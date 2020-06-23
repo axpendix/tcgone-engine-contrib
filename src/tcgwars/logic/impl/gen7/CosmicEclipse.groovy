@@ -4840,7 +4840,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               toDiscard.discard()
             }
 
-            def names = my.all.findAll {it.turnCount < bg.turnCount}.collect { it.name }
+            def names = my.all.findAll {it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount}.collect { it.name }
             def sel = deck.search ("Select a Pokémon-GX that evolves from $names.", {
               it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor) && it.cardTypes.is(POKEMON_GX)
             })
