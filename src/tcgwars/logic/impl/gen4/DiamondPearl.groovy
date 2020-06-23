@@ -2980,14 +2980,18 @@ public enum DiamondPearl implements LogicCardInfo {
               }*/
               before EVOLVE, {
                 if ((ef.evolutionCard as Card) == thisCard) {
-                   if (ef.pokemonToBeEvolved.topPokemonCard.cardTypes.is(LEVEL_UP)){
-                     wcu "You can't level up a LV.X Pokémon."
-                     prevent()
-                   } else if (!ef.pokemonToBeEvolved.active) {
-                     wcu "To level-up a Pokémon, it must be your Active Pokémon"
-                     prevent()
-                   }
-                }
+                  def evolutionPrevented = false
+                  if (ef.pokemonToBeEvolved.topPokemonCard.cardTypes.is(LEVEL_UP)){
+                    wcu "You can't level up a LV.X Pokémon."
+                    evolutionPrevented = true
+                  } else if (!ef.pokemonToBeEvolved.active) {
+                    wcu "To level-up a Pokémon, it must be your Active Pokémon"
+                    evolutionPrevented = true
+                  }
+                  if (evolutionPrevented) {
+                    new CardList(thisCard).moveTo(my.hand)
+                    prevent()
+                  }
               }
             }
           }
@@ -3056,13 +3060,18 @@ public enum DiamondPearl implements LogicCardInfo {
               }*/
               before EVOLVE, {
                 if ((ef.evolutionCard as Card) == thisCard) {
-                   if (ef.pokemonToBeEvolved.topPokemonCard.cardTypes.is(LEVEL_UP)){
-                     wcu "You can't level up a LV.X Pokémon."
-                     prevent()
-                   } else if (!ef.pokemonToBeEvolved.active) {
-                     wcu "To level-up a Pokémon, it must be your Active Pokémon"
-                     prevent()
-                   }
+                  def evolutionPrevented = false
+                  if (ef.pokemonToBeEvolved.topPokemonCard.cardTypes.is(LEVEL_UP)){
+                    wcu "You can't level up a LV.X Pokémon."
+                    evolutionPrevented = true
+                  } else if (!ef.pokemonToBeEvolved.active) {
+                    wcu "To level-up a Pokémon, it must be your Active Pokémon"
+                    evolutionPrevented = true
+                  }
+                  if (evolutionPrevented) {
+                    new CardList(thisCard).moveTo(my.hand)
+                    prevent()
+                  }
                 }
               }
             }
@@ -3120,13 +3129,18 @@ public enum DiamondPearl implements LogicCardInfo {
               }*/
               before EVOLVE, {
                 if ((ef.evolutionCard as Card) == thisCard) {
-                   if (ef.pokemonToBeEvolved.topPokemonCard.cardTypes.is(LEVEL_UP)){
-                     wcu "You can't level up a LV.X Pokémon."
-                     prevent()
-                   } else if (!ef.pokemonToBeEvolved.active) {
-                     wcu "To level-up a Pokémon, it must be your Active Pokémon"
-                     prevent()
-                   }
+                  def evolutionPrevented = false
+                  if (ef.pokemonToBeEvolved.topPokemonCard.cardTypes.is(LEVEL_UP)){
+                    wcu "You can't level up a LV.X Pokémon."
+                    evolutionPrevented = true
+                  } else if (!ef.pokemonToBeEvolved.active) {
+                    wcu "To level-up a Pokémon, it must be your Active Pokémon"
+                    evolutionPrevented = true
+                  }
+                  if (evolutionPrevented) {
+                    new CardList(thisCard).moveTo(my.hand)
+                    prevent()
+                  }
                 }
               }
             }
