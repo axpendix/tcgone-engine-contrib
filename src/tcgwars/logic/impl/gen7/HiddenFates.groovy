@@ -596,11 +596,14 @@ public enum HiddenFates implements LogicCardInfo {
           text "If this Pokémon is Knocked Out by damage from an opponent's attack, discard 2 random cards from your opponent's hand."
           delayedA {
             after (KNOCKOUT, self) {
-              bc "Last Pattern activates"
-              bg.deterministicCurrentThreadPlayerType = self.owner
-              astonish()
-              astonish()
-              bg.clearDeterministicCurrentThreadPlayerType()
+              // TODO: Make TcgStatics.astonish more flexible so that it actually works for this?
+              if(!checkBodyguard()) {
+                bc "Last Pattern activates"
+                bg.deterministicCurrentThreadPlayerType = self.owner
+                def sel=opp.hand.select(hidden: true, count: 2, "Choose 2 random cards from your opponent's hand to be discarded.")
+                sel.discard()
+                bg.clearDeterministicCurrentThreadPlayerType()
+              }
             }
           }
         }
