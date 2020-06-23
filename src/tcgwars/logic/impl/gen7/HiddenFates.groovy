@@ -916,6 +916,9 @@ public enum HiddenFates implements LogicCardInfo {
         move "Happy Mime", {
           text "Each player draws a card."
           energyCost Y
+          attackRequirement {
+            assert opp.deck || my.deck : "Both decks are empty"
+          }
           onAttack {
             draw 1, TargetPlayer.SELF
             draw 1, TargetPlayer.OPPONENT
