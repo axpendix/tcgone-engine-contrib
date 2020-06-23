@@ -1083,7 +1083,7 @@ public enum ForbiddenLight implements LogicCardInfo {
           resistance FIGHTING, MINUS20
           bwAbility "Roto Motor", {
             text "If you have 9 or more Pokémon Tool cards in your discard pile, ignore all Energy in the attack cost of each of this Pokémon’s attacks."
-            getterA GET_MOVE_LIST, self, {h->
+            getterA GET_MOVE_LIST, BEFORE_LAST, self, {h->
               def toolReq = (my.discard.filterByType(POKEMON_TOOL).size()>8)
               def list=[]
               for(move in h.object){
