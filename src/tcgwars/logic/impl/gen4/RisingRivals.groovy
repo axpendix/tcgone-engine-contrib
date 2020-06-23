@@ -2212,7 +2212,7 @@ public enum RisingRivals implements LogicCardInfo {
           onPlay {
             def src = my.all.findAll{it.cards.filterByType(ENERGY)}.select("Select Pokemon to move energy from").first()
             def energyList = src.cards.filterByType(ENERGY).select(min:1, "Choose energy cards to move")
-            tar = my.all.getExcludedList(src).select("Choose Pokemon to move energy cards to").first()
+            tar = my.all.findAll{it != src}.select("Choose Pokemon to move energy cards to").first()
             energyList.each {
               energySwitch(src, tar, it)
             }

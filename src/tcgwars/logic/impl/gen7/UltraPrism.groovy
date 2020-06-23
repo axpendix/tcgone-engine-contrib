@@ -540,13 +540,13 @@ public enum UltraPrism implements LogicCardInfo {
           weakness FIRE
           bwAbility "Roto Motor", {
             text "If you have 9 or more Pokémon Tool cards in your discard pile, ignore all Energy in the attack cost of each of this Pokémon’s attacks."
-            getterA GET_MOVE_LIST, NORMAL,self, {h->
+            getterA GET_MOVE_LIST, BEFORE_LAST, self, {h->
               def toolReq = (my.discard.filterByType(POKEMON_TOOL).size()>=9)
               def list=[]
               for(move in h.object){
                 def copy=move.shallowCopy()
                 if(toolReq){
-                  copy.energyCost.clear()
+                  copy.energyCost.retainAll()
                 }
                 list.add(copy)
               }
@@ -755,7 +755,7 @@ public enum UltraPrism implements LogicCardInfo {
           weakness WATER
           bwAbility "Roto Motor", {
             text "If you have 9 or more Pokémon Tool cards in your discard pile, ignore all Energy in the attack cost of each of this Pokémon’s attacks."
-            getterA GET_MOVE_LIST, self, {h->
+            getterA GET_MOVE_LIST, BEFORE_LAST, self, {h->
               def toolReq = (my.discard.filterByType(POKEMON_TOOL).size()>=9)
               def list=[]
               for(move in h.object){
@@ -1088,7 +1088,7 @@ public enum UltraPrism implements LogicCardInfo {
           weakness GRASS
           bwAbility "Roto Motor", {
             text "If you have 9 or more Pokémon Tool cards in your discard pile, ignore all Energy in the attack cost of each of this Pokémon’s attacks."
-            getterA GET_MOVE_LIST, self, {h->
+            getterA GET_MOVE_LIST, BEFORE_LAST, self, {h->
               def toolReq = (my.discard.filterByType(POKEMON_TOOL).size()>=9)
               def list=[]
               for(move in h.object){
@@ -1118,7 +1118,7 @@ public enum UltraPrism implements LogicCardInfo {
           weakness METAL
           bwAbility "Roto Motor", {
             text "If you have 9 or more Pokémon Tool cards in your discard pile, ignore all Energy in the attack cost of each of this Pokémon’s attacks."
-            getterA GET_MOVE_LIST, self, {h->
+            getterA GET_MOVE_LIST, BEFORE_LAST, self, {h->
               def toolReq = (my.discard.filterByType(POKEMON_TOOL).size()>=9)
               def list=[]
               for(move in h.object){
@@ -1330,7 +1330,7 @@ public enum UltraPrism implements LogicCardInfo {
           resistance METAL, MINUS20
           bwAbility "Roto Motor", {
             text "If you have 9 or more Pokémon Tool cards in your discard pile, ignore all Energy in the attack cost of each of this Pokémon’s attacks."
-            getterA GET_MOVE_LIST, self, {h->
+            getterA GET_MOVE_LIST, BEFORE_LAST, self, {h->
               def toolReq = (my.discard.filterByType(POKEMON_TOOL).size()>=9)
               def list=[]
               for(move in h.object){
@@ -2712,7 +2712,7 @@ public enum UltraPrism implements LogicCardInfo {
           resistance FIGHTING, MINUS20
           bwAbility "Roto Motor", {
             text "If you have 9 or more Pokémon Tool cards in your discard pile, ignore all Energy in the attack cost of each of this Pokémon’s attacks."
-            getterA GET_MOVE_LIST, self, {h->
+            getterA GET_MOVE_LIST, BEFORE_LAST, self, {h->
               def toolReq = (my.discard.filterByType(POKEMON_TOOL).size()>=9)
               def list=[]
               for(move in h.object){
