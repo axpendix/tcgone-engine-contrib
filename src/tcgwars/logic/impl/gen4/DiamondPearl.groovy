@@ -2978,7 +2978,7 @@ public enum DiamondPearl implements LogicCardInfo {
                   def currentActive = thisCard.player.pbg.active
                   if (thisCard.predecessor != currentActive.name){
                     wcu "You can only level-up a ${thisCard.name} placed as your Active Pokémon"
-                  } else if (currentActive.cardTypes.is(LEVEL_UP)) {
+                  } else if (currentActive.topPokemonCard.cardTypes.is(LEVEL_UP)) {
                     wcu "You can't level-up a ${thisCard.name} LV.X"
                   } else if (currentActive.turnCount >= bg.turnCount) {
                     wcu "You can't level-up a ${thisCard.name} that was put in play during this turn."
@@ -3055,7 +3055,7 @@ public enum DiamondPearl implements LogicCardInfo {
                   def currentActive = thisCard.player.pbg.active
                   if (thisCard.predecessor != currentActive.name){
                     wcu "You can only level-up a ${thisCard.name} placed as your Active Pokémon"
-                  } else if (currentActive.cardTypes.is(LEVEL_UP)) {
+                  } else if (currentActive.topPokemonCard.cardTypes.is(LEVEL_UP)) {
                     wcu "You can't level-up a ${thisCard.name} LV.X"
                   } else if (currentActive.turnCount >= bg.turnCount) {
                     wcu "You can't level-up a ${thisCard.name} that was put in play during this turn."
@@ -3120,7 +3120,7 @@ public enum DiamondPearl implements LogicCardInfo {
                   def currentActive = thisCard.player.pbg.active
                   if (thisCard.predecessor != currentActive.name){
                     wcu "You can only level-up a ${thisCard.name} placed as your Active Pokémon"
-                  } else if (currentActive.cardTypes.is(LEVEL_UP)) {
+                  } else if (currentActive.topPokemonCard.cardTypes.is(LEVEL_UP)) {
                     wcu "You can't level-up a ${thisCard.name} LV.X"
                   } else if (currentActive.turnCount >= bg.turnCount) {
                     wcu "You can't level-up a ${thisCard.name} that was put in play during this turn."
