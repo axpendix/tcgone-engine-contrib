@@ -996,7 +996,6 @@ public enum HiddenFates implements LogicCardInfo {
           text "40x damage. Flip a coin until you get tails. This attack does 40 damage for each heads."
           energyCost C, C
           onAttack {
-            damage 40
             flipUntilTails { damage 40 }
           }
         }
