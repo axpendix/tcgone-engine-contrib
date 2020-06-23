@@ -2982,6 +2982,8 @@ public enum DiamondPearl implements LogicCardInfo {
                     wcu "You can't level-up a ${thisCard.name} LV.X"
                   } else if (currentActive.turnCount >= bg.turnCount) {
                     wcu "You can't level-up a ${thisCard.name} that was put in play during this turn."
+                  } else if (currentActive.lastEvolved >= bg.turnCount) {
+                    wcu "You can't level-up a ${thisCard.name} that was evolved during this turn."
                   } else {
                     //All is good, evolve the active
                     evolve(currentActive, thisCard, PLAY_FROM_HAND)
@@ -3059,6 +3061,8 @@ public enum DiamondPearl implements LogicCardInfo {
                     wcu "You can't level-up a ${thisCard.name} LV.X"
                   } else if (currentActive.turnCount >= bg.turnCount) {
                     wcu "You can't level-up a ${thisCard.name} that was put in play during this turn."
+                  } else if (currentActive.lastEvolved >= bg.turnCount) {
+                    wcu "You can't level-up a ${thisCard.name} that was evolved during this turn."
                   } else {
                     //All is good, evolve the active
                     evolve(currentActive, thisCard, PLAY_FROM_HAND)
@@ -3124,6 +3128,8 @@ public enum DiamondPearl implements LogicCardInfo {
                     wcu "You can't level-up a ${thisCard.name} LV.X"
                   } else if (currentActive.turnCount >= bg.turnCount) {
                     wcu "You can't level-up a ${thisCard.name} that was put in play during this turn."
+                  } else if (currentActive.lastEvolved >= bg.turnCount) {
+                    wcu "You can't level-up a ${thisCard.name} that was evolved during this turn."
                   } else {
                     //All is good, evolve the active
                     evolve(currentActive, thisCard, PLAY_FROM_HAND)
