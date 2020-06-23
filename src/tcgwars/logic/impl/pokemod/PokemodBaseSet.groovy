@@ -2184,6 +2184,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         }
         typeImagesOverride = [RAINBOW, RAINBOW]
         def eff
+        def subeff
         onPlay {reason->
           if(!bg.em().retrieveObject("G_SPEC_"+thisCard.player)){
             bg.em().storeObject("G_SPEC_"+thisCard.player, 1)
@@ -2191,32 +2192,18 @@ public enum PokemodBaseSet implements LogicCardInfo {
             discard thisCard
           }
           eff = delayed {
-            before PLAY_TRAINER, {
-              bc "before PLAY_TRAINER"
-            }
-            before DISCARD, {
-              bc "before DISCARD"
-              bc "ef.card = ${ef.card}"
-              prevent()
-            }
-            before null, null, Source.TRAINER_CARD,{
-              bc "before n,n,ScrTrainerCard"
-            }
             before null, self, Source.TRAINER_CARD,{
-              bc "before n,self,ScrTrainerCard"
-            }
-            after PLAY_TRAINER,{
-              bc "after PLAY_TRAINER"
-            }
-            after DISCARD, {//hopefully never
-              bc "after DISCARD"
-              bc "ef.card = ${ef.card}"
-            }
-            after null, null, Source.TRAINER_CARD,{
-              bc "after n,n,ScrTrainerCard"
+              subeff = delayed {
+                before DISCARD, {
+                  if(ef.card == thisCard && bg.currentTurn == self.owner.opposite){
+                    prevent()
+                    bc "Miracle Energy isn't discarded by ${self.owner.opposite.getPlayerUsername(bg)}'s trainer cards"
+                  }
+                }
+              }
             }
             after null, self, Source.TRAINER_CARD,{
-              bc "after n,self,ScrTrainerCard"
+              subeff.unregister()
             }
             after EVOLVE, self, {check(self)}
             after DEVOLVE, self, {check(self)}
@@ -2243,13 +2230,22 @@ public enum PokemodBaseSet implements LogicCardInfo {
         }
         typeImagesOverride = [RAINBOW, RAINBOW]
         def eff
+        def subeff
         onPlay {reason->
           bg.em().storeObject("G_SPEC_"+thisCard.player, 1)
           eff = delayed {
-            before DISCARD, null, Source.TRAINER_CARD, {
-              if(ef.card == thisCard){
-                prevent()
+            before null, self, Source.TRAINER_CARD,{
+              subeff = delayed {
+                before DISCARD, {
+                  if(ef.card == thisCard && bg.currentTurn == self.owner.opposite){
+                    prevent()
+                    bc "Miracle Energy isn't discarded by ${self.owner.opposite.getPlayerUsername(bg)}'s trainer cards"
+                  }
+                }
               }
+            }
+            after null, self, Source.TRAINER_CARD,{
+              subeff.unregister()
             }
             after EVOLVE, self, {check(self)}
             after DEVOLVE, self, {check(self)}
