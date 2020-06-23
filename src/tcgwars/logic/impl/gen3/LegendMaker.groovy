@@ -2638,15 +2638,15 @@ public enum LegendMaker implements LogicCardInfo {
             checkNoSPC()
             checkLastTurn()
             assert self.active : "This Pokemon is not the Active Pokemon"
-            assert all.any{it.numberOfDamageCounters}
+            assert all.any{it.numberOfDamageCounters} : "No Damage Counters in any Pokémon"
             powerUsed()
-            def src=all.findAll{it.numberOfDamageCounters}.select("Source for damage counter")
-            def tar=all
-            all.remove(src)
-            tar=tar.select("Target for damage counter")
-            src.damage-=hp(10)
-            directDamage(10, tar, SRC_ABILITY)
-            bc "Swapped a damage counter from $src to $tar"
+            def source = all.findAll{it.numberOfDamageCounters}.select("Source for damage counter")
+            def target = all
+            target.remove(source)
+            target = target.select("Target for damage counter")
+            source.damage-=hp(10)
+            directDamage 10, target
+            bc "Moved 1 damage counter from $source to $target"
             checkFaint()
           }
         }

@@ -573,16 +573,16 @@ public enum DragonFrontiers implements LogicCardInfo {
           actionA {
             checkNoSPC()
             checkLastTurn()
-            assert my.all.find({ it.numberOfDamageCounters > 0 }) : "No Damage Counters"
-
+            assert self.active : "This Pokemon is not the Active Pokemon"
+            assert all.any{it.numberOfDamageCounters} : "No Damage Counters in any Pokémon"
             powerUsed()
-            def source = my.all.findAll { it.numberOfDamageCounters > 0 }.select("Source for damage counter")
-            def target = my.all
+            def source = all.findAll{it.numberOfDamageCounters}.select("Source for damage counter")
+            def target = all
             target.remove(source)
             target = target.select("Target for damage counter")
             source.damage-=hp(10)
-            target.damage+=hp(10)
-            bc "Swapped a damage counter from $source to $target"
+            directDamage 10, target
+            bc "Moved 1 damage counter from $source to $target"
             checkFaint()
           }
         }
