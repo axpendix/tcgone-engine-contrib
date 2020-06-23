@@ -2191,6 +2191,22 @@ public enum PokemodBaseSet implements LogicCardInfo {
             discard thisCard
           }
           eff = delayed {
+            before DISCARD, {
+              bc "before DISCARD"
+              bc "ef.card = ${ef.card}"
+            }
+            before null, null, Source.TRAINER_CARD,{
+              bc "before n,n,ScrTrainerCard"
+              bc "ef.card = ${ef.card}"
+            }
+            before DISCARD, self, {
+              bc "before DISCARD self"
+              bc "ef.card = ${ef.card}"
+            }
+            before null, self, Source.TRAINER_CARD,{
+              bc "before n,self,ScrTrainerCard"
+              bc "ef.card = ${ef.card}"
+            }
             before DISCARD, null, Source.TRAINER_CARD, {
               bc "before Discard, null, Source.TRAINER_CARD,"
               if(ef.card == thisCard){
