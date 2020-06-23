@@ -2393,21 +2393,18 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           globalAbility{
             delayed {
               before PLAY_TRAINER, {
+                bc "before PLAY_TRAINER"
                 if(ef.cardToPlay.cardTypes.is(SUPPORTER)){
-                  thisTurnSupporter = ef.cardToPlay
-                  bc "thisTurnSupporter = $thisTurnSupporter"
+                  bc "thisTurnSupporter"
                 }
-              }
-              after BETWEEN_TURNS, {
-                thisTurnSupporter = null
               }
             }
           }
           onPlay {
-            my.discard.getExcludedList(thisTurnSupporter).filterByType(SUPPORTER).select("Select one Supporter card").showToOpponent("Selected supporter").moveTo(my.hand)
+            my.discard.filterByType(SUPPORTER).select("Select one Supporter card").showToOpponent("Selected supporter").moveTo(my.hand)
           }
           playRequirement{
-            assert my.discard.getExcludedList(thisTurnSupporter).filterByType(SUPPORTER) : "You have no Supporters in your discard"
+            assert my.discard.filterByType(SUPPORTER) : "You have no Supporters in your discard"
           }
         };
       case POTION_101:
