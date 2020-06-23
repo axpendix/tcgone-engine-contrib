@@ -2640,9 +2640,6 @@ public enum LegendMaker implements LogicCardInfo {
                 thisTurnSupporter = ef.cardToPlay
               }
             }
-            after BETWEEN_TURNS, {
-              thisTurnSupporter = null
-            }
           }
         }
         pokePower "Shady Move", {
