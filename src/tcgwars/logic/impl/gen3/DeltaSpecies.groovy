@@ -212,11 +212,15 @@ public enum DeltaSpecies implements LogicCardInfo {
         pokePower "Final Sting", {
           text "Once during your turn (before your attack), you may Knock Out Beedrill. If you do, choose 1 of your opponent's Defending Pokémon. That Pokémon is now Paralyzed and Poisoned. Put 2 damage counters instead of 1 on that Pokémon between turns. This power can't be used if Beedrill is affected by a Special Condition."
           actionA {
+            checkLastTurn()
             checkNoSPC()
+            powerUsed()
             def tar = opp.active
             apply PARALYZED, tar, SRC_ABILITY
             apply POISONED, tar, SRC_ABILITY
-            extraPoison 1
+            targeted (tar, SRC_ABILITY) {
+              extraPoison 1
+            }
             new Knockout(self).run(bg)
           }
         }
@@ -305,11 +309,11 @@ public enum DeltaSpecies implements LogicCardInfo {
             checkLastTurn()
             assert bg.em().retrieveObject("Delta_Heal") != bg.turnCount : "You cannot use Delta Heal more than once per turn!"
             checkNoSPC()
-            powerUsed()
             bg.em().storeObject("Delta_Heal", bg.turnCount)
+            powerUsed()
             my.all.each {
               if (it.topPokemonCard.cardTypes.is(DELTA)) {
-                heal 10, it
+                heal 10, it, SRC_ABILITY
               }
             }
           }
@@ -329,17 +333,16 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Delta Search", {
           text "10 damage. Search your deck for a Holon Energy card and attach it to Flareon. Shuffle your deck afterward."
           energyCost C
-          attackRequirement {
-            assert my.deck : "Deck is empty"
-          }
+          attackRequirement {}
           onAttack {
             damage 10
-
             afterDamage {
-              my.deck.search(max: 1, "Select a Holon Energy card to attach to Flareon", {it.cardTypes.is(SPECIAL_ENERGY) && it.name.contains("Holon") }).each {
-                attachEnergy(self, it)
+              if (my.deck){
+                my.deck.search(max: 1, "Select a Holon Energy card to attach to Flareon", {it.cardTypes.is(SPECIAL_ENERGY) && it.name.contains("Holon") }).each {
+                  attachEnergy(self, it)
+                }
+                shuffleDeck()
               }
-              shuffleDeck()
             }
           }
         }
