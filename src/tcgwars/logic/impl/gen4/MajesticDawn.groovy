@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen4;
 
+import tcgwars.logic.impl.gen4.MysteriousTreasures;
 import tcgwars.logic.impl.gen5.PlasmaStorm;
 
 import static tcgwars.logic.card.HP.*;
@@ -2042,17 +2043,7 @@ public enum MajesticDawn implements LogicCardInfo {
           }
         };
       case DARKNESS_ENERGY_93:
-        return specialEnergy (this, [[C]]) {
-          text "If the Pokémon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). Ignore this effect if the Pokémon that Darkness Energy is attached to isn’t [D]. Darkness Energy provides [D] Energy. (Doesn’t count as a basic Energy card.)"
-          onPlay {reason->
-          }
-          onRemoveFromPlay {
-          }
-          onMove {to->
-          }
-          allowAttach {to->
-          }
-        };
+        return copy (MysteriousTreasures.DARKNESS_ENERGY_119, this);
       case HEALTH_ENERGY_94:
         return specialEnergy (this, [[C]]) {
           text "Health Energy provides [C] Energy. When you attach this card from your hand to 1 of your Pokémon, remove 1 damage counter from that Pokémon."

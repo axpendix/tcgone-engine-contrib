@@ -1,5 +1,7 @@
 package tcgwars.logic.impl.gen4;
 
+import tcgwars.logic.impl.gen4.MysteriousTreasures;
+
 import tcgwars.logic.effect.gm.PlayTrainer
 
 import static tcgwars.logic.card.HP.*;
@@ -2770,7 +2772,7 @@ public enum SecretWonders implements LogicCardInfo {
       case SWITCH_128:
         return copy(FireRedLeafGreen.SWITCH_102, this);
       case DARKNESS_ENERGY_129:
-        return copy (RubySapphire.DARKNESS_ENERGY_93, this);
+        return copy (MysteriousTreasures.DARKNESS_ENERGY_119, this);
       case METAL_ENERGY_130:
         return copy (RubySapphire.METAL_ENERGY_94, this);
       case GARDEVOIR_LV_X_131:

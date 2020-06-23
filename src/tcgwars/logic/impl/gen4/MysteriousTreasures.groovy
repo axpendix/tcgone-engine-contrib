@@ -3408,7 +3408,26 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return copy (Sandstorm.MULTI_ENERGY_93, this);
       case DARKNESS_ENERGY_119:
         //TODO: This version of "Darkness Energy (Special Energy)" shouldn't work on "Dark ____" cards, only on [D] Type Pokémon.
-        return copy (RubySapphire.DARKNESS_ENERGY_93, this);
+        return specialEnergy (this, [[D]]) {
+          text: "If the Pokémon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). Ignore this effect if the Pokémon that Darkness Energy is attached to isn’t [D]. Darkness Energy provides [D] Energy. (Doesn’t count as a basic Energy card.)"
+          def eff
+          onPlay {reason->
+            eff = delayed {
+              after PROCESS_ATTACK_EFFECTS, {
+                if (self.types.contains(D)){
+                  bg.dm().each(){
+                    if(it.from == self && it.to.active && it.to.owner != self.owner && it.dmg.value) {
+                      it.dmg += hp(10)
+                    }
+                  }
+                }
+              }
+            }
+          }
+          onRemoveFromPlay {
+            eff.unregister()
+          }
+        }
       case METAL_ENERGY_120:
         return copy (RubySapphire.METAL_ENERGY_94, this);
       case ELECTIVIRE_LV_X_121:
