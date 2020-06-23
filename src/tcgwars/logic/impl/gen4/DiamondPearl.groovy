@@ -606,7 +606,7 @@ public enum DiamondPearl implements LogicCardInfo {
               powerUsed()
               flip {
                 def pcs = list.select("Devolve one of your opponent's evolved Benched Pokémon.")
-                def top=pcs.topPokemonCard
+                def top = pcs.topPokemonCard
                 //
                 // [Temporary LV.X workaround]
                 if (top.cardTypes.is(LEVEL_UP) && pcs.cards.filterByType(POKEMON).size() > 2){

@@ -1358,9 +1358,9 @@ public enum LegendMaker implements LogicCardInfo {
             assert opp.bench.findAll { it.evolution } : "Opponent has no evolved Pokemon"
           }
           onAttack {
+            def list = opp.all.findAll { it.evolution }
+            def pcs = list.select("Choose one of your opponent's evolved Pokémon.")
             flip {
-              def list = opp.all.findAll { it.evolution }
-              def pcs = list.select("Devolve one of your opponent's evolved Pokémon")
               def top = pcs.topPokemonCard
               //
               // [Temporary LV.X workaround]
@@ -1376,8 +1376,8 @@ public enum LegendMaker implements LogicCardInfo {
               bc "$top Devolved"
               pcs.cards.remove(top)
               opp.deck.add(top)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
               devolve(pcs, top)
+              shuffleDeck(null, TargetPlayer.OPPONENT)
             }
           }
         }
