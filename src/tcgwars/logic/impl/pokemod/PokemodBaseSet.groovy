@@ -154,7 +154,9 @@ public enum PokemodBaseSet implements LogicCardInfo {
   ARCANINE_117 ("Arcanine", 117, Rarity.SECRET, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
   CHARIZARD_EX_118 ("Charizard ex", 118, Rarity.SECRET, [POKEMON, EVOLUTION, EX, STAGE2, _FIRE_]),
   BLASTOISE_EX_119 ("Blastoise ex", 119, Rarity.SECRET, [POKEMON, EVOLUTION, EX, STAGE2, _WATER_]),
-  VENUSAUR_EX_120 ("Venusaur ex", 120, Rarity.SECRET, [POKEMON, EVOLUTION, EX, STAGE2, _GRASS_]);
+  VENUSAUR_EX_120 ("Venusaur ex", 120, Rarity.SECRET, [POKEMON, EVOLUTION, EX, STAGE2, _GRASS_]),
+  MIRACLE_ENERGY_OPTION_1 ("Miracle Energy", 121, Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
+  MIRACLE_ENERGY_OPTION_2 ("Miracle Energy", 122, Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -2169,6 +2171,77 @@ public enum PokemodBaseSet implements LogicCardInfo {
           onAttack {
             damage 70
           }
+        }
+      };
+      case MIRACLE_ENERGY_OPTION_1:
+      return specialEnergy (this, [[]]) {
+        def check = {
+          if(!it.topPokemonCard.cardTypes.is(STAGE2)){discard thisCard}
+        }
+        typeImagesOverride = [RAINBOW, RAINBOW]
+        onPlay {reason->
+          if(!bg.em().retrieveObject("G_SPEC_"+thisCard.player)){
+            bg.em().storeObject("G_SPEC_"+thisCard.player, 1)
+          } else{
+            discard thisCard
+          }
+          def eff
+          eff = delayed {
+            before DISCARD, self, Source.TRAINER_CARD{
+              if(ef.card == thisCard){
+                prevent()
+              }
+            }
+            after EVOLVE, self, {check(self)}
+            after DEVOLVE, self, {check(self)}
+            after ATTACH_ENERGY, self, {check(self)}
+          }
+        }
+        onRemoveFromPlay {
+          eff.unregister()
+        }
+        onMove {to->
+          check(to)
+        }
+        allowAttach {to->
+          to.topPokemonCard.cardTypes.is(STAGE2) && !bg.em().retrieveObject("G_SPEC_"+thisCard.player)
+        }
+        getEnergyTypesOverride{
+          return [[R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set]
+        }
+      };
+      case MIRACLE_ENERGY_OPTION_2:
+      return specialEnergy (this, [[]]) {
+        def check = {
+          if(!it.topPokemonCard.cardTypes.is(STAGE2)){discard thisCard}
+        }
+        typeImagesOverride = [RAINBOW, RAINBOW]
+        onPlay {reason->
+          bg.em().storeObject("G_SPEC_"+thisCard.player, 1)
+          def eff
+          eff = delayed {
+            before DISCARD, self, Source.TRAINER_CARD{
+              if(ef.card == thisCard){
+                prevent()
+              }
+            }
+            after EVOLVE, self, {check(self)}
+            after DEVOLVE, self, {check(self)}
+            after ATTACH_ENERGY, self, {check(self)}
+          }
+        }
+        onRemoveFromPlay {
+          eff.unregister()
+          thisCard.moveTo(suppressLog: true, my.lostZone)
+        }
+        onMove {to->
+          check(to)
+        }
+        allowAttach {to->
+          to.topPokemonCard.cardTypes.is(STAGE2) && !bg.em().retrieveObject("G_SPEC_"+thisCard.player)
+        }
+        getEnergyTypesOverride{
+          return [[R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set]
         }
       };
         default:
