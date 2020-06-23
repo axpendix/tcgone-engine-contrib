@@ -1693,7 +1693,7 @@ public enum Emerald implements LogicCardInfo {
           def eff
           onPlay {
             eff = getter IS_ABILITY_BLOCKED, { Holder h->
-              if (h.effect.target.evolution && (h.effect.ability instanceof PokeBody || h.effect.ability instanceof PokePower) && (h.effect.target.types.contains(C) || h.effect.target.types.contains(D) || h.effect.target.types.contains(M))) {
+              if (h.effect.target.evolution && (h.effect.ability instanceof PokeBody || h.effect.ability instanceof PokePower || h.effect.ability instanceof PokemonPower) && (h.effect.target.types.contains(C) || h.effect.target.types.contains(D) || h.effect.target.types.contains(M))) {
                 h.object=true
               }
             }
