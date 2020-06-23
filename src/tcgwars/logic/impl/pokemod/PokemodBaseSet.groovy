@@ -2180,7 +2180,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
       case MIRACLE_ENERGY_OPTION_1:
       return specialEnergy (this, [[]]) {
         def check = {
-          if(!it.topPokemonCard.cardTypes.is(STAGE2)){discard thisCard}
+          if(it && !it.topPokemonCard.cardTypes.is(STAGE2)){discard thisCard}
         }
         typeImagesOverride = [RAINBOW, RAINBOW]
         def eff
