@@ -2973,23 +2973,19 @@ public enum DiamondPearl implements LogicCardInfo {
           weakness L, PLUS30
           globalAbility {Card thisCard->
             delayed {
-              /*before PLAY_CARD, {
+              before PLAY_CARD, {
                 if(ef.cardToPlay == thisCard){
-                  validPokemon = thisCard.player.pbg.all.findAll{it.topPokemonCard.name == thisCard.name && !it.topPokemonCard.cardTypes.is(LEVEL_UP)}
-                }
-              }*/
-              before EVOLVE, {
-                if ((ef.evolutionCard as Card) == thisCard) {
-                  def evolutionPrevented = false
-                  if (ef.pokemonToBeEvolved.topPokemonCard.cardTypes.is(LEVEL_UP)){
-                    wcu "You can't level up a LV.X Pokémon."
-                    evolutionPrevented = true
-                  } else if (!ef.pokemonToBeEvolved.active) {
-                    wcu "To level-up a Pokémon, it must be your Active Pokémon"
-                    evolutionPrevented = true
-                  }
-                  if (evolutionPrevented) {
-                    new CardList(thisCard).moveTo(my.hand)
+                  currentActive = thisCard.player.pbg.active
+                  if (thisCard.predecessor != currentActive.name){
+                    wcu "You can only level-up a ${thisCard.name} placed as your Active Pokémon"
+                    prevent()
+                  } else if (currentActive.cardTypes.is(LEVEL_UP)) {
+                    wcu "You can't level-up a ${thisCard.name} LV.X"
+                    prevent()
+                  } else {
+                    //All is good, evolve the active
+                    evolve(currentActive, thisCard, PLAY_FROM_HAND)
+                    bc "$currentActive is now LV.X!"
                     prevent()
                   }
                 }
@@ -3054,23 +3050,19 @@ public enum DiamondPearl implements LogicCardInfo {
           def validPokemon
           globalAbility {Card thisCard->
             delayed {
-              /*before PLAY_CARD, {
+              before PLAY_CARD, {
                 if(ef.cardToPlay == thisCard){
-                  validPokemon = thisCard.player.pbg.all.findAll{it.topPokemonCard.name == thisCard.name && !it.topPokemonCard.cardTypes.is(LEVEL_UP)}
-                }
-              }*/
-              before EVOLVE, {
-                if ((ef.evolutionCard as Card) == thisCard) {
-                  def evolutionPrevented = false
-                  if (ef.pokemonToBeEvolved.topPokemonCard.cardTypes.is(LEVEL_UP)){
-                    wcu "You can't level up a LV.X Pokémon."
-                    evolutionPrevented = true
-                  } else if (!ef.pokemonToBeEvolved.active) {
-                    wcu "To level-up a Pokémon, it must be your Active Pokémon"
-                    evolutionPrevented = true
-                  }
-                  if (evolutionPrevented) {
-                    new CardList(thisCard).moveTo(my.hand)
+                  currentActive = thisCard.player.pbg.active
+                  if (thisCard.predecessor != currentActive.name){
+                    wcu "You can only level-up a ${thisCard.name} placed as your Active Pokémon"
+                    prevent()
+                  } else if (currentActive.cardTypes.is(LEVEL_UP)) {
+                    wcu "You can't level-up a ${thisCard.name} LV.X"
+                    prevent()
+                  } else {
+                    //All is good, evolve the active
+                    evolve(currentActive, thisCard, PLAY_FROM_HAND)
+                    bc "$currentActive is now LV.X!"
                     prevent()
                   }
                 }
@@ -3123,23 +3115,19 @@ public enum DiamondPearl implements LogicCardInfo {
           weakness R, PLUS30
           globalAbility {Card thisCard->
             delayed {
-              /*before PLAY_CARD, {
+              before PLAY_CARD, {
                 if(ef.cardToPlay == thisCard){
-                  validPokemon = thisCard.player.pbg.all.findAll{it.topPokemonCard.name == thisCard.name && !it.topPokemonCard.cardTypes.is(LEVEL_UP)}
-                }
-              }*/
-              before EVOLVE, {
-                if ((ef.evolutionCard as Card) == thisCard) {
-                  def evolutionPrevented = false
-                  if (ef.pokemonToBeEvolved.topPokemonCard.cardTypes.is(LEVEL_UP)){
-                    wcu "You can't level up a LV.X Pokémon."
-                    evolutionPrevented = true
-                  } else if (!ef.pokemonToBeEvolved.active) {
-                    wcu "To level-up a Pokémon, it must be your Active Pokémon"
-                    evolutionPrevented = true
-                  }
-                  if (evolutionPrevented) {
-                    new CardList(thisCard).moveTo(my.hand)
+                  currentActive = thisCard.player.pbg.active
+                  if (thisCard.predecessor != currentActive.name){
+                    wcu "You can only level-up a ${thisCard.name} placed as your Active Pokémon"
+                    prevent()
+                  } else if (currentActive.cardTypes.is(LEVEL_UP)) {
+                    wcu "You can't level-up a ${thisCard.name} LV.X"
+                    prevent()
+                  } else {
+                    //All is good, evolve the active
+                    evolve(currentActive, thisCard, PLAY_FROM_HAND)
+                    bc "$currentActive is now LV.X!"
                     prevent()
                   }
                 }
