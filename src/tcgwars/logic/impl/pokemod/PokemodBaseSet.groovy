@@ -2191,7 +2191,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
           }
           def eff
           eff = delayed {
-            before DISCARD, null, Source.TRAINER_CARD{
+            before DISCARD, null, Source.TRAINER_CARD, {
               if(ef.card == thisCard){
                 prevent()
               }
@@ -2224,7 +2224,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
           bg.em().storeObject("G_SPEC_"+thisCard.player, 1)
           def eff
           eff = delayed {
-            before DISCARD, null, Source.TRAINER_CARD{
+            before DISCARD, null, Source.TRAINER_CARD, {
               if(ef.card == thisCard){
                 prevent()
               }
