@@ -3533,7 +3533,7 @@ public enum DarknessAblaze implements LogicCardInfo {
                 if (!src) break;
                 def card=src.cards.filterByType(ENERGY).select("Energy to move").first()
 
-                def tar=my.all.getExcludedList(src).select("Target for energy (cancel to stop)", false)
+                def tar=my.all.findAll{it != src}.select("Target for energy (cancel to stop)", false)
                 if (!tar) break;
                 energySwitch(src, tar, card)
               }
