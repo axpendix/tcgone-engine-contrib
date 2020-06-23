@@ -451,7 +451,7 @@ public enum LegendMaker implements LogicCardInfo {
           onActivate {
             if(it==PLAY_FROM_HAND && my.deck && confirm("Use Support Navigation?")){
               powerUsed()
-              my.deck.search(max:1, "Choose a Trainer card", cardTypeFilter(SUPPORTER)).moveTo(my.hand)
+              my.deck.search(max:1, "Choose a Supporter card", cardTypeFilter(SUPPORTER)).showToOpponent("Opponent used Support Navigation").moveTo(my.hand)
               shuffleDeck()
             }
           }
@@ -859,7 +859,7 @@ public enum LegendMaker implements LogicCardInfo {
           attackRequirement { assert my.deck : "Deck is empty" }
           onAttack {
             def tar = my.deck.search("Trainer Card (excluding Supporter cards)", {it.cardTypes.is(TRAINER) && !it.cardTypes.is(SUPPORTER)})
-            tar.moveTo(my.hand)
+            tar.showToOpponent("Opponent used Moon Guidance").moveTo(my.hand)
             shuffleDeck()
           }
         }
