@@ -1835,7 +1835,7 @@ public enum PowerKeepers implements LogicCardInfo {
         }
       };
       case PROFESSOR_BIRCH_80:
-      return copy(Deoxys.PROFESSOR_BIRCH_82, this);
+      return copy(Emerald.PROFESSOR_BIRCH_82, this);
       case SCOTT_81:
       return copy(Emerald.SCOTT_84, this);
       case SIDNEY_S_STADIUM_82:
