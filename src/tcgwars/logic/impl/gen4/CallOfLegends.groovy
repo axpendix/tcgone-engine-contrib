@@ -1,6 +1,7 @@
 package tcgwars.logic.impl.gen4;
 
 import tcgwars.logic.impl.gen4.Unleashed;
+import tcgwars.logic.impl.gen4.MysteriousTreasures;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -1717,17 +1718,7 @@ public enum CallOfLegends implements LogicCardInfo {
           }
         };
       case DARKNESS_ENERGY_86:
-        return specialEnergy (this, [[C]]) {
-          text "If the Pokémon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). Ignore this Effect if the Pokémon that Darkness Energy is attached to isn’t [D]. Darkness Energy provides [D] Energy. (Doesn’t count as a basic Energy card.)"
-          onPlay {reason->
-          }
-          onRemoveFromPlay {
-          }
-          onMove {to->
-          }
-          allowAttach {to->
-          }
-        };
+        return copy (MysteriousTreasures.DARKNESS_ENERGY_119, this);
       case METAL_ENERGY_87:
         return specialEnergy (this, [[C]]) {
           text "Damage done by attacks to the Pokémon that Metal Energy attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the Pokémon that Metal Energy is attached to isn’t Metal. Metal Energy provides Metal Energy. (Doesn’t count as a basic Energy card.)"
