@@ -2183,13 +2183,13 @@ public enum PokemodBaseSet implements LogicCardInfo {
           if(!it.topPokemonCard.cardTypes.is(STAGE2)){discard thisCard}
         }
         typeImagesOverride = [RAINBOW, RAINBOW]
+        def eff
         onPlay {reason->
           if(!bg.em().retrieveObject("G_SPEC_"+thisCard.player)){
             bg.em().storeObject("G_SPEC_"+thisCard.player, 1)
           } else{
             discard thisCard
           }
-          def eff
           eff = delayed {
             before DISCARD, null, Source.TRAINER_CARD, {
               if(ef.card == thisCard){
@@ -2220,9 +2220,9 @@ public enum PokemodBaseSet implements LogicCardInfo {
           if(!it.topPokemonCard.cardTypes.is(STAGE2)){discard thisCard}
         }
         typeImagesOverride = [RAINBOW, RAINBOW]
+        def eff
         onPlay {reason->
           bg.em().storeObject("G_SPEC_"+thisCard.player, 1)
-          def eff
           eff = delayed {
             before DISCARD, null, Source.TRAINER_CARD, {
               if(ef.card == thisCard){
