@@ -2992,6 +2992,7 @@ public enum DiamondPearl implements LogicCardInfo {
                     new CardList(thisCard).moveTo(my.hand)
                     prevent()
                   }
+                }
               }
             }
           }
