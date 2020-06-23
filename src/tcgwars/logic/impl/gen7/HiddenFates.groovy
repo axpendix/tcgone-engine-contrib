@@ -514,11 +514,15 @@ public enum HiddenFates implements LogicCardInfo {
         weakness F
         resistance M, MINUS20
         bwAbility "Electromagnetic Wall", {
-          text "As long as this Pokémon is your Active Pokémon, whenever your opponent attaches an Energy from his or her hand to 1 of his or her Pokémon, put 3 damage counters on that Pokémon."
+          text "As long as this Pokémon is your Active Pokémon, whenever your opponent attaches an Energy from his or her hand to 1 of his or her Pokémon, put 2 damage counters on that Pokémon."
           delayedA {
+            def fromHand
+            before PLAY_ENERGY, {
+              fromHand = bg.currentTurn.pbg.hand.contains(ef.cardToPlay)
+            }
             after ATTACH_ENERGY, {
-              if(self.active && ef.reason == PLAY_FROM_HAND && ef.resolvedTarget.owner == self.owner.opposite)
-                directDamage 30, ef.resolvedTarget
+              if(self.active && fromHand && ef.resolvedTarget.owner == self.owner.opposite)
+                directDamage 20, ef.resolvedTarget
             }
           }
         }
