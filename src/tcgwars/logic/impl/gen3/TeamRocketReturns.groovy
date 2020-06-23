@@ -2376,6 +2376,16 @@ public enum TeamRocketReturns implements LogicCardInfo {
             if(pcs.evolution) {
               targeted (pcs, SRC_ABILITY) {
                 def top=pcs.topPokemonCard
+                //
+                // [Temporary LV.X workaround]
+                if (top.cardTypes.is(LEVEL_UP) && pcs.cards.filterByType(POKEMON).size() > 2){
+                  bc "${top}'s Level-Up card will be moved wherever the top evolution ends up at."
+                  moveCard(top, my.deck)
+                  devolve(pcs, top)
+                  top = pcs.topPokemonCard
+                }
+                // [End of LV.X workaround] TODO: Remove this when no longer needed
+                //
                 bc "$top Devolved"
                 moveCard(top, my.deck)
                 devolve(pcs, top)

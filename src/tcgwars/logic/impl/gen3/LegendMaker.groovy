@@ -278,6 +278,16 @@ public enum LegendMaker implements LogicCardInfo {
               def list = LUtils.selectMultiPokemon(bg.oppClient(), opp.all.findAll{ it.evolution }, "Devolve which pokemon?", dev)
               opp.all.findAll{list.contains(it)}.each{
                 def top=it.topPokemonCard
+                //
+                // [Temporary LV.X workaround]
+                if (top.cardTypes.is(LEVEL_UP) && it.cards.filterByType(POKEMON).size() > 2){
+                  bc "${top}'s Level-Up card will be moved wherever the top evolution ends up at."
+                  moveCard(top, opp.hand)
+                  devolve(it, top)
+                  top = it.topPokemonCard
+                }
+                // [End of LV.X workaround] TODO: Remove this when no longer needed
+                //
                 bc "$top Devolved"
                 moveCard(top, opp.hand)
                 devolve(it, top)
@@ -1352,6 +1362,17 @@ public enum LegendMaker implements LogicCardInfo {
               def list = opp.all.findAll { it.evolution }
               def pcs = list.select("Devolve one of your opponent's evolved Pokémon")
               def top = pcs.topPokemonCard
+              //
+              // [Temporary LV.X workaround]
+              if (top.cardTypes.is(LEVEL_UP) && pcs.cards.filterByType(POKEMON).size() > 2){
+                bc "${top}'s Level-Up card will be moved wherever the top evolution ends up at."
+                pcs.cards.remove(top)
+                opp.deck.add(top)
+                devolve(pcs, top)
+                top = pcs.topPokemonCard
+              }
+              // [End of LV.X workaround] TODO: Remove this when no longer needed
+              //
               bc "$top Devolved"
               pcs.cards.remove(top)
               opp.deck.add(top)
