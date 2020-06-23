@@ -430,8 +430,8 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C, C, C
           onAttack {
             def bonus = my.discard.findAll{it.cardTypes.is(POKEMON)}.size()
-            def bonusDamage = 10 * Math.min(my.discard.findAll{it.cardTypes.is(POKEMON)}.size(), 6)
-            damage 30+10*bonusDamage
+            def bonusDamage = 10 * Math.min(bonus.size(), 6)
+            damage 30 + bonusDamage
           }
         }
       };
