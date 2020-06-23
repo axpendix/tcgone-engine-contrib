@@ -2975,19 +2975,19 @@ public enum DiamondPearl implements LogicCardInfo {
             delayed {
               before PLAY_CARD, {
                 if(ef.cardToPlay == thisCard){
-                  currentActive = thisCard.player.pbg.active
+                  def currentActive = thisCard.player.pbg.active
                   if (thisCard.predecessor != currentActive.name){
                     wcu "You can only level-up a ${thisCard.name} placed as your Active Pokémon"
-                    prevent()
                   } else if (currentActive.cardTypes.is(LEVEL_UP)) {
                     wcu "You can't level-up a ${thisCard.name} LV.X"
-                    prevent()
+                  } else if (currentActive.turnCount >= bg.turnCount) {
+                    wcu "You can't level-up a ${thisCard.name} that was put in play during this turn."
                   } else {
                     //All is good, evolve the active
                     evolve(currentActive, thisCard, PLAY_FROM_HAND)
                     bc "$currentActive is now LV.X!"
-                    prevent()
                   }
+                  prevent()
                 }
               }
             }
@@ -3052,19 +3052,19 @@ public enum DiamondPearl implements LogicCardInfo {
             delayed {
               before PLAY_CARD, {
                 if(ef.cardToPlay == thisCard){
-                  currentActive = thisCard.player.pbg.active
+                  def currentActive = thisCard.player.pbg.active
                   if (thisCard.predecessor != currentActive.name){
                     wcu "You can only level-up a ${thisCard.name} placed as your Active Pokémon"
-                    prevent()
                   } else if (currentActive.cardTypes.is(LEVEL_UP)) {
                     wcu "You can't level-up a ${thisCard.name} LV.X"
-                    prevent()
+                  } else if (currentActive.turnCount >= bg.turnCount) {
+                    wcu "You can't level-up a ${thisCard.name} that was put in play during this turn."
                   } else {
                     //All is good, evolve the active
                     evolve(currentActive, thisCard, PLAY_FROM_HAND)
                     bc "$currentActive is now LV.X!"
-                    prevent()
                   }
+                  prevent()
                 }
               }
             }
@@ -3117,19 +3117,19 @@ public enum DiamondPearl implements LogicCardInfo {
             delayed {
               before PLAY_CARD, {
                 if(ef.cardToPlay == thisCard){
-                  currentActive = thisCard.player.pbg.active
+                  def currentActive = thisCard.player.pbg.active
                   if (thisCard.predecessor != currentActive.name){
                     wcu "You can only level-up a ${thisCard.name} placed as your Active Pokémon"
-                    prevent()
                   } else if (currentActive.cardTypes.is(LEVEL_UP)) {
                     wcu "You can't level-up a ${thisCard.name} LV.X"
-                    prevent()
+                  } else if (currentActive.turnCount >= bg.turnCount) {
+                    wcu "You can't level-up a ${thisCard.name} that was put in play during this turn."
                   } else {
                     //All is good, evolve the active
                     evolve(currentActive, thisCard, PLAY_FROM_HAND)
                     bc "$currentActive is now LV.X!"
-                    prevent()
                   }
+                  prevent()
                 }
               }
             }
