@@ -451,7 +451,7 @@ public enum LegendMaker implements LogicCardInfo {
           onActivate {
             if(it==PLAY_FROM_HAND && my.deck && confirm("Use Support Navigation?")){
               powerUsed()
-              my.deck.search(max:1, "Choose a Trainer card", cardTypeFilter(SUPPORTER)).moveTo(my.hand)
+              my.deck.search(max:1, "Choose a Supporter card", cardTypeFilter(SUPPORTER)).showToOpponent("Opponent used Support Navigation").moveTo(my.hand)
               shuffleDeck()
             }
           }
