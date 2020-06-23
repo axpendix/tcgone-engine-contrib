@@ -3887,7 +3887,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return supporter (this) {
         text "Choose up to 2 of your Pokémon in play. Search your deck for a card that evolves from each of those Pokémon and put it on top of the Pokémon to evolve it. Then, shuffle your deck. (You can’t use this card during your first turn or on a Pokémon that just came into play.)"
         onPlay {
-          def tar = my.all.findAll{it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount}
+          def tar = my.all.findAll{it.turnCount < bg.turnCount}
           def pl = new PcsList()
 
           def pcs = tar.select("Pokémon Breeder's Nurturing - Choose which Pokémon you want to search an evolution of. (1/${Math.min(tar.size(), 2)})")
@@ -3917,7 +3917,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         playRequirement{
           assert my.deck : "Your deck is empty."
           assert bg.turnCount > 2 : "Cannot use this card during your first turn."
-          assert my.all.findAll {it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount} : "Cannot use this on Pokémon put into play this turn"
+          assert my.all.findAll {it.turnCount < bg.turnCount}
         }
       };
       case RARE_FOSSIL_175:
