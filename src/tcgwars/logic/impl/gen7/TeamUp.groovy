@@ -595,6 +595,7 @@ public enum TeamUp implements LogicCardInfo {
             text "Once during your turn (before your attack), you may discard 2 Fire Energy cards from your hand. If you do, switch 1 of your opponent's Benched Pokémon with their Active Pokémon."
             actionA{
               checkLastTurn()
+              assert opp.bench.notEmpty() : "Opponent bench empty"
               def src = my.hand.filterByBasicEnergyType(R)
               assert src.size() >= 2 : "You don't have enough Fire Energy cards to discard"
               powerUsed()
