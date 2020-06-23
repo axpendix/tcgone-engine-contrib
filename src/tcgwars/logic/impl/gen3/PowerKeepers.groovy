@@ -2074,6 +2074,7 @@ public enum PowerKeepers implements LogicCardInfo {
       case SHIFTRY_EX_97:
       return evolution (this, from:"Nuzleaf", hp:HP140, type:D, retreatCost:1) {
         weakness G
+        weakness F
         resistance P, MINUS30
         move "Skill Hack", {
           text "Look at your opponent's hand and choose a Basic Pokémon or Evolution card you find there. Choose 1 of that Pokémon's attacks. Skill Hack copies that attack except for its Energy cost. (You must still do anything else required for that attack.) (No matter what type that Pokémon is, Shiftry ex's type is still Darkness.) Shiftry ex performs that attack."
