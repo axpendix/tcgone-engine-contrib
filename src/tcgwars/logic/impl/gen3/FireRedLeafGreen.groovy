@@ -2391,14 +2391,16 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           text "Search your discard pile for a Supporter card, show it to your opponent, and put it into your hand."
           def thisTurnSupporter
           globalAbility{
-            before PLAY_TRAINER, {
-              if(ef.cardToPlay.cardTypes.is(SUPPORTER)){
-                thisTurnSupporter = ef.cardToPlay
-                bc "thisTurnSupporter = $thisTurnSupporter"
+            delayed {
+              before PLAY_TRAINER, {
+                if(ef.cardToPlay.cardTypes.is(SUPPORTER)){
+                  thisTurnSupporter = ef.cardToPlay
+                  bc "thisTurnSupporter = $thisTurnSupporter"
+                }
               }
-            }
-            after BETWEEN_TURNS, {
-              thisTurnSupporter = null
+              after BETWEEN_TURNS, {
+                thisTurnSupporter = null
+              }
             }
           }
           onPlay {
