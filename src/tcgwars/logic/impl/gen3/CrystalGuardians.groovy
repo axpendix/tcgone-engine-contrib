@@ -2241,7 +2241,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           text "After your opponent's Pokémon uses a Poké-Power, put 2 damage counters on that Pokémon."
           delayedA {
             def pcs
-            before USED_ABILITY, {
+            before USE_ABILITY, {
               if (ability instanceof PokePower){
                 pcs = ef.getResolvedTarget(bg, e)
               }

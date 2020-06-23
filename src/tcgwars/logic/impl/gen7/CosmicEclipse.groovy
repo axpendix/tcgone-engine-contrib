@@ -4863,7 +4863,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           playRequirement{
             assert my.deck : "Your deck is empty."
             assert bg.turnCount > 2 : "Cannot use this card during your first turn."
-            assert my.all.findAll {it.turnCount < bg.turnCount}
+            assert my.all.any{it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount} : "Cannot use this on Pokémon put into play this turn"
           }
         };
       case ROLLER_SKATER_203:
