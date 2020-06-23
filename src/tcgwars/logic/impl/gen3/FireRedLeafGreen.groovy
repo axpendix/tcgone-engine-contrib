@@ -2471,10 +2471,9 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           pokeBody "Energy Flame", {
             text "All Energy attached to Charizard ex are [R] Energy instead of its usual type."
             getterA GET_ENERGY_TYPES, { holder->
-              if(holder.effect.target.owner == self.owner
-                && holder.effect.target == self
-                && holder.effect.card.cardTypes.is(ENERGY)) {
-                holder.object = [[R] as Set]
+              if(holder.effect.target == self) {
+                int count = holder.object.size()
+                holder.object = (1..count).collect{[FIRE] as Set}
               }
             }
           }
