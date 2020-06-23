@@ -545,14 +545,14 @@ public enum HiddenFates implements LogicCardInfo {
           text "Flip 4 coins. For each heads, search your deck for a [L] Energy card and attach it to 1 of your Pokémon-GX or Pokémon-EX. Then, shuffle your deck."
           energyCost C, C
           attackRequirement {
-            assert deck
+            assert deck : "Your deck is empty"
           }
           onAttack {
             if(my.all.findAll {it.pokemonGX || it.pokemonEX}) {
-              flip 4, {
-                deck.search (basicEnergyFilter(L)).each {
-                  attachEnergy(my.all.findAll {it.pokemonGX || it.pokemonEX}.select("Attach energy to?"),it)
-                }
+              def count = 0
+              flip 4, { count++ }
+              deck.search (max:count, basicEnergyFilter(L)).each {
+                attachEnergy(my.all.findAll {it.pokemonGX || it.pokemonEX}.select("Attach energy to?"),it)
               }
               shuffleDeck()
             }
