@@ -2397,6 +2397,9 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                   thisTurnSupporter = ef.cardToPlay
                 }
               }
+              after BETWEEN_TURNS, {
+                thisTurnSupporter = null
+              }
             }
           }
           onPlay {
