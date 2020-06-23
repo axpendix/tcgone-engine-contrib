@@ -1808,9 +1808,11 @@ public enum Emerald implements LogicCardInfo {
           onPlay {reason->
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each(){
-                  if(it.from == self && it.to.active && it.to.owner != self.owner && self.types.contains(D) && it.dmg.value) {
-                    it.dmg += hp(10)
+                if (self.types.contains(D) || self.topPokemonCard.name.contains("Dark ")){
+                  bg.dm().each(){
+                    if(it.from == self && it.to.active && it.to.owner != self.owner && it.dmg.value) {
+                      it.dmg += hp(10)
+                    }
                   }
                 }
               }
