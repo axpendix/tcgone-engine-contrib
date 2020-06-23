@@ -1,5 +1,9 @@
 package tcgwars.logic.impl.pokemod
 
+import tcgwars.logic.effect.gm.PlayCard
+import tcgwars.logic.effect.gm.PlayStadium
+import tcgwars.logic.effect.gm.PlayTrainer
+
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
