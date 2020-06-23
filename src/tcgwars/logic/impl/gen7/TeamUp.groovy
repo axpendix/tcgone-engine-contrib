@@ -3336,7 +3336,7 @@ public enum TeamUp implements LogicCardInfo {
             draw 4
           }
           playRequirement{
-            assert opp.active.topPokemonCard.cardTypes.contains(STAGE1) : "There is no more card in your deck"
+            assert opp.active.topPokemonCard.cardTypes.contains(STAGE1) : "Your opponent's Active Pokémon is not a Stage 1 Pokémon"
             assert my.deck : "There are no more cards in your deck"
           }
         };

@@ -2375,7 +2375,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             text "Once during your turn (before your attack), if you have a Pokémon in your hand that evolves from Eevee, you may put that card onto this Pokémon to evolve it. Before evolving, heal all damage from this Pokémon. You can't use this Ability during your first turn or on the turn this Pokémon was put into play."
             actionA{
               checkLastTurn()
-              assert my.hand.findAll{it.cardTypes.is(EVOLUTION) && it.predecessor == "Eevee"} : "No Stage 1 in your hand"
+              assert my.hand.findAll{it.cardTypes.is(EVOLUTION) && it.predecessor == "Eevee"} : "No card that evolves from Eevee in your hand"
               assert bg.turnCount > 2 : "Cannot evolve first turn"
               assert self.turnCount < bg.turnCount : "Cannot evolve the turn you put it into play"
               powerUsed()

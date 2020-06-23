@@ -3697,8 +3697,8 @@ public enum LostThunder implements LogicCardInfo {
               assert bg.turnCount > 2 : "Cannot evolve first turn"
               assert self.turnCount < bg.turnCount : "Cannot evolve the turn you put it into play"
               powerUsed()
-              def pcs = my.hand.filterByType(STAGE1).select("Evolve To")
-              evolve(self, pcs.first(), PLAY_FROM_HAND)
+              def tar = my.hand.filterByType(STAGE1).select("Evolve To")
+              evolve(self, card.first(), PLAY_FROM_HAND)
             }
           }
         };
