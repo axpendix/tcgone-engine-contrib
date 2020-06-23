@@ -3917,7 +3917,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         playRequirement{
           assert my.deck : "Your deck is empty."
           assert bg.turnCount > 2 : "Cannot use this card during your first turn."
-          assert my.all.findAll {it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount} : "Cannot use this on Pokémon put into play this turn"
+          assert my.all.any{it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount} : "Cannot use this on Pokémon put into play this turn"
         }
       };
       case RARE_FOSSIL_175:
