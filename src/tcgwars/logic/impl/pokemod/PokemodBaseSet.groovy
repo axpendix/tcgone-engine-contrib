@@ -2235,22 +2235,23 @@ public enum PokemodBaseSet implements LogicCardInfo {
           bg.em().storeObject("G_SPEC_"+thisCard.player, 1)
           eff = delayed {
             eff = delayed {
-            before null, self, Source.TRAINER_CARD,{
-              flag = true
-            }
-            after null, self, Source.TRAINER_CARD,{
-              flag = false
-              check(self)
-            }
-            before DISCARD, {
-              if(ef.card == thisCard && bg.currentTurn == self.owner.opposite && flag){
-                prevent()
-                bc "Miracle Energy isn't discarded by ${self.owner.opposite.getPlayerUsername(bg)}'s trainer cards"
+              before null, self, Source.TRAINER_CARD,{
+                flag = true
               }
+              after null, self, Source.TRAINER_CARD,{
+                flag = false
+                check(self)
+              }
+              before DISCARD, {
+                if(ef.card == thisCard && bg.currentTurn == self.owner.opposite && flag){
+                  prevent()
+                  bc "Miracle Energy isn't discarded by ${self.owner.opposite.getPlayerUsername(bg)}'s trainer cards"
+                }
+              }
+              after EVOLVE, self, {check(self)}
+              after DEVOLVE, self, {check(self)}
+              after ATTACH_ENERGY, self, {check(self)}
             }
-            after EVOLVE, self, {check(self)}
-            after DEVOLVE, self, {check(self)}
-            after ATTACH_ENERGY, self, {check(self)}
           }
         }
         onRemoveFromPlay {
