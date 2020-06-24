@@ -2057,7 +2057,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Switch this Pokémon with 1 of your Benched Pokémon."
             energyCost C
             attackRequirement {
-              assert my.bench : "There are no Pokémon on your bench."
+              assertMyBench()
             }
             onAttack {
               switchYourActive()
@@ -2196,7 +2196,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Attach 2 basic Energy cards from your discard pile to your Benched Pokémon in any way you like."
             energyCost P
             attackRequirement {
-              assert my.bench : "You have no benched Pokémon."
+              assertMyBench()
               assert my.discard.find(cardTypeFilter(BASIC_ENERGY)) : "You have no basic Energy cards in your discard pile."
             }
             onAttack {
@@ -3320,7 +3320,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Run Around", {
             text "Switch this Pokémon with 1 of your Benched Pokémon."
             attackRequirement {
-              assert my.bench : "Your bench has no Pokémon."
+              assertMyBench()
             }
             onAttack {
               switchYourActive()
@@ -4746,11 +4746,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             }
           }
           playRequirement {
-<<<<<<< HEAD
-            assertMyBenched()
-=======
             assertMyBench()
->>>>>>> f2455e5e... Benched -> Bench
           }
         };
       case MISTY_LORELEI_199:
@@ -4802,7 +4798,6 @@ public enum CosmicEclipse implements LogicCardInfo {
           }
           playRequirement{
             assert my.deck : "Your deck is empty."
-            //assert my.bench.findAll({ it.types.contains(N) }) : "No [N] Pokémon on your bench."
             assertMyBench(hasType: N)
           }
         };
@@ -4865,7 +4860,11 @@ public enum CosmicEclipse implements LogicCardInfo {
           playRequirement{
             assert my.deck : "Your deck is empty."
             assert bg.turnCount > 2 : "Cannot use this card during your first turn."
-            assert my.all.any{it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount} : "Cannot use this on Pokémon put into play this turn"
+            assertMyAll(info: "that weren't put into play this turn.", {
+              (it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount) &&
+              //TODO: Change this. Still can't learn if a Pokémon has a GX evolution, but this will at least filter obvious non-allowed cases for standard and expanded.
+              !(it.pokemonEX || it.pokemonBreak || it.pokemonGX || it.pokemonV || it.topPokemonCard.cardTypes.is(PRISM_STAR))
+              })
           }
         };
       case ROLLER_SKATER_203:
