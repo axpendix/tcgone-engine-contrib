@@ -2400,6 +2400,9 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                   bc "$thisTurnSupporter"
                 }
               }
+              after BETWEEN_TURNS{
+                thisTurnSupporter = null
+              }
             }
           }
           onPlay {
