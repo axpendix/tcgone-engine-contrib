@@ -386,7 +386,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             text "30 damage. This attack’s damage isn’t affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             energyCost C, C
             onAttack {
-              swiftDamage(30, defending)
+              noResistanceOrAnyEffectDamage(30, defending)
             }
           }
           move "Hard Bone", {

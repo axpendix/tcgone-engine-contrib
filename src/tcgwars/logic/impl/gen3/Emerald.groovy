@@ -1800,7 +1800,24 @@ public enum Emerald implements LogicCardInfo {
           }
         };
       case WALLY_S_TRAINING_85:
-        return copy (Sandstorm.WALLY_S_TRAINING_89, this);
+        return supporter (this) {
+          text "Search your deck for a card that evolves from your Active Pokémon (choose 1 if there are 2) and put it on your Active Pokémon. (This counts as evolving that Pokémon.) Shuffle your deck afterward."
+          onPlay {
+            def name = my.active.name
+            def sel = deck.search ("Select a Pokémon that evolves from ${my.active}.", {
+              it.cardTypes.is(EVOLUTION) && it.predecessor == my.active.name
+            })
+            if (sel) {
+              evolve(my.active, sel.first(), OTHER)
+            }
+
+            shuffleDeck()
+          }
+          playRequirement{
+            assert my.deck : "Your deck is empty."
+            //TODO: Check for the existance of any card the Active can evolve into.
+          }
+        };
       case DARKNESS_ENERGY_86:
         return specialEnergy (this, [[D]]) {
           text: "If the Pokémon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). Ignore this effect unless the Attacking Pokémon is Darkness or has Dark in its name. Darkness Energy provides Darkness Energy. (Doesn't count as a basic Energy card.)"
@@ -1890,7 +1907,7 @@ public enum Emerald implements LogicCardInfo {
             text "70 damage. This attack’s damage isn’t affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             energyCost W, L, C
             onAttack {
-              new ResolvedDamage(hp(70), my.active, defending, Source.ATTACK, DamageManager.DamageFlag.NO_DEFENDING_EFFECT, DamageManager.DamageFlag.NO_RESISTANCE).run(bg)
+              noResistanceOrAnyEffectDamage(70, defending)
             }
           }
 
@@ -1997,7 +2014,7 @@ public enum Emerald implements LogicCardInfo {
             text "50 damage. This attack’s damage isn’t affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             energyCost C, C, C
             onAttack {
-              new ResolvedDamage(hp(50), my.active, defending, Source.ATTACK, DamageManager.DamageFlag.NO_DEFENDING_EFFECT, DamageManager.DamageFlag.NO_RESISTANCE).run(bg)
+              noResistanceOrAnyEffectDamage(50, defending)
             }
           }
 
