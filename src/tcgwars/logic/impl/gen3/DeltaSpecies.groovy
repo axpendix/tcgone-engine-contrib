@@ -1163,6 +1163,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 
             def indexOfOldPrize = my.prizeCardSet.indexOf(tar)
             my.prizeCardSet.set(indexOfOldPrize, newPrize)
+            my.prizeCardSet.setVisible(newPrize, true)
             my.hand.remove(newPrize)
           }
         }
