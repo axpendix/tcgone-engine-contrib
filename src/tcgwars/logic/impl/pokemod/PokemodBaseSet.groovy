@@ -2185,6 +2185,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         typeImagesOverride = [RAINBOW, RAINBOW]
         def eff
         def flag
+        def prev
         onPlay {reason->
           if(!bg.em().retrieveObject("G_SPEC_"+thisCard.player)){
             bg.em().storeObject("G_SPEC_"+thisCard.player, 1)
@@ -2198,11 +2199,15 @@ public enum PokemodBaseSet implements LogicCardInfo {
             after null, self, Source.TRAINER_CARD,{
               flag = false
               check(self)
+              if(self && prev){
+                bc "Miracle Energy isn't discarded by ${self.owner.opposite.getPlayerUsername(bg)}'s trainer cards"
+                prev = false
+              }
             }
             before DISCARD, {
               if(ef.card == thisCard && bg.currentTurn == self.owner.opposite && flag){
                 prevent()
-                bc "Miracle Energy isn't discarded by ${self.owner.opposite.getPlayerUsername(bg)}'s trainer cards"
+                prev = true
               }
             }
             after EVOLVE, self, {check(self)}
@@ -2230,7 +2235,8 @@ public enum PokemodBaseSet implements LogicCardInfo {
         }
         typeImagesOverride = [RAINBOW, RAINBOW]
         def eff
-        def subeff
+        def flag
+        def prev
         onPlay {reason->
           bg.em().storeObject("G_SPEC_"+thisCard.player, 1)
           eff = delayed {
@@ -2240,11 +2246,15 @@ public enum PokemodBaseSet implements LogicCardInfo {
             after null, self, Source.TRAINER_CARD,{
               flag = false
               check(self)
+              if(self && prev){
+                bc "Miracle Energy isn't discarded by ${self.owner.opposite.getPlayerUsername(bg)}'s trainer cards"
+                prev = false
+              }
             }
             before DISCARD, {
               if(ef.card == thisCard && bg.currentTurn == self.owner.opposite && flag){
                 prevent()
-                bc "Miracle Energy isn't discarded by ${self.owner.opposite.getPlayerUsername(bg)}'s trainer cards"
+                prev = true
               }
             }
             after EVOLVE, self, {check(self)}
