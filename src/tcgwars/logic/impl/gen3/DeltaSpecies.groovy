@@ -1114,11 +1114,11 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "As long as Sandslash is your Active Pokémon, put 1 damage counter on each of your opponent's Pokémon-ex between turns."
           delayedA {
             before BEGIN_TURN, {
-              boolean flag = 1
+              boolean flag = true
               all.each {
                 if (self.active && it.owner != self.owner && it.EX) {
                   if (flag) {
-                    bc "Delta Storm activates"; flag = 0
+                    bc "Delta Storm activates"; flag = false
                   }
                   directDamage 10, it, SRC_ABILITY
                 }
@@ -1130,9 +1130,8 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "20+ damage. If the Defending Pokémon already has any damage counters on it, this attack does 20 damage plus 20 more damage."
           energyCost F, C
           onAttack {
+            damage 20
             if (defending.numberOfDamageCounters) {
-              damage 40
-            } else {
               damage 20
             }
           }
