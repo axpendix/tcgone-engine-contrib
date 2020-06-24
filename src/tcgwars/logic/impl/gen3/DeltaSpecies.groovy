@@ -1393,8 +1393,10 @@ public enum DeltaSpecies implements LogicCardInfo {
         pokePower "Duplicate", {
           text "Once during your turn (before your attack), you may search your deck for another Ditto and switch it with Ditto. (Any cards attached to Ditto, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Ditto on top of your deck. Shuffle your deck afterward. You can't use more than 1 Duplicate Poké-Power each turn."
           actionA {
+            assert bg.em().retrieveObject("Duplicate") != bg.turnCount : "You can’t use more than 1 Duplicate Poké-Power each turn"
             checkLastTurn()
             assert my.deck : "Deck is empty"
+            bg.em().storeObject("Duplicate",bg.turnCount)
             powerUsed()
 
             def oldDitto = self.topPokemonCard
@@ -1430,8 +1432,10 @@ public enum DeltaSpecies implements LogicCardInfo {
         pokePower "Duplicate", {
           text "Once during your turn (before your attack), you may search your deck for another Ditto and switch it with Ditto. (Any cards attached to Ditto, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Ditto on top of your deck. Shuffle your deck afterward. You can't use more than 1 Duplicate Poké-Power each turn."
           actionA {
+            assert bg.em().retrieveObject("Duplicate") != bg.turnCount : "You can’t use more than 1 Duplicate Poké-Power each turn"
             checkLastTurn()
             assert my.deck : "Deck is empty"
+            bg.em().storeObject("Duplicate",bg.turnCount)
             powerUsed()
 
             def oldDitto = self.topPokemonCard
@@ -1464,8 +1468,10 @@ public enum DeltaSpecies implements LogicCardInfo {
         pokePower "Duplicate", {
           text "Once during your turn (before your attack), you may search your deck for another Ditto and switch it with Ditto. (Any cards attached to Ditto, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Ditto on top of your deck. Shuffle your deck afterward. You can't use more than 1 Duplicate Poké-Power each turn."
           actionA {
+            assert bg.em().retrieveObject("Duplicate") != bg.turnCount : "You can’t use more than 1 Duplicate Poké-Power each turn"
             checkLastTurn()
             assert my.deck : "Deck is empty"
+            bg.em().storeObject("Duplicate",bg.turnCount)
             powerUsed()
 
             def oldDitto = self.topPokemonCard
@@ -1497,8 +1503,10 @@ public enum DeltaSpecies implements LogicCardInfo {
         pokePower "Duplicate", {
           text "Once during your turn (before your attack), you may search your deck for another Ditto and switch it with Ditto. (Any cards attached to Ditto, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Ditto on top of your deck. Shuffle your deck afterward. You can't use more than 1 Duplicate Poké-Power each turn."
           actionA {
+            assert bg.em().retrieveObject("Duplicate") != bg.turnCount : "You can’t use more than 1 Duplicate Poké-Power each turn"
             checkLastTurn()
             assert my.deck : "Deck is empty"
+            bg.em().storeObject("Duplicate",bg.turnCount)
             powerUsed()
 
             def oldDitto = self.topPokemonCard
@@ -1537,8 +1545,10 @@ public enum DeltaSpecies implements LogicCardInfo {
         pokePower "Duplicate", {
           text "Once during your turn (before your attack), you may search your deck for another Ditto and switch it with Ditto. (Any cards attached to Ditto, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Ditto on top of your deck. Shuffle your deck afterward. You can't use more than 1 Duplicate Poké-Power each turn."
           actionA {
+            assert bg.em().retrieveObject("Duplicate") != bg.turnCount : "You can’t use more than 1 Duplicate Poké-Power each turn"
             checkLastTurn()
             assert my.deck : "Deck is empty"
+            bg.em().storeObject("Duplicate",bg.turnCount)
             powerUsed()
 
             def oldDitto = self.topPokemonCard
@@ -1571,8 +1581,10 @@ public enum DeltaSpecies implements LogicCardInfo {
         pokePower "Duplicate", {
           text "Once during your turn (before your attack), you may search your deck for another Ditto and switch it with Ditto. (Any cards attached to Ditto, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Ditto on top of your deck. Shuffle your deck afterward. You can't use more than 1 Duplicate Poké-Power each turn."
          actionA {
+            assert bg.em().retrieveObject("Duplicate") != bg.turnCount : "You can’t use more than 1 Duplicate Poké-Power each turn"
             checkLastTurn()
             assert my.deck : "Deck is empty"
+            bg.em().storeObject("Duplicate",bg.turnCount)
             powerUsed()
 
             def oldDitto = self.topPokemonCard
@@ -1595,11 +1607,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost W, C
           onAttack {
             damage 20
-            afterDamage {
-              if (my.bench && confirm("Switch $self with 1 of your Benched Pokémon")) {
-                sw self, my.bench.select("New active")
-              }
-            }
+            switchYourActive(may: true)
           }
         }
       };
