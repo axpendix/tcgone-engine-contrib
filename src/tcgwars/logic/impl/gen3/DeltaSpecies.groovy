@@ -2714,7 +2714,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Discard a card from your hand. If you can't discard a card from your hand, you can't play this card. Search your discard pile for 3 basic Energy cards and any combination of 3 Basic Pokémon or Evolution cards, show them to your opponent, and put them on top of your deck. Shuffle your deck afterward."
         onPlay {
-          def toDiscard = my.hand.getExcludedList(thisCard).select(count:1, "Discard a card to play ${thisCard}.")
+          def toDiscard = my.hand.getExcludedList(thisCard).select(count:1, "Discard a card from your hand in order to play ${thisCard}.")
           toDiscard.discard()
 
           if (my.discard.filterByType(BASIC_ENERGY)) {
@@ -2738,7 +2738,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Discard a card from your hand. If you can't discard a card from your hand, you can't play this card. Count the total number of Prize cards left (both yours and your opponent's). Look at that many cards from the top of your deck, choose as many Energy cards as you like, show them to your opponent, and put them into your hand. Put the other cards back on top of your deck. Shuffle your deck afterward."
         onPlay {
-          def toDiscard = my.hand.getExcludedList(thisCard).select(count:1, "Discard a card to discard.")
+          def toDiscard = my.hand.getExcludedList(thisCard).select(count:1, "Discard a card from your hand in order to play ${thisCard}.")
           toDiscard.discard()
 
           def prizeCardCount = my.prizeCardSet.size() + opp.prizeCardSet.size()
@@ -2747,7 +2747,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           list.showToMe("Top $prizeCardCount cards of your deck.")
 
           def numOfEnergies = list.filterByType(ENERGY).size()
-          list.filterByType(ENERGY).select(max: numOfEnergies, "Select any amount of Energy cards to move to your hand.").showToOpponent("Opponent used Holon Lass").moveTo(my.hand)
+          list.filterByType(ENERGY).select(min: 0, max: numOfEnergies, "Select any amount of Energy cards to move to your hand.").showToOpponent("Opponent used Holon Lass").moveTo(my.hand)
           shuffleDeck()
         }
         playRequirement{
@@ -2761,7 +2761,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Discard a card from your hand. If you can't discard a card from your hand, you can't play this card. Search your deck for up to 3 Basic Pokémon that each has 100 HP or less, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
         onPlay {
-          def toDiscard = my.hand.getExcludedList(thisCard).select(count:1, "Discard a card to discard.")
+          def toDiscard = my.hand.getExcludedList(thisCard).select(count:1, "Discard a card from your hand in order to play ${thisCard}.")
           toDiscard.discard()
 
           deck.search(max: 3, "Search your deck for up to 3 Basic Pokemon with 100 HP or less", {
