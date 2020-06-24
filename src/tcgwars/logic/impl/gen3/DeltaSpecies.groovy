@@ -585,12 +585,12 @@ public enum DeltaSpecies implements LogicCardInfo {
           onActivate {
             if (it == PLAY_FROM_HAND && confirm("Use Delta Switch?")) {
               while (1) {
-                def pl=(my.all.findAll {it.cards.filterByType(BASIC_ENERGY) && it != self})
+                def pl = (my.all.findAll {it.cards.filterByType(BASIC_ENERGY)})
                 if(!pl) break;
-                def src =pl.select("Source for energy (cancel to stop)", false)
+                def src = pl.select("Source for energy (cancel to stop)", false)
                 if(!src) break;
                 def card=src.cards.select("Card to move",cardTypeFilter(ENERGY)).first()
-                def target = my.all.findAll{ it != self }.select("Move Energy to?")
+                def target = my.all.findAll{ it != src && it != self }.select("Move Energy to?")
                 energySwitch(src, target, card)
               }
             }
