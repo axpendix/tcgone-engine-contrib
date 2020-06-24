@@ -349,8 +349,7 @@ public enum HiddenFates implements LogicCardInfo {
           onAttack {
             damage 40
             afterDamage{
-              if(my.discard.filterByEnergyType(W)) { attachEnergyFrom(type:W, my.discard, my.all.select()) }
-              if(my.discard.filterByEnergyType(W)) { attachEnergyFrom(type:W, my.discard, my.all.select()) }
+              if(my.discard.filterByEnergyType(W)) { attachEnergyFrom(count:2, type:W, my.discard, my.all.select()) }
             }
           }
         }
@@ -515,11 +514,15 @@ public enum HiddenFates implements LogicCardInfo {
         weakness F
         resistance M, MINUS20
         bwAbility "Electromagnetic Wall", {
-          text "As long as this Pokémon is your Active Pokémon, whenever your opponent attaches an Energy from his or her hand to 1 of his or her Pokémon, put 3 damage counters on that Pokémon."
+          text "As long as this Pokémon is your Active Pokémon, whenever your opponent attaches an Energy from his or her hand to 1 of his or her Pokémon, put 2 damage counters on that Pokémon."
           delayedA {
+            def fromHand
+            before PLAY_ENERGY, {
+              fromHand = bg.currentTurn.pbg.hand.contains(ef.cardToPlay)
+            }
             after ATTACH_ENERGY, {
-              if(self.active && ef.reason == PLAY_FROM_HAND && ef.resolvedTarget.owner == self.owner.opposite)
-                directDamage 30, ef.resolvedTarget
+              if(self.active && fromHand && ef.resolvedTarget.owner == self.owner.opposite)
+                directDamage 20, ef.resolvedTarget
             }
           }
         }
@@ -542,14 +545,14 @@ public enum HiddenFates implements LogicCardInfo {
           text "Flip 4 coins. For each heads, search your deck for a [L] Energy card and attach it to 1 of your Pokémon-GX or Pokémon-EX. Then, shuffle your deck."
           energyCost C, C
           attackRequirement {
-            assert deck
+            assert deck : "Your deck is empty"
           }
           onAttack {
             if(my.all.findAll {it.pokemonGX || it.pokemonEX}) {
-              flip 4, {
-                deck.search (basicEnergyFilter(L)).each {
-                  attachEnergy(my.all.findAll {it.pokemonGX || it.pokemonEX}.select("Attach energy to?"),it)
-                }
+              def count = 0
+              flip 4, { count++ }
+              deck.search (max:count, basicEnergyFilter(L)).each {
+                attachEnergy(my.all.findAll {it.pokemonGX || it.pokemonEX}.select("Attach energy to?"),it)
               }
               shuffleDeck()
             }
@@ -593,11 +596,14 @@ public enum HiddenFates implements LogicCardInfo {
           text "If this Pokémon is Knocked Out by damage from an opponent's attack, discard 2 random cards from your opponent's hand."
           delayedA {
             after (KNOCKOUT, self) {
-              bc "Last Pattern activates"
-              bg.deterministicCurrentThreadPlayerType = self.owner
-              astonish()
-              astonish()
-              bg.clearDeterministicCurrentThreadPlayerType()
+              // TODO: Make TcgStatics.astonish more flexible so that it actually works for this?
+              if(!checkBodyguard()) {
+                bc "Last Pattern activates"
+                bg.deterministicCurrentThreadPlayerType = self.owner
+                def sel=opp.hand.select(hidden: true, count: 2, "Choose 2 random cards from your opponent's hand to be discarded.")
+                sel.discard()
+                bg.clearDeterministicCurrentThreadPlayerType()
+              }
             }
           }
         }
@@ -910,6 +916,9 @@ public enum HiddenFates implements LogicCardInfo {
         move "Happy Mime", {
           text "Each player draws a card."
           energyCost Y
+          attackRequirement {
+            assert opp.deck || my.deck : "Both decks are empty"
+          }
           onAttack {
             draw 1, TargetPlayer.SELF
             draw 1, TargetPlayer.OPPONENT
@@ -987,7 +996,6 @@ public enum HiddenFates implements LogicCardInfo {
           text "40x damage. Flip a coin until you get tails. This attack does 40 damage for each heads."
           energyCost C, C
           onAttack {
-            damage 40
             flipUntilTails { damage 40 }
           }
         }
