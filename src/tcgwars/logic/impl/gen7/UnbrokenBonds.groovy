@@ -1026,7 +1026,6 @@ public enum UnbrokenBonds implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert my.hand.filterByBasicEnergyType(R)
-              assert my.deck
               powerUsed()
               my.hand.filterByBasicEnergyType(R).select("Discard").discard()
               draw 3
