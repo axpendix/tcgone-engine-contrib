@@ -3802,7 +3802,7 @@ public enum RebelClash implements LogicCardInfo {
         }
         getEnergyTypesOverride {
           if (self) {
-            if (!self.pokemonV || !self.pokemonGX) {
+            if (!self.pokemonV && !self.pokemonGX) {
               return [[C] as Set, [C] as Set]
             } else {
               return [[C] as Set]
