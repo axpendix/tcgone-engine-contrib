@@ -2165,7 +2165,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
         return supporter (this) {
           text "Search your deck for an Evolution card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
           onPlay {
-            my.deck.search(count : 1,"Select an evolution card", {it.cardTypes.is(EVOLUTION)}).moveTo(my.hand)
+            my.deck.search(count : 1,"Select an evolution card", {it.cardTypes.is(EVOLUTION)}).showToOpponent("Opponent used Professor Elm's Training Method").moveTo(my.hand)
             shuffleDeck()
           }
           playRequirement{
