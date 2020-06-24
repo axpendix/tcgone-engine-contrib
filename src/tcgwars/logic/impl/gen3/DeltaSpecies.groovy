@@ -840,9 +840,13 @@ public enum DeltaSpecies implements LogicCardInfo {
             def chosenEnergy = my.hand.filterByType(BASIC_ENERGY).select(count: 1, "Select a Basic Energy card to search for a Pokemon of that Energy type.")
             chosenEnergy.showToOpponent("Your opponent has chosen this basic Energy card. They'll now search their deck for a Pokémon of that Energy type.")
             def cardType = chosenEnergy.basicType
-            my.deck.search(count: 1, "search for a [${cardType}] Basic Pokémon or Evolution card", {
+            def sel = my.deck.search(max: 1, "search for a [${cardType}] Basic Pokémon or Evolution card", {
               it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(cardType.get(0))
-            }).moveTo(my.hand)
+            })
+            if (sel) {
+              sel.showToOpponent("Your opponent has chosen this Pokémon card.")
+              sel.moveTo(my.hand)
+            }
             shuffleDeck()
           }
         }
