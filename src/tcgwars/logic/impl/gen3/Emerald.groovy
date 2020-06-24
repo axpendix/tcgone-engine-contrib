@@ -1803,9 +1803,9 @@ public enum Emerald implements LogicCardInfo {
         return supporter (this) {
           text "Search your deck for a card that evolves from your Active Pokémon (choose 1 if there are 2) and put it on your Active Pokémon. (This counts as evolving that Pokémon.) Shuffle your deck afterward."
           onPlay {
-            def name = my.active.name
-            def sel = deck.search ("Select a Pokémon that evolves from ${my.active}.", {
-              it.cardTypes.is(EVOLUTION) && it.predecessor == my.active.name
+            def activeName = my.active.name
+            def sel = deck.search ("Select a Pokémon that evolves from ${activeName}.", {
+              it.cardTypes.is(EVOLUTION) && it.predecessor == activeName
             })
             if (sel) {
               evolve(my.active, sel.first(), OTHER)
