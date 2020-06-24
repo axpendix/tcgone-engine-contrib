@@ -1674,7 +1674,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         }
       };
       case HARIYAMA_44:
-      return evolution (this, from:"Makuhita", hp:HP080, type:R, retreatCost:1) {
+      return evolution (this, from:"Makuhita", hp:HP080, type:F, retreatCost:1) {
         weakness P
         pokeBody "Reversal Aura", {
           text "As long as you have more Prize cards left than your opponent, each of Hariyama's attacks does 20 more damage to the Active Pokémon (before applying Weakness and Resistance) and damage done by the Active Pokémon to Hariyama is reduced by 20 (after applying Weakness and Resistance)."
@@ -1690,10 +1690,12 @@ public enum DeltaSpecies implements LogicCardInfo {
               }
             }
             before APPLY_ATTACK_DAMAGES, {
-              bg.dm().each {
-                if (it.to == self && it.dmg.value && it.notNoEffect) {
-                  bc "Reversal Aura -20"
-                  it.dmg -= hp(20)
+              if (my.prizeCardSet.size() > opp.prizeCardSet.size()) {
+                bg.dm().each {
+                  if (it.to == self && it.dmg.value && it.notNoEffect) {
+                    bc "Reversal Aura -20"
+                    it.dmg -= hp(20)
+                  }
                 }
               }
             }
@@ -1710,7 +1712,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "50 damage. This attack's damage isn't affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
           energyCost R, R, C
           onAttack {
-            damage 50
+            noResistanceOrAnyEffectDamage(50, defending)
           }
         }
       };
