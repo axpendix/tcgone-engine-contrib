@@ -630,9 +630,11 @@ public enum CrimsonInvasion implements LogicCardInfo {
               damage 90
               if(confirm("Add damage counters to Mamoswine for 10 more damage with each damage counter put that way?"))
               {
-                def num = choose([1,2,3,4,5,6,7,8,9])
-                damage 10*num
-                directDamage 10*num, self
+                def num = choose([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], "How many damage counters would you like to put on $self?")
+                damage 90 + 10 * num
+                afterDamage{
+                  directDamage 10 * num, self
+                }
               }
             }
           }
