@@ -2264,7 +2264,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         }
         onRemoveFromPlay {
           eff.unregister()
-          thisCard.moveTo(suppressLog: true, my.lostZone)
+          new CardList(thisCard).moveTo(suppressLog: true, my.lostZone)
         }
         onMove {to->
           check(to)
