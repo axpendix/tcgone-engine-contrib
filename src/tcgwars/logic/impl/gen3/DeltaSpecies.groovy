@@ -806,7 +806,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 20
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
         move "Rolling Tackle", {
