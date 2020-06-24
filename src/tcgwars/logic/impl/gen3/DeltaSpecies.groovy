@@ -2532,7 +2532,7 @@ public enum DeltaSpecies implements LogicCardInfo {
       };
       case POOCHYENA_79:
       return basic (this, hp:HP050, type:D, retreatCost:1) {
-        weakness R
+        weakness F
         resistance P, MINUS30
         move "Roar", {
           text "Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon, if any."
@@ -2582,7 +2582,7 @@ public enum DeltaSpecies implements LogicCardInfo {
       };
       case SANDSHREW_82:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
-        weakness L
+        weakness G
         move "Dig Under", {
           text "Choose 1 of your opponent's Pokémon. This attack does 10 damage to that Pokémon. This attack's damage isn't affected by Weakness or Resistance."
           energyCost F
@@ -2648,7 +2648,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "Discard a [W] Energy card attached to Staryu and remove 4 damage counters from Staryu (all if there are less than 4)."
           energyCost W
           onAttack {
-            discardSelfEnergy(C)
+            discardSelfEnergy(W)
             heal 40, self
           }
         }
@@ -2656,7 +2656,7 @@ public enum DeltaSpecies implements LogicCardInfo {
       case TAILLOW_86:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness L
-        resistance R, MINUS30
+        resistance F, MINUS30
         move "Skill Dive", {
           text "Does 10 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C
