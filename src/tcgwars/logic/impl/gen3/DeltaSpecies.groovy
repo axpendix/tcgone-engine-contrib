@@ -911,7 +911,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost L, C
           onAttack {
             damage 30
-            apply CONFUSED
+            applyAfterDamage CONFUSED
           }
         }
       };
@@ -975,10 +975,9 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "30+ damage. If the Defending Pokémon is Pokémon-ex, this attack does 30 damage plus 20 more damage."
           energyCost M, C
           onAttack {
+            damage 30
             if (defending.EX) {
-              damage 50
-            } else {
-              damage 30
+              damage 20
             }
           }
         }
