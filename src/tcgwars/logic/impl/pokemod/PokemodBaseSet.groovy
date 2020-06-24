@@ -1730,7 +1730,9 @@ public enum PokemodBaseSet implements LogicCardInfo {
           def tar = opp.all.findAll {it.cards.energyCount(C)}
           if(tar) {
             def pcs = tar.select("Discard energy from")
-            pcs.cards.filterByType(SPECIAL_ENERGY).select("Discard").discard()
+            targeted (pcs, TRAINER_CARD) {
+              pcs.cards.filterByType(SPECIAL_ENERGY).select("Discard").discard()
+            }
           }
         }
         playRequirement{
@@ -2182,7 +2184,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         }
         typeImagesOverride = [RAINBOW, RAINBOW]
         def eff
-        def subeff
+        def flag
         onPlay {reason->
           if(!bg.em().retrieveObject("G_SPEC_"+thisCard.player)){
             bg.em().storeObject("G_SPEC_"+thisCard.player, 1)
@@ -2191,18 +2193,17 @@ public enum PokemodBaseSet implements LogicCardInfo {
           }
           eff = delayed {
             before null, self, Source.TRAINER_CARD,{
-              subeff = delayed {
-                before DISCARD, {
-                  if(ef.card == thisCard && bg.currentTurn == self.owner.opposite){
-                    prevent()
-                    bc "Miracle Energy isn't discarded by ${self.owner.opposite.getPlayerUsername(bg)}'s trainer cards"
-                  }
-                }
-              }
+              flag = true
             }
             after null, self, Source.TRAINER_CARD,{
-              subeff.unregister()
+              flag = false
               check(self)
+            }
+            before DISCARD, {
+              if(ef.card == thisCard && bg.currentTurn == self.owner.opposite && flag){
+                prevent()
+                bc "Miracle Energy isn't discarded by ${self.owner.opposite.getPlayerUsername(bg)}'s trainer cards"
+              }
             }
             after EVOLVE, self, {check(self)}
             after DEVOLVE, self, {check(self)}
