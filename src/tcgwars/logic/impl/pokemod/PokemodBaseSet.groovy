@@ -2204,6 +2204,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             }
             after null, self, Source.TRAINER_CARD,{
               subeff.unregister()
+              check(self)
             }
             after EVOLVE, self, {check(self)}
             after DEVOLVE, self, {check(self)}
@@ -2246,6 +2247,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             }
             after null, self, Source.TRAINER_CARD,{
               subeff.unregister()
+              check(self)
             }
             after EVOLVE, self, {check(self)}
             after DEVOLVE, self, {check(self)}
