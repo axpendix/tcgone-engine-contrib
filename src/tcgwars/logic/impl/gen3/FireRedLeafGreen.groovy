@@ -2406,10 +2406,18 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
           onPlay {
-            my.discard.filterByType(SUPPORTER).select("Select one Supporter card").showToOpponent("Selected supporter").moveTo(my.hand)
+            if(thisTurnSupporter){
+              my.discard.getExcludedList(thisTurnSupporter).filterByType(SUPPORTER).select("Select one Supporter card").showToOpponent("Selected supporter (Supporters you play remain in play untill your turn ends)").moveTo(my.hand)
+            } else {
+              my.discard.filterByType(SUPPORTER).select("Select one Supporter card").showToOpponent("Selected supporter").moveTo(my.hand)
+            }
           }
           playRequirement{
-            assert my.discard.filterByType(SUPPORTER) : "You have no Supporters in your discard"
+            if(thisTurnSupporter){
+              assert my.discard.getExcludedList(thisTurnSupporter).filterByType(SUPPORTER) : "You have no Supporters in your discard (Supporters you play remain in play untill your turn ends)"
+            } else {
+              assert my.discard.filterByType(SUPPORTER) : "You have no Supporters in your discard"
+            }
           }
         };
       case POTION_101:
