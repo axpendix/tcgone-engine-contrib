@@ -1948,7 +1948,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "As long as Skarmory is the only Pokémon you have in play, your opponent's Basic Pokémon can't attack."
           delayedA {
             before CHECK_ATTACK_REQUIREMENTS, {
-              if (ef.attacker.owner == self.owner.opposite && !ef.attacker.evolution && self.owner.pbg.all.size() == 1) {
+              if (ef.attacker.owner == self.owner.opposite && ef.attacker.notEvolution && self.owner.pbg.all.size() == 1) {
                 wcu "Shining Horn prevents this Pokémon from attacking"
                 prevent()
               }
@@ -1986,15 +1986,17 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "As long as you have Illumise in play, prevent all effects, including damage, done to Volbeat by attacks from your opponent's Pokémon-ex."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
-              bg.dm().each {
-                if (self.owner.pbg.all.find{it.name == "Illumise"} && it.to == self && it.from.EX) {
-                  bc "Extra Protection prevents all damage"
-                  it.dmg=hp(0)
+              if (self.owner.pbg.all.find{it.name == "Illumise"}){
+                bg.dm().each {
+                  if (it.to == self && it.from.EX && it.notNoEffect && it.dmg.value) {
+                    bc "Extra Protection prevents all damage"
+                    it.dmg=hp(0)
+                  }
                 }
               }
             }
             before null, self, Source.ATTACK, {
-              if (self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
+              if (self.owner.pbg.all.find{it.name == "Illumise"} && self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
                 bc "Extra Protection prevents effect"
                 prevent()
               }
