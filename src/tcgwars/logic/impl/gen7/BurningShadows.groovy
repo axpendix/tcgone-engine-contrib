@@ -1771,7 +1771,7 @@ public enum BurningShadows implements LogicCardInfo {
             text "40 damage. This attack's damage isn't affected by Resistance or any other effects on your opponent's Active Pokémon."
             energyCost F, C
             onAttack {
-              new ResolvedDamage(hp(40), my.active, opp.active, Source.ATTACK, DamageManager.DamageFlag.NO_DEFENDING_EFFECT, DamageManager.DamageFlag.NO_RESISTANCE).run(bg)
+              noResistanceOrAnyEffectDamage(40, defending)
             }
           }
 

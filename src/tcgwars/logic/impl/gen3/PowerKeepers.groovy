@@ -494,7 +494,7 @@ public enum PowerKeepers implements LogicCardInfo {
           text "40 damage. This attack's damage isn't affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
           energyCost F, C
           onAttack {
-            shredDamage 40
+            noResistanceOrAnyEffectDamage(40, defending)
           }
         }
         move "Cross Chop", {

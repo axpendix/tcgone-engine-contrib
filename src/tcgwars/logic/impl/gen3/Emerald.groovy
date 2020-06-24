@@ -1890,7 +1890,7 @@ public enum Emerald implements LogicCardInfo {
             text "70 damage. This attack’s damage isn’t affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             energyCost W, L, C
             onAttack {
-              new ResolvedDamage(hp(70), my.active, defending, Source.ATTACK, DamageManager.DamageFlag.NO_DEFENDING_EFFECT, DamageManager.DamageFlag.NO_RESISTANCE).run(bg)
+              noResistanceOrAnyEffectDamage(70, defending)
             }
           }
 
@@ -1997,7 +1997,7 @@ public enum Emerald implements LogicCardInfo {
             text "50 damage. This attack’s damage isn’t affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             energyCost C, C, C
             onAttack {
-              new ResolvedDamage(hp(50), my.active, defending, Source.ATTACK, DamageManager.DamageFlag.NO_DEFENDING_EFFECT, DamageManager.DamageFlag.NO_RESISTANCE).run(bg)
+              noResistanceOrAnyEffectDamage(50, defending)
             }
           }
 
