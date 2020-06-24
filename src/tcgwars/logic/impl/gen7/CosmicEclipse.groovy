@@ -3856,7 +3856,6 @@ public enum CosmicEclipse implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert my.hand.findAll(cardTypeFilter(POKEMON)) : "There are no Pokémon in your hand."
-              assert self.numberOfDamageCounters : "$self has no damage counters."
               powerUsed()
               my.hand.findAll(cardTypeFilter(POKEMON)).select("Discard a Pokémon to heal 60.").discard()
               heal(60, self)
