@@ -3768,7 +3768,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return supporter (this) {
         text "Switch your Active Pokémon with 1 of your Benched Pokémon. Then, draw 3 cards."
         onPlay {
-          switchYourActive now:true, source:TRAINER
+          switchYourActive now:true, source:TRAINER_CARD
           draw 3
         }
         playRequirement{
