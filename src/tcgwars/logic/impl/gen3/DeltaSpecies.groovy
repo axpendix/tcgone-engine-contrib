@@ -788,9 +788,10 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 50
 
             afterDamage {
-              if (confirm("Return an Energy card from $self to your hand?")) {
+              if (confirm("Return an Energy card from $self to your hand in order to use the additional effect of 'Return Wave'?")) {
 
                 self.cards.filterByType(ENERGY).select(count:1).moveTo(my.hand)
+                //TODO: Add a check for the energy not being here anymore (Scoop-Up Block)
                 defending.cards.filterByType(ENERGY).select(count:1).moveTo(opp.hand)
               }
             }
