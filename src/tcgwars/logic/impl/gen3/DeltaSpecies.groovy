@@ -767,9 +767,6 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Delta Search", {
           text "10 damage. Search your deck for a Holon Energy card and attach it to Vaporeon. Shuffle your deck afterward."
           energyCost C
-          attackRequirement {
-            assert my.deck : "Deck is empty"
-          }
           onAttack {
             damage 10
 
@@ -1270,6 +1267,9 @@ public enum DeltaSpecies implements LogicCardInfo {
         move "Holon Search", {
           text "Search your deck for a Holon Energy card and attach it to 1 of your Pokémon. Shuffle your deck afterward."
           energyCost C, C
+          attackRequirement {
+            assert my.deck: "Deck is empty"
+          }
           onAttack {
             def toAttach = my.deck.search(max: 1, "Select a Special Energy card", {
               it.cardTypes.is(SPECIAL_ENERGY) && it.name.contains("Holon Energy")
