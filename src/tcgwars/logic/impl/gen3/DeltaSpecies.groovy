@@ -2073,6 +2073,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         }
         move "Rage", {
           text "10+ damage. Does 10 damage plus 10 more damage for each damage counter on Cubone."
+          energyCost C, C
           onAttack {
             damage 10+10*self.numberOfDamageCounters
           }
