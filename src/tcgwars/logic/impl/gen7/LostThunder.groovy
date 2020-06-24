@@ -3705,7 +3705,7 @@ public enum LostThunder implements LogicCardInfo {
               }
               // [End of workaround for VMAX]
               // TODO: Remove this when VMAX are no longer marked as STAGE1.
-              evolve(self, card.first(), PLAY_FROM_HAND)
+              evolve(self, tar.first(), PLAY_FROM_HAND)
             }
           }
         };
