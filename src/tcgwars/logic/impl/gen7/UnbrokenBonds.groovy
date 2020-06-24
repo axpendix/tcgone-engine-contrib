@@ -1026,7 +1026,6 @@ public enum UnbrokenBonds implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert my.hand.filterByBasicEnergyType(R)
-              assert my.deck
               powerUsed()
               my.hand.filterByBasicEnergyType(R).select("Discard").discard()
               draw 3
@@ -3210,7 +3209,6 @@ public enum UnbrokenBonds implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert my.hand.findAll(pokemonTypeFilter(M)) : "No [M} pokemon in hand"
-              assert self.numberOfDamageCounters : "$self is not damaged"
               powerUsed()
               my.hand.findAll(pokemonTypeFilter(M)).select("Discard").discard()
               heal(100,self)

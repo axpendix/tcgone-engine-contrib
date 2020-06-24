@@ -2333,7 +2333,7 @@ public enum UltraPrism implements LogicCardInfo {
                 directDamage 10, tar
               }
               eff.unregister()
-              bg().em().run(new CheckFaint())
+              checkFaint()
             }
           }
 

@@ -3673,7 +3673,6 @@ public enum UnifiedMinds implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert my.hand.findAll{it.cardTypes.is(ULTRA_BEAST)} : "Your hand has no Ultra Beast cards in it."
-              assert my.deck : "Your deck is empty."
               powerUsed()
               my.hand.findAll{it.cardTypes.is(ULTRA_BEAST)}.select("Discard an Ultra Beast card.").discard()
               draw 3

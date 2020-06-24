@@ -554,10 +554,16 @@ public enum TeamUp implements LogicCardInfo {
               checkLastTurn()
               assert my.deck : "There are no more cards in your deck"
               powerUsed()
+              def eff = delayed {
+                before KNOCKOUT, {
+                  prevent()
+                }
+              }
               directDamage 20, self
-              attachEnergyFrom(type: FIRE, my.deck, self)
-              attachEnergyFrom(type: FIRE, my.deck, self)
+              my.deck.search(max:2, "Search your deck for up to 2 [R] Energy cards", basicEnergyFilter(R)).each{attachEnergy(self,it)}
               shuffleDeck()
+              eff.unregister()
+              checkFaint()
             }
           }
           move "Continuous Blaze Ball" , {
@@ -2370,11 +2376,18 @@ public enum TeamUp implements LogicCardInfo {
               checkLastTurn()
               assert my.deck : "There are no more cards in your deck"
               powerUsed()
+              def eff = delayed {
+                before KNOCKOUT, {
+                  prevent()
+                }
+              }
               directDamage(30,self)
               my.deck.search(max:3,"Choose up to 3 [D] Energy cards", basicEnergyFilter(D)).each {
                 attachEnergy(self, it)
               }
               shuffleDeck()
+              eff.unregister()
+              checkFaint()
             }
           }
           move "Crushing Punch" , {
