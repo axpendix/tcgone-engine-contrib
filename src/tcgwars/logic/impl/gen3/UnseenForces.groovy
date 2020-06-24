@@ -2626,9 +2626,10 @@ public enum UnseenForces implements LogicCardInfo {
           }
         }
         move "Power Poison", {
-          text "Discard 1 Energy attached to Meganium ex. The Defending Pokémon is now Poisoned."
+          text "90 damage. Discard 1 Energy attached to Meganium ex. The Defending Pokémon is now Poisoned."
           energyCost G, G, C, C, C
           onAttack {
+            damage 90
             discardSelfEnergy C
             apply POISONED
           }
