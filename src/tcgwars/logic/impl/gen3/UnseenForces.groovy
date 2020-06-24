@@ -2389,7 +2389,7 @@ public enum UnseenForces implements LogicCardInfo {
       return specialEnergy (this, [[C]]) {
         text "Cyclone Energy provides [C] Energy. When you attach this card from your hand to your Active Pokémon, switch 1 of the Defending Pokémon with 1 of your opponent's Benched Pokémon. Your opponent chooses the Benched Pokémon to switch."
         onPlay { reason->
-          if (reason == PLAY_FROM_HAND) {
+          if (reason == PLAY_FROM_HAND && self.active) {
             if (opp.bench) {
               sw(opp.active, opp.bench.oppSelect("Cyclone Energy was played, which Pokemon to switch with the Active?"))
             }
