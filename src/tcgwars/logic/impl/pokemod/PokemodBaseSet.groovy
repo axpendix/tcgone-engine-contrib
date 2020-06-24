@@ -1730,9 +1730,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
           def tar = opp.all.findAll {it.cards.energyCount(C)}
           if(tar) {
             def pcs = tar.select("Discard energy from")
-            targeted (pcs, TRAINER_CARD) {
-              pcs.cards.filterByType(SPECIAL_ENERGY).select("Discard").discard()
-            }
+            pcs.cards.filterByType(SPECIAL_ENERGY).select("Discard").discard()
           }
         }
         playRequirement{
