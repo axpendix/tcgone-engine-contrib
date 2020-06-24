@@ -1321,7 +1321,7 @@ public enum DeltaSpecies implements LogicCardInfo {
                     once = false
                   }
                   if (hasPokeBody) {
-                    directDamage(10, it)
+                    directDamage(10, it, SRC_ABILITY)
                     hasPokeBody = false
                   }
                 }
@@ -1352,8 +1352,10 @@ public enum DeltaSpecies implements LogicCardInfo {
         pokePower "Temperamental Weather", {
           text "Once during your turn (before your attack), you may search your deck for Sunny Castform, Rain Castform, or Snow-cloud Castform and switch it with Castform. (Any cards attached to Castform, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Shuffle Castform back into your deck. You can't use more than 1 Temperamental Weather Poké-Power each turn."
           actionA {
+            assert bg.em().retrieveObject("Temperamental_Weather") != bg.turnCount : "You can’t use more than 1 Temperamental Weather Poké-Power each turn"
             checkLastTurn()
             assert my.deck : "Deck is empty"
+            bg.em().storeObject("Temperamental_Weather",bg.turnCount)
             powerUsed()
 
             def oldCastform = self.topPokemonCard
@@ -1379,7 +1381,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           attackRequirement { assert my.deck : "Deck is empty" }
           onAttack {
             draw 1
-            if (self.cards.findAll { it.name.contains("Holon Energy") }) {
+            if ( self.cards.any{it.name.contains("Holon Energy")} ) {
               draw 2
             }
           }
