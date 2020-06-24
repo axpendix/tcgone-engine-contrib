@@ -712,10 +712,11 @@ public enum DeltaSpecies implements LogicCardInfo {
             assert my.deck : "Deck is empty"
             powerUsed()
 
+            my.deck.subList(0,1).showToMe("Top card of your deck").showToOpponent("Top card of your opponent's deck")
             if (my.deck.subList(0,1).filterByType(BASIC_ENERGY)) {
               attachEnergyFrom(my.deck.subList(0,1), my.all)
             } else {
-              bc "Top card was not a Basic Energy card"
+              bc "Top card was not a Basic Energy card, it's put back where it was."
             }
           }
         }
@@ -726,10 +727,11 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 50
 
             if (confirm("Discard an Energy card from $self to deal 20 more damage?")) {
+              def tar = self.cards.filterByType(ENERGY).select(count:1)
               damage 20
 
               afterDamage {
-                self.cards.filterByType(ENERGY).select(count:1).discard()
+                tar.discard()
               }
             }
           }
