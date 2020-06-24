@@ -338,7 +338,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 10
             afterDamage {
               if (my.deck){
-                my.deck.search(max: 1, "Select a Holon Energy card to attach to $self", {it.cardTypes.is(SPECIAL_ENERGY) && it.name.contains("Holon") }).each {
+                my.deck.search(max: 1, "Select a Holon Energy card to attach to $self", {it.cardTypes.is(SPECIAL_ENERGY) && it.name.contains("Holon Energy") }).each {
                   attachEnergy(self, it)
                 }
                 shuffleDeck()
@@ -406,7 +406,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 10
             afterDamage {
               if (my.deck){
-                my.deck.search(max: 1, "Select a Holon Energy card to attach to $self", {it.cardTypes.is(SPECIAL_ENERGY) && it.name.contains("Holon") }).each {
+                my.deck.search(max: 1, "Select a Holon Energy card to attach to $self", {it.cardTypes.is(SPECIAL_ENERGY) && it.name.contains("Holon Energy") }).each {
                   attachEnergy(self, it)
                 }
                 shuffleDeck()
@@ -774,7 +774,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 10
 
             afterDamage {
-              my.deck.search(max: 1, "Select a Holon Energy card to attach to Vaporeon", {it.cardTypes.is(SPECIAL_ENERGY) && it.name.contains("Holon") }).each {
+              my.deck.search(max: 1, "Select a Holon Energy card to attach to Vaporeon", {it.cardTypes.is(SPECIAL_ENERGY) && it.name.contains("Holon Energy") }).each {
                 attachEnergy(self, it)
               }
               shuffleDeck()
