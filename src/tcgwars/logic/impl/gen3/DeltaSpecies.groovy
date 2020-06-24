@@ -1723,15 +1723,17 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "As long as you have Volbeat in play, prevent all effects, including damage, done to Illumise by attacks from your opponent's Pokémon that has Dark in its name."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
-              bg.dm().each {
-                if (self.owner.pbg.all.find{it.name == "Volbeat"} && it.to == self && it.from.topPokemonCard.name.contains("Dark")) {
-                  bc "Beacon Protection prevents all damage"
-                  it.dmg=hp(0)
+              if (self.owner.pbg.all.find{it.name == "Volbeat"}) {
+                bg.dm().each {
+                  if (it.to == self && it.from.topPokemonCard.name.contains("Dark ") && it.notNoEffect && it.dmg.value) {
+                    bc "Beacon Protection prevents all damage"
+                    it.dmg=hp(0)
+                  }
                 }
               }
             }
             before null, self, Source.ATTACK, {
-              if (self.owner.opposite.pbg.active.name.contains("Dark") && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
+              if (self.owner.pbg.all.find{it.name == "Volbeat"} && self.owner.opposite.pbg.active.name.contains("Dark ") && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
                 bc "Beacon Protection prevents effect"
                 prevent()
               }
@@ -1748,6 +1750,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost G, C
           onAttack {
             damage 20
+            if (defending.evolution) { applyAfterDamage CONFUSED }
           }
         }
       };
@@ -1761,7 +1764,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
           onAttack{
-            my.deck.search(min: 0, max:1,"Choose an Evolution card",cardTypeFilter(EVOLUTION)).moveTo(my.hand)
+            my.deck.search(max: 1, "Choose an Evolution card", cardTypeFilter(EVOLUTION)).moveTo(my.hand)
             shuffleDeck()
           }
         }
