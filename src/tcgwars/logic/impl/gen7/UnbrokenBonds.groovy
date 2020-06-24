@@ -3210,7 +3210,6 @@ public enum UnbrokenBonds implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert my.hand.findAll(pokemonTypeFilter(M)) : "No [M} pokemon in hand"
-              assert self.numberOfDamageCounters : "$self is not damaged"
               powerUsed()
               my.hand.findAll(pokemonTypeFilter(M)).select("Discard").discard()
               heal(100,self)
