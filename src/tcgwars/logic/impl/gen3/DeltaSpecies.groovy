@@ -558,7 +558,6 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "30+ damage. You may discard as many Energy cards as you like attached to your Pokémon in play. If you do, this attack does 30 damage plus 20 more damage for each Energy card you discarded."
           energyCost L, M
           onAttack {
-            def count=0
             def toBeDiscarded = new CardList()
             while(true) {
               def pl = my.all.findAll{
@@ -566,15 +565,14 @@ public enum DeltaSpecies implements LogicCardInfo {
               }
               if(!pl) break;
 
-              def info = "Energy cards already marked for discard: ${count}\nCurrent base damage: 30 + ${20 * count}\nDiscard an Energy card from which Pokémon? (cancel to stop)"
+              def info = "Energy cards already marked for discard: ${toBeDiscarded.size()}\nCurrent base damage: 30 + ${20 * toBeDiscarded.size()}\nDiscard an Energy card from which Pokémon? (cancel to stop)"
               def src = pl.select(info, false)
               if(!src) break;
 
               def selection = src.cards.filterByType(ENERGY).select("Card to discard")
               toBeDiscarded.addAll(selection)
-              count++
             }
-            damage 30+20*count
+            damage 30+20*toBeDiscarded.size()
             afterDamage { toBeDiscarded.discard() }
           }
         }
