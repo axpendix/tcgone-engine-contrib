@@ -374,9 +374,11 @@ public enum DeltaSpecies implements LogicCardInfo {
             powerUsed()
 
             def source = my.all.findAll { it.cards.filterByType(ENERGY) }.select("Choose a Pokemon to move an Energy from")
+            def energyCard = source.cards.filterByType(ENERGY).select("Choose the energy to move")
             def target = my.all.findAll{it != source}.select("Select a Pokemon to move the Energy to")
-
-            moveEnergy(source, target)
+            targeted (target, SRC_ABILITY) {
+              energySwitch(source,target,energyCard)
+            }
           }
         }
         move "Psychic Rage", {
