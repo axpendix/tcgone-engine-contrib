@@ -2823,17 +2823,14 @@ public enum DeltaSpecies implements LogicCardInfo {
         def actions=[]
         onPlay {
           actions=action("Stadium: Holon Ruins") {
-            assert my.deck : "Deck is empty."
-            assert my.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) } : "No Delta Pokemon in play."
-            assert my.hand : "You don't have cards in your hand"
             assert lastTurn != bg().turnCount : "Already used Holon Ruins"
-
+            assert my.deck : "Deck is empty."
+            assert my.all.any{it.topPokemonCard.cardTypes.is(DELTA)} : "No Delta Pokemon in play."
             bc "Used Holon Ruins effect"
             lastTurn = bg().turnCount
-            def deltaPokemon = my.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) }
+
             draw 1
-            shuffleDeck()
-            my.hand.select("Choose the card to discard").discard()
+            my.hand.select("Discard a card from your hand").discard()
           }
         }
         onRemoveFromPlay{
