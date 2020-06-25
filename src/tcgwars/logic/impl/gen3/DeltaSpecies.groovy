@@ -3012,7 +3012,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         pokePower "Evolutionary Flame", {
           text "Once during your turn, when you play Flareon ex from your hand to evolve 1 of your Pokémon, you may choose 1 of the Defending Pokémon. That Pokémon is now Burned and Confused."
           onActivate {r->
-            if (r==PLAY_FROM_HAND && my.deck && confirm("Use Evolutionary Flame?")) {
+            if (r==PLAY_FROM_HAND && confirm("Use Evolutionary Flame?")) {
               powerUsed()
               apply BURNED, opp.active, SRC_ABILITY
               apply CONFUSED, opp.active, SRC_ABILITY
@@ -3043,7 +3043,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         pokePower "Evolutionary Thunder", {
           text "Once during your turn, when you play Jolteon ex from your hand to evolve 1 of your Pokémon, you may put 1 damage counter on each of your opponent's Pokémon."
           onActivate {r->
-            if (r==PLAY_FROM_HAND && my.deck && confirm("Use Evolutionary Thunder?")) {
+            if (r==PLAY_FROM_HAND && confirm("Use Evolutionary Thunder?")) {
               powerUsed()
               opp.all.each {
                 directDamage 10, it, SRC_ABILITY
@@ -3073,7 +3073,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         pokePower "Evolutionary Swirl", {
           text "Once during your turn, when you play Vaporeon ex from your hand to evolve 1 of your Pokémon, you may have your opponent shuffle his or her hand into his or her deck. Then, your opponent draws up to 4 cards."
           onActivate {
-            if (it==PLAY_FROM_HAND && opp.hand && confirm("Use Evolutionary Swirl?")) {
+            if (it==PLAY_FROM_HAND && (opp.hand || opp.deck) && confirm("Use Evolutionary Swirl?")) {
               powerUsed()
               opp.hand.moveTo(hidden:true, opp.deck)
               shuffleDeck(null, TargetPlayer.OPPONENT)
