@@ -2566,20 +2566,28 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
           move "Crush and Burn", {
-            text "30+ damage. You may discard as many Energy as you like attached to your Pokémon in play. If you do, this attack does 30 damage plus 20 more damage for each Energy you discarded."
+            text "30+ damage. You may discard as many Energy as you like attached to your Pokémon in play. If you do, this attack does 30 damage plus 20 more damage for each Energy card you discarded."
+            //Errata'd, original text said "each Energy you discarded"
             energyCost L, C
             onAttack {
               def count=0
-              while(1){
-                def pl=(my.all.findAll {it.cards.filterByType(ENERGY)})
+              def toBeDiscarded = new CardList()
+              while(true) {
+                def pl = my.all.findAll{
+                  it.cards.filterByType(ENERGY).any{enCard -> !toBeDiscarded.contains(enCard)}
+                }
                 if(!pl) break;
-                def src=pl.select("Source for energy (cancel to stop)", false)
+
+                def info = "Energy cards already marked for discard: ${count}\nCurrent base damage: 30 + ${20 * count}\nDiscard an Energy card from which Pokémon? (cancel to stop)"
+                def src = pl.select(info, false)
                 if(!src) break;
-                def card=src.cards.filterByType(ENERGY).select("Card to discard").first()
-                discard card
+
+                def selection = src.cards.filterByType(ENERGY).select("Card to discard")
+                toBeDiscarded.addAll(selection)
                 count++
               }
               damage 30+20*count
+              afterDamage { toBeDiscarded.discard() }
             }
           }
 
