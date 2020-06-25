@@ -2799,16 +2799,13 @@ public enum DeltaSpecies implements LogicCardInfo {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
           "Discard a card from your hand. If you can't discard a card from your hand, you can't play this card. Search your deck for a [M] Energy card or a Basic Pokémon (or Evolution card) that has δ on its card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
         onPlay {
-          def toDiscard = my.hand.getExcludedList(thisCard).select(count:1, "Discard a card to discard.")
+          def toDiscard = my.hand.getExcludedList(thisCard).select(count:1, "Discard a card from your hand in order to play ${thisCard}.")
           toDiscard.discard()
 
           my.deck.search(max: 1, "Select a [M] or a Pokemon card with δ in its card.", {
             (it.cardTypes.is(ENERGY) && it.asEnergyCard().containsTypePlain(M)) ||
             (it.cardTypes.is(POKEMON) && it.cardTypes.is(DELTA))
-          }, { CardList list ->
-            list.filterByType(ENERGY).size() <= 1 &&
-            list.filterByType(POKEMON).size() <= 1
-          }).showToOpponent("Opponent's chosen cards to move to their hand.").moveTo(my.hand)
+          }).showToOpponent("Opponent's used Holon Researcher, and will put this card into their hand.").moveTo(my.hand)
 
           shuffleDeck()
         }
