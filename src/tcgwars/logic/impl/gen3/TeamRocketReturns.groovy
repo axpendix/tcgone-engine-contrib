@@ -1393,10 +1393,12 @@ public enum TeamRocketReturns implements LogicCardInfo {
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
           weakness LIGHTNING
           pokePower "Ripples", {
-            text "Once during your turn (before your attack), you may remove 1 damage counter from 1 of your Pokémon (excluding Mantine). This power can’t be used if Mantine is affected by a Special Condition."
+            text "Once during your turn (before your attack), if Mantine is your Active Pokémon, you may remove 1 damage counter from 1 of your Pokémon (excluding Mantine). This power can’t be used if Mantine is affected by a Special Condition."
+            //Errata'd: Originally didn't mention Mantine needing to be Active in order to use Ripples.
             actionA {
               checkLastTurn()
               checkNoSPC()
+              assert self.active : "$self is not your Active Pokémon [Errata, may not show in the card itself]"
               assert my.all.findAll{it.numberOfDamageCounters && it != self} : "There is no Pokémon with damage counter outside from ${self}."
               powerUsed()
               heal 10, my.all.findAll{it.numberOfDamageCounters && it != self}.select("Select the pokemon to heal.")
