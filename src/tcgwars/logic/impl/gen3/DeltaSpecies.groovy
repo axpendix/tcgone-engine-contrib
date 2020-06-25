@@ -2860,37 +2860,32 @@ public enum DeltaSpecies implements LogicCardInfo {
           // Choice 1 = Search deck
           // Choice 2 = Search discard
           def choice = 2
-          if (!my.discard || !my.discard.findAll {it.cardTypes.is(SUPPORTER) && it.name.contains("Holon")}) {
+          if (!my.discard || !my.discard.any{it.cardTypes.is(SUPPORTER) && it.name.contains("Holon")}) {
             choice = 1
           }
           else {
             choice = choose([1,2],["Search the deck", "Search the Discard pile"], "Where to search for a Supporter card that has Holon in its name?")
           }
           if (choice == 1) {
-            if (my.deck) {
-              def tar = my.deck.search(max: 1, "Search for a Holon Supporter", {
-                it.cardTypes.is(SUPPORTER) &&
-                it.name.contains("Holon")
-              })
-              if (tar) {
-                tar.showToOpponent("Opponent moved this card to their hand.").moveTo(my.hand)
-              }
-              shuffleDeck()
-            } else {
-              wcu "Your deck is empty and cannot search for a Holon Supporter."
-            }
-          }
-          else {
-            my.discard.findAll {
+            def tar = my.deck.search(max: 1, "Search for a Holon Supporter", {
               it.cardTypes.is(SUPPORTER) &&
               it.name.contains("Holon")
-            }.select("Which card to move to hand?").showToOpponent("Opponent moved this card to their hand.").moveTo(my.hand)
+            })
+            if (tar) {
+              tar.showToOpponent("Opponent played Holon Transceiver, and will move this Holon Supporter from their deck to their hand.").moveTo(my.hand)
+            }
+            shuffleDeck()
+          }
+          else {
+            my.discard.findAll{
+              it.cardTypes.is(SUPPORTER) &&
+              it.name.contains("Holon")
+            }.select("Which card to move to hand?").showToOpponent("Opponent moved this Holon Supporter to their hand.").moveTo(my.hand)
           }
         }
         playRequirement {
-          assert my.discard.findAll {
-            it.cardTypes.is(SUPPORTER) &&
-            it.name.contains("Holon")
+          assert my.discard.any{
+            it.cardTypes.is(SUPPORTER) && it.name.contains("Holon")
           } || my.deck.notEmpty : "Deck is empty and your discard pile does not have any Holon Supporters"
         }
       };
