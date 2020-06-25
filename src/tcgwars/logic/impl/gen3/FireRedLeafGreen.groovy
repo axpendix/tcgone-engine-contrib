@@ -2304,17 +2304,18 @@ public enum FireRedLeafGreen implements LogicCardInfo {
         };
       case MT__MOON_94:
         return stadium (this) {
-          text "Any Pokémon (both yours and your opponent’s) with maximum HP less than 70 can’t use any Poké-Powers.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
+          text "Any Pokémon (both yours and your opponent’s) with maximum HP of 70 or less can’t use any Poké-Powers.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
+          //Errata: Originally said "HP of less than 70".
           def effect1
           def effect2
           onPlay {
             effect1 = getter IS_ABILITY_BLOCKED, { Holder h->
-              if (h.effect.target.fullHP.value < 70 && h.effect.ability instanceof PokePower) {
+              if (h.effect.target.fullHP.value <= 70 && h.effect.ability instanceof PokePower) {
                 h.object=true
               }
             }
             effect2 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
-              if ((h.effect.target as Card).fullHP.value < 70) {
+              if ((h.effect.target as Card).fullHP.value <= 70) {
                 h.object=true
               }
             }
