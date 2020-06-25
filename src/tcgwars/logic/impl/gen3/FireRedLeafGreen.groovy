@@ -2570,7 +2570,6 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             //Errata'd, original text said "each Energy you discarded"
             energyCost L, C
             onAttack {
-              def count=0
               def toBeDiscarded = new CardList()
               while(true) {
                 def pl = my.all.findAll{
@@ -2578,15 +2577,14 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                 }
                 if(!pl) break;
 
-                def info = "Energy cards already marked for discard: ${count}\nCurrent base damage: 30 + ${20 * count}\nDiscard an Energy card from which Pokémon? (cancel to stop)"
+                def info = "Energy cards already marked for discard: ${toBeDiscarded.size()}\nCurrent base damage: 30 + ${20 * toBeDiscarded.size()}\nDiscard an Energy card from which Pokémon? (cancel to stop)"
                 def src = pl.select(info, false)
                 if(!src) break;
 
                 def selection = src.cards.filterByType(ENERGY).select("Card to discard")
                 toBeDiscarded.addAll(selection)
-                count++
               }
-              damage 30+20*count
+              damage 30+20*toBeDiscarded.size()
               afterDamage { toBeDiscarded.discard() }
             }
           }
