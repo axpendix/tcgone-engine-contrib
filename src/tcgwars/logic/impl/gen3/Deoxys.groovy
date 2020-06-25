@@ -2461,6 +2461,7 @@ public enum Deoxys implements LogicCardInfo {
       case STRENGTH_CHARM_92:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nWhenever an attack from the Pokémon that Strength Charm is attached to does damage to the Active Pokémon, the attack does 10 more damage (before applying Weakness and Resistance). Discard Strength Charm at the end of the turn in which this Pokémon attacks."
+          //TODO: Check for older non-groovy prints to apply the correct effect of this card. Got errata'd, used to increase damage after W/R (current behaviour: before W/R)
           def eff1
           def attackUsed = false
           onPlay {reason->
