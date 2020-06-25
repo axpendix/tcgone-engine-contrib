@@ -3104,13 +3104,12 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost F
           onAttack {
             damage 10
-
-            def takenPrizes = opp.prizeCardSet.takenCount
-            def energies = my.discard.filterByType(ENERGY).size()
-            if (takenPrizes && energies) {
-              def count = Math.min(takenPrizes, energies)
-              (1..count).each {
-                attachEnergyFrom(type:F, my.discard, self)
+            afterDamage{
+              def takenPrizes = opp.prizeCardSet.takenCount
+              def energies = my.discard.filterByType(ENERGY).size()
+              if (takenPrizes && energies) {
+                def cnt = Math.min(takenPrizes, energies)
+                attachEnergyFrom(max: cnt, type:F, my.discard, self)
               }
             }
           }
@@ -3132,12 +3131,12 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost W
           onAttack {
             damage 10
-            def takenPrizes = opp.prizeCardSet.takenCount
-            def energies = my.discard.filterByType(ENERGY).size()
-            if (takenPrizes && energies) {
-              def count = Math.min(takenPrizes, energies)
-              (1..count).each {
-                attachEnergyFrom(type:W, my.discard, self)
+            afterDamage{
+              def takenPrizes = opp.prizeCardSet.takenCount
+              def energies = my.discard.filterByType(ENERGY).size()
+              if (takenPrizes && energies) {
+                def cnt = Math.min(takenPrizes, energies)
+                attachEnergyFrom(max: cnt, type:W, my.discard, self)
               }
             }
           }
@@ -3152,7 +3151,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         }
       };
       case METAGROSS_STAR_113:
-      return basic (this, hp:HP070, type:M, retreatCost:3) {
+      return basic (this, hp:HP090, type:M, retreatCost:3) {
         weakness R
         resistance G, MINUS30
         move "Critical Collection", {
@@ -3160,13 +3159,12 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost M
           onAttack {
             damage 10
-
-            def takenPrizes = opp.prizeCardSet.takenCount
-            def energies = my.discard.filterByType(ENERGY).size()
-            if (takenPrizes && energies) {
-              def count = Math.min(takenPrizes, energies)
-              (1..count).each {
-                attachEnergyFrom(type:M, my.discard, self)
+            afterDamage{
+              def takenPrizes = opp.prizeCardSet.takenCount
+              def energies = my.discard.filterByType(ENERGY).size()
+              if (takenPrizes && energies) {
+                def cnt = Math.min(takenPrizes, energies)
+                attachEnergyFrom(max: cnt, type:M, my.discard, self)
               }
             }
           }
