@@ -2414,7 +2414,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             if (selected) {
               selected.moveTo(suppressLog: true, pcs.cards)
               my.discard.add(tpc)
-              self.cards.remove(tpc)
+              pcs.cards.remove(tpc)
               checkFaint
               new CheckAbilities().run(bg)
               checkFaint()
