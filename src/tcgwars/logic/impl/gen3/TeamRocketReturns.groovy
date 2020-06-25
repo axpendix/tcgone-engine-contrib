@@ -2416,7 +2416,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               selected.moveTo(suppressLog: true, pcs.cards)
               discard tpc
               spc.each{
-                apply it
+                apply it, pcs
                 bc"$it"
               }
               new CheckAbilities().run(bg)
