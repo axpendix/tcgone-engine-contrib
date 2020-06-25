@@ -3108,7 +3108,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 10
             afterDamage{
               def takenPrizes = opp.prizeCardSet.takenCount
-              def energies = my.discard.filterByType(ENERGY).size()
+              def energies = my.discard.filterByType(ENERGY).filterByEnergyType(F).size()
               if (takenPrizes && energies) {
                 def cnt = Math.min(takenPrizes, energies)
                 attachEnergyFrom(max: cnt, type:F, my.discard, self)
@@ -3135,7 +3135,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 10
             afterDamage{
               def takenPrizes = opp.prizeCardSet.takenCount
-              def energies = my.discard.filterByType(ENERGY).size()
+              def energies = my.discard.filterByType(ENERGY).filterByEnergyType(W).size()
               if (takenPrizes && energies) {
                 def cnt = Math.min(takenPrizes, energies)
                 attachEnergyFrom(max: cnt, type:W, my.discard, self)
@@ -3163,7 +3163,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 10
             afterDamage{
               def takenPrizes = opp.prizeCardSet.takenCount
-              def energies = my.discard.filterByType(ENERGY).size()
+              def energies = my.discard.filterByType(ENERGY).filterByEnergyType(M).size()
               if (takenPrizes && energies) {
                 def cnt = Math.min(takenPrizes, energies)
                 attachEnergyFrom(max: cnt, type:M, my.discard, self)
