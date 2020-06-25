@@ -3077,7 +3077,7 @@ public enum DeltaSpecies implements LogicCardInfo {
               powerUsed()
               opp.hand.moveTo(hidden:true, opp.deck)
               shuffleDeck(null, TargetPlayer.OPPONENT)
-              draw 4, TargetPlayer.OPPONENT
+              draw(oppChoose(1..4,"Evolutionary Swirl - How many cards would you like to draw?"),TargetPlayer.OPPONENT)
             }
           }
         }
