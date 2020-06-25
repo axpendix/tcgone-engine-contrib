@@ -2956,10 +2956,12 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
           eff2=delayed {
             before APPLY_ATTACK_DAMAGES, {
-              bg.dm().each {
-                if(it.to==self && !self.EX && it.from.owner!=self.owner && it.from.EX && it.dmg.value && it.notNoEffect && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(L)){
-                  it.dmg -= hp(10)
-                  bc "Holon Energy GL -10"
+              if (self != null && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(L)){
+                bg.dm().each {
+                  if(it.to==self && it.from.owner!=self.owner && it.from.EX && it.dmg.value && it.notNoEffect){
+                    it.dmg -= hp(10)
+                    bc "Holon Energy GL -10"
+                  }
                 }
               }
             }
@@ -2988,7 +2990,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
           eff2 = delayed {
             before null, self, Source.ATTACK, {
-              if (bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages) && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(W)) {
+              if (self != null && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(W) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages)) {
                 bc "Holon Energy WP prevented effect"
                 prevent()
               }
