@@ -2576,6 +2576,13 @@ public enum UnseenForces implements LogicCardInfo {
       return basic (this, hp:HP100, type:C, retreatCost:1) {
         weakness P
         resistance F, MINUS30
+        def howMuchFulfillable(enRequirement, potEnergy){
+          def typeRequired = enRequirement[0]
+          def cntRequired = enRequirement[1]
+          def fulfillableAmount = potEnergy.count{it[0].contains(typeRequired)}
+          bc "${enRequirement} can be fulfilled with ${fulfillableAmount}"
+          return fulfillableAmount
+        }
         pokeBody "Silver Sparkle", {
           text "If Lugia ex is your Active Pokémon and is damaged by an opponent's attack (even if Lugia ex is Knocked Out), flip a coin. If heads, choose an Energy card attached to the Attacking Pokémon and return it to your opponent's hand."
           delayedA (priority: LAST) {
@@ -2594,13 +2601,6 @@ public enum UnseenForces implements LogicCardInfo {
         move "Elemental Blast", {
           text "200 damage. Discard a [R] Energy, [W] Energy, and [L] Energy attached to Lugia ex."
           energyCost R, W, L
-          def howMuchFulfillable(enRequirement, potEnergy){
-            def typeRequired = enRequirement[0]
-            def cntRequired = enRequirement[1]
-            def fulfillableAmount = potEnergy.count{it[0].contains(typeRequired)}
-            bc "${enRequirement} can be fulfilled with ${fulfillableAmount}"
-            return fulfillableAmount
-          }
           onAttack {
             damage 200
             afterDamage{
