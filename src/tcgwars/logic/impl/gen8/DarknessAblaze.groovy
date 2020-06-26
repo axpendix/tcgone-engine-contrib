@@ -2877,22 +2877,29 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 200
-            afterDamage {
-              // TODO: Make a static method to do this
-              def targetCount = Math.min self.cards.energyCount(D), 2
-              def finalCount = 0
-              while (self.cards.energyCount(D) > 0 && finalCount < targetCount) {
-                def info = "Select [D] Energy to return to your hand."
-                def energy = self.cards.filterByType(ENERGY).select(info, energyFilter(D))
-                def energyCount = 1
-                if (energy.energyCount(D) > 1) {
-                  def choices = 1..energy.energyCount(D)
-                  def choiceInfo = "How many Energy do you want this card to count as?"
-                  energyCount = choose(choices, choiceInfo)
+            afterDamage{
+              def cost = [D,D]
+              self.cards.filterByType(ENERGY).select("Return 2 [W] Energy from this Pokémon to your hand.",{ CardList list ->
+                if(list.cards.energySufficient(cost) && list.cards.size() <= cost.size()){
+                  //check if an selected energy can be not used
+                  if(list.cards.any{list.cards.getExcludedList(it).energySufficient(cost)}){
+                    def unusedMulti = list.cards.energyCount(C)-cost.size()
+                    //check if any of the selected energy can't be used to pay the cost
+                    //example Holon Castform + 2 basic water to pay Lugia ex cost fails
+                    if(unusedMulti == 1){
+                      if(!list.cards.any{it.getEnergyTypes.size()>1 && list.getExcludedList(it).add(specialEnergy(new CustomCardInfo(testEnergy).setCardTypes(ENERGY, SPECIAL_ENERGY), it.getEnergyTypes.subList(0,it.getEnergyTypes.size()-1))).energySufficient(cost)}){
+                        return false
+                      }
+                    }
+                    if(unusedMulti == 2){// I should use recursion here I think but I don't really get how to do it with closures.
+                      if(!list.cards.any{it.getEnergyTypes.size()>1 && list.getExcludedList(it).add(specialEnergy(new CustomCardInfo(testEnergy).setCardTypes(ENERGY, SPECIAL_ENERGY), it.getEnergyTypes.subList(0,it.getEnergyTypes.size()-1))).any{it.getEnergyTypes.size()>1 && list.getExcludedList(it).add(specialEnergy(new CustomCardInfo(testEnergy).setCardTypes(ENERGY, SPECIAL_ENERGY), it.getEnergyTypes.subList(0,it.getEnergyTypes.size()-1))).energySufficient(cost)}}){
+                        return false
+                      }
+                    }
+                  }
+                  return true
                 }
-                finalCount += energyCount
-                energy.moveTo my.hand
-              }
+              }).moveTo(my.hand)
             }
           }
         }
