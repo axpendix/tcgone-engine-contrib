@@ -2616,31 +2616,31 @@ public enum UnseenForces implements LogicCardInfo {
                 def typeRequired = enRequirement[0]
                 def cntRequired = enRequirement[1]
                 def fulfillableAmount = potEnergy.count{it[0].contains(typeRequired)}
-                bc "${enRequirement} can be fulfilled with ${fulfillableAmount}"
+                //bc "${enRequirement} can be fulfilled with ${fulfillableAmount}"
                 return fulfillableAmount
               }
 
               def nonFulfillableReq = []
-              bc "Originally $energyRequired"
+              //bc "Originally $energyRequired"
               for (req in energyRequired){
                 def fulfillableAmount = howMuchFulfillable.call(req, potentialEnergy)
                 if (fulfillableAmount == 0){
-                  bc "${req} can't be fulfilled"
+                  //bc "${req} can't be fulfilled"
                   nonFulfillableReq.add(req)
                 } else {
-                  bc"${req} can be fulfilled up to $fulfillableAmount (prev. $req[1])"
+                  //bc"${req} can be fulfilled up to $fulfillableAmount (prev. $req[1])"
                   req.putAt(1, Math.min(req.get(1), fulfillableAmount))
                 }
               }
               energyRequired.removeAll(nonFulfillableReq)
 
-              bc "Post removal of non-fulfillables $energyRequired"
+              //bc "Post removal of non-fulfillables $energyRequired"
               energyRequired.sort{ typeA, typeB ->
                 def fulA = howMuchFulfillable.call(typeA, potentialEnergy)
                 def fulB = howMuchFulfillable.call(typeB, potentialEnergy)
                 typeA.get(1) == typeB.get(1) ? (fulA == fulB ? 0 : fulA < fulB ? -1 : 1) : typeA.get(1) < typeB.get(1) ? -1 : 1
               }
-              bc "Post sorting $energyRequired"
+              //bc "Post sorting $energyRequired"
 
               def energyToBeDiscarded = []
               def cardsToBeDiscarded = []
