@@ -2657,6 +2657,8 @@ public enum UnseenForces implements LogicCardInfo {
                     def chosenEnergy = 0
                     //bc ">>${optionsLabels}"
                     if (options.size() > 1) {
+                      bc ">>>${optionsNum} (${optionsNum.getClass()})"
+                      bc ">>>${optionsLabels} (${optionsLabels.getClass()})"
                       chosenEnergy = choose (
                         optionsNum,
                         optionsLabels,
