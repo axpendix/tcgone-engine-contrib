@@ -2660,9 +2660,9 @@ public enum UnseenForces implements LogicCardInfo {
                       bc ">>>${optionsNum} (${optionsNum.getClass()})"
                       bc ">>>${optionsLabels} (${optionsLabels.getClass()})"
                       chosenEnergy = choose (
-                        optionsNum,
-                        optionsLabels,
-                        "Discard a ${enReq[0]} Energy from these options:"
+                        (optionsNum as List),
+                        (optionsLabels as List<String>),
+                        "Discard a enReq[0] Energy from these options:"
                       )
                     }
                     bc "Paying [${enReq[0]}] with ${options[chosenEnergy][2]}"
