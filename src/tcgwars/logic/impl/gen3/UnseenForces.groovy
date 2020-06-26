@@ -2606,8 +2606,10 @@ public enum UnseenForces implements LogicCardInfo {
                 } else {
                   def i = 1
                   def total = enTypes.size()
+                  //TODO: Cover multiple of the same energy, add some identifier for e.g. 2 Holon's Castform
                   for (enTypeSet in enTypes) {
                     potentialEnergy.add([enTypeSet, enCard, "${enCard} - Energy #${i}/${total}"])
+                    i++
                   }
                 }
               }
@@ -2667,6 +2669,7 @@ public enum UnseenForces implements LogicCardInfo {
                     }
                     bc "Paying [${enReq[0]}] with ${options[chosenEnergy][2]}"
                     energyToBeDiscarded.add(options[chosenEnergy])
+                    potentialEnergy.remove(options[chosenEnergy])
                     options.remove(options[chosenEnergy])
                     cnt++
                   } else {
