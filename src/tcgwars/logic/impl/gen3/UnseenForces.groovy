@@ -2649,6 +2649,8 @@ public enum UnseenForces implements LogicCardInfo {
                 def optionsNum = (0..potentialEnergy.size() -1).toList()
                 def options = potentialEnergy.findAll{it[0].contains(enReq[0])}
                 def cnt = 0
+                bc ">Options available: ${potentialEnergy.size()}"
+                bc ">${enReq[0]} Energy selected: ${cnt}/${enReq[1]}"
                 while (cnt < enReq[1]){
                   if (options){
                     def chosenEnergy = 0
@@ -2664,6 +2666,7 @@ public enum UnseenForces implements LogicCardInfo {
                     cnt = enReq[1]
                   }
                 }
+                bc ">Loop ended"
               }
               cardsToBeDiscarded = energyToBeDiscarded.collect{it[1]} as CardList
               cardsToBeDiscarded.discard()
