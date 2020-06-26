@@ -505,7 +505,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "80 damage. If your opponent has no Stage 2 Evolved Pokémon in play, this attack does nothing."
           energyCost L, M, C, C, C
           onAttack {
-            if (opp.all.any{ it.topPokemonCard.cardTypes.is(STAGE2) }) {
+            if (opp.all.any{ it.topPokemonCard.cardTypes.is(EVOLVED) && it.topPokemonCard.cardTypes.is(STAGE2) }) {
               damage 80
             }
           }
@@ -569,7 +569,7 @@ public enum DeltaSpecies implements LogicCardInfo {
               def src = pl.select(info, false)
               if(!src) break;
 
-              def selection = src.cards.filterByType(ENERGY).select("Card to discard")
+              def selection = src.cards.filterByType(ENERGY).findAll{!toBeDiscarded.contains(it)}.select("Card to discard")
               toBeDiscarded.addAll(selection)
             }
             damage 30+20*toBeDiscarded.size()
