@@ -2576,13 +2576,6 @@ public enum UnseenForces implements LogicCardInfo {
       return basic (this, hp:HP100, type:C, retreatCost:1) {
         weakness P
         resistance F, MINUS30
-        def howMuchFulfillable(enRequirement, potEnergy){
-          def typeRequired = enRequirement[0]
-          def cntRequired = enRequirement[1]
-          def fulfillableAmount = potEnergy.count{it[0].contains(typeRequired)}
-          bc "${enRequirement} can be fulfilled with ${fulfillableAmount}"
-          return fulfillableAmount
-        }
         pokeBody "Silver Sparkle", {
           text "If Lugia ex is your Active Pokémon and is damaged by an opponent's attack (even if Lugia ex is Knocked Out), flip a coin. If heads, choose an Energy card attached to the Attacking Pokémon and return it to your opponent's hand."
           delayedA (priority: LAST) {
@@ -2604,9 +2597,7 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             damage 200
             afterDamage{
-              
               def energyRequired = [[R, 1], [W, 1], [L, 1]]
-
               def potentialEnergy = []
               for (enCard in self.cards.filterByType(ENERGY)){
                 def enTypes = enCard.getEnergyTypes()
@@ -2620,10 +2611,19 @@ public enum UnseenForces implements LogicCardInfo {
                   }
                 }
               }
+
+              def howMuchFulfillable = { enRequirement, potEnergy ->
+                def typeRequired = enRequirement[0]
+                def cntRequired = enRequirement[1]
+                def fulfillableAmount = potEnergy.count{it[0].contains(typeRequired)}
+                bc "${enRequirement} can be fulfilled with ${fulfillableAmount}"
+                return fulfillableAmount
+              }
+
               def nonFulfillableReq = []
               bc "Originally $energyRequired"
               for (req in energyRequired){
-                def fulfillableAmount = howMuchFulfillable(req, potentialEnergy)
+                def fulfillableAmount = howMuchFulfillable.call(req, potentialEnergy)
                 if (fulfillableAmount == 0){
                   bc "${req} can't be fulfilled"
                   nonFulfillableReq.add(req)
@@ -2636,8 +2636,8 @@ public enum UnseenForces implements LogicCardInfo {
 
               bc "Post removal of non-fulfillables $energyRequired"
               energyRequired.sort{ typeA, typeB ->
-                def fulA = howMuchFulfillable(typeA, potentialEnergy)
-                def fulB = howMuchFulfillable(typeB, potentialEnergy)
+                def fulA = howMuchFulfillable.call(typeA, potentialEnergy)
+                def fulB = howMuchFulfillable.call(typeB, potentialEnergy)
                 typeA.get(1) == typeB.get(1) ? (fulA == fulB ? 0 : fulA < fulB ? -1 : 1) : typeA.get(1) < typeB.get(1) ? -1 : 1
               }
               bc "Post sorting $energyRequired"
