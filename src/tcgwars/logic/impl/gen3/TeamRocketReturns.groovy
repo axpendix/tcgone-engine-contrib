@@ -2417,7 +2417,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               pcs.cards.remove(tpc)
               checkFaint
               new CheckAbilities().run(bg)
-              checkFaint()
+              new CheckFaint().run(bg)
             }
             shuffleDeck()
           }
