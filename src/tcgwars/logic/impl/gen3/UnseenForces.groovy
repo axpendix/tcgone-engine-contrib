@@ -2652,8 +2652,8 @@ public enum UnseenForces implements LogicCardInfo {
                 def optionsNum = (0..options.size()-1).toList()
                 def optionsLabels = options.collect{it[2]}.toList()
                 def cnt = 0
-                bc ">${enReq[0]} Energy selected: ${cnt}/${enReq[1]}"
-                bc ">Options available: ${options.size()}"
+                //bc ">${enReq[0]} Energy selected: ${cnt}/${enReq[1]}"
+                //bc ">Options available: ${options.size()}"
                 while (cnt < enReq[1]){
                   if (options){
                     def chosenEnergy = 0
@@ -2677,15 +2677,13 @@ public enum UnseenForces implements LogicCardInfo {
                     cnt = enReq[1]
                   }
                 }
-                bc ">Loop ended"
+                //bc ">Loop ended"
               }
               cardsToBeDiscarded = energyToBeDiscarded.collect{it[1]} as CardList
-              bc "> ${cardsToBeDiscarded}"
-              bc "> ${cardsToBeDiscarded.flatten()}"
+              //bc "> ${cardsToBeDiscarded}"
+              //bc "> ${cardsToBeDiscarded.flatten()}"
               cardsToBeDiscarded.discard()
             }
-
-            //discardSelfEnergy R, W, L
           }
         }
       };
