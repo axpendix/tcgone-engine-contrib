@@ -1254,10 +1254,9 @@ public enum CelestialStorm implements LogicCardInfo {
                     may : true ,my.discard, my.all.findAll{!(it.pokemonEX) && !(it.pokemonGX)}
                   )
                   if (tup[0] == null) break;
+                }
               }
               new Knockout(self).run(bg)
-              attachEnergyFrom(may : true,my.discard, my.all.findAll{!(it.pokemonEX) && !(it.pokemonGX)})
-              attachEnergyFrom(may : true,my.discard, my.all.findAll{!(it.pokemonEX) && !(it.pokemonGX)})
             }
           }
           move "Electro Ball" , {
