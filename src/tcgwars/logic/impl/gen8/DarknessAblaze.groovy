@@ -2879,7 +2879,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 200
             afterDamage{
               def cost = [D,D]
-              self.cards.filterByType(ENERGY).select("Return 2 [W] Energy from this Pokémon to your hand.",{ CardList list ->
+              self.cards.filterByType(ENERGY).select(min:1,max:self.cards.filterByType(ENERGY).size(),"Return 2 [W] Energy from this Pokémon to your hand.",{ CardList list ->
                 if(list.cards.energySufficient(cost) && list.cards.size() <= cost.size()){
                   //check if an selected energy can be not used
                   if(list.cards.any{list.cards.getExcludedList(it).energySufficient(cost)}){
