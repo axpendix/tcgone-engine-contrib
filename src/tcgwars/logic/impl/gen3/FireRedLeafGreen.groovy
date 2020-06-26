@@ -2555,8 +2555,8 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               checkNoSPC()
               checkLastTurn()
               powerUsed()
-              new Knockout(self).run(bg)
               5.times{ attachEnergyFrom(my.discard, my.all.findAll{!it.EX}) }
+              new Knockout(self).run(bg)
             }
           }
           move "Crush and Burn", {
