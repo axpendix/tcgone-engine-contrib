@@ -505,7 +505,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "80 damage. If your opponent has no Stage 2 Evolved Pokémon in play, this attack does nothing."
           energyCost L, M, C, C, C
           onAttack {
-            if (opp.all.any{ it.topPokemonCard.cardTypes.is(STAGE2) }) {
+            if (opp.all.any{ it.topPokemonCard.cardTypes.is(EVOLVED) && it.topPokemonCard.cardTypes.is(STAGE2) }) {
               damage 80
             }
           }
@@ -569,7 +569,7 @@ public enum DeltaSpecies implements LogicCardInfo {
               def src = pl.select(info, false)
               if(!src) break;
 
-              def selection = src.cards.filterByType(ENERGY).select("Card to discard")
+              def selection = src.cards.filterByType(ENERGY).findAll{!toBeDiscarded.contains(it)}.select("Card to discard")
               toBeDiscarded.addAll(selection)
             }
             damage 30+20*toBeDiscarded.size()
@@ -1680,7 +1680,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "As long as you have more Prize cards left than your opponent, each of Hariyama's attacks does 20 more damage to the Active Pokémon (before applying Weakness and Resistance) and damage done by the Active Pokémon to Hariyama is reduced by 20 (after applying Weakness and Resistance)."
           delayedA {
             after PROCESS_ATTACK_EFFECTS, {
-              if (my.prizeCardSet.size() > opp.prizeCardSet.size()) {
+              if (self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size()) {
                 bg.dm().each {
                   if (it.from == self && it.to.active && it.to.owner != self.owner && it.dmg.value) {
                     bc "Reversal Aura +20"
@@ -1690,7 +1690,7 @@ public enum DeltaSpecies implements LogicCardInfo {
               }
             }
             before APPLY_ATTACK_DAMAGES, {
-              if (my.prizeCardSet.size() > opp.prizeCardSet.size()) {
+              if (self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size()) {
                 bg.dm().each {
                   if (it.to == self && it.dmg.value && it.notNoEffect) {
                     bc "Reversal Aura -20"

@@ -1243,11 +1243,19 @@ public enum CelestialStorm implements LogicCardInfo {
             text "Once during your turn (before your attack), you may attach 5 Energy cards from your discard pile to your Pokémon, except Pokémon-GX or Pokémon-EX, in any way you like. If you do, this Pokémon is Knocked Out."
             actionA {
               checkLastTurn()
+              assert my.discard.filterByType(ENERGY) : "No energy in your discard pile"
+              assert my.all.any{!(it.pokemonEX) && !(it.pokemonGX)} : "No Pokémon that aren't EX or GX"
               powerUsed()
+              //Must attach at least one energy
+              attachEnergyFrom(my.discard, my.all.findAll{!(it.pokemonEX) && !(it.pokemonGX)})
+              if (my.discard.filterByType(ENERGY)){
+                4.times{
+                  def tup = attachEnergyFrom(
+                    may : true ,my.discard, my.all.findAll{!(it.pokemonEX) && !(it.pokemonGX)}
+                  )
+                  if (tup[0] == null) break;
+              }
               new Knockout(self).run(bg)
-              attachEnergyFrom(may : true ,my.discard, my.all.findAll{!(it.pokemonEX) && !(it.pokemonGX)})
-              attachEnergyFrom(may : true,my.discard, my.all.findAll{!(it.pokemonEX) && !(it.pokemonGX)})
-              attachEnergyFrom(may : true,my.discard, my.all.findAll{!(it.pokemonEX) && !(it.pokemonGX)})
               attachEnergyFrom(may : true,my.discard, my.all.findAll{!(it.pokemonEX) && !(it.pokemonGX)})
               attachEnergyFrom(may : true,my.discard, my.all.findAll{!(it.pokemonEX) && !(it.pokemonGX)})
             }
