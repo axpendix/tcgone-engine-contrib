@@ -2596,7 +2596,73 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost R, W, L
           onAttack {
             damage 200
-            discardSelfEnergy R, W, L
+            def energyRequired = [[R, 1], [W, 1], [L, 1]]
+
+            def potentialEnergy = []
+            for (enCard in self.cards.filterByType(ENERGY)){
+              def enTypes = enCard.getEnergyTypes()
+              if (enTypes.size() == 1){
+                potentialEnergy.add([enTypeSet, enCard, "${enCard}"])
+              } else {
+                def i = 1
+                def total = enTypes.size()
+                for (enTypeSet in enTypes) {
+                  potentialEnergy.add([enTypeSet, enCard, "${enCard} - Energy #${i}/${total}"])
+                }
+              }
+            }
+
+            def howMuchFulfillable(enRequirement, potEnergy){
+              def typeRequired = enRequirement[0]
+              def cntRequired = enRequirement[1]
+              def fulfillableAmount = potEnergy.count{it[0].contains(typeRequired)}
+              bc "${enRequirement} can be fulfilled with ${fulfillableAmount}"
+              return fulfillableAmount
+            }
+            def nonFulfillableReq = []
+            bc "Originally $energyRequired"
+            for (req in energyRequired){
+              def fulfillableAmount = howMuchFulfillable(req, potentialEnergy)
+              if (fulfillableAmount == 0){
+                bc "${req} can't be fulfilled"
+                nonFulfillableReq.add(req)
+              } else {
+                bc"${req} can be fulfilled up to $fulfillableAmount (prev. $req[1])"
+                req.putAt(1, Math.min(req.get(1), fulfillableAmount))
+              }
+            }
+            energyRequired.removeAll(nonFulfillableReq)
+
+            bc "Post removal of non-fulfillables $energyRequired"
+            energyRequired.sort{ typeA, typeB ->
+              def fulA = howMuchFulfillable(typeA, potentialEnergy)
+              def fulB = howMuchFulfillable(typeB, potentialEnergy)
+              typeA.get(1) == typeB.get(1) ? (fulA == fulB ? 0 : fulA < fulB ? -1 : 1) : typeA.get(1) < typeB.get(1) ? -1 : 1
+            }
+            bc "Post sorting $energyRequired"
+
+            def energyToBeDiscarded = []
+            def cardsToBeDiscarded = []
+
+            for (enReq in energyRequired){
+              def optionsNum = (0..potentialEnergy.size() -1).toList()
+              def options = potentialEnergy.findAll{it[0].contains(enReq[0])}
+              if (options){
+                def chosenEnergy = 0
+                if (options.size() > 1) {
+                  chosenEnergy = choose(optionsNum,options.collect{it[2]})
+                }
+                bc "Paying [${enReq[0]}] with ${options[chosenEnergy][2]}"
+                energyToBeDiscarded.add(options[chosenEnergy])
+                potentialEnergy.remove(options[chosenEnergy])
+              } else {
+                bc "No way to pay [${enReq[0]}], applying 'do as much as you can'"
+              }
+            }
+            cardsToBeDiscarded = energyToBeDiscarded.collect{it[1]} as CardList
+            cardsToBeDiscarded.discard
+
+            //discardSelfEnergy R, W, L
           }
         }
       };
