@@ -2594,9 +2594,17 @@ public enum UnseenForces implements LogicCardInfo {
         move "Elemental Blast", {
           text "200 damage. Discard a [R] Energy, [W] Energy, and [L] Energy attached to Lugia ex."
           energyCost R, W, L
+          def howMuchFulfillable(enRequirement, potEnergy){
+            def typeRequired = enRequirement[0]
+            def cntRequired = enRequirement[1]
+            def fulfillableAmount = potEnergy.count{it[0].contains(typeRequired)}
+            bc "${enRequirement} can be fulfilled with ${fulfillableAmount}"
+            return fulfillableAmount
+          }
           onAttack {
             damage 200
             afterDamage{
+              
               def energyRequired = [[R, 1], [W, 1], [L, 1]]
 
               def potentialEnergy = []
@@ -2611,14 +2619,6 @@ public enum UnseenForces implements LogicCardInfo {
                     potentialEnergy.add([enTypeSet, enCard, "${enCard} - Energy #${i}/${total}"])
                   }
                 }
-              }
-
-              def howMuchFulfillable(enRequirement, potEnergy){
-                def typeRequired = enRequirement[0]
-                def cntRequired = enRequirement[1]
-                def fulfillableAmount = potEnergy.count{it[0].contains(typeRequired)}
-                bc "${enRequirement} can be fulfilled with ${fulfillableAmount}"
-                return fulfillableAmount
               }
               def nonFulfillableReq = []
               bc "Originally $energyRequired"
