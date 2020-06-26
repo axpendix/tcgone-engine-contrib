@@ -2680,6 +2680,8 @@ public enum UnseenForces implements LogicCardInfo {
                 bc ">Loop ended"
               }
               cardsToBeDiscarded = energyToBeDiscarded.collect{it[1]} as CardList
+              bc "> ${cardsToBeDiscarded}"
+              bc "> ${cardsToBeDiscarded.flatten()}"
               cardsToBeDiscarded.discard()
             }
 
