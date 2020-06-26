@@ -2648,16 +2648,21 @@ public enum UnseenForces implements LogicCardInfo {
               for (enReq in energyRequired){
                 def optionsNum = (0..potentialEnergy.size() -1).toList()
                 def options = potentialEnergy.findAll{it[0].contains(enReq[0])}
-                if (options){
-                  def chosenEnergy = 0
-                  if (options.size() > 1) {
-                    chosenEnergy = choose(optionsNum,options.collect{it[2]})
+                def cnt = 0
+                while (cnt < enReq[1]){
+                  if (options){
+                    def chosenEnergy = 0
+                    if (options.size() > 1) {
+                      chosenEnergy = choose(optionsNum,options.collect{it[2]})
+                    }
+                    bc "Paying [${enReq[0]}] with ${options[chosenEnergy][2]}"
+                    energyToBeDiscarded.add(options[chosenEnergy])
+                    potentialEnergy.remove(options[chosenEnergy])
+                    cnt++
+                  } else {
+                    bc "No way to pay [${enReq[0]}], applying 'do as much as you can'"
+                    cnt = enReq[1]
                   }
-                  bc "Paying [${enReq[0]}] with ${options[chosenEnergy][2]}"
-                  energyToBeDiscarded.add(options[chosenEnergy])
-                  potentialEnergy.remove(options[chosenEnergy])
-                } else {
-                  bc "No way to pay [${enReq[0]}], applying 'do as much as you can'"
                 }
               }
               cardsToBeDiscarded = energyToBeDiscarded.collect{it[1]} as CardList
