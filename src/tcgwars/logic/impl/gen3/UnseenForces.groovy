@@ -2602,7 +2602,7 @@ public enum UnseenForces implements LogicCardInfo {
               for (enCard in self.cards.filterByType(ENERGY)){
                 def enTypes = enCard.getEnergyTypes()
                 if (enTypes.size() == 1){
-                  potentialEnergy.add([enTypeSet, enCard, "${enCard}"])
+                  potentialEnergy.add([enTypes.first(), enCard, "${enCard}"])
                 } else {
                   def i = 1
                   def total = enTypes.size()
