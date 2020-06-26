@@ -2648,20 +2648,19 @@ public enum UnseenForces implements LogicCardInfo {
               for (enReq in energyRequired){
                 def optionsNum = (0..potentialEnergy.size() -1).toList()
                 def options = potentialEnergy.findAll{it[0].contains(enReq[0])}
+                def optionsLabels = options.collect{it[2]}.toList()
                 def cnt = 0
                 bc ">${enReq[0]} Energy selected: ${cnt}/${enReq[1]}"
                 bc ">Options available: ${options.size()}"
                 while (cnt < enReq[1]){
                   if (options){
                     def chosenEnergy = 0
-                    //bc ">>${options.collect{it[2]}}"
-                    //bc ">>${options.collect{it[2]}.flatten()}"
+                    //bc ">>${optionsLabels}"
                     if (options.size() > 1) {
                       chosenEnergy = choose (
                         optionsNum,
-                        options.collect{it[2]},
-                        "Discard a ${enReq[0]} Energy from these options:",
-                        null
+                        optionsLabels,
+                        "Discard a ${enReq[0]} Energy from these options:"
                       )
                     }
                     bc "Paying [${enReq[0]}] with ${options[chosenEnergy][2]}"
