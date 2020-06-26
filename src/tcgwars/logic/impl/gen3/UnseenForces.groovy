@@ -2655,7 +2655,7 @@ public enum UnseenForces implements LogicCardInfo {
                   if (options){
                     def chosenEnergy = 0
                     if (options.size() > 1) {
-                      chosenEnergy = choose(optionsNum,options.collect{it[2]})
+                      chosenEnergy = choose(optionsNum,options.collect{it[2]}, "Discard a ${enReq[0]} Energy from these options:")
                     }
                     bc "Paying [${enReq[0]}] with ${options[chosenEnergy][2]}"
                     energyToBeDiscarded.add(options[chosenEnergy])
