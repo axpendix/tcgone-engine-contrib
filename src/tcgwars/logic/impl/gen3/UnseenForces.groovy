@@ -2646,8 +2646,8 @@ public enum UnseenForces implements LogicCardInfo {
               def cardsToBeDiscarded = []
 
               for (enReq in energyRequired){
-                def optionsNum = (0..potentialEnergy.size() -1).toList()
                 def options = potentialEnergy.findAll{it[0].contains(enReq[0])}
+                def optionsNum = (0..options.size()-1).toList()
                 def optionsLabels = options.collect{it[2]}.toList()
                 def cnt = 0
                 bc ">${enReq[0]} Energy selected: ${cnt}/${enReq[1]}"
@@ -2657,12 +2657,12 @@ public enum UnseenForces implements LogicCardInfo {
                     def chosenEnergy = 0
                     //bc ">>${optionsLabels}"
                     if (options.size() > 1) {
-                      bc ">>>${optionsNum} (${optionsNum.getClass()})"
-                      bc ">>>${optionsLabels} (${optionsLabels.getClass()})"
+                      //bc ">>>${optionsNum} (${optionsNum.getClass()})"
+                      //bc ">>>${optionsLabels} (${optionsLabels.getClass()})"
                       chosenEnergy = choose (
-                        (optionsNum as List),
-                        (optionsLabels as List<String>),
-                        "Discard a enReq[0] Energy from these options:"
+                        optionsNum,
+                        optionsLabels,
+                        "Discard a ${enReq[0]} Energy from these options:"
                       )
                     }
                     bc "Paying [${enReq[0]}] with ${options[chosenEnergy][2]}"
