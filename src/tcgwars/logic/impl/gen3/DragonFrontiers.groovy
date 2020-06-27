@@ -1935,10 +1935,24 @@ public enum DragonFrontiers implements LogicCardInfo {
       case GARDEVOIR_EX_DELTA_93:
       return evolution (this, from:"Kirlia", hp:HP150, type:R, retreatCost:2) {
         weakness P
+        def Imprison = []
         pokePower "Imprison", {
           text "Once during your turn (before your attack), if Gardevoir ex is your Active Pokémon, you may put an Imprison marker on 1 of your opponent's Pokémon. Any Pokémon that has any Imprison markers on it can't use any Poké-Powers or Poké-Bodies. This power can't be used if Gardevoir ex is affected by a Special Condition."
           actionA {
-            // TODO
+            // TODO: Apply body/power restriction
+            if(bg.em().retrieveObject("Imprison") != null){
+              Imprison = bg.em().retrieveObject("Imprison")
+            }
+            def tar = opp.all.select("Choose a pokemon to put an Imprison marker on")
+            targeted (tar, SRC_ABILITY){
+              if (Imprison.contains(tar)) {
+                bc "$tar already has an Imprison marker"
+              } else {
+                Imprison.add(tar)
+                bc"$tar received an Imprison marker"
+                bg.em().storeObject("Imprison",Imprison)
+              }
+            }
           }
         }
         move "Flame Ball", {
@@ -2156,10 +2170,16 @@ public enum DragonFrontiers implements LogicCardInfo {
             if(bg.em().retrieveObject("Shock_Wave") != null){
               Shock_Wave = bg.em().retrieveObject("Shock_Wave")
             }
-            def tar = opp.all.findAll{!Shock_Wave.contains(it)}.select("Choose a pokemon to put a Shock-Wave marker on")
-            Shock_Wave.add(tar)
-            bc"$tar received a Shock-Wave marker"
-            bg.em().storeObject("Shock_Wave",Shock_Wave)
+            def tar = opp.all.select("Choose a pokemon to put a Shock-Wave marker on")
+            targeted (tar) {
+              if (Shock_Wave.contains(tar)) {
+                bc "$tar already has a Shock-Wave marker"
+              } else {
+                Shock_Wave.add(tar)
+                bc"$tar received a Shock-Wave marker"
+                bg.em().storeObject("Shock_Wave",Shock_Wave)
+              }
+            }
           }
         }
         move "Hyper Claws", {
@@ -2185,8 +2205,12 @@ public enum DragonFrontiers implements LogicCardInfo {
             if(bg.em().retrieveObject("Shock_Wave") != null){
               Shock_Wave = bg.em().retrieveObject("Shock_Wave")
             }
-            def ko = opp.all.findAll{Shock_Wave.contains(it)}.select("Choose a Pokémon to knock out")
-            new Knockout(ko).run(bg)
+            def pcs = opp.all.findAll{Shock_Wave.contains(it)}.select("Choose a Pokémon to knock out")
+            targeted (pcs) {
+              Shock_Wave.remove(pcs)
+              bg.em().storeObject("Shock_Wave",Shock_Wave)
+              new Knockout(pcs).run(bg)
+            }
           }
         }
       };
