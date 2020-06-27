@@ -1936,48 +1936,46 @@ public enum DragonFrontiers implements LogicCardInfo {
       return evolution (this, from:"Kirlia", hp:HP150, type:R, retreatCost:2) {
         weakness P
         def Imprison = []
-        def actionMaker
         def actions=[]
-        globalAbility {Card thisCard ->
+        def actionMaker = {
+          bg.em().storeObject("Imprison_Loaded",true)
+          actions=action("[Imprison Check]") {
+            if(bg.em().retrieveObject("Imprison") != null){
+              Imprison = bg.em().retrieveObject("Imprison")
+            }
+            def playerChecked = choose([my, opp], ["My Own", "My Opponent's"], "Which player's Pokémon will you check?")
+            def playerText = (playerChecked == my ? "your" : "your opponent's")
+
+            assert playerChecked.all.any{Imprison.contains(it)} : "None of $playerText Pokémon in play have Imprison counters on them"
+
+            def currentPokemon, resultInfo
+            while (true){
+              resultInfo = (
+                currentPokemon ? "The ${currentPokemon.active?"Active":"Selected"} $currentPokemon ${Imprison.contains(currentPokemon) ? "has" : "doesn't have"} an Imprison counter on them." : ""
+              )
+              currentPokemon = playerChecked.all.select("${resultInfo}\nPlease select one of $playerText Pokémon (first one is the Active), or cancel to end this check.", false)
+              if (!currentPokemon) break;
+            }
+          }
           delayed {
-            actionMaker = after EVOLVE, {
-              def isImprisonLoaded = bg.em().retrieveObject("Imprison_Loaded")
-              if(ef.evolutionCard == thisCard){
-                //Check if an action setter was already triggered
-                if (!isImprisonLoaded) {
-                  bg.em().storeObject("Imprison_Loaded",true)
-                  actions=action("[Imprison Check]") {
-                    if(bg.em().retrieveObject("Imprison") != null){
-                      Imprison = bg.em().retrieveObject("Imprison")
-                    }
-                    def playerChecked = choose([my, opp], ["My Own", "My Opponent's"], "Which player's Pokémon will you check?")
-                    def playerText = (playerChecked == my ? "your" : "your opponent's")
-
-                    assert playerChecked.all.any{Imprison.contains(it)} : "None of $playerText Pokémon in play have Imprison counters on them"
-
-                    def currentPokemon, resultInfo
-                    while (true){
-                      resultInfo = (
-                        currentPokemon ? "The ${currentPokemon.active?"Active":"Selected"} $currentPokemon ${Imprison.contains(currentPokemon) ? "has" : "doesn't have"} an Imprison counter on them." : ""
-                      )
-                      currentPokemon = playerChecked.all.select("${resultInfo}\nPlease select one of $playerText Pokémon (first one is the Active), or cancel to end this check.", false)
-                      if (!currentPokemon) break;
-                    }
-                  }
-                  delayed {
-                    getter (IS_ABILITY_BLOCKED) { Holder h ->
-                      if(bg.em().retrieveObject("Imprison") != null){
-                        Imprison = bg.em().retrieveObject("Imprison")
-                      }
-                      if (Imprison.contains(h.effect.target)) {
-                        if (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody) {
-                          h.object=true
-                        }
-                      }
-                    }
-                  }
+            getter (IS_ABILITY_BLOCKED) { Holder h ->
+              if(bg.em().retrieveObject("Imprison") != null){
+                Imprison = bg.em().retrieveObject("Imprison")
+              }
+              if (Imprison.contains(h.effect.target)) {
+                if (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody) {
+                  h.object=true
                 }
               }
+            }
+          }
+        }
+        globalAbility {Card thisCard ->
+          delayed {
+            after EVOLVE, {
+              //Imprison_Loaded checks if an action setter was already triggered
+              def isImprisonLoaded = bg.em().retrieveObject("Imprison_Loaded")
+              if(ef.evolutionCard == thisCard && !isImprisonLoaded) actionMaker.call()
             }
           }
         }
