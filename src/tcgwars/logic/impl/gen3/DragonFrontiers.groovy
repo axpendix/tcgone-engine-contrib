@@ -1950,11 +1950,10 @@ public enum DragonFrontiers implements LogicCardInfo {
                     if(bg.em().retrieveObject("Imprison") != null){
                       Imprison = bg.em().retrieveObject("Imprison")
                     }
-                    assert all.any{Imprison.contains(it)}
                     def playerChecked = choose([my, opp], ["My Own", "My Opponent's"], "Which player's Pokémon will you check?")
                     def playerText = (playerChecked == my ? "your" : "your opponent's")
 
-                    assert playerChecked.any{Imprison.contains(it)} : "None of $playerText Pokémon in play has Imprison counters on them"
+                    assert playerChecked.all.any{Imprison.contains(it)} : "None of $playerText Pokémon in play have Imprison counters on them"
 
                     def currentPokemon, resultInfo
                     while (true){
