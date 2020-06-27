@@ -1945,6 +1945,7 @@ public enum DragonFrontiers implements LogicCardInfo {
               if(ef.cardToPlay == thisCard){
                 //Check if an action setter was already triggered
                 if (!imprActionAdded) {
+                  bg.em().storeObject("Imprison_Action_Added",true)
                   actions=action("Imprison Check") {
                     if(bg.em().retrieveObject("Imprison") != null){
                       Imprison = bg.em().retrieveObject("Imprison")
