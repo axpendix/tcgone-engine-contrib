@@ -1937,6 +1937,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         weakness P
         def Imprison = []
         def actionMaker
+        def actions=[]
         globalAbility {Card thisCard ->
           delayed {
             actionMaker = before PLAY_CARD, {
