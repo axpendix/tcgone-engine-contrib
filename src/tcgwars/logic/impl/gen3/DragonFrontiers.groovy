@@ -2249,7 +2249,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             if(bg.em().retrieveObject("Shock_Wave") != null){
               Shock_Wave = bg.em().retrieveObject("Shock_Wave")
             }
-            assert opp.all.findAll{Shock_Wave.contains(it)} : "None of your opponent's Pokémon have Shock-Wave markers on them"
+            assert opp.all.any{Shock_Wave.contains(it)} : "None of your opponent's Pokémon have Shock-Wave markers on them"
             }
           onAttack {
             if(bg.em().retrieveObject("Shock_Wave") != null){
