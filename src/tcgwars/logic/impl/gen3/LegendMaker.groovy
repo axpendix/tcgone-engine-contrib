@@ -736,12 +736,12 @@ public enum LegendMaker implements LogicCardInfo {
             if(!my.deck){
               list=rearrange(opp.deck.subList(0,5), "Rearrange top 5 cards in your opponent's deck")
               opp.deck.setSubList(0, list)
-              bc "Girafarig rearranged its opponent's deck"
+              bc "Foresight rearranged its opponent's deck"
             }
             else if(!opp.deck){
               list=rearrange(my.deck.subList(0,5), "Rearrange top 5 cards in your deck")
               my.deck.setSubList(0, list)
-              bc "Girafarig rearranged its owner's deck"
+              bc "Foresight rearranged its owner's deck"
               
             }
             else{
