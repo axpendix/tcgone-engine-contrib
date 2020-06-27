@@ -1935,10 +1935,76 @@ public enum DragonFrontiers implements LogicCardInfo {
       case GARDEVOIR_EX_DELTA_93:
       return evolution (this, from:"Kirlia", hp:HP150, type:R, retreatCost:2) {
         weakness P
+        def Imprison = []
+        def actionMaker
+        globalAbility {Card thisCard ->
+          delayed {
+            actionMaker = before PLAY_CARD, {
+              def imprActionAdded = bg.em().retrieveObject("Imprison_Action_Added")
+              if(ef.cardToPlay == thisCard){
+                //Check if an action setter was already triggered
+                if (!imprActionAdded) {
+                  actions=action("Imprison Check") {
+                    if(bg.em().retrieveObject("Imprison") != null){
+                      Imprison = bg.em().retrieveObject("Imprison")
+                    }
+                    assert all.any{Imprison.contains(it)}
+                    def playerChecked = choose([my, opp], ["My Own", "My Opponent's"], "Which player's Pokémon will you check?")
+                    def playerText = (playerChecked == my ? "your" : "your opponent's")
+
+                    assert playerChecked.any{Imprison.contains(it)} : "None of $playerText Pokémon in play has Imprison counters on them"
+
+                    def currentPokemon, resultInfo
+                    while (true){
+                      resultInfo = (
+                        currentPokemon ? "The ${currentPokemon.active?"Active":"Selected")} $currentPokemon ${Imprison.contains(currentPokemon) ? "has" : "doesn't have"} an Imprison counter on them." : ""
+                      )
+                      currentPokemon = playerChecked.all.select(min:0, "${resultInfo}\nPlease select one of $playerText Pokémon (first one is the Active), or cancel to end this check.")
+                      if (!currentPokemon) break;
+                    }
+                  }
+                  delayed {
+                    getter (IS_ABILITY_BLOCKED) { Holder h ->
+                      def imprisonChecker = bg.em().retrieveObject("Imprison_Checker")
+                      if(imprisonChecker == null || imprisonChecker != self.hashCode()) {
+                        if (imprisonChecker == null){
+                          bg.em().storeObject("Imprison_Checker", self.hashCode())
+                        }
+                        if(bg.em().retrieveObject("Imprison") != null){
+                          Imprison = bg.em().retrieveObject("Imprison")
+                        }
+
+                        if (Imprison.contains(h.effect.target)) {
+                          if (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody) {
+                            h.object=true
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+                actionMaker.unregister()
+              }
+            }
+          }
+        }
         pokePower "Imprison", {
           text "Once during your turn (before your attack), if Gardevoir ex is your Active Pokémon, you may put an Imprison marker on 1 of your opponent's Pokémon. Any Pokémon that has any Imprison markers on it can't use any Poké-Powers or Poké-Bodies. This power can't be used if Gardevoir ex is affected by a Special Condition."
           actionA {
-            // TODO
+            // TODO: Apply body/power restriction
+            if(bg.em().retrieveObject("Imprison") != null){
+              Imprison = bg.em().retrieveObject("Imprison")
+            }
+            def tar = opp.all.select("Choose a pokemon to put an Imprison marker on")
+            targeted (tar, SRC_ABILITY){
+              if (Imprison.contains(tar)) {
+                bc "$tar already has an Imprison marker"
+              } else {
+                Imprison.add(tar)
+                bc"$tar received an Imprison marker"
+                bg.em().storeObject("Imprison",Imprison)
+              }
+            }
           }
         }
         move "Flame Ball", {
@@ -2156,10 +2222,16 @@ public enum DragonFrontiers implements LogicCardInfo {
             if(bg.em().retrieveObject("Shock_Wave") != null){
               Shock_Wave = bg.em().retrieveObject("Shock_Wave")
             }
-            def tar = opp.all.findAll{!Shock_Wave.contains(it)}.select("Choose a pokemon to put a Shock-Wave marker on")
-            Shock_Wave.add(tar)
-            bc"$tar received a Shock-Wave marker"
-            bg.em().storeObject("Shock_Wave",Shock_Wave)
+            def tar = opp.all.select("Choose a pokemon to put a Shock-Wave marker on")
+            targeted (tar) {
+              if (Shock_Wave.contains(tar)) {
+                bc "$tar already has a Shock-Wave marker"
+              } else {
+                Shock_Wave.add(tar)
+                bc"$tar received a Shock-Wave marker"
+                bg.em().storeObject("Shock_Wave",Shock_Wave)
+              }
+            }
           }
         }
         move "Hyper Claws", {
@@ -2179,14 +2251,18 @@ public enum DragonFrontiers implements LogicCardInfo {
             if(bg.em().retrieveObject("Shock_Wave") != null){
               Shock_Wave = bg.em().retrieveObject("Shock_Wave")
             }
-            assert opp.all.findAll{Shock_Wave.contains(it)} : "None of your opponent's Pokémon have Shock-Wave markers on them"
+            assert opp.all.any{Shock_Wave.contains(it)} : "None of your opponent's Pokémon have Shock-Wave markers on them"
             }
           onAttack {
             if(bg.em().retrieveObject("Shock_Wave") != null){
               Shock_Wave = bg.em().retrieveObject("Shock_Wave")
             }
-            def ko = opp.all.findAll{Shock_Wave.contains(it)}.select("Choose a Pokémon to knock out")
-            new Knockout(ko).run(bg)
+            def pcs = opp.all.findAll{Shock_Wave.contains(it)}.select("Choose a Pokémon to knock out")
+            targeted (pcs) {
+              Shock_Wave.remove(pcs)
+              bg.em().storeObject("Shock_Wave",Shock_Wave)
+              new Knockout(pcs).run(bg)
+            }
           }
         }
       };
