@@ -1963,25 +1963,27 @@ public enum DragonFrontiers implements LogicCardInfo {
                       if (!currentPokemon) break;
                     }
                   }
-                }
-                actionMaker.unregister()
-              }
-            }
-            getter (IS_ABILITY_BLOCKED) { Holder h ->
-              def imprisonChecker = bg.em().retrieveObject("Imprison_Checker")
-              if(imprisonChecker == null || imprisonChecker != self.hashCode()) {
-                if (imprisonChecker == null){
-                  bg.em().storeObject("Imprison_Checker", self.hashCode())
-                }
-                if(bg.em().retrieveObject("Imprison") != null){
-                  Imprison = bg.em().retrieveObject("Imprison")
-                }
+                  delayed {
+                    getter (IS_ABILITY_BLOCKED) { Holder h ->
+                      def imprisonChecker = bg.em().retrieveObject("Imprison_Checker")
+                      if(imprisonChecker == null || imprisonChecker != self.hashCode()) {
+                        if (imprisonChecker == null){
+                          bg.em().storeObject("Imprison_Checker", self.hashCode())
+                        }
+                        if(bg.em().retrieveObject("Imprison") != null){
+                          Imprison = bg.em().retrieveObject("Imprison")
+                        }
 
-                if (Imprison.contains(h.effect.target)) {
-                  if (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody) {
-                    h.object=true
+                        if (Imprison.contains(h.effect.target)) {
+                          if (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody) {
+                            h.object=true
+                          }
+                        }
+                      }
+                    }
                   }
                 }
+                actionMaker.unregister()
               }
             }
           }
