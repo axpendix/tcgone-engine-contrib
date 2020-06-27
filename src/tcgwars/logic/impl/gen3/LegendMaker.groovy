@@ -736,20 +736,25 @@ public enum LegendMaker implements LogicCardInfo {
             if(!my.deck){
               list=rearrange(opp.deck.subList(0,5), "Rearrange top 5 cards in your opponent's deck")
               opp.deck.setSubList(0, list)
+              bc "Foresight rearranged its opponent's deck"
             }
             else if(!opp.deck){
               list=rearrange(my.deck.subList(0,5), "Rearrange top 5 cards in your deck")
               my.deck.setSubList(0, list)
+              bc "Foresight rearranged its owner's deck"
+              
             }
             else{
               def c=choose([1,2],["Your deck", "Your opponent's deck"], "Rearrange the top 5 cards of which player's deck?")
               if(c==1){
                 list=rearrange(my.deck.subList(0,5), "Rearrange top 5 cards in your deck")
                 my.deck.setSubList(0, list)
+                bc "Foresight rearranged its owner's deck"
               }
               if(c==2){
                 list=rearrange(opp.deck.subList(0,5), "Rearrange top 5 cards in your opponent's deck")
                 opp.deck.setSubList(0, list)
+                bc "Foresight rearranged its opponent's deck"
               }
             }
           }
