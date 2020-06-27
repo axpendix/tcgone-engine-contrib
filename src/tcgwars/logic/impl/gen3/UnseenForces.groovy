@@ -2670,7 +2670,6 @@ public enum UnseenForces implements LogicCardInfo {
                     bc "Paying [${enReq[0]}] with ${options[chosenEnergy][2]}"
                     energyToBeDiscarded.add(options[chosenEnergy])
                     potentialEnergy.remove(options[chosenEnergy])
-                    options.remove(options[chosenEnergy])
                     if(options[chosenEnergy][3] == 1){
                       potentialEnergy.each{
                         if(it[1] == option[chosenEnergy][1]){
@@ -2681,6 +2680,7 @@ public enum UnseenForces implements LogicCardInfo {
                         }
                       }
                     }
+                    options.remove(options[chosenEnergy])
                     cnt++
                   } else {
                     bc "No way to pay [${enReq[0]}], applying 'do as much as you can'"
