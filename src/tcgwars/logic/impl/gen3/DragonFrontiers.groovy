@@ -1941,11 +1941,11 @@ public enum DragonFrontiers implements LogicCardInfo {
         globalAbility {Card thisCard ->
           delayed {
             actionMaker = before PLAY_CARD, {
-              def imprActionAdded = bg.em().retrieveObject("Imprison_Action_Added")
+              def isImprisonLoaded = bg.em().retrieveObject("Imprison_Loaded")
               if(ef.cardToPlay == thisCard){
                 //Check if an action setter was already triggered
-                if (!imprActionAdded) {
-                  bg.em().storeObject("Imprison_Action_Added",true)
+                if (!isImprisonLoaded) {
+                  bg.em().storeObject("Imprison_Loaded",true)
                   actions=action("Imprison Check") {
                     if(bg.em().retrieveObject("Imprison") != null){
                       Imprison = bg.em().retrieveObject("Imprison")
