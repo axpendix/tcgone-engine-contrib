@@ -1247,13 +1247,13 @@ public enum CelestialStorm implements LogicCardInfo {
               assert my.all.any{!(it.pokemonEX) && !(it.pokemonGX)} : "No Pokémon that aren't EX or GX"
               powerUsed()
               //Must attach at least one energy
-              def tup = attachEnergyFrom(my.discard, my.all.findAll{!(it.pokemonEX) && !(it.pokemonGX)})
+              attachEnergyFrom(my.discard, my.all.findAll{!(it.pokemonEX) && !(it.pokemonGX)})
               if (my.discard.filterByType(ENERGY)){
-                4.times{
-                  if (tup[0] == null) return
-                  tup = attachEnergyFrom(
+                for (i in 1..4){
+                  def tup = attachEnergyFrom(
                     may : true ,my.discard, my.all.findAll{!(it.pokemonEX) && !(it.pokemonGX)}
                   )
+                  if (tup[0] == null) break;
                 }
               }
               new Knockout(self).run(bg)
