@@ -2602,13 +2602,13 @@ public enum UnseenForces implements LogicCardInfo {
               for (enCard in self.cards.filterByType(ENERGY)){
                 def enTypes = enCard.getEnergyTypes()
                 if (enTypes.size() == 1){
-                  potentialEnergy.add([enTypes.first(), enCard, "${enCard}",1,0])
+                  potentialEnergy.add([enTypes.first(), enCard, "${enCard}",0])
                 } else {
                   def i = 1
                   def total = enTypes.size()
                   //TODO: Cover multiple of the same energy, add some identifier for e.g. 2 Holon's Castform
                   for (enTypeSet in enTypes) {
-                    potentialEnergy.add([enTypeSet, enCard, "${enCard} - Energy #${i}/${total}",i,1])
+                    potentialEnergy.add([enTypeSet, enCard, "${enCard} - Energy #${i}/${total}",i])
                     i++
                   }
                 }
@@ -2648,7 +2648,7 @@ public enum UnseenForces implements LogicCardInfo {
               def cardsToBeDiscarded = []
 
               for (enReq in energyRequired){
-                def options = potentialEnergy.findAll{it[0].contains(enReq[0]) && it[3]==1}
+                def options = potentialEnergy.findAll{it[0].contains(enReq[0]) && it[3] <= 1}
                 def optionsNum = (0..options.size()-1).toList()
                 def optionsLabels = options.collect{it[2]}.toList()
                 def cnt = 0
@@ -2671,11 +2671,11 @@ public enum UnseenForces implements LogicCardInfo {
                     energyToBeDiscarded.add(options[chosenEnergy])
                     potentialEnergy.remove(options[chosenEnergy])
                     options.remove(options[chosenEnergy])
-                    if(options[chosenEnergy][4]){
+                    if(options[chosenEnergy][3] == 1){
                       potentialEnergy.each{
-                        if(it[1] == options[chosenEnergy][1]){
+                        if(it[1] == option[chosenEnergy][1]){
                           it[3] --
-                          if(it[3] == 0){
+                          if(it[3] == 1){
                             options.add(it)
                           }
                         }
