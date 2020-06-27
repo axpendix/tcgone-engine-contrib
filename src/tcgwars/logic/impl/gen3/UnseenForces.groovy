@@ -2672,7 +2672,7 @@ public enum UnseenForces implements LogicCardInfo {
                     potentialEnergy.remove(options[chosenEnergy])
                     if(options[chosenEnergy][3] == 1){
                       potentialEnergy.each{
-                        if(it[1] == option[chosenEnergy][1]){
+                        if(it[1] == options[chosenEnergy][1]){
                           it[3] --
                           if(it[3] == 1){
                             options.add(it)
