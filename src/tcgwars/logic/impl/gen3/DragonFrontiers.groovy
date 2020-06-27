@@ -1960,7 +1960,7 @@ public enum DragonFrontiers implements LogicCardInfo {
                       resultInfo = (
                         currentPokemon ? "The ${currentPokemon.active?"Active":"Selected"} $currentPokemon ${Imprison.contains(currentPokemon) ? "has" : "doesn't have"} an Imprison counter on them." : ""
                       )
-                      currentPokemon = playerChecked.all.select(min:0, "${resultInfo}\nPlease select one of $playerText Pokémon (first one is the Active), or cancel to end this check.")
+                      currentPokemon = playerChecked.all.select("${resultInfo}\nPlease select one of $playerText Pokémon (first one is the Active), or cancel to end this check.", false)
                       if (!currentPokemon) break;
                     }
                   }
@@ -1984,19 +1984,21 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Imprison", {
           text "Once during your turn (before your attack), if Gardevoir ex is your Active Pokémon, you may put an Imprison marker on 1 of your opponent's Pokémon. Any Pokémon that has any Imprison markers on it can't use any Poké-Powers or Poké-Bodies. This power can't be used if Gardevoir ex is affected by a Special Condition."
           actionA {
-            // TODO: Apply body/power restriction
+            checkLastTurn()
+            checkNoSPC()
             if(bg.em().retrieveObject("Imprison") != null){
               Imprison = bg.em().retrieveObject("Imprison")
             }
-            def tar = opp.all.select("Choose a pokemon to put an Imprison marker on")
+            assert opp.all.any{!Imprison.contains(it)} : "All of your opponent's Pokémon already have Imprison counters"
+            powerUsed()
+            def tar = opp.all.select("Choose a pokemon to put an Imprison marker on:")
+            while (Imprison.contains(tar)){
+              tar = opp.all.select("$tar already has an Imprison marker.\n\nChoose a pokemon to put an Imprison marker on:")
+            }
             targeted (tar, SRC_ABILITY){
-              if (Imprison.contains(tar)) {
-                bc "$tar already has an Imprison marker"
-              } else {
-                Imprison.add(tar)
-                bc"$tar received an Imprison marker"
-                bg.em().storeObject("Imprison",Imprison)
-              }
+              Imprison.add(tar)
+              bc"$tar received an Imprison marker"
+              bg.em().storeObject("Imprison",Imprison)
             }
           }
         }
