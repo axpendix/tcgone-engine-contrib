@@ -1984,7 +1984,6 @@ public enum DragonFrontiers implements LogicCardInfo {
                     }
                   }
                 }
-                actionMaker.unregister()
               }
             }
           }
