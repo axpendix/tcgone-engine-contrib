@@ -1936,6 +1936,56 @@ public enum DragonFrontiers implements LogicCardInfo {
       return evolution (this, from:"Kirlia", hp:HP150, type:R, retreatCost:2) {
         weakness P
         def Imprison = []
+        def actionMaker
+        globalAbility {Card thisCard ->
+          delayed {
+            actionMaker = before PLAY_CARD, {
+              def imprActionAdded = bg.em().retrieveObject("Imprison_Action_Added")
+              if(ef.cardToPlay == thisCard){
+                //Check if an action setter was already triggered
+                if (!imprActionAdded) {
+                  actions=action("Imprison Check") {
+                    if(bg.em().retrieveObject("Imprison") != null){
+                      Imprison = bg.em().retrieveObject("Imprison")
+                    }
+                    assert all.any{Imprison.contains(it)}
+                    def playerChecked = choose([my, opp], ["My Own", "My Opponent's"], "Which player's Pokémon will you check?")
+                    def playerText = (playerChecked == my ? "your" : "your opponent's")
+
+                    assert playerChecked.any{Imprison.contains(it)} : "None of $playerText Pokémon in play has Imprison counters on them"
+
+                    def currentPokemon, resultInfo
+                    while (true){
+                      resultInfo = (
+                        currentPokemon ? "The ${currentPokemon.active?"Active":"Selected")} $currentPokemon ${Imprison.contains(currentPokemon) ? "has" : "doesn't have"} an Imprison counter on them." : ""
+                      )
+                      currentPokemon = playerChecked.all.select(min:0, "${resultInfo}\nPlease select one of $playerText Pokémon (first one is the Active), or cancel to end this check.")
+                      if (!currentPokemon) break;
+                    }
+                  }
+                }
+                actionMaker.unregister()
+              }
+            }
+            getter (IS_ABILITY_BLOCKED) { Holder h ->
+              def imprisonChecker = bg.em().retrieveObject("Imprison_Checker")
+              if(imprisonChecker == null || imprisonChecker != self.hashCode()) {
+                if (imprisonChecker == null){
+                  bg.em().storeObject("Imprison_Checker", self.hashCode())
+                }
+                if(bg.em().retrieveObject("Imprison") != null){
+                  Imprison = bg.em().retrieveObject("Imprison")
+                }
+
+                if (Imprison.contains(h.effect.target)) {
+                  if (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody) {
+                    h.object=true
+                  }
+                }
+              }
+            }
+          }
+        }
         pokePower "Imprison", {
           text "Once during your turn (before your attack), if Gardevoir ex is your Active Pokémon, you may put an Imprison marker on 1 of your opponent's Pokémon. Any Pokémon that has any Imprison markers on it can't use any Poké-Powers or Poké-Bodies. This power can't be used if Gardevoir ex is affected by a Special Condition."
           actionA {
