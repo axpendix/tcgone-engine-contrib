@@ -1940,13 +1940,13 @@ public enum DragonFrontiers implements LogicCardInfo {
         def actions=[]
         globalAbility {Card thisCard ->
           delayed {
-            actionMaker = before PLAY_CARD, {
+            actionMaker = after PLAY_CARD, {
               def isImprisonLoaded = bg.em().retrieveObject("Imprison_Loaded")
               if(ef.cardToPlay == thisCard){
                 //Check if an action setter was already triggered
                 if (!isImprisonLoaded) {
                   bg.em().storeObject("Imprison_Loaded",true)
-                  actions=action("Imprison Check") {
+                  actions=action("[Imprison Check]") {
                     if(bg.em().retrieveObject("Imprison") != null){
                       Imprison = bg.em().retrieveObject("Imprison")
                     }
@@ -1986,6 +1986,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           actionA {
             checkLastTurn()
             checkNoSPC()
+            assert self.active : "$self is not your Active Pokémon"
             if(bg.em().retrieveObject("Imprison") != null){
               Imprison = bg.em().retrieveObject("Imprison")
             }
