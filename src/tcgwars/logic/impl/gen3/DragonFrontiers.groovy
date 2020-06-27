@@ -1957,7 +1957,7 @@ public enum DragonFrontiers implements LogicCardInfo {
                     def currentPokemon, resultInfo
                     while (true){
                       resultInfo = (
-                        currentPokemon ? "The ${currentPokemon.active?"Active":"Selected")} $currentPokemon ${Imprison.contains(currentPokemon) ? "has" : "doesn't have"} an Imprison counter on them." : ""
+                        currentPokemon ? "The ${currentPokemon.active?"Active":"Selected"} $currentPokemon ${Imprison.contains(currentPokemon) ? "has" : "doesn't have"} an Imprison counter on them." : ""
                       )
                       currentPokemon = playerChecked.all.select(min:0, "${resultInfo}\nPlease select one of $playerText Pokémon (first one is the Active), or cancel to end this check.")
                       if (!currentPokemon) break;
