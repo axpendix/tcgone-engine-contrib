@@ -3762,14 +3762,21 @@ public enum RebelClash implements LogicCardInfo {
         text "This card provides 1 [P] Energy while it’s attached to a Pokemon. When the [P] Pokemon this card is attached to is your Active Pokemon and is damaged by an opponents attack, put 2 damage counters on the Attacking Pokemon."
         def eff
         onPlay { reason->
-          eff = delayed(priority: LAST) {
+          eff = delayed(priority: BEFORE_LAST) {
+            def attackDidDamage = false
             before APPLY_ATTACK_DAMAGES, {
               bg().dm().each {
                 if (it.to == self && self.types.contains(P) && it.dmg.value && bg.currentTurn==self.owner.opposite
                   && self.active) {
-                  bc "Horror Psychic Energy activates."
-                  directDamage(20, ef.attacker as PokemonCardSet)
+                    attackDidDamage = true
                 }
+              }
+            }
+            after APPLY_ATTACK_DAMAGES, {
+              if(attackDidDamage && self.cards.contains(thisCard)) { // this energy card is still attached
+                bc "Horror [P] Energy activates."
+                directDamage(20, ef.attacker as PokemonCardSet)
+                attackDidDamage = false
               }
             }
           }
