@@ -1253,6 +1253,7 @@ public enum CelestialStorm implements LogicCardInfo {
                   def tup = attachEnergyFrom(
                     may : true ,my.discard, my.all.findAll{!(it.pokemonEX) && !(it.pokemonGX)}
                   )
+                  bc "$tup ${tup[0]}"
                   if (tup[0] == null) break;
                 }
               }
