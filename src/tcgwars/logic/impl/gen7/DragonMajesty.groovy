@@ -1387,6 +1387,15 @@ public enum DragonMajesty implements LogicCardInfo {
       case LANCE_PRISM_STAR_61:
         return supporter(this) {
           text "You can play this card only if 1 of your Pokémon was Knocked Out during your opponent's last turn.\nSearch your deck for up to 2 [N] Pokémon and put them onto your Bench. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack).\n"
+          globalAbility {Card thisCard->
+            delayed {
+              before KNOCKOUT, {
+                if(ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite){
+                  keyStore("Lance_Prism_KO", thisCard, bg.turnCount)
+                }
+              }
+            }
+          }
           onPlay {
             def maxSpace = Math.min(my.bench.freeBenchCount,2)
             my.deck.search(max:maxSpace,"Select $maxSpace [N] Pokémon to put onto your Bench",{it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(N)}).each{
@@ -1397,7 +1406,7 @@ public enum DragonMajesty implements LogicCardInfo {
           }
           playRequirement{
             assert bg.turnCount
-            assert my.lastKnockoutByOpponentDamageTurn == bg.turnCount - 1: "No Pokémon has been Knocked Out during your opponent’s last turn"
+            assert keyStore("Lance_Prism_KO", thisCard, null) == bg.turnCount - 1: "No Pokémon was Knocked Out during your opponent’s last turn"
           }
         };
       case SWITCH_RAFT_62:
@@ -1426,6 +1435,15 @@ public enum DragonMajesty implements LogicCardInfo {
       case ZINNIA_64:
         return supporter(this) {
           text "You can play this card only if 1 of your Pokémon was Knocked Out during your opponent's last turn.\nAttach up to 2 basic Energy cards from your hand to 1 of your [N] Pokémon.\nYou may play only 1 Supporter card during your turn (before your attack).\n"
+          globalAbility {Card thisCard->
+            delayed {
+              before KNOCKOUT, {
+                if(ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite){
+                  keyStore("Zinnia_KO", thisCard, bg.turnCount)
+                }
+              }
+            }
+          }
           onPlay {
             def tar = my.all.findAll{it.types.contains(N)}.select("Select the Pokémon to which you want to attach 2 basic Energy.")
             attachEnergyFrom(basic:true,my.hand,tar)
@@ -1433,8 +1451,8 @@ public enum DragonMajesty implements LogicCardInfo {
           }
           playRequirement{
             assert bg.turnCount
-            assert my.lastKnockoutByOpponentDamageTurn == bg.turnCount - 1: "No Pokémon has been Knocked Out during your opponent’s last turn"
-            assert my.all.findAll{it.types.contains(N)}
+            assert keyStore("Zinnia_KO", thisCard, null) == bg.turnCount - 1: "No Pokémon was Knocked Out during your opponent’s last turn"
+            assert my.all.findAll{it.types.contains(N)} : "You have no [N] type Pokémon in play"
           }
         };
       case RESHIRAM_GX_65:
