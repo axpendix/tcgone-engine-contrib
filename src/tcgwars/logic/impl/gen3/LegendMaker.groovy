@@ -2642,7 +2642,6 @@ public enum LegendMaker implements LogicCardInfo {
           delayed {
             after PLAY_TRAINER, {
               if(ef.cardToPlay.cardTypes.is(SUPPORTER)){
-                bc "thisTurnSupporter"
                 thisTurnSupporter = ef.cardToPlay
               }
             }

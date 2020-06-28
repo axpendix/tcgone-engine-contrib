@@ -589,7 +589,7 @@ public enum DeltaSpecies implements LogicCardInfo {
                 if(!pl) break;
                 def src = pl.select("Source for energy (cancel to stop)", false)
                 if(!src) break;
-                def card=src.cards.select("Card to move",cardTypeFilter(ENERGY)).first()
+                def card=src.cards.select("Card to move",cardTypeFilter(BASIC_ENERGY)).first()
                 def target = my.all.findAll{ it != src && it != self }.select("Move Energy to?")
                 energySwitch(src, target, card)
               }
