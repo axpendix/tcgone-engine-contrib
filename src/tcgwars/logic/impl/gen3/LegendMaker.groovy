@@ -2765,9 +2765,15 @@ public enum LegendMaker implements LogicCardInfo {
         def actions = []
         def toggleAction = {boolean bool->
           if (bool){
-            actions.each { bg().gm().registerAction(it) }
+            actions.each {
+              bg().gm().registerAction(it)
+              bc "Versatile Registered"
+            }
           } else {
-            actions.each { bg().gm().unregisterAction(it) }
+            actions.each {
+              bg().gm().unregisterAction(it)
+              bc "Versatile Unregistered"
+            }
           }
         }
         def actionHandler = {PokemonCardSet self->
@@ -2775,6 +2781,7 @@ public enum LegendMaker implements LogicCardInfo {
             if (actions != []){
               toggleAction.call(true)
             } else {
+              bc "Creating the Versatile action"
               actions = action("Poké-Body: Versatile") {
                 assert self.active: "This Mew ex is not an Active Pokemon"
                 def moves = []
