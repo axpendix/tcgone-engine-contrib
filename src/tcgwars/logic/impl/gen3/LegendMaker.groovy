@@ -2763,7 +2763,7 @@ public enum LegendMaker implements LogicCardInfo {
       return basic (this, hp:HP090, type:P, retreatCost:1) {
         weakness P
         def actions = []
-        def actionHandler = {
+        def actionHandler = {PokemonCardSet self->
           if (self.active) {
             actions = action("Poké-Body: Versatile") {
               assert self.active: "This Mew ex is not an Active Pokemon"
@@ -2789,13 +2789,13 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Versatile", {
           text "Mew ex can use the attacks of all Pokémon in play as its own. (You still need the necessary Energy to use each attack.)"
           delayedA {
-            after SWITCH, self, { actionHandler.call() }
+            after SWITCH, self, { actionHandler.call(self) }
           }
           onActivate {
-            actionHandler.call()
+            actionHandler.call(self)
           }
           onDeactivate {
-            actionHandler.call()
+            actionHandler.call(self)
           }
         }
         move "Power Move", {
