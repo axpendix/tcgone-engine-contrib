@@ -2389,6 +2389,9 @@ public enum FireRedLeafGreen implements LogicCardInfo {
       case VS_SEEKER_100:
         return basicTrainer (this) {
           text "Search your discard pile for a Supporter card, show it to your opponent, and put it into your hand."
+          //
+          // [EX Rules Supporters Workaround] TODO: Edit this once no longer needed
+          //
           def thisTurnSupporter
           globalAbility{
             delayed {

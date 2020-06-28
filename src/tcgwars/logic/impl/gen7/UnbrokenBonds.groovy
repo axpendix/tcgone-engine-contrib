@@ -4434,32 +4434,36 @@ public enum UnbrokenBonds implements LogicCardInfo {
           }
         };
       case TRIPLE_ACCELERATION_ENERGY_190:
-        return specialEnergy (this, [[C]]) {
+        return specialEnergy (this, [[]]) {
           text "This card can only be attached to Evolution Pokémon. If this card is attached to 1 of your Pokémon, discard it at the end of the turn." +
             "This card provides [C][C][C] Energy only while it is attached to an Evolution Pokémon." +
             "If this card is attached to anything other than an Evolution Pokémon, discard this card."
           def eff
+          def check = {
+            if (!to.realEvolution) discard thisCard
+          }
           onPlay {reason->
             eff = delayed (priority: BEFORE_LAST) {
               before BETWEEN_TURNS, {discard thisCard}
             }
+            after EVOLVE, self, {check(self)} //some pokemon evolve into different type
+            after DEVOLVE, self, {check(self)}
+            after ATTACH_ENERGY, self, {check(self)}
           }
           onRemoveFromPlay {
             eff.unregister()
           }
           onMove {to->
-            if(!to.realEvolution) discard thisCard
+            check(to)
           }
           allowAttach {to->
             to.realEvolution
           }
           getEnergyTypesOverride {
-            if(self == null){
-              return [[C] as Set]
-            } else if (!self.realEvolution) {
-              discard thisCard
-            } else {
+            if (self && self.realEvolution) {
               return [[C] as Set,[C] as Set,[C] as Set]
+            } else {
+              return [[] as Set]
             }
           }
         };

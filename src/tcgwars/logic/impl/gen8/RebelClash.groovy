@@ -3744,7 +3744,7 @@ public enum RebelClash implements LogicCardInfo {
       return specialEnergy (this, [[]]) {
         text "This card provides [C] Energy only while attached to a Pokemon. When attaching this card from your hand to 1 of your Pokemon, search your deck for a Basic Pokemon and put it on your Bench. Then, shuffle your deck."
         onPlay {reason->
-          if (my.deck && my.bench.notFull) {
+          if (reason == PLAY_FROM_HAND && my.deck && my.bench.notFull) {
             my.deck.search (count: 1, { it.cardTypes.is(BASIC) }).each {
               my.deck.remove(it)
               benchPCS(it)

@@ -2360,7 +2360,7 @@ public enum UnseenForces implements LogicCardInfo {
               }}
             }
             after EVOLVE, self, {check(self)}
-            after DEVOLVE, self, {check(self)}
+            after DEVOLVE, self, {check(self)} //TODO: Get TOOL_ATTACHED and TOOL_MOVED effects to better check this.
           }
         }
         onRemoveFromPlay {

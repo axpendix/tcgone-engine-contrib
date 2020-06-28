@@ -2637,6 +2637,9 @@ public enum LegendMaker implements LogicCardInfo {
       return evolution (this, from:"Shuppet", hp:HP090, type:P, retreatCost:1) {
         weakness D
         resistance F, MINUS30
+        //
+        // [EX Rules Supporters Workaround] TODO: Edit this once no longer needed
+        //
         def thisTurnSupporter
         globalAbility{
           delayed {
