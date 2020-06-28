@@ -1973,9 +1973,20 @@ public enum DragonFrontiers implements LogicCardInfo {
         globalAbility {Card thisCard ->
           delayed {
             after EVOLVE, {
-              //Imprison_Loaded checks if an action setter was already triggered
-              def isImprisonLoaded = bg.em().retrieveObject("Imprison_Loaded")
-              if(ef.evolutionCard == thisCard && !isImprisonLoaded) actionMaker.call()
+              if (ef.evolutionCard == thisCard) {
+                //Imprison_Loaded checks if an action setter was already triggered
+                def isImprisonLoaded = bg.em().retrieveObject("Imprison_Loaded")
+                if (!isImprisonLoaded) actionMaker.call()
+              }
+
+              if(bg.em().retrieveObject("Imprison") != null){
+                Imprison = bg.em().retrieveObject("Imprison")
+              }
+              if (Imprison.contains(ef.pokemonToBeEvolved)) {
+                bc "${ef.pokemonToBeEvolved} loses its Imprison marker when evolved"
+                Imprison.remove(ef.pokemonToBeEvolved)
+                bg.em().storeObject("Imprison",Imprison)
+              }
             }
           }
         }
@@ -1996,7 +2007,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
             targeted (tar, SRC_ABILITY){
               Imprison.add(tar)
-              bc"$tar received an Imprison marker"
+              bc "$tar received an Imprison marker"
               bg.em().storeObject("Imprison",Imprison)
             }
           }
@@ -2209,22 +2220,80 @@ public enum DragonFrontiers implements LogicCardInfo {
       return evolution (this, from:"Pupitar", hp:HP150, type:L, retreatCost:3) {
         weakness G
         def Shock_Wave = []
-        move "Electromark", {
-          text "Put a Shock-wave marker on 1 of your opponent's Pokémon."
-          energyCost L, C
-          onAttack {
+        def actions=[]
+        def actionMaker = {
+          bg.em().storeObject("Shock_Wave_Loaded",true)
+          actions=action("[Shock-wave Check]") {
             if(bg.em().retrieveObject("Shock_Wave") != null){
               Shock_Wave = bg.em().retrieveObject("Shock_Wave")
             }
-            def tar = opp.all.select("Choose a pokemon to put a Shock-Wave marker on")
-            targeted (tar) {
-              if (Shock_Wave.contains(tar)) {
-                bc "$tar already has a Shock-Wave marker"
-              } else {
-                Shock_Wave.add(tar)
-                bc"$tar received a Shock-Wave marker"
+            def playerChecked = choose([my, opp], ["My Own", "My Opponent's"], "Which player's Pokémon will you check?")
+            def playerText = (playerChecked == my ? "your" : "your opponent's")
+
+            assert playerChecked.all.any{Shock_Wave.contains(it)} : "None of $playerText Pokémon in play have Shock-wave counters on them"
+
+            def currentPokemon, resultInfo
+            while (true){
+              resultInfo = (
+                currentPokemon ? "The ${currentPokemon.active?"Active":"Selected"} $currentPokemon ${Shock_Wave.contains(currentPokemon) ? "has" : "doesn't have"} a Shock-wave counter on them." : ""
+              )
+              currentPokemon = playerChecked.all.select("${resultInfo}\nPlease select one of $playerText Pokémon (first one is the Active), or cancel to end this check.", false)
+              if (!currentPokemon) break;
+            }
+          }
+        }
+        globalAbility {Card thisCard ->
+          delayed {
+            after EVOLVE, {
+              if (ef.evolutionCard == thisCard) {
+                //Shock_Wave_Loaded checks if an action setter was already triggered
+                def isShockWaveLoaded = bg.em().retrieveObject("Shock_Wave_Loaded")
+                if (!isShockWaveLoaded) actionMaker.call()
+              }
+
+              if(bg.em().retrieveObject("Shock_Wave") != null){
+                Shock_Wave = bg.em().retrieveObject("Shock_Wave")
+              }
+              if (Shock_Wave.contains(ef.pokemonToBeEvolved)) {
+                bc "${ef.pokemonToBeEvolved} loses its Shock-wave marker when evolved"
+                Shock_Wave.remove(ef.pokemonToBeEvolved)
                 bg.em().storeObject("Shock_Wave",Shock_Wave)
               }
+            }
+            after DEVOLVE, {
+              if(bg.em().retrieveObject("Shock_Wave") != null){
+                Shock_Wave = bg.em().retrieveObject("Shock_Wave")
+              }
+              if (Shock_Wave.contains(ef.pokemonToBeEvolved)) {
+                bc "${ef.pokemonToBeEvolved} loses its Shock-wave marker when devolved"
+                Shock_Wave.remove(ef.pokemonToBeEvolved)
+                bg.em().storeObject("Shock_Wave",Shock_Wave)
+              }
+            }
+          }
+        }
+        move "Electromark", {
+          text "Put a Shock-wave marker on 1 of your opponent's Pokémon."
+          energyCost L, C
+          attackRequirement{
+            if(bg.em().retrieveObject("Shock_Wave") != null){
+              Shock_Wave = bg.em().retrieveObject("Shock_Wave")
+            }
+            //Check is also run here in case someone copies the attack
+            def isShockWaveLoaded = bg.em().retrieveObject("Shock_Wave_Loaded")
+            if(ef.evolutionCard == thisCard && !isShockWaveLoaded) actionMaker.call()
+
+            assert opp.all.any{!Shock_Wave.contains(it)} : "All of your opponent's Pokémon already have Shock-wave markers on them"
+          }
+          onAttack {
+            def tar = opp.all.select("Choose a pokemon to put an Shock-wave marker on:")
+            while (Shock_Wave.contains(tar)){
+              tar = opp.all.select("$tar already has an Shock-wave marker.\n\nChoose a pokemon to put an Shock-wave marker on:")
+            }
+            targeted (tar){
+              Shock_Wave.add(tar)
+              bc "$tar received a Shock-wave marker"
+              bg.em().storeObject("Shock_Wave",Shock_Wave)
             }
           }
         }
@@ -2245,17 +2314,21 @@ public enum DragonFrontiers implements LogicCardInfo {
             if(bg.em().retrieveObject("Shock_Wave") != null){
               Shock_Wave = bg.em().retrieveObject("Shock_Wave")
             }
+            //Check is also run here in case someone copies the attack
+            def isShockWaveLoaded = bg.em().retrieveObject("Shock_Wave_Loaded")
+            if(ef.evolutionCard == thisCard && !isShockWaveLoaded) actionMaker.call()
+
             assert opp.all.any{Shock_Wave.contains(it)} : "None of your opponent's Pokémon have Shock-Wave markers on them"
-            }
+          }
           onAttack {
-            if(bg.em().retrieveObject("Shock_Wave") != null){
-              Shock_Wave = bg.em().retrieveObject("Shock_Wave")
+            def tar = opp.all.select("Choose 1 of your opponent’s Pokémon that has any Shock-wave markers on it. That Pokémon will be Knocked Out.")
+            while (!Shock_Wave.contains(tar)){
+              tar = opp.all.select("$tar doesn't have a Shock-wave marker.\n\nChoose 1 of your opponent’s Pokémon that has any Shock-wave markers on it. That Pokémon will be Knocked Out.")
             }
-            def pcs = opp.all.findAll{Shock_Wave.contains(it)}.select("Choose a Pokémon to knock out")
-            targeted (pcs) {
-              Shock_Wave.remove(pcs)
+            targeted (tar){
+              Shock_Wave.remove(tar)
               bg.em().storeObject("Shock_Wave",Shock_Wave)
-              new Knockout(pcs).run(bg)
+              new Knockout(tar).run(bg)
             }
           }
         }
