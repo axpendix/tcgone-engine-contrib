@@ -2763,7 +2763,7 @@ public enum LegendMaker implements LogicCardInfo {
       return basic (this, hp:HP090, type:P, retreatCost:1) {
         weakness P
         def actions = []
-        def toggleAction {boolean bool->
+        def toggleAction = {boolean bool->
           if (bool){
             actions.each { bg().gm().registerAction(it) }
           } else {
