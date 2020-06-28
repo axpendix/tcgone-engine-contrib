@@ -2763,27 +2763,37 @@ public enum LegendMaker implements LogicCardInfo {
       return basic (this, hp:HP090, type:P, retreatCost:1) {
         weakness P
         def actions = []
+        def toggleAction {boolean bool->
+          if (bool){
+            actions.each { bg().gm().registerAction(it) }
+          } else {
+            actions.each { bg().gm().unregisterAction(it) }
+          }
+        }
         def actionHandler = {PokemonCardSet self->
           if (self.active) {
-            actions = action("Poké-Body: Versatile") {
-              assert self.active: "This Mew ex is not an Active Pokemon"
-              def moves = []
-              all.each {
-                if (it != self) {
-                  moves.addAll(it.topPokemonCard.moves)
+            if (actions != []){
+              toggleAction.call(true)
+            } else {
+              actions = action("Poké-Body: Versatile") {
+                assert self.active: "This Mew ex is not an Active Pokemon"
+                def moves = []
+                all.each {
+                  if (it != self) {
+                    moves.addAll(it.topPokemonCard.moves)
+                  }
                 }
-              }
-              assert !moves.isEmpty(): "There are no moves to copy"
+                assert !moves.isEmpty(): "There are no moves to copy"
 
-              def chosenMove = choose(moves+["Cancel"], moves.collect({it.name})+["Cancel"], "Choose a move to perform")
+                def chosenMove = choose(moves+["Cancel"], moves.collect({it.name})+["Cancel"], "Choose a move to perform")
 
-              if (chosenMove && chosenMove != "Cancel") {
-                attack (chosenMove as Move)
+                if (chosenMove && chosenMove != "Cancel") {
+                  attack (chosenMove as Move)
+                }
               }
             }
           } else {
-            actions.each { bg().gm().unregisterAction(it) }
-            actions.clear()
+            toggleAction.call(false)
           }
         }
         pokeBody "Versatile", {
