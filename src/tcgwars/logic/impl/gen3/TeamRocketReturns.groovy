@@ -2389,7 +2389,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
                 bc "$top Devolved"
                 moveCard(top, my.deck)
                 devolve(pcs, top)
-                shuffleDeck()
                 checkFaint()
                 if(pcs) {
                   def tar = my.deck.search(max:1,"Search for an Evolution card that evolves from that Pokémon",{it.cardTypes.is(EVOLUTION) && it.predecessor==pcs.name})
@@ -2397,6 +2396,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
                     evolve(pcs,tar.first(),OTHER)
                   }
                 }
+                shuffleDeck()
               }
             }
           }
