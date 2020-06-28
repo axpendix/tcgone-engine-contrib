@@ -2762,23 +2762,40 @@ public enum LegendMaker implements LogicCardInfo {
       case MEW_EX_88:
       return basic (this, hp:HP090, type:P, retreatCost:1) {
         weakness P
-        pokeBody "Versatile", {
-          text "Mew ex can use the attacks of all Pokémon in play as its own. (You still need the necessary Energy to use each attack.)"
-          actionA {
-            assert self.active: "This Mew ex is not an Active Pokemon"
-            def moves = []
-            all.each {
-              if (it != self) {
-                moves.addAll(it.topPokemonCard.moves)
+        def actions = []
+        def actionHandler = {
+          if (self.active) {
+            actions = action("Poké-Body: Versatile") {
+              assert self.active: "This Mew ex is not an Active Pokemon"
+              def moves = []
+              all.each {
+                if (it != self) {
+                  moves.addAll(it.topPokemonCard.moves)
+                }
+              }
+              assert !moves.isEmpty(): "There are no moves to copy"
+
+              def chosenMove = choose(moves+["Cancel"], moves.collect({it.name})+["Cancel"], "Choose a move to perform")
+
+              if (chosenMove && chosenMove != "Cancel") {
+                attack (chosenMove as Move)
               }
             }
-            assert !moves.isEmpty(): "There are no moves to copy"
-
-            def chosenMove = choose(moves+["Cancel"], moves.collect({it.name})+["Cancel"], "Choose a move to perform")
-
-            if (chosenMove && chosenMove != "Cancel") {
-              attack (chosenMove as Move)
-            }
+          } else {
+            actions.each { bg().gm().unregisterAction(it) }
+            actions.clear()
+          }
+        }
+        pokeBody "Versatile", {
+          text "Mew ex can use the attacks of all Pokémon in play as its own. (You still need the necessary Energy to use each attack.)"
+          delayedA {
+            after SWITCH, self, { actionHandler.call() }
+          }
+          onActivate {
+            actionHandler.call()
+          }
+          onDeactivate {
+            actionHandler.call()
           }
         }
         move "Power Move", {
