@@ -1936,10 +1936,11 @@ public enum DragonFrontiers implements LogicCardInfo {
       return evolution (this, from:"Kirlia", hp:HP150, type:R, retreatCost:2) {
         weakness P
         def Imprison = []
+        def actions = []
         def imprisonLoader = {
           bg.em().storeObject("Imprison_Loaded",true)
 
-          loadMarkerCheckerAction()
+          loadMarkerCheckerAction(delegate, actions)
 
           delayed {
             getter (IS_ABILITY_BLOCKED) { Holder h ->
@@ -2215,10 +2216,11 @@ public enum DragonFrontiers implements LogicCardInfo {
       return evolution (this, from:"Pupitar", hp:HP150, type:L, retreatCost:3) {
         weakness G
         def Shock_Wave = []
+        def actions = []
         def shockWaveLoader = {
           bg.em().storeObject("Shock_Wave_Loaded",true)
 
-          loadMarkerCheckerAction()
+          loadMarkerCheckerAction(delegate, actions)
         }
         globalAbility {Card thisCard ->
           delayed {

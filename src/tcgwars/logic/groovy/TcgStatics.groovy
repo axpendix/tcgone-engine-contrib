@@ -1304,14 +1304,13 @@ class TcgStatics {
       return false
   }
 
-  static void loadMarkerCheckerAction() {
+  static void loadMarkerCheckerAction(def delegate, actions) {
     def isCheckerLoaded = bg.em().retrieveObject("Checker_Loaded")
     if (isCheckerLoaded)
       return
     bg.em().storeObject("Checker_Loaded",true)
 
-    def actions = []
-    actions=action("[ Imprison / Shock-wave Check ]") {
+    actions = delegate.action("[ Imprison / Shock-wave Check ]") {
       def imprisonPokemon, shockwavePokemon
       if(bg.em().retrieveObject("Imprison") != null){
         imprisonPokemon = bg.em().retrieveObject("Imprison")
