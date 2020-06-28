@@ -2781,8 +2781,8 @@ public enum LegendMaker implements LogicCardInfo {
             }
           }
         }
-        def actionHandler = {PokemonCardSet self, boolean isActive ->
-          if (isActive){
+        def actionHandler = {PokemonCardSet self, boolean enable ->
+          if (enable){
             if (actions == []){
               bc "Creating the Versatile action"
               actionMaker.call(self)
@@ -2800,10 +2800,10 @@ public enum LegendMaker implements LogicCardInfo {
           }
         }
         customAbility {
-          delayed {
+          delayedA {
             after SWITCH, self, {
-              new CheckAbilities().run(bg)
-              toggleAction.call(self, self.active)
+              //TODO: This should turn off if the Body is disabled.
+              actionHandler.call(self, self.active)
             }
           }
         }
