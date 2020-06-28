@@ -2801,7 +2801,7 @@ public enum LegendMaker implements LogicCardInfo {
           delayedA {
             after SWITCH, {
               //TODO: This should turn off if the Body is disabled.
-              if (bg.currentTurn == self.owner){
+              if (bg.currentTurn == self.owner && ef.switchedOut.owner == self.owner){
                 actionHandler.call(self, self.active)
               }
             }
@@ -2809,7 +2809,7 @@ public enum LegendMaker implements LogicCardInfo {
           onDeactivate {
             actionHandler.call(self, false)
           }
-          onDeactivate {
+          onActivate {
             actionHandler.call(self, self.active)
           }
         }
