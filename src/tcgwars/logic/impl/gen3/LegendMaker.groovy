@@ -2768,7 +2768,7 @@ public enum LegendMaker implements LogicCardInfo {
             assert self.active: "This Mew ex is not an Active Pokemon"
             def moves = []
             all.each {
-              if (it.topPokemonCard.name != "Mew ex") {
+              if (it != self) {
                 moves.addAll(it.topPokemonCard.moves)
               }
             }

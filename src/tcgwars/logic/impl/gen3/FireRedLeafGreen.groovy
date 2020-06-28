@@ -283,12 +283,17 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             text "Once during your turn (before your attack), you may search you discard pile for a Basic Pokémon (excluding Pokémon-ex and Ditto) and switch it with Ditto. (Any cards attached to Ditto, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Place Ditto in the discard pile."
             actionA {
               checkLastTurn()
-              assert my.discard.findAll {it.cardTypes.is(BASIC)} : "No basic in discard"
+              assert my.discard.any{it.cardTypes.is(BASIC) && !it.cardTypes.is(EX) && it.name != "Ditto"} : "No Basic Pokémon in your discard (that isn't a Pokémon-ex or Ditto)"
               powerUsed()
+
               def ditto = self.topPokemonCard
-              my.discard.findAll{it.cardTypes.is(BASIC)}.select().moveTo(self.cards)
-              discard(ditto)
+              def dittoReplacement = my.discard.findAll{it.cardTypes.is(BASIC) && !it.cardTypes.is(EX) && it.name != "Ditto"}.select("Form Variation - Choose which Pokémon will replace Ditto.")
+
+              dittoReplacement.moveTo(self.cards)
+              my.discard.add(ditto)
+              self.cards.remove(ditto)
               checkFaint()
+              //new CheckAbilities().run(bg) //Needed?
             }
           }
           move "Energy Ball", {
