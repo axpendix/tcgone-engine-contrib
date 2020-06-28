@@ -293,7 +293,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               my.discard.add(ditto)
               self.cards.remove(ditto)
               checkFaint()
-              //new CheckAbilities().run(bg) //Needed?
+              new CheckAbilities().run(bg)
             }
           }
           move "Energy Ball", {
