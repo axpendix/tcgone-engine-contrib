@@ -1332,12 +1332,12 @@ class TcgStatics {
           def hasImprison = imprisonPokemon.contains(currentPokemon)
           def hasShockwave = shockwavePokemon.contains(currentPokemon)
 
-          def markersInfo = (hasImprison || hasShockwave) ? "has ${(hasImprison ? "an Imprison" : "") + ((hasImprison && hasShockwave) ? " and " : "") + (hasShockwave ? "a Shock-wave" : "")} ${(hasImprison && hasShockwave) ? "markers" : "marker"}" : "doesn't have any markers"
+          def markersInfo = (hasImprison || hasShockwave) ? "has ${(hasImprison ? "an Imprison" : "") + ((hasImprison && hasShockwave) ? " and " : "") + (hasShockwave ? "a Shock-wave" : "")} marker" : "doesn't have any markers"
 
           resultInfo = "The ${currentPokemon.active?"Active":"selected"} $currentPokemon $markersInfo"
         }
 
-        currentPokemon = playerChecked.all.select("${resultInfo}" + "Please select one of $playerText Pokémon (first one is the Active), or cancel to end this check.", false)
+        currentPokemon = playerChecked.all.select("${resultInfo}.\n\n\nPlease select one of $playerText Pokémon (first one is the Active), or cancel to end this check.", false)
         if (!currentPokemon) break;
       }
     }
