@@ -1937,26 +1937,44 @@ public enum DragonFrontiers implements LogicCardInfo {
         weakness P
         def Imprison = []
         def actions=[]
-        def actionMaker = {
-          bg.em().storeObject("Imprison_Loaded",true)
-          actions=action("[Imprison Check]") {
+        def checkerLoader = {
+          bg.em().storeObject("Checker_Loaded",true)
+          actions=action("[ Imprison / Shock-wave Check ]") {
+            def imprisonPokemon, shockwavePokemon
             if(bg.em().retrieveObject("Imprison") != null){
-              Imprison = bg.em().retrieveObject("Imprison")
+              def imprisonPokemon = bg.em().retrieveObject("Imprison")
+            }
+            if(bg.em().retrieveObject("Shock_Wave") != null){
+              def shockwavePokemon = bg.em().retrieveObject("Shock_Wave")
             }
             def playerChecked = choose([my, opp], ["My Own", "My Opponent's"], "Which player's Pokémon will you check?")
             def playerText = (playerChecked == my ? "your" : "your opponent's")
 
-            assert playerChecked.all.any{Imprison.contains(it)} : "None of $playerText Pokémon in play have Imprison counters on them"
+            assert playerChecked.all.any{imprisonPokemon.contains(it) || shockwavePokemon.contains(it)} : "None of $playerText Pokémon in play have any Imprison / Shock-wave markers on them"
 
             def currentPokemon, resultInfo
             while (true){
-              resultInfo = (
-                currentPokemon ? "The ${currentPokemon.active?"Active":"Selected"} $currentPokemon ${Imprison.contains(currentPokemon) ? "has" : "doesn't have"} an Imprison counter on them." : ""
-              )
-              currentPokemon = playerChecked.all.select("${resultInfo}\nPlease select one of $playerText Pokémon (first one is the Active), or cancel to end this check.", false)
+              resultInfo = ""
+              if (currentPokemon){
+                def hasImprison = imprisonPokemon.contains(currentPokemon)
+                def hasShockwave = shockwavePokemon.contains(currentPokemon)
+
+                def markersInfo = (hasImprison || hasShockwave) ? "has ${(hasImprison ? "an Imprison" : "") + ((hasImprison && hasShockwave) ? " and " : "") + (hasShockwave ? "a Shock-wave" : "")} ${(hasImprison && hasShockwave) ? "markers" : "marker")}" : "doesn't have any markers"
+
+                resultInfo = "The ${currentPokemon.active?"Active":"selected"} $currentPokemon $markersInfo"
+              }
+
+              currentPokemon = playerChecked.all.select("${resultInfo}" + "Please select one of $playerText Pokémon (first one is the Active), or cancel to end this check.", false)
               if (!currentPokemon) break;
             }
           }
+        }
+        def imprisonLoader = {
+          bg.em().storeObject("Imprison_Loaded",true)
+
+          def isCheckerLoaded = bg.em().retrieveObject("Checker_Loaded")
+          if(!isCheckerLoaded) checkerLoader.call()
+
           getter (IS_ABILITY_BLOCKED) { Holder h ->
             if(bg.em().retrieveObject("Imprison") != null){
               Imprison = bg.em().retrieveObject("Imprison")
@@ -1971,12 +1989,6 @@ public enum DragonFrontiers implements LogicCardInfo {
         globalAbility {Card thisCard ->
           delayed {
             after EVOLVE, {
-              if (ef.evolutionCard == thisCard) {
-                //Imprison_Loaded checks if an action setter was already triggered
-                def isImprisonLoaded = bg.em().retrieveObject("Imprison_Loaded")
-                if (!isImprisonLoaded) actionMaker.call()
-              }
-
               if(bg.em().retrieveObject("Imprison") != null){
                 Imprison = bg.em().retrieveObject("Imprison")
               }
@@ -2005,9 +2017,15 @@ public enum DragonFrontiers implements LogicCardInfo {
             checkLastTurn()
             checkNoSPC()
             assert self.active : "$self is not your Active Pokémon"
+
             if(bg.em().retrieveObject("Imprison") != null){
               Imprison = bg.em().retrieveObject("Imprison")
             }
+            //Imprison_Loaded checks if an action setter was already triggered
+            def isImprisonLoaded = bg.em().retrieveObject("Imprison_Loaded")
+            if (!isImprisonLoaded) imprisonLoader.call()
+
+
             assert opp.all.any{!Imprison.contains(it)} : "All of your opponent's Pokémon already have Imprison counters"
             powerUsed()
             def tar = opp.all.select("Choose a pokemon to put an Imprison marker on:")
@@ -2230,36 +2248,47 @@ public enum DragonFrontiers implements LogicCardInfo {
         weakness G
         def Shock_Wave = []
         def actions=[]
-        def actionMaker = {
-          bg.em().storeObject("Shock_Wave_Loaded",true)
-          actions=action("[Shock-wave Check]") {
+        def checkerLoader = {
+          bg.em().storeObject("Checker_Loaded",true)
+          actions=action("[ Imprison / Shock-wave Check ]") {
+            def imprisonPokemon, shockwavePokemon
+            if(bg.em().retrieveObject("Imprison") != null){
+              def imprisonPokemon = bg.em().retrieveObject("Imprison")
+            }
             if(bg.em().retrieveObject("Shock_Wave") != null){
-              Shock_Wave = bg.em().retrieveObject("Shock_Wave")
+              def shockwavePokemon = bg.em().retrieveObject("Shock_Wave")
             }
             def playerChecked = choose([my, opp], ["My Own", "My Opponent's"], "Which player's Pokémon will you check?")
             def playerText = (playerChecked == my ? "your" : "your opponent's")
 
-            assert playerChecked.all.any{Shock_Wave.contains(it)} : "None of $playerText Pokémon in play have Shock-wave counters on them"
+            assert playerChecked.all.any{imprisonPokemon.contains(it) || shockwavePokemon.contains(it)} : "None of $playerText Pokémon in play have any Imprison / Shock-wave markers on them"
 
             def currentPokemon, resultInfo
             while (true){
-              resultInfo = (
-                currentPokemon ? "The ${currentPokemon.active?"Active":"Selected"} $currentPokemon ${Shock_Wave.contains(currentPokemon) ? "has" : "doesn't have"} a Shock-wave counter on them." : ""
-              )
-              currentPokemon = playerChecked.all.select("${resultInfo}\nPlease select one of $playerText Pokémon (first one is the Active), or cancel to end this check.", false)
+              resultInfo = ""
+              if (currentPokemon){
+                def hasImprison = imprisonPokemon.contains(currentPokemon)
+                def hasShockwave = shockwavePokemon.contains(currentPokemon)
+
+                def markersInfo = (hasImprison || hasShockwave) ? "has ${(hasImprison ? "an Imprison" : "") + ((hasImprison && hasShockwave) ? " and " : "") + (hasShockwave ? "a Shock-wave" : "")} ${(hasImprison && hasShockwave) ? "markers" : "marker")}" : "doesn't have any markers"
+
+                resultInfo = "The ${currentPokemon.active?"Active":"selected"} $currentPokemon $markersInfo"
+              }
+
+              currentPokemon = playerChecked.all.select("${resultInfo}" + "Please select one of $playerText Pokémon (first one is the Active), or cancel to end this check.", false)
               if (!currentPokemon) break;
             }
           }
         }
+        def shockWaveLoader = {
+          bg.em().storeObject("Shock_Wave_Loaded",true)
+
+          def isCheckerLoaded = bg.em().retrieveObject("Checker_Loaded")
+          if(!isCheckerLoaded) checkerLoader.call()
+        }
         globalAbility {Card thisCard ->
           delayed {
             after EVOLVE, {
-              if (ef.evolutionCard == thisCard) {
-                //Shock_Wave_Loaded checks if an action setter was already triggered
-                def isShockWaveLoaded = bg.em().retrieveObject("Shock_Wave_Loaded")
-                if (!isShockWaveLoaded) actionMaker.call()
-              }
-
               if(bg.em().retrieveObject("Shock_Wave") != null){
                 Shock_Wave = bg.em().retrieveObject("Shock_Wave")
               }
@@ -2289,9 +2318,9 @@ public enum DragonFrontiers implements LogicCardInfo {
             if(bg.em().retrieveObject("Shock_Wave") != null){
               Shock_Wave = bg.em().retrieveObject("Shock_Wave")
             }
-            //Check is also run here in case someone copies the attack
+            //Shock_Wave_Loaded checks if another shockwave loader was already triggered
             def isShockWaveLoaded = bg.em().retrieveObject("Shock_Wave_Loaded")
-            if(!isShockWaveLoaded) actionMaker.call()
+            if(!isShockWaveLoaded) shockWaveLoader.call()
 
             assert opp.all.any{!Shock_Wave.contains(it)} : "All of your opponent's Pokémon already have Shock-wave markers on them"
           }
@@ -2324,9 +2353,9 @@ public enum DragonFrontiers implements LogicCardInfo {
             if(bg.em().retrieveObject("Shock_Wave") != null){
               Shock_Wave = bg.em().retrieveObject("Shock_Wave")
             }
-            //Check is also run here in case someone copies the attack
+            //Check is also run here in case someone copies this first... for some reason.
             def isShockWaveLoaded = bg.em().retrieveObject("Shock_Wave_Loaded")
-            if(!isShockWaveLoaded) actionMaker.call()
+            if(!isShockWaveLoaded) shockWaveLoader.call()
 
             assert opp.all.any{Shock_Wave.contains(it)} : "None of your opponent's Pokémon have Shock-Wave markers on them"
           }
