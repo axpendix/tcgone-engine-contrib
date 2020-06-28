@@ -1975,13 +1975,15 @@ public enum DragonFrontiers implements LogicCardInfo {
           def isCheckerLoaded = bg.em().retrieveObject("Checker_Loaded")
           if(!isCheckerLoaded) checkerLoader.call()
 
-          getter (IS_ABILITY_BLOCKED) { Holder h ->
-            if(bg.em().retrieveObject("Imprison") != null){
-              Imprison = bg.em().retrieveObject("Imprison")
-            }
-            if (Imprison.contains(h.effect.target)) {
-              if (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody) {
-                h.object=true
+          delayed {
+            getter (IS_ABILITY_BLOCKED) { Holder h ->
+              if(bg.em().retrieveObject("Imprison") != null){
+                Imprison = bg.em().retrieveObject("Imprison")
+              }
+              if (Imprison.contains(h.effect.target)) {
+                if (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody) {
+                  h.object=true
+                }
               }
             }
           }
