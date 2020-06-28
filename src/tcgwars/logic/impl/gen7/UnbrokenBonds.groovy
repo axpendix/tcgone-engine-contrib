@@ -4440,7 +4440,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             "If this card is attached to anything other than an Evolution Pokémon, discard this card."
           def eff
           def check = {
-            if (!to.realEvolution) discard thisCard
+            if (!it.realEvolution) discard thisCard
           }
           onPlay {reason->
             eff = delayed (priority: BEFORE_LAST) {
