@@ -4444,11 +4444,13 @@ public enum UnbrokenBonds implements LogicCardInfo {
           }
           onPlay {reason->
             eff = delayed (priority: BEFORE_LAST) {
-              before BETWEEN_TURNS, {discard thisCard}
+              before BETWEEN_TURNS, {
+                discard thisCard
+              }
+              after EVOLVE, self, {check(self)} //some pokemon evolve into different type
+              after DEVOLVE, self, {check(self)}
+              after ATTACH_ENERGY, self, {check(self)}
             }
-            after EVOLVE, self, {check(self)} //some pokemon evolve into different type
-            after DEVOLVE, self, {check(self)}
-            after ATTACH_ENERGY, self, {check(self)}
           }
           onRemoveFromPlay {
             eff.unregister()
