@@ -314,7 +314,7 @@ public enum PopSeries4 implements LogicCardInfo {
         pokeBody "Shell Retreat", {
           text "As long as Squirtle has any Energy cards attached to it, damage done to Squirtle by an opponent's attack is reduced by 10 (after applying Weakness and Resistance)."
           delayedA {
-            after APPLY_ATTACK_DAMAGES, {
+            before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
                 if (it.to == self && self.cards.energyCount(C) && it.dmg.value && it.notNoEffect) {
                   bc "Shell Retreat -10"

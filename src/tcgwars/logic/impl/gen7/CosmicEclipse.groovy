@@ -1743,7 +1743,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             onAttack {
               damage 80
               delayed {
-                after APPLY_ATTACK_DAMAGES, {
+                before APPLY_ATTACK_DAMAGES, {
                   bg.dm().each {
                     if(it.to == defending && it.dmg.value && it.notNoEffect) {
                       bc "Liquidation +60"
