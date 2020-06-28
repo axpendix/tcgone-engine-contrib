@@ -2763,11 +2763,34 @@ public enum LegendMaker implements LogicCardInfo {
       return basic (this, hp:HP090, type:P, retreatCost:1) {
         weakness P
         def actions = []
-        def toggleAction = {boolean bool->
-          if (bool){
-            actions.each {
-              bg().gm().registerAction(it)
-              bc "Versatile Registered"
+        def actionMaker = {PokemonCardSet self->
+          actions = action("Poké-Body: Versatile") {
+            assert self.active: "This Mew ex is not an Active Pokemon"
+            def moves = []
+            all.each {
+              if (it != self) {
+                moves.addAll(it.topPokemonCard.moves)
+              }
+            }
+            assert !moves.isEmpty(): "There are no moves to copy"
+
+            def chosenMove = choose(moves+["Cancel"], moves.collect({it.name})+["Cancel"], "Choose a move to perform")
+
+            if (chosenMove && chosenMove != "Cancel") {
+              attack (chosenMove as Move)
+            }
+          }
+        }
+        def actionHandler = {PokemonCardSet self, boolean isActive ->
+          if (isActive){
+            if (actions == []){
+              bc "Creating the Versatile action"
+              actionMaker.call(self)
+            } else {
+              actions.each {
+                bg().gm().registerAction(it)
+                bc "Versatile Registered"
+              }
             }
           } else {
             actions.each {
@@ -2776,51 +2799,16 @@ public enum LegendMaker implements LogicCardInfo {
             }
           }
         }
-        def actionHandler = {PokemonCardSet self->
-          if (self.active) {
-            if (actions != []){
-              toggleAction.call(true)
-            } else {
-              bc "Creating the Versatile action"
-              actions = action("Poké-Body: Versatile") {
-                assert self.active: "This Mew ex is not an Active Pokemon"
-                def moves = []
-                all.each {
-                  if (it != self) {
-                    moves.addAll(it.topPokemonCard.moves)
-                  }
-                }
-                assert !moves.isEmpty(): "There are no moves to copy"
-
-                def chosenMove = choose(moves+["Cancel"], moves.collect({it.name})+["Cancel"], "Choose a move to perform")
-
-                if (chosenMove && chosenMove != "Cancel") {
-                  attack (chosenMove as Move)
-                }
-              }
-            }
-          } else {
-            toggleAction.call(false)
-          }
-        }
         customAbility {
-          getter IS_ABILITY_BLOCKED, { Holder h->
-            if (h == self && !self.active) {
-              h.object=true
-            }
-          }
           delayed {
-            after SWITCH, self, {new CheckAbilities().run(bg)}
+            after SWITCH, self, {
+              new CheckAbilities().run(bg)
+              toggleAction.call(self, self.active)
+            }
           }
         }
         pokeBody "Versatile", {
           text "Mew ex can use the attacks of all Pokémon in play as its own. (You still need the necessary Energy to use each attack.)"
-          onActivate {
-            actionHandler.call(self)
-          }
-          onDeactivate {
-            actionHandler.call(self)
-          }
         }
         move "Power Move", {
           text "Search your deck for an Energy card and attach it to Mew ex. Shuffle your deck afterward. Then, you may switch Mew ex with 1 of your Benched Pokémon."
