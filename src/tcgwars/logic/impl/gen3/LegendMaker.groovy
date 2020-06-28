@@ -2763,7 +2763,7 @@ public enum LegendMaker implements LogicCardInfo {
       return basic (this, hp:HP090, type:P, retreatCost:1) {
         weakness P
         globalAbility{
-          getterA IS_ABILITY_BLOCKED, { Holder h->
+          getter IS_ABILITY_BLOCKED, { Holder h->
             if (h == self && !self.active) {
               h.object=true
             }
