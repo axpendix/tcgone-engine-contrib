@@ -2801,11 +2801,16 @@ public enum LegendMaker implements LogicCardInfo {
           delayedA {
             after SWITCH, {
               //TODO: This should turn off if the Body is disabled.
-              actionHandler.call(self, self.active)
+              if (bg.currentTurn == self.owner){
+                actionHandler.call(self, self.active)
+              }
             }
           }
           onDeactivate {
             actionHandler.call(self, false)
+          }
+          onDeactivate {
+            actionHandler.call(self, self.active)
           }
         }
         move "Power Move", {
