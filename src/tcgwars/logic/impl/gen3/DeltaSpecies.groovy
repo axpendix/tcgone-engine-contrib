@@ -583,7 +583,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         pokePower "Delta Switch", {
           text "Once during your turn, when you put Mewtwo from your hand onto your Bench, you may move any number of basic Energy cards attached to your Pokémon to your other Pokémon (excluding Mewtwo) in any way you like."
           onActivate {
-            if (it == PLAY_FROM_HAND && confirm("Use Delta Switch?")) {
+            if (it == PLAY_FROM_HAND && my.all.findAll{it.cardTypes.is(BASIC_ENERGY) && confirm("Use Delta Switch?")) {
               while (1) {
                 def pl = (my.all.findAll {it.cards.filterByType(BASIC_ENERGY)})
                 if(!pl) break;
