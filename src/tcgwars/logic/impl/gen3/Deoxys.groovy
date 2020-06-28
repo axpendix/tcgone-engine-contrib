@@ -2627,7 +2627,7 @@ public enum Deoxys implements LogicCardInfo {
             text "10+ damage. Does 10 damage plus 10 more damage for each Energy attached to Deoxys ex and the Defending Pokémon."
             energyCost P, C
             onAttack {
-              damage 10+10*self.cards.energyCount(C)+10*defending.cards.energyCount(C)
+              damage 10 + 10 * (self.cards.energyCount(C) + defending.cards.energyCount(C))
             }
           }
 

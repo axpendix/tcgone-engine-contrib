@@ -3049,7 +3049,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
 
         };
       case ALOLAN_DUGTRIO_122:
-        return evolution (this, from:"AlolanDiglett", hp:HP080, type:M, retreatCost:1) {
+        return evolution (this, from:"Alolan Diglett", hp:HP080, type:M, retreatCost:1) {
           weakness R
           resistance P, MINUS20
           bwAbility "Hair Wall", {

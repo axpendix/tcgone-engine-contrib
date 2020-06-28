@@ -600,7 +600,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "10x damage. Does 10 damage times the total amount of Energy attached to Mewtwo and the Defending Pokémon."
           energyCost R, M
           onAttack {
-            damage 10*(self.cards.energyCount(C) + opp.active.cards.energyCount(C))
+            damage 10 * (self.cards.energyCount(C) + defending.cards.energyCount(C))
           }
         }
       };

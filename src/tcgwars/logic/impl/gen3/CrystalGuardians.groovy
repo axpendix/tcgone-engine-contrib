@@ -1,6 +1,7 @@
 package tcgwars.logic.impl.gen3;
 
 import tcgwars.logic.impl.gen3.Deoxys;
+import tcgwars.logic.impl.gen3.Emerald;
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen3.DeltaSpecies;
 import tcgwars.logic.impl.gen5.PlasmaStorm;
@@ -1913,7 +1914,7 @@ public enum CrystalGuardians implements LogicCardInfo {
       case POTION_87:
       return copy (FireRedLeafGreen.POTION_101, this)
       case DOUBLE_RAINBOW_ENERGY_88:
-      return copy (TeamMagmaVsTeamAqua.DOUBLE_RAINBOW_ENERGY_88, this);
+      return copy (Emerald.DOUBLE_RAINBOW_ENERGY_87, this);
       case AGGRON_EX_89:
       return evolution (this, from:"Lairon", hp:HP150, type:M, retreatCost:4) {
         weakness R
