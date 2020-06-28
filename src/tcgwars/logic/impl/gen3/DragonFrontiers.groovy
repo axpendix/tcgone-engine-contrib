@@ -1957,15 +1957,13 @@ public enum DragonFrontiers implements LogicCardInfo {
               if (!currentPokemon) break;
             }
           }
-          delayed {
-            getter (IS_ABILITY_BLOCKED) { Holder h ->
-              if(bg.em().retrieveObject("Imprison") != null){
-                Imprison = bg.em().retrieveObject("Imprison")
-              }
-              if (Imprison.contains(h.effect.target)) {
-                if (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody) {
-                  h.object=true
-                }
+          getter (IS_ABILITY_BLOCKED) { Holder h ->
+            if(bg.em().retrieveObject("Imprison") != null){
+              Imprison = bg.em().retrieveObject("Imprison")
+            }
+            if (Imprison.contains(h.effect.target)) {
+              if (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody) {
+                h.object=true
               }
             }
           }
@@ -1988,7 +1986,8 @@ public enum DragonFrontiers implements LogicCardInfo {
                 bg.em().storeObject("Imprison",Imprison)
               }
             }
-            after DEVOLVE, {
+            //TODO: Find correct term, to replace pokemonToBeDevolved
+            /* after DEVOLVE, {
               if(bg.em().retrieveObject("Imprison") != null){
                 Imprison = bg.em().retrieveObject("Imprison")
               }
@@ -1997,7 +1996,7 @@ public enum DragonFrontiers implements LogicCardInfo {
                 Imprison.remove(ef.pokemonToBeDevolved)
                 bg.em().storeObject("Imprison", Imprison)
               }
-            }
+            } */
           }
         }
         pokePower "Imprison", {
@@ -2270,7 +2269,8 @@ public enum DragonFrontiers implements LogicCardInfo {
                 bg.em().storeObject("Shock_Wave",Shock_Wave)
               }
             }
-            after DEVOLVE, {
+            //TODO: Find correct term, to replace pokemonToBeDevolved
+            /* after DEVOLVE, {
               if(bg.em().retrieveObject("Shock_Wave") != null){
                 Shock_Wave = bg.em().retrieveObject("Shock_Wave")
               }
@@ -2279,7 +2279,7 @@ public enum DragonFrontiers implements LogicCardInfo {
                 Shock_Wave.remove(ef.pokemonToBeDevolved)
                 bg.em().storeObject("Shock_Wave",Shock_Wave)
               }
-            }
+            } */
           }
         }
         move "Electromark", {
