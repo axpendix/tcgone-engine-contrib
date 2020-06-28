@@ -2252,11 +2252,11 @@ public enum TeamRocketReturns implements LogicCardInfo {
           onPlay {
             def choice = choose([0,1],["Select 1 card : put it in your hand","Select 3 cards : shuffle them in your deck"],"What do you want to do?")
             if(choice){
-              my.discard.filterByType(BASIC, EVOLUTION).select(count : 3,"Select a combination of 3 Basic Pokémon or Evolution cards.").showToOpponent("Selected cards.").moveTo(my.deck)
+              my.discard.filterByType(BASIC, EVOLUTION).select(count : 3,"Select a combination of 3 Basic Pokémon or Evolution cards.").showToOpponent("Opponent used Pokemon Retriever to shuffle these cards into their deck").moveTo(my.deck)
               shuffleDeck()
             }
             else{
-              my.discard.filterByType(BASIC, EVOLUTION).select(count : 1,"Select 1 Basic Pokémon or Evolution").showToOpponent("Selected card.").moveTo(my.hand)
+              my.discard.filterByType(BASIC, EVOLUTION).select(count : 1,"Select 1 Basic Pokémon or Evolution").showToOpponent("Opponent used Pokemon Retriever to put this card into their hand").moveTo(my.hand)
             }
           }
           playRequirement{
