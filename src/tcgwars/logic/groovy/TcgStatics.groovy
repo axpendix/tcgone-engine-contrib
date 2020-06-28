@@ -1311,7 +1311,8 @@ class TcgStatics {
     bg.em().storeObject("Checker_Loaded",true)
 
     actions = delegate.action("[ Imprison / Shock-wave Check ]") {
-      def imprisonPokemon, shockwavePokemon
+      def imprisonPokemon = []
+      def shockwavePokemon = []
       if(bg.em().retrieveObject("Imprison") != null){
         imprisonPokemon = bg.em().retrieveObject("Imprison")
       }
