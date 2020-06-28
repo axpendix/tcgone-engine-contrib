@@ -1936,44 +1936,10 @@ public enum DragonFrontiers implements LogicCardInfo {
       return evolution (this, from:"Kirlia", hp:HP150, type:R, retreatCost:2) {
         weakness P
         def Imprison = []
-        def actions=[]
-        def checkerLoader = {
-          bg.em().storeObject("Checker_Loaded",true)
-          actions=action("[ Imprison / Shock-wave Check ]") {
-            def imprisonPokemon, shockwavePokemon
-            if(bg.em().retrieveObject("Imprison") != null){
-              def imprisonPokemon = bg.em().retrieveObject("Imprison")
-            }
-            if(bg.em().retrieveObject("Shock_Wave") != null){
-              def shockwavePokemon = bg.em().retrieveObject("Shock_Wave")
-            }
-            def playerChecked = choose([my, opp], ["My Own", "My Opponent's"], "Which player's Pokémon will you check?")
-            def playerText = (playerChecked == my ? "your" : "your opponent's")
-
-            assert playerChecked.all.any{imprisonPokemon.contains(it) || shockwavePokemon.contains(it)} : "None of $playerText Pokémon in play have any Imprison / Shock-wave markers on them"
-
-            def currentPokemon, resultInfo
-            while (true){
-              resultInfo = ""
-              if (currentPokemon){
-                def hasImprison = imprisonPokemon.contains(currentPokemon)
-                def hasShockwave = shockwavePokemon.contains(currentPokemon)
-
-                def markersInfo = (hasImprison || hasShockwave) ? "has ${(hasImprison ? "an Imprison" : "") + ((hasImprison && hasShockwave) ? " and " : "") + (hasShockwave ? "a Shock-wave" : "")} ${(hasImprison && hasShockwave) ? "markers" : "marker"}" : "doesn't have any markers"
-
-                resultInfo = "The ${currentPokemon.active?"Active":"selected"} $currentPokemon $markersInfo"
-              }
-
-              currentPokemon = playerChecked.all.select("${resultInfo}" + "Please select one of $playerText Pokémon (first one is the Active), or cancel to end this check.", false)
-              if (!currentPokemon) break;
-            }
-          }
-        }
         def imprisonLoader = {
           bg.em().storeObject("Imprison_Loaded",true)
 
-          def isCheckerLoaded = bg.em().retrieveObject("Checker_Loaded")
-          if(!isCheckerLoaded) checkerLoader.call()
+          loadMarkerCheckerAction()
 
           delayed {
             getter (IS_ABILITY_BLOCKED) { Holder h ->
@@ -2249,44 +2215,10 @@ public enum DragonFrontiers implements LogicCardInfo {
       return evolution (this, from:"Pupitar", hp:HP150, type:L, retreatCost:3) {
         weakness G
         def Shock_Wave = []
-        def actions=[]
-        def checkerLoader = {
-          bg.em().storeObject("Checker_Loaded",true)
-          actions=action("[ Imprison / Shock-wave Check ]") {
-            def imprisonPokemon, shockwavePokemon
-            if(bg.em().retrieveObject("Imprison") != null){
-              def imprisonPokemon = bg.em().retrieveObject("Imprison")
-            }
-            if(bg.em().retrieveObject("Shock_Wave") != null){
-              def shockwavePokemon = bg.em().retrieveObject("Shock_Wave")
-            }
-            def playerChecked = choose([my, opp], ["My Own", "My Opponent's"], "Which player's Pokémon will you check?")
-            def playerText = (playerChecked == my ? "your" : "your opponent's")
-
-            assert playerChecked.all.any{imprisonPokemon.contains(it) || shockwavePokemon.contains(it)} : "None of $playerText Pokémon in play have any Imprison / Shock-wave markers on them"
-
-            def currentPokemon, resultInfo
-            while (true){
-              resultInfo = ""
-              if (currentPokemon){
-                def hasImprison = imprisonPokemon.contains(currentPokemon)
-                def hasShockwave = shockwavePokemon.contains(currentPokemon)
-
-                def markersInfo = (hasImprison || hasShockwave) ? "has ${(hasImprison ? "an Imprison" : "") + ((hasImprison && hasShockwave) ? " and " : "") + (hasShockwave ? "a Shock-wave" : "")} ${(hasImprison && hasShockwave) ? "markers" : "marker"}" : "doesn't have any markers"
-
-                resultInfo = "The ${currentPokemon.active?"Active":"selected"} $currentPokemon $markersInfo"
-              }
-
-              currentPokemon = playerChecked.all.select("${resultInfo}" + "Please select one of $playerText Pokémon (first one is the Active), or cancel to end this check.", false)
-              if (!currentPokemon) break;
-            }
-          }
-        }
         def shockWaveLoader = {
           bg.em().storeObject("Shock_Wave_Loaded",true)
 
-          def isCheckerLoaded = bg.em().retrieveObject("Checker_Loaded")
-          if(!isCheckerLoaded) checkerLoader.call()
+          loadMarkerCheckerAction()
         }
         globalAbility {Card thisCard ->
           delayed {

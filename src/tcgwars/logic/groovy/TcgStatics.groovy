@@ -1304,4 +1304,43 @@ class TcgStatics {
       return false
   }
 
+  static void loadMarkerCheckerAction() {
+    def isCheckerLoaded = bg.em().retrieveObject("Checker_Loaded")
+    if (isCheckerLoaded)
+      return
+    bg.em().storeObject("Checker_Loaded",true)
+
+    def actions = []
+    actions=action("[ Imprison / Shock-wave Check ]") {
+      def imprisonPokemon, shockwavePokemon
+      if(bg.em().retrieveObject("Imprison") != null){
+        imprisonPokemon = bg.em().retrieveObject("Imprison")
+      }
+      if(bg.em().retrieveObject("Shock_Wave") != null){
+        shockwavePokemon = bg.em().retrieveObject("Shock_Wave")
+      }
+
+      def playerChecked = choose([my, opp], ["My Own", "My Opponent's"], "Which player's Pokémon will you check?")
+      def playerText = (playerChecked == my ? "your" : "your opponent's")
+
+      assert playerChecked.all.any{imprisonPokemon.contains(it) || shockwavePokemon.contains(it)} : "None of $playerText Pokémon in play have any Imprison / Shock-wave markers on them"
+
+      def currentPokemon, resultInfo
+      while (true){
+        resultInfo = ""
+        if (currentPokemon){
+          def hasImprison = imprisonPokemon.contains(currentPokemon)
+          def hasShockwave = shockwavePokemon.contains(currentPokemon)
+
+          def markersInfo = (hasImprison || hasShockwave) ? "has ${(hasImprison ? "an Imprison" : "") + ((hasImprison && hasShockwave) ? " and " : "") + (hasShockwave ? "a Shock-wave" : "")} ${(hasImprison && hasShockwave) ? "markers" : "marker"}" : "doesn't have any markers"
+
+          resultInfo = "The ${currentPokemon.active?"Active":"selected"} $currentPokemon $markersInfo"
+        }
+
+        currentPokemon = playerChecked.all.select("${resultInfo}" + "Please select one of $playerText Pokémon (first one is the Active), or cancel to end this check.", false)
+        if (!currentPokemon) break;
+      }
+    }
+  }
+
 }
