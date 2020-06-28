@@ -1959,7 +1959,7 @@ public enum DragonFrontiers implements LogicCardInfo {
                 def hasImprison = imprisonPokemon.contains(currentPokemon)
                 def hasShockwave = shockwavePokemon.contains(currentPokemon)
 
-                def markersInfo = (hasImprison || hasShockwave) ? "has ${(hasImprison ? "an Imprison" : "") + ((hasImprison && hasShockwave) ? " and " : "") + (hasShockwave ? "a Shock-wave" : "")} ${(hasImprison && hasShockwave) ? "markers" : "marker")}" : "doesn't have any markers"
+                def markersInfo = (hasImprison || hasShockwave) ? "has ${(hasImprison ? "an Imprison" : "") + ((hasImprison && hasShockwave) ? " and " : "") + (hasShockwave ? "a Shock-wave" : "")} ${(hasImprison && hasShockwave) ? "markers" : "marker"}" : "doesn't have any markers"
 
                 resultInfo = "The ${currentPokemon.active?"Active":"selected"} $currentPokemon $markersInfo"
               }
