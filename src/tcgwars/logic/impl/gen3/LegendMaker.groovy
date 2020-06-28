@@ -2762,33 +2762,57 @@ public enum LegendMaker implements LogicCardInfo {
       case MEW_EX_88:
       return basic (this, hp:HP090, type:P, retreatCost:1) {
         weakness P
+        def actions = []
+        def toggleAction = {boolean bool->
+          if (bool){
+            actions.each { bg().gm().registerAction(it) }
+          } else {
+            actions.each { bg().gm().unregisterAction(it) }
+          }
+        }
+        def actionHandler = {PokemonCardSet self->
+          if (self.active) {
+            if (actions != []){
+              toggleAction.call(true)
+            } else {
+              actions = action("Poké-Body: Versatile") {
+                assert self.active: "This Mew ex is not an Active Pokemon"
+                def moves = []
+                all.each {
+                  if (it != self) {
+                    moves.addAll(it.topPokemonCard.moves)
+                  }
+                }
+                assert !moves.isEmpty(): "There are no moves to copy"
+
+                def chosenMove = choose(moves+["Cancel"], moves.collect({it.name})+["Cancel"], "Choose a move to perform")
+
+                if (chosenMove && chosenMove != "Cancel") {
+                  attack (chosenMove as Move)
+                }
+              }
+            }
+          } else {
+            toggleAction.call(false)
+          }
+        }
         customAbility {
           getter IS_ABILITY_BLOCKED, { Holder h->
             if (h == self && !self.active) {
               h.object=true
             }
           }
-          delayed{
+          delayed {
             after SWITCH, self, {new CheckAbilities().run(bg)}
           }
         }
         pokeBody "Versatile", {
           text "Mew ex can use the attacks of all Pokémon in play as its own. (You still need the necessary Energy to use each attack.)"
-          actionA {
-            assert self.active: "This Mew ex is not an Active Pokemon"
-            def moves = []
-            all.each {
-              if (it != self) {
-                moves.addAll(it.topPokemonCard.moves)
-              }
-            }
-            assert !moves.isEmpty(): "There are no moves to copy"
-
-            def chosenMove = choose(moves+["Cancel"], moves.collect({it.name})+["Cancel"], "Choose a move to perform")
-
-            if (chosenMove && chosenMove != "Cancel") {
-              attack (chosenMove as Move)
-            }
+          onActivate {
+            actionHandler.call(self)
+          }
+          onDeactivate {
+            actionHandler.call(self)
           }
         }
         move "Power Move", {
