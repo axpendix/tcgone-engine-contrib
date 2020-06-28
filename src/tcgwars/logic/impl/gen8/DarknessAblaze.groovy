@@ -282,6 +282,7 @@ public enum DarknessAblaze implements LogicCardInfo {
     return name();
   }
 
+//TODO: Remove empty closures
   @Override
   public Card getImplementation() {
     switch (this) {
@@ -535,7 +536,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Search your deck for a [G] Energy card and attach it to 1 of your Pokémon."
           energyCost C
           attackRequirement {
-            assert my.deck : "Your deck is empty"
+            assert my.deck : AssertString.MY_DECK.text
           }
           onAttack {
             attachEnergyFrom type:G, my.deck, my.all
@@ -581,7 +582,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon for each Energy attached to this Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C
           attackRequirement {
-            assert self.cards.energyCount(C) : "$self.name has no Energy attached"
+            assert self.cards.energyCount(C) : AssertString.getAssertString 'energy.energyCount', "[C]"
           }
           onAttack {
             def damageAmount = 20 * self.cards.energyCount(C)
@@ -821,7 +822,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Draw a card."
           energyCost C
           attackRequirement {
-            assert my.deck : "Your deck is empty"
+            assert my.deck : AssertString.MY_DECK.text
           }
           onAttack {
             draw 1
@@ -923,7 +924,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "80 damage. If your opponent’s Active Pokémon has no damage counters on it, this attack does nothing."
           energyCost R
           attackRequirement {
-            assert opp.active.numberOfDamageCounters : "The defending Pokémon has no damage counters on it"
+            assert opp.active.numberOfDamageCounters : AssertString.OPP_ACTIVE_DAMAGE.text
           }
           onAttack {
             damage 80
@@ -1045,7 +1046,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Once during your turn, you may choose 1 of your opponent’s face-down Prize cards and switch it with the top card from their deck. (Both cards remain face-down.)"
           actionA {
             checkLastTurn()
-            assert opp.deck : "Your opponent's deck is empty"
+            assert opp.deck : AssertString.OPP_DECK.text
             assert opp.prizeCardSet.faceDownCards : "Your opponent has no face down Prize cards"
             powerUsed()
 
@@ -1108,7 +1109,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Heal 20 damage from this Pokémon."
           energyCost C
           attackRequirement {
-            assert self.numberOfDamageCounters : "$self.name has taken no damage"
+            assert self.numberOfDamageCounters : AssertString.MY_ACTIVE_DAMAGE.text
           }
           onAttack {
             heal 20, self
@@ -1145,7 +1146,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Search your deck for up to 2 Rare Fossil cards and put them on your Bench. Then, shuffle your deck."
           energyCost C
           attackRequirement {
-            assert my.deck : "Your deck is empty"
+            assert my.deck : AssertString.MY_DECK.text
           }
           onAttack {
             def info = "Select up to 2 Rare Fossil cards to put on your bench."
@@ -1261,7 +1262,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Once during your turn, if this Pokémon is your Active Pokémon, you may flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
           actionA {
             checkLastTurn()
-            assert self.active : "$self.name is not your Active Pokémon"
+            assert self.active : AssertString.getAssertString AssertString.SELF_ACTIVE.id, "$self"
             powerUsed()
             flip {apply PARALYZED, opp.active, SRC_ABILITY}
           }
@@ -1323,7 +1324,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Shuffle your hand into your deck, then draw 8 cards."
           energyCost C
           attackRequirement {
-            assert my.deck || my.hand : "There are no cards in your hand or deck"
+            assert my.deck || my.hand : AssertString.getAssertString 'my.deck.or.my.hand'
           }
           onAttack {
             my.hand.moveTo hidden:true, my.deck
@@ -1347,7 +1348,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Heal 30 damage from this Pokémon."
           energyCost C
           attackRequirement {
-            assert self.numberOfDamageCounters : "$self.name has not taken any damage"
+            assert self.numberOfDamageCounters : AssertString.getAssertString AssertString.MY_ACTIVE_DAMAGE.id, "$self"
           }
           onAttack {
             heal 30, self
@@ -1370,7 +1371,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Discard an Energy from this Pokémon. If you do, heal all damage from this Pokémon."
           energyCost C
           attackRequirement {
-            assert self.cards.energyCount(C) : "$self.name has no Energy attached"
+            assert self.cards.energyCount(C) : AssertString.getAssertString AssertString.ATTACHED_ENERGY.id, "[C] on $self to discard"
           }
           onAttack {
             self.cards.findAll {energyFilter C}.select("Select Energy to discard from $self.name.").discard()
@@ -1512,7 +1513,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Draw 2 cards."
           energyCost C
           attackRequirement {
-            assert my.deck : "Your deck is empty"
+            assert my.deck : AssertString.MY_DECK.text
           }
           onAttack {
             draw 2
@@ -1554,7 +1555,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Flip a coin, if heads discard 5 cards from the top of your opponent’s deck. If tails, discard 5 cards from the top of your deck."
           energyCost C, C
           attackRequirement {
-            assert my.deck || opp.deck : "Both decks are empty"
+            assert my.deck || opp.deck : AssertString.MY_HAND_OPP_HAND.text
           }
           onAttack {
             flip 1, {if (opp.deck) opp.deck.subList(0, 5).discard()}, {if (my.deck) my.deck.subList(0, 5).discard()}
@@ -1836,7 +1837,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Look at the top 5 cards of your opponent’s deck and put them back on top of their deck in any order."
           energyCost P
           attackRequirement {
-            assert opp.deck
+            assert opp.deck : AssertString.OPP_DECK.text
           }
           onAttack {
             def deck=opp.deck
@@ -1862,7 +1863,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Choose 1 random card from your opponent’s hand. Your opponent reveals that card and shuffles it into their deck."
           energyCost P
           attackRequirement {
-            assert opp.hand : "Your opponent's hand is empty"
+            assert opp.hand : AssertString.OPP_HAND.text
           }
           onAttack {
             opp.hand.select(hidden: true, count: 1, "Choose a random card from your opponent's hand").showToMe("Selected card").showToOpponent("this card will be shuffled into your deck").moveTo(opp.deck)
@@ -2010,8 +2011,8 @@ public enum DarknessAblaze implements LogicCardInfo {
         bwAbility "Tea Break", {
           text "Once during your turn, you may discard a Pokémon with a Mad Party attack from your hand and draw 2 cards."
           actionA {
-            assert my.hand.findAll{ it.cardTypes.is(POKEMON) && it.moves.any{it.name=="Mad Party"} } : "You have no Pokemon with Mad Party in your hand"
-            assert my.deck : "Your deck is empty"
+            assert my.hand.findAll{ it.cardTypes.is(POKEMON) && it.moves.any{it.name=="Mad Party"} } : AssertString.getAssertString 'my.hand.filter', "Pokémon with Mad Party"
+            assert my.deck : AssertString.MY_DECK.text
             checkLastTurn()
             powerUsed()
             my.hand.findAll{ it.cardTypes.is(POKEMON) && it.moves.any{it.name=="Mad Party"} }.select("Choose a Pokemon with Mad Party to discard").discard()
@@ -2389,7 +2390,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Discard 1 card from the top of your opponent’s deck."
           energyCost D
           attackRequirement {
-            assert opp.deck : "Your opponent's deck is empty"
+            assert opp.deck : AssertString.OPP_DECK.text
           }
           onAttack {
             opp.deck.subList(0,1).discard()
@@ -2629,7 +2630,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         bwAbility "Dark Squall", {
           text "As often as you like during your turn, you may attach a [D] Energy from your hand to one of your Pokémon in play."
           actionA {
-            assert my.hand.filterByBasicEnergyType(D) : "No [D] in hand"
+            assert my.hand.filterByBasicEnergyType(D) : AssertString.getAssertString AssertString.MY_HAND_FILTER.id, "[D]"
             powerUsed()
             def card = my.hand.filterByEnergyType(D).select("Choose a [D] Energy Card to attach")
             attachEnergy(my.all.select("To?"), card)
@@ -2808,7 +2809,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Draw a card."
           energyCost C
           attackRequirement {
-            assert my.deck : "Your deck is empty"
+            assert my.deck : AssertString.MY_DECK.text
           }
           onAttack {
             draw 1
@@ -2844,7 +2845,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
           energyCost D
           attackRequirement {
-            assert my.deck : "Your deck is empty"
+            assert my.deck : AssertString.MY_DECK.text
           }
           onAttack {
             my.deck.search(max:2,"Select up to 2 cards",{true}).moveTo(hidden:true,my.hand)
@@ -3243,7 +3244,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Search your deck for a Pokémon that evolves from Eevee, reveal it, and put it into your hand. Then, shuffle your deck."
           energyCost C
           attackRequirement {
-            assert my.deck : "There are no cards left in your deck"
+            assert my.deck : AssertString.MY_DECK.text
           }
           onAttack {
             my.deck.search("Select a Pokémon that evolves from Eevee.", {it.cardTypes.is(EVOLUTION) && it.predecessor == "Eevee"}).showToOpponent("Your opponent chose this Pokémon that evolves from Eevee").moveTo(my.hand)
@@ -3274,7 +3275,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Draw 3 cards."
           energyCost C
           attackRequirement {
-            assert my.deck : "There are no cards left in your deck"
+            assert my.deck : AssertString.MY_DECK.text
           }
           onAttack {
             draw 3
@@ -3386,7 +3387,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Search your deck for an Energy card, reveal it, and put it into your hand. Then, shuffle your deck."
           energyCost C
           attackRequirement {
-            assert my.deck : "You have no cards left in your deck"
+            assert my.deck : AssertString.MY_DECK.text
           }
           onAttack {
             my.deck.search("Put Energy Card into your hand",cardTypeFilter(ENERGY)).showToOpponent("Opponent's chosen Energy card").moveTo(my.hand)
@@ -3484,7 +3485,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Search your deck for any 2 cards and put them into your hand. Then, shuffle your deck."
           energyCost C, C
           attackRequirement {
-            assert my.deck : "There are no cards left in your deck"
+            assert my.deck : AssertString.MY_DECK.text
           }
           onAttack {
             deck.select(count: 2).moveTo(hidden: true, hand)
@@ -3834,7 +3835,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           flip 2, {}, {}, [2: bringCardFromDiscard]
         }
         playRequirement{
-          assert my.discard : "You have no cards in your discard pile"
+          assert my.discard : AssertString.MY_DISCARD.text
         }
       };
       case KABU_171:
@@ -3860,8 +3861,8 @@ public enum DarknessAblaze implements LogicCardInfo {
           shuffleDeck()
         }
         playRequirement{
-          assert my.deck : "You have no cards in your deck"
-          assert my.discard.filterByType(POKEMON) : "You have no Pokémon in your discard pile"
+          assert my.deck : AssertString.MY_DECK.text
+          assert my.discard.filterByType(POKEMON) : AssertString.getAssertString 'my.discard.filter', "Pokémon"
         }
       };
       case PIERS_173:
@@ -3880,7 +3881,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             bg.em().storeObject("Piers", bg.turnCount)
           }
           playRequirement{
-            assert my.deck.notEmpty
+            assert my.deck.notEmpty : AssertString.MY_DECK.text
           }
       };
       case POKEMON_BREEDER_S_NURTURING_174:
@@ -3915,8 +3916,8 @@ public enum DarknessAblaze implements LogicCardInfo {
           shuffleDeck()
         }
         playRequirement{
-          assert my.deck : "Your deck is empty."
-          assert bg.turnCount > 2 : "Cannot use this card during your first turn."
+          assert my.deck : AssertString.MY_DECK.text
+          assert bg.turnCount > 2 : AssertString.FIRST_TURN.text
           assert my.all.any{it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount} : "Cannot use this on Pokémon put into play this turn"
         }
       };
@@ -3986,7 +3987,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         }
         playRequirement{
           assertMyAll(hasPokemonVMAX: true)
-          assert my.discard.filterByType(BASIC_ENERGY) : "No Basic Energy in your discard pile"
+          assert my.discard.filterByType(BASIC_ENERGY) : AssertString.getAssertString 'my.discard.filter', "Basic Energy"
         }
       };
       case ROSE_TOWER_177:
@@ -3996,8 +3997,8 @@ public enum DarknessAblaze implements LogicCardInfo {
         def actions=[]
         onPlay {
           actions = action("Stadium: Rose Tower") {
-            assert lastTurn != bg().turnCount : "Already used"
-            assert my.deck : "You don't have any cards left in your deck"
+            assert lastTurn != bg().turnCount : AssertString.getAssertString 'already.used', "Rose Tower"
+            assert my.deck : AssertString.MY_DECK.text
             assert (my.hand.size() < 3) : "You have 3 or more cards in your hand"
             bc "Used Rose Tower"
             lastTurn = bg().turnCount
@@ -4018,7 +4019,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           my.deck.add(0, card)
         }
         playRequirement{
-          assert my.deck.notEmpty : "Your deck is empty"
+          assert my.deck.notEmpty : AssertString.MY_DECK.text
         }
       };
       case MOUNTAINOUS_SMOKE_179:
@@ -4085,7 +4086,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         }
         playRequirement{
           assert my.all.findAll{it.basic && !(it.pokemonGX)} : "You have no Basic Pokémon that aren't Pokémon-GX"
-          assert my.discard.filterByType(BASIC_ENERGY) : "There are no basic Energy cards in your discard pile"
+          assert my.discard.filterByType(BASIC_ENERGY) : AssertString.getAssertString 'my.discard.filter', "Basic Energy"
         }
       };
       case HEAT_FIRE_ENERGY_184:
