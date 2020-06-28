@@ -434,7 +434,7 @@ public enum PowerKeepers implements LogicCardInfo {
           text "10x damage. Does 10 damage times the total amount of Energy attached to Gardevoir and the Defending Pokémon."
           energyCost P
           onAttack {
-            def energies = self.cards.filterByType(ENERGY).size() + opp.cards.filterByType(ENERGY).size()
+            def energies = self.cards.energyCount(C) + opp.active.cards.energyCount(C)
             damage 10*energies
           }
         }
