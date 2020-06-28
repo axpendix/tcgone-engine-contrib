@@ -2801,7 +2801,7 @@ public enum LegendMaker implements LogicCardInfo {
         }
         customAbility {
           delayed {
-            after SWITCH, self, {
+            after SWITCH, {
               //TODO: This should turn off if the Body is disabled.
               bc "calling actionHandler"
               actionHandler.call(self, self.active)
