@@ -2784,32 +2784,29 @@ public enum LegendMaker implements LogicCardInfo {
         def actionHandler = {PokemonCardSet self, boolean enable ->
           if (enable){
             if (actions == []){
-              bc "Creating the Versatile action"
               actionMaker.call(self)
             } else {
               actions.each {
                 bg().gm().registerAction(it)
-                bc "Versatile Registered"
               }
             }
           } else {
             actions.each {
               bg().gm().unregisterAction(it)
-              bc "Versatile Unregistered"
-            }
-          }
-        }
-        customAbility {
-          delayed {
-            after SWITCH, {
-              //TODO: This should turn off if the Body is disabled.
-              bc "calling actionHandler"
-              actionHandler.call(self, self.active)
             }
           }
         }
         pokeBody "Versatile", {
           text "Mew ex can use the attacks of all Pokémon in play as its own. (You still need the necessary Energy to use each attack.)"
+          delayedA {
+            after SWITCH, {
+              //TODO: This should turn off if the Body is disabled.
+              actionHandler.call(self, self.active)
+            }
+          }
+          onDeactivate {
+            actionHandler.call(self, false)
+          }
         }
         move "Power Move", {
           text "Search your deck for an Energy card and attach it to Mew ex. Shuffle your deck afterward. Then, you may switch Mew ex with 1 of your Benched Pokémon."
