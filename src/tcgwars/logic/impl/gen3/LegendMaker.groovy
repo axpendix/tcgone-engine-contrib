@@ -2768,6 +2768,9 @@ public enum LegendMaker implements LogicCardInfo {
               h.object=true
             }
           }
+          delayed{
+            after SWITCH, self, {new CheckAbilities().run(bg)}
+          }
         }
         pokeBody "Versatile", {
           text "Mew ex can use the attacks of all Pokémon in play as its own. (You still need the necessary Energy to use each attack.)"
