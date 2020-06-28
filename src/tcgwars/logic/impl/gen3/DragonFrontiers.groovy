@@ -2281,7 +2281,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
             //Check is also run here in case someone copies the attack
             def isShockWaveLoaded = bg.em().retrieveObject("Shock_Wave_Loaded")
-            if(ef.evolutionCard == thisCard && !isShockWaveLoaded) actionMaker.call()
+            if(!isShockWaveLoaded) actionMaker.call()
 
             assert opp.all.any{!Shock_Wave.contains(it)} : "All of your opponent's Pokémon already have Shock-wave markers on them"
           }
@@ -2316,7 +2316,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
             //Check is also run here in case someone copies the attack
             def isShockWaveLoaded = bg.em().retrieveObject("Shock_Wave_Loaded")
-            if(ef.evolutionCard == thisCard && !isShockWaveLoaded) actionMaker.call()
+            if(!isShockWaveLoaded) actionMaker.call()
 
             assert opp.all.any{Shock_Wave.contains(it)} : "None of your opponent's Pokémon have Shock-Wave markers on them"
           }
