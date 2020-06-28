@@ -1983,9 +1983,19 @@ public enum DragonFrontiers implements LogicCardInfo {
                 Imprison = bg.em().retrieveObject("Imprison")
               }
               if (Imprison.contains(ef.pokemonToBeEvolved)) {
-                bc "${ef.pokemonToBeEvolved} loses its Imprison marker when evolved"
+                bc "${ef.pokemonToBeEvolved} loses its Imprison marker when evolved!"
                 Imprison.remove(ef.pokemonToBeEvolved)
                 bg.em().storeObject("Imprison",Imprison)
+              }
+            }
+            after DEVOLVE, {
+              if(bg.em().retrieveObject("Imprison") != null){
+                Imprison = bg.em().retrieveObject("Imprison")
+              }
+              if (Imprison.contains(ef.pokemonToBeDevolved)) {
+                bc "${ef.pokemonToBeDevolved} loses its Imprison marker when devolved!"
+                Imprison.remove(ef.pokemonToBeDevolved)
+                bg.em().storeObject("Imprison", Imprison)
               }
             }
           }
@@ -2255,7 +2265,7 @@ public enum DragonFrontiers implements LogicCardInfo {
                 Shock_Wave = bg.em().retrieveObject("Shock_Wave")
               }
               if (Shock_Wave.contains(ef.pokemonToBeEvolved)) {
-                bc "${ef.pokemonToBeEvolved} loses its Shock-wave marker when evolved"
+                bc "${ef.pokemonToBeEvolved} loses its Shock-wave marker when evolved!"
                 Shock_Wave.remove(ef.pokemonToBeEvolved)
                 bg.em().storeObject("Shock_Wave",Shock_Wave)
               }
@@ -2264,9 +2274,9 @@ public enum DragonFrontiers implements LogicCardInfo {
               if(bg.em().retrieveObject("Shock_Wave") != null){
                 Shock_Wave = bg.em().retrieveObject("Shock_Wave")
               }
-              if (Shock_Wave.contains(ef.pokemonToBeEvolved)) {
-                bc "${ef.pokemonToBeEvolved} loses its Shock-wave marker when devolved"
-                Shock_Wave.remove(ef.pokemonToBeEvolved)
+              if (Shock_Wave.contains(ef.pokemonToBeDevolved)) {
+                bc "${ef.pokemonToBeDevolved} loses its Shock-wave marker when devolved!"
+                Shock_Wave.remove(ef.pokemonToBeDevolved)
                 bg.em().storeObject("Shock_Wave",Shock_Wave)
               }
             }
