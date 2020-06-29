@@ -4860,11 +4860,10 @@ public enum CosmicEclipse implements LogicCardInfo {
           playRequirement{
             assert my.deck : "Your deck is empty."
             assert bg.turnCount > 2 : "Cannot use this card during your first turn."
+              //TODO: Change this filter. Currently can't learn if a Pokémon has a GX evolution.
             assertMyAll(info: "that weren't put into play this turn.", {
-              (it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount) &&
-              //TODO: Change this. Still can't learn if a Pokémon has a GX evolution, but this will at least filter obvious non-allowed cases for standard and expanded.
-              !(it.pokemonEX || it.pokemonBreak || it.pokemonGX || it.pokemonV || it.topPokemonCard.cardTypes.is(PRISM_STAR))
-              })
+              (it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount)
+            })
           }
         };
       case ROLLER_SKATER_203:
