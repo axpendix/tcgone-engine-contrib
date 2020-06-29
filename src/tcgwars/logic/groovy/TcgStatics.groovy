@@ -1300,7 +1300,7 @@ class TcgStatics {
     delegate.onAttack {
       def c = !opp.deck ? 1 : 2
       if (my.deck && opp.deck){
-        def c=choose([1,2],["Your deck", "Your opponent's deck"], "Rearrange the top 5 cards of which player's deck?")
+        c = choose([1,2],["Your deck", "Your opponent's deck"], "Rearrange the top 5 cards of which player's deck?")
       }
 
       def chosenDeck, playerString, bcString
