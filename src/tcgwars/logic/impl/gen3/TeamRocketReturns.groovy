@@ -112,7 +112,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
   COPYCAT_83 ("Copycat", 83, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   POKEMON_RETRIEVER_84 ("Pokémon Retriever", 84, Rarity.UNCOMMON, [TRAINER]),
   POW__HAND_EXTENSION_85 ("Pow! Hand Extension", 85, Rarity.UNCOMMON, [TRAINER]),
-  ROCKET_S_ADMIN__86 ("Rocket's Admin.", 86, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  ROCKET_S_ADMIN__86 ("Rocket's Admin", 86, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   ROCKET_S_HIDEOUT_87 ("Rocket's Hideout", 87, Rarity.UNCOMMON, [TRAINER, STADIUM]),
   ROCKET_S_MISSION_88 ("Rocket's Mission", 88, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   ROCKET_S_POKE_BALL_89 ("Rocket's Poké Ball", 89, Rarity.UNCOMMON, [TRAINER]),
@@ -224,7 +224,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               before EVOLVE, {
                 flag = (ef.evolutionCard as Card).player.pbg.hand.contains(ef.evolutionCard)
               }
-              after EVOLVE, { 
+              after EVOLVE, {
                 if (flag) {
                   PokemonCardSet pcs = ef.pokemonToBeEvolved
                   if(pcs.owner != self.owner && bg.em().retrieveObject("Darkest Impulse") != (pcs.id+bg.turnCount)){
