@@ -1280,7 +1280,7 @@ class TcgStatics {
   }
   static rearrangeEitherPlayersDeck(def delegate, int count){
     delegate.attackRequirement {
-      assert my.deck || opp.deck : "Both players' decks are empty"
+      assert my.deck || opp.deck : "Both players' decks are empty."
     }
     delegate.onAttack {
       def choices=[]; def labels=[]
