@@ -1764,7 +1764,7 @@ public enum UnseenForces implements LogicCardInfo {
                 if (confirm("Use Energy Evolution?")) {
                   powerUsed()
                   def typesAllowed = ef.card.getEnergyTypes().first()
-                  bc "Debug ${typesAllowed} -> ${typesAllowed.minus[[C, M, F] as Set])}"
+                  bc "Debug ${typesAllowed} -> ${typesAllowed.minus([[C, M, F] as Set])}"
                   def sel = self.owner.pbg.deck.select(min:0, "Energy Evolution ${typesAllowed}",
                     { it.cardTypes.is(EVOLUTION) && it.types.contains(typesAllowed) && it.predecessor==self.name }, self.owner)
 
