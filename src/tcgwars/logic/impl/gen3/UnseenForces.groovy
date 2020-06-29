@@ -1761,7 +1761,9 @@ public enum UnseenForces implements LogicCardInfo {
             after ATTACH_ENERGY, self, {
               //TODO: Prevent the ability from triggering if the attachment is caused by an attack's effect.
               if (ef.reason==PLAY_FROM_HAND && self.owner.pbg.deck && ef.card.getEnergyTypes()) {
-                def typesAllowed = ef.card.getEnergyTypes().first().minus([C]).minus([F])
+                def typesAllowed = ef.card.getEnergyTypes().first()
+                typesAllowed -= [C, F]
+                bc ">DEBUG: $typesAllowed"
                 if (typesAllowed && confirm("Use Energy Evolution?")) {
                   powerUsed()
                   def sel = self.owner.pbg.deck.select(min:0, "Energy Evolution ${typesAllowed}",

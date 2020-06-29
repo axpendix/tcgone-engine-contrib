@@ -1585,13 +1585,15 @@ public enum LegendMaker implements LogicCardInfo {
         move "Flick Poison", {
           text "Switch 1 of your opponent's Benched Pokémon with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch. The new Defending Pokémon is now Poisoned."
           energyCost C
+          attackRequirement{
+            assert opp.bench : "Your opponent has no benched Pokémon"
+          }
           onAttack {
-            def pcs = defending
-            if (opp.bench) {
-              pcs = opp.bench.select("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon.")
-              sw defending, pcs
+            def pcs = opp.bench.select("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon.")
+            sw defending, pcs
+            if (pcs.active){
+              apply POISONED, pcs
             }
-            apply POISONED, pcs
           }
         }
       };

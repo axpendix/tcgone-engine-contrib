@@ -1304,7 +1304,7 @@ public enum DiamondPearl implements LogicCardInfo {
               assert my.deck : "There are no more cards in your deck."
             }
             onAttack {
-              my.deck.select(max: 1).moveTo(hidden: true, my.hand)
+              my.deck.select().moveTo(hidden: true, my.hand)
               shuffleDeck()
             }
           }
