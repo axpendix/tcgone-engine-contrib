@@ -4438,7 +4438,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             }
           }
           playRequirement{
-            assertOppBench(overrideText: true, info: "Your opponent only has 1 Pokémon in play")
+            assert opp.all.size() > 1 : "Your opponent only has one Pokémon in play"
             assertOppAll(overrideText: true, info: "There are no damage counters to move", {it.numberOfDamageCounters})
           }
         };
@@ -4606,7 +4606,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             pcs.cards.filterByType(ENERGY).select(max:2, "Select up to 2 Energy cards to move to the target.").each{energySwitch(pcs,tar,it)}
           }
           playRequirement{
-            assertMyBench(overrideText: true, info: "You only have 1 Pokémon in play")
+            assert my.all.size() > 1 : "You only have one Pokémon in play"
             assertMyAll(hasVariants: TAG_TEAM, info: "with Energy attached to them", {it.cards.filterByType(ENERGY)})
           }
         };

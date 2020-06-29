@@ -1252,8 +1252,8 @@ public enum UnbrokenBonds implements LogicCardInfo {
             text "Move an Energy from 1 of your opponent's Pokémon to another of their Pokémon. If you do, put 3 damage counters on the Pokémon you moved the Energy to."
             energyCost C
             attackRequirement {
+              assert opp.all.size() > 1 : "Your opponent only has one Pokémon in play"
               assertOppAll(info: "with Energy attached to them", {it.cards.filterByType(ENERGY)})
-              assertOppBench(overrideText: true, info: "Your opponent only has 1 Pokémon in play")
             }
             onAttack {
               def bothAll = new PcsList();
