@@ -865,11 +865,13 @@ public enum DragonFrontiers implements LogicCardInfo {
               my.all.each{
                 if(Imprison.contains(it)){
                   Imprison.remove(it)
+                  bc"Removed an Imprison counter from $it"
                   bg.em().storeObject("Imprison",Imprison)
                   new CheckAbilities().run(bg)//Not sure if Gardevoir will update abilities in time so adding this here.
                 }
                 if(Shock_Wave.contains(it)){
                   Shock_Wave.remove(it)
+                  bc"Removed a Shock-wave counter from $it"
                   bg.em().storeObject("Shock_Wave",Shock_Wave)
                 }
                 if(it.specialConditions){
