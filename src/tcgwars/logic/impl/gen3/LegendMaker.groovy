@@ -1560,8 +1560,8 @@ public enum LegendMaker implements LogicCardInfo {
           onAttack {
             if (defending.cards.filterByType(TRAINER)){
               defending.cards.filterByType(TRAINER).discard()
-              damage 30
             }
+            damage 30
           }
         }
       };
