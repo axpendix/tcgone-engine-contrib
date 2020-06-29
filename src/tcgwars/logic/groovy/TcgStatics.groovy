@@ -1283,14 +1283,25 @@ class TcgStatics {
       assert my.deck || opp.deck : "Both players' decks are empty."
     }
     delegate.onAttack {
-      def choices=[]; def labels=[]
-      if(my().deck.notEmpty()){choices.add(my().deck); labels.add("My deck")}
-      if(opp().deck.notEmpty()){choices.add(opp().deck); labels.add("Opp deck")}
-      def deck=choose(choices, labels) as CardList
-      def deck2=rearrange(deck.subList(0,count))
-      deck.setSubList(0, deck2)
-      if(deck==my().deck) bc "Rearranged top $count cards of own deck."
-      else bc "Rearranged top $count cards of opponent's (${opp.owner.getPlayerUsername(bg)}) deck."
+      def choices=[]
+      def labels=[]
+
+      if ( my().deck.notEmpty() ) {
+        choices.add(my().deck)
+        labels.add("My deck")
+      }
+      if( opp().deck.notEmpty() ) {
+        choices.add(opp().deck)
+        labels.add("Opponent's deck")
+      }
+      def chosenDeck = choose(choices, labels) as CardList
+      def rearrangedCards = rearrange(deck.subList(0, count))
+      chosenDeck.setSubList(0, rearrangedCards)
+      if (chosenDeck == my().deck) {
+        bc "Rearranged top $count cards of own's deck."
+      } else {
+        bc "Rearranged top $count cards of opponent's (${opp.owner.getPlayerUsername(bg)}) deck."
+      }
     }
   }
   static boolean wasSwitchedOutThisTurn(PokemonCardSet self){
