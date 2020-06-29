@@ -3126,7 +3126,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "Discard a Pokémon Tool card from 1 of your opponent's Pokémon."
             energyCost C
             attackRequirement {
-              assertOppAll(repText: true, info: "There are no Pokémon Tool cards attached to your opponent's Pokemon.", {it.cards.filterByType(POKEMON_TOOL)})
+              assertOppAll(overrideText: true, info: "There are no Pokémon Tool cards attached to your opponent's Pokemon.", {it.cards.filterByType(POKEMON_TOOL)})
             }
             onAttack {
               def target = opp.all.findAll{ it.cards.filterByType(POKEMON_TOOL) }.select("Choose the Pokémon to discard a Pokémon Tool from.")
@@ -4437,8 +4437,8 @@ public enum UnifiedMinds implements LogicCardInfo {
             }
           }
           playRequirement{
-            assertOppBench(repText: true, info: "Your opponent only has 1 Pokémon in play")
-            assertOppAll(repText: true, info: "There are no damage counters to move", {it.numberOfDamageCounters})
+            assertOppBench(overrideText: true, info: "Your opponent only has 1 Pokémon in play")
+            assertOppAll(overrideText: true, info: "There are no damage counters to move", {it.numberOfDamageCounters})
           }
         };
       case HAPU_200:
@@ -4605,7 +4605,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             pcs.cards.filterByType(ENERGY).select(max:2, "Select up to 2 Energy cards to move to the target.").each{energySwitch(pcs,tar,it)}
           }
           playRequirement{
-            assertMyBench(repText: true, info: "You only have 1 Pokémon in play")
+            assertMyBench(overrideText: true, info: "You only have 1 Pokémon in play")
             assertMyAll(hasVariants: TAG_TEAM, info: "with Energy attached to them", {it.cards.filterByType(ENERGY)})
           }
         };

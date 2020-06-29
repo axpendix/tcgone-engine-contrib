@@ -1253,7 +1253,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             energyCost C
             attackRequirement {
               assertOppAll(info: "with Energy attached to them", {it.cards.filterByType(ENERGY)})
-              assertOppBench(repText: true, info: "Your opponent only has 1 Pokémon in play")
+              assertOppBench(overrideText: true, info: "Your opponent only has 1 Pokémon in play")
             }
             onAttack {
               def bothAll = new PcsList();

@@ -1058,7 +1058,7 @@ public enum TeamUp implements LogicCardInfo {
           move "Electromagnetic Bomb" , {
             text "20× damages. Move any number of [L] Energy from your Benched Pokémon to this Pokémon. This attack does 20 damage for each Energy card you moved in this way."
             attackRequirement{
-              assertMyBench(repText: true, info: "None of your Benched Pokémon has any [L] Energy attached", {it.cards.filterByEnergyType(L)})
+              assertMyBench(overrideText: true, info: "None of your Benched Pokémon has any [L] Energy attached", {it.cards.filterByEnergyType(L)})
             }
             onAttack{
               def dmgCount = 0

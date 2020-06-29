@@ -1163,7 +1163,7 @@ class TcgStatics {
    *   + negateVariants: If set to true, hasVariants will be inverted: only PCS that are __not__ any of the variants provided will be accepted.
    *   + isStage: A list of specific CardType values (currently: EVOLVED | UNEVOLVED | BASIC | STAGE1 | STAGE2 | EVOLUTION). If set, the area filter will only accept PCS that return true for every single one of the included values; otherwise, it'll take any Pokémon regardless of stage.
    *   + info: If set, it'll replace the end of the failed assert warning with a custom text, instead of the default "follow the stated condition(s)".
-   *   + repText: If true, params.info will override the entirety of the failed assert warning.
+   *   + overrideText: If true, params.info will override the entirety of the failed assert warning.
    *
    * @param filter Additional condition the filtered benched Pokémon must follow. Defaults to true (so any Pokémon).
    *
@@ -1209,7 +1209,7 @@ class TcgStatics {
       )
     }
 
-    if (params.info && params.repText) {
+    if (params.info && params.overrideText) {
       failMessage = params.info
     } else {
       def benchedString = (params.benched ? "Benched " : "")
