@@ -2763,16 +2763,6 @@ public enum LegendMaker implements LogicCardInfo {
       return basic (this, hp:HP090, type:P, retreatCost:1) {
         weakness P
         pokeBody "Versatile", {
-					text "This Pokémon can use the attacks of any Pokémon in play (both yours and your opponent's). (You still need the necessary Energy to use each attack.)"
-					getterA (GET_MOVE_LIST, self) {holder->
-						all.each {
-							if(it!=self) {
-								holder.object.addAll(it.topPokemonCard.moves)
-							}
-						}
-					}
-				}
-        pokeBody "Versatile", {
           text "Mew ex can use the attacks of all Pokémon in play as its own. (You still need the necessary Energy to use each attack.)"
           getterA (GET_MOVE_LIST, self) {holder->
 						all.each {
