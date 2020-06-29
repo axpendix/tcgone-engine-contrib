@@ -594,8 +594,9 @@ public enum HiddenFates implements LogicCardInfo {
         weakness P
         bwAbility "Last Pattern", {
           text "If this Pokémon is Knocked Out by damage from an opponent's attack, discard 2 random cards from your opponent's hand."
-          delayedA {
-            eff = after (KNOCKOUT, self) {
+          def eff
+          eff = delayed {
+            after (KNOCKOUT, self) {
               // TODO: Make TcgStatics.astonish more flexible so that it actually works for this?
               if(!checkBodyguard()) {
                 bc "Last Pattern activates"
