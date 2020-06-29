@@ -1759,11 +1759,14 @@ public enum UnseenForces implements LogicCardInfo {
           text "Whenever you attach an Energy card from your hand to Eevee, you may search your deck for a card that evolves from Eevee that is the same type as the Energy card you attached to Eevee. Put that card onto Eevee. (This counts as evolving Eevee.) Shuffle your deck afterward. This power can't be used when you attach an Energy card to Eevee as part of an attack's effect."
           delayedA {
             after ATTACH_ENERGY, self, {
-              if (ef.reason==PLAY_FROM_HAND && self.owner.pbg.deck && ef.card.basicType.minus[[C, M, F] as Set]) {
+              //TODO: Filter out C, M and F energies
+              if (ef.reason==PLAY_FROM_HAND && self.owner.pbg.deck && ef.card.getEnergyTypes()) {
                 if (confirm("Use Energy Evolution?")) {
                   powerUsed()
-                  def sel = self.owner.pbg.deck.select(min:0, "Energy Evolution ${ef.card.basicType}",
-                    { it.cardTypes.is(EVOLUTION) && it.types.contains(ef.card.basicType) && it.predecessor==self.name }, self.owner)
+                  def typesAllowed = ef.card.getEnergyTypes().first()
+                  bc "Debug ${typesAllowed} -> ${typesAllowed.minus[[C, M, F] as Set])}"
+                  def sel = self.owner.pbg.deck.select(min:0, "Energy Evolution ${typesAllowed}",
+                    { it.cardTypes.is(EVOLUTION) && it.types.contains(typesAllowed) && it.predecessor==self.name }, self.owner)
 
                   if (sel) {
                     evolve(self, sel.first(), OTHER)

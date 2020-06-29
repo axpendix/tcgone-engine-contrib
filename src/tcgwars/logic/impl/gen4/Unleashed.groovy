@@ -1339,11 +1339,11 @@ public enum Unleashed implements LogicCardInfo {
         return basic (this, hp:HP090, type:FIGHTING, retreatCost:4) {
           weakness G
           pokeBody "Energy Healer", {
-            text "Whenever you attach an Energy card from you hand to 1 of your Pokémon, remove 1 damage counter from that Pokémon."
+            text "Whenever you attach an Energy card from your hand to Onix, remove a damage counter from Onix."
             delayedA{
-              before ATTACH_ENERGY, {
-                if (ef.reason == PLAY_FROM_HAND && bg.currentTurn == self.owner) {
-                  heal 10, h.effect.getResolvedTarget(bg, e)
+              after ATTACH_ENERGY, self, {
+                if (ef.reason == PLAY_FROM_HAND && ef.card.cardTypes.is(ENERGY)) {
+                  heal 10, self, SRC_ABILITY
                 }
               }
             }
