@@ -177,8 +177,7 @@ public enum PopSeries5 implements LogicCardInfo {
           }
           onAttack {
             my.deck.search(max: 2, "Search your deck for up to 2 Basic Energy cards", cardTypeFilter(BASIC_ENERGY)).each{
-              def pcs = my.all.select("Attach $it to which Pokémon?")
-              attachEnergy(pcs, it)
+              attachEnergy(self, it)
             }
             shuffleDeck()
           }

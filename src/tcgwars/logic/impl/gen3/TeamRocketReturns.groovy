@@ -1265,14 +1265,16 @@ public enum TeamRocketReturns implements LogicCardInfo {
             text "Flip a coin. If heads, this attack does 10 damage to each of your opponent’s Pokémon. (Don’t apply Weakness and Resistance.) Then, search your deck for a card that evolves from Dark Pupitar and put it on Dark Pupitar. (This counts as evolving Dark Pupitar.) Shuffle your deck afterward."
             energyCost C
             onAttack {
-              flip{
+              flip {
                 opp.all.each{
                   damage 10, it
                 }
-                if(my.deck){
-                  def tar = my.deck.search(max:1,"Search for a card that evolves from Dark Pupitar",{it.cardTypes.is(EVOLUTION) && self.name == it.predecessor})
-                  if(tar) evolve(self, tar.first(), OTHER)
-                  shuffleDeck()
+                afterDamage{
+                  if(my.deck) {
+                    def tar = my.deck.search(max:1, "Search for a card that evolves from Dark Pupitar", {it.cardTypes.is(EVOLUTION) && self.name == it.predecessor})
+                    if(tar) evolve(self, tar.first(), OTHER)
+                    shuffleDeck()
+                  }
                 }
               }
             }
