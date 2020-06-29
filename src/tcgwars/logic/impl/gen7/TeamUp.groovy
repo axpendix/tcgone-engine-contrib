@@ -3353,10 +3353,6 @@ public enum TeamUp implements LogicCardInfo {
           }
           playRequirement{
             assert opp.active.topPokemonCard.cardTypes.contains(STAGE1) : "Your opponent's Active Pokémon is not a Stage 1 Pokémon"
-            // [Temp Workaround for VMAX]
-            assert !opp.active.topPokemonCard.cardTypes.contains(VMAX) : "Your opponent's Active Pokémon is not a Stage 1 Pokémon"
-            // [End of workaround for VMAX]
-            // TODO: Remove this when VMAX are no longer marked as STAGE1.
             assert my.deck : "There are no more cards in your deck"
           }
         };
