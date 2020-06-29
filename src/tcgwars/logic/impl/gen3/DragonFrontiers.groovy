@@ -855,7 +855,7 @@ public enum DragonFrontiers implements LogicCardInfo {
               bg.em().storeObject("Tropical_Heal",bg.turnCount)
               powerUsed()
               def Imprison = []
-              def Shockwave = []
+              def Shock_wave = []
               if(bg.em().retrieveObject("Imprison") != null){
                 Imprison = bg.em().retrieveObject("Imprison")
               }
