@@ -854,8 +854,28 @@ public enum DragonFrontiers implements LogicCardInfo {
             if (it==PLAY_FROM_HAND && bg.em().retrieveObject("Tropical_Heal")!=bg.turnCount && confirm("Use Tropical Heal?")) {
               bg.em().storeObject("Tropical_Heal",bg.turnCount)
               powerUsed()
-
-              // TODO
+              def Imprison = []
+              def Shockwave = []
+              if(bg.em().retrieveObject("Imprison") != null){
+                Imprison = bg.em().retrieveObject("Imprison")
+              }
+              if(bg.em().retrieveObject("Shock_Wave") != null){
+                Shock_Wave = bg.em().retrieveObject("Shock_Wave")
+              }
+              my.all.each{
+                if(Imprison.contains(it)){
+                  Imprison.remove(it)
+                  bg.em().storeObject("Imprison",Imprison)
+                  new CheckAbilities().run(bg)//Not sure if Gardevoir will update abilities in time so adding this here.
+                }
+                if(Shock_Wave.contains(it)){
+                  Shock_Wave.remove(it)
+                  bg.em().storeObject("Shock_Wave",Shock_Wave)
+                }
+                if(it.specialConditions){
+                  clearSpecialCondition(it,SRC_ABILITY)
+                }
+              }
             }
           }
         }
