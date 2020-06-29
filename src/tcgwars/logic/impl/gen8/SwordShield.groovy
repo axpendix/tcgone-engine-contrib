@@ -261,7 +261,16 @@ public enum SwordShield implements LogicCardInfo {
   AIR_BALLOON_213 ("Air Balloon", 213, Rarity.SECRET, [TRAINER, ITEM, POKEMON_TOOL]),
   METAL_SAUCER_214 ("Metal Saucer", 214, Rarity.SECRET, [TRAINER, ITEM]),
   ORDINARY_ROD_215 ("Ordinary Rod", 215, Rarity.SECRET, [TRAINER, ITEM]),
-  QUICK_BALL_216 ("Quick Ball", 216, Rarity.SECRET, [TRAINER, ITEM]);
+  QUICK_BALL_216 ("Quick Ball", 216, Rarity.SECRET, [TRAINER, ITEM]),
+  PSYCHIC_ENERGY_217 ("Psychic Energy", 217, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
+  METAL_ENERGY_218 ("Metal Energy", 218, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
+  GRASS_ENERGY_219 ("Grass Energy", 219, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
+  FIRE_ENERGY_220 ("Fire Energy", 220, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
+  WATER_ENERGY_221 ("Water Energy", 221, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
+  LIGHTNING_ENERGY_222 ("Lightning Energy", 222, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
+  FIGHTING_ENERGY_223 ("Fighting Energy", 223, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
+  DARKNESS_ENERGY_224 ("Darkness Energy", 224, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
+  FAIRY_ENERGY_225 ("Fairy Energy", 225, Rarity.COMMON, [BASIC_ENERGY, ENERGY]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -3657,6 +3666,24 @@ public enum SwordShield implements LogicCardInfo {
       return copy (ORDINARY_ROD_171, this);
       case QUICK_BALL_216:
       return copy (QUICK_BALL_179, this);
+      case PSYCHIC_ENERGY_217:
+        return basicEnergy (this, PSYCHIC)
+      case METAL_ENERGY_218:
+        return basicEnergy (this, METAL)
+      case GRASS_ENERGY_219:
+        return basicEnergy (this, GRASS)
+      case FIRE_ENERGY_220:
+        return basicEnergy (this, FIRE)
+      case WATER_ENERGY_221:
+        return basicEnergy (this, WATER)
+      case LIGHTNING_ENERGY_222:
+        return basicEnergy (this, LIGHTNING)
+      case FIGHTING_ENERGY_223:
+        return basicEnergy (this, FIGHTING)
+      case DARKNESS_ENERGY_224:
+        return basicEnergy (this, DARKNESS)
+      case FAIRY_ENERGY_225:
+        return basicEnergy (this, FAIRY)
         default:
       return null;
     }
