@@ -317,7 +317,7 @@ public enum CelestialStorm implements LogicCardInfo {
               assert opp.bench
               powerUsed()
               flip {
-                sw opp.active, opp.bench.select("New active."), SRC_ABILITY
+                swFromBench (opp.active, opp.bench.select("Select your opponent's new Active Pokémon."), SRC_ABILITY)
               }
             }
           }
@@ -386,8 +386,8 @@ public enum CelestialStorm implements LogicCardInfo {
             onAttack {
               def pcs = defending
               if(opp.bench && confirm("Switch the defending pokémon with 1 of your opponent's benched pokémon?")){
-                pcs = opp.bench.select("Switch")
-                sw opp.active, pcs
+                def target = opp.bench.select("Select the new Active Pokémon.")
+                if ( swFromBench (defending, target) ) { pcs = target }
               }
               targeted(pcs) {
                 apply POISONED, pcs
@@ -871,11 +871,10 @@ public enum CelestialStorm implements LogicCardInfo {
               assert opp.bench.notEmpty
             }
             onAttack {
-              def pcs = opp.bench.select("Switch")
-              targeted(pcs) {
-                sw opp.active, pcs
-                apply BURNED, pcs
-                apply CONFUSED, pcs
+              def target = opp.bench.select("Select the new Active Pokémon.")
+              if ( swFromBench (defending, target) ) {
+                apply BURNED, target
+                apply CONFUSED, target
               }
             }
           }
@@ -2659,7 +2658,7 @@ public enum CelestialStorm implements LogicCardInfo {
               assert self.active : "$self is not your active pokémon"
               assert opp.bench : "There is no pokémon on your opponent's bench to switch"
               powerUsed()
-              sw self.owner.opposite.pbg.active, self.owner.opposite.pbg.bench.select("Choose the new active"), SRC_ABILITY
+              swFromBench (opp.active, opp.bench.select("Select your opponent's new Active Pokémon."), SRC_ABILITY)
             }
           }
           move "Dragon Claw" , {

@@ -326,11 +326,8 @@ public enum UltraPrism implements LogicCardInfo {
               assert opp.bench.notEmpty
             }
             onAttack {
-              def pcs = opp.bench.select("Switch")
-              targeted(pcs) {
-                sw opp.active, pcs
-                apply POISONED, pcs
-              }
+              def target = opp.bench.select("Select the new Active Pokémon.")
+              if ( swFromBench (defending, target) ) { apply POISONED, target }
             }
           }
           move "Flower Tornado", {
