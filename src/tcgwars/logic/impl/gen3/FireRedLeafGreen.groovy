@@ -2304,17 +2304,18 @@ public enum FireRedLeafGreen implements LogicCardInfo {
         };
       case MT__MOON_94:
         return stadium (this) {
-          text "Any Pokémon (both yours and your opponent’s) with maximum HP less than 70 can’t use any Poké-Powers.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
+          text "Any Pokémon (both yours and your opponent’s) with maximum HP of 70 or less can’t use any Poké-Powers.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
+          //Errata: Originally said "HP of less than 70".
           def effect1
           def effect2
           onPlay {
             effect1 = getter IS_ABILITY_BLOCKED, { Holder h->
-              if (h.effect.target.fullHP.value < 70 && h.effect.ability instanceof PokePower) {
+              if (h.effect.target.fullHP.value <= 70 && h.effect.ability instanceof PokePower) {
                 h.object=true
               }
             }
             effect2 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
-              if ((h.effect.target as Card).fullHP.value < 70) {
+              if ((h.effect.target as Card).fullHP.value <= 70) {
                 h.object=true
               }
             }
@@ -2565,20 +2566,26 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
           move "Crush and Burn", {
-            text "30+ damage. You may discard as many Energy as you like attached to your Pokémon in play. If you do, this attack does 30 damage plus 20 more damage for each Energy you discarded."
+            text "30+ damage. You may discard as many Energy as you like attached to your Pokémon in play. If you do, this attack does 30 damage plus 20 more damage for each Energy card you discarded."
+            //Errata'd, original text said "each Energy you discarded"
             energyCost L, C
             onAttack {
-              def count=0
-              while(1){
-                def pl=(my.all.findAll {it.cards.filterByType(ENERGY)})
+              def toBeDiscarded = new CardList()
+              while(true) {
+                def pl = my.all.findAll{
+                  it.cards.filterByType(ENERGY).any{enCard -> !toBeDiscarded.contains(enCard)}
+                }
                 if(!pl) break;
-                def src=pl.select("Source for energy (cancel to stop)", false)
+
+                def info = "Energy cards already marked for discard: ${toBeDiscarded.size()}\nCurrent base damage: 30 + ${20 * toBeDiscarded.size()}\nDiscard an Energy card from which Pokémon? (cancel to stop)"
+                def src = pl.select(info, false)
                 if(!src) break;
-                def card=src.cards.filterByType(ENERGY).select("Card to discard").first()
-                discard card
-                count++
+
+                def selection = src.cards.filterByType(ENERGY).select("Card to discard")
+                toBeDiscarded.addAll(selection)
               }
-              damage 30+20*count
+              damage 30+20*toBeDiscarded.size()
+              afterDamage { toBeDiscarded.discard() }
             }
           }
 

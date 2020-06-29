@@ -3561,7 +3561,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
           move "Flame Buster", {
-            text "Discard 2 [R] Energy attached to Magmortar. Choose 1 of your opponent’s Pokémon. This attack does 100 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.) During your next turn, Magmortar can’t use Flame Bluster."
+            text "Discard 2 [R] Energy cards attached to Magmortar. Choose 1 of your opponent’s Pokémon. This attack does 100 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.) During your next turn, Magmortar can’t use Flame Bluster."
+            //Errata'd, used to say "2 [R] Energy attached"
+            //TODO: Fix this attack so it discards energy cards, not just energy (also invert order, discard then damage).
             energyCost R, R, R, R
             attackRequirement {}
             onAttack {

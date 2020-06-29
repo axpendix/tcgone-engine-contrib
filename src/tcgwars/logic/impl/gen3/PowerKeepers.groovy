@@ -492,6 +492,7 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Brick Smash", {
           text "40 damage. This attack's damage isn't affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
           energyCost F, C
+          //TODO: Check the Hidden Legends Machamp working as a reprint of this one. An errata was applied, so this attack applies Weakness.
           onAttack {
             noResistanceOrAnyEffectDamage(40, defending)
           }
@@ -1873,6 +1874,7 @@ public enum PowerKeepers implements LogicCardInfo {
       return supporter (this) {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Draw a number of cards up to the number of your opponent's Pokémon in play. If you have 7 or more cards (including this one) in your hand, you can't play this card."
+          //TODO: Check the Hidden Legends print, see if it works like this or with pre-errata text: originally said "If you have more than 7 cards (including this one)".
         onPlay {
           draw opp.all.size()
         }

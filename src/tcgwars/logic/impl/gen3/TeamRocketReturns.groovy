@@ -475,7 +475,8 @@ public enum TeamRocketReturns implements LogicCardInfo {
           weakness FIRE
           resistance WATER, MINUS30
           pokeBody "Buffer", {
-            text "If Jumpluff would be Knocked Out by an opponent’s attack, flip a coin. If heads, Jumpluff is not Knocked Out and its remaining HP becomes 10 instead."
+            text "If Jumpluff would be Knocked Out by damage from an opponent's attack, flip a coin. If heads, Jumpluff is not Knocked Out and its remaining HP becomes 10 instead."
+            //Errata'd, used to say "by an opponent’s attack".
             delayedA {
               before KNOCKOUT, self, {
                 if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite){
@@ -1393,10 +1394,12 @@ public enum TeamRocketReturns implements LogicCardInfo {
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
           weakness LIGHTNING
           pokePower "Ripples", {
-            text "Once during your turn (before your attack), you may remove 1 damage counter from 1 of your Pokémon (excluding Mantine). This power can’t be used if Mantine is affected by a Special Condition."
+            text "Once during your turn (before your attack), if Mantine is your Active Pokémon, you may remove 1 damage counter from 1 of your Pokémon (excluding Mantine). This power can’t be used if Mantine is affected by a Special Condition."
+            //Errata'd: Originally didn't mention Mantine needing to be Active in order to use Ripples.
             actionA {
               checkLastTurn()
               checkNoSPC()
+              assert self.active : "$self is not your Active Pokémon [Errata, may not show in the card itself]"
               assert my.all.findAll{it.numberOfDamageCounters && it != self} : "There is no Pokémon with damage counter outside from ${self}."
               powerUsed()
               heal 10, my.all.findAll{it.numberOfDamageCounters && it != self}.select("Select the pokemon to heal.")
@@ -1500,7 +1503,8 @@ public enum TeamRocketReturns implements LogicCardInfo {
           weakness FIRE
           resistance WATER, MINUS30
           pokeBody "Buffer", {
-            text "If Skiploom would be Knocked Out by an opponent’s attack, flip a coin. If heads, Skiploom is not Knocked Out and its remaining HP becomes 10 instead."
+            text "If Skiploom would be Knocked Out by damage from an opponent's attack, flip a coin. If heads, Skiploom is not Knocked Out and its remaining HP becomes 10 instead."
+            //Errata'd, used to say "by an opponent’s attack".
             delayedA {
               before KNOCKOUT, self, {
                 if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite){
@@ -1689,7 +1693,8 @@ public enum TeamRocketReturns implements LogicCardInfo {
           weakness FIRE
           resistance WATER, MINUS30
           pokeBody "Buffer", {
-            text "If Hoppip would be Knocked Out by an opponent’s attack, flip a coin. If heads, Hoppip is not Knocked Out and its remaining HP becomes 10 instead."
+            text "If Hoppip would be Knocked Out by damage from an opponent's attack, flip a coin. If heads, Hoppip is not Knocked Out and its remaining HP becomes 10 instead."
+            //Errata'd, used to say "by an opponent’s attack".
             delayedA {
               before KNOCKOUT, self, {
                 if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite){
@@ -1780,7 +1785,8 @@ public enum TeamRocketReturns implements LogicCardInfo {
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
           pokeBody "Knockout Gas", {
-            text "If Koffing is your Active Pokémon and is Knocked Out by an opponent’s attack, the Attacking Pokémon is now Confused and Poisoned."
+            text "If Koffing is your Active Pokémon and is Knocked Out by damage from an opponent’s attack, the Attacking Pokémon is now Confused and Poisoned."
+            //Errata'd, used to say "is Knocked Out by an opponent’s attack"
             delayedA {
               before KNOCKOUT, self, {
                 if((ef as Knockout).byDamageFromAttack){
