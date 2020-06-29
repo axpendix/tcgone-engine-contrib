@@ -1280,24 +1280,24 @@ class TcgStatics {
   }
   static rearrangeEitherPlayersDeck(def delegate, int count){
     delegate.attackRequirement {
-      assert my.deck || opp.deck : "Both players' decks are empty."
+      assert my.deck || opp.deck : "Both players' decks are empty"
     }
     delegate.onAttack {
       def choices=[]
       def labels=[]
 
-      if ( my().deck.notEmpty() ) {
-        choices.add(my().deck)
+      if ( my.deck ) {
+        choices.add(my.deck)
         labels.add("My deck")
       }
-      if( opp().deck.notEmpty() ) {
-        choices.add(opp().deck)
+      if( opp.deck ) {
+        choices.add(opp.deck)
         labels.add("Opponent's deck")
       }
       def chosenDeck = choose(choices, labels) as CardList
-      def rearrangedCards = rearrange(deck.subList(0, count))
+      def rearrangedCards = rearrange(chosenDeck.subList(0, count))
       chosenDeck.setSubList(0, rearrangedCards)
-      if (chosenDeck == my().deck) {
+      if (chosenDeck == my.deck) {
         bc "Rearranged top $count cards of own's deck."
       } else {
         bc "Rearranged top $count cards of opponent's (${opp.owner.getPlayerUsername(bg)}) deck."
