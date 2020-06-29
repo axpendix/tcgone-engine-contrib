@@ -2776,9 +2776,15 @@ public enum LegendMaker implements LogicCardInfo {
 
             def chosenMove = choose(moves+["Cancel"], moves.collect({it.name})+["Cancel"], "Choose a move to perform")
 
+            bc "${self.cards.energySufficient(thisMove.energyCost)}"
+            bc "${thisMove.energyCost}"
+            def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
+            bc "${self.cards.energySufficient(thisMove.energyCost)}"
+
             if (chosenMove && chosenMove != "Cancel") {
               attack (chosenMove as Move)
             }
+            bef.unregisterItself(bg().em())
           }
         }
         def actionHandler = {PokemonCardSet self, boolean enable ->
