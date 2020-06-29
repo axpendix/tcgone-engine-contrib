@@ -2927,7 +2927,12 @@ public enum UnbrokenBonds implements LogicCardInfo {
               while(list.get(0).remainingHP.value==min){
                 tar.add(list.remove(0))
               }
-              new Knockout(tar.select("Knock Out")).run(bg)
+              //TODO: Heavily improve this selection, in case both players have tied Pokémon. Make it clearer to pick.
+              def pcs = tar.select("Choose which of these Pokémon will be knocked out.")
+              bc "${pcs.owner}'s $pcs was selected for Knock Out"
+              targeted (pcs) {
+                new Knockout(pcs).run(bg)
+              }
             }
           }
           move "Mist Slash", {

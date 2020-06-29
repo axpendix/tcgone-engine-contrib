@@ -2056,18 +2056,21 @@ public enum GuardiansRising implements LogicCardInfo {
             onAttack {
               self.cards.filterByType(ENERGY).moveTo(my.hand)
               def pcs = defending
-              delayed {
-                before BETWEEN_TURNS, {
-                  if(turnCount + 1 <= bg.turnCount){
-                    if(all.contains(pcs)){
-                      bc "Doom News kicks in"
-                      new Knockout(pcs).run(bg)
+              targeted (pcs) {
+                bc "At the end of the next turn, $pcs will be Knocked Out. (This effect can be removed by benching/evolving $pcs)"
+                delayed {
+                  before BETWEEN_TURNS, {
+                    if(turnCount + 1 <= bg.turnCount){
+                      if(all.contains(pcs)){
+                        bc "Doom News kicks in"
+                        new Knockout(pcs).run(bg)
+                      }
                     }
                   }
+                  unregisterAfter 2
+                  after SWITCH, pcs, {unregister()}
+                  after EVOLVE, pcs, {unregister()}
                 }
-                unregisterAfter 2
-                after SWITCH, pcs, {unregister()}
-                after EVOLVE, pcs, {unregister()}
               }
             }
           }

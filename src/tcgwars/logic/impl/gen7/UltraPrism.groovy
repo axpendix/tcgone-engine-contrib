@@ -1656,7 +1656,9 @@ public enum UltraPrism implements LogicCardInfo {
               assert opp.active.basic : "Defending is not basic"
             }
             onAttack {
-              new Knockout(defending).run(bg)
+              targeted (defending) {
+                new Knockout(defending).run(bg)
+              }
             }
           }
 

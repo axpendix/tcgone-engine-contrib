@@ -393,7 +393,9 @@ public enum TeamUp implements LogicCardInfo {
               assert self.numberOfDamageCounters : "$self has no damage counter"
             }
             onAttack{
-              new Knockout(defending).run(bg)
+              targeted (defending) {
+                new Knockout(defending).run(bg)
+              }
               new Knockout(self).run(bg)
             }
           }
@@ -476,8 +478,10 @@ public enum TeamUp implements LogicCardInfo {
             energyCost G,C,C
             onAttack{
               flip 2,{},{},[2:{
-                bc "$defending is Knocked Out.";
-                new Knockout(defending).run(bg)
+                targeted (defending) {
+                  bc "$defending is Knocked Out.";
+                  new Knockout(defending).run(bg)
+                }
               },1:{
                 bc "$thisMove has no effect."
               },0:{

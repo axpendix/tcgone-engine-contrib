@@ -1658,7 +1658,9 @@ public enum SunMoon implements LogicCardInfo {
             onAttack {
               gxPerform()
               def pcs = opp.all.findAll {it.basic && !it.pokemonGX}.select("Knockout?")
-              new Knockout(pcs).run(bg)
+              targeted (pcs) {
+                new Knockout(pcs).run(bg)
+              }
             }
           }
 

@@ -1894,7 +1894,9 @@ public enum RebelClash implements LogicCardInfo {
             before (KNOCKOUT, self) {
               if ((ef as Knockout).byDamageFromAttack && self.active && bg.currentTurn==self.owner.opposite && self.owner.opposite.pbg.active != null && self.owner.opposite.pbg.active.inPlay) {
                 flip "Perish Body", {
-                  new Knockout(self.owner.opposite.pbg.active).run(bg)
+                  targeted (self.owner.opposite.pbg.active, SRC_ABILITY){
+                    new Knockout(self.owner.opposite.pbg.active).run(bg)
+                  }
                 }
               }
             }

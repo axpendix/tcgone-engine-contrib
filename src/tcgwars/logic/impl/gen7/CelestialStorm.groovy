@@ -2463,16 +2463,22 @@ public enum CelestialStorm implements LogicCardInfo {
             energyCost C,C,C
             onAttack {
               damage 10
-              afterDamage{apply ASLEEP, self}
-              delayed{
-                before BETWEEN_TURNS, {
-                  if(bg.currentTurn == self.owner.opposite){
-                    new Knockout(defending).run(bg)
+              afterDamage{
+                apply ASLEEP, self
+
+                targeted (defending) {
+                  bc "At the end of the next turn, $defending will be Knocked Out. (This effect can be removed by benching/evolving $defending)"
+                  delayed {
+                    before BETWEEN_TURNS, {
+                      if(bg.currentTurn == self.owner.opposite){
+                        new Knockout(defending).run(bg)
+                      }
+                    }
+                    after SWITCH, defending, {unregister()}
+                    after EVOLVE, defending, {unregister()}
+                    unregisterAfter 2
                   }
                 }
-                after SWITCH, defending, {unregister()}
-                after EVOLVE, defending, {unregister()}
-                unregisterAfter 2
               }
             }
           }

@@ -2124,7 +2124,9 @@ public enum BurningShadows implements LogicCardInfo {
             }
             onAttack {
               gxPerform()
-              new Knockout(defending).run(bg)
+              targeted (defending) {
+                new Knockout(defending).run(bg)
+              }
             }
           }
 
