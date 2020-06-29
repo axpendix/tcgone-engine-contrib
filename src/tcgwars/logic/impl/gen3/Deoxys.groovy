@@ -1241,7 +1241,7 @@ public enum Deoxys implements LogicCardInfo {
           move "Foresight", {
             text "Look at the top 5 cards of either player’s deck and put them back on top of that player’s deck in any order."
             energyCost C
-            rearrangeEitherPlayersDeck(delegate, 5)
+            foresight(5, delegate)
           }
           move "Target Beam", {
             text "20+ damage. Does 20 damage plus 10 more damage for each Solrock you have in play."

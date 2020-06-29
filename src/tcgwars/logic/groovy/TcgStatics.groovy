@@ -1293,6 +1293,33 @@ class TcgStatics {
       else bc "Rearranged top $count cards of opponent's (${opp.owner.getPlayerUsername(bg)}) deck."
     }
   }
+  static foresight(int count, Object delegate){
+    delegate.attackRequirement {
+      assert my.deck || opp.deck : "Both players' decks are empty"
+    }
+    delegate.onAttack {
+      def c = !opp.deck ? 1 : 2
+      if (my.deck && opp.deck){
+        def c=choose([1,2],["Your deck", "Your opponent's deck"], "Rearrange the top 5 cards of which player's deck?")
+      }
+
+      def chosenDeck, playerString, bcString
+      if (c == 1) {
+        chosenDeck = my.deck
+        playerString = "your"
+        bcString = "owner's"
+      } else {
+        chosenDeck = opp.deck
+        playerString = "your opponent's"
+        bcString = "opponent's"
+      }
+
+      def list = rearrange(chosenDeck.subList(0,5), "Rearrange top 5 cards in $playerString deck")
+      chosenDeck.setSubList(0, list)
+      bc "Foresight rearranged its $bcString deck"
+    }
+  }
+
   static boolean wasSwitchedOutThisTurn(PokemonCardSet self){
     self.lastSwitchedOut == bg.turnCount && self.lastSwitchedOutName == self.name
   }
