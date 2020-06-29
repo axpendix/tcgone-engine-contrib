@@ -1179,6 +1179,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "This attack does 20 damage for each Basculin you have in play to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C
             attackRequirement {
+              assertOppBench()
               assertMyAll(info: "that are Basculin", { it.name == "Basculin" })
             }
             onAttack {
