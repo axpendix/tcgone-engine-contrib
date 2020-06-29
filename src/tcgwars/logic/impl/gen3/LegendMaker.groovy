@@ -2762,63 +2762,25 @@ public enum LegendMaker implements LogicCardInfo {
       case MEW_EX_88:
       return basic (this, hp:HP090, type:P, retreatCost:1) {
         weakness P
-        def actions = []
-        def actionMaker = {PokemonCardSet self->
-          actions = action("Poké-Body: Versatile") {
-            assert self.active: "This Mew ex is not an Active Pokemon"
-            def moves = []
-            all.each {
-              if (it != self) {
-                moves.addAll(it.topPokemonCard.moves)
-              }
-            }
-            assert !moves.isEmpty(): "There are no moves to copy"
-
-            def chosenMove = choose(moves+["Cancel"], moves.collect({it.name})+["Cancel"], "Choose a move to perform")
-
-            if (chosenMove && chosenMove != "Cancel") {
-              bc "${self.cards.energySufficient(chosenMove.energyCost)}"
-              bc "${chosenMove.energyCost}"
-              def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
-              bc "${self.cards.energySufficient(chosenMove.energyCost)}"
-
-              attack (chosenMove as Move)
-
-              bef.unregisterItself(bg().em())
-            }
-          }
-        }
-        def actionHandler = {PokemonCardSet self, boolean enable ->
-          if (enable){
-            if (actions == []){
-              actionMaker.call(self)
-            } else {
-              actions.each {
-                bg().gm().registerAction(it)
-              }
-            }
-          } else {
-            actions.each {
-              bg().gm().unregisterAction(it)
-            }
-          }
-        }
+        pokeBody "Versatile", {
+					text "This Pokémon can use the attacks of any Pokémon in play (both yours and your opponent's). (You still need the necessary Energy to use each attack.)"
+					getterA (GET_MOVE_LIST, self) {holder->
+						all.each {
+							if(it!=self) {
+								holder.object.addAll(it.topPokemonCard.moves)
+							}
+						}
+					}
+				}
         pokeBody "Versatile", {
           text "Mew ex can use the attacks of all Pokémon in play as its own. (You still need the necessary Energy to use each attack.)"
-          delayedA {
-            after SWITCH, {
-              //TODO: This should turn off if the Body is disabled.
-              if (bg.currentTurn == self.owner && ef.switchedOut.owner == self.owner){
-                actionHandler.call(self, self.active)
-              }
-            }
-          }
-          onDeactivate {
-            actionHandler.call(self, false)
-          }
-          onActivate {
-            actionHandler.call(self, self.active)
-          }
+          getterA (GET_MOVE_LIST, self) {holder->
+						all.each {
+							if(it!=self) {
+								holder.object.addAll(it.topPokemonCard.moves)
+							}
+						}
+					}
         }
         move "Power Move", {
           text "Search your deck for an Energy card and attach it to Mew ex. Shuffle your deck afterward. Then, you may switch Mew ex with 1 of your Benched Pokémon."
