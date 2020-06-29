@@ -1590,9 +1590,11 @@ public enum LegendMaker implements LogicCardInfo {
           }
           onAttack {
             def pcs = opp.bench.select("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon.")
-            sw defending, pcs
-            if (pcs.active){
-              apply POISONED, pcs
+            targeted (pcs) {
+              sw(defending, pcs, null)
+              if (pcs.active){
+                apply POISONED, pcs
+              }
             }
           }
         }
