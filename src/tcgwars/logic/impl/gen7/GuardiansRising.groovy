@@ -2057,7 +2057,7 @@ public enum GuardiansRising implements LogicCardInfo {
               self.cards.filterByType(ENERGY).moveTo(my.hand)
               def pcs = defending
               targeted (pcs) {
-                bc "At the end of the next turn, $pcs will be Knocked Out. (This effect can be removed by benching/evolving $pcs)"
+                bc "At the end of ${pcs.owner}'s next turn, $pcs will be Knocked Out. (This effect can be removed by benching/evolving $pcs)"
                 delayed {
                   before BETWEEN_TURNS, {
                     if(turnCount + 1 <= bg.turnCount){

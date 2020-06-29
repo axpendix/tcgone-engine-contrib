@@ -2467,7 +2467,7 @@ public enum CelestialStorm implements LogicCardInfo {
                 apply ASLEEP, self
 
                 targeted (defending) {
-                  bc "At the end of the next turn, $defending will be Knocked Out. (This effect can be removed by benching/evolving $defending)"
+                  bc "At the end of ${self.owner.opposite}'s next turn, $defending will be Knocked Out. (This effect can be removed by benching/evolving $defending)"
                   delayed {
                     before BETWEEN_TURNS, {
                       if(bg.currentTurn == self.owner.opposite){

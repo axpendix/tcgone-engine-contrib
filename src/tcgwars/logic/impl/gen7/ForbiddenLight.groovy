@@ -1264,9 +1264,9 @@ public enum ForbiddenLight implements LogicCardInfo {
           move "Ticking Knock Out", {
             text "During your next turn, if the Defending Pokémon is damaged by an attack, it will be Knocked Out."
             energyCost C
-            targeted (defending) {
-              bc "During ${self.owner}'s next turn, if $defending is damaged by an attack, it will be Knocked Out. (This effect can be removed by benching/evolving $defending)"
-              onAttack {
+            onAttack {
+              targeted (defending) {
+                bc "During ${self.owner}'s next turn, if $defending is damaged by an attack, it will be Knocked Out. (This effect can be removed by benching/evolving $defending)"
                 delayed {
                   before APPLY_ATTACK_DAMAGES, {
                     if (bg.currentTurn == self.owner){
