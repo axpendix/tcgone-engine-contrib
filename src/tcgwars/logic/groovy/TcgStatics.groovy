@@ -440,7 +440,7 @@ class TcgStatics {
   }
   //use for "Switch 1 of your opponent's Benched Pokémon with their Active Pokémon." If an additional effect depends on this, the method returns whether or not the switch happened.
   static boolean swFromBench (PokemonCardSet old, PokemonCardSet newp, Source source=Source.ATTACK) {
-    targeted (pcs, source) {
+    targeted (newp, source) {
       sw (old, newp, null)
     }
     return newp.active
