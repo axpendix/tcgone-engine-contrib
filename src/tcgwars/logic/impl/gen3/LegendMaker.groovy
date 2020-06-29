@@ -2166,7 +2166,7 @@ public enum LegendMaker implements LogicCardInfo {
             assert opp.bench : "There is no Pokémon on your opponent's bench"
           }
           onAttack {
-            sw defending, opp.bench.select()
+            swFromBench (defending, opp.bench.select("Select your opponent's new Active Pokémon."))
           }
         }
       };

@@ -385,7 +385,7 @@ public enum CelestialStorm implements LogicCardInfo {
             }
             onAttack {
               def pcs = defending
-              if(opp.bench && confirm("Switch the defending pokémon with 1 of your opponent's benched pokémon?")){
+              if(opp.bench && confirm("Switch 1 of your opponent's Benched Pokémon with their Active Pokémon?")){
                 def target = opp.bench.select("Select the new Active Pokémon.")
                 if ( swFromBench (defending, target) ) { pcs = target }
               }

@@ -1758,9 +1758,8 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               assert opp.bench : "There is no Pokémon to switch"
             }
             onAttack {
-              def pcs = opp.bench.select("New active")
-              sw defending, pcs
-              apply ASLEEP, pcs
+              def target = opp.bench.select("Select the new Active Pokémon.")
+              if ( swFromBench (defending, target) ) { apply ASLEEP, target }
             }
           }
           move "Quick Blow", {
