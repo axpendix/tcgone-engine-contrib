@@ -661,9 +661,9 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Reactive Lift", {
           text "As long as Wailord has any React Energy cards attached to it, the Retreat Cost for each of your [W] Pokémon (excluding Pokémon-ex) is 0."
           getterA (GET_RETREAT_COST, BEFORE_LAST) {holder->
-            if (self.cards.findAll { it.name.contains("React Energy") }) {
-              def pcs = holder.effect.target
-              if (pcs.types.contains(W) && !pcs.EX) {
+            def pcs = holder.effect.target
+            if (pcs.owner = self.owner && pcs.types.contains(W) && !pcs.EX) {
+              if (self.cards.any{ it.name.contains("React Energy") }) {
                 holder.object = 0
               }
             }
@@ -681,7 +681,7 @@ public enum LegendMaker implements LogicCardInfo {
           text "40+ damage. Does 40 damage plus 10 more damage for each of your Benched Stage 1 Evolved Pokémon."
           energyCost W, W, C, C
           onAttack {
-            def friends = my.bench.findAll { it.topPokemonCard.cardTypes.is(STAGE1) }.size()
+            def friends = my.bench.findAll{ it.evolution && it.topPokemonCard.cardTypes.is(STAGE1) }.size()
             damage 40+10*friends
           }
         }
