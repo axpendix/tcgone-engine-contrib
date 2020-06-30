@@ -194,7 +194,7 @@ public enum LegendMaker implements LogicCardInfo {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
                 if (it.to == self && it.dmg.value && it.notNoEffect) {
-                  def energies = self.cards.findAll {it.name.contains("React Energy")}
+                  def energies = self.cards.findAll{it.name.contains("React Energy")}
                   if (energies) {
                     def reducedDamage = energies.size()*10
                     bc "Reactive Protection -$reducedDamage"
@@ -226,7 +226,7 @@ public enum LegendMaker implements LogicCardInfo {
               }
             }
             afterDamage{
-              preventAllDamageFromCustomPokemonNextTurn(thisMove, self, {it.EX})
+              preventAllEffectsFromCustomPokemonNextTurn(thisMove, self, {it.EX})
             }
           }
         }
