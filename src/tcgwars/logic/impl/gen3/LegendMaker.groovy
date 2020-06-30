@@ -957,7 +957,7 @@ public enum LegendMaker implements LogicCardInfo {
               if (ef.attacker == self) {
                 bg.dm().each {
                   if (it.to.active && it.to.owner != self.owner && it.notNoEffect && it.dmg.value) {
-                    if (self.owner.all.pbg.findAll {
+                    if (self.owner.all.pbg.any{
                       it.name == "Kabuto" ||
                       it.name == "Kabutops" ||
                       it.name == "Kabutops ex"
@@ -998,8 +998,8 @@ public enum LegendMaker implements LogicCardInfo {
           text "As long as Pinsir is the only Pokémon you have in play, your opponent's Basic Pokémon can't attack."
           delayedA {
             before CHECK_ATTACK_REQUIREMENTS, {
-              if (ef.attacker.owner == self.owner.opposite && !ef.attacker.evolution && self.owner.pbg.all.size() == 1) {
-                wcu "Shining Horn prevents this Pokémon from attacking"
+              if (ef.attacker.owner == self.owner.opposite && ef.attacker.notEvolution && self.owner.pbg.all.size() == 1) {
+                wcu "Shining Horn prevents Unevolved Pokémon from attacking"
                 prevent()
               }
             }
@@ -1012,9 +1012,9 @@ public enum LegendMaker implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            def selected = deck.search (max: 1, "Search for a [G] Pokemon (excluding Pokemon-ex) to put into your hand.", {
+            def selected = my.deck.search(max: 1, "Search for a [G] Pokemon (excluding Pokemon-ex) to put into your hand.", {
               (it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(G) && !it.asPokemonCard().cardTypes.is(EX))
-            }).moveTo(my.hand)
+            }).showToOpponent("Pinsir used Cry For Help.").moveTo(my.hand)
             shuffleDeck()
           }
         }
