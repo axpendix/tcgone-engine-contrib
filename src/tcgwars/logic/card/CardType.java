@@ -20,8 +20,8 @@ public enum CardType {
 	MEGA_POKEMON(-6),
 	LEVEL_UP(-5),
 	BREAK(-4),
-	STAGE2(-2),
-	STAGE1(-1),
+	STAGE2(-2, "Stage 2"),
+	STAGE1(-1, "Stage 1"),
 	EVOLUTION(0),
 	RESTORED(4),
 	BASIC(7),
@@ -33,7 +33,7 @@ public enum CardType {
 	STADIUM(25),
 	POKEMON_TOOL(26),
 	TECHNICAL_MACHINE(27),
-	FLARE(28),
+	FLARE(28, "Team Flare Hyper Gear"),
 	ROCKETS_SECRET_MACHINE(29),
 
 	_GRASS_(41),
@@ -48,11 +48,11 @@ public enum CardType {
 	_DRAGON_(50),
 	_COLORLESS_(51),
 
-	LEGEND(92),
+	LEGEND(92, "Pokémon LEGEND"),
 	TAG_TEAM(93),
 	ULTRA_BEAST(94),
 	PRISM_STAR(95),
-	POKEMON_GX(96),
+	POKEMON_GX(96, "Pokémon-GX"),
 	POKEMON_PRIME(97),
 	POKEMON_STAR(98),
 	POKEMON_EX(99, "Pokémon-EX"), //UPPERCASE
@@ -66,13 +66,18 @@ public enum CardType {
 	SHINING_POKEMON(107),
 	TEAM_PLASMA(108),
 	ACE_SPEC(109),
-  HAS_ANCIENT_TRAIT(110),
-  POKEMON_V(111),
-  VMAX(112),
-  G_SPEC(113),
-  DELTA(114),
+	HAS_ANCIENT_TRAIT(110),
+	POKEMON_V(111),
+	VMAX(112, "Pokémon VMAX"),
+	G_SPEC(113),
+	DELTA(114, "Delta Pokémon"),
 
 	NOT_IMPLEMENTED(201),
+
+
+	//Note: These next values are not meant for use in set definitions.
+	EVOLVED(401),
+	UNEVOLVED(402),
 
 	;
 

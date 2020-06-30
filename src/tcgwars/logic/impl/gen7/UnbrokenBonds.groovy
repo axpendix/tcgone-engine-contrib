@@ -556,7 +556,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             energyCost C
             attackRequirement {
               assert !opp.active.noSPC() : "Your opponent's Active Pokémon is NOT affected by a Special Condition"
-              assert opp.bench.notEmpty : "Empty opponent bench"
+              assertOppBench()
             }
             onAttack {
               damage 90, opp.bench.select()
@@ -680,7 +680,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             text "Switch 1 of your opponent’s Benched Pokémon with their Active Pokémon."
             energyCost G
             attackRequirement {
-              assert opp.bench
+              assertOppBench()
             }
             onAttack {
               sw(opp.active, opp.bench.select())
@@ -1252,8 +1252,8 @@ public enum UnbrokenBonds implements LogicCardInfo {
             text "Move an Energy from 1 of your opponent's Pokémon to another of their Pokémon. If you do, put 3 damage counters on the Pokémon you moved the Energy to."
             energyCost C
             attackRequirement {
-              assert opp.all.findAll{it.cards.filterByType(ENERGY)}
-              assert opp.bench
+              assert opp.all.size() > 1 : "Your opponent only has one Pokémon in play"
+              assertOppAll(info: "with Energy attached to them", {it.cards.filterByType(ENERGY)})
             }
             onAttack {
               def bothAll = new PcsList();
@@ -2101,7 +2101,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             text "This attack does 20 damage to 1 of your opponent's Benched Pokémon for each damage counter on that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost P, C, C
             attackRequirement {
-              assert opp.bench.findAll{it.numberOfDamageCounters} : "Opponent does not have a damaged Pokemon"
+              assertOppBench(info: "with damage on them", {it.numberOfDamageCounters})
             }
             onAttack {
               def pcs = opp.bench.findAll{it.numberOfDamageCounters}.select("Deal damage to")
@@ -3236,7 +3236,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             text "Search your deck for up to 2 [Y] Energy cards and attach them to your Benched Pokémon in any way you like. Then, shuffle your deck."
             energyCost C
             attackRequirement {
-              assert my.bench.notEmpty()
+              assertMyBench()
               assert my.deck.notEmpty()
             }
             onAttack {
@@ -3383,7 +3383,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             text "Attach an Energy card from your hand to 1 of your Benched Pokémon."
             energyCost C
             attackRequirement {
-              assert my.bench.notEmpty
+              assertMyBench()
               assert my.hand.filterByType(ENERGY)
             }
             onAttack {
@@ -3882,7 +3882,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             text "This attack does 60 damage to 1 of your opponent's Pokémon-GX or Pokémon-EX. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C, C, C
             attackRequirement {
-              assert opp.all.find{it.pokemonGX||it.pokemonEX}
+              assertOppAll(hasVariants: [POKEMON_GX, POKEMON_EX])
             }
             onAttack {
               damage 60,opp.all.findAll{it.pokemonGX||it.pokemonEX}.select("Deal 60 damage")
@@ -3917,7 +3917,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             text "Once during your turn (before your attack), you may flip a coin. If heads, heal 60 damage from 1 of your Pokémon. If you use this Ability, your turn ends."
             actionA {
               checkLastTurn()
-              assert my.all.find{it.numberOfDamageCounters} : "All is well"
+              assertMyAll(info: "with damage on them", {it.numberOfDamageCounters})
               powerUsed()
               flip {
                 heal 60, my.all.findAll{it.numberOfDamageCounters}.select("Heal"), SRC_ABILITY
@@ -4059,7 +4059,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             shuffleDeck()
           }
           playRequirement{
-            assert my.all.findAll{it.evolution} : "You have no evolved pokemon in play"
+            assertMyAll(isStage: EVOLVED)
           }
         };
       case DUSK_STONE_167:
@@ -4074,7 +4074,9 @@ public enum UnbrokenBonds implements LogicCardInfo {
           }
           playRequirement{
             assert deck
-            assert my.all.find{it.name=='Misdreavus'||it.name=='Murkrow'||it.name=='Lampent'||it.name=='Doublade'}
+            assertMyAll(info: "that evolve into either Mismagius, Honchkrow, Chandelure, or Aegislash", {
+              ['Misdreavus', 'Murkrow', 'Lampent', 'Doublade'].contains(it.name)
+            })
           }
         };
       case DUST_ISLAND_168:

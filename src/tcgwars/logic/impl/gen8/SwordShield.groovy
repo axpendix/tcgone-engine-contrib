@@ -365,7 +365,7 @@ public enum SwordShield implements LogicCardInfo {
           text "Heal 30 damage from 1 of your Pokémon."
           energyCost C
           attackRequirement {
-            assert my.all.findAll { it.numberOfDamageCounters }
+            assertMyAll(info:"with damage on them", {it.numberOfDamageCounters})
           }
           onAttack {
             heal 30, my.all.findAll { it.numberOfDamageCounters }.select()
@@ -521,7 +521,7 @@ public enum SwordShield implements LogicCardInfo {
           text "Switch 1 of your opponent’s Benched Pokémon with their Active Pokémon."
           energyCost C
           attackRequirement {
-            assert opp.bench
+            assertOppBench()
           }
           onAttack {
             sw(opp.active, opp.bench.select())
@@ -683,7 +683,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost C
           attackRequirement {
             assert my.deck : "Deck is empty"
-            assert my.bench : "You don't have Pokémon on your bench"
+            assertMyBench()
           }
           onAttack {
             my.deck.filterByEnergyType(G).select(max: 3).each {
@@ -1542,7 +1542,7 @@ public enum SwordShield implements LogicCardInfo {
           text "Switch 1 of your opponent’s Benched Pokémon with their Active Pokémon."
           energyCost L
           attackRequirement {
-            assert opp.bench
+            assertOppBench()
           }
           onAttack {
             sw(opp.active, opp.bench.select())
@@ -1863,7 +1863,7 @@ public enum SwordShield implements LogicCardInfo {
         bwAbility "Life Shaker", {
           text "As often as you like during your turn, you may move 1 damage counter from 1 of your [P] Pokémon to another of your [P] Pokémon."
           actionA {
-            assert my.all.find({ it.numberOfDamageCounters > 0 && it.types.contains(P) })
+            assertMyAll(hasType: P, info: "with damage counters on them", {it.numberOfDamageCounters})
             powerUsed()
             def source = my.all.findAll { it.numberOfDamageCounters > 0 && it.types.contains(P) }.select("Source for the damage counter?")
             def target = my.all.findAll { it.types.contains(P) }
@@ -3074,7 +3074,7 @@ public enum SwordShield implements LogicCardInfo {
           text "Your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
           energyCost C
           attackRequirement {
-            assert opp.bench
+            assertOppBench()
           }
           onAttack {
             sw defending, opp.bench.oppSelect("New active")
@@ -3103,7 +3103,7 @@ public enum SwordShield implements LogicCardInfo {
           text "Choose 1 of your opponent's Benched Pokémon. They shuffle that Pokémon and all attached cards into their deck. Then, shuffle this Pokémon and all attached cards into your deck."
           energyCost C, C, C
           attackRequirement {
-            assert opp.bench
+            assertOppBench()
           }
           onAttack {
             def tar = opp.bench.select("Choose a Benched Pokémon to shuffle back into the deck.")
@@ -3337,7 +3337,8 @@ public enum SwordShield implements LogicCardInfo {
           attachEnergyFrom(basic:true, my.hand, my.bench)
         }
         playRequirement{
-          assert my.bench && my.hand.filterByType(BASIC_ENERGY)
+          assertMyBench()
+          assert my.hand.filterByType(BASIC_ENERGY) : "You don't have any Basic Energy cards in your hand"
         }
       };
       case BIG_CHARM_158:
@@ -3385,7 +3386,7 @@ public enum SwordShield implements LogicCardInfo {
           pcs.cards.filterByType(ENERGY).select(count: 2, "Discard which Energy card(s)?").discard()
         }
         playRequirement{
-          assert my.all.findAll{it.numberOfDamageCounters && it.cards.energyCount() >= 2}
+          assertMyAll(info: "with damage on them and at least 2 Energy attached", {it.numberOfDamageCounters && it.cards.energyCount() >= 2})
         }
       };
       case LUCKY_EGG_167:
@@ -3449,7 +3450,7 @@ public enum SwordShield implements LogicCardInfo {
         }
         playRequirement{
           assert my.discard.findAll(basicEnergyFilter(M))
-          assert my.bench.findAll {it.types.contains(M)}
+          assertMyBench(hasType: M)
         }
       };
       case ORDINARY_ROD_171:
@@ -3565,7 +3566,7 @@ public enum SwordShield implements LogicCardInfo {
           }
         }
         playRequirement {
-          assert opp.all.findAll { it.cards.energyCount(C) }
+          assertOppAll(info: "with Energy attached to them", {it.cards.energyCount(C)})
         }
       };
       case VITALITY_BAND_185:

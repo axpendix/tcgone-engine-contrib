@@ -343,7 +343,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "Search your deck for a card that evolves from 1 of your [G] Pokémon and put it onto that Pokémon to evolve it. If that Pokémon is now a Stage 1 Pokémon, search your deck for a Stage 2 Pokémon that evolves from that Pokémon and put it onto that Pokémon to evolve it. Then, shuffle your deck."
             attackRequirement {
               assert my.deck : "Your deck is empty."
-              assert my.all.findAll { it.types.contains(G) } : "You have no [G] Pokémon in play."
+              assertMyAll(hasType: G)
             }
             onAttack {
               def names = my.all.findAll { it.types.contains(G) }.collect{ it.name }
@@ -437,7 +437,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "Devolve 1 of your opponent's evolved Pokémon by removing the highest Stage Evolution card from it. Your opponent shuffles that card into their deck."
             energyCost G
             attackRequirement {
-              assert opp.all.findAll { it.evolution } : "The opponent does not have any evolved Pokémon in play."
+              assertOppAll(isStage: EVOLVED)
             }
             onAttack {
               def list = opp.all.findAll { it.evolution }
@@ -662,7 +662,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "Heal 30 damage from 1 of your Pokémon."
             energyCost C
             attackRequirement {
-              assert my.all.findAll {it.numberOfDamageCounters} : "None of your Pokémon have any damage."
+              assertMyAll(info: "with damage on them", {it.numberOfDamageCounters})
             }
             onAttack {
               heal 30, my.all.findAll { it.numberOfDamageCounters }.select()
@@ -1179,10 +1179,11 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "This attack does 20 damage for each Basculin you have in play to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C
             attackRequirement {
-              assert my.bench.findAll({ it.name == "Basculin" }) : "You have no Basculin on your bench."
+              assertOppBench()
+              assertMyAll(info: "that are Basculin", { it.name == "Basculin" })
             }
             onAttack {
-              def count = my.bench.findAll({ it.name == "Basculin" }).size()
+              def count = my.all.findAll({ it.name == "Basculin" }).size()
               damage 20*count, opp.bench.select()
             }
           }
@@ -1344,7 +1345,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             text " Switch 1 of your opponent's Benched Pokémon with their Active Pokémon."
             energyCost C
             attackRequirement{
-              assert opp.bench : "Your opponent's Bench is empty."
+              assertOppBench()
             }
             onAttack{
               sw defending, opp.bench.select("Choose your opponent's new Active Pokémon.")
@@ -1622,10 +1623,10 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "Switch this Pokémon with 1 of your Benched Pokémon."
             energyCost C
             attackRequirement {
-              assert my.bench : "Your bench is empty."
+              assertMyBench()
             }
             onAttack {
-              sw self, my.bench.select("Select the new Active Pokémon.")
+              switchYourActive()
             }
           }
         };
@@ -2034,7 +2035,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             actionA {
               assert my.active.topPokemonCard.cardTypes.is(TAG_TEAM) : "Your Active Pokémon is not a Tag Team Pokémon."
               checkLastTurn()
-              assert my.bench.notEmpty : "Your bench is empty."
+              assertMyBench() //TODO: is this needed?
               powerUsed()
               sw my.active, my.bench.select("Select a new Active Pokémon."), SRC_ABILITY
             }
@@ -3126,7 +3127,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "Discard a Pokémon Tool card from 1 of your opponent's Pokémon."
             energyCost C
             attackRequirement {
-              assert opp.all.findAll{it.cards.filterByType(POKEMON_TOOL)} : "There are no Pokémon Tool cards attached to your opponent's Pokemon."
+              assertOppAll(overrideText: true, info: "There are no Pokémon Tool cards attached to your opponent's Pokemon.", {it.cards.filterByType(POKEMON_TOOL)})
             }
             onAttack {
               def target = opp.all.findAll{ it.cards.filterByType(POKEMON_TOOL) }.select("Choose the Pokémon to discard a Pokémon Tool from.")
@@ -3614,7 +3615,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             text " Switch 1 of your opponent's Benched Pokémon with their Active Pokémon. This attack does 30 damage to the new Active Pokémon."
             energyCost C, C
             attackRequirement {
-              assert opp.bench : "Opponent has no Benched Pokémon."
+              assertOppBench()
             }
             onAttack {
               def target = defending
@@ -4435,8 +4436,8 @@ public enum UnifiedMinds implements LogicCardInfo {
             }
           }
           playRequirement{
-            assert opp.all.size() >= 2 : "Opponent only has one Pokémon in play."
-            assert opp.all.findAll {it.numberOfDamageCounters} : "There are no damage counters to move."
+            assert opp.all.size() > 1 : "Your opponent only has one Pokémon in play"
+            assertOppAll(overrideText: true, info: "There are no damage counters to move", {it.numberOfDamageCounters})
           }
         };
       case HAPU_200:
@@ -4603,8 +4604,8 @@ public enum UnifiedMinds implements LogicCardInfo {
             pcs.cards.filterByType(ENERGY).select(max:2, "Select up to 2 Energy cards to move to the target.").each{energySwitch(pcs,tar,it)}
           }
           playRequirement{
-            assert my.all.findAll {it.tagTeam && it.cards.filterByType(ENERGY)} : "No valid targets."
-            assert my.all.size() >= 2 : "You only have one Pokémon in play."
+            assert my.all.size() > 1 : "You only have one Pokémon in play"
+            assertMyAll(hasVariants: TAG_TEAM, info: "with Energy attached to them", {it.cards.filterByType(ENERGY)})
           }
         };
       case UNIDENTIFIED_FOSSIL_210:

@@ -1156,6 +1156,7 @@ class TcgStatics {
   }
 
   /* General checks for attacks and abilities */
+  //TODO: assertFullBench, assertDeck, assertMorePrizes
 
   /**
    *
@@ -1165,9 +1166,11 @@ class TcgStatics {
    *   + benched: If true, checks for only Benched Pokémon; otherwise also includes the Active.
    *   + opp: If true, checks for the opponent's bench instead of "my" bench.
    *   + hasType: If set, restricts to benched Pokémon of a single specific type.
-   *   + hasPokemonEX/hasPokemonGX/hasPokemonV/hasPokemonMAX: Can be expanded if needed. All of these unset will have the method search for any Pokémon no matter what, but if even a single one is set true it'll only filter those that are set true as well.
+   *   + hasVariants: A list of specific CardType values (currently: POKEMON_V | VMAX | TAG_TEAM | POKEMON_GX | POKEMON_EX | DELTA | EX). If set, the area filter will only accept PCS that have at least one of these CardTypes on its top card; otherwise, it'll take any Pokémon.
+   *   + negateVariants: If set to true, hasVariants will be inverted: only PCS that are __not__ any of the variants provided will be accepted.
+   *   + isStage: A list of specific CardType values (currently: EVOLVED | UNEVOLVED | BASIC | STAGE1 | STAGE2 | EVOLUTION). If set, the area filter will only accept PCS that return true for every single one of the included values; otherwise, it'll take any Pokémon regardless of stage.
    *   + info: If set, it'll replace the end of the failed assert warning with a custom text, instead of the default "follow the stated condition(s)".
-   *   + repText: If true, params.info will override the entirety of the failed assert warning.
+   *   + overrideText: If true, params.info will override the entirety of the failed assert warning.
    *
    * @param filter Additional condition the filtered benched Pokémon must follow. Defaults to true (so any Pokémon).
    *
@@ -1177,47 +1180,65 @@ class TcgStatics {
     def checkedPlayer = params.opp ? opp : my
     def checkedArea = params.benched ? checkedPlayer.bench : checkedPlayer.all
 
-    def hasPokeCnt = [
-      params.hasPokemonEX,
-      params.hasPokemonGX,
-      params.hasPokemonV,
-      params.hasPokemonVMAX
-    ].count{it}
+    def variantsAllowed = params.hasVariants?:[]
+    if (!(variantsAllowed instanceof ArrayList<>)) variantsAllowed = [variantsAllowed]
+    def variantFilters = [
+      (CardType.POKEMON_V):   { it.pokemonV },
+      (CardType.VMAX):        { it.pokemonVMAX },
+      (CardType.TAG_TEAM):    { it.tagTeam },
+      (CardType.POKEMON_GX):  { it.pokemonGX },
+      (CardType.POKEMON_EX):  { it.pokemonEX },
+      (CardType.DELTA):       { it.topPokemonCard.cardTypes.is(DELTA) },
+      (CardType.EX):          { it.EX }
+    ]
+
+    def stageRequired = params.isStage?:[]
+    if (!(stageRequired instanceof ArrayList<>)) stageRequired = [stageRequired]
+    def stageFilters = [
+      (CardType.EVOLVED):     { it.evolution },
+      (CardType.UNEVOLVED):   { it.notEvolution },
+      (CardType.BASIC):       { it.basic },
+      //TODO: Remove !it.pokemonVMAX from STAGE1 once solved.
+      (CardType.STAGE1):      { it.topPokemonCard.cardTypes.is(STAGE1) && !it.pokemonVMAX },
+      (CardType.STAGE2):      { it.topPokemonCard.cardTypes.is(STAGE2) },
+      (CardType.EVOLUTION):   { it.realEvolution }
+    ]
 
     def areaFilter = {
       (
-          !params.hasType || it.types.contains(params.hasType)
+        !params.hasType || it.types.contains(params.hasType)
       ) && (
-          !hasPokeCnt || (
-              (params.hasPokemonEX && it.pokemonEX) ||
-              (params.hasPokemonGX && it.pokemonGX) ||
-              (params.hasPokemonV && it.pokemonV) ||
-              (params.hasPokemonVMAX && it.pokemonVMAX)
-          )
+        variantsAllowed.any{ varFilter -> params.negateVariants ^ variantFilters.get(varFilter).call(it) }
       ) && (
-          filter == null || filter.call(it)
+        stageRequired.every{ stgFilter -> stageFilters.get(stgFilter).call(it) }
+      ) && (
+        filter == null || filter.call(it)
       )
     }
 
-    if (params.info && params.repText) {
+    if (params.info && params.overrideText) {
       failMessage = params.info
     } else {
       def benchedString = (params.benched ? "Benched " : "")
+
+      int i, count
+
+      def stageString = ""
+      if (stageRequired) {
+        stageRequired.each{ stgFilter -> stageString += "${(stgFilter as CardType).toString()} " }
+      }
+
       def typeString = (params.hasType ? "${params.hasType} " : "")
 
       def pokeString = ""
-      if (hasPokeCnt) {
-        int i = 1
-        [
-          [params.hasPokemonEX, "Pokémon-EX"],
-          [params.hasPokemonGX, "Pokémon-GX"],
-          [params.hasPokemonV, "Pokémon V"],
-          [params.hasPokemonVMAX, "Pokémon VMAX"]
-        ].each{
-          if (it[0]) {
-            pokeString += it[1] + ((i == hasPokeCnt) ? "" : (i == hasPokeCnt-1 ? " or " : ", "))
-            i += 1
-          }
+      if (variantsAllowed) {
+        if (params.negateVariants) pokeString += "Pokémon that aren't "
+        i = 1
+        count = variantsAllowed.size()
+        variantsAllowed.each{ varFilter ->
+          pokeString += (varFilter as CardType).toString() + (varFilter == TAG_TEAM ? " Pokémon" : "")
+          pokeString += ((i == count) ? "" : (i == count-1 ? " or " : ", "))
+          i ++
         }
       } else {
         pokeString += "Pokémon"
@@ -1225,7 +1246,7 @@ class TcgStatics {
 
       def extraConditionString = (filter == null) ? "" : " in play ${params.info ?: "that follow the stated condition(s)"}"
 
-      failMessage = "${params.opp ? "Your opponent doesn't" : "You don't"} have any ${benchedString + typeString + pokeString + extraConditionString}"
+      failMessage = "${params.opp ? "Your opponent doesn't" : "You don't"} have any ${benchedString + stageString + typeString + pokeString + extraConditionString}"
     }
 
     assert checkedArea.any(areaFilter) : failMessage
@@ -1242,12 +1263,12 @@ class TcgStatics {
     assertAnyPokemonInPlay(params, filter)
   }
 
-  static void assertMyBenched(params=[:], Closure filter = null) {
+  static void assertMyBench(params=[:], Closure filter = null) {
     params.benched = true
     params.opp = false
     assertAnyPokemonInPlay(params, filter)
   }
-  static void assertOppBenched(params=[:], Closure filter = null) {
+  static void assertOppBench(params=[:], Closure filter = null) {
     params.benched = true
     params.opp = true
     assertAnyPokemonInPlay(params, filter)
