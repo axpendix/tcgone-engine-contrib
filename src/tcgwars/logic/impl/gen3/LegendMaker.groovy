@@ -403,6 +403,7 @@ public enum LegendMaker implements LogicCardInfo {
           }
           onAttack {
             attachEnergyFrom(type : F, my.discard, self)
+            //TODO: Confirm the energy being attached maybe?
             heal 20, self
           }
         }
@@ -553,7 +554,7 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Stench", {
           text "As long as Muk is your Active Pokémon, each player's Pokémon can't use any Poké-Powers."
           getterA (IS_ABILITY_BLOCKED) { Holder h->
-            if (self.active && h.effect.target.owner != self.owner && h.effect.ability instanceof PokePower) {
+            if (self.active && h.effect.ability instanceof PokePower) {
               h.object=true
             }
           }
