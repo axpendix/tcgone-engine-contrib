@@ -218,7 +218,8 @@ public enum CelestialStorm implements LogicCardInfo {
   HUSTLE_BELT_179("Hustle Belt", 179, Rarity.SECRET, [TRAINER,ITEM,POKEMON_TOOL]),
   LIFE_HERB_180("Life Herb", 180, Rarity.SECRET, [TRAINER,ITEM]),
   POKENAV_181("PokéNav", 181, Rarity.SECRET, [TRAINER,ITEM]),
-  RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]);
+  RAINBOW_BRUSH_182("Rainbow Brush", 182, Rarity.SECRET, [TRAINER,ITEM]),
+  RAINBOW_ENERGY_183("Rainbow Energy", 183, Rarity.SECRET, [ENERGY,SPECIAL_ENERGY]);
 
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
@@ -3373,6 +3374,8 @@ public enum CelestialStorm implements LogicCardInfo {
         return copy(POKENAV_140,this);
       case RAINBOW_BRUSH_182:
         return copy(RAINBOW_BRUSH_141,this);
+      case RAINBOW_ENERGY_183:
+        return copy(RAINBOW_ENERGY_151,this);
       default:
         return null;
     }
