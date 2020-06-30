@@ -694,8 +694,8 @@ public enum LegendMaker implements LogicCardInfo {
           text "As long as Absol is the only Pokémon you have in play, your opponent's Basic Pokémon can't attack."
           delayedA {
             before CHECK_ATTACK_REQUIREMENTS, {
-              if (self.owner.pbg.all.size() == 1 && ef.attacker.owner != self.owner && !ef.attacker.evolution) {
-                wcu "Shining Horn prevents attack"
+              if (self.owner.pbg.all.size() == 1 && ef.attacker.owner != self.owner && ef.attacker.notEvolution) {
+                wcu "Shining Horn prevents Unevolved Pokémon from attacking"
                 prevent()
               }
             }
@@ -708,7 +708,7 @@ public enum LegendMaker implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            my.deck.search("Search your deck for a Pokémon-ex", {it.cardTypes.pokemon && it.cardTypes.isIn(EX)}).moveTo(hand)
+            my.deck.search("Search your deck for a Pokémon-ex", {it.cardTypes.pokemon && it.cardTypes.is(EX)}).moveTo(hand)
             shuffleDeck()
           }
         }
@@ -716,8 +716,7 @@ public enum LegendMaker implements LogicCardInfo {
           text "Choose 1 of your opponent's Pokémon. This attack does 20 damage to that Pokémon. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
           energyCost D, C
           onAttack {
-            def tar = opp.all.select("To?")
-            tar.damage += hp(20)
+            swiftDamage(20, opp.all.select())
           }
         }
       };
