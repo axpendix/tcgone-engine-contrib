@@ -590,10 +590,11 @@ public enum LegendMaker implements LogicCardInfo {
           text "Once during your turn, when you play Shiftry from your hand to evolve 1 of your Pokémon, you may choose 1 of your Evolved Pokémon in play (excluding any Shiftry). Return that Pokémon and all cards attached to it to your hand."
           onActivate { r->
             if (r==PLAY_FROM_HAND) {
-              if (opp.all.findAll { it.evolution } && confirm("Evolutionary Fan - Return an opponent's evolved Pokemon back to their hand?")){
-                def pcs = opp.all.findAll { it.evolution }.select("Which Pokemon to bring back to their owner's hand?")
+              if (my.all.any{ it.evolution && it.name != "Shiftry" } && confirm("Evolutionary Fan - Return 1 of your evolved Pokemon, and all cards attached to it, back to your hand?")){
+                powerUsed()
+                def pcs = my.all.findAll{ it.evolution && it.name != "Shiftry" }.select("Which Pokemon, and all cards attached to it, will you bring back to your hand?")
 
-                pcs.cards.moveTo(opp.hand)
+                pcs.cards.moveTo(my.hand)
                 removePCS(pcs)
               }
             }
@@ -604,7 +605,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 30
-            if (self.cards.findAll { it.name.contains("React Energy") }) {
+            if (self.cards.any{ it.name.contains("React Energy") }) {
               apply CONFUSED
             }
           }
