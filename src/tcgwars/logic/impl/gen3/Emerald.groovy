@@ -1852,8 +1852,8 @@ public enum Emerald implements LogicCardInfo {
           onPlay {reason->
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
-                if(ef.attacker==self) bg.dm().each {
-                  if(it.from==self && it.to.owner!=self.owner && it.dmg.value) {
+                if(ef.attacker == self) bg.dm().each {
+                  if(it.to.owner != self.owner && it.dmg.value) {
                     bc "Double Rainbow Energy -10"
                     it.dmg -= hp(10)
                   }
