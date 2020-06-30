@@ -1077,7 +1077,7 @@ public enum LegendMaker implements LogicCardInfo {
           def endTurn = false
           delayedA {
             before CHECK_ATTACK_REQUIREMENTS, {
-              if (ef.attacker.owner == self.owner.opposite && self.active && !ef.attacker.evolution) {
+              if (ef.attacker.owner == self.owner.opposite && self.active && ef.attacker.notEvolution) {
                 flip 1, {}, {
                   bc "Pattern Distraction prevented this Pokémon from attacking"
                   endTurn = true
@@ -1087,6 +1087,7 @@ public enum LegendMaker implements LogicCardInfo {
             }
             after CHECK_ATTACK_REQUIREMENTS, {
               if (endTurn) {
+                endTurn = false
                 bg.gm().betweenTurns()
               }
             }
