@@ -354,9 +354,10 @@ public enum LegendMaker implements LogicCardInfo {
         pokePower "Shadow Curse", {
           text "If Gengar would be Knocked Out by damage from an opponent's attack, you may put 3 damage counters on 1 of your opponent's Pokémon."
           delayedA {
+            //TODO: Confirm this triggers after Focus Band does.
             before (KNOCKOUT,self) {
-              if(self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
-                def pcs = self.owner.opposite.pbg.all.oppSelect("choose the Pokémon to put 3 damage counters on")
+              if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && confirm("Put 3 damage counters on 1 of your opponent's Pokémon?", self.owner)) {
+                def pcs = self.owner.opposite.pbg.all.select("choose the Pokémon to put 3 damage counters on", self.owner)
                 directDamage 30, pcs, SRC_ABILITY
               }
             }
@@ -365,14 +366,22 @@ public enum LegendMaker implements LogicCardInfo {
         move "Cursed Reaction", {
           text "Put 2 damage counters on your opponent's Pokémon in any way you like. If Gengar has any React Energy cards attached to it, put 4 damage counters instead."
           energyCost P
+          def eff
           onAttack {
-            def counters = 2
-            if (self.cards.findAll { it.name.contains("React Energy") }) {
-              counters = 4
+            def counters = (self.cards.any{ it.name.contains("React Energy") }) ? 4 : 2
+
+            eff = delayed {
+              before KNOCKOUT, {
+                prevent()
+              }
             }
+
             (1..counters).each {
-              directDamage 10, opp.all.select("Put 1 damage counter to which Pokémon? $it/counters remaining")
+              directDamage 10, opp.all.select("Put 1 damage counter to which Pokémon? ${it-1}/$counters counters placed")
             }
+
+            eff.unregister()
+            checkFaint()
           }
         }
         move "Super Psy Bolt", {
