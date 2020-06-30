@@ -295,7 +295,7 @@ public enum UnseenForces implements LogicCardInfo {
             def pcs = defending
             if(opp.bench && confirm("Switch 1 of your opponent's Benched Pokémon with the Defending Pokémon?")){
               def target = opp.bench.select("Select the new Active Pokémon.")
-              if ( swFromBench (defending, target) ) { pcs = target }
+              if ( sw2(target) ) { pcs = target }
             }
             targeted(pcs) {
               apply ASLEEP, pcs
@@ -824,7 +824,7 @@ public enum UnseenForces implements LogicCardInfo {
             def pcs = defending
             if(opp.bench && confirm("Switch 1 of your opponent's Benched Pokémon with the Defending Pokémon?")){
               def target = opp.bench.select("Select the new Active Pokémon.")
-              if ( swFromBench (defending, target) ) { pcs = target }
+              if ( sw2(target) ) { pcs = target }
             }
             damage 20, pcs
           }
@@ -1154,7 +1154,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
           onAttack {
             def target = opp.bench.select("Select the new Active Pokémon.")
-            if ( swFromBench (defending, target) ) { apply ASLEEP, target }
+            if ( sw2(target) ) { apply ASLEEP, target }
           }
         }
         move "Plunder", {
@@ -2934,9 +2934,10 @@ public enum UnseenForces implements LogicCardInfo {
         pokePower "Darker Ring", {
           text "Once during your turn (before your attack), when you play Umbreon ex from your hand to evolve 1 of your Pokémon, switch 1 of your opponent's Benched Pokémon with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
           onActivate {r->
+            // Umbreon-EX's "Darker Ring" Poké-POWER is optional. You do not have to switch one of your opponent's benched Pokémon if you do not want to. (Sep 21, 2006 PUI Rules Team)
             if (r==PLAY_FROM_HAND && opp.bench && confirm("Use Darker Ring?")) {
               powerUsed()
-              swFromBench (opp.active, opp.bench.select("Select your opponent's new Active Pokémon."), SRC_ABILITY)
+              sw2(opp.bench.select("Select your opponent's new Active Pokémon."), SRC_ABILITY)
             }
           }
         }
@@ -3559,7 +3560,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
           onAttack {
             def target = opp.bench.select("Select the new Active Pokémon.")
-            if ( swFromBench (defending, target) ) {
+            if ( sw2(target) ) {
               apply BURNED, target
               apply CONFUSED, target
             }

@@ -1011,7 +1011,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
           onAttack {
             def target = opp.bench.select("Select the new Active Pokémon.")
-            if ( swFromBench (defending, target) ) { apply ASLEEP, target }
+            if ( sw2(target) ) { apply ASLEEP, target }
           }
         }
         move "Psyshot", {
