@@ -786,12 +786,12 @@ public enum LegendMaker implements LogicCardInfo {
             checkLastTurn()
             checkNoSPC()
             assert my.deck : "Deck is empty"
-            assert self.cards.findAll { it.name.contains("React Energy") }.size() == 0 : "Huntail has React Energy cards attached"
+            assert !(self.cards.any{ it.name == "React Energy" }) : "Huntail has React Energy cards attached"
             powerUsed()
 
-            def energy = my.deck.search(max: 1, "Select a React Energy card.", {it.name.contains("React Energy")}).first()
+            def energy = my.deck.search(max: 1, "Select a React Energy card.", { it.name == "React Energy" })
             if (energy) {
-              attachEnergy(self, energy)
+              attachEnergy(self, energy.first())
             }
           }
         }
@@ -897,7 +897,7 @@ public enum LegendMaker implements LogicCardInfo {
           onAttack {
             damage 40
             if (defending.numberOfDamageCounters) {
-              apply BURNED
+              applyAfterDamage BURNED
             }
           }
         }
