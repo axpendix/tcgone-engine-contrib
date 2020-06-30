@@ -1191,6 +1191,15 @@ class TcgStatics {
       (CardType.DELTA):       { it.topPokemonCard.cardTypes.is(DELTA) },
       (CardType.EX):          { it.EX }
     ]
+    def variantLabels = [
+      (CardType.POKEMON_V):   (CardType.POKEMON_V).toString(),
+      (CardType.VMAX):        (CardType.VMAX).toString(),
+      (CardType.TAG_TEAM):    (CardType.TAG_TEAM).toString() + " Pokémon",
+      (CardType.POKEMON_GX):  (CardType.POKEMON_GX).toString(),
+      (CardType.POKEMON_EX):  (CardType.POKEMON_EX).toString(),
+      (CardType.DELTA):       (CardType.DELTA).toString() + " Pokémon",
+      (CardType.EX):          (CardType.EX).toString()
+    ]
 
     def stageRequired = params.isStage?:[]
     if (!(stageRequired instanceof ArrayList<>)) stageRequired = [stageRequired]
@@ -1236,7 +1245,7 @@ class TcgStatics {
         i = 1
         count = variantsAllowed.size()
         variantsAllowed.each{ varFilter ->
-          pokeString += (varFilter as CardType).toString() + (varFilter == TAG_TEAM ? " Pokémon" : "")
+          pokeString += variantLabels.get(varFilter)
           pokeString += ((i == count) ? "" : (i == count-1 ? " or " : ", "))
           i ++
         }

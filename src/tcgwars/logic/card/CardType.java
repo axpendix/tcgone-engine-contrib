@@ -70,7 +70,7 @@ public enum CardType {
 	POKEMON_V(111, "Pokémon V"),
 	VMAX(112, "Pokémon VMAX"),
 	G_SPEC(113, "G-SPEC"),
-	DELTA(114, "Delta Pokémon"),
+	DELTA(114, "Delta Species"),
 
 	NOT_IMPLEMENTED(201),
 
