@@ -1123,7 +1123,7 @@ public enum LegendMaker implements LogicCardInfo {
           onAttack {
             def selected = deck.search (max: 1, "Search for a [R] Pokemon (excluding Pokemon-ex) to put into your hand.", {
               (it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(R) && !it.asPokemonCard().cardTypes.is(EX))
-            }).moveTo(my.hand)
+            }).showToOpponent("Torkoal used Cry For Help.").moveTo(my.hand)
             shuffleDeck()
           }
         }
