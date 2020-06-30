@@ -458,7 +458,9 @@ public enum TeamRocketReturns implements LogicCardInfo {
             energyCost C, C
             onAttack {
               damage 20
-              attachEnergyFrom(my.discard,self)
+              afterDamage{
+                attachEnergyFrom(my.discard,self)
+              }
             }
           }
           move "Heavy Impact", {
