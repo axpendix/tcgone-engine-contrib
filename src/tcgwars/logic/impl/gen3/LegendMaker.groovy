@@ -2686,6 +2686,8 @@ public enum LegendMaker implements LogicCardInfo {
       };
       case DUSTOX_EX_86:
       return evolution (this, from:"Cascoon", hp:HP140, type:G, retreatCost:1) {
+        weakness R
+        weakness P
         pokeBody "Safeguard", {
           text "Prevent all effects of attacks, including damage, done to Dustox ex by your opponent's Pokémon-ex."
           delayedA {
