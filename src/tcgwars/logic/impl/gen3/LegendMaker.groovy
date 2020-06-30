@@ -762,9 +762,8 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Reactive Booster", {
           text "Each React Energy card attached to all of your Huntail and Gorebyss provides 2 Energy of every type but has no effect other than providing Energy."
           getterA GET_ENERGY_TYPES, { holder->
-            if(holder.effect.target.owner == self.owner
-              && (holder.effect.target.name.contains("Huntail") || holder.effect.target.name.contains("Gorebyss"))
-              && holder.effect.card.name == "React Energy") {
+            def pcs = holder.effect.target
+            if(pcs.owner == self.owner && ["Huntail", "Gorebyss"].contains(pcs.name) && holder.effect.card.name == "React Energy") {
               holder.object = [[R, D, F, G, W, Y, L, M, P] as Set,[R, D, F, G, W, Y, L, M, P] as Set]
             }
           }
@@ -774,7 +773,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost W, C
           onAttack {
             damage 30
-            extraEnergyDamage(4, hp(20), W, thisMove)
+            extraEnergyDamage(2, hp(20), W, thisMove)
           }
         }
       };
