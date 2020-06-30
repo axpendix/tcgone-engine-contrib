@@ -627,13 +627,13 @@ public enum LegendMaker implements LogicCardInfo {
         pokePower "Nectar Pod", {
           text "Once during your turn (before your attack), you may switch 1 of your opponent's Benched Stage 2 Evolved Pokémon with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch. This power can't be used if Victreebel is affected by a Special Condition."
           actionA {
-            checkNoSPC()
             checkLastTurn()
-            assert opp.bench.findAll { it.topPokemonCard.cardTypes.is(STAGE2) } : "Opponent's bench does not have any Stage 2 Pokemon."
+            checkNoSPC()
+            assert opp.bench.any{ it.evolution && it.topPokemonCard.cardTypes.is(STAGE2) } : "Opponent's bench does not have any evolved Stage 2 Pokemon."
 
             powerUsed()
 
-            def pcs = opp.bench.findAll { it.topPokemonCard.cardTypes.is(STAGE2) }.select("Select a Stage 2 Pokemon to become the new Active.")
+            def pcs = opp.bench.findAll { it.evolution && it.topPokemonCard.cardTypes.is(STAGE2) }.select("Select a Stage 2 Pokemon to become the new Active.")
             sw opp.active, pcs
           }
         }
