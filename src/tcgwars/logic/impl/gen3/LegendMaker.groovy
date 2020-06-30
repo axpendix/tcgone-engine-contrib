@@ -1189,10 +1189,11 @@ public enum LegendMaker implements LogicCardInfo {
           }
           onAttack {
             def maxSpace = Math.min(my.bench.freeBenchCount, 2)
-            my.deck.search(min:0, max:maxSpace, "Search your deck for up to 2 cards named Omanyte, Kabuto, Aerodactyl, Lileep, or Anorith", {it.name == "Omanyte" || it.name == "Kabuto" || it.name == "Aerodactyl" || it.name == "Lileep" || it.name == "Anorith"}).each {
+            my.deck.search(min:0, max:maxSpace, "Search your deck for up to 2 cards named Omanyte, Kabuto, Aerodactyl, Lileep, or Anorith", {
+              ["Omanyte", "Kabuto", "Aerodactyl", "Lileep", "Anorith"].contains(it.name)
+            }).each {
               my.deck.remove(it)
               benchPCS(it)
-              //TODO: Needs to be marked as a Basic Pokémon.
             }
             shuffleDeck()
           }
@@ -1202,7 +1203,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 20
-            if (self.cards.findAll { it.name.contains("React Energy") } && opp.bench) {
+            if (opp.bench && self.cards.any{ it.name == "React Energy" }) {
               damage 20, opp.bench.select()
             }
           }
