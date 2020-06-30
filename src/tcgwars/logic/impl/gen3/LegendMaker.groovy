@@ -1217,8 +1217,8 @@ public enum LegendMaker implements LogicCardInfo {
           actionA {
             checkLastTurn()
             checkNoSPC()
+            assert self.active : "$self is not your Active Pokemon"
             assert my.deck : "Deck is empty"
-            assert self.active : "This Pokemon is not an Active Pokemon"
             powerUsed()
 
             flip {
