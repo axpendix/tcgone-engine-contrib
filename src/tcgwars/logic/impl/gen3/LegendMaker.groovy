@@ -1159,6 +1159,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost P, P, C
           onAttack {
             targeted (defending){
+              bc "7 damage counters will be put on ${self.owner.opposite}'s Defending ${defending} at the end of their next turn. (This effect can be removed by evolving or benching ${defending}.)"
               def pcs = defending
               delayed {
                 before BETWEEN_TURNS, {
