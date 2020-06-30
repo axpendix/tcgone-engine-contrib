@@ -239,7 +239,7 @@ public enum LegendMaker implements LogicCardInfo {
           text "70- damage. Does 70 damage minus 10 damage for each damage counter on Aggron. If Aggron has any React Energy cards attached to it, this attack does 70 damage instead."
           energyCost F, C, C
           onAttack {
-            if (self.cards.findAll { it.name.contains("React Energy") }) {
+            if (self.cards.any{ it.name.contains("React Energy") }) {
               damage 70
             } else {
               damage 70-self.numberOfDamageCounters*10
