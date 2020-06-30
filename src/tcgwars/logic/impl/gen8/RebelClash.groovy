@@ -3776,7 +3776,7 @@ public enum RebelClash implements LogicCardInfo {
             after APPLY_ATTACK_DAMAGES, {
               if(attackDidDamage && self.cards.contains(thisCard)) { // this energy card is still attached
                 bc "Horror [P] Energy activates."
-                directDamage(20, ef.attacker as PokemonCardSet)
+                directDamage(20, ef.attacker as PokemonCardSet, SRC_SPENERGY)
                 attackDidDamage = false
               }
             }
