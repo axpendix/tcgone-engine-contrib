@@ -334,7 +334,7 @@ public enum TeamUp implements LogicCardInfo {
               assertOppBench()
             }
             onAttack{
-              swFromBench (opp.active, opp.bench.select("Select your opponent's new Active Pokémon."))
+              sw2(opp.bench.select("Select your opponent's new Active Pokémon."))
             }
           }
           move "Bug Bite" , {
@@ -608,7 +608,7 @@ public enum TeamUp implements LogicCardInfo {
               powerUsed()
               src.select(count:2,"Discard").discard()
               if (opp.bench){
-                swFromBench (opp.active, opp.bench.select("Select your opponent's new Active Pokémon."), SRC_ABILITY)
+                sw2(opp.bench.select("Select your opponent's new Active Pokémon."), SRC_ABILITY)
               }
             }
           }
@@ -1561,7 +1561,7 @@ public enum TeamUp implements LogicCardInfo {
             energyCost C,C
             onAttack{
               def target = opp.bench.select("Select the new Active Pokémon.")
-              if ( swFromBench (defending, target) ) { damage 50, target }
+              if ( sw2(target) ) { damage 50, target }
             }
           }
           move "King's Drum" , {
@@ -2231,7 +2231,7 @@ public enum TeamUp implements LogicCardInfo {
               assertOppBench()
             }
             onAttack{
-              swFromBench (opp.active, opp.bench.select("Select your opponent's new Active Pokémon."))
+              sw2(opp.bench.select("Select your opponent's new Active Pokémon."))
             }
           }
           move "Night Punishment" , {

@@ -279,7 +279,7 @@ public enum ShiningLegends implements LogicCardInfo {
             }
             onAttack {
               def target = opp.bench.select("Select the new Active Pokémon.")
-              if ( swFromBench (defending, target) ) { apply POISONED, target }
+              if ( sw2(target) ) { apply POISONED, target }
             }
           }
           move "Crunch", {

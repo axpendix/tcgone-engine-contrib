@@ -2016,7 +2016,7 @@ public enum BurningShadows implements LogicCardInfo {
               gxPerform()
               if (opp.bench){
                 def target = opp.bench.select("Select the new Active Pokémon.")
-                if ( swFromBench (defending, target) ) {
+                if ( sw2(target) ) {
                   apply POISONED, target
                   apply BURNED, target
                   apply PARALYZED, target
@@ -2657,7 +2657,7 @@ public enum BurningShadows implements LogicCardInfo {
           text "Switch 1 of your opponent's Benched Pokémon with their Active Pokémon. If you do, switch your Active Pokémon with 1 of your Benched Pokémon.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
             def target = opp.bench.select("Select the new Active Pokémon.")
-            if ( swFromBench (opp.active, target, TRAINER_CARD) && my.bench) {
+            if ( sw2(target, TRAINER_CARD) && my.bench) {
               sw my.active, my.bench.select("Select your new Active Pokémon."), TRAINER_CARD
             }
           }

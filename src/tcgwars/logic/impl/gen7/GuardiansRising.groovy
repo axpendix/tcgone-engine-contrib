@@ -1453,7 +1453,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
             onAttack {
               def target = opp.bench.select("Select the new Active Pokémon.")
-              if ( swFromBench (defending, target) ) { damage 30, target }
+              if ( sw2(target) ) { damage 30, target }
             }
           }
           move "Link Blast", {
@@ -1906,7 +1906,7 @@ public enum GuardiansRising implements LogicCardInfo {
             onActivate {r->
               if(r==PLAY_FROM_HAND && opp.bench.notEmpty && confirm('Use Bloodthirsty Eyes?')) {
                 powerUsed()
-                swFromBench (opp.active, opp.bench.select("Select your opponent's new Active Pokémon."), SRC_ABILITY)
+                sw2(opp.bench.select("Select your opponent's new Active Pokémon."), SRC_ABILITY)
               }
             }
           }
@@ -2235,7 +2235,7 @@ public enum GuardiansRising implements LogicCardInfo {
               assert opp.bench.notEmpty
             }
             onAttack {
-              swFromBench (opp.active, opp.bench.select("Select your opponent's new Active Pokémon."))
+              sw2(opp.bench.select("Select your opponent's new Active Pokémon."))
             }
           }
 

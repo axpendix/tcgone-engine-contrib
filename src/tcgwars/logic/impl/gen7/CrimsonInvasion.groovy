@@ -313,7 +313,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
             onAttack {
               def target = opp.bench.select("Select the new Active Pokémon.")
-              if ( swFromBench (defending, target) ) { damage 40, target }
+              if ( sw2(target) ) { damage 40, target }
             }
           }
 
@@ -2272,7 +2272,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
           text "You can play this card only if you have more Prize cards remaining than your opponent.\nSwitch 1 of your opponent's Benched Pokémon with their Active Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
           onPlay {
             if(opp.bench){
-              swFromBench (opp.active, opp.bench.select("Select your opponent's new Active Pokémon."), TRAINER_CARD)
+              sw2(opp.bench.select("Select your opponent's new Active Pokémon."), TRAINER_CARD)
             }
           }
           playRequirement{

@@ -317,7 +317,7 @@ public enum CelestialStorm implements LogicCardInfo {
               assert opp.bench
               powerUsed()
               flip {
-                swFromBench (opp.active, opp.bench.select("Select your opponent's new Active Pokémon."), SRC_ABILITY)
+                sw2(opp.bench.select("Select your opponent's new Active Pokémon."), SRC_ABILITY)
               }
             }
           }
@@ -387,7 +387,7 @@ public enum CelestialStorm implements LogicCardInfo {
               def pcs = defending
               if(opp.bench && confirm("Switch 1 of your opponent's Benched Pokémon with their Active Pokémon?")){
                 def target = opp.bench.select("Select the new Active Pokémon.")
-                if ( swFromBench (defending, target) ) { pcs = target }
+                if ( sw2(target) ) { pcs = target }
               }
               targeted(pcs) {
                 apply POISONED, pcs
@@ -872,7 +872,7 @@ public enum CelestialStorm implements LogicCardInfo {
             }
             onAttack {
               def target = opp.bench.select("Select the new Active Pokémon.")
-              if ( swFromBench (defending, target) ) {
+              if ( sw2(target) ) {
                 apply BURNED, target
                 apply CONFUSED, target
               }
@@ -2658,7 +2658,7 @@ public enum CelestialStorm implements LogicCardInfo {
               assert self.active : "$self is not your active pokémon"
               assert opp.bench : "There is no pokémon on your opponent's bench to switch"
               powerUsed()
-              swFromBench (opp.active, opp.bench.select("Select your opponent's new Active Pokémon."), SRC_ABILITY)
+              sw2(opp.bench.select("Select your opponent's new Active Pokémon."), SRC_ABILITY)
             }
           }
           move "Dragon Claw" , {
