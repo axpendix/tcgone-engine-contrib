@@ -438,12 +438,12 @@ class TcgStatics {
   static sw (PokemonCardSet old, PokemonCardSet newp, Source source=Source.ATTACK) {
     bg().em().run(new Switch(old,newp,source))
   }
-  //use for "Switch 1 of your opponent's Benched Pokémon with their Active Pokémon." If an additional effect depends on this, the method returns whether or not the switch happened.
-  static boolean swFromBench (PokemonCardSet old, PokemonCardSet newp, Source source=Source.ATTACK) {
-    targeted (newp, source) {
-      sw (old, newp, null)
+  static sw2 (def pcs1, def pcs2 = null, Source src = Source.ATTACK) {
+    if(pcs2 == null) {
+      return !(new Switch(pcs1.owner.pbg.active, src, pcs1).run(bg))
+    } else {
+      return !(new Switch(pcs1, pcs2, src).run(bg))
     }
-    return newp.active
   }
   static discardStadium(){
     if (bg().stadiumInfoStruct?.stadiumCard){
