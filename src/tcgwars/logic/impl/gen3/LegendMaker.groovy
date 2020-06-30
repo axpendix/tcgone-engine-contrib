@@ -909,15 +909,19 @@ public enum LegendMaker implements LogicCardInfo {
         pokePower "Reactive Recharge", {
           text "If Magneton would be Knocked Out by damage from an opponent's attack, you may move any number of React Energy cards from Magneton to your Pokémon in any way you like."
           delayedA {
-            before KNOCKOUT, {
-              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && ef.pokemonToBeKnockedOut==self  && ef.pokemonToBeKnockedOut.cards.findAll {it.name.contains("React Energy")}) {
-                if (oppConfirm("Move an energy from Magneton to your other Pokemon?")) {
-                  while(ef.pokemonToBeKnockedOut.cards.findAll{it.name.contains("React Energy")}) {
-                    def card=ef.pokemonToBeKnockedOut.cards.findAll {
-                      it.name.contains("React Energy")
-                    }.oppSelect("Card to move").first()
-                    def tar = my.all.findAll{ it != self }.oppSelect("Select Pokemon to move React Energy to")
-                    energySwitch(self, tar, card)
+            before KNOCKOUT, self, {
+              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.bench && self.cards.any{it.name.contains("React Energy")} && confirm("Move any number of React Energy cards from Magneton to your other Pokemon?", self.owner)) {
+                def list = self.cards.findAll{it.name == "React Energy"}
+                def sel = list.select("Card to move", self.owner)
+                while(list) {
+                  def card = sel.first()
+                  def tar = self.owner.pbg.all.findAll{it != self}.select("Select Pokemon to move React Energy to", self.owner)
+                  energySwitch(self, tar, card)
+                  list.remove(card)
+                  if (list){
+                    sel = list.select(min: 0, "Card to move (Cancel to stop)", self.owner)
+                    if (!sel)
+                      list.clear()
                   }
                 }
               }
@@ -929,12 +933,9 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost L, C
           onAttack {
             damage 30
-
-            if (self.cards.findAll { it.name.contains("React Energy") }) {
-              def magnets = all.findAll({
-                it.name.contains("Magnemite") || it.name.contains("Magneton")
-              }).size()
-              damage 10*magnets
+            if (self.cards.any{ it.name == "React Energy" }) {
+              def magnets = all.count{ ["Magnemite", "Magneton"].contains(it.name) }
+              damage 10 * magnets
             }
           }
         }
