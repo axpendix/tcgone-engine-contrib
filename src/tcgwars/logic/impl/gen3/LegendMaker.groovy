@@ -319,16 +319,14 @@ public enum LegendMaker implements LogicCardInfo {
         pokePower "Reactive Shift", {
           text "Once during your turn (before your attack), you may move a React Energy card attached to 1 of your Pokémon to another of your Pokémon. This power can't be used if Delcatty is affected by a Special Condition."
           actionA {
-            assert my.all.findAll{it.cards.findAll { it.name == "React Energy" }}
+            assert my.all.any{it.cards.any{ it.name == "React Energy" }}
             checkLastTurn()
             checkNoSPC()
-            def src = my.all.findAll{it.cards.findAll { it.name == "React Energy" }}.select("Source for energy")
-            if(src){
-              powerUsed()
-              def card = src.cards.findAll{ it.name == "React Energy"}.select("Energy to move").first()
-              def tar = my.all.findAll{it != src}.select("Target for energy")
-              energySwitch(src, tar, card)
-            }
+            powerUsed()
+            def src = my.all.findAll{it.cards.any{ it.name == "React Energy" }}.select("Source for energy")
+            def card = src.cards.findAll{ it.name == "React Energy"}.select("Energy to move").first()
+            def tar = my.all.findAll{it != src}.select("Target for energy")
+            energySwitch(src, tar, card)
           }
         }
         move "Energy Link", {
