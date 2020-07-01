@@ -686,8 +686,8 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost M, M, C
           onAttack {
             if (confirm("Discard 2 [M]?")) {
-              discardSelfEnergy M, M
               damage 90
+              discardSelfEnergy M, M
             } else {
               damage 50
             }
