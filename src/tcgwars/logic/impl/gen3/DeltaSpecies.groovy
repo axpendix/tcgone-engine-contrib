@@ -548,10 +548,13 @@ public enum DeltaSpecies implements LogicCardInfo {
             assert my.deck : "Deck is empty"
             powerUsed()
 
-            my.deck.subList(0,4).select("Choose the card to put in your hand").moveTo(hidden:true, my.hand)
+            def maxSize = Math.min(my.deck.size(),4)
+            my.deck.subList(0,maxSize).select("Choose the card to put in your hand").moveTo(hidden:true, my.hand)
 
-            def rearrangedCards = rearrange(my.deck.subList(0, 3))
-            rearrangedCards.moveTo(hidden:true, my.deck)
+            if ( (maxSize - 1) > 0 ) {
+              def rearrangedCards = rearrange(my.deck.subList(0, maxSize - 1))
+              rearrangedCards.moveTo(hidden:true, my.deck)
+            }
           }
         }
         move "Crush and Burn", {
