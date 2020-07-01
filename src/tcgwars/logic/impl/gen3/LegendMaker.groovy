@@ -726,7 +726,8 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Rear Sensor", {
           text "Each player's Active Basic Pokémon (excluding Pokémon-ex) can't use any Poké-Powers."
           getterA (IS_ABILITY_BLOCKED) { Holder h ->
-            if (!h.effect.target.evolution && h.effect.target.active && !h.effect.target.EX) {
+            def pcs = h.effect.target
+            if (pcs.active && pcs.notEvolution && !pcs.EX) {
               if (h.effect.ability instanceof PokePower) {
                 h.object=true
               }
