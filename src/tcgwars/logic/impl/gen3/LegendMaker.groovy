@@ -1622,9 +1622,9 @@ public enum LegendMaker implements LogicCardInfo {
           text "Whenever you attach a React Energy card from your hand to Tangela, remove all damage counters from Tangela."
           delayedA {
             after ATTACH_ENERGY, self, {
-              if (ef.reason==PLAY_FROM_HAND && ef.card.name.contains("React Energy")) {
+              if (ef.reason==PLAY_FROM_HAND && ef.card.name == "React Energy") {
                 bc "Reactive Healing Activates"
-                healAll self
+                healAll self, SRC_ABILITY
               }
             }
           }
@@ -1634,7 +1634,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 10
-            if (!defending.evolution) {
+            if (defending.notEvolution) {
               cantAttackNextTurn(defending)
             }
           }
