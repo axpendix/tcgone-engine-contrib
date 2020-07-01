@@ -1690,6 +1690,8 @@ public enum LegendMaker implements LogicCardInfo {
       case VIBRAVA_46:
       return evolution (this, from:"Trapinch", hp:HP080, type:C, retreatCost:1) {
         weakness C
+        resistance L, MINUS30
+        resistance F, MINUS30
         move "Supersonic", {
           text "Flip a coin. If heads, the Defending Pokémon is now Confused."
           energyCost C
@@ -1702,7 +1704,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 20
-            if (self.cards.findAll { it.name.contains("React Energy") }) {
+            if (self.cards.any{ it.name == "React Energy" }) {
               damage 20
             }
           }
