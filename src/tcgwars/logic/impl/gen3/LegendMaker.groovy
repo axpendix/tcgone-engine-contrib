@@ -1158,17 +1158,20 @@ public enum LegendMaker implements LogicCardInfo {
           text "Put 7 damage counters on the Defending Pokémon at the end of your opponent's next turn."
           energyCost P, P, C
           onAttack {
-            delayed {
-              before BETWEEN_TURNS, {
-                if (bg.currentTurn == self.owner.opposite) {
-                  directDamage 70, self.owner.opposite.pbg.active
-                  bc "Shadow Tag activates"
+            targeted (defending){
+              def pcs = defending
+              delayed {
+                before BETWEEN_TURNS, {
+                  if (bg.currentTurn == self.owner.opposite) {
+                    bc "Shadow Tag activates"
+                    directDamage 70, pcs
+                  }
                 }
+                after SWITCH, pcs, {unregister()}
+                after EVOLVE, pcs, {unregister()}
+                after DEVOLVE, pcs, {unregister()}
+                unregisterAfter 2
               }
-              after SWITCH, defending, {unregister()}
-              after EVOLVE, defending, {unregister()}
-              after DEVOLVE, defending, {unregister()}
-              unregisterAfter 2
             }
           }
         }
