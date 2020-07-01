@@ -1330,7 +1330,7 @@ class TcgStatics {
     delegate.onAttack {
       def c = !opp.deck ? 1 : 2
       if (my.deck && opp.deck){
-        c = choose([1,2],["Your deck", "Your opponent's deck"], "Rearrange the top 5 cards of which player's deck?")
+        c = choose([1,2],["Your deck", "Your opponent's deck"], "Rearrange the top $count cards of which player's deck?")
       }
 
       def chosenDeck, playerString, bcString
@@ -1344,9 +1344,10 @@ class TcgStatics {
         bcString = "opponent's"
       }
 
-      def list = rearrange(chosenDeck.subList(0,5), "Rearrange top 5 cards in $playerString deck")
+      def maxSize = Math.min(chosenDeck.size(),count)
+      def list = rearrange(chosenDeck.subList(0,maxSize), "Rearrange top $count cards in $playerString deck")
       chosenDeck.setSubList(0, list)
-      bc "${delegate.thisMove} rearranged ${self}'s $bcString deck"
+      bc "${delegate.thisMove} rearranged ${delegate.self}'s $bcString deck"
     }
   }
 
