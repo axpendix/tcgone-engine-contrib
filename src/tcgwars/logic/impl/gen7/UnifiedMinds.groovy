@@ -2172,7 +2172,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           move "Future Sight", {
             text "Look at the top 4 cards of either player's deck and put them back in any order."
             energyCost C
-            rearrangeEitherPlayersDeck(delegate, 4)
+            foresight(4, delegate)
           }
         };
       case MUSHARNA_89:

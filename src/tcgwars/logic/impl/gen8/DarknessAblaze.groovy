@@ -1775,7 +1775,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Future Sight", {
           text "Look at the top 4 cards of either player’s deck, then return them to the top of that deck in any order."
           energyCost C
-          rearrangeEitherPlayersDeck(delegate, 4)
+          foresight(4, delegate)
         }
         move "Psychic", {
           text "20+ damage. This attack does an additional 20 damage for each Energy attached to your opponent’s Active Pokémon."

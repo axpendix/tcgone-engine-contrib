@@ -2048,7 +2048,7 @@ public enum GuardiansRising implements LogicCardInfo {
           move "Future Sight", {
             text "Look at the top 4 cards of either player's deck and put them back in any order."
             energyCost D
-            rearrangeEitherPlayersDeck(delegate, 4)
+            foresight(4, delegate)
           }
           move "Doom News", {
             text "Put all Energy attached to this Pokémon into your hand. At the end of your opponent's next turn, the Defending Pokémon will be Knocked Out."

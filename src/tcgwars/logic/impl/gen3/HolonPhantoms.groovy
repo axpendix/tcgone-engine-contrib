@@ -764,16 +764,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Foresight", {
           text "Look at the top 5 cards of either player's deck and put them back on top of that player's deck in any order."
           energyCost C
-          onAttack {
-            def list
-            if (my.deck && confirm("Rearrange the top 5 cards of your deck?")) {
-              list=rearrange(my.deck.subList(0,5), "Rearrange top 5 cards of your deck")
-              my.deck.setSubList(0, list)
-            } else if (opp.deck && confirm ("Rearrange the top 5 cards of your Opponent's deck?")) {
-              list=rearrange(opp.deck.subList(0,5), "Rearrange top 5 cards of your Opponent's deck")
-              opp.deck.setSubList(0, list)
-            }
-          }
+          foresight(5, delegate)
         }
         move "Overrun", {
           text "10 damage. Choose 1 of your opponent's Benched Pokémon. This attack does 20 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"

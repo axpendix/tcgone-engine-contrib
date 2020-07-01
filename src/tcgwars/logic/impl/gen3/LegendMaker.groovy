@@ -731,33 +731,7 @@ public enum LegendMaker implements LogicCardInfo {
         move "Foresight", {
           text "Look at the top 5 cards of either player's deck and put them back on top of that player's deck in any order you like."
           energyCost C
-          onAttack {
-            def list
-            if(!my.deck){
-              list=rearrange(opp.deck.subList(0,5), "Rearrange top 5 cards in your opponent's deck")
-              opp.deck.setSubList(0, list)
-              bc "Foresight rearranged its opponent's deck"
-            }
-            else if(!opp.deck){
-              list=rearrange(my.deck.subList(0,5), "Rearrange top 5 cards in your deck")
-              my.deck.setSubList(0, list)
-              bc "Foresight rearranged its owner's deck"
-              
-            }
-            else{
-              def c=choose([1,2],["Your deck", "Your opponent's deck"], "Rearrange the top 5 cards of which player's deck?")
-              if(c==1){
-                list=rearrange(my.deck.subList(0,5), "Rearrange top 5 cards in your deck")
-                my.deck.setSubList(0, list)
-                bc "Foresight rearranged its owner's deck"
-              }
-              if(c==2){
-                list=rearrange(opp.deck.subList(0,5), "Rearrange top 5 cards in your opponent's deck")
-                opp.deck.setSubList(0, list)
-                bc "Foresight rearranged its opponent's deck"
-              }
-            }
-          }
+          foresight(5, delegate)
         }
         move "Disorder", {
           text "20 damage. If the Defending Pokémon has any Special Energy cards attached to it, the Defending Pokémon is now Confused."
