@@ -1718,7 +1718,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 20
-            apply ASLEEP
+            applyAfterDamage ASLEEP
           }
         }
         move "Vine Whip", {
@@ -1864,7 +1864,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 10
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
         move "Firebreathing", {
@@ -1884,7 +1884,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 20
-            if (self.cards.findAll { it.name.contains("React Energy") }) {
+            if (self.cards.any{ it.name == "React Energy" }) {
               heal 20, self
             }
           }
@@ -1894,7 +1894,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost G, C
           onAttack {
             damage 20
-            apply CONFUSED
+            applyAfterDamage CONFUSED
           }
         }
       };
@@ -1958,14 +1958,8 @@ public enum LegendMaker implements LogicCardInfo {
           delayedA {
             before APPLY_RESISTANCE, {
               bg.dm().each {
-                if (
-                  it.from.name == "Omanyte" ||
-                  it.from.name == "Omastar" ||
-                  it.from.name == "Kabuto" ||
-                  it.from.name == "Kabutops" ||
-                  it.from.name == "Kabutops ex"
-                ) {
-                  if (it.from.owner == self.owner) {
+                if ( ["Omanyte", "Omastar", "Kabuto", "Kabutops", "Kabutops ex"].contains(it.from.name) ) {
+                  if (it.from.owner == self.owner && it.to.owner == self.owner.opposite) {
                     bc "Ancient Tentacles prevents the attack from being affected by Resistance."
                     prevent()
                   }
