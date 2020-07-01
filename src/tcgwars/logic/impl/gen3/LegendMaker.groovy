@@ -1284,7 +1284,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 10
-            apply CONFUSED
+            applyAfterDamage CONFUSED
           }
         }
         move "Tumbling Attack", {
@@ -1304,7 +1304,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 20
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
         move "Do the Wave", {
@@ -1338,9 +1338,7 @@ public enum LegendMaker implements LogicCardInfo {
             damage 20
             if (opp.bench) {
               multiSelect(opp.bench, 2).each{
-                targeted(it) {
-                  damage 10, it
-                }
+                damage 10, it
               }
             }
           }
@@ -1354,7 +1352,7 @@ public enum LegendMaker implements LogicCardInfo {
           text "If your opponent has any Evolved Pokémon in play, choose 1 of them and flip a coin. If heads, remove the highest Stage Evolution card on that Pokémon and have your opponent shuffled it into his or her deck."
           energyCost C, C
           attackRequirement {
-            assert opp.bench.findAll { it.evolution } : "Opponent has no evolved Pokemon"
+            assert opp.bench.any{ it.evolution } : "Opponent has no evolved Pokemon"
           }
           onAttack {
             def list = opp.all.findAll { it.evolution }
@@ -1394,7 +1392,7 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Ancient Protection", {
           text "Each of your Omanyte, Omastar, Kabuto, Kabutops, and Kabutops ex has no Weakness."
           getterA (GET_WEAKNESSES) { h->
-            if (h.effect.target.name == "Omanyte" || h.effect.target.name == "Omastar" || h.effect.target.name == "Kabuto" || h.effect.target.name == "Kabutops" || h.effect.target.name == "Kabutops ex" ) {
+            if ( ["Omanyte", "Omastar", "Kabuto", "Kabutops", "Kabutops ex"].contains(h.effect.target.name) ) {
               def list = h.object as List<Weakness>
               list.clear()
             }
@@ -1416,7 +1414,8 @@ public enum LegendMaker implements LogicCardInfo {
           text "If Kecleon has any React Energy cards attached to it, Kecleon is Grass, Fire, Water, Lightning, Psychic, and Fighting type."
           delayedA {
             getterA GET_POKEMON_TYPE, self, {h->
-              if (self.cards.findAll { it.name.contains("React Energy") }) {
+              if (self.cards.findAll { it.name == "React Energy" }) {
+                h.object.clear()
                 h.object.add(G)
                 h.object.add(R)
                 h.object.add(W)
