@@ -2964,7 +2964,7 @@ public enum RebelClash implements LogicCardInfo {
             if (my.bench) {
               sw self, my.bench.select("Choose the new Active Pokémon.")
               if (opp.bench) {
-                whirlwind()
+                sw opp.active, opp.bench.oppSelect("Choose your new Active Pokémon.")
               }
             }
           }
