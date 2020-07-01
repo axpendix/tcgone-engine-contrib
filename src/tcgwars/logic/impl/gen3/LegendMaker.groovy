@@ -1505,6 +1505,7 @@ public enum LegendMaker implements LogicCardInfo {
           text "As long as Misdreavus is your Active Pokémon, each player flips 2 coins for his or her Pokémon that is Asleep between turns. If either coin is tails, that Pokémon is still Asleep."
           delayedA {
             before ASLEEP_SPC, null, null, BEGIN_TURN, {
+              //TODO: Check this not stacking with other cards (Slumbering Forest, Dark Gengar NeoDestiny). 99% sure it doesn't but just to make sure.
               if(self.active){
                 flip "Asleep (Deep Sleep)", 2, {}, {}, [2:{
                   ef.unregisterItself(bg.em());
@@ -1529,10 +1530,11 @@ public enum LegendMaker implements LogicCardInfo {
         move "Dream Eater", {
           text "30 damage. If the Defending Pokémon is not Asleep, this attack does nothing."
           energyCost P
+          attackRequirement{
+            assert defending.isSPC(ASLEEP) : "The Defending Pokémon is not asleep"
+          }
           onAttack {
-            if (defending.isSPC(ASLEEP)) {
-              damage 30
-            }
+            damage 30
           }
         }
       };
