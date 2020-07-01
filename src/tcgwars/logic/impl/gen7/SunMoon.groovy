@@ -2021,9 +2021,7 @@ public enum SunMoon implements LogicCardInfo {
             energyCost D, D, C
             onAttack {
               damage 30
-              flip { afterDamage {
-                discardDefendingEnergy()
-              } }
+              flip { discardDefendingEnergy() }
             }
           }
 

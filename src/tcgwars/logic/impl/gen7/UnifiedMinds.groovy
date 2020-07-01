@@ -2791,9 +2791,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 80
-              afterDamage {
-                discardDefendingEnergy()
-              }
+              discardDefendingEnergy()
             }
           }
         };
