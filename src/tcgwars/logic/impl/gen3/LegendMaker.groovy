@@ -1596,16 +1596,14 @@ public enum LegendMaker implements LogicCardInfo {
         pokePower "Power Circulation", {
           text "Once during your turn (before your attack), you may search your discard pile for a basic Energy card, show it to your opponent, and put it on top of your deck. If you do, put 1 damage counter on Sealeo. This power can't be used if Sealeo is affected by a Special Condition."
           actionA {
-            checkNoSPC()
             checkLastTurn()
+            checkNoSPC()
             assert my.discard.filterByType(BASIC_ENERGY) : "No Basic Energy cards in Discard."
 
             powerUsed()
-            def selected = my.discard.filterByType(BASIC_ENERGY).select(min: 0, max: 1, "Move one to the top of your deck")
-            if (selected) {
-              selected.moveTo(addToTop: true, my.deck)
-              directDamage 10, self
-            }
+            def selected = my.discard.filterByType(BASIC_ENERGY).select("Move one Basic Energy to the top of your deck")
+            selected.moveTo(addToTop: true, my.deck)
+            directDamage 10, self
           }
         }
         move "Lunge Out", {
