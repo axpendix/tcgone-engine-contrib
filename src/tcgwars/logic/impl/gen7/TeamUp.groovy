@@ -2203,6 +2203,9 @@ public enum TeamUp implements LogicCardInfo {
           move "Spooky Shot" , {
             text "20 damage"
             energyCost C
+            onAttack{
+              damage 20
+            }
           }
         };
       case ZORUA_90:

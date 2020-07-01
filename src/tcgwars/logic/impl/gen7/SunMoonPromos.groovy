@@ -1003,6 +1003,9 @@ public enum SunMoonPromos implements LogicCardInfo {
           move "Submarine Blow" , {
             text "120 damage."
             energyCost F,F,F
+            onAttack{
+              damage 120
+            }
           }
         };
       case DECIDUEYE_SM55:
