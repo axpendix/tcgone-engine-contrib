@@ -1553,6 +1553,7 @@ public enum LegendMaker implements LogicCardInfo {
           text "30 damage. Before doing damage, discard all Trainer cards attached to the Defending Pokémon."
           energyCost D, C
           onAttack {
+            //TODO: Check this not discarding Fossil placed as Pokémon.
             if (defending.cards.filterByType(TRAINER)){
               defending.cards.filterByType(TRAINER).discard()
             }
@@ -1566,10 +1567,10 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Reactive Aroma", {
           text "As long as Roselia has any React Energy cards attached to it, remove 1 damage counter from each of your Pokémon (excluding Pokémon-ex) that has any React Energy cards attached to it between turns. You can't use more than 1 Reactive Aroma Poké-Body each turn."
           delayedA {
-            before BETWEEN_TURNS, {
-              if (self.cards.findAll{it.name.contains("React Energy")}) {
+            before BEGIN_TURN, {
+              if (self.cards.any{it.name == "React Energy"}) {
                 self.owner.pbg.all.each {
-                  if (it.numberOfDamageCounters && it.cards.findAll{it.name.contains("React Energy")} && !it.EX) {
+                  if (it.numberOfDamageCounters && it.cards.any{it.name == "React Energy"} && !it.EX) {
                     heal 10, it
                   }
                 }
