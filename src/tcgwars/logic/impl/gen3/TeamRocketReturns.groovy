@@ -248,7 +248,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             energyCost L, C, C
             onAttack {
               damage 70
-              discardAllSelfEnergy(L)
+              afterDamage { discardAllSelfEnergy(L) } //TODO: Handle in static.
             }
           }
         };

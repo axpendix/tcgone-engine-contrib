@@ -609,7 +609,7 @@ public enum PowerKeepers implements LogicCardInfo {
             damage 50
             if (confirm("Discard all [L] Energy?")) {
               damage 40
-              discardAllSelfEnergy(L)
+              afterDamage { discardAllSelfEnergy(L) } //TODO: Handle in the static.
             }
           }
         }
