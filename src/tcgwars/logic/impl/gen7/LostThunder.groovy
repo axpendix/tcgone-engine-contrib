@@ -3700,13 +3700,7 @@ public enum LostThunder implements LogicCardInfo {
               assert self.turnCount < bg.turnCount : "Cannot evolve the turn you put it into play"
               powerUsed()
               def tar = my.hand.filterByType(STAGE1).select("Evolve To")
-              // [Temp Workaround for VMAX]
-              while (tar.first().cardTypes.is(VMAX)){
-                wcu "You cannot evolve into a Pokémon VMAX"
-                tar = my.hand.filterByType(STAGE1).select("Evolve To")
-              }
-              // [End of workaround for VMAX]
-              // TODO: Remove this when VMAX are no longer marked as STAGE1.
+
               evolve(self, tar.first(), PLAY_FROM_HAND)
             }
           }
