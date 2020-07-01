@@ -2026,7 +2026,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Future Sight", {
             text "Look at the top 4 cards of either player's deck and put them back in any order."
             energyCost P
-            rearrangeEitherPlayersDeck(delegate, 4)
+            foresight(4, delegate)
           }
         };
       case XATU_79:
