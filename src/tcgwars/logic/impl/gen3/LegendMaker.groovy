@@ -1470,10 +1470,10 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Paranoid", {
           text "As long as Machoke is Confused, Machoke's attacks do 50 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
           delayedA {
-            before APPLY_ATTACK_DAMAGES, {
-              if (self.isSPC(CONFUSED)) {
+            before PROCESS_ATTACK_EFFECTS, {
+              if (ef.attacker == self && self.isSPC(CONFUSED)) {
                 bg.dm().each {
-                  if (it.from == self && it.to != self) {
+                  if (it.to == self.owner.opposite.active && it.notNoEffect && it.dmg.value) {
                     bc "Paranoid +50"
                     it.dmg += hp(50)
                   }
