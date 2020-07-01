@@ -1346,7 +1346,7 @@ class TcgStatics {
 
       def list = rearrange(chosenDeck.subList(0,5), "Rearrange top 5 cards in $playerString deck")
       chosenDeck.setSubList(0, list)
-      bc "$thisMove rearranged ${self}'s $bcString deck"
+      bc "${delegate.thisMove} rearranged ${self}'s $bcString deck"
     }
   }
 
