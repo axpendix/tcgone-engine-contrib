@@ -2575,8 +2575,7 @@ public enum LegendMaker implements LogicCardInfo {
             afterDamage {
               def reactEnergies = self.cards.findAll{it.name == "React Energy"}
               if (reactEnergies && confirm("Discard a React Energy card attached to Arcanine ex? Otherwise, 2 [R] Energies will be discarded.")) {
-                  reactEnergies.select("Select the React Energy to discard").discard()
-                }
+                reactEnergies.select("Select the React Energy to discard").discard()
               } else {
                 discardSelfEnergy R,R
               }
