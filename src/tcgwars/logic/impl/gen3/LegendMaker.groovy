@@ -2275,9 +2275,9 @@ public enum LegendMaker implements LogicCardInfo {
         def actions=[]
         onPlay {
           actions=action("Stadium: Power Tree") {
-            assert my.discard : "Discard pile is empty"
-            assert lastTurn != bg().turnCount : "Power Tree already used"
-            assert !my.discard.filterByType(SPECIAL_ENERGY) : "Cannot activate because there are Special Energies in discard"
+            assert lastTurn != bg().turnCount : "You've already used Power Tree this turn"
+            assert my.discard.filterByType(BASIC_ENERGY) : "There are no basic Energy cards in your discard Pile"
+            assert !my.discard.filterByType(SPECIAL_ENERGY) : "You cannot use Power Tree, there are Special Energy cards in your discard pile"
             bc "Used Power Tree effect"
             lastTurn = bg().turnCount
 
@@ -2296,16 +2296,14 @@ public enum LegendMaker implements LogicCardInfo {
         def actions=[]
         onPlay {
           actions=action("Stadium: Strange Cave") {
-            assert my.deck : "Deck is empty"
             assert lastTurn != bg().turnCount : "Already used"
             assert my.bench.notFull : "Bench is full"
+            def eligible = my.hand.findAll{["Omanyte", "Kabuto", "Aerodactyl", "Aerodactyl ex", "Lileep", "Anorith"].contains(it.name)}
+            assert elegible : "You have no Omanyte, Kabuto, Aerodactyl, Aerodactyl ex, Lileep or Anorith in your hand"
             bc "Used Strange Cave effect"
             lastTurn = bg().turnCount
-            def eligible = my.hand.findAll { it.name == "Omanyte" || it.name == "Kabuto" || it.name == "Aerodactyl" || it.name == "Aerodactyl ex" || it.name == "Lileep" || it.name == "Anorith"}
             eligible.select("Select which Pokemon to bench").each {
               hand.remove(it)
-
-              // TODO How to mark it as a Basic Pokemon?
               benchPCS(it)
             }
           }
