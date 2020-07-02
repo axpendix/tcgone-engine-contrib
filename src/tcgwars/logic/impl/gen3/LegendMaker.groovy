@@ -194,7 +194,7 @@ public enum LegendMaker implements LogicCardInfo {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
                 if (it.to == self && it.dmg.value && it.notNoEffect) {
-                  def energies = self.cards.findAll{it.name.contains("React Energy")}
+                  def energies = self.cards.findAll{it.name == "React Energy"}
                   if (energies) {
                     def reducedDamage = energies.size()*10
                     bc "Reactive Protection -$reducedDamage"
@@ -239,7 +239,7 @@ public enum LegendMaker implements LogicCardInfo {
           text "70- damage. Does 70 damage minus 10 damage for each damage counter on Aggron. If Aggron has any React Energy cards attached to it, this attack does 70 damage instead."
           energyCost F, C, C
           onAttack {
-            if (self.cards.any{ it.name.contains("React Energy") }) {
+            if (self.cards.any{ it.name == "React Energy" }) {
               damage 70
             } else {
               damage 70-self.numberOfDamageCounters*10
@@ -262,11 +262,10 @@ public enum LegendMaker implements LogicCardInfo {
           text "Count the number of React Energy cards attached to Cradily and choose up to that number of your opponent's Evolved Pokémon. Remove the highest Stage Evolution card from each of those Pokémon, then have your opponent shuffle those cards into his or her deck."
           energyCost C, C
           attackRequirement {
-            assert self.cards.findAll {it.name.contains("React Energy")} : "No React Energies attached to this Pokemon"
-            assert opp.all.findAll{ it.evolution } : "Your opponent has no evolved pokemon"
+            assert self.cards.any{it.name == "React Energy"} : "No React Energies attached to this Pokemon"
+            assert opp.all.any{ it.evolution } : "Your opponent has no evolved pokemon"
           }
           onAttack {
-            //TODO: Rework this, should be a select loop with a cancel option. All devolutions should be done after selecting.
             def evolvedPoke = opp.all.findAll{it.evolution}
             def max = Math.min(self.cards.findAll{it.name == "React Energy"}.size(), evolvedPoke.size())
             def toBeDevolved = new PcsList()
@@ -368,7 +367,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost P
           def eff
           onAttack {
-            def counters = (self.cards.any{ it.name.contains("React Energy") }) ? 4 : 2
+            def counters = (self.cards.any{ it.name == "React Energy" }) ? 4 : 2
 
             eff = delayed {
               before KNOCKOUT, {
@@ -500,7 +499,7 @@ public enum LegendMaker implements LogicCardInfo {
           text "60+ damage. Does 60 damage plus 20 damage for each React Energy card attached to Machamp."
           energyCost F, C, C
           onAttack {
-            def energies = self.cards.findAll{it.name.contains("React Energy")}.size()
+            def energies = self.cards.findAll{it.name == "React Energy"}.size()
             damage 60+20*energies
 
           }
@@ -605,7 +604,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 30
-            if (self.cards.any{ it.name.contains("React Energy") }) {
+            if (self.cards.any{ it.name == "React Energy" }) {
               apply CONFUSED
             }
           }
@@ -663,7 +662,7 @@ public enum LegendMaker implements LogicCardInfo {
           getterA (GET_RETREAT_COST, BEFORE_LAST) {holder->
             def pcs = holder.effect.target
             if (pcs.owner = self.owner && pcs.types.contains(W) && !pcs.EX) {
-              if (self.cards.any{ it.name.contains("React Energy") }) {
+              if (self.cards.any{ it.name == "React Energy" }) {
                 holder.object = 0
               }
             }
@@ -793,6 +792,7 @@ public enum LegendMaker implements LogicCardInfo {
             if (energy) {
               attachEnergy(self, energy.first())
             }
+            shuffleDeck()
           }
         }
         move "Bite Off", {
@@ -910,7 +910,7 @@ public enum LegendMaker implements LogicCardInfo {
           text "If Magneton would be Knocked Out by damage from an opponent's attack, you may move any number of React Energy cards from Magneton to your Pokémon in any way you like."
           delayedA {
             before KNOCKOUT, self, {
-              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.bench && self.cards.any{it.name.contains("React Energy")} && confirm("Move any number of React Energy cards from Magneton to your other Pokemon?", self.owner)) {
+              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && self.owner.pbg.bench && self.cards.any{it.name == "React Energy"} && confirm("Move any number of React Energy cards from Magneton to your other Pokemon?", self.owner)) {
                 def list = self.cards.findAll{it.name == "React Energy"}
                 def sel = list.select("Card to move", self.owner)
                 while(list) {
@@ -1159,7 +1159,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost P, P, C
           onAttack {
             targeted (defending){
-              bc "7 damage counters will be put on ${self.owner.opposite}'s Defending ${defending} at the end of their next turn. (This effect can be removed by evolving or benching ${defending}.)"
+              bc "7 damage counters will be put on ${opp.owner.getPlayerUsername(bg)}'s Defending ${defending} at the end of their next turn. (This effect can be removed by evolving or benching ${defending}.)"
               def pcs = defending
               delayed {
                 before BETWEEN_TURNS, {
@@ -1534,7 +1534,9 @@ public enum LegendMaker implements LogicCardInfo {
             assert defending.isSPC(ASLEEP) : "The Defending Pokémon is not asleep"
           }
           onAttack {
-            damage 30
+            if (defending.isSPC(ASLEEP)) {
+              damage 30
+            }
           }
         }
       };
@@ -1553,7 +1555,6 @@ public enum LegendMaker implements LogicCardInfo {
           text "30 damage. Before doing damage, discard all Trainer cards attached to the Defending Pokémon."
           energyCost D, C
           onAttack {
-            //TODO: Check this not discarding Fossil placed as Pokémon.
             if (defending.cards.filterByType(TRAINER)){
               defending.cards.filterByType(TRAINER).discard()
             }
@@ -1568,7 +1569,8 @@ public enum LegendMaker implements LogicCardInfo {
           text "As long as Roselia has any React Energy cards attached to it, remove 1 damage counter from each of your Pokémon (excluding Pokémon-ex) that has any React Energy cards attached to it between turns. You can't use more than 1 Reactive Aroma Poké-Body each turn."
           delayedA {
             before BEGIN_TURN, {
-              if (self.cards.any{it.name == "React Energy"}) {
+              if (bg.em().retrieveObject("Reactive_Aroma") != bg.turnCount && self.cards.any{it.name == "React Energy"}) {
+                bg.em().storeObject("Reactive_Aroma", bg.turnCount)
                 self.owner.pbg.all.each {
                   if (it.numberOfDamageCounters && it.cards.any{it.name == "React Energy"} && !it.EX) {
                     heal 10, it
