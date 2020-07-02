@@ -574,7 +574,11 @@ public enum TeamUp implements LogicCardInfo {
             text "30+ Discard all [R] Energy from this Pokémon. This attack does 50 more damage for each card you discarded in this way."
             energyCost R,R
             onAttack{
-              damage 30 + 50*self.cards.filterByType(ENERGY).filterByEnergyType(R).discard().size()
+              def cards = self.cards.filterByType(ENERGY).filterByEnergyType(R)
+              damage 30 + 50*cards.size()
+              afterDamage{
+                cards.discard()
+              }
 
             }
           }
