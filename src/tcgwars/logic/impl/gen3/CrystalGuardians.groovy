@@ -582,7 +582,6 @@ public enum CrystalGuardians implements LogicCardInfo {
                 apply ASLEEP, (ef.attacker as PokemonCardSet)
               }
             }
-            after SWITCH, self, {unregister()}
           }
         }
         move "Collect", {

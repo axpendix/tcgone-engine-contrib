@@ -1726,7 +1726,6 @@ public enum SecretWonders implements LogicCardInfo {
                   apply POISONED, (ef.attacker as PokemonCardSet)
                 }
               }
-              after SWITCH, self, {unregister()}
             }
           }
           move "Disturbance Dive", {

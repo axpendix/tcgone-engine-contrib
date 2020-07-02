@@ -1355,7 +1355,6 @@ public enum ForbiddenLight implements LogicCardInfo {
                   apply POISONED, (ef.attacker as PokemonCardSet), SRC_ABILITY
                 }
               }
-              after SWITCH, self, {unregister()}
             }
           }
           move "Twister", {

@@ -630,7 +630,6 @@ public enum CelestialStorm implements LogicCardInfo {
                   apply POISONED, (ef.attacker as PokemonCardSet), SRC_ABILITY
                 }
               }
-              after SWITCH, self, {unregister()}
             }
           }
           move "Light Punch" , {
@@ -653,7 +652,6 @@ public enum CelestialStorm implements LogicCardInfo {
                   apply POISONED, (ef.attacker as PokemonCardSet), SRC_ABILITY
                 }
               }
-              after SWITCH, self, {unregister()}
             }
           }
           move "Feint Attack" , {
