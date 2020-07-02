@@ -1128,7 +1128,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
               delayed {
                 before CHECK_ATTACK_REQUIREMENTS, {
                   if(self.active && ef.attacker.owner != self.owner) {
-                    wcu "Disgusting Pollen prevents attack"
+                    wcu "Leer prevents attack"
                     prevent()
                   }
                 }

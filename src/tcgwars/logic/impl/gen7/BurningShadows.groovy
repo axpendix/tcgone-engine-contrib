@@ -344,7 +344,8 @@ public enum BurningShadows implements LogicCardInfo {
             text "As long as this Pokémon is your Active Pokémon, your opponent's Basic Pokémon can't attack."
             delayedA {
               before CHECK_ATTACK_REQUIREMENTS, {
-                if(self.active && ef.attacker.owner != self.owner && ef.attacker.basic) {
+                //TODO: Remove workaround for stealthy hood whenever that's fixed.
+                if(self.active && ef.attacker.owner != self.owner && ef.attacker.basic && ef.attacker.cards.any{it.name == "Stealthy Hood"}) {
                   wcu "Disgusting Pollen prevents attack"
                   prevent()
                 }
