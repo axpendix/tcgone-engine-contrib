@@ -401,9 +401,11 @@ public enum LegendMaker implements LogicCardInfo {
             assert my.discard.filterByType(ENERGY).filterByEnergyType(F) : "There is no [F] Energy card in your discard"
           }
           onAttack {
-            attachEnergyFrom(type : F, my.discard, self)
-            //TODO: Confirm the energy being attached maybe?
-            heal 20, self
+            if (my.discard.filterByType(ENERGY).filterByEnergyType(F)){
+              attachEnergyFrom(type : F, my.discard, self)
+              //TODO: Confirm the energy being attached maybe?
+              heal 20, self
+            }
           }
         }
         move "Enraged Linear Attack", {
