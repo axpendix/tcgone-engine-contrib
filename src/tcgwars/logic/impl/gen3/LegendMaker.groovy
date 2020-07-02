@@ -370,7 +370,7 @@ public enum LegendMaker implements LogicCardInfo {
               counters = 4
             }
             (1..counters).each {
-              directDamage 10, opp.all.select("Put 1 damage counter to which Pokémon? $it/counters remaining")
+              directDamage 10, opp.all.select("Put 1 damage counter to which Pokémon? $it/$counters counters remaining")
             }
           }
         }
@@ -2833,11 +2833,11 @@ public enum LegendMaker implements LogicCardInfo {
           text "30 damage. If your opponent has only 1 Prize card left and Regirock Star is the only Pokémon you have in play, this attack's base damage is 100 instead of 30."
           energyCost F, F, C
           onAttack {
-            def amount = 30
             if (opp.prizeCardSet.size() == 1 && my.all.size() == 1) {
-              amount = 100
+              damage 100
+            } else {
+              damage 30
             }
-            damage amount
           }
         }
       };
@@ -2862,7 +2862,7 @@ public enum LegendMaker implements LogicCardInfo {
               counters = 6
             }
             (1..counters).each {
-              directDamage 10, opp.all.select("Put 1 damage counter to which Pokémon? $it/counters remaining")
+              directDamage 10, opp.all.select("Put 1 damage counter to which Pokémon? $it/$counters counters remaining")
             }
           }
         }
