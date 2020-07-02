@@ -266,33 +266,36 @@ public enum LegendMaker implements LogicCardInfo {
             assert opp.all.findAll{ it.evolution } : "Your opponent has no evolved pokemon"
           }
           onAttack {
-            def max = Math.min(self.cards.findAll {it.name.contains("React Energy")}.size(), opp.all.findAll{it.evolution}.size())
-            def count = []
-            def selection = []
-            for(int i =0; i<=max; i++){
-              count += [i]
-              selection += [i.toString()]
+            //TODO: Rework this, should be a select loop with a cancel option. All devolutions should be done after selecting.
+            def evolvedPoke = opp.all.findAll{it.evolution}
+            def max = Math.min(self.cards.findAll{it.name == "React Energy"}.size(), evolvedPoke.size())
+            def toBeDevolved = new PcsList()
+            def i = max
+            while (evolvedPoke && i > 0) {
+              def info = "Select one of your opponent's devolved Pokémon to mark it for devolution, or press Cancel to stop. You have ${i} out of ${max} potential devolutions remaining."
+              def sel = evolvedPoke.select(info, (i == max)) // Mandatory to devolve at least one, if attacking.
+              if (!sel) break; //TODO: Allow to unmark a Pokémon. Ideal way would be a search-like pop-up.
+              toBeDevolved.add(sel.first())
+              evolvedPoke.remove(sel.first())
+              i--
             }
-            def dev = choose(count, selection, "Devolve how many of your opponent's pokémon?", max)
-            if(dev !=0){
-              def list = LUtils.selectMultiPokemon(bg.oppClient(), opp.all.findAll{ it.evolution }, "Devolve which pokemon?", dev)
-              opp.all.findAll{list.contains(it)}.each{
-                def top=it.topPokemonCard
-                //
-                // [Temporary LV.X workaround]
-                if (top.cardTypes.is(LEVEL_UP) && it.cards.filterByType(POKEMON).size() > 2){
-                  bc "${top}'s Level-Up card will be moved wherever the top evolution ends up at."
-                  moveCard(top, opp.hand)
-                  devolve(it, top)
-                  top = it.topPokemonCard
-                }
-                // [End of LV.X workaround] TODO: Remove this when no longer needed
-                //
-                bc "$top Devolved"
-                moveCard(top, opp.hand)
+            toBeDevolved.each{
+              def top = it.topPokemonCard
+              //
+              // [Temporary LV.X workaround]
+              if (top.cardTypes.is(LEVEL_UP) && it.cards.filterByType(POKEMON).size() > 2){
+                bc "${top}'s Level-Up card will be moved wherever the top evolution ends up at."
+                moveCard(top, opp.deck)
                 devolve(it, top)
+                top = it.topPokemonCard
               }
+              // [End of LV.X workaround] TODO: Remove this when no longer needed
+              //
+              bc "$top Devolved"
+              moveCard(top, opp.deck)
+              devolve(it, top)
             }
+            if (toBeDevolved) { shuffleDeck(null, TargetPlayer.OPPONENT) }
           }
         }
         move "Linear Attack", {
