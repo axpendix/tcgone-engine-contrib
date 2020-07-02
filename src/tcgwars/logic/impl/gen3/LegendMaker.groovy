@@ -2532,13 +2532,12 @@ public enum LegendMaker implements LogicCardInfo {
           text "Whenever you attach a [R] Energy from your hand to Arcanine ex, remove 1 damage counter and all Special Conditions from Arcanine ex."
           delayedA {
             after ATTACH_ENERGY, self, {
-              if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(R) && confirm("Use Fire Remedy?")) {
-                bc "Fire Remedy heals 10 and removes all Special Conditions from Arcanine ex"
+              if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(R)) {
+                bc "Fire Remedy removes 1 damage counter and all Special Conditions from Arcanine ex"
                 heal 10, self
                 if (self.specialConditions) {
                   clearSpecialCondition(self, SRC_ABILITY)
                 }
-                powerUsed()
               }
             }
           }
@@ -2558,16 +2557,12 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost R, R, C
           onAttack {
             damage 100
-
             afterDamage {
-              def paidCost = false
-              if (self.cards.findAll {it.name.contains("React Energy")}) {
-                if (confirm("Discard a React Energy attached to Arcanine ex? Otherwise two [R] Energies will be discarded")) {
-                  self.cards.findAll {it.name.contains("React Energy")}.select(count:1, "Select the React Energy to discard").discard()
-                  paidCost = true
+              def reactEnCardsAttached = self.cards.findAll{it.name.contains("React Energy")}
+              if (reactEnCardsAttached && confirm("Discard a React Energy card attached to Arcanine ex? Otherwise, 2 [R] Energies will be discarded.")) {
+                  reactEnCardsAttached.select("Select the React Energy to discard").discard()
                 }
-              }
-              if (!paidCost) {
+              } else {
                 discardSelfEnergy R,R
               }
             }
