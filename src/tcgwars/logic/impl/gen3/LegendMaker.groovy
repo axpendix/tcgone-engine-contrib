@@ -2448,11 +2448,11 @@ public enum LegendMaker implements LogicCardInfo {
         onPlay {
           Card pokemonCard, trainerCard = thisCard
           pokemonCard = basic (new CustomCardInfo(ROOT_FOSSIL_80).setCardTypes(BASIC, POKEMON), hp:HP040, type:COLORLESS, retreatCost:0) {
-            pokeBody "Spongey Stone", {
+            pokeBody "Spongy Stone", {
               delayedA{
                 before BEGIN_TURN, {
                   if (self.numberOfDamageCounters) {
-                    bc "Spongey Stone activates"
+                    bc "Spongy Stone activates"
                     heal 10, self
                   }
                 }
