@@ -2669,7 +2669,7 @@ public enum LegendMaker implements LogicCardInfo {
             }
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if(it.to == self && it.notNoEffect && it.from.EX ) {
+                if(it.to == self && it.from.EX && it.notNoEffect && it.dmg.value ) {
                   it.dmg = hp(0)
                   bc "Safeguard prevents damage"
                 }
