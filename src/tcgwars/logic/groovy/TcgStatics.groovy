@@ -1351,6 +1351,12 @@ class TcgStatics {
     }
   }
 
+  static whirlwind2(){
+    if (opp.bench) {
+      sw opp.active, opp.bench.oppSelect("Choose your new Active Pokémon.")
+    }
+  }
+
   static boolean wasSwitchedOutThisTurn(PokemonCardSet self){
     self.lastSwitchedOut == bg.turnCount && self.lastSwitchedOutName == self.name
   }

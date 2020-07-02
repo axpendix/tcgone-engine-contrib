@@ -414,7 +414,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 30
-            whirlwind()
+            whirlwind2()
           }
         }
         move "Superpowered Horns", {
