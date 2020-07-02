@@ -2751,22 +2751,24 @@ public enum LegendMaker implements LogicCardInfo {
           onAttack {
             attachEnergyFrom(my.deck, self)
             shuffleDeck()
-            if (my.bench && confirm("Switch Mew ex with benched?")) {
-              sw self, my.bench.select()
-            }
+            switchYourActive(may: true)
           }
         }
       };
       case WALREIN_EX_89:
       return evolution (this, from:"Sealeo", hp:HP150, type:W, retreatCost:3) {
+        weakness F
+        weakness M
         pokeBody "Icy Aura", {
           text "As long as Walrein ex is your Active Pokémon, put 1 damage count on each Active Pokémon (both yours and your opponent's) between turns, excluding [W] Pokémon."
           delayedA {
             before BEGIN_TURN, {
-              all.each {
-                if (self.active && it.active && !it.types.contains(W)) {
-                  bc "Icy Aura activates"
-                  directDamage 10, it, SRC_ABILITY
+              if (self.active){
+                all.each {
+                  if (it.active && !it.types.contains(W)) {
+                    bc "Icy Aura activates"
+                    directDamage 10, it, SRC_ABILITY
+                  }
                 }
               }
             }
