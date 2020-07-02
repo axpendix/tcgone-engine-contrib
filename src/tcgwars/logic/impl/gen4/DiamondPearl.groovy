@@ -1833,9 +1833,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost F, F, C
             attackRequirement {}
             onAttack {
-              damage 60
-              damage 10, self
-              whirlwind()
+              whirlwind2(60, 10)
             }
           }
 

@@ -1351,7 +1351,7 @@ class TcgStatics {
     }
   }
 
-  static whirlwind2(int dmg = 0){
+  static whirlwind2(int dmg = 0, int selfDmg = 0){
     def eff
     eff = delayed {
       before KNOCKOUT, {
@@ -1359,13 +1359,14 @@ class TcgStatics {
       }
     }
     if (dmg) damage dmg
+    if (selfDmg) damage selfDmg, my.active
     afterDamage{
       if (opp.bench) {
         sw opp.active, opp.bench.oppSelect("Choose your new Active Pokémon.")
       }
+      eff.unregister()
+      checkFaint()
     }
-    eff.unregister()
-    checkFaint()
   }
 
   static boolean wasSwitchedOutThisTurn(PokemonCardSet self){
