@@ -1833,7 +1833,14 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost F, F, C
             attackRequirement {}
             onAttack {
-              whirlwind2(60, 10)
+              damage 60
+              damage 10, self
+              afterDamage{
+                //TODO: Remove "opp.active == pcs && ", once KOs aren't checked during attack.
+                if (opp.active == pcs && opp.bench) {
+                  sw opp.active, opp.bench.oppSelect("Choose your new Active Pokémon.")
+                }
+              }
             }
           }
 
