@@ -413,8 +413,7 @@ public enum RebelClash implements LogicCardInfo {
           text "30 damage. Your opponent switches their Active Pokemon with 1 of their Benched Pokemon."
           energyCost C, C
           onAttack {
-            damage 30
-            whirlwind2()
+            whirlwind2(30)
           }
         }
         move "Superpowered Horns", {

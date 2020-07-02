@@ -1351,10 +1351,21 @@ class TcgStatics {
     }
   }
 
-  static whirlwind2(){
-    if (opp.bench) {
-      sw opp.active, opp.bench.oppSelect("Choose your new Active Pokémon.")
+  static whirlwind2(int dmg = 0){
+    def eff
+    eff = delayed {
+      before KNOCKOUT, {
+        prevent()
+      }
     }
+    if (dmg) damage dmg
+    afterDamage{
+      if (opp.bench) {
+        sw opp.active, opp.bench.oppSelect("Choose your new Active Pokémon.")
+      }
+    }
+    eff.unregister()
+    checkFaint()
   }
 
   static boolean wasSwitchedOutThisTurn(PokemonCardSet self){
