@@ -663,7 +663,7 @@ public enum LegendMaker implements LogicCardInfo {
           text "As long as Wailord has any React Energy cards attached to it, the Retreat Cost for each of your [W] Pokémon (excluding Pokémon-ex) is 0."
           getterA (GET_RETREAT_COST, BEFORE_LAST) {holder->
             def pcs = holder.effect.target
-            if (pcs.owner = self.owner && pcs.types.contains(W) && !pcs.EX) {
+            if (pcs.owner == self.owner && pcs.types.contains(W) && !pcs.EX) {
               if (self.cards.any{ it.name == "React Energy" }) {
                 holder.object = 0
               }
