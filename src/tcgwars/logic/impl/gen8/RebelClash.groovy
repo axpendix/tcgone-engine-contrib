@@ -2958,7 +2958,12 @@ public enum RebelClash implements LogicCardInfo {
           text "70 damage. Switch this Pokemon with 1 of your Benched Pokemon. If you do, your opponent switches their Active Pokemon with 1 of their Benched Pokemon."
           energyCost M, C, C
           onAttack {
-            damage 70
+            if ((bg.stadiumInfoStruct && ["Sky Pillar", "Mountain Ring"].contains(bg.stadiumInfoStruct.stadiumCard.name)) || opp.all.any{PokemonCardSet pcs -> pcs.abilities.any{["Bench Barrier", "Sand Veil", "Daunting Pose", "Fabled Defense"].contains.(it.name)}}){
+              shredDamage 70, opp.active
+            } else {
+              damage 70
+            }
+            //damage 70 //TODO: Remove^ once switch issue below is solved.
 
             if (my.bench) {
               sw self, my.bench.select("Choose the new Active Pokémon.")
@@ -2966,6 +2971,7 @@ public enum RebelClash implements LogicCardInfo {
                 sw opp.active, opp.bench.oppSelect("Choose your new Active Pokémon.")
               }
             }
+            //TODO: Make the switch above happen afterDamage, once KOs aren't checked during attack.
           }
         }
       };

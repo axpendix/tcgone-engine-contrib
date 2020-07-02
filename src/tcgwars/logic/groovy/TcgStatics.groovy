@@ -1352,21 +1352,28 @@ class TcgStatics {
   }
 
   static whirlwind2(int dmg = 0, int selfDmg = 0){
-    def eff
-    eff = delayed {
-      before KNOCKOUT, {
-        prevent()
+    if (dmg) {
+      if ((bg.stadiumInfoStruct && ["Sky Pillar", "Mountain Ring"].contains(bg.stadiumInfoStruct.stadiumCard.name)) || opp.all.any{PokemonCardSet pcs -> pcs.abilities.any{["Bench Barrier", "Sand Veil", "Daunting Pose", "Fabled Defense"].contains.(it.name)}}){
+        shredDamage dmg, opp.active
+      } else {
+        damage dmg
       }
     }
-    if (dmg) damage dmg
-    if (selfDmg) damage selfDmg, my.active
-    afterDamage{
-      if (opp.bench) {
-        sw opp.active, opp.bench.oppSelect("Choose your new Active Pokémon.")
+    //if (dmg) damage dmg //TODO: Remove^ once switch issue below is solved.
+    if (selfDmg) {
+      if ((bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Mountain Ring") || my.all.any{PokemonCardSet pcs -> pcs.name == "Mr. Mime" && pcs.abilities.any{it.name == "Bench Barrier"}}){
+        shredDamage selfDmg, my.active
+      } else {
+        damage selfDmg, my.active
       }
-      eff.unregister()
-      checkFaint()
     }
+    //if (selfDmg) damage selfDmg, my.active //TODO: Remove^ once switch issue below is solved.
+    if (opp.bench) {
+      sw opp.active, opp.bench.oppSelect("Choose your new Active Pokémon.")
+    }
+    /* afterDamage{
+      //The switch above should happen here. But that currently causes KOs to trigger mid switch (Known bug: Submerge-like abilities will block damage that should be done prior to the switch). TODO move it here once KOs are prevented during an attack.
+    } */
   }
 
   static boolean wasSwitchedOutThisTurn(PokemonCardSet self){
