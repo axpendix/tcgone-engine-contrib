@@ -2558,9 +2558,9 @@ public enum LegendMaker implements LogicCardInfo {
           onAttack {
             damage 100
             afterDamage {
-              def reactEnCardsAttached = self.cards.findAll{it.name == "React Energy"}
-              if (reactEnCardsAttached && confirm("Discard a React Energy card attached to Arcanine ex? Otherwise, 2 [R] Energies will be discarded.")) {
-                  reactEnCardsAttached.select("Select the React Energy to discard").discard()
+              def reactEnergies = self.cards.findAll{it.name == "React Energy"}
+              if (reactEnergies && confirm("Discard a React Energy card attached to Arcanine ex? Otherwise, 2 [R] Energies will be discarded.")) {
+                  reactEnergies.select("Select the React Energy to discard").discard()
                 }
               } else {
                 discardSelfEnergy R,R
@@ -2698,10 +2698,12 @@ public enum LegendMaker implements LogicCardInfo {
       case FLYGON_EX_87:
       return evolution (this, from:"Vibrava", hp:HP150, type:C, retreatCost:2) {
         weakness C
+        resistance L, MINUS30
+        resistance F, MINUS30
         pokePower "Emerge Charge", {
           text "Once during your turn, when you play Flygon ex from your hand to evolve 1 of your Pokémon, you may search your discard pile for up to 2 Energy cards and attach them to Flygon ex."
           onActivate {r->
-            if (r==PLAY_FROM_HAND && my.discard.findAll(cardTypeFilter(ENERGY)) && confirm("Use Emerge Charge?")) {
+            if (r==PLAY_FROM_HAND && my.discard.any(cardTypeFilter(ENERGY)) && confirm("Use Emerge Charge?")) {
               powerUsed()
               attachEnergyFrom(max: 2, my.discard, self)
             }
@@ -2712,10 +2714,10 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost L, C
           onAttack {
             damage 40
-            def reactEnergies = self.cards.findAll {it.name.contains("React Energy")}
+            def reactEnergies = self.cards.findAll{it.name == "React Energy"}
             if (reactEnergies) {
-              def toDiscard = reactEnergies.select(min:0, max:reactEnergies.size())
-              damage 30*toDiscard.size()
+              def toDiscard = reactEnergies.select(min:0, max:reactEnergies.size(), "Select any number of React Energy cards attached to Flygon. $thisMove will do 40 damage plus 30 more damage for each React Energy card you choose to discard.")
+              damage 30 * toDiscard.size()
               afterDamage {
                 toDiscard.discard()
               }
