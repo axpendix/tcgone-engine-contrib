@@ -2558,7 +2558,7 @@ public enum LegendMaker implements LogicCardInfo {
           onAttack {
             damage 100
             afterDamage {
-              def reactEnCardsAttached = self.cards.findAll{it.name.contains("React Energy")}
+              def reactEnCardsAttached = self.cards.findAll{it.name == "React Energy"}
               if (reactEnCardsAttached && confirm("Discard a React Energy card attached to Arcanine ex? Otherwise, 2 [R] Energies will be discarded.")) {
                   reactEnCardsAttached.select("Select the React Energy to discard").discard()
                 }
@@ -2575,8 +2575,10 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Dual Armor", {
           text "As long as Armaldo ex has any React Energy cards attached to it, Armaldo ex is both Grass and Fighting type."
           getterA GET_POKEMON_TYPE, self, {h->
-            if (self.cards.findAll { it.name.contains("React Energy") }) {
+            if (self.cards.any{ it.name == "React Energy" }) {
+              h.object.clear()
               h.object.add(G)
+              h.object.add(F)
             }
           }
         }
@@ -2590,7 +2592,7 @@ public enum LegendMaker implements LogicCardInfo {
         }
         move "Vortex Chop", {
           text "70 damage. If the Defending Pokemon has any Resistance, this attack's base damage is 100 instead of 70."
-          energyCost F, C
+          energyCost F, C, C
           onAttack {
             if (defending.resistances) {
               damage 100
