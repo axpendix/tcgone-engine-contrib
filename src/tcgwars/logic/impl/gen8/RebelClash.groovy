@@ -2959,7 +2959,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost M, C, C
           onAttack {
             if ((bg.stadiumInfoStruct && ["Sky Pillar", "Mountain Ring"].contains(bg.stadiumInfoStruct.stadiumCard.name)) || opp.all.any{PokemonCardSet pcs -> pcs.abilities.any{["Bench Barrier", "Sand Veil", "Daunting Pose", "Fabled Defense"].contains(it.key.name)}}){
-              shredDamage 70, opp.active
+              shredDamage 70
             } else {
               damage 70
             }

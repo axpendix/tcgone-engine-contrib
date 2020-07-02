@@ -1354,7 +1354,7 @@ class TcgStatics {
   static whirlwind2(int dmg = 0, int selfDmg = 0){
     if (dmg) {
       if ((bg.stadiumInfoStruct && ["Sky Pillar", "Mountain Ring"].contains(bg.stadiumInfoStruct.stadiumCard.name)) || opp.all.any{PokemonCardSet pcs -> pcs.abilities.any{["Bench Barrier", "Sand Veil", "Daunting Pose", "Fabled Defense"].contains.(it.name)}}){
-        shredDamage dmg, opp.active
+        shredDamage dmg
       } else {
         damage dmg
       }
@@ -1362,7 +1362,7 @@ class TcgStatics {
     //if (dmg) damage dmg //TODO: Remove^ once switch issue below is solved.
     if (selfDmg) {
       if ((bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Mountain Ring") || my.all.any{PokemonCardSet pcs -> pcs.name == "Mr. Mime" && pcs.abilities.any{it.name == "Bench Barrier"}}){
-        shredDamage selfDmg, my.active
+        new ResolvedDamage(hp(dmg), my.active, my.active, Source.ATTACK, DamageManager.DamageFlag.NO_DEFENDING_EFFECT).run(bg)
       } else {
         damage selfDmg, my.active
       }
