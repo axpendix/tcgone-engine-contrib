@@ -361,21 +361,36 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Sharing", {
           text "Once during your turn (before your attack), you may look at your opponent's hand. You may use the effect of a Supporter card you find there as the effect of this power. (The Supporter card remains in your opponent's hand.) You can't use more than 1 Sharing Poké-Power each turn. This power can't be used if Milotic is affected by a Special Condition."
           actionA {
-            assert opp.hand : "Opponent hand is empty"
-            checkNoSPC()
             checkLastTurn()
-            opp.hand.showToMe("Opponent's Hand")
+            assert bg.em().retrieveObject("Sharing") != bg.turnCount : "You can’t use more than 1 Sharing Poké-Power each turn"
+            checkNoSPC()
+            assert opp.hand : "Opponent hand is empty"
+            bg.em().storeObject("Sharing",bg.turnCount)
+            powerUsed()
 
-            if (bg.em().retrieveObject("Sharing") != bg.turnCount && opp.hand.hasType(SUPPORTER)) {
-              def card=opp.hand.select("Opponent's hand. Select a Supporter.", cardTypeFilter(SUPPORTER)).first()
-              bg.deterministicCurrentThreadPlayerType=bg.currentTurn
-              bg.em().run(new PlayTrainer(card).setDontDiscard(true))
-              bg.clearDeterministicCurrentThreadPlayerType()
+            if (opp.hand.hasType(SUPPORTER)) {
+              def sel = opp.hand.select(min: 0, "Opponent's hand. You may select a Supporter and use it as the effect of this power.", cardTypeFilter(SUPPORTER))
+              if (sel){
+                delayed {
+                  def eff
+                  register {
+                    eff = getter (GET_MAX_SUPPORTER_PER_TURN) {h->
+                      h.object = h.object + 1
+                    }
+                  }
+                  unregister {
+                    eff.unregister()
+                  }
+                  unregisterAfter 1
+                }
+                def card = sel.first()
+                bg.deterministicCurrentThreadPlayerType=bg.currentTurn
+                bg.em().run(new PlayTrainer(card).setDontDiscard(true))
+                bg.clearDeterministicCurrentThreadPlayerType()
+              }
             } else {
               opp.hand.showToMe("Opponent's hand. No supporter in there.")
             }
-            powerUsed()
-            bg.em().storeObject("Sharing", bg.turnCount)
           }
         }
         move "Flare", {
