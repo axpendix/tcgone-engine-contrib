@@ -1987,7 +1987,7 @@ public enum LegendMaker implements LogicCardInfo {
             assert deck : "Deck is empty"
           }
           onAttack {
-            my.deck.search ("Put Energy Card to hand", cardTypeFilter(ENERGY)).moveTo(hand)
+            my.deck.search ("Put Energy Card to hand", cardTypeFilter(ENERGY)).showToOpponent("Opponent's chosen Energy card").moveTo(my.hand)
             shuffleDeck()
           }
         }
@@ -2047,7 +2047,7 @@ public enum LegendMaker implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            my.deck.search(max: 1, "Select a React Energy card.", {it.name.contains("React Energy")}).moveTo(my.hand)
+            my.deck.search(max: 1, "Select a React Energy card.", {it.name == "React Energy"}).moveTo(my.hand)
             shuffleDeck()
           }
         }
