@@ -53,7 +53,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
   VENUSAUR_13 ("Venusaur", 13, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
   MEWTWO_14 ("Mewtwo", 14, Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
   COOL_PORYGON_15 ("Cool Porygon", 15, Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
-  COMPUTER_ERROR_16 ("Computer Error", 16, Rarity.PROMO, [TRAINER]),
+  COMPUTER_ERROR_16 ("Computer Error", 16, Rarity.PROMO, [TRAINER, ROCKETS_SECRET_MACHINE]),
   DARK_PERSIAN_17 ("Dark Persian", 17, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
   TEAM_ROCKET_S_MEOWTH_18 ("Team Rocket's Meowth", 18, Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
   SABRINA_S_ABRA_19 ("Sabrina's Abra", 19, Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),

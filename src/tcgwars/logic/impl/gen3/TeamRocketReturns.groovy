@@ -110,16 +110,16 @@ public enum TeamRocketReturns implements LogicCardInfo {
   WOOPER_81 ("Wooper", 81, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
   ZUBAT_82 ("Zubat", 82, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
   COPYCAT_83 ("Copycat", 83, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-  POKEMON_RETRIEVER_84 ("Pokémon Retriever", 84, Rarity.UNCOMMON, [TRAINER]),
-  POW__HAND_EXTENSION_85 ("Pow! Hand Extension", 85, Rarity.UNCOMMON, [TRAINER]),
+  POKEMON_RETRIEVER_84 ("Pokémon Retriever", 84, Rarity.UNCOMMON, [TRAINER, ROCKETS_SECRET_MACHINE]),
+  POW__HAND_EXTENSION_85 ("Pow! Hand Extension", 85, Rarity.UNCOMMON, [TRAINER, ROCKETS_SECRET_MACHINE]),
   ROCKET_S_ADMIN__86 ("Rocket's Admin", 86, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   ROCKET_S_HIDEOUT_87 ("Rocket's Hideout", 87, Rarity.UNCOMMON, [TRAINER, STADIUM]),
   ROCKET_S_MISSION_88 ("Rocket's Mission", 88, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   ROCKET_S_POKE_BALL_89 ("Rocket's Poké Ball", 89, Rarity.UNCOMMON, [TRAINER]),
   ROCKET_S_TRICKY_GYM_90 ("Rocket's Tricky Gym", 90, Rarity.UNCOMMON, [STADIUM, TRAINER]),
-  SURPRISE__TIME_MACHINE_91 ("Surprise! Time Machine", 91, Rarity.UNCOMMON, [TRAINER]),
-  SWOOP__TELEPORTER_92 ("Swoop! Teleporter", 92, Rarity.UNCOMMON, [TRAINER]),
-  VENTURE_BOMB_93 ("Venture Bomb", 93, Rarity.UNCOMMON, [TRAINER]),
+  SURPRISE__TIME_MACHINE_91 ("Surprise! Time Machine", 91, Rarity.UNCOMMON, [TRAINER, ROCKETS_SECRET_MACHINE]),
+  SWOOP__TELEPORTER_92 ("Swoop! Teleporter", 92, Rarity.UNCOMMON, [TRAINER, ROCKETS_SECRET_MACHINE]),
+  VENTURE_BOMB_93 ("Venture Bomb", 93, Rarity.UNCOMMON, [TRAINER, ROCKETS_SECRET_MACHINE]),
   DARK_METAL_ENERGY_94 ("Dark Metal Energy", 94, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   R_ENERGY_95 ("R Energy", 95, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   ROCKET_S_ARTICUNO_EX_96 ("Rocket's Articuno ex", 96, Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
@@ -442,9 +442,8 @@ public enum TeamRocketReturns implements LogicCardInfo {
             energyCost P, C
             onAttack {
               damage 20
-              //TODO : rocket secret machine
-              if(my.hand.filterByType(POKEMON_TOOL)){
-                damage 30*my.hand.filterByType(POKEMON_TOOL).select(min:0, max :2,"Select up to 2 Pokémon Tool cards and Rocket’s Secret Machine cards from your hand to discard them. This attack does 30 more damage for each card you discarded.").discard().size()
+              if(my.hand.filterByType(POKEMON_TOOL, ROCKETS_SECRET_MACHINE)){
+                damage 30*my.hand.filterByType(POKEMON_TOOL, ROCKETS_SECRET_MACHINE).select(min:0, max :2,"Select up to 2 Pokémon Tool cards and Rocket’s Secret Machine cards from your hand to discard them. This attack does 30 more damage for each card you discard.").discard().size()
               }
             }
           }
