@@ -2279,6 +2279,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
           }
           playRequirement{
             assert my.prizeCardSet.size() > opp.prizeCardSet.size()
+            assertOppBench()
           }
         };
       case DASHING_POUCH_92:
