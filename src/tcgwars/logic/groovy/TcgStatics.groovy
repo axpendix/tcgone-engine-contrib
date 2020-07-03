@@ -1315,13 +1315,11 @@ class TcgStatics {
     _delegate.delayed {
       before PLAY_TRAINER, {
         if(ef.supporter && bg.currentTurn==_delegate.self.owner.opposite) {
-          wcu "Bother prevents playing supporters"
+          wcu "${_delegate.thisMove} prevents playing supporters"
           prevent()
         }
       }
       unregisterAfter 2
-      after SWITCH, _delegate.self, {unregister()}
-      after EVOLVE, _delegate.self, {unregister()}
     }
   }
   static rearrangeEitherPlayersDeck(def delegate, int count){

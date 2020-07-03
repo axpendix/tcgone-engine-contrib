@@ -914,7 +914,6 @@ public enum Deoxys implements LogicCardInfo {
             text "Your opponent can’t play any Supporter Cards from his or hand during your opponent’s next turn."
             energyCost D
             onAttack {
-              //TODO: Fix the static so it uses this attack's name
               opponentCantPlaySupporterNextTurn(delegate)
             }
           }
