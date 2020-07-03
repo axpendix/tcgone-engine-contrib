@@ -363,8 +363,8 @@ public enum CosmicEclipse implements LogicCardInfo {
               after ATTACH_ENERGY, self, {
                 checkLastTurn()
                 if (self.active && ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(G) && opp.bench && confirm("Use Shining Vine?")) {
-                  sw(opp.active, opp.bench.select(), SRC_ABILITY)
                   powerUsed()
+                  swFromBench (opp.active, opp.bench.select("Select your opponent's new Active Pokémon."), SRC_ABILITY)
                 }
               }
             }
@@ -2639,7 +2639,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               assertOppBench()
             }
             onAttack {
-              sw(opp.active, opp.bench.select())
+              swFromBench (opp.active, opp.bench.select("Select your opponent's new Active Pokémon."))
             }
           }
           move "Zap Cannon", {

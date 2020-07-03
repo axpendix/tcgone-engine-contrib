@@ -1342,7 +1342,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               assertOppBench()
             }
             onAttack{
-              sw defending, opp.bench.select("Choose your opponent's new Active Pokémon.")
+              swFromBench (opp.active, opp.bench.select("Select your opponent's new Active Pokémon."))
             }
           }
           move "Sticky Web", {
@@ -3610,12 +3610,8 @@ public enum UnifiedMinds implements LogicCardInfo {
               assertOppBench()
             }
             onAttack {
-              def target = defending
-              if (opp.bench) {
-                target = opp.bench.select("Select the new Active Pokémon.")
-                sw defending, target
-                damage 30, target
-              }
+              def target = opp.bench.select("Select the new Active Pokémon.")
+              if ( swFromBench (defending, target) ) { damage 30, target }
             }
           }
           move "Dragon Tail", {
