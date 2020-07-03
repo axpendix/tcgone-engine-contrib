@@ -514,21 +514,16 @@ public enum BurningShadows implements LogicCardInfo {
             onAttack {
               damage 30
               afterDamage {
-                targeted (defending) {
-                  bc "During ${opp.owner.getPlayerUsername(bg)}'s next turn, Energy can't be attached from their hand to the Defending ${defending}. (This effect can be removed by evolving or benching ${defending}.)"
-                  def pcs = defending
-                  delayed {
-                    before ATTACH_ENERGY, pcs, {
-                      if(ef.reason == PLAY_FROM_HAND) {
-                        wcu "Bubble Net: Can't attach energy to ${pcs}"
-                        prevent()
-                      }
+                delayed {
+                  before ATTACH_ENERGY, defending, {
+                    if(ef.reason == PLAY_FROM_HAND) {
+                      wcu "Bubble Net: Can't attach energy"
+                      prevent()
                     }
-                    unregisterAfter 2
-                    after SWITCH, pcs, {unregister()}
-                    after EVOLVE, pcs, {unregister()}
-                    after DEVOLVE, pcs, {unregister()}
                   }
+                  unregisterAfter 2
+                  after SWITCH, defending, {unregister()}
+                  after EVOLVE, defending, {unregister()}
                 }
               }
             }
@@ -1439,12 +1434,10 @@ public enum BurningShadows implements LogicCardInfo {
             energyCost C
             onAttack {
               targeted (defending) {
-                bc "Until the end of ${my.owner.getPlayerUsername(bg)}'s next turn, the weakness of the Defending ${defending} is [P]. (This effect can be removed by evolving or benching ${defending}.)"
-                def pcs = defending
                 delayed {
                   def eff
                   register {
-                    eff = getter (GET_WEAKNESSES, pcs) {h->
+                    eff = getter (GET_WEAKNESSES, defending) {h->
                       def list = h.object as List<Weakness>
                       if(list) {
                         list.get(0).type = PSYCHIC
@@ -1456,9 +1449,8 @@ public enum BurningShadows implements LogicCardInfo {
                   unregister {
                     eff.unregister()
                   }
-                  after SWITCH, pcs, {unregister()}
-                  after EVOLVE, pcs, {unregister()}
-                  after DEVOLVE, pcs, {unregister()}
+                  after SWITCH, defending, {unregister()}
+                  after EVOLVE, defending, {unregister()}
                   unregisterAfter 2
                 }
               }

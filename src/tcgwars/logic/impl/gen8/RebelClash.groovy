@@ -514,23 +514,16 @@ public enum RebelClash implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 30
-            afterDamage {
-              targeted (defending) {
-                bc "During ${opp.owner.getPlayerUsername(bg)}'s next turn, Energy can't be attached from their hand to the Defending ${defending}. (This effect can be removed by evolving or benching ${defending}.)"
-                def pcs = defending
-                delayed {
-                  before ATTACH_ENERGY, pcs, {
-                    if(ef.reason == PLAY_FROM_HAND) {
-                      wcu "Bubble Net: Can't attach energy to ${pcs}"
-                      prevent()
-                    }
-                  }
-                  unregisterAfter 2
-                  after SWITCH, pcs, {unregister()}
-                  after EVOLVE, pcs, {unregister()}
-                  after DEVOLVE, pcs, {unregister()}
+            delayed{
+              before ATTACH_ENERGY, self.owner.opposite.pbg.active, {
+                if(ef.reason == PLAY_FROM_HAND && ef.resolvedTarget.owner == self.owner.opposite && ef.resolvedTarget.active) {
+                  wcu "Pattern Menace prevents you from attaching Energy."
+                  prevent()
                 }
               }
+              unregisterAfter 2
+              after SWITCH, defending, {unregister()}
+              after EVOLVE, defending, {unregister()}
             }
           }
         }
@@ -2297,7 +2290,6 @@ public enum RebelClash implements LogicCardInfo {
 
                 after SWITCH, self, { unregister() }
                 after EVOLVE, self, { unregister() }
-                after DEVOLVE, self, { unregister() }
               }
             }
           }

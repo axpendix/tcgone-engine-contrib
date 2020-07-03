@@ -2069,7 +2069,6 @@ public enum GuardiansRising implements LogicCardInfo {
                   unregisterAfter 2
                   after SWITCH, pcs, {unregister()}
                   after EVOLVE, pcs, {unregister()}
-                  after DEVOLVE, pcs, {unregister()}
                 }
               }
             }
@@ -2295,7 +2294,6 @@ public enum GuardiansRising implements LogicCardInfo {
                 }
                 after SWITCH, pcs, {unregister()}
                 after EVOLVE, pcs, {unregister()}
-                after DEVOLVE, pcs, {unregister()}
                 unregisterAfter 3
               }
             }

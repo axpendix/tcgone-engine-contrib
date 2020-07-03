@@ -1855,7 +1855,6 @@ public enum CelestialStorm implements LogicCardInfo {
                   }
                   unregisterAfter 2
                   after EVOLVE, self, {unregister()}
-                  after DEVOLVE, self, {unregister()}
                   after SWITCH, self, {unregister()}
                 }
               }
@@ -1952,7 +1951,6 @@ public enum CelestialStorm implements LogicCardInfo {
                   }
                   unregisterAfter 2
                   after EVOLVE, self, {unregister()}
-                  after DEVOLVE, self, {unregister()}
                   after SWITCH, self, {unregister()}
                 }
               }
@@ -2467,17 +2465,15 @@ public enum CelestialStorm implements LogicCardInfo {
                 apply ASLEEP, self
 
                 targeted (defending) {
-                  bc "At the end of ${self.owner.opposite}'s next turn, the Defending ${defending} will be Knocked Out. (This effect can be removed by benching/evolving ${defending}.)"
-                  def pcs = defending
+                  bc "At the end of ${self.owner.opposite}'s next turn, $defending will be Knocked Out. (This effect can be removed by benching/evolving $defending)"
                   delayed {
                     before BETWEEN_TURNS, {
                       if(bg.currentTurn == self.owner.opposite){
-                        new Knockout(pcs).run(bg)
+                        new Knockout(defending).run(bg)
                       }
                     }
-                    after SWITCH, pcs, {unregister()}
-                    after EVOLVE, pcs, {unregister()}
-                    after DEVOLVE, pcs, {unregister()}
+                    after SWITCH, defending, {unregister()}
+                    after EVOLVE, defending, {unregister()}
                     unregisterAfter 2
                   }
                 }

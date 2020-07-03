@@ -1125,24 +1125,18 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             flip{
-              targeted (defending){
-                bc "During ${opp.owner.getPlayerUsername(bg)}'s next turn, the defending ${defending} can't attack ${self}. (This effect can be removed by benching/evolving either Pokémon.)"
-                def pcs = defending
-                delayed {
-                  before CHECK_ATTACK_REQUIREMENTS, {
-                    if(self.active && ef.attacker == pcs) {
-                      wcu "Leer prevents attack"
-                      prevent()
-                    }
+              delayed {
+                before CHECK_ATTACK_REQUIREMENTS, {
+                  if(self.active && ef.attacker.owner != self.owner) {
+                    wcu "Leer prevents attack"
+                    prevent()
                   }
-                  after SWITCH, pcs, {unregister()}
-                  after EVOLVE, pcs, {unregister()}
-                  after DEVOLVE, pcs, {unregister()}
-                  after SWITCH,self, {unregister()}
-                  after EVOLVE,self, {unregister()}
-                  after DEVOLVE,self, {unregister()}
-                  unregisterAfter 2
                 }
+                unregisterAfter 2
+                after SWITCH, defending, {unregister()}
+                after EVOLVE, defending, {unregister()}
+                after EVOLVE,self, {unregister()}
+                after SWITCH,self, {unregister()}
               }
             }
           }
