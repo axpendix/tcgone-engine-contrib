@@ -1274,6 +1274,10 @@ class TcgStatics {
       failMessage = "${params.opp ? "Your opponent doesn't" : "You don't"} have any ${benchedString + stageString + typeString + pokeString + extraConditionString}"
     }
 
+    bc "checking bench: ${params.benched}"
+    bc "checking opponent: ${params.opp}"
+    bc "extra conditions: ${!params.hasType || it.types.contains(params.hasType)} - ${variantsAllowed.any{ varFilter -> params.negateVariants ^ variantFilters.get(varFilter).call(it) }} - ${stageRequired.every{ stgFilter -> stageFilters.get(stgFilter).call(it) }} - ${filter == null || filter.call(it)}"
+
     assert checkedArea.any(areaFilter) : failMessage
   }
 
