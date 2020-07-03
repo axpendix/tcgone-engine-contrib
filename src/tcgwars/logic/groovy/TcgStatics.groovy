@@ -1312,6 +1312,7 @@ class TcgStatics {
     }
   }
   static void opponentCantPlaySupporterNextTurn(def _delegate){
+    bc "${_delegate.thisMove} - Supporters can't be played from ${opp.owner.getPlayerUsername(bg)}'s hand during theit next turn"
     _delegate.delayed {
       before PLAY_TRAINER, {
         if(ef.supporter && bg.currentTurn==_delegate.self.owner.opposite) {
