@@ -1193,6 +1193,7 @@ class TcgStatics {
    */
   static void assertAnyPokemonInPlay(params=[:], Closure filter = null) {
     def failMessage
+    def negateVariants = params.negateVariants ? true : false
     def checkedPlayer = params.opp ? opp : my
     def checkedArea = params.benched ? checkedPlayer.bench : checkedPlayer.all
 
@@ -1233,7 +1234,7 @@ class TcgStatics {
       (
         !params.hasType || it.types.contains(params.hasType)
       ) && (
-        variantsAllowed.any{ varFilter -> params.negateVariants ^ variantFilters.get(varFilter).call(it) }
+        variantsAllowed.any{ varFilter -> negateVariants ^ variantFilters.get(varFilter).call(it) }
       ) && (
         stageRequired.every{ stgFilter -> stageFilters.get(stgFilter).call(it) }
       ) && (
