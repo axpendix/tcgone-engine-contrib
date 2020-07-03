@@ -2290,6 +2290,7 @@ public enum RebelClash implements LogicCardInfo {
 
                 after SWITCH, self, { unregister() }
                 after EVOLVE, self, { unregister() }
+                after DEVOLVE, self, { unregister() }
               }
             }
           }

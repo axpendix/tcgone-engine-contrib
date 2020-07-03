@@ -2714,6 +2714,7 @@ public enum DiamondPearl implements LogicCardInfo {
                   }
                   unregisterAfter 2
                   after EVOLVE, self, {unregister()}
+                  after DEVOLVE, self, {unregister()} //This attack could be copied by an evolution.
                   after SWITCH, self, {unregister()}
                 }
               }

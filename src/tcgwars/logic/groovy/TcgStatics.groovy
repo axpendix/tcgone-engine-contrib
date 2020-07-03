@@ -429,6 +429,7 @@ class TcgStatics {
         unregisterAfter 2
         after SWITCH, defending, {unregister()}
         after EVOLVE, defending, {unregister()}
+        after DEVOLVE, defending, {unregister()}
       }
     } }
   }
@@ -626,6 +627,7 @@ class TcgStatics {
       unregisterAfter 3
       after SWITCH, self, {unregister()}
       after EVOLVE, self, {unregister()}
+      after DEVOLVE, self, {unregister()}
       register{registeredOn=bg.turnCount}
     }
   }
@@ -695,6 +697,7 @@ class TcgStatics {
       }
       unregisterAfter(2)
       after EVOLVE, self, {unregister()}
+      after DEVOLVE, self, {unregister()}
       after SWITCH, self, {unregister()}
     }
   }
@@ -717,6 +720,7 @@ class TcgStatics {
       }
       unregisterAfter(2)
       after EVOLVE, self, {unregister()}
+      after DEVOLVE, self, {unregister()}
       after SWITCH, self, {unregister()}
     }
   }
@@ -733,6 +737,7 @@ class TcgStatics {
       }
       unregisterAfter(2)
       after EVOLVE, self, {unregister()}
+      after DEVOLVE, self, {unregister()}
       after SWITCH, self, {unregister()}
     }
   }
@@ -788,9 +793,11 @@ class TcgStatics {
         if(asLongAsSelfIsActive){
           after SWITCH, self, {unregister()}
           after EVOLVE, self, {unregister()}
+          after DEVOLVE, self, {unregister()}
         }
         after SWITCH, defending, {unregister()}
         after EVOLVE, defending, {unregister()}
+        after DEVOLVE, defending, {unregister()}
         unregisterAfter 2
       }
     } } }
@@ -1021,6 +1028,7 @@ class TcgStatics {
 				unregisterAfter 2
         after SWITCH, pcs, {unregister()}
         after EVOLVE, pcs, {unregister()}
+        after DEVOLVE, pcs, {unregister()}
 			}
 		}
 	}
@@ -1041,6 +1049,7 @@ class TcgStatics {
 				unregisterAfter 2
         after SWITCH, pcs, {unregister()}
         after EVOLVE, pcs, {unregister()}
+        after DEVOLVE, pcs, {unregister()}
 			}
 		}
 	}
@@ -1057,6 +1066,7 @@ class TcgStatics {
         unregisterAfter 3
         after SWITCH, pcs, {unregister()}
         after EVOLVE, pcs, {unregister()}
+        after DEVOLVE, pcs, {unregister()}
       }
     }
   }
@@ -1286,6 +1296,7 @@ class TcgStatics {
   static void cantBeHealed(PokemonCardSet defending){
     delayed {
       after EVOLVE, defending, {unregister()}
+      after DEVOLVE, defending, {unregister()}
       after SWITCH, defending, {unregister()}
 
       before REMOVE_DAMAGE_COUNTER, defending, {
