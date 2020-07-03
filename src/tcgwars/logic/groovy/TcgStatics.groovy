@@ -1234,7 +1234,7 @@ class TcgStatics {
       (
         !params.hasType || it.types.contains(params.hasType)
       ) && (
-        variantsAllowed.any{ varFilter -> negateVariants ^ variantFilters.get(varFilter).call(it) }
+        negateVariants ^ variantsAllowed.any{ varFilter -> variantFilters.get(varFilter).call(it) }
       ) && (
         stageRequired.every{ stgFilter -> stageFilters.get(stgFilter).call(it) }
       ) && (
