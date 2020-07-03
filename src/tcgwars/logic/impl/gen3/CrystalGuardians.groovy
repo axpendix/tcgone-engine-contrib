@@ -2319,7 +2319,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C, C, C
           def flag
           attackRequirement {
-            assert (!flag || my.hand.filterByType(POKEMON)) : "No Pokemon in hand" //TODO: Ignore BREAKs and LEGENDs.
+            assert (flag || my.hand.filterByType(POKEMON)) : "No Pokemon in hand" //TODO: Ignore BREAKs and LEGENDs.
           }
           onAttack {
             flag = true
