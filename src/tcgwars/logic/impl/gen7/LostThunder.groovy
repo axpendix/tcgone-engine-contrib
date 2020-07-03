@@ -495,16 +495,21 @@ public enum LostThunder implements LogicCardInfo {
             energyCost C,C
             onAttack{
               damage 30
-              delayed {
-                before null, defending, Source.TRAINER_CARD, {
-                  if (bg.currentThreadPlayerType != self.owner){
-                    bc "Trap Thread prevents effect"
-                    prevent()
+              targeted (defending) {
+                bc "During ${self.owner.opposite}'s next turn, whenever they play an Item or Supporter from their hand, all effects of that card done to the Defending ${defending} will be prevented. (This effect can be removed by benching/evolving ${defending}.)"
+                def pcs = defending
+                delayed {
+                  before null, pcs, Source.TRAINER_CARD, {
+                    if (bg.currentThreadPlayerType != self.owner){
+                      bc "Trap Thread prevents effect"
+                      prevent()
+                    }
                   }
+                  after SWITCH, pcs, {unregister()}
+                  after EVOLVE, pcs, {unregister()}
+                  after DEVOLVE, pcs, {unregister()}
+                  unregisterAfter 2
                 }
-                after SWITCH, defending, {unregister()}
-                after EVOLVE, defending, {unregister()}
-                unregisterAfter 2
               }
             }
           }
