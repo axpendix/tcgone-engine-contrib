@@ -1342,7 +1342,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               assertOppBench()
             }
             onAttack{
-              sw2(opp.bench.select("Select your opponent's new Active Pokémon."))
+              switchYourOpponentsBenchedWithActive()
             }
           }
           move "Sticky Web", {

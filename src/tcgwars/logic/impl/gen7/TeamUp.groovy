@@ -334,7 +334,7 @@ public enum TeamUp implements LogicCardInfo {
               assertOppBench()
             }
             onAttack{
-              sw2(opp.bench.select("Select your opponent's new Active Pokémon."))
+              switchYourOpponentsBenchedWithActive()
             }
           }
           move "Bug Bite" , {
@@ -607,9 +607,7 @@ public enum TeamUp implements LogicCardInfo {
               assert src.size() >= 2 : "You don't have enough Fire Energy cards to discard"
               powerUsed()
               src.select(count:2,"Discard").discard()
-              if (opp.bench){
-                sw2(opp.bench.select("Select your opponent's new Active Pokémon."), SRC_ABILITY)
-              }
+              switchYourOpponentsBenchedWithActive(SRC_ABILITY)
             }
           }
           move "Flame Tail" , {
@@ -2231,7 +2229,7 @@ public enum TeamUp implements LogicCardInfo {
               assertOppBench()
             }
             onAttack{
-              sw2(opp.bench.select("Select your opponent's new Active Pokémon."))
+              switchYourOpponentsBenchedWithActive()
             }
           }
           move "Night Punishment" , {

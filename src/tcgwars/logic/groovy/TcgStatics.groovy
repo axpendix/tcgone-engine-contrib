@@ -985,6 +985,12 @@ class TcgStatics {
     }
   }
 
+  static void switchYourOpponentsBenchedWithActive(Source src = ATTACK){
+    if (opp.bench){
+      sw2(opp.bench.select("Select your opponent's new Active Pokémon."), src)
+    }
+  }
+
   static void spiritLink(delegate1, name){
     def eff
     delegate1.onPlay {

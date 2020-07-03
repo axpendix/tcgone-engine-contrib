@@ -2937,7 +2937,7 @@ public enum UnseenForces implements LogicCardInfo {
             // Umbreon-EX's "Darker Ring" Poké-POWER is optional. You do not have to switch one of your opponent's benched Pokémon if you do not want to. (Sep 21, 2006 PUI Rules Team)
             if (r==PLAY_FROM_HAND && opp.bench && confirm("Use Darker Ring?")) {
               powerUsed()
-              sw2(opp.bench.select("Select your opponent's new Active Pokémon."), SRC_ABILITY)
+              switchYourOpponentsBenchedWithActive(SRC_ABILITY)
             }
           }
         }

@@ -1914,7 +1914,7 @@ public enum SunMoon implements LogicCardInfo {
               assert opp.bench.notEmpty
             }
             onAttack {
-              sw2(opp.bench.select("Select your opponent's new Active Pokémon."))
+              switchYourOpponentsBenchedWithActive()
             }
           }
           move "Claw Rend", {

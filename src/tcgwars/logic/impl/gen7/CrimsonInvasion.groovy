@@ -2271,9 +2271,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
         return itemCard (this) {
           text "You can play this card only if you have more Prize cards remaining than your opponent.\nSwitch 1 of your opponent's Benched Pokémon with their Active Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
           onPlay {
-            if(opp.bench){
-              sw2(opp.bench.select("Select your opponent's new Active Pokémon."), TRAINER_CARD)
-            }
+            switchYourOpponentsBenchedWithActive(TRAINER_CARD)
           }
           playRequirement{
             assert my.prizeCardSet.size() > opp.prizeCardSet.size()

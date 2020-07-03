@@ -1906,7 +1906,7 @@ public enum GuardiansRising implements LogicCardInfo {
             onActivate {r->
               if(r==PLAY_FROM_HAND && opp.bench.notEmpty && confirm('Use Bloodthirsty Eyes?')) {
                 powerUsed()
-                sw2(opp.bench.select("Select your opponent's new Active Pokémon."), SRC_ABILITY)
+                switchYourOpponentsBenchedWithActive(SRC_ABILITY)
               }
             }
           }
@@ -2235,7 +2235,7 @@ public enum GuardiansRising implements LogicCardInfo {
               assert opp.bench.notEmpty
             }
             onAttack {
-              sw2(opp.bench.select("Select your opponent's new Active Pokémon."))
+              switchYourOpponentsBenchedWithActive()
             }
           }
 

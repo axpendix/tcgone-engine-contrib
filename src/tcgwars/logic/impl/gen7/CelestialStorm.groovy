@@ -317,7 +317,7 @@ public enum CelestialStorm implements LogicCardInfo {
               assert opp.bench
               powerUsed()
               flip {
-                sw2(opp.bench.select("Select your opponent's new Active Pokémon."), SRC_ABILITY)
+                switchYourOpponentsBenchedWithActive(SRC_ABILITY)
               }
             }
           }
@@ -2658,7 +2658,7 @@ public enum CelestialStorm implements LogicCardInfo {
               assert self.active : "$self is not your active pokémon"
               assert opp.bench : "There is no pokémon on your opponent's bench to switch"
               powerUsed()
-              sw2(opp.bench.select("Select your opponent's new Active Pokémon."), SRC_ABILITY)
+              switchYourOpponentsBenchedWithActive(SRC_ABILITY)
             }
           }
           move "Dragon Claw" , {

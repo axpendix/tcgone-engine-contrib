@@ -1389,7 +1389,7 @@ public enum Deoxys implements LogicCardInfo {
               assert opp.bench : "There is no Pokémon to switch"
               powerUsed()
               flip {
-                sw2(opp.bench.select("Select your opponent's new Active Pokémon."), SRC_ABILITY)
+                switchYourOpponentsBenchedWithActive(SRC_ABILITY)
               }
             }
           }
