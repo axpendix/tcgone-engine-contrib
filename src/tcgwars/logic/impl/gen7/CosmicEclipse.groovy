@@ -3709,18 +3709,23 @@ public enum CosmicEclipse implements LogicCardInfo {
             onAttack {
               damage 30
               afterDamage { targeted (defending) {
+                bc "During ${self.owner.opposite}'s next turn, the Defending ${defending}'s attacks do 30 less damage (before W/R). (This effect can be removed by benching/evolving ${defending}.)"
+                def pcs = defending
                 delayed {
-                  before APPLY_ATTACK_DAMAGES, {
-                    bg.dm().each {
-                      if(it.from==defending && ef.attacker==defending && it.dmg.value){
-                        bc "${thisMove.name} reduces damage"
-                        it.dmg-=hp(30)
+                  after PROCESS_ATTACK_EFFECTS, {
+                    if (ef.attacker == pcs){
+                      bg.dm().each {
+                        if(it.notNoEffect && it.dmg.value){
+                          bc "${thisMove.name} reduces damage"
+                          it.dmg-=hp(30)
+                        }
                       }
                     }
                   }
                   unregisterAfter 2
-                  after SWITCH, defending, {unregister()}
-                  after EVOLVE, defending, {unregister()}
+                  after SWITCH, pcs, {unregister()}
+                  after EVOLVE, pcs, {unregister()}
+                  after DEVOLVE, pcs, {unregister()}
                 }
               } }
             }

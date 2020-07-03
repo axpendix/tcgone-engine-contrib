@@ -3808,16 +3808,22 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "During your opponent's next turn, if they attach an Energy card from their hand to the Defending Pokémon, their turn ends."
             energyCost C
             onAttack {
-              delayed {
-                after ATTACH_ENERGY, {
-                  if (ef.reason == PLAY_FROM_HAND && bg.currentTurn == self.owner.opposite && ef.resolvedTarget.owner == self.owner.opposite && ef.resolvedTarget.isActive()) {
-                    wcu "Lazy Howl ends your turn."
-                    bg.gm().betweenTurns()
+              targeted (defending) {
+                bc "During ${self.owner.opposite}'s next turn, if they attach an Energy card from their hand to the Defending ${defending}, their turn ends. (This effect can be removed by benching/evolving ${defending}.)"
+                def pcs = defending
+                delayed {
+                  //TODO: Don't end turn if action is not yet finished (e.g. Welder, Alcremie attack, Energy Evolution)
+                  after ATTACH_ENERGY, {
+                    if (ef.reason == PLAY_FROM_HAND && bg.currentTurn == self.owner.opposite && ef.resolvedTarget == pcs) {
+                      wcu "Lazy Howl ends your turn."
+                      bg.gm().betweenTurns()
+                    }
                   }
+                  unregisterAfter 2
+                  after SWITCH, pcs, {unregister()}
+                  after EVOLVE, pcs, {unregister()}
+                  after DEVOLVE, pcs, {unregister()}
                 }
-                unregisterAfter 2
-                after EVOLVE, defending, {unregister()}
-                after SWITCH, defending, {unregister()}
               }
             }
           }
@@ -3899,6 +3905,7 @@ public enum UnifiedMinds implements LogicCardInfo {
                       unregisterAfter 2
                       after SWITCH, self, { unregister() }
                       after EVOLVE, self, { unregister() }
+                      after DEVOLVE, self, { unregister() }
                     }
                   }
                 }
