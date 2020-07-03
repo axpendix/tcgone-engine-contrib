@@ -822,8 +822,6 @@ public enum MysteriousTreasures implements LogicCardInfo {
                   apply ASLEEP, (ef.attacker as PokemonCardSet), SRC_ABILITY
                 }
               }
-              after SWITCH, self, {unregister()}
-              after EVOLVE, self, {unregister()}
             }
           }
           move "Heavy Blizzard", {
@@ -2547,16 +2545,15 @@ public enum MysteriousTreasures implements LogicCardInfo {
               damage 10
               afterDamage {
                 flip{
+                  bc "${opp.owner.getPlayerUsername(bg)} can't attach any Energy cards from their hand to their Active Pokémon during their next turn. (This effect is on the player, it isn't removed by benching or evolving the currently Active ${defending}.)"
                   delayed{
                     before ATTACH_ENERGY, self.owner.opposite.pbg.active, {
                       if(ef.reason == PLAY_FROM_HAND && ef.resolvedTarget.owner == self.owner.opposite && ef.resolvedTarget.active) {
-                        wcu "Electromagnetic Jam prevents you from attaching Energy to ${ef.resolvedTarget}."
+                        wcu "Electromagnetic Jam prevents you from attaching Energy to your Active Pokémon."
                         prevent()
                       }
                     }
                     unregisterAfter 2
-                    after SWITCH, defending, {unregister()}
-                    after EVOLVE, defending, {unregister()}
                   }
                 }
               }
