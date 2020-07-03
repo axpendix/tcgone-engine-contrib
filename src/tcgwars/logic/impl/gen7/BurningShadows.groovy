@@ -514,16 +514,21 @@ public enum BurningShadows implements LogicCardInfo {
             onAttack {
               damage 30
               afterDamage {
-                delayed {
-                  before ATTACH_ENERGY, defending, {
-                    if(ef.reason == PLAY_FROM_HAND) {
-                      wcu "Bubble Net: Can't attach energy"
-                      prevent()
+                targeted (defending) {
+                  bc "During ${opp.owner.getPlayerUsername(bg)}'s next turn, Energy can't be attached from their hand to the Defending ${defending}. (This effect can be removed by evolving or benching ${defending}.)"
+                  def pcs = defending
+                  delayed {
+                    before ATTACH_ENERGY, pcs, {
+                      if(ef.reason == PLAY_FROM_HAND) {
+                        wcu "Bubble Net: Can't attach energy to ${pcs}"
+                        prevent()
+                      }
                     }
+                    unregisterAfter 2
+                    after SWITCH, pcs, {unregister()}
+                    after EVOLVE, pcs, {unregister()}
+                    after DEVOLVE, pcs, {unregister()}
                   }
-                  unregisterAfter 2
-                  after SWITCH, defending, {unregister()}
-                  after EVOLVE, defending, {unregister()}
                 }
               }
             }
