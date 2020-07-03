@@ -1276,7 +1276,10 @@ class TcgStatics {
 
     bc "checking bench: ${params.benched}"
     bc "checking opponent: ${params.opp}"
-    bc "extra conditions: ${!params.hasType || it.types.contains(params.hasType)} - ${variantsAllowed.any{ varFilter -> params.negateVariants ^ variantFilters.get(varFilter).call(it) }} - ${stageRequired.every{ stgFilter -> stageFilters.get(stgFilter).call(it) }} - ${filter == null || filter.call(it)}"
+    def n = 1
+    checkedArea.each{
+      bc "extra conditions ${n++}: ${!params.hasType || it.types.contains(params.hasType)} - ${variantsAllowed.any{ varFilter -> params.negateVariants ^ variantFilters.get(varFilter).call(it) }} - ${stageRequired.every{ stgFilter -> stageFilters.get(stgFilter).call(it) }} - ${filter == null || filter.call(it)}"
+    }
 
     assert checkedArea.any(areaFilter) : failMessage
   }
