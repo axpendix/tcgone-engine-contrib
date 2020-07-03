@@ -2284,10 +2284,8 @@ public enum CrystalGuardians implements LogicCardInfo {
             checkNoSPC()
             assert my.discard.filterByType(ENERGY) : "No Energies in discard"
             powerUsed()
-            def energies = my.discard.filterByType(ENERGY).size()
-            (1..energies).each {
-              attachEnergy(my.all.select("Target"), my.discard.filterByType(ENERGY).select("Energy").first())
-            }
+            3.times{attachEnergyFrom(my.discard, my.all)}
+            bg.gm().betweenTurns()
           }
         }
         move "Ultra Pump", {
@@ -2295,7 +2293,8 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost W, C, C
           onAttack {
             damage 60
-            if (confirm("Ultra Pump - Discard 2 cards from hand?")) {
+            if (hand.size() >= 2 && confirm("Ultra Pump - Discard 2 cards from hand?")) {
+              my.hand.select(count:2, "Discard 2 cards").discard()
               damage 20
               if (opp.bench) {
                 damage 20, opp.bench.select()
