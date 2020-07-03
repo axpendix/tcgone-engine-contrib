@@ -691,13 +691,21 @@ public enum TeamRocketReturns implements LogicCardInfo {
             energyCost D
             onAttack {
               cantRetreat defending
-              delayed{
-                before BETWEEN_TURNS, {
-                  if(bg.currentTurn == self.owner.opposite){
-                    directDamage 50, self.owner.opposite.pbg.active
+              targeted (defending){
+                bc "5 damage counters will be put on ${opp.owner.getPlayerUsername(bg)}'s Defending ${defending} at the end of their next turn. (This effect can be removed by evolving or benching ${defending}.)"
+                def pcs = defending
+                delayed {
+                  before BETWEEN_TURNS, {
+                    if (bg.currentTurn == self.owner.opposite) {
+                      bc "Dark Seed activates"
+                      directDamage 50, pcs
+                    }
                   }
+                  after SWITCH, pcs, {unregister()}
+                  after EVOLVE, pcs, {unregister()}
+                  after DEVOLVE, pcs, {unregister()}
+                  unregisterAfter 2
                 }
-                unregisterAfter 2
               }
             }
           }

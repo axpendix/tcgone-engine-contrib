@@ -417,17 +417,20 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 20
-            targeted(defending){
+            targeted (defending){
+              bc "3 damage counters will be put on ${opp.owner.getPlayerUsername(bg)}'s Defending ${defending} at the end of their next turn. (This effect can be removed by evolving or benching ${defending}.)"
+              def pcs = defending
               delayed {
                 before BETWEEN_TURNS, {
                   if (bg.currentTurn == self.owner.opposite) {
                     bc "Spiky Shell activates"
-                    directDamage 30, defending
+                    directDamage 30, pcs
                   }
                 }
+                after SWITCH, pcs, {unregister()}
+                after EVOLVE, pcs, {unregister()}
+                after DEVOLVE, pcs, {unregister()}
                 unregisterAfter 2
-                after SWITCH, defending, {unregister()}
-                after EVOLVE, defending, {unregister()}
               }
             }
           }
@@ -2946,6 +2949,8 @@ public enum UnseenForces implements LogicCardInfo {
 
             cantRetreat(defending)
             targeted (defending) {
+              bc "During ${opp.owner.getPlayerUsername(bg)}'s next turn, the Defending ${defending} can't retreat or use any Poké-Powers. (This effect can be removed by evolving or benching ${defending}.)"
+              def pcs = defending
               delayed {
                 def eff
                 register {
@@ -2961,8 +2966,9 @@ public enum UnseenForces implements LogicCardInfo {
                   new CheckAbilities().run(bg)
                 }
                 unregisterAfter 2
-                after SWITCH, defending, {unregister()}
-                after EVOLVE, defending, {unregister()}
+                after SWITCH, pcs, {unregister()}
+                after EVOLVE, pcs, {unregister()}
+                after DEVOLVE, pcs, {unregister()}
               }
             }
           }

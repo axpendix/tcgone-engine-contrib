@@ -1709,15 +1709,21 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             text "At the end of your opponent’s next turn, the Defending Pokémon is now Confused."
             energyCost C
             onAttack {
-              delayed{
-                before BETWEEN_TURNS, {
-                  if(bg.currentTurn == self.owner.opposite){
-                    apply CONFUSED, self.owner.opposite.pbg.active
+              targeted (defending){
+                bc "At the end of ${opp.owner.getPlayerUsername(bg)}'s next turn, the Defending ${defending} will be Confused. (This effect can be removed by evolving or benching ${defending}.)"
+                def pcs = defending
+                delayed {
+                  before BETWEEN_TURNS, {
+                    if (bg.currentTurn == self.owner.opposite) {
+                      bc "Slow Trip Gas activates"
+                      apply CONFUSED, pcs
+                    }
                   }
+                  after SWITCH, pcs, {unregister()}
+                  after EVOLVE, pcs, {unregister()}
+                  after DEVOLVE, pcs, {unregister()}
+                  unregisterAfter 2
                 }
-                unregisterAfter 2
-                after SWITCH, self.owner.opposite.pbg.active, {unregister()}
-                after EVOLVE, self.owner.opposite.pbg.active, {unregister()}
               }
             }
           }
