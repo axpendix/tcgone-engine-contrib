@@ -1434,10 +1434,12 @@ public enum BurningShadows implements LogicCardInfo {
             energyCost C
             onAttack {
               targeted (defending) {
+                bc "Until the end of ${my.owner.getPlayerUsername(bg)}'s next turn, the weakness of the Defending ${defending} is [P]. (This effect can be removed by evolving or benching ${defending}.)"
+                def pcs = defending
                 delayed {
                   def eff
                   register {
-                    eff = getter (GET_WEAKNESSES, defending) {h->
+                    eff = getter (GET_WEAKNESSES, pcs) {h->
                       def list = h.object as List<Weakness>
                       if(list) {
                         list.get(0).type = PSYCHIC
@@ -1449,8 +1451,9 @@ public enum BurningShadows implements LogicCardInfo {
                   unregister {
                     eff.unregister()
                   }
-                  after SWITCH, defending, {unregister()}
-                  after EVOLVE, defending, {unregister()}
+                  after SWITCH, pcs, {unregister()}
+                  after EVOLVE, pcs, {unregister()}
+                  after DEVOLVE, pcs, {unregister()}
                   unregisterAfter 2
                 }
               }
