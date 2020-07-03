@@ -2104,10 +2104,8 @@ public enum ForbiddenLight implements LogicCardInfo {
               assert opp.bench
             }
             onAttack {
-              def target = opp.bench.select("Select the new Active Pokémon.")
-              if ( sw2(target) && my.bench) {
-                sw self, my.bench.select("Select your new Active Pokémon.")
-              }
+              sw defending, opp.bench.select("New opponent’s Active")
+              if(my.bench) sw self, my.bench.select("Your new Active")
             }
           }
 

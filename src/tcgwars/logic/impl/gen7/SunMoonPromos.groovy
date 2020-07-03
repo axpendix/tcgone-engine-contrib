@@ -1030,8 +1030,8 @@ public enum SunMoonPromos implements LogicCardInfo {
               assert opp.bench
             }
             onAttack {
-              def target = opp.bench.select("Select the new Active Pokémon.")
-              if ( sw2(target) ) { apply CONFUSED, target }
+              sw opp.active, opp.bench.select()
+              apply CONFUSED, opp.active
             }
           }
           move "Jumping Side Kick", {

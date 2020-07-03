@@ -1706,7 +1706,7 @@ public enum LostThunder implements LogicCardInfo {
               assert opp.bench : "There is no Pokémon on your opponent's bench"
             }
             onAttack{
-              switchYourOpponentsBenchedWithActive()
+              sw defending, opp.bench.select("Choose the new Active Pokémon.")
             }
           }
           move "Water Gun" , {
@@ -4033,7 +4033,7 @@ public enum LostThunder implements LogicCardInfo {
             if(opp.bench && my.hand.findAll({it.name=="Custom Catcher"}).size()>=2) {
               if(confirm("Use another Custom Catcher and switch your opponent active?") || toDraw == 0){
                 my.hand.findAll({it.name=="Custom Catcher" && it!= thisCard}).subList(0,1).discard()
-                switchYourOpponentsBenchedWithActive(TRAINER_CARD)
+                sw opp.active, opp.bench.select("Choose the new active"), TRAINER_CARD
                 return
               }
             }
