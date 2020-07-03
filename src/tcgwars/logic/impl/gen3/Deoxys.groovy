@@ -2880,11 +2880,11 @@ public enum Deoxys implements LogicCardInfo {
             energyCost C, C
             onAttack {
               def pcs = defending
-              if(opp.bench && confirm("Switch 1 of your opponent's Benched Pokémon with the Defending Pokémon?")){
+              if (opp.bench && confirm("Switch 1 of your opponent's Benched Pokémon with the Defending Pokémon?")){
                 def target = opp.bench.select("Select the new Active Pokémon.")
                 if ( sw2(target) ) { pcs = target }
               }
-              damage 20, pcs
+              damage 20
             }
           }
           move "Darkness Blast", {

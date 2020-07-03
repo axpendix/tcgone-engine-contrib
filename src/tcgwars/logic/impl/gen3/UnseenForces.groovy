@@ -826,7 +826,7 @@ public enum UnseenForces implements LogicCardInfo {
               def target = opp.bench.select("Select the new Active Pokémon.")
               if ( sw2(target) ) { pcs = target }
             }
-            damage 20, pcs
+            damage 20
           }
         }
         move "Rock Smash", {

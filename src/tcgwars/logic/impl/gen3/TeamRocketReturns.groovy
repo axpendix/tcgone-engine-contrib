@@ -2725,7 +2725,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
                 def target = opp.bench.select("Select the new Active Pokémon.")
                 if ( sw2(target) ) { pcs = target }
               }
-              damage 10, pcs
+              damage 10
             }
           }
           move "Dark Ring", {
