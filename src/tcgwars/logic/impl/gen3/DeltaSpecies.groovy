@@ -879,8 +879,8 @@ public enum DeltaSpecies implements LogicCardInfo {
                       }
                       energyCard.player = thisCard.player
                       bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
-                      attachEnergy(pcs, energyCard)
                       bc "$energyCard is now a Special Energy Card"
+                      attachEnergy(pcs, energyCard)
                       prevent()
                     } else {
                       prevent()
@@ -944,8 +944,8 @@ public enum DeltaSpecies implements LogicCardInfo {
                       }
                       energyCard.player = thisCard.player
                       bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
-                      attachEnergy(pcs, energyCard)
                       bc "$energyCard is now a Special Energy Card"
+                      attachEnergy(pcs, energyCard)
                       prevent()
                     } else {
                       prevent()
@@ -2330,8 +2330,8 @@ public enum DeltaSpecies implements LogicCardInfo {
                     }
                     energyCard.player = thisCard.player
                     bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
-                    attachEnergy(pcs, energyCard)
                     bc "$energyCard is now a Special Energy Card"
+                    attachEnergy(pcs, energyCard)
                     prevent()
                   } else {
                     prevent()
@@ -2382,8 +2382,8 @@ public enum DeltaSpecies implements LogicCardInfo {
                     }
                     energyCard.player = thisCard.player
                     bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
-                    attachEnergy(pcs, energyCard)
                     bc "$energyCard is now a Special Energy Card"
+                    attachEnergy(pcs, energyCard)
                     prevent()
                   } else {
                     prevent()

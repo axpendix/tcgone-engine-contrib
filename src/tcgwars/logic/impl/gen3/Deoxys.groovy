@@ -2537,6 +2537,7 @@ public enum Deoxys implements LogicCardInfo {
           def check = {
             if(!it.evolution || it.EX){discard thisCard}
           }
+          typeImagesOverride = (self && self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size()) ? [RAINBOW,RAINBOW,RAINBOW] : [COLORLESS]
           onPlay {reason->
             eff = delayed {
               after EVOLVE, self, {check(self)}

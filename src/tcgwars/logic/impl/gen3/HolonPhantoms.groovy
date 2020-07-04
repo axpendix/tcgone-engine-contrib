@@ -1381,8 +1381,8 @@ public enum HolonPhantoms implements LogicCardInfo {
                       }
                       energyCard.player = thisCard.player
                       bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
-                      attachEnergy(pcs, energyCard)
                       bc "$energyCard is now a Special Energy Card"
+                      attachEnergy(pcs, energyCard)
                       prevent()
                     } else {
                       prevent()
@@ -2305,6 +2305,7 @@ public enum HolonPhantoms implements LogicCardInfo {
       case DELTA_RAINBOW_ENERGY_98:
       return specialEnergy (this, [[C]]) {
         text "δ Rainbow Energy provides [C] Energy. While attached to a Pokémon that has δ on its card, δ Rainbow Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.)"
+        typeImagesOverride = (!self || !self.topPokemonCard || !self.topPokemonCard.cardTypes.is(DELTA)) ? [COLORLESS] : [RAINBOW]
         onPlay {reason->
         }
         onRemoveFromPlay {
