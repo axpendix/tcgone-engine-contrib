@@ -3907,7 +3907,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           def preEvoNames = pl.collect{it.name}.unique(false)
           bc ">preEvoNames: $preEvoNames"
           def sel = my.deck.search(max: pl.size(), info, { it.cardTypes.is(EVOLUTION) &&  preEvoNames.contains(it.predecessor) }, { CardList list ->
-            preEvoNames.size() == 1 || list.findAll{it.predecessor == preEvoNames[0]}.size() <= 1 && list.findAll{it.predecessor == preEvoNames[1]}.size() <= 1 })
+            preEvoNames.size() == 1 || (list.findAll{it.predecessor == preEvoNames[0]}.size() <= 1 && list.findAll{it.predecessor == preEvoNames[1]}.size() <= 1 )})
 
           /*pl.each { preEvo ->
             def sel = deck.search ("Select a Pokémon that evolves from ${preEvo.name}.", {
