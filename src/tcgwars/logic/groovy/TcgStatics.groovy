@@ -994,7 +994,7 @@ class TcgStatics {
 
   static void switchYourOpponentsBenchedWithActive(Source src = ATTACK){
     if (opp.bench){
-      sw2(opp.bench.select("Select your opponent's new Active Pokémon."), src)
+      sw2(opp.bench.select("Select your opponent's new Active Pokémon."), null, src)
     }
   }
 
