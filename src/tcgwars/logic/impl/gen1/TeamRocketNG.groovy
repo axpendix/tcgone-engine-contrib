@@ -1064,6 +1064,7 @@ public enum TeamRocketNG implements LogicCardInfo {
                 }
                 after SWITCH, self, {unregister()}
                 after EVOLVE, self, {unregister()}
+                after DEVOLVE, self, {unregister()}
 
                 unregisterAfter 2
               }
@@ -1126,6 +1127,7 @@ public enum TeamRocketNG implements LogicCardInfo {
                     }
                     after SWITCH, defending, {unregister()}
                     after EVOLVE, defending, {unregister()}
+                    after DEVOLVE, defending, {unregister()}
                   }
                 }
               }

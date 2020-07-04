@@ -667,6 +667,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
                 unregisterAfter 3
                 after SWITCH, pcs, {unregister()}
                 after EVOLVE, pcs, {unregister()}
+                after DEVOLVE, pcs, {unregister()}
               }
               bg.em().run(new CheckAbilities())
             }
@@ -1468,6 +1469,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
                   }
                 }
                 after EVOLVE, self, {unregister()}
+                after DEVOLVE, self, {unregister()}
                 after SWITCH, self, {unregister()}
                 unregisterAfter 2
               }
@@ -2129,21 +2131,27 @@ public enum UnbrokenBonds implements LogicCardInfo {
             energyCost P, C, C
             onAttack {
               damage 70
-              def pcs = defending
-              afterDamage { delayed {
-                def ef
-                register {
-                  ef = getter(GET_WEAKNESSES, pcs) { Holder<List<Weakness>> h ->
-                    h.object = h.object.collect { it = it.copy(); it.type = PSYCHIC; it }
+              afterDamage {
+                targeted (defending) {
+                  bc "Until the end of ${my.owner.getPlayerUsername(bg)}'s next turn, the weakness of the Defending ${defending} is [P]. (This effect can be removed by evolving or benching ${defending}.)"
+                  def pcs = defending
+                  delayed {
+                    def ef
+                    register {
+                      ef = getter(GET_WEAKNESSES, pcs) { Holder<List<Weakness>> h ->
+                        h.object = h.object.collect { it = it.copy(); it.type = PSYCHIC; it }
+                      }
+                    }
+                    after EVOLVE, pcs, {unregister()}
+                    after DEVOLVE, pcs, {unregister()}
+                    after SWITCH, pcs, {unregister()}
+                    unregister {
+                      ef.unregister()
+                    }
+                    unregisterAfter 3
                   }
                 }
-                after EVOLVE, pcs, {unregister()}
-                after FALL_BACK, pcs, {unregister()}
-                unregister {
-                  ef.unregister()
-                }
-                unregisterAfter 3
-              } }
+              }
             }
           }
 
@@ -2211,6 +2219,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
                   }
                   unregisterAfter 2
                   after EVOLVE, self, {unregister()}
+                  after DEVOLVE, self, {unregister()} //Could be copied by an evolution.
                   after SWITCH, self, {unregister()}
                 }
               }

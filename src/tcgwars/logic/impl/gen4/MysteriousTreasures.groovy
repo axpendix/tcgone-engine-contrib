@@ -293,6 +293,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                   unregisterAfter 2
                   after SWITCH, self, { unregister() }
                   after EVOLVE, self, { unregister() }
+                  after DEVOLVE, self, { unregister() }
                 }
               }
             }
@@ -1302,6 +1303,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                   }
                   after SWITCH, self, {unregister()}
                   after EVOLVE, self, {unregister()}
+                  after DEVOLVE, self, {unregister()}
                   unregisterAfter 1
                 }
                 bc "During this turn, Slaking's Lazy Blow attack's base damage is 130."
@@ -1319,6 +1321,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                   }
                   after SWITCH, self, {unregister()}
                   after EVOLVE, self, {unregister()}
+                  after DEVOLVE, self, {unregister()}
                   unregisterAfter 1
                 }
               }
@@ -2056,6 +2059,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 }
                 unregisterAfter 2
                 after EVOLVE, self, {unregister()}
+                after DEVOLVE, self, {unregister()}
                 after SWITCH, self, {unregister()}
               }
             }
@@ -3493,6 +3497,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                   unregisterAfter 2
                   after SWITCH, self, {unregister()}
                   after EVOLVE, self, {unregister()}
+                  after DEVOLVE, self, {unregister()}
                 }
               }
             }
@@ -3515,6 +3520,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 }
                 unregisterAfter 2
                 after EVOLVE, self, {unregister()}
+                after DEVOLVE, self, {unregister()}
                 after SWITCH, self, {unregister()}
               }
             }
@@ -3548,6 +3554,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 }
                 //TODO: Remove if these are not needed.
                 // after EVOLVE, torridWaveRecipient, {unregister()}
+                // after DEVOLVE, torridWaveRecipient, {unregister()}
                 // after SWITCH, torridWaveRecipient, {unregister()}
                 after CLEAR_SPECIAL_CONDITION, torridWaveRecipient, {
                   if(ef.types.contains(BURNED)){
