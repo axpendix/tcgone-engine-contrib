@@ -3903,19 +3903,22 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
 
-          def info = "Select a Pokémon that evolves from ${pl[0].name + (pl.size() == 2 ? " and a Pokémon that evolves from" + pl[1].name : "")}:"
           def preEvoNames = pl.collect{it.name}.unique(false)
-          bc ">preEvoNames: $preEvoNames"
-          def sel = my.deck.search(max: pl.size(), info, { it.cardTypes.is(EVOLUTION) &&  preEvoNames.contains(it.predecessor) }, { CardList list ->
-            preEvoNames.size() == 1 || (list.findAll{it.predecessor == preEvoNames[0]}.size() <= 1 && list.findAll{it.predecessor == preEvoNames[1]}.size() <= 1 )})
 
-          /*pl.each { preEvo ->
-            def sel = deck.search ("Select a Pokémon that evolves from ${preEvo.name}.", {
-              it.cardTypes.is(EVOLUTION) && it.predecessor == preEvo.name
-            })
-            //Minor TODO: Have this happen after choosing all evolutions? One at a time, then searching for the next is a bit of a weird timing imo.
-            if (sel) { evolve(preEvo, sel.first(), OTHER) }
-          }*/
+          def info = "Select a Pokémon that evolves from ${preEvoNames[0] + (preEvoNames.size() == 2 ? " and a Pokémon that evolves from " + preEvoNames[1] : "")}:"
+
+          def sel = my.deck.search(max: pl.size(), info, { it.cardTypes.is(EVOLUTION) &&  preEvoNames.contains(it.predecessor) }, { CardList list -> preEvoNames.size() == 1 || ( list.findAll{it.predecessor == preEvoNames[0]}.size() <= 1 && list.findAll{it.predecessor == preEvoNames[1]}.size() <= 1 )})
+
+          sel.each{ evoCard ->
+            def toEvolve
+            if (preEvoNames.size() == 1 && pl.size() > 1){
+              toEvolve = pl.select("Which of these Pokémon will evolve into ${evoCard.name}?").first()
+            } else {
+              toEvolve = pl.find{it.name == evoCard.predecessor}
+            }
+            evolve(toEvolve, evoCard, OTHER)
+            pl.remove(toEvolve)
+          }
 
           shuffleDeck()
         }
