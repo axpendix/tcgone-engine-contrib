@@ -684,7 +684,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               assertOppBench()
             }
             onAttack {
-              switchYourOpponentsBenchedWithActive()
+              sw(opp.active, opp.bench.select())
             }
           }
           move "Gentle Slap", {

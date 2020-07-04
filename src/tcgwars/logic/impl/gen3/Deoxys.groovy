@@ -1389,7 +1389,7 @@ public enum Deoxys implements LogicCardInfo {
               assert opp.bench : "There is no Pokémon to switch"
               powerUsed()
               flip {
-                switchYourOpponentsBenchedWithActive(SRC_ABILITY)
+                sw opp.active, opp.bench.select("Select the new active Pokémon.")
               }
             }
           }
@@ -2883,11 +2883,14 @@ public enum Deoxys implements LogicCardInfo {
             energyCost C, C
             onAttack {
               def pcs = defending
-              if (opp.bench && confirm("Switch 1 of your opponent's Benched Pokémon with the Defending Pokémon?")){
-                def target = opp.bench.select("Select the new Active Pokémon.")
-                if ( sw2(target) ) { pcs = target }
+              if(opp.bench){
+                if(confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon before doing damage?")){
+                  pcs = opp.bench.select()
+                  sw defending, pcs
+                }
               }
-              damage 20
+
+              damage 20, pcs
             }
           }
           move "Darkness Blast", {

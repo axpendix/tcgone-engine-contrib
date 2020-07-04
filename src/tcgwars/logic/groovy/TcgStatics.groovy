@@ -439,12 +439,12 @@ class TcgStatics {
   static sw (PokemonCardSet old, PokemonCardSet newp, Source source=Source.ATTACK) {
     bg().em().run(new Switch(old,newp,source))
   }
-  static sw2 (PokemonCardSet pcs1, PokemonCardSet pcs2 = null, Source src = Source.ATTACK) {
-    if(pcs2 == null) {
-      return !(new Switch(pcs1.owner.pbg.active, pcs1, src, pcs1).run(bg))
-    } else {
-      return !(new Switch(pcs1, pcs2, src, pcs1).run(bg))
+  //use for "Switch 1 of your opponent's Benched Pokémon with their Active Pokémon." If an additional effect depends on this, the method returns whether or not the switch happened.
+  static boolean swFromBench (PokemonCardSet old, PokemonCardSet newp, Source source=Source.ATTACK) {
+    targeted (newp, source) {
+      sw (old, newp, null)
     }
+    return newp.active
   }
   static discardStadium(){
     if (bg().stadiumInfoStruct?.stadiumCard){
@@ -989,12 +989,6 @@ class TcgStatics {
       doit()
     } else {
       afterDamage {doit()}
-    }
-  }
-
-  static void switchYourOpponentsBenchedWithActive(Source src = ATTACK){
-    if (opp.bench){
-      sw2(opp.bench.select("Select your opponent's new Active Pokémon."), null, src)
     }
   }
 

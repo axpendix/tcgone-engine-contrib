@@ -2786,8 +2786,10 @@ public enum RebelClash implements LogicCardInfo {
             assertOppBench()
           }
           onAttack {
-            def target = opp.bench.select("Select the new Active Pokémon.")
-            if ( sw2(target) ) { damage 30, target }
+            def target = defending
+            target = opp.bench.select("Select the new Active Pokémon.")
+            sw defending, target
+            damage 30, target
           }
         }
         move "Brain Shake", {
@@ -3491,7 +3493,10 @@ public enum RebelClash implements LogicCardInfo {
       return supporter (this) {
         text "Choose 1 of your opponent’s Benched Pokemon and switch it with their Active Pokemon. You may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
-          switchYourOpponentsBenchedWithActive(TRAINER_CARD)
+          def pcs = opp.bench.select("New active")
+          targeted (pcs, TRAINER_CARD) {
+            sw opp.active, pcs, TRAINER_CARD
+          }
         }
         playRequirement {
           assertOppBench()

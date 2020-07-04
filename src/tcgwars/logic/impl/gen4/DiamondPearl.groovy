@@ -2300,11 +2300,11 @@ public enum DiamondPearl implements LogicCardInfo {
             text "Switch 1 of your opponent’s Benched Pokémon with 1 of the Defending Pokémon. The new Defending Pokémon is now Asleep."
             energyCost G
             attackRequirement {
-              assert opp.bench : "Your opponent has no Benched Pokémon"
+              assert opp.bench
             }
             onAttack {
-              def target = opp.bench.select("Select the new Active Pokémon.")
-              if ( sw2(target) ) { apply ASLEEP, target }
+              sw opp.active, opp.bench.select()
+              apply ASLEEP, opp.active
             }
           }
           move "Gust", {
