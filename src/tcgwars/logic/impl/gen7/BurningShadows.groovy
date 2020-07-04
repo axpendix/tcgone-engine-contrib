@@ -345,7 +345,7 @@ public enum BurningShadows implements LogicCardInfo {
             delayedA {
               before CHECK_ATTACK_REQUIREMENTS, {
                 //TODO: Remove workaround for stealthy hood whenever that's fixed.
-                if(self.active && ef.attacker.owner != self.owner && ef.attacker.basic && ef.attacker.cards.any{it.name == "Stealthy Hood"}) {
+                if(self.active && ef.attacker.owner != self.owner && ef.attacker.basic && !ef.attacker.cards.any{it.name == "Stealthy Hood"}) {
                   wcu "Disgusting Pollen prevents attack"
                   prevent()
                 }
