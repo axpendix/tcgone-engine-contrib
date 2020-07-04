@@ -439,7 +439,7 @@ class TcgStatics {
   static sw (PokemonCardSet old, PokemonCardSet newp, Source source=Source.ATTACK) {
     bg().em().run(new Switch(old,newp,source))
   }
-  static sw2 (def pcs1, def pcs2 = null, Source src = Source.ATTACK) {
+  static sw2 (PokemonCardSet pcs1, PokemonCardSet pcs2 = null, Source src = Source.ATTACK) {
     if(pcs2 == null) {
       return !(new Switch(pcs1.owner.pbg.active, src, pcs1).run(bg))
     } else {
