@@ -3736,11 +3736,12 @@ public enum DarknessAblaze implements LogicCardInfo {
                 def flag = self.getWeaknesses().any {weakness ->
                   opp.active.types.contains(weakness.type)
                 }
-                bg.dm().each {
-                  if (it.to.active && it.to.owner == self.owner.opposite && it.dmg.value && flag) {
-                    bc "Adversity Gloves +30"
-                    it.dmg += hp(30)
-                    flag = false
+                if (flag){
+                  bg.dm().each {
+                    if (it.to.active && it.to.owner == self.owner.opposite) {
+                      bc "Adversity Gloves +30"
+                      it.dmg += hp(30)
+                    }
                   }
                 }
               }
