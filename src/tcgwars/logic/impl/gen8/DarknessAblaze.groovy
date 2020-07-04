@@ -3890,23 +3890,25 @@ public enum DarknessAblaze implements LogicCardInfo {
         onPlay {
           def tar = my.all.findAll{it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount}
           def pl = new PcsList()
+          def pcs
 
-          def pcs = tar.select("Pokémon Breeder's Nurturing - Choose which Pokémon you want to search an evolution of. (1/${Math.min(tar.size(), 2)})")
-          pl.add(pcs)
-          tar.remove(pcs)
-          pcs = null
-
-          if (tar){
-            pcs = tar.select("Pokémon Breeder's Nurturing - Choose which Pokémon you want to search an evolution of. (2/2) [You can hit cancel and search for only an evolution of ${pl.first()}]", false)
+          while (tar && pl.size() < 2){
+            pcs = tar.select("Pokémon Breeder's Nurturing - Choose which Pokémon you want to search an evolution of. (${pl.size() + 1}/2) ${pl.notEmpty ? " [You can hit cancel and search for only an evolution of " + pl.first() + "]" : ""}", pl.size() == 0)
 
             if (pcs) {
               pl.add(pcs)
               tar.remove(pcs)
+            } else {
+              tar.clear()
             }
           }
 
+          /*def sel = my.deck.search(max: pl.size(), "Search your deck for a [D] Pokémon and an Energy card.", {darkPokeFilter(it) || it.cardTypes.is(ENERGY)}, { CardList list ->
+            list.findAll{darkPokeFilter(it)}.size() <= 1 && list.filterByType(ENERGY).size() <= 1
+          })*/
+
           pl.each { preEvo ->
-            def sel = deck.search ("Select a Pokémon that evolves from $preEvo.name.", {
+            def sel = deck.search ("Select a Pokémon that evolves from ${preEvo.name}.", {
               it.cardTypes.is(EVOLUTION) && it.predecessor == preEvo.name
             })
             //Minor TODO: Have this happen after choosing all evolutions? One at a time, then searching for the next is a bit of a weird timing imo.
