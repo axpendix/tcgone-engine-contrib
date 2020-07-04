@@ -4096,7 +4096,6 @@ public enum DarknessAblaze implements LogicCardInfo {
         text "Flip a coin. If heads, choose a basic Energy card from your discard pile and attach it to 1 of your Basic Pokémon (excluding Pokémon-GX)."
         onPlay {
           flip {
-            def pcs = my.all.findAll{it.basic && !(it.pokemonGX)}.select("Choose which of your Basic, non-GX Pokémon to attach to")
             attachEnergyFrom(basic:true, tostrOverride: "one of your Basic, non-GX Pokémon", my.discard, my.all.findAll{it.basic && !(it.pokemonGX)})
           }
         }
