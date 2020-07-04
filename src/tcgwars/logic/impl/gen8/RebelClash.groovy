@@ -2407,13 +2407,24 @@ public enum RebelClash implements LogicCardInfo {
         move "Spreading Spite", {
           text "For each damage counter on this Galarian Runerigus, put 2 damage counters on your opponent's Pokemon in any way you like."
           energyCost C, C
+          attackRequirement{
+            assert self.numberOfDamageCounters : "$self has no damage counters on itself."
+          }
           onAttack {
-            def num = self.numberOfDamageCounters
-            if (num > 0) {
-              (1..num).each {
-                directDamage 20, opp.all.select("Put 2 damage counters to which Pokémon? ($it/$num")
+            def counters = 2 * self.numberOfDamageCounters
+
+            eff = delayed {
+              before KNOCKOUT, {
+                prevent()
               }
             }
+
+            (1..counters).each {
+              directDamage 10, opp.all.select("Put 1 damage counter to which Pokémon? ${it-1}/$counters counters placed")
+            }
+
+            eff.unregister()
+            checkFaint()
           }
         }
         move "Mad Hammer", {
