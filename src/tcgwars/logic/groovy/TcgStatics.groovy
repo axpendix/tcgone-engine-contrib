@@ -1125,12 +1125,14 @@ class TcgStatics {
     Integer max = params.max ?: 1
     CardList list
     String tostr = "";
-    if(to instanceof PcsList) {
+    if (params.tostrOverride){
+      tostr += params.tostrOverride
+    } else if (to instanceof PcsList) {
       tostr += "one of "+to.collect{it.name}.join(", ")
     } else {
       tostr += to
     }
-    def info = "Attach ${params.type ?: ''} ${params.basic ? 'Basic' : ''} Energy to $tostr."
+    def info = "Attach ${params.type ?: ''} ${params.basic ? 'Basic' : ''} Energy to ${tostr}."
     def filter = { Card card ->
       card.cardTypes.is(ENERGY) && (!params.basic || card.cardTypes.is(BASIC_ENERGY)) && (!params.type || card.asEnergyCard().containsTypePlain(params.type))
     }
