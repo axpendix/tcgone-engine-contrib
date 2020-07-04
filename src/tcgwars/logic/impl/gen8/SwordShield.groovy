@@ -3314,8 +3314,10 @@ public enum SwordShield implements LogicCardInfo {
           text "Discard all Energy from this Pokémon. This attack does 160 damage to 1 of your opponent’s Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C, C, C
           onAttack {
-            discardAllSelfEnergy(null)
             damage 160, opp.all.select()
+            afterDamage{
+              discardAllSelfEnergy(null)
+            }
           }
         }
       };
