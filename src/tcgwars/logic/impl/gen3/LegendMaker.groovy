@@ -1589,8 +1589,8 @@ public enum LegendMaker implements LogicCardInfo {
             assert opp.bench : "Your opponent has no benched Pokémon"
           }
           onAttack {
-            def pcs = opp.bench.select("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon.")
-            if ( swFromBench (defending, pcs) ) { apply POISONED, pcs }
+            def target = opp.bench.select("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon.")
+            if ( sw2(target) ) { apply POISONED, target }
           }
         }
       };
@@ -2166,7 +2166,7 @@ public enum LegendMaker implements LogicCardInfo {
             assert opp.bench : "There is no Pokémon on your opponent's bench"
           }
           onAttack {
-            sw defending, opp.bench.select()
+            switchYourOpponentsBenchedWithActive()
           }
         }
       };

@@ -524,7 +524,7 @@ public enum SwordShield implements LogicCardInfo {
             assertOppBench()
           }
           onAttack {
-            sw(opp.active, opp.bench.select())
+            switchYourOpponentsBenchedWithActive()
           }
         }
         move "Double Hit", {
@@ -1544,7 +1544,7 @@ public enum SwordShield implements LogicCardInfo {
             assertOppBench()
           }
           onAttack {
-            sw(opp.active, opp.bench.select())
+            switchYourOpponentsBenchedWithActive()
           }
         }
         move "Lightning Ball", {
