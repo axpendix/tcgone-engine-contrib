@@ -4052,11 +4052,19 @@ public enum DarknessAblaze implements LogicCardInfo {
       case SPIKEMUTH_180:
       return stadium (this) {
         text "Whenever a player’s Pokémon is moved from the Active Spot to the Bench during their turn put 2 damage counters on that Pokémon."
-        def eff
+        def eff, switchedFromActive
         onPlay {
           eff = delayed{
-            after FALL_BACK, {
-              directDamage 20, ef.fallenBack, TRAINER_CARD //TODO: Cover Omega Barrier
+            before SWITCH, {
+              if (ef.fallenBack.owner == my){
+                switchedFromActive = ef.fallenBack
+              }
+            }
+            after SWITCH, {
+              if (switchedFromActive){
+                directDamage 20, ef.fallenBack, TRAINER_CARD //TODO: Cover Omega Barrier
+                switchedFromActive = null
+              }
             }
           }
         }
