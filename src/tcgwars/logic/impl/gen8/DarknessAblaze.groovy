@@ -3486,7 +3486,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Sharp Eyes", {
-          text "Search your deck for any 2 cards and put them into your hand. Then, shuffle your deck."
+          text "Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
           energyCost C, C
           attackRequirement {
             assert my.deck : "There are no cards left in your deck"
