@@ -544,7 +544,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokeBody "Dual Aura", {
           text "As long as you have Latios or Latios ex in play, each player's Evolved Pokémon (excluding Pokémon-ex) can't use any Poké-Bodies."
           getterA (IS_ABILITY_BLOCKED) { Holder h ->
-            if (my.all.findAll{it.name == "Latios" || it.name == "Latios ex"} && !h.effect.target.EX && h.effect.target.evolution) {
+            if (self.owner.pbg.all.findAll{it.name == "Latios" || it.name == "Latios ex"} && !h.effect.target.EX && h.effect.target.evolution) {
               if (h.effect.ability instanceof PokeBody) {
                 h.object = true
               }
@@ -580,7 +580,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokeBody "Dual Aura", {
           text "As long as you have Latias or Latias ex in play, each player's Evolved Pokémon (excluding Pokémon-ex) can't use any Poké-Bodies."
           getterA (IS_ABILITY_BLOCKED) { Holder h ->
-            if (my.all.findAll{it.name == "Latias" || it.name == "Latias ex"} && !h.effect.target.EX && h.effect.target.evolution) {
+            if (self.owner.pbg.all.findAll{it.name == "Latias" || it.name == "Latias ex"} && !h.effect.target.EX && h.effect.target.evolution) {
               if (h.effect.ability instanceof PokeBody) {
                 h.object = true
               }
