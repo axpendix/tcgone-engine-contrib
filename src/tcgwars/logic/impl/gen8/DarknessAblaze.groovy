@@ -3406,7 +3406,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return evolution (this, from:"Skitty", hp:HP100, type:C, retreatCost:1) {
         weakness F
         move "Captivating Tail", {
-          text "Switch your opponent’s Active Pokémon with 1 of their Benched Pokémon. The new Active Pokémon is now Confused."
+          text "Switch 1 of your opponent's Benched Pokémon with their Active Pokémon. The new Active Pokémon is now Confused."
           energyCost C
           attackRequirement {
             assert opp.bench : "Opponent has no Benched Pokémon."
