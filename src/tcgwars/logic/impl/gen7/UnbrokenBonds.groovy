@@ -594,12 +594,14 @@ public enum UnbrokenBonds implements LogicCardInfo {
             energyCost C
             attackRequirement {gxCheck()}
             onAttack {
-              damage 60
               gxPerform()
-              if(my.deck || my.hand){
-                my.hand.moveTo(my.deck)
-                shuffleDeck()
-                draw 10
+              damage 60
+              afterDamage{
+                if(my.deck || my.hand){
+                  my.hand.moveTo(my.deck)
+                  shuffleDeck()
+                  draw 10
+                }
               }
             }
           }
@@ -2770,8 +2772,8 @@ public enum UnbrokenBonds implements LogicCardInfo {
               assert opp.hand
             }
             onAttack {
-              opp.hand.select(count:2,"Opponent's hand. Discard 2").discard()
               gxPerform()
+              opp.hand.select(count:2,"Opponent's hand. Discard 2").discard()
             }
           }
 
@@ -3280,11 +3282,13 @@ public enum UnbrokenBonds implements LogicCardInfo {
             energyCost Y, Y, Y
             attackRequirement {gxCheck()}
             onAttack {
-              damage 200
               gxPerform()
-              if(self.cards.energySufficient(thisMove.energyCost + Y+Y+Y)){
-                opp.hand.moveTo(opp.deck)
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+              damage 200
+              afterDamage{
+                if(self.cards.energySufficient(thisMove.energyCost + Y+Y+Y)){
+                  opp.hand.moveTo(opp.deck)
+                  shuffleDeck(null, TargetPlayer.OPPONENT)
+                }
               }
             }
           }
@@ -3680,8 +3684,8 @@ public enum UnbrokenBonds implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {gxCheck()}
             onAttack {
-              damage 150
               gxPerform()
+              damage 150
               switchYourActive()
             }
           }

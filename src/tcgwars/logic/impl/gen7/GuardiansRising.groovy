@@ -2553,8 +2553,8 @@ public enum GuardiansRising implements LogicCardInfo {
               gxCheck()
             }
             onAttack {
-              damage 240
               gxPerform()
+              damage 240
             }
           }
 

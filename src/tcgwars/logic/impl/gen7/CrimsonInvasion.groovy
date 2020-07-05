@@ -1613,7 +1613,6 @@ public enum CrimsonInvasion implements LogicCardInfo {
               gxCheck()
             }
             onAttack {
-              damage 100
               gxPerform()
               delayed (priority: LAST) {
                 def pcs = defending
@@ -1623,6 +1622,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
                 }
                 unregisterAfter 1
               }
+              damage 100
             }
           }
 

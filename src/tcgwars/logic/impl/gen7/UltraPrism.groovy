@@ -3232,8 +3232,8 @@ public enum UltraPrism implements LogicCardInfo {
               assert opp.prizeCardSet.takenCount : "No prize taken"
             }
             onAttack {
-              damage 50*opp.prizeCardSet.takenCount
               gxPerform()
+              damage 50 * opp.prizeCardSet.takenCount
             }
           }
 

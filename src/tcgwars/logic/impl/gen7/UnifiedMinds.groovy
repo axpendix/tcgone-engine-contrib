@@ -374,8 +374,8 @@ public enum UnifiedMinds implements LogicCardInfo {
             energyCost G, G, G
             attackRequirement { gxCheck() }
             onAttack {
-              damage 200
               gxPerform()
+              damage 200
               if (self.cards.energySufficient(thisMove.energyCost + [C, C, C])){
                 afterDamage{
                   opp.all.each {
@@ -1799,8 +1799,8 @@ public enum UnifiedMinds implements LogicCardInfo {
             energyCost P, P, C
             attackRequirement { gxCheck() }
             onAttack {
-              damage 200
               gxPerform()
+              damage 200
               if (self.cards.energySufficient(thisMove.energyCost + C)) {
                 my.all.each {heal it.damage.value, it}
               }
@@ -2937,11 +2937,12 @@ public enum UnifiedMinds implements LogicCardInfo {
             energyCost D, D, D, D, C
             attackRequirement { gxCheck() }
             onAttack {
-              damage 250
               gxPerform()
-
-              if (self.cards.energySufficient(thisMove.energyCost + [C, C, C, C, C] )) {
-                opp.deck.subList(0, 15).discard()
+              damage 250
+              afterDamage{
+                if (self.cards.energySufficient(thisMove.energyCost + [C, C, C, C, C] )) {
+                  opp.deck.subList(0, 15).discard()
+                }
               }
             }
           }

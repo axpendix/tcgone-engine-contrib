@@ -1039,8 +1039,8 @@ public enum BurningShadows implements LogicCardInfo {
               assert opp.bench.notEmpty
             }
             onAttack {
+              gxPerform()
               targeted (defending) {
-                gxPerform()
                 defending.cards.reverse().moveTo(opp.deck)
                 removePCS(defending)
               }
