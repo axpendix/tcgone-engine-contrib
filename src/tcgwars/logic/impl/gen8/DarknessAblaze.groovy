@@ -3820,8 +3820,17 @@ public enum DarknessAblaze implements LogicCardInfo {
         def eff
         onPlay {
           eff = delayed {
+            def act = false
+            before PROCESS_ATTACK_EFFECTS, {
+              if(ef.attacker.owner == my.owner){
+                act = true
+              }
+            }
+            before BETWEEN_TURNS, {
+              act = false
+            }
             before COIN_FLIP_BETWEEN_EXECUTION, {
-              if (lastTurn != bg.turnCount && confirm("Glimwood Tangle: Result: $ef.object.lastResultString. Do you want to reflip? ")) {
+              if (act && lastTurn != bg.turnCount && confirm("Glimwood Tangle: Result: $ef.object.lastResultString. Do you want to reflip? ")) {
                 lastTurn = bg.turnCount
                 bc "Used Glimwood Tangle and discarded those flips"
                 ef.object.run(bg) //flip again
@@ -4056,7 +4065,6 @@ public enum DarknessAblaze implements LogicCardInfo {
         onPlay {
           eff = delayed{
             before SWITCH, {
-              bc "${ef.fallenBack.owner}"
               if (ef.fallenBack.owner == my.owner){
                 switchedFromActive = ef.fallenBack
               }

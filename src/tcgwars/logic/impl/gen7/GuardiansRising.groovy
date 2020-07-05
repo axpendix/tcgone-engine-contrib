@@ -432,7 +432,7 @@ public enum GuardiansRising implements LogicCardInfo {
                   act = true
                 }
               }
-              after APPLY_ATTACK_DAMAGES, {
+              before BETWEEN_TURNS, {
                 act = false
               }
               before COIN_FLIP_BETWEEN_EXECUTION, {
