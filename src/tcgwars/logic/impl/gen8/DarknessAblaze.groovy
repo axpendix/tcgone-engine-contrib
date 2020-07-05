@@ -3706,8 +3706,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Once during your turn when you play this card from your hand to evolve a Pokémon, you may choose 1 of your Pokémon (excluding any Corviknight). Return that Pokémon and all cards attached to it to your hand."
           onActivate { r->
             if (r==PLAY_FROM_HAND) {
+              //TODO: Handle Scoop-Up Block on this.
               if (my.all.any{ it.name != "Corviknight" } && confirm("Flying Taxi - Return one of your Pokémon (and all cards attached to it) back to your hand?")){
-                def pcs = opp.all.findAll { it.name != "Corviknight" }.select("Which Pokemon to bring back to your hand?")
+                def pcs = my.all.findAll { it.name != "Corviknight" }.select("Which Pokemon to bring back to your hand?")
 
                 targeted (pcs, SRC_ABILITY) {
                   pcs.cards.moveTo(my.hand)

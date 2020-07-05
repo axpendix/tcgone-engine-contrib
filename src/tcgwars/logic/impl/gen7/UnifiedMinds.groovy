@@ -4621,8 +4621,10 @@ public enum UnifiedMinds implements LogicCardInfo {
           }
           onRemoveFromPlay {
             eff.unregister()
+            //TODO: Handle Scoop-Up Block on this.
             if(thisCard.player.pbg.discard.contains(thisCard)){ // if in discard, move it back to hand
-              moveCard(thisCard, thisCard.player.pbg.hand)
+              moveCard(suppressLog: true, thisCard, thisCard.player.pbg.hand)
+              bc "U-Turn Board was recycled into its owner's hand." // it deserves its own log entry
             }
           }
         };
@@ -4632,9 +4634,10 @@ public enum UnifiedMinds implements LogicCardInfo {
             "If this card is discarded from play, put it into your hand instead of the discard pile."
           onPlay {reason->}
           onRemoveFromPlay {
+            //TODO: Handle Scoop-Up Block on this.
             if(thisCard.player.pbg.discard.contains(thisCard)){ // if in discard, move it back to hand
               moveCard(suppressLog: true, thisCard, thisCard.player.pbg.hand)
-              bc "Recycle Energy has recycled into its owner's hand." // it deserves its own log entry
+              bc "Recycle Energy was recycled into its owner's hand." // it deserves its own log entry
             }
           }
         };
