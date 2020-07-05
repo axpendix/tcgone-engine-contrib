@@ -550,6 +550,12 @@ public enum HolonPhantoms implements LogicCardInfo {
               }
             }
           }
+          onActivate{
+            new CheckAbilities().run(bg)
+          }
+          onDeactivate{
+            new CheckAbilities().run(bg)
+          }
         }
         move "Spearhead", {
           text "Draw a card."
@@ -579,6 +585,12 @@ public enum HolonPhantoms implements LogicCardInfo {
                 h.object = true
               }
             }
+          }
+          onActivate{
+            new CheckAbilities().run(bg)
+          }
+          onDeactivate{
+            new CheckAbilities().run(bg)
           }
         }
         move "Dive", {
