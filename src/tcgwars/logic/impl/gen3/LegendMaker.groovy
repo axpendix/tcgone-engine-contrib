@@ -2325,7 +2325,7 @@ public enum LegendMaker implements LogicCardInfo {
           actions=action("Stadium: Strange Cave") {
             assert lastTurn != bg().turnCount : "Already used"
             assert my.bench.notFull : "Bench is full"
-            def eligible = my.hand.findAll{["Omanyte", "Kabuto", "Aerodactyl", "Aerodactyl ex", "Lileep", "Anorith"].contains(it.name)}
+            def elegible = my.hand.findAll{["Omanyte", "Kabuto", "Aerodactyl", "Aerodactyl ex", "Lileep", "Anorith"].contains(it.name)}
             assert elegible : "You have no Omanyte, Kabuto, Aerodactyl, Aerodactyl ex, Lileep or Anorith in your hand"
             bc "Used Strange Cave effect"
             lastTurn = bg().turnCount
