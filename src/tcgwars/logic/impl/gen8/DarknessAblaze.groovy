@@ -3299,7 +3299,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             before (KNOCKOUT, self) {
               if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && opp.deck) {
                 bc "One Last Dig - 2 cards will be discarded from the top of the opponent's deck"
-                opp.deck.subList(0,2).discard()
+                self.owner.opposite.pbg.deck.subList(0,2).discard()
               }
             }
           }
