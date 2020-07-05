@@ -2456,6 +2456,7 @@ public enum Deoxys implements LogicCardInfo {
           onRemoveFromPlay{
             eff1.unregister()
             eff2.unregister()
+            new CheckAbilities().run(bg)
           }
         };
       case STRENGTH_CHARM_92:
