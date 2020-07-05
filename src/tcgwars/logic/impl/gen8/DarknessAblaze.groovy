@@ -3127,12 +3127,13 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "200 damage. If you don't have Klink and Klang on your Bench, this attack does nothing."
           energyCost M, C, C
           attackRequirement {
-            //TODO: This should be a soft requirement.
             assert my.bench.any({ it.name == "Klink" }) : "You have no Klink on your bench."
             assert my.bench.any({ it.name == "Klang" }) : "You have no Klang on your bench."
           }
           onAttack {
-            damage 200
+            if ( my.bench.any({ it.name == "Klink" }) && my.bench.any({ it.name == "Klang" }) ) {
+              damage 200
+            }
           }
         }
       };
