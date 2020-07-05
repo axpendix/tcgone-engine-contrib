@@ -2236,6 +2236,7 @@ public enum CrystalGuardians implements LogicCardInfo {
       case SHIFTRY_EX_97:
       return evolution (this, from:"Nuzleaf", hp:HP140, type:D, retreatCost:0) {
         weakness G
+        weakness F
         resistance P, MINUS30
         pokeBody "Dark Eyes", {
           text "After your opponent's Pokémon uses a Poké-Power, put 2 damage counters on that Pokémon."
