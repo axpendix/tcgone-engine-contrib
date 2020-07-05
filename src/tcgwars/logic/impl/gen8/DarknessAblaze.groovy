@@ -3810,6 +3810,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           apply CONFUSED, my.active, Source.TRAINER_CARD
         }
         playRequirement{
+          assert !(opp.active.isSPC(CONFUSED) && my.active.isSPC(CONFUSED)) : "Both Active Pokémon are already confused"
         }
       };
       case GLIMWOOD_TANGLE_169:
