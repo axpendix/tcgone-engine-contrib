@@ -2286,6 +2286,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               deck.remove(it)
               benchPCS(it)
             }
+            shuffleDeck()
           }
           playRequirement{
             assert my.bench.notFull
