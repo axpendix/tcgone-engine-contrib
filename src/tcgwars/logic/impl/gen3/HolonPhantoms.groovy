@@ -225,9 +225,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           onAttack {
             damage 50
 
-            def fossilInHand = my.hand.findAll { it.name.contains("Fossil") }
+            def fossilInHand = my.hand.any{ ["Claw Fossil", "Mysterious Fossil", "Root Fossil", "Holon Fossil"].contains(it.name) }
             if (opp.bench && fossilInHand && confirm("Discard a Fossil from hand to do 30 damage to a Benched Pokemon?")) {
-              my.hand.findAll { it.name.contains("Fossil") }.select().discard()
+              my.hand.findAll{ ["Claw Fossil", "Mysterious Fossil", "Root Fossil", "Holon Fossil"].contains(it.name) }.select().discard()
               damage 30, opp.bench.select()
             }
           }
