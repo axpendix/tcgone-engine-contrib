@@ -2425,10 +2425,10 @@ public enum TeamRocketReturns implements LogicCardInfo {
         return basicTrainer (this) {
           text "Search your deck for a Basic Pokémon (excluding Pokémon-ex) and switch it with 1 of your Basic Pokémon (excluding Pokémon-ex) in play. (Any cards attached to that Pokémon, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Place the first Basic Pokémon in the discard pile. Shuffle your deck afterward."
           onPlay {
-            def pcs = my.all.findAll{it.notEvolution && it.topPokemonCard.cardTypes.isNot(EX)}.select()
-            def tpc = pcs.topPokemonCard
             def selected = my.deck.search(max:1,"Select a Basic Pokémon (excluding Pokémon-ex)",{it.cardTypes.is(BASIC) && it.cardTypes.isNot(EX)})
             if (selected) {
+              def pcs = my.all.findAll{it.notEvolution && it.topPokemonCard.cardTypes.isNot(EX)}.select()
+              def tpc = pcs.topPokemonCard
               selected.moveTo(suppressLog: true, pcs.cards)
               my.discard.add(tpc)
               pcs.cards.remove(tpc)
