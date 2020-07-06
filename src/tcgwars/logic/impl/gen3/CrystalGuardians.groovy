@@ -2248,8 +2248,8 @@ public enum CrystalGuardians implements LogicCardInfo {
               }
             }
             after POKEPOWER, {
-              bc "Dark eyes activate"
               if (bg.currentThreadPlayerType != self.owner) {
+                bc "Dark Eyes activates"
                 directDamage(20, pcs, Source.SRC_ABILITY)
               }
             }
