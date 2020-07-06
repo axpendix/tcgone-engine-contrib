@@ -300,6 +300,22 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost D, C, C
           onAttack {
             damage 60
+            afterDamage {
+              // TODO: Make a static method to do this
+              def targetCount = Math.min self.cards.energyCount(C), 2
+              def finalCount = 0
+              while (self.cards.energyCount(C) > 0 && finalCount < targetCount) {
+                def info = "Select Energy to return to your hand."
+                def energy = self.cards.filterByType(ENERGY).select(info, energyFilter(C))
+                def energyCount = 1
+                if (energy.energyCount(C) > 1) {
+                  def choices = 1..energy.energyCount(C)
+                  def choiceInfo = "How many Energy do you want this card to count as?"
+                  energyCount = choose(choices, choiceInfo)
+                }
+                finalCount += energyCount
+                energy.moveTo my.hand
+              }
           }
         }
       };
@@ -339,13 +355,15 @@ public enum HolonPhantoms implements LogicCardInfo {
               delayed{
                 after PROCESS_ATTACK_EFFECTS, {
                   bg.dm().each{
-                    if(it.from.owner == self.owner.opposite && it.to == self) {
+                    if(it.from.owner == self.owner.opposite && it.to == self && it.notNoEffect && it.dmg.value) {
                       bc "Delta Reduction -30 (before W/R)"
                       it.dmg -= hp(30)
                     }
                   }
                 }
                 after SWITCH, self, {unregister()}
+                after EVOLVE, self, {unregister()}
+                after DEVOLVE, self, {unregister()}
                 unregisterAfter 2
               }
             }
@@ -384,6 +402,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 20
+            doMoreDamageNextTurn(thisMove, 40, self)
           }
         }
       };
