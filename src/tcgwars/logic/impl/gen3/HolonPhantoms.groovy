@@ -1578,7 +1578,11 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost L, C
           onAttack {
             damage 30
-            whirlwind()
+            afterDamage{
+              if (!defending.slatedToKO && opp.bench) {
+                sw opp.active, opp.bench.oppSelect("Choose your new Active Pokémon.")
+              }
+            }
           }
         }
       };
@@ -1604,7 +1608,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost R, C, C
           onAttack {
             damage 10+20*self.numberOfDamageCounters
-            discardSelfEnergy C, C
+            afterDamage{
+              discardSelfEnergy C, C
+            }
           }
         }
       };
@@ -1616,7 +1622,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 20
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
         move "Pika Bolt", {
@@ -1635,7 +1641,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 10
-            apply BURNED
+            applyAfterDamage BURNED
           }
         }
         move "Combustion", {
@@ -1655,16 +1661,17 @@ public enum HolonPhantoms implements LogicCardInfo {
           onAttack {
             damage 30
 
-            if (self.cards.findAll { it.name.contains("Holon Energy") }) {
+            if (self.cards.any{ it.name == "Holon Energy" }) {
               discardRandomCardFromOpponentsHand()
             }
           }
         }
         move "Swift Turn", {
-          text "50+ damage. If the Defending Pokémon has Fighting Resistance, this attack does 50 damage plus 30 more damage."
+          text "50+ damage. If the Defending Pokémon has [F] Resistance, this attack does 50 damage plus 30 more damage."
           energyCost F, C, C
           onAttack {
             damage 50
+            if(defending.resistances.find{it.type==F}) damage 30
           }
         }
       };
@@ -1722,6 +1729,9 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Retaliate", {
           text "10x damage. Does 10 damage times the number of damage counters on Wobbuffet."
           energyCost P, C
+          attackRequirement{
+            assert self.numberOfDamageCounters : "$self has no damage counters on it"
+          }
           onAttack {
             damage 10*self.numberOfDamageCounters
           }
