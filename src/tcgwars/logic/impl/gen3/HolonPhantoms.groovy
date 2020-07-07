@@ -1248,8 +1248,15 @@ public enum HolonPhantoms implements LogicCardInfo {
         weakness P
         globalAbility {Card thisCard->
           delayed {
+            def flag = false
+            before USE_ABILITY, {
+              flag = true
+            }
+            after POKEPOWER, {
+              flag = false
+            }
             before PLAY_TRAINER, {
-              if(ef.cardToPlay.cardTypes.is(SUPPORTER) && ef.cardToPlay.name.contains("Holon") && bg.currentTurn == thisCard.player){
+              if(!flag && ef.cardToPlay.cardTypes.is(SUPPORTER) && ef.cardToPlay.name.contains("Holon") && bg.currentTurn == thisCard.player){
                 bg.em().storeObject("Holon_Supporter", bg.turnCount)
               }
             }
