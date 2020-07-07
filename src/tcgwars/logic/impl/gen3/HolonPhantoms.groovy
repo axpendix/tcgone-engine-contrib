@@ -915,7 +915,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           onAttack {
             flip {
               damage 50
-              apply PARALYZED
+              applyAfterDamage PARALYZED
             }
           }
         }
@@ -966,7 +966,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 10
-            flip { apply CONFUSED }
+            flip { applyAfterDamage CONFUSED }
           }
         }
         move "Rock Slide", {
@@ -976,9 +976,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 20
             if (opp.bench) {
               multiSelect(opp.bench, 2).each {
-                targeted(it) {
-                  damage 10, it
-                }
+                damage 10, it
               }
             }
           }
@@ -1012,11 +1010,16 @@ public enum HolonPhantoms implements LogicCardInfo {
           text "Regice can't be affected by any Special Conditions."
           delayedA {
             before APPLY_SPECIAL_CONDITION, {
-              def pcs = e.getTarget(bg)
-              if (pcs.owner == self.owner) {
+              if (e.getTarget(bg) == self) {
                 bc "Clear Body prevents Special Conditions"
                 prevent()
               }
+            }
+          }
+          onActivate{
+            if (self.specialConditions) {
+              bc "Clear Body clears Special Conditions from $self."
+              clearSpecialCondition(self, SRC_ABILITY)
             }
           }
         }
@@ -1025,7 +1028,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost W, W, C
           onAttack {
             damage 40
-            flip { apply ASLEEP }
+            flip { applyAfterDamage ASLEEP }
           }
         }
       };
@@ -1036,11 +1039,16 @@ public enum HolonPhantoms implements LogicCardInfo {
           text "Regirock can't be affected by any Special Conditions."
           delayedA {
             before APPLY_SPECIAL_CONDITION, {
-              def pcs = e.getTarget(bg)
-              if (pcs.owner == self.owner) {
+              if (e.getTarget(bg) == self) {
                 bc "Clear Body prevents Special Conditions"
                 prevent()
               }
+            }
+          }
+          onActivate{
+            if (self.specialConditions) {
+              bc "Clear Body clears Special Conditions from $self."
+              clearSpecialCondition(self, SRC_ABILITY)
             }
           }
         }
@@ -1051,9 +1059,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 40
             if (opp.bench) {
               multiSelect(opp.bench, 2).each {
-                targeted(it) {
-                  damage 10, it
-                }
+                damage 10, it
               }
             }
           }
@@ -1067,11 +1073,16 @@ public enum HolonPhantoms implements LogicCardInfo {
           text "Registeel can't be affected by any Special Conditions."
           delayedA {
             before APPLY_SPECIAL_CONDITION, {
-              def pcs = e.getTarget(bg)
-              if (pcs.owner == self.owner) {
+              if (e.getTarget(bg) == self) {
                 bc "Clear Body prevents Special Conditions"
                 prevent()
               }
+            }
+          }
+          onActivate{
+            if (self.specialConditions) {
+              bc "Clear Body clears Special Conditions from $self."
+              clearSpecialCondition(self, SRC_ABILITY)
             }
           }
         }
