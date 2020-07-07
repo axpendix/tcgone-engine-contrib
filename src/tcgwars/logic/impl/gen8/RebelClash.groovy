@@ -413,11 +413,10 @@ public enum RebelClash implements LogicCardInfo {
           text "30 damage. Your opponent switches their Active Pokemon with 1 of their Benched Pokemon."
           energyCost C, C
           onAttack {
-            def pcs = opp.active
             damage 30
             afterDamage{
               //TODO: Remove "opp.active == pcs && ", once KOs aren't checked during attack.
-              if (opp.active == pcs && opp.bench) {
+              if (!defending.slatedToKO() && opp.bench) {
                 sw opp.active, opp.bench.oppSelect("Choose your new Active Pokémon.")
               }
             }
