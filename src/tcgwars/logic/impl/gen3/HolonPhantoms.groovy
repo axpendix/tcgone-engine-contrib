@@ -735,7 +735,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokeBody "Hydro Barrier", {
           text "As long as Rayquaza has any Holon Energy cards attached to it, each of your [W] Pokémon has no Weakness."
           getterA (GET_WEAKNESSES) { h->
-            if (h.effect.target.owner == self.owner && h.effect.target.types.contains(W) && self.cards.findAll {it.name.contains("Holon Energy")}) {
+            if (h.effect.target.owner == self.owner && h.effect.target.types.contains(W) && self.cards.any{it.name == "Holon Energy"}) {
               def list = h.object as List<Weakness>
               list.clear()
             }
@@ -748,7 +748,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            def energy = my.deck.search(max: 1, "Select a Holon Energy card.", {it.name.contains("Holon Energy")}).first()
+            def energy = my.deck.search(max: 1, "Select a Holon Energy card.", {it.name == "Holon Energy"}).first()
             if (energy) {
               attachEnergy(self, energy)
             }
