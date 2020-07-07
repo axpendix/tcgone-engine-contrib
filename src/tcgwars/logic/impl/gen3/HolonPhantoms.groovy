@@ -631,7 +631,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost W, C, C
           onAttack {
             damage 50
-            discardSelfEnergy W
+            afterDamage{
+              discardSelfEnergy W
+            }
           }
         }
       };
@@ -999,7 +1001,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost R, C, C
           onAttack {
             damage 40
-            discardSelfEnergy R
+            afterDamage{
+              discardSelfEnergy R
+            }
           }
         }
       };
@@ -1091,7 +1095,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost M, M, C
           onAttack {
             damage 30
-            flip { discardDefendingEnergy() }
+            afterDamage{
+              flip { discardDefendingEnergy() }
+            }
           }
         }
       };
@@ -1196,11 +1202,10 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokePower "Primal Light", {
           text "Once during your turn (before your attack), you may search your deck for a basic Energy card, show it to your opponent, and put it into your hand. Shuffle your deck afterward. This power can't be used if Aerodactyl is affected by a Special Condition."
           actionA {
-            // TODO
             checkLastTurn()
             checkNoSPC()
-            powerUsed()
             assert my.deck : "Deck is empty"
+            powerUsed()
             my.deck.search(max: 1, "Select a basic Energy card.", cardTypeFilter(BASIC_ENERGY)).moveTo(my.hand)
             shuffleDeck()
           }
