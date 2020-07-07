@@ -416,7 +416,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 30
             afterDamage{
               //TODO: Remove "opp.active == pcs && ", once KOs aren't checked during attack.
-              if (!defending.slatedToKO() && opp.bench) {
+              if (!defending.slatedToKO && opp.bench) {
                 sw opp.active, opp.bench.oppSelect("Choose your new Active Pokémon.")
               }
             }
