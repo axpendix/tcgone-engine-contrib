@@ -1298,7 +1298,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost P, C, C
           onAttack {
             damage 40
-            flip { discardDefendingEnergy() }
+            afterDamage {
+              flip { discardDefendingEnergy() }
+            }
           }
         }
       };
@@ -1317,7 +1319,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost R, C, C
           onAttack {
             damage 40
-            flip { apply BURNED }
+            flip { applyAfterDamage BURNED }
           }
         }
       };
@@ -1355,9 +1357,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost F, C, C
           onAttack {
             multiSelect(opp.all, 2).each {
-              targeted(it) {
-                damage 30, it
-              }
+              damage 30, it
             }
           }
         }
@@ -1400,6 +1400,21 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost L, C
           onAttack {
             damage 30
+            def chosenCard = opp.hand.select(hidden: true, count: 1, "Choose 1 card from your opponent's hand without looking.")
+            def result = ""
+
+            if (chosenCard.cardTypeFilter(TRAINER)){
+              damage 30
+              afterDamage{
+                chosenCard.discard()
+              }
+
+              result = "It's a Trainer card, so ${self}'s attack will do 30 damage plus 30 more damage and the card will be discarded."
+            } else {
+              result = "It's not a Trainer card, so ${self}'s attack only does 30 damage and the card is returned to where it was."
+            }
+
+            chosenCard.showToMe("The card you selected. ${result}").showToOpponent("Mind Play: Your opponent chose a random card from your hand. ${result}")
           }
         }
       };
