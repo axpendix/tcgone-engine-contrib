@@ -646,7 +646,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokeBody "Delta Reserve", {
           text "As long as Pidgeot has any Holon Energy cards attached to it, each player's Pokémon (excluding Pokémon that has δ on its card) can't use any Poké-Powers."
           getterA (IS_ABILITY_BLOCKED) { Holder h ->
-            if (self.cards.findAll{it.name.contains("Holon Energy")} && !h.effect.target.topPokemonCard.cardTypes.is(DELTA)) {
+            if (self.cards.any{it.name == "Holon Energy"} && !h.effect.target.topPokemonCard.cardTypes.is(DELTA)) {
               if (h.effect.ability instanceof PokePower) {
                 h.object=true
               }
@@ -665,10 +665,10 @@ public enum HolonPhantoms implements LogicCardInfo {
           onAttack {
             damage 50
             afterDamage {
-              if (confirm("Rotating Claws - Discard an Energy?")) {
-                discardSelfEnergy C
-                // TODO how to not include the energy that was just added?
-                attachEnergyFrom(my.discard, self)
+              if (confirm("Rotating Claws - Discard an Energy? If you do, search your discard pile for an Energy card (excluding the one you discarded) and attach it to Pidgeot.")) {
+                def tar = self.cards.filterByType(ENERGY).select("Choose the Energy card to Discard.").discard()
+
+                attachEnergyFrom(my.discard.getExcludedList(tar), self)
               }
             }
           }
