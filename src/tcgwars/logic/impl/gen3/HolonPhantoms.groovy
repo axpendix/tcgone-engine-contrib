@@ -511,7 +511,6 @@ public enum HolonPhantoms implements LogicCardInfo {
           text "30 damage. If the Defending Pokémon is Knocked Out by this attack, remove all Special Conditions and 7 damage counters from Kabutops (all if there are less than 7)."
           energyCost L, C
           onAttack {
-            damage 30
             delayed {
               def pcs = defending
               after KNOCKOUT, pcs, {
@@ -520,6 +519,7 @@ public enum HolonPhantoms implements LogicCardInfo {
               }
               unregisterAfter 1
             }
+            damage 30
           }
         }
         move "Thunderous Blow", {
@@ -538,10 +538,10 @@ public enum HolonPhantoms implements LogicCardInfo {
           actionA {
             checkLastTurn()
             checkNoSPC()
-            assert opp.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) } : "No valid targets"
             assert self.active : "Kingdra δ is not active."
+            assert opp.all.any{ it.topPokemonCard.cardTypes.is(DELTA) } : "No valid targets"
             powerUsed()
-            directDamage 20, opp.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) }.select()
+            directDamage 20, opp.all.findAll{ it.topPokemonCard.cardTypes.is(DELTA) }.select()
           }
         }
         move "Extra Flame", {
@@ -643,7 +643,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost P, C
           onAttack {
             damage 30
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
         move "Vengeful Spikes", {
@@ -651,16 +651,10 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost P, C, C
           onAttack {
             damage 30
-            def bonusDamage = 30 * my.discard.findAll {
-              it.cardTypes.is(POKEMON) && (
-                it.name == "Omanyte" ||
-                it.name == "Omastar" ||
-                it.name == "Kabuto" ||
-                it.name == "Kabutops" ||
-                it.name == "Kabutops ex"
-              )
-            }.size()
+
+            def bonusDamage = 10 * my.discard.findAll{ it.cardTypes.is(POKEMON) && ["Omanyte", "Omastar", "Kabuto", "Kabutops", "Kabutops ex"].contains(it.name) }.size()
             def amount = Math.min(bonusDamage, 60)
+
             damage amount
           }
         }
