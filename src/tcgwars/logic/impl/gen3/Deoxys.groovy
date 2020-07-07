@@ -1803,8 +1803,21 @@ public enum Deoxys implements LogicCardInfo {
             onAttack {
               flip {
                 delayed{
+                  def flag = false
+                  before PROCESS_ATTACK_EFFECTS, {
+                    flag = true
+                  }
+                  before BETWEEN_TURNS, {
+                    flag = false
+                  }
+                  before USE_ABILITY, {
+                    flag = true
+                  }
+                  after POKEPOWER, {
+                    flag = false
+                  }
                   before PLAY_TRAINER, {
-                    if (bg.currentTurn == self.owner.opposite) {
+                    if (bg.currentTurn == self.owner.opposite && !flag) {
                       wcu "High Voltage prevents playing this card"
                       prevent()
                     }

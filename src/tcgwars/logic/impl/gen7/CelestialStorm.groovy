@@ -2894,8 +2894,15 @@ public enum CelestialStorm implements LogicCardInfo {
             }
             onAttack {
               delayed{
+                def flag = false
+                before PROCESS_ATTACK_EFFECTS, {
+                  flag = true
+                }
+                before BETWEEN_TURNS, {
+                  flag = false
+                }
                 before PLAY_TRAINER, {
-                  if (bg.currentTurn == self.owner.opposite) {
+                  if (bg.currentTurn == self.owner.opposite && !flag) {
                     wcu "Bawl prevents playing trainer cards"
                     prevent()
                   }

@@ -911,8 +911,15 @@ public enum CrimsonInvasion implements LogicCardInfo {
               gxPerform()
               damage 100
               delayed {
+                def flag = false
+                before PROCESS_ATTACK_EFFECTS, {
+                  flag = true
+                }
+                before BETWEEN_TURNS, {
+                  flag = false
+                }
                 before PLAY_TRAINER, {
-                  if(bg.currentTurn == self.owner.opposite)
+                  if(bg.currentTurn == self.owner.opposite && !flag)
                   {
                     wcu "Heavy Rock GX prevent you playing this card"
                     prevent()

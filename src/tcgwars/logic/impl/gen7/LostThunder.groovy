@@ -3507,9 +3507,16 @@ public enum LostThunder implements LogicCardInfo {
           bwAbility "Mysterious Buzz" , {
             text "As long as this Pokémon is on your Bench, whenever your opponent plays a Supporter card from their hand, prevent all effects of that card done to your [Y] Pokémon in play."
             delayedA {
+              def flag = false
+              before PROCESS_ATTACK_EFFECTS, {
+                flag = true
+              }
+              before BETWEEN_TURNS, {
+                flag = false
+              }
               def power=false
               before PLAY_TRAINER, {
-                if(self.benched && ef.supporter && bg.currentTurn==self.owner.opposite ){
+                if(self.benched && ef.supporter && bg.currentTurn==self.owner.opposite && !flag){
                   power=true
                 }
               }

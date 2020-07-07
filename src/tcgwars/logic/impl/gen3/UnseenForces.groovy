@@ -459,7 +459,7 @@ public enum UnseenForces implements LogicCardInfo {
           delayedA {
             before PLAY_TRAINER, {
               // TODO: Fix bodies like this one to cover Power Spray in the future.
-              //       "bg.currentTurn == self.owner.opposite" won't work for that.
+              //       "bg.currentTurn == self.owner.opposite" won't work for stopping that.
               if (self.owner.pbg.all.size() < self.owner.opposite.pbg.all.size() && !ef.cardToPlay.cardTypes.is(SUPPORTER) && bg.currentTurn == self.owner.opposite) {
                 wcu "Lonesome prevents playing this card"
                 prevent()

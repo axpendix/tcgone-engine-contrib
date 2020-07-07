@@ -1982,7 +1982,20 @@ public enum TeamRocketReturns implements LogicCardInfo {
               flip{
                 delayed{
                   before PLAY_TRAINER, {
-                    if (bg.currentTurn == self.owner.opposite) {
+                    def flag = false
+                    before PROCESS_ATTACK_EFFECTS, {
+                      flag = true
+                    }
+                    before BETWEEN_TURNS, {
+                      flag = false
+                    }
+                    before USE_ABILITY, {
+                      flag = true
+                    }
+                    after POKEPOWER, {
+                      flag = false
+                    }
+                    if (bg.currentTurn == self.owner.opposite && !flag) {
                       wcu "Psyduck's Headache prevents playing this card!"
                       prevent()
                     }

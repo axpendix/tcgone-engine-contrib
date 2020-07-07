@@ -1315,6 +1315,12 @@ class TcgStatics {
     bc "${_delegate.thisMove} - Supporters can't be played from ${opp.owner.getPlayerUsername(bg)}'s hand during their next turn"
     _delegate.delayed {
       def flag = false
+      before USE_ABILITY, {
+        flag = true
+      }
+      after POKEPOWER, {
+        flag = false
+      }
       before PROCESS_ATTACK_EFFECTS, {
         flag = true
       }
