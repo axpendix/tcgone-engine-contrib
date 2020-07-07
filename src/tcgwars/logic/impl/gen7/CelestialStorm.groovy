@@ -2472,7 +2472,7 @@ public enum CelestialStorm implements LogicCardInfo {
                   def pcs = defending
                   delayed {
                     before BETWEEN_TURNS, {
-                      if(bg.currentTurn == self.owner.opposite){
+                      if(bg.currentTurn == self.owner.opposite && all.contains(pcs)){
                         new Knockout(pcs).run(bg)
                       }
                     }
