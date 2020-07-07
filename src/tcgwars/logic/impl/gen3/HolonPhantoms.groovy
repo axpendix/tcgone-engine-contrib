@@ -822,43 +822,32 @@ public enum HolonPhantoms implements LogicCardInfo {
         resistance W, MINUS30
         pokeBody "Fellowship", {
           text "Bellossom can use the attacks of all Oddish, Gloom, Vileplume, Vileplume ex, or other Bellossom you have in play as its own. (You still need the necessary Energy to use each attack.)"
-          actionA {
-            assert self.active: "$self is not an Active Pokemon"
-            def fellowshipMoves = []
-            self.owner.pbg.bench.findAll {
-              it.topPokemonCard.name == "Oddish" ||
-              it.topPokemonCard.name == "Gloom" ||
-              it.topPokemonCard.name == "Vileplume" ||
-              it.topPokemonCard.name == "Vileplume ex" ||
-              it.topPokemonCard.name == "Bellossom"
-            }.each {
-              if (it != self) {
-                fellowshipMoves.addAll(it.topPokemonCard.moves)
-              }
-            }
-            assert !fellowshipMoves.isEmpty(): "There are no moves to copy"
-
-            def chosenMove = choose(fellowshipMoves+["Cancel"], fellowshipMoves.collect({it.name})+["Cancel"], "Choose a move to perform")
-
-            if (chosenMove && chosenMove != "Cancel") {
-              attack (chosenMove as Move)
-            }
-          }
+          getterA (GET_MOVE_LIST, self) {holder->
+						my.all.findAll{ ["Oddish", "Gloom", "Vileplume", "Vileplume ex", "Bellossom"].contains(it.topPokemonCard.name) }.each {
+							if(it!=self) {
+								holder.object.addAll(it.topPokemonCard.moves)
+							}
+						}
+					}
         }
         move "Aqua Flower", {
           text "40 damage. During your opponent's next turn, Bellossom has no Weakness."
           energyCost W, C
           onAttack {
             damage 40
-
-            delayed {
-              getter (GET_WEAKNESSES) { h->
-                if (h.effect.target == self) {
-                  def list = h.object as List<Weakness>
-                  list.clear()
+            afterDamage{
+              delayed {
+                getter (GET_WEAKNESSES) { h->
+                  if (h.effect.target == self) {
+                    def list = h.object as List<Weakness>
+                    list.clear()
+                  }
                 }
+                after SWITCH, self, {unregister()}
+                after EVOLVE, self, {unregister()}
+                after DEVOLVE, self, {unregister()}
+                unregisterAfter 2
               }
-              unregisterAfter 2
             }
           }
         }
@@ -881,7 +870,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             flip 1, {
               damage 20
             }, {
-              apply BURNED
+              applyAfterDamage BURNED
             }
           }
         }
@@ -903,7 +892,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost R, R, C
           onAttack {
             damage 40
-            flip { apply BURNED }
+            flip { applyAfterDamage BURNED }
           }
         }
       };
