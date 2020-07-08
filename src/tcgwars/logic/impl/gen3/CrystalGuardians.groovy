@@ -225,8 +225,8 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost P, C
           onAttack {
             damage 30
-            if (!defending.evolution) {
-              apply CONFUSED
+            if (defending.notEvolution) {
+              applyAfterDamage CONFUSED
             }
           }
         }
@@ -246,6 +246,9 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Enraged Linear Attack", {
           text "Choose 1 of your opponent's Pokémon. This attack does 10 damage for each damage counter on Blastoise to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost F, C
+          attackRequirement{
+            assert self.numberOfDamageCounters : "$self has no damage counters"
+          }
           onAttack {
             damage 10*self.numberOfDamageCounters, opp.all.select("Deal damage to?")
           }
