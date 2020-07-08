@@ -788,6 +788,14 @@ public enum CrystalGuardians implements LogicCardInfo {
       case IGGLYBUFF_21:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
+        pokeBody "Hover Lift", {
+          text "You pay [C] less to retreat your Jigglypuff, Wigglytuff, Wigglytuff ex, and Igglybuff."
+          getterA GET_RETREAT_COST ,{ h->
+            if (h.effect.target.owner == self.owner && ["Jigglypuff", "Wigglytuff", "Wigglytuff ex", "Igglybuff"].contains(h.effect.target.name)) {
+              h.object -= 1
+            }
+          }
+        }
         pokePower "Baby Evolution", {
           text "Once during your turn (before your attack), you may put Jigglypuff from your hand onto Igglybuff (this counts as evolving Igglybuff) and remove all damage counters from Igglybuff."
           actionA {
@@ -795,14 +803,6 @@ public enum CrystalGuardians implements LogicCardInfo {
             checkLastTurn()
             powerUsed()
             babyEvolution("Jigglypuff", self)
-          }
-        }
-        pokeBody "Hover Lift", {
-          text "You pay [C] less to retreat your Jigglypuff, Wigglytuff, Wigglytuff ex, and Igglybuff."
-          getterA GET_RETREAT_COST ,{ h->
-            if (h.effect.target.owner == self.owner && (h.effect.target.name == "Jigglypuff" || h.effect.target.name == "Wigglytuff" || h.effect.target.name == "Wigglytuff ex" || h.effect.target.name == "Igglybuff")) {
-              h.object = Math.max(0, h.object-1)
-            }
           }
         }
       };
@@ -814,7 +814,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost M, C
           onAttack {
             damage 30
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
         move "Prop-up Pinchers", {
