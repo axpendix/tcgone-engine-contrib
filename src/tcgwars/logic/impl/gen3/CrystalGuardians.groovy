@@ -641,9 +641,9 @@ public enum CrystalGuardians implements LogicCardInfo {
             checkNoSPC()
             checkLastTurn()
             assert self.active : "Cacturne is not an Active Pokemon"
-            assert opp.all.findAll { it.numberOfDamageCounters } : "Opponent has no damaged Pokemon."
+            assert opp.all.any{ it.numberOfDamageCounters } : "Opponent has no damaged Pokemon."
             powerUsed()
-            directDamage 10, opp.all.findAll { it.numberOfDamageCounters }.select("Which Pokemon to put 1 damage counter on?")
+            directDamage 10, opp.all.findAll{ it.numberOfDamageCounters }.select("Which Pokemon to put 1 damage counter on?")
           }
         }
         move "Triple Needle", {
@@ -651,9 +651,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost F
           onAttack {
             multiSelect(opp.all, 3).each {
-              targeted(it) {
-                damage 10, it
-              }
+              damage 10, it
             }
           }
         }
