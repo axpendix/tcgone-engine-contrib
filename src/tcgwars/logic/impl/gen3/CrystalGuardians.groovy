@@ -339,7 +339,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           text "Choose 1 of your opponent's Pokémon. This attack does 30 damage to that Pokémon. This attack's damage isn't affected by Weakness or Resistance."
           energyCost F, C
           onAttack {
-            damage 30, opp.all.select()
+            noWrDamage 30, opp.all.select()
           }
         }
         move "Double-edge", {
@@ -358,9 +358,9 @@ public enum CrystalGuardians implements LogicCardInfo {
           text "If your opponent has any Pokémon-ex in play, each of Ludicolo's attacks does 30 more damage to the Defending Pokémon."
           delayedA {
             after PROCESS_ATTACK_EFFECTS, {
-              bg.dm().each {
-                if (it.from.owner==self.owner && it.to.active && it.to.owner!=self.owner && it.dmg.value) {
-                  if (opp.all.findAll { it.EX }) {
+              if (opp.all.any{ it.EX }) {
+                bg.dm().each {
+                  if (it.from == self && it.to.active && it.to.owner != self.owner && it.dmg.value && it.notNoEffect) {
                     bc "Overzealous +30"
                     it.dmg += hp(30)
                   }
