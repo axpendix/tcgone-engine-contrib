@@ -2250,7 +2250,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Discard a card from your hand. If you can't discard a card from your hand, you can't play this card. Draw 3 cards. If you discarded a Pokémon that has δ on its card, draw 4 cards instead."
         onPlay {
-        my.hand.getExcludedList(thisCard).select("Choose a card to discard.").discard().each {
+          my.hand.getExcludedList(thisCard).select("Discard a card from your hand in order to play ${thisCard}.").discard().each {
             draw 3
             if(it.cardTypes.is(POKEMON) && it.cardTypes.is(DELTA)){
               draw 1
@@ -2258,7 +2258,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           }
         }
         playRequirement{
-          assert my.hand.getExcludedList(thisCard)
+          def hand = my.hand.getExcludedList(thisCard).size() >= 1
+          assert hand : "One other card in hand is required to play this card."
+          assert my.deck : "Deck is empty"
         }
       };
       case HOLON_FOSSIL_86:
