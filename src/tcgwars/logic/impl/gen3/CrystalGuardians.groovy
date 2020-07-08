@@ -299,7 +299,7 @@ public enum CrystalGuardians implements LogicCardInfo {
               def sel = tar.select(min:0, max:tar.size(), "The top 5 cards of your deck. Select which Energy cards you want to attach to 1 of your Pokémon. The Energy cards you don't select, alongside all non-Energy cards, will be discarded.", cardTypeFilter(ENERGY))
               if (sel) {
                 def pcs = my.all.select("Which Pokémon will you attach the selected energy to?")
-                sel.each{ attachEnergy(sel, it) }
+                sel.each{ attachEnergy(pcs, it) }
                 tar.getExcludedList(sel).discard()
               }
             }
