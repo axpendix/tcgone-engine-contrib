@@ -465,9 +465,10 @@ public enum CrystalGuardians implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            def trainer = my.deck.search(count:1, "Select an Trainer card",cardTypeFilter(ITEM))
+            def trainer = my.deck.search(count:1, "Select an Trainer card",cardTypeFilter(TRAINER))
             trainer.each {
               if (it.cardTypes.is(POKEMON_TOOL)) {
+                //TODO: Should use some PCS method for checking if tools can be attached, as to cover multi-tool Pokémon (Ancient Trait Gyarados, Genesect-GX, etc.)
                 if (my.all.findAll{!it.cards.filterByType(POKEMON_TOOL)} && confirm("Attach this tool to one of your pokémon?")) {
                   trainer.moveTo(my.all.findAll{!it.cards.filterByType(POKEMON_TOOL)}.select("Attach $it to which pokémon?").cards)
                 }
