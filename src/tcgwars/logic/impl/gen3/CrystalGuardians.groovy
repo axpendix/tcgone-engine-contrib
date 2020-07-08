@@ -861,7 +861,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           onAttack {
             damage 30
             if (opp.bench) {
-              damage 30, opp.all.bench()
+              damage 30, opp.bench.select()
             }
           }
         }
