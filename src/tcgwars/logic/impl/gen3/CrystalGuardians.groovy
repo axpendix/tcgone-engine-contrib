@@ -435,7 +435,9 @@ public enum CrystalGuardians implements LogicCardInfo {
           onAttack {
             damage 30
             afterDamage {
-              whirlwind()
+              if (!defending.slatedToKO && opp.bench) {
+                sw opp.active, opp.bench.oppSelect("Choose your new Active Pokémon.")
+              }
             }
           }
         }
