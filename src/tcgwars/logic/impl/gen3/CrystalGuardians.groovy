@@ -721,11 +721,13 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokePower "Delta Sign", {
           text "Once during your turn (before your attack), you may search your deck for a Pokémon that has δ on its card, show it to your opponent, and put it into your hand. Shuffle your deck afterward. You can't use more than 1 Delta Sign Poké-Power each turn. This power can't be used if Fearow is affected by a Special Condition."
           actionA {
-            assert my.deck : "Deck is empty"
-            checkNoSPC()
+            assert bg.em().retrieveObject("Delta_Sign") != bg.turnCount : "You can’t use more than 1 Delta Sign Poké-Power each turn"
             checkLastTurn()
+            checkNoSPC()
+            assert my.deck : "Deck is empty"
+            bg.em().storeObject("Delta_Sign",bg.turnCount)
             powerUsed()
-            deck.search("Search your deck for a δ Pokemon", {it.cardTypes.pokemon && it.cardTypes.is(DELTA) }).moveTo(my.hand)
+            deck.search("Search your deck for a δ Pokemon", {it.cardTypes.pokemon && it.cardTypes.is(DELTA) }).showToOpponent("Opponent used Delta Sign").moveTo(my.hand)
             shuffleDeck()
           }
         }
