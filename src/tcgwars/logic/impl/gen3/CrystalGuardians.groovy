@@ -555,8 +555,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokePower "Crush Chance", {
           text "Once during your turn, when you put Tauros from your hand onto your Bench, you may discard a Stadium card in play."
           onActivate {r->
-            if (r==PLAY_FROM_HAND && bg.stadiumInfoStruct && bg.em().retrieveObject("Crush_Chance")!=bg.turnCount && confirm('Use Crush Chance to discard the current Stadium Card?')) {
-              bg.em().storeObject("Crush_Chance", bg.turnCount)
+            if (r==PLAY_FROM_HAND && bg.stadiumInfoStruct && confirm('Use Crush Chance to discard the current Stadium Card?')) {
               powerUsed()
               discard bg.stadiumInfoStruct.stadiumCard
             }
