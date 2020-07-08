@@ -2416,7 +2416,9 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokePower "Splash Back", {
           text "Once during your turn (before your attack), if your opponent has 4 or more Benched Pokémon, you may choose 1 of them and return that Pokémon and all cards attached to it to his or her hand. This power can't be used if Crawdaunt ex is affected by a Special Condition."
           actionA {
+            checkLastTurn()
             assert opp.bench.size() >= 4 : "Opponent needs to have 4 or more Benched Pokémon"
+            powerUsed()
             def tar = opp.bench.select("Choose a pokemon to return to your opponent's hand.")
             tar.cards.moveTo(opp.hand)
             removePCS(tar)
@@ -2486,8 +2488,8 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokePower "Driving Howl", {
           text "Once during your turn (before your attack), you may choose 1 of the Defending Pokémon and switch it with 1 of your opponent's Benched Pokémon. Your opponent chooses the Benched Pokémon to switch. This power can't be used if Mightyena ex is affected by a Special Condition."
           actionA {
-            checkNoSPC()
             checkLastTurn()
+            checkNoSPC()
             assert opp.bench : "Opponent has no Benched"
             powerUsed()
             sw(opp.active, opp.bench.oppSelect("New Active Pokemon"))
@@ -2505,7 +2507,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost D, C, C
           onAttack {
             damage 50
-            if (opp.active.topPokemonCard.cardTypes.is(STAGE2)) {
+            if (opp.active.evolution && opp.active.topPokemonCard.cardTypes.is(STAGE2)) {
               damage 40
             }
           }
