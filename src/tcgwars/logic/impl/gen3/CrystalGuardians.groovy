@@ -612,10 +612,12 @@ public enum CrystalGuardians implements LogicCardInfo {
           text "As long as Blastoise's remaining HP is 40 or less, Blastoise does 40 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
           delayedA {
             after PROCESS_ATTACK_EFFECTS, {
-              bg.dm().each {
-                if (it.from == self && self.getRemainingHP().value <= 40 && it.dmg.value && it.notNoEffect) {
-                  bc "Water Pressure +40"
-                  it.dmg += hp(40)
+              if (ef.attacker == self && self.getRemainingHP().value <= 40) {
+                bg.dm().each {
+                  if (it.to.owner == self.owner.opposite && it.to.active && it.dmg.value && it.notNoEffect) {
+                    bc "Water Pressure +40"
+                    it.dmg += hp(40)
+                  }
                 }
               }
             }
