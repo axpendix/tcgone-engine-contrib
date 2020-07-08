@@ -1886,7 +1886,7 @@ public enum PowerKeepers implements LogicCardInfo {
       case CLAW_FOSSIL_84:
       return copy(LegendMaker.CLAW_FOSSIL_78, this);
       case MYSTERIOUS_FOSSIL_85:
-      return copy(FossilNG.MYSTERIOUS_FOSSIL, this);
+      return copy(LegendMaker.MYSTERIOUS_FOSSIL_79, this);
       case ROOT_FOSSIL_86:
       return copy(LegendMaker.ROOT_FOSSIL_80, this);
       case DARKNESS_ENERGY_87:
