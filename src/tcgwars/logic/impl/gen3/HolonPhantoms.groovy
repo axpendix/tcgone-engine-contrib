@@ -2551,14 +2551,12 @@ public enum HolonPhantoms implements LogicCardInfo {
           text "Search your discard pile for an Energy card and attach it to Mewtwo Star."
           energyCost C
           onAttack {
-            afterDamage {
-              attachEnergyFrom(my.discard, self)
-            }
+            attachEnergyFrom(my.discard, self)
           }
         }
         move "Psychic Star", {
           text "50+ damage. If the Defending Pokémon is an Evolved Pokémon, discard all Energy attached to Mewtwo Star and this attack does 50 damage plus 50 more damage."
-          energyCost P, R, L
+          energyCost R, L, P
           onAttack {
             damage 50
             if (defending.evolution) {
