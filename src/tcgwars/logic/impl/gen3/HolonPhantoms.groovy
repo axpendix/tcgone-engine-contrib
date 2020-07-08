@@ -2269,19 +2269,17 @@ public enum HolonPhantoms implements LogicCardInfo {
         onPlay {
           flip 1, {
             if(my.deck){
-              my.deck.search(min:0, max:1, "Search your deck for a card named Omanyte, Kabuto, Aerodactyl, Lileep, or Anorith", {it.name == "Omanyte" || it.name == "Kabuto" || it.name == "Aerodactyl" || it.name == "Aerodactyl ex" || it.name == "Lileep" || it.name == "Anorith"}).each {
+              my.deck.search(min:0, max:1, "Search your deck for a card named Omanyte, Kabuto, Aerodactyl, Aerodactyl ex, Lileep, or Anorith.", {["Omanyte", "Kabuto", "Aerodactyl", "Aerodactyl ex", "Lileep", "Anorith"].contains(it.name)}).each {
                 my.deck.remove(it)
                 benchPCS(it)
-                //TODO Mark as basic
               }
               shuffleDeck()
             }
           },{
-            def eligible = my.hand.findAll { it.name == "Omanyte" || it.name == "Kabuto" || it.name == "Aerodactyl" || it.name == "Aerodactyl ex" || it.name == "Lileep" || it.name == "Anorith"}
+            def eligible = my.hand.findAll { ["Omanyte", "Kabuto", "Aerodactyl", "Aerodactyl ex", "Lileep", "Anorith"].contains(it.name) }
             if(eligible){
               eligible.select("Select which Pokemon to bench").each {
                 hand.remove(it)
-                // TODO How to mark it as a Basic Pokemon?
                 benchPCS(it)
               }
             }
@@ -2289,7 +2287,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         }
         playRequirement{
           assert my.bench.notFull : "Your bench is full"
-          assert my.deck || my.hand.getExcludedList(thisCard)
+          assert my.deck || my.hand.getExcludedList(thisCard) : "You cannot play this card if its your only card in hand, and you have no more cards in deck"
         }
       };
       case HOLON_LAKE_87:
