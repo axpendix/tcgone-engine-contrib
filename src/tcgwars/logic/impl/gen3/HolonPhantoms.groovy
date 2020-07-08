@@ -2574,7 +2574,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 10
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
         move "Spring Back", {
@@ -2606,6 +2606,9 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Super Psywave", {
           text "Choose 1 of your opponent's Pokémon. Count the amount of Energy attached to that Pokémon. Put that many damage counters on the Pokémon."
           energyCost P, C
+          attackRequirement{
+            assertOppAll(info: "with Energy attached to them", {it.cards.energyCount(C)})
+          }
           onAttack {
             def target = opp.all.select()
             def count = target.cards.energyCount(C)
