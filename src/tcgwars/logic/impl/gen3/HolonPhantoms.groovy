@@ -1789,7 +1789,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           text "20x damage. Flip 2 coins. This attack does 20 damage times the number of heads."
           energyCost P, C
           onAttack {
-            damage 20
+            flip 2, {damage 20}
           }
         }
       };
@@ -1806,6 +1806,9 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Flail", {
           text "10x damage. Does 10 damage times the number of damage counters on Barboach."
           energyCost F
+          attackRequirement{
+            assert self.numberOfDamageCounters : "$self has no damage counters on it"
+          }
           onAttack {
             damage 10*self.numberOfDamageCounters
           }
@@ -1856,6 +1859,9 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Flail", {
           text "10x damage. Does 10 damage times the number of damage counters on Corphish."
           energyCost C
+          attackRequirement{
+            assert self.numberOfDamageCounters : "$self has no damage counters on it"
+          }
           onAttack {
             damage 10*self.numberOfDamageCounters
           }
@@ -1877,7 +1883,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 10
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -1894,6 +1900,9 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Pebble Throw", {
           text "Choose 1 of your opponent's Benched Pokémon. This attack does 20 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost F, C
+          attackRequirement{
+            assertOppBench()
+          }
           onAttack {
             if (opp.bench) {
               damage 20, opp.bench.select()
@@ -2092,10 +2101,11 @@ public enum HolonPhantoms implements LogicCardInfo {
           text "Search your discard pile for an Energy card and attach it to 1 of your Pokémon that has δ on its card."
           energyCost C
           attackRequirement {
+            assertMyAll(hasVariants: DELTA)
             assert my.discard.filterByType(ENERGY) : "Discard pile does not have any Energy cards"
           }
           onAttack {
-            attachEnergyFrom(my.discard, my.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) }.select("Attach an Energy to?"))
+            attachEnergyFrom(my.discard, my.all.findAll{ it.topPokemonCard.cardTypes.is(DELTA) }.select("Attach an Energy to?"))
           }
         }
       };
@@ -2194,7 +2204,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 10
-            apply ASLEEP
+            applyAfterDamage ASLEEP
           }
         }
       };
