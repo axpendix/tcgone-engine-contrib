@@ -753,10 +753,16 @@ public enum HolonPhantoms implements LogicCardInfo {
           actionA {
             checkNoSPC()
             checkLastTurn()
+            //TODO: Check for it being single-counter poison, multiple should be overridable.
+            if (opp.active.isSPC(POISONED)){
+              def extraPoisonCount = bg.em().retrieveObject("extra_poison_counter_"+opp.active.hashCode()) ?: 0
+              bc "${extraPoisonCount}"
+            }
+            assert opp.active.isSPC(POISONED) : "Your opponent's Active Pokémon is already Poisoned"
+            powerUsed()
             flip {
               apply POISONED, opp.active, SRC_ABILITY
             }
-            powerUsed()
           }
         }
         move "Poltergeist", {
