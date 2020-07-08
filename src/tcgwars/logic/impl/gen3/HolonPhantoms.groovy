@@ -1423,6 +1423,9 @@ public enum HolonPhantoms implements LogicCardInfo {
         move "Delta Draw", {
           text "Count the number of Pokémon you have in play that has δ on its card. Draw up to that many cards."
           energyCost C
+          attackRequirement{
+            assertMyAll(hasVariants: DELTA)
+          }
           onAttack {
             def maxCards = my.all.count{ it.topPokemonCard.cardTypes.is(DELTA) }
             draw choose(1..maxCards, "Draw how many cards?")
