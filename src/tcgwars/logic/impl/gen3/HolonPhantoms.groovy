@@ -2522,9 +2522,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           onAttack {
             damage 20
             afterDamage {
-              flipUntilTails {
-                attachEnergyFrom(my.discard, self)
-              }
+              def n = 0
+              flipUntilTails { n++ }
+              n.times{ attachEnergyFrom(my.discard, self) }
             }
           }
         }
@@ -2532,10 +2532,11 @@ public enum HolonPhantoms implements LogicCardInfo {
           text "50+ damage. Discard cards from the top of your deck until you have 1 card left. This attack does 50 damage plus 20 more damage for each Energy card you discarded in this way."
           energyCost R, R, R, R
           onAttack {
+            damage 50
+
             def list = my.deck.subList(0,my.deck.size() - 1)
             def count = list.filterByType(ENERGY).size()
 
-            damage 50
             damage 20*count
             afterDamage {
               list.discard()
