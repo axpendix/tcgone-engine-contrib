@@ -825,12 +825,12 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokeBody "Fellowship", {
           text "Bellossom can use the attacks of all Oddish, Gloom, Vileplume, Vileplume ex, or other Bellossom you have in play as its own. (You still need the necessary Energy to use each attack.)"
           getterA (GET_MOVE_LIST, self) {holder->
-						my.all.findAll{ ["Oddish", "Gloom", "Vileplume", "Vileplume ex", "Bellossom"].contains(it.topPokemonCard.name) }.each {
-							if(it!=self) {
-								holder.object.addAll(it.topPokemonCard.moves)
-							}
-						}
-					}
+            my.all.findAll{ ["Oddish", "Gloom", "Vileplume", "Vileplume ex", "Bellossom"].contains(it.topPokemonCard.name) }.each {
+              if(it!=self) {
+                holder.object.addAll(it.topPokemonCard.moves)
+              }
+            }
+          }
         }
         move "Aqua Flower", {
           text "40 damage. During your opponent's next turn, Bellossom has no Weakness."
@@ -2250,16 +2250,13 @@ public enum HolonPhantoms implements LogicCardInfo {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Discard a card from your hand. If you can't discard a card from your hand, you can't play this card. Draw 3 cards. If you discarded a Pokémon that has δ on its card, draw 4 cards instead."
         onPlay {
-          my.hand.getExcludedList(thisCard).select("Discard a card from your hand in order to play ${thisCard}.").discard().each {
-            draw 3
-            if(it.cardTypes.is(POKEMON) && it.cardTypes.is(DELTA)){
-              draw 1
-            }
-          }
+          def toDiscard = my.hand.getExcludedList(thisCard).select("Discard a card from your hand in order to play ${thisCard}.").discard().first()
+          draw 3
+          if(toDiscard.cardTypes.is(POKEMON) && toDiscard.cardTypes.is(DELTA))
+            draw 1
         }
         playRequirement{
-          def hand = my.hand.getExcludedList(thisCard).size() >= 1
-          assert hand : "One other card in hand is required to play this card."
+          assert my.hand.getExcludedList(thisCard) : "One other card in hand is required to play this card."
           assert my.deck : "Deck is empty"
         }
       };
@@ -2417,6 +2414,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           text "Once during your turn (before your attack), if your opponent has 4 or more Benched Pokémon, you may choose 1 of them and return that Pokémon and all cards attached to it to his or her hand. This power can't be used if Crawdaunt ex is affected by a Special Condition."
           actionA {
             checkLastTurn()
+            checkNoSPC()
             assert opp.bench.size() >= 4 : "Opponent needs to have 4 or more Benched Pokémon"
             powerUsed()
             def tar = opp.bench.select("Choose a pokemon to return to your opponent's hand.")
@@ -2524,7 +2522,9 @@ public enum HolonPhantoms implements LogicCardInfo {
             afterDamage {
               def n = 0
               flipUntilTails { n++ }
-              n.times{ attachEnergyFrom(my.discard, self) }
+              n = Math.min(n, my.discard.filterByType(BASIC_ENERGY).size())
+
+              if (n) attachEnergyFrom(count: n, my.discard, self)
             }
           }
         }
