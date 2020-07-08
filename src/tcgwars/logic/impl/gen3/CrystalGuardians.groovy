@@ -447,7 +447,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           onAttack {
             damage 50
             if (self.cards.hasType(POKEMON_TOOL)) {
-              opp.bench.each {
+              opp.bench.findAll{it.EX}.each {
                 damage 20, it
               }
             }
