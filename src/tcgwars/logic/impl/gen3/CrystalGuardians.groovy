@@ -686,11 +686,11 @@ public enum CrystalGuardians implements LogicCardInfo {
         weakness D
         resistance F, MINUS30
         pokeBody "Cursed Glare", {
-          text "As long as Dusclops is your Active Pokémon, your opponent can't attach any Special Energy cards (except for Darkness and [M] Energy cards) from his or her hand to his or her Active Pokémon."
+          text "As long as Dusclops is your Active Pokémon, your opponent can't attach any Special Energy cards (except for [D] and [M] Energy cards) from his or her hand to his or her Active Pokémon."
           delayedA {
             before PLAY_ENERGY, {
               if (self.active && ef.cardToPlay.cardTypes.is(SPECIAL_ENERGY) && bg.currentTurn == self.owner.opposite) {
-                if (!ef.cardToPlay.name.contains("Metal") || !ef.cardToPlay.name.contains("Darkness")) {
+                if ( !( ["Metal Energy", "Darkness Energy"].contains(ef.cardToPlay.name) ) ) {
                   wcu "Cursed Glare prevents playing this card"
                   prevent()
                 }
