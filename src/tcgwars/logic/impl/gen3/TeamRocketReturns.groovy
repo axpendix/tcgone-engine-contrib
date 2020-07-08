@@ -2697,9 +2697,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 10
-              if(my.bench){
-                if(confirm("Switch Rocket’s Scyther ex with 1 of your Benched Pokémon?")) sw self, my.bench.select()
-              }
+              switchYourActive(may: true)
             }
           }
           move "Slashing Strike", {

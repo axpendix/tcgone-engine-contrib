@@ -115,9 +115,7 @@ public enum PopSeries3 implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 30
-            afterDamage{
-              switchYourActive(may: true)
-            }
+            switchYourActive(may: true)
           }
         }
         move "Rocket Tackle", {

@@ -1460,13 +1460,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost W, C, C
             onAttack {
               damage 40
-              afterDamage{
-                if(my.bench){
-                  if(confirm("switch Wartortle with 1 of your Benched Pokémon?")){
-                    sw self, my.bench.select()
-                  }
-                }
-              }
+              switchYourActive(may: true)
             }
           }
 
@@ -2125,13 +2119,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost W, C
             onAttack {
               damage 20
-              afterDamage{
-                if(my.bench){
-                  if(confirm("switch Squirtle with 1 of your Benched Pokémon?")){
-                    sw self, my.bench.select("New active")
-                  }
-                }
-              }
+              switchYourActive(may: true)
             }
           }
 

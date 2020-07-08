@@ -820,9 +820,7 @@ public enum Emerald implements LogicCardInfo {
             energyCost C, C, C
             onAttack {
               damage 40
-              afterDamage{
-                switchYourActive(may: true)
-              }
+              switchYourActive(may: true)
             }
           }
 
@@ -884,9 +882,7 @@ public enum Emerald implements LogicCardInfo {
             energyCost C, C, C
             onAttack {
               damage 40
-              afterDamage{
-                switchYourActive(may: true)
-              }
+              switchYourActive(may: true)
             }
           }
 
