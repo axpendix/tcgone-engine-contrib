@@ -880,7 +880,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 20
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
         move "Sky Uppercut", {
@@ -899,11 +899,11 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokePower "Delta Transport", {
           text "Once during your turn (before your attack), if Pelipper is on your Bench, you may switch 1 of your Active Pokémon that has δ on its card with 1 of your Benched Pokémon."
           actionA {
-            assert my.active.topPokemonCard.cardTypes.is(DELTA) : "Active is not Delta Pokemon"
             checkLastTurn()
-            assert self.benched : "Pelipper not on Bench"
+            assert self.benched : "Pelipper is not on your Bench"
+            assert my.active.topPokemonCard.cardTypes.is(DELTA) : "Active is not a Delta Pokemon"
             powerUsed()
-            sw my.active, my.bench.select("Select a new active Pokemon.")
+            sw my.active, my.bench.select("Select a new active Pokemon."), SRC_ABILITY
           }
         }
         move "Supersonic", {
@@ -911,7 +911,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost L, C
           onAttack {
             damage 20
-            apply CONFUSED
+            applyAfterDamage CONFUSED
           }
         }
         move "Wing Attack", {
@@ -928,9 +928,9 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokePower "Echo Draw", {
           text "Once during your turn (before your attack), you may draw a card. This power can't be used if Swampert is affected by a Special Condition."
           actionA {
-            assert my.deck : "Deck is empty"
-            checkNoSPC()
             checkLastTurn()
+            checkNoSPC()
+            assert my.deck : "Deck is empty"
             powerUsed()
             draw 1
           }
