@@ -2716,9 +2716,8 @@ public enum DeltaSpecies implements LogicCardInfo {
       return supporter (this) {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Discard a card from your hand. If you can't discard a card from your hand, you can't play this card. Search your discard pile for 3 basic Energy cards and any combination of 3 Basic Pokémon or Evolution cards, show them to your opponent, and put them on top of your deck. Shuffle your deck afterward."
-        def toDiscard = null
         onPlay {
-          if (!toDiscard) toDiscard = my.hand.getExcludedList(thisCard).select(count:1, "Discard a card from your hand in order to play ${thisCard}.")
+          def toDiscard = my.hand.getExcludedList(thisCard).select(count:1, "Discard a card from your hand in order to play ${thisCard}.")
           toDiscard.discard()
 
           if (my.discard.filterByType(BASIC_ENERGY)) {
@@ -2732,9 +2731,9 @@ public enum DeltaSpecies implements LogicCardInfo {
           shuffleDeck()
         }
         playRequirement{
-          assert my.hand.getExcludedList(thisCard) : "One other card in hand is required to play this card."
-          toDiscard = my.hand.getExcludedList(thisCard).select(count:1, "Discard a card from your hand in order to play ${thisCard}.")
-          assert toDiscard.cardTypes.is(BASIC_ENERGY) || toDiscard.cardTypes.is(POKEMON) || my.discard.filterByType(BASIC_ENERGY) || my.discard.filterByType(POKEMON) : "No Basic Energy cards or Pokemon in discard pile (including the card you want to discard as this card's cost)"
+          def hand = my.hand.getExcludedList(thisCard).size() >= 1
+          assert hand : "One other card in hand is required to play this card."
+          assert my.discard.filterByType(BASIC_ENERGY) || my.discard.filterByType(POKEMON) : "No Basic Energy cards or Pokemon in discard pile."
         }
       };
       case HOLON_LASS_92:
