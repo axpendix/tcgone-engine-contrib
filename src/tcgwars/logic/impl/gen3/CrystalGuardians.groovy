@@ -295,17 +295,12 @@ public enum CrystalGuardians implements LogicCardInfo {
           onActivate {r->
             if (r==PLAY_FROM_HAND && my.deck && confirm("Use Peal of Thunder?")) {
               powerUsed()
-              my.deck.subList(0,5).showToMe("Top 5 cards of your deck.")
-              //TODO: This should allow to choose which energies to attach. You could choose not to attach any and just discard all 5 cards.
-              if (my.deck.subList(0,5).filterByType(ENERGY)) {
-                def tar = my.all.select("Attach Energies to?")
-                my.deck.subList(0,5).filterByType(ENERGY).each {
-                  if (it.cardTypes.is(ENERGY)) {
-                    attachEnergy(self,it)
-                  } else {
-                    discard it
-                  }
-                }
+              def tar = my.deck.subList(0,5)
+              def sel = tar.select(min:0, max:tar.size(), "The top 5 cards of your deck. Select which Energy cards you want to attach to 1 of your Pokémon. The Energy cards you don't select, alongside all non-Energy cards, will be discarded.", cardTypeFilter(ENERGY))
+              if (sel) {
+                def pcs = my.all.select("Which Pokémon will you attach the selected energy to?")
+                sel.each{ attachEnergy(sel, it) }
+                tar.getExcludedList(sel).discard()
               }
             }
           }
@@ -315,7 +310,9 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost L, M, M, C
           onAttack {
             damage 120
-            discardAllSelfEnergy(M)
+            afterDamage{
+              discardAllSelfEnergy(M)
+            }
           }
         }
       };
