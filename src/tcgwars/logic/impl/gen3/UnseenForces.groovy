@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen3;
 
+import tcgwars.logic.impl.gen2.Expedition;
 import tcgwars.logic.impl.gen2.Aquapolis;
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen3.Deoxys;
@@ -2216,7 +2217,7 @@ public enum UnseenForces implements LogicCardInfo {
       case ENERGY_RECYCLE_SYSTEM_81:
       return copy(Dragon.ENERGY_RECYCLE_SYSTEM_84, this);
       case ENERGY_REMOVAL_2_82:
-      return copy(FireRedLeafGreen.ENERGY_REMOVAL_2_89, this);
+      return copy(Expedition.ENERGY_REMOVAL_2_140, this);
       case ENERGY_ROOT_83:
       return pokemonTool (this) {
         text "Attach Energy Root to 1 of your Pokémon (excluding Pokémon-ex and Pokémon that has Dark or an owner in its name) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Energy Root is attached to is Pokémon-ex or has Dark or an owner in its name, discard Energy Root.\nAs long as Energy Root is attached to a Pokémon, that Pokémon gets +20 HP and can't use any Poké-Powers or Poké-Bodies."

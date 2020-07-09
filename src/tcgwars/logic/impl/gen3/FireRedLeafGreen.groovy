@@ -1,5 +1,7 @@
 package tcgwars.logic.impl.gen3;
 
+import tcgwars.logic.impl.gen2.Expedition;
+
 import tcgwars.logic.effect.gm.Attack
 
 import static tcgwars.logic.card.HP.*;
@@ -2220,16 +2222,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           }
         };
       case ENERGY_REMOVAL_2_89:
-        return basicTrainer (this) {
-          text "Flip a coin. If heads, choose 1 Energy card attached to 1 of your opponent’s Pokémon and discard it."
-          onPlay {
-            flip {
-              discardOpponentEnergy(Target.OPP_ALL)
-            }
-          }
-          playRequirement{
-          }
-        };
+        return copy(Expedition.ENERGY_REMOVAL_2_140, this);
       case ENERGY_SWITCH_90:
         return basicTrainer (this) {
           text "Move a basic Energy card attached to 1 of your Pokémon to another of your Pokémon."

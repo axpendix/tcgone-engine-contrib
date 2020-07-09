@@ -1,6 +1,7 @@
 package tcgwars.logic.impl.gen3;
 
 import tcgwars.logic.impl.gen1.FossilNG;
+import tcgwars.logic.impl.gen2.Expedition;
 import tcgwars.logic.impl.gen2.Aquapolis;
 import tcgwars.logic.impl.gen3.Deoxys;
 import tcgwars.logic.impl.gen3.Dragon;
@@ -1804,7 +1805,7 @@ public enum PowerKeepers implements LogicCardInfo {
       case ENERGY_RECYCLE_SYSTEM_73:
       return copy(Dragon.ENERGY_RECYCLE_SYSTEM_84, this);
       case ENERGY_REMOVAL_2_74:
-      return copy(FireRedLeafGreen.ENERGY_REMOVAL_2_89, this);
+      return copy(Expedition.ENERGY_REMOVAL_2_140, this);
       case ENERGY_SWITCH_75:
       return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this);
       case GLACIA_S_STADIUM_76:
