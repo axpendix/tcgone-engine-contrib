@@ -3004,6 +3004,12 @@ public enum DiamondPearl implements LogicCardInfo {
           weakness L, PLUS30
           globalAbility {Card thisCard->
             delayed {
+              before EVOLVE, {
+                if ( (ef.evolutionCard as Card) == thisCard && ef.pokemonToBeEvolved.name == "Piplup" ) {
+                  wcu "You cannot evolve Piplup into Empoleon LV.X"
+                  prevent()
+                }
+              }
               before PLAY_CARD, {
                 if(ef.cardToPlay == thisCard){
                   def currentActive = thisCard.player.pbg.active
