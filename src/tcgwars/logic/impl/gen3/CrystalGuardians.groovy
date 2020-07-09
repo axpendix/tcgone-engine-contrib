@@ -2154,14 +2154,14 @@ public enum CrystalGuardians implements LogicCardInfo {
           text "As long as Groudon ex has 1 Energy or less attached to it, damage done to any of your Groudon ex in play by attacks is reduced by 20 (after applying Weakness and Resistance). You can't use more than 1 Hard Rock Poké-Body each turn."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
-              bg.dm().each {
-                if (it.to.name == "Groudon ex" && it.dmg.value && it.notNoEffect && bg.em().retrieveObject("Hard Rock") != bg.turnCount) {
-                  if (self.cards.energyCount(C) < 2) {
-                    bg.em().storeObject("Hard Rock", bg.turnCount)
+              if(self.cards.energyCount(C) < 2 && bg.em().retrieveObject("Hard_Rock" + self.owner) != bg.turnCount) {
+                bg.dm().each {
+                  if(it.to.owner == self.owner && it.to.name == "Groudon ex" && it.dmg.value && it.notNoEffect){
                     bc "Hard Rock -20"
-                    it.dmg -= hp(20)
+                    it.dmg-=hp(20)
                   }
                 }
+                bg.em().storeObject("Hard_Rock" + self.owner, bg.turnCount)
               }
             }
           }
