@@ -2067,8 +2067,9 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokePower "Constrain", {
           text "Once during your turn (before your attack), you may use this power. Each player discards cards until that player has 6 cards in his or her hand. (You discard first.) This power can't be used if Delcatty ex is affected by a Special Condition."
           actionA {
-            checkNoSPC()
             checkLastTurn()
+            checkNoSPC()
+            assert [my.hand, opp.hand].any{it.size() > 6} : "Neither player has more than 6 cards in their hand"
             powerUsed()
 
             def amountToDiscard = Math.max(my.hand.size() - 6, 0)
@@ -2081,6 +2082,9 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Upstream", {
           text "10x damage. Search your discard pile for all Energy cards. This attack does 10 damage times the number of Energy cards you find there. Show them to your opponent, and put them on top of your deck. Shuffle your deck afterward."
           energyCost C
+          attackRequirement{
+            assert my.discard.filterByType(ENERGY) : "You have no Energy cards in your discard pile"
+          }
           onAttack {
             def energies = my.discard.filterByType(ENERGY)
             damage 10*energies.size()
