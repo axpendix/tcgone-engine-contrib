@@ -311,7 +311,7 @@ public enum PopSeries2 implements LogicCardInfo {
         def eff
         onPlay {
           eff = delayed {
-            def card
+            def card = null
             before ATTACH_ENERGY, {
               if (my.hand.contains(ef.card) && bg.em().retrieveObject("Pokemon_Park_" + thisCard.hashCode()) != bg.turnCount) {
                 card = ef.card
@@ -321,6 +321,7 @@ public enum PopSeries2 implements LogicCardInfo {
               if (ef.card == card && bg.em().storeObject("Pokemon_Park_" + thisCard.hashCode(), bg.turnCount)) {
                 heal 10, ef.resolvedTarget
               }
+              card = null
             }
           }
         }
