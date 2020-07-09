@@ -1,5 +1,7 @@
 package tcgwars.logic.impl.gen3;
 
+import tcgwars.logic.impl.gen3.FireRedLeafGreen;
+
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
@@ -1878,7 +1880,7 @@ public enum Emerald implements LogicCardInfo {
       case METAL_ENERGY_88:
         return copy (RubySapphire.METAL_ENERGY_94, this);
       case MULTI_ENERGY_89:
-        return copy (Sandstorm.MULTI_ENERGY_93, this);
+        return copy (FireRedLeafGreen.MULTI_ENERGY_103, this);
       case ALTARIA_EX_90:
         return evolution (this, from:"Swablu", hp:HP100, type:COLORLESS, retreatCost:1) {
           pokeBody "Mist", {

@@ -1,5 +1,7 @@
 package tcgwars.logic.impl.gen4;
 
+import tcgwars.logic.impl.gen3.FireRedLeafGreen;
+
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
@@ -3406,7 +3408,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
           }
         };
       case MULTI_ENERGY_118:
-        return copy (Sandstorm.MULTI_ENERGY_93, this);
+        return copy(FireRedLeafGreen.MULTI_ENERGY_103, this);
       case DARKNESS_ENERGY_119:
         //TODO: This version of "Darkness Energy (Special Energy)" shouldn't work on "Dark ____" cards, only on [D] Type Pokémon.
         return specialEnergy (this, [[D]]) {
