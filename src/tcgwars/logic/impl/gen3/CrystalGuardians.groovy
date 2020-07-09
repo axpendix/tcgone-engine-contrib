@@ -2241,23 +2241,28 @@ public enum CrystalGuardians implements LogicCardInfo {
           text "After your opponent's Pokémon uses a Poké-Power, put 2 damage counters on that Pokémon."
           delayedA {
             def pcs = null
+            def pcsTPC = null
             before USE_ABILITY, {
               if ((ef.getResolvedTarget(bg, e) as PokemonCardSet).owner == self.owner.opposite && ef.ability instanceof PokePower){
                 pcs = ef.getResolvedTarget(bg, e)
+                pcsTPC = pcs.topPokemonCard
               }
             }
+            //TODO: Maybe update this so it actually stop working immediately after Imprison-like powers block it? Is there any other power that can block it?
             after POKEPOWER, {
-              if (pcs) {
+              if (pcs && pcsTPC == pcs.topPokemonCard && pcsTPC.name != "Gardevoir ex") {
                 bc "Dark Eyes activates"
                 directDamage(20, pcs, Source.SRC_ABILITY)
                 pcs = null
+                pcsTPC = null
               }
             }
             after ACTIVATE_ABILITY, {
-              if (pcs) {
+              if (pcs && pcsTPC == pcs.topPokemonCard) {
                 bc "Dark Eyes activates"
                 directDamage(20, pcs, Source.SRC_ABILITY)
                 pcs = null
+                pcsTPC = null
               }
             }
           }
