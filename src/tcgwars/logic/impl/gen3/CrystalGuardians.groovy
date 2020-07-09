@@ -940,9 +940,11 @@ public enum CrystalGuardians implements LogicCardInfo {
         weakness R
         pokeBody "Chlorophyll", {
           text "All Energy cards that provide only [C] Energy attached to your [G] Pokémon provide [G] Energy instead."
+          //TODO REPLACE EACH [C] for [G]
           getterA GET_ENERGY_TYPES, { holder ->
-            if(holder.effect.target.owner == self.owner
-              && holder.effect.card.containsTypePlain(C)) {
+            def pcs = holder.effect.target
+            if(pcs.owner == self.owner && pcs.types.contains(G)) {
+              bc "${holder.object}"
               holder.object = [[G] as Set]
             }
           }
