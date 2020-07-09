@@ -992,7 +992,9 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost R, R, C
           onAttack {
             damage 60
-            discardSelfEnergy R
+            afterDamage{
+              discardSelfEnergy R
+            }
           }
         }
       };
@@ -2171,7 +2173,9 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost F, F, C
           onAttack {
             damage 100
-            discardSelfEnergy C,C
+            afterDamage{
+              discardSelfEnergy C,C
+            }
           }
         }
       };
@@ -2241,8 +2245,10 @@ public enum CrystalGuardians implements LogicCardInfo {
           text "Discard 2 Energy attached to Kyogre ex. Choose 1 of your opponent's Pokémon. This attack does 70 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W, W, C
           onAttack {
-            discardSelfEnergy C,C
             damage 70, opp.all.select("Deal 70 damage to which Pokemon?")
+            afterDamage{
+              discardSelfEnergy C,C
+            }
           }
         }
       };
