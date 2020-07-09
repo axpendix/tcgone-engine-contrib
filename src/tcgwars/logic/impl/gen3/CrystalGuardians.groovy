@@ -1980,6 +1980,7 @@ public enum CrystalGuardians implements LogicCardInfo {
       case AGGRON_EX_89:
       return evolution (this, from:"Lairon", hp:HP150, type:M, retreatCost:4) {
         weakness R
+        weakness F
         resistance G, MINUS30
         pokeBody "Intimidating Armor", {
           text "As long as Aggron ex is your Active Pokémon, your opponent's Basic Pokémon can't attack or use any Poké-Powers or Poké-Bodies."
@@ -1987,14 +1988,14 @@ public enum CrystalGuardians implements LogicCardInfo {
           onActivate {
             eff1 = delayed{
               before CHECK_ATTACK_REQUIREMENTS, {
-                if(self.active && !ef.attacker.evolution) {
+                if(self.active && ef.attacker.notEvolution) {
                   wcu "Intimidating Armor prevents attack"
                   prevent()
                 }
               }
             }
             eff2 = getter IS_ABILITY_BLOCKED, { Holder h->
-              if (self.active && !h.effect.target.evolution && h.effect.target.owner == self.owner.opposite && (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody)) {
+              if (self.active && h.effect.target.notEvolution && h.effect.target.owner == self.owner.opposite && (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody)) {
                 h.object=true
               }
             }
@@ -2018,9 +2019,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C, C, C
           onAttack {
             multiSelect(opp.all, 2).each {
-              targeted(it) {
-                damage 30, it
-              }
+              damage 30, it
             }
           }
         }
