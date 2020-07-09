@@ -1719,7 +1719,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost P
           onAttack {
             damage 10
-            flip { applyAfterDamage PARALYZED }
+            flip { applyAfterDamage CONFUSED }
           }
         }
       };
