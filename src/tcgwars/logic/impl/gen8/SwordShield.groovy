@@ -739,11 +739,13 @@ public enum SwordShield implements LogicCardInfo {
           energyCost R, R, C
           onAttack {
             damage 90
-            def cards = my.deck.subList(0, 1)
-            if (cards.filterByEnergyType(R)) {
-              damage 90
+            if (my.deck) {
+              def cards = my.deck.subList(0, 1)
+              if (cards.filterByEnergyType(R)) {
+                damage 90
+              }
+              cards.discard()
             }
-            cards.discard()
           }
         }
         move "Steam Crush", {
