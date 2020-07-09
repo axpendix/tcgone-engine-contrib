@@ -892,6 +892,7 @@ public enum DragonFrontiers implements LogicCardInfo {
                 if(it.specialConditions){
                   clearSpecialCondition(it,SRC_ABILITY)
                 }
+                new CheckAbilities().run(bg)
               }
             }
           }
@@ -2056,6 +2057,7 @@ public enum DragonFrontiers implements LogicCardInfo {
               Imprison.add(tar)
               bc "$tar received an Imprison marker"
               bg.em().storeObject("Imprison",Imprison)
+              new CheckAbilities().run(bg)
             }
           }
         }
