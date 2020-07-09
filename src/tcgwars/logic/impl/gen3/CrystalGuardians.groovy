@@ -2248,7 +2248,7 @@ public enum CrystalGuardians implements LogicCardInfo {
                 pcsTPC = pcs.topPokemonCard
               }
             }
-            //TODO: Maybe update this so it actually stop working immediately after Imprison-like powers block it? Is there any other power that can block it?
+            //TODO: Maybe update this so it actually stop working immediately after Imprison-like powers block it. Is there any other power that can block it?
             after POKEPOWER, {
               if (pcs && pcsTPC == pcs.topPokemonCard && pcsTPC.name != "Gardevoir ex") {
                 bc "Dark Eyes activates"
