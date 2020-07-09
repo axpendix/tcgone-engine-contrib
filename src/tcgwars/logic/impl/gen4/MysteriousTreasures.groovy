@@ -270,6 +270,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 ) {
                   keyStore("Power_Cancel", self, bg.turnCount)
                   bc "$self activates Power Cancel to block ${ability.name}!"
+                  powerUsed()
                   self.owner.pbg.hand.select(count: 2, "Discard 2 hand from your hand", {true}, self.owner).discard()
                   prevent()
                 }

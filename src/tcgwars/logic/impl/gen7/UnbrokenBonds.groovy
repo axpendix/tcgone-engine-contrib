@@ -4401,7 +4401,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             // TODO implement properly after source refactoring and/or RichSource captivation
             eff = delayed {
               before null, self, SRC_ABILITY, {
-                bc "Stealty Hood prevents effect"
+                bc "Stealthy Hood prevents effect"
                 prevent()
               }
             }
