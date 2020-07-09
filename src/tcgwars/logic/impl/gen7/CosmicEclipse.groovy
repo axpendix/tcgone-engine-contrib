@@ -869,12 +869,14 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "The attacks of your Pokémon-GX in play that evolve from Eevee do 30 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance). You can't apply more than 1 Power Cheer Ability at a time."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each{
-                  if(it.from.owner == self.owner && it.from.pokemonGX && it.from.topPokemonCard.cardTypes.isEvolution() && it.from.topPokemonCard.predecessor == "Eevee" && it.to.active && it.to.owner != self.owner && it.dmg.value && bg.em().retrieveObject("Power Cheer") != bg.turnCount) {
-                    it.dmg += hp(30)
-                    bc "Power Cheer +30"
-                    bg.em().storeObject("Power Cheer", bg.turnCount)
+                if (bg.em().retrieveObject("Power_Cheer") != bg.turnCount){
+                  bg.dm().each{
+                    if(it.from.owner == self.owner && it.from.pokemonGX && pcs.realEvolution && it.from.topPokemonCard.predecessor == "Eevee" && it.to.active && it.to.owner != self.owner && it.dmg.value && it.notNoEffect) {
+                      bc "Power Cheer +30"
+                      it.dmg += hp(30)
+                    }
                   }
+                  bg.em().storeObject("Power_Cheer", bg.turnCount)
                 }
               }
             }
@@ -1250,25 +1252,12 @@ public enum CosmicEclipse implements LogicCardInfo {
         return evolution (this, from:"Eevee", hp:HP110, type:W, retreatCost:2) {
           weakness G
           bwAbility "Vitality Cheer", {
-            def target = []
-            def source = []
-            bg.em().storeObject("Vitality_Cheer_target", target)
-            bg.em().storeObject("Vitality_Cheer_source", source)
             text "Your Pokémon-GX in play that evolve from Eevee get +60 HP. You can't apply more than 1 Vitality Cheer Ability at a time."
             getterA (GET_FULL_HP) {h->
               def pcs = h.effect.target
-              if (pcs.owner == self.owner && pcs.pokemonGX && pcs.topPokemonCard.cardTypes.is(EVOLUTION) && pcs.topPokemonCard.predecessor == "Eevee"){
-                target = bg.em().retrieveObject("Vitality_Cheer_target")
-                source = bg.em().retrieveObject("Vitality_Cheer_source")
-                if(!target.contains(pcs)){
-                  h.object += hp(60)
-                  target.add(pcs)
-                  bg.em().storeObject("Vitality_Cheer_target", target)
-                  source.add(self)
-                  bg.em().storeObject("Vitality_Cheer_source", source)
-                } else if(source.get(target.indexOf(pcs)) == self){
-                  h.object += hp(60)
-                }
+              if(keyStore("Vitality_Cheer", pcs, null) != bg.turnCount && pcs.owner==self.owner && pcs.pokemonGX && pcs.realEvolution && pcs.topPokemonCard.predecessor == "Eevee"){
+                h.object += hp(60)
+                keyStore("Vitality_Cheer", pcs, bg.turnCount)
               }
             }
           }
@@ -1841,7 +1830,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "The attacks of your Pokémon-GX in play that evolve from Eevee cost [C] less. You can't apply more than 1 Speed Cheer Ability at a time."
             getterA GET_MOVE_LIST, BEFORE_LAST, {h->
               PokemonCardSet pcs = h.effect.target
-              if(pcs.owner==self.owner && pcs.pokemonGX && pcs.realEvolution && pcs.topPokemonCard.predecessor == "Eevee" && bg.currentTurn == self.owner && bg.em().retrieveObject("Speed_Cheer") != bg.turnCount){
+              if(keyStore("Speed_Cheer", pcs, null) != bg.turnCount && pcs.owner==self.owner && pcs.pokemonGX && pcs.realEvolution && pcs.topPokemonCard.predecessor == "Eevee" && bg.currentTurn == self.owner){
                 def list=[]
                 for(move in h.object){
                   def copy=move.shallowCopy()
@@ -1851,7 +1840,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                   list.add(copy)
                 }
                 h.object=list
-                bg.em().storeObject("Speed Cheer", bg.turnCount)
+                keyStore("Speed_Cheer", pcs, bg.turnCount)
               }
             }
           }
