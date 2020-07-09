@@ -2180,7 +2180,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Star Light", {
           text "As long as your opponent has any Pokémon-ex or Stage 2 Evolved Pokémon in play, Jirachi ex pays [C] less Energy to use Shield Beam or Super Psy Bolt."
           getterA (GET_MOVE_LIST, BEFORE_LAST, self) {h->
-						if (opp.all.findAll { it.EX || it.topPokemonCard.cardTypes.is(STAGE2) }) {
+						if (opp.all.any{ it.EX || (it.evolution && it.topPokemonCard.cardTypes.is(STAGE2) ) }) {
               def list=[]
               for (move in h.object) {
                 def copy = move.shallowCopy()
