@@ -608,7 +608,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost F, C
           onAttack {
             damage 40
-            if (defending.types.contains(D) || defending.name.contains("Dark")) {
+            if (defending.types.contains(D) || defending.name.contains("Dark ")) {
               damage 30
             }
           }
@@ -2216,7 +2216,7 @@ public enum UnseenForces implements LogicCardInfo {
         def eff
         def eff2
         def check = {
-          if (it.topPokemonCard.name.contains("Dark") || it.topPokemonCard.cardTypes.is(OWNERS_POKEMON) || it.EX){ discard thisCard }
+          if (it.topPokemonCard.name.contains("Dark ") || it.topPokemonCard.cardTypes.is(OWNERS_POKEMON) || it.EX){ discard thisCard }
         }
         onPlay {reason->
           eff = getter (GET_FULL_HP, self) {h->
@@ -2240,7 +2240,7 @@ public enum UnseenForces implements LogicCardInfo {
           check(to)
         }//TODO: Find alternative */
         allowAttach {to->
-          !to.topPokemonCard.name.contains("Dark") && to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON) && !to.EX
+          !to.topPokemonCard.name.contains("Dark ") && to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON) && !to.EX
         }
       };
       case ENERGY_SWITCH_84:
@@ -2251,7 +2251,7 @@ public enum UnseenForces implements LogicCardInfo {
           "As long as Fluffy Berry is attached to a Pokémon, that Pokémon's Retreat Cost is 0."
         def eff
         def check = {
-          if (it.topPokemonCard.name.contains("Dark") || it.topPokemonCard.cardTypes.is(OWNERS_POKEMON) || it.EX){ discard thisCard }
+          if (it.topPokemonCard.name.contains("Dark ") || it.topPokemonCard.cardTypes.is(OWNERS_POKEMON) || it.EX){ discard thisCard }
         }
         onPlay {reason->
           eff = getter GET_RETREAT_COST, self, { h ->
@@ -2265,7 +2265,7 @@ public enum UnseenForces implements LogicCardInfo {
           check(to)
         }//TODO: Find alternative */
         allowAttach {to->
-          !to.topPokemonCard.name.contains("Dark") && to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON) && !to.EX
+          !to.topPokemonCard.name.contains("Dark ") && to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON) && !to.EX
         }
       };
       case MARY_S_REQUEST_86:
@@ -2326,7 +2326,7 @@ public enum UnseenForces implements LogicCardInfo {
           "At any time between turns, if the Pokémon this card is attached to has at least 3 damage counters on it, remove 3 damage counters from it. Then, discard Sitrus Berry."
         def eff
         def check = {
-          if (it.topPokemonCard.name.contains("Dark") || it.topPokemonCard.cardTypes.is(OWNERS_POKEMON) || it.EX){ discard thisCard }
+          if (it.topPokemonCard.name.contains("Dark ") || it.topPokemonCard.cardTypes.is(OWNERS_POKEMON) || it.EX){ discard thisCard }
         }
         onPlay {reason->
           eff=delayed(anytime:true){
@@ -2346,7 +2346,7 @@ public enum UnseenForces implements LogicCardInfo {
           check(to)
         }//TODO: Find alternative */
         allowAttach {to->
-          !to.topPokemonCard.name.contains("Dark") && to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON) && !to.EX
+          !to.topPokemonCard.name.contains("Dark ") && to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON) && !to.EX
         }
       };
       case SOLID_RAGE_92:

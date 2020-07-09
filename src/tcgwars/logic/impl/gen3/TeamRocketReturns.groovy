@@ -351,14 +351,14 @@ public enum TeamRocketReturns implements LogicCardInfo {
             text "Flip a coin. If heads, choose an attack on 1 of your Pokémon in play that has Dark in its name (excluding this one). Dark Link copies that attack except for its Energy cost. (You must still do anything else required for that attack.) (No matter what type that Pokémon is, Dark Hypno’s type is still .) Dark Hypno performs that attack."
             energyCost C
             attackRequirement {
-              assert my.bench.find {it.name.contains("Dark") && it.topPokemonCard.moves} : "No moves to perform"
+              assert my.bench.find {it.name.contains("Dark ") && it.topPokemonCard.moves} : "No moves to perform"
             }
             onAttack {
               flip {
                 def moveList = []
                 def labelList = []
                 my.bench.each {pcs->
-                  if(pcs.name.contains("Dark")){
+                  if(pcs.name.contains("Dark ")){
                     moveList.addAll(pcs.topPokemonCard.moves);
                     labelList.addAll(pcs.topPokemonCard.moves.collect{pcs.name+"-"+it.name})
                   }
@@ -566,14 +566,14 @@ public enum TeamRocketReturns implements LogicCardInfo {
             text "Prevent all effects of attacks, including damage, done to Togetic by your opponent’s Pokémon that has Dark in its name."
             delayedA {
               before null, self, Source.ATTACK, {
-                if (self.owner.opposite.pbg.active.name.contains("Dark") && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                if (self.owner.opposite.pbg.active.name.contains("Dark ") && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
                   bc "Holy Shield prevents effect"
                   prevent()
                 }
               }
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if(it.to == self && it.notNoEffect && self.owner.opposite.pbg.active.name.contains("Dark")){
+                  if(it.to == self && it.notNoEffect && self.owner.opposite.pbg.active.name.contains("Dark ")){
                     it.dmg = hp(0)
                     bc "Holy Shield prevents damage"
                   }
@@ -581,7 +581,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               }
               after ENERGY_SWITCH, {
                 def efs = (ef as EnergySwitch)
-                if(self.owner.opposite.pbg.active.name.contains("Dark") && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
+                if(self.owner.opposite.pbg.active.name.contains("Dark ") && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
                   discard efs.card
                 }
               }
@@ -2352,7 +2352,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
         return basicTrainer (this) {
           text "Search your deck for a Pokémon that has Dark in its name, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
           onPlay {
-            my.deck.search(max:1,"Select a Pokémon with Dark in its name",{it.cardTypes.is(POKEMON) && it.name.contains("Dark")}).showToOpponent("Selected card.").moveTo(my.hand)
+            my.deck.search(max:1,"Select a Pokémon with Dark in its name",{it.cardTypes.is(POKEMON) && it.name.contains("Dark ")}).showToOpponent("Selected card.").moveTo(my.hand)
             shuffleDeck()
           }
           playRequirement{

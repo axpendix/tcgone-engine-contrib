@@ -1613,7 +1613,7 @@ public enum TeamRocketNG implements LogicCardInfo {
         return basicTrainer (this) {
           text "Search your deck for an Evolution card with Dark in its name. Show it to your opponent and put it into your hand. Shuffle your deck afterward."
           onPlay {
-            def tar = my.deck.search(count : 1, "Search your deck for an Evolution card with Dark in its name", {it.name.contains("Dark")})
+            def tar = my.deck.search(count : 1, "Search your deck for an Evolution card with Dark in its name", {it.name.contains("Dark ")})
             tar.showToOpponent("selected card")
             tar.moveTo(my.hand)
             shuffleDeck()
