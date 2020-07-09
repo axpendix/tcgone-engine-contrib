@@ -1259,7 +1259,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Your Pokémon-GX in play that evolve from Eevee get +60 HP. You can't apply more than 1 Vitality Cheer Ability at a time."
             getterA (GET_FULL_HP) {h->
               def pcs = h.effect.target
-              if (pcs.owner == self.owner && pcs.pokemonGX && pcs.topPokemonCard.cardTypes.is(EVOLUTION) && pcs.topPokemonCard.predecessor == "Eevee"){
+              if (pcs.owner == self.owner && pcs.pokemonGX && pcs.realEvolution && pcs.topPokemonCard.predecessor == "Eevee"){
                 target = bg.em().retrieveObject("Vitality_Cheer_target")
                 source = bg.em().retrieveObject("Vitality_Cheer_source")
                 if(!target.contains(pcs)){
@@ -1840,20 +1840,38 @@ public enum CosmicEclipse implements LogicCardInfo {
           weakness F
           resistance M, MINUS20
           bwAbility "Speed Cheer", {
+            def target = []
+            def source = []
+            bg.em().storeObject("Speed_Cheer_target", target)
+            bg.em().storeObject("Speed_Cheer_source", source)
             text "The attacks of your Pokémon-GX in play that evolve from Eevee cost [C] less. You can't apply more than 1 Speed Cheer Ability at a time."
             getterA GET_MOVE_LIST, BEFORE_LAST, {h->
               PokemonCardSet pcs = h.effect.target
-              if(keyStore("Speed_Cheer", pcs, null) != bg.turnCount && pcs.owner==self.owner && pcs.pokemonGX && pcs.realEvolution && pcs.topPokemonCard.predecessor == "Eevee" && bg.currentTurn == self.owner){
-                def list=[]
-                for(move in h.object){
-                  def copy=move.shallowCopy()
-                  if (copy.energyCost.contains(C)) {
-                    copy.energyCost.remove(C)
+              if(pcs.owner==self.owner && pcs.pokemonGX && pcs.realEvolution && pcs.topPokemonCard.predecessor == "Eevee"){
+                target = bg.em().retrieveObject("Speed_Cheer_target")
+                source = bg.em().retrieveObject("Speed_Cheer_source")
+
+                def reduceAttackCost = {
+                  def list=[]
+                  for(move in h.object){
+                    def copy=move.shallowCopy()
+                    if (copy.energyCost.contains(C)) {
+                      copy.energyCost.remove(C)
+                    }
+                    list.add(copy)
                   }
-                  list.add(copy)
+                  h.object=list
                 }
-                h.object=list
-                keyStore("Speed_Cheer", pcs, bg.turnCount)
+
+                if(!target.contains(pcs)){
+                  reduceAttackCost.call()
+                  target.add(pcs)
+                  bg.em().storeObject("Speed_Cheer_target", target)
+                  source.add(self)
+                  bg.em().storeObject("Speed_Cheer_source", source)
+                } else if(source.get(target.indexOf(pcs)) == self){
+                  reduceAttackCost.call()
+                }
               }
             }
           }
