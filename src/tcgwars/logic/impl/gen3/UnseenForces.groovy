@@ -10,6 +10,7 @@ import tcgwars.logic.impl.gen5.PlasmaStorm;
 import tcgwars.logic.impl.gen6.KalosStarterSet;
 
 import tcgwars.logic.effect.gm.PlayTrainer
+import tcgwars.logic.effect.gm.Attack
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;

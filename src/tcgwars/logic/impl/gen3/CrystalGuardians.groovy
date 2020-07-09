@@ -7,6 +7,8 @@ import tcgwars.logic.impl.gen3.DeltaSpecies;
 import tcgwars.logic.impl.gen5.PlasmaStorm;
 import tcgwars.logic.impl.gen5.BlackWhite;
 
+import tcgwars.logic.effect.gm.Attack
+
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
