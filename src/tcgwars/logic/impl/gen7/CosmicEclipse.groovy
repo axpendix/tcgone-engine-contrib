@@ -3433,12 +3433,14 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "If you have Lunala in play, your Solgaleo and Lunala take 50 less damage from your opponent's attacks (after applying Weakness and Resistance). You can't apply more than 1 Armor of the Sunne Ability at a time."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if (self.owner.pbg.all.find({ it.name == "Lunala" }) && it.from.owner != self.owner && it.to.owner == self.owner && it.dmg.value && it.notNoEffect && (it.to.name == "Solgaleo" || it.to.name == "Lunala") && bg.em().retrieveObject("Armor of the Sunne") != bg.turnCount) {
-                    bc "Armor of the Sunne -50"
-                    it.dmg -= hp(50)
-                    bg.em().storeObject("Armor of the Sunne", bg.turnCount)
+                if(bg.em().retrieveObject("Armor_Of_The_Sunne") != bg.turnCount && self.owner.pbg.all.find({ it.name == "Lunala" })) {
+                  bg.dm().each {
+                    if (it.from.owner != self.owner && it.to.owner == self.owner && it.dmg.value && it.notNoEffect && (it.to.name == "Solgaleo" || it.to.name == "Lunala")) {
+                      bc "Armor of the Sunne -50"
+                      it.dmg -= hp(50)
+                    }
                   }
+                  bg.em().storeObject("Armor_Of_The_Sunne", bg.turnCount)
                 }
               }
             }

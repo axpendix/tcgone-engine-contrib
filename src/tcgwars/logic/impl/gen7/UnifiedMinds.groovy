@@ -543,12 +543,14 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "Your [G] Pokémon take 40 less damage from your opponent's attacks (after applying Weakness and Resistance). You can't apply more than 1 Blanket Weaver Ability at a time."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if (it.to.types.contains(G) && ef.attacker.owner != self.owner && it.notNoEffect && it.dmg.value && bg.em().retrieveObject("Blanket Weaver") != bg.turnCount) {//if Blanket Weaver hasn't been used yet
-                    bc "Blanket Weaver -40"
-                    it.dmg -= hp(40)
-                    bg.em().storeObject("Blanket Weaver", bg.turnCount)
+                if(bg.em().retrieveObject("Blanket_Weaver") != bg.turnCount) {
+                  bg.dm().each {
+                    if (it.from.owner != self.owner && it.to.owner == self.owner && it.to.types.contains(G) && it.notNoEffect && it.dmg.value) {
+                      bc "Blanket Weaver -40"
+                      it.dmg -= hp(40)
+                    }
                   }
+                  bg.em().storeObject("Blanket_Weaver", bg.turnCount)
                 }
               }
             }
