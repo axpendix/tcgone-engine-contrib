@@ -1424,11 +1424,11 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "60 damage. Your opponent can’t play any Trainer cards from their hand during their next turn. If 1 of your Pokémon used Cold Snap during your last turn, this attack can't be used."
             energyCost W
             attackRequirement {
-              assert (bg.em().retrieveObject("Cold_Snap") != bg.turnCount - 2)
+              assert (bg.em().retrieveObject("Cold_Snap" + self.owner) != bg.turnCount - 2) : "Cold Snap was used last turn, it can't be used again"
             }
             onAttack {
               damage 60
-              bg.em().storeObject("Cold_Snap", bg.turnCount)
+              bg.em().storeObject("Cold_Snap" + self.owner, bg.turnCount)
               delayed {
                 before PLAY_TRAINER, {
                   if (bg.currentTurn == self.owner.opposite) {
