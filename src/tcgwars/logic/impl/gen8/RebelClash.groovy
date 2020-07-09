@@ -2412,7 +2412,7 @@ public enum RebelClash implements LogicCardInfo {
           onAttack {
             def counters = 2 * self.numberOfDamageCounters
 
-            eff = delayed {
+            def eff = delayed {
               before KNOCKOUT, {
                 prevent()
               }
