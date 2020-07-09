@@ -2779,7 +2779,7 @@ public enum LegendMaker implements LogicCardInfo {
                 //
               }
             }
-            moves
+            holder.object = moves
           }
         }
         move "Power Move", {
