@@ -2354,7 +2354,7 @@ public enum Deoxys implements LogicCardInfo {
           def eff2
           def flag = false
           onPlay {reason->
-            eff1 = getter GET_POKEMON_TYPE, self, {h ->
+            eff1 = getter GET_POKEMON_TYPE, BEFORE_LAST, self, {h ->
               h.object.clear()
               h.object.add(C)
             }
