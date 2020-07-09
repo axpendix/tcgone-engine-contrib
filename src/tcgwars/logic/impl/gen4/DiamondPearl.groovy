@@ -836,6 +836,17 @@ public enum DiamondPearl implements LogicCardInfo {
               moveList.addAll(defending.topPokemonCard.moves);
               labelList.addAll(defending.topPokemonCard.moves.collect{it.name})
 
+              //
+              // [Temporary LV.X workaround]
+              if (defending.topPokemonCard.cardTypes.is(CardType.LEVEL_UP)){
+                //Only 3 LV.Xs right now, all stage 2 so this should do
+                def tpc = defending.cards.find{car -> car.cardTypes.is(STAGE2) && car != defending.topPokemonCard}
+                moveList.addAll(tpc.moves)
+                labelList.addAll(tpc.moves.collect{it.name})
+              }
+              // [End of LV.X workaround] TODO: Remove this when no longer needed
+              //
+
               def move=choose(moveList, labelList)
               def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
               attack (move as Move)
