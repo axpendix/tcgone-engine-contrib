@@ -980,14 +980,14 @@ public enum UnbrokenBonds implements LogicCardInfo {
             text "Your Pokémon's attacks do 30 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance). You can't apply more than 1 Strong Cheer Ability at a time."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                if(ef.attacker.owner == self.owner){
+                if(ef.attacker.owner == self.owner && bg.em().retrieveObject("Strong Cheer") != bg.turnCount){
                   bg.dm().each {
-                    if (it.from.active && it.from.owner == self.owner && it.to.active && it.to.owner != self.owner && it.dmg.value && bg.em().retrieveObject("Strong Cheer") != bg.turnCount) {//if not strong cheer has been used before
+                    if (it.from.active && it.from.owner == self.owner && it.to.active && it.to.owner != self.owner && it.dmg.value) {//if not strong cheer has been used before
                       bc "Strong Cheer +30"
                       it.dmg += hp(30)
-                      bg.em().storeObject("Strong Cheer", bg.turnCount)
                     }
                   }
+                  bg.em().storeObject("Strong Cheer", bg.turnCount)
                 }
               }
             }
