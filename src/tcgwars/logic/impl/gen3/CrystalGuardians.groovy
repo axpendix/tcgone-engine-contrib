@@ -1023,7 +1023,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 10
-            apply BURNED
+            applyAfterDamage BURNED
           }
         }
         move "Firebreathing", {
@@ -1080,7 +1080,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 20
-            apply ASLEEP
+            applyAfterDamage ASLEEP
           }
         }
         move "Vine Whip", {
@@ -1097,6 +1097,9 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Stretch Vine", {
           text "Choose 1 of your opponent's Benched Pokémon. This attack does 30 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C, C
+          attackRequirement{
+            assertOppBench()
+          }
           onAttack {
             if (opp.bench) {
               damage 30, opp.bench.select()
@@ -1179,6 +1182,9 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Self Charge", {
           text "Attach a [D] Energy card from your hand to Nuzleaf."
           energyCost C
+          attackRequirement {
+            assert my.hand.filterByEnergyType(D) : "You have no [D] Energy in your hand."
+          }
           onAttack {
             attachEnergyFrom(type:D, my.hand, self)
           }
@@ -1242,7 +1248,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost W, C
           onAttack {
             damage 20
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
         move "Tackle", {
@@ -1278,6 +1284,9 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Flail", {
           text "10x damage. Does 10 damage times the number of damage counters on Aron."
           energyCost C
+          attackRequirement{
+            assert self.numberOfDamageCounters : "$self has no damage counters"
+          }
           onAttack {
             damage 10*self.numberOfDamageCounters
           }
@@ -1307,6 +1316,9 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Growth", {
           text "Attach a [G] Energy card from your hand to Bulbasaur."
           energyCost C
+          attackRequirement {
+            assert my.hand.filterByEnergyType(G) : "You have no [G] Energy in your hand."
+          }
           onAttack {
             attachEnergyFrom(type:G, my.hand, self)
           }
@@ -1342,6 +1354,9 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Retaliate", {
           text "10x damage. Does 10 damage times the number of damage counters on Charmander."
           energyCost C
+          attackRequirement{
+            assert self.numberOfDamageCounters : "$self has no damage counters"
+          }
           onAttack {
             damage 10*self.numberOfDamageCounters
           }
@@ -1420,7 +1435,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C
           attackRequirement { assert my.discard : "Discard is empty"}
           onAttack {
-            my.discard.select().moveTo(my.hand)
+            if (my.discard) my.discard.select().moveTo(my.hand)
           }
         }
         move "Quick Blow", {
@@ -1440,7 +1455,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 10
-            apply ASLEEP
+            applyAfterDamage ASLEEP
           }
         }
       };
@@ -1489,9 +1504,18 @@ public enum CrystalGuardians implements LogicCardInfo {
           text "Put 2 damage counters on your opponent's Pokémon in any way you like."
           energyCost C, C
           onAttack {
-            (1..2).each {
-              if (opp.all) directDamage(10, opp.all.select("Put a damage counter on - $it out of 2"))
+            def eff = delayed {
+              before KNOCKOUT, {
+                prevent()
+              }
             }
+
+            (1..2).each {
+              directDamage 10, opp.all.select("Put 1 damage counter to which Pokémon? ${it-1}/2 counters placed")
+            }
+
+            eff.unregister()
+            checkFaint()
           }
         }
       };
@@ -1503,7 +1527,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if (!self.active && it.to == self) {
+                if (!self.active && it.to == self && it.notNoEffect) {
                   bc "Submerge prevent all damage"
                   it.dmg=hp(0)
                 }
@@ -1630,7 +1654,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 10
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -1692,7 +1716,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost P
           onAttack {
             damage 10
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
