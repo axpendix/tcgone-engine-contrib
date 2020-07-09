@@ -2242,19 +2242,19 @@ public enum CrystalGuardians implements LogicCardInfo {
           delayedA {
             def pcs = null
             before USE_ABILITY, {
-              if (ef.ability instanceof PokePower){
+              if ((ef.getResolvedTarget(bg, e) as PokemonCardSet).owner == self.owner.opposite && ef.ability instanceof PokePower){
                 pcs = ef.getResolvedTarget(bg, e)
               }
             }
             after POKEPOWER, {
-              if (pcs && bg.currentThreadPlayerType != self.owner) {
+              if (pcs) {
                 bc "Dark Eyes activates"
                 directDamage(20, pcs, Source.SRC_ABILITY)
+                pcs = null
               }
-              pcs = null
             }
             after ACTIVATE_ABILITY, {
-              if (pcs && bg.currentThreadPlayerType != self.owner) {
+              if (pcs) {
                 bc "Dark Eyes activates"
                 directDamage(20, pcs, Source.SRC_ABILITY)
                 pcs = null
