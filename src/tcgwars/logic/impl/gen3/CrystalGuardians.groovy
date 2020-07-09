@@ -2249,6 +2249,7 @@ public enum CrystalGuardians implements LogicCardInfo {
       case SCEPTILE_EX_DELTA_96:
       return evolution (this, from:"Grovyle", hp:HP140, type:P, retreatCost:1) {
         weakness G
+        weakness R
         resistance W, MINUS30
         pokeBody "Extra Liquid", {
           def target = []
