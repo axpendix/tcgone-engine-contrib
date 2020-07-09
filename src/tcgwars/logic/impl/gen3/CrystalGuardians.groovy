@@ -943,9 +943,11 @@ public enum CrystalGuardians implements LogicCardInfo {
           //TODO REPLACE EACH [C] for [G]
           getterA GET_ENERGY_TYPES, { holder ->
             def pcs = holder.effect.target
-            if(pcs.owner == self.owner && pcs.types.contains(G)) {
+            if(pcs.owner == self.owner && pcs.types.contains(G) && holder.effect.card.containsTypePlain(C)) {
               bc "${holder.object}"
-              holder.object = [[G] as Set]
+              int count = holder.object.size()
+              holder.object = (1..count).collect{[GRASS] as Set}
+              bc "${holder.object}"
             }
           }
         }
