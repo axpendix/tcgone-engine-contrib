@@ -2773,9 +2773,9 @@ public enum LegendMaker implements LogicCardInfo {
                 // [Temporary LV.X workaround]
                 if (it.topPokemonCard.cardTypes.is(LEVEL_UP)){
                   //Only 3 LV.Xs right now, all stage 2 so this should do
-                  def tpc = it.cards.findAll{car -> car.cardTypes.is(STAGE_2) && car.cardTypes.isNot(LEVEL_UP)}.first()
-                  bc "> ${tpc}"
-                  bc ">> ${tpc.moves}"
+                  def tpc = it.cards.findAll{car -> car.cardTypes.is(STAGE_2) && car != it.topPokemonCard.cardTypes}.first()
+                  bc "!> ${tpc}"
+                  bc "!>> ${tpc.moves}"
                   holder.object.addAll(tpc.moves)
                 }
                 // [End of LV.X workaround] TODO: Remove this when no longer needed
