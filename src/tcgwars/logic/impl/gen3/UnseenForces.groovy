@@ -2231,7 +2231,8 @@ public enum UnseenForces implements LogicCardInfo {
             h.object += hp(20)
           }
           eff2 = getter (IS_ABILITY_BLOCKED) { Holder h ->
-            if (h.effect.target == self) {
+            def pcs = h.effect.target
+            if ( pcs == self  && !(pcs.topPokemonCard.name.contains("Dark ") || pcs.topPokemonCard.cardTypes.is(OWNERS_POKEMON) || pcs.EX) ) {
               if (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody) {
                 h.object=true
               }
