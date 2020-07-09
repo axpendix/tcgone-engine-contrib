@@ -3078,7 +3078,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost W, W, W
             attackRequirement {}
             onAttack {
-              damage 80, opp.all.findAll{it.numberOfDamageCounters}.select()
+              damage 80, opp.all.select()
               cantAttackNextTurn self
             }
           }
