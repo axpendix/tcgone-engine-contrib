@@ -1740,20 +1740,34 @@ public enum CrystalGuardians implements LogicCardInfo {
       return pokemonTool (this) {
         text "Attach Cessation Crystal to 1 of your Pokémon (excluding Pokémon-ex) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Cessation Crystal is attached to is a Pokémon-ex, discard this card." +
           "As long as Cessation Crystal is attached to an Active Pokémon, each player's Pokémon (both yours and your opponent's) can't use any Poké-Powers or Poké-Bodies."
-        def eff
+        def eff1, eff2
+        def check = {
+          if (it.EX) {discard thisCard}
+        }
         onPlay {reason->
-          eff = getter IS_ABILITY_BLOCKED, { Holder h->
+          eff1 = getter IS_ABILITY_BLOCKED, { Holder h->
             if (self.active && (h.effect.ability instanceof PokeBody || h.effect.ability instanceof PokePower)) {
               h.object=true
             }
           }
+          eff2 = delayed {
+            after EVOLVE, self, {check(self)}
+            after DEVOLVE, self, {check(self)}
+            //TODO: onMove() instead of this
+            after PROCESS_ATTACK_EFFECTS, {
+              if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
+                check(self)
+              }
+            }
+          }
+          check(self)
           new CheckAbilities().run(bg)
         }
         onRemoveFromPlay {
-          eff.unregister()
+          eff1.unregister()
+          eff2.unregister()
           new CheckAbilities().run(bg)
         }
-        //TODO: onMove()
         allowAttach { to->
           !to.EX
         }
@@ -1847,6 +1861,9 @@ public enum CrystalGuardians implements LogicCardInfo {
         text "Prevent all effects of attacks, including damage, done to the Pokémon that Mysterious Shard is attached to by your opponent's Pokémon-ex. Discard this card at the end of your opponent's next turn."
         def eff1
         def eff2
+        def check = {
+          if (it.EX) {discard thisCard}
+        }
         onPlay {reason->
           eff1=delayed {
             before APPLY_ATTACK_DAMAGES, {
@@ -1866,13 +1883,28 @@ public enum CrystalGuardians implements LogicCardInfo {
             }
           }
           eff2 = delayed {
-            after BETWEEN_TURNS, {
-              if (bg.currentTurn == self.owner) {
+            before BETWEEN_TURNS, {
+              if (bg.currentTurn == self.owner.opposite) {
                 discard thisCard
-                eff1.unregister()
+              }
+            }
+            after EVOLVE, self, {check(self)}
+            after DEVOLVE, self, {check(self)}
+            //TODO: onMove() instead of this
+            after PROCESS_ATTACK_EFFECTS, {
+              if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
+                check(self)
               }
             }
           }
+          check(self)
+        }
+        onRemoveFromPlay {
+          eff1.unregister()
+          eff2.unregister()
+        }
+        allowAttach { to->
+          !to.EX
         }
       };
       case POKE_BALL_82:

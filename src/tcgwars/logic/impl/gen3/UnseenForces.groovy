@@ -2194,14 +2194,20 @@ public enum UnseenForces implements LogicCardInfo {
                 directDamage 30, self.owner.opposite.pbg.active//, Source.POKEMON_TOOL or something similar
               }
             }
+            after EVOLVE, self, {check(self)}
+            after DEVOLVE, self, {check(self)}
+            //TODO: onMove() instead of this
+            after PROCESS_ATTACK_EFFECTS, {
+              if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
+                check(self)
+              }
+            }
           }
+          check(self)
         }
         onRemoveFromPlay {
           eff.unregister()
         }
-        /*onMove {to->
-          check(to)
-        }//TODO: Find alternative */
         allowAttach {to->
           to.evolution && !to.EX
         }
@@ -2213,13 +2219,14 @@ public enum UnseenForces implements LogicCardInfo {
       case ENERGY_ROOT_83:
       return pokemonTool (this) {
         text "Attach Energy Root to 1 of your Pokémon (excluding Pokémon-ex and Pokémon that has Dark or an owner in its name) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Energy Root is attached to is Pokémon-ex or has Dark or an owner in its name, discard Energy Root.\nAs long as Energy Root is attached to a Pokémon, that Pokémon gets +20 HP and can't use any Poké-Powers or Poké-Bodies."
-        def eff
+        def eff1
         def eff2
+        def eff3
         def check = {
           if (it.topPokemonCard.name.contains("Dark ") || it.topPokemonCard.cardTypes.is(OWNERS_POKEMON) || it.EX){ discard thisCard }
         }
         onPlay {reason->
-          eff = getter (GET_FULL_HP, self) {h->
+          eff1 = getter (GET_FULL_HP, self) {h->
             h.object += hp(20)
           }
           eff2 = getter (IS_ABILITY_BLOCKED) { Holder h ->
@@ -2229,11 +2236,23 @@ public enum UnseenForces implements LogicCardInfo {
               }
             }
           }
+          eff3 = delayed {
+            after EVOLVE, self, {check(self)}
+            after DEVOLVE, self, {check(self)}
+            //TODO: onMove() instead of this
+            after PROCESS_ATTACK_EFFECTS, {
+              if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
+                check(self)
+              }
+            }
+          }
+          check(self)
           new CheckAbilities().run(bg)
         }
         onRemoveFromPlay {
-          eff.unregister()
+          eff1.unregister()
           eff2.unregister()
+          eff3.unregister()
           new CheckAbilities().run(bg)
         }
         /*onMove {to->
@@ -2249,17 +2268,29 @@ public enum UnseenForces implements LogicCardInfo {
       return pokemonTool (this) {
         text "Attach Fluffy Berry to 1 of your Pokémon (excluding Pokémon-ex and Pokémon that has Dark or an owner in its name) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Fluffy Berry is attached to is Pokémon-ex or has Dark or an owner in its name, discard Fluffy Berry." +
           "As long as Fluffy Berry is attached to a Pokémon, that Pokémon's Retreat Cost is 0."
-        def eff
+        def eff1, eff2
         def check = {
           if (it.topPokemonCard.name.contains("Dark ") || it.topPokemonCard.cardTypes.is(OWNERS_POKEMON) || it.EX){ discard thisCard }
         }
         onPlay {reason->
-          eff = getter GET_RETREAT_COST, self, { h ->
+          eff1 = getter GET_RETREAT_COST, self, { h ->
             h.object = 0
           }
+          eff2 = delayed {
+            after EVOLVE, self, {check(self)}
+            after DEVOLVE, self, {check(self)}
+            //TODO: onMove() instead of this
+            after PROCESS_ATTACK_EFFECTS, {
+              if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
+                check(self)
+              }
+            }
+          }
+          check(self)
         }
         onRemoveFromPlay {
-          eff.unregister()
+          eff1.unregister()
+          eff2.unregister()
         }
         /*onMove {to->
           check(to)
@@ -2301,21 +2332,30 @@ public enum UnseenForces implements LogicCardInfo {
       return pokemonTool (this) {
         text "Attach Protective Orb to 1 of your Evolved Pokémon (excluding Pokémon-ex) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Protective Orb is attached to is a Basic Pokémon or Pokémon-ex, discard Protective Orb." +
           "As long as Protective Orb is attached to a Pokémon, that Pokémon has no Weakness."
-        def eff
+        def eff1, eff2
         def check = {
-          if(!it.evolution || it.EX){discard thisCard}
+          if(it.notEvolution || it.EX){discard thisCard}
         }
         onPlay {reason->
-          eff = getter (GET_WEAKNESSES, self) { h->
+          eff1 = getter (GET_WEAKNESSES, self) { h->
             h.object.clear()
           }
+          eff2 = delayed {
+            after EVOLVE, self, {check(self)}
+            after DEVOLVE, self, {check(self)}
+            //TODO: onMove() instead of this
+            after PROCESS_ATTACK_EFFECTS, {
+              if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
+                check(self)
+              }
+            }
+          }
+          check(self)
         }
         onRemoveFromPlay {
-          eff.unregister()
+          eff1.unregister()
+          eff2.unregister()
         }
-        /*onMove {to->
-          check(to)
-        }//TODO: Find alternative */
         allowAttach {to->
           to.evolution && !to.EX
         }
@@ -2324,12 +2364,12 @@ public enum UnseenForces implements LogicCardInfo {
       return pokemonTool (this) {
         text "Attach Sitrus Berry to 1 of your Pokémon (excluding Pokémon-ex and Pokémon that has Dark or an owner in its name) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Sitrus Berry is attached to is Pokémon-ex or has Dark or an owner in its name, discard Sitrus Berry." +
           "At any time between turns, if the Pokémon this card is attached to has at least 3 damage counters on it, remove 3 damage counters from it. Then, discard Sitrus Berry."
-        def eff
+        def eff1, eff2
         def check = {
           if (it.topPokemonCard.name.contains("Dark ") || it.topPokemonCard.cardTypes.is(OWNERS_POKEMON) || it.EX){ discard thisCard }
         }
         onPlay {reason->
-          eff=delayed(anytime:true){
+          eff1 = delayed(anytime:true){
             before BEGIN_TURN,{
               if(self.numberOfDamageCounters >= 3) {
                 bc "Sitrus Berry activates"
@@ -2338,13 +2378,22 @@ public enum UnseenForces implements LogicCardInfo {
               }
             }
           }
+          eff2 = delayed {
+            after EVOLVE, self, {check(self)}
+            after DEVOLVE, self, {check(self)}
+            //TODO: onMove() instead of this
+            after PROCESS_ATTACK_EFFECTS, {
+              if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
+                check(self)
+              }
+            }
+          }
+          check(self)
         }
         onRemoveFromPlay {
-          eff.unregister()
+          eff1.unregister()
+          eff2.unregister()
         }
-        /*onMove {to->
-          check(to)
-        }//TODO: Find alternative */
         allowAttach {to->
           !to.topPokemonCard.name.contains("Dark ") && to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON) && !to.EX
         }
@@ -2366,15 +2415,19 @@ public enum UnseenForces implements LogicCardInfo {
               }}
             }
             after EVOLVE, self, {check(self)}
-            after DEVOLVE, self, {check(self)} //TODO: Get TOOL_ATTACHED and TOOL_MOVED effects to better check this.
+            after DEVOLVE, self, {check(self)}
+            //TODO: onMove() instead of this
+            after PROCESS_ATTACK_EFFECTS, {
+              if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
+                check(self)
+              }
+            }
           }
+          check(self)
         }
         onRemoveFromPlay {
           eff.unregister()
         }
-        /*onMove {to->
-          check(to)
-        }//TODO: Find alternative */
         allowAttach {to->
           to.evolution && !to.EX
         }

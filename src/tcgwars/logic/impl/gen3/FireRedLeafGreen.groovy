@@ -2245,6 +2245,9 @@ public enum FireRedLeafGreen implements LogicCardInfo {
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nAttach EXP.ALL to 1 of your Pokémon (excluding Pokémon-ex and Pokémon that has an owner in its name) that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nDuring your opponent’s turn, if 1 of your Active Pokémon would be Knocked Out by your opponent’s attack, you may take 1 basic Energy card attached to that Knocked Out Pokémon and attach it to the Pokémon with EXP.ALL attached to it. If you do, discard EXP.ALL."
           def eff
+          def check = {
+            if (it.EX || it.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON)) {discard thisCard}
+          }
           onPlay {reason->
             eff = delayed {
               before KNOCKOUT, {
@@ -2257,13 +2260,22 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                   }
                 }
               }
+              after EVOLVE, self, {check(self)}
+              after DEVOLVE, self, {check(self)}
+              //TODO: onMove() instead of this
+              after PROCESS_ATTACK_EFFECTS, {
+                if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
+                  check(self)
+                }
+              }
             }
+            check(self)
           }
           onRemoveFromPlay {
             eff.unregister()
           }
           allowAttach {to->
-            to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON) && to.topPokemonCard.cardTypes.isNot(EX)
+            to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON) && !to.EX
           }
         };
       case GREAT_BALL_92:
