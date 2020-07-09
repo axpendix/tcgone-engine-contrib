@@ -1968,7 +1968,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
         }
         playRequirement{
-          assert all.findAll {it.cards.hasType(POKEMON_TOOL)} || (bg.stadiumInfoStruct && stadiumCanBeAffectedByItemAndSupporter())
+          assert all.any{it.cards.hasType(POKEMON_TOOL)} || (bg.stadiumInfoStruct && stadiumCanBeAffectedByItemAndSupporter())
         }
       };
       case ENERGY_SEARCH_86:
