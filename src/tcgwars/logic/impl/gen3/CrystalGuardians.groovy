@@ -2117,7 +2117,7 @@ public enum CrystalGuardians implements LogicCardInfo {
                       bc "Extra Noise"
                       once = false
                     }
-                    directDamage(10, it, TRAINER_CARD)
+                    directDamage(10, it, SRC_ABILITY)
                   }
                 }
               }
