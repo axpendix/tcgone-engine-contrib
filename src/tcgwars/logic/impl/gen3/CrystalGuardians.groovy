@@ -1763,7 +1763,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         text "Each Special Energy card that provides 2 or more Energy (both yours and your opponent's) now provides only 1 [C] Energy. This isn't affected by any Poké-Powers or Poké-Bodies."
         def eff
         onPlay {
-          eff = getter GET_ENERGY_TYPES, { holder->
+          eff = getter (GET_ENERGY_TYPES, BEFORE_LAST) { holder->
             if (holder.object.size() >= 2 && holder.effect.card.cardTypes.is(SPECIAL_ENERGY)) {
               holder.object = [[C] as Set]
             }
