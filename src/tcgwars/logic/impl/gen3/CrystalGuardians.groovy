@@ -6,6 +6,7 @@ import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen3.DeltaSpecies;
 import tcgwars.logic.impl.gen5.PlasmaStorm;
 import tcgwars.logic.impl.gen5.BlackWhite;
+import tcgwars.logic.impl.gen7.GuardiansRising;
 
 import tcgwars.logic.effect.gm.Attack
 
@@ -1948,31 +1949,7 @@ public enum CrystalGuardians implements LogicCardInfo {
       case WARP_POINT_84:
       return copy(PlasmaStorm.ESCAPE_ROPE_120, this)
       case WINDSTORM_85:
-      return itemCard (this) {
-        text "Choose up to 2 in any combination of Pokémon Tool cards and Stadium cards in play (both yours and your opponent's) and discard them."
-        onPlay {
-          def i = 2
-          while(i-- > 0) {
-            if (bg.stadiumInfoStruct && stadiumCanBeAffectedByItemAndSupporter() && confirm("Would you like to discard stadium in play (${bg.stadiumInfoStruct.stadiumCard})? If not, you can select a Pokemon Tool in play")) {
-              discard bg.stadiumInfoStruct.stadiumCard
-              continue
-            }
-            def tar = all.findAll {it.cards.hasType(POKEMON_TOOL)}
-            if(tar) {
-              def sel = tar.select("Select Pokemon to discard a Pokemon Tool from (cancel to stop)", i == 1)
-              if (sel) {
-                def list = sel.cards.filterByType(POKEMON_TOOL).select("Discard a Pokemon Tool from $sel")
-                targeted (sel, TRAINER_CARD) {
-                  list.discard()
-                }
-              }
-            }
-          }
-        }
-        playRequirement{
-          assert all.any{it.cards.hasType(POKEMON_TOOL)} || (bg.stadiumInfoStruct && stadiumCanBeAffectedByItemAndSupporter())
-        }
-      };
+      return copy(GuardiansRising.FIELD_BLOWER_125, this)
       case ENERGY_SEARCH_86:
       return copy(BlackWhite.ENERGY_SEARCH_93, this);
       case POTION_87:
