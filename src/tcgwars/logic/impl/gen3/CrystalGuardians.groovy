@@ -1821,7 +1821,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         onPlay { reason ->
           eff = getter (GET_MOVE_LIST) { holder->
             if(holder.effect.target.active && holder.effect.target.evolution) {
-              for(card in holder.effect.target.cards.filterByType(POKEMON)) {
+              for(card in holder.effect.target.cards.filterByType(STAGE_1, BASIC)) {
                 if(card!=holder.effect.target.topPokemonCard){
                   holder.object.addAll(card.moves)
                 }
