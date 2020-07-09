@@ -2764,9 +2764,9 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Versatile", {
           text "Mew ex can use the attacks of all Pokémon in play as its own. (You still need the necessary Energy to use each attack.)"
           getterA (GET_MOVE_LIST, self) {holder->
+            def moves = holder.object
             all.each {
               if(it!=self) {
-                def moves = holder.object
                 moves.addAll(it.topPokemonCard.moves)
                 //
                 // [Temporary LV.X workaround]
@@ -2777,9 +2777,9 @@ public enum LegendMaker implements LogicCardInfo {
                 }
                 // [End of LV.X workaround] TODO: Remove this when no longer needed
                 //
-                moves
               }
             }
+            moves
           }
         }
         move "Power Move", {

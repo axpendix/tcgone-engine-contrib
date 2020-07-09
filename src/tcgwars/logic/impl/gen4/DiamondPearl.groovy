@@ -3005,8 +3005,9 @@ public enum DiamondPearl implements LogicCardInfo {
           globalAbility {Card thisCard->
             delayed {
               before EVOLVE, {
-                if ( (ef.evolutionCard as Card) == thisCard && ef.pokemonToBeEvolved.name == "Piplup" ) {
-                  wcu "You cannot evolve Piplup into Empoleon LV.X"
+                if ( (ef.evolutionCard as Card) == thisCard && ["Piplup", "Prinplup"].contains(ef.pokemonToBeEvolved.name)  ) {
+                  wcu "You cannot evolve ${ef.pokemonToBeEvolved} into $thisCard.name LV.X"
+                  bc "[ERROR] Level-Up cards are not yet fully implemented, try to avoid using Rare Candy or Wally's Training as they will fail and be discarded with no use."
                   prevent()
                 }
               }
@@ -3089,6 +3090,13 @@ public enum DiamondPearl implements LogicCardInfo {
           def validPokemon
           globalAbility {Card thisCard->
             delayed {
+              before EVOLVE, {
+                if ( (ef.evolutionCard as Card) == thisCard && ["Chimchar", "Monferno"].contains(ef.pokemonToBeEvolved.name)  ) {
+                  wcu "You cannot evolve ${ef.pokemonToBeEvolved} into $thisCard.name LV.X"
+                  bc "[ERROR] Level-Up cards are not yet fully implemented, try to avoid using Rare Candy or Wally's Training as they will fail and be discarded with no use."
+                  prevent()
+                }
+              }
               before PLAY_CARD, {
                 if(ef.cardToPlay == thisCard){
                   def currentActive = thisCard.player.pbg.active
@@ -3156,6 +3164,13 @@ public enum DiamondPearl implements LogicCardInfo {
           weakness R, PLUS30
           globalAbility {Card thisCard->
             delayed {
+              before EVOLVE, {
+                if ( (ef.evolutionCard as Card) == thisCard && ["Turtwig", "Grotle"].contains(ef.pokemonToBeEvolved.name)  ) {
+                  wcu "You cannot evolve ${ef.pokemonToBeEvolved} into $thisCard.name LV.X"
+                  bc "[ERROR] Level-Up cards are not yet fully implemented, try to avoid using Rare Candy or Wally's Training as they will fail and be discarded with no use."
+                  prevent()
+                }
+              }
               before PLAY_CARD, {
                 if(ef.cardToPlay == thisCard){
                   def currentActive = thisCard.player.pbg.active
