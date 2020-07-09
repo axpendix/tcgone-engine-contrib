@@ -2804,11 +2804,9 @@ public enum TeamUp implements LogicCardInfo {
             }
             onAttack{
               gxPerform()
-              attachEnergyFrom(my.discard,my.all)
-              attachEnergyFrom(my.discard,my.all)
-              attachEnergyFrom(my.discard,my.all)
-              attachEnergyFrom(my.discard,my.all)
-              attachEnergyFrom(my.discard,my.all)
+              5.times{
+                attachEnergyFrom(basic:true, my.discard, my.all)
+              }
               if(self.cards.energySufficient(thisMove.energyCost + C)){
                 preventAllEffectsNextTurn()
               }
