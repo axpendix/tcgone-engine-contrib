@@ -2799,7 +2799,7 @@ public enum UltraPrism implements LogicCardInfo {
             onAttack {
               damage 20
               if (opp.hand) randomizedOpponentsHand().showToMe("Opponent's hand")
-              if (opp.hand.filterByType(POKEMON)){
+              if (opp.hand.hasType(POKEMON)){
                 damage 80
               }
             }

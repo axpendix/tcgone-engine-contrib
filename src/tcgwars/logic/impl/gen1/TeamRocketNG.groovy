@@ -619,8 +619,7 @@ public enum TeamRocketNG implements LogicCardInfo {
         return basicTrainer (this) {
           text "Look at your opponent’s hand. If he or she has any Trainer cards, choose 1 of them. Your opponent shuffles that card into his or her deck."
           onPlay {
-            opp.hand.showToMe("Opponent's hand")
-            def list = opp.hand.filterByType(TRAINER)
+            def list = randomizedOpponentsHand().showToMe("Opponent's hand").filterByType(TRAINER)
             if(list){
               list.select(count: 1, "Discard").moveTo(opp.deck)
               shuffleDeck(null, TargetPlayer.OPPONENT)

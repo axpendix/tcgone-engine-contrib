@@ -1105,6 +1105,7 @@ public enum FossilNG implements LogicCardInfo {
           pokemonPower "Clairvoyance", {
             text "Your opponent plays with his or her hand face up. This power stops working while Omanyte is Asleep, Confused, or Paralyzed."
             actionA {
+              //TODO: Make cards visible, even to spectators.
               opp.hand.showToMe("opponent's hand")
             }
           }

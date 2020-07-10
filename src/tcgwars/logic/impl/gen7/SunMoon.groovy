@@ -2830,9 +2830,7 @@ public enum SunMoon implements LogicCardInfo {
         return supporter (this) {
           text "Your opponent reveals their hand. Discard 2 Energy cards from it.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
-            def randomOppHand = randomizedOpponentsHand()
-            randomOppHand.showToMe("Opponent's hand")
-            def list = randomOppHand.filterByType(ENERGY)
+            def list = randomizedOpponentsHand().showToMe("Opponent's hand").filterByType(ENERGY)
             if(list){
               list.select(count: 2, "Discard").discard()
             }
