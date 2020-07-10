@@ -2741,8 +2741,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           shuffleDeck()
         }
         playRequirement{
-          def hand = my.hand.getExcludedList(thisCard).size() >= 1
-          assert hand : "One other card in hand is required to play this card."
+          assert my.hand.getExcludedList(thisCard) : "One other card in hand is required to play this card."
           assert my.discard.filterByType(BASIC_ENERGY) || my.discard.filterByType(POKEMON) : "No Basic Energy cards or Pokemon in discard pile."
         }
       };
@@ -2764,8 +2763,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           shuffleDeck()
         }
         playRequirement{
-          def hand = my.hand.getExcludedList(thisCard).size() >= 1
-          assert hand : "One other card in hand is required to play this card."
+          assert my.hand.getExcludedList(thisCard) : "One other card in hand is required to play this card."
           assert my.deck : "Deck is empty"
         }
       };
@@ -2784,8 +2782,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           shuffleDeck()
         }
         playRequirement{
-          def hand = my.hand.getExcludedList(thisCard).size() >= 1
-          assert hand : "One other card in hand is required to play this card."
+          assert my.hand.getExcludedList(thisCard) : "One other card in hand is required to play this card."
           assert my.deck : "Deck is empty"
         }
       };
@@ -2823,8 +2820,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           shuffleDeck()
         }
         playRequirement{
-          def hand = my.hand.getExcludedList(thisCard).size() >= 1
-          assert hand : "One other card in hand is required to play this card."
+          assert my.hand.getExcludedList(thisCard) : "One other card in hand is required to play this card."
           assert my.deck : "Deck is empty."
         }
       };
@@ -2861,8 +2857,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           draw opp.hand.size() - my.hand.getExcludedList(thisCard).size()
         }
         playRequirement{
-          def hand = my.hand.getExcludedList(thisCard).size() >= 1
-          assert hand : "One other card in hand is required to play this card."
+          assert my.hand.getExcludedList(thisCard) : "One other card in hand is required to play this card."
           assert (my.hand.size()-2 < opp.hand.size()) : "You must be able to draw at least one card after you have paid the discard cost"
         }
       };
