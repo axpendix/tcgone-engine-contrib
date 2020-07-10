@@ -3623,7 +3623,7 @@ public enum RebelClash implements LogicCardInfo {
           my.hand.getExcludedList(thisCard).select(count:2, "Discard two cards.").discard()
           def randomOppHand = randomizedOpponentsHand()
           randomOppHand.showToMe("Opponent's hand.")
-          if (randomOppHand.filterByType(TRAINER)) {
+          if (randomOppHand.hasType(TRAINER)) {
             randomOppHand.filterByType(TRAINER).select(count:1).moveTo(opp.deck)
           }
         }
