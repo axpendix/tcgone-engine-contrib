@@ -1383,7 +1383,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 40
-            opp.hand.select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be discarded.").showToMe("Selected card.").showToOpponent("This card will be discarded.").discard()
+            opp.hand.shuffledCopy().select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be discarded.").showToMe("Selected card.").showToOpponent("This card will be discarded.").discard()
           }
         }
         move "Hydro Snipe", {
@@ -2701,8 +2701,10 @@ public enum SwordShield implements LogicCardInfo {
           energyCost D
           onAttack {
             damage 20
-            if (opp.hand) {
-              opp.hand.select("Choose 1 card to put on the bottom of their deck").moveTo(opp.deck)
+            afterDamage{
+              if (opp.hand) {
+                opp.hand.shuffledCopy().select("Choose 1 card to put on the bottom of their deck").moveTo(opp.deck)
+              }
             }
           }
         }

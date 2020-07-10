@@ -2052,7 +2052,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "Discard a random card from your opponent's hand."
             energyCost C, C
             onAttack {
-              opp.hand.select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be discarded.").showToMe("Selected card.").showToOpponent("This card will be discarded.").discard()
+              opp.hand.shuffledCopy().select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be discarded.").showToMe("Selected card.").showToOpponent("This card will be discarded.").discard()
             }
           }
           move "Bug Bite", {

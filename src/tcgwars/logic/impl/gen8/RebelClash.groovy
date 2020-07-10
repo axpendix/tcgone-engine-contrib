@@ -2811,7 +2811,7 @@ public enum RebelClash implements LogicCardInfo {
 
             afterDamage {
               if (opp.hand) {
-                opp.hand.select("Choose 1 card to put on the bottom of your opponent's deck.").moveTo(opp.deck)
+                opp.hand.shuffledCopy().select("Choose 1 card to put on the bottom of your opponent's deck.").moveTo(opp.deck)
               }
             }
           }

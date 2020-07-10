@@ -2775,7 +2775,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
             onAttack {
               gxPerform()
-              opp.hand.select(count:2,"Opponent's hand. Discard 2").discard()
+              opp.hand.shuffledCopy().select(count:2,"Opponent's hand. Discard 2").discard()
             }
           }
 
@@ -3527,7 +3527,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             onAttack {
               flip 2,{
                 if (opp.hand) {
-                  opp.hand.select("Opponent's hand. Shuffle a card into their deck.").moveTo(opp.deck)
+                  opp.hand.shuffledCopy().select("Opponent's hand. Shuffle a card into their deck.").moveTo(opp.deck)
                   shuffleDeck(null, TargetPlayer.OPPONENT)
                 }
               }

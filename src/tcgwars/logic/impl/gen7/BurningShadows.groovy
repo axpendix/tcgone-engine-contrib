@@ -2797,7 +2797,7 @@ public enum BurningShadows implements LogicCardInfo {
         return itemCard (this) {
           text "Choose a random card from your opponent's hand. Your opponent reveals that card. If it's a Supporter card, discard it.\nYou may play as many Item cards as you like during your turn (before your attack)."
           onPlay {
-            opp.hand.select(hidden: true, "Select random card from opponent's hand").showToMe("Selected card").showToOpponent("Opponent used Tormenting Spray").each {if(it.cardTypes.is(SUPPORTER)) discard(it)}
+            opp.hand.shuffledCopy().select(hidden: true, "Select random card from opponent's hand").showToMe("Selected card").showToOpponent("Opponent used Tormenting Spray").each {if(it.cardTypes.is(SUPPORTER)) discard(it)}
           }
           playRequirement{
             assert opp.hand

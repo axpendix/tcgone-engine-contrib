@@ -1473,7 +1473,7 @@ public enum LostThunder implements LogicCardInfo {
             energyCost W
             onAttack{
               if (opp.hand){
-                opp.hand.select("Select the card to put in the Lost Zone").moveTo(opp.lostZone)
+                opp.hand.shuffledCopy().select("Select the card to put in the Lost Zone").moveTo(opp.lostZone)
               }
             }
           }

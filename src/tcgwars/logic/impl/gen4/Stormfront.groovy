@@ -2383,7 +2383,7 @@ public enum Stormfront implements LogicCardInfo {
               if (opp.deck) {
                 opp.deck.subList(0, 1).discard()
               }
-              opp.hand.select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be discarded").showToMe("Selected card").showToOpponent("This card will be discarded").discard()
+              if (opp.hand) opp.hand.shuffledCopy().select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be discarded").showToMe("Selected card").showToOpponent("This card will be discarded").discard()
             }
           }
           move "", {
