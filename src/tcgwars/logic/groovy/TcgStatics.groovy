@@ -957,7 +957,7 @@ class TcgStatics {
 
   static void astonish(int count=1){
     if(checkBodyguard()) return
-    def sel=opp.hand.select(hidden: true, count: count, "Choose ${count==1?'a':count} random ${count==1?'card':'cards'} from your opponent's hand to be shuffled into his or her deck").showToMe("Selected card(s)").showToOpponent("Astonish: these cards will be shuffled from your hand to your deck")
+    def sel = randomizedOpponentsHand().select(hidden: true, count: count, "Choose ${count==1?'a':count} random ${count==1?'card':'cards'} from your opponent's hand to be shuffled into his or her deck").showToMe("Selected card(s)").showToOpponent("Astonish: these cards will be shuffled from your hand to your deck")
     sel.moveTo(opp.deck)
     shuffleDeck(null, TargetPlayer.OPPONENT)
 //		opp.hand.removeAll(sel)
