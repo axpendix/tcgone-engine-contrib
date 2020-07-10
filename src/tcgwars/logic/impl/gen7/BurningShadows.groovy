@@ -2528,7 +2528,7 @@ public enum BurningShadows implements LogicCardInfo {
               opp.hand.showToMe("Opponent's hand")
               def shuffledHand = opp.hand.copy()
               shuffledHand.showToMe("Still Opponent's hand")
-              shuffleHand.shuffle()
+              shuffledHand.shuffle()
               shuffledHand.showToMe("Randomized Opponent's hand")
               opp.hand.showToMe("Opponent's hand")
             }
