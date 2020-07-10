@@ -827,7 +827,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             energyCost C
             onAttack {
               flip 3, {
-                if(opp.hand) {
+                if (opp.hand) {
                   opp.hand.select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be discarded").showToMe("Selected card").showToOpponent("This card will be discarded").discard()
                 }
               }
@@ -1937,7 +1937,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             attackRequirement {
               assert opp.hand : "Opponent has no cards in hand."}
             onAttack {
-              opp.hand.showToMe("Opponent's hand")
+              if (opp.hand) randomizedOpponentsHand().showToMe("Opponent's hand")
             }
           }
           move "Scratch", {
@@ -2449,7 +2449,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
         return itemCard (this) {
           text "LOOK AT YOUR OPPONENTS HAND!"
           onPlay {
-            opp.hand.showToMe("Opponent's hand")
+            randomizedOpponentsHand().showToMe("Opponent's hand")
           }
           playRequirement{
             assert opp.hand : "Opponent has no cards in hand."

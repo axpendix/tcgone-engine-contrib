@@ -2973,7 +2973,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {
               assert opp.hand : "Opponent has no cards in hand."}
             onAttack {
-              opp.hand.showToMe("Opponent's hand")
+              if (opp.hand) randomizedOpponentsHand().showToMe("Opponent's hand")
             }
           }
           move "Snowball Fight", {

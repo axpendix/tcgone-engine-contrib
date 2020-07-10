@@ -411,8 +411,7 @@ public enum DiamondPearl implements LogicCardInfo {
             onActivate {reason ->
               if(reason==PLAY_FROM_HAND && opp.hand && opp.bench.notFull && confirm('Use Gleam Eyes?')){
                 powerUsed()
-                opp.hand.showToMe("Opponent's hand")
-                def list = opp.hand.filterByType(BASIC)
+                def list = randomizedOpponentsHand().showToMe("Opponent's hand").filterByType(BASIC)
                 if(list){
                   def card = list.select("Put a Basic Pokémon you find there onto your opponent's Bench").first()
                   opp.hand.remove(card)
