@@ -1660,7 +1660,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return supporter (this) {
         text "You and your opponent show each other your hands, then shuffle all the Trainer cards from your hands into your decks."
         onPlay {
-          if (opp.hand) randomizedOpponentsHand().showToMe("Opponent's hand")
+          if (opp.hand) opp.hand.shuffledCopy().showToMe("Opponent's hand")
           my.hand.getExcludedList(thisCard).showToOpponent("Opponent's hand")
           def tarOpp = opp.hand.filterByType(TRAINER)
           def tarMy = my.hand.getExcludedList(thisCard).filterByType(TRAINER)
