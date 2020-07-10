@@ -2525,7 +2525,11 @@ public enum BurningShadows implements LogicCardInfo {
             text "Your opponent reveals their hand."
             energyCost C
             onAttack {
+              def randomHand = randomizedOpponentsHand()
+              randomHand.showToMe("Opponent's hand")
               randomizedOpponentsHand().showToMe("Opponent's hand")
+              def card1 = randomHand.select("Test 1")
+              def card2 = randomizedOpponentsHand().select("Test 1")
             }
           }
           move "Peck", {
