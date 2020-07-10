@@ -326,7 +326,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             energyCost D, C
             onAttack {
               damage 20
-              if(opp.hand){
+              if (opp.hand){
                 opp.hand.select(hidden: true, "Select random card from opponent's hand").showToOpponent("Card to be discarded").discard()
               }
             }

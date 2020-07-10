@@ -2441,7 +2441,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             assert self.benched : "This Pokemon is not benched"
             assert opp.hand : "Opponent's hand is empty"
             powerUsed()
-            opp.hand.showToMe("Opponent's hand")
+            randomizedOpponentsHand().showToMe("Your opponent's hand")
           }
         }
         move "Super Psy Bolt", {
