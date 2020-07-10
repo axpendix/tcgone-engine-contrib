@@ -1106,7 +1106,7 @@ public enum FossilNG implements LogicCardInfo {
             text "Your opponent plays with his or her hand face up. This power stops working while Omanyte is Asleep, Confused, or Paralyzed."
             actionA {
               //TODO: Make cards visible, even to spectators.
-              opp.hand.showToMe("opponent's hand")
+              opp.hand.shuffledCopy().showToMe("opponent's hand")
             }
           }
           move "Water Gun", {

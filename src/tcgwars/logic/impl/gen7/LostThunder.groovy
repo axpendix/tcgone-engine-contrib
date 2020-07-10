@@ -2151,7 +2151,7 @@ public enum LostThunder implements LogicCardInfo {
             energyCost C,C
             onAttack{
               damage 30
-              opp.hand.showToMe("Your opponent's hand")
+              opp.hand.shuffledCopy().showToMe("Your opponent's hand.")
               if(opp.hand.filterByType(ENERGY)) damage 60
             }
           }
@@ -4344,13 +4344,14 @@ public enum LostThunder implements LogicCardInfo {
         return supporter(this) {
           text "You can play this card only if 1 of your [P] Pokémon was Knocked Out during your opponent's last turn.\nYour opponent reveals their hand. Choose 2 cards you find there. Your opponent shuffles those cards into their deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
-            opp.hand.showToMe("Your opponent's hand").select(count : Math.min(2,opp.hand.size())).moveTo(opp.deck)
+            opp.hand.shuffledCopy().select(count : Math.min(2,opp.hand.size()), "Your opponent's hand. Choose 2 cards you find there, and your opponent will shuffle those cards into their deck.").showToOpponent("Your opponent used Morty. These two cards will be shuffled into your deck.").moveTo(opp.deck)
             shuffleDeck(null, TargetPlayer.OPPONENT)
           }
           playRequirement{
             assert bg.turnCount
             assert my.lastKnockoutByOpponentDamageTurn == bg.turnCount - 1: "No Pokémon has been Knocked Out during your opponent’s last turn"
-            assert my.knockoutTypesPerTurn.get(bg.turnCount - 1)?.contains(P) : "The Pokémon Knocked Out was not Fairy"
+            assert my.knockoutTypesPerTurn.get(bg.turnCount - 1)?.contains(P) : "The Pokémon Knocked Out was not Psychic"
+            assert opp.hand : "Your opponent has no cards in their hand"
           }
         };
       case NET_BALL_187:

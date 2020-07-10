@@ -1806,7 +1806,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             onAttack{
               gxPerform()
               if (opp.hand){
-                opp.hand.showToMe("Your opponent's hand")
+                opp.hand.shuffledCopy().showToMe("Your opponent's hand")
                 opp.hand.filterByType(ENERGY).each{
                   damage 120
                 }

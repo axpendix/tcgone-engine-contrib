@@ -1794,7 +1794,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             onAttack {
               damage 30
               afterDamage{
-                opp.hand.showToMe("Opponent’s hand")
+                if (opp.hand) opp.hand.shuffledCopy().showToMe("Opponent’s hand")
               }
             }
           }
@@ -2243,7 +2243,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 shuffleDeck(null, TargetPlayer.OPPONENT)
               }
               if (my.hand) {
-                def myCard = my.hand.oppSelect(hidden: true, count: 1, "Choose 1 random card from your opponent's hand to be shuffled into his or her deck").showToOpponent("Selected card(s)").showToMe("Hidden Power: this card will be shuffled from your hand to your deck")
+                def myCard = my.hand.shuffledCopy().oppSelect(hidden: true, count: 1, "Choose 1 random card from your opponent's hand to be shuffled into his or her deck").showToOpponent("Selected card(s)").showToMe("Hidden Power: this card will be shuffled from your hand to your deck")
                 myCard.moveTo(my.deck)
                 shuffleDeck()
               }

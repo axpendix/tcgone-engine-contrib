@@ -791,11 +791,11 @@ public enum HolonPhantoms implements LogicCardInfo {
           text "30+ damage. Look at your opponent's hand. This attack does 30 damage plus 10 more damage for each Trainer card in your opponent's hand."
           energyCost P, M
           onAttack {
-            opp.hand.showToMe("Opponent’s hand")
+            opp.hand.shuffledCopy().showToMe("Opponent’s hand")
             def trainerSize = opp.hand.findAll { it.cardTypes.is(TRAINER) }.size()
 
-            damage 30+10*trainerSize
             bc "Found $trainerSize Trainer cards"
+            damage 30+10*trainerSize
           }
         }
       };
