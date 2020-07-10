@@ -1424,7 +1424,7 @@ public enum TeamUp implements LogicCardInfo {
             text "50× damage. Your opponent reveals their hand. This attack does 50 damage for each Trainer card you find there."
             energyCost P,P
             onAttack{
-              if(opp.hand){
+              if (opp.hand){
                 opp.hand.showToMe("Your opponent's hand")
                 damage 50*opp.hand.filterByType(TRAINER).size()
               }
@@ -3588,13 +3588,14 @@ public enum TeamUp implements LogicCardInfo {
         return supporter(this) {
           text "Your opponent reveals their hand. You may choose a Supporter card you find there and use the effect of that card as the effect of this card.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
-            if(opp.hand.hasType(SUPPORTER)){
-              def card=opp.hand.select("Opponent's hand. Select a supporter.", cardTypeFilter(SUPPORTER)).first()
+            def randomOppHand = randomizedOpponentsHand()
+            if(randomOppHand.hasType(SUPPORTER)){
+              def card = randomOppHand.select("Opponent's hand. Select a supporter.", cardTypeFilter(SUPPORTER)).first()
               bg.deterministicCurrentThreadPlayerType=bg.currentTurn
               bg.em().run(new PlayTrainer(card).setDontDiscard(true))
               bg.clearDeterministicCurrentThreadPlayerType()
             } else {
-              opp.hand.showToMe("Opponent's hand. No supporter in there.")
+              randomOppHand.showToMe("Opponent's hand. No supporter in there.")
             }
           }
           playRequirement{

@@ -468,12 +468,14 @@ public enum UnbrokenBonds implements LogicCardInfo {
             text "Once during your turn (before your attack), if your opponent's Bench isn't full, you may flip a coin. If heads, your opponent reveals their hand. Put a Basic Pokémon you find there onto their Bench."
             actionA {
               assert opp.bench.notFull : "There is no more space on your opponent bench"
+              assert opp.hand : "Your opponent has no cards in hand"
               checkLastTurn()
               powerUsed()
               flip {
-                opp.hand.showToMe("Opponent's hand")
-                if(opp.hand.findAll{it.cardTypes.is(BASIC)}){
-                  def card = opp.hand.findAll{it.cardTypes.is(BASIC)}.select("select the pokémon to put on the bench").first()
+                def randomOppHand = randomizedOpponentsHand()
+                randomOppHand.showToMe("Opponent's hand")
+                if(randomOppHand.any{it.cardTypes.is(BASIC)}){
+                  def card = randomOppHand.findAll{it.cardTypes.is(BASIC)}.select("select the pokémon to put on the bench").first()
                   opp.hand.remove(card)
                   benchPCS(card, OTHER, TargetPlayer.OPPONENT)
                 }
@@ -2976,23 +2978,26 @@ public enum UnbrokenBonds implements LogicCardInfo {
             text "Your opponent reveals their hand. You may discard a Pokémon you find there and use one of that Pokémon’s non-GX attacks as this attack."
             energyCost D
             attackRequirement {
-              assert opp.hand
+              assert opp.hand : "Your opponent has no cards in hand"
             }
             onAttack {
-              opp.hand.showToMe("Opponent's hand")
-              if(opp.hand.filterByType(POKEMON)){
-                def tmp = opp.hand.filterByType(POKEMON).select(min:0, "You may discard a Pokémon you find there and use one of that Pokémon’s non-GX attacks as this attack.")
-                if(tmp){
-                  def card = tmp.first()
-                  bc "$card was chosen"
-                  discard card
-                  def moves = card.asPokemonCard().moves.findAll{!it.name.contains("GX")}
-                  if(moves){
-                    def move = choose(moves, "Choose attack")
-                    bc "$move was chosen"
-                    def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
-                    attack (move as Move)
-                    bef.unregisterItself(bg().em())
+              if (opp.hand) {
+                def randomOppHand = randomizedOpponentsHand()
+                randomOppHand.showToMe("Opponent's hand")
+                if (randomOppHand.hasType(POKEMON)){
+                  def tmp = randomOppHand.filterByType(POKEMON).select(min:0, "You may discard a Pokémon you find there and use one of that Pokémon’s non-GX attacks as this attack.")
+                  if(tmp){
+                    def card = tmp.first()
+                    bc "$card was chosen"
+                    discard card
+                    def moves = card.asPokemonCard().moves.findAll{!it.name.contains("GX")}
+                    if(moves){
+                      def move = choose(moves, "Choose attack")
+                      bc "$move was chosen"
+                      def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
+                      attack (move as Move)
+                      bef.unregisterItself(bg().em())
+                    }
                   }
                 }
               }
@@ -3521,7 +3526,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
             onAttack {
               flip 2,{
-                if(opp.hand) {
+                if (opp.hand) {
                   opp.hand.select("Opponent's hand. Shuffle a card into their deck.").moveTo(opp.deck)
                   shuffleDeck(null, TargetPlayer.OPPONENT)
                 }

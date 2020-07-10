@@ -3241,11 +3241,12 @@ public enum UnifiedMinds implements LogicCardInfo {
           bwAbility "Captivating Wink", {
             text "When you play this Pokémon from your hand onto your Bench during your turn, you may have your opponent reveal their hand and put any number of Basic Pokémon you find there onto their Bench."
             onActivate {
-              if (it == PLAY_FROM_HAND && confirm("Use Captivating Wink?")) {
-                opp.hand.showToMe("Opponent's hand.")
+              if (it == PLAY_FROM_HAND && opp.hand && confirm("Use Captivating Wink?")) {
+                def randomOppHand = randomizedOpponentsHand()
+                randomOppHand.showToMe("Opponent's hand.")
 
-                if (opp.hand.findAll{it.cardTypes.is(BASIC)}) {
-                  def basicPokemon = opp.hand.findAll{ it.cardTypes.is(BASIC) }
+                if (randomOppHand.hasType(BASIC)) {
+                  def basicPokemon = randomOppHand.findAll{ it.cardTypes.is(BASIC) }
                   def maximumAllowed = Math.min(basicPokemon.size(), opp.bench.freeBenchCount)
                   basicPokemon.select(min: 0, max: maximumAllowed).each {
                     opp.hand.remove(it)
@@ -3269,8 +3270,8 @@ public enum UnifiedMinds implements LogicCardInfo {
             attackRequirement { gxCheck() }
             onAttack {
               gxPerform()
-              opp.hand.showToMe("Opponent's hand.")
-              opp.hand.filterByType(SUPPORTER).discard()
+              if (opp.hand) randomizedOpponentsHand().showToMe("Opponent's hand. All supporters in it will be discarded.")
+              opp.hand.filterByType(SUPPORTER).showToOpponent("Your opponent used Big Eater GX: These Supporter cards will now be discarded.").discard()
             }
           }
         };

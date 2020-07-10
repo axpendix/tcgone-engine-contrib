@@ -1008,8 +1008,11 @@ public enum HiddenFates implements LogicCardInfo {
         move "Curiosity", {
           text "Your opponent reveals their hand."
           energyCost C
+          attackRequirement {
+            assert opp.hand : "Your opponent has no cards in hand"
+          }
           onAttack {
-            opp.hand.showToMe("Opponent's hand")
+            if (opp.hand) randomizedOpponentsHand().showToMe("Opponent's hand")
           }
         }
         move "Spin Tackle", {
