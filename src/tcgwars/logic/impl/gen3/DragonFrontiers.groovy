@@ -1009,13 +1009,13 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Power of Evolution", {
           text "Once during your turn (before your attack), if Electabuzz is an Evolved Pokémon, you may draw a card from the bottom of your deck. This power can't be used if Electabuzz is affected by a Special Condition."
           actionA {
-            checkNoSPC()
             checkLastTurn()
-            powerUsed()
+            checkNoSPC()
             assert my.deck : "Deck is empty"
             assert self.evolution : "This Electabuzz is not an Evolved Pokemon"
 
-            my.deck.subList(my.deck.size() - 1, my.deck.size()).moveTo(my.hand)
+            powerUsed()
+            my.deck.subList(my.deck.size() - 1, my.deck.size()).moveTo(hidden:true, my.hand)
           }
         }
         move "Swift", {
