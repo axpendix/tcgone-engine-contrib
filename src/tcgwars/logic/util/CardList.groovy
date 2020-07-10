@@ -67,6 +67,12 @@ public class CardList extends ArrayList<Card> {
     return shCopy
   }
 
+  public CardList shuffledCopy(){
+    def shCopy = this.copy()
+    shCopy.shuffle()
+    return shCopy
+  }
+
   List<String> getFullNames(){
     this.collect {it.fullName}
   }
