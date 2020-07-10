@@ -2526,7 +2526,8 @@ public enum BurningShadows implements LogicCardInfo {
             energyCost C
             onAttack {
               opp.hand.showToMe("Opponent's hand")
-              opp.hand.copy().shuffle().showToMe("Randomized Opponent's hand")
+              def shuffledHand = opp.hand.copy().shuffle()
+              shuffledHand.showToMe("Randomized Opponent's hand")
               opp.hand.showToMe("Opponent's hand")
             }
           }
