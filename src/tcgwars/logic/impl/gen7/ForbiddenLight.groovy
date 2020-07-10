@@ -2159,17 +2159,18 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
             onAttack {
               if (opp.hand) {
-              def randomOppHand = opp.hand.shuffledCopy()
-              if(randomOppHand.hasType(SUPPORTER)){
-                def support = randomOppHand.select(max: 0, "Your opponent's hand. You may discard a Supporter card you find there and use the effect of that card as the effect of this attack.", cardTypeFilter(SUPPORTER))
-                if (support){
-                  discard support.first()
-                  bg.deterministicCurrentThreadPlayerType=self.owner
-                  bg.em().run(new PlayTrainer(support.first()))
-                  bg.clearDeterministicCurrentThreadPlayerType()
+                def randomOppHand = opp.hand.shuffledCopy()
+                if(randomOppHand.hasType(SUPPORTER)){
+                  def support = randomOppHand.select(max: 0, "Your opponent's hand. You may discard a Supporter card you find there and use the effect of that card as the effect of this attack.", cardTypeFilter(SUPPORTER))
+                  if (support){
+                    discard support.first()
+                    bg.deterministicCurrentThreadPlayerType=self.owner
+                    bg.em().run(new PlayTrainer(support.first()))
+                    bg.clearDeterministicCurrentThreadPlayerType()
+                  }
+                } else {
+                  randomOppHand.showToMe("Your opponent's hand. No supporter in there.")
                 }
-              } else {
-                randomOppHand.showToMe("Your opponent's hand. No supporter in there.")
               }
             }
           }
