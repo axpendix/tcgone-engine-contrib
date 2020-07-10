@@ -1958,6 +1958,9 @@ public enum UnifiedMinds implements LogicCardInfo {
                     }
                   }
                 }
+                after EVOLVE, self, {unregister()}
+                after DEVOLVE, self, {unregister()}
+                after SWITCH, self, {unregister()}
                 unregisterAfter 2
               }
             }
