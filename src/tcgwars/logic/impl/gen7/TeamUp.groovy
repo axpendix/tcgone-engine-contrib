@@ -1428,7 +1428,7 @@ public enum TeamUp implements LogicCardInfo {
             }
             onAttack{
               if (opp.hand){
-                trainersInHand = opp.hand.shuffledCopy().showToMe("Your opponent's hand").filterByType(TRAINER)
+                def trainersInHand = opp.hand.shuffledCopy().showToMe("Your opponent's hand").filterByType(TRAINER)
                 damage 50 * trainersInHand.size()
               }
             }
@@ -3084,7 +3084,7 @@ public enum TeamUp implements LogicCardInfo {
                 if(opp.hand.size() >= 4){
                   def randomOppHand = opp.hand.shuffledCopy()
                   if (opp.hand.size() == 4){
-                    randomOppHand.shuffledCopy().showToMe("Your opponent's hand.")
+                    randomOppHand.showToMe("Your opponent's hand.")
                   } else {
                     randomOppHand.select(count:opp.hand.size() - 4,"Your opponent's hand. Choose cards to discard until they have exactly 4 left.").discard()
                   }
