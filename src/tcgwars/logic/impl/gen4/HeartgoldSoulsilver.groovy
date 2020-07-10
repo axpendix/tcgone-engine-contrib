@@ -1937,7 +1937,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             attackRequirement {
               assert opp.hand : "Opponent has no cards in hand."}
             onAttack {
-              if (opp.hand) randomizedOpponentsHand().showToMe("Opponent's hand")
+              if (opp.hand) opp.hand.shuffledCopy().showToMe("Opponent's hand")
             }
           }
           move "Scratch", {
@@ -2449,7 +2449,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
         return itemCard (this) {
           text "LOOK AT YOUR OPPONENTS HAND!"
           onPlay {
-            randomizedOpponentsHand().showToMe("Opponent's hand")
+            opp.hand.shuffledCopy().showToMe("Opponent's hand")
           }
           playRequirement{
             assert opp.hand : "Opponent has no cards in hand."

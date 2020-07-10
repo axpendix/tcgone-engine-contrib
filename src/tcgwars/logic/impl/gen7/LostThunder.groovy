@@ -3749,7 +3749,7 @@ public enum LostThunder implements LogicCardInfo {
             }
             onAttack {
               if (opp.hand) {
-                def randomOppHand = randomizedOpponentsHand()
+                def randomOppHand = opp.hand.shuffledCopy()
                 if(randomOppHand.hasType(SUPPORTER)){
                   def support = randomOppHand.select(max: 0, "Your opponent's hand. You may use the effect of a Supporter card you find there as the effect of this attack.", cardTypeFilter(SUPPORTER))
                   if (support){

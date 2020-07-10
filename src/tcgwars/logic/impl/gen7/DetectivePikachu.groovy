@@ -266,7 +266,7 @@ public enum DetectivePikachu implements LogicCardInfo {
               assert opp.hand : "Your opponent has no cards in hand"
             }
             onAttack {
-              if (opp.hand) randomizedOpponentsHand().showToMe("Opponent's hand")
+              if (opp.hand) opp.hand.shuffledCopy().showToMe("Opponent's hand")
             }
           }
           move "Surprise Attack", {

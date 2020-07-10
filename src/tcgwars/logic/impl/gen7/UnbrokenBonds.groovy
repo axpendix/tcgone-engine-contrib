@@ -472,7 +472,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               checkLastTurn()
               powerUsed()
               flip {
-                def randomOppHand = randomizedOpponentsHand()
+                def randomOppHand = opp.hand.shuffledCopy()
                 randomOppHand.showToMe("Opponent's hand")
                 if(randomOppHand.any{it.cardTypes.is(BASIC)}){
                   def card = randomOppHand.findAll{it.cardTypes.is(BASIC)}.select("select the pokémon to put on the bench").first()
@@ -2982,7 +2982,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
             onAttack {
               if (opp.hand) {
-                def randomOppHand = randomizedOpponentsHand()
+                def randomOppHand = opp.hand.shuffledCopy()
                 randomOppHand.showToMe("Opponent's hand")
                 if (randomOppHand.hasType(POKEMON)){
                   def tmp = randomOppHand.filterByType(POKEMON).select(min:0, "You may discard a Pokémon you find there and use one of that Pokémon’s non-GX attacks as this attack.")

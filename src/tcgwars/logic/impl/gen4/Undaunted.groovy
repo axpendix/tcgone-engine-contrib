@@ -359,7 +359,7 @@ public enum Undaunted implements LogicCardInfo {
               assert self.isActive() : "$self is not active"
               assert opp.hand : "Your opponent has no cards in their hand"
               powerUsed()
-              def randomOppHand = randomizedOpponentsHand()
+              def randomOppHand = opp.hand.shuffledCopy()
               if(randomOppHand.hasType(SUPPORTER)){
                 def card = randomOppHand.select(min:1, "Opponent's hand. Select a Supporter.", cardTypeFilter(SUPPORTER)).first()
                 bg.deterministicCurrentThreadPlayerType=self.owner

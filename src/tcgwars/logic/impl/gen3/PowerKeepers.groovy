@@ -2085,7 +2085,7 @@ public enum PowerKeepers implements LogicCardInfo {
             assert opp.hand : "Opponent's hand is empty"
           }
           onAttack {
-            def pokeCards = randomizedOpponentsHand().showToMe("Opponent's hand").filterByType(POKEMON)
+            def pokeCards = opp.hand.shuffledCopy().showToMe("Opponent's hand").filterByType(POKEMON)
             if (pokeCards) {
               def card = pokeCards.select(max:1, "Select a Pokémon and use one of that Pokémon’s attacks as this attack.").first()
               bc "$card was chosen"

@@ -1894,7 +1894,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               assert opp.hand : "Your opponent has no cards in their hand."
             }
             onAttack {
-              if (opp.hand) randomizedOpponentsHand().showToMe("Opponent's hand.")
+              if (opp.hand) opp.hand.shuffledCopy().showToMe("Opponent's hand.")
             }
           }
           move "Razor Fin", {
@@ -3272,7 +3272,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             }
             onAttack {
               if (opp.hand) {
-                def itemsToDiscard = randomizedOpponentsHand().showToMe("Opponent's hand.").filterByType(ITEM)
+                def itemsToDiscard = opp.hand.shuffledCopy().showToMe("Opponent's hand.").filterByType(ITEM)
                 if(itemsToDiscard){
                   itemsToDiscard.select("Select an Item to discard.").discard()
                 }

@@ -3588,7 +3588,7 @@ public enum TeamUp implements LogicCardInfo {
         return supporter(this) {
           text "Your opponent reveals their hand. You may choose a Supporter card you find there and use the effect of that card as the effect of this card.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
-            def randomOppHand = randomizedOpponentsHand()
+            def randomOppHand = opp.hand.shuffledCopy()
             if(randomOppHand.hasType(SUPPORTER)){
               def card = randomOppHand.select("Opponent's hand. Select a supporter.", cardTypeFilter(SUPPORTER)).first()
               bg.deterministicCurrentThreadPlayerType=bg.currentTurn

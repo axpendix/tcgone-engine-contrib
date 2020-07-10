@@ -2159,7 +2159,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
             onAttack {
               if (opp.hand) {
-              def randomOppHand = randomizedOpponentsHand()
+              def randomOppHand = opp.hand.shuffledCopy()
               if(randomOppHand.hasType(SUPPORTER)){
                 def support = randomOppHand.select(max: 0, "Your opponent's hand. You may discard a Supporter card you find there and use the effect of that card as the effect of this attack.", cardTypeFilter(SUPPORTER))
                 if (support){
@@ -2487,7 +2487,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
             onAttack {
               if (opp.hand) {
-                def itemsInOppHand = randomizedOpponentsHand().showToMe("Opponent's hand. All items in it will be discarded.").filterByType(ITEM)
+                def itemsInOppHand = opp.hand.shuffledCopy().showToMe("Opponent's hand. All items in it will be discarded.").filterByType(ITEM)
                 if (itemsInOppHand)
                   itemsInOppHand.showToOpponent("Your opponent used Destructive Sound. All of these items in your hand will now be discarded.").discard()
                 else

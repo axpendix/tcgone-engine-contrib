@@ -521,7 +521,7 @@ public enum CelestialStorm implements LogicCardInfo {
             }
             onAttack {
               if (opp.hand) {
-                def supportersToShuffle = randomizedOpponentsHand().showToMe("Opponent's hand.").filterByType(SUPPORTER)
+                def supportersToShuffle = opp.hand.shuffledCopy().showToMe("Opponent's hand.").filterByType(SUPPORTER)
                 if(supportersToShuffle){
                   supportersToShuffle.select("Select a supporter to put back into your opponent's deck.").moveTo(opp.deck)
                   shuffleDeck(null, TargetPlayer.OPPONENT)

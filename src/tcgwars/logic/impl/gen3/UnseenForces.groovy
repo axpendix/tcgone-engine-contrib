@@ -1220,7 +1220,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 20
             afterDamage {
               if (opp.hand) {
-                def list = randomizedOpponentsHand().showToMe("Opponent's hand").filterByType(TRAINER)
+                def list = opp.hand.shuffledCopy().showToMe("Opponent's hand").filterByType(TRAINER)
                 if(list){
                   list.select("Select a Trainer card to discard").discard()
                 }
@@ -3452,7 +3452,7 @@ public enum UnseenForces implements LogicCardInfo {
             assert opp.hand : "Your opponent has no cards in their hand"
           }
           onAttack {
-            def basics = randomizedOpponentsHand().showToMe("Opponent's hand.").filterByType(BASIC)
+            def basics = opp.hand.shuffledCopy().showToMe("Opponent's hand.").filterByType(BASIC)
             if (basics) {
               basics.select("Choose a pokemon to bench").each {
                 opp.hand.remove(it)

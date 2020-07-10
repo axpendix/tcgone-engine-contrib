@@ -367,7 +367,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             assert opp.hand : "Your opponent has no cards in their hand"
             bg.em().storeObject("Sharing",bg.turnCount)
             powerUsed()
-            def randomOppHand = randomizedOpponentsHand()
+            def randomOppHand = opp.hand.shuffledCopy()
             if (randomOppHand.hasType(SUPPORTER)) {
               def sel = randomOppHand.select(min: 0, "Opponent's hand. You may select a Supporter and use it as the effect of this power.", cardTypeFilter(SUPPORTER))
               if (sel){

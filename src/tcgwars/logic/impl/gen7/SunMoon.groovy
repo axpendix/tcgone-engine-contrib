@@ -653,7 +653,7 @@ public enum SunMoon implements LogicCardInfo {
             text "When you play this card from your hand to evolve 1 of your Pokémon during your turn, you may have your opponent reveal their hand. Then, discard a card from it."
             onActivate {r->
               if(r==Ability.ActivationReason.PLAY_FROM_HAND && opp.hand && confirm("Use Queenly Majesty?")){
-                randomizedOpponentsHand().select("Your opponent's hand. Select a card to discard from it.").discard()
+                opp.hand.shuffledCopy().select("Your opponent's hand. Select a card to discard from it.").discard()
               }
             }
           }
@@ -2597,7 +2597,7 @@ public enum SunMoon implements LogicCardInfo {
               checkLastTurn()
               assert opp.hand : "Your opponent has no cards in hand"
               powerUsed()
-              randomizedOpponentsHand().showToMe("Opponent's hand")
+              opp.hand.shuffledCopy().showToMe("Opponent's hand")
             }
           }
           move "Headbutt Bounce", {
@@ -2830,7 +2830,7 @@ public enum SunMoon implements LogicCardInfo {
         return supporter (this) {
           text "Your opponent reveals their hand. Discard 2 Energy cards from it.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
-            def list = randomizedOpponentsHand().showToMe("Opponent's hand").filterByType(ENERGY)
+            def list = opp.hand.shuffledCopy().showToMe("Opponent's hand").filterByType(ENERGY)
             if(list){
               list.select(count: 2, "Discard").discard()
             }

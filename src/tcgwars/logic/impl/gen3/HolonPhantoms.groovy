@@ -1401,7 +1401,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost L, C
           onAttack {
             damage 30
-            def chosenCard = randomizedOpponentsHand().select(hidden: true, count: 1, "Choose 1 card from your opponent's hand without looking.")
+            def chosenCard = opp.hand.shuffledCopy().select(hidden: true, count: 1, "Choose 1 card from your opponent's hand without looking.")
             def result = ""
 
             if (chosenCard.first().cardTypes.is(TRAINER)){
@@ -2441,7 +2441,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             assert self.benched : "This Pokemon is not benched"
             assert opp.hand : "Opponent's hand is empty"
             powerUsed()
-            randomizedOpponentsHand().showToMe("Your opponent's hand")
+            opp.hand.shuffledCopy().showToMe("Your opponent's hand")
           }
         }
         move "Super Psy Bolt", {
