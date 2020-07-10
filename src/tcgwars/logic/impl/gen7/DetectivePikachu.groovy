@@ -263,10 +263,10 @@ public enum DetectivePikachu implements LogicCardInfo {
             text "Your opponent reveals their hand."
             energyCost L
             attackRequirement {
-              assert opp.hand
+              assert opp.hand : "Your opponent has no cards in hand"
             }
             onAttack {
-              opp.hand.showToMe("Opponent's hand")
+              if (opp.hand) randomizedOpponentsHand().showToMe("Opponent's hand")
             }
           }
           move "Surprise Attack", {

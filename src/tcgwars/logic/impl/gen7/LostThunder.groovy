@@ -1472,7 +1472,7 @@ public enum LostThunder implements LogicCardInfo {
             text "Look at your opponent's hand and put a card you find there in the Lost Zone."
             energyCost W
             onAttack{
-              if(opp.hand){
+              if (opp.hand){
                 opp.hand.select("Select the card to put in the Lost Zone").moveTo(opp.lostZone)
               }
             }
@@ -3748,13 +3748,18 @@ public enum LostThunder implements LogicCardInfo {
               assert opp.hand
             }
             onAttack {
-              if(opp.hand.hasType(SUPPORTER)){
-                def card=opp.hand.showToMe("Your opponent's hand.").select("Opponent's hand. Select a supporter.", cardTypeFilter(SUPPORTER)).first()
-                bg.deterministicCurrentThreadPlayerType=self.owner
-                bg.em().run(new PlayTrainer(card))
-                bg.clearDeterministicCurrentThreadPlayerType()
-              } else {
-                opp.hand.showToMe("Opponent's hand. No supporter in there.")
+              if (opp.hand) {
+                def randomOppHand = randomizedOpponentsHand()
+                if(randomOppHand.hasType(SUPPORTER)){
+                  def support = randomOppHand.select(max: 0, "Your opponent's hand. You may use the effect of a Supporter card you find there as the effect of this attack.", cardTypeFilter(SUPPORTER))
+                  if (support){
+                    bg.deterministicCurrentThreadPlayerType=self.owner
+                    bg.em().run(new PlayTrainer(support.first()))
+                    bg.clearDeterministicCurrentThreadPlayerType()
+                  }
+                } else {
+                  randomOppHand.showToMe("Your opponent's hand. No supporter in there.")
+                }
               }
             }
           }

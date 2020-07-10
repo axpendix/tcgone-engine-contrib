@@ -2773,8 +2773,11 @@ public enum UltraPrism implements LogicCardInfo {
           move "Scout", {
             text "Your opponent reveals their hand."
             energyCost C
+            attackRequirement {
+              assert opp.hand : "Your opponent has no cards in hand"
+            }
             onAttack {
-              opp.hand.showToMe("Opponent's hand")
+              if (opp.hand) randomizedOpponentsHand().showToMe("Opponent's hand")
             }
           }
           move "Take Down", {
@@ -2795,8 +2798,8 @@ public enum UltraPrism implements LogicCardInfo {
             energyCost C, C
             onAttack {
               damage 20
-              opp.hand.showToMe("Opponent's hand")
-              if(opp.hand.filterByType(POKEMON)){
+              if (opp.hand) randomizedOpponentsHand().showToMe("Opponent's hand")
+              if (opp.hand.filterByType(POKEMON)){
                 damage 80
               }
             }
