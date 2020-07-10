@@ -497,8 +497,8 @@ public enum GuardiansRising implements LogicCardInfo {
               all.remove(src)
               tar=tar.select("Target for damage counter")
               src.damage-=hp(10)
-              tar.damage+=hp(10)
-              bc "Swapped a damage counter from $src to $tar"
+              directDamage 10, tar, SRC_ABILITY
+              bc "Moved 1 damage counter from $src to $tar"
               checkFaint()
             }
           }

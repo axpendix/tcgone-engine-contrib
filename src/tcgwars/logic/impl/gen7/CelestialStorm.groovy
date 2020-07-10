@@ -1692,7 +1692,8 @@ public enum CelestialStorm implements LogicCardInfo {
               def pcs = bothAll.findAll{it.numberOfDamageCounters}.select("Choose the pokémon to move the damage counter from")
               def tar = bothAll.findAll{it != pcs}.select("Select the pokémon to recieve the damage counter")
               pcs.damage-=hp(10)
-              tar.damage+=hp(10)
+              directDamage 10, tar, SRC_ABILITY
+              bc "Moved 1 damage counter from $pcs to $tar"
             }
           }
           move "Shadow Chant" , {
