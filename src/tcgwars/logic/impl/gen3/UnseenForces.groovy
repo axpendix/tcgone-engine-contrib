@@ -961,7 +961,9 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost L, C, C, C
           onAttack {
             damage 70
-            discardSelfEnergy C,C,C
+            afterDamage{
+              discardSelfEnergy C,C,C
+            }
           }
         }
       };
