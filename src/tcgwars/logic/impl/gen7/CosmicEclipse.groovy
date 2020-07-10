@@ -871,7 +871,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               after PROCESS_ATTACK_EFFECTS, {
                 if (bg.em().retrieveObject("Power_Cheer") != bg.turnCount){
                   bg.dm().each{
-                    if(it.from.owner == self.owner && it.from.pokemonGX && pcs.realEvolution && it.from.topPokemonCard.predecessor == "Eevee" && it.to.active && it.to.owner != self.owner && it.dmg.value && it.notNoEffect) {
+                    if(it.from.owner == self.owner && it.from.pokemonGX && it.from.topPokemonCard.predecessor == "Eevee" && it.to.active && it.to.owner != self.owner && it.dmg.value && it.notNoEffect) {
                       bc "Power Cheer +30"
                       it.dmg += hp(30)
                     }
