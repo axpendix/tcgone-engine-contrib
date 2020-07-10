@@ -1461,7 +1461,7 @@ public enum SunMoon implements LogicCardInfo {
           bwAbility "Power of Alchemy", {
             text "Each Basic Pokémon in play, in each player's hand, and in each player's discard pile has no Abilities."
             getterA (GET_ABILITIES, BEFORE_LAST) {h->
-              if (h.effect.target.basic) {
+              if (h.effect.target != self && h.effect.target.basic) {
                 h.object.keySet().removeIf{it instanceof BwAbility}
               }
             }
