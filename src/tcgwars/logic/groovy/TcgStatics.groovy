@@ -1367,6 +1367,12 @@ class TcgStatics {
     }
   }
 
+  static randomizedOpponentsHand() {
+    def oppHand = opp.hand.copy()
+    oppHand.shuffle()
+    return oppHand
+  }
+
   static whirlwind2(int dmg = 0, int selfDmg = 0){
     if (dmg) {
       if ((bg.stadiumInfoStruct && ["Sky Pillar", "Mountain Ring"].contains(bg.stadiumInfoStruct.stadiumCard.name)) || opp.all.any{PokemonCardSet pcs -> pcs.abilities.any{["Bench Barrier", "Sand Veil", "Daunting Pose", "Fabled Defense"].contains.(it.name)}}){

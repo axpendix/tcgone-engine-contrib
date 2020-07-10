@@ -1401,7 +1401,6 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost L, C
           onAttack {
             damage 30
-            def chosenCard = opp.hand.select(hidden: true, count: 1, "Choose 1 card from your opponent's hand without looking.")
             def result = ""
 
             if (chosenCard.first().cardTypes.is(TRAINER)){
