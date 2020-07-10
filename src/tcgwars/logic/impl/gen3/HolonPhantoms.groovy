@@ -306,7 +306,7 @@ public enum HolonPhantoms implements LogicCardInfo {
               def finalCount = 0
               while (self.cards.energyCount(C) > 0 && finalCount < targetCount) {
                 def info = "Select Energy to return to your hand."
-                def energy = self.cards.filterByType(ENERGY).select(info, energyFilter(C))
+                def energy = self.cards.filterByType(ENERGY).select(info)
                 def energyCount = 1
                 if (energy.energyCount(C) > 1) {
                   def choices = 1..energy.energyCount(C)
