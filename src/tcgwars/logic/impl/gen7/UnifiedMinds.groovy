@@ -3695,7 +3695,6 @@ public enum UnifiedMinds implements LogicCardInfo {
               def card = opp.discard.select("Select a card to add to your opponent's prizes.").showToOpponent("This card from your discard is now in your prizes.").first()
               opp.discard.remove(card)
               opp.prizeCardSet.add(card)
-              opp.prizeCardSet.shuffle()
               bc "Injection GX added 1 card to prizes and shuffled them."
             }
           }
