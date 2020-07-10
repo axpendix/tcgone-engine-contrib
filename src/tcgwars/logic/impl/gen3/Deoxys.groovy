@@ -951,7 +951,7 @@ public enum Deoxys implements LogicCardInfo {
               assert opp.bench : "There is no benched Pokemon"
               powerUsed()
 
-              sw opp.active, opp.bench.oppSelect()
+              sw opp.active, opp.bench.oppSelect(), SRC_ABILITY
             }
           }
           move "Stadium Power", {

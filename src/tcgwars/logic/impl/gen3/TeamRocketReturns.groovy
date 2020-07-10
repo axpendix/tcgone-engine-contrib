@@ -1684,7 +1684,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               assert opp.bench : "There is no Pokémon on your opponent’s bench."
             }
             onAttack {
-              sw opp.active, opp.bench.select()
+              switchYourOpponentsBenchedWithActive()
             }
           }
           move "Spit Poison", {

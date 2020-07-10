@@ -3460,7 +3460,7 @@ public enum UnseenForces implements LogicCardInfo {
                 opp.hand.remove(it)
                 tar = benchPCS(it, OTHER, TargetPlayer.OPPONENT)
               }
-              sw opp.active, tar
+              sw2 (tar)
             }
           }
         }

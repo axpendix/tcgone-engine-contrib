@@ -4608,8 +4608,8 @@ public enum CosmicEclipse implements LogicCardInfo {
 
             def tar = opp.bench.findAll { it.pokemonGX || it.pokemonEX }
             if (tar) {
-              def card = tar.select("Select a Pokémon-EX or Pokémon-GX to be the new Active Pokémon")
-              sw opp.active, card, TRAINER_CARD
+              def pcs = tar.select("Select a Pokémon-EX or Pokémon-GX to be the new Active Pokémon")
+              sw2 (pcs, null, TRAINER_CARD)
             }
 
             shuffleDeck()

@@ -635,7 +635,7 @@ public enum LegendMaker implements LogicCardInfo {
             powerUsed()
 
             def pcs = opp.bench.findAll { it.evolution && it.topPokemonCard.cardTypes.is(STAGE2) }.select("Select a Stage 2 Pokemon to become the new Active.")
-            sw opp.active, pcs
+            sw2 (pcs, null, SRC_ABILITY)
           }
         }
         move "Sleep Poison", {
@@ -977,12 +977,12 @@ public enum LegendMaker implements LogicCardInfo {
           text "10 damage. Before doing damage, you may choose 1 of your opponent's Benched Pokémon and switch it with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
           energyCost C
           onAttack{
-            def target = defending
-            if (opp.bench && confirm("Switch Defending with a Benched?")) {
-              target = opp.bench.select("Select the new active")
-              sw defending, target
+            def pcs = defending
+            if (opp.bench && confirm("Switch 1 of your opponent's Benched Pokémon with the Defending Pokémon?")){
+              def target = opp.bench.select("Select the new Active Pokémon.")
+              if ( sw2(target) ) { pcs = target }
             }
-            damage 10, target
+            damage 10
           }
         }
         move "Hydro Splash", {

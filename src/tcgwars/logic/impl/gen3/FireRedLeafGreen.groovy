@@ -1633,7 +1633,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               assert opp.bench
             }
             onAttack {
-              sw defending, opp.bench.select()
+              switchYourOpponentsBenchedWithActive()
             }
           }
           move "Moon Kick", {
@@ -2359,7 +2359,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           onPlay {
             if(opp.bench){
               flip{
-                sw opp.active, opp.bench.select(), TRAINER_CARD
+                switchYourOpponentsBenchedWithActive(TRAINER_CARD)
               }
             }
           }

@@ -559,9 +559,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             assert opp.bench : "Your opponent has no benched Pokémon"
           }
           onAttack {
-            def info = "Select Pokémon to switch with opponent's Active Pokémon."
-            def selectedPokemon = opp.bench.select info
-            sw defending, selectedPokemon
+            switchYourOpponentsBenchedWithActive()
           }
         }
         move "Slap", {
