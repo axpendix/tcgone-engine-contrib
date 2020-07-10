@@ -2701,7 +2701,7 @@ public enum UltraPrism implements LogicCardInfo {
             onAttack {
               damage 60
               if(opp.hand.size()>3)
-                opp.hand.select(hidden: true, count: opp.hand.size()-3).discard()
+                opp.hand.shuffledCopy().select(hidden: true, count: opp.hand.size()-3).discard()
             }
           }
 
@@ -2770,8 +2770,11 @@ public enum UltraPrism implements LogicCardInfo {
           move "Scout", {
             text "Your opponent reveals their hand."
             energyCost C
+            attackRequirement {
+              assert opp.hand : "Your opponent has no cards in hand"
+            }
             onAttack {
-              opp.hand.showToMe("Opponent's hand")
+              if (opp.hand) opp.hand.shuffledCopy().showToMe("Opponent's hand")
             }
           }
           move "Take Down", {
@@ -2792,8 +2795,8 @@ public enum UltraPrism implements LogicCardInfo {
             energyCost C, C
             onAttack {
               damage 20
-              opp.hand.showToMe("Opponent's hand")
-              if(opp.hand.filterByType(POKEMON)){
+              if (opp.hand) opp.hand.shuffledCopy().showToMe("Opponent's hand")
+              if (opp.hand.hasType(POKEMON)){
                 damage 80
               }
             }
@@ -3019,7 +3022,7 @@ public enum UltraPrism implements LogicCardInfo {
           text "Draw 2 cards. If you do, discard a random card from your opponent’s hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
             draw 2
-            if (opp.hand) opp.hand.select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be discarded").showToMe("Selected card").showToOpponent("this card will be discarded").discard()
+            if (opp.hand) opp.hand.shuffledCopy().select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be discarded").showToMe("Selected card").showToOpponent("this card will be discarded").discard()
           }
           playRequirement{
             assert my.deck
@@ -3273,7 +3276,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
             onAttack {
               gxPerform()
-              def card = opp.hand.select("Opponent's hand. Put one card as opponent prize").showToOpponent("This card from your hand is now in your prizes").first()
+              def card = opp.hand.shuffledCopy().select("Opponent's hand. Put one card as opponent prize").showToOpponent("This card from your hand is now in your prizes").first()
               opp.hand.remove(card)
               opp.prizeCardSet.add(card)
               bc "Put 1 card to prizes and shuffled them"

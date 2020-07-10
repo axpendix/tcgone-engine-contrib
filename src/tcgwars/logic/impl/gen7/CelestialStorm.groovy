@@ -520,10 +520,12 @@ public enum CelestialStorm implements LogicCardInfo {
               assert opp.hand : "Your opponent have no cards in hand"
             }
             onAttack {
-              opp.hand.showToMe("opponent's hand")
-              if(opp.hand.filterByType(SUPPORTER)){
-                opp.hand.filterByType(SUPPORTER).select("select a supporter to put back in deck.").moveTo(opp.deck)
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+              if (opp.hand) {
+                def supportersToShuffle = opp.hand.shuffledCopy().showToMe("Opponent's hand.").filterByType(SUPPORTER)
+                if(supportersToShuffle){
+                  supportersToShuffle.select("Select a supporter to put back into your opponent's deck.").moveTo(opp.deck)
+                  shuffleDeck(null, TargetPlayer.OPPONENT)
+                }
               }
             }
           }

@@ -2602,7 +2602,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost P, C
             onAttack {
               damage 40
-              opp.hand.showToMe("Opponent’s hand")
+              opp.hand.shuffledCopy().showToMe("Opponent’s hand")
               damage 10*opp.hand.findAll{it.cardTypes.is(TRAINER)}.size()
             }
           }

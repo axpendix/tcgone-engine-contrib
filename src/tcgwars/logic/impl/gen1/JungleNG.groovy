@@ -1211,7 +1211,7 @@ public enum JungleNG implements LogicCardInfo {
               switch (choice){
                 case 0: my.deck.subList(0,1).showToMe("Top of your deck"); break;
                 case 1: opp.deck.subList(0,1).showToMe("Top of your opponent's deck"); break;
-                case 2: opp.hand.select(hidden: true, "Select a random card from opponent's hand").showToMe("Selected card"); break;
+                case 2: opp.hand.shuffledCopy().select(hidden: true, "Select a random card from opponent's hand").showToMe("Selected card"); break;
                 case 3: my.prizeCardSet.select(hidden: true, "Select a random card from your prizes").showToMe("Selected card"); break;
                 case 4: opp.prizeCardSet.select(hidden: true, "Select a random card from your opponent's prizes").showToMe("Selected card"); break;
               }

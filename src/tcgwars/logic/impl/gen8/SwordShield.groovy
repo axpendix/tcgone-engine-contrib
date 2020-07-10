@@ -1383,7 +1383,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 40
-            opp.hand.select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be discarded.").showToMe("Selected card.").showToOpponent("This card will be discarded.").discard()
+            opp.hand.shuffledCopy().select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be discarded.").showToMe("Selected card.").showToOpponent("This card will be discarded.").discard()
           }
         }
         move "Hydro Snipe", {
@@ -1572,8 +1572,10 @@ public enum SwordShield implements LogicCardInfo {
           energyCost L, C, C
           onAttack {
             damage 90
-            opp.hand.showToMe("Your opponent's hand.")
-            if (opp.hand.filterByType(ENERGY)) apply PARALYZED
+            if (opp.hand) {
+              opp.hand.shuffledCopy().showToMe("Your opponent's hand.")
+              if (opp.hand.filterByType(ENERGY)) apply PARALYZED
+            }
           }
         }
       };
@@ -2004,9 +2006,14 @@ public enum SwordShield implements LogicCardInfo {
         move "Poltergeist", {
           text "50x damage. Your opponent reveals their hand. This attack does 50 damage for each Trainer card you find there."
           energyCost P, C
+          attackRequirement {
+            assert opp.hand : "Your opponent has no cards in their hand"
+          }
           onAttack {
-            opp.hand.showToMe("Your opponent's hand.")
-            damage 50*opp.hand.filterByType(TRAINER).size()
+            if (opp.hand) {
+              def itemsInOppHand = opp.hand.shuffledCopy().showToMe("Your opponent's hand.").filterByType(TRAINER)
+              damage 50 * itemsInOppHand.size()
+            }
           }
         }
       };
@@ -2694,8 +2701,10 @@ public enum SwordShield implements LogicCardInfo {
           energyCost D
           onAttack {
             damage 20
-            if (opp.hand) {
-              opp.hand.select("Choose 1 card to put on the bottom of their deck").moveTo(opp.deck)
+            afterDamage{
+              if (opp.hand) {
+                opp.hand.shuffledCopy().select("Choose 1 card to put on the bottom of their deck").moveTo(opp.deck)
+              }
             }
           }
         }

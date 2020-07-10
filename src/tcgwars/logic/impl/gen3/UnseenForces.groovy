@@ -1219,9 +1219,9 @@ public enum UnseenForces implements LogicCardInfo {
             damage 20
             afterDamage {
               if (opp.hand) {
-                opp.hand.showToMe("Opponent's hand")
-                if (opp.hand.filterByType(TRAINER)) {
-                  opp.hand.select(count: 1, "Select a Trainer card to discard.", cardTypeFilter(TRAINER)).discard()
+                def list = opp.hand.shuffledCopy().showToMe("Opponent's hand").filterByType(TRAINER)
+                if(list){
+                  list.select("Select a Trainer card to discard").discard()
                 }
               }
             }
@@ -3449,13 +3449,12 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C
           attackRequirement {
             assert opp.bench.notFull : "Opponent's Bench is full"
+            assert opp.hand : "Your opponent has no cards in their hand"
           }
           onAttack {
-            opp.hand.showToMe("Opponent's hand.")
-            if (opp.hand.findAll { it.cardTypes.is(BASIC) }) {
-              def basicPokemon = opp.hand.findAll { it.cardTypes.is(BASIC) }
-              def tar
-              basicPokemon.select("Choose a pokemon to bench").each {
+            def basics = opp.hand.shuffledCopy().showToMe("Opponent's hand.").filterByType(BASIC)
+            if (basics) {
+              basics.select("Choose a pokemon to bench").each {
                 opp.hand.remove(it)
                 tar = benchPCS(it, OTHER, TargetPlayer.OPPONENT)
               }

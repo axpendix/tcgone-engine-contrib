@@ -1817,16 +1817,17 @@ public enum BaseSetNG implements LogicCardInfo {
         return basicTrainer (this) {
           text "You and your opponent show each other your hands, then shuffle all the Trainer cards from your hands into your decks."
           onPlay {
-            opp.hand.showToMe("Opponent's hand")
-            my.hand.showToOpponent("Opponent's hand")
+            opp.hand.shuffledCopy().showToMe("Opponent's hand")
+            my.hand.getExcludedList(thisCard).shuffledCopy().showToOpponent("Opponent's hand")
             def tarOpp = opp.hand.filterByType(TRAINER)
-            def tarMy = my.hand.filterByType(TRAINER)
+            def tarMy = my.hand.getExcludedList(thisCard).filterByType(TRAINER)
             opp.hand.removeAll(tarOpp)
             my.hand.removeAll(tarMy)
             shuffleDeck(tarOpp, TargetPlayer.OPPONENT)
             shuffleDeck(tarMy)
           }
           playRequirement{
+            assert (opp.hand || my.hand) : "Neither player has any cards in hand"
           }
         };
       case POKEMON_BREEDER: //TODO: Use the implementation of Rare Candy (admin: they are not the same!)

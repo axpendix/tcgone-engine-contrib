@@ -652,11 +652,8 @@ public enum SunMoon implements LogicCardInfo {
           bwAbility "Queenly Majesty", {
             text "When you play this card from your hand to evolve 1 of your Pokémon during your turn, you may have your opponent reveal their hand. Then, discard a card from it."
             onActivate {r->
-              if(r==Ability.ActivationReason.PLAY_FROM_HAND && confirm("Use Queenly Majesty?")){
-                if(opp.hand){
-                  opp.hand.showToMe("Opponent's hand")
-                  opp.hand.select("Discard").discard()
-                }
+              if(r==Ability.ActivationReason.PLAY_FROM_HAND && opp.hand && confirm("Use Queenly Majesty?")){
+                opp.hand.shuffledCopy().select("Your opponent's hand. Select a card to discard from it.").discard()
               }
             }
           }
@@ -2598,9 +2595,9 @@ public enum SunMoon implements LogicCardInfo {
             text "Once during your turn (before your attack), you may have your opponent reveal their hand."
             actionA {
               checkLastTurn()
-              assert opp.hand : "Empty hand"
+              assert opp.hand : "Your opponent has no cards in hand"
               powerUsed()
-              opp.hand.showToMe("Opponent's hand")
+              opp.hand.shuffledCopy().showToMe("Opponent's hand")
             }
           }
           move "Headbutt Bounce", {
@@ -2833,14 +2830,13 @@ public enum SunMoon implements LogicCardInfo {
         return supporter (this) {
           text "Your opponent reveals their hand. Discard 2 Energy cards from it.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
-            opp.hand.showToMe("Opponent's hand")
-            def list = opp.hand.filterByType(ENERGY)
+            def list = opp.hand.shuffledCopy().showToMe("Opponent's hand").filterByType(ENERGY)
             if(list){
               list.select(count: 2, "Discard").discard()
             }
           }
           playRequirement{
-            assert opp.hand
+            assert opp.hand : "Your opponent has no cards in hand"
           }
         }
       case TIMER_BALL_134:

@@ -2054,9 +2054,11 @@ public enum CrimsonInvasion implements LogicCardInfo {
           move "Bug Search", {
             text "Your opponent reveals their hand."
             energyCost C
+            attackRequirement {
+              assert opp.hand : "Your opponent has no cards in hand"
+            }
             onAttack {
-              opp.hand.showToMe("Opponent's hand")
-              opp.hand.shuffle()
+              if (opp.hand) opp.hand.shuffledCopy().showToMe("Opponent's hand")
             }
           }
           move "Flap", {
@@ -2356,7 +2358,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
         return itemCard (this) {
           text "Your opponent reveals their hand. You may have your opponent count the cards in their hand, shuffle those cards into their deck, then draw that many cards.\nYou may play as many Item cards as you like during your turn (before your attack)."
           onPlay {
-            opp.hand.showToMe("Opponent's hand")
+            opp.hand.shuffledCopy().showToMe("Opponent's hand")
             if(confirm("Replace opponent hand?")){
               def nbc = opp.hand.size()
               opp.hand.moveTo(hidden:true,opp.deck)

@@ -900,7 +900,7 @@ public enum Deoxys implements LogicCardInfo {
               assert self.active : "$self is not your active Pokémon."
               assert opp.hand : "There are no cards in your opponent's hand"
               powerUsed()
-              opp.hand.showToMe("Opponent's hand")
+              opp.hand.shuffledCopy().showToMe("Opponent's hand")
             }
           }
           move "Slash", {

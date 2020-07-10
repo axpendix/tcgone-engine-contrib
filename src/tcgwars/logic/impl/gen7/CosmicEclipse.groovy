@@ -1894,7 +1894,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               assert opp.hand : "Your opponent has no cards in their hand."
             }
             onAttack {
-              opp.hand.showToMe("Opponent's hand.")
+              if (opp.hand) opp.hand.shuffledCopy().showToMe("Opponent's hand.")
             }
           }
           move "Razor Fin", {
@@ -3267,10 +3267,15 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Bag Slash", {
             text "Your opponent reveals their hand. Discard an Item card you find there."
             energyCost C
+            attackRequirement {
+              assert opp.hand : "Your opponent has no cards in hand"
+            }
             onAttack {
-              opp.hand.showToMe("Opponent's hand.")
-              if(opp.hand.filterByType(ITEM)){
-                opp.hand.filterByType(ITEM).select("Select an Item to discard.").discard()
+              if (opp.hand) {
+                def itemsToDiscard = opp.hand.shuffledCopy().showToMe("Opponent's hand.").filterByType(ITEM)
+                if(itemsToDiscard){
+                  itemsToDiscard.select("Select an Item to discard.").discard()
+                }
               }
             }
           }
@@ -3650,7 +3655,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             onActivate {r->
               if (r == PLAY_FROM_HAND && my.deck && confirm("Use Flower Picking?")) {
                 powerUsed()
-                opp.hand.select(hidden: true, count:1).showToMe("Opponent's card being shuffled into their deck.").moveTo(hidden: false, opp.deck)
+                opp.hand.shuffledCopy().select(hidden: true, count:1).showToMe("Opponent's card being shuffled into their deck.").moveTo(hidden: false, opp.deck)
                 shuffleDeck(null, TargetPlayer.OPPONENT)
               }
             }
@@ -3672,7 +3677,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             onActivate { r->
               if (r == PLAY_FROM_HAND && my.deck && confirm("Use Flower Picking?")) {
                 powerUsed()
-                opp.hand.select(hidden: true, count:2).showToMe("Opponent's cards being shuffled into their deck.").moveTo(hidden: false, opp.deck)
+                opp.hand.shuffledCopy().select(hidden: true, count:2).showToMe("Opponent's cards being shuffled into their deck.").moveTo(hidden: false, opp.deck)
                 shuffleDeck(null, TargetPlayer.OPPONENT)
               }
             }

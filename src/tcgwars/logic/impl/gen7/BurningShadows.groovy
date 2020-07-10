@@ -1307,8 +1307,7 @@ public enum BurningShadows implements LogicCardInfo {
               checkLastTurn()
               assert opp.hand && opp.bench.notFull
               powerUsed()
-              opp.hand.showToMe("Opponent's hand")
-              def list = opp.hand.filterByType(BASIC)
+              def list = opp.hand.shuffledCopy().showToMe("Opponent's hand").filterByType(BASIC)
               if(list){
                 def card = list.select("Put a Basic Pokémon you find there onto your opponent's Bench").first()
                 opp.hand.remove(card)
@@ -2525,8 +2524,11 @@ public enum BurningShadows implements LogicCardInfo {
           move "See Through", {
             text "Your opponent reveals their hand."
             energyCost C
+            attackRequirement{
+              assert opp.hand : "Your opponent has no cards in hand"
+            }
             onAttack {
-              opp.hand.shuffledCopy().showToMe("Opponent's hand")
+              if (opp.hand) opp.hand.shuffledCopy().showToMe("Opponent's hand")
             }
           }
           move "Peck", {
@@ -2556,11 +2558,12 @@ public enum BurningShadows implements LogicCardInfo {
             onAttack {
               damage 70
               afterDamage {
-                if(opp.hand) {
-                  opp.hand.showToMe("Opponent's hand")
-                  def list = opp.hand.filterByType(POKEMON)
-                  if(list) {
-                    list.select("Discard").discard()
+                onAttack {
+                  if (opp.hand) {
+                    def pokeToDiscard = opp.hand.shuffledCopy().showToMe("Opponent's hand.").filterByType(POKEMON)
+                    if(pokeToDiscard){
+                      pokeToDiscard.select("Select a Pokémon card to discard.").discard()
+                    }
                   }
                 }
               }
@@ -2792,7 +2795,7 @@ public enum BurningShadows implements LogicCardInfo {
         return itemCard (this) {
           text "Choose a random card from your opponent's hand. Your opponent reveals that card. If it's a Supporter card, discard it.\nYou may play as many Item cards as you like during your turn (before your attack)."
           onPlay {
-            opp.hand.select(hidden: true, "Select random card from opponent's hand").showToMe("Selected card").showToOpponent("Opponent used Tormenting Spray").each {if(it.cardTypes.is(SUPPORTER)) discard(it)}
+            opp.hand.shuffledCopy().select(hidden: true, "Select random card from opponent's hand").showToMe("Selected card").showToOpponent("Opponent used Tormenting Spray").each {if(it.cardTypes.is(SUPPORTER)) discard(it)}
           }
           playRequirement{
             assert opp.hand

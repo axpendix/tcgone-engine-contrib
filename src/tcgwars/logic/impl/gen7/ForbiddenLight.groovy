@@ -2160,14 +2160,19 @@ public enum ForbiddenLight implements LogicCardInfo {
               assert opp.hand
             }
             onAttack {
-              if(opp.hand.hasType(SUPPORTER)){
-                def card=opp.hand.select("Opponent's hand. Select a supporter.", cardTypeFilter(SUPPORTER)).first()
-                discard card
-                bg.deterministicCurrentThreadPlayerType=self.owner
-                bg.em().run(new PlayTrainer(card))
-                bg.clearDeterministicCurrentThreadPlayerType()
-              } else {
-                opp.hand.showToMe("Opponent's hand. No supporter in there.")
+              if (opp.hand) {
+                def randomOppHand = opp.hand.shuffledCopy()
+                if(randomOppHand.hasType(SUPPORTER)){
+                  def support = randomOppHand.select(max: 0, "Your opponent's hand. You may discard a Supporter card you find there and use the effect of that card as the effect of this attack.", cardTypeFilter(SUPPORTER))
+                  if (support){
+                    discard support.first()
+                    bg.deterministicCurrentThreadPlayerType=self.owner
+                    bg.em().run(new PlayTrainer(support.first()))
+                    bg.clearDeterministicCurrentThreadPlayerType()
+                  }
+                } else {
+                  randomOppHand.showToMe("Your opponent's hand. No supporter in there.")
+                }
               }
             }
           }
@@ -2480,8 +2485,17 @@ public enum ForbiddenLight implements LogicCardInfo {
           move "Destructive Sound", {
             text "Your opponent reveals their hand. Discard all Item cards you find there."
             energyCost C, C
+            attackRequirement {
+              assert opp.hand : "Your opponent has no cards in hand"
+            }
             onAttack {
-              opp.hand.showToMe("Opponent's hand").filterByType(ITEM).discard()
+              if (opp.hand) {
+                def itemsInOppHand = opp.hand.shuffledCopy().showToMe("Opponent's hand. All items in it will be discarded.").filterByType(ITEM)
+                if (itemsInOppHand)
+                  itemsInOppHand.showToOpponent("Your opponent used Destructive Sound. All of these items in your hand will now be discarded.").discard()
+                else
+                  bc "No items were discarded by Destructive Sound."
+              }
             }
           }
 

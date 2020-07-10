@@ -1305,7 +1305,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost W, W, C
           onAttack {
             damage 130
-            opp.hand.showToMe("Opponent's hand.")
+            if (opp.hand) opp.hand.shuffledCopy().showToMe("Opponent's hand.")
           }
         }
       };
@@ -2809,7 +2809,7 @@ public enum RebelClash implements LogicCardInfo {
 
             afterDamage {
               if (opp.hand) {
-                opp.hand.select("Choose 1 card to put on the bottom of your opponent's deck.").moveTo(opp.deck)
+                opp.hand.shuffledCopy().select("Choose 1 card to put on the bottom of your opponent's deck.").moveTo(opp.deck)
               }
             }
           }
@@ -3616,9 +3616,10 @@ public enum RebelClash implements LogicCardInfo {
         text "Discard 2 cards from your hand in order to play this card. Your opponent reveals their hand. Choose a Trainer you find there and put it at the bottom of your opponent’s deck. You may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
           my.hand.getExcludedList(thisCard).select(count:2, "Discard two cards.").discard()
-          opp.hand.showToMe("Opponent's hand.")
-          if (opp.hand.filterByType(TRAINER)) {
-            opp.hand.filterByType(TRAINER).select(count:1).moveTo(opp.deck)
+          def randomOppHand = opp.hand.shuffledCopy()
+          randomOppHand.showToMe("Opponent's hand.")
+          if (randomOppHand.hasType(TRAINER)) {
+            randomOppHand.filterByType(TRAINER).select(count:1).moveTo(opp.deck)
           }
         }
         playRequirement {

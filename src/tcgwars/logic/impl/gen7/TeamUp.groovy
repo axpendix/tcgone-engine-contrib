@@ -1418,10 +1418,13 @@ public enum TeamUp implements LogicCardInfo {
           move "Poltergeist" , {
             text "50× damage. Your opponent reveals their hand. This attack does 50 damage for each Trainer card you find there."
             energyCost P,P
+            attackRequirement {
+              assert opp.hand : "Your opponent has no cards in their hand"
+            }
             onAttack{
-              if(opp.hand){
-                opp.hand.showToMe("Your opponent's hand")
-                damage 50*opp.hand.filterByType(TRAINER).size()
+              if (opp.hand){
+                def trainersInHand = opp.hand.shuffledCopy().showToMe("Your opponent's hand").filterByType(TRAINER)
+                damage 50 * trainersInHand.size()
               }
             }
           }
@@ -1830,8 +1833,11 @@ public enum TeamUp implements LogicCardInfo {
           move "Scout" , {
             text "You opponent reveals their hand."
             energyCost C
-            onAttack{
-              opp.hand.showToMe("Your opponent's hand")
+            attackRequirement {
+              assert opp.hand : "Your opponent has no cards in their hand"
+            }
+            onAttack {
+              if (opp.hand) opp.hand.shuffledCopy().showToMe("Your opponent's hand")
             }
           }
           move "Low Kick" , {
@@ -3067,11 +3073,11 @@ public enum TeamUp implements LogicCardInfo {
               damage 20
               afterDamage{
                 if(opp.hand.size() >= 4){
-                  if(opp.hand.size() == 4){
-                    opp.hand.showToMe("Your opponent's hand")
-                  }
-                  else{
-                    opp.hand.select(count:opp.hand.size() - 4,"Choose the cards to discard").discard()
+                  def randomOppHand = opp.hand.shuffledCopy()
+                  if (opp.hand.size() == 4){
+                    randomOppHand.showToMe("Your opponent's hand.")
+                  } else {
+                    randomOppHand.select(count:opp.hand.size() - 4,"Your opponent's hand. Choose cards to discard until they have exactly 4 left.").discard()
                   }
                 }
               }
@@ -3463,7 +3469,7 @@ public enum TeamUp implements LogicCardInfo {
               assert lastTurn != bg().turnCount : "Already used"
               bc "Used Lavender Town effect"
               lastTurn = bg().turnCount
-              opp.hand.showToMe("Your opponent's hand")
+              opp.hand.shuffledCopy().showToMe("Your opponent's hand")
             }
           }
           onRemoveFromPlay{
@@ -3579,13 +3585,14 @@ public enum TeamUp implements LogicCardInfo {
         return supporter(this) {
           text "Your opponent reveals their hand. You may choose a Supporter card you find there and use the effect of that card as the effect of this card.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
-            if(opp.hand.hasType(SUPPORTER)){
-              def card=opp.hand.select("Opponent's hand. Select a supporter.", cardTypeFilter(SUPPORTER)).first()
+            def randomOppHand = opp.hand.shuffledCopy()
+            if(randomOppHand.hasType(SUPPORTER)){
+              def card = randomOppHand.select("Opponent's hand. Select a supporter.", cardTypeFilter(SUPPORTER)).first()
               bg.deterministicCurrentThreadPlayerType=bg.currentTurn
               bg.em().run(new PlayTrainer(card).setDontDiscard(true))
               bg.clearDeterministicCurrentThreadPlayerType()
             } else {
-              opp.hand.showToMe("Opponent's hand. No supporter in there.")
+              randomOppHand.showToMe("Opponent's hand. No supporter in there.")
             }
           }
           playRequirement{

@@ -1794,7 +1794,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             onAttack {
               damage 30
               afterDamage{
-                opp.hand.showToMe("Opponent’s hand")
+                if (opp.hand) opp.hand.shuffledCopy().showToMe("Opponent’s hand")
               }
             }
           }
@@ -2238,12 +2238,12 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
             onAttack {
               if (opp.hand && !checkBodyguard()) {
-                def oppCard = opp.hand.select(hidden: true, count: count, "Choose a random card from your opponent's hand to be shuffled into his or her deck").showToMe("Selected card(s)").showToOpponent("Hidden Power: this card will be shuffled from your hand to your deck")
+                def oppCard = opp.hand.shuffledCopy().select(hidden: true, count: count, "Choose a random card from your opponent's hand to be shuffled into his or her deck").showToMe("Selected card(s)").showToOpponent("Hidden Power: this card will be shuffled from your hand to your deck")
                 oppCard.moveTo(opp.deck)
                 shuffleDeck(null, TargetPlayer.OPPONENT)
               }
               if (my.hand) {
-                def myCard = my.hand.oppSelect(hidden: true, count: 1, "Choose 1 random card from your opponent's hand to be shuffled into his or her deck").showToOpponent("Selected card(s)").showToMe("Hidden Power: this card will be shuffled from your hand to your deck")
+                def myCard = my.hand.shuffledCopy().oppSelect(hidden: true, count: 1, "Choose 1 random card from your opponent's hand to be shuffled into his or her deck").showToOpponent("Selected card(s)").showToMe("Hidden Power: this card will be shuffled from your hand to your deck")
                 myCard.moveTo(my.deck)
                 shuffleDeck()
               }
@@ -2973,7 +2973,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {
               assert opp.hand : "Opponent has no cards in hand."}
             onAttack {
-              opp.hand.showToMe("Opponent's hand")
+              if (opp.hand) opp.hand.shuffledCopy().showToMe("Opponent's hand")
             }
           }
           move "Snowball Fight", {

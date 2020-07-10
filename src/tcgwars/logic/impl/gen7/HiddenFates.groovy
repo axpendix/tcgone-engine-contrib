@@ -601,7 +601,7 @@ public enum HiddenFates implements LogicCardInfo {
               if(!checkBodyguard()) {
                 bc "Last Pattern activates"
                 bg.deterministicCurrentThreadPlayerType = self.owner
-                def sel=opp.hand.select(hidden: true, count: 2, "Choose 2 random cards from your opponent's hand to be discarded.")
+                def sel=opp.hand.shuffledCopy().select(hidden: true, count: 2, "Choose 2 random cards from your opponent's hand to be discarded.")
                 sel.discard()
                 bg.clearDeterministicCurrentThreadPlayerType()
               }
@@ -1008,8 +1008,11 @@ public enum HiddenFates implements LogicCardInfo {
         move "Curiosity", {
           text "Your opponent reveals their hand."
           energyCost C
+          attackRequirement {
+            assert opp.hand : "Your opponent has no cards in hand"
+          }
           onAttack {
-            opp.hand.showToMe("Opponent's hand")
+            if (opp.hand) opp.hand.shuffledCopy().showToMe("Opponent's hand")
           }
         }
         move "Spin Tackle", {

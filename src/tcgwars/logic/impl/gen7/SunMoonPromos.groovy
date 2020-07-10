@@ -1805,8 +1805,8 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
             onAttack{
               gxPerform()
-              if(opp.hand){
-                opp.hand.showToMe("Your opponent's hand")
+              if (opp.hand){
+                opp.hand.shuffledCopy().showToMe("Your opponent's hand")
                 opp.hand.filterByType(ENERGY).each{
                   damage 120
                 }
@@ -2965,7 +2965,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               afterDamage {
                 def number = Math.min(2, opp.hand.size())
                 if (number > 0) {
-                  opp.hand.select(hidden: true, count:number).showToMe("Chosen cards").moveTo(opp.deck)
+                  opp.hand.shuffledCopy().select(hidden: true, count:number).showToMe("Chosen cards").moveTo(opp.deck)
                   shuffleDeck(null, TargetPlayer.OPPONENT)
                 }
               }
@@ -3347,7 +3347,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               assert opp.hand.size() > 5 : "Opponent has 5 or less cards in hand."
             }
             onAttack {
-              opp.hand.select(hidden: true, count:opp.hand.size() - 5,"Choose the cards to discard.").discard()
+              opp.hand.shuffledCopy().select(hidden: true, count:opp.hand.size() - 5,"Choose the cards to discard.").discard()
             }
           }
           move "Tail Smash", {

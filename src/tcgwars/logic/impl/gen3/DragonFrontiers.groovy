@@ -364,12 +364,12 @@ public enum DragonFrontiers implements LogicCardInfo {
             checkLastTurn()
             assert bg.em().retrieveObject("Sharing") != bg.turnCount : "You can’t use more than 1 Sharing Poké-Power each turn"
             checkNoSPC()
-            assert opp.hand : "Opponent hand is empty"
+            assert opp.hand : "Your opponent has no cards in their hand"
             bg.em().storeObject("Sharing",bg.turnCount)
             powerUsed()
-
-            if (opp.hand.hasType(SUPPORTER)) {
-              def sel = opp.hand.select(min: 0, "Opponent's hand. You may select a Supporter and use it as the effect of this power.", cardTypeFilter(SUPPORTER))
+            def randomOppHand = opp.hand.shuffledCopy()
+            if (randomOppHand.hasType(SUPPORTER)) {
+              def sel = randomOppHand.select(min: 0, "Opponent's hand. You may select a Supporter and use it as the effect of this power.", cardTypeFilter(SUPPORTER))
               if (sel){
                 delayed {
                   def eff
@@ -389,7 +389,7 @@ public enum DragonFrontiers implements LogicCardInfo {
                 bg.clearDeterministicCurrentThreadPlayerType()
               }
             } else {
-              opp.hand.showToMe("Opponent's hand. No supporter in there.")
+              randomOppHand.showToMe("Opponent's hand. No supporter in there.")
             }
           }
         }

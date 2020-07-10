@@ -2085,10 +2085,9 @@ public enum PowerKeepers implements LogicCardInfo {
             assert opp.hand : "Opponent's hand is empty"
           }
           onAttack {
-            opp.hand.showToMe("Opponent's hand")
-            def tmp = opp.hand.filterByType(POKEMON).select(max:1, "Select a Pokémon and use one of that Pokémon’s attacks as this attack.")
-            if (tmp) {
-              def card = tmp.first()
+            def pokeCards = opp.hand.shuffledCopy().showToMe("Opponent's hand").filterByType(POKEMON)
+            if (pokeCards) {
+              def card = pokeCards.select(max:1, "Select a Pokémon and use one of that Pokémon’s attacks as this attack.").first()
               bc "$card was chosen"
               def moves = card.asPokemonCard().moves
               if (moves) {
@@ -2097,7 +2096,11 @@ public enum PowerKeepers implements LogicCardInfo {
                 def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
                 attack (move as Move)
                 bef.unregisterItself(bg().em())
+              } else {
+                bc "$thisMove failed! The selected Pokémon card had no attacks on it."
               }
+            } else {
+              bc "$thisMove failed! There were no Pokémon to copy an attack from."
             }
           }
         }

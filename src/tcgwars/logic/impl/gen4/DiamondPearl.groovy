@@ -411,8 +411,7 @@ public enum DiamondPearl implements LogicCardInfo {
             onActivate {reason ->
               if(reason==PLAY_FROM_HAND && opp.hand && opp.bench.notFull && confirm('Use Gleam Eyes?')){
                 powerUsed()
-                opp.hand.showToMe("Opponent's hand")
-                def list = opp.hand.filterByType(BASIC)
+                def list = opp.hand.shuffledCopy().showToMe("Opponent's hand").filterByType(BASIC)
                 if(list){
                   def card = list.select("Put a Basic Pokémon you find there onto your opponent's Bench").first()
                   opp.hand.remove(card)
@@ -3062,7 +3061,7 @@ public enum DiamondPearl implements LogicCardInfo {
               assert opp.hand : "Your Opponent has no cards in their hand."
               powerUsed()
 
-              def chosenCards = opp.hand.select(hidden: true, max: 2).showToOpponent("Cards randomly put aside by Supreme Command. They'll return to your hand at the end of your next turn.")
+              def chosenCards = opp.hand.shuffledCopy().select(hidden: true, max: 2).showToOpponent("Cards randomly put aside by Supreme Command. They'll return to your hand at the end of your next turn.")
               def supremeCommandBundles = bg.em().retrieveObject("supremeCommandBundles")
               if (!supremeCommandBundles)
                 supremeCommandBundles = [ : ]

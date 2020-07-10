@@ -956,7 +956,7 @@ class TcgStatics {
   }
 
   static void astonish(int count=1){
-    if(checkBodyguard()) return
+    if(checkBodyguard() || !opp.hand) return
     def sel = opp.hand.shuffledCopy().select(hidden: true, count: count, "Choose ${count==1?'a':count} random ${count==1?'card':'cards'} from your opponent's hand to be shuffled into his or her deck").showToMe("Selected card(s)").showToOpponent("Astonish: these cards will be shuffled from your hand to your deck")
     sel.moveTo(opp.deck)
     shuffleDeck(null, TargetPlayer.OPPONENT)
@@ -970,7 +970,7 @@ class TcgStatics {
   }
 
   static void discardRandomCardFromOpponentsHand(){
-    if(opp.hand) opp.hand.select(hidden: true, "Discard a random card from your opponent's hand.").discard()
+    if (opp.hand) opp.hand.shuffledCopy().select(hidden: true, "Discard a random card from your opponent's hand.").discard()
   }
 
   static void switchYourActive(Map params=[:]){
