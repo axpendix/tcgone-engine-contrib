@@ -2022,7 +2022,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             if(opp.bench){
               if(confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon before doing damage?")){
                 pcs = opp.bench.select()
-                sw defending, pcs
+                sw2(pcs)
               }
             }
 

@@ -252,8 +252,8 @@ public enum Deoxys implements LogicCardInfo {
               def pcs = defending
               if(opp.bench){
                 if(confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon.")){
-                  pcs = opp.bench.select()
-                  sw defending, pcs
+                  def target = opp.bench.select()
+                  if ( sw2(target) ) { pcs = target }
                 }
               }
               damage 20, pcs

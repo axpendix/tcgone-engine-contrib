@@ -3414,11 +3414,8 @@ public enum DarknessAblaze implements LogicCardInfo {
             assert opp.bench : "Opponent has no Benched Pokémon."
           }
           onAttack {
-            if (opp.bench) {
-              def target = opp.bench.select("Select the new Active Pokémon.")
-              sw defending, target
-              apply CONFUSED, target
-            }
+            def target = opp.bench.select("Select the new Active Pokémon.")
+            if ( sw2(target) ) { apply CONFUSED, target }
           }
         }
         move "Moon Impact", {
