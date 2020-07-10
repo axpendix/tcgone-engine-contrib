@@ -441,9 +441,9 @@ class TcgStatics {
   }
   static sw2 (PokemonCardSet pcs1, PokemonCardSet pcs2 = null, Source src = Source.ATTACK) {
     if(pcs2 == null) {
-      return !(new Switch(pcs1.owner.pbg.active, pcs1, src, pcs1).run(bg))
+      return !(bg().em().run(new Switch(pcs1.owner.pbg.active, pcs1, src, pcs1)))
     } else {
-      return !(new Switch(pcs1, pcs2, src, pcs1).run(bg))
+      return !(bg().em().run(new Switch(pcs1, pcs2, src, pcs1)))
     }
   }
   static discardStadium(){
