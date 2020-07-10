@@ -316,6 +316,7 @@ public enum HolonPhantoms implements LogicCardInfo {
                 finalCount += energyCount
                 energy.moveTo my.hand
               }
+            }
           }
         }
       };
