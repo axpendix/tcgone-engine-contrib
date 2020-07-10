@@ -1307,8 +1307,7 @@ public enum BurningShadows implements LogicCardInfo {
               checkLastTurn()
               assert opp.hand && opp.bench.notFull
               powerUsed()
-              opp.hand.showToMe("Opponent's hand")
-              def list = opp.hand.filterByType(BASIC)
+              def list = randomizedOpponentsHand().showToMe("Opponent's hand").filterByType(BASIC)
               if(list){
                 def card = list.select("Put a Basic Pokémon you find there onto your opponent's Bench").first()
                 opp.hand.remove(card)
@@ -2524,8 +2523,11 @@ public enum BurningShadows implements LogicCardInfo {
           move "See Through", {
             text "Your opponent reveals their hand."
             energyCost C
+            attackRequirement{
+              assert opp.hand : "Your opponent has no cards in hand"
+            }
             onAttack {
-              randomizedOpponentsHand().showToMe("Opponent's hand")
+              if (opp.hand) randomizedOpponentsHand().showToMe("Opponent's hand")
             }
           }
           move "Peck", {
@@ -2555,11 +2557,12 @@ public enum BurningShadows implements LogicCardInfo {
             onAttack {
               damage 70
               afterDamage {
-                if(opp.hand) {
-                  opp.hand.showToMe("Opponent's hand")
-                  def list = opp.hand.filterByType(POKEMON)
-                  if(list) {
-                    list.select("Discard").discard()
+                onAttack {
+                  if (opp.hand) {
+                    def pokeToDiscard = randomizedOpponentsHand().showToMe("Opponent's hand.").filterByType(POKEMON)
+                    if(pokeToDiscard){
+                      pokeToDiscard.select("Select a Pokémon card to discard.").discard()
+                    }
                   }
                 }
               }

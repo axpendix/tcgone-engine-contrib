@@ -360,9 +360,12 @@ public enum GuardiansRising implements LogicCardInfo {
           move "Poltergeist", {
             text "30× damage. Your opponent reveals their hand. This attack does 30 damage for each Trainer card you find there."
             energyCost C, C
+            attackRequirement {
+              assert opp.hand : "Your opponent has no cards in hand"
+            }
             onAttack {
-              opp.hand.showToMe("Opponent's hand")
-              damage 30*opp.hand.findAll {it.cardTypes.is(TRAINER)}.size()
+              if (opp.hand) randomizedOpponentsHand().showToMe("Opponent's hand")
+              damage 30*opp.hand.findAll{it.cardTypes.is(TRAINER)}.size()
             }
           }
           move "Horn Leech", {
