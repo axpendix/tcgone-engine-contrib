@@ -1207,7 +1207,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             checkNoSPC()
             assert my.deck : "Deck is empty"
             powerUsed()
-            my.deck.search(max: 1, "Select a basic Energy card.", cardTypeFilter(BASIC_ENERGY)).moveTo(my.hand)
+            my.deck.search(max: 1, "Select a basic Energy card.", cardTypeFilter(BASIC_ENERGY)).showToOpponent("Your opponent used Primal Light.").moveTo(my.hand)
             shuffleDeck()
           }
         }
