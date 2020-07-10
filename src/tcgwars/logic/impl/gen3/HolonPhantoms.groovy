@@ -2611,9 +2611,11 @@ public enum HolonPhantoms implements LogicCardInfo {
             assertOppAll(info: "with Energy attached to them", {it.cards.energyCount(C)})
           }
           onAttack {
-            def target = opp.all.select()
-            def count = target.cards.energyCount(C)
-            directDamage count*10, target
+            if (opp.all.any{it.cards.energyCount(C)}){
+              def target = opp.all.findAll{it.cards.energyCount(C)}.select()
+              def count = target.cards.energyCount(C)
+              directDamage count*10, target
+            }
           }
         }
       };
