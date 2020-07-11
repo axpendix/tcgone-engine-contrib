@@ -2456,7 +2456,7 @@ public enum DragonFrontiers implements LogicCardInfo {
               attack (move as Move)
               bef.unregisterItself(bg().em())
             } else {
-              bc "Mimicry did not detect any moves $tar.name"
+              bc "Mimicry failed, couldn't find any moves in $tar.name"
             }
           }
         }
@@ -2470,11 +2470,14 @@ public enum DragonFrontiers implements LogicCardInfo {
             def energy = self.cards.filterByType(BASIC_ENERGY).select("Deal 20 damage to your opponent's Pokemon of the same type of the chosen Energy.")
             def type = energy.basicType
             bc "Rainbow Wave - Chosen type is $type"
+            def flag = false
             opp.all.each {
               if (it.types.contains(type.get(0))) {
+                flag = true
                 damage 20, it
               }
             }
+            if (!flag) bc "$thisMove failed! None of the opponent's Pokémon were ${type} type."
           }
         }
       };
