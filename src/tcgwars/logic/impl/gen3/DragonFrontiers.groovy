@@ -2148,9 +2148,9 @@ public enum DragonFrontiers implements LogicCardInfo {
             checkLastTurn()
             checkNoSPC()
             assert my.hand.filterByType(BASIC_ENERGY) : "No Basic Energy in hand"
-            assert my.all.findAll { it.name == "Latias" || it.name == "Latias ex" || it.name == "Latios" || it.name == "Latios ex"}
+            assert my.all.any{ ["Latias", "Latias ex", "Latios", "Latios ex"].contains(it.name) }
             powerUsed()
-            def eligible = my.all.findAll { it.name == "Latias" || it.name == "Latias ex" || it.name == "Latios" || it.name == "Latios ex"}
+            def eligible = my.all.findAll { ["Latias", "Latias ex", "Latios", "Latios ex"].contains(it.name) }
             attachEnergyFrom(basic:true, my.hand, eligible.select("Attach to"))
             bg.gm().betweenTurns()
           }
@@ -2160,11 +2160,12 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost R, R, C
           onAttack {
             damage 90
-
+            //Would a slatedToKO inside afterDamage work fine here? -starg
             delayed {
               def pcs = defending
               after KNOCKOUT, pcs, {
                 discardSelfEnergy R,R
+                unregister()
               }
               unregisterAfter 1
             }
