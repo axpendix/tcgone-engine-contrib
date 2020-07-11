@@ -822,10 +822,9 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "Once during your turn, when you play Quagsire from your hand to evolve 1 of your Pokémon, you may search your discard pile for up to 2 Pokémon Tool cards, show them to your opponent, and put them into your hand."
           onActivate {r->
             checkLastTurn()
-            if (r==PLAY_FROM_HAND && my.discard.filterByType(POKEMON_TOOL) && bg.em().retrieveObject("Dig_Up")!=bg.turnCount && confirm("Use Dig Up?")) {
+            if (r==PLAY_FROM_HAND && my.discard.filterByType(POKEMON_TOOL) && confirm("Use Dig Up?")) {
               powerUsed()
-              bg.em().storeObject("Dig_Up", bg.turnCount)
-              my.discard.filterByType(POKEMON_TOOL).select(min: 0, max: 2, "Select Pokémon Tool cards to move to your hand.").moveTo(my.hand)
+              my.discard.filterByType(POKEMON_TOOL).select(min: 1, max: 2, "Select Pokémon Tool cards to move to your hand.").showToOpponent("Your opponent used Dig Up. These Pokémon Tool cards will now be moved from their discard pile into their hand.").moveTo(my.hand)
             }
           }
         }
@@ -863,8 +862,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Tropical Heal", {
           text "Once during your turn, when you put Tropius from your hand onto your Bench, you may remove all Special Conditions, Imprison markers, and Shock-wave markers from your Pokémon."
           onActivate {
-            if (it==PLAY_FROM_HAND && bg.em().retrieveObject("Tropical_Heal")!=bg.turnCount && confirm("Use Tropical Heal?")) {
-              bg.em().storeObject("Tropical_Heal",bg.turnCount)
+            if (it==PLAY_FROM_HAND && confirm("Use Tropical Heal?")) {
               powerUsed()
               def Imprison = []
               def Shock_Wave = []
