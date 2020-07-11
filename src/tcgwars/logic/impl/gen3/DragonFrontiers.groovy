@@ -1965,7 +1965,7 @@ public enum DragonFrontiers implements LogicCardInfo {
               boolean flag = true
               if (self.active) {
                 self.owner.opposite.pbg.bench.each {
-                  if (!it.evolution) {
+                  if (it.notEvolution) {
                     if(flag) {bc "Sand Damage activates"; flag = false}
                     directDamage 10, it, SRC_ABILITY
                   }
@@ -2100,10 +2100,12 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "Any damage done to your Stage 2 Pokémon-ex by your opponent's attacks is reduced by 10 (before applying Weakness and Resistance)."
           delayedA {
             after PROCESS_ATTACK_EFFECTS, {
-              bg.dm().each {
-                if (it.to.owner == self.owner && it.to.EX && it.to.topPokemonCard.cardTypes.is(STAGE2) && it.dmg.value && it.notNoEffect) {
-                  bc "Extra Smoke -10"
-                  it.dmg -= hp(10)
+              if (ef.attacker.owner != self.owner) {
+                bg.dm().each {
+                  if (it.to.owner == self.owner && it.to.EX && it.to.topPokemonCard.cardTypes.is(STAGE2) && it.dmg.value && it.notNoEffect) {
+                    bc "Extra Smoke -10"
+                    it.dmg -= hp(10)
+                  }
                 }
               }
             }
@@ -2114,7 +2116,9 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost F, C
           onAttack {
             damage 40
-            attachEnergyFrom(my.discard, self)
+            afterDamage{
+              attachEnergyFrom(my.discard, self)
+            }
           }
         }
         move "Protective Swirl", {
