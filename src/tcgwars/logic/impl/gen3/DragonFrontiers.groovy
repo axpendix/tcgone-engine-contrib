@@ -550,7 +550,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "Choose an attack on 1 of your opponent's Pokémon in play that has δ on its card. Delta Copy copies that attack except for its Energy cost. (You must still do anything else required for that attack.) Togetic performs that attack."
           energyCost C, C
           attackRequirement {
-            assert opp.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) } : "Opponent has no Delta Pokemon"
+            assert opp.all.any{ it.topPokemonCard.cardTypes.is(DELTA) } : "Opponent has no Delta Pokemon"
           }
           onAttack {
             def card = opp.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) }.select("Source of move")
@@ -603,7 +603,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 60
 
             if (self.cards.energyCount(R) >= 2) {
-              apply BURNED
+              applyAfterDamage BURNED
             }
           }
         }
@@ -668,10 +668,12 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "Any damage done to Dewgong by attacks from your opponent's Pokémon that has δ on its card is reduced by 40 (after applying Weakness and Resistance)."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
-              bg.dm().each {
-                if (it.from.topPokemonCard.cardTypes.is(DELTA) && it.to == self && it.dmg.value && it.notNoEffect) {
-                  bc "Delta Protection -40"
-                  it.dmg -= hp(40)
+              if (ef.attacker.topPokemonCard.cardTypes.is(DELTA)){
+                bg.dm().each {
+                  if (it.to == self && it.dmg.value && it.notNoEffect) {
+                    bc "Delta Protection -40"
+                    it.dmg -= hp(40)
+                  }
                 }
               }
             }
@@ -682,7 +684,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 20
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
         move "Surge", {
