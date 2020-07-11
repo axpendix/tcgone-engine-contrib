@@ -522,14 +522,12 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Dozing", {
           text "Once during your turn (before your attack), if Snorlax is your Active Pokemon, you may remove 2 damage counters from Snorlax and Snorlax is now Asleep. This power can't be used if Snorlax is affected by a Special Condition"
           actionA {
-            checkNoSPC()
             checkLastTurn()
-
-            if (confirm("Activate Dozing to remove 2 damage counters from Snorlax Delta and fall asleep?")) {
-              heal 20, self
-              apply ASLEEP, self
-              powerUsed()
-            }
+            checkNoSPC()
+            assert self.active : "$self is not your Active Pokémon"
+            powerUsed()
+            heal 20, self, SRC_ABILITY
+            apply ASLEEP, self, SRC_ABILITY
           }
         }
         pokeBody "Bedhead", {
@@ -538,7 +536,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             before BEGIN_TURN, {
               if (self.isSPC(ASLEEP)) {
                 bc "Bedhead activates"
-                directDamage 20, self.owner.opposite.pbg.active
+                directDamage 20, self.owner.opposite.pbg.active, SRC_ABILITY
               }
             }
           }
