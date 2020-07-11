@@ -929,10 +929,12 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "Each of your Stage 2 Pokémon-ex does 10 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
           delayedA {
             after PROCESS_ATTACK_EFFECTS, {
-              bg.dm().each {
-                if (it.from.owner == self.owner && it.to.active && it.to.owner != self.owner && it.dmg.value && it.from.EX && it.from.topPokemonCard.cardTypes.is(STAGE2)) {
-                  bc "Extra Feather +10"
-                  it.dmg += hp(10)
+              if (ef.attacker.owner == self.owner && ef.attacker.EX && ef.attacker.topPokemonCard.cardTypes.is(STAGE2)) {
+                bg.dm().each {
+                  if (it.to.active && it.to.owner != self.owner && it.dmg.value) {
+                    bc "Extra Feather +10"
+                    it.dmg += hp(10)
+                  }
                 }
               }
             }
@@ -943,7 +945,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost D, C
           onAttack {
             damage 20
-            flip { apply CONFUSED }
+            flip { applyAfterDamage CONFUSED }
           }
         }
       };
