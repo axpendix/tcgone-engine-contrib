@@ -427,13 +427,13 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Invitation", {
           text "Once during your turn (before your attack), you may search your deck for a Basic Pokémon or Evolution card, show it to your opponent, and put it into your hand. Shuffle your deck afterward. This power can't be used if Nidoqueen is affected by a Special Condition."
           actionA {
-            assert my.deck : "Deck is empty"
-            checkNoSPC()
             checkLastTurn()
+            checkNoSPC()
+            assert my.deck : "Deck is empty"
             powerUsed()
-            my.deck.search(max: 1, "Select a Basic or Evolution Pokemon to put into your hand", {
+            my.deck.search(max: 1, "Select a Pokemon card to put into your hand", {
               it.cardTypes.is(POKEMON)
-            }).moveTo(my.hand)
+            }).showToOpponent("Your opponent used Invitation. They're moving this Pokémon card from their deck into their hand.").moveTo(my.hand)
             shuffleDeck()
           }
         }
