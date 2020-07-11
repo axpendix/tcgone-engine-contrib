@@ -457,8 +457,9 @@ public enum PowerKeepers implements LogicCardInfo {
         pokeBody "Primal Stare", {
           text "As long as Kabutops is your Active Pokémon, your opponent can't play any Basic Pokémon or Evolution cards from his or her hand to evolve his or her Active Pokémon."
           delayedA {
-            before EVOLVE_STANDARD, self.owner.opposite.pbg.active,{
-              if (bg.currentTurn==self.owner.opposite) {
+            before EVOLVE_STANDARD, {
+              if (ef.pokemonToBeEvolved.owner != self.owner && ef.pokemonToBeEvolved.active && self.active) {
+                wcu "Primal Stare prevents evolving your Active Pokémon"
                 prevent()
               }
             }
@@ -468,10 +469,9 @@ public enum PowerKeepers implements LogicCardInfo {
           text "20 damage. Before doing damage, you may choose 1 of your opponent's Benched Pokémon and switch it with 1 of the Defending Pokémon. If you do, this attack does 20 damage to the new Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
           energyCost F, C
           onAttack {
-            def pcs = defending
             if(opp.bench && confirm("Switch 1 of your opponent's Benched Pokémon with the Defending Pokémon?")){
               def target = opp.bench.select("Select the new Active Pokémon.")
-              if ( sw2(target) ) { pcs = target }
+              sw2(target)
             }
             damage 20
           }
