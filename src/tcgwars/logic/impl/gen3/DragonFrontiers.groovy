@@ -2407,8 +2407,9 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost D, C
           onAttack {
             damage 20
-            if (confirm("Rotating Claws - Discard an Energy to attach an Energy from your Discard Pile?")) {
-              if (my.discard.filterByType(ENERGY)) {
+            afterDamage{
+              if (my.discard.filterByType(ENERGY) && confirm("Rotating Claws - Discard an Energy to attach an Energy from your Discard Pile?")) {
+                //TODO: Discard the energy first, and exclude it from the select.
                 def energy = my.discard.filterByType(ENERGY).select()
                 discardSelfEnergy(C)
                 energy.each{
@@ -2423,8 +2424,10 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost D, D, D, D, C
           onAttack {
             damage 150
-            discardAllSelfEnergy(null)
-            opp.deck.subList(0, 3).discard()
+            afterDamage{
+              discardAllSelfEnergy(null)
+              if (opp.deck) opp.deck.subList(0, Math.min(3, opp.deck.size())).discard()
+            }
           }
         }
       };
