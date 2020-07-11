@@ -1683,7 +1683,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "Choose 1 of your opponent's Pokémon. This attack does 10 damage to that Pokémon. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
           energyCost P
           onAttack {
-            directDamage 10, opp.all.select()
+            swiftDamage (10, opp.all.select())
           }
         }
       };
