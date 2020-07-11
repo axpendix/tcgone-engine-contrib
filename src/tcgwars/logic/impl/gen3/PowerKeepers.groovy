@@ -330,12 +330,13 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Firestarter", {
           text "Once during your turn (before your attack), you may attach a [R] Energy card from your discard pile to 1 of your Benched Pokémon. This power can't be used if Blaziken is affected by a Special Condition."
           actionA {
-            checkNoSPC()
             checkLastTurn()
+            checkNoSPC()
             assert my.bench : "No benched Pokemon"
+            assert my.discard.filterByEnergyType(R) : "You have no [R] Energy cards in your discard pile"
+            powerUsed()
 
             attachEnergyFrom(type: R, my.discard, my.bench)
-            powerUsed()
           }
         }
         move "Fire Stream", {
@@ -343,10 +344,8 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost R, C, C
           onAttack {
             damage 50
-            if (opp.bench) {
-              opp.bench.each {
-                damage 10, it
-              }
+            opp.bench.each {
+              damage 10, it
             }
             afterDamage {
               discardSelfEnergy(R)
