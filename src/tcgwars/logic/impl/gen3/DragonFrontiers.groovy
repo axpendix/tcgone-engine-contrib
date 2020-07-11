@@ -2179,7 +2179,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "The Retreat Cost for each of your Latias, Latias ex, Latios, and Latios ex is 0."
           getterA (GET_RETREAT_COST, BEFORE_LAST) {holder->
             def name = holder.effect.target.name
-            if (name == "Latias" || name == "Latias ex" || name == "Latios" || name == "Latios ex") {
+            if ( ["Latias", "Latias ex", "Latios", "Latios ex"].contains(name) ) {
               holder.object = 0
             }
           }
