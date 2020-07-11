@@ -277,11 +277,18 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Rock Blast", {
           text "Discard up to 5 [F] Energy cards attached to Armaldo. For each Energy card you discarded, choose an opponent's Pokémon in play and this attack does 20 damage to those Pokémon. (You may choose the same Pokémon more than once.) This attack's damage isn't affected by Weakness or Resistance."
           energyCost F
+          attackRequirement {
+            assert self.cards.energyCount(F) : "You have no Energy cards attached that provide [F] Energy"
+          }
           onAttack {
-            def selected = self.cards.filterByEnergyType(F).select(min:0, max:5, "Select up to 5 [F] Energies to discard, does 20 damage to one Pokemon")
-
-            if (selected) {
-              damage 20*selected.size(), opp.all.select("Deal damage to which Pokemon?")
+            //TODO: This could be made into a static, other cards do similar attacks with other types.
+            def selected = self.cards.filterByEnergyType(F).select(min:1, max:5, "Select up to 5 [F] Energy cards to discard; for each card discarded, this attack will do 20 damage to 1 opponent's Pokemon of your choosing (you can pick the same Pokémon more than once.)")
+            def i = 0
+            def selNum = selected.size()
+            while (i++ < selNum){
+              noWrDamage ( 20, opp.all.select("Deal 20 damage to which Pokemon? ${i-1}/${selNum} Pokémon selected.") )
+            }
+            afterDamage {
               selected.discard()
             }
           }
