@@ -1583,7 +1583,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost F
           onAttack {
             damage 10
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -1603,10 +1603,11 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "Search your deck for a Basic Pokémon and a basic Energy card, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
           energyCost C
           onAttack {
-            def pokemon = my.deck.search ("Search for a Basic Pokemon", cardTypeFilter(BASIC))
-            def energy = my.deck.search("Search for Basic Energy", cardTypeFilter(BASIC_ENERGY))
-            pokemon.moveTo(my.hand)
-            energy.moveTo(my.hand)
+            def tar = my.deck.search(max: 2, "Search your deck for a Basic Pokémon and a Basic Energy card.", {it.cardTypes.is(BASIC) || it.cardTypes.is(BASIC_ENERGY)}, { CardList list ->
+              list.filterByType(BASIC).size() <= 1 && list.filterByType(BASIC_ENERGY).size() <= 1
+            })
+
+            if (tar) { tar.showToOpponent("Opponent used Alluring Kiss.").moveTo(my.hand) }
             shuffleDeck()
           }
         }
