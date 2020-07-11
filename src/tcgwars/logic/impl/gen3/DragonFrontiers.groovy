@@ -487,7 +487,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if (it.to == self && it.dmg.value && it.notNoEffect && opp.hand.size() >= 5) {
+                if (it.to == self && it.dmg.value && it.notNoEffect && self.owner.opposite.pbg.hand.size() >= 5) {
                   bc "Armor -30"
                   it.dmg -= hp(30)
                 }
@@ -504,7 +504,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           onAttack {
             deck.search("Search your deck for a δ Pokemon", {
               it.cardTypes.pokemon && it.cardTypes.is(DELTA)
-            }).moveTo(my.hand)
+            }).showToOpponent("Your opponent used Delta Call. They're moving this Pokémon card from their deck into their hand.").moveTo(my.hand)
             shuffleDeck()
           }
         }
