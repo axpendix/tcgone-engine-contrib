@@ -1931,24 +1931,28 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
         move "Dragon Roar", {
-          text "Put 8 damage counters on the Defending Pokémon. If that Pokémon would be Knocked Out by this attack, you may put any damage counters not necessary to Knocked Out the Defending Pokémon on your opponent's Benched Pokémon in any way you like."
+          text "Put 8 damage counters on the Defending Pokémon. If that Pokémon would be Knocked Out by this attack, you may put any damage counters not necessary to Knock Out the Defending Pokémon on your opponent's Benched Pokémon in any way you like."
           energyCost G, G, C, C
           onAttack {
-            def remainingHp = defending.getRemainingHP().value
-            def excessDamageCounters = (80 - remainingHp) / 10
+            targeted (defending) {
+              def remainingHp = defending.getRemainingHP().value
+              def excessDamageCounters = (80 - remainingHp) / 10
 
-            delayed {
-              def pcs = defending
-              before KNOCKOUT, pcs, {
-                if (excessDamageCounters && opp.bench) {
-                  (1..excessDamageCounters).each {
-                    directDamage 10, opp.bench.select("Put damage counter on?")
+              delayed {
+                def pcs = defending
+                before KNOCKOUT, pcs, {
+                  if (excessDamageCounters && opp.bench) {
+                    (1..excessDamageCounters).each {
+                      directDamage 10, opp.bench.select("Put damage counter on?")
+                      defending.damage-=hp(10)
+                    }
                   }
+                  unregister()
                 }
+                unregisterAfter 1
               }
-              unregisterAfter 1
+              directDamage 80, defending
             }
-            directDamage 80, defending
           }
         }
       };
