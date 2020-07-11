@@ -3159,14 +3159,14 @@ public enum MysteriousTreasures implements LogicCardInfo {
             def choice = 1
             def chosenCard
 
-            if(my.discard.any{isValidFossilCard(it)}){
-              choice = choose([1,2],['Search your deck', 'Search your discard pile'], "Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil, reveal it, and put it into your hand. Then, shuffle your deck.")
+            if(my.deck && my.discard.any{isValidFossilCard(it)}){
+              choice = choose([1,2],['Search your deck', 'Search your discard pile'], "Choose where to search for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil, reveal it, and put it into your hand?")
             }
 
-            if (choice == 1){
+            if (choice == 1 && my.deck){
               def validTargets = my.deck.findAll{isValidFossilCard(it)}
               chosenCard = my.deck.search(count:1, "Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil.", { validTargets.contains(it) } )
-            } else /*if (choice == 2)*/ {
+            } else /*if (choice == 2 || !my.deck)*/ {
               chosenCard = my.discard.findAll{isValidFossilCard(it)}.select()
             }
 
@@ -3176,7 +3176,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             shuffleDeck()
           }
           playRequirement {
-            assert ( my.deck.notEmpty || my.discard.any{isValidFossilCard(it)}) : "You have no cards in deck, and there are no cards in your discard pile that satisfy this supporter's requirements."
+            assert ( my.deck.notEmpty || my.discard.any{isValidFossilCard(it)}) : "You have no cards in deck, and there are no cards in your discard pile that satisfy this supporter's requirements"
           }
         };
       case LAKE_BOUNDARY_112:
