@@ -1847,6 +1847,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
         playRequirement{
+          assert my.discard.hasType(POKEMON) || my.discard.hasType(TRAINER) : "You don't have any Pokémon or Trainer cards in your discard pile"
         }
       };
       case PROFESSOR_ELM_S_TRAINING_METHOD_79:
