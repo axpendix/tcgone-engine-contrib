@@ -252,9 +252,9 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "Each of your Pokémon that has δ on its card does 10 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
           delayedA {
             after PROCESS_ATTACK_EFFECTS, {
-              if (ef.attacker.owner == self.owner) {
+              if (ef.attacker.owner == self.owner && ef.attacker.topPokemonCard.cardTypes.is(DELTA)) {
                 bg.dm().each {
-                  if (it.from.topPokemonCard.cardTypes.is(DELTA) && it.to.active && it.to != self.owner && it.notNoEffect && it.dmg.value) {
+                  if (it.to.active && it.to != self.owner && it.notNoEffect && it.dmg.value) {
                     bc "Battle Aura +10"
                     it.dmg += hp(10)
                   }
@@ -267,15 +267,13 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "20 damage. Before doing damage, you may choose 1 of your opponent's Benched Pokémon and switch it with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
           energyCost C, C
           onAttack {
-            def pcs = defending
             if(opp.bench){
               if(confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon before doing damage?")){
                 def target = opp.bench.select()
-                if ( sw2(target) ) { pcs = target }
+                sw2(target)
               }
             }
-
-            damage 20, pcs
+            damage 20
           }
         }
         move "Sharp Fang", {
@@ -293,8 +291,8 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "As long as Heracross is the only Pokémon you have in play, your opponent's Basic Pokémon can't attack."
           delayedA {
             before CHECK_ATTACK_REQUIREMENTS, {
-              if (self.owner.pbg.all.size() == 1 && ef.attacker.owner != self.owner && !ef.attacker.evolution) {
-                wcu "Shining Horn prevents Basic Pokemon from attacking."
+              if (ef.attacker.owner == self.owner.opposite && ef.attacker.notEvolution && self.owner.pbg.all.size() == 1) {
+                wcu "Shining Horn prevents Basic Pokémon from attacking."
                 prevent()
               }
             }
@@ -307,7 +305,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             assert my.discard.find(cardTypeFilter(ENERGY)) : "There are no Energy cards in your discard pile."
           }
           onAttack {
-            my.discard.findAll(cardTypeFilter(ENERGY)).select().moveTo(my.hand)
+            my.discard.findAll(cardTypeFilter(ENERGY)).select().showToOpponent("Opponent used Dig Deep. They're putting this Energy card from their discard pile into their hand.").moveTo(my.hand)
           }
         }
         move "Extra Claws", {
@@ -327,13 +325,12 @@ public enum DragonFrontiers implements LogicCardInfo {
         resistance W, MINUS30
         pokePower "Evolutionary Call", {
           text "Once during your turn, when you play Meganium from your hand to evolve 1 of your Pokémon, you may search your deck for up to 3 in any combination of Basic Pokémon or Evolution cards. Show them to your opponent and put them into your hand. Shuffle your deck afterward."
-          onActivate {
+          onActivate {reason ->
             checkLastTurn()
-            assert my.deck : "Deck is empty"
-            if (it==PLAY_FROM_HAND && confirm("Use Evolutionary Call?")) {
+            if (reason==PLAY_FROM_HAND && my.deck && confirm("Use Evolutionary Call?")) {
               powerUsed()
 
-              deck.search(max: 3, "Search your deck for up to 3 Basic/Evolutions", {it.cardTypes.pokemon && it.cardTypes.isIn(BASIC, EVOLUTION)}).moveTo(hand)
+              deck.search(max: 3, "Search your deck for up to 3 Basic/Evolutions", {it.cardTypes.is(POKEMON)}).showToOpponent("Opponent used Evolutionary Call. They're putting these cards from their deck into their hand.").moveTo(my.hand)
 
               shuffleDeck()
             }
