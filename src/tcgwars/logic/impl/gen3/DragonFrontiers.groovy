@@ -958,7 +958,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost F, C
           onAttack {
             damage 20
-            apply POISONED
+            applyAfterDamage POISONED
           }
         }
       };
@@ -1008,8 +1008,8 @@ public enum DragonFrontiers implements LogicCardInfo {
           actionA {
             checkLastTurn()
             checkNoSPC()
-            assert my.deck : "Deck is empty"
             assert self.evolution : "This Electabuzz is not an Evolved Pokemon"
+            assert my.deck : "Deck is empty"
 
             powerUsed()
             my.deck.subList(my.deck.size() - 1, my.deck.size()).moveTo(hidden:true, my.hand)
@@ -1031,7 +1031,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 20
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -1050,10 +1050,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost F, C
           onAttack {
             damage 20
-            if (bench) {
-              def tar = my.bench.select("Switch with")
-              sw self, tar
-            }
+            switchYourActive()
           }
         }
       };
@@ -1065,7 +1062,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost P, C
           onAttack {
             damage 20
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
         move "Link Blast", {
@@ -1088,7 +1085,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost R, C
           onAttack {
             damage 20
-            apply ASLEEP
+            applyAfterDamage ASLEEP
           }
         }
         move "Smack", {
@@ -1107,7 +1104,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 10
-            apply POISONED
+            applyAfterDamage POISONED
           }
         }
         move "Rear Kick", {
