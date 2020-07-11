@@ -553,6 +553,7 @@ public enum PowerKeepers implements LogicCardInfo {
               h.object=true
             }
           }
+          //TODO: Is this needed here?
           getterA IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
             if (self.active && h.effect.target.owner == self.owner.opposite) {
               h.object=true
@@ -568,12 +569,17 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Critical Move", {
           text "100 damage. Discard a basic Energy card attached to Slaking or this attack does nothing. Slaking can't attack during your next turn."
           energyCost C, C, C, C
+          attackRequirement {
+            assert self.cards.filterByType(BASIC_ENERGY) : "$self has no Basic Energy attached"
+          }
           onAttack {
             if(self.cards.filterByType(BASIC_ENERGY)){
-              self.cards.filterByType(BASIC_ENERGY).select("Discard a basic energy from $self.").discard()
               damage 100
+              afterDamage {
+                self.cards.filterByType(BASIC_ENERGY).select("Discard a basic energy from $self.").discard()
+                cantAttackNextTurn(self)
+              }
             }
-            cantAttackNextTurn(self)
           }
         }
       };
