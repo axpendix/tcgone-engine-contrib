@@ -406,9 +406,14 @@ public enum PowerKeepers implements LogicCardInfo {
             checkNoSPC()
             checkLastTurn()
             assert my.hand.filterByType(ENERGY) : "No Energy in hand"
-            my.hand.filterByType(ENERGY).select("Discard").discard()
-            draw choose([0,1,2,3], ["0","1","2","3"], "Draw how many cards?", 3)
+            //TODO: Confirm whether to use EX or LV.X ruling regarding being able to use it without cards in deck (EX ruling: You can't use the power at all; LV.X ruling: you can, you discard the energy and nothing else happens)
             powerUsed()
+
+            my.hand.filterByType(ENERGY).select("Discard").discard()
+            if (my.deck){
+              def maxDraw = Math.min(3, my.deck.size())
+              draw choose(1..maxDraw, "Draw how many cards?")
+            }
           }
         }
         move "Max Energy Source", {
