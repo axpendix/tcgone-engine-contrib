@@ -316,9 +316,11 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Bench Manipulation", {
           text "40x damage. Your opponent flips a number of coins equal to the number of his or her Benched Pokémon. This attack does 40 damage times the number of tails. This attack's damage isn't affected by Weakness or Resistance."
           energyCost P, P, C
+          attackRequirement {
+            assertOppBench()
+          }
           onAttack {
-            damage 40
-            flip opp.bench.size(), {}, { noWrDamage 40 }
+            flip opp.bench.size(), {}, { noWrDamage 40, defending }
           }
         }
       };
