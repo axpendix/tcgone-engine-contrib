@@ -707,7 +707,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           onAttack {
             flip {
               apply PARALYZED
-              if (bench) {
+              if (my.bench) {
                 def tar = my.bench.select("Switch with")
                 sw self, tar
               }
@@ -721,7 +721,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 10
             if (defending.EX) {
               damage 10
-              apply CONFUSED
+              applyAfterDamage CONFUSED
             }
           }
         }
@@ -798,12 +798,12 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Power Circulation", {
           text "Once during your turn (before your attack), you may search your discard pile for a basic Energy card, show it to your opponent, and put it on top of your deck. If you do, put 1 damage counter on Mantine. This power can't be used if Mantine is affected by a Special Condition."
           actionA {
-            checkNoSPC()
             checkLastTurn()
-            powerUsed()
+            checkNoSPC()
             assert my.discard.filterByType(BASIC_ENERGY) : "No Basic Energy in Discard"
+            powerUsed()
             my.discard.filterByType(BASIC_ENERGY).select(min: 0, max: 1, "Move one to the top of your deck").moveTo(addToTop: true, my.deck)
-            directDamage 10, self
+            directDamage 10, self, SRC_ABILITY
           }
         }
         move "Spiral Drain", {
