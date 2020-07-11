@@ -1208,7 +1208,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 10
             if (defending.EX) {
               damage 10
-              apply ASLEEP
+              applyAfterDamage ASLEEP
             }
           }
         }
@@ -1261,7 +1261,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           onAttack {
             damage 30
             if (defending.EX) {
-              apply CONFUSED
+              applyAfterDamage CONFUSED
             }
           }
         }
@@ -1361,6 +1361,9 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Flail", {
           text "10x damage. Does 10 damage times the number of damage counters on Feebas."
           energyCost R
+          attackRequirement {
+            assert self.numberOfDamageCounters : "$self has no damage counters on it"
+          }
           onAttack {
             damage 10*self.numberOfDamageCounters
           }
@@ -1374,7 +1377,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 10
-            apply ASLEEP
+            applyAfterDamage ASLEEP
           }
         }
       };
@@ -1509,7 +1512,9 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost L, C
           onAttack {
             damage 20
-            flip { discardDefendingEnergy() }
+            afterDamage {
+              flip { discardDefendingEnergy() }
+            }
           }
         }
       };
@@ -1526,6 +1531,9 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Psychic Boom", {
           text "10x damage. Does 10 damage times the amount of Energy attached to the Defending Pokémon."
           energyCost P
+          attackRequirement {
+            assert defending.cards.energyCount() : "The defending Pokémon has no energy on it"
+          }
           onAttack {
             damage 10*defending.cards.energyCount()
           }
