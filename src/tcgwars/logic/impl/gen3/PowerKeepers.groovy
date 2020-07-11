@@ -491,7 +491,7 @@ public enum PowerKeepers implements LogicCardInfo {
           text "If your opponent has any Pokémon-ex in play, each of Machamp's attacks does 30 more damage to the Defending Pokémon."
           delayedA {
             after PROCESS_ATTACK_EFFECTS, {
-              if(ef.attacker == self && opp.all.findAll{it.EX}){
+              if(ef.attacker == self && opp.all.any{it.EX}){
                 bg.dm().each {
                   if (it.to.active && it.to.owner != self.owner && it.dmg.value) {
                     bc "Overzealous +30"
@@ -537,7 +537,9 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost L, L, C
           onAttack {
             damage 100
-            discardAllSelfEnergy(null)
+            afterDamage {
+              discardAllSelfEnergy(null)
+            }
           }
         }
       };
