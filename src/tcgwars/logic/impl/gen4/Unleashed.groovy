@@ -193,7 +193,7 @@ public enum Unleashed implements LogicCardInfo {
           pokePower "Stardust Song", {
             text "Once during your turn, when you put Jirachi from you hand onto your Bench, you may flip 3 coins. For each heads, search your discard pile for a [P] Energy card and attach it to Jirachi."
             onActivate {reason ->
-              if(reason == PLAY_FROM_HAND && my.discard.findAll{it.cards.filterByEnergyType(P)}.size() && confirm("Use Stardust Song?")){
+              if(reason == PLAY_FROM_HAND && my.discard.filterByEnergyType(P) && confirm("Use Stardust Song?")){
                 powerUsed()
                 flip 3, {attachEnergyFrom(type: P, my.discard, self)}
               }
