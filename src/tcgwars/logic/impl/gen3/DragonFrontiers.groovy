@@ -1894,9 +1894,9 @@ public enum DragonFrontiers implements LogicCardInfo {
             checkLastTurn()
             checkNoSPC()
             assert my.hand.filterByType(BASIC_ENERGY) : "No Basic Energy in Hand"
-            assert my.all.findAll { it.EX && it.topPokemonCard.cardTypes.is(STAGE2) } : "No Stage 2 Pokemon-ex in play"
+            assert my.all.any{ it.EX && it.topPokemonCard.cardTypes.is(STAGE2) } : "No Stage 2 Pokemon-ex in play"
             powerUsed()
-            def tar = my.all.findAll { it.EX && it.topPokemonCard.cardTypes.is(STAGE2) }.select()
+            def tar = my.all.findAll{ it.EX && it.topPokemonCard.cardTypes.is(STAGE2) }.select()
             attachEnergyFrom(basic: true, my.hand, tar)
           }
         }
@@ -1906,7 +1906,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           onAttack {
             damage 60
             my.all.each{
-              it.damage-=hp(10)
+              heal 10, it
             }
           }
         }
