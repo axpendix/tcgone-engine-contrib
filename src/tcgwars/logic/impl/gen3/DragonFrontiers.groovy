@@ -1780,19 +1780,16 @@ public enum DragonFrontiers implements LogicCardInfo {
           "Choose up to 2 of your Prize cards and put them face up. (These cards remain face up for the rest of the game.) Draw 2 cards."
         onPlay {
           if (my.prizeCardSet.faceDownCards) {
-            def sel = my.prizeCardSet.faceDownCards.select(hidden:true, "Reveal a prize card")
-            bc "$sel was revealed"
-            my.prizeCardSet.setVisible(sel.first(), true)
-          }
-          if (my.prizeCardSet.faceDownCards) {
-            def sel = my.prizeCardSet.faceDownCards.select(hidden:true, "Reveal a prize card")
-            bc "$sel was revealed"
-            my.prizeCardSet.setVisible(sel.first(), true)
+            def maxPrizes = Math.min(2, my.prizeCardSet.faceDownCards.size())
+            def sel = my.prizeCardSet.faceDownCards.select(min: 1, max: maxPrizes, hidden:true, "Reveal a prize card")
+            sel.each{
+              bc "$it was revealed"
+              my.prizeCardSet.setVisible(it, true)
+            }
           }
           draw 2
         }
         playRequirement{
-          assert my.prizeCardSet.faceDownCards : "No faced-down prize cards"
         }
       };
       case MR_STONE_S_PROJECT_77:
