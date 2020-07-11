@@ -1789,6 +1789,8 @@ public enum DragonFrontiers implements LogicCardInfo {
               bc "$it was revealed"
               my.prizeCardSet.setVisible(it, true)
             }
+          } else {
+            bc "All of ${my.owner.getPlayerUsername(bg)}'s Prize cards are already face up!"
           }
           draw 2
         }
@@ -1800,18 +1802,22 @@ public enum DragonFrontiers implements LogicCardInfo {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Search your deck for up to 2 basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward. Or, search your discard pile for up to 2 basic Energy cards, show them to your opponent, and put them into your hand."
         onPlay {
-          def choice = choose([1,2],['Search Deck for up to 2 basic Energy cards', 'Search Discard for up to 2 basic Energy cards'], "Where to search for up to 2 basic Energy cards")
+          def choice = 1
+          if (my.deck && my.discard.hasType(BASIC_ENERGY)){
+            choice = choose([1,2],['Search your Deck', 'Search your Discard Pile'], "Where to search for up to 2 basic Energy cards?")
+          }
 
-          if (choice == 1) {
+          if (choice == 1 && my.deck) {
             my.deck.search(max:2, "Choose up to 2 basic Energy cards to move to your hand.",cardTypeFilter(BASIC_ENERGY)).moveTo(my.hand)
             shuffleDeck()
           } else {
             if (my.discard.filterByType(BASIC_ENERGY)) {
-              my.discard.filterByType(BASIC_ENERGY).select(min: 0, max: 2, "Select up to 2 basic Energy cards to move to your hand.").moveTo(my.hand)
+              my.discard.filterByType(BASIC_ENERGY).select(min: 1, max: 2, "Select up to 2 basic Energy cards to move to your hand.").moveTo(my.hand)
             }
           }
         }
         playRequirement{
+          assert ( my.deck.notEmpty || my.discard.hasType(BASIC_ENERGY)) : "You have no cards in deck, and there are no Basic Energy cards in your discard pile"
         }
       };
       case OLD_ROD_78:
