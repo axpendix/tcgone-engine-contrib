@@ -683,8 +683,10 @@ public enum PowerKeepers implements LogicCardInfo {
           onAttack {
             damage 20
 
-            if (opp.hand.size() >= 5) {
-              opp.hand.oppSelect(min: opp.hand.size()-4, max: opp.hand.size()-4, "Discard cards until you have 4 left in your hand").discard()
+            afterDamage{
+              if (opp.hand.size() >= 5) {
+                opp.hand.oppSelect(min: opp.hand.size()-4, max: opp.hand.size()-4, "Discard cards until you have 4 left in your hand").discard()
+              }
             }
           }
         }
@@ -697,10 +699,10 @@ public enum PowerKeepers implements LogicCardInfo {
           text "30 damage. Before doing damage, discard all Trainer cards attached to the Defending Pokémon."
           energyCost C, C
           onAttack {
-            damage 30
             if (defending.cards.filterByType(TRAINER)) {
               defending.cards.filterByType(TRAINER).discard()
             }
+            damage 30
           }
         }
         move "Dark Burst", {
@@ -727,10 +729,12 @@ public enum PowerKeepers implements LogicCardInfo {
               }
             }
             before APPLY_ATTACK_DAMAGES, {
-              bg.dm().each {
-                if(it.to == self && it.notNoEffect && it.from.EX ) {
-                  it.dmg = hp(0)
-                  bc "Safeguard prevents damage"
+              if (ef.attacker.owner != self.owner && ef.attacker.EX) {
+                bg.dm().each {
+                  if(it.to == self && it.notNoEffect && it.dmg.value) {
+                    it.dmg = hp(0)
+                    bc "Safeguard prevents damage"
+                  }
                 }
               }
             }
