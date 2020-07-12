@@ -988,6 +988,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         pokeBody "Binding Aura", {
           text "Your opponent can't play any Basic Pokémon or Evolution cards from his or her hand to evolve an Asleep Pokémon and can't attach any Energy cards from his or her hand to an Asleep Pokémon."
           delayedA {
+            //TODO: Prevent Baby Evolution from happening.
             before EVOLVE_STANDARD, {
               if (bg.currentTurn == self.owner.opposite && ef.pokemonToBeEvolved.isSPC(ASLEEP)) {
                 wcu "Binding Aura prevents you from evolving an Asleep Pokemon"

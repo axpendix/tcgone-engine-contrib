@@ -458,6 +458,7 @@ public enum PowerKeepers implements LogicCardInfo {
         pokeBody "Primal Stare", {
           text "As long as Kabutops is your Active Pokémon, your opponent can't play any Basic Pokémon or Evolution cards from his or her hand to evolve his or her Active Pokémon."
           delayedA {
+            //TODO: Prevent Baby Evolution from happening.
             before EVOLVE_STANDARD, {
               if (ef.pokemonToBeEvolved.owner != self.owner && ef.pokemonToBeEvolved.active && self.active) {
                 wcu "Primal Stare prevents evolving your Active Pokémon"
@@ -616,8 +617,9 @@ public enum PowerKeepers implements LogicCardInfo {
           text "Once during your opponent's turn, when any of your Pokémon is Knocked Out by your opponent's attacks, you may use this power. Choose a basic Energy card discarded from the Knocked Out Pokémon and attach it to Lanturn. You can't use more than 1 Energy Grounding Poké-Power each turn."
           delayedA{
             before KNOCKOUT, {
-              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && ef.pokemonToBeKnockedOut != self  && ef.pokemonToBeKnockedOut.cards.filterByType(BASIC_ENERGY).energyCount(C)) {
+              if (bg.em().retrieveObject("Metal_Gravity") != bg.turnCount && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && ef.pokemonToBeKnockedOut != self && ef.pokemonToBeKnockedOut.cards.filterByType(BASIC_ENERGY).energyCount(C)) {
                 if (confirm("Move an energy from ${ef.pokemonToBeKnockedOut} to $self?")) {
+                  bg.em().storeObject("Metal_Gravity", bg.turnCount)
                   moveEnergy(basic:true, ef.pokemonToBeKnockedOut,self)
                 }
               }
