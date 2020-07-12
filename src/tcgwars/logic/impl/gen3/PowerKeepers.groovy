@@ -892,10 +892,12 @@ public enum PowerKeepers implements LogicCardInfo {
               }
             }
             before APPLY_ATTACK_DAMAGES, {
-              bg.dm().each {
-                if(it.to == self && it.notNoEffect && it.from.EX ) {
-                  it.dmg = hp(0)
-                  bc "Safeguard prevents damage"
+              if (ef.attacker.EX) {
+                bg.dm().each {
+                  if(it.to == self && it.dmg.value && it.notNoEffect) {
+                    it.dmg = hp(0)
+                    bc "Safeguard prevents damage"
+                  }
                 }
               }
             }
@@ -905,8 +907,8 @@ public enum PowerKeepers implements LogicCardInfo {
           text "50 damage. Wobbuffet does 10 damage to itself, and don't apply Weakness and Resistance to this damage."
           energyCost P, C, C
           onAttack {
-            noWrDamage 50, defending
-            directDamage 10, self
+            damage 50, defending
+            noWrDamage 10, self
           }
         }
       };
