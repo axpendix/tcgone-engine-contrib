@@ -669,7 +669,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokeBody "Delta Reserve", {
           text "As long as Pidgeot has any Holon Energy cards attached to it, each player's Pokémon (excluding Pokémon that has δ on its card) can't use any Poké-Powers."
           getterA (IS_ABILITY_BLOCKED) { Holder h ->
-            if (self.cards.any{it.name == "Holon Energy"} && !h.effect.target.topPokemonCard.cardTypes.is(DELTA)) {
+            if (self.cards.any{it.name.contains("Holon Energy")} && !h.effect.target.topPokemonCard.cardTypes.is(DELTA)) {
               if (h.effect.ability instanceof PokePower) {
                 h.object=true
               }
@@ -738,7 +738,7 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokeBody "Hydro Barrier", {
           text "As long as Rayquaza has any Holon Energy cards attached to it, each of your [W] Pokémon has no Weakness."
           getterA (GET_WEAKNESSES) { h->
-            if (h.effect.target.owner == self.owner && h.effect.target.types.contains(W) && self.cards.any{it.name == "Holon Energy"}) {
+            if (h.effect.target.owner == self.owner && h.effect.target.types.contains(W) && self.cards.any{it.name.contains("Holon Energy")}) {
               def list = h.object as List<Weakness>
               list.clear()
             }
@@ -751,7 +751,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            def energy = my.deck.search(max: 1, "Select a Holon Energy card.", {it.name == "Holon Energy"}).first()
+            def energy = my.deck.search(max: 1, "Select a Holon Energy card.", {it.name.contains("Holon Energy")}).first()
             if (energy) {
               attachEnergy(self, energy)
             }
@@ -1662,7 +1662,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           onAttack {
             damage 30
 
-            if (self.cards.any{ it.name == "Holon Energy" }) {
+            if (self.cards.any{ it.name.contains("Holon Energy") }) {
               discardRandomCardFromOpponentsHand()
             }
           }
