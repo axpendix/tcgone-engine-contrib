@@ -1174,11 +1174,16 @@ public enum PowerKeepers implements LogicCardInfo {
           text "Metang can't be affected by any Special Conditions."
           delayedA {
             before APPLY_SPECIAL_CONDITION, {
-              def pcs = e.getTarget(bg)
-              if (pcs.owner == self.owner) {
+              if (e.getTarget(bg) == self) {
                 bc "Clear Body prevents Special Conditions"
                 prevent()
               }
+            }
+          }
+          onActivate{
+            if (self.specialConditions) {
+              bc "Clear Body removes existing Special Conditions from $self."
+              clearSpecialCondition(self, SRC_ABILITY)
             }
           }
         }
