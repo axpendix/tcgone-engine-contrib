@@ -407,7 +407,7 @@ public enum PowerKeepers implements LogicCardInfo {
             checkNoSPC()
             checkLastTurn()
             assert my.hand.filterByType(ENERGY) : "No Energy in hand"
-            //TODO: Confirm whether to use EX or LV.X ruling regarding being able to use it without cards in deck (EX ruling: You can't use the power at all; LV.X ruling: you can, you discard the energy and nothing else happens)
+            //Using LV.X Compendium Ruling instead of the EX: You can discard even if you don't have cards in deck.
             powerUsed()
 
             my.hand.filterByType(ENERGY).select("Discard").discard()
