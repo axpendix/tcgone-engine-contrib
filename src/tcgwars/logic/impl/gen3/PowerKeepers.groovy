@@ -1041,9 +1041,9 @@ public enum PowerKeepers implements LogicCardInfo {
           text "If Glacia's Stadium is in play, any damage done to Glalie by attacks from your opponent's Pokémon is reduced by 30 (after applying Weakness and Resistance)."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
-              bg.dm().each {
-                if (it.to == self && it.dmg.value && it.notNoEffect) {
-                  if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Glacia's Stadium") {
+              if (ef.attacker.owner != self.owner && bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Glacia's Stadium") {
+                bg.dm().each {
+                  if (it.to == self && it.dmg.value && it.notNoEffect) {
                     bc "Synergy Effect -30"
                     it.dmg -= hp(30)
                   }
@@ -1057,7 +1057,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost W, C
           onAttack {
             damage 20
-            apply ASLEEP
+            applyAfterDamage ASLEEP
           }
         }
         move "Double-edge", {
@@ -1082,6 +1082,9 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Dream Eater", {
           text "50 damage. If the Defending Pokémon is not Asleep, this attack does nothing."
           energyCost P, C
+          attackRequirement {
+            assert defending.isSPC(ASLEEP) : "Your opponent's Active Pokémon is not Asleep"
+          }
           onAttack {
             if (defending.isSPC(ASLEEP)) {
               damage 50
@@ -1138,7 +1141,7 @@ public enum PowerKeepers implements LogicCardInfo {
             after PROCESS_ATTACK_EFFECTS, {
               if (self.active) {
                 bg.dm().each {
-                  if (it.to.active && it.notNoEffect && it.dmg.value) {
+                  if (it.to.active && it.dmg.value) {
                     bc "Vigorous Aura +10"
                     it.dmg += hp(10)
                   }
@@ -1159,7 +1162,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost F, F, C
           onAttack {
             damage 40
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
