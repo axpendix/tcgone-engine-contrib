@@ -2255,7 +2255,6 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Crimson Ray", {
           text "Once during your turn, when you put Flareon Star from your hand onto your Bench, you may use this power. Each Active Pokémon (both yours and your opponent's) is now Burned."
           onActivate {r->
-            checkLastTurn()
             if (r==PLAY_FROM_HAND && confirm("Use Crimson Ray?")) {
               powerUsed()
 
@@ -2269,7 +2268,9 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost R, R, C
           onAttack {
             damage 50
-            discardSelfEnergy(R)
+            afterDamage {
+              discardSelfEnergy(R)
+            }
           }
         }
       };
@@ -2280,7 +2281,6 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Yellow Ray", {
           text "Once during your turn, when you put Jolteon Star from your hand onto your Bench, you may put 1 damage counter on each Active Pokémon (both yours and your opponent's)."
           onActivate {r->
-            checkLastTurn()
             if (r==PLAY_FROM_HAND && confirm("Use Yellow Ray?")) {
               powerUsed()
               directDamage 10, opp.active, SRC_ABILITY
@@ -2303,14 +2303,12 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Blue Ray", {
           text "Once during your turn, when you put Vaporeon Star from your hand onto your Bench, you may remove all Special Conditions and 3 damage counters from each Active Pokémon (both yours and your opponent's)."
           onActivate {r->
-            if (r==PLAY_FROM_HAND) {
-              if (confirm("Use Blue Ray?")) {
-                powerUsed()
-                clearSpecialCondition(opp.active, Source.SRC_ABILITY)
-                clearSpecialCondition(my.active, Source.SRC_ABILITY)
-                heal 30, my.active, Source.SRC_ABILITY
-                heal 30, opp.active, Source.SRC_ABILITY
-              }
+            if (r==PLAY_FROM_HAND && confirm("Use Blue Ray?")) {
+              powerUsed()
+              clearSpecialCondition(my.active, Source.SRC_ABILITY)
+              heal 30, my.active, Source.SRC_ABILITY
+              clearSpecialCondition(opp.active, Source.SRC_ABILITY)
+              heal 30, opp.active, Source.SRC_ABILITY
             }
           }
         }
@@ -2319,7 +2317,9 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost W, W, C
           onAttack {
             damage 40
-            flip { discardDefendingEnergy() }
+            afterDamage {
+              flip { discardDefendingEnergy() }
+            }
           }
         }
       };
