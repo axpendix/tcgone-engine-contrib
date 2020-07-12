@@ -1023,7 +1023,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           }
           onActivate{
             if (self.specialConditions) {
-              bc "Clear Body clears Special Conditions from $self."
+              bc "Clear Body removes existing Special Conditions from $self."
               clearSpecialCondition(self, SRC_ABILITY)
             }
           }
@@ -1052,7 +1052,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           }
           onActivate{
             if (self.specialConditions) {
-              bc "Clear Body clears Special Conditions from $self."
+              bc "Clear Body removes existing Special Conditions from $self."
               clearSpecialCondition(self, SRC_ABILITY)
             }
           }
@@ -1086,7 +1086,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           }
           onActivate{
             if (self.specialConditions) {
-              bc "Clear Body clears Special Conditions from $self."
+              bc "Clear Body removes existing Special Conditions from $self."
               clearSpecialCondition(self, SRC_ABILITY)
             }
           }

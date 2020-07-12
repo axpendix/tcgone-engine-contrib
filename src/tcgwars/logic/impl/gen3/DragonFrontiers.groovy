@@ -2253,7 +2253,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           actionA {
             checkLastTurn()
             powerUsed()
-            bc "$self's type is now Fire until the end of the turn."
+            bc "$self's type is now Fire until the end of this turn."
             delayed {
               def eff
               register {

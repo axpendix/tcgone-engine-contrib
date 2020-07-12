@@ -1191,7 +1191,7 @@ public enum LegendMaker implements LogicCardInfo {
           }
           onAttack {
             def maxSpace = Math.min(my.bench.freeBenchCount, 2)
-            my.deck.search(min:0, max:maxSpace, "Search your deck for up to 2 cards named Omanyte, Kabuto, Aerodactyl, Lileep, or Anorith", {
+            my.deck.search(min:0, max:maxSpace, "Search your deck for ${maxSpace == 2 ? "up to 2 cards" : "a card"} named Omanyte, Kabuto, Aerodactyl, Lileep, or Anorith", {
               ["Omanyte", "Kabuto", "Aerodactyl", "Lileep", "Anorith"].contains(it.name)
             }).each {
               my.deck.remove(it)
