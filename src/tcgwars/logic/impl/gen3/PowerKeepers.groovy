@@ -919,8 +919,14 @@ public enum PowerKeepers implements LogicCardInfo {
           text "Zangoose can't be affected by any Special Conditions."
           delayedA {
             before APPLY_SPECIAL_CONDITION, self, {
-              bc ("$self is thick Skinned!")
+              bc "$self is thick Skinned!"
               prevent()
+            }
+          }
+          onActivate{
+            if (self.specialConditions) {
+              bc "${self}'s Thick Skin clears all Special Conditions from them."
+              clearSpecialCondition(self, SRC_ABILITY)
             }
           }
         }
