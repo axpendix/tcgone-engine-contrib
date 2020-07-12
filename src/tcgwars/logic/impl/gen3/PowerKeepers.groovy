@@ -642,17 +642,18 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Magnetic Field", {
           text "Once during your turn (before your attack), if you have basic Energy cards in your discard pile, you may discard any 1 card from your hand. Then search for up to 2 basic Energy cards from your discard pile, show them to your opponent, and put them into your hand. You can't return the card you first discarded to your hand in this way. This power can't be used if Magneton is affected by a Special Condition."
           actionA {
+            checkLastTurn()
             checkNoSPC()
             assert my.discard.filterByType(BASIC_ENERGY) : "No Basic Energy cards in your discard pile."
-            checkLastTurn()
-
-            if (my.hand) {
-              my.hand.select("Select one card to discard.").discard()
-            }
-
-            my.discard.filterByType(BASIC_ENERGY).select(max: 2, "Select up to 2 Basic Energy scards to add to your hand.").moveTo(my.hand)
-
+            assert my.hand : "You have no cards in your hand"
             powerUsed()
+
+            def toDiscard = my.hand.select("Select one card to discard.")
+
+            my.discard.filterByType(BASIC_ENERGY).select(min: 1, max: 2, "Select up to 2 Basic Energy scards to add to your hand.").moveTo(my.hand)
+
+            toDiscard.discard()
+
           }
         }
         move "Magnetic Force", {
@@ -661,7 +662,7 @@ public enum PowerKeepers implements LogicCardInfo {
           onAttack {
             def amount = 0
             my.all.each {
-              amount += 10 * it.cards.filterByType(ENERGY).size()
+              amount += 10 * it.cards.energyCount(C)
             }
             damage amount
           }
