@@ -252,9 +252,9 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "Each of your Pokémon that has δ on its card does 10 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
           delayedA {
             after PROCESS_ATTACK_EFFECTS, {
-              if (ef.attacker.owner == self.owner) {
+              if (ef.attacker.owner == self.owner && ef.attacker.topPokemonCard.cardTypes.is(DELTA)) {
                 bg.dm().each {
-                  if (it.from.topPokemonCard.cardTypes.is(DELTA) && it.to.active && it.to != self.owner && it.notNoEffect && it.dmg.value) {
+                  if (it.to.active && it.to != self.owner && it.notNoEffect && it.dmg.value) {
                     bc "Battle Aura +10"
                     it.dmg += hp(10)
                   }
@@ -267,15 +267,13 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "20 damage. Before doing damage, you may choose 1 of your opponent's Benched Pokémon and switch it with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
           energyCost C, C
           onAttack {
-            def pcs = defending
             if(opp.bench){
               if(confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon before doing damage?")){
                 def target = opp.bench.select()
-                if ( sw2(target) ) { pcs = target }
+                sw2(target)
               }
             }
-
-            damage 20, pcs
+            damage 20
           }
         }
         move "Sharp Fang", {
@@ -293,8 +291,8 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "As long as Heracross is the only Pokémon you have in play, your opponent's Basic Pokémon can't attack."
           delayedA {
             before CHECK_ATTACK_REQUIREMENTS, {
-              if (self.owner.pbg.all.size() == 1 && ef.attacker.owner != self.owner && !ef.attacker.evolution) {
-                wcu "Shining Horn prevents Basic Pokemon from attacking."
+              if (ef.attacker.owner == self.owner.opposite && ef.attacker.notEvolution && self.owner.pbg.all.size() == 1) {
+                wcu "Shining Horn prevents Basic Pokémon from attacking."
                 prevent()
               }
             }
@@ -307,7 +305,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             assert my.discard.find(cardTypeFilter(ENERGY)) : "There are no Energy cards in your discard pile."
           }
           onAttack {
-            my.discard.findAll(cardTypeFilter(ENERGY)).select().moveTo(my.hand)
+            my.discard.findAll(cardTypeFilter(ENERGY)).select().showToOpponent("Opponent used Dig Deep. They're putting this Energy card from their discard pile into their hand.").moveTo(my.hand)
           }
         }
         move "Extra Claws", {
@@ -327,13 +325,12 @@ public enum DragonFrontiers implements LogicCardInfo {
         resistance W, MINUS30
         pokePower "Evolutionary Call", {
           text "Once during your turn, when you play Meganium from your hand to evolve 1 of your Pokémon, you may search your deck for up to 3 in any combination of Basic Pokémon or Evolution cards. Show them to your opponent and put them into your hand. Shuffle your deck afterward."
-          onActivate {
+          onActivate {reason ->
             checkLastTurn()
-            assert my.deck : "Deck is empty"
-            if (it==PLAY_FROM_HAND && confirm("Use Evolutionary Call?")) {
+            if (reason==PLAY_FROM_HAND && my.deck && confirm("Use Evolutionary Call?")) {
               powerUsed()
 
-              deck.search(max: 3, "Search your deck for up to 3 Basic/Evolutions", {it.cardTypes.pokemon && it.cardTypes.isIn(BASIC, EVOLUTION)}).moveTo(hand)
+              deck.search(max: 3, "Search your deck for up to 3 Basic/Evolutions", {it.cardTypes.is(POKEMON)}).showToOpponent("Opponent used Evolutionary Call. They're putting these cards from their deck into their hand.").moveTo(my.hand)
 
               shuffleDeck()
             }
@@ -417,9 +414,9 @@ public enum DragonFrontiers implements LogicCardInfo {
           onAttack {
             damage 60
 
-            if (opp.bench && my.hand.filterByType(BASIC, EVOLUTION) && confirm("Discard Pokemon from Hand?")) {
+            if (my.hand.filterByType(POKEMON) && confirm("Discard Pokemon from Hand?")) {
               my.hand.filterByType(BASIC, EVOLUTION).select("Which card to discard?").discard()
-              damage 20, opp.bench.select("Damage to?")
+              if (opp.bench) damage 20, opp.bench.select("Damage to?")
             }
           }
         }
@@ -430,13 +427,13 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Invitation", {
           text "Once during your turn (before your attack), you may search your deck for a Basic Pokémon or Evolution card, show it to your opponent, and put it into your hand. Shuffle your deck afterward. This power can't be used if Nidoqueen is affected by a Special Condition."
           actionA {
-            assert my.deck : "Deck is empty"
-            checkNoSPC()
             checkLastTurn()
+            checkNoSPC()
+            assert my.deck : "Deck is empty"
             powerUsed()
-            my.deck.search(max: 1, "Select a Basic or Evolution Pokemon to put into your hand", {
+            my.deck.search(max: 1, "Select a Pokemon card to put into your hand", {
               it.cardTypes.is(POKEMON)
-            }).moveTo(my.hand)
+            }).showToOpponent("Your opponent used Invitation. They're moving this Pokémon card from their deck into their hand.").moveTo(my.hand)
             shuffleDeck()
           }
         }
@@ -490,7 +487,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if (it.to == self && it.dmg.value && it.notNoEffect && opp.hand.size() >= 5) {
+                if (it.to == self && it.dmg.value && it.notNoEffect && self.owner.opposite.pbg.hand.size() >= 5) {
                   bc "Armor -30"
                   it.dmg -= hp(30)
                 }
@@ -507,7 +504,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           onAttack {
             deck.search("Search your deck for a δ Pokemon", {
               it.cardTypes.pokemon && it.cardTypes.is(DELTA)
-            }).moveTo(my.hand)
+            }).showToOpponent("Your opponent used Delta Call. They're moving this Pokémon card from their deck into their hand.").moveTo(my.hand)
             shuffleDeck()
           }
         }
@@ -525,14 +522,12 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Dozing", {
           text "Once during your turn (before your attack), if Snorlax is your Active Pokemon, you may remove 2 damage counters from Snorlax and Snorlax is now Asleep. This power can't be used if Snorlax is affected by a Special Condition"
           actionA {
-            checkNoSPC()
             checkLastTurn()
-
-            if (confirm("Activate Dozing to remove 2 damage counters from Snorlax Delta and fall asleep?")) {
-              heal 20, self
-              apply ASLEEP, self
-              powerUsed()
-            }
+            checkNoSPC()
+            assert self.active : "$self is not your Active Pokémon"
+            powerUsed()
+            heal 20, self, SRC_ABILITY
+            apply ASLEEP, self, SRC_ABILITY
           }
         }
         pokeBody "Bedhead", {
@@ -541,7 +536,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             before BEGIN_TURN, {
               if (self.isSPC(ASLEEP)) {
                 bc "Bedhead activates"
-                directDamage 20, self.owner.opposite.pbg.active
+                directDamage 20, self.owner.opposite.pbg.active, SRC_ABILITY
               }
             }
           }
@@ -555,7 +550,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "Choose an attack on 1 of your opponent's Pokémon in play that has δ on its card. Delta Copy copies that attack except for its Energy cost. (You must still do anything else required for that attack.) Togetic performs that attack."
           energyCost C, C
           attackRequirement {
-            assert opp.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) } : "Opponent has no Delta Pokemon"
+            assert opp.all.any{ it.topPokemonCard.cardTypes.is(DELTA) } : "Opponent has no Delta Pokemon"
           }
           onAttack {
             def card = opp.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) }.select("Source of move")
@@ -608,7 +603,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 60
 
             if (self.cards.energyCount(R) >= 2) {
-              apply BURNED
+              applyAfterDamage BURNED
             }
           }
         }
@@ -673,10 +668,12 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "Any damage done to Dewgong by attacks from your opponent's Pokémon that has δ on its card is reduced by 40 (after applying Weakness and Resistance)."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
-              bg.dm().each {
-                if (it.from.topPokemonCard.cardTypes.is(DELTA) && it.to == self && it.dmg.value && it.notNoEffect) {
-                  bc "Delta Protection -40"
-                  it.dmg -= hp(40)
+              if (ef.attacker.topPokemonCard.cardTypes.is(DELTA)){
+                bg.dm().each {
+                  if (it.to == self && it.dmg.value && it.notNoEffect) {
+                    bc "Delta Protection -40"
+                    it.dmg -= hp(40)
+                  }
                 }
               }
             }
@@ -687,7 +684,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 20
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
         move "Surge", {
@@ -710,7 +707,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           onAttack {
             flip {
               apply PARALYZED
-              if (bench) {
+              if (my.bench) {
                 def tar = my.bench.select("Switch with")
                 sw self, tar
               }
@@ -724,7 +721,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 10
             if (defending.EX) {
               damage 10
-              apply CONFUSED
+              applyAfterDamage CONFUSED
             }
           }
         }
@@ -801,12 +798,12 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Power Circulation", {
           text "Once during your turn (before your attack), you may search your discard pile for a basic Energy card, show it to your opponent, and put it on top of your deck. If you do, put 1 damage counter on Mantine. This power can't be used if Mantine is affected by a Special Condition."
           actionA {
-            checkNoSPC()
             checkLastTurn()
-            powerUsed()
+            checkNoSPC()
             assert my.discard.filterByType(BASIC_ENERGY) : "No Basic Energy in Discard"
+            powerUsed()
             my.discard.filterByType(BASIC_ENERGY).select(min: 0, max: 1, "Move one to the top of your deck").moveTo(addToTop: true, my.deck)
-            directDamage 10, self
+            directDamage 10, self, SRC_ABILITY
           }
         }
         move "Spiral Drain", {
@@ -825,10 +822,9 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "Once during your turn, when you play Quagsire from your hand to evolve 1 of your Pokémon, you may search your discard pile for up to 2 Pokémon Tool cards, show them to your opponent, and put them into your hand."
           onActivate {r->
             checkLastTurn()
-            if (r==PLAY_FROM_HAND && my.discard.filterByType(POKEMON_TOOL) && bg.em().retrieveObject("Dig_Up")!=bg.turnCount && confirm("Use Dig Up?")) {
+            if (r==PLAY_FROM_HAND && my.discard.filterByType(POKEMON_TOOL) && confirm("Use Dig Up?")) {
               powerUsed()
-              bg.em().storeObject("Dig_Up", bg.turnCount)
-              my.discard.filterByType(POKEMON_TOOL).select(min: 0, max: 2, "Select Pokémon Tool cards to move to your hand.").moveTo(my.hand)
+              my.discard.filterByType(POKEMON_TOOL).select(min: 1, max: 2, "Select Pokémon Tool cards to move to your hand.").showToOpponent("Your opponent used Dig Up. These Pokémon Tool cards will now be moved from their discard pile into their hand.").moveTo(my.hand)
             }
           }
         }
@@ -866,8 +862,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokePower "Tropical Heal", {
           text "Once during your turn, when you put Tropius from your hand onto your Bench, you may remove all Special Conditions, Imprison markers, and Shock-wave markers from your Pokémon."
           onActivate {
-            if (it==PLAY_FROM_HAND && bg.em().retrieveObject("Tropical_Heal")!=bg.turnCount && confirm("Use Tropical Heal?")) {
-              bg.em().storeObject("Tropical_Heal",bg.turnCount)
+            if (it==PLAY_FROM_HAND && confirm("Use Tropical Heal?")) {
               powerUsed()
               def Imprison = []
               def Shock_Wave = []
@@ -934,10 +929,12 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "Each of your Stage 2 Pokémon-ex does 10 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
           delayedA {
             after PROCESS_ATTACK_EFFECTS, {
-              bg.dm().each {
-                if (it.from.owner == self.owner && it.to.active && it.to.owner != self.owner && it.dmg.value && it.from.EX && it.from.topPokemonCard.cardTypes.is(STAGE2)) {
-                  bc "Extra Feather +10"
-                  it.dmg += hp(10)
+              if (ef.attacker.owner == self.owner && ef.attacker.EX && ef.attacker.topPokemonCard.cardTypes.is(STAGE2)) {
+                bg.dm().each {
+                  if (it.to.active && it.to.owner != self.owner && it.dmg.value) {
+                    bc "Extra Feather +10"
+                    it.dmg += hp(10)
+                  }
                 }
               }
             }
@@ -948,7 +945,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost D, C
           onAttack {
             damage 20
-            flip { apply CONFUSED }
+            flip { applyAfterDamage CONFUSED }
           }
         }
       };
@@ -961,7 +958,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost F, C
           onAttack {
             damage 20
-            apply POISONED
+            applyAfterDamage POISONED
           }
         }
       };
@@ -1011,8 +1008,8 @@ public enum DragonFrontiers implements LogicCardInfo {
           actionA {
             checkLastTurn()
             checkNoSPC()
-            assert my.deck : "Deck is empty"
             assert self.evolution : "This Electabuzz is not an Evolved Pokemon"
+            assert my.deck : "Deck is empty"
 
             powerUsed()
             my.deck.subList(my.deck.size() - 1, my.deck.size()).moveTo(hidden:true, my.hand)
@@ -1034,7 +1031,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 20
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -1053,10 +1050,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost F, C
           onAttack {
             damage 20
-            if (bench) {
-              def tar = my.bench.select("Switch with")
-              sw self, tar
-            }
+            switchYourActive()
           }
         }
       };
@@ -1068,7 +1062,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost P, C
           onAttack {
             damage 20
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
         move "Link Blast", {
@@ -1091,7 +1085,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost R, C
           onAttack {
             damage 20
-            apply ASLEEP
+            applyAfterDamage ASLEEP
           }
         }
         move "Smack", {
@@ -1110,7 +1104,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 10
-            apply POISONED
+            applyAfterDamage POISONED
           }
         }
         move "Rear Kick", {
@@ -1214,7 +1208,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 10
             if (defending.EX) {
               damage 10
-              apply ASLEEP
+              applyAfterDamage ASLEEP
             }
           }
         }
@@ -1267,7 +1261,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           onAttack {
             damage 30
             if (defending.EX) {
-              apply CONFUSED
+              applyAfterDamage CONFUSED
             }
           }
         }
@@ -1367,6 +1361,9 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Flail", {
           text "10x damage. Does 10 damage times the number of damage counters on Feebas."
           energyCost R
+          attackRequirement {
+            assert self.numberOfDamageCounters : "$self has no damage counters on it"
+          }
           onAttack {
             damage 10*self.numberOfDamageCounters
           }
@@ -1380,7 +1377,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 10
-            apply ASLEEP
+            applyAfterDamage ASLEEP
           }
         }
       };
@@ -1515,7 +1512,9 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost L, C
           onAttack {
             damage 20
-            flip { discardDefendingEnergy() }
+            afterDamage {
+              flip { discardDefendingEnergy() }
+            }
           }
         }
       };
@@ -1532,6 +1531,9 @@ public enum DragonFrontiers implements LogicCardInfo {
         move "Psychic Boom", {
           text "10x damage. Does 10 damage times the amount of Energy attached to the Defending Pokémon."
           energyCost P
+          attackRequirement {
+            assert defending.cards.energyCount() : "The defending Pokémon has no energy on it"
+          }
           onAttack {
             damage 10*defending.cards.energyCount()
           }
@@ -1581,7 +1583,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost F
           onAttack {
             damage 10
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -1601,10 +1603,11 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "Search your deck for a Basic Pokémon and a basic Energy card, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
           energyCost C
           onAttack {
-            def pokemon = my.deck.search ("Search for a Basic Pokemon", cardTypeFilter(BASIC))
-            def energy = my.deck.search("Search for Basic Energy", cardTypeFilter(BASIC_ENERGY))
-            pokemon.moveTo(my.hand)
-            energy.moveTo(my.hand)
+            def tar = my.deck.search(max: 2, "Search your deck for a Basic Pokémon and a Basic Energy card.", {it.cardTypes.is(BASIC) || it.cardTypes.is(BASIC_ENERGY)}, { CardList list ->
+              list.filterByType(BASIC).size() <= 1 && list.filterByType(BASIC_ENERGY).size() <= 1
+            })
+
+            if (tar) { tar.showToOpponent("Opponent used Alluring Kiss.").moveTo(my.hand) }
             shuffleDeck()
           }
         }
@@ -1680,7 +1683,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "Choose 1 of your opponent's Pokémon. This attack does 10 damage to that Pokémon. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
           energyCost P
           onAttack {
-            directDamage 10, opp.all.select()
+            swiftDamage (10, opp.all.select())
           }
         }
       };
@@ -1786,6 +1789,8 @@ public enum DragonFrontiers implements LogicCardInfo {
               bc "$it was revealed"
               my.prizeCardSet.setVisible(it, true)
             }
+          } else {
+            bc "All of ${my.owner.getPlayerUsername(bg)}'s Prize cards are already face up!"
           }
           draw 2
         }
@@ -1797,18 +1802,22 @@ public enum DragonFrontiers implements LogicCardInfo {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Search your deck for up to 2 basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward. Or, search your discard pile for up to 2 basic Energy cards, show them to your opponent, and put them into your hand."
         onPlay {
-          def choice = choose([1,2],['Search Deck for up to 2 basic Energy cards', 'Search Discard for up to 2 basic Energy cards'], "Where to search for up to 2 basic Energy cards")
+          def choice = 1
+          if (my.deck && my.discard.hasType(BASIC_ENERGY)){
+            choice = choose([1,2],['Search your Deck', 'Search your Discard Pile'], "Where to search for up to 2 basic Energy cards?")
+          }
 
-          if (choice == 1) {
+          if (choice == 1 && my.deck) {
             my.deck.search(max:2, "Choose up to 2 basic Energy cards to move to your hand.",cardTypeFilter(BASIC_ENERGY)).moveTo(my.hand)
             shuffleDeck()
           } else {
             if (my.discard.filterByType(BASIC_ENERGY)) {
-              my.discard.filterByType(BASIC_ENERGY).select(min: 0, max: 2, "Select up to 2 basic Energy cards to move to your hand.").moveTo(my.hand)
+              my.discard.filterByType(BASIC_ENERGY).select(min: 1, max: 2, "Select up to 2 basic Energy cards to move to your hand.").moveTo(my.hand)
             }
           }
         }
         playRequirement{
+          assert ( my.deck.notEmpty || my.discard.hasType(BASIC_ENERGY)) : "You have no cards in deck, and there are no Basic Energy cards in your discard pile"
         }
       };
       case OLD_ROD_78:
@@ -1823,14 +1832,22 @@ public enum DragonFrontiers implements LogicCardInfo {
             allHeads = false
           }
 
-          if (allHeads && my.discard.filterByType(POKEMON)) {
-            my.discard.filterByType(POKEMON).select(count: 1, "Search your discard pile for a Basic Pokémon (or Evolution card)").moveTo(my.hand)
-          }
-          else if (allTails && my.discard.filterByType(TRAINER)) {
-            my.discard.filterByType(TRAINER).select(count: 1, "Search your discard pile for a Trainer").moveTo(my.hand)
+          if (allHeads) {
+            if (my.discard.filterByType(POKEMON)) {
+              my.discard.filterByType(POKEMON).select(count: 1, "Search your discard pile for a Pokémon card.").showToOpponent("Your opponent played Old Rod.").moveTo(my.hand)
+            } else {
+              bc "There are no Pokémon cards in ${my.owner.getPlayerUsername(bg)}'s discard pile."
+            }
+          } else if (allTails){
+            if (my.discard.filterByType(TRAINER)) {
+              my.discard.filterByType(TRAINER).select(count: 1, "Search your discard pile for a Trainer card.").showToOpponent("Your opponent played Old Rod.").moveTo(my.hand)
+            } else {
+              bc "There are no Trainer cards in ${my.owner.getPlayerUsername(bg)}'s discard pile."
+            }
           }
         }
         playRequirement{
+          assert my.discard.hasType(POKEMON) || my.discard.hasType(TRAINER) : "You don't have any Pokémon or Trainer cards in your discard pile"
         }
       };
       case PROFESSOR_ELM_S_TRAINING_METHOD_79:
@@ -1877,9 +1894,9 @@ public enum DragonFrontiers implements LogicCardInfo {
             checkLastTurn()
             checkNoSPC()
             assert my.hand.filterByType(BASIC_ENERGY) : "No Basic Energy in Hand"
-            assert my.all.findAll { it.EX && it.topPokemonCard.cardTypes.is(STAGE2) } : "No Stage 2 Pokemon-ex in play"
+            assert my.all.any{ it.EX && it.topPokemonCard.cardTypes.is(STAGE2) } : "No Stage 2 Pokemon-ex in play"
             powerUsed()
-            def tar = my.all.findAll { it.EX && it.topPokemonCard.cardTypes.is(STAGE2) }.select()
+            def tar = my.all.findAll{ it.EX && it.topPokemonCard.cardTypes.is(STAGE2) }.select()
             attachEnergyFrom(basic: true, my.hand, tar)
           }
         }
@@ -1889,7 +1906,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           onAttack {
             damage 60
             my.all.each{
-              it.damage-=hp(10)
+              heal 10, it
             }
           }
         }
@@ -1914,24 +1931,28 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
         }
         move "Dragon Roar", {
-          text "Put 8 damage counters on the Defending Pokémon. If that Pokémon would be Knocked Out by this attack, you may put any damage counters not necessary to Knocked Out the Defending Pokémon on your opponent's Benched Pokémon in any way you like."
+          text "Put 8 damage counters on the Defending Pokémon. If that Pokémon would be Knocked Out by this attack, you may put any damage counters not necessary to Knock Out the Defending Pokémon on your opponent's Benched Pokémon in any way you like."
           energyCost G, G, C, C
           onAttack {
-            def remainingHp = defending.getRemainingHP().value
-            def excessDamageCounters = (80 - remainingHp) / 10
+            targeted (defending) {
+              def remainingHp = defending.getRemainingHP().value
+              def excessDamageCounters = (80 - remainingHp) / 10
 
-            delayed {
-              def pcs = defending
-              before KNOCKOUT, pcs, {
-                if (excessDamageCounters && opp.bench) {
-                  (1..excessDamageCounters).each {
-                    directDamage 10, opp.bench.select("Put damage counter on?")
+              delayed {
+                def pcs = defending
+                before KNOCKOUT, pcs, {
+                  if (excessDamageCounters && opp.bench) {
+                    (1..excessDamageCounters).each {
+                      directDamage 10, opp.bench.select("Put damage counter on?")
+                      defending.damage-=hp(10)
+                    }
                   }
+                  unregister()
                 }
+                unregisterAfter 1
               }
-              unregisterAfter 1
+              directDamage 80, defending
             }
-            directDamage 80, defending
           }
         }
       };
@@ -1944,7 +1965,7 @@ public enum DragonFrontiers implements LogicCardInfo {
               boolean flag = true
               if (self.active) {
                 self.owner.opposite.pbg.bench.each {
-                  if (!it.evolution) {
+                  if (it.notEvolution) {
                     if(flag) {bc "Sand Damage activates"; flag = false}
                     directDamage 10, it, SRC_ABILITY
                   }
@@ -2079,10 +2100,12 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "Any damage done to your Stage 2 Pokémon-ex by your opponent's attacks is reduced by 10 (before applying Weakness and Resistance)."
           delayedA {
             after PROCESS_ATTACK_EFFECTS, {
-              bg.dm().each {
-                if (it.to.owner == self.owner && it.to.EX && it.to.topPokemonCard.cardTypes.is(STAGE2) && it.dmg.value && it.notNoEffect) {
-                  bc "Extra Smoke -10"
-                  it.dmg -= hp(10)
+              if (ef.attacker.owner != self.owner) {
+                bg.dm().each {
+                  if (it.to.owner == self.owner && it.to.EX && it.to.topPokemonCard.cardTypes.is(STAGE2) && it.dmg.value && it.notNoEffect) {
+                    bc "Extra Smoke -10"
+                    it.dmg -= hp(10)
+                  }
                 }
               }
             }
@@ -2093,7 +2116,9 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost F, C
           onAttack {
             damage 40
-            attachEnergyFrom(my.discard, self)
+            afterDamage{
+              attachEnergyFrom(my.discard, self)
+            }
           }
         }
         move "Protective Swirl", {
@@ -2123,9 +2148,9 @@ public enum DragonFrontiers implements LogicCardInfo {
             checkLastTurn()
             checkNoSPC()
             assert my.hand.filterByType(BASIC_ENERGY) : "No Basic Energy in hand"
-            assert my.all.findAll { it.name == "Latias" || it.name == "Latias ex" || it.name == "Latios" || it.name == "Latios ex"}
+            assert my.all.any{ ["Latias", "Latias ex", "Latios", "Latios ex"].contains(it.name) }
             powerUsed()
-            def eligible = my.all.findAll { it.name == "Latias" || it.name == "Latias ex" || it.name == "Latios" || it.name == "Latios ex"}
+            def eligible = my.all.findAll { ["Latias", "Latias ex", "Latios", "Latios ex"].contains(it.name) }
             attachEnergyFrom(basic:true, my.hand, eligible.select("Attach to"))
             bg.gm().betweenTurns()
           }
@@ -2135,11 +2160,12 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost R, R, C
           onAttack {
             damage 90
-
+            //Would a slatedToKO inside afterDamage work fine here? -starg
             delayed {
               def pcs = defending
               after KNOCKOUT, pcs, {
                 discardSelfEnergy R,R
+                unregister()
               }
               unregisterAfter 1
             }
@@ -2153,7 +2179,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "The Retreat Cost for each of your Latias, Latias ex, Latios, and Latios ex is 0."
           getterA (GET_RETREAT_COST, BEFORE_LAST) {holder->
             def name = holder.effect.target.name
-            if (name == "Latias" || name == "Latias ex" || name == "Latios" || name == "Latios ex") {
+            if ( ["Latias", "Latias ex", "Latios", "Latios ex"].contains(name) ) {
               holder.object = 0
             }
           }
@@ -2381,8 +2407,9 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost D, C
           onAttack {
             damage 20
-            if (confirm("Rotating Claws - Discard an Energy to attach an Energy from your Discard Pile?")) {
-              if (my.discard.filterByType(ENERGY)) {
+            afterDamage{
+              if (my.discard.filterByType(ENERGY) && confirm("Rotating Claws - Discard an Energy to attach an Energy from your Discard Pile?")) {
+                //TODO: Discard the energy first, and exclude it from the select.
                 def energy = my.discard.filterByType(ENERGY).select()
                 discardSelfEnergy(C)
                 energy.each{
@@ -2397,8 +2424,10 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost D, D, D, D, C
           onAttack {
             damage 150
-            discardAllSelfEnergy(null)
-            opp.deck.subList(0, 3).discard()
+            afterDamage{
+              discardAllSelfEnergy(null)
+              if (opp.deck) opp.deck.subList(0, Math.min(3, opp.deck.size())).discard()
+            }
           }
         }
       };
@@ -2427,7 +2456,7 @@ public enum DragonFrontiers implements LogicCardInfo {
               attack (move as Move)
               bef.unregisterItself(bg().em())
             } else {
-              bc "Mimicry did not detect any moves $tar.name"
+              bc "Mimicry failed, couldn't find any moves in $tar.name"
             }
           }
         }
@@ -2441,11 +2470,14 @@ public enum DragonFrontiers implements LogicCardInfo {
             def energy = self.cards.filterByType(BASIC_ENERGY).select("Deal 20 damage to your opponent's Pokemon of the same type of the chosen Energy.")
             def type = energy.basicType
             bc "Rainbow Wave - Chosen type is $type"
+            def flag = false
             opp.all.each {
               if (it.types.contains(type.get(0))) {
+                flag = true
                 damage 20, it
               }
             }
+            if (!flag) bc "$thisMove failed! None of the opponent's Pokémon were ${type} type."
           }
         }
       };
