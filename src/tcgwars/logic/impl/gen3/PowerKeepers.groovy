@@ -1915,11 +1915,9 @@ public enum PowerKeepers implements LogicCardInfo {
           eff = delayed {
             before APPLY_SPECIAL_CONDITION, {
               def pcs=e.getTarget(bg)
-              if (pcs.types.contains(D)) {
-                if (ef.type == POISONED || ef.type == CONFUSED || ef.type == PARALYZED) {
-                  bc "Sidney's Stadium - [D] Pokemon can't be Asleep, Confused or Paralyzed."
-                  prevent()
-                }
+              if ( pcs.types.contains(D) and [ASLEEP, CONFUSED, PARALYZED].contains(ef.type) ) {
+                bc "Sidney's Stadium - [D] Pokemon can't be Asleep, Confused or Paralyzed."
+                prevent()
               }
             }
           }
@@ -1932,13 +1930,12 @@ public enum PowerKeepers implements LogicCardInfo {
       return supporter (this) {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Draw a number of cards up to the number of your opponent's Pokémon in play. If you have 7 or more cards (including this one) in your hand, you can't play this card."
-          //TODO: Check the Hidden Legends print, see if it works like this or with pre-errata text: originally said "If you have more than 7 cards (including this one)".
         onPlay {
           draw opp.all.size()
         }
         playRequirement {
-          assert my.deck : "Deck is empty"
-          assert my.hand.size() < 7 : "Hand size greater than 7"
+          assert my.deck : "Your deck is empty"
+          assert my.hand.size() < 7 : "You have 7 or more cards in your hand (including this card)"
         }
       };
       case CLAW_FOSSIL_84:
