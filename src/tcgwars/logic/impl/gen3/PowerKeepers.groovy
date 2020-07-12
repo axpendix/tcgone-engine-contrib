@@ -436,7 +436,7 @@ public enum PowerKeepers implements LogicCardInfo {
             assert my.deck : "Deck is empty"
             powerUsed()
 
-            my.deck.search(max: 1, "Search for a [P] Energy card to attach to one of your Pokemon.", {Card card -> card.asEnergyCard().containsTypePlain(L)}).each {
+            my.deck.search(max: 1, "Search for a [P] Energy card to attach to one of your Pokemon.", {Card card -> card.asEnergyCard().containsTypePlain(P)}).each {
               def tar = my.all.select("Attach $it to? That Pokemon will receive 2 damage counters.")
               attachEnergy(tar, it)
               directDamage 20, tar, SRC_ABILITY
@@ -2083,7 +2083,7 @@ public enum PowerKeepers implements LogicCardInfo {
             checkLastTurn()
             checkNoSPC()
             assert self.active : "$self is not an Active Pokémon"
-            assert ( [my, opp].any{curPlayer -> curPlayer.hand || curPlayer.deck} ) : "No player has cards in their deck or in their hand (...how?)"
+            assert ( [my, opp].any{curPlayer -> curPlayer.hand || curPlayer.deck} ) : "No player has cards in their deck or in their hand"
             powerUsed()
 
             my.hand.moveTo(hidden:true, my.deck)
