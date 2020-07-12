@@ -976,12 +976,11 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Poison Structure", {
           text "Once during your turn (before your attack), if Sidney's Stadium is in play, you may choose 1 of the Defending Pokémon. That Pokémon is now Poisoned. This power can't be used if Cacturne is affected by a Special Condition."
           actionA {
-            checkNoSPC()
             checkLastTurn()
-            if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Sidney's Stadium") {
-              apply POISONED, opp.active
-            }
+            checkNoSPC()
+            assert (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Sidney's Stadium") : "Sidney's Stadium is not in play"
             powerUsed()
+            apply POISONED, opp.active, SRC_ABILITY
           }
         }
         move "Pin Missile", {
