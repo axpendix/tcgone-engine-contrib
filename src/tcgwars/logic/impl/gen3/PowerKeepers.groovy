@@ -1556,7 +1556,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost P
           onAttack {
             damage 10
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
         move "Cross Chop", {
@@ -1579,10 +1579,12 @@ public enum PowerKeepers implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            my.deck.search(min:0, max:2, "Search your deck for a card named Omanyte, Kabuto, Aerodactyl, Lileep, or Anorith", {it.name == "Omanyte" || it.name == "Kabuto" || it.name == "Aerodactyl" || it.name == "Lileep" || it.name == "Anorith"}).each {
+            def maxSpace = Math.min(my.bench.freeBenchCount, 2)
+            my.deck.search(min:0, max:maxSpace, "Search your deck for ${maxSpace == 2 ? "up to 2 cards" : "a card"} named Omanyte, Kabuto, Aerodactyl, Lileep, or Anorith", {
+              ["Omanyte", "Kabuto", "Aerodactyl", "Lileep", "Anorith"].contains(it.name)
+            }).each {
               my.deck.remove(it)
               benchPCS(it)
-              // TODO: Mark as basic
             }
             shuffleDeck()
           }
