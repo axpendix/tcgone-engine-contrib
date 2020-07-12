@@ -1205,7 +1205,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 10
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
         move "Gentle Slap", {
@@ -1224,7 +1224,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost W, C
           onAttack {
             damage 20
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -1237,7 +1237,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost D, C
           onAttack {
             damage 20
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
         move "Darkness Charge", {
@@ -1245,7 +1245,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost D, C, C
           onAttack {
             damage 50
-            damage 10, self
+            directDamage 10, self
           }
         }
       };
@@ -1287,7 +1287,7 @@ public enum PowerKeepers implements LogicCardInfo {
           onAttack {
             flip {
               damage 60
-              apply PARALYZED
+              applyAfterDamage PARALYZED
             }
           }
         }
@@ -1299,7 +1299,7 @@ public enum PowerKeepers implements LogicCardInfo {
           text "If Vigoroth is your Active Pokémon and is damaged by an opponent's attack (even if Vigoroth is Knocked Out), put 1 damage counter on the Attacking Pokémon."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
-              if (bg.currentTurn == self.owner.opposite && bg.dm().find({ it.to==self && it.dmg.value }) && self.active) {
+              if (bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({ it.to==self && it.dmg.value })) {
                 directDamage(10, ef.attacker, Source.SRC_ABILITY)
               }
             }
@@ -1325,7 +1325,7 @@ public enum PowerKeepers implements LogicCardInfo {
             assert my.discard.find(cardTypeFilter(ENERGY)) : "No Energies in your discard pile."
           }
           onAttack {
-            my.discard.findAll(cardTypeFilter(ENERGY)).select().moveTo(my.hand)
+            my.discard.findAll(cardTypeFilter(ENERGY)).select().showToOpponent("Your opponent used Dig Deep.").moveTo(my.hand)
           }
         }
         move "Tackle", {
@@ -1344,8 +1344,11 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Retaliate", {
           text "10x damage. Does 10 damage times the number of damage counters on Bagon."
           energyCost C
+          attackRequirement {
+            assert self.numberOfDamageCounters : "$self has no damage counters on them."
+          }
           onAttack {
-            damage 10+10*self.numberOfDamageCounters
+            damage 10 * self.numberOfDamageCounters
           }
         }
       };
@@ -1357,7 +1360,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost P
           onAttack {
             damage 10
-            flip { apply CONFUSED }
+            flip { applyAfterDamage CONFUSED }
           }
         }
         move "Spinning Attack", {
@@ -1377,9 +1380,11 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost M
           onAttack {
             damage 10
-            if (opp.bench) {
-              flip {
-                moveEnergy(basic: true, defending, opp.bench)
+            afterDamage {
+              if (opp.bench) {
+                flip {
+                  moveEnergy(basic: true, defending, opp.bench)
+                }
               }
             }
           }
@@ -1404,7 +1409,7 @@ public enum PowerKeepers implements LogicCardInfo {
           text "If Carvanha is your Active Pokémon and is damaged by an opponent's attack (even if Carvanha is Knocked Out), put 1 damage counter on the Attacking Pokémon."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
-              if (bg.currentTurn == self.owner.opposite && bg.dm().find({ it.to==self && it.dmg.value }) && self.active) {
+              if (bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({ it.to==self && it.dmg.value })) {
                 directDamage(10, ef.attacker, Source.SRC_ABILITY)
               }
             }
