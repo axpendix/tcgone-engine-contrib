@@ -2044,14 +2044,18 @@ public enum PowerKeepers implements LogicCardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if (it.to == self && it.dmg.value && it.notNoEffect) {
+                if (it.to == self && it.dmg.value) {
                   if (self.owner.pbg.hand && oppConfirm("Activate Psychic Protector to reduce damage taken?")) {
                     def maxDiscard = Math.min(4, my.hand.size())
                     def toDiscard = self.owner.pbg.hand.oppSelect(min: 0, max: maxDiscard, "For each card discarded, the damage Flygon ex takes will reduced by 10.")
                     def reductionAmount = toDiscard.size() * 10
                     toDiscard.discard()
                     bc "Psychic Protector -$reductionAmount"
-                    it.dmg -= hp(reductionAmount)
+                    if (it.notNoEffect) {
+                      it.dmg -= hp(reductionAmount)
+                    } else {
+                      bc "Psychic Protector's damage reduction is ignored"
+                    }
                   }
                 }
               }
@@ -2063,7 +2067,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost C, C, C
           onAttack {
             damage 70
-            flip { cantUseAttack(thisMove, self) }
+            flip 1, {}, { cantUseAttack(thisMove, self) }
           }
         }
       };
