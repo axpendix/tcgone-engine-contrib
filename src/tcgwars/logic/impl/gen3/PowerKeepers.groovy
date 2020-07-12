@@ -2074,6 +2074,7 @@ public enum PowerKeepers implements LogicCardInfo {
       case METAGROSS_EX_95:
       return evolution (this, from:"Metang", hp:HP150, type:M, retreatCost:4) {
         weakness R
+        weakness F
         resistance G, MINUS30
         pokePower "Magnetic Redraw", {
           text "Once during your turn (before your attack), if Metagross ex is your Active Pokémon, you may use this power. Each player shuffles his or her hand into his or her deck. Then, each player draws 4 cards. This power can't be used if Metagross ex is affected by a Special Condition."
@@ -2081,17 +2082,15 @@ public enum PowerKeepers implements LogicCardInfo {
             checkLastTurn()
             checkNoSPC()
             assert self.active : "$self is not an Active Pokémon"
+            assert ( [my, opp].any{curPlayer -> curPlayer.hand || curPlayer.deck} ) : "No player has cards in their deck or in their hand (...how?)"
             powerUsed()
 
+            my.hand.moveTo(hidden:true, my.deck)
             opp.hand.moveTo(hidden:true, opp.deck)
+            shuffleDeck()
             shuffleDeck(null, TargetPlayer.OPPONENT)
-            draw 4, TargetPlayer.OPPONENT
-
-            if (my.hand.size()) {
-              my.hand.moveTo(hidden:true, my.deck)
-              shuffleDeck()
-            }
             draw 4
+            draw 4, TargetPlayer.OPPONENT
           }
         }
         move "Scanblast", {
