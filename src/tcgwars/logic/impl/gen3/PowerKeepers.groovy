@@ -250,7 +250,7 @@ public enum PowerKeepers implements LogicCardInfo {
           delayedA {
             before BETWEEN_TURNS, {
               if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Drake's Stadium") {
-                heal 10, self, TRAINER_CARD
+                heal 10, self, SRC_ABILITY
               }
             }
           }
