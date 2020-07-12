@@ -1603,6 +1603,9 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Charge", {
           text "Search your discard pile for a [L] Energy card and attach it to Pikachu."
           energyCost L
+          attackRequirement {
+            assert my.discard.filterByEnergyType(L) : "There are no [L] Energy cards in your discard pile"
+          }
           onAttack {
             attachEnergyFrom(type: L, my.discard, self)
           }
@@ -1642,10 +1645,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost P, C
           onAttack {
             damage 20
-            if (bench) {
-              def tar = my.bench.select("Select the Pokémon to switch with Ralts")
-              sw self, tar
-            }
+            switchYourActive()
           }
         }
       };
@@ -1676,7 +1676,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost P
           onAttack {
             damage 10
-            flip 1, { apply ASLEEP }, { apply CONFUSED }
+            flip 1, { applyAfterDamage ASLEEP }, { applyAfterDamage CONFUSED }
           }
         }
       };
@@ -1722,6 +1722,9 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Pebble Throw", {
           text "Choose 1 of your opponent's Benched Pokémon. This attack does 10 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C
+          attackRequirement {
+            assertOppBench()
+          }
           onAttack {
             if (opp.bench) {
               damage 10, opp.bench.select()
@@ -1774,7 +1777,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost R
           onAttack {
             damage 10
-            flip { apply BURNED }
+            flip { applyAfterDamage BURNED }
           }
         }
       };
@@ -1804,7 +1807,9 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost R, C
           onAttack {
             damage 30
-            discardSelfEnergy(R)
+            afterDamage {
+              discardSelfEnergy(R)
+            }
           }
         }
       };
@@ -1823,6 +1828,9 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Flail", {
           text "10x damage. Does 10 damage times the number of damage counters on Wynaut."
           energyCost C
+          attackRequirement {
+            assert self.numberOfDamageCounters : "$self has no damage counters on them."
+          }
           onAttack {
             damage 10*self.numberOfDamageCounters
           }
