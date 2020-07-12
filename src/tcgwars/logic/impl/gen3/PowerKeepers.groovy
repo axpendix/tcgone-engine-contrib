@@ -763,7 +763,7 @@ public enum PowerKeepers implements LogicCardInfo {
           text "If your opponent has any Evolved Pokémon in play, remove the highest Stage Evolution card from each of them and put those cards back into his or her hand."
           energyCost C
           attackRequirement {
-            assert opp.all.findAll { it.evolution } : "Opponent does not have any Evolved Pokemon in play."
+            assert opp.all.any{ it.evolution } : "Opponent does not have any Evolved Pokemon in play."
           }
           onAttack {
             opp.all.findAll { it.evolution }.each {
@@ -826,9 +826,9 @@ public enum PowerKeepers implements LogicCardInfo {
           text "If Phoebe's Stadium is in play, prevent all damage done to Sableye by attacks from your opponent's Pokémon-ex."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
-              bg.dm().each {
-                if (it.to == self && it.from.EX) {
-                  if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Phoebe's Stadium") {
+              if (ef.attacker.EX && bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Phoebe's Stadium") {
+                bg.dm().each {
+                  if (it.to == self && it.dmg.value && it.notNoEffect) {
                     bc "Synergy Effect prevents all damage"
                     it.dmg=hp(0)
                   }
@@ -844,10 +844,11 @@ public enum PowerKeepers implements LogicCardInfo {
             assert my.deck : "No cards in deck"
           }
           onAttack {
-            if (my.deck.size() < 2) {
-              draw 2
-            } else {
-              my.deck.subList(my.deck.size() - 2, my.deck.size()).moveTo(hidden:true, my.hand)
+            if (my.deck) {
+              def drawStart = Math.max(0, my.deck.size() - 2)
+              def cardsDrawn = my.deck.size() - drawStart
+              my.deck.subList(drawStart, my.deck.size()).moveTo(hidden:true, my.hand)
+              bc "${my.owner.getPlayerUsername(bg)} drew ${cardsDrawn} cards from the bottom of their deck."
             }
           }
         }
