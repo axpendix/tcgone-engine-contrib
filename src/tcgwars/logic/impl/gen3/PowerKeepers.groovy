@@ -2190,7 +2190,7 @@ public enum PowerKeepers implements LogicCardInfo {
           delayedA {
             after RETREAT, {
               if (ef.retreater.owner == self.owner.opposite && ef.retreater.getRemainingHP().value >= 40) {
-                bc "Metal Gravity"
+                bc "Metal Gravity activates"
                 directDamage 30, ef.retreater, SRC_ABILITY
               }
             }
