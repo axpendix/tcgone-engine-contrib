@@ -2190,7 +2190,8 @@ public enum PowerKeepers implements LogicCardInfo {
           text "If your opponent's Active Pokémon retreats and has 40 or more remaining HP, put 3 damage counters on that Pokémon. You can't use more than 1 Metal Gravity Poké-Body each turn."
           delayedA {
             after RETREAT, {
-              if (ef.retreater.owner == self.owner.opposite && ef.retreater.getRemainingHP().value >= 40) {
+              if (bg.em().retrieveObject("Metal_Gravity") != bg.turnCount && ef.retreater.owner == self.owner.opposite && ef.retreater.getRemainingHP().value >= 40) {
+                bg.em().storeObject("Metal_Gravity", bg.turnCount)
                 bc "Metal Gravity activates"
                 directDamage 30, ef.retreater, SRC_ABILITY
               }
