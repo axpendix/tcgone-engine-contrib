@@ -1996,6 +1996,7 @@ public enum PowerKeepers implements LogicCardInfo {
           actionA {
             checkLastTurn()
             powerUsed()
+            bc "$self's type is now Fighting until the end of this turn."
             delayed {
               def eff
               register {
@@ -2024,9 +2025,11 @@ public enum PowerKeepers implements LogicCardInfo {
           onAttack {
             damage 60
 
-            if (confirm("Discard a [P] attached to Claydol ex?")) {
-              discardSelfEnergy(P)
-              discardDefendingEnergy()
+            afterDamage {
+              if (confirm("Discard a [P] attached to Claydol ex? If you do, discard an Energy card attached to the Defending Pokémon.")) {
+                discardSelfEnergy(P)
+                discardDefendingEnergy()
+              }
             }
           }
         }
