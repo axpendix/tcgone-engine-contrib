@@ -1020,6 +1020,7 @@ public enum PowerKeepers implements LogicCardInfo {
           delayedA {
             after ATTACH_ENERGY, self, {
               if(ef.reason==PLAY_FROM_HAND && ef.card instanceof BasicEnergyCard && ef.card.basicType == R){
+                bc "Natural Cure clears all Special Conditions from ${self}."
                 clearSpecialCondition(self, SRC_ABILITY)
               }
             }
