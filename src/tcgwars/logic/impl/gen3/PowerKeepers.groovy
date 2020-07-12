@@ -2116,9 +2116,11 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost R, R, C, C
           onAttack {
             damage 150
-
-            if (my.deck) {
-              my.deck.subList(0, 5).discard()
+            afterDamage {
+              if (my.deck) {
+                def maxDiscard = Math.min(5, my.deck.size())
+                my.deck.subList(0, maxDiscard).discard()
+              }
             }
           }
         }
@@ -2129,7 +2131,9 @@ public enum PowerKeepers implements LogicCardInfo {
             opp.bench.each {
               damage 30, it
             }
-            discardAllSelfEnergy(W)
+            afterDamage {
+              discardAllSelfEnergy(W)
+            }
           }
         }
       };
