@@ -320,6 +320,7 @@ public enum PowerKeepers implements LogicCardInfo {
             assertOppBench()
           }
           onAttack {
+            //TODO: Opponent flips, "Will" (CEC) should not be usable here, or by Fliptini effects (that allow to reflip *your* flips).
             flip opp.bench.size(), {}, { noWrDamage 40, defending }
           }
         }
@@ -2050,11 +2051,11 @@ public enum PowerKeepers implements LogicCardInfo {
                     def toDiscard = self.owner.pbg.hand.oppSelect(min: 0, max: maxDiscard, "For each card discarded, the damage Flygon ex takes will reduced by 10.")
                     def reductionAmount = toDiscard.size() * 10
                     toDiscard.discard()
-                    bc "Psychic Protector -$reductionAmount"
                     if (it.notNoEffect) {
+                      bc "Psychic Protector -$reductionAmount"
                       it.dmg -= hp(reductionAmount)
                     } else {
-                      bc "Psychic Protector's damage reduction is ignored"
+                      bc "Psychic Protector's -$reductionAmount damage reduction is ignored"
                     }
                   }
                 }
