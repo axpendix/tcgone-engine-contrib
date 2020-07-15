@@ -250,7 +250,7 @@ public enum PowerKeepers implements LogicCardInfo {
           delayedA {
             before BETWEEN_TURNS, {
               if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Drake's Stadium") {
-                heal 10, self, TRAINER_CARD
+                heal 10, self, SRC_ABILITY
               }
             }
           }
@@ -320,6 +320,7 @@ public enum PowerKeepers implements LogicCardInfo {
             assertOppBench()
           }
           onAttack {
+            //TODO: Opponent flips, "Will" (CEC) should not be usable here, or by Fliptini effects (that allow to reflip *your* flips).
             flip opp.bench.size(), {}, { noWrDamage 40, defending }
           }
         }
@@ -406,7 +407,7 @@ public enum PowerKeepers implements LogicCardInfo {
             checkNoSPC()
             checkLastTurn()
             assert my.hand.filterByType(ENERGY) : "No Energy in hand"
-            //TODO: Confirm whether to use EX or LV.X ruling regarding being able to use it without cards in deck (EX ruling: You can't use the power at all; LV.X ruling: you can, you discard the energy and nothing else happens)
+            //Using LV.X Compendium Ruling instead of the EX: You can discard even if you don't have cards in deck.
             powerUsed()
 
             my.hand.filterByType(ENERGY).select("Discard").discard()
@@ -435,7 +436,7 @@ public enum PowerKeepers implements LogicCardInfo {
             assert my.deck : "Deck is empty"
             powerUsed()
 
-            my.deck.search(max: 1, "Search for a [P] Energy card to attach to one of your Pokemon.", {Card card -> card.asEnergyCard().containsTypePlain(L)}).each {
+            my.deck.search(max: 1, "Search for a [P] Energy card to attach to one of your Pokemon.", {Card card -> card.asEnergyCard().containsTypePlain(P)}).each {
               def tar = my.all.select("Attach $it to? That Pokemon will receive 2 damage counters.")
               attachEnergy(tar, it)
               directDamage 20, tar, SRC_ABILITY
@@ -457,6 +458,7 @@ public enum PowerKeepers implements LogicCardInfo {
         pokeBody "Primal Stare", {
           text "As long as Kabutops is your Active Pokémon, your opponent can't play any Basic Pokémon or Evolution cards from his or her hand to evolve his or her Active Pokémon."
           delayedA {
+            //TODO: Prevent Baby Evolution from happening.
             before EVOLVE_STANDARD, {
               if (ef.pokemonToBeEvolved.owner != self.owner && ef.pokemonToBeEvolved.active && self.active) {
                 wcu "Primal Stare prevents evolving your Active Pokémon"
@@ -615,8 +617,9 @@ public enum PowerKeepers implements LogicCardInfo {
           text "Once during your opponent's turn, when any of your Pokémon is Knocked Out by your opponent's attacks, you may use this power. Choose a basic Energy card discarded from the Knocked Out Pokémon and attach it to Lanturn. You can't use more than 1 Energy Grounding Poké-Power each turn."
           delayedA{
             before KNOCKOUT, {
-              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && ef.pokemonToBeKnockedOut != self  && ef.pokemonToBeKnockedOut.cards.filterByType(BASIC_ENERGY).energyCount(C)) {
+              if (bg.em().retrieveObject("Energy_Grounding") != bg.turnCount && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && ef.pokemonToBeKnockedOut != self && ef.pokemonToBeKnockedOut.cards.filterByType(BASIC_ENERGY).energyCount(C)) {
                 if (confirm("Move an energy from ${ef.pokemonToBeKnockedOut} to $self?")) {
+                  bg.em().storeObject("Energy_Grounding", bg.turnCount)
                   moveEnergy(basic:true, ef.pokemonToBeKnockedOut,self)
                 }
               }
@@ -2050,11 +2053,11 @@ public enum PowerKeepers implements LogicCardInfo {
                     def toDiscard = self.owner.pbg.hand.oppSelect(min: 0, max: maxDiscard, "For each card discarded, the damage Flygon ex takes will reduced by 10.")
                     def reductionAmount = toDiscard.size() * 10
                     toDiscard.discard()
-                    bc "Psychic Protector -$reductionAmount"
                     if (it.notNoEffect) {
+                      bc "Psychic Protector -$reductionAmount"
                       it.dmg -= hp(reductionAmount)
                     } else {
-                      bc "Psychic Protector's damage reduction is ignored"
+                      bc "Psychic Protector's -$reductionAmount damage reduction is ignored"
                     }
                   }
                 }
@@ -2082,7 +2085,7 @@ public enum PowerKeepers implements LogicCardInfo {
             checkLastTurn()
             checkNoSPC()
             assert self.active : "$self is not an Active Pokémon"
-            assert ( [my, opp].any{curPlayer -> curPlayer.hand || curPlayer.deck} ) : "No player has cards in their deck or in their hand (...how?)"
+            assert ( [my, opp].any{curPlayer -> curPlayer.hand || curPlayer.deck} ) : "No player has cards in their deck or in their hand"
             powerUsed()
 
             my.hand.moveTo(hidden:true, my.deck)
@@ -2189,7 +2192,8 @@ public enum PowerKeepers implements LogicCardInfo {
           text "If your opponent's Active Pokémon retreats and has 40 or more remaining HP, put 3 damage counters on that Pokémon. You can't use more than 1 Metal Gravity Poké-Body each turn."
           delayedA {
             after RETREAT, {
-              if (ef.retreater.owner == self.owner.opposite && ef.retreater.getRemainingHP().value >= 40) {
+              if (bg.em().retrieveObject("Metal_Gravity") != bg.turnCount && ef.retreater.owner == self.owner.opposite && ef.retreater.getRemainingHP().value >= 40) {
+                bg.em().storeObject("Metal_Gravity", bg.turnCount)
                 bc "Metal Gravity activates"
                 directDamage 30, ef.retreater, SRC_ABILITY
               }

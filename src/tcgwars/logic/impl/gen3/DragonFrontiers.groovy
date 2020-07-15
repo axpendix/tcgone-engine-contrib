@@ -1943,8 +1943,9 @@ public enum DragonFrontiers implements LogicCardInfo {
                 before KNOCKOUT, pcs, {
                   if (excessDamageCounters && opp.bench) {
                     (1..excessDamageCounters).each {
-                      directDamage 10, opp.bench.select("Put damage counter on?")
-                      defending.damage-=hp(10)
+                      def tar = opp.bench.select("Move a damage counter from $defending to some of your opponent's benched Pokémon? There are still ${excessDamageCounters - it + 1} available counters to move (Cancel to stop)", false)
+                      if(!tar) break;
+                      directDamage 10, tar
                     }
                   }
                   unregister()

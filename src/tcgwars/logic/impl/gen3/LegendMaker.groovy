@@ -2329,7 +2329,7 @@ public enum LegendMaker implements LogicCardInfo {
             assert elegible : "You have no Omanyte, Kabuto, Aerodactyl, Aerodactyl ex, Lileep or Anorith in your hand"
             bc "Used Strange Cave effect"
             lastTurn = bg().turnCount
-            eligible.select("Select which Pokemon to bench").each {
+            elegible.select("Select which Pokemon to bench").each {
               hand.remove(it)
               benchPCS(it)
             }
