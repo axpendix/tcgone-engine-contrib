@@ -1961,6 +1961,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             energyCost D
             attackRequirement {
               gxCheck()
+              assert (defending.numberOfDamageCounters == 4) : "Your opponent's Active Pokémon doesn't have 4 damage counters on them"
             }
             onAttack {
               gxPerform()
