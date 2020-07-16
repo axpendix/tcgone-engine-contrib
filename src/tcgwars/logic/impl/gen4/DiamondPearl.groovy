@@ -2946,7 +2946,7 @@ public enum DiamondPearl implements LogicCardInfo {
               }
             }
             before BETWEEN_TURNS, {
-              discard thisCard
+              if (pcs) discard thisCard
             }
           }
         }
