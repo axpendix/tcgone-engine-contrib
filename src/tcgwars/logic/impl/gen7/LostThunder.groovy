@@ -2923,17 +2923,18 @@ public enum LostThunder implements LogicCardInfo {
                   flag = ef.pokemonToBeKnockedOut.cards.copy()
                 }
               }
-              before MOVE_CARD, {
+              after MOVE_CARD, {
                 if (flag != null && ef.cards.every{card -> flag.contains(card) && ef.newLocation?.is(card.player.pbg.discard)}) {
-                  bc "debug test"
-                  prevent()
+                  bc "Lost Out activates for dolls"
+                  ef.cards.moveTo(self.owner.opposite.pbg.lostZone)
+                  flag.remove(ef.cards)
                 }
               }
               after KNOCKOUT, {
                 if(flag){
                   // FIXME this doesnt work with Robo Substitute, results in duplication
                   bc "Lost Out activates"
-                  flag.moveTo(self.owner.opposite.pbg.lostZone)
+                  if (flag) flag.moveTo(self.owner.opposite.pbg.lostZone)
                   flag = null
                 }
               }
