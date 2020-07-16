@@ -3069,6 +3069,7 @@ public enum GuardiansRising implements LogicCardInfo {
             draw(isGxPerformed() ? 7 : 4)
           }
           playRequirement{
+            assert (my.hand.getExcludedList(thisCard) || my.deck) : "You have no more cards in neither your deck nor your hand"
           }
         };
       case MALLOW_127:
