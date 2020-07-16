@@ -2929,6 +2929,7 @@ public enum DiamondPearl implements LogicCardInfo {
           pcs.cards.add(thisCard)
           my.hand.remove(thisCard)
 
+          //TODO: Unregister eff (specifically the discard) when pcs (and this card) is scooped up. Current bug: PlusPower ends up discarded at the end of the turn, even if the pokemon it's attached to is sent back to hand.
           eff = delayed {
             after PROCESS_ATTACK_EFFECTS, {
               if (ef.attacker == pcs) {
@@ -2946,7 +2947,7 @@ public enum DiamondPearl implements LogicCardInfo {
               }
             }
             before BETWEEN_TURNS, {
-              if (pcs) discard thisCard
+              discard thisCard
             }
           }
         }
