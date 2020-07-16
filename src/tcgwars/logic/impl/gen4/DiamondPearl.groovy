@@ -2917,16 +2917,40 @@ public enum DiamondPearl implements LogicCardInfo {
           }
         };
       case PLUSPOWER_109:
-        return copy(BaseSet.PLUSPOWER, this)
-      // TODO this has to be implemented here again because base set version has a multiplying bug
-//        return basicTrainer (this) {
-//          text "Attach PlusPower to 1 of your Pokémon. Discard this card at the end of your turn.\nIf the Pokémon PlusPower is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance)."
-//          onPlay {
-//            //TODO
-//          }
-//          playRequirement{
-//          }
-//        };
+      // TODO this has to be implemented here again because base set version has a multiplying bug (also, this print increases before W/R when the old prints do it after W/R - starg)
+      return itemCard (this) {
+        text "Attach PlusPower to 1 of your Pokémon. Discard this card at the end of your turn.\nIf the Pokémon PlusPower is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance)."
+        def eff
+        onPlay {reason->
+          def pcs = my.active
+          if (my.bench) {
+            pcs = my.all.select("Which Pokémon will you attach $thisCard to?")
+          }
+          pcs.cards.add(self)
+          my.hand.remove(self)
+
+          eff = delayed {
+            after PROCESS_ATTACK_EFFECTS, {
+              if (ef.attacker == pcs) {
+                bg.dm().each {
+                  if (it.to.active && it.dmg.value) {
+                    bc "PlusPower +10"
+                    it.dmg += hp(10)
+                  }
+                }
+              }
+            }
+            after DISCARD, {
+              if(ef.card == thisCard){
+                eff.unregister()
+              }
+            }
+            before BETWEEN_TURNS, {
+              discard thisCard
+            }
+          }
+        }
+      };
       case POKE_BALL_110:
       return itemCard (this) {
           text "Flip a coin. If heads, search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
