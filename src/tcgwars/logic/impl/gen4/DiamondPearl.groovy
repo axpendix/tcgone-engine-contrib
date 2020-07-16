@@ -2926,8 +2926,8 @@ public enum DiamondPearl implements LogicCardInfo {
           if (my.bench) {
             pcs = my.all.select("Which Pokémon will you attach $thisCard to?")
           }
-          pcs.cards.add(self)
-          my.hand.remove(self)
+          pcs.cards.add(thisCard)
+          my.hand.remove(thisCard)
 
           eff = delayed {
             after PROCESS_ATTACK_EFFECTS, {
