@@ -4256,6 +4256,14 @@ public enum UnbrokenBonds implements LogicCardInfo {
             bg.em().storeObject("KOGA_S_TRAP_TURN", bg.turnCount)
           }
           playRequirement{
+            def defendingConfused = opp.active.isSPC(CONFUSED)
+            def defendingPoisoned = opp.active.isSPC(POISONED)
+            def extraPoisonCount = 0
+            if (defendingPoisoned){
+              //Check for multi-counter poison; this only detects active increasers.
+              extraPoisonCount = bg.em().retrieveObject("extra_poison_counter_"+opp.active.hashCode()) ?: 0
+            }
+            assert !defendingConfused || !defendingPoisoned || extraPoisonCount : "Your opponent's Active Pokémon is already Confused and Poisoned"
           }
         };
       case LT_SURGE_S_STRATEGY_178:

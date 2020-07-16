@@ -776,9 +776,10 @@ public enum HolonPhantoms implements LogicCardInfo {
             checkNoSPC()
             checkLastTurn()
             def defendingPoisoned = opp.active.isSPC(POISONED)
+            def extraPoisonCount = 0
             if (defendingPoisoned){
               //Check for multi-counter poison; this only detects active increasers.
-              def extraPoisonCount = bg.em().retrieveObject("extra_poison_counter_"+opp.active.hashCode()) ?: 0
+              extraPoisonCount = bg.em().retrieveObject("extra_poison_counter_"+opp.active.hashCode()) ?: 0
             }
             assert !defendingPoisoned || extraPoisonCount : "Your opponent's Active Pokémon is already Poisoned"
             powerUsed()

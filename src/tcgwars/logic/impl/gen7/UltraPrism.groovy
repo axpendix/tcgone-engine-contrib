@@ -3033,7 +3033,7 @@ public enum UltraPrism implements LogicCardInfo {
           text "You may play 4 Missing Clover cards at once. \n-If you played 1 card, look at the top card of your deck \n if you played 4 cards, take a prize card \nYou may play as many Item cards as you like during your turn (before your attack)."
           onPlay {
             if(my.hand.findAll({it.name=="Missing Clover"}).size()>=4) {
-              if(confirm("Use your 4 Missing Clover and take a prize card?")){
+              if(!my.deck || confirm("Use your 4 Missing Clover and take a prize card?")){
                 bg.em().run(new TakePrize(thisCard.player, null))
                 my.hand.findAll({it.name=="Missing Clover"}).subList(0,4).discard()
               }
@@ -3042,6 +3042,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
           playRequirement{
+            assert (my.hand.count{it.name=="Missing Clover"} >= 4 || my.deck) : "You have no cards in your deck"
           }
         };
       case MT__CORONET_130:
