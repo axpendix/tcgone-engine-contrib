@@ -2233,6 +2233,8 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
           playRequirement{
+            assertMyBench()
+            assertMyAll(info:"with basic Energy cards attached to them", {it.cards.filterByType(BASIC_ENERGY)})
           }
         };
       case EXP_ALL_91:
@@ -2438,6 +2440,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
           playRequirement{
+            assertMyAll(info:"with damage on them", {it.numberOfDamageCounters})
           }
         };
       case SWITCH_102:
