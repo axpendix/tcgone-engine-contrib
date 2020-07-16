@@ -1368,9 +1368,10 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C
           attackRequirement {
             assert self.cards.energyCount(C) : "$self.name has no Energy attached"
+            assert self.numberOfDamageCounters : "$self.name has no damage counters on it"
           }
           onAttack {
-            self.cards.findAll {energyFilter C}.select("Select Energy to discard from $self.name.").discard()
+            self.cards.filterByType(ENERGY).findAll {energyFilter C}.select("Select Energy to discard from $self.name.").discard()
             healAll self
           }
         }
