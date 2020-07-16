@@ -2744,6 +2744,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             tar.discard()
           }
           playRequirement{
+            assert my.hand.filterByType(ULTRA_BEAST) : "You don't have any Ultra Beast cards in your hand"
           }
         };
       case ULTRA_SPACE_115:
