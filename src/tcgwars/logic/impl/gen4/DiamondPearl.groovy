@@ -2949,6 +2949,11 @@ public enum DiamondPearl implements LogicCardInfo {
             before BETWEEN_TURNS, {
               discard thisCard
             }
+            after REMOVE_FROM_PLAY, pcs, null, {
+              if(ef.removedCards.contains(thisCard)) {
+                eff.unregister()
+              }
+            }
           }
         }
       };
