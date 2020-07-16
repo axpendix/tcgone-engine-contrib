@@ -2923,6 +2923,12 @@ public enum LostThunder implements LogicCardInfo {
                   flag = ef.pokemonToBeKnockedOut.cards.copy()
                 }
               }
+              before MOVE_CARD, {
+                if (flag.contains(card) && ef.newLocation?.is(card.player.pbg.discard)) {
+                  bc "debug test"
+                  prevent()
+                }
+              }
               after KNOCKOUT, {
                 if(flag){
                   // FIXME this doesnt work with Robo Substitute, results in duplication
