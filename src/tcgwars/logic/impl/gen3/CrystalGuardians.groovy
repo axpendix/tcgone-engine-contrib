@@ -2052,10 +2052,10 @@ public enum CrystalGuardians implements LogicCardInfo {
             powerUsed()
 
             def amountToDiscard = Math.max(my.hand.size() - 6, 0)
-            my.hand.select(count: amountToDiscard, "Discard until 6 cards left in hand").discard()
+            if (amountToDiscard) my.hand.select(count: amountToDiscard, "Discard until 6 cards left in hand").discard()
 
             def oppAmountToDiscard = Math.max(opp.hand.size() - 6, 0)
-            opp.hand.oppSelect(count: oppAmountToDiscard, "Discard until 6 cards left in hand").discard()
+            if (oppAmountToDiscard) opp.hand.oppSelect(count: oppAmountToDiscard, "Discard until 6 cards left in hand").discard()
           }
         }
         move "Upstream", {
