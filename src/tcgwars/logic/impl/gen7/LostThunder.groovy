@@ -2924,7 +2924,7 @@ public enum LostThunder implements LogicCardInfo {
                 }
               }
               before MOVE_CARD, {
-                if (flag.contains(card) && ef.newLocation?.is(card.player.pbg.discard)) {
+                if (flag != null && flag.contains(card) && ef.newLocation?.is(card.player.pbg.discard)) {
                   bc "debug test"
                   prevent()
                 }
