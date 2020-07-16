@@ -2927,12 +2927,12 @@ public enum LostThunder implements LogicCardInfo {
                 if(flag){
                   // FIXME this doesnt work with Robo Substitute, results in duplication
                   bc "Lost Out activates"
+                  def changedCardsList = bg.em().retrieveObject("impl_changed_cards")
                   flag.each{ card ->
-                    if (["Lillie's Poké Doll", "Robo Substitute", "Unidentified Fossil", "Rare Fossil"].contains(card.name)) {
-                      self.owner.opposite.pbg.discard.find{it.name == card.name}.moveTo(self.owner.opposite.pbg.lostZone)
-                    } else {
-                      card.moveTo(self.owner.opposite.pbg.lostZone)
-                    }
+                    def toMove = card
+                    def changedCard = changedCardsList.findAll{it[0] == card}
+                    if (changedCard) toMove = (changedCard.first())[1]
+                    toMove.moveTo(self.owner.opposite.pbg.lostZone)
                   }
                   flag = null
                 }
