@@ -2923,11 +2923,9 @@ public enum LostThunder implements LogicCardInfo {
                   flag = ef.pokemonToBeKnockedOut.cards.copy()
                 }
               }
-              after MOVE_CARD, {
-                if (flag != null && ef.cards.every{card -> flag.contains(card) && ef.newLocation?.is(card.player.pbg.discard)}) {
-                  bc "Lost Out activates for dolls"
-                  ef.cards.moveTo(self.owner.opposite.pbg.lostZone)
-                  flag.remove(ef.cards)
+              before DISCARD, {
+                if(flag && flag.contains(ef.card) && bg.currentTurn == self.owner){
+                  prevent()
                 }
               }
               after KNOCKOUT, {
