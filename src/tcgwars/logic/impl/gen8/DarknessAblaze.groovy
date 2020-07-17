@@ -4051,11 +4051,33 @@ public enum DarknessAblaze implements LogicCardInfo {
       case MOUNTAINOUS_SMOKE_179:
       return pokemonTool (this) {
         text "When the Pokémon this card is attached to is Knocked Out by damage from an opponent’s attack, your opponent puts any Prize cards they pick into their discard pile instead of their hand."
+        def eff
         onPlay {reason->
+          eff = delayed {
+            before (KNOCKOUT,self) {
+              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
+                bc "Mountainous Smoke activates."
+                bg.em().retrieveAndStore("Mountainous_Smoke", {true})
+                delayed {
+                  after TAKE_PRIZE, {
+                    if(self.owner.opposite.prizeCardSet.notEmpty && ef.card != null && ef.card.player == self.owner.opposite){
+                      bc "${ef.card} gets discarded due to Mountainous Smoke's effect."
+                      def prizeOwner = ef.card.player
+                      prizeOwner.pbg.hand.remove(ef.card)
+                      prizeOwner.pbg.discard.add(ef.card)
+                    }
+                  }
+                  after KNOCKOUT, self, {
+                    bg.em().retrieveAndStore("Mountainous_Smoke", {false})
+                    unregister()
+                  }
+                }
+              }
+            }
+          }
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          eff.unregister()
         }
       };
       case SPIKEMUTH_180:

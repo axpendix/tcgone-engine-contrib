@@ -2445,7 +2445,8 @@ public enum CelestialStorm implements LogicCardInfo {
           globalAbility{
             delayed{
               after TAKE_PRIZE, {
-                if(thisCard.player.pbg.prizeCardSet.notEmpty && ef.card != null && ef.card == thisCard
+                def hasSmoke = bg.em().retrieveObject("Mountainous_Smoke")
+                if(thisCard.player.pbg.prizeCardSet.notEmpty && !hasSmoke && ef.card != null && ef.card == thisCard
                   && thisCard.player.pbg.bench.notFull && bg.currentTurn == thisCard.player
                   && thisCard.player.pbg.hand.contains(thisCard)
                   && checkGlobalAbility(thisCard)
