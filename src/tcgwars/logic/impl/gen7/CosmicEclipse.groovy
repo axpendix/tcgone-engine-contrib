@@ -4735,6 +4735,12 @@ public enum CosmicEclipse implements LogicCardInfo {
                           bg.em().retrieveAndStore("impl_changed_cards", {it ?: []})
                           bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
                           bg.em().retrieveAndStore("impl_changed_cards", {it.add([pokemonCard, trainerCard]); it})
+                          delayed {
+                            before BEGIN_TURN, {
+                              bg.em().retrieveAndStore("impl_changed_cards", {it.remove([pokemonCard, trainerCard]); it})
+                              unregister()
+                            }
+                          }
                           unregister()
                           ef2 = null
                         }
