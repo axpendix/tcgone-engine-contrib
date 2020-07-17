@@ -4057,7 +4057,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             before (KNOCKOUT,self) {
               if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
                 bc "Mountainous Smoke activates."
-                bg.em().retrieveAndStore("Mountainous_Smoke", {true})
+                bg.em().storeObject("Mountainous_Smoke", true)
                 delayed {
                   after TAKE_PRIZE, {
                     if(self.owner.opposite.prizeCardSet.notEmpty && ef.card != null && ef.card.player == self.owner.opposite){
@@ -4068,7 +4068,7 @@ public enum DarknessAblaze implements LogicCardInfo {
                     }
                   }
                   after KNOCKOUT, self, {
-                    bg.em().retrieveAndStore("Mountainous_Smoke", {false})
+                    bg.em().storeObject("Mountainous_Smoke", false)
                     unregister()
                   }
                 }
