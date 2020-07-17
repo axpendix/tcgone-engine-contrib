@@ -2931,8 +2931,11 @@ public enum LostThunder implements LogicCardInfo {
                   flag.each{ card ->
                     def toMove = card
                     def changedCard = changedCardsList.findAll{it[0] == card}
-                    if (changedCard) toMove = (changedCard.first())[1]
-                    toMove.moveTo(self.owner.opposite.pbg.lostZone)
+                    if (changedCard) {
+                      bc "Card was changed: $changedCard"
+                      toMove = (changedCard.first())[1]
+                    }
+                    new CardList(toMove).moveTo(self.owner.opposite.pbg.lostZone)
                   }
                   flag = null
                 }
