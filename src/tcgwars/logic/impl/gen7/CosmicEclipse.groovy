@@ -2182,7 +2182,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                 if(self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite ) {
                   bc "Grim Marking activates."
                   (1..4).each {
-                    if (opp.all) directDamage(10, self.owner.opposite.pbg.all.select("Grim Marking: Choose an opponent's Pokémon to put a damage counter on.", self.owner))
+                    if (opp.all) directDamage(10, self.owner.opposite.pbg.all.select("Grim Marking: Choose an opponent's Pokémon to put a damage counter on.", self.owner), SRC_ABILITY)
                   }
                 }
               }
