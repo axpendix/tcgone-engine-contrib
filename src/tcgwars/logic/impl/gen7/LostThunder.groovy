@@ -3711,6 +3711,7 @@ public enum LostThunder implements LogicCardInfo {
               assert my.hand.filterByType(STAGE1) : "No Stage 1 in your hand"
               assert bg.turnCount > 2 : "Cannot evolve first turn"
               assert self.turnCount < bg.turnCount : "Cannot evolve the turn you put it into play"
+              assert self.lastEvolved < bg.turnCount : "Cannot evolve the turn $self was devolved"
               powerUsed()
               def tar = my.hand.filterByType(STAGE1).select("Evolve To")
 
