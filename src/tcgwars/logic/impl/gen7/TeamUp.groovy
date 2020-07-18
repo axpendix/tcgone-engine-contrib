@@ -3491,13 +3491,14 @@ public enum TeamUp implements LogicCardInfo {
                 }
               }
               before DIRECT_DAMAGE, self, Source.SRC_ABILITY, {
+                //FIXME this will also block own pokemon abilities. to fix this, "Source refactoring" must be done. (See omega stop)
                 if(self.types.contains(M)) {
                   bc "Metal Goggles prevents damage counters from being placed on $self.name"
                   prevent()
                 }
               }
               before DIRECT_DAMAGE, self, Source.ATTACK, {
-                if(self.types.contains(M)) {
+                if(bg.currentTurn == self.owner.opposite && self.types.contains(M)) {
                   bc "Metal Goggles prevents damage counters from being placed on $self.name"
                   prevent()
                 }
