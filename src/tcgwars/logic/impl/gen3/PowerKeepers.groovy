@@ -618,7 +618,7 @@ public enum PowerKeepers implements LogicCardInfo {
           delayedA{
             before KNOCKOUT, {
               if (bg.em().retrieveObject("Energy_Grounding") != bg.turnCount && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && ef.pokemonToBeKnockedOut != self && ef.pokemonToBeKnockedOut.cards.filterByType(BASIC_ENERGY).energyCount(C)) {
-                if (confirm("Move an energy from ${ef.pokemonToBeKnockedOut} to $self?")) {
+                if (confirm("Move an energy from ${ef.pokemonToBeKnockedOut} to $self?", self.owner)) {
                   bg.em().storeObject("Energy_Grounding", bg.turnCount)
                   moveEnergy(basic:true, ef.pokemonToBeKnockedOut,self)
                 }
