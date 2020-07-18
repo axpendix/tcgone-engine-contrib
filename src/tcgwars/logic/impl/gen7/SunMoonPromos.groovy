@@ -3303,9 +3303,13 @@ public enum SunMoonPromos implements LogicCardInfo {
             onAttack {
               gxPerform()
               def maxSpace = my.bench.freeBenchCount
-              babyFossils().select(min:0, max: maxSpace, "Bench up to $maxSpace card(s) from the discard that evolve from Unidentified Fossil.", babyFossils).each{
-                  my.discard.remove(it);
-                  benchPCS(it)
+              if (maxSpace){
+                babyFossils().select(min:0, max: maxSpace, "Bench up to $maxSpace card(s) from the discard that evolve from Unidentified Fossil.").each{
+                    my.discard.remove(it);
+                    benchPCS(it)
+                }
+              } else {
+                bc "Bench is full, $thisMove does nothing!"
               }
             }
           }
