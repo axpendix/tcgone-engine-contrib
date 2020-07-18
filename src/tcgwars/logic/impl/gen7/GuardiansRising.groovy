@@ -1712,6 +1712,13 @@ public enum GuardiansRising implements LogicCardInfo {
                   // TODO Fix it not blocking damage counters.
                 }}
               }
+              before DIRECT_DAMAGE, null, Source.ATTACK, {
+                def pcs = ef.getResolvedTarget(bg, e)
+                if(bg.currentTurn == self.owner.opposite && pcs.owner == self.owner && !pcs.active) {
+                  bc "Daunting Pose prevents damage counters from being placed on $self.name"
+                  prevent()
+                }
+              }
             }
           }
           move "Cross Chop", {
