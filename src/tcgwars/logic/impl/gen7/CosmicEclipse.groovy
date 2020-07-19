@@ -4698,7 +4698,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               unregisterAfter 1
               unregister {
                 while (my.hand.size() >= 3) {
-                  my.hand.select("Select cards to shuffle back into the deck.").moveTo(my.deck)
+                  my.hand.select("Select cards to shuffle back into the deck.").moveTo(hidden:true, my.deck)
                 }
                 shuffleDeck()
                 draw 2 - my.hand.size()

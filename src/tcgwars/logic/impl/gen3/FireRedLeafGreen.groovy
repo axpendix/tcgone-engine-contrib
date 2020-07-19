@@ -320,7 +320,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               assert my.hand.notEmpty && my.deck.notEmpty
             }
             onAttack {
-              my.hand.moveTo(my.deck)
+              my.hand.moveTo(hidden:true, my.deck)
               shuffleDeck()
               draw 8
             }

@@ -1443,8 +1443,8 @@ public enum ForbiddenLight implements LogicCardInfo {
             text "Both players shuffle their Prize cards into their decks. Then, each player puts the top 3 cards of their deck face down as their Prize cards. (You can’t use more than 1 GX attack in a game.)"
             energyCost C, C, C
             onAttack {
-              my.prizeCardSet.moveTo(my.deck)
-              opp.prizeCardSet.moveTo(opp.deck)
+              my.prizeCardSet.moveTo(hidden:true, my.deck)
+              opp.prizeCardSet.moveTo(hidden:true, opp.deck)
               shuffleDeck()
               shuffleDeck(null, TargetPlayer.OPPONENT)
               for(int i=0;i<3;i++){

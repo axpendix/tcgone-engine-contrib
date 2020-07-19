@@ -600,7 +600,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               damage 60
               afterDamage{
                 if(my.deck || my.hand){
-                  my.hand.moveTo(my.deck)
+                  my.hand.moveTo(hidden:true, my.deck)
                   shuffleDeck()
                   draw 10
                 }
@@ -3291,7 +3291,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               damage 200
               afterDamage{
                 if(self.cards.energySufficient(thisMove.energyCost + Y+Y+Y)){
-                  opp.hand.moveTo(opp.deck)
+                  opp.hand.moveTo(hidden:true, opp.deck)
                   shuffleDeck(null, TargetPlayer.OPPONENT)
                 }
               }
@@ -3307,7 +3307,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               checkLastTurn()
               powerUsed()
               flip {
-                my.hand.moveTo(my.deck)
+                my.hand.moveTo(hidden:true, my.deck)
                 shuffleDeck()
                 draw 6
               }
@@ -3953,7 +3953,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             text "Shuffle your hand into your deck. Then, draw a card for each card in your opponent's hand."
             energyCost C
             onAttack {
-              my.hand.moveTo(my.deck)
+              my.hand.moveTo(hidden:true, my.deck)
               shuffleDeck()
               draw opp.hand.size()
             }

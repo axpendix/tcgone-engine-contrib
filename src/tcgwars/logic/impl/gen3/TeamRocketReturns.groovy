@@ -813,7 +813,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               assert self.active : "$self is not your active Pokémon."
               checkLastTurn()
               powerUsed()
-              my.hand.select("select card to shuffle into your deck").moveTo(my.deck)
+              my.hand.select("select card to shuffle into your deck").moveTo(hidden:true, my.deck)
               shuffleDeck()
               draw 1
             }

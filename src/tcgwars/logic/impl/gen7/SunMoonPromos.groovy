@@ -2202,7 +2202,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               assert my.deck || my.hand : "You don't have any card to draw"
             }
             onAttack{
-              my.hand.moveTo(my.deck)
+              my.hand.moveTo(hidden:true, my.deck)
               shuffleDeck()
               draw opp.hand.size()
             }

@@ -2808,11 +2808,11 @@ public enum BurningShadows implements LogicCardInfo {
           text "Each player counts the cards in their hand, shuffles those cards into their deck, then draws that many cards.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
             int c1 = my.hand.getExcludedList(thisCard).size()
-            my.hand.getExcludedList(thisCard).moveTo(my.deck)
+            my.hand.getExcludedList(thisCard).moveTo(hidden:true, my.deck)
             shuffleDeck()
             draw c1
             int c2 = opp.hand.size()
-            opp.hand.moveTo(opp.deck)
+            opp.hand.moveTo(hidden:true, opp.deck)
             shuffleDeck(null, TargetPlayer.OPPONENT)
             draw c2, TargetPlayer.OPPONENT
           }
