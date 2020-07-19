@@ -1134,7 +1134,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 20
-              if (confirm("Put Uxie on the bottom of your deck?") {
+              if (confirm("Put Uxie on the bottom of your deck?")) {
                 def rearrangedCards = rearrange(self.cards)
                 rearrangedCards.moveTo(my.deck)
                 removePCS(self)
