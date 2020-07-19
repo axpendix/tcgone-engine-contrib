@@ -73,7 +73,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
   ARTICUNO_EX_32 ("Articuno ex", 32, Rarity.RARE, [POKEMON, BASIC, _WATER_]),
   ZAPDOS_EX_33 ("Zapdos ex", 33, Rarity.RARE, [POKEMON, BASIC, _LIGHTNING_]),
   TYPHLOSION_34 ("Typhlosion", 34, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _FIRE_]),
-  PIKACHU_DELTA_35 ("Pikachu", 35, Rarity.RARE, [POKEMON, BASIC, _METAL_]),
+  PIKACHU_DELTA_35 ("Pikachu", 35, Rarity.RARE, [POKEMON, BASIC, DELTA, _METAL_]),
   TROPICAL_TIDAL_WAVE_36 ("Tropical Tidal Wave", 36, Rarity.RARE, [TRAINER, ITEM]),
   KYOGRE_EX_37 ("Kyogre ex", 37, Rarity.RARE, [POKEMON, BASIC, _WATER_]),
   GROUDON_EX_38 ("Groudon ex", 38, Rarity.RARE, [POKEMON, BASIC, _FIGHTING_]),
