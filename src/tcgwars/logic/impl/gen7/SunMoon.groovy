@@ -2426,7 +2426,7 @@ public enum SunMoon implements LogicCardInfo {
               def welderFlag = false
               before PLAY_TRAINER, {
                 welderFlag = false
-                if ((ef.cardToPlay.name == "Welder")) {
+                if (ef.cardToPlay.name == "Welder") {
                   welderFlag = true
                 }
               }
