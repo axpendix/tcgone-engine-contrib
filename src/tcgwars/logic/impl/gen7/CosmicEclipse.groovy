@@ -4747,7 +4747,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                       }
                     }
                   }
-                  acl = action("Discard Lillie's Poké Doll", [TargetPlayer.SELF]) {
+                  acl = action("Send Lillie's Poké Doll into Deck Bottom", [TargetPlayer.SELF]) {
                     assert self.active : "Lillie's Poké Doll must be the Active Pokémon."
                     self.cards.getExcludedList(self.topPokemonCard).discard()
                     self.cards.moveTo(my.deck)
