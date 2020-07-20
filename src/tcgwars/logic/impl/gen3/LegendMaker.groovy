@@ -369,18 +369,7 @@ public enum LegendMaker implements LogicCardInfo {
           onAttack {
             def counters = (self.cards.any{ it.name == "React Energy" }) ? 4 : 2
 
-            eff = delayed {
-              before KNOCKOUT, {
-                prevent()
-              }
-            }
-
-            (1..counters).each {
-              directDamage 10, opp.all.select("Put 1 damage counter to which Pokémon? ${it-1}/$counters counters placed")
-            }
-
-            eff.unregister()
-            checkFaint()
+            putDamageCountersOnOpponentsPokemon(counters)
           }
         }
         move "Super Psy Bolt", {
@@ -2896,9 +2885,7 @@ public enum LegendMaker implements LogicCardInfo {
             if (opp.prizeCardSet.size() == 1 && my.all.size() == 1) {
               counters = 6
             }
-            (1..counters).each {
-              directDamage 10, opp.all.select("Put 1 damage counter to which Pokémon? ${it-1}/$counters counters remaining")
-            }
+            putDamageCountersOnOpponentsPokemon(counters)
           }
         }
       };

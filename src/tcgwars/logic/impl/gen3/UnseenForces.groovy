@@ -1138,9 +1138,7 @@ public enum UnseenForces implements LogicCardInfo {
           text "Put 4 damage counters on your opponent's Pokémon in any way you like."
           energyCost W, P, C
           onAttack {
-            (1..4).each {
-              directDamage 10, opp.all.select("Put 1 damage counter to which Pokémon?")
-            }
+            putDamageCountersOnOpponentsPokemon(4)
           }
         }
       };

@@ -2622,9 +2622,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             onAttack {
               def maxCountersToPlace = (opp.prizeCardSet.size() == 3) ? 12 : 4
 
-              (1..maxCountersToPlace).each {
-                directDamage 10, opp.all.select("Put 1 damage counter to which Pokémon? ($it/$maxCountersToPlace)")
-              }
+              putDamageCountersOnOpponentsPokemon(maxCountersToPlace)
             }
           }
         };

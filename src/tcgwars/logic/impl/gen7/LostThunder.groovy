@@ -2368,9 +2368,7 @@ public enum LostThunder implements LogicCardInfo {
             text "Put 3 damage counters on your opponent's Pokémon in any way you like."
             energyCost P
             onAttack{
-              for(int i=0;i<3;i++){
-                if(opp.all) directDamage 10, opp.all.select()
-              }
+              putDamageCountersOnOpponentsPokemon(3)
             }
           }
         };
@@ -2510,9 +2508,7 @@ public enum LostThunder implements LogicCardInfo {
             text "Put 4 damage counters on your opponent's Pokémon in any way you like.\n"
             energyCost P
             onAttack{
-              for(int i=0;i<4;i++){
-                directDamage 10, opp.all.select()
-              }
+              putDamageCountersOnOpponentsPokemon(4)
             }
           }
           move "Vortex of Pain" , {

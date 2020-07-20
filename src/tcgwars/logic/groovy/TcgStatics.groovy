@@ -1396,6 +1396,19 @@ class TcgStatics {
     } */
   }
 
+  static putDamageCountersOnOpponentsPokemon(int counters, def selectArea = opp.all){
+    def eff = delayed {
+      before KNOCKOUT, {
+        prevent()
+      }
+    }
+
+    counters.times{ directDamage 10, selectArea.select("Put 1 damage counter on which pokémon? ${it-1}/${counters} counters placed") }
+
+    eff.unregister()
+    checkFaint()
+  }
+
   static boolean wasSwitchedOutThisTurn(PokemonCardSet self){
     self.lastSwitchedOut == bg.turnCount && self.lastSwitchedOutName == self.name
   }

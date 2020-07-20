@@ -1552,9 +1552,8 @@ public enum SunMoon implements LogicCardInfo {
             }
             onAttack {
               gxPerform()
-              (1..10).each {
-                if(opp.all) directDamage(10, opp.all.select("Put a damage counter on"))
-              }
+
+              putDamageCountersOnOpponentsPokemon(10)
             }
           }
 

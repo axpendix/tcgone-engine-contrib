@@ -972,12 +972,20 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost P, P, C
             attackRequirement {}
             onAttack {
-              (1..4).each {
-                directDamage 10, opp.all.select("Put 1 damage counter to which Pokémon?")
+              def eff = delayed {
+                before KNOCKOUT, {
+                  prevent()
+                }
               }
+
+              4.times{ directDamage 10, opp.all.select("Put 1 damage counter to which pokémon? ${it-1}/4 counters placed") }
+
               if (my.bench) {
-                sw self, my.bench.select("Select the new active.")
+                sw self, my.bench.select("Select your new active.")
               }
+
+              eff.unregister()
+              checkFaint()
             }
           }
 

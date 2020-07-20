@@ -1507,18 +1507,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           text "Put 2 damage counters on your opponent's Pokémon in any way you like."
           energyCost C, C
           onAttack {
-            def eff = delayed {
-              before KNOCKOUT, {
-                prevent()
-              }
-            }
-
-            (1..2).each {
-              directDamage 10, opp.all.select("Put 1 damage counter to which Pokémon? ${it-1}/2 counters placed")
-            }
-
-            eff.unregister()
-            checkFaint()
+            putDamageCountersOnOpponentsPokemon(2)
           }
         }
       };
