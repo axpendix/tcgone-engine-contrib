@@ -818,23 +818,28 @@ public enum SunMoonPromos implements LogicCardInfo {
             text "Move any number of damage counters on your opponent's Pokémon to their other Pokémon in any way you like."
             energyCost P, C
             attackRequirement {
-              assert opp.all.size() > 1
+              assert opp.all.size() > 1 : "Your opponent only has one Pokémon in play"
             }
             onAttack {
-              while (1) {
-                def tar = opp.all.findAll{it.numberOfDamageCounters}
-                if(!tar) break
-                def from = tar.select("Move counter from (cancel to stop)", false)
-                if(!from) break
-                tar = opp.all
-                tar.remove(from)
-                if(!tar) break
-                def to = tar.select("To?")
-                from.damage -= hp(10)
-                to.damage += hp(10)
-                bc "Moved a damage counter from $from to $to"
-                checkFaint()
+              //Taken from UPR Tapu Lele
+              eff = delayed {
+                before KNOCKOUT, {
+                  prevent()
+                }
               }
+              while(1){
+                def pl=(opp.all.findAll {it.numberOfDamageCounters})
+                if(!pl) break;
+                def src =pl.select("Source for damage counter (cancel to stop)", false)
+                if(!src) break;
+                def tar=opp.all.select("Target for damage counter (cancel to stop)", false)
+                if(!tar) break;
+
+                src.damage-=hp(10)
+                directDamage 10, tar
+              }
+              eff.unregister()
+              checkFaint()
             }
           }
         };

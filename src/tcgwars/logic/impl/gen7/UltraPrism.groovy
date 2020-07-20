@@ -2312,7 +2312,7 @@ public enum UltraPrism implements LogicCardInfo {
             text "Move any number of damage counters on your opponent’s Pokémon to their other Pokémon in any way you like."
             energyCost Y, C
             attackRequirement {
-              assert opp.bench
+              assert opp.all.size() > 1 : "Your opponent only has one Pokémon in play"
             }
             def eff
             onAttack {
@@ -2324,7 +2324,7 @@ public enum UltraPrism implements LogicCardInfo {
               while(1){
                 def pl=(opp.all.findAll {it.numberOfDamageCounters})
                 if(!pl) break;
-                def src =pl.select("source for damage counter (cancel to stop)", false)
+                def src =pl.select("Source for damage counter (cancel to stop)", false)
                 if(!src) break;
                 def tar=opp.all.select("Target for damage counter (cancel to stop)", false)
                 if(!tar) break;
