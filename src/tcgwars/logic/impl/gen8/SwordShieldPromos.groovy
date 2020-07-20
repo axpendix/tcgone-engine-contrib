@@ -68,7 +68,15 @@ public enum SwordShieldPromos implements LogicCardInfo {
   RAYQUAZA_SWSH29 ("Rayquaza", 29, Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
   COPPERAJAH_V_SWSH30 ("Copperajah V", 30, Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _METAL_]),
   MORPEKO_SWSH31 ("Morpeko", 31, Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
-  SNORLAX_SWSH32 ("Snorlax", 32, Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]);
+  SNORLAX_SWSH32 ("Snorlax", 32, Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
+  DECIDUEYE_SWSH35 ("Decidueye", 35, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
+  ARCTOZOLT_SWSH36 ("Arctozolt", 36, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
+  HYDREIGON_SWSH37 ("Hydreigon", 37, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _DARKNESS_]),
+  KANGASKHAN_SWSH38 ("Kangaskhan", 38, Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
+  PIKACHU_SWSH39 ("Pikachu", 39, Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
+  HATENNA_SWSH40 ("Hatenna", 40, Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
+  FLAREON_SWSH41 ("Flareon", 41, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+  EEVEE_SWSH42 ("Eevee", 42, Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -413,6 +421,84 @@ public enum SwordShieldPromos implements LogicCardInfo {
       };
       case SNORLAX_SWSH32:
       return copy(SwordShield.SNORLAX_140, this);
+      case DECIDUEYE_SWSH35:
+      return copy(DarknessAblaze.DECIDUEYE_13, this);
+      case ARCTOZOLT_SWSH36:
+      return copy(DarknessAblaze.ARCTOZOLT_64, this);
+      case HYDREIGON_SWSH37:
+      return copy(DarknessAblaze.HYDREIGON_113, this);
+      case KANGASKHAN_SWSH38:
+      return copy(DarknessAblaze.KANGASKHAN_140, this);
+      case PIKACHU_SWSH39:
+      return basic (this, hp:HP060, type:L, retreatCost:1) {
+        weakness F
+        move "Tail Whip" , {
+          text "Flip a coin. If heads, the Defending Pokémon can't attack during your opponent's next turn."
+          energyCost C
+          onAttack{
+            flip{
+              cantAttackNextTurn defending
+            }
+          }
+        }
+        move "Pika Bolt", {
+          text "50 damage."
+          energyCost L, C, C
+          onAttack {
+            damage 50
+          }
+        }
+      };
+      case HATENNA_SWSH40:
+      return copy(RebelClash.HATENNA_83, this);
+      case FLAREON_SWSH41:
+      return evolution (this, from:"Eevee", hp:HP110, type:R, retreatCost:2) {
+        weakness W
+        move "Singe", {
+          text "Your opponent’s Active Pokémon is now Burned."
+          energyCost R
+          attackRequirement {}
+          onAttack {
+            apply BURNED
+          }
+        }
+        move "Kindle", {
+          text "120 damage. Discard an Energy from this Pokémon. Then, discard an Energy from your opponent’s Active Pokémon."
+          energyCost R, R, C
+          attackRequirement {}
+          onAttack {
+            damage 120
+            if (self.cards.energyCount(C)) {
+              afterDamage {
+                discardSelfEnergy C
+              }
+              discardDefendingEnergy()
+            }
+          }
+        }
+      };
+      case EEVEE_SWSH42:
+      return basic (this, hp:HP060, type:C, retreatCost:1) {
+        weakness F
+        move "Signs of Evolution", {
+          text "Search your deck for a Pokémon that evolves from Eevee, reveal it, and put it into your hand. Then, shuffle your deck."
+          energyCost C
+          attackRequirement {
+            assert my.deck : "There are no cards left in your deck"
+          }
+          onAttack {
+            my.deck.search("Select a Pokémon that evolves from Eevee.", {it.cardTypes.is(EVOLUTION) && it.predecessor == "Eevee"}).showToOpponent("Your opponent chose this Pokémon that evolves from Eevee").moveTo(my.hand)
+          }
+        }
+        move "Kick Attack", {
+          text "30 damage. Flip a coin. If tails, this attack does nothing."
+          energyCost C, C
+          attackRequirement {}
+          onAttack {
+            flip { damage 30 }
+          }
+        }
+      };
         default:
       return null;
     }
