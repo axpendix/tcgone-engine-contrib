@@ -424,11 +424,11 @@ public enum SwordShieldPromos implements LogicCardInfo {
       case DECIDUEYE_SWSH35:
       return copy(DarknessAblaze.DECIDUEYE_13, this);
       case ARCTOZOLT_SWSH36:
-      return copy(DarknessAblaze.ARCTOZOLT_64, this);
+      return copy(DarknessAblaze.ARCTOZOLT_66, this);
       case HYDREIGON_SWSH37:
-      return copy(DarknessAblaze.HYDREIGON_113, this);
+      return copy(DarknessAblaze.HYDREIGON_110, this);
       case KANGASKHAN_SWSH38:
-      return copy(DarknessAblaze.KANGASKHAN_140, this);
+      return copy(DarknessAblaze.KANGASKHAN_133, this);
       case PIKACHU_SWSH39:
       return basic (this, hp:HP060, type:L, retreatCost:1) {
         weakness F
