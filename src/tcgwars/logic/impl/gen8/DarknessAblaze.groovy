@@ -1,5 +1,7 @@
 package tcgwars.logic.impl.gen8;
 
+import tcgwars.logic.impl.gen8.RebelClash;
+
 import tcgwars.logic.effect.gm.PlayTrainer
 
 import static tcgwars.logic.card.HP.*;
@@ -60,178 +62,162 @@ public enum DarknessAblaze implements LogicCardInfo {
   GOLISOPOD_18 ("Golisopod", 18, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
   CHARIZARD_V_19 ("Charizard V", 19, Rarity.HOLORARE, [POKEMON, BASIC, POKEMON_V, _FIRE_]),
   CHARIZARD_VMAX_20 ("Charizard VMAX", 20, Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _FIRE_]),
-  FLAREON_21 ("Flareon", 21, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
-  HOUNDOOM_V_22 ("Houndoom V", 22, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _FIRE_]),
-  TORCHIC_23 ("Torchic", 23, Rarity.HOLORARE, [POKEMON, BASIC, _FIRE_]),
-  COMBUSKEN_24 ("Combusken", 24, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
-  BLAZIKEN_25 ("Blaziken", 25, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _FIRE_]),
-  HEATRAN_26 ("Heatran", 26, Rarity.HOLORARE, [POKEMON, BASIC, _FIRE_]),
-  VICTINI_27 ("Victini", 27, Rarity.HOLORARE, [POKEMON, BASIC, _FIRE_]),
-  PANSEAR_28 ("Pansear", 28, Rarity.HOLORARE, [POKEMON, BASIC, _FIRE_]),
-  SIMISEAR_29 ("Simisear", 29, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
-  GALARIAN_DARMANITAN_30 ("Galarian Darmanitan", 30, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
-  LARVESTA_31 ("Larvesta", 31, Rarity.HOLORARE, [POKEMON, BASIC, _FIRE_]),
-  VOLCARONA_32 ("Volcarona", 32, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
-  FLETCHINDER_33 ("Fletchinder", 33, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
-  TALONFLAME_34 ("Talonflame", 34, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _FIRE_]),
-  CENTISKORCH_V_35 ("Centiskorch V", 35, Rarity.HOLORARE, [POKEMON, BASIC, POKEMON_V, _FIRE_]),
-  CENTISKORCH_VMAX_36 ("Centiskorch VMAX", 36, Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _FIRE_]),
-  GALARIAN_MR_MIME_37 ("Galarian Mr. Mime", 37, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
-  GALARIAN_MR_RIME_38 ("Galarian Mr. Rime", 38, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
-  SUICUNE_39 ("Suicune", 39, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
-  FEEBAS_40 ("Feebas", 40, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
-  MILOTIC_41 ("Milotic", 41, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
-  RELICANTH_42 ("Relicanth", 42, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
-  PANPOUR_43 ("Panpour", 43, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
-  SIMIPOUR_44 ("Simipour", 44, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
-  GALARIAN_DARUMAKA_45 ("Galarian Darumaka", 45, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
-  GALARIAN_DARMANITAN_46 ("Galarian Darmanitan", 46, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
-  VANILLITE_47 ("Vanillite", 47, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
-  VANILLISH_48 ("Vanillish", 48, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
-  VANILLUXE_49 ("Vanilluxe", 49, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _WATER_]),
-  CUBCHOO_50 ("Cubchoo", 50, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
-  BEARTIC_51 ("Beartic", 51, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
-  WISHIWASHI_52 ("Wishiwashi", 52, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
-  MAREANIE_53 ("Mareanie", 53, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
-  TOXAPEX_54 ("Toxapex", 54, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
-  DRACOVISH_55 ("Dracovish", 55, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
-  ARCTOVISH_56 ("Arctovish", 56, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
-  ELECTRIKE_57 ("Electrike", 57, Rarity.HOLORARE, [POKEMON, BASIC, _LIGHTNING_]),
-  MANECTRIC_58 ("Manectric", 58, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
-  VIKAVOLT_V_59 ("Vikavolt V", 59, Rarity.HOLORARE, [POKEMON, BASIC, POKEMON_V, _LIGHTNING_]),
-  TAPU_KOKO_60 ("Tapu Koko", 60, Rarity.HOLORARE, [POKEMON, BASIC, _LIGHTNING_]),
-  TOXEL_61 ("Toxel", 61, Rarity.HOLORARE, [POKEMON, BASIC, _LIGHTNING_]),
-  TOXTRICITY_62 ("Toxtricity", 62, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
-  DRACOZOLT_63 ("Dracozolt", 63, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
-  ARCTOZOLT_64 ("Arctozolt", 64, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
-  JIGGLYPUFF_65 ("Jigglypuff", 65, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  WIGGLYTUFF_66 ("Wigglytuff", 66, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
-  GALARIAN_SLOWBRO_V_67 ("Galarian Slowbro V", 67, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
-  MEW_V_68 ("Mew V", 68, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
-  SNUBBULL_69 ("Snubbull", 69, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  GRANBULL_70 ("Granbull", 70, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
-  GARDEVOIR_V_71 ("Gardevoir V", 71, Rarity.HOLORARE, [POKEMON, BASIC, POKEMON_V, _PSYCHIC_]),
-  GARDEVOIR_VMAX_72 ("Gardevoir VMAX", 72, Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _PSYCHIC_]),
-  LUNATONE_73 ("Lunatone", 73, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  GOLETT_74 ("Golett", 74, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  GOLURK_75 ("Golurk", 75, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
-  GOTHITA_76 ("Gothita", 76, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  GOTHORITA_77 ("Gothorita", 77, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
-  GOTHITELLE_78 ("Gothitelle", 78, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _PSYCHIC_]),
-  DEDENNE_79 ("Dedenne", 79, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  MORELULL_80 ("Morelull", 80, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  SHIINOTIC_81 ("Shiinotic", 81, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
-  MIMIKYU_82 ("Mimikyu", 82, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  SINISTEA_83 ("Sinistea", 83, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  POLTEAGEIST_84 ("Polteageist", 84, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
-  DIGLETT_85 ("Diglett", 85, Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
-  DUGTRIO_86 ("Dugtrio", 86, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
-  GALARIAN_FARFETCH_D_87 ("Galarian Farfetch'd", 87, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
-  GALARIAN_SIRFETCH_D_88 ("Galarian Sirfetch'd", 88, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
-  LARVITAR_89 ("Larvitar", 89, Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
-  PUPITAR_90 ("Pupitar", 90, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
-  TYRANITAR_91 ("Tyranitar", 91, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_]),
-  TRAPINCH_92 ("Trapinch", 92, Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
-  VIBRAVA_93 ("Vibrava", 93, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
-  FLYGON_94 ("Flygon", 94, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_]),
-  SOLROCK_95 ("Solrock", 95, Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
-  HIPPOPOTAS_96 ("Hippopotas", 96, Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
-  HIPPOWDON_97 ("Hippowdon", 97, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
-  RHYPERIOR_V_98 ("Rhyperior V", 98, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _FIGHTING_]),
-  DIGGERSBY_99 ("Diggersby", 99, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
-  ZYGARDE_100 ("Zygarde", 100, Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
-  PASSIMIAN_101 ("Passimian", 101, Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
-  GRIMER_102 ("Grimer", 102, Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
-  MUK_103 ("Muk", 103, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
-  SPINARAK_104 ("Spinarak", 104, Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
-  ARIADOS_105 ("Ariados", 105, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
-  CROBAT_V_106 ("Crobat V", 106, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _DARKNESS_]),
-  ABSOL_107 ("Absol", 107, Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
-  DARKRAI_108 ("Darkrai", 108, Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
-  PURRLOIN_109 ("Purrloin", 109, Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
-  LIEPARD_110 ("Liepard", 110, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
-  DEINO_111 ("Deino", 111, Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
-  ZWEILOUS_112 ("Zweilous", 112, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
-  HYDREIGON_113 ("Hydreigon", 113, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _DARKNESS_]),
-  GALARIAN_ZIGZAGOON_114 ("Galarian Zigzagoon", 114, Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
-  GALARIAN_LINOONE_115 ("Galarian Linoone", 115, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
-  GALARIAN_OBSTAGOON_116 ("Galarian Obstagoon", 116, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _DARKNESS_]),
-  SCRAGGY_117 ("Scraggy", 117, Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
-  SCRAFTY_118 ("Scrafty", 118, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
-  INKAY_119 ("Inkay", 119, Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
-  MALAMAR_120 ("Malamar", 120, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
-  HOOPA_121 ("Hoopa", 121, Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
-  NICKIT_122 ("Nickit", 122, Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
-  NICKIT_123 ("Nickit", 123, Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
-  THIEVUL_124 ("Thievul", 124, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
-  GRIMMSNARL_V_125 ("Grimmsnarl V", 125, Rarity.HOLORARE, [POKEMON, BASIC, POKEMON_V, _DARKNESS_]),
-  GRIMMSNARL_VMAX_126 ("Grimmsnarl VMAX", 126, Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _DARKNESS_]),
-  ETERNATUS_V_127 ("Eternatus V", 127, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _DARKNESS_]),
-  ETERNATUS_VMAX_128 ("Eternatus VMAX", 128, Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _DARKNESS_]),
-  SKARMORY_129 ("Skarmory", 129, Rarity.HOLORARE, [POKEMON, BASIC, _METAL_]),
-  ARON_130 ("Aron", 130, Rarity.HOLORARE, [POKEMON, BASIC, _METAL_]),
-  LAIRON_131 ("Lairon", 131, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
-  AGGRON_132 ("Aggron", 132, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _METAL_]),
-  ESCAVALIER_133 ("Escavalier", 133, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
-  KLINK_134 ("Klink", 134, Rarity.HOLORARE, [POKEMON, BASIC, _METAL_]),
-  KLANG_135 ("Klang", 135, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
-  KLINKLANG_136 ("Klinklang", 136, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _METAL_]),
-  GALARIAN_STUNFISK_V_137 ("Galarian Stunfisk V", 137, Rarity.HOLORARE, [POKEMON, BASIC, POKEMON_V, _METAL_]),
-  CUFANT_138 ("Cufant", 138, Rarity.HOLORARE, [POKEMON, BASIC, _METAL_]),
-  COPPERAJAH_139 ("Copperajah", 139, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
-  KANGASKHAN_140 ("Kangaskhan", 140, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
-  TAUROS_141 ("Tauros", 141, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
-  EEVEE_142 ("Eevee", 142, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
-  SENTRET_143 ("Sentret", 143, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
-  FURRET_144 ("Furret", 144, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
-  DUNSPARCE_145 ("Dunsparce", 145, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
-  TEDDIURSA_146 ("Teddiursa", 146, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
-  URSARING_147 ("Ursaring", 147, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
-  LUGIA_148 ("Lugia", 148, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
-  SKITTY_149 ("Skitty", 149, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
-  DELCATTY_150 ("Delcatty", 150, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
-  SALAMENCE_V_151 ("Salamence V", 151, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _COLORLESS_]),
-  SALAMENCE_VMAX_152 ("Salamence VMAX", 152, Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _COLORLESS_]),
-  STARLY_153 ("Starly", 153, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
-  STARAVIA_154 ("Staravia", 154, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
-  STARAPTOR_155 ("Staraptor", 155, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]),
-  DUCKLETT_156 ("Ducklett", 156, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
-  SWANNA_157 ("Swanna", 157, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
-  SKWOVET_158 ("Skwovet", 158, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
-  GREEDENT_159 ("Greedent", 159, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
-  BUNNELBY_160 ("Bunnelby", 160, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
-  FLETCHLING_161 ("Fletchling", 161, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
-  ROOKIDEE_162 ("Rookidee", 162, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
-  CORVISQUIRE_163 ("Corvisquire", 163, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
-  CORVIKNIGHT_164 ("Corviknight", 164, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]),
-  ADVERSITY_GLOVES_165 ("Adversity Gloves", 165, Rarity.HOLORARE, [TRAINER, ITEM, POKEMON_TOOL]),
-  BIG_PARASOL_166 ("Big Parasol", 166, Rarity.HOLORARE, [TRAINER, ITEM, POKEMON_TOOL]),
-  BIRD_KEEPER_167 ("Bird Keeper", 167, Rarity.HOLORARE, [TRAINER, SUPPORTER]),
-  CHEERING_YELL_HORN_168 ("Cheering Yell Horn", 168, Rarity.HOLORARE, [TRAINER, ITEM]),
-  GLIMWOOD_TANGLE_169 ("Glimwood Tangle", 169, Rarity.HOLORARE, [TRAINER, STADIUM]),
-  OLD_COMPUTER_170 ("Old Computer", 170, Rarity.HOLORARE, [TRAINER, ITEM]),
-  KABU_171 ("Kabu", 171, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-  LOOKALIKE_BELL_172 ("Lookalike Bell", 172, Rarity.HOLORARE, [TRAINER, ITEM]),
-  PIERS_173 ("Piers", 173, Rarity.HOLORARE, [TRAINER, SUPPORTER]),
-  POKEMON_BREEDER_S_NURTURING_174 ("Pokémon Breeder's Nurturing", 174, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-  RARE_FOSSIL_175 ("Rare Fossil", 175, Rarity.HOLORARE, [TRAINER, ITEM]),
-  ROSE_176 ("Rose", 176, Rarity.HOLORARE, [TRAINER, SUPPORTER]),
-  ROSE_TOWER_177 ("Rose Tower", 177, Rarity.HOLORARE, [TRAINER, STADIUM]),
-  ROTOM_PHONE_178 ("Rotom Phone", 178, Rarity.HOLORARE, [TRAINER, ITEM]),
-  MOUNTAINOUS_SMOKE_179 ("Mountainous Smoke", 179, Rarity.HOLORARE, [TRAINER, ITEM, POKEMON_TOOL]),
-  SPIKEMUTH_180 ("Spikemuth", 180, Rarity.HOLORARE, [TRAINER, STADIUM]),
-  DUBIOUS_CANNED_GOODS_181 ("Dubious Canned Goods", 181, Rarity.HOLORARE, [TRAINER, ITEM]),
-  TOUGHNESS_CAPE_182 ("Toughness Cape", 182, Rarity.HOLORARE, [TRAINER, ITEM, POKEMON_TOOL]),
-  TURBO_PATCH_183 ("Turbo Patch", 183, Rarity.HOLORARE, [TRAINER, ITEM]),
-  HEAT_FIRE_ENERGY_184 ("Heat Fire Energy", 184, Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
-  HIDE_DARKNESS_ENERGY_185 ("Hide Darkness Energy", 185, Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
-  POWERFUL_COLORLESS_ENERGY_186 ("Powerful Colorless Energy", 186, Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
-  CENTISKORCH_V_187 ("Centiskorch V", 187, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _FIRE_]),
-  VIKAVOLT_V_188 ("Vikavolt V", 188, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _LIGHTNING_]),
-  GARDEVOIR_V_189 ("Gardevoir V", 189, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _PSYCHIC_]),
-  GALARIAN_STUNFISK_V_190 ("Galarian Stunfisk V", 190, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _METAL_]),
-  KABU_191 ("Kabu", 191, Rarity.ULTRARARE, [TRAINER, SUPPORTER]),
-  POKEMON_BREEDER_S_NURTURING_192 ("Pokémon Breeder's Nurturing", 192, Rarity.ULTRARARE, [TRAINER, SUPPORTER]);
+  HOUNDOOM_V_21 ("Houndoom V", 21, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _FIRE_]),
+  TORCHIC_22 ("Torchic", 22, Rarity.HOLORARE, [POKEMON, BASIC, _FIRE_]),
+  COMBUSKEN_23 ("Combusken", 23, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+  BLAZIKEN_24 ("Blaziken", 24, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _FIRE_]),
+  HEATRAN_25 ("Heatran", 25, Rarity.HOLORARE, [POKEMON, BASIC, _FIRE_]),
+  PANSEAR_26 ("Pansear", 26, Rarity.HOLORARE, [POKEMON, BASIC, _FIRE_]),
+  SIMISEAR_27 ("Simisear", 27, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+  GALARIAN_DARMANITAN_28 ("Galarian Darmanitan", 28, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+  LARVESTA_29 ("Larvesta", 29, Rarity.HOLORARE, [POKEMON, BASIC, _FIRE_]),
+  VOLCARONA_30 ("Volcarona", 30, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+  FLETCHINDER_31 ("Fletchinder", 31, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+  TALONFLAME_32 ("Talonflame", 32, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _FIRE_]),
+  CENTISKORCH_V_33 ("Centiskorch V", 33, Rarity.HOLORARE, [POKEMON, BASIC, POKEMON_V, _FIRE_]),
+  CENTISKORCH_VMAX_34 ("Centiskorch VMAX", 34, Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _FIRE_]),
+  GALARIAN_MR_MIME_35 ("Galarian Mr. Mime", 35, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
+  GALARIAN_MR_RIME_36 ("Galarian Mr. Rime", 36, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
+  SUICUNE_37 ("Suicune", 37, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
+  FEEBAS_38 ("Feebas", 38, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
+  MILOTIC_39 ("Milotic", 39, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
+  RELICANTH_40 ("Relicanth", 40, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
+  PANPOUR_41 ("Panpour", 41, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
+  SIMIPOUR_42 ("Simipour", 42, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
+  GALARIAN_DARUMAKA_43 ("Galarian Darumaka", 43, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
+  GALARIAN_DARMANITAN_44 ("Galarian Darmanitan", 44, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+  VANILLITE_45 ("Vanillite", 45, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
+  VANILLISH_46 ("Vanillish", 46, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
+  VANILLUXE_47 ("Vanilluxe", 47, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _WATER_]),
+  CUBCHOO_48 ("Cubchoo", 48, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
+  BEARTIC_49 ("Beartic", 49, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
+  WISHIWASHI_50 ("Wishiwashi", 50, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
+  MAREANIE_51 ("Mareanie", 51, Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
+  TOXAPEX_52 ("Toxapex", 52, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
+  DRACOVISH_53 ("Dracovish", 53, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
+  ARCTOVISH_54 ("Arctovish", 54, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
+  MAREEP_55 ("Mareep", 55, Rarity.HOLORARE, [POKEMON, BASIC, _LIGHTNING_]),
+  FLAAFFY_56 ("Flaaffy", 56, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
+  AMPHAROS_57 ("Ampharos", 57, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _LIGHTNING_]),
+  ELECTRIKE_58 ("Electrike", 58, Rarity.HOLORARE, [POKEMON, BASIC, _LIGHTNING_]),
+  MANECTRIC_59 ("Manectric", 59, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
+  VIKAVOLT_V_60 ("Vikavolt V", 60, Rarity.HOLORARE, [POKEMON, BASIC, POKEMON_V, _LIGHTNING_]),
+  TAPU_KOKO_61 ("Tapu Koko", 61, Rarity.HOLORARE, [POKEMON, BASIC, _LIGHTNING_]),
+  TOXEL_62 ("Toxel", 62, Rarity.HOLORARE, [POKEMON, BASIC, _LIGHTNING_]),
+  TOXTRICITY_63 ("Toxtricity", 63, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
+  PINCURCHIN_64 ("Pincurchin", 64, Rarity.HOLORARE, [POKEMON, BASIC, _LIGHTNING_]),
+  DRACOZOLT_65 ("Dracozolt", 65, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
+  ARCTOZOLT_66 ("Arctozolt", 66, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
+  JIGGLYPUFF_67 ("Jigglypuff", 67, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  WIGGLYTUFF_68 ("Wigglytuff", 68, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
+  MEW_V_69 ("Mew V", 69, Rarity.HOLORARE, [POKEMON, BASIC, POKEMON_V, _PSYCHIC_]),
+  SNUBBULL_70 ("Snubbull", 70, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  GRANBULL_71 ("Granbull", 71, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
+  LUNATONE_72 ("Lunatone", 72, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  GOLETT_73 ("Golett", 73, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  GOLURK_74 ("Golurk", 74, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
+  GOTHITA_75 ("Gothita", 75, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  GOTHORITA_76 ("Gothorita", 76, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
+  GOTHITELLE_77 ("Gothitelle", 77, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _PSYCHIC_]),
+  DEDENNE_78 ("Dedenne", 78, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  MORELULL_79 ("Morelull", 79, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  SHIINOTIC_80 ("Shiinotic", 80, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
+  MIMIKYU_81 ("Mimikyu", 81, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  SINISTEA_82 ("Sinistea", 82, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  POLTEAGEIST_83 ("Polteageist", 83, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
+  DIGLETT_84 ("Diglett", 84, Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
+  DUGTRIO_85 ("Dugtrio", 85, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
+  LARVITAR_86 ("Larvitar", 86, Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
+  PUPITAR_87 ("Pupitar", 87, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
+  TYRANITAR_88 ("Tyranitar", 88, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_]),
+  TRAPINCH_89 ("Trapinch", 89, Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
+  VIBRAVA_90 ("Vibrava", 90, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
+  FLYGON_91 ("Flygon", 91, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_]),
+  SOLROCK_92 ("Solrock", 92, Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
+  HIPPOPOTAS_93 ("Hippopotas", 93, Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
+  HIPPOWDON_94 ("Hippowdon", 94, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
+  RHYPERIOR_V_95 ("Rhyperior V", 95, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _FIGHTING_]),
+  DIGGERSBY_96 ("Diggersby", 96, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
+  PASSIMIAN_97 ("Passimian", 97, Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
+  GALARIAN_SIRFETCH_D_98 ("Galarian Sirfetch'd", 98, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
+  GALARIAN_SLOWBRO_V_99 ("Galarian Slowbro V", 99, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _DARKNESS_]),
+  GRIMER_100 ("Grimer", 100, Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
+  MUK_101 ("Muk", 101, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
+  SPINARAK_102 ("Spinarak", 102, Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
+  ARIADOS_103 ("Ariados", 103, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
+  CROBAT_V_104 ("Crobat V", 104, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _DARKNESS_]),
+  DARKRAI_105 ("Darkrai", 105, Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
+  PURRLOIN_106 ("Purrloin", 106, Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
+  LIEPARD_107 ("Liepard", 107, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
+  DEINO_108 ("Deino", 108, Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
+  ZWEILOUS_109 ("Zweilous", 109, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
+  HYDREIGON_110 ("Hydreigon", 110, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _DARKNESS_]),
+  HOOPA_111 ("Hoopa", 111, Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
+  NICKIT_112 ("Nickit", 112, Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
+  THIEVUL_113 ("Thievul", 113, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
+  GRIMMSNARL_V_114 ("Grimmsnarl V", 114, Rarity.HOLORARE, [POKEMON, BASIC, POKEMON_V, _DARKNESS_]),
+  GRIMMSNARL_VMAX_115 ("Grimmsnarl VMAX", 115, Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _DARKNESS_]),
+  ETERNATUS_V_116 ("Eternatus V", 116, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _DARKNESS_]),
+  ETERNATUS_VMAX_117 ("Eternatus VMAX", 117, Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _DARKNESS_]),
+  SCIZOR_V_118 ("Scizor V", 118, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _METAL_]),
+  SCIZOR_VMAX_119 ("Scizor VMAX", 119, Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _METAL_]),
+  SKARMORY_120 ("Skarmory", 120, Rarity.HOLORARE, [POKEMON, BASIC, _METAL_]),
+  ARON_121 ("Aron", 121, Rarity.HOLORARE, [POKEMON, BASIC, _METAL_]),
+  LAIRON_122 ("Lairon", 122, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
+  AGGRON_123 ("Aggron", 123, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _METAL_]),
+  ESCAVALIER_124 ("Escavalier", 124, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
+  KLINK_125 ("Klink", 125, Rarity.HOLORARE, [POKEMON, BASIC, _METAL_]),
+  KLANG_126 ("Klang", 126, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
+  KLINKLANG_127 ("Klinklang", 127, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _METAL_]),
+  GALARIAN_STUNFISK_V_128 ("Galarian Stunfisk V", 128, Rarity.HOLORARE, [POKEMON, BASIC, POKEMON_V, _METAL_]),
+  MELTAN_129 ("Meltan", 129, Rarity.HOLORARE, [POKEMON, BASIC, _METAL_]),
+  MELMETAL_130 ("Melmetal", 130, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
+  CUFANT_131 ("Cufant", 131, Rarity.HOLORARE, [POKEMON, BASIC, _METAL_]),
+  COPPERAJAH_132 ("Copperajah", 132, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
+  KANGASKHAN_133 ("Kangaskhan", 133, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
+  TAUROS_134 ("Tauros", 134, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
+  SENTRET_135 ("Sentret", 135, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
+  FURRET_136 ("Furret", 136, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
+  DUNSPARCE_137 ("Dunsparce", 137, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
+  TEDDIURSA_138 ("Teddiursa", 138, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
+  URSARING_139 ("Ursaring", 139, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
+  LUGIA_140 ("Lugia", 140, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
+  SKITTY_141 ("Skitty", 141, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
+  DELCATTY_142 ("Delcatty", 142, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
+  SALAMENCE_V_143 ("Salamence V", 143, Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _COLORLESS_]),
+  SALAMENCE_VMAX_144 ("Salamence VMAX", 144, Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _COLORLESS_]),
+  STARLY_145 ("Starly", 145, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
+  STARAVIA_146 ("Staravia", 146, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
+  STARAPTOR_147 ("Staraptor", 147, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]),
+  DUCKLETT_148 ("Ducklett", 148, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
+  SWANNA_149 ("Swanna", 149, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
+  SKWOVET_150 ("Skwovet", 150, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
+  GREEDENT_151 ("Greedent", 151, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
+  BUNNELBY_152 ("Bunnelby", 152, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
+  FLETCHLING_153 ("Fletchling", 153, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
+  ROOKIDEE_154 ("Rookidee", 154, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
+  CORVISQUIRE_155 ("Corvisquire", 155, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
+  CORVIKNIGHT_156 ("Corviknight", 156, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]),
+  BIG_PARASOL_157 ("Big Parasol", 157, Rarity.HOLORARE, [TRAINER, ITEM, POKEMON_TOOL]),
+  BILLOWING_SMOKE_158 ("Billowing Smoke", 158, Rarity.HOLORARE, [TRAINER, ITEM, POKEMON_TOOL]),
+  BIRD_KEEPER_159 ("Bird Keeper", 159, Rarity.HOLORARE, [TRAINER, SUPPORTER]),
+  CAPE_OF_TOUGHNESS_160 ("Cape of Toughness", 160, Rarity.HOLORARE, [TRAINER, ITEM, POKEMON_TOOL]),
+  FAMILIAR_BELL_161 ("Familiar Bell", 161, Rarity.HOLORARE, [TRAINER, ITEM]),
+  GLIMWOOD_TANGLE_162 ("Glimwood Tangle", 162, Rarity.HOLORARE, [TRAINER, STADIUM]),
+  KABU_163 ("Kabu", 163, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  OLD_PC_164 ("Old PC", 164, Rarity.HOLORARE, [TRAINER, ITEM]),
+  PIERS_165 ("Piers", 165, Rarity.HOLORARE, [TRAINER, SUPPORTER]),
+  POKEMON_BREEDER_S_NURTURING_166 ("Pokémon Breeder's Nurturing", 166, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  RARE_FOSSIL_167 ("Rare Fossil", 167, Rarity.HOLORARE, [TRAINER, ITEM]),
+  ROSE_168 ("Rose", 168, Rarity.HOLORARE, [TRAINER, SUPPORTER]),
+  ROSE_TOWER_169 ("Rose Tower", 169, Rarity.HOLORARE, [TRAINER, STADIUM]),
+  SPIKEMUTH_170 ("Spikemuth", 170, Rarity.HOLORARE, [TRAINER, STADIUM]),
+  STRUGGLE_GLOVES_171 ("Struggle Gloves", 171, Rarity.HOLORARE, [TRAINER, ITEM, POKEMON_TOOL]),
+  TURBO_PATCH_172 ("Turbo Patch", 172, Rarity.HOLORARE, [TRAINER, ITEM]),
+  YELL_HORN_173 ("Yell Horn", 173, Rarity.HOLORARE, [TRAINER, ITEM]),
+  HEAT_FIRE_ENERGY_174 ("Heat Fire Energy", 174, Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
+  HIDING_DARKNESS_ENERGY_175 ("Hiding Darkness Energy", 175, Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
+  POWERFUL_COLORLESS_ENERGY_176 ("Powerful Colorless Energy", 176, Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -682,32 +668,6 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
       };
-      case FLAREON_21:
-      return evolution (this, from:"Eevee", hp:HP110, type:R, retreatCost:2) {
-        weakness W
-        move "Singe", {
-          text "Your opponent’s Active Pokémon is now Burned."
-          energyCost R
-          attackRequirement {}
-          onAttack {
-            apply BURNED
-          }
-        }
-        move "Kindle", {
-          text "120 damage. Discard an Energy from this Pokémon. Then, discard an Energy from your opponent’s Active Pokémon."
-          energyCost R, R, C
-          attackRequirement {}
-          onAttack {
-            damage 120
-            if (self.cards.energyCount(C)) {
-              afterDamage {
-                discardSelfEnergy C
-              }
-              discardDefendingEnergy()
-            }
-          }
-        }
-      };
       case HOUNDOOM_V_22:
       return basic (this, hp:HP210, type:R, retreatCost:1) {
         weakness W
@@ -808,28 +768,6 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 80 + 10 * self.numberOfDamageCounters
-          }
-        }
-      };
-      case VICTINI_27:
-      return basic (this, hp:HP070, type:R, retreatCost:1) {
-        weakness W
-        move "Quick Draw", {
-          text "Draw a card."
-          energyCost C
-          attackRequirement {
-            assert my.deck : "Your deck is empty"
-          }
-          onAttack {
-            draw 1
-          }
-        }
-        move "Combustion", {
-          text "30 damage."
-          energyCost R, C
-          attackRequirement {}
-          onAttack {
-            damage 30
           }
         }
       };
@@ -1053,7 +991,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Mad Party", {
-          text "20x damage. This attack does 20 damage for each Pokémon in your discard pile with a Mad Party attack."
+          text "20x damage. This attack does 20 damage for each Pokemon in your discard pile that has the Mad Party attack."
           energyCost W, C, C
           attackRequirement {}
           onAttack {
@@ -1224,7 +1162,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         }
       };
       case GALARIAN_DARMANITAN_46:
-      return copy (GALARIAN_DARMANITAN_30, this);
+      return copy(RebelClash.GALARIAN_DARMANITAN_48, this);
       case VANILLITE_47:
       return basic (this, hp:HP060, type:W, retreatCost:1) {
         weakness M
@@ -1429,6 +1367,51 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
       };
+      case MAREEP_47:
+      return basic (this, hp:HP060, type:L, retreatCost:1) {
+        weakness F
+        move "Static Shock", {
+          text "20 damage."
+          energyCost L
+          attackRequirement {}
+          onAttack {
+            damage 20
+          }
+        }
+      };
+      case FLAAFFY_48:
+      return evolution (this, from:"Mareep", hp:HP090, type:L, retreatCost:1) {
+        weakness F
+        move "Static Shock", {
+          text "40 damage."
+          energyCost L
+          attackRequirement {}
+          onAttack {
+            damage 40
+          }
+        }
+      };
+      case AMPHAROS_49:
+      return evolution (this, from:"Flaaffy", hp:HP150, type:L, retreatCost:2) {
+        weakness F
+        move "Dazzle Blast", {
+          text "50 damage. Your opponent’s Active Pokemon is now Confused."
+          energyCost L
+          attackRequirement {}
+          onAttack {
+            damage 50
+            applyAfterDamage CONFUSED
+          }
+        }
+        move "Lightning Ball", {
+          text "130 damage."
+          energyCost L, L
+          attackRequirement {}
+          onAttack {
+            damage 130
+          }
+        }
+      };
       case ELECTRIKE_57:
       return basic (this, hp:HP060, type:L, retreatCost:1) {
         weakness F
@@ -1567,6 +1550,25 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
       };
+      case PINCURCHIN_47:
+      return basic (this, hp:HP080, type:L, retreatCost:2) {
+        weakness F
+        move "Double Draw", {
+          text "Draw 2 cards."
+          energyCost L
+          onAttack {
+            draw 2
+          }
+        }
+        move "Zing Zap", {
+          text "50 damage. Flip a coin. If heads, your opponent’s Active Pokemon is now Paralyzed."
+          energyCost L, C, C
+          onAttack {
+            damage 50
+            flip { applyAfterDamage PARALYZED }
+          }
+        }
+      };
       case DRACOZOLT_63:
       return evolution (this, from:"Rare Fossil", hp:HP160, type:L, retreatCost:4) {
         weakness F
@@ -1662,39 +1664,16 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
       };
-      case GALARIAN_SLOWBRO_V_67:
-      return basic (this, hp:HP100, type:C, retreatCost:2) {
-        weakness Y
-        resistance F, MINUS30
-        bwAbility "TBA", {
-          text "TBA"
-          actionA {
-          }
-        }
-        move "TBA", {
-          text "100 damage. TBA"
-          energyCost C, C, C
-          attackRequirement {}
-          onAttack {
-            damage 100
-          }
-        }
-      };
       case MEW_V_68:
-      return basic (this, hp:HP100, type:C, retreatCost:2) {
-        weakness Y
+      return basic (this, hp:HP180, type:P, retreatCost:0) {
+        weakness D
         resistance F, MINUS30
-        bwAbility "TBA", {
-          text "TBA"
-          actionA {
-          }
-        }
-        move "TBA", {
-          text "100 damage. TBA"
-          energyCost C, C, C
+        move "X Ball", {
+          text "30x damage. This attack does 30 damage times the amount of Energy attached to this Pokemon and your opponent’s Active Pokemon"
+          energyCost P, P
           attackRequirement {}
           onAttack {
-            damage 100
+            damage 30 * ( self.cards.energyCount(C) + defending.cards.energyCount(C) )
           }
         }
       };
@@ -1728,40 +1707,6 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 130
-          }
-        }
-      };
-      case GARDEVOIR_V_71:
-      return basic (this, hp:HP210, type:P, retreatCost:2) {
-        weakness M
-        move "Magical Shot", {
-          text "30 damage."
-          energyCost P
-          attackRequirement {}
-          onAttack {
-            damage 30
-          }
-        }
-        move "Overflow Pulse", {
-          text "120+ damage. If this Pokémon had its HP healed this turn, this attack does 80 more damage."
-          energyCost P, P, C
-          attackRequirement {}
-          onAttack {
-            damage 120
-            if(self.lastHealedTurn == bg.turnCount) damage 80
-          }
-        }
-      };
-      case GARDEVOIR_VMAX_72:
-      return evolution (this, from:"Gardevoir V", hp:HP320, type:P, retreatCost:2) {
-        weakness M
-        move "Max Cure", {
-          text "180 damage. Heal 50 damage from this Pokémon."
-          energyCost P, P, C
-          attackRequirement {}
-          onAttack {
-            damage 180
-            heal 50, self
           }
         }
       };
@@ -1911,7 +1856,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP070, type:P, retreatCost:1) {
         weakness M
         move "Mad Party", {
-          text "20x damage. This attack does 20 damage for each Pokémon in your discard pile with a Mad Party attack."
+          text "20x damage. This attack does 20 damage for each Pokemon in your discard pile that has the Mad Party attack."
           energyCost P, C, C
           attackRequirement {}
           onAttack {
@@ -2007,9 +1952,9 @@ public enum DarknessAblaze implements LogicCardInfo {
         weakness D
         resistance F, MINUS30
         bwAbility "Tea Break", {
-          text "Once during your turn, you may discard a Pokémon with a Mad Party attack from your hand and draw 2 cards."
+          text "You must discard a Pokemon that has the Mad Party attack from your hand in order to use this Ability. Once during your turn, you may draw 2 cards."
           actionA {
-            assert my.hand.findAll{ it.cardTypes.is(POKEMON) && it.moves.any{it.name=="Mad Party"} } : "You have no Pokemon with Mad Party in your hand"
+            assert my.hand.any{ it.cardTypes.is(POKEMON) && it.moves.any{it.name=="Mad Party"} } : "You have no Pokemon with Mad Party in your hand"
             assert my.deck : "Your deck is empty"
             checkLastTurn()
             powerUsed()
@@ -2018,7 +1963,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Mad Party", {
-          text "20x damage. This attack does 20 damage for each Pokémon in your discard pile with a Mad Party attack."
+          text "20x damage. This attack does 20 damage for each Pokemon in your discard pile that has the Mad Party attack."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -2058,42 +2003,6 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 70
-          }
-        }
-      };
-      case GALARIAN_FARFETCH_D_87: //TODO: Get data on this card.
-      return basic (this, hp:HP010, type:C, retreatCost:2) {
-        weakness Y
-        resistance F, MINUS30
-        bwAbility "TBA", {
-          text "TBA"
-          actionA {
-          }
-        }
-        move "TBA", {
-          text "100 damage. TBA"
-          energyCost C, C, C
-          attackRequirement {}
-          onAttack {
-            damage 100
-          }
-        }
-      };
-      case GALARIAN_SIRFETCH_D_88:
-      return basic (this, hp:HP010, type:C, retreatCost:2) {
-        weakness Y
-        resistance F, MINUS30
-        bwAbility "TBA", {
-          text "TBA"
-          actionA {
-          }
-        }
-        move "TBA", {
-          text "100 damage. TBA"
-          energyCost C, C, C
-          attackRequirement {}
-          onAttack {
-            damage 100
           }
         }
       };
@@ -2340,29 +2249,6 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
       };
-      case ZYGARDE_100:
-      return basic (this, hp:HP140, type:F, retreatCost:3) {
-        weakness G
-        move "Bite", {
-          text "30 damage."
-          energyCost C
-          attackRequirement {}
-          onAttack {
-            damage 30
-          }
-        }
-        move "Power Blast", {
-          text "130 damage. Discard a [F] Energy attached to this Pokémon."
-          energyCost F, F, C, C
-          attackRequirement {}
-          onAttack {
-            damage 130
-            afterDamage {
-              discardSelfEnergy F
-            }
-          }
-        }
-      };
       case PASSIMIAN_101:
       return basic (this, hp:HP110, type:F, retreatCost:1) {
         weakness P
@@ -2378,6 +2264,26 @@ public enum DarknessAblaze implements LogicCardInfo {
           onAttack {
             damage 70
             dontApplyResistance()
+          }
+        }
+      };
+      case GALARIAN_SIRFETCH_D_88:
+      return copy(RebelClash.GALARIAN_SIRFETCH_D_95, this);
+      case GALARIAN_SLOWBRO_V_67:
+      return basic (this, hp:HP210, type:D, retreatCost:3) {
+        weakness F
+        bwAbility "Quick Draw Poison", {
+          text "Once during your turn, if this Pokemon is your Active Pokemon, you may leave your opponent’s Active Pokemon Poisoned"
+          actionA {
+          }
+        }
+        move "Stranding Shot", {
+          text "130 damage. During your opponent’s next turn, the Defending Pokemon can’t retreat"
+          energyCost D, D, C
+          attackRequirement {}
+          onAttack {
+            damage 130
+            cantRetreat(defending)
           }
         }
       };
@@ -2478,11 +2384,11 @@ public enum DarknessAblaze implements LogicCardInfo {
       case CROBAT_V_106:
       return basic (this, hp:HP180, type:D, retreatCost:1) {
         weakness F
-        bwAbility "Night Asset", {
-          text "Once during your turn, when you play this Pokémon from hand to your Bench, you may draw cards until you have 6 cards in your hand. You can’t use more than 1 Night Asset Ability during your turn."
+        bwAbility "Dark Asset", {
+          text "When you play this Pokemon from your hand onto your Bench during your turn, you may draw cards until you have 6 cards in your hand. You can’t use more than 1 Dark Asset Ability each turn."
           onActivate {
-            if(it==PLAY_FROM_HAND && bg.em().retrieveObject("Night_Asset")!=bg.turnCount && confirm("Use Night Asset?")){
-              bg.em().storeObject("Night_Asset",bg.turnCount)
+            if(it==PLAY_FROM_HAND && bg.em().retrieveObject("Dark_Asset")!=bg.turnCount && confirm("Use Dark Asset?")){
+              bg.em().storeObject("Dark_Asset",bg.turnCount)
               powerUsed()
               draw (6 - hand.getExcludedList(thisCard).size())
             }
@@ -2497,18 +2403,6 @@ public enum DarknessAblaze implements LogicCardInfo {
             afterDamage{
               apply POISONED
             }
-          }
-        }
-      };
-      case ABSOL_107:
-      return basic (this, hp:HP100, type:D, retreatCost:1) {
-        weakness G
-        move "Dark Cutter", {
-          text "70 damage."
-          energyCost D, D
-          attackRequirement {}
-          onAttack {
-            damage 70
           }
         }
       };
@@ -2626,7 +2520,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return evolution (this, from:"Zweilous", hp:HP160, type:D, retreatCost:3) {
         weakness G
         bwAbility "Dark Squall", {
-          text "As often as you like during your turn, you may attach a [D] Energy from your hand to one of your Pokémon in play."
+          text "As often as you like during your turn, you may attach a [D] Energy from your hand to 1 of your Pokemon."
           actionA {
             assert my.hand.filterByBasicEnergyType(D) : "No [D] in hand"
             powerUsed()
@@ -2643,182 +2537,17 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
       };
-      case GALARIAN_ZIGZAGOON_114:
-      return basic (this, hp:HP070, type:D, retreatCost:2) {
-        weakness G
-        move "Pin Missile", {
-          text "10x damage. Flip 4 coins. This attack does 10 damage times the number of heads."
-          energyCost C
-          attackRequirement {}
-          onAttack {
-            flip 4, {
-              damage 10
-            }
-          }
-        }
-      };
-      case GALARIAN_LINOONE_115:
-      return evolution (this, from:"Galarian Zigzagoon", hp:HP100, type:D, retreatCost:2) {
-        weakness G
-        move "Double-Edge", {
-          text "60 damage. This attack does 20 damage to this Pokémon."
-          energyCost C, C
-          attackRequirement {}
-          onAttack {
-            damage 60
-            damage 20, self
-          }
-        }
-      };
-      case GALARIAN_OBSTAGOON_116:
-      return evolution (this, from:"Galarian Linoone", hp:HP170, type:D, retreatCost:2) {
-        weakness G
-        bwAbility "Bad Ruler", {
-          text "Once during your turn, you may have your opponent discard cards from their hand until they have 4 cards left."
-          actionA {
-            assert opp.hand.size() > 4 :"Your opponent has 4 or fewer cards in hand"
-            checkLastTurn()
-            powerUsed()
-            def hand = opp.hand.oppSelect(count: 4, "Bad Ruler - Select 4 cards to KEEP (the rest will be discarded)")
-            opp.hand.getExcludedList(hand).discard()
-          }
-        }
-        move "Knuckle Impact", {
-          text "180 damage. This Pokémon can’t attack during your next turn."
-          energyCost C, C, C
-          attackRequirement {}
-          onAttack {
-            damage 180
-            cantAttackNextTurn self
-          }
-        }
-      };
-      case SCRAGGY_117:
-      return basic (this, hp:HP070, type:D, retreatCost:1) {
-        weakness G
-        move "Stampede", {
-          text "10 damage."
-          energyCost C
-          attackRequirement {}
-          onAttack {
-            damage 10
-          }
-        }
-        move "Ram", {
-          text "20 damage."
-          energyCost D, C
-          attackRequirement {}
-          onAttack {
-            damage 20
-          }
-        }
-      };
-      case SCRAFTY_118:
-      return evolution (this, from:"Scraggy", hp:HP120, type:D, retreatCost:2) {
-        weakness G
-        move "Corner", {
-          text "30 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
-          energyCost D
-          attackRequirement {}
-          onAttack {
-            damage 30
-            cantRetreat defending
-          }
-        }
-        move "Bad Brawl", {
-          text "90+ damage. If you played Piers this turn, this attack does 90 more damage."
-          energyCost D, C, C
-          attackRequirement {}
-          onAttack {
-            damage 90
-            if(bg.em().retrieveObject("Piers") == bg.turnCount){
-              damage 90
-            }
-          }
-        }
-      };
-      case INKAY_119:
-      return basic (this, hp:HP060, type:D, retreatCost:1) {
-        weakness G
-        move "Tackle", {
-          text "10 damage."
-          energyCost D
-          attackRequirement {}
-          onAttack {
-            damage 10
-          }
-        }
-        move "Back Strike", {
-          text "20+ damage. If your opponent’s Active Pokémon is Confused, this attack does 50 more damage."
-          energyCost C, C
-          attackRequirement {}
-          onAttack {
-            damage 20
-            if(defending.isSPC(CONFUSED)){
-              damage 50
-            }
-          }
-        }
-      };
-      case MALAMAR_120:
-      return evolution (this, from:"Inkay", hp:HP120, type:D, retreatCost:3) {
-        weakness G
-        move "Eerie Wave", {
-          text "50 damage. Your opponent’s Active Pokémon is now Confused."
-          energyCost D, C
-          attackRequirement {}
-          onAttack {
-            damage 50
-            afterDamage{
-              apply CONFUSED
-            }
-          }
-        }
-        move "Random Peck", {
-          text "80+ damage. Flip 2 coins. This attack does 40 more damage for each heads."
-          energyCost D, D, C
-          attackRequirement {}
-          onAttack {
-            damage 80
-            flip 2, {
-              damage 40
-            }
-          }
-        }
-      };
       case HOOPA_121:
       return basic (this, hp:HP120, type:D, retreatCost:2) {
         weakness G
         move "Assault Gate", {
-          text "90 damage. If this Pokémon wasn’t moved from your Bench to the Active Spot during your turn, this attack does nothing. This attack isn’t affected by Weakness."
+          text "90 damage. If this Pokemon wasn’t moved from your Bench to the Active Spot during your turn, this attack does nothing. This attack isn’t affected by Weakness."
           energyCost D
           attackRequirement {}
           onAttack {
             if(wasSwitchedOutThisTurn(self)){
               noWeaknessDamage(90,defending)
             }
-          }
-        }
-      };
-      case NICKIT_122:
-      return basic (this, hp:HP070, type:D, retreatCost:1) {
-        weakness G
-        move "Filch", {
-          text "Draw a card."
-          energyCost C
-          attackRequirement {
-            assert my.deck : "Your deck is empty"
-          }
-          onAttack {
-            draw 1
-          }
-        }
-        move "Tail Slap", {
-          text "30 damage."
-          energyCost D, C
-          attackRequirement {}
-          onAttack {
-            damage 30
           }
         }
       };
@@ -2900,7 +2629,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return evolution (this, from:"Grimmsnarl V", hp:HP330, type:D, retreatCost:3) {
         weakness G
         move "G-Max Drill", {
-          text "170+ damage. This attack does 50 more damage for each extra [D] Energy attached to this Pokémon (in addition to this attack’s cost). You can’t add more than 100 damage in this way."
+          text "170+ damage. This attack does 50 more damage for each extra [D] Energy attached to this Pokemon, but not used to pay for this attack. Energy beyond the second doesn’t count."
           energyCost D, D, D
           attackRequirement {}
           onAttack {
@@ -2913,7 +2642,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP220, type:D, retreatCost:2) {
         weakness F
         move "Power Accel", {
-          text "30 damage. You may attach 1 [D] Energy from your hand to 1 of your Benched Pokémon."
+          text "30 damage. You may attach a [D] Energy card from your hand to 1 of your Benched Pokemon."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -2942,17 +2671,69 @@ public enum DarknessAblaze implements LogicCardInfo {
       case ETERNATUS_VMAX_128:
       return evolution (this, from:"Eternatus V", hp:HP340, type:D, retreatCost:3) {
         weakness F
-        bwAbility "Infinity Zone", {
-          text "If all of your Pokémon in play are [D], you may now have up to 8 [D] Pokémon on your Bench and can’t play any other type of Pokémon. (When this Ability no longer works, discard your Benched Pokémon until there are 5 left.)"
+        bwAbility "Eternal Zone", {
+          text "If all of your Pokemon in play are [D] type, you can have up to 8 Pokemon on your Bench, and can’t put non-[D] Pokemon into play. (If this Ability stops working, discard Pokemon from your Bench until you have 5.)"
           actionA {
           }
         }
         move "Dread End", {
-          text "30x damage. This attack does 30 damage times the number of your [D] Pokémon."
+          text "30x damage. This attack does 30 damage for each of your [D] Pokemon in play."
           energyCost D, C
           attackRequirement {}
           onAttack {
             damage 30
+          }
+        }
+      };
+      case SCIZOR_V_127:
+      return basic (this, hp:HP210, type:M, retreatCost:2) {
+        weakness R
+        resistance G, MINUS30
+        move "Hack Off", {
+          text "30 damage. Discard a Pokemon Tool and a Special Energy from your opponent’s Active Pokemon."
+          energyCost M
+          attackRequirement {}
+          onAttack {
+            damage 30
+            discardDefendingSpecialEnergy(delegate)
+            afterDamage{
+              targeted (defending){
+                def attachedTools = sel.cards.filterByType(POKEMON_TOOL)
+                if (attachedTools) {
+                  attachedTools.select("Discard a Pokémon Tool from $defending.").discard()
+                }
+              }
+            }
+          }
+        }
+        move "Slashing Claw", {
+          text "140 damage."
+          energyCost M, M, C
+          attackRequirement {}
+          onAttack {
+            damage 140
+          }
+        }
+      };
+      case SCIZOR_VMAX_128:
+      return evolution (this, from:"Scizor V", hp:HP320, type:M, retreatCost:2) {
+        weakness R
+        resistance G, MINUS30
+        move "Hard Scissors", {
+          text "90 damage. During your next turn, this Pokemon takes 30 less damage from attacks."
+          energyCost M, C
+          attackRequirement {}
+          onAttack {
+            damage 90
+            reduceDamageNextTurn(hp(30),thisMove)
+          }
+        }
+        move "Max Steelspike", {
+          text "190 damage."
+          energyCost M, M, C
+          attackRequirement {}
+          onAttack {
+            damage 190
           }
         }
       };
@@ -3168,6 +2949,50 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
       };
+      case MELTAN_130:
+      return basic (this, hp:HP070, type:M, retreatCost:1) {
+        weakness R
+        resistance G, MINUS30
+        move "Headbutt", {
+          text "10 damage."
+          energyCost C
+          attackRequirement {}
+          onAttack {
+            damage 10
+          }
+        }
+        move "Beam", {
+          text "20 damage."
+          energyCost M, C
+          attackRequirement {}
+          onAttack {
+            damage 20
+          }
+        }
+      };
+      case MELMETAL_131:
+      return evolution (this, from:"Meltan", hp:HP150, type:M, retreatCost:4) {
+        weakness R
+        resistance G, MINUS30
+        move "Energy Link", {
+          text "30 damage. Attach an Energy card from your discard pile to this Pokémon."
+          energyCost M
+          onAttack {
+            damage 30
+            afterDamage {
+              attachEnergyFrom(my.discard, self)
+            }
+          }
+        }
+        move "Heavy Impact", {
+          text "130 damage."
+          energyCost M, C, C, C
+          attackRequirement {}
+          onAttack {
+            damage 130
+          }
+        }
+      };
       case CUFANT_138:
       return basic (this, hp:HP100, type:M, retreatCost:3) {
         weakness R
@@ -3234,28 +3059,6 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
-          }
-        }
-      };
-      case EEVEE_142:
-      return basic (this, hp:HP060, type:C, retreatCost:1) {
-        weakness F
-        move "Signs of Evolution", {
-          text "Search your deck for a Pokémon that evolves from Eevee, reveal it, and put it into your hand. Then, shuffle your deck."
-          energyCost C
-          attackRequirement {
-            assert my.deck : "There are no cards left in your deck"
-          }
-          onAttack {
-            my.deck.search("Select a Pokémon that evolves from Eevee.", {it.cardTypes.is(EVOLUTION) && it.predecessor == "Eevee"}).showToOpponent("Your opponent chose this Pokémon that evolves from Eevee").moveTo(my.hand)
-          }
-        }
-        move "Kick Attack", {
-          text "30 damage. Flip a coin. If tails, this attack does nothing."
-          energyCost C, C
-          attackRequirement {}
-          onAttack {
-            flip { damage 30 }
           }
         }
       };
@@ -3637,7 +3440,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness F
         move "Mad Party", {
-          text "20x damage. This attack does 20 damage for each Pokémon in your discard pile with a Mad Party attack."
+          text "20x damage. This attack does 20 damage for each Pokemon in your discard pile that has the Mad Party attack."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -3724,36 +3527,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
       };
-      case ADVERSITY_GLOVES_165:
-      return pokemonTool (this) {
-        text "If your opponent’s Active Pokémon is the same type as the Weakness of the Pokémon this card is attached to, the attacks of this Pokémon do 30 more damage to your opponent’s Active Pokémon."
-        def increasedDmgEff
-        onPlay {reason->
-          increasedDmgEff = delayed {
-            after PROCESS_ATTACK_EFFECTS, {
-              if (bg.currentTurn == self.owner && ef.attacker == self && self.active) {
-                def flag = self.getWeaknesses().any {weakness ->
-                  opp.active.types.contains(weakness.type)
-                }
-                if (flag){
-                  bg.dm().each {
-                    if (it.to.active && it.to.owner == self.owner.opposite) {
-                      bc "Adversity Gloves +30"
-                      it.dmg += hp(30)
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-        onRemoveFromPlay {
-          increasedDmgEff.unregister()
-        }
-      };
       case BIG_PARASOL_166:
       return pokemonTool (this) {
-        text "As long as the Pokémon this card is attached to is your Active Pokémon, prevent all effects of your opponent’s attacks, except damage, done to all of your Pokémon (existing effects are not removed)."
+        text "As long as the Pokemon this card is attached to is in the Active Spot, prevent all effects of attacks from your opponent’s Pokemon done to all of your Pokemon. (Existing effects are not removed. Damage is not an effect.)"
         def eff
         onPlay {reason->
           eff = delayed {
@@ -3774,9 +3550,19 @@ public enum DarknessAblaze implements LogicCardInfo {
           eff.unregister()
         }
       };
+      case BILLOWING_SMOKE_179:
+      return pokemonTool (this) {
+        text "If the Pokemon this card is attached to is Knocked Out by damage from an attack from your opponent’s Pokemon, that player discards any Prize cards they would take for that Knock Out instead of putting those cards into their hand."
+        onPlay {reason->
+        }
+        onRemoveFromPlay {
+        }
+        allowAttach {to->
+        }
+      };
       case BIRD_KEEPER_167:
       return supporter (this) {
-        text "Switch your Active Pokémon with 1 of your Benched Pokémon. Then, draw 3 cards."
+        text "Switch your Active Pokemon with 1 of your Benched Pokemon. If you do, draw 3 cards."
         onPlay {
           switchYourActive now:true, source:TRAINER_CARD
           draw 3
@@ -3801,20 +3587,41 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
       };
-      case CHEERING_YELL_HORN_168:
+      case CAPE_OF_TOUGHNESS_182:
+      return pokemonTool (this) {
+        text "The Basic Pokemon this card is attached to gets +50 HP, except Pokemon-GX."
+        def eff
+        onPlay {reason->
+          eff = getter (GET_FULL_HP, self) {h->
+            def selfTopCardTypes = self.topPokemonCard.cardTypes
+            if(selfTopCardTypes.is(BASIC) && !(selfTopCardTypes.is(POKEMON_GX))) {
+              h.object += hp(50)
+            }
+          }
+        }
+        onRemoveFromPlay {
+          eff.unregister()
+        }
+      };
+      case FAMILIAR_BELL_172:
       return itemCard (this) {
-        text "Each player’s Active Pokémon is now Confused."
+        text "Search your deck for a Pokemon with the same name as a Pokemon in your discard pile, reveal it, and put it into your hand. Then, shuffle your deck."
         onPlay {
-          apply CONFUSED, opp.active, Source.TRAINER_CARD
-          apply CONFUSED, my.active, Source.TRAINER_CARD
+          def pokeNamesInDiscard = []
+          my.discard.filterByType(POKEMON).each{
+            pokeNamesInDiscard.add(it.name)
+          }
+          my.deck.search("Pokémon with same name as a Pokémon in your discard pile. Possible options: $pokeNamesInDiscard", {it.cardTypes.is(POKEMON) && pokeNamesInDiscard.contains(it.name)}).moveTo(my.hand)
+          shuffleDeck()
         }
         playRequirement{
-          assert !(opp.active.isSPC(CONFUSED) && my.active.isSPC(CONFUSED)) : "Both Active Pokémon are already confused"
+          assert my.deck : "You have no cards in your deck"
+          assert my.discard.filterByType(POKEMON) : "You have no Pokémon in your discard pile"
         }
       };
       case GLIMWOOD_TANGLE_169:
       return stadium (this) {
-        text "Once during either player’s turn, after they flip any coins for an attack, that player may ignore all results of those coin flips and begin flipping those coins again."
+        text "Once during each player’s turn, after that player flips any coins for an attack, they may ignore all results of those coin flips and begin flipping those coins again."
         // Heavy reference to Victini's Victory Star
         def lastTurn = 0
         def eff
@@ -3843,9 +3650,20 @@ public enum DarknessAblaze implements LogicCardInfo {
           eff.unregister()
         }
       };
-      case OLD_COMPUTER_170:
+      case KABU_171:
+      return supporter (this) {
+        text "Shuffle your hand into your deck and draw 4 cards. If you only have 1 Pokemon in play, draw 8 cards instead."
+        onPlay {
+          shuffleDeck(my.hand.getExcludedList(thisCard))
+          my.hand.removeAll(my.hand.getExcludedList(thisCard))
+          draw(my.bench ? 4 : 8)
+        }
+        playRequirement{
+        }
+      };
+      case OLD_PC_170:
       return itemCard (this) {
-        text "Flip 2 coins. If both are heads, choose 1 card from your discard pile, reveal it, and put it into your hand."
+        text "Flip 2 coins. If both are heads, put a card from your discard pile into your hand."
         onPlay {
           def bringCardFromDiscard = {
             my.discard.select("Which card will you put back into your hand?").moveTo(my.hand)
@@ -3857,45 +3675,18 @@ public enum DarknessAblaze implements LogicCardInfo {
           assert my.discard : "You have no cards in your discard pile"
         }
       };
-      case KABU_171:
-      return supporter (this) {
-        text "Shuffle your hand into your deck and draw 4 cards. If you only have 1 Pokémon in play, draw 8 cards instead."
-        onPlay {
-          shuffleDeck(my.hand.getExcludedList(thisCard))
-          my.hand.removeAll(my.hand.getExcludedList(thisCard))
-          draw(my.bench ? 4 : 8)
-        }
-        playRequirement{
-        }
-      };
-      case LOOKALIKE_BELL_172:
-      return itemCard (this) {
-        text "Search your deck for a Pokémon with the same name as a Pokémon in your discard pile, and add it to your hand. Then, shuffle your deck."
-        onPlay {
-          def pokeNamesInDiscard = []
-          my.discard.filterByType(POKEMON).each{
-            pokeNamesInDiscard.add(it.name)
-          }
-          my.deck.search("Pokémon with same name as a Pokémon in your discard pile. Possible options: $pokeNamesInDiscard", {it.cardTypes.is(POKEMON) && pokeNamesInDiscard.contains(it.name)}).moveTo(my.hand)
-          shuffleDeck()
-        }
-        playRequirement{
-          assert my.deck : "You have no cards in your deck"
-          assert my.discard.filterByType(POKEMON) : "You have no Pokémon in your discard pile"
-        }
-      };
       case PIERS_173:
       return supporter (this) {
-        text "Search your deck for a [D] Pokémon and an Energy card, reveal them, and put them into your hand. Then, shuffle your deck."
+        text "Search your deck for an Energy card and a [D] Pokemon, reveal them, and put them into your hand. Then, shuffle your deck."
           onPlay {
 
             def darkPokeFilter = {card -> card.cardTypes.is(POKEMON) && card.asPokemonCard().types.contains(D)}
 
-            def tar = my.deck.search(max: 2, "Search your deck for a [D] Pokémon and an Energy card.", {darkPokeFilter(it) || it.cardTypes.is(ENERGY)}, { CardList list ->
+            def tar = my.deck.search(max: 2, "Search your deck for an Energy card and a [D] Pokemon.", {darkPokeFilter(it) || it.cardTypes.is(ENERGY)}, { CardList list ->
               list.findAll{darkPokeFilter(it)}.size() <= 1 && list.filterByType(ENERGY).size() <= 1
             })
 
-            if (tar) { tar.showToOpponent("Opponent's selected [D] Pokémon and Energy card.").moveTo(my.hand) }
+            if (tar) { tar.showToOpponent("Opponent's selected Energy card and [D] Pokemon.").moveTo(my.hand) }
             shuffleDeck()
             bg.em().storeObject("Piers", bg.turnCount)
           }
@@ -3905,7 +3696,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       };
       case POKEMON_BREEDER_S_NURTURING_174:
       return supporter (this) {
-        text "Choose up to 2 of your Pokémon in play. Search your deck for a card that evolves from each of those Pokémon and put it on top of the Pokémon to evolve it. Then, shuffle your deck. (You can’t use this card during your first turn or on a Pokémon that just came into play.)"
+        text "Choose up to 2 of your Pokemon in play. For each of those Pokemon, search your deck for a card that evolves from that Pokemon and put it onto that Pokemon to evolve it. Then, shuffle your deck. You can’t use this card during your first turn or on a Pokemon that was put into play this turn."
         onPlay {
           def tar = my.all.findAll{it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount}
           def pl = new PcsList()
@@ -3949,7 +3740,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       };
       case RARE_FOSSIL_175:
       return itemCard (this) {
-        text "Play this card as if it were a 70-HP [C] Basic Pokémon. At any time during your turn (before your attack), you may discard this card from play. This card can’t retreat and isn’t affected by Status Conditions."
+        text "Play this card as if it were a 70-HP [C] Basic Pokemon. At any time during your turn, you may discard this card from play. This card can’t be affected by any Special Conditions, and it can’t retreat."
         onPlay {
           Card pokemonCard, trainerCard = thisCard
           pokemonCard = basic (new CustomCardInfo(RARE_FOSSIL_175).setCardTypes(BASIC, POKEMON), hp:HP070, type:COLORLESS, retreatCost:0) {
@@ -3964,7 +3755,7 @@ public enum DarknessAblaze implements LogicCardInfo {
                     }
                   }
                   before APPLY_SPECIAL_CONDITION, self, {
-                    bc "Rare Fossil can't be affected by special conditions"
+                    bc "Rare Fossil can't be affected by Special Conditions"
                     prevent()
                   }
                 }
@@ -4006,7 +3797,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       };
       case ROSE_176:
       return supporter (this) {
-        text "Choose up to 2 basic Energy from your discard pile and attach them to 1 of your Pokémon VMAX. Then, discard your hand."
+        text "Attach up to 2 basic Energy cards from your discard pile to 1 of your Pokemon VMAX. If you attached any Energy cards in this way, discard your hand."
         onPlay {
           attachEnergyFrom(max:2, basic: true, my.discard, my.all.findAll{it.pokemonVMAX}.select("Attach Energy to which Pokémon VMAX?"))
           my.hand.discard()
@@ -4018,7 +3809,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       };
       case ROSE_TOWER_177:
       return stadium (this) {
-        text "Once during either player’s turn, that player may draw cards from their deck until they have 3 cards in their hand."
+        text "Once during each player’s turn, that player may draw cards until they have 3 cards in their hand."
         def lastTurn=0
         def actions=[]
         onPlay {
@@ -4035,32 +3826,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           actions.each { bg().gm().unregisterAction(it) }
         }
       };
-      case ROTOM_PHONE_178:
-      return itemCard (this) {
-        text "Look at the top 5 cards of your deck. Choose a card you find there, shuffle your deck, then put the card you chose on top of your deck."
-        onPlay {
-          def card = my.deck.subList(0,5).select("Choose a card to put on top of your deck.").first()
-          my.deck.remove(card)
-          shuffleDeck()
-          my.deck.add(0, card)
-        }
-        playRequirement{
-          assert my.deck.notEmpty : "Your deck is empty"
-        }
-      };
-      case MOUNTAINOUS_SMOKE_179:
-      return pokemonTool (this) {
-        text "When the Pokémon this card is attached to is Knocked Out by damage from an opponent’s attack, your opponent puts any Prize cards they pick into their discard pile instead of their hand."
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        allowAttach {to->
-        }
-      };
       case SPIKEMUTH_180:
       return stadium (this) {
-        text "Whenever a player’s Pokémon is moved from the Active Spot to the Bench during their turn put 2 damage counters on that Pokémon."
+        text "Whenever a player’s Active Pokemon moves to the Bench during their turn, put 2 damage counters on that Pokemon."
         def eff, switchedFromActive
         onPlay {
           eff = delayed{
@@ -4081,37 +3849,36 @@ public enum DarknessAblaze implements LogicCardInfo {
           eff.unregister()
         }
       };
-      case DUBIOUS_CANNED_GOODS_181:
-      return itemCard (this) {
-        text "Heal 80 damage from 1 of your Pokémon with a [P] Energy attached to it. Then, discard a [P] Energy from that Pokémon."
-        onPlay {
-          def pcs = my.all.findAll{it.cards.energyCount(P) && it.numberOfDamageCounters}.select("Choose which Pokémon to heal 80 damage from")
-          heal 80, pcs
-          pcs.cards.filterByEnergyType(P).select("Select a [P] Energy to discard from $pcs").discard()
-        }
-        playRequirement{
-          assert my.all.findAll{it.cards.energyCount(P) && it.numberOfDamageCounters} : "You have no damaged Pokémon with [P] Energy attached to them"
-        }
-      };
-      case TOUGHNESS_CAPE_182:
+      case STRUGGLE_GLOVES_165:
       return pokemonTool (this) {
-        text "The maximum HP of the Basic Pokémon this card is attached to is increased by 50 (excluding Pokémon-GX)."
-        def eff
+        text "If the Pokemon this card is attached to has Weakness to your opponent’s Active Pokemon’s type, its attacks do 30 more damage to your opponent’s Active Pokemon (before applying Weakness and Resistance)."
+        def increasedDmgEff
         onPlay {reason->
-          eff = getter (GET_FULL_HP, self) {h->
-            def selfTopCardTypes = self.topPokemonCard.cardTypes
-            if(selfTopCardTypes.is(BASIC) && !(selfTopCardTypes.is(POKEMON_GX))) {
-              h.object += hp(50)
+          increasedDmgEff = delayed {
+            after PROCESS_ATTACK_EFFECTS, {
+              if (bg.currentTurn == self.owner && ef.attacker == self && self.active) {
+                def flag = self.getWeaknesses().any {weakness ->
+                  opp.active.types.contains(weakness.type)
+                }
+                if (flag){
+                  bg.dm().each {
+                    if (it.to.active && it.to.owner == self.owner.opposite) {
+                      bc "Struggle Gloves +30"
+                      it.dmg += hp(30)
+                    }
+                  }
+                }
+              }
             }
           }
         }
         onRemoveFromPlay {
-          eff.unregister()
+          increasedDmgEff.unregister()
         }
       };
       case TURBO_PATCH_183:
       return itemCard (this) {
-        text "Flip a coin. If heads, choose a basic Energy card from your discard pile and attach it to 1 of your Basic Pokémon (excluding Pokémon-GX)."
+        text "Flip a coin. If heads, attach a basic Energy card from your discard pile to 1 of your Basic Pokemon that isn’t a Pokemon-GX."
         onPlay {
           flip {
             attachEnergyFrom(basic:true, tostrOverride: "one of your Basic, non-GX Pokémon", my.discard, my.all.findAll{it.basic && !(it.pokemonGX)})
@@ -4122,9 +3889,20 @@ public enum DarknessAblaze implements LogicCardInfo {
           assert my.discard.filterByType(BASIC_ENERGY) : "There are no basic Energy cards in your discard pile"
         }
       };
+      case YELL_HORN_168:
+      return itemCard (this) {
+        text "Both Active Pokemon are now Confused."
+        onPlay {
+          apply CONFUSED, opp.active, Source.TRAINER_CARD
+          apply CONFUSED, my.active, Source.TRAINER_CARD
+        }
+        playRequirement{
+          assert !(opp.active.isSPC(CONFUSED) && my.active.isSPC(CONFUSED)) : "Both Active Pokémon are already confused"
+        }
+      };
       case HEAT_FIRE_ENERGY_184:
       return specialEnergy (this, [[]]) {
-        text "This card provides 1 [R] Energy while it’s attached to a Pokémon. If this card is attached to a [R] Pokémon, its maximum HP is increased by 20."
+        text "As long as this card is attached to a Pokemon, it provides [R] Energy. The [R] Pokemon this card is attached to gets +20 HP."
         def eff
         onPlay { reason->
           eff = getter (GET_FULL_HP, self) {h->
@@ -4143,7 +3921,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       };
       case HIDE_DARKNESS_ENERGY_185:
       return specialEnergy (this, [[]]) {
-        text "As long as this card is attached to a Pokémon, it provides [D] Energy. The Retreat Cost of the [D] Pokémon this card is attached to is 0."
+        text "As long as this card is attached to a Pokemon, it provides [D] Energy. The [D] Pokemon this card is attached to has no Retreat Cost."
         def eff
         onPlay { reason->
           eff = getter (GET_RETREAT_COST, BEFORE_LAST, self) {h->
@@ -4162,7 +3940,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       };
       case POWERFUL_COLORLESS_ENERGY_186:
       return specialEnergy (this, [[]]) {
-        text "As long as this card is attached to a Pokémon, it provides [C] Energy. The attacks of the [C] Pokémon this card is attached to do 20 more damage to your opponent’s Active Pokémon."
+        text "As long as this card is attached to a Pokemon, it provides [C] Energy. The attacks of the [C] Pokemon this card is attached to do 20 more damage to your opponent’s Active Pokemon (before applying Weakness and Resistance)."
         def eff
         onPlay { reason->
           eff = delayed {
@@ -4184,18 +3962,6 @@ public enum DarknessAblaze implements LogicCardInfo {
           eff.unregister()
         }
       };
-      case CENTISKORCH_V_187:
-      return copy (CENTISKORCH_V_35, this);
-      case VIKAVOLT_V_188:
-      return copy (VIKAVOLT_V_59, this);
-      case GARDEVOIR_V_189:
-      return copy (GARDEVOIR_V_71, this);
-      case GALARIAN_STUNFISK_V_190:
-      return copy (GALARIAN_STUNFISK_V_137, this);
-      case KABU_191:
-      return copy (KABU_171, this);
-      case POKEMON_BREEDER_S_NURTURING_192:
-      return copy (POKEMON_BREEDER_S_NURTURING_174, this);
         default:
       return null;
     }
