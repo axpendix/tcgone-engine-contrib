@@ -2423,16 +2423,41 @@ public enum SunMoon implements LogicCardInfo {
           bwAbility "Energy Evolution", {
             text "When you attach a basic Energy card from your hand to this Pokémon during your turn, you may search your deck for a card that evolves from this Pokémon that is the same type as that Energy card and put it onto this Pokémon to evolve it. Then, shuffle your deck."
             delayedA {
+              def welderFlag = false
+              before PLAY_TRAINER, {
+                welderFlag = false
+                if ((ef.cardToPlay.name == "Welder")) {
+                  welderFlag = true
+                }
+              }
               after ATTACH_ENERGY, self, {
                 if(ef.reason==PLAY_FROM_HAND && ef.card instanceof BasicEnergyCard && self.owner.pbg.deck){
-                  if(confirm("Use Energy Evolution?")){
-                    powerUsed()
+                  def energyEvoSearch = {
                     def sel=self.owner.pbg.deck.select(min:0, "Energy Evolution ${ef.card.basicType}",
                       {it.cardTypes.is(EVOLUTION) && it.types.contains(ef.card.basicType) && it.predecessor==self.name}, self.owner)
                     if(sel){
                       evolve(self, sel.first(), OTHER)
                     }
                     shuffleDeck(null, self.owner.toTargetPlayer())
+                  }
+                  def welderChoice = 0
+                  if (welderFlag) {
+                    def welderChoice = choose([1, 2, 3], ["Use before drawing 3 cards", "Use after drawing 3 cards", "Don't use Energy Evolution"], "A basic Energy was attached to $self via Welder. When would you like to use Energy Evolution?")
+
+                    if (welderChoice == 2){
+                      powerUsed()
+                      delayed {
+                        after PLAY_TRAINER {
+                          energyEvoSearch.call()
+                        }
+                      }
+                    }
+
+                    welderFlag = false
+                  }
+                  if ( welderChoice == 1 || (welderChoice == 0 && confirm("Use Energy Evolution?")) ){
+                    powerUsed()
+                    energyEvoSearch.call()
                   }
                 }
               }
