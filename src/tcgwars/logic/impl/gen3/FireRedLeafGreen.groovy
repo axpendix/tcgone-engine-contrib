@@ -317,7 +317,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             text "Shuffle your hand into your deck. Draw up to 8 cards."
             energyCost C
             attackRequirement {
-              assert my.deck.notEmpty
+              assert my.hand.notEmpty || my.deck.notEmpty
             }
             onAttack {
               my.hand.moveTo(hidden:true, my.deck)
