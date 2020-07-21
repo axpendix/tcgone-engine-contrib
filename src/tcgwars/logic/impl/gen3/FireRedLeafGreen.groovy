@@ -322,7 +322,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             onAttack {
               my.hand.moveTo(hidden:true, my.deck)
               shuffleDeck()
-              draw 8
+              draw choose(1..8,"How many cards would you like to draw?")
             }
           }
           move "Big Eggsplosion", {
