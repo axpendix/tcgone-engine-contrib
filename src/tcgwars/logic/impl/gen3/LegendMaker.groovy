@@ -1559,9 +1559,14 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Reactive Aroma", {
           text "As long as Roselia has any React Energy cards attached to it, remove 1 damage counter from each of your Pokémon (excluding Pokémon-ex) that has any React Energy cards attached to it between turns. You can't use more than 1 Reactive Aroma Poké-Body each turn."
           delayedA {
+            def lastTurn = 0
             before BEGIN_TURN, {
-              if (bg.em().retrieveObject("Reactive_Aroma" + self.owner) != bg.turnCount && self.cards.any{it.name == "React Energy"}) {
+              if (bg.em().retrieveObject("Reactive_Aroma" + self.owner) != null) {
+                lastTurn = bg.em().retrieveObject("Reactive_Aroma" + self.owner)
+              }
+              if ( lastTurn != bg.turnCount && self.cards.any{it.name == "React Energy"}) {
                 bg.em().storeObject("Reactive_Aroma" + self.owner, bg.turnCount)
+                bc "Reactive Aroma Activates"
                 self.owner.pbg.all.each {
                   if (it.numberOfDamageCounters && it.cards.any{it.name == "React Energy"} && !it.EX) {
                     heal 10, it
