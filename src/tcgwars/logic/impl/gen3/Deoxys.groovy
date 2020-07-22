@@ -2498,6 +2498,7 @@ public enum Deoxys implements LogicCardInfo {
           onPlay {reason->
             eff = delayed {
               before RETREAT, self, {
+                wcu "$self can't retreat due to having Boost Energy attached."
                 prevent()
               }
               before BETWEEN_TURNS, {
