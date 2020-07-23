@@ -4794,19 +4794,17 @@ public enum CosmicEclipse implements LogicCardInfo {
           text "Search your deck for up to 3 [W] Energy cards, reveal them, and put them into your hand. Then, shuffle your deck." +
             "When you play this card, you may discard 5 other cards from your hand. If you do, during this turn, your [W] Pokémon can use their GX attacks even if you have used your GX attack."
           onPlay {
-            my.deck.search(max:3,"Select up to 3 [W] Energy cards.",basicEnergyFilter(W)).moveTo(my.hand)
-            shuffleDeck()
+            if (my.hand.getExcludedList(thisCard).size() >= 5 && isGxPerformed()){
+              if (!my.deck || confirm("Discard 5 cards to allow [W] Pokémon to use their GX attack this turn (even if GX attack has already been used)?")) {
+                my.hand.getExcludedList(thisCard).select(count:5, "Choose 5 cards to discard.").discard()
 
-            if (my.hand.getExcludedList(thisCard).size() >= 5 && confirm("Discard 5 cards to allow [W] Pokémon to use their GX attack this turn (even if GX attack has already been used)?")) {
-              my.hand.getExcludedList(thisCard).select(count:5, "Choose 5 cards to discard.").discard()
-              if (isGxPerformed()) {
                 bg.em().storeObject("gx_"+thisCard.player, 0)
                 delayed {
                   before CHECK_ATTACK_REQUIREMENTS, {
                     if (!ef.attacker.types.contains(W) ) {
                       if (ef.move.name.contains('GX')) {
                         prevent()
-                        bc "GX move already used"
+                        bc "GX move already used (Misty & Lorelei only allows [W] Pokémon to use it again)"
                       }
                     }
                   }
@@ -4817,9 +4815,15 @@ public enum CosmicEclipse implements LogicCardInfo {
                 }
               }
             }
+
+            if (my.deck) {
+              my.deck.search(max:3,"Select up to 3 [W] Energy cards.",basicEnergyFilter(W)).moveTo(my.hand)
+              shuffleDeck()
+            }
+
           }
           playRequirement{
-            assert my.deck
+            assert ( my.deck || ( my.hand.getExcludedList(thisCard).size() >= 5 && !isGxPerformed() ) ) : "You can't do either of this card's effects"
           }
         };
       case N_S_RESOLVE_200:
