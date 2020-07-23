@@ -2962,7 +2962,6 @@ public enum Deoxys implements LogicCardInfo {
             energyCost G, L, P
             onAttack {
               damage 50
-              bc "${defending.evolution} / ${defending.topPokemonCard} / ${defending.topPokemonCard.is(STAGE2)}"
               if(defending.evolution && defending.topPokemonCard.cardTypes.is(STAGE2)){
                 damage 100
                 discardAllSelfEnergy(null)
