@@ -2762,11 +2762,11 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                 powerUsed()
                 sw my.active, self
                 while(1){
-                  def pl=(my.all.findAll {it.cards.filterByEnergyType(W) && it!=self})
+                  def pl=(my.all.findAll {it.cards.filterByBasicEnergyType(W) && it!=self})
                   if(!pl) break;
-                  def src=pl.select("Source for [W] energy (cancel to stop moving)", false)
+                  def src=pl.select("Source for basic [W] Energy (cancel to stop moving)", false)
                   if(!src) break;
-                  def card=src.cards.filterByEnergyType(W).select("Card to move").first()
+                  def card=src.cards.filterByBasicEnergyType(W).select("Card to move").first()
                   energySwitch(src, self, card)
                 }
               }
@@ -2777,9 +2777,11 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost W, W, C
             onAttack {
               damage 50
-              if(confirm("Discard an Energy card attached to $self?")){
-                discardSelfEnergy C
-                discardDefendingEnergy()
+              if (confirm("Discard an Energy card attached to $self?")) {
+                afterDamage {
+                  discardSelfEnergy C
+                  discardDefendingEnergy()
+                }
               }
             }
           }
@@ -2795,11 +2797,11 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                 powerUsed()
                 sw my.active, self
                 while (1) {
-                  def pl = (my.all.findAll { it.cards.filterByEnergyType(R) && it != self })
+                  def pl = (my.all.findAll { it.cards.filterByBasicEnergyType(R) && it != self })
                   if (!pl) break;
-                  def src = pl.select("Source for [R] energy (cancel to stop moving)", false)
+                  def src = pl.select("Source for basic [R] Energy (cancel to stop moving)", false)
                   if (!src) break;
-                  def card = src.cards.filterByEnergyType(R).select("Card to move").first()
+                  def card = src.cards.filterByBasicEnergyType(R).select("Card to move").first()
                   energySwitch(src, self, card)
                 }
               }
@@ -2811,8 +2813,8 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost R, R, C
             onAttack {
               damage 60
-              if(confirm("Discard an Energy card attached to $self?")){
-                discardSelfEnergy C
+              if (confirm("Discard an Energy card attached to $self?")) {
+                afterDamage {discardSelfEnergy C}
                 applyAfterDamage CONFUSED
               }
             }
@@ -2828,11 +2830,11 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                 powerUsed()
                 sw my.active, self
                 while (1) {
-                  def pl = (my.all.findAll { it.cards.filterByEnergyType(L) && it != self })
+                  def pl = (my.all.findAll { it.cards.filterByBasicEnergyType(L) && it != self })
                   if (!pl) break;
-                  def src = pl.select("Source for [L] energy (cancel to stop moving)", false)
+                  def src = pl.select("Source for basic [L] Energy (cancel to stop moving)", false)
                   if (!src) break;
-                  def card = src.cards.filterByEnergyType(L).select("Card to move").first()
+                  def card = src.cards.filterByBasicEnergyType(L).select("Card to move").first()
                   energySwitch(src, self, card)
                 }
               }
@@ -2843,9 +2845,9 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost L, L, C
             onAttack {
               damage 50
-              if(confirm("Discard an Energy card attached to $self for +20?")){
-                discardSelfEnergy C
+              if (confirm("Discard an Energy card attached to $self for +20?")) {
                 damage 20
+                afterDamage {discardSelfEnergy C}
               }
             }
           }
