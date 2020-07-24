@@ -1515,7 +1515,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               def numL = self.cards.filterByEnergyType(L).size()
               def toDiscard = self.cards.filterByEnergyType(L).select(min:0, max:numL, "Discard as much [L] Energy as you'd like to deal 30 damage to an opponent's Pokémon.")
 
-              (1..toDiscard.size()).each {
+              (1..toDiscard.energyCount(L)).each {
                 damage 30, opp.all.select()
               }
               afterDamage{toDiscard.discard()}
