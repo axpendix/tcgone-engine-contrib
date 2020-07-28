@@ -1200,7 +1200,7 @@ class TcgStatics {
     def checkedArea = params.benched ? checkedPlayer.bench : checkedPlayer.all
 
     def variantsAllowed = params.hasVariants?:[]
-    if (!(variantsAllowed instanceof ArrayList<>)) variantsAllowed = [variantsAllowed]
+    if (!(variantsAllowed instanceof List)) variantsAllowed = [variantsAllowed]
     def variantFilters = [
       (CardType.POKEMON_V):   { it.pokemonV },
       (CardType.VMAX):        { it.pokemonVMAX },
@@ -1221,7 +1221,7 @@ class TcgStatics {
     ]
 
     def stageRequired = params.isStage?:[]
-    if (!(stageRequired instanceof ArrayList<>)) stageRequired = [stageRequired]
+    if (!(stageRequired instanceof List)) stageRequired = [stageRequired]
     def stageFilters = [
       (CardType.EVOLVED):     { it.evolution },
       (CardType.UNEVOLVED):   { it.notEvolution },
