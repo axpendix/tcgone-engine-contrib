@@ -2447,7 +2447,7 @@ public enum SunMoon implements LogicCardInfo {
                     if (welderChoice == 2){
                       powerUsed()
                       delayed {
-                        after PLAY_TRAINER {
+                        after PLAY_TRAINER, {
                           energyEvoSearch.call()
                         }
                       }
