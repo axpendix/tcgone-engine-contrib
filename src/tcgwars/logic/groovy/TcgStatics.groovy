@@ -1403,7 +1403,7 @@ class TcgStatics {
       }
     }
 
-    counters.times{ directDamage 10, selectArea.select("Put 1 damage counter on which pokémon? ${it-1}/${counters} counters placed") }
+    counters.times{directDamage 10, selectArea.select("Put 1 damage counter on which pokémon? ${it}/${counters} counters placed") }
 
     eff.unregister()
     checkFaint()

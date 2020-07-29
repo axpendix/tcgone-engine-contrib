@@ -978,7 +978,7 @@ public enum DiamondPearl implements LogicCardInfo {
                 }
               }
 
-              4.times{ directDamage 10, opp.all.select("Put 1 damage counter to which pokémon? ${it-1}/4 counters placed") }
+              4.times{ directDamage 10, opp.all.select("Put 1 damage counter to which pokémon? ${it}/4 counters placed") }
 
               if (my.bench) {
                 sw self, my.bench.select("Select your new active.")
