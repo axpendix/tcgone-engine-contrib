@@ -2448,16 +2448,14 @@ public enum DarknessAblaze implements LogicCardInfo {
       return evolution (this, from:"Spinarak", hp:HP110, type:D, retreatCost:2) {
         weakness F
         bwAbility "Spider Net", {
-          text "When you play this card from your hand to evolve 1 of your Pokémon, you may switch 1 of your opponent’s Evolution Pokémon with their Active Pokémon."
-          actionA {
-            onActivate {r->
-              if(r==Ability.ActivationReason.PLAY_FROM_HAND && opp.bench.findAll{it.realEvolution} && confirm("Use Spider Net")){
-                powerUsed()
-                def pcs = opp.bench.findAll{it.realEvolution}.select("New active")
-                if(pcs){
-                  targeted (pcs, SRC_ABILITY) {
-                    sw(opp.active, pcs, SRC_ABILITY)
-                  }
+          text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may switch 1 of your opponent’s Benched Evolution Pokémon with their Active Pokémon."
+          onActivate {r->
+            if(r==Ability.ActivationReason.PLAY_FROM_HAND && opp.bench.findAll{it.realEvolution} && confirm("Use Spider Net")){
+              powerUsed()
+              def pcs = opp.bench.findAll{it.realEvolution}.select("New active")
+              if(pcs){
+                targeted (pcs, SRC_ABILITY) {
+                  sw(opp.active, pcs, SRC_ABILITY)
                 }
               }
             }
