@@ -2422,6 +2422,14 @@ public enum SunMoon implements LogicCardInfo {
           weakness FIGHTING
           bwAbility "Energy Evolution", {
             text "When you attach a basic Energy card from your hand to this Pokémon during your turn, you may search your deck for a card that evolves from this Pokémon that is the same type as that Energy card and put it onto this Pokémon to evolve it. Then, shuffle your deck."
+            def energyEvoSearch = {
+              def sel=self.owner.pbg.deck.select(min:0, "Energy Evolution ${ef.card.basicType}",
+              {it.cardTypes.is(EVOLUTION) && it.types.contains(ef.card.basicType) && it.predecessor==self.name}, self.owner)
+              if (sel) {
+                evolve(self, sel.first(), OTHER)
+              }
+              shuffleDeck(null, self.owner.toTargetPlayer())
+            }
             delayedA {
               def welderFlag = false
               before PLAY_TRAINER, {
@@ -2432,14 +2440,6 @@ public enum SunMoon implements LogicCardInfo {
               }
               after ATTACH_ENERGY, self, {
                 if(ef.reason==PLAY_FROM_HAND && ef.card instanceof BasicEnergyCard && self.owner.pbg.deck){
-                  def energyEvoSearch = {
-                    def sel=self.owner.pbg.deck.select(min:0, "Energy Evolution ${ef.card.basicType}",
-                      {it.cardTypes.is(EVOLUTION) && it.types.contains(ef.card.basicType) && it.predecessor==self.name}, self.owner)
-                    if(sel){
-                      evolve(self, sel.first(), OTHER)
-                    }
-                    shuffleDeck(null, self.owner.toTargetPlayer())
-                  }
                   def welderChoice = 0
                   if (welderFlag) {
                     welderChoice = choose([1, 2, 3], ["Use before drawing 3 cards", "Use after drawing 3 cards", "Don't use Energy Evolution"], "A basic Energy was attached to $self via Welder. When would you like to use Energy Evolution?")
