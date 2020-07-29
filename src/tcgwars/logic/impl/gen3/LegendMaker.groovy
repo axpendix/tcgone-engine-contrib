@@ -2,6 +2,7 @@ package tcgwars.logic.impl.gen3;
 
 import tcgwars.logic.impl.gen1.FossilNG;
 import tcgwars.logic.impl.gen6.Xy;
+import tcgwars.logic.impl.gen7.CelestialStorm;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -2537,7 +2538,7 @@ public enum LegendMaker implements LogicCardInfo {
         }
       };
       case RAINBOW_ENERGY_81:
-      return copy(Xy.RAINBOW_ENERGY_131, this)
+      return copy(CelestialStorm.RAINBOW_ENERGY_151,this);
       case REACT_ENERGY_82:
       return specialEnergy (this, [[C]]) {
         text "React Energy provides [C] Energy."
