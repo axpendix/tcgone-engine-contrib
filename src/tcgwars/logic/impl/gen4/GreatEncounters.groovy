@@ -475,7 +475,7 @@ public enum GreatEncounters implements LogicCardInfo {
               powerUsed()
               def list = my.hand.select(min: 1, max: 2, "Select up to 2 cards to move to the bottom of your deck")
               def rearrangedCards = rearrange(list)
-              rearrangedCards.moveTo(my.deck)
+              rearrangedCards.moveTo(hidden:true, my.deck)
               draw 6 - my.hand.size()
             } 
           } 

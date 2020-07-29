@@ -1270,7 +1270,7 @@ public enum FossilNG implements LogicCardInfo {
         return basicTrainer (this) {
           text "Shuffle your hand into your deck. Flip a coin. If heads, draw 8 cards. If tails, draw 1 card."
           onPlay {
-            my.hand.getExcludedList(thisCard).moveTo(my.deck)
+            my.hand.getExcludedList(thisCard).moveTo(hidden:true, my.deck)
             shuffleDeck()
             flip 1,{draw 8},{draw 1}
           }

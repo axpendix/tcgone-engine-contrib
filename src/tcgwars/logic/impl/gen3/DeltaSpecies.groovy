@@ -65,7 +65,7 @@ public enum DeltaSpecies implements LogicCardInfo {
   MIGHTYENA_DELTA_24 ("Mightyena", 24, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, DELTA, _DARKNESS_, _METAL_]),
   PORYGON2_25 ("Porygon2", 25, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
   RAIN_CASTFORM_26 ("Rain Castform", 26, Rarity.RARE, [POKEMON, BASIC, _WATER_]),
-  SANDSLASH_DELTA_27 ("Sandslash", 27, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_, _METAL_]),
+  SANDSLASH_DELTA_27 ("Sandslash", 27, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, DELTA, _FIGHTING_, _METAL_]),
   SLOWKING_28 ("Slowking", 28, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
   SNOW_CLOUD_CASTFORM_29 ("Snow-cloud Castform", 29, Rarity.RARE, [POKEMON, BASIC, _WATER_]),
   STARMIE_DELTA_30 ("Starmie", 30, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, DELTA, _WATER_, _METAL_]),
@@ -505,7 +505,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "80 damage. If your opponent has no Stage 2 Evolved Pokémon in play, this attack does nothing."
           energyCost L, M, C, C, C
           onAttack {
-            if (opp.all.any{ it.topPokemonCard.cardTypes.is(EVOLVED) && it.topPokemonCard.cardTypes.is(STAGE2) }) {
+            if (opp.all.any{ it.evolution && it.topPokemonCard.cardTypes.is(STAGE2) }) {
               damage 80
             }
           }
@@ -616,11 +616,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "As long as Rayquaza has any Holon Energy cards attached to it, ignore the effect of Rayquaza's Lightning Storm attack."
           delayedA {
             before CHECK_ATTACK_REQUIREMENTS, {
-              if (ef.attacker == self && self.cards.any{ it.name.contains("Holon Energy") }) {
-                if (ef.move.name == "Lightning Storm") {
-                  bg.em().storeObject("Lightning_Storm", bg.turnCount)
-                }
-              }
+              bg.em().storeObject("Lightning_Storm", (ef.attacker == self && self.cards.any{ it.name.contains("Holon Energy") } && ef.move.name == "Lightning Storm") )
             }
           }
         }
@@ -636,7 +632,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost L, M, C, C
           onAttack {
             damage 70
-            if (bg.em().retrieveObject("Lightning_Storm") != bg.turnCount) {
+            if (bg.em().retrieveObject("Lightning_Storm") != true) {
               directDamage 70, self
             } else {
               bc "Rayquaza Delta has a Holon Energy attached and will not take self damage from Lightning Storm"

@@ -1886,11 +1886,7 @@ public enum RebelClash implements LogicCardInfo {
           text "Put 3 damage counters on your opponent’s Pokemon in any way you like."
           energyCost P
           onAttack {
-            (1..3).each {
-              if (opp.all) {
-                directDamage(10, opp.all.select("Place a damage counter on? ($it/3)"))
-              }
-            }
+            putDamageCountersOnOpponentsPokemon(3)
           }
         }
       };
@@ -2196,10 +2192,8 @@ public enum RebelClash implements LogicCardInfo {
           energyCost P, P
           onAttack {
             damage 120
-            (1..3).each {
-              if (opp.bench) {
-                directDamage(10, opp.bench.select("Place a damage counter on? ($it/3)"))
-              }
+            afterDamage{
+              putDamageCountersOnOpponentsPokemon(3, opp.bench)
             }
           }
         }
@@ -2242,10 +2236,8 @@ public enum RebelClash implements LogicCardInfo {
           energyCost P, P
           onAttack {
             damage 130
-            (1..5).each {
-              if (opp.bench) {
-                directDamage(10, opp.bench.select("Place a damage counter on? ($it/5)"))
-              }
+            afterDamage{
+              putDamageCountersOnOpponentsPokemon(5, opp.bench)
             }
           }
         }
@@ -2412,18 +2404,7 @@ public enum RebelClash implements LogicCardInfo {
           onAttack {
             def counters = 2 * self.numberOfDamageCounters
 
-            def eff = delayed {
-              before KNOCKOUT, {
-                prevent()
-              }
-            }
-
-            (1..counters).each {
-              directDamage 10, opp.all.select("Put 1 damage counter to which Pokémon? ${it-1}/$counters counters placed")
-            }
-
-            eff.unregister()
-            checkFaint()
+            putDamageCountersOnOpponentsPokemon(counters)
           }
         }
         move "Mad Hammer", {

@@ -6,6 +6,7 @@ import tcgwars.logic.impl.gen5.EmergingPowers
 import tcgwars.logic.impl.gen5.NextDestinies
 import tcgwars.logic.impl.gen6.KalosStarterSet
 import tcgwars.logic.impl.gen6.Xy
+import tcgwars.logic.impl.gen7.CelestialStorm
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -1552,9 +1553,8 @@ public enum SunMoon implements LogicCardInfo {
             }
             onAttack {
               gxPerform()
-              (1..10).each {
-                if(opp.all) directDamage(10, opp.all.select("Put a damage counter on"))
-              }
+
+              putDamageCountersOnOpponentsPokemon(10)
             }
           }
 
@@ -2857,7 +2857,7 @@ public enum SunMoon implements LogicCardInfo {
       case DOUBLE_COLORLESS_ENERGY_136:
         return copy(Xy.DOUBLE_COLORLESS_ENERGY_130, this)
       case RAINBOW_ENERGY_137:
-        return copy(Xy.RAINBOW_ENERGY_131, this)
+        return copy(CelestialStorm.RAINBOW_ENERGY_151,this);
       case LURANTIS_GX_138:
         return copy (LURANTIS_GX_15, this)
       case LAPRAS_GX_139:

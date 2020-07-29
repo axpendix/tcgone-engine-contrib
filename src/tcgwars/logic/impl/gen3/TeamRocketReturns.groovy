@@ -115,7 +115,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
   ROCKET_S_ADMIN__86 ("Rocket's Admin. ", 86, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   ROCKET_S_HIDEOUT_87 ("Rocket's Hideout", 87, Rarity.UNCOMMON, [TRAINER, STADIUM]),
   ROCKET_S_MISSION_88 ("Rocket's Mission", 88, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-  ROCKET_S_POKE_BALL_89 ("Rocket's Poké Ball", 89, Rarity.UNCOMMON, [TRAINER]),
+  ROCKET_S_POKE_BALL_89 ("Rocket's Poké Ball", 89, Rarity.UNCOMMON, [TRAINER, ITEM]),
   ROCKET_S_TRICKY_GYM_90 ("Rocket's Tricky Gym", 90, Rarity.UNCOMMON, [STADIUM, TRAINER]),
   SURPRISE__TIME_MACHINE_91 ("Surprise! Time Machine", 91, Rarity.UNCOMMON, [TRAINER, ROCKETS_SECRET_MACHINE]),
   SWOOP__TELEPORTER_92 ("Swoop! Teleporter", 92, Rarity.UNCOMMON, [TRAINER, ROCKETS_SECRET_MACHINE]),
@@ -137,7 +137,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
   TORCHIC_STAR_108 ("Torchic Star", 108, Rarity.ULTRARARE, [BASIC, POKEMON, _FIRE_]),
   TREECKO_STAR_109 ("Treecko Star", 109, Rarity.ULTRARARE, [BASIC, POKEMON, _GRASS_]),
   CHARMELEON_110 ("Charmeleon", 110, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
-  HERE_COMES_TEAM_ROCKET__111 ("Here Comes Team Rocket!", 111, Rarity.HOLORARE, [TRAINER]);
+  HERE_COMES_TEAM_ROCKET__111 ("Here Comes Team Rocket!", 111, Rarity.HOLORARE, [TRAINER, SUPPORTER]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS;
 
@@ -813,7 +813,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               assert self.active : "$self is not your active Pokémon."
               checkLastTurn()
               powerUsed()
-              my.hand.select("select card to shuffle into your deck").moveTo(my.deck)
+              my.hand.select("select card to shuffle into your deck").moveTo(hidden:true, my.deck)
               shuffleDeck()
               draw 1
             }
@@ -2718,10 +2718,8 @@ public enum TeamRocketReturns implements LogicCardInfo {
             text "10 damage. Before doing damage, you may switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon. If you do, this attack does 10 damage to the new Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
             energyCost D
             onAttack {
-              def pcs = defending
-              if(opp.bench && confirm("Switch 1 of your opponent's Benched Pokémon with the Defending Pokémon?")){
-                def target = opp.bench.select("Select the new Active Pokémon.")
-                if ( sw2(target) ) { pcs = target }
+              if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon before doing damage?")) {
+                switchYourOpponentsBenchedWithActive()
               }
               damage 10
             }

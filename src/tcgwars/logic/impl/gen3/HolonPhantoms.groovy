@@ -1252,9 +1252,14 @@ public enum HolonPhantoms implements LogicCardInfo {
           delayed {
             def flag = false
             before USE_ABILITY, {
-              flag = true
+              if (ef.ability instanceof PokePower){
+                flag = true
+              }
             }
             after POKEPOWER, {
+              flag = false
+            }
+            after ACTIVATE_ABILITY, {
               flag = false
             }
             before PLAY_TRAINER, {
@@ -1271,8 +1276,8 @@ public enum HolonPhantoms implements LogicCardInfo {
             checkNoSPC()
             assert bg.em().retrieveObject("Holon_Supporter") == bg.turnCount : "You haven't played a Supporter with Holon in its name this turn"
             assert my.discard.findAll({it.cardTypes.is(BASIC_ENERGY) || it.name == "δ Rainbow Energy"}) : "You dont't have the required energy in your discard"
-            my.discard.findAll({it.cardTypes.is(BASIC_ENERGY) || it.name == "δ Rainbow Energy"}).select("Choose an energy to put into your hand").showToOpponent("Energy card to be put to hand").moveTo(my.hand)
             powerUsed()
+            my.discard.findAll({it.cardTypes.is(BASIC_ENERGY) || it.name == "δ Rainbow Energy"}).select("Choose an energy to put into your hand").showToOpponent("Energy card to be put to hand").moveTo(my.hand)
           }
         }
         move "Hook", {

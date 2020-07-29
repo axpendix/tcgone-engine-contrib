@@ -1672,7 +1672,7 @@ public enum TeamRocketNG implements LogicCardInfo {
           text "Discard a card from your hand in order to play this card. Your opponent shuffles his or her hand into his or her deck, then draws 4 cards."
           onPlay {
             my.hand.findAll({it != thisCard}).select().discard()
-            opp.hand.moveTo(opp.deck)
+            opp.hand.moveTo(hidden:true, opp.deck)
             shuffleDeck(null,TargetPlayer.OPPONENT)
             draw(4, TargetPlayer.OPPONENT)
           }

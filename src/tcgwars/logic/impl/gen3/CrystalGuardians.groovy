@@ -1507,18 +1507,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           text "Put 2 damage counters on your opponent's Pokémon in any way you like."
           energyCost C, C
           onAttack {
-            def eff = delayed {
-              before KNOCKOUT, {
-                prevent()
-              }
-            }
-
-            (1..2).each {
-              directDamage 10, opp.all.select("Put 1 damage counter to which Pokémon? ${it-1}/2 counters placed")
-            }
-
-            eff.unregister()
-            checkFaint()
+            putDamageCountersOnOpponentsPokemon(2)
           }
         }
       };
@@ -2018,15 +2007,11 @@ public enum CrystalGuardians implements LogicCardInfo {
           text "30 damage. Before doing damage, you may choose 1 of your opponent's Benched Pokémon and switch it with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
           energyCost F, C
           onAttack {
-            def pcs = defending
-            if(opp.bench){
-              if(confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon before doing damage?")){
-                def target = opp.bench.select()
-                if ( sw2(target) ) { pcs = target }
-              }
+            if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon before doing damage?")) {
+              switchYourOpponentsBenchedWithActive()
             }
 
-            damage 30, pcs
+            damage 30
           }
         }
         move "Burn Away", {
@@ -2301,7 +2286,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             }
             //TODO: Maybe update this so it actually stop working immediately after Imprison-like powers block it. Is there any other power that can block it?
             after POKEPOWER, {
-              if (pcs && pcsTPC == pcs.topPokemonCard) {
+              if (pcs && pcs.cards && pcsTPC == pcs.topPokemonCard) {
                 bc "Dark Eyes activates"
                 directDamage(20, pcs, Source.SRC_ABILITY)
                 pcs = null
@@ -2309,7 +2294,7 @@ public enum CrystalGuardians implements LogicCardInfo {
               }
             }
             after ACTIVATE_ABILITY, {
-              if (pcs && pcsTPC == pcs.topPokemonCard) {
+              if (pcs && pcs.cards && pcsTPC == pcs.topPokemonCard) {
                 bc "Dark Eyes activates"
                 directDamage(20, pcs, Source.SRC_ABILITY)
                 pcs = null

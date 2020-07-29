@@ -1139,9 +1139,7 @@ public enum ShiningLegends implements LogicCardInfo {
             text "Put 3 damage counters on your opponent's Pokémon in any way you like."
             energyCost D, C
             onAttack {
-              (1..3).each {
-                if(opp.all) directDamage(10, opp.all.select("Put a damage counter on"))
-              }
+              putDamageCountersOnOpponentsPokemon(3)
             }
           }
 

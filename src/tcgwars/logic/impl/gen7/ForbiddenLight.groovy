@@ -1443,8 +1443,8 @@ public enum ForbiddenLight implements LogicCardInfo {
             text "Both players shuffle their Prize cards into their decks. Then, each player puts the top 3 cards of their deck face down as their Prize cards. (You can’t use more than 1 GX attack in a game.)"
             energyCost C, C, C
             onAttack {
-              my.prizeCardSet.moveTo(my.deck)
-              opp.prizeCardSet.moveTo(opp.deck)
+              my.prizeCardSet.moveTo(hidden:true, my.deck)
+              opp.prizeCardSet.moveTo(hidden:true, opp.deck)
               shuffleDeck()
               shuffleDeck(null, TargetPlayer.OPPONENT)
               for(int i=0;i<3;i++){
@@ -2043,7 +2043,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             onAttack {
               gxPerform()
               damage 150
-              afterDamage{
+              afterDamage {
                 delayed (priority: BEFORE_LAST) {
                   before BETWEEN_TURNS, {
                     prevent()
@@ -2052,6 +2052,19 @@ public enum ForbiddenLight implements LogicCardInfo {
                     bc "Timeless GX started a new turn!"
                     unregister()
                   }
+
+                  // Enable the use of a 2nd Supporter
+                  def eff
+                  register {
+                    //TODO: This may not work properly against other extra supporter effects (mainly Lt. Surge's Strategy)
+                    eff = getter (GET_MAX_SUPPORTER_PER_TURN) {h->
+                      if(h.effect.playerType == thisCard.player && h.object < 2) h.object = 2
+                    }
+                  }
+                  unregister {
+                    eff.unregister()
+                  }
+                  unregisterAfter 1
                 }
               }
             }
@@ -2709,9 +2722,9 @@ public enum ForbiddenLight implements LogicCardInfo {
             eff2 = delayed{
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if(it.to == self && self.types.contains(M)){
-                    bc "Metal Frying Pan -30"
-                    it.dmg-=hp(30)
+                  if(it.to == self && self.types.contains(M) && it.dmg.value && it.notNoEffect) {
+                      bc "Metal Frying Pan -30"
+                      it.dmg-=hp(30)
                   }
                 }
               }

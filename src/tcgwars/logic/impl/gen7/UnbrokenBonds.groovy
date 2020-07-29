@@ -600,7 +600,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               damage 60
               afterDamage{
                 if(my.deck || my.hand){
-                  my.hand.moveTo(my.deck)
+                  my.hand.moveTo(hidden:true, my.deck)
                   shuffleDeck()
                   draw 10
                 }
@@ -2044,9 +2044,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             text "Put 3 damage counters on your opponent's Pokémon in any way you like."
             energyCost C
             onAttack {
-              (1..3).each {
-                if(opp.all) directDamage(10, opp.all.select("Put a damage counter on"))
-              }
+              putDamageCountersOnOpponentsPokemon(3)
             }
           }
 
@@ -2937,7 +2935,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               def list = all.findAll{it!=self}.sort(false) {p1,p2 -> p1.remainingHP.value <=> p2.remainingHP.value}
               def tar = new PcsList()
               int min = list.get(0).remainingHP.value
-              while(list.get(0).remainingHP.value==min){
+              while (list.notEmpty && list.get(0).remainingHP.value==min) {
                 tar.add(list.remove(0))
               }
               //TODO: Heavily improve this selection, in case both players have tied Pokémon. Make it clearer to pick.
@@ -3291,7 +3289,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               damage 200
               afterDamage{
                 if(self.cards.energySufficient(thisMove.energyCost + Y+Y+Y)){
-                  opp.hand.moveTo(opp.deck)
+                  opp.hand.moveTo(hidden:true, opp.deck)
                   shuffleDeck(null, TargetPlayer.OPPONENT)
                 }
               }
@@ -3307,7 +3305,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               checkLastTurn()
               powerUsed()
               flip {
-                my.hand.moveTo(my.deck)
+                my.hand.moveTo(hidden:true, my.deck)
                 shuffleDeck()
                 draw 6
               }
@@ -3953,7 +3951,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             text "Shuffle your hand into your deck. Then, draw a card for each card in your opponent's hand."
             energyCost C
             onAttack {
-              my.hand.moveTo(my.deck)
+              my.hand.moveTo(hidden:true, my.deck)
               shuffleDeck()
               draw opp.hand.size()
             }
@@ -4440,11 +4438,15 @@ public enum UnbrokenBonds implements LogicCardInfo {
           text "During this turn, damage from your Ultra Beasts' attacks isn't affected by any effects on your opponent's Active Pokémon."
           onPlay {
             delayed {
-              before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each{if(it.from==ef.attacker && ef.attacker.topPokemonCard.cardTypes.is(ULTRA_BEAST)){
-                  it.flags.add(DamageManager.DamageFlag.NO_DEFENDING_EFFECT)
-                  bc "Ultra Forest Kartenvoy kicks in"
-                }}
+              before PROCESS_ATTACK_EFFECTS, {
+                if (ef.attacker.topPokemonCard.cardTypes.is(ULTRA_BEAST)){
+                  bg.dm().each{
+                    if (it.to.owner != self.owner && it.to.active) {
+                      bc "Ultra Forest Kartenvoy kicks in"
+                      it.flags.add(DamageManager.DamageFlag.NO_DEFENDING_EFFECT)
+                    }
+                  }
+                }
               }
               unregister {
                 bc "Ultra Forest Kartenvoy fades out"

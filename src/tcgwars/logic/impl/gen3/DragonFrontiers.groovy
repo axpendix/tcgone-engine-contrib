@@ -2129,8 +2129,14 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 80
 
             delayed {
-              getter (GET_WEAKNESSES, self) {h->
-                h.object.clear()
+              def eff
+              register {
+                eff = getter (GET_WEAKNESSES, self) {h->
+                  h.object.clear()
+                }
+              }
+              unregister {
+                eff.unregister()
               }
               unregisterAfter 2
               after SWITCH, self, { unregister() }
