@@ -2433,31 +2433,47 @@ public enum SunMoon implements LogicCardInfo {
               after ATTACH_ENERGY, self, {
                 if(ef.reason==PLAY_FROM_HAND && ef.card instanceof BasicEnergyCard && self.owner.pbg.deck){
                   def energyEvoSearch = {
-                    def sel=self.owner.pbg.deck.select(min:0, "Energy Evolution ${ef.card.basicType}",
-                      {it.cardTypes.is(EVOLUTION) && it.types.contains(ef.card.basicType) && it.predecessor==self.name}, self.owner)
-                    if(sel){
-                      evolve(self, sel.first(), OTHER)
+                    if (self.owner.pbg.deck) {
+                      def sel=self.owner.pbg.deck.select(min:0, "Energy Evolution ${ef.card.basicType}",
+                        {it.cardTypes.is(EVOLUTION) && it.types.contains(ef.card.basicType) && it.predecessor==self.name}, self.owner)
+                      if(sel){
+                        evolve(self, sel.first(), OTHER)
+                      }
+                      shuffleDeck(null, self.owner.toTargetPlayer())
+                    } else {
+                      bc "Due to drawing cards with Welder, ${self.owner.getPlayerUsername(bg)} has no cards left in deck and can't use Energy Evolution now."
                     }
-                    shuffleDeck(null, self.owner.toTargetPlayer())
                   }
-                  def welderChoice = 0
                   if (welderFlag) {
-                    welderChoice = choose([1, 2, 3], ["Use before drawing 3 cards", "Use after drawing 3 cards", "Don't use Energy Evolution"], "A basic Energy was attached to $self via Welder. When would you like to use Energy Evolution?")
-
-                    if (welderChoice == 2){
+                    def welderChoice = choose([1, 2, 3], ["Use before drawing 3 cards", "Use after drawing 3 cards", "Don't use Energy Evolution"], "A basic Energy was attached to $self via Welder. When would you like to use Energy Evolution?")
+                    if (welderChoice < 3) {
                       powerUsed()
                       delayed {
+                        before DRAW_CARD, {
+                          if (welderChoice == 1) {
+                            energyEvoSearch.call()
+                            unregister()
+                          }
+                        }
                         after PLAY_TRAINER, {
                           energyEvoSearch.call()
+                          unregister()
                         }
                       }
                     }
-
                     welderFlag = false
-                  }
-                  if ( welderChoice == 1 || (welderChoice == 0 && confirm("Use Energy Evolution?")) ){
+                  } else if ( confirm("Use Energy Evolution?") ){
                     powerUsed()
-                    energyEvoSearch.call()
+                    delayed {
+                      before DRAW_CARD, {
+                        energyEvoSearch.call()
+                        unregister()
+                      }
+                      after PLAY_TRAINER, {
+                        energyEvoSearch.call()
+                        unregister()
+                      }
+                    }
                   }
                 }
               }
