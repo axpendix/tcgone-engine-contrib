@@ -2935,7 +2935,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               def list = all.findAll{it!=self}.sort(false) {p1,p2 -> p1.remainingHP.value <=> p2.remainingHP.value}
               def tar = new PcsList()
               int min = list.get(0).remainingHP.value
-              while(list.get(0).remainingHP.value==min){
+              while (list.notEmpty && list.get(0).remainingHP.value==min) {
                 tar.add(list.remove(0))
               }
               //TODO: Heavily improve this selection, in case both players have tied Pokémon. Make it clearer to pick.
