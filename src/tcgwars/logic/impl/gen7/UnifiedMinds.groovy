@@ -3031,6 +3031,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           bwAbility "Shadow Connection", {
             text "As often as you like during your turn (before your attack), you may move a basic [D] Energy from 1 of your Pokémon to another of your Pokémon."
             actionA {
+              powerUsed()
               moveEnergy(basic: true, type: D, my.all, my.all)
             }
           }
