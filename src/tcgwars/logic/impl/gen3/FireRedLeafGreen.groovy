@@ -2585,7 +2585,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                 def src = pl.select(info, false)
                 if(!src) break;
 
-                def selection = src.cards.filterByType(ENERGY).select("Card to discard")
+                def selection = src.cards.filterByType(ENERGY).findAll{!toBeDiscarded.contains(it)}.select("Card to discard")
                 toBeDiscarded.addAll(selection)
               }
               damage 30+20*toBeDiscarded.size()
