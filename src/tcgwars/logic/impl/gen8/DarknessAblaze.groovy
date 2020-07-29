@@ -3490,7 +3490,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             assert my.deck : "There are no cards left in your deck"
           }
           onAttack {
-            deck.select(count: 2).moveTo(hidden: true, hand)
+            my.deck.select(min:1, max:2, "Put up to 2 cards into your hand").moveTo(hidden: true, my.hand)
             shuffleDeck()
           }
         }
