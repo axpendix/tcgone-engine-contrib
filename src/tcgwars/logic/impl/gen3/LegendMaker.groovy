@@ -948,7 +948,7 @@ public enum LegendMaker implements LogicCardInfo {
               if (ef.attacker == self) {
                 bg.dm().each {
                   if (it.to.active && it.to.owner != self.owner && it.notNoEffect && it.dmg.value) {
-                    if (self.owner.all.pbg.any{
+                    if (self.owner.pbg.all.any{
                       it.name == "Kabuto" ||
                       it.name == "Kabutops" ||
                       it.name == "Kabutops ex"
@@ -966,10 +966,8 @@ public enum LegendMaker implements LogicCardInfo {
           text "10 damage. Before doing damage, you may choose 1 of your opponent's Benched Pokémon and switch it with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
           energyCost C
           onAttack{
-            def pcs = defending
-            if (opp.bench && confirm("Switch 1 of your opponent's Benched Pokémon with the Defending Pokémon?")){
-              def target = opp.bench.select("Select the new Active Pokémon.")
-              if ( sw2(target) ) { pcs = target }
+            if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon before doing damage?")) {
+              switchYourOpponentsBenchedWithActive()
             }
             damage 10
           }

@@ -2718,10 +2718,8 @@ public enum TeamRocketReturns implements LogicCardInfo {
             text "10 damage. Before doing damage, you may switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon. If you do, this attack does 10 damage to the new Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
             energyCost D
             onAttack {
-              def pcs = defending
-              if(opp.bench && confirm("Switch 1 of your opponent's Benched Pokémon with the Defending Pokémon?")){
-                def target = opp.bench.select("Select the new Active Pokémon.")
-                if ( sw2(target) ) { pcs = target }
+              if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon before doing damage?")) {
+                switchYourOpponentsBenchedWithActive()
               }
               damage 10
             }

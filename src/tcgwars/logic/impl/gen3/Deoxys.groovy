@@ -249,14 +249,10 @@ public enum Deoxys implements LogicCardInfo {
             text "20 damage. Before doing damage, you may choose 1 of your opponent’s Benched Pokémon and switch it with 1 of the Defending Pokémon. If you do, this attack does 20 damage to the new Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
             energyCost G
             onAttack {
-              def pcs = defending
-              if(opp.bench){
-                if(confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon.")){
-                  def target = opp.bench.select()
-                  if ( sw2(target) ) { pcs = target }
-                }
+              if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon before doing damage?")) {
+                switchYourOpponentsBenchedWithActive()
               }
-              damage 20, pcs
+              damage 20
             }
           }
           move "Cutting Wind", {
@@ -2887,10 +2883,8 @@ public enum Deoxys implements LogicCardInfo {
             text "20 damage. Before doing damage, you may switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon. If you do, this attack does 20 damage to the new Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
             energyCost C, C
             onAttack {
-              def pcs = defending
-              if (opp.bench && confirm("Switch 1 of your opponent's Benched Pokémon with the Defending Pokémon?")){
-                def target = opp.bench.select("Select the new Active Pokémon.")
-                if ( sw2(target) ) { pcs = target }
+              if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon before doing damage?")) {
+                switchYourOpponentsBenchedWithActive()
               }
               damage 20
             }
