@@ -2442,7 +2442,7 @@ public enum SunMoon implements LogicCardInfo {
                   }
                   def welderChoice = 0
                   if (welderFlag) {
-                    def welderChoice = choose([1, 2, 3], ["Use before drawing 3 cards", "Use after drawing 3 cards", "Don't use Energy Evolution"], "A basic Energy was attached to $self via Welder. When would you like to use Energy Evolution?")
+                    welderChoice = choose([1, 2, 3], ["Use before drawing 3 cards", "Use after drawing 3 cards", "Don't use Energy Evolution"], "A basic Energy was attached to $self via Welder. When would you like to use Energy Evolution?")
 
                     if (welderChoice == 2){
                       powerUsed()
