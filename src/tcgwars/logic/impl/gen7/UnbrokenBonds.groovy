@@ -4459,8 +4459,10 @@ public enum UnbrokenBonds implements LogicCardInfo {
         return supporter (this) {
           text "Attach up to 2 [R] Energy cards from your hand to 1 of your Pokémon. If you do, draw 3 cards."
           onPlay {
+            bg.em().storeObject("Welder_Played",true)
             attachEnergyFrom(max:2,type:R,my.hand,my.all)
             draw 3
+            bg.em().storeObject("Welder_Played",false)
           }
           playRequirement{
             assert my.hand.filterByEnergyType(R)

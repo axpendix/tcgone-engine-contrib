@@ -2424,56 +2424,41 @@ public enum SunMoon implements LogicCardInfo {
             text "When you attach a basic Energy card from your hand to this Pokémon during your turn, you may search your deck for a card that evolves from this Pokémon that is the same type as that Energy card and put it onto this Pokémon to evolve it. Then, shuffle your deck."
             delayedA {
               def welderFlag = false
-              before PLAY_TRAINER, {
-                welderFlag = false
-                if (ef.cardToPlay.name == "Welder") {
-                  welderFlag = true
+              def welderChoice = 0
+              def basicEnType
+              def energyEvoSearch = {
+                if (self.owner.pbg.deck) {
+                  powerUsed()
+                  def sel=self.owner.pbg.deck.select(min:0, "Energy Evolution ${basicEnType}",
+                    {it.cardTypes.is(EVOLUTION) && it.types.contains(basicEnType) && it.predecessor==self.name}, self.owner)
+                  if(sel){
+                    evolve(self, sel.first(), OTHER)
+                  }
+                  shuffleDeck(null, self.owner.toTargetPlayer())
+                } else {
+                  bc "Due to drawing cards with Welder, ${self.owner.getPlayerUsername(bg)} has no cards left in deck and $self now can't use Energy Evolution."
                 }
+              }
+              before DRAW_CARD, {
+                if (welderFlag && welderChoice == 1) {
+                  energyEvoSearch.call()
+                  welderFlag = false
+                }
+              }
+              after PLAY_TRAINER, {
+                if (welderFlag && welderChoice == 2) {
+                  energyEvoSearch.call()
+                }
+                welderFlag = false
               }
               after ATTACH_ENERGY, self, {
                 if(ef.reason==PLAY_FROM_HAND && ef.card instanceof BasicEnergyCard && self.owner.pbg.deck){
-                  def energyEvoSearch = {
-                    if (self.owner.pbg.deck) {
-                      def sel=self.owner.pbg.deck.select(min:0, "Energy Evolution ${ef.card.basicType}",
-                        {it.cardTypes.is(EVOLUTION) && it.types.contains(ef.card.basicType) && it.predecessor==self.name}, self.owner)
-                      if(sel){
-                        evolve(self, sel.first(), OTHER)
-                      }
-                      shuffleDeck(null, self.owner.toTargetPlayer())
-                    } else {
-                      bc "Due to drawing cards with Welder, ${self.owner.getPlayerUsername(bg)} has no cards left in deck and can't use Energy Evolution now."
-                    }
-                  }
+                  welderFlag = bg.em().retrieveObject("Welder_Played") ?: false
+                  basicEnType = ef.card.basicType
                   if (welderFlag) {
-                    def welderChoice = choose([1, 2, 3], ["Use before drawing 3 cards", "Use after drawing 3 cards", "Don't use Energy Evolution"], "A basic Energy was attached to $self via Welder. When would you like to use Energy Evolution?")
-                    if (welderChoice < 3) {
-                      powerUsed()
-                      delayed {
-                        before DRAW_CARD, {
-                          if (welderChoice == 1) {
-                            energyEvoSearch.call()
-                            unregister()
-                          }
-                        }
-                        after PLAY_TRAINER, {
-                          energyEvoSearch.call()
-                          unregister()
-                        }
-                      }
-                    }
-                    welderFlag = false
+                    if (welderChoice == 0) welderChoice = choose([1, 2, 3], ["Use before drawing 3 cards", "Use after drawing 3 cards", "Don't use Energy Evolution"], "A basic Energy was attached to $self via Welder. When would you like to use Energy Evolution?")
                   } else if ( confirm("Use Energy Evolution?") ){
-                    powerUsed()
-                    delayed {
-                      before DRAW_CARD, {
-                        energyEvoSearch.call()
-                        unregister()
-                      }
-                      after PLAY_TRAINER, {
-                        energyEvoSearch.call()
-                        unregister()
-                      }
-                    }
+                    energyEvoSearch.call()
                   }
                 }
               }
