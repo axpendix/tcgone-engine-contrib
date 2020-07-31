@@ -4806,8 +4806,8 @@ public enum CosmicEclipse implements LogicCardInfo {
                   before CHECK_ATTACK_REQUIREMENTS, {
                     if (!ef.attacker.types.contains(W) ) {
                       if (ef.move.name.contains('GX')) {
+                        wcu "GX move already used (Misty & Lorelei only allows [W] Pokémon to use it again)"
                         prevent()
-                        bc "GX move already used (Misty & Lorelei only allows [W] Pokémon to use it again)"
                       }
                     }
                   }
