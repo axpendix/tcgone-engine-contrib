@@ -2932,7 +2932,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             text "The Pokémon that has the least HP remaining, except for this Pokémon, is Knocked Out. (If multiple Pokémon are tied, choose one.)"
             energyCost C, C
             onAttack {
-              def list = all.findAll{it!=self}.sort(false) {p1,p2 -> p1.remainingHP.value <=> p2.remainingHP.value}
+              def list = all.findAll{it!=self}.sort(false) {p1,p2 -> p1.remainingHP.value <=> p2.remainingHP.value} as PcsList
               def tar = new PcsList()
               int min = list.get(0).remainingHP.value
               while (list.notEmpty && list.get(0).remainingHP.value==min) {
@@ -4438,6 +4438,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           text "During this turn, damage from your Ultra Beasts' attacks isn't affected by any effects on your opponent's Active Pokémon."
           onPlay {
             delayed {
+              //TODO Fix, not working currently against safeguard (Keldeo-GX)
               before PROCESS_ATTACK_EFFECTS, {
                 if (ef.attacker.topPokemonCard.cardTypes.is(ULTRA_BEAST)){
                   bg.dm().each{
