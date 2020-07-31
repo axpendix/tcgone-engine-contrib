@@ -1122,7 +1122,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness P, PLUS20
           pokePower "Set Up", {
             text "Once during your turn, when you put Uxie from your hand onto your Bench, you may draw cards until you have 7 cards in your hand."
-            actionA {
+            onActivate { reason ->
               if(reason == PLAY_FROM_HAND && self.benched && my.deck.notEmpty && my.hand.size() < 7 && confirm("Use Set Up?")){
                 powerUsed()
                 draw 7 - my.hand.size()
