@@ -4826,7 +4826,7 @@ public enum CosmicEclipse implements LogicCardInfo {
 
           }
           playRequirement{
-            assert ( my.deck || ( my.hand.getExcludedList(thisCard).size() >= 5 && !isGxPerformed() ) ) : "You can't do either of this card's effects"
+            assert ( my.deck || ( my.hand.getExcludedList(thisCard).size() >= 5 && isGxPerformed() ) ) : "You can't do either of this card's effects"
           }
         };
       case N_S_RESOLVE_200:
