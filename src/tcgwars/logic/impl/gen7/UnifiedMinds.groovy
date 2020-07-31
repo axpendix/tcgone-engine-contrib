@@ -1513,10 +1513,12 @@ public enum UnifiedMinds implements LogicCardInfo {
             }
             onAttack {
               def numL = self.cards.filterByEnergyType(L).size()
-              def toDiscard = self.cards.filterByEnergyType(L).select(min:0, max:numL, "Discard as much [L] Energy as you'd like to deal 30 damage to an opponent's Pokémon.")
+              //TODO: Allow to select how many energy does a multi-energy (Counter Energy) gives, in case you wanted to do less damage for some reason.
+              def toDiscard = self.cards.filterByEnergyType(L).select(min:0, max:numL, "Discard any amount of [L] Energy from this Pokémon. Then, for each Energy you discarded in this way, choose 1 of your opponent's Pokémon and do 30 damage to it. (You can choose the same Pokémon more than once.) This damage isn't affected by Weakness or Resistance.")
 
-              (1..toDiscard.energyCount(L)).each {
-                damage 30, opp.all.select()
+              def dmgTimes = toDiscard.energyCount(L)
+              dmgTimes.times {
+                noWrDamage(30,opp.all.select("Which Pokémon will you do 30 damage to (${it}/${dmgTimes} selections made)"))
               }
               afterDamage{toDiscard.discard()}
             }
