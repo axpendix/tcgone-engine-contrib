@@ -1320,6 +1320,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
                 }
                 unregisterAfter 2
                 after EVOLVE,defending, {unregister()}
+                after DEVOLVE,defending, {unregister()}
                 after FALL_BACK,defending, {unregister()}
               }
             }

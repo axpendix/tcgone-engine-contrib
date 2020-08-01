@@ -634,6 +634,8 @@ public enum GuardiansRising implements LogicCardInfo {
                 }
                 unregisterAfter 2
                 after FALL_BACK, self, {unregister()}
+                after EVOLVE, self, {unregister()}
+                after DEVOLVE, self, {unregister()}
               }
             }
           }

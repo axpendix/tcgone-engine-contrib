@@ -2730,6 +2730,8 @@ public enum Deoxys implements LogicCardInfo {
                   }
                 }
                 before FALL_BACK, self, {unregister()}
+                before EVOLVE, self, {unregister()}
+                before DEVOLVE, self, {unregister()}
                 unregisterAfter 2
               }
             }

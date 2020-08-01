@@ -1756,6 +1756,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                 unregisterAfter 3
                 after FALL_BACK,defending, {unregister()}
                 after EVOLVE,defending, {unregister()}
+                after DEVOLVE,defending, {unregister()}
               }
             }
           }
