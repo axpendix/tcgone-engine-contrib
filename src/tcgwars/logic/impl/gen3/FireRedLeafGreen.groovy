@@ -1717,7 +1717,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                       apply CONFUSED, pcs
                     }
                   }
-                  after SWITCH, pcs, {unregister()}
+                  after FALL_BACK, pcs, {unregister()}
                   after EVOLVE, pcs, {unregister()}
                   after DEVOLVE, pcs, {unregister()}
                   unregisterAfter 2

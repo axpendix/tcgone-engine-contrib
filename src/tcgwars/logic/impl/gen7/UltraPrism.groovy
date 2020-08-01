@@ -867,7 +867,7 @@ public enum UltraPrism implements LogicCardInfo {
                 unregisterAfter 2
                 after EVOLVE, self, {unregister()}
                 after DEVOLVE, self, {unregister()}
-                after SWITCH, self, {unregister()}
+                after FALL_BACK, self, {unregister()}
               }
             }
           }

@@ -2729,7 +2729,7 @@ public enum Deoxys implements LogicCardInfo {
                     discard efs.card
                   }
                 }
-                before SWITCH, self, {unregister()}
+                before FALL_BACK, self, {unregister()}
                 unregisterAfter 2
               }
             }
@@ -2777,7 +2777,7 @@ public enum Deoxys implements LogicCardInfo {
                 unregisterAfter 2
                 after EVOLVE, self, {unregister()}
                 after DEVOLVE, self, {unregister()}
-                after SWITCH, self, {unregister()}
+                after FALL_BACK, self, {unregister()}
               }
             }
           }

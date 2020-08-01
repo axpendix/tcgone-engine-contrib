@@ -294,7 +294,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                     }
                   }
                   unregisterAfter 2
-                  after SWITCH, self, { unregister() }
+                  after FALL_BACK, self, { unregister() }
                   after EVOLVE, self, { unregister() }
                   after DEVOLVE, self, { unregister() }
                 }
@@ -1304,7 +1304,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                     keyStore("EI_Buff_Lazy_Blow", self, 0)
                     bc "Energetic Impulse's effect wore off."
                   }
-                  after SWITCH, self, {unregister()}
+                  after FALL_BACK, self, {unregister()}
                   after EVOLVE, self, {unregister()}
                   after DEVOLVE, self, {unregister()}
                   unregisterAfter 1
@@ -1322,7 +1322,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                     wcu "$pokePower prevents $self from attacking."
                     prevent()
                   }
-                  after SWITCH, self, {unregister()}
+                  after FALL_BACK, self, {unregister()}
                   after EVOLVE, self, {unregister()}
                   after DEVOLVE, self, {unregister()}
                   unregisterAfter 1
@@ -2063,7 +2063,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 unregisterAfter 2
                 after EVOLVE, self, {unregister()}
                 after DEVOLVE, self, {unregister()}
-                after SWITCH, self, {unregister()}
+                after FALL_BACK, self, {unregister()}
               }
             }
           }
@@ -3498,7 +3498,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                     }
                   }
                   unregisterAfter 2
-                  after SWITCH, self, {unregister()}
+                  after FALL_BACK, self, {unregister()}
                   after EVOLVE, self, {unregister()}
                   after DEVOLVE, self, {unregister()}
                 }
@@ -3524,7 +3524,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 unregisterAfter 2
                 after EVOLVE, self, {unregister()}
                 after DEVOLVE, self, {unregister()}
-                after SWITCH, self, {unregister()}
+                after FALL_BACK, self, {unregister()}
               }
             }
           }

@@ -1158,7 +1158,7 @@ public enum LegendMaker implements LogicCardInfo {
                     directDamage 70, pcs
                   }
                 }
-                after SWITCH, pcs, {unregister()}
+                after FALL_BACK, pcs, {unregister()}
                 after EVOLVE, pcs, {unregister()}
                 after DEVOLVE, pcs, {unregister()}
                 unregisterAfter 2

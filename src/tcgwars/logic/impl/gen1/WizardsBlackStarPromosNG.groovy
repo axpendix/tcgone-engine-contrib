@@ -750,8 +750,8 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
                 }
 
                 unregisterAfter 2
-                after SWITCH, defending, {unregister()}
-                after SWITCH, self, {unregister()}
+                after FALL_BACK,defending, {unregister()}
+                after FALL_BACK,self, {unregister()}
               }
             }
           }

@@ -1046,7 +1046,7 @@ public enum DiamondPearl implements LogicCardInfo {
                         }
                       }
                     }
-                    after SWITCH, pcs, {unregister()}
+                    after FALL_BACK, pcs, {unregister()}
                     after EVOLVE, pcs, {unregister()}
                     after DEVOLVE, pcs, {unregister()}
                     unregisterAfter 3
@@ -1430,7 +1430,7 @@ public enum DiamondPearl implements LogicCardInfo {
                 }
                 unregisterAfter 2
                 after EVOLVE,self, {unregister()}
-                after SWITCH,self, {unregister()}
+                after FALL_BACK,self, {unregister()}
               }
             }
           }
@@ -1922,7 +1922,7 @@ public enum DiamondPearl implements LogicCardInfo {
                 }
                 unregisterAfter 2
                 after EVOLVE,self, {unregister()}
-                after SWITCH,self, {unregister()}
+                after FALL_BACK,self, {unregister()}
               }
             }
           }
@@ -2738,7 +2738,7 @@ public enum DiamondPearl implements LogicCardInfo {
                   unregisterAfter 2
                   after EVOLVE, self, {unregister()}
                   after DEVOLVE, self, {unregister()} //This attack could be copied by an evolution.
-                  after SWITCH, self, {unregister()}
+                  after FALL_BACK, self, {unregister()}
                 }
               }
             }

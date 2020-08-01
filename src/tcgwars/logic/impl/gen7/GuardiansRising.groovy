@@ -633,7 +633,7 @@ public enum GuardiansRising implements LogicCardInfo {
                   }
                 }
                 unregisterAfter 2
-                after SWITCH, self, {unregister()}
+                after FALL_BACK, self, {unregister()}
               }
             }
           }
@@ -2086,7 +2086,7 @@ public enum GuardiansRising implements LogicCardInfo {
                     }
                   }
                   unregisterAfter 2
-                  after SWITCH, pcs, {unregister()}
+                  after FALL_BACK, pcs, {unregister()}
                   after EVOLVE, pcs, {unregister()}
                   after DEVOLVE, pcs, {unregister()}
                 }
@@ -2312,7 +2312,7 @@ public enum GuardiansRising implements LogicCardInfo {
                     bg.em().run(new TakePrize(self.owner, pcs))
                   }
                 }
-                after SWITCH, pcs, {unregister()}
+                after FALL_BACK, pcs, {unregister()}
                 after EVOLVE, pcs, {unregister()}
                 after DEVOLVE, pcs, {unregister()}
                 unregisterAfter 3

@@ -1249,7 +1249,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
               }
               after EVOLVE, self, {unregister()}
               after DEVOLVE, self, {unregister()}
-              after SWITCH, self, {unregister()}
+              after FALL_BACK, self, {unregister()}
               unregisterAfter 2
             }
           }

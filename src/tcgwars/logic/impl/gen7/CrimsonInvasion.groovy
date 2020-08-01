@@ -1320,7 +1320,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
                 }
                 unregisterAfter 2
                 after EVOLVE,defending, {unregister()}
-                after SWITCH,defending, {unregister()}
+                after FALL_BACK,defending, {unregister()}
               }
             }
           }
@@ -1974,7 +1974,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
                     }
                   }
                   unregisterAfter 2
-                  after SWITCH, self, {unregister()}
+                  after FALL_BACK, self, {unregister()}
                   after EVOLVE, self, {unregister()}
                   after DEVOLVE, self, {unregister()}
                 }

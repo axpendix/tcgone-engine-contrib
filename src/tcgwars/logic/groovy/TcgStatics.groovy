@@ -427,7 +427,7 @@ class TcgStatics {
           }
         }
         unregisterAfter 2
-        after SWITCH, defending, {unregister()}
+        after FALL_BACK, defending, {unregister()}
         after EVOLVE, defending, {unregister()}
         after DEVOLVE, defending, {unregister()}
       }
@@ -553,7 +553,7 @@ class TcgStatics {
           }
         }
       }
-      after SWITCH, pcs, {unregister()}
+      after FALL_BACK, pcs, {unregister()}
       unregisterAfter 3
     }
   }
@@ -625,7 +625,7 @@ class TcgStatics {
         }
       }
       unregisterAfter 3
-      after SWITCH, self, {unregister()}
+      after FALL_BACK, self, {unregister()}
       after EVOLVE, self, {unregister()}
       after DEVOLVE, self, {unregister()}
       register{registeredOn=bg.turnCount}
@@ -698,7 +698,7 @@ class TcgStatics {
       unregisterAfter(2)
       after EVOLVE, self, {unregister()}
       after DEVOLVE, self, {unregister()}
-      after SWITCH, self, {unregister()}
+      after FALL_BACK, self, {unregister()}
     }
   }
 
@@ -721,7 +721,7 @@ class TcgStatics {
       unregisterAfter(2)
       after EVOLVE, self, {unregister()}
       after DEVOLVE, self, {unregister()}
-      after SWITCH, self, {unregister()}
+      after FALL_BACK, self, {unregister()}
     }
   }
 
@@ -738,7 +738,7 @@ class TcgStatics {
       unregisterAfter(2)
       after EVOLVE, self, {unregister()}
       after DEVOLVE, self, {unregister()}
-      after SWITCH, self, {unregister()}
+      after FALL_BACK, self, {unregister()}
     }
   }
   static callForFamily(Map params=[:],int count,Object delegate){
@@ -789,13 +789,13 @@ class TcgStatics {
     afterDamage { if (defending.active) { targeted(defending) {
       delayed {
         before RETREAT, defending, { wcu "${thisMove.name} prevents retreat."; prevent()}
-        before SWITCH, defending, { bc "${thisMove.name} prevents switch."; prevent()}
+        before FALL_BACK, defending, { bc "${thisMove.name} prevents switch."; prevent()}
         if(asLongAsSelfIsActive){
-          after SWITCH, self, {unregister()}
+          after FALL_BACK, self, {unregister()}
           after EVOLVE, self, {unregister()}
           after DEVOLVE, self, {unregister()}
         }
-        after SWITCH, defending, {unregister()}
+        after FALL_BACK, defending, {unregister()}
         after EVOLVE, defending, {unregister()}
         after DEVOLVE, defending, {unregister()}
         unregisterAfter 2
@@ -935,7 +935,7 @@ class TcgStatics {
         eff.unregister()
       }
       unregisterAfter 2
-      after SWITCH, self, {unregister()}
+      after FALL_BACK, self, {unregister()}
     }
   }
 
@@ -1032,7 +1032,7 @@ class TcgStatics {
 					eff.unregister()
 				}
 				unregisterAfter 2
-        after SWITCH, pcs, {unregister()}
+        after FALL_BACK, pcs, {unregister()}
         after EVOLVE, pcs, {unregister()}
         after DEVOLVE, pcs, {unregister()}
 			}
@@ -1053,7 +1053,7 @@ class TcgStatics {
 					eff.unregister()
 				}
 				unregisterAfter 2
-        after SWITCH, pcs, {unregister()}
+        after FALL_BACK, pcs, {unregister()}
         after EVOLVE, pcs, {unregister()}
         after DEVOLVE, pcs, {unregister()}
 			}
@@ -1070,7 +1070,7 @@ class TcgStatics {
           }}
         }
         unregisterAfter 3
-        after SWITCH, pcs, {unregister()}
+        after FALL_BACK, pcs, {unregister()}
         after EVOLVE, pcs, {unregister()}
         after DEVOLVE, pcs, {unregister()}
       }
@@ -1308,7 +1308,7 @@ class TcgStatics {
     delayed {
       after EVOLVE, defending, {unregister()}
       after DEVOLVE, defending, {unregister()}
-      after SWITCH, defending, {unregister()}
+      after FALL_BACK, defending, {unregister()}
 
       before REMOVE_DAMAGE_COUNTER, defending, {
         bc "Healing was prevented due to an effect"
