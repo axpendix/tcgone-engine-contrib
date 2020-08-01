@@ -3673,7 +3673,7 @@ public enum TeamUp implements LogicCardInfo {
               damage 180
             }
           }
-          move "Towering Splash" , {
+          move "Towering Splash GX" , {
             text "10 damage. If this Pokémon has at least 7 extra [W] Energy attached to it (in addition to this attack’s cost), this attack does 100 damage to each of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost W
             attackRequirement{

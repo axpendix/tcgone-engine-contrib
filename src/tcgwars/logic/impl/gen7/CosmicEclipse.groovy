@@ -4748,7 +4748,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                       }
                     }
                   }
-                  acl = action("Send Lillie's Poké Doll into Deck Bottom", [TargetPlayer.SELF]) {
+                  acl = action("Put Lillie's Poké Doll on Deck ↓", [TargetPlayer.SELF]) {
                     assert self.active : "Lillie's Poké Doll must be the Active Pokémon."
                     self.cards.getExcludedList(self.topPokemonCard).discard()
                     self.cards.moveTo(my.deck)
@@ -4806,8 +4806,8 @@ public enum CosmicEclipse implements LogicCardInfo {
                   before CHECK_ATTACK_REQUIREMENTS, {
                     if (!ef.attacker.types.contains(W) ) {
                       if (ef.move.name.contains('GX')) {
+                        wcu "GX move already used (Misty & Lorelei only allows [W] Pokémon to use it again)"
                         prevent()
-                        bc "GX move already used (Misty & Lorelei only allows [W] Pokémon to use it again)"
                       }
                     }
                   }
@@ -4826,7 +4826,7 @@ public enum CosmicEclipse implements LogicCardInfo {
 
           }
           playRequirement{
-            assert ( my.deck || ( my.hand.getExcludedList(thisCard).size() >= 5 && !isGxPerformed() ) ) : "You can't do either of this card's effects"
+            assert ( my.deck || ( my.hand.getExcludedList(thisCard).size() >= 5 && isGxPerformed() ) ) : "You can't do either of this card's effects"
           }
         };
       case N_S_RESOLVE_200:
