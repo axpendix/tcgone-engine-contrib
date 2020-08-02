@@ -2391,7 +2391,7 @@ public enum GuardiansRising implements LogicCardInfo {
                 verdantWind()
               }
               before APPLY_SPECIAL_CONDITION, {
-                def pcs=e.getTarget(bg)
+                def pcs = ef.getResolvedTarget(bg, e)
                 if(pcs.owner==self.owner && pcs.cards.energyCount(Y)){
                   bc "Flower Shield prevents special conditions"
                   prevent()

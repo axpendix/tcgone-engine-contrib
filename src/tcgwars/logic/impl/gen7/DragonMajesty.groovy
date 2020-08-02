@@ -741,7 +741,7 @@ public enum DragonMajesty implements LogicCardInfo {
             }
             delayedA {
               before APPLY_SPECIAL_CONDITION, {
-                def pcs=e.getTarget(bg)
+                def pcs = ef.getResolvedTarget(bg, e)
                 if(pcs.owner==self.owner && ef.type == CONFUSED && pcs.types.contains(W)){
                   bc "Murmurs of the Sea prevents special conditions"
                   prevent()

@@ -2613,8 +2613,8 @@ public enum TeamUp implements LogicCardInfo {
                 verdantWind()
               }
               before APPLY_SPECIAL_CONDITION, {
-                def pcs=e.getTarget(bg)
-                if(pcs.owner==self.owner && pcs.cards.energyCount(M)){
+                def pcs = ef.getResolvedTarget(bg, e)
+                if (pcs.owner==self.owner && pcs.cards.energyCount(M)) {
                   bc "Metal Symbol prevents special conditions"
                   prevent()
                 }
