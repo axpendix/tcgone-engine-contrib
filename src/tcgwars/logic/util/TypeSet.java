@@ -12,25 +12,28 @@ public class TypeSet extends THashSet<Type> {
 
   public TypeSet() {
   }
-  public TypeSet(Collection<Type> types){
+
+  public TypeSet(Collection<Type> types) {
     super(types);
   }
-  public TypeSet(Type...types){
+
+  public TypeSet(Type... types) {
     this();
     for (Type type : types) {
       add(type);
     }
   }
-  public Type getFirst(){
+
+  public Type getFirst() {
     for (Type type : this) {
       return type;
     }
     return null;
   }
 
-  public boolean containsAny(TypeSet o){
+  public boolean containsAny(TypeSet o) {
     for (Type type : o) {
-      if(this.contains(type)){
+      if (this.contains(type)) {
         return true;
       }
     }

@@ -1012,53 +1012,53 @@ class TcgStatics {
     }
   }
 
-	static void defendingAttacksCostsMore (PokemonCardSet pcs, List<Type> energies) {
-		targeted(pcs) {
-			delayed {
-				def eff
-				register {
-					eff = getter (GET_MOVE_LIST, NORMAL, pcs) {h->
-						def list=[]
-						for(move in h.object){
-							def copy=move.shallowCopy()
-							copy.energyCost.addAll(energies)
-							list.add(copy)
-						}
-						h.object=list
-					}
-					bc "Attacks of $pcs will cost $energies more during next turn"
-				}
-				unregister {
-					eff.unregister()
-				}
-				unregisterAfter 2
+  static void defendingAttacksCostsMore (PokemonCardSet pcs, List<Type> energies) {
+    targeted(pcs) {
+      delayed {
+        def eff
+        register {
+          eff = getter (GET_MOVE_LIST, NORMAL, pcs) {h->
+            def list=[]
+            for(move in h.object){
+              def copy=move.shallowCopy()
+              copy.energyCost.addAll(energies)
+              list.add(copy)
+            }
+            h.object=list
+          }
+          bc "Attacks of $pcs will cost $energies more during next turn"
+        }
+        unregister {
+          eff.unregister()
+        }
+        unregisterAfter 2
         after SWITCH, pcs, {unregister()}
         after EVOLVE, pcs, {unregister()}
         after DEVOLVE, pcs, {unregister()}
-			}
-		}
-	}
+      }
+    }
+  }
 
-	static void defendingRetreatsCostsMore (PokemonCardSet pcs, List<Type> energies) {
-		targeted(pcs) {
-			delayed {
-				def eff
-				register {
+  static void defendingRetreatsCostsMore (PokemonCardSet pcs, List<Type> energies) {
+    targeted(pcs) {
+      delayed {
+        def eff
+        register {
           eff = getter (GET_RETREAT_COST, NORMAL, pcs) {h->
             h.object += 1
           }
-					bc "Retreat cost of $pcs will cost 1 more energy during the next turn."
-				}
-				unregister {
-					eff.unregister()
-				}
-				unregisterAfter 2
+          bc "Retreat cost of $pcs will cost 1 more energy during the next turn."
+        }
+        unregister {
+          eff.unregister()
+        }
+        unregisterAfter 2
         after SWITCH, pcs, {unregister()}
         after EVOLVE, pcs, {unregister()}
         after DEVOLVE, pcs, {unregister()}
-			}
-		}
-	}
+      }
+    }
+  }
 
   static void increasedDamageDoneToDefending (PokemonCardSet self, PokemonCardSet pcs, int value, String atkName=""){
     targeted(pcs){
@@ -1418,7 +1418,7 @@ class TcgStatics {
 
   static boolean isValidFossilCard(Card potentialFossil){
     if(
-      (potentialFossil.cardTypes.is(ITEM) && potentialFossil.name.contains("Fossil")) ||
+    (potentialFossil.cardTypes.is(ITEM) && potentialFossil.name.contains("Fossil")) ||
       (potentialFossil.cardTypes.is(STAGE1) && potentialFossil.predecessor.contains("Fossil")) ||
       (potentialFossil.cardTypes.is(STAGE2) && bg().gm().getBasicsFromStage2(potentialFossil.name).any{it.contains("Fossil")})
     )
