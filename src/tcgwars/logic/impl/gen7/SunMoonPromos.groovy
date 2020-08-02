@@ -820,7 +820,6 @@ public enum SunMoonPromos implements LogicCardInfo {
             attackRequirement {
               assert opp.all.size() > 1 : "Your opponent only has one Pokémon in play"
             }
-            def eff
             onAttack {
               //Taken from UPR Tapu Lele
               eff = delayed {

@@ -1112,7 +1112,6 @@ public enum TeamRocketNG implements LogicCardInfo {
                   if(opp.active.weaknesses)
                   {
                     def newWeakness = choose([R,F,G,W,P,L,M,D,Y,N],"Select the new weakness")
-                    bc "${defending}'s Weakness is now ${newWeakness}"
                     def eff
                     register {
                       eff = getter (GET_WEAKNESSES, defending) {h->
