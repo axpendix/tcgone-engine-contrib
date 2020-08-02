@@ -133,14 +133,10 @@ public enum EffectType {
   DEACTIVATE_ABILITY,
   BLOCK_ABILITY,
   CHECK_ABILITIES,
-
-
   ;
 
   @Override
   public String toString() {
     return name();
   }
-
-  ;
 }
