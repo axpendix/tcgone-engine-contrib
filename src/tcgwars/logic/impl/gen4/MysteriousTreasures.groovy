@@ -3291,12 +3291,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
                         prevent()
                       }
                     }
-                    before APPLY_SPECIAL_CONDITION, {
-                      def pcs=e.getTarget(bg)
-                      if(pcs==self){
-                        bc "Armor Fossil is unaffected by Special Conditions"
-                        prevent()
-                      }
+                    before APPLY_SPECIAL_CONDITION, self, {
+                      bc "Armor Fossil is unaffected by Special Conditions"
+                      prevent()
                     }
                   }
                   if (!eff) {
@@ -3364,12 +3361,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
                         prevent()
                       }
                     }
-                    before APPLY_SPECIAL_CONDITION, {
-                      def pcs=e.getTarget(bg)
-                      if(pcs==self){
-                        bc "Skull Fossil is unaffected by Special Conditions"
-                        prevent()
-                      }
+                    before APPLY_SPECIAL_CONDITION, self, {
+                      bc "Skull Fossil is unaffected by Special Conditions"
+                      prevent()
                     }
                   }
                   if (!eff) {

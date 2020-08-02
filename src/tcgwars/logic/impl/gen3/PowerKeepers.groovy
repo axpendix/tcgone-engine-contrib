@@ -1176,11 +1176,9 @@ public enum PowerKeepers implements LogicCardInfo {
         pokeBody "Clear Body", {
           text "Metang can't be affected by any Special Conditions."
           delayedA {
-            before APPLY_SPECIAL_CONDITION, {
-              if (e.getTarget(bg) == self) {
-                bc "Clear Body prevents Special Conditions"
-                prevent()
-              }
+            before APPLY_SPECIAL_CONDITION, self, {
+              bc "Clear Body prevents Special Conditions"
+              prevent()
             }
           }
           onActivate{

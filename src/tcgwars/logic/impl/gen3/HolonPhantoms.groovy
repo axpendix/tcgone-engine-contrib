@@ -1015,11 +1015,9 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokeBody "Clear Body", {
           text "Regice can't be affected by any Special Conditions."
           delayedA {
-            before APPLY_SPECIAL_CONDITION, {
-              if (e.getTarget(bg) == self) {
-                bc "Clear Body prevents Special Conditions"
-                prevent()
-              }
+            before APPLY_SPECIAL_CONDITION, self, {
+              bc "Clear Body prevents Special Conditions"
+              prevent()
             }
           }
           onActivate{
@@ -1044,11 +1042,9 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokeBody "Clear Body", {
           text "Regirock can't be affected by any Special Conditions."
           delayedA {
-            before APPLY_SPECIAL_CONDITION, {
-              if (e.getTarget(bg) == self) {
-                bc "Clear Body prevents Special Conditions"
-                prevent()
-              }
+            before APPLY_SPECIAL_CONDITION, self, {
+              bc "Clear Body prevents Special Conditions"
+              prevent()
             }
           }
           onActivate{
@@ -1078,11 +1074,9 @@ public enum HolonPhantoms implements LogicCardInfo {
         pokeBody "Clear Body", {
           text "Registeel can't be affected by any Special Conditions."
           delayedA {
-            before APPLY_SPECIAL_CONDITION, {
-              if (e.getTarget(bg) == self) {
-                bc "Clear Body prevents Special Conditions"
-                prevent()
-              }
+            before APPLY_SPECIAL_CONDITION, self, {
+              bc "Clear Body prevents Special Conditions"
+              prevent()
             }
           }
           onActivate{

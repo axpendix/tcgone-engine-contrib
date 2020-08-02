@@ -3188,11 +3188,9 @@ public enum DarknessAblaze implements LogicCardInfo {
         bwAbility "Antibacterial Skin", {
           text "This Pokémon can’t be affected by Special Conditions."
           delayedA {
-            before APPLY_SPECIAL_CONDITION, {
-              if(e.getTarget(bg) == self){
-                bc "Antibacterial Skin prevents $self from being ${ef.type}"
-                prevent()
-              }
+            before APPLY_SPECIAL_CONDITION, self, {
+              bc "Antibacterial Skin prevents $self from being ${ef.type}"
+              prevent()
             }
           }
         }

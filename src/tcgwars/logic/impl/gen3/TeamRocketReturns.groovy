@@ -2773,8 +2773,8 @@ public enum TeamRocketReturns implements LogicCardInfo {
           pokeBody "Dark and Clear", {
             text "As long as Rocket’s Suicune ex has any [D] Energy attached to it, Rocket’s Suicune ex can’t be affected by any Special Conditions."
             delayedA {
-              before APPLY_SPECIAL_CONDITION,self, {
-                if(e.getTarget(bg)==self && self.cards.energyCount(D)){
+              before APPLY_SPECIAL_CONDITION, self, {
+                if (self.cards.energyCount(D)) {
                   bc "Dark and Clear prevents special conditions"
                   prevent()
                 }

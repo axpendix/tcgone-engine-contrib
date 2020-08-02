@@ -1837,11 +1837,9 @@ public enum Unleashed implements LogicCardInfo {
           pokeBody "Perfect Metal", {
             text "Steelix can’t be affected by any Special Conditions"
             delayedA {
-              before APPLY_SPECIAL_CONDITION, {
-                if(e.getTarget(bg)==self){
-                  bc "Perfect Metal prevents special conditions"
-                  prevent()
-                }
+              before APPLY_SPECIAL_CONDITION, self, {
+                bc "Perfect Metal prevents special conditions"
+                prevent()
               }
             }
             onActivate {

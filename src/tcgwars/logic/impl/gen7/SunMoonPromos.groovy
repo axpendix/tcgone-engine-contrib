@@ -2153,9 +2153,8 @@ public enum SunMoonPromos implements LogicCardInfo {
           bwAbility "Pika Shield" , {
             text "This Pokémon can't be Paralyzed."
             delayedA {
-              before APPLY_SPECIAL_CONDITION, {
-                def pcs=e.getTarget(bg)
-                if(pcs == self && ef.type == PARALYZED){
+              before APPLY_SPECIAL_CONDITION, self, {
+                if(ef.type == PARALYZED){
                   bc "Pika Shield prevents $self from being Paralyzed"
                   prevent()
                 }

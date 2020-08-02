@@ -1714,12 +1714,9 @@ public enum BaseSetNG implements LogicCardInfo {
                       wcu "Cannot retreat"
                       prevent()
                     }
-                    before APPLY_SPECIAL_CONDITION, {
-                      def pcs=e.getTarget(bg)
-                      if(pcs==self){
-                        bc "Clefairy Doll is unaffected by Special Conditions"
-                        prevent()
-                      }
+                    before APPLY_SPECIAL_CONDITION, self, {
+                      bc "Clefairy Doll is unaffected by Special Conditions"
+                      prevent()
                     }
                     before TAKE_PRIZE, {
                       if(ef.pcs==self){
