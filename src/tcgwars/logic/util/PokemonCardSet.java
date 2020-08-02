@@ -1,9 +1,6 @@
 package tcgwars.logic.util;
 
 
-
-
-
 import com.google.common.collect.ImmutableList;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
@@ -27,6 +24,7 @@ import static tcgwars.logic.card.CardType.EVOLUTION;
 
 /**
  * Models an in-game pokemon
+ *
  * @author axpendix@hotmail.com
  */
 public class PokemonCardSet implements PokemonStack, Serializable {
@@ -78,53 +76,57 @@ public class PokemonCardSet implements PokemonStack, Serializable {
   /**
    * literally: evolution
    */
-  public boolean isRealEvolution(){
+  public boolean isRealEvolution() {
     return getTopPokemonCard().getCardTypes().contains(EVOLUTION);
   }
+
   /**
    * literally: evolved
    */
-  public boolean isEvolution(){
-    return getPokemonCards().size()>1;
+  public boolean isEvolution() {
+    return getPokemonCards().size() > 1;
 //		return getTopPokemonCard().getCardTypes().is(CardType.EVOLUTION);
   }
+
   /**
    * means it is not an evolved card = basic.
    * but beware that if baby evolution is done, than that is an evolved one even though it writes basic on it.
+   *
    * @return
    */
-  public boolean isNotEvolution(){
+  public boolean isNotEvolution() {
     return !isEvolution();
   }
 
   /**
    * this will check the top card being a basic or evolution
+   *
    * @see #isNotEvolution()
    */
   public boolean isBasic() {
     return getTopPokemonCard().getCardTypes().is(CardType.BASIC);
   }
 
-  public PokemonCard getTopPokemonCard(){
+  public PokemonCard getTopPokemonCard() {
     Card card = cards().first();
-    if(card == null){
+    if (card == null) {
       throw new NullPointerException("topPokemonCard. lastName:" + lastName);
     }
-    if (!card.getCardTypes().isPokemon()){
+    if (!card.getCardTypes().isPokemon()) {
       throw new IllegalStateException("Top card is not a pokemon card. lastName:" + lastName);
     }
     return (PokemonCard) card;
   }
 
-  public PokemonCard getTopNonBreakPokemonCard(){
+  public PokemonCard getTopNonBreakPokemonCard() {
     for (Card card : cards().filterByType(CardType.POKEMON)) {
-      if(card.getCardTypes().is(CardType.BREAK)) continue;
+      if (card.getCardTypes().is(CardType.BREAK)) continue;
       return card.asPokemonCard();
     }
     return null;
   }
 
-  public CardList getCards(){
+  public CardList getCards() {
     return set;
   }
 
@@ -135,7 +137,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
   private List<Type> energyTypeImages = Collections.emptyList();
 
   // can be called from UI
-  public List<Type> getEnergyTypeImages(){
+  public List<Type> getEnergyTypeImages() {
     return energyTypeImages;
   }
 
@@ -145,7 +147,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
     ImmutableList.Builder<Type> listBuilder = ImmutableList.builder();
     for (EnergyCard card : energyCards) {
       List<Type> typeImagesOverride = card.getTypeImagesOverride();
-      if(typeImagesOverride != null){
+      if (typeImagesOverride != null) {
         listBuilder.addAll(typeImagesOverride);
         continue;
       }
@@ -155,51 +157,52 @@ public class PokemonCardSet implements PokemonStack, Serializable {
     energyTypeImages = listBuilder.build();
   }
 
-  public List<EnergyCard> getEnergyCards(){
+  public List<EnergyCard> getEnergyCards() {
     List<EnergyCard> list = new ArrayList<EnergyCard>();
-    for (Iterator<Card> iterator = cards().iterator(); iterator.hasNext();) {
+    for (Iterator<Card> iterator = cards().iterator(); iterator.hasNext(); ) {
       Card card = iterator.next();
-      if(card.getCardTypes().isEnergy()){
+      if (card.getCardTypes().isEnergy()) {
         list.add((EnergyCard) card);
       }
     }
     return Collections.unmodifiableList(list);
   }
 
-  public List<PokemonCard> getPokemonCards(){
+  public List<PokemonCard> getPokemonCards() {
     ArrayList<PokemonCard> list = new ArrayList<PokemonCard>();
-    for (Iterator<Card> iterator = cards().iterator(); iterator.hasNext();) {
+    for (Iterator<Card> iterator = cards().iterator(); iterator.hasNext(); ) {
       Card card = iterator.next();
-      if(card.getCardTypes().isPokemon()){
+      if (card.getCardTypes().isPokemon()) {
         list.add((PokemonCard) card);
       }
     }
     return Collections.unmodifiableList(list);
   }
 
-  public HP getFullHP(Battleground bg){
+  public HP getFullHP(Battleground bg) {
     return bg.em().activateGetter(new GetFullHP(this));
   }
-  public HP getFullHP(){
+
+  public HP getFullHP() {
     return TcgStatics.bg().em().activateGetter(new GetFullHP(this));
   }
 
-  public HP getRemainingHP(Battleground bg){
+  public HP getRemainingHP(Battleground bg) {
     HP fullHP = getFullHP(bg);
     return (HP.valueOf(fullHP.getValue() - damage.getValue()));
   }
 
-  public HP getRemainingHP(){
+  public HP getRemainingHP() {
     HP fullHP = getFullHP(TcgStatics.bg());
     return (HP.valueOf(fullHP.getValue() - damage.getValue()));
   }
 
-  public HP getDamage(){
+  public HP getDamage() {
     return damage;
   }
 
-  public int getNumberOfDamageCounters(){
-    return damage.getValue()/10;
+  public int getNumberOfDamageCounters() {
+    return damage.getValue() / 10;
   }
 
   public PlayerType getOwner() {
@@ -227,7 +230,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
     this.damage = damage;
   }
 
-  public void addSpecialCondition(SpecialConditionType type){
+  public void addSpecialCondition(SpecialConditionType type) {
     specialConditions.add(type);
   }
 
@@ -253,7 +256,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
 
   private String lastName = "?";
 
-  public String getName(){
+  public String getName() {
     try {
       lastName = getTopPokemonCard().getName();
       return lastName;
@@ -262,23 +265,23 @@ public class PokemonCardSet implements PokemonStack, Serializable {
     }
   }
 
-  public boolean isActive(){
+  public boolean isActive() {
     return TcgStatics.bg().getPBG(owner).getActive() == this;
   }
 
-  public boolean isBenched(){
+  public boolean isBenched() {
     return TcgStatics.bg().getPBG(owner).getBench().contains(this);
   }
 
-  public boolean isActive(Battleground bg){
+  public boolean isActive(Battleground bg) {
     return bg.getPBG(owner).getActive() == this;
   }
 
-  public boolean isBenched(Battleground bg){
+  public boolean isBenched(Battleground bg) {
     return bg.getPBG(owner).getBench().contains(this);
   }
 
-  public boolean isInPlay(){
+  public boolean isInPlay() {
     return isActive() || isBenched();
   }
 
@@ -286,89 +289,102 @@ public class PokemonCardSet implements PokemonStack, Serializable {
     return getTopPokemonCard().getCardTypes().is(CardType.EX);
   }
 
-  public boolean isPokemonEX(){
+  public boolean isPokemonEX() {
     return getTopPokemonCard().getCardTypes().is(CardType.POKEMON_EX);
   }
 
-  public boolean isPokemonBreak(){
+  public boolean isPokemonBreak() {
     return getTopPokemonCard().getCardTypes().is(CardType.BREAK);
   }
 
-  public boolean isPokemonGX(){
+  public boolean isPokemonGX() {
     return getTopPokemonCard().getCardTypes().is(CardType.POKEMON_GX);
   }
 
-  public boolean isTagTeam(){
+  public boolean isTagTeam() {
     return getTopPokemonCard().getCardTypes().is(CardType.TAG_TEAM);
   }
 
-  public boolean isPokemonV(){
+  public boolean isPokemonV() {
     return getTopPokemonCard().getCardTypes().isIn(CardType.POKEMON_V, CardType.VMAX);
   }
 
-  public boolean isPokemonVMAX(){
+  public boolean isPokemonVMAX() {
     return getTopPokemonCard().getCardTypes().is(CardType.VMAX);
   }
 
-  public List<Weakness> getWeaknesses(Battleground bg){
+  public List<Weakness> getWeaknesses(Battleground bg) {
     return bg.em().activateGetter(new GetWeaknesses(this));
   }
-  public List<Weakness> getWeaknesses(){
+
+  public List<Weakness> getWeaknesses() {
     return getWeaknesses(Battleground.getInstance());
   }
-  public List<Resistance> getResistances(Battleground bg){
+
+  public List<Resistance> getResistances(Battleground bg) {
     return bg.em().activateGetter(new GetResistances(this));
   }
-  public List<Resistance> getResistances(){
+
+  public List<Resistance> getResistances() {
     return getResistances(Battleground.getInstance());
   }
 
-  public TypeSet getTypes(Battleground bg){
+  public TypeSet getTypes(Battleground bg) {
     return bg.em().activateGetter(new GetPokemonType(this));
   }
-  public TypeSet getTypes(){
+
+  public TypeSet getTypes() {
     return Battleground.getInstance().em().activateGetter(new GetPokemonType(this));
   }
-  public Integer getEnergyCount(Battleground bg){
+
+  public Integer getEnergyCount(Battleground bg) {
     return bg.em().activateGetter(new GetEnergyCount(this));
   }
-  public boolean noSPC(){
+
+  public boolean noSPC() {
     return specialConditions.isEmpty();
   }
+
   public boolean checkSpecialConditionsForClassic() {
-    if(Battleground.getInstance().getGame().getFormat() == GameFormat.MODIFIED_2002_2003) {
+    if (Battleground.getInstance().getGame().getFormat() == GameFormat.MODIFIED_2002_2003) {
       return specialConditions.isEmpty();
     } else {
       for (SpecialConditionType sct : specialConditions) {
-        if(sct == SpecialConditionType.PARALYZED || sct == SpecialConditionType.ASLEEP || sct == SpecialConditionType.CONFUSED) {
+        if (sct == SpecialConditionType.PARALYZED || sct == SpecialConditionType.ASLEEP || sct == SpecialConditionType.CONFUSED) {
           return false;
         }
       }
       return true;
     }
   }
-  public boolean isSPC(SpecialConditionType type){
+
+  public boolean isSPC(SpecialConditionType type) {
     return specialConditions.contains(type);
   }
-  public boolean isSlatedToKO(){
-    return getRemainingHP()==HP.HP000;
+
+  public boolean isSlatedToKO() {
+    return getRemainingHP() == HP.HP000;
   }
-  public int getRetreatCost(){
+
+  public int getRetreatCost() {
     return Battleground.getInstance().em().activateGetter(new GetRetreatCost(this));
   }
-  public Map<Ability, PokemonCard> getAbilities(){
+
+  public Map<Ability, PokemonCard> getAbilities() {
     lastAbilities = Battleground.getInstance().em().activateGetter(new GetAbilities(this));
     return lastAbilities;
   }
+
   public Map<Ability, PokemonCard> getLastAbilities() {
     // copying this map is very important. If not done, then a second call to CheckAbilities removes the currently processing Ability from the map, leading to ConcurrentModificationException.
     return lastAbilities != null ? new THashMap<>(lastAbilities) : new THashMap<>();
   }
 
-  public boolean isTeamPlasma(){
+  public boolean isTeamPlasma() {
     return cards().filterByNameEquals("Team Plasma Badge").notEmpty() || getTopPokemonCard().getCardTypes().is(CardType.TEAM_PLASMA);
   }
-  public boolean hasModernAbility(){
+
+  public boolean hasModernAbility() {
     for (Ability ability : getAbilities().keySet()) {
       if (ability instanceof BwAbility) return true;
     }
@@ -376,19 +392,22 @@ public class PokemonCardSet implements PokemonStack, Serializable {
     // even global abilities need to be defined as regular ability with no effect
 //		return getTopPokemonCard().getGlobalAbilities().size() > 0;
   }
-  public boolean hasPokePower(){
+
+  public boolean hasPokePower() {
     for (Ability ability : getAbilities().keySet()) {
       if (ability instanceof PokePower) return true;
     }
     return false;
   }
-  public boolean hasPokeBody(){
+
+  public boolean hasPokeBody() {
     for (Ability ability : getAbilities().keySet()) {
       if (ability instanceof PokeBody) return true;
     }
     return false;
   }
-  public boolean isMegaEvolution(){
+
+  public boolean isMegaEvolution() {
     return getTopPokemonCard().getCardTypes().is(CardType.MEGA_POKEMON);
   }
 
@@ -398,11 +417,12 @@ public class PokemonCardSet implements PokemonStack, Serializable {
 //		return "\n\tPokemonCardSet [set=" + cards() + ", damage=" + damage + "]" ;
   }
 
-  public String getShortId(){
-    return id.substring(0,6);
+  public String getShortId() {
+    return id.substring(0, 6);
   }
-  public String getNameWithShortId(){
-    return getName()+" ("+getShortId()+")";
+
+  public String getNameWithShortId() {
+    return getName() + " (" + getShortId() + ")";
   }
 
 //	public void setCards(CardList set) {
