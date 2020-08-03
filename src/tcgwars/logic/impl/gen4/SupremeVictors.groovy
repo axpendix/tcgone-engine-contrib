@@ -1101,7 +1101,7 @@ public enum SupremeVictors implements LogicCardInfo {
           pokeBody "Natural Cure", {
             text "When you attach an Energy card from your hand to Roserade , remove all Special Conditions from Roserade ."
             delayedA {
-              before ATTACH_ENERGY, self {
+              before ATTACH_ENERGY, self, {
                 if (ef.reason == PLAY_FROM_HAND) {
                   clearSpecialCondition(self, SRC_ABILITY)
                 }
