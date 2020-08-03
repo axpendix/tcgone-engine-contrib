@@ -2312,7 +2312,7 @@ public enum UltraPrism implements LogicCardInfo {
             text "Move any number of damage counters on your opponent’s Pokémon to their other Pokémon in any way you like."
             energyCost Y, C
             attackRequirement {
-              assert opp.bench
+              assert opp.all.size() > 1 : "Your opponent only has one Pokémon in play"
             }
             def eff
             onAttack {
@@ -2324,7 +2324,7 @@ public enum UltraPrism implements LogicCardInfo {
               while(1){
                 def pl=(opp.all.findAll {it.numberOfDamageCounters})
                 if(!pl) break;
-                def src =pl.select("source for damage counter (cancel to stop)", false)
+                def src =pl.select("Source for damage counter (cancel to stop)", false)
                 if(!src) break;
                 def tar=opp.all.select("Target for damage counter (cancel to stop)", false)
                 if(!tar) break;
@@ -2495,6 +2495,7 @@ public enum UltraPrism implements LogicCardInfo {
                   // Enable the use of a 2nd Supporter
                   def eff
                   register {
+                    //TODO: This may not work properly against other extra supporter effects (mainly Lt. Surge's Strategy)
                     eff = getter (GET_MAX_SUPPORTER_PER_TURN) {h->
                       if(h.effect.playerType == thisCard.player && h.object < 2) h.object = 2
                     }
@@ -2921,8 +2922,8 @@ public enum UltraPrism implements LogicCardInfo {
             opp.bench.findAll{!list.contains(it)}.each{
               it.cards.moveTo(opp.deck)
               removePCS(it)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
             }
+            shuffleDeck(null, TargetPlayer.OPPONENT)
           }
           playRequirement{
             assert my.active.types.contains(W) || my.active.types.contains(M) : "Your Active Pokémon needs to be [W] or [M]. (The card text was officially changed)"

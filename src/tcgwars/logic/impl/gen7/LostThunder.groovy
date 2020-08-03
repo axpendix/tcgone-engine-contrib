@@ -2368,9 +2368,7 @@ public enum LostThunder implements LogicCardInfo {
             text "Put 3 damage counters on your opponent's Pokémon in any way you like."
             energyCost P
             onAttack{
-              for(int i=0;i<3;i++){
-                if(opp.all) directDamage 10, opp.all.select()
-              }
+              putDamageCountersOnOpponentsPokemon(3)
             }
           }
         };
@@ -2510,9 +2508,7 @@ public enum LostThunder implements LogicCardInfo {
             text "Put 4 damage counters on your opponent's Pokémon in any way you like.\n"
             energyCost P
             onAttack{
-              for(int i=0;i<4;i++){
-                directDamage 10, opp.all.select()
-              }
+              putDamageCountersOnOpponentsPokemon(4)
             }
           }
           move "Vortex of Pain" , {
@@ -3711,6 +3707,7 @@ public enum LostThunder implements LogicCardInfo {
               assert my.hand.filterByType(STAGE1) : "No Stage 1 in your hand"
               assert bg.turnCount > 2 : "Cannot evolve first turn"
               assert self.turnCount < bg.turnCount : "Cannot evolve the turn you put it into play"
+              assert self.lastEvolved < bg.turnCount : "Cannot evolve the turn $self was devolved"
               powerUsed()
               def tar = my.hand.filterByType(STAGE1).select("Evolve To")
 

@@ -111,9 +111,9 @@ public enum Deoxys implements LogicCardInfo {
   ZUBAT_83 ("Zubat", 83, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
   BALLOON_BERRY_84 ("Balloon Berry", 84, Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER]),
   CRYSTAL_SHARD_85 ("Crystal Shard", 85, Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER]),
-  ENERGY_CHARGE_86 ("Energy Charge", 86, Rarity.UNCOMMON, [TRAINER]),
+  ENERGY_CHARGE_86 ("Energy Charge", 86, Rarity.UNCOMMON, [TRAINER, ITEM]),
   LADY_OUTING_87 ("Lady Outing", 87, Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
-  MASTER_BALL_88 ("Master Ball", 88, Rarity.UNCOMMON, [TRAINER]),
+  MASTER_BALL_88 ("Master Ball", 88, Rarity.UNCOMMON, [TRAINER, ITEM]),
   METEOR_FALLS_89 ("Meteor Falls", 89, Rarity.UNCOMMON, [STADIUM, TRAINER]),
   PROFESSOR_COZMO_S_DISCOVERY_90 ("Professor Cozmo's Discovery", 90, Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
   SPACE_CENTER_91 ("Space Center", 91, Rarity.UNCOMMON, [STADIUM, TRAINER]),
@@ -249,14 +249,10 @@ public enum Deoxys implements LogicCardInfo {
             text "20 damage. Before doing damage, you may choose 1 of your opponent’s Benched Pokémon and switch it with 1 of the Defending Pokémon. If you do, this attack does 20 damage to the new Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
             energyCost G
             onAttack {
-              def pcs = defending
-              if(opp.bench){
-                if(confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon.")){
-                  def target = opp.bench.select()
-                  if ( sw2(target) ) { pcs = target }
-                }
+              if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon before doing damage?")) {
+                switchYourOpponentsBenchedWithActive()
               }
-              damage 20, pcs
+              damage 20
             }
           }
           move "Cutting Wind", {
@@ -323,7 +319,7 @@ public enum Deoxys implements LogicCardInfo {
               checkNoSPC()
               assert self.active : "$self is not your Active Pokémon"
               powerUsed()
-              my.hand.moveTo(my.deck)
+              my.hand.moveTo(hidden:true, my.deck)
               shuffleDeck()
               draw opp.hand.size()
             }
@@ -2498,6 +2494,7 @@ public enum Deoxys implements LogicCardInfo {
           onPlay {reason->
             eff = delayed {
               before RETREAT, self, {
+                wcu "$self can't retreat due to having Boost Energy attached."
                 prevent()
               }
               before BETWEEN_TURNS, {
@@ -2886,10 +2883,8 @@ public enum Deoxys implements LogicCardInfo {
             text "20 damage. Before doing damage, you may switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon. If you do, this attack does 20 damage to the new Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
             energyCost C, C
             onAttack {
-              def pcs = defending
-              if (opp.bench && confirm("Switch 1 of your opponent's Benched Pokémon with the Defending Pokémon?")){
-                def target = opp.bench.select("Select the new Active Pokémon.")
-                if ( sw2(target) ) { pcs = target }
+              if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon before doing damage?")) {
+                switchYourOpponentsBenchedWithActive()
               }
               damage 20
             }
@@ -2961,7 +2956,6 @@ public enum Deoxys implements LogicCardInfo {
             energyCost G, L, P
             onAttack {
               damage 50
-              bc "${defending.evolution} / ${defending.topPokemonCard} / ${defending.topPokemonCard.is(STAGE2)}"
               if(defending.evolution && defending.topPokemonCard.cardTypes.is(STAGE2)){
                 damage 100
                 discardAllSelfEnergy(null)

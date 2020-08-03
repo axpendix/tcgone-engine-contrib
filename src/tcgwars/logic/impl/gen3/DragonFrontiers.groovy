@@ -2103,7 +2103,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             after PROCESS_ATTACK_EFFECTS, {
               if (ef.attacker.owner != self.owner) {
                 bg.dm().each {
-                  if (it.to.owner == self.owner && it.to.EX && it.to.topPokemonCard.cardTypes.is(STAGE2) && it.dmg.value && it.notNoEffect) {
+                  if (it.to.owner == self.owner && it.to.EX && it.to.topPokemonCard.cardTypes.is(STAGE2) && it.dmg.value) {
                     bc "Extra Smoke -10"
                     it.dmg -= hp(10)
                   }
@@ -2129,8 +2129,14 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 80
 
             delayed {
-              getter (GET_WEAKNESSES, self) {h->
-                h.object.clear()
+              def eff
+              register {
+                eff = getter (GET_WEAKNESSES, self) {h->
+                  h.object.clear()
+                }
+              }
+              unregister {
+                eff.unregister()
               }
               unregisterAfter 2
               after SWITCH, self, { unregister() }

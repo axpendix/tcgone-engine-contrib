@@ -3491,13 +3491,14 @@ public enum TeamUp implements LogicCardInfo {
                 }
               }
               before DIRECT_DAMAGE, self, Source.SRC_ABILITY, {
+                //FIXME this will also block own pokemon abilities. to fix this, "Source refactoring" must be done. (See omega stop)
                 if(self.types.contains(M)) {
                   bc "Metal Goggles prevents damage counters from being placed on $self.name"
                   prevent()
                 }
               }
               before DIRECT_DAMAGE, self, Source.ATTACK, {
-                if(self.types.contains(M)) {
+                if(bg.currentTurn == self.owner.opposite && self.types.contains(M)) {
                   bc "Metal Goggles prevents damage counters from being placed on $self.name"
                   prevent()
                 }
@@ -3672,7 +3673,7 @@ public enum TeamUp implements LogicCardInfo {
               damage 180
             }
           }
-          move "Towering Splash" , {
+          move "Towering Splash GX" , {
             text "10 damage. If this Pokémon has at least 7 extra [W] Energy attached to it (in addition to this attack’s cost), this attack does 100 damage to each of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost W
             attackRequirement{

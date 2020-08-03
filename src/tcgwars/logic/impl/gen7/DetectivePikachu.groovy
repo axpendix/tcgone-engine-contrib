@@ -393,10 +393,11 @@ public enum DetectivePikachu implements LogicCardInfo {
             text "Choose 1 of your opponent's Pokémon's attacks and use it as this attack. If this Pokémon doesn't have the necessary Energy to use that attack, this attack does nothing."
             energyCost C
             attackRequirement {
-              assert defending.topPokemonCard.moves : "No moves to perform"
+              assert opp.all.any{it.topPokemonCard.moves} : "No moves to perform"
             }
             onAttack {
-              def move=choose(defending.topPokemonCard.moves+["End Turn (Skip)"], "Choose 1 of the Defending Pokémon's attacks. (Do not select a move if you don't have necessary energy or it will fail) ")
+              def pcs = opp.all.findAll{it.topPokemonCard.moves}.select("Which Pokémon will you copy an attack from? Choose carefully, this selection cannot be undone.")
+              def move=choose(pcs.topPokemonCard.moves+["End Turn (Skip)"], "Choose 1 of ${pcs}'s attacks. (Do not select a move if you don't have necessary energy or it will fail) ")
               if(move instanceof String) return
               def bef=blockingEffect(BETWEEN_TURNS)
               attack (move as Move)

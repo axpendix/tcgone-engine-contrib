@@ -1513,10 +1513,12 @@ public enum UnifiedMinds implements LogicCardInfo {
             }
             onAttack {
               def numL = self.cards.filterByEnergyType(L).size()
-              def toDiscard = self.cards.filterByEnergyType(L).select(min:0, max:numL, "Discard as much [L] Energy as you'd like to deal 30 damage to an opponent's Pokémon.")
+              //TODO: Allow to select how many energy does a multi-energy (Counter Energy) gives, in case you wanted to do less damage for some reason.
+              def toDiscard = self.cards.filterByEnergyType(L).select(min:0, max:numL, "Discard any amount of [L] Energy from this Pokémon. Then, for each Energy you discarded in this way, choose 1 of your opponent's Pokémon and do 30 damage to it. (You can choose the same Pokémon more than once.) This damage isn't affected by Weakness or Resistance.")
 
-              (1..toDiscard.size()).each {
-                damage 30, opp.all.select()
+              def dmgTimes = toDiscard.energyCount(L)
+              dmgTimes.times {
+                noWrDamage(30,opp.all.select("Which Pokémon will you do 30 damage to (${it}/${dmgTimes} selections made)"))
               }
               afterDamage{toDiscard.discard()}
             }
@@ -1829,9 +1831,8 @@ public enum UnifiedMinds implements LogicCardInfo {
             onAttack {
               gxPerform()
               int counters = (self.cards.energySufficient(thisMove.energyCost + [C,C,C])) ? 20 : 10
-              (1..counters).each { if(opp.all) {
-                directDamage 10, opp.all.select("Select a Pokémon to deal damage counters to. ($it/$counters)"), Source.ATTACK
-              }}
+
+              putDamageCountersOnOpponentsPokemon(counters)
             }
           }
         };
@@ -2120,9 +2121,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             text " Put 3 damage counters on your opponent’s Pokémon in any way you like."
             energyCost C
             onAttack {
-              (1..3).each {
-                if (opp.all) directDamage(10, opp.all.select("Choose a Pokémon to put a damage counter on. ($it/3)"))
-              }
+              putDamageCountersOnOpponentsPokemon(3)
             }
           }
         };
@@ -2597,9 +2596,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "Put 4 damage counters on your opponent's Pokémon in any way you like."
             energyCost F
             onAttack {
-              (1..4).each {
-                directDamage 10, opp.all.select("Choose a Pokémon to put a damage counter on. ($it/4)")
-              }
+              putDamageCountersOnOpponentsPokemon(4)
             }
           }
           move "Master Strike", {
@@ -3036,6 +3033,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           bwAbility "Shadow Connection", {
             text "As often as you like during your turn (before your attack), you may move a basic [D] Energy from 1 of your Pokémon to another of your Pokémon."
             actionA {
+              powerUsed()
               moveEnergy(basic: true, type: D, my.all, my.all)
             }
           }

@@ -1712,6 +1712,21 @@ public enum GuardiansRising implements LogicCardInfo {
                   // TODO Fix it not blocking damage counters.
                 }}
               }
+              before DIRECT_DAMAGE, null, ATTACK, {
+                def pcs = ef.getResolvedTarget(bg, e)
+                if(bg.currentTurn == self.owner.opposite && pcs.owner == self.owner && !pcs.active) {
+                  bc "Daunting Pose prevents damage counters from being placed on $self.name"
+                  prevent()
+                }
+              }
+              before DIRECT_DAMAGE, null, SRC_ABILITY, {
+                def pcs = ef.getResolvedTarget(bg, e)
+                //FIXME this will also block own pokemon abilities. to fix this, "Source refactoring" must be done. (See omega stop)
+                if(/*bg.currentTurn == self.owner.opposite &&*/ pcs.owner == self.owner && !pcs.active) {
+                  bc "Daunting Pose prevents damage counters from being placed on $self.name"
+                  prevent()
+                }
+              }
             }
           }
           move "Cross Chop", {
@@ -1750,9 +1765,10 @@ public enum GuardiansRising implements LogicCardInfo {
           weakness WATER
           bwAbility "Roadblock", {
             text "Your opponent can't have more than 4 Benched Pokémon. If they have 5 or more Benched Pokémon, they discard Benched Pokémon until they have 4 Pokémon on the Bench. If more than one effect changes the number of Benched Pokémon allowed, use the smaller number."
-            getterA (GET_BENCH_SIZE) {h->
+            getterA (GET_BENCH_SIZE, BEFORE_LAST) {h->
               if(h.effect.playerType == self.owner.opposite) {
-                h.object = 4
+                //TODO: Check this working with CLEFAIRY_144 (CEC) placing Lillie's Poké Doll
+                h.object = Math.min(h.object, 4)
               }
             }
             onActivate {

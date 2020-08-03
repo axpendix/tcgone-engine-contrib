@@ -833,10 +833,8 @@ public enum UnseenForces implements LogicCardInfo {
           text "20 damage. Before doing damage, you may switch 1 of your opponent's Benched Pokémon with the Defending Pokémon. If you do, this attack does 20 damage to the new Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
           energyCost C, C
           onAttack {
-            def pcs = defending
-            if(opp.bench && confirm("Switch 1 of your opponent's Benched Pokémon with the Defending Pokémon?")){
-              def target = opp.bench.select("Select the new Active Pokémon.")
-              if ( sw2(target) ) { pcs = target }
+            if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon before doing damage?")) {
+              switchYourOpponentsBenchedWithActive()
             }
             damage 20
           }
@@ -1138,9 +1136,7 @@ public enum UnseenForces implements LogicCardInfo {
           text "Put 4 damage counters on your opponent's Pokémon in any way you like."
           energyCost W, P, C
           onAttack {
-            (1..4).each {
-              directDamage 10, opp.all.select("Put 1 damage counter to which Pokémon?")
-            }
+            putDamageCountersOnOpponentsPokemon(4)
           }
         }
       };
@@ -3456,6 +3452,7 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             def basics = opp.hand.shuffledCopy().showToMe("Opponent's hand.").filterByType(BASIC)
             if (basics) {
+              def tar
               basics.select("Choose a pokemon to bench").each {
                 opp.hand.remove(it)
                 tar = benchPCS(it, OTHER, TargetPlayer.OPPONENT)

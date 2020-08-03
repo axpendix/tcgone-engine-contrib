@@ -1393,7 +1393,7 @@ public enum CelestialStorm implements LogicCardInfo {
               assert my.deck : "There is no more card to draw in your deck"
             }
             onAttack {
-              my.hand.moveTo(my.deck)
+              my.hand.moveTo(hidden:true, my.deck)
               shuffleDeck()
               draw my.bench.size() + opp.bench.size()
             }

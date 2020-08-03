@@ -6,6 +6,7 @@ import tcgwars.logic.impl.gen5.EmergingPowers
 import tcgwars.logic.impl.gen5.NextDestinies
 import tcgwars.logic.impl.gen6.KalosStarterSet
 import tcgwars.logic.impl.gen6.Xy
+import tcgwars.logic.impl.gen7.CelestialStorm
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -1552,9 +1553,8 @@ public enum SunMoon implements LogicCardInfo {
             }
             onAttack {
               gxPerform()
-              (1..10).each {
-                if(opp.all) directDamage(10, opp.all.select("Put a damage counter on"))
-              }
+
+              putDamageCountersOnOpponentsPokemon(10)
             }
           }
 
@@ -2423,16 +2423,42 @@ public enum SunMoon implements LogicCardInfo {
           bwAbility "Energy Evolution", {
             text "When you attach a basic Energy card from your hand to this Pokémon during your turn, you may search your deck for a card that evolves from this Pokémon that is the same type as that Energy card and put it onto this Pokémon to evolve it. Then, shuffle your deck."
             delayedA {
+              def welderFlag = false
+              def welderChoice = 0
+              def basicEnType
+              def energyEvoSearch = {
+                if (self.owner.pbg.deck) {
+                  powerUsed()
+                  def sel=self.owner.pbg.deck.select(min:0, "Energy Evolution ${basicEnType}",
+                    {it.cardTypes.is(EVOLUTION) && it.types.contains(basicEnType) && it.predecessor==self.name}, self.owner)
+                  if(sel){
+                    evolve(self, sel.first(), OTHER)
+                  }
+                  shuffleDeck(null, self.owner.toTargetPlayer())
+                } else {
+                  bc "Due to drawing cards with Welder, ${self.owner.getPlayerUsername(bg)} has no cards left in deck and $self now can't use Energy Evolution."
+                }
+              }
+              before DRAW_CARD, {
+                if (welderFlag && welderChoice == 1) {
+                  energyEvoSearch.call()
+                  welderFlag = false
+                }
+              }
+              after PLAY_TRAINER, {
+                if (welderFlag && welderChoice == 2) {
+                  energyEvoSearch.call()
+                }
+                welderFlag = false
+              }
               after ATTACH_ENERGY, self, {
                 if(ef.reason==PLAY_FROM_HAND && ef.card instanceof BasicEnergyCard && self.owner.pbg.deck){
-                  if(confirm("Use Energy Evolution?")){
-                    powerUsed()
-                    def sel=self.owner.pbg.deck.select(min:0, "Energy Evolution ${ef.card.basicType}",
-                      {it.cardTypes.is(EVOLUTION) && it.types.contains(ef.card.basicType) && it.predecessor==self.name}, self.owner)
-                    if(sel){
-                      evolve(self, sel.first(), OTHER)
-                    }
-                    shuffleDeck(null, self.owner.toTargetPlayer())
+                  welderFlag = bg.em().retrieveObject("Welder_Played") ?: false
+                  basicEnType = ef.card.basicType
+                  if (welderFlag) {
+                    if (welderChoice == 0) welderChoice = choose([1, 2, 3], ["Use before drawing 3 cards", "Use after drawing 3 cards", "Don't use Energy Evolution"], "A basic Energy was attached to $self via Welder. When would you like to use Energy Evolution?")
+                  } else if ( confirm("Use Energy Evolution?") ){
+                    energyEvoSearch.call()
                   }
                 }
               }
@@ -2857,7 +2883,7 @@ public enum SunMoon implements LogicCardInfo {
       case DOUBLE_COLORLESS_ENERGY_136:
         return copy(Xy.DOUBLE_COLORLESS_ENERGY_130, this)
       case RAINBOW_ENERGY_137:
-        return copy(Xy.RAINBOW_ENERGY_131, this)
+        return copy(CelestialStorm.RAINBOW_ENERGY_151,this);
       case LURANTIS_GX_138:
         return copy (LURANTIS_GX_15, this)
       case LAPRAS_GX_139:

@@ -96,18 +96,18 @@ public enum Unleashed implements LogicCardInfo {
   WEEDLE_69 ("Weedle", 69, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
   ZUBAT_70 ("Zubat", 70, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
   CHEERLEADER_S_CHEER_71 ("Cheerleader's Cheer", 71, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-  DUAL_BALL_72 ("Dual Ball", 72, Rarity.UNCOMMON, [TRAINER]),
+  DUAL_BALL_72 ("Dual Ball", 72, Rarity.UNCOMMON, [TRAINER, ITEM]),
   EMCEE_S_CHATTER_73 ("Emcee's Chatter", 73, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-  ENERGY_RETURNER_74 ("Energy Returner", 74, Rarity.UNCOMMON, [TRAINER]),
+  ENERGY_RETURNER_74 ("Energy Returner", 74, Rarity.UNCOMMON, [TRAINER, ITEM]),
   ENGINEER_S_ADJUSTMENTS_75 ("Engineer's Adjustments", 75, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-  GOOD_ROD_76 ("Good Rod", 76, Rarity.UNCOMMON, [TRAINER]),
+  GOOD_ROD_76 ("Good Rod", 76, Rarity.UNCOMMON, [TRAINER, ITEM]),
   INTERVIEWER_S_QUESTIONS_77 ("Interviewer's Questions", 77, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   JUDGE_78 ("Judge", 78, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-  LIFE_HERB_79 ("Life Herb", 79, Rarity.UNCOMMON, [TRAINER]),
-  PLUSPOWER_80 ("PlusPower", 80, Rarity.UNCOMMON, [TRAINER]),
-  POKEMON_CIRCULATOR_81 ("Pokémon Circulator", 81, Rarity.UNCOMMON, [TRAINER]),
-  RARE_CANDY_82 ("Rare Candy", 82, Rarity.UNCOMMON, [TRAINER]),
-  SUPER_SCOOP_UP_83 ("Super Scoop Up", 83, Rarity.UNCOMMON, [TRAINER]),
+  LIFE_HERB_79 ("Life Herb", 79, Rarity.UNCOMMON, [TRAINER, ITEM]),
+  PLUSPOWER_80 ("PlusPower", 80, Rarity.UNCOMMON, [TRAINER, ITEM]),
+  POKEMON_CIRCULATOR_81 ("Pokémon Circulator", 81, Rarity.UNCOMMON, [TRAINER, ITEM]),
+  RARE_CANDY_82 ("Rare Candy", 82, Rarity.UNCOMMON, [TRAINER, ITEM]),
+  SUPER_SCOOP_UP_83 ("Super Scoop Up", 83, Rarity.UNCOMMON, [TRAINER, ITEM]),
   CROBAT_84 ("Crobat", 84, Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
   KINGDRA_85 ("Kingdra", 85, Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
   LANTURN_86 ("Lanturn", 86, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
@@ -120,7 +120,7 @@ public enum Unleashed implements LogicCardInfo {
   RAIKOU_AND_SUICUNE_LEGEND_93 ("Raikou & Suicune LEGEND", 93, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
   SUICUNE_AND_ENTEI_LEGEND_94 ("Suicune & Entei LEGEND", 94, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
   SUICUNE_AND_ENTEI_LEGEND_95 ("Suicune & Entei LEGEND", 95, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
-  ALPH_LITHOGRAPH_TWO ("Alph Lithograph", 96, Rarity.HOLORARE, [TRAINER]);
+  ALPH_LITHOGRAPH_TWO ("Alph Lithograph", 96, Rarity.HOLORARE, [TRAINER, ITEM]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 

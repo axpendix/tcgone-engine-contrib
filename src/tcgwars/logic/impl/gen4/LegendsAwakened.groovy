@@ -6,6 +6,7 @@ import static tcgwars.logic.card.CardType.*;
 import static tcgwars.logic.effect.EffectType.*;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
+import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
 
@@ -1122,7 +1123,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness P, PLUS20
           pokePower "Set Up", {
             text "Once during your turn, when you put Uxie from your hand onto your Bench, you may draw cards until you have 7 cards in your hand."
-            actionA {
+            onActivate { reason ->
               if(reason == PLAY_FROM_HAND && self.benched && my.deck.notEmpty && my.hand.size() < 7 && confirm("Use Set Up?")){
                 powerUsed()
                 draw 7 - my.hand.size()
@@ -1134,7 +1135,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 20
-              if (confirm("Put Uxie on the bottom of your deck?") {
+              if (confirm("Put Uxie on the bottom of your deck?")) {
                 def rearrangedCards = rearrange(self.cards)
                 rearrangedCards.moveTo(my.deck)
                 removePCS(self)
