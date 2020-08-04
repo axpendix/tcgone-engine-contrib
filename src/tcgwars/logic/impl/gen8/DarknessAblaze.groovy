@@ -2920,10 +2920,13 @@ public enum DarknessAblaze implements LogicCardInfo {
           onAttack {
             damage 30
             afterDamage{
-              def card = my.hand.filterByEnergyType(D).select(min:0, "Select a [D] Energy to attach from your hand.")
-              if(card){
-                def tar = my.bench.select("To?")
-                attachEnergy(tar, card)
+              def potentialEnergy = my.hand.filterByEnergyType(D)
+              if (my.bench && potentialEnergy){
+                def sel = potentialEnergy.select(min:0, "Select a [D] Energy to attach from your hand.")
+                if (sel) {
+                  def tar = my.bench.select("To?")
+                  attachEnergy(tar, sel.first(), PLAY_FROM_HAND)
+                }
               }
             }
           }
