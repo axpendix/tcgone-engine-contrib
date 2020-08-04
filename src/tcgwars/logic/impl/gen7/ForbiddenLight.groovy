@@ -2082,7 +2082,10 @@ public enum ForbiddenLight implements LogicCardInfo {
             text "If you go second, this Pokémon can evolve during your first turn."
             delayedA {
               before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
-                if(bg.turnCount == 2) prevent()
+                if(bg.turnCount == 2 && bg.currentTurn == self.owner){
+                  powerUsed()
+                  prevent()
+                }
               }
             }
           }

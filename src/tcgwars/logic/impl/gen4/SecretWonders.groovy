@@ -2187,7 +2187,9 @@ public enum SecretWonders implements LogicCardInfo {
             text "Murkrow can evolve during the turn you play it."
             delayedA {
               before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
-                prevent()
+                if(bg.currentTurn == self.owner){
+                  prevent()
+                }
               }
             }
           }
