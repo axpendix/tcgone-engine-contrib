@@ -1869,6 +1869,7 @@ public enum SwordShield implements LogicCardInfo {
           text "As often as you like during your turn, you may move 1 damage counter from 1 of your [P] Pokémon to another of your [P] Pokémon."
           actionA {
             assertMyAll(hasType: P, info: "with damage counters on them", {it.numberOfDamageCounters})
+            assert my.all.count{it.types.contains(P)} > 1 : "You don't have another [P] Pokémon in play"
             powerUsed()
             def source = my.all.findAll { it.numberOfDamageCounters > 0 && it.types.contains(P) }.select("Source for the damage counter?")
             def target = my.all.findAll { it.types.contains(P) }
