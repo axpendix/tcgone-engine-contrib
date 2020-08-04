@@ -69,6 +69,8 @@ public enum SwordShieldPromos implements LogicCardInfo {
   COPPERAJAH_V_SWSH30 ("Copperajah V", 30, Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _METAL_]),
   MORPEKO_SWSH31 ("Morpeko", 31, Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
   SNORLAX_SWSH32 ("Snorlax", 32, Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
+  ZACIAN_SWSH33 ("Zacian", 33, Rarity.PROMO, [POKEMON, BASIC, _METAL_]),
+  ZAMAZENTA_SWSH34 ("Zamazenta", 34, Rarity.PROMO, [POKEMON, BASIC, _METAL_]),
   DECIDUEYE_SWSH35 ("Decidueye", 35, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
   ARCTOZOLT_SWSH36 ("Arctozolt", 36, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
   HYDREIGON_SWSH37 ("Hydreigon", 37, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _DARKNESS_]),
@@ -421,6 +423,54 @@ public enum SwordShieldPromos implements LogicCardInfo {
       };
       case SNORLAX_SWSH32:
       return copy(SwordShield.SNORLAX_140, this);
+      case ZACIAN_SWSH33:
+      return basic (this, hp:HP130, type:M, retreatCost:2) {
+        weakness R
+        resistance G, MINUS30
+        move "Crunch", {
+          text "60 damage. Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon."
+          energyCost C, C, C
+          onAttack {
+            damage 60
+            flip{ afterDamage{ discardDefendingEnergy() } }
+          }
+        }
+        move "Metal Blade", {
+          text "190 damage. Discard 3 Energy from this Pokémon."
+          energyCost M, M, M, C
+          onAttack {
+            damage 190
+            afterDamage{
+              discardSelfEnergy(C,C,C)
+            }
+          }
+        }
+      };
+      case ZAMAZENTA_SWSH34:
+      return basic (this, hp:HP130, type:M, retreatCost:2) {
+        weakness R
+        resistance G, MINUS30
+        bwAbility "Sturdy Shield", {
+          text "This Pokémon takes 20 less damage from attacks (after applying Weakness and Resistance)."
+          delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if(it.to==self && it.dmg.value && it.notNoEffect){
+                  bc "Sturdy Shield -20"
+                  it.dmg -= hp(20)
+                }
+              }
+            }
+          }
+        }
+        move "Headbang", {
+          text "130 damage."
+          energyCost M, M, M, C
+          onAttack {
+            damage 130
+          }
+        }
+      };
       case DECIDUEYE_SWSH35:
       return copy(DarknessAblaze.DECIDUEYE_13, this);
       case ARCTOZOLT_SWSH36:
