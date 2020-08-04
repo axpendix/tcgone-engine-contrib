@@ -2626,10 +2626,11 @@ public enum DarknessAblaze implements LogicCardInfo {
         bwAbility "Dark Squall", {
           text "As often as you like during your turn, you may attach a [D] Energy from your hand to one of your Pokémon in play."
           actionA {
-            assert my.hand.filterByBasicEnergyType(D) : "No [D] in hand"
+            assert my.hand.filterByEnergyType(D) : "No [D] Energy in hand"
             powerUsed()
-            def card = my.hand.filterByEnergyType(D).select("Choose a [D] Energy Card to attach")
-            attachEnergy(my.all.select("To?"), card)
+            def list = my.hand.filterByEnergyType(D).select("Choose a [D] Energy Card to attach")
+            def pcs = my.all.select("Attach to?")
+            attachEnergy(pcs, list.first(), PLAY_FROM_HAND)
           }
         }
         move "Jet Black Fangs", {
