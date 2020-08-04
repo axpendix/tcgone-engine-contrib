@@ -4055,30 +4055,45 @@ public enum DarknessAblaze implements LogicCardInfo {
       case MOUNTAINOUS_SMOKE_179:
       return pokemonTool (this) {
         text "When the Pokémon this card is attached to is Knocked Out by damage from an opponent’s attack, your opponent puts any Prize cards they pick into their discard pile instead of their hand."
-        def eff
+        def eff1, eff2
+        def itemActive = false
         onPlay {reason->
-          eff = delayed {
+          //
+          // Code following current compendium rulings
+          //
+          eff1 = delayed {
             before KNOCKOUT, self, {
-              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
+              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite) {
                 bc "Billowing Smoke activates."
-                //
-                // Code following current compendium rulings
-                //
-                delayed {
-                  before TAKE_PRIZE, {
-                    prevent()
-                    def tar = opp.prizeCardSet.oppSelect(hidden: true, count: 1, "The knocked out Pokémon had Billowing Smoke attached. Select a prize card, and it'll be discarded instead of taken and put into your hand.")
-                    moveCard(suppressLog: true, tar, tar.player.pbg.discard)
-                    bc "$tar was discarded instead of taken as a Prize." // custom log entry
-                  }
-                  after KNOCKOUT, self, {
-                    unregister()
-                  }
-                }
-                //
-                // TODO: Use this code (and update Jirachi Prism Star) if the rulings on this card are updated/fixed (JP says they counts as taken prizes, Compendium currently says they don't)
-                //
-                /* bg.em().storeObject("Billowing_Smoke", true)
+                itemActive = true
+              }
+            }
+          }
+          eff2 = delayed {
+            before TAKE_PRIZE, {
+              if (itemActive && ef.pcs==self) {
+                prevent()
+                def tar = self.owner.opposite.pbg.prizeCardSet.oppSelect(hidden: true, count: 1, "The knocked out Pokémon had Billowing Smoke attached. Select a prize card, and it'll be discarded instead of taken and put into your hand.")
+                moveCard(suppressLog: true, tar.first(), self.owner.opposite.pbg.discard)
+                bc "$tar was discarded instead of taken as a Prize." // custom log entry
+                TakePrize.checkPrizes(bg)
+              }
+            }
+            after KNOCKOUT, self, {
+              if (itemActive) {
+                itemActive = false
+                unregister()
+              }
+            }
+          }
+          //
+          // TODO: Use this code (and update Jirachi Prism Star) if the rulings on this card are updated/fixed (JP says they counts as taken prizes, Compendium currently says they don't)
+          //
+          /* eff1 = delayed {
+            before KNOCKOUT, self, {
+              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite) {
+                bc "Billowing Smoke activates."
+                bg.em().storeObject("Billowing_Smoke", true)
                 delayed {
                   after TAKE_PRIZE, {
                     if(self.owner.opposite.prizeCardSet.notEmpty && ef.card != null && ef.card.player == self.owner.opposite){
@@ -4092,13 +4107,13 @@ public enum DarknessAblaze implements LogicCardInfo {
                     bg.em().storeObject("Billowing_Smoke", false)
                     unregister()
                   }
-                } */
+                }
               }
             }
-          }
+          } */
         }
         onRemoveFromPlay {
-          eff.unregister()
+          eff1.unregister()
         }
       };
       case SPIKEMUTH_180:
