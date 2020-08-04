@@ -4052,24 +4052,41 @@ public enum DarknessAblaze implements LogicCardInfo {
         def eff
         onPlay {reason->
           eff = delayed {
-            before (KNOCKOUT,self) {
+            before KNOCKOUT, self, {
               if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
-                bc "Mountainous Smoke activates."
-                bg.em().storeObject("Mountainous_Smoke", true)
+                bc "Billowing Smoke activates."
+                //
+                // Code following current compendium rulings
+                //
+                delayed {
+                  before TAKE_PRIZE, {
+                    prevent()
+                    def tar = opp.prizeCardSet.oppSelect(hidden: true, count: 1, "The knocked out Pokémon had Billowing Smoke attached. Select a prize card, and it'll be discarded instead of taken and put into your hand.")
+                    moveCard(suppressLog: true, tar, tar.player.pbg.discard)
+                    bc "$tar was discarded instead of taken as a Prize." // custom log entry
+                  }
+                  after KNOCKOUT, self, {
+                    unregister()
+                  }
+                }
+                //
+                // TODO: Use this code (and update Jirachi Prism Star) if the rulings on this card are updated/fixed (JP says they counts as taken prizes, Compendium currently says they don't)
+                //
+                /* bg.em().storeObject("Billowing_Smoke", true)
                 delayed {
                   after TAKE_PRIZE, {
                     if(self.owner.opposite.prizeCardSet.notEmpty && ef.card != null && ef.card.player == self.owner.opposite){
-                      bc "${ef.card} gets discarded due to Mountainous Smoke's effect."
+                      bc "${ef.card} gets discarded due to Billowing Smoke's effect."
                       def prizeOwner = ef.card.player
                       prizeOwner.pbg.hand.remove(ef.card)
                       prizeOwner.pbg.discard.add(ef.card)
                     }
                   }
                   after KNOCKOUT, self, {
-                    bg.em().storeObject("Mountainous_Smoke", false)
+                    bg.em().storeObject("Billowing_Smoke", false)
                     unregister()
                   }
-                }
+                } */
               }
             }
           }

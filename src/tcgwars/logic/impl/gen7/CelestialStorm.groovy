@@ -2445,12 +2445,16 @@ public enum CelestialStorm implements LogicCardInfo {
           globalAbility{
             delayed{
               after TAKE_PRIZE, {
-                def hasSmoke = bg.em().retrieveObject("Mountainous_Smoke")
-                if(thisCard.player.pbg.prizeCardSet.notEmpty && !hasSmoke && ef.card != null && ef.card == thisCard
+                //def hasSmoke = bg.em().retrieveObject("Billowing_Smoke")
+                if (
+                  thisCard.player.pbg.prizeCardSet.notEmpty
+                  //&& !hasSmoke
+                  && ef.card != null && ef.card == thisCard
                   && thisCard.player.pbg.bench.notFull && bg.currentTurn == thisCard.player
                   && thisCard.player.pbg.hand.contains(thisCard)
                   && checkGlobalAbility(thisCard)
-                  && confirm("You've picked ${thisCard}. Would you like to use Wish Upon a Star?")){
+                  && confirm("You've picked ${thisCard}. Would you like to use Wish Upon a Star?")
+                ) {
                   bc "${thisCard} used Wish Upon a Star"
                   thisCard.player.pbg.hand.remove(thisCard)
                   benchPCS(thisCard, OTHER, thisCard.player.toTargetPlayer())
