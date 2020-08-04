@@ -1959,7 +1959,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
-            if(bg.stadiumInfoStruct.stadiumCard.name == "Glimwood Tangle"){
+            if(bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Glimwood Tangle"){
               damage 60
             }
           }
