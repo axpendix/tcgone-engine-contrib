@@ -1355,7 +1355,7 @@ public enum Deoxys implements LogicCardInfo {
               assert my.discard : "There are no cards in your discard pile"
             }
             onAttack {
-              my.discard.select("Select 1 card to put into your hand.").moveTo(my.hand)
+              my.discard.select("Select 1 card to put into your hand.").showToOpponent("Opponent used Sniff Out").moveTo(my.hand)
             }
           }
           move "Negative Spark", {
