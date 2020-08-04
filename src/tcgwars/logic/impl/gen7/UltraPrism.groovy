@@ -2039,8 +2039,11 @@ public enum UltraPrism implements LogicCardInfo {
           bwAbility "Magnetic Circuit", {
             text "As often as you like during your turn (before your attack), you may attach a [M] Energy card from your hand to 1 of your Pokémon."
             actionA {
-              assert my.hand.findAll(basicEnergyFilter(METAL))
-              attachEnergyFrom(may: true, type: METAL, my.hand, my.all)
+              assert my.hand.filterByEnergyType(M) : "No [M] Energy in hand"
+              powerUsed()
+              def list = my.hand.filterByEnergyType(M).select("Choose a [M] Energy Card to attach")
+              def pcs = my.all.select("Attach to?")
+              attachEnergy(pcs, list.first(), PLAY_FROM_HAND)
             }
           }
           move "Zap Cannon", {

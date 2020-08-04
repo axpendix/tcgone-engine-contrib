@@ -1471,10 +1471,12 @@ public enum SwordShield implements LogicCardInfo {
         bwAbility "Ice Dance", {
           text "As often as you like during your turn, you may attach a [W] Energy card from your hand to 1 of your Benched [W] Pokémon."
           actionA {
-            if (confirm("Use Ice Dance?")) {
-              powerUsed()
-              attachEnergyFrom(type:W, my.hand, my.bench.findAll { it.types.contains(W) })
-            }
+            assert my.hand.filterByEnergyType(W) : "No [W] Energy in hand"
+            assertMyBench(hasType: W)
+            powerUsed()
+            def selEnergy = my.hand.filterByBasicEnergyType(W).first()
+            def pcs = my.bench.findAll{it.types.contains(W)}.select("Attach to?")
+            attachEnergy(pcs, selEnergy, PLAY_FROM_HAND)
           }
         }
         move "Aurora Beam", {
