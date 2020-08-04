@@ -2307,7 +2307,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 80
-            discardDefendingEnergy()
+            afterDamage{
+              discardDefendingEnergy()
+            }
           }
         }
         move "Heavy Rock Cannon", {
