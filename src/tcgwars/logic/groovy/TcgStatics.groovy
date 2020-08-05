@@ -1327,6 +1327,9 @@ class TcgStatics {
       after POKEPOWER, {
         flag = false
       }
+      after ACTIVATE_ABILITY, {
+        flag = false
+      }
       before PROCESS_ATTACK_EFFECTS, {
         flag = true
       }

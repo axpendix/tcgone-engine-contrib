@@ -2240,6 +2240,9 @@ public enum PowerKeepers implements LogicCardInfo {
                 after POKEPOWER, {
                   flag = false
                 }
+                after ACTIVATE_ABILITY, {
+                  flag = false
+                }
                 before PLAY_TRAINER, {
                   if (bg.currentTurn == self.owner.opposite && !flag) {
                     wcu "Chilling Breath prevents playing Trainer cards"

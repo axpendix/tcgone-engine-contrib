@@ -1995,6 +1995,9 @@ public enum TeamRocketReturns implements LogicCardInfo {
                     after POKEPOWER, {
                       flag = false
                     }
+                    after ACTIVATE_ABILITY, {
+                      flag = false
+                    }
                     if (bg.currentTurn == self.owner.opposite && !flag) {
                       wcu "Psyduck's Headache prevents playing this card!"
                       prevent()
