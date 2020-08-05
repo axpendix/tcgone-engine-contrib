@@ -3272,7 +3272,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
                         if(it.to == self && it.notNoEffect && it.dmg.value) {
                           bc "$self - Armor Stone activated"
                           def reducedDmg = 0
+                          bg.setDeterministicCurrentThreadPlayerType(self.owner)
                           flipUntilTails { reducedDmg += 10 }
+                          bg.clearDeterministicCurrentThreadPlayerType()
                           if (reducedDmg) bc "Damage reduced by $reducedDmg"
                           it.dmg -= hp(reducedDmg)
                         }
@@ -3348,7 +3350,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
                     if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
                       bc "$self - Skull Stone activated"
                       if (self.owner.opposite.pbg.all) {
+                        bg.setDeterministicCurrentThreadPlayerType(self.owner)
                         flipUntilTails { directDamage(10, self.owner.opposite.pbg.active, Source.SRC_ABILITY) }
+                        bg.clearDeterministicCurrentThreadPlayerType()
                       }
                     }
                   }

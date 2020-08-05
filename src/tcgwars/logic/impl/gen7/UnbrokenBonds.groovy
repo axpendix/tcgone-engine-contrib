@@ -3460,9 +3460,11 @@ public enum UnbrokenBonds implements LogicCardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 def entry=bg.dm().find({it.to==self && it.dmg.value && it.notNoEffect})
                 if(entry){
+                  bg.setDeterministicCurrentThreadPlayerType(self.owner)
                   flip "Fluffy Cotton", {
                     entry.dmg=hp(0)
                   }
+                  bg.clearDeterministicCurrentThreadPlayerType()
                 }
               }
             }

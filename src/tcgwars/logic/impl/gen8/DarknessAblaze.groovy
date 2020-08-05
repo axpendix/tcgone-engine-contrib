@@ -984,9 +984,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           onAttack {
             damage 20
             if (self.cards.energyCount(C) && confirm("Discard an Energy from $self.name to discard an energy from $defending.name?")) {
-              afterDamage {
-                discardSelfEnergy C
-              }
+              discardSelfEnergy C
               discardDefendingEnergy()
             }
           }
@@ -3834,7 +3832,7 @@ public enum DarknessAblaze implements LogicCardInfo {
               act = false
             }
             before COIN_FLIP_BETWEEN_EXECUTION, {
-              if (act && lastTurn != bg.turnCount && confirm("Glimwood Tangle: Result: $ef.object.lastResultString. Do you want to reflip? ")) {
+              if (act && ef.object.player == bg.getCurrentTurn() && lastTurn != bg.turnCount && confirm("Glimwood Tangle: Result: $ef.object.lastResultString. Do you want to reflip?")) {
                 lastTurn = bg.turnCount
                 bc "Used Glimwood Tangle and discarded those flips"
                 ef.object.run(bg) //flip again
