@@ -1,6 +1,7 @@
 package tcgwars.logic.impl.gen3;
 
 import tcgwars.logic.impl.gen1.FossilNG;
+import tcgwars.logic.impl.gen2.Expedition;
 import tcgwars.logic.impl.gen2.Aquapolis;
 import tcgwars.logic.impl.gen3.Deoxys;
 import tcgwars.logic.impl.gen3.Dragon;
@@ -212,11 +213,12 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Terraforming", {
           text "Once during your turn (before your attack), you may look at the top 5 cards from your deck and put them back on top of your deck in any order. This power can't be used if Aggron is affected by a Special Condition."
           actionA {
-            assert my.deck : "Your deck is empty"
             checkLastTurn()
             checkNoSPC()
+            assert my.deck : "Your deck is empty"
             powerUsed()
-            def list=rearrange(my.deck.subList(0,5), "Rearrange top 5 cards in your deck")
+            def cardsNum = Math.min(5, my.deck.size())
+            def list=rearrange(my.deck.subList(0, cardsNum), "Rearrange the top ${cardsNum} cards in your deck.")
             my.deck.setSubList(0, list)
           }
         }
@@ -248,7 +250,7 @@ public enum PowerKeepers implements LogicCardInfo {
           delayedA {
             before BETWEEN_TURNS, {
               if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Drake's Stadium") {
-                heal 10, self
+                heal 10, self, SRC_ABILITY
               }
             }
           }
@@ -275,11 +277,18 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Rock Blast", {
           text "Discard up to 5 [F] Energy cards attached to Armaldo. For each Energy card you discarded, choose an opponent's Pokémon in play and this attack does 20 damage to those Pokémon. (You may choose the same Pokémon more than once.) This attack's damage isn't affected by Weakness or Resistance."
           energyCost F
+          attackRequirement {
+            assert self.cards.energyCount(F) : "You have no Energy cards attached that provide [F] Energy"
+          }
           onAttack {
-            def selected = self.cards.filterByEnergyType(F).select(min:0, max:5, "Select up to 5 [F] Energies to discard, does 20 damage to one Pokemon")
-
-            if (selected) {
-              damage 20*selected.size(), opp.all.select("Deal damage to which Pokemon?")
+            //TODO: This could be made into a static, other cards do similar attacks with other types.
+            def selected = self.cards.filterByEnergyType(F).select(min:1, max:5, "Select up to 5 [F] Energy cards to discard; for each card discarded, this attack will do 20 damage to 1 opponent's Pokemon of your choosing (you can pick the same Pokémon more than once.)")
+            def i = 0
+            def selNum = selected.size()
+            while (i++ < selNum){
+              noWrDamage ( 20, opp.all.select("Deal 20 damage to which Pokemon? ${i-1}/${selNum} Pokémon selected.") )
+            }
+            afterDamage {
               selected.discard()
             }
           }
@@ -307,9 +316,12 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Bench Manipulation", {
           text "40x damage. Your opponent flips a number of coins equal to the number of his or her Benched Pokémon. This attack does 40 damage times the number of tails. This attack's damage isn't affected by Weakness or Resistance."
           energyCost P, P, C
+          attackRequirement {
+            assertOppBench()
+          }
           onAttack {
-            damage 40
-            flip opp.bench.size(), {}, { noWrDamage 40 }
+            //TODO: Opponent flips, "Will" (CEC) should not be usable here, or by Fliptini effects (that allow to reflip *your* flips).
+            flip opp.bench.size(), {}, { noWrDamage 40, defending }
           }
         }
       };
@@ -319,12 +331,13 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Firestarter", {
           text "Once during your turn (before your attack), you may attach a [R] Energy card from your discard pile to 1 of your Benched Pokémon. This power can't be used if Blaziken is affected by a Special Condition."
           actionA {
-            checkNoSPC()
             checkLastTurn()
+            checkNoSPC()
             assert my.bench : "No benched Pokemon"
+            assert my.discard.filterByEnergyType(R) : "You have no [R] Energy cards in your discard pile"
+            powerUsed()
 
             attachEnergyFrom(type: R, my.discard, my.bench)
-            powerUsed()
           }
         }
         move "Fire Stream", {
@@ -332,10 +345,8 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost R, C, C
           onAttack {
             damage 50
-            if (opp.bench) {
-              opp.bench.each {
-                damage 10, it
-              }
+            opp.bench.each {
+              damage 10, it
             }
             afterDamage {
               discardSelfEnergy(R)
@@ -358,7 +369,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost R, R, C, C
           onAttack {
             damage 50
-            apply BURNED
+            applyAfterDamage BURNED
           }
         }
       };
@@ -367,11 +378,11 @@ public enum PowerKeepers implements LogicCardInfo {
         weakness R
         pokePower "Evolutionary Call", {
           text "Once during your turn, when you play Cradily from your hand to evolve 1 of your Pokémon, you may search your deck for up to 3 in any combination of Basic Pokémon or Evolution cards. Show them to your opponent and put them into your hand. Shuffle your deck afterward."
-          onActivate {
-            if (it==PLAY_FROM_HAND && my.deck && confirm("Use Evolutionary Call?")) {
+          onActivate {r ->
+            if (r == PLAY_FROM_HAND && my.deck && confirm("Use Evolutionary Call?")) {
               powerUsed()
 
-              deck.search(max: 3, "Search your deck for up to 3 Basic/Evolutions", {it.cardTypes.pokemon}).moveTo(my.hand)
+              my.deck.search(max: 3, "Search your deck for up to 3 Basic/Evolutions", {it.cardTypes.pokemon}).showToOpponent("Your opponent used Evolutionary Call.").moveTo(my.hand)
 
               shuffleDeck()
             }
@@ -382,7 +393,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost G, G, C
           onAttack {
             damage 50
-            apply POISONED
+            applyAfterDamage POISONED
             cantRetreat defending
           }
         }
@@ -396,9 +407,14 @@ public enum PowerKeepers implements LogicCardInfo {
             checkNoSPC()
             checkLastTurn()
             assert my.hand.filterByType(ENERGY) : "No Energy in hand"
-            my.hand.filterByType(ENERGY).select("Discard").discard()
-            draw choose([0,1,2,3], ["0","1","2","3"], "Draw how many cards?", 3)
+            //Using LV.X Compendium Ruling instead of the EX: You can discard even if you don't have cards in deck.
             powerUsed()
+
+            my.hand.filterByType(ENERGY).select("Discard").discard()
+            if (my.deck){
+              def maxDraw = Math.min(3, my.deck.size())
+              draw choose(1..maxDraw, "Draw how many cards?")
+            }
           }
         }
         move "Max Energy Source", {
@@ -420,13 +436,11 @@ public enum PowerKeepers implements LogicCardInfo {
             assert my.deck : "Deck is empty"
             powerUsed()
 
-            my.deck.search(max: 1, "Search for a [P] Energy card to attach to one of your Pokemon.", {
-              Card card->card.cardTypes.contains(BASIC_ENERGY) && card.asEnergyCard().containsTypePlain(P)
-              }).each {
-                def tar = my.all.select("Attach $it to? That Pokemon will receive 2 damage counters.")
-                attachEnergy(tar, it)
-                directDamage 20, tar
-              }
+            my.deck.search(max: 1, "Search for a [P] Energy card to attach to one of your Pokemon.", {Card card -> card.asEnergyCard().containsTypePlain(P)}).each {
+              def tar = my.all.select("Attach $it to? That Pokemon will receive 2 damage counters.")
+              attachEnergy(tar, it)
+              directDamage 20, tar, SRC_ABILITY
+            }
             shuffleDeck()
           }
         }
@@ -444,8 +458,10 @@ public enum PowerKeepers implements LogicCardInfo {
         pokeBody "Primal Stare", {
           text "As long as Kabutops is your Active Pokémon, your opponent can't play any Basic Pokémon or Evolution cards from his or her hand to evolve his or her Active Pokémon."
           delayedA {
-            before EVOLVE_STANDARD, self.owner.opposite.pbg.active,{
-              if (bg.currentTurn==self.owner.opposite) {
+            //TODO: Prevent Baby Evolution from happening.
+            before EVOLVE_STANDARD, {
+              if (ef.pokemonToBeEvolved.owner != self.owner && ef.pokemonToBeEvolved.active && self.active) {
+                wcu "Primal Stare prevents evolving your Active Pokémon"
                 prevent()
               }
             }
@@ -455,12 +471,11 @@ public enum PowerKeepers implements LogicCardInfo {
           text "20 damage. Before doing damage, you may choose 1 of your opponent's Benched Pokémon and switch it with 1 of the Defending Pokémon. If you do, this attack does 20 damage to the new Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
           energyCost F, C
           onAttack {
-            def target = defending
-            if (opp.bench) {
-              target = opp.bench.select("Select the new Active Pokémon.")
-              sw defending, target
-              damage 20, target
+            if(opp.bench && confirm("Switch 1 of your opponent's Benched Pokémon with the Defending Pokémon?")){
+              def target = opp.bench.select("Select the new Active Pokémon.")
+              sw2(target)
             }
+            damage 20
           }
         }
         move "Blinding Scythe", {
@@ -478,7 +493,7 @@ public enum PowerKeepers implements LogicCardInfo {
           text "If your opponent has any Pokémon-ex in play, each of Machamp's attacks does 30 more damage to the Defending Pokémon."
           delayedA {
             after PROCESS_ATTACK_EFFECTS, {
-              if(ef.attacker == self && opp.all.findAll{it.EX}){
+              if(ef.attacker == self && opp.all.any{it.EX}){
                 bg.dm().each {
                   if (it.to.active && it.to.owner != self.owner && it.dmg.value) {
                     bc "Overzealous +30"
@@ -524,7 +539,9 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost L, L, C
           onAttack {
             damage 100
-            discardAllSelfEnergy(null)
+            afterDamage {
+              discardAllSelfEnergy(null)
+            }
           }
         }
       };
@@ -538,6 +555,7 @@ public enum PowerKeepers implements LogicCardInfo {
               h.object=true
             }
           }
+          //TODO: Is this needed here?
           getterA IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
             if (self.active && h.effect.target.owner == self.owner.opposite) {
               h.object=true
@@ -553,12 +571,17 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Critical Move", {
           text "100 damage. Discard a basic Energy card attached to Slaking or this attack does nothing. Slaking can't attack during your next turn."
           energyCost C, C, C, C
+          attackRequirement {
+            assert self.cards.filterByType(BASIC_ENERGY) : "$self has no Basic Energy attached"
+          }
           onAttack {
             if(self.cards.filterByType(BASIC_ENERGY)){
-              self.cards.filterByType(BASIC_ENERGY).select("Discard a basic energy from $self.").discard()
               damage 100
+              afterDamage {
+                self.cards.filterByType(BASIC_ENERGY).select("Discard a basic energy from $self.").discard()
+                cantAttackNextTurn(self)
+              }
             }
-            cantAttackNextTurn(self)
           }
         }
       };
@@ -582,7 +605,7 @@ public enum PowerKeepers implements LogicCardInfo {
           onAttack {
             damage 50
             if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Phoebe's Stadium") {
-              apply CONFUSED
+              applyAfterDamage CONFUSED
             }
           }
         }
@@ -594,9 +617,10 @@ public enum PowerKeepers implements LogicCardInfo {
           text "Once during your opponent's turn, when any of your Pokémon is Knocked Out by your opponent's attacks, you may use this power. Choose a basic Energy card discarded from the Knocked Out Pokémon and attach it to Lanturn. You can't use more than 1 Energy Grounding Poké-Power each turn."
           delayedA{
             before KNOCKOUT, {
-              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && ef.pokemonToBeKnockedOut!=self  && ef.pokemonToBeKnockedOut.cards.energyCount(C)) {
-                if (confirm("Move an energy from ${ef.pokemonToBeKnockedOut} to $self?")) {
-                  moveEnergy(basic:true, ef.pokemonToBeKnockedOut,self)
+              if (bg.em().retrieveObject("Energy_Grounding") != bg.turnCount && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && ef.pokemonToBeKnockedOut != self && ef.pokemonToBeKnockedOut.cards.filterByType(BASIC_ENERGY).energyCount(C)) {
+                if (confirm("Move an energy from ${ef.pokemonToBeKnockedOut} to $self?", self.owner)) {
+                  bg.em().storeObject("Energy_Grounding", bg.turnCount)
+                  moveEnergy(basic:true, playerType: self.owner, ef.pokemonToBeKnockedOut, self)
                 }
               }
             }
@@ -621,17 +645,18 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Magnetic Field", {
           text "Once during your turn (before your attack), if you have basic Energy cards in your discard pile, you may discard any 1 card from your hand. Then search for up to 2 basic Energy cards from your discard pile, show them to your opponent, and put them into your hand. You can't return the card you first discarded to your hand in this way. This power can't be used if Magneton is affected by a Special Condition."
           actionA {
+            checkLastTurn()
             checkNoSPC()
             assert my.discard.filterByType(BASIC_ENERGY) : "No Basic Energy cards in your discard pile."
-            checkLastTurn()
-
-            if (my.hand) {
-              my.hand.select("Select one card to discard.").discard()
-            }
-
-            my.discard.filterByType(BASIC_ENERGY).select(max: 2, "Select up to 2 Basic Energy scards to add to your hand.").moveTo(my.hand)
-
+            assert my.hand : "You have no cards in your hand"
             powerUsed()
+
+            def toDiscard = my.hand.select("Select one card to discard.")
+
+            my.discard.filterByType(BASIC_ENERGY).select(min: 1, max: 2, "Select up to 2 Basic Energy scards to add to your hand.").moveTo(my.hand)
+
+            toDiscard.discard()
+
           }
         }
         move "Magnetic Force", {
@@ -640,7 +665,7 @@ public enum PowerKeepers implements LogicCardInfo {
           onAttack {
             def amount = 0
             my.all.each {
-              amount += 10 * it.cards.filterByType(ENERGY).size()
+              amount += 10 * it.cards.energyCount(C)
             }
             damage amount
           }
@@ -661,8 +686,10 @@ public enum PowerKeepers implements LogicCardInfo {
           onAttack {
             damage 20
 
-            if (opp.hand.size() >= 5) {
-              opp.hand.oppSelect(min: opp.hand.size()-4, max: opp.hand.size()-4, "Discard cards until you have 4 left in your hand").discard()
+            afterDamage{
+              if (opp.hand.size() >= 5) {
+                opp.hand.oppSelect(min: opp.hand.size()-4, max: opp.hand.size()-4, "Discard cards until you have 4 left in your hand").discard()
+              }
             }
           }
         }
@@ -675,10 +702,10 @@ public enum PowerKeepers implements LogicCardInfo {
           text "30 damage. Before doing damage, discard all Trainer cards attached to the Defending Pokémon."
           energyCost C, C
           onAttack {
-            damage 30
             if (defending.cards.filterByType(TRAINER)) {
               defending.cards.filterByType(TRAINER).discard()
             }
+            damage 30
           }
         }
         move "Dark Burst", {
@@ -705,10 +732,12 @@ public enum PowerKeepers implements LogicCardInfo {
               }
             }
             before APPLY_ATTACK_DAMAGES, {
-              bg.dm().each {
-                if(it.to == self && it.notNoEffect && it.from.EX ) {
-                  it.dmg = hp(0)
-                  bc "Safeguard prevents damage"
+              if (ef.attacker.owner != self.owner && ef.attacker.EX) {
+                bg.dm().each {
+                  if(it.to == self && it.notNoEffect && it.dmg.value) {
+                    it.dmg = hp(0)
+                    bc "Safeguard prevents damage"
+                  }
                 }
               }
             }
@@ -737,7 +766,7 @@ public enum PowerKeepers implements LogicCardInfo {
           text "If your opponent has any Evolved Pokémon in play, remove the highest Stage Evolution card from each of them and put those cards back into his or her hand."
           energyCost C
           attackRequirement {
-            assert opp.all.findAll { it.evolution } : "Opponent does not have any Evolved Pokemon in play."
+            assert opp.all.any{ it.evolution } : "Opponent does not have any Evolved Pokemon in play."
           }
           onAttack {
             opp.all.findAll { it.evolution }.each {
@@ -800,9 +829,9 @@ public enum PowerKeepers implements LogicCardInfo {
           text "If Phoebe's Stadium is in play, prevent all damage done to Sableye by attacks from your opponent's Pokémon-ex."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
-              bg.dm().each {
-                if (it.to == self && it.from.EX) {
-                  if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Phoebe's Stadium") {
+              if (ef.attacker.EX && bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Phoebe's Stadium") {
+                bg.dm().each {
+                  if (it.to == self && it.dmg.value && it.notNoEffect) {
                     bc "Synergy Effect prevents all damage"
                     it.dmg=hp(0)
                   }
@@ -818,10 +847,11 @@ public enum PowerKeepers implements LogicCardInfo {
             assert my.deck : "No cards in deck"
           }
           onAttack {
-            if (my.deck.size() < 2) {
-              draw 2
-            } else {
-              my.deck.subList(my.deck.size() - 2, my.deck.size()).moveTo(hidden:true, my.hand)
+            if (my.deck) {
+              def drawStart = Math.max(0, my.deck.size() - 2)
+              def cardsDrawn = my.deck.size() - drawStart
+              my.deck.subList(drawStart, my.deck.size()).moveTo(hidden:true, my.hand)
+              bc "${my.owner.getPlayerUsername(bg)} drew ${cardsDrawn} cards from the bottom of their deck."
             }
           }
         }
@@ -865,10 +895,12 @@ public enum PowerKeepers implements LogicCardInfo {
               }
             }
             before APPLY_ATTACK_DAMAGES, {
-              bg.dm().each {
-                if(it.to == self && it.notNoEffect && it.from.EX ) {
-                  it.dmg = hp(0)
-                  bc "Safeguard prevents damage"
+              if (ef.attacker.EX) {
+                bg.dm().each {
+                  if(it.to == self && it.dmg.value && it.notNoEffect) {
+                    it.dmg = hp(0)
+                    bc "Safeguard prevents damage"
+                  }
                 }
               }
             }
@@ -878,8 +910,8 @@ public enum PowerKeepers implements LogicCardInfo {
           text "50 damage. Wobbuffet does 10 damage to itself, and don't apply Weakness and Resistance to this damage."
           energyCost P, C, C
           onAttack {
-            noWrDamage 50, defending
-            directDamage 10, self
+            damage 50, defending
+            noWrDamage 10, self
           }
         }
       };
@@ -890,8 +922,14 @@ public enum PowerKeepers implements LogicCardInfo {
           text "Zangoose can't be affected by any Special Conditions."
           delayedA {
             before APPLY_SPECIAL_CONDITION, self, {
-              bc ("$self is thick Skinned!")
+              bc "$self is thick Skinned!"
               prevent()
+            }
+          }
+          onActivate{
+            if (self.specialConditions) {
+              bc "${self}'s Thick Skin clears all Special Conditions from them."
+              clearSpecialCondition(self, SRC_ABILITY)
             }
           }
         }
@@ -941,12 +979,11 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Poison Structure", {
           text "Once during your turn (before your attack), if Sidney's Stadium is in play, you may choose 1 of the Defending Pokémon. That Pokémon is now Poisoned. This power can't be used if Cacturne is affected by a Special Condition."
           actionA {
-            checkNoSPC()
             checkLastTurn()
-            if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Sidney's Stadium") {
-              apply POISONED, opp.active
-            }
+            checkNoSPC()
+            assert (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Sidney's Stadium") : "Sidney's Stadium is not in play"
             powerUsed()
+            apply POISONED, opp.active, SRC_ABILITY
           }
         }
         move "Pin Missile", {
@@ -986,6 +1023,7 @@ public enum PowerKeepers implements LogicCardInfo {
           delayedA {
             after ATTACH_ENERGY, self, {
               if(ef.reason==PLAY_FROM_HAND && ef.card instanceof BasicEnergyCard && ef.card.basicType == R){
+                bc "Natural Cure clears all Special Conditions from ${self}."
                 clearSpecialCondition(self, SRC_ABILITY)
               }
             }
@@ -1006,9 +1044,9 @@ public enum PowerKeepers implements LogicCardInfo {
           text "If Glacia's Stadium is in play, any damage done to Glalie by attacks from your opponent's Pokémon is reduced by 30 (after applying Weakness and Resistance)."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
-              bg.dm().each {
-                if (it.to == self && it.dmg.value && it.notNoEffect) {
-                  if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Glacia's Stadium") {
+              if (ef.attacker.owner != self.owner && bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Glacia's Stadium") {
+                bg.dm().each {
+                  if (it.to == self && it.dmg.value && it.notNoEffect) {
                     bc "Synergy Effect -30"
                     it.dmg -= hp(30)
                   }
@@ -1022,7 +1060,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost W, C
           onAttack {
             damage 20
-            apply ASLEEP
+            applyAfterDamage ASLEEP
           }
         }
         move "Double-edge", {
@@ -1047,6 +1085,9 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Dream Eater", {
           text "50 damage. If the Defending Pokémon is not Asleep, this attack does nothing."
           energyCost P, C
+          attackRequirement {
+            assert defending.isSPC(ASLEEP) : "Your opponent's Active Pokémon is not Asleep"
+          }
           onAttack {
             if (defending.isSPC(ASLEEP)) {
               damage 50
@@ -1103,7 +1144,7 @@ public enum PowerKeepers implements LogicCardInfo {
             after PROCESS_ATTACK_EFFECTS, {
               if (self.active) {
                 bg.dm().each {
-                  if (it.to.active && it.notNoEffect && it.dmg.value) {
+                  if (it.to.active && it.dmg.value) {
                     bc "Vigorous Aura +10"
                     it.dmg += hp(10)
                   }
@@ -1124,7 +1165,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost F, F, C
           onAttack {
             damage 40
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -1136,11 +1177,16 @@ public enum PowerKeepers implements LogicCardInfo {
           text "Metang can't be affected by any Special Conditions."
           delayedA {
             before APPLY_SPECIAL_CONDITION, {
-              def pcs = e.getTarget(bg)
-              if (pcs.owner == self.owner) {
+              if (e.getTarget(bg) == self) {
                 bc "Clear Body prevents Special Conditions"
                 prevent()
               }
+            }
+          }
+          onActivate{
+            if (self.specialConditions) {
+              bc "Clear Body removes existing Special Conditions from $self."
+              clearSpecialCondition(self, SRC_ABILITY)
             }
           }
         }
@@ -1162,7 +1208,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 10
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
         move "Gentle Slap", {
@@ -1181,7 +1227,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost W, C
           onAttack {
             damage 20
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -1194,7 +1240,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost D, C
           onAttack {
             damage 20
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
         move "Darkness Charge", {
@@ -1202,7 +1248,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost D, C, C
           onAttack {
             damage 50
-            damage 10, self
+            directDamage 10, self
           }
         }
       };
@@ -1244,7 +1290,7 @@ public enum PowerKeepers implements LogicCardInfo {
           onAttack {
             flip {
               damage 60
-              apply PARALYZED
+              applyAfterDamage PARALYZED
             }
           }
         }
@@ -1256,7 +1302,7 @@ public enum PowerKeepers implements LogicCardInfo {
           text "If Vigoroth is your Active Pokémon and is damaged by an opponent's attack (even if Vigoroth is Knocked Out), put 1 damage counter on the Attacking Pokémon."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
-              if (bg.currentTurn == self.owner.opposite && bg.dm().find({ it.to==self && it.dmg.value }) && self.active) {
+              if (bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({ it.to==self && it.dmg.value })) {
                 directDamage(10, ef.attacker, Source.SRC_ABILITY)
               }
             }
@@ -1282,7 +1328,7 @@ public enum PowerKeepers implements LogicCardInfo {
             assert my.discard.find(cardTypeFilter(ENERGY)) : "No Energies in your discard pile."
           }
           onAttack {
-            my.discard.findAll(cardTypeFilter(ENERGY)).select().moveTo(my.hand)
+            my.discard.findAll(cardTypeFilter(ENERGY)).select().showToOpponent("Your opponent used Dig Deep.").moveTo(my.hand)
           }
         }
         move "Tackle", {
@@ -1301,8 +1347,11 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Retaliate", {
           text "10x damage. Does 10 damage times the number of damage counters on Bagon."
           energyCost C
+          attackRequirement {
+            assert self.numberOfDamageCounters : "$self has no damage counters on them."
+          }
           onAttack {
-            damage 10+10*self.numberOfDamageCounters
+            damage 10 * self.numberOfDamageCounters
           }
         }
       };
@@ -1314,7 +1363,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost P
           onAttack {
             damage 10
-            flip { apply CONFUSED }
+            flip { applyAfterDamage CONFUSED }
           }
         }
         move "Spinning Attack", {
@@ -1334,9 +1383,11 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost M
           onAttack {
             damage 10
-            if (opp.bench) {
-              flip {
-                moveEnergy(basic: true, defending, opp.bench)
+            afterDamage {
+              if (opp.bench) {
+                flip {
+                  moveEnergy(basic: true, defending, opp.bench)
+                }
               }
             }
           }
@@ -1361,7 +1412,7 @@ public enum PowerKeepers implements LogicCardInfo {
           text "If Carvanha is your Active Pokémon and is damaged by an opponent's attack (even if Carvanha is Knocked Out), put 1 damage counter on the Attacking Pokémon."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
-              if (bg.currentTurn == self.owner.opposite && bg.dm().find({ it.to==self && it.dmg.value }) && self.active) {
+              if (bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({ it.to==self && it.dmg.value })) {
                 directDamage(10, ef.attacker, Source.SRC_ABILITY)
               }
             }
@@ -1508,7 +1559,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost P
           onAttack {
             damage 10
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
         move "Cross Chop", {
@@ -1531,10 +1582,12 @@ public enum PowerKeepers implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            my.deck.search(min:0, max:2, "Search your deck for a card named Omanyte, Kabuto, Aerodactyl, Lileep, or Anorith", {it.name == "Omanyte" || it.name == "Kabuto" || it.name == "Aerodactyl" || it.name == "Lileep" || it.name == "Anorith"}).each {
+            def maxSpace = Math.min(my.bench.freeBenchCount, 2)
+            my.deck.search(min:0, max:maxSpace, "Search your deck for ${maxSpace == 2 ? "up to 2 cards" : "a card"} named Omanyte, Kabuto, Aerodactyl, Lileep, or Anorith", {
+              ["Omanyte", "Kabuto", "Aerodactyl", "Lileep", "Anorith"].contains(it.name)
+            }).each {
               my.deck.remove(it)
               benchPCS(it)
-              // TODO: Mark as basic
             }
             shuffleDeck()
           }
@@ -1553,6 +1606,9 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Charge", {
           text "Search your discard pile for a [L] Energy card and attach it to Pikachu."
           energyCost L
+          attackRequirement {
+            assert my.discard.filterByEnergyType(L) : "There are no [L] Energy cards in your discard pile"
+          }
           onAttack {
             attachEnergyFrom(type: L, my.discard, self)
           }
@@ -1592,10 +1648,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost P, C
           onAttack {
             damage 20
-            if (bench) {
-              def tar = my.bench.select("Select the Pokémon to switch with Ralts")
-              sw self, tar
-            }
+            switchYourActive()
           }
         }
       };
@@ -1626,7 +1679,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost P
           onAttack {
             damage 10
-            flip 1, { apply ASLEEP }, { apply CONFUSED }
+            flip 1, { applyAfterDamage ASLEEP }, { applyAfterDamage CONFUSED }
           }
         }
       };
@@ -1672,6 +1725,9 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Pebble Throw", {
           text "Choose 1 of your opponent's Benched Pokémon. This attack does 10 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C
+          attackRequirement {
+            assertOppBench()
+          }
           onAttack {
             if (opp.bench) {
               damage 10, opp.bench.select()
@@ -1724,7 +1780,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost R
           onAttack {
             damage 10
-            flip { apply BURNED }
+            flip { applyAfterDamage BURNED }
           }
         }
       };
@@ -1754,7 +1810,9 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost R, C
           onAttack {
             damage 30
-            discardSelfEnergy(R)
+            afterDamage {
+              discardSelfEnergy(R)
+            }
           }
         }
       };
@@ -1773,6 +1831,9 @@ public enum PowerKeepers implements LogicCardInfo {
         move "Flail", {
           text "10x damage. Does 10 damage times the number of damage counters on Wynaut."
           energyCost C
+          attackRequirement {
+            assert self.numberOfDamageCounters : "$self has no damage counters on them."
+          }
           onAttack {
             damage 10*self.numberOfDamageCounters
           }
@@ -1804,7 +1865,7 @@ public enum PowerKeepers implements LogicCardInfo {
       case ENERGY_RECYCLE_SYSTEM_73:
       return copy(Dragon.ENERGY_RECYCLE_SYSTEM_84, this);
       case ENERGY_REMOVAL_2_74:
-      return copy(FireRedLeafGreen.ENERGY_REMOVAL_2_89, this);
+      return copy(Expedition.ENERGY_REMOVAL_2_140, this);
       case ENERGY_SWITCH_75:
       return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this);
       case GLACIA_S_STADIUM_76:
@@ -1857,11 +1918,9 @@ public enum PowerKeepers implements LogicCardInfo {
           eff = delayed {
             before APPLY_SPECIAL_CONDITION, {
               def pcs=e.getTarget(bg)
-              if (pcs.types.contains(D)) {
-                if (ef.type == POISONED || ef.type == CONFUSED || ef.type == PARALYZED) {
-                  bc "Sidney's Stadium - [D] Pokemon can't be Asleep, Confused or Paralyzed."
-                  prevent()
-                }
+              if ( pcs.types.contains(D) && [ASLEEP, CONFUSED, PARALYZED].contains(ef.type) ) {
+                bc "Sidney's Stadium - [D] Pokemon can't be Asleep, Confused or Paralyzed."
+                prevent()
               }
             }
           }
@@ -1874,19 +1933,18 @@ public enum PowerKeepers implements LogicCardInfo {
       return supporter (this) {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Draw a number of cards up to the number of your opponent's Pokémon in play. If you have 7 or more cards (including this one) in your hand, you can't play this card."
-          //TODO: Check the Hidden Legends print, see if it works like this or with pre-errata text: originally said "If you have more than 7 cards (including this one)".
         onPlay {
           draw opp.all.size()
         }
         playRequirement {
-          assert my.deck : "Deck is empty"
-          assert my.hand.size() < 7 : "Hand size greater than 7"
+          assert my.deck : "Your deck is empty"
+          assert my.hand.size() < 7 : "You have 7 or more cards in your hand (including this card)"
         }
       };
       case CLAW_FOSSIL_84:
       return copy(LegendMaker.CLAW_FOSSIL_78, this);
       case MYSTERIOUS_FOSSIL_85:
-      return copy(FossilNG.MYSTERIOUS_FOSSIL, this);
+      return copy(LegendMaker.MYSTERIOUS_FOSSIL_79, this);
       case ROOT_FOSSIL_86:
       return copy(LegendMaker.ROOT_FOSSIL_80, this);
       case DARKNESS_ENERGY_87:
@@ -1915,7 +1973,7 @@ public enum PowerKeepers implements LogicCardInfo {
               def tar = opp.all.findAll{it != src}.select("Choose the Pokémon that will receive the $countersToMove Damage Counters")
 
               // Ensure damage value is not negative
-              src.damage = hp(Math.max(src.damage.value - 30, 0))
+              src.damage -= hp(10 * countersToMove)
               directDamage 10 * countersToMove, tar, SRC_ABILITY
             }
           }
@@ -1941,6 +1999,7 @@ public enum PowerKeepers implements LogicCardInfo {
           actionA {
             checkLastTurn()
             powerUsed()
+            bc "$self's type is now Fighting until the end of this turn."
             delayed {
               def eff
               register {
@@ -1969,9 +2028,11 @@ public enum PowerKeepers implements LogicCardInfo {
           onAttack {
             damage 60
 
-            if (confirm("Discard a [P] attached to Claydol ex?")) {
-              discardSelfEnergy(P)
-              discardDefendingEnergy()
+            afterDamage {
+              if (confirm("Discard a [P] attached to Claydol ex? If you do, discard an Energy card attached to the Defending Pokémon.")) {
+                discardSelfEnergy(P)
+                discardDefendingEnergy()
+              }
             }
           }
         }
@@ -1986,14 +2047,18 @@ public enum PowerKeepers implements LogicCardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if (it.to == self && it.dmg.value && it.notNoEffect) {
+                if (it.to == self && it.dmg.value) {
                   if (self.owner.pbg.hand && oppConfirm("Activate Psychic Protector to reduce damage taken?")) {
                     def maxDiscard = Math.min(4, my.hand.size())
                     def toDiscard = self.owner.pbg.hand.oppSelect(min: 0, max: maxDiscard, "For each card discarded, the damage Flygon ex takes will reduced by 10.")
                     def reductionAmount = toDiscard.size() * 10
                     toDiscard.discard()
-                    bc "Psychic Protector -$reductionAmount"
-                    it.dmg -= hp(reductionAmount)
+                    if (it.notNoEffect) {
+                      bc "Psychic Protector -$reductionAmount"
+                      it.dmg -= hp(reductionAmount)
+                    } else {
+                      bc "Psychic Protector's -$reductionAmount damage reduction is ignored"
+                    }
                   }
                 }
               }
@@ -2005,13 +2070,14 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost C, C, C
           onAttack {
             damage 70
-            flip { cantUseAttack(thisMove, self) }
+            flip 1, {}, { cantUseAttack(thisMove, self) }
           }
         }
       };
       case METAGROSS_EX_95:
       return evolution (this, from:"Metang", hp:HP150, type:M, retreatCost:4) {
         weakness R
+        weakness F
         resistance G, MINUS30
         pokePower "Magnetic Redraw", {
           text "Once during your turn (before your attack), if Metagross ex is your Active Pokémon, you may use this power. Each player shuffles his or her hand into his or her deck. Then, each player draws 4 cards. This power can't be used if Metagross ex is affected by a Special Condition."
@@ -2019,17 +2085,15 @@ public enum PowerKeepers implements LogicCardInfo {
             checkLastTurn()
             checkNoSPC()
             assert self.active : "$self is not an Active Pokémon"
+            assert ( [my, opp].any{curPlayer -> curPlayer.hand || curPlayer.deck} ) : "No player has cards in their deck or in their hand"
             powerUsed()
 
+            my.hand.moveTo(hidden:true, my.deck)
             opp.hand.moveTo(hidden:true, opp.deck)
+            shuffleDeck()
             shuffleDeck(null, TargetPlayer.OPPONENT)
-            draw 4, TargetPlayer.OPPONENT
-
-            if (my.hand.size()) {
-              my.hand.moveTo(hidden:true, my.deck)
-              shuffleDeck()
-            }
             draw 4
+            draw 4, TargetPlayer.OPPONENT
           }
         }
         move "Scanblast", {
@@ -2055,9 +2119,11 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost R, R, C, C
           onAttack {
             damage 150
-
-            if (my.deck) {
-              my.deck.subList(0, 5).discard()
+            afterDamage {
+              if (my.deck) {
+                def maxDiscard = Math.min(5, my.deck.size())
+                my.deck.subList(0, maxDiscard).discard()
+              }
             }
           }
         }
@@ -2068,7 +2134,9 @@ public enum PowerKeepers implements LogicCardInfo {
             opp.bench.each {
               damage 30, it
             }
-            discardAllSelfEnergy(W)
+            afterDamage {
+              discardAllSelfEnergy(W)
+            }
           }
         }
       };
@@ -2084,10 +2152,9 @@ public enum PowerKeepers implements LogicCardInfo {
             assert opp.hand : "Opponent's hand is empty"
           }
           onAttack {
-            opp.hand.showToMe("Opponent's hand")
-            def tmp = opp.hand.filterByType(POKEMON).select(max:1, "Select a Pokémon and use one of that Pokémon’s attacks as this attack.")
-            if (tmp) {
-              def card = tmp.first()
+            def pokeCards = opp.hand.shuffledCopy().showToMe("Opponent's hand").filterByType(POKEMON)
+            if (pokeCards) {
+              def card = pokeCards.select(max:1, "Select a Pokémon and use one of that Pokémon’s attacks as this attack.").first()
               bc "$card was chosen"
               def moves = card.asPokemonCard().moves
               if (moves) {
@@ -2096,7 +2163,11 @@ public enum PowerKeepers implements LogicCardInfo {
                 def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
                 attack (move as Move)
                 bef.unregisterItself(bg().em())
+              } else {
+                bc "$thisMove failed! The selected Pokémon card had no attacks on it."
               }
+            } else {
+              bc "$thisMove failed! There were no Pokémon to copy an attack from."
             }
           }
         }
@@ -2121,8 +2192,9 @@ public enum PowerKeepers implements LogicCardInfo {
           text "If your opponent's Active Pokémon retreats and has 40 or more remaining HP, put 3 damage counters on that Pokémon. You can't use more than 1 Metal Gravity Poké-Body each turn."
           delayedA {
             after RETREAT, {
-              if (ef.retreater.owner == self.owner.opposite && ef.retreater.getRemainingHP().value >= 40) {
-                bc "Metal Gravity"
+              if (bg.em().retrieveObject("Metal_Gravity") != bg.turnCount && ef.retreater.owner == self.owner.opposite && ef.retreater.getRemainingHP().value >= 40) {
+                bg.em().storeObject("Metal_Gravity", bg.turnCount)
+                bc "Metal Gravity activates"
                 directDamage 30, ef.retreater, SRC_ABILITY
               }
             }
@@ -2200,7 +2272,6 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Crimson Ray", {
           text "Once during your turn, when you put Flareon Star from your hand onto your Bench, you may use this power. Each Active Pokémon (both yours and your opponent's) is now Burned."
           onActivate {r->
-            checkLastTurn()
             if (r==PLAY_FROM_HAND && confirm("Use Crimson Ray?")) {
               powerUsed()
 
@@ -2214,7 +2285,9 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost R, R, C
           onAttack {
             damage 50
-            discardSelfEnergy(R)
+            afterDamage {
+              discardSelfEnergy(R)
+            }
           }
         }
       };
@@ -2225,7 +2298,6 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Yellow Ray", {
           text "Once during your turn, when you put Jolteon Star from your hand onto your Bench, you may put 1 damage counter on each Active Pokémon (both yours and your opponent's)."
           onActivate {r->
-            checkLastTurn()
             if (r==PLAY_FROM_HAND && confirm("Use Yellow Ray?")) {
               powerUsed()
               directDamage 10, opp.active, SRC_ABILITY
@@ -2248,14 +2320,12 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Blue Ray", {
           text "Once during your turn, when you put Vaporeon Star from your hand onto your Bench, you may remove all Special Conditions and 3 damage counters from each Active Pokémon (both yours and your opponent's)."
           onActivate {r->
-            if (r==PLAY_FROM_HAND) {
-              if (confirm("Use Blue Ray?")) {
-                powerUsed()
-                clearSpecialCondition(opp.active, Source.SRC_ABILITY)
-                clearSpecialCondition(my.active, Source.SRC_ABILITY)
-                heal 30, my.active, Source.SRC_ABILITY
-                heal 30, opp.active, Source.SRC_ABILITY
-              }
+            if (r==PLAY_FROM_HAND && confirm("Use Blue Ray?")) {
+              powerUsed()
+              clearSpecialCondition(my.active, Source.SRC_ABILITY)
+              heal 30, my.active, Source.SRC_ABILITY
+              clearSpecialCondition(opp.active, Source.SRC_ABILITY)
+              heal 30, opp.active, Source.SRC_ABILITY
             }
           }
         }
@@ -2264,7 +2334,9 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost W, W, C
           onAttack {
             damage 40
-            flip { discardDefendingEnergy() }
+            afterDamage {
+              flip { discardDefendingEnergy() }
+            }
           }
         }
       };

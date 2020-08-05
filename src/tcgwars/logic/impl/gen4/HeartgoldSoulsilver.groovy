@@ -150,7 +150,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
   DARKNESS_ENERGY_121 ("Darkness Energy", 121, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
   METAL_ENERGY_122 ("Metal Energy", 122, Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
   GYARADOS_123 ("Gyarados", 123, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  ALPH_LITHOGRAPH_ONE ("Alph Lithograph", 124, Rarity.HOLORARE, [TRAINER]);
+  ALPH_LITHOGRAPH_ONE ("Alph Lithograph", 124, Rarity.HOLORARE, [TRAINER, ITEM]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -827,8 +827,8 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             energyCost C
             onAttack {
               flip 3, {
-                if(opp.hand) {
-                  opp.hand.select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be discarded").showToMe("Selected card").showToOpponent("This card will be discarded").discard()
+                if (opp.hand) {
+                  opp.hand.shuffledCopy().select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be discarded").showToMe("Selected card").showToOpponent("This card will be discarded").discard()
                 }
               }
             }
@@ -1937,7 +1937,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             attackRequirement {
               assert opp.hand : "Opponent has no cards in hand."}
             onAttack {
-              opp.hand.showToMe("Opponent's hand")
+              if (opp.hand) opp.hand.shuffledCopy().showToMe("Opponent's hand")
             }
           }
           move "Scratch", {
@@ -2449,7 +2449,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
         return itemCard (this) {
           text "LOOK AT YOUR OPPONENTS HAND!"
           onPlay {
-            opp.hand.showToMe("Opponent's hand")
+            opp.hand.shuffledCopy().showToMe("Opponent's hand")
           }
           playRequirement{
             assert opp.hand : "Opponent has no cards in hand."

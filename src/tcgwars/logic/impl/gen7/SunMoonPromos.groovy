@@ -818,23 +818,28 @@ public enum SunMoonPromos implements LogicCardInfo {
             text "Move any number of damage counters on your opponent's Pokémon to their other Pokémon in any way you like."
             energyCost P, C
             attackRequirement {
-              assert opp.all.size() > 1
+              assert opp.all.size() > 1 : "Your opponent only has one Pokémon in play"
             }
             onAttack {
-              while (1) {
-                def tar = opp.all.findAll{it.numberOfDamageCounters}
-                if(!tar) break
-                def from = tar.select("Move counter from (cancel to stop)", false)
-                if(!from) break
-                tar = opp.all
-                tar.remove(from)
-                if(!tar) break
-                def to = tar.select("To?")
-                from.damage -= hp(10)
-                to.damage += hp(10)
-                bc "Moved a damage counter from $from to $to"
-                checkFaint()
+              //Taken from UPR Tapu Lele
+              eff = delayed {
+                before KNOCKOUT, {
+                  prevent()
+                }
               }
+              while(1){
+                def pl=(opp.all.findAll {it.numberOfDamageCounters})
+                if(!pl) break;
+                def src =pl.select("Source for damage counter (cancel to stop)", false)
+                if(!src) break;
+                def tar=opp.all.select("Target for damage counter (cancel to stop)", false)
+                if(!tar) break;
+
+                src.damage-=hp(10)
+                directDamage 10, tar
+              }
+              eff.unregister()
+              checkFaint()
             }
           }
         };
@@ -1030,8 +1035,8 @@ public enum SunMoonPromos implements LogicCardInfo {
               assert opp.bench
             }
             onAttack {
-              sw opp.active, opp.bench.select()
-              apply CONFUSED, opp.active
+              def target = opp.bench.select("Select the new Active Pokémon.")
+              if ( sw2(target) ) { apply CONFUSED, target }
             }
           }
           move "Jumping Side Kick", {
@@ -1805,8 +1810,8 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
             onAttack{
               gxPerform()
-              if(opp.hand){
-                opp.hand.showToMe("Your opponent's hand")
+              if (opp.hand){
+                opp.hand.shuffledCopy().showToMe("Your opponent's hand")
                 opp.hand.filterByType(ENERGY).each{
                   damage 120
                 }
@@ -2202,7 +2207,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               assert my.deck || my.hand : "You don't have any card to draw"
             }
             onAttack{
-              my.hand.moveTo(my.deck)
+              my.hand.moveTo(hidden:true, my.deck)
               shuffleDeck()
               draw opp.hand.size()
             }
@@ -2965,7 +2970,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               afterDamage {
                 def number = Math.min(2, opp.hand.size())
                 if (number > 0) {
-                  opp.hand.select(hidden: true, count:number).showToMe("Chosen cards").moveTo(opp.deck)
+                  opp.hand.shuffledCopy().select(hidden: true, count:number).showToMe("Chosen cards").moveTo(opp.deck)
                   shuffleDeck(null, TargetPlayer.OPPONENT)
                 }
               }
@@ -3303,9 +3308,13 @@ public enum SunMoonPromos implements LogicCardInfo {
             onAttack {
               gxPerform()
               def maxSpace = my.bench.freeBenchCount
-              babyFossils().select(min:0, max: maxSpace, "Bench up to $maxSpace card(s) from the discard that evolve from Unidentified Fossil.", babyFossils).each{
-                  my.discard.remove(it);
-                  benchPCS(it)
+              if (maxSpace){
+                babyFossils().select(min:0, max: maxSpace, "Bench up to $maxSpace card(s) from the discard that evolve from Unidentified Fossil.").each{
+                    my.discard.remove(it);
+                    benchPCS(it)
+                }
+              } else {
+                bc "Bench is full, $thisMove does nothing!"
               }
             }
           }
@@ -3347,7 +3356,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               assert opp.hand.size() > 5 : "Opponent has 5 or less cards in hand."
             }
             onAttack {
-              opp.hand.select(hidden: true, count:opp.hand.size() - 5,"Choose the cards to discard.").discard()
+              opp.hand.shuffledCopy().select(hidden: true, count:opp.hand.size() - 5,"Choose the cards to discard.").discard()
             }
           }
           move "Tail Smash", {

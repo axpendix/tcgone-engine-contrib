@@ -1,5 +1,9 @@
 package tcgwars.logic.impl.gen3;
 
+import tcgwars.logic.impl.gen2.Expedition;
+
+import tcgwars.logic.effect.gm.Attack
+
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
@@ -113,20 +117,20 @@ public enum FireRedLeafGreen implements LogicCardInfo {
   WEEDLE_86 ("Weedle", 86, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
   BILL_S_MAINTENANCE_87 ("Bill's Maintenance", 87, Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
   CELIO_S_NETWORK_88 ("Celio's Network", 88, Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
-  ENERGY_REMOVAL_2_89 ("Energy Removal 2", 89, Rarity.UNCOMMON, [TRAINER]),
-  ENERGY_SWITCH_90 ("Energy Switch", 90, Rarity.UNCOMMON, [TRAINER]),
-  EXP_ALL_91 ("EXP.ALL", 91, Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER]),
-  GREAT_BALL_92 ("Great Ball", 92, Rarity.UNCOMMON, [TRAINER]),
-  LIFE_HERB_93 ("Life Herb", 93, Rarity.UNCOMMON, [TRAINER]),
-  MT__MOON_94 ("Mt. Moon", 94, Rarity.UNCOMMON, [STADIUM, TRAINER]),
-  POKE_BALL_95 ("Poké Ball", 95, Rarity.UNCOMMON, [TRAINER]),
-  POKEDEX_HANDY909_96 ("PokéDex Handy909", 96, Rarity.UNCOMMON, [TRAINER]),
-  POKEMON_REVERSAL_97 ("Pokémon Reversal", 97, Rarity.UNCOMMON, [TRAINER]),
+  ENERGY_REMOVAL_2_89 ("Energy Removal 2", 89, Rarity.UNCOMMON, [TRAINER, ITEM]),
+  ENERGY_SWITCH_90 ("Energy Switch", 90, Rarity.UNCOMMON, [TRAINER, ITEM]),
+  EXP_ALL_91 ("EXP.ALL", 91, Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER, ITEM]),
+  GREAT_BALL_92 ("Great Ball", 92, Rarity.UNCOMMON, [TRAINER, ITEM]),
+  LIFE_HERB_93 ("Life Herb", 93, Rarity.UNCOMMON, [TRAINER, ITEM]),
+  MT__MOON_94 ("Mt. Moon", 94, Rarity.UNCOMMON, [STADIUM, TRAINER, ITEM]),
+  POKE_BALL_95 ("Poké Ball", 95, Rarity.UNCOMMON, [TRAINER, ITEM]),
+  POKEDEX_HANDY909_96 ("PokéDex Handy909", 96, Rarity.UNCOMMON, [TRAINER, ITEM]),
+  POKEMON_REVERSAL_97 ("Pokémon Reversal", 97, Rarity.UNCOMMON, [TRAINER, ITEM]),
   PROF__OAK_S_RESEARCH_98 ("Prof. Oak's Research", 98, Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
-  SUPER_SCOOP_UP_99 ("Super Scoop Up", 99, Rarity.UNCOMMON, [TRAINER]),
-  VS_SEEKER_100 ("VS Seeker", 100, Rarity.UNCOMMON, [TRAINER]),
-  POTION_101 ("Potion", 101, Rarity.COMMON, [TRAINER]),
-  SWITCH_102 ("Switch", 102, Rarity.COMMON, [TRAINER]),
+  SUPER_SCOOP_UP_99 ("Super Scoop Up", 99, Rarity.UNCOMMON, [TRAINER, ITEM]),
+  VS_SEEKER_100 ("VS Seeker", 100, Rarity.UNCOMMON, [TRAINER, ITEM]),
+  POTION_101 ("Potion", 101, Rarity.COMMON, [TRAINER, ITEM]),
+  SWITCH_102 ("Switch", 102, Rarity.COMMON, [TRAINER, ITEM]),
   MULTI_ENERGY_103 ("Multi Energy", 103, Rarity.RARE, [SPECIAL_ENERGY, ENERGY]),
   BLASTOISE_EX_104 ("Blastoise ex", 104, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _WATER_, EX]),
   CHARIZARD_EX_105 ("Charizard ex", 105, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIRE_, EX]),
@@ -313,12 +317,12 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             text "Shuffle your hand into your deck. Draw up to 8 cards."
             energyCost C
             attackRequirement {
-              assert my.hand.notEmpty && my.deck.notEmpty
+              assert my.hand.notEmpty || my.deck.notEmpty
             }
             onAttack {
-              my.hand.moveTo(my.deck)
+              my.hand.moveTo(hidden:true, my.deck)
               shuffleDeck()
-              draw 8
+              draw choose(1..8,"How many cards would you like to draw?")
             }
           }
           move "Big Eggsplosion", {
@@ -1460,13 +1464,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost W, C, C
             onAttack {
               damage 40
-              afterDamage{
-                if(my.bench){
-                  if(confirm("switch Wartortle with 1 of your Benched Pokémon?")){
-                    sw self, my.bench.select()
-                  }
-                }
-              }
+              switchYourActive(may: true)
             }
           }
 
@@ -1635,7 +1633,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               assert opp.bench
             }
             onAttack {
-              sw defending, opp.bench.select()
+              switchYourOpponentsBenchedWithActive()
             }
           }
           move "Moon Kick", {
@@ -1758,9 +1756,8 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               assert opp.bench : "There is no Pokémon to switch"
             }
             onAttack {
-              def pcs = opp.bench.select("New active")
-              sw defending, pcs
-              apply ASLEEP, pcs
+              def target = opp.bench.select("Select the new Active Pokémon.")
+              if ( sw2(target) ) { apply ASLEEP, target }
             }
           }
           move "Quick Blow", {
@@ -2125,13 +2122,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost W, C
             onAttack {
               damage 20
-              afterDamage{
-                if(my.bench){
-                  if(confirm("switch Squirtle with 1 of your Benched Pokémon?")){
-                    sw self, my.bench.select("New active")
-                  }
-                }
-              }
+              switchYourActive(may: true)
             }
           }
 
@@ -2230,16 +2221,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           }
         };
       case ENERGY_REMOVAL_2_89:
-        return basicTrainer (this) {
-          text "Flip a coin. If heads, choose 1 Energy card attached to 1 of your opponent’s Pokémon and discard it."
-          onPlay {
-            flip {
-              discardOpponentEnergy(Target.OPP_ALL)
-            }
-          }
-          playRequirement{
-          }
-        };
+        return copy(Expedition.ENERGY_REMOVAL_2_140, this);
       case ENERGY_SWITCH_90:
         return basicTrainer (this) {
           text "Move a basic Energy card attached to 1 of your Pokémon to another of your Pokémon."
@@ -2251,12 +2233,17 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
           playRequirement{
+            assertMyBench()
+            assertMyAll(info:"with basic Energy cards attached to them", {it.cards.filterByType(BASIC_ENERGY)})
           }
         };
       case EXP_ALL_91:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nAttach EXP.ALL to 1 of your Pokémon (excluding Pokémon-ex and Pokémon that has an owner in its name) that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nDuring your opponent’s turn, if 1 of your Active Pokémon would be Knocked Out by your opponent’s attack, you may take 1 basic Energy card attached to that Knocked Out Pokémon and attach it to the Pokémon with EXP.ALL attached to it. If you do, discard EXP.ALL."
           def eff
+          def check = {
+            if (it.EX || it.topPokemonCard.cardTypes.is(OWNERS_POKEMON)) {discard thisCard}
+          }
           onPlay {reason->
             eff = delayed {
               before KNOCKOUT, {
@@ -2269,13 +2256,22 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                   }
                 }
               }
+              after EVOLVE, self, {check(self)}
+              after DEVOLVE, self, {check(self)}
+              //TODO: onMove() instead of this
+              after PROCESS_ATTACK_EFFECTS, {
+                if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
+                  check(self)
+                }
+              }
             }
+            check(self)
           }
           onRemoveFromPlay {
             eff.unregister()
           }
           allowAttach {to->
-            to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON) && to.topPokemonCard.cardTypes.isNot(EX)
+            to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON) && !to.EX
           }
         };
       case GREAT_BALL_92:
@@ -2365,7 +2361,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           onPlay {
             if(opp.bench){
               flip{
-                sw opp.active, opp.bench.select(), TRAINER_CARD
+                switchYourOpponentsBenchedWithActive(TRAINER_CARD)
               }
             }
           }
@@ -2444,6 +2440,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
           playRequirement{
+            assertMyAll(info:"with damage on them", {it.numberOfDamageCounters})
           }
         };
       case SWITCH_102:
@@ -2588,7 +2585,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                 def src = pl.select(info, false)
                 if(!src) break;
 
-                def selection = src.cards.filterByType(ENERGY).select("Card to discard")
+                def selection = src.cards.filterByType(ENERGY).findAll{enCard -> !toBeDiscarded.contains(enCard)}.select("Card to discard")
                 toBeDiscarded.addAll(selection)
               }
               damage 30+20*toBeDiscarded.size()
@@ -2608,7 +2605,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost P, C
             onAttack {
               damage 40
-              opp.hand.showToMe("Opponent’s hand")
+              opp.hand.shuffledCopy().showToMe("Opponent’s hand")
               damage 10*opp.hand.findAll{it.cardTypes.is(TRAINER)}.size()
             }
           }
@@ -2765,11 +2762,11 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                 powerUsed()
                 sw my.active, self
                 while(1){
-                  def pl=(my.all.findAll {it.cards.filterByEnergyType(W) && it!=self})
+                  def pl=(my.all.findAll {it.cards.filterByBasicEnergyType(W) && it!=self})
                   if(!pl) break;
-                  def src=pl.select("Source for [W] energy (cancel to stop moving)", false)
+                  def src=pl.select("Source for basic [W] Energy (cancel to stop moving)", false)
                   if(!src) break;
-                  def card=src.cards.filterByEnergyType(W).select("Card to move").first()
+                  def card=src.cards.filterByBasicEnergyType(W).select("Card to move").first()
                   energySwitch(src, self, card)
                 }
               }
@@ -2780,9 +2777,11 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost W, W, C
             onAttack {
               damage 50
-              if(confirm("Discard an Energy card attached to $self?")){
-                discardSelfEnergy C
-                discardDefendingEnergy()
+              if (confirm("Discard an Energy card attached to $self?")) {
+                afterDamage {
+                  discardSelfEnergy C
+                  discardDefendingEnergy()
+                }
               }
             }
           }
@@ -2798,11 +2797,11 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                 powerUsed()
                 sw my.active, self
                 while (1) {
-                  def pl = (my.all.findAll { it.cards.filterByEnergyType(R) && it != self })
+                  def pl = (my.all.findAll { it.cards.filterByBasicEnergyType(R) && it != self })
                   if (!pl) break;
-                  def src = pl.select("Source for [R] energy (cancel to stop moving)", false)
+                  def src = pl.select("Source for basic [R] Energy (cancel to stop moving)", false)
                   if (!src) break;
-                  def card = src.cards.filterByEnergyType(R).select("Card to move").first()
+                  def card = src.cards.filterByBasicEnergyType(R).select("Card to move").first()
                   energySwitch(src, self, card)
                 }
               }
@@ -2814,8 +2813,8 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost R, R, C
             onAttack {
               damage 60
-              if(confirm("Discard an Energy card attached to $self?")){
-                discardSelfEnergy C
+              if (confirm("Discard an Energy card attached to $self?")) {
+                afterDamage {discardSelfEnergy C}
                 applyAfterDamage CONFUSED
               }
             }
@@ -2831,11 +2830,11 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                 powerUsed()
                 sw my.active, self
                 while (1) {
-                  def pl = (my.all.findAll { it.cards.filterByEnergyType(L) && it != self })
+                  def pl = (my.all.findAll { it.cards.filterByBasicEnergyType(L) && it != self })
                   if (!pl) break;
-                  def src = pl.select("Source for [L] energy (cancel to stop moving)", false)
+                  def src = pl.select("Source for basic [L] Energy (cancel to stop moving)", false)
                   if (!src) break;
-                  def card = src.cards.filterByEnergyType(L).select("Card to move").first()
+                  def card = src.cards.filterByBasicEnergyType(L).select("Card to move").first()
                   energySwitch(src, self, card)
                 }
               }
@@ -2846,9 +2845,9 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost L, L, C
             onAttack {
               damage 50
-              if(confirm("Discard an Energy card attached to $self for +20?")){
-                discardSelfEnergy C
+              if (confirm("Discard an Energy card attached to $self for +20?")) {
                 damage 20
+                afterDamage {discardSelfEnergy C}
               }
             }
           }

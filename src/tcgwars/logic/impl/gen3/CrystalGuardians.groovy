@@ -6,6 +6,9 @@ import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen3.DeltaSpecies;
 import tcgwars.logic.impl.gen5.PlasmaStorm;
 import tcgwars.logic.impl.gen5.BlackWhite;
+import tcgwars.logic.impl.gen7.GuardiansRising;
+
+import tcgwars.logic.effect.gm.Attack
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -223,8 +226,8 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost P, C
           onAttack {
             damage 30
-            if (!defending.evolution) {
-              apply CONFUSED
+            if (defending.notEvolution) {
+              applyAfterDamage CONFUSED
             }
           }
         }
@@ -244,6 +247,9 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Enraged Linear Attack", {
           text "Choose 1 of your opponent's Pokémon. This attack does 10 damage for each damage counter on Blastoise to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost F, C
+          attackRequirement{
+            assert self.numberOfDamageCounters : "$self has no damage counters"
+          }
           onAttack {
             damage 10*self.numberOfDamageCounters, opp.all.select("Deal damage to?")
           }
@@ -295,17 +301,12 @@ public enum CrystalGuardians implements LogicCardInfo {
           onActivate {r->
             if (r==PLAY_FROM_HAND && my.deck && confirm("Use Peal of Thunder?")) {
               powerUsed()
-              my.deck.subList(0,5).showToMe("Top 5 cards of your deck.")
-              //TODO: This should allow to choose which energies to attach. You could choose not to attach any and just discard all 5 cards.
-              if (my.deck.subList(0,5).filterByType(ENERGY)) {
-                def tar = my.all.select("Attach Energies to?")
-                my.deck.subList(0,5).filterByType(ENERGY).each {
-                  if (it.cardTypes.is(ENERGY)) {
-                    attachEnergy(self,it)
-                  } else {
-                    discard it
-                  }
-                }
+              def tar = my.deck.subList(0,5)
+              def sel = tar.select(min:0, max:tar.size(), "The top 5 cards of your deck. Select which Energy cards you want to attach to 1 of your Pokémon. The Energy cards you don't select, alongside all non-Energy cards, will be discarded.", cardTypeFilter(ENERGY))
+              if (sel) {
+                def pcs = my.all.select("Which Pokémon will you attach the selected energy to?")
+                sel.each{ attachEnergy(pcs, it) }
+                tar.getExcludedList(sel).discard()
               }
             }
           }
@@ -315,7 +316,9 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost L, M, M, C
           onAttack {
             damage 120
-            discardAllSelfEnergy(M)
+            afterDamage{
+              discardAllSelfEnergy(M)
+            }
           }
         }
       };
@@ -337,7 +340,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           text "Choose 1 of your opponent's Pokémon. This attack does 30 damage to that Pokémon. This attack's damage isn't affected by Weakness or Resistance."
           energyCost F, C
           onAttack {
-            damage 30, opp.all.select()
+            noWrDamage 30, opp.all.select()
           }
         }
         move "Double-edge", {
@@ -356,9 +359,9 @@ public enum CrystalGuardians implements LogicCardInfo {
           text "If your opponent has any Pokémon-ex in play, each of Ludicolo's attacks does 30 more damage to the Defending Pokémon."
           delayedA {
             after PROCESS_ATTACK_EFFECTS, {
-              bg.dm().each {
-                if (it.from.owner==self.owner && it.to.active && it.to.owner!=self.owner && it.dmg.value) {
-                  if (opp.all.findAll { it.EX }) {
+              if (opp.all.any{ it.EX }) {
+                bg.dm().each {
+                  if (it.from == self && it.to.active && it.to.owner != self.owner && it.dmg.value && it.notNoEffect) {
                     bc "Overzealous +30"
                     it.dmg += hp(30)
                   }
@@ -433,7 +436,9 @@ public enum CrystalGuardians implements LogicCardInfo {
           onAttack {
             damage 30
             afterDamage {
-              whirlwind()
+              if (!defending.slatedToKO && opp.bench) {
+                sw opp.active, opp.bench.oppSelect("Choose your new Active Pokémon.")
+              }
             }
           }
         }
@@ -443,7 +448,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           onAttack {
             damage 50
             if (self.cards.hasType(POKEMON_TOOL)) {
-              opp.bench.each {
+              opp.bench.findAll{it.EX}.each {
                 damage 20, it
               }
             }
@@ -461,9 +466,10 @@ public enum CrystalGuardians implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            def trainer = my.deck.search(count:1, "Select an Trainer card",cardTypeFilter(ITEM))
+            def trainer = my.deck.search(count:1, "Select an Trainer card",cardTypeFilter(TRAINER))
             trainer.each {
               if (it.cardTypes.is(POKEMON_TOOL)) {
+                //TODO: Should use some PCS method for checking if tools can be attached, as to cover multi-tool Pokémon (Ancient Trait Gyarados, Genesect-GX, etc.)
                 if (my.all.findAll{!it.cards.filterByType(POKEMON_TOOL)} && confirm("Attach this tool to one of your pokémon?")) {
                   trainer.moveTo(my.all.findAll{!it.cards.filterByType(POKEMON_TOOL)}.select("Attach $it to which pokémon?").cards)
                 }
@@ -550,8 +556,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokePower "Crush Chance", {
           text "Once during your turn, when you put Tauros from your hand onto your Bench, you may discard a Stadium card in play."
           onActivate {r->
-            if (r==PLAY_FROM_HAND && bg.stadiumInfoStruct && bg.em().retrieveObject("Crush_Chance")!=bg.turnCount && confirm('Use Crush Chance to discard the current Stadium Card?')) {
-              bg.em().storeObject("Crush_Chance", bg.turnCount)
+            if (r==PLAY_FROM_HAND && bg.stadiumInfoStruct && confirm('Use Crush Chance to discard the current Stadium Card?')) {
               powerUsed()
               discard bg.stadiumInfoStruct.stadiumCard
             }
@@ -608,10 +613,12 @@ public enum CrystalGuardians implements LogicCardInfo {
           text "As long as Blastoise's remaining HP is 40 or less, Blastoise does 40 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
           delayedA {
             after PROCESS_ATTACK_EFFECTS, {
-              bg.dm().each {
-                if (it.from == self && self.getRemainingHP().value <= 40 && it.dmg.value && it.notNoEffect) {
-                  bc "Water Pressure +40"
-                  it.dmg += hp(40)
+              if (ef.attacker == self && self.getRemainingHP().value <= 40) {
+                bg.dm().each {
+                  if (it.to.owner == self.owner.opposite && it.to.active && it.dmg.value && it.notNoEffect) {
+                    bc "Water Pressure +40"
+                    it.dmg += hp(40)
+                  }
                 }
               }
             }
@@ -635,9 +642,9 @@ public enum CrystalGuardians implements LogicCardInfo {
             checkNoSPC()
             checkLastTurn()
             assert self.active : "Cacturne is not an Active Pokemon"
-            assert opp.all.findAll { it.numberOfDamageCounters } : "Opponent has no damaged Pokemon."
+            assert opp.all.any{ it.numberOfDamageCounters } : "Opponent has no damaged Pokemon."
             powerUsed()
-            directDamage 10, opp.all.findAll { it.numberOfDamageCounters }.select("Which Pokemon to put 1 damage counter on?")
+            directDamage 10, opp.all.findAll{ it.numberOfDamageCounters }.select("Which Pokemon to put 1 damage counter on?")
           }
         }
         move "Triple Needle", {
@@ -645,9 +652,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost F
           onAttack {
             multiSelect(opp.all, 3).each {
-              targeted(it) {
-                damage 10, it
-              }
+              damage 10, it
             }
           }
         }
@@ -682,11 +687,11 @@ public enum CrystalGuardians implements LogicCardInfo {
         weakness D
         resistance F, MINUS30
         pokeBody "Cursed Glare", {
-          text "As long as Dusclops is your Active Pokémon, your opponent can't attach any Special Energy cards (except for Darkness and [M] Energy cards) from his or her hand to his or her Active Pokémon."
+          text "As long as Dusclops is your Active Pokémon, your opponent can't attach any Special Energy cards (except for [D] and [M] Energy cards) from his or her hand to his or her Active Pokémon."
           delayedA {
             before PLAY_ENERGY, {
               if (self.active && ef.cardToPlay.cardTypes.is(SPECIAL_ENERGY) && bg.currentTurn == self.owner.opposite) {
-                if (!ef.cardToPlay.name.contains("Metal") || !ef.cardToPlay.name.contains("Darkness")) {
+                if ( !( ["Metal Energy", "Darkness Energy"].contains(ef.cardToPlay.name) ) ) {
                   wcu "Cursed Glare prevents playing this card"
                   prevent()
                 }
@@ -717,11 +722,13 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokePower "Delta Sign", {
           text "Once during your turn (before your attack), you may search your deck for a Pokémon that has δ on its card, show it to your opponent, and put it into your hand. Shuffle your deck afterward. You can't use more than 1 Delta Sign Poké-Power each turn. This power can't be used if Fearow is affected by a Special Condition."
           actionA {
-            assert my.deck : "Deck is empty"
-            checkNoSPC()
+            assert bg.em().retrieveObject("Delta_Sign") != bg.turnCount : "You can’t use more than 1 Delta Sign Poké-Power each turn"
             checkLastTurn()
+            checkNoSPC()
+            assert my.deck : "Deck is empty"
+            bg.em().storeObject("Delta_Sign",bg.turnCount)
             powerUsed()
-            deck.search("Search your deck for a δ Pokemon", {it.cardTypes.pokemon && it.cardTypes.is(DELTA) }).moveTo(my.hand)
+            deck.search("Search your deck for a δ Pokemon", {it.cardTypes.pokemon && it.cardTypes.is(DELTA) }).showToOpponent("Opponent used Delta Sign").moveTo(my.hand)
             shuffleDeck()
           }
         }
@@ -782,6 +789,14 @@ public enum CrystalGuardians implements LogicCardInfo {
       case IGGLYBUFF_21:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
+        pokeBody "Hover Lift", {
+          text "You pay [C] less to retreat your Jigglypuff, Wigglytuff, Wigglytuff ex, and Igglybuff."
+          getterA GET_RETREAT_COST ,{ h->
+            if (h.effect.target.owner == self.owner && ["Jigglypuff", "Wigglytuff", "Wigglytuff ex", "Igglybuff"].contains(h.effect.target.name)) {
+              h.object -= 1
+            }
+          }
+        }
         pokePower "Baby Evolution", {
           text "Once during your turn (before your attack), you may put Jigglypuff from your hand onto Igglybuff (this counts as evolving Igglybuff) and remove all damage counters from Igglybuff."
           actionA {
@@ -789,14 +804,6 @@ public enum CrystalGuardians implements LogicCardInfo {
             checkLastTurn()
             powerUsed()
             babyEvolution("Jigglypuff", self)
-          }
-        }
-        pokeBody "Hover Lift", {
-          text "You pay [C] less to retreat your Jigglypuff, Wigglytuff, Wigglytuff ex, and Igglybuff."
-          getterA GET_RETREAT_COST ,{ h->
-            if (h.effect.target.owner == self.owner && (h.effect.target.name == "Jigglypuff" || h.effect.target.name == "Wigglytuff" || h.effect.target.name == "Wigglytuff ex" || h.effect.target.name == "Igglybuff")) {
-              h.object = Math.max(0, h.object-1)
-            }
           }
         }
       };
@@ -808,7 +815,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost M, C
           onAttack {
             damage 30
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
         move "Prop-up Pinchers", {
@@ -855,7 +862,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           onAttack {
             damage 30
             if (opp.bench) {
-              damage 30, opp.all.bench()
+              damage 30, opp.bench.select()
             }
           }
         }
@@ -874,7 +881,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 20
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
         move "Sky Uppercut", {
@@ -893,11 +900,11 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokePower "Delta Transport", {
           text "Once during your turn (before your attack), if Pelipper is on your Bench, you may switch 1 of your Active Pokémon that has δ on its card with 1 of your Benched Pokémon."
           actionA {
-            assert my.active.topPokemonCard.cardTypes.is(DELTA) : "Active is not Delta Pokemon"
             checkLastTurn()
-            assert self.benched : "Pelipper not on Bench"
+            assert self.benched : "Pelipper is not on your Bench"
+            assert my.active.topPokemonCard.cardTypes.is(DELTA) : "Active is not a Delta Pokemon"
             powerUsed()
-            sw my.active, my.bench.select("Select a new active Pokemon.")
+            sw my.active, my.bench.select("Select a new active Pokemon."), SRC_ABILITY
           }
         }
         move "Supersonic", {
@@ -905,7 +912,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost L, C
           onAttack {
             damage 20
-            apply CONFUSED
+            applyAfterDamage CONFUSED
           }
         }
         move "Wing Attack", {
@@ -922,9 +929,9 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokePower "Echo Draw", {
           text "Once during your turn (before your attack), you may draw a card. This power can't be used if Swampert is affected by a Special Condition."
           actionA {
-            assert my.deck : "Deck is empty"
-            checkNoSPC()
             checkLastTurn()
+            checkNoSPC()
+            assert my.deck : "Deck is empty"
             powerUsed()
             draw 1
           }
@@ -944,9 +951,10 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Chlorophyll", {
           text "All Energy cards that provide only [C] Energy attached to your [G] Pokémon provide [G] Energy instead."
           getterA GET_ENERGY_TYPES, { holder ->
-            if(holder.effect.target.owner == self.owner
-              && holder.effect.card.containsTypePlain(C)) {
-              holder.object = [[G] as Set]
+            def pcs = holder.effect.target
+            if(pcs.owner == self.owner && pcs.types.contains(G) && holder.object.every{ it == ([C] as Set)}) {
+              int count = holder.object.size()
+              holder.object = (1..count).collect{[GRASS] as Set}
             }
           }
         }
@@ -985,7 +993,9 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost R, R, C
           onAttack {
             damage 60
-            discardSelfEnergy R
+            afterDamage{
+              discardSelfEnergy R
+            }
           }
         }
       };
@@ -1016,7 +1026,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 10
-            apply BURNED
+            applyAfterDamage BURNED
           }
         }
         move "Firebreathing", {
@@ -1073,7 +1083,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 20
-            apply ASLEEP
+            applyAfterDamage ASLEEP
           }
         }
         move "Vine Whip", {
@@ -1090,6 +1100,9 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Stretch Vine", {
           text "Choose 1 of your opponent's Benched Pokémon. This attack does 30 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C, C
+          attackRequirement{
+            assertOppBench()
+          }
           onAttack {
             if (opp.bench) {
               damage 30, opp.bench.select()
@@ -1172,6 +1185,9 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Self Charge", {
           text "Attach a [D] Energy card from your hand to Nuzleaf."
           energyCost C
+          attackRequirement {
+            assert my.hand.filterByEnergyType(D) : "You have no [D] Energy in your hand."
+          }
           onAttack {
             attachEnergyFrom(type:D, my.hand, self)
           }
@@ -1235,7 +1251,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost W, C
           onAttack {
             damage 20
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
         move "Tackle", {
@@ -1271,6 +1287,9 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Flail", {
           text "10x damage. Does 10 damage times the number of damage counters on Aron."
           energyCost C
+          attackRequirement{
+            assert self.numberOfDamageCounters : "$self has no damage counters"
+          }
           onAttack {
             damage 10*self.numberOfDamageCounters
           }
@@ -1300,6 +1319,9 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Growth", {
           text "Attach a [G] Energy card from your hand to Bulbasaur."
           energyCost C
+          attackRequirement {
+            assert my.hand.filterByEnergyType(G) : "You have no [G] Energy in your hand."
+          }
           onAttack {
             attachEnergyFrom(type:G, my.hand, self)
           }
@@ -1335,6 +1357,9 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Retaliate", {
           text "10x damage. Does 10 damage times the number of damage counters on Charmander."
           energyCost C
+          attackRequirement{
+            assert self.numberOfDamageCounters : "$self has no damage counters"
+          }
           onAttack {
             damage 10*self.numberOfDamageCounters
           }
@@ -1413,7 +1438,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C
           attackRequirement { assert my.discard : "Discard is empty"}
           onAttack {
-            my.discard.select().moveTo(my.hand)
+            if (my.discard) my.discard.select().moveTo(my.hand)
           }
         }
         move "Quick Blow", {
@@ -1433,7 +1458,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 10
-            apply ASLEEP
+            applyAfterDamage ASLEEP
           }
         }
       };
@@ -1482,9 +1507,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           text "Put 2 damage counters on your opponent's Pokémon in any way you like."
           energyCost C, C
           onAttack {
-            (1..2).each {
-              if (opp.all) directDamage(10, opp.all.select("Put a damage counter on - $it out of 2"))
-            }
+            putDamageCountersOnOpponentsPokemon(2)
           }
         }
       };
@@ -1496,7 +1519,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if (!self.active && it.to == self) {
+                if (!self.active && it.to == self && it.notNoEffect) {
                   bc "Submerge prevent all damage"
                   it.dmg=hp(0)
                 }
@@ -1623,7 +1646,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 10
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -1685,7 +1708,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost P
           onAttack {
             damage 10
-            flip { apply PARALYZED }
+            flip { applyAfterDamage CONFUSED }
           }
         }
       };
@@ -1741,20 +1764,34 @@ public enum CrystalGuardians implements LogicCardInfo {
       return pokemonTool (this) {
         text "Attach Cessation Crystal to 1 of your Pokémon (excluding Pokémon-ex) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Cessation Crystal is attached to is a Pokémon-ex, discard this card." +
           "As long as Cessation Crystal is attached to an Active Pokémon, each player's Pokémon (both yours and your opponent's) can't use any Poké-Powers or Poké-Bodies."
-        def eff
+        def eff1, eff2
+        def check = {
+          if (it.EX) {discard thisCard}
+        }
         onPlay {reason->
-          eff = getter IS_ABILITY_BLOCKED, { Holder h->
+          eff1 = getter IS_ABILITY_BLOCKED, { Holder h->
             if (self.active && (h.effect.ability instanceof PokeBody || h.effect.ability instanceof PokePower)) {
               h.object=true
             }
           }
+          eff2 = delayed {
+            after EVOLVE, self, {check(self)}
+            after DEVOLVE, self, {check(self)}
+            //TODO: onMove() instead of this
+            after PROCESS_ATTACK_EFFECTS, {
+              if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
+                check(self)
+              }
+            }
+          }
+          check(self)
           new CheckAbilities().run(bg)
         }
         onRemoveFromPlay {
-          eff.unregister()
+          eff1.unregister()
+          eff2.unregister()
           new CheckAbilities().run(bg)
         }
-        //TODO: onMove()
         allowAttach { to->
           !to.EX
         }
@@ -1764,7 +1801,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         text "Each Special Energy card that provides 2 or more Energy (both yours and your opponent's) now provides only 1 [C] Energy. This isn't affected by any Poké-Powers or Poké-Bodies."
         def eff
         onPlay {
-          eff = getter GET_ENERGY_TYPES, { holder->
+          eff = getter (GET_ENERGY_TYPES, BEFORE_LAST) { holder->
             if (holder.object.size() >= 2 && holder.effect.card.cardTypes.is(SPECIAL_ENERGY)) {
               holder.object = [[C] as Set]
             }
@@ -1822,7 +1859,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         onPlay { reason ->
           eff = getter (GET_MOVE_LIST) { holder->
             if(holder.effect.target.active && holder.effect.target.evolution) {
-              for(card in holder.effect.target.cards.filterByType(POKEMON)) {
+              for(card in holder.effect.target.cards.filterByType(STAGE_1, BASIC)) {
                 if(card!=holder.effect.target.topPokemonCard){
                   holder.object.addAll(card.moves)
                 }
@@ -1848,6 +1885,9 @@ public enum CrystalGuardians implements LogicCardInfo {
         text "Prevent all effects of attacks, including damage, done to the Pokémon that Mysterious Shard is attached to by your opponent's Pokémon-ex. Discard this card at the end of your opponent's next turn."
         def eff1
         def eff2
+        def check = {
+          if (it.EX) {discard thisCard}
+        }
         onPlay {reason->
           eff1=delayed {
             before APPLY_ATTACK_DAMAGES, {
@@ -1867,13 +1907,28 @@ public enum CrystalGuardians implements LogicCardInfo {
             }
           }
           eff2 = delayed {
-            after BETWEEN_TURNS, {
-              if (bg.currentTurn == self.owner) {
+            before BETWEEN_TURNS, {
+              if (bg.currentTurn == self.owner.opposite) {
                 discard thisCard
-                eff1.unregister()
+              }
+            }
+            after EVOLVE, self, {check(self)}
+            after DEVOLVE, self, {check(self)}
+            //TODO: onMove() instead of this
+            after PROCESS_ATTACK_EFFECTS, {
+              if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
+                check(self)
               }
             }
           }
+          check(self)
+        }
+        onRemoveFromPlay {
+          eff1.unregister()
+          eff2.unregister()
+        }
+        allowAttach { to->
+          !to.EX
         }
       };
       case POKE_BALL_82:
@@ -1883,31 +1938,7 @@ public enum CrystalGuardians implements LogicCardInfo {
       case WARP_POINT_84:
       return copy(PlasmaStorm.ESCAPE_ROPE_120, this)
       case WINDSTORM_85:
-      return itemCard (this) {
-        text "Choose up to 2 in any combination of Pokémon Tool cards and Stadium cards in play (both yours and your opponent's) and discard them."
-        onPlay {
-          def i = 2
-          while(i-- > 0) {
-            if (bg.stadiumInfoStruct && stadiumCanBeAffectedByItemAndSupporter() && confirm("Would you like to discard stadium in play (${bg.stadiumInfoStruct.stadiumCard})? If not, you can select a Pokemon Tool in play")) {
-              discard bg.stadiumInfoStruct.stadiumCard
-              continue
-            }
-            def tar = all.findAll {it.cards.hasType(POKEMON_TOOL)}
-            if(tar) {
-              def sel = tar.select("Select Pokemon to discard a Pokemon Tool from (cancel to stop)", i == 1)
-              if (sel) {
-                def list = sel.cards.filterByType(POKEMON_TOOL).select("Discard a Pokemon Tool from $sel")
-                targeted (sel, TRAINER_CARD) {
-                  list.discard()
-                }
-              }
-            }
-          }
-        }
-        playRequirement{
-          assert all.findAll {it.cards.hasType(POKEMON_TOOL)} || (bg.stadiumInfoStruct && stadiumCanBeAffectedByItemAndSupporter())
-        }
-      };
+      return copy(GuardiansRising.FIELD_BLOWER_125, this)
       case ENERGY_SEARCH_86:
       return copy(BlackWhite.ENERGY_SEARCH_93, this);
       case POTION_87:
@@ -1917,6 +1948,7 @@ public enum CrystalGuardians implements LogicCardInfo {
       case AGGRON_EX_89:
       return evolution (this, from:"Lairon", hp:HP150, type:M, retreatCost:4) {
         weakness R
+        weakness F
         resistance G, MINUS30
         pokeBody "Intimidating Armor", {
           text "As long as Aggron ex is your Active Pokémon, your opponent's Basic Pokémon can't attack or use any Poké-Powers or Poké-Bodies."
@@ -1924,14 +1956,14 @@ public enum CrystalGuardians implements LogicCardInfo {
           onActivate {
             eff1 = delayed{
               before CHECK_ATTACK_REQUIREMENTS, {
-                if(self.active && !ef.attacker.evolution) {
+                if(self.active && ef.attacker.notEvolution) {
                   wcu "Intimidating Armor prevents attack"
                   prevent()
                 }
               }
             }
             eff2 = getter IS_ABILITY_BLOCKED, { Holder h->
-              if (self.active && !h.effect.target.evolution && h.effect.target.owner == self.owner.opposite && (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody)) {
+              if (self.active && h.effect.target.notEvolution && h.effect.target.owner == self.owner.opposite && (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody)) {
                 h.object=true
               }
             }
@@ -1955,9 +1987,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C, C, C
           onAttack {
             multiSelect(opp.all, 2).each {
-              targeted(it) {
-                damage 30, it
-              }
+              damage 30, it
             }
           }
         }
@@ -1977,15 +2007,11 @@ public enum CrystalGuardians implements LogicCardInfo {
           text "30 damage. Before doing damage, you may choose 1 of your opponent's Benched Pokémon and switch it with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
           energyCost F, C
           onAttack {
-            def pcs = defending
-            if(opp.bench){
-              if(confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon before doing damage?")){
-                pcs = opp.bench.select()
-                sw defending, pcs
-              }
+            if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon before doing damage?")) {
+              switchYourOpponentsBenchedWithActive()
             }
 
-            damage 30, pcs
+            damage 30
           }
         }
         move "Burn Away", {
@@ -2005,20 +2031,24 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokePower "Constrain", {
           text "Once during your turn (before your attack), you may use this power. Each player discards cards until that player has 6 cards in his or her hand. (You discard first.) This power can't be used if Delcatty ex is affected by a Special Condition."
           actionA {
-            checkNoSPC()
             checkLastTurn()
+            checkNoSPC()
+            assert [my.hand, opp.hand].any{it.size() > 6} : "Neither player has more than 6 cards in their hand"
             powerUsed()
 
             def amountToDiscard = Math.max(my.hand.size() - 6, 0)
-            my.hand.select(count: amountToDiscard, "Discard until 6 cards left in hand").discard()
+            if (amountToDiscard) my.hand.select(count: amountToDiscard, "Discard until 6 cards left in hand").discard()
 
             def oppAmountToDiscard = Math.max(opp.hand.size() - 6, 0)
-            opp.hand.select(count: oppAmountToDiscard, "Discard until 6 cards left in hand").discard()
+            if (oppAmountToDiscard) opp.hand.oppSelect(count: oppAmountToDiscard, "Discard until 6 cards left in hand").discard()
           }
         }
         move "Upstream", {
           text "10x damage. Search your discard pile for all Energy cards. This attack does 10 damage times the number of Energy cards you find there. Show them to your opponent, and put them on top of your deck. Shuffle your deck afterward."
           energyCost C
+          attackRequirement{
+            assert my.discard.filterByType(ENERGY) : "You have no Energy cards in your discard pile"
+          }
           onAttack {
             def energies = my.discard.filterByType(ENERGY)
             damage 10*energies.size()
@@ -2051,7 +2081,7 @@ public enum CrystalGuardians implements LogicCardInfo {
                       bc "Extra Noise"
                       once = false
                     }
-                    directDamage(10, it, TRAINER_CARD)
+                    directDamage(10, it, SRC_ABILITY)
                   }
                 }
               }
@@ -2088,14 +2118,14 @@ public enum CrystalGuardians implements LogicCardInfo {
           text "As long as Groudon ex has 1 Energy or less attached to it, damage done to any of your Groudon ex in play by attacks is reduced by 20 (after applying Weakness and Resistance). You can't use more than 1 Hard Rock Poké-Body each turn."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
-              bg.dm().each {
-                if (it.to.name == "Groudon ex" && it.dmg.value && it.notNoEffect && bg.em().retrieveObject("Hard Rock") != bg.turnCount) {
-                  if (self.cards.energyCount(C) < 2) {
-                    bg.em().storeObject("Hard Rock", bg.turnCount)
+              if(self.cards.energyCount(C) < 2 && bg.em().retrieveObject("Hard_Rock" + self.owner) != bg.turnCount) {
+                bg.dm().each {
+                  if(it.to.owner == self.owner && it.to.name == "Groudon ex" && it.dmg.value && it.notNoEffect){
                     bc "Hard Rock -20"
-                    it.dmg -= hp(20)
+                    it.dmg-=hp(20)
                   }
                 }
+                bg.em().storeObject("Hard_Rock" + self.owner, bg.turnCount)
               }
             }
           }
@@ -2105,7 +2135,9 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost F, F, C
           onAttack {
             damage 100
-            discardSelfEnergy C,C
+            afterDamage{
+              discardSelfEnergy C,C
+            }
           }
         }
       };
@@ -2114,7 +2146,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Star Light", {
           text "As long as your opponent has any Pokémon-ex or Stage 2 Evolved Pokémon in play, Jirachi ex pays [C] less Energy to use Shield Beam or Super Psy Bolt."
           getterA (GET_MOVE_LIST, BEFORE_LAST, self) {h->
-						if (opp.all.findAll { it.EX || it.topPokemonCard.cardTypes.is(STAGE2) }) {
+						if (opp.all.any{ it.EX || (it.evolution && it.topPokemonCard.cardTypes.is(STAGE2) ) }) {
               def list=[]
               for (move in h.object) {
                 def copy = move.shallowCopy()
@@ -2175,14 +2207,17 @@ public enum CrystalGuardians implements LogicCardInfo {
           text "Discard 2 Energy attached to Kyogre ex. Choose 1 of your opponent's Pokémon. This attack does 70 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W, W, C
           onAttack {
-            discardSelfEnergy C,C
             damage 70, opp.all.select("Deal 70 damage to which Pokemon?")
+            afterDamage{
+              discardSelfEnergy C,C
+            }
           }
         }
       };
       case SCEPTILE_EX_DELTA_96:
       return evolution (this, from:"Grovyle", hp:HP140, type:P, retreatCost:1) {
         weakness G
+        weakness R
         resistance W, MINUS30
         pokeBody "Extra Liquid", {
           def target = []
@@ -2241,16 +2276,29 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Dark Eyes", {
           text "After your opponent's Pokémon uses a Poké-Power, put 2 damage counters on that Pokémon."
           delayedA {
-            def pcs
+            def pcs = null
+            def pcsTPC = null
             before USE_ABILITY, {
-              if (ef.ability instanceof PokePower){
+              if ((ef.getResolvedTarget(bg, e) as PokemonCardSet).owner == self.owner.opposite && ef.ability instanceof PokePower){
                 pcs = ef.getResolvedTarget(bg, e)
+                pcsTPC = pcs.topPokemonCard
               }
             }
+            //TODO: Maybe update this so it actually stop working immediately after Imprison-like powers block it. Is there any other power that can block it?
             after POKEPOWER, {
-              if (bg.currentThreadPlayerType != self.owner) {
+              if (pcs && pcs.cards && pcsTPC == pcs.topPokemonCard) {
                 bc "Dark Eyes activates"
                 directDamage(20, pcs, Source.SRC_ABILITY)
+                pcs = null
+                pcsTPC = null
+              }
+            }
+            after ACTIVATE_ABILITY, {
+              if (pcs && pcs.cards && pcsTPC == pcs.topPokemonCard) {
+                bc "Dark Eyes activates"
+                directDamage(20, pcs, Source.SRC_ABILITY)
+                pcs = null
+                pcsTPC = null
               }
             }
           }

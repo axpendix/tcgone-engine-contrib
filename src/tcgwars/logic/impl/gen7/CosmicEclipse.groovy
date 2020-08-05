@@ -363,8 +363,8 @@ public enum CosmicEclipse implements LogicCardInfo {
               after ATTACH_ENERGY, self, {
                 checkLastTurn()
                 if (self.active && ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(G) && opp.bench && confirm("Use Shining Vine?")) {
-                  sw(opp.active, opp.bench.select(), SRC_ABILITY)
                   powerUsed()
+                  switchYourOpponentsBenchedWithActive(SRC_ABILITY)
                 }
               }
             }
@@ -869,12 +869,14 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "The attacks of your Pokémon-GX in play that evolve from Eevee do 30 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance). You can't apply more than 1 Power Cheer Ability at a time."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each{
-                  if(it.from.owner == self.owner && it.from.pokemonGX && it.from.topPokemonCard.cardTypes.isEvolution() && it.from.topPokemonCard.predecessor == "Eevee" && it.to.active && it.to.owner != self.owner && it.dmg.value && bg.em().retrieveObject("Power Cheer") != bg.turnCount) {
-                    it.dmg += hp(30)
-                    bc "Power Cheer +30"
-                    bg.em().storeObject("Power Cheer", bg.turnCount)
+                if (bg.em().retrieveObject("Power_Cheer") != bg.turnCount){
+                  bg.dm().each{
+                    if(it.from.owner == self.owner && it.from.pokemonGX && it.from.realEvolution && it.from.topPokemonCard.predecessor == "Eevee" && it.to.active && it.to.owner != self.owner && it.dmg.value && it.notNoEffect) {
+                      bc "Power Cheer +30"
+                      it.dmg += hp(30)
+                    }
                   }
+                  bg.em().storeObject("Power_Cheer", bg.turnCount)
                 }
               }
             }
@@ -1257,7 +1259,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Your Pokémon-GX in play that evolve from Eevee get +60 HP. You can't apply more than 1 Vitality Cheer Ability at a time."
             getterA (GET_FULL_HP) {h->
               def pcs = h.effect.target
-              if (pcs.owner == self.owner && pcs.pokemonGX && pcs.topPokemonCard.cardTypes.is(EVOLUTION) && pcs.topPokemonCard.predecessor == "Eevee"){
+              if (pcs.owner == self.owner && pcs.pokemonGX && pcs.realEvolution && pcs.topPokemonCard.predecessor == "Eevee"){
                 target = bg.em().retrieveObject("Vitality_Cheer_target")
                 source = bg.em().retrieveObject("Vitality_Cheer_source")
                 if(!target.contains(pcs)){
@@ -1435,11 +1437,11 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "60 damage. Your opponent can’t play any Trainer cards from their hand during their next turn. If 1 of your Pokémon used Cold Snap during your last turn, this attack can't be used."
             energyCost W
             attackRequirement {
-              assert (bg.em().retrieveObject("Cold_Snap") != bg.turnCount - 2)
+              assert (bg.em().retrieveObject("Cold_Snap" + self.owner) != bg.turnCount - 2) : "Cold Snap was used last turn, it can't be used again"
             }
             onAttack {
               damage 60
-              bg.em().storeObject("Cold_Snap", bg.turnCount)
+              bg.em().storeObject("Cold_Snap" + self.owner, bg.turnCount)
               delayed {
                 def flag = false
                 before PROCESS_ATTACK_EFFECTS, {
@@ -1845,20 +1847,38 @@ public enum CosmicEclipse implements LogicCardInfo {
           weakness F
           resistance M, MINUS20
           bwAbility "Speed Cheer", {
+            def target = []
+            def source = []
+            bg.em().storeObject("Speed_Cheer_target", target)
+            bg.em().storeObject("Speed_Cheer_source", source)
             text "The attacks of your Pokémon-GX in play that evolve from Eevee cost [C] less. You can't apply more than 1 Speed Cheer Ability at a time."
             getterA GET_MOVE_LIST, BEFORE_LAST, {h->
               PokemonCardSet pcs = h.effect.target
-              if(pcs.owner==self.owner && pcs.pokemonGX && pcs.realEvolution && pcs.topPokemonCard.predecessor == "Eevee" && bg.currentTurn == self.owner && bg.em().retrieveObject("Speed_Cheer") != bg.turnCount){
-                def list=[]
-                for(move in h.object){
-                  def copy=move.shallowCopy()
-                  if (copy.energyCost.contains(C)) {
-                    copy.energyCost.remove(C)
+              if(pcs.owner==self.owner && pcs.pokemonGX && pcs.realEvolution && pcs.topPokemonCard.predecessor == "Eevee"){
+                target = bg.em().retrieveObject("Speed_Cheer_target")
+                source = bg.em().retrieveObject("Speed_Cheer_source")
+
+                def reduceAttackCost = {
+                  def list=[]
+                  for(move in h.object){
+                    def copy=move.shallowCopy()
+                    if (copy.energyCost.contains(C)) {
+                      copy.energyCost.remove(C)
+                    }
+                    list.add(copy)
                   }
-                  list.add(copy)
+                  h.object=list
                 }
-                h.object=list
-                bg.em().storeObject("Speed Cheer", bg.turnCount)
+
+                if(!target.contains(pcs)){
+                  reduceAttackCost.call()
+                  target.add(pcs)
+                  bg.em().storeObject("Speed_Cheer_target", target)
+                  source.add(self)
+                  bg.em().storeObject("Speed_Cheer_source", source)
+                } else if(source.get(target.indexOf(pcs)) == self){
+                  reduceAttackCost.call()
+                }
               }
             }
           }
@@ -1881,7 +1901,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               assert opp.hand : "Your opponent has no cards in their hand."
             }
             onAttack {
-              opp.hand.showToMe("Opponent's hand.")
+              if (opp.hand) opp.hand.shuffledCopy().showToMe("Opponent's hand.")
             }
           }
           move "Razor Fin", {
@@ -2169,7 +2189,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                 if(self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite ) {
                   bc "Grim Marking activates."
                   (1..4).each {
-                    if (opp.all) directDamage(10, self.owner.opposite.pbg.all.select("Grim Marking: Choose an opponent's Pokémon to put a damage counter on.", self.owner))
+                    if (opp.all) directDamage(10, self.owner.opposite.pbg.all.select("Grim Marking: Choose an opponent's Pokémon to put a damage counter on.", self.owner), SRC_ABILITY)
                   }
                 }
               }
@@ -2450,6 +2470,9 @@ public enum CosmicEclipse implements LogicCardInfo {
           bwAbility "Shadow Box", {
             text "Pokémon-GX that have any damage counters on them (both yours and your opponent's) have no Abilities."
             delayedA {
+              after DIRECT_DAMAGE, {
+                new CheckAbilities().run(bg)
+              }
               after REMOVE_DAMAGE_COUNTER, {
                 new CheckAbilities().run(bg)
               }
@@ -2609,9 +2632,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             onAttack {
               def maxCountersToPlace = (opp.prizeCardSet.size() == 3) ? 12 : 4
 
-              (1..maxCountersToPlace).each {
-                directDamage 10, opp.all.select("Put 1 damage counter to which Pokémon? ($it/$maxCountersToPlace)")
-              }
+              putDamageCountersOnOpponentsPokemon(maxCountersToPlace)
             }
           }
         };
@@ -2646,7 +2667,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               assertOppBench()
             }
             onAttack {
-              sw(opp.active, opp.bench.select())
+              switchYourOpponentsBenchedWithActive()
             }
           }
           move "Zap Cannon", {
@@ -3261,10 +3282,15 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Bag Slash", {
             text "Your opponent reveals their hand. Discard an Item card you find there."
             energyCost C
+            attackRequirement {
+              assert opp.hand : "Your opponent has no cards in hand"
+            }
             onAttack {
-              opp.hand.showToMe("Opponent's hand.")
-              if(opp.hand.filterByType(ITEM)){
-                opp.hand.filterByType(ITEM).select("Select an Item to discard.").discard()
+              if (opp.hand) {
+                def itemsToDiscard = opp.hand.shuffledCopy().showToMe("Opponent's hand.").filterByType(ITEM)
+                if(itemsToDiscard){
+                  itemsToDiscard.select("Select an Item to discard.").discard()
+                }
               }
             }
           }
@@ -3447,12 +3473,14 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "If you have Lunala in play, your Solgaleo and Lunala take 50 less damage from your opponent's attacks (after applying Weakness and Resistance). You can't apply more than 1 Armor of the Sunne Ability at a time."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if (self.owner.pbg.all.find({ it.name == "Lunala" }) && it.from.owner != self.owner && it.to.owner == self.owner && it.dmg.value && it.notNoEffect && (it.to.name == "Solgaleo" || it.to.name == "Lunala") && bg.em().retrieveObject("Armor of the Sunne") != bg.turnCount) {
-                    bc "Armor of the Sunne -50"
-                    it.dmg -= hp(50)
-                    bg.em().storeObject("Armor of the Sunne", bg.turnCount)
+                if(bg.em().retrieveObject("Armor_Of_The_Sunne") != bg.turnCount && self.owner.pbg.all.find({ it.name == "Lunala" })) {
+                  bg.dm().each {
+                    if (it.from.owner != self.owner && it.to.owner == self.owner && it.dmg.value && it.notNoEffect && (it.to.name == "Solgaleo" || it.to.name == "Lunala")) {
+                      bc "Armor of the Sunne -50"
+                      it.dmg -= hp(50)
+                    }
                   }
+                  bg.em().storeObject("Armor_Of_The_Sunne", bg.turnCount)
                 }
               }
             }
@@ -3642,7 +3670,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             onActivate {r->
               if (r == PLAY_FROM_HAND && my.deck && confirm("Use Flower Picking?")) {
                 powerUsed()
-                opp.hand.select(hidden: true, count:1).showToMe("Opponent's card being shuffled into their deck.").moveTo(hidden: false, opp.deck)
+                opp.hand.shuffledCopy().select(hidden: true, count:1).showToMe("Opponent's card being shuffled into their deck.").moveTo(hidden: false, opp.deck)
                 shuffleDeck(null, TargetPlayer.OPPONENT)
               }
             }
@@ -3664,7 +3692,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             onActivate { r->
               if (r == PLAY_FROM_HAND && my.deck && confirm("Use Flower Picking?")) {
                 powerUsed()
-                opp.hand.select(hidden: true, count:2).showToMe("Opponent's cards being shuffled into their deck.").moveTo(hidden: false, opp.deck)
+                opp.hand.shuffledCopy().select(hidden: true, count:2).showToMe("Opponent's cards being shuffled into their deck.").moveTo(hidden: false, opp.deck)
                 shuffleDeck(null, TargetPlayer.OPPONENT)
               }
             }
@@ -4595,8 +4623,8 @@ public enum CosmicEclipse implements LogicCardInfo {
 
             def tar = opp.bench.findAll { it.pokemonGX || it.pokemonEX }
             if (tar) {
-              def card = tar.select("Select a Pokémon-EX or Pokémon-GX to be the new Active Pokémon")
-              sw opp.active, card, TRAINER_CARD
+              def pcs = tar.select("Select a Pokémon-EX or Pokémon-GX to be the new Active Pokémon")
+              sw2 (pcs, null, TRAINER_CARD)
             }
 
             shuffleDeck()
@@ -4685,7 +4713,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               unregisterAfter 1
               unregister {
                 while (my.hand.size() >= 3) {
-                  my.hand.select("Select cards to shuffle back into the deck.").moveTo(my.deck)
+                  my.hand.select("Select cards to shuffle back into the deck.").moveTo(hidden:true, my.deck)
                 }
                 shuffleDeck()
                 draw 2 - my.hand.size()
@@ -4719,14 +4747,22 @@ public enum CosmicEclipse implements LogicCardInfo {
                     ef2 = delayed {
                       after REMOVE_FROM_PLAY, {
                         if(ef.removedCards.contains(pokemonCard)) {
+                          bg.em().retrieveAndStore("impl_changed_cards", {it ?: []})
                           bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
+                          bg.em().retrieveAndStore("impl_changed_cards", {it.add([pokemonCard, trainerCard]); it})
+                          delayed {
+                            before BEGIN_TURN, {
+                              bg.em().retrieveAndStore("impl_changed_cards", {it.remove([pokemonCard, trainerCard]); it})
+                              unregister()
+                            }
+                          }
                           unregister()
                           ef2 = null
                         }
                       }
                     }
                   }
-                  acl = action("Discard Lillie's Poké Doll", [TargetPlayer.SELF]) {
+                  acl = action("Put Lillie's Poké Doll on Deck ↓", [TargetPlayer.SELF]) {
                     assert self.active : "Lillie's Poké Doll must be the Active Pokémon."
                     self.cards.getExcludedList(self.topPokemonCard).discard()
                     self.cards.moveTo(my.deck)
@@ -4775,19 +4811,17 @@ public enum CosmicEclipse implements LogicCardInfo {
           text "Search your deck for up to 3 [W] Energy cards, reveal them, and put them into your hand. Then, shuffle your deck." +
             "When you play this card, you may discard 5 other cards from your hand. If you do, during this turn, your [W] Pokémon can use their GX attacks even if you have used your GX attack."
           onPlay {
-            my.deck.search(max:3,"Select up to 3 [W] Energy cards.",basicEnergyFilter(W)).moveTo(my.hand)
-            shuffleDeck()
+            if (my.hand.getExcludedList(thisCard).size() >= 5 && isGxPerformed()){
+              if (!my.deck || confirm("Discard 5 cards to allow [W] Pokémon to use their GX attack this turn (even if GX attack has already been used)?")) {
+                my.hand.getExcludedList(thisCard).select(count:5, "Choose 5 cards to discard.").discard()
 
-            if (my.hand.getExcludedList(thisCard).size() >= 5 && confirm("Discard 5 cards to allow [W] Pokémon to use their GX attack this turn (even if GX attack has already been used)?")) {
-              my.hand.getExcludedList(thisCard).select(count:5, "Choose 5 cards to discard.").discard()
-              if (isGxPerformed()) {
                 bg.em().storeObject("gx_"+thisCard.player, 0)
                 delayed {
                   before CHECK_ATTACK_REQUIREMENTS, {
                     if (!ef.attacker.types.contains(W) ) {
                       if (ef.move.name.contains('GX')) {
+                        wcu "GX move already used (Misty & Lorelei only allows [W] Pokémon to use it again)"
                         prevent()
-                        bc "GX move already used"
                       }
                     }
                   }
@@ -4798,9 +4832,15 @@ public enum CosmicEclipse implements LogicCardInfo {
                 }
               }
             }
+
+            if (my.deck) {
+              my.deck.search(max:3,"Select up to 3 [W] Energy cards.",basicEnergyFilter(W)).moveTo(my.hand)
+              shuffleDeck()
+            }
+
           }
           playRequirement{
-            assert my.deck
+            assert ( my.deck || ( my.hand.getExcludedList(thisCard).size() >= 5 && isGxPerformed() ) ) : "You can't do either of this card's effects"
           }
         };
       case N_S_RESOLVE_200:

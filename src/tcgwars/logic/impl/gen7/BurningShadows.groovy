@@ -1307,8 +1307,7 @@ public enum BurningShadows implements LogicCardInfo {
               checkLastTurn()
               assert opp.hand && opp.bench.notFull
               powerUsed()
-              opp.hand.showToMe("Opponent's hand")
-              def list = opp.hand.filterByType(BASIC)
+              def list = opp.hand.shuffledCopy().showToMe("Opponent's hand").filterByType(BASIC)
               if(list){
                 def card = list.select("Put a Basic Pokémon you find there onto your opponent's Bench").first()
                 opp.hand.remove(card)
@@ -2023,11 +2022,12 @@ public enum BurningShadows implements LogicCardInfo {
             onAttack {
               gxPerform()
               if (opp.bench){
-                def pcs = opp.bench.select("Switch")
-                sw opp.active, pcs
-                apply POISONED, pcs
-                apply BURNED, pcs
-                apply PARALYZED, pcs
+                def target = opp.bench.select("Select the new Active Pokémon.")
+                if ( sw2(target) ) {
+                  apply POISONED, target
+                  apply BURNED, target
+                  apply PARALYZED, target
+                }
               }
             }
           }
@@ -2524,9 +2524,11 @@ public enum BurningShadows implements LogicCardInfo {
           move "See Through", {
             text "Your opponent reveals their hand."
             energyCost C
+            attackRequirement{
+              assert opp.hand : "Your opponent has no cards in hand"
+            }
             onAttack {
-              opp.hand.showToMe("Opponent's hand")
-              opp.hand.shuffle()
+              if (opp.hand) opp.hand.shuffledCopy().showToMe("Opponent's hand")
             }
           }
           move "Peck", {
@@ -2556,11 +2558,12 @@ public enum BurningShadows implements LogicCardInfo {
             onAttack {
               damage 70
               afterDamage {
-                if(opp.hand) {
-                  opp.hand.showToMe("Opponent's hand")
-                  def list = opp.hand.filterByType(POKEMON)
-                  if(list) {
-                    list.select("Discard").discard()
+                onAttack {
+                  if (opp.hand) {
+                    def pokeToDiscard = opp.hand.shuffledCopy().showToMe("Opponent's hand.").filterByType(POKEMON)
+                    if(pokeToDiscard){
+                      pokeToDiscard.select("Select a Pokémon card to discard.").discard()
+                    }
                   }
                 }
               }
@@ -2663,12 +2666,9 @@ public enum BurningShadows implements LogicCardInfo {
         return supporter (this) {
           text "Switch 1 of your opponent's Benched Pokémon with their Active Pokémon. If you do, switch your Active Pokémon with 1 of your Benched Pokémon.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
-            def pcs = opp.bench.select("New active")
-            targeted (pcs, TRAINER_CARD) {
-              sw opp.active, pcs, TRAINER_CARD
-              if(my.bench) {
-                sw my.active, my.bench.select("New active"), TRAINER_CARD
-              }
+            def target = opp.bench.select("Select the new Active Pokémon.")
+            if ( sw2(target, null, TRAINER_CARD) && my.bench) {
+              sw my.active, my.bench.select("Select your new Active Pokémon."), TRAINER_CARD
             }
           }
           playRequirement{
@@ -2795,7 +2795,7 @@ public enum BurningShadows implements LogicCardInfo {
         return itemCard (this) {
           text "Choose a random card from your opponent's hand. Your opponent reveals that card. If it's a Supporter card, discard it.\nYou may play as many Item cards as you like during your turn (before your attack)."
           onPlay {
-            opp.hand.select(hidden: true, "Select random card from opponent's hand").showToMe("Selected card").showToOpponent("Opponent used Tormenting Spray").each {if(it.cardTypes.is(SUPPORTER)) discard(it)}
+            opp.hand.shuffledCopy().select(hidden: true, "Select random card from opponent's hand").showToMe("Selected card").showToOpponent("Opponent used Tormenting Spray").each {if(it.cardTypes.is(SUPPORTER)) discard(it)}
           }
           playRequirement{
             assert opp.hand
@@ -2808,11 +2808,11 @@ public enum BurningShadows implements LogicCardInfo {
           text "Each player counts the cards in their hand, shuffles those cards into their deck, then draws that many cards.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
             int c1 = my.hand.getExcludedList(thisCard).size()
-            my.hand.getExcludedList(thisCard).moveTo(my.deck)
+            my.hand.getExcludedList(thisCard).moveTo(hidden:true, my.deck)
             shuffleDeck()
             draw c1
             int c2 = opp.hand.size()
-            opp.hand.moveTo(opp.deck)
+            opp.hand.moveTo(hidden:true, opp.deck)
             shuffleDeck(null, TargetPlayer.OPPONENT)
             draw c2, TargetPlayer.OPPONENT
           }

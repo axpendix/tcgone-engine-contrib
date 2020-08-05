@@ -278,8 +278,8 @@ public enum ShiningLegends implements LogicCardInfo {
               assert opp.bench
             }
             onAttack {
-              sw opp.active, opp.bench.select()
-              apply POISONED, opp.active
+              def target = opp.bench.select("Select the new Active Pokémon.")
+              if ( sw2(target) ) { apply POISONED, target }
             }
           }
           move "Crunch", {
@@ -1139,9 +1139,7 @@ public enum ShiningLegends implements LogicCardInfo {
             text "Put 3 damage counters on your opponent's Pokémon in any way you like."
             energyCost D, C
             onAttack {
-              (1..3).each {
-                if(opp.all) directDamage(10, opp.all.select("Put a damage counter on"))
-              }
+              putDamageCountersOnOpponentsPokemon(3)
             }
           }
 

@@ -6,6 +6,7 @@ import tcgwars.logic.impl.gen5.EmergingPowers
 import tcgwars.logic.impl.gen5.NextDestinies
 import tcgwars.logic.impl.gen6.KalosStarterSet
 import tcgwars.logic.impl.gen6.Xy
+import tcgwars.logic.impl.gen7.CelestialStorm
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -652,11 +653,8 @@ public enum SunMoon implements LogicCardInfo {
           bwAbility "Queenly Majesty", {
             text "When you play this card from your hand to evolve 1 of your Pokémon during your turn, you may have your opponent reveal their hand. Then, discard a card from it."
             onActivate {r->
-              if(r==Ability.ActivationReason.PLAY_FROM_HAND && confirm("Use Queenly Majesty?")){
-                if(opp.hand){
-                  opp.hand.showToMe("Opponent's hand")
-                  opp.hand.select("Discard").discard()
-                }
+              if(r==Ability.ActivationReason.PLAY_FROM_HAND && opp.hand && confirm("Use Queenly Majesty?")){
+                opp.hand.shuffledCopy().select("Your opponent's hand. Select a card to discard from it.").discard()
               }
             }
           }
@@ -1464,7 +1462,7 @@ public enum SunMoon implements LogicCardInfo {
           bwAbility "Power of Alchemy", {
             text "Each Basic Pokémon in play, in each player's hand, and in each player's discard pile has no Abilities."
             getterA (GET_ABILITIES, BEFORE_LAST) {h->
-              if (h.effect.target.basic) {
+              if (h.effect.target.basic && h.effect.target != self) {
                 h.object.keySet().removeIf{it instanceof BwAbility}
               }
             }
@@ -1555,9 +1553,8 @@ public enum SunMoon implements LogicCardInfo {
             }
             onAttack {
               gxPerform()
-              (1..10).each {
-                if(opp.all) directDamage(10, opp.all.select("Put a damage counter on"))
-              }
+
+              putDamageCountersOnOpponentsPokemon(10)
             }
           }
 
@@ -1914,7 +1911,7 @@ public enum SunMoon implements LogicCardInfo {
               assert opp.bench.notEmpty
             }
             onAttack {
-              sw opp.active, opp.bench.select()
+              switchYourOpponentsBenchedWithActive()
             }
           }
           move "Claw Rend", {
@@ -2426,16 +2423,42 @@ public enum SunMoon implements LogicCardInfo {
           bwAbility "Energy Evolution", {
             text "When you attach a basic Energy card from your hand to this Pokémon during your turn, you may search your deck for a card that evolves from this Pokémon that is the same type as that Energy card and put it onto this Pokémon to evolve it. Then, shuffle your deck."
             delayedA {
+              def welderFlag = false
+              def welderChoice = 0
+              def basicEnType
+              def energyEvoSearch = {
+                if (self.owner.pbg.deck) {
+                  powerUsed()
+                  def sel=self.owner.pbg.deck.select(min:0, "Energy Evolution ${basicEnType}",
+                    {it.cardTypes.is(EVOLUTION) && it.types.contains(basicEnType) && it.predecessor==self.name}, self.owner)
+                  if(sel){
+                    evolve(self, sel.first(), OTHER)
+                  }
+                  shuffleDeck(null, self.owner.toTargetPlayer())
+                } else {
+                  bc "Due to drawing cards with Welder, ${self.owner.getPlayerUsername(bg)} has no cards left in deck and $self now can't use Energy Evolution."
+                }
+              }
+              before DRAW_CARD, {
+                if (welderFlag && welderChoice == 1) {
+                  energyEvoSearch.call()
+                  welderFlag = false
+                }
+              }
+              after PLAY_TRAINER, {
+                if (welderFlag && welderChoice == 2) {
+                  energyEvoSearch.call()
+                }
+                welderFlag = false
+              }
               after ATTACH_ENERGY, self, {
                 if(ef.reason==PLAY_FROM_HAND && ef.card instanceof BasicEnergyCard && self.owner.pbg.deck){
-                  if(confirm("Use Energy Evolution?")){
-                    powerUsed()
-                    def sel=self.owner.pbg.deck.select(min:0, "Energy Evolution ${ef.card.basicType}",
-                      {it.cardTypes.is(EVOLUTION) && it.types.contains(ef.card.basicType) && it.predecessor==self.name}, self.owner)
-                    if(sel){
-                      evolve(self, sel.first(), OTHER)
-                    }
-                    shuffleDeck(null, self.owner.toTargetPlayer())
+                  welderFlag = bg.em().retrieveObject("Welder_Played") ?: false
+                  basicEnType = ef.card.basicType
+                  if (welderFlag) {
+                    if (welderChoice == 0) welderChoice = choose([1, 2, 3], ["Use before drawing 3 cards", "Use after drawing 3 cards", "Don't use Energy Evolution"], "A basic Energy was attached to $self via Welder. When would you like to use Energy Evolution?")
+                  } else if ( confirm("Use Energy Evolution?") ){
+                    energyEvoSearch.call()
                   }
                 }
               }
@@ -2598,9 +2621,9 @@ public enum SunMoon implements LogicCardInfo {
             text "Once during your turn (before your attack), you may have your opponent reveal their hand."
             actionA {
               checkLastTurn()
-              assert opp.hand : "Empty hand"
+              assert opp.hand : "Your opponent has no cards in hand"
               powerUsed()
-              opp.hand.showToMe("Opponent's hand")
+              opp.hand.shuffledCopy().showToMe("Opponent's hand")
             }
           }
           move "Headbutt Bounce", {
@@ -2833,14 +2856,13 @@ public enum SunMoon implements LogicCardInfo {
         return supporter (this) {
           text "Your opponent reveals their hand. Discard 2 Energy cards from it.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
-            opp.hand.showToMe("Opponent's hand")
-            def list = opp.hand.filterByType(ENERGY)
+            def list = opp.hand.shuffledCopy().showToMe("Opponent's hand").filterByType(ENERGY)
             if(list){
               list.select(count: 2, "Discard").discard()
             }
           }
           playRequirement{
-            assert opp.hand
+            assert opp.hand : "Your opponent has no cards in hand"
           }
         }
       case TIMER_BALL_134:
@@ -2861,7 +2883,7 @@ public enum SunMoon implements LogicCardInfo {
       case DOUBLE_COLORLESS_ENERGY_136:
         return copy(Xy.DOUBLE_COLORLESS_ENERGY_130, this)
       case RAINBOW_ENERGY_137:
-        return copy(Xy.RAINBOW_ENERGY_131, this)
+        return copy(CelestialStorm.RAINBOW_ENERGY_151,this);
       case LURANTIS_GX_138:
         return copy (LURANTIS_GX_15, this)
       case LAPRAS_GX_139:

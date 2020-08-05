@@ -2,6 +2,7 @@ package tcgwars.logic.impl.gen3;
 
 import tcgwars.logic.impl.gen1.FossilNG;
 import tcgwars.logic.impl.gen6.Xy;
+import tcgwars.logic.impl.gen7.CelestialStorm;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -369,18 +370,7 @@ public enum LegendMaker implements LogicCardInfo {
           onAttack {
             def counters = (self.cards.any{ it.name == "React Energy" }) ? 4 : 2
 
-            eff = delayed {
-              before KNOCKOUT, {
-                prevent()
-              }
-            }
-
-            (1..counters).each {
-              directDamage 10, opp.all.select("Put 1 damage counter to which Pokémon? ${it-1}/$counters counters placed")
-            }
-
-            eff.unregister()
-            checkFaint()
+            putDamageCountersOnOpponentsPokemon(counters)
           }
         }
         move "Super Psy Bolt", {
@@ -635,7 +625,7 @@ public enum LegendMaker implements LogicCardInfo {
             powerUsed()
 
             def pcs = opp.bench.findAll { it.evolution && it.topPokemonCard.cardTypes.is(STAGE2) }.select("Select a Stage 2 Pokemon to become the new Active.")
-            sw opp.active, pcs
+            sw2 (pcs, null, SRC_ABILITY)
           }
         }
         move "Sleep Poison", {
@@ -959,7 +949,7 @@ public enum LegendMaker implements LogicCardInfo {
               if (ef.attacker == self) {
                 bg.dm().each {
                   if (it.to.active && it.to.owner != self.owner && it.notNoEffect && it.dmg.value) {
-                    if (self.owner.all.pbg.any{
+                    if (self.owner.pbg.all.any{
                       it.name == "Kabuto" ||
                       it.name == "Kabutops" ||
                       it.name == "Kabutops ex"
@@ -977,12 +967,10 @@ public enum LegendMaker implements LogicCardInfo {
           text "10 damage. Before doing damage, you may choose 1 of your opponent's Benched Pokémon and switch it with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
           energyCost C
           onAttack{
-            def target = defending
-            if (opp.bench && confirm("Switch Defending with a Benched?")) {
-              target = opp.bench.select("Select the new active")
-              sw defending, target
+            if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon before doing damage?")) {
+              switchYourOpponentsBenchedWithActive()
             }
-            damage 10, target
+            damage 10
           }
         }
         move "Hydro Splash", {
@@ -1191,7 +1179,7 @@ public enum LegendMaker implements LogicCardInfo {
           }
           onAttack {
             def maxSpace = Math.min(my.bench.freeBenchCount, 2)
-            my.deck.search(min:0, max:maxSpace, "Search your deck for up to 2 cards named Omanyte, Kabuto, Aerodactyl, Lileep, or Anorith", {
+            my.deck.search(min:0, max:maxSpace, "Search your deck for ${maxSpace == 2 ? "up to 2 cards" : "a card"} named Omanyte, Kabuto, Aerodactyl, Lileep, or Anorith", {
               ["Omanyte", "Kabuto", "Aerodactyl", "Lileep", "Anorith"].contains(it.name)
             }).each {
               my.deck.remove(it)
@@ -1570,9 +1558,14 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Reactive Aroma", {
           text "As long as Roselia has any React Energy cards attached to it, remove 1 damage counter from each of your Pokémon (excluding Pokémon-ex) that has any React Energy cards attached to it between turns. You can't use more than 1 Reactive Aroma Poké-Body each turn."
           delayedA {
+            def lastTurn = 0
             before BEGIN_TURN, {
-              if (bg.em().retrieveObject("Reactive_Aroma") != bg.turnCount && self.cards.any{it.name == "React Energy"}) {
-                bg.em().storeObject("Reactive_Aroma", bg.turnCount)
+              if (bg.em().retrieveObject("Reactive_Aroma" + self.owner) != null) {
+                lastTurn = bg.em().retrieveObject("Reactive_Aroma" + self.owner)
+              }
+              if ( lastTurn != bg.turnCount && self.cards.any{it.name == "React Energy"}) {
+                bg.em().storeObject("Reactive_Aroma" + self.owner, bg.turnCount)
+                bc "Reactive Aroma Activates"
                 self.owner.pbg.all.each {
                   if (it.numberOfDamageCounters && it.cards.any{it.name == "React Energy"} && !it.EX) {
                     heal 10, it
@@ -1589,8 +1582,8 @@ public enum LegendMaker implements LogicCardInfo {
             assert opp.bench : "Your opponent has no benched Pokémon"
           }
           onAttack {
-            def pcs = opp.bench.select("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon.")
-            if ( swFromBench (defending, pcs) ) { apply POISONED, pcs }
+            def target = opp.bench.select("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon.")
+            if ( sw2(target) ) { apply POISONED, target }
           }
         }
       };
@@ -2166,7 +2159,7 @@ public enum LegendMaker implements LogicCardInfo {
             assert opp.bench : "There is no Pokémon on your opponent's bench"
           }
           onAttack {
-            sw defending, opp.bench.select()
+            switchYourOpponentsBenchedWithActive()
           }
         }
       };
@@ -2321,7 +2314,7 @@ public enum LegendMaker implements LogicCardInfo {
             assert elegible : "You have no Omanyte, Kabuto, Aerodactyl, Aerodactyl ex, Lileep or Anorith in your hand"
             bc "Used Strange Cave effect"
             lastTurn = bg().turnCount
-            eligible.select("Select which Pokemon to bench").each {
+            elegible.select("Select which Pokemon to bench").each {
               hand.remove(it)
               benchPCS(it)
             }
@@ -2537,7 +2530,7 @@ public enum LegendMaker implements LogicCardInfo {
         }
       };
       case RAINBOW_ENERGY_81:
-      return copy(Xy.RAINBOW_ENERGY_131, this)
+      return copy(CelestialStorm.RAINBOW_ENERGY_151,this);
       case REACT_ENERGY_82:
       return specialEnergy (this, [[C]]) {
         text "React Energy provides [C] Energy."
@@ -2653,7 +2646,7 @@ public enum LegendMaker implements LogicCardInfo {
             target.remove(source)
             target = target.select("Target for damage counter")
             source.damage-=hp(10)
-            directDamage 10, target
+            directDamage 10, target, SRC_ABILITY
             bc "Moved 1 damage counter from $source to $target"
             checkFaint()
           }
@@ -2756,12 +2749,21 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Versatile", {
           text "Mew ex can use the attacks of all Pokémon in play as its own. (You still need the necessary Energy to use each attack.)"
           getterA (GET_MOVE_LIST, self) {holder->
-						all.each {
-							if(it!=self) {
-								holder.object.addAll(it.topPokemonCard.moves)
-							}
-						}
-					}
+            all.each {
+              if(it!=self) {
+                holder.object.addAll(it.topPokemonCard.moves)
+                //
+                // [Temporary LV.X workaround]
+                if (it.topPokemonCard.cardTypes.is(CardType.LEVEL_UP)){
+                  //Only 3 LV.Xs right now, all stage 2 so this should do
+                  def tpc = it.cards.find{car -> car.cardTypes.is(STAGE2) && car != it.topPokemonCard}
+                  holder.object.addAll(tpc.moves)
+                }
+                // [End of LV.X workaround] TODO: Remove this when no longer needed
+                //
+              }
+            }
+          }
         }
         move "Power Move", {
           text "Search your deck for an Energy card and attach it to Mew ex. Shuffle your deck afterward. Then, you may switch Mew ex with 1 of your Benched Pokémon."
@@ -2879,9 +2881,7 @@ public enum LegendMaker implements LogicCardInfo {
             if (opp.prizeCardSet.size() == 1 && my.all.size() == 1) {
               counters = 6
             }
-            (1..counters).each {
-              directDamage 10, opp.all.select("Put 1 damage counter to which Pokémon? ${it-1}/$counters counters remaining")
-            }
+            putDamageCountersOnOpponentsPokemon(counters)
           }
         }
       };

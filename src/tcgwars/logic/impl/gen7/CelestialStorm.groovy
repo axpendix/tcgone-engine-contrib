@@ -317,7 +317,7 @@ public enum CelestialStorm implements LogicCardInfo {
               assert opp.bench
               powerUsed()
               flip {
-                sw opp.active, opp.bench.select("New active."), SRC_ABILITY
+                switchYourOpponentsBenchedWithActive(SRC_ABILITY)
               }
             }
           }
@@ -385,9 +385,9 @@ public enum CelestialStorm implements LogicCardInfo {
             }
             onAttack {
               def pcs = defending
-              if(opp.bench && confirm("Switch the defending pokémon with 1 of your opponent's benched pokémon?")){
-                pcs = opp.bench.select("Switch")
-                sw opp.active, pcs
+              if(opp.bench && confirm("Switch 1 of your opponent's Benched Pokémon with their Active Pokémon?")){
+                def target = opp.bench.select("Select the new Active Pokémon.")
+                if ( sw2(target) ) { pcs = target }
               }
               targeted(pcs) {
                 apply POISONED, pcs
@@ -520,10 +520,12 @@ public enum CelestialStorm implements LogicCardInfo {
               assert opp.hand : "Your opponent have no cards in hand"
             }
             onAttack {
-              opp.hand.showToMe("opponent's hand")
-              if(opp.hand.filterByType(SUPPORTER)){
-                opp.hand.filterByType(SUPPORTER).select("select a supporter to put back in deck.").moveTo(opp.deck)
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+              if (opp.hand) {
+                def supportersToShuffle = opp.hand.shuffledCopy().showToMe("Opponent's hand.").filterByType(SUPPORTER)
+                if(supportersToShuffle){
+                  supportersToShuffle.select("Select a supporter to put back into your opponent's deck.").moveTo(opp.deck)
+                  shuffleDeck(null, TargetPlayer.OPPONENT)
+                }
               }
             }
           }
@@ -871,11 +873,10 @@ public enum CelestialStorm implements LogicCardInfo {
               assert opp.bench.notEmpty
             }
             onAttack {
-              def pcs = opp.bench.select("Switch")
-              targeted(pcs) {
-                sw opp.active, pcs
-                apply BURNED, pcs
-                apply CONFUSED, pcs
+              def target = opp.bench.select("Select the new Active Pokémon.")
+              if ( sw2(target) ) {
+                apply BURNED, target
+                apply CONFUSED, target
               }
             }
           }
@@ -1392,7 +1393,7 @@ public enum CelestialStorm implements LogicCardInfo {
               assert my.deck : "There is no more card to draw in your deck"
             }
             onAttack {
-              my.hand.moveTo(my.deck)
+              my.hand.moveTo(hidden:true, my.deck)
               shuffleDeck()
               draw my.bench.size() + opp.bench.size()
             }
@@ -1693,7 +1694,8 @@ public enum CelestialStorm implements LogicCardInfo {
               def pcs = bothAll.findAll{it.numberOfDamageCounters}.select("Choose the pokémon to move the damage counter from")
               def tar = bothAll.findAll{it != pcs}.select("Select the pokémon to recieve the damage counter")
               pcs.damage-=hp(10)
-              tar.damage+=hp(10)
+              directDamage 10, tar, SRC_ABILITY
+              bc "Moved 1 damage counter from $pcs to $tar"
             }
           }
           move "Shadow Chant" , {
@@ -2443,11 +2445,16 @@ public enum CelestialStorm implements LogicCardInfo {
           globalAbility{
             delayed{
               after TAKE_PRIZE, {
-                if(thisCard.player.pbg.prizeCardSet.notEmpty && ef.card != null && ef.card == thisCard
+                //def hasSmoke = bg.em().retrieveObject("Billowing_Smoke")
+                if (
+                  thisCard.player.pbg.prizeCardSet.notEmpty
+                  //&& !hasSmoke
+                  && ef.card != null && ef.card == thisCard
                   && thisCard.player.pbg.bench.notFull && bg.currentTurn == thisCard.player
                   && thisCard.player.pbg.hand.contains(thisCard)
                   && checkGlobalAbility(thisCard)
-                  && confirm("You've picked ${thisCard}. Would you like to use Wish Upon a Star?")){
+                  && confirm("You've picked ${thisCard}. Would you like to use Wish Upon a Star?")
+                ) {
                   bc "${thisCard} used Wish Upon a Star"
                   thisCard.player.pbg.hand.remove(thisCard)
                   benchPCS(thisCard, OTHER, thisCard.player.toTargetPlayer())
@@ -2663,7 +2670,7 @@ public enum CelestialStorm implements LogicCardInfo {
               assert self.active : "$self is not your active pokémon"
               assert opp.bench : "There is no pokémon on your opponent's bench to switch"
               powerUsed()
-              sw self.owner.opposite.pbg.active, self.owner.opposite.pbg.bench.select("Choose the new active"), SRC_ABILITY
+              switchYourOpponentsBenchedWithActive(SRC_ABILITY)
             }
           }
           move "Dragon Claw" , {

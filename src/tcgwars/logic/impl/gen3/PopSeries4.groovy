@@ -164,7 +164,7 @@ public enum PopSeries4 implements LogicCardInfo {
           text "As long as Mew has any React Energy cards attached to it, prevent all effects, excluding damage, done to Mew by attacks from your opponent's Pokémon."
           delayedA {
             before null, self, Source.ATTACK, {
-              if (bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages) && self.cards.findAll { it.name.contains("React Energy") }) {
+              if (bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages) && self.cards.any{ it.name == "React Energy" }) {
                 bc "Reactive Barrier prevented effect"
                 prevent()
               }

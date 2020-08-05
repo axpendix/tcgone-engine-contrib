@@ -1450,8 +1450,8 @@ public enum ForbiddenLight implements LogicCardInfo {
             text "Both players shuffle their Prize cards into their decks. Then, each player puts the top 3 cards of their deck face down as their Prize cards. (You can’t use more than 1 GX attack in a game.)"
             energyCost C, C, C
             onAttack {
-              my.prizeCardSet.moveTo(my.deck)
-              opp.prizeCardSet.moveTo(opp.deck)
+              my.prizeCardSet.moveTo(hidden:true, my.deck)
+              opp.prizeCardSet.moveTo(hidden:true, opp.deck)
               shuffleDeck()
               shuffleDeck(null, TargetPlayer.OPPONENT)
               for(int i=0;i<3;i++){
@@ -1968,6 +1968,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             energyCost D
             attackRequirement {
               gxCheck()
+              assert (defending.numberOfDamageCounters == 4) : "Your opponent's Active Pokémon doesn't have 4 damage counters on them"
             }
             onAttack {
               gxPerform()
@@ -2049,7 +2050,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             onAttack {
               gxPerform()
               damage 150
-              afterDamage{
+              afterDamage {
                 delayed (priority: BEFORE_LAST) {
                   before BETWEEN_TURNS, {
                     prevent()
@@ -2058,6 +2059,19 @@ public enum ForbiddenLight implements LogicCardInfo {
                     bc "Timeless GX started a new turn!"
                     unregister()
                   }
+
+                  // Enable the use of a 2nd Supporter
+                  def eff
+                  register {
+                    //TODO: This may not work properly against other extra supporter effects (mainly Lt. Surge's Strategy)
+                    eff = getter (GET_MAX_SUPPORTER_PER_TURN) {h->
+                      if(h.effect.playerType == thisCard.player && h.object < 2) h.object = 2
+                    }
+                  }
+                  unregister {
+                    eff.unregister()
+                  }
+                  unregisterAfter 1
                 }
               }
             }
@@ -2111,8 +2125,10 @@ public enum ForbiddenLight implements LogicCardInfo {
               assert opp.bench
             }
             onAttack {
-              sw defending, opp.bench.select("New opponent’s Active")
-              if(my.bench) sw self, my.bench.select("Your new Active")
+              def target = opp.bench.select("Select the new Active Pokémon.")
+              if ( sw2(target) && my.bench) {
+                sw self, my.bench.select("Select your new Active Pokémon.")
+              }
             }
           }
 
@@ -2165,14 +2181,19 @@ public enum ForbiddenLight implements LogicCardInfo {
               assert opp.hand
             }
             onAttack {
-              if(opp.hand.hasType(SUPPORTER)){
-                def card=opp.hand.select("Opponent's hand. Select a supporter.", cardTypeFilter(SUPPORTER)).first()
-                discard card
-                bg.deterministicCurrentThreadPlayerType=self.owner
-                bg.em().run(new PlayTrainer(card))
-                bg.clearDeterministicCurrentThreadPlayerType()
-              } else {
-                opp.hand.showToMe("Opponent's hand. No supporter in there.")
+              if (opp.hand) {
+                def randomOppHand = opp.hand.shuffledCopy()
+                if(randomOppHand.hasType(SUPPORTER)){
+                  def support = randomOppHand.select(max: 0, "Your opponent's hand. You may discard a Supporter card you find there and use the effect of that card as the effect of this attack.", cardTypeFilter(SUPPORTER))
+                  if (support){
+                    discard support.first()
+                    bg.deterministicCurrentThreadPlayerType=self.owner
+                    bg.em().run(new PlayTrainer(support.first()))
+                    bg.clearDeterministicCurrentThreadPlayerType()
+                  }
+                } else {
+                  randomOppHand.showToMe("Your opponent's hand. No supporter in there.")
+                }
               }
             }
           }
@@ -2485,8 +2506,17 @@ public enum ForbiddenLight implements LogicCardInfo {
           move "Destructive Sound", {
             text "Your opponent reveals their hand. Discard all Item cards you find there."
             energyCost C, C
+            attackRequirement {
+              assert opp.hand : "Your opponent has no cards in hand"
+            }
             onAttack {
-              opp.hand.showToMe("Opponent's hand").filterByType(ITEM).discard()
+              if (opp.hand) {
+                def itemsInOppHand = opp.hand.shuffledCopy().showToMe("Opponent's hand. All items in it will be discarded.").filterByType(ITEM)
+                if (itemsInOppHand)
+                  itemsInOppHand.showToOpponent("Your opponent used Destructive Sound. All of these items in your hand will now be discarded.").discard()
+                else
+                  bc "No items were discarded by Destructive Sound."
+              }
             }
           }
 
@@ -2699,9 +2729,9 @@ public enum ForbiddenLight implements LogicCardInfo {
             eff2 = delayed{
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if(it.to == self && self.types.contains(M)){
-                    bc "Metal Frying Pan -30"
-                    it.dmg-=hp(30)
+                  if(it.to == self && self.types.contains(M) && it.dmg.value && it.notNoEffect) {
+                      bc "Metal Frying Pan -30"
+                      it.dmg-=hp(30)
                   }
                 }
               }
@@ -2734,6 +2764,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             tar.discard()
           }
           playRequirement{
+            assert my.hand.filterByType(ULTRA_BEAST) : "You don't have any Ultra Beast cards in your hand"
           }
         };
       case ULTRA_SPACE_115:

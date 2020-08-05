@@ -65,7 +65,7 @@ public enum DeltaSpecies implements LogicCardInfo {
   MIGHTYENA_DELTA_24 ("Mightyena", 24, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, DELTA, _DARKNESS_, _METAL_]),
   PORYGON2_25 ("Porygon2", 25, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
   RAIN_CASTFORM_26 ("Rain Castform", 26, Rarity.RARE, [POKEMON, BASIC, _WATER_]),
-  SANDSLASH_DELTA_27 ("Sandslash", 27, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_, _METAL_]),
+  SANDSLASH_DELTA_27 ("Sandslash", 27, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, DELTA, _FIGHTING_, _METAL_]),
   SLOWKING_28 ("Slowking", 28, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
   SNOW_CLOUD_CASTFORM_29 ("Snow-cloud Castform", 29, Rarity.RARE, [POKEMON, BASIC, _WATER_]),
   STARMIE_DELTA_30 ("Starmie", 30, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, DELTA, _WATER_, _METAL_]),
@@ -505,7 +505,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "80 damage. If your opponent has no Stage 2 Evolved Pokémon in play, this attack does nothing."
           energyCost L, M, C, C, C
           onAttack {
-            if (opp.all.any{ it.topPokemonCard.cardTypes.is(EVOLVED) && it.topPokemonCard.cardTypes.is(STAGE2) }) {
+            if (opp.all.any{ it.evolution && it.topPokemonCard.cardTypes.is(STAGE2) }) {
               damage 80
             }
           }
@@ -616,11 +616,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "As long as Rayquaza has any Holon Energy cards attached to it, ignore the effect of Rayquaza's Lightning Storm attack."
           delayedA {
             before CHECK_ATTACK_REQUIREMENTS, {
-              if (ef.attacker == self && self.cards.any{ it.name.contains("Holon Energy") }) {
-                if (ef.move.name == "Lightning Storm") {
-                  bg.em().storeObject("Lightning_Storm", bg.turnCount)
-                }
-              }
+              bg.em().storeObject("Lightning_Storm", (ef.attacker == self && self.cards.any{ it.name.contains("Holon Energy") } && ef.move.name == "Lightning Storm") )
             }
           }
         }
@@ -636,7 +632,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost L, M, C, C
           onAttack {
             damage 70
-            if (bg.em().retrieveObject("Lightning_Storm") != bg.turnCount) {
+            if (bg.em().retrieveObject("Lightning_Storm") != true) {
               directDamage 70, self
             } else {
               bc "Rayquaza Delta has a Holon Energy attached and will not take self damage from Lightning Storm"
@@ -988,6 +984,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         pokeBody "Binding Aura", {
           text "Your opponent can't play any Basic Pokémon or Evolution cards from his or her hand to evolve an Asleep Pokémon and can't attach any Energy cards from his or her hand to an Asleep Pokémon."
           delayedA {
+            //TODO: Prevent Baby Evolution from happening.
             before EVOLVE_STANDARD, {
               if (bg.currentTurn == self.owner.opposite && ef.pokemonToBeEvolved.isSPC(ASLEEP)) {
                 wcu "Binding Aura prevents you from evolving an Asleep Pokemon"
@@ -1010,8 +1007,8 @@ public enum DeltaSpecies implements LogicCardInfo {
             assert opp.bench : "There is no Pokémon on your opponent's bench"
           }
           onAttack {
-            sw defending, opp.bench.select()
-            applyAfterDamage(ASLEEP)
+            def target = opp.bench.select("Select the new Active Pokémon.")
+            if ( sw2(target) ) { apply ASLEEP, target }
           }
         }
         move "Psyshot", {
@@ -1534,7 +1531,17 @@ public enum DeltaSpecies implements LogicCardInfo {
             assert defending.topPokemonCard.moves : "No moves to perform"
           }
           onAttack {
-            def move = choose(defending.topPokemonCard.moves+["End Turn (Skip)"], "Choose 1 of the Defending Pokémon's attacks. (Do not select a move if you don't have necessary energy or it will fail) ")
+            def moveOptions = defending.topPokemonCard.moves
+            //
+            // [Temporary LV.X workaround]
+            if (defending.topPokemonCard.cardTypes.is(CardType.LEVEL_UP)){
+              //Only 3 LV.Xs right now, all stage 2 so this should do
+              def tpc = defending.cards.find{car -> car.cardTypes.is(STAGE2) && car != defending.topPokemonCard}
+              moveOptions += tpc.moves
+            }
+            // [End of LV.X workaround] TODO: Remove this when no longer needed
+            //
+            def move = choose(moveOptions + ["End Turn (Skip)"], "Choose 1 of the Defending Pokémon's attacks. (Do not select a move if you don't have necessary energy or it will fail) ")
             if (move instanceof String) return
             def bef = blockingEffect(BETWEEN_TURNS)
             attack (move as Move)
@@ -2731,8 +2738,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           shuffleDeck()
         }
         playRequirement{
-          def hand = my.hand.getExcludedList(thisCard).size() >= 1
-          assert hand : "One other card in hand is required to play this card."
+          assert my.hand.getExcludedList(thisCard) : "One other card in hand is required to play this card."
           assert my.discard.filterByType(BASIC_ENERGY) || my.discard.filterByType(POKEMON) : "No Basic Energy cards or Pokemon in discard pile."
         }
       };
@@ -2754,8 +2760,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           shuffleDeck()
         }
         playRequirement{
-          def hand = my.hand.getExcludedList(thisCard).size() >= 1
-          assert hand : "One other card in hand is required to play this card."
+          assert my.hand.getExcludedList(thisCard) : "One other card in hand is required to play this card."
           assert my.deck : "Deck is empty"
         }
       };
@@ -2774,8 +2779,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           shuffleDeck()
         }
         playRequirement{
-          def hand = my.hand.getExcludedList(thisCard).size() >= 1
-          assert hand : "One other card in hand is required to play this card."
+          assert my.hand.getExcludedList(thisCard) : "One other card in hand is required to play this card."
           assert my.deck : "Deck is empty"
         }
       };
@@ -2813,8 +2817,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           shuffleDeck()
         }
         playRequirement{
-          def hand = my.hand.getExcludedList(thisCard).size() >= 1
-          assert hand : "One other card in hand is required to play this card."
+          assert my.hand.getExcludedList(thisCard) : "One other card in hand is required to play this card."
           assert my.deck : "Deck is empty."
         }
       };
@@ -2851,8 +2854,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           draw opp.hand.size() - my.hand.getExcludedList(thisCard).size()
         }
         playRequirement{
-          def hand = my.hand.getExcludedList(thisCard).size() >= 1
-          assert hand : "One other card in hand is required to play this card."
+          assert my.hand.getExcludedList(thisCard) : "One other card in hand is required to play this card."
           assert (my.hand.size()-2 < opp.hand.size()) : "You must be able to draw at least one card after you have paid the discard cost"
         }
       };
@@ -2863,10 +2865,10 @@ public enum DeltaSpecies implements LogicCardInfo {
           // Choice 1 = Search deck
           // Choice 2 = Search discard
           def choice = 2
-          if (!my.discard || !my.discard.any{it.cardTypes.is(SUPPORTER) && it.name.contains("Holon")}) {
+          if (!my.discard.any{it.cardTypes.is(SUPPORTER) && it.name.contains("Holon")}) {
             choice = 1
           }
-          else {
+          else if (my.deck) {
             choice = choose([1,2],["Search the deck", "Search the Discard pile"], "Where to search for a Supporter card that has Holon in its name?")
           }
           if (choice == 1) {

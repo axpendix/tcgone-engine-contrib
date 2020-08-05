@@ -1,5 +1,7 @@
 package tcgwars.logic.impl.gen3;
 
+import tcgwars.logic.impl.gen3.FireRedLeafGreen;
+
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
@@ -99,14 +101,14 @@ public enum Emerald implements LogicCardInfo {
   WHISMUR_73 ("Whismur", 73, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
   ZIGZAGOON_74 ("Zigzagoon", 74, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
   BATTLE_FRONTIER_75 ("Battle Frontier", 75, Rarity.UNCOMMON, [STADIUM, TRAINER]),
-  DOUBLE_FULL_HEAL_76 ("Double Full Heal", 76, Rarity.UNCOMMON, [TRAINER]),
+  DOUBLE_FULL_HEAL_76 ("Double Full Heal", 76, Rarity.UNCOMMON, [TRAINER, ITEM]),
   LANETTE_S_NET_SEARCH_77 ("Lanette's Net Search", 77, Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
   LUM_BERRY_78 ("Lum Berry", 78, Rarity.COMMON, [POKEMON_TOOL, TRAINER]),
   MR__STONE_S_PROJECT_79 ("Mr. Stone's Project", 79, Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
   ORAN_BERRY_80 ("Oran Berry", 80, Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER]),
-  POKENAV_81 ("PokéNav", 81, Rarity.UNCOMMON, [TRAINER]),
+  POKENAV_81 ("PokéNav", 81, Rarity.UNCOMMON, [TRAINER, ITEM]),
   PROFESSOR_BIRCH_82 ("Professor Birch", 82, Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
-  RARE_CANDY_83 ("Rare Candy", 83, Rarity.UNCOMMON, [TRAINER]),
+  RARE_CANDY_83 ("Rare Candy", 83, Rarity.UNCOMMON, [TRAINER, ITEM]),
   SCOTT_84 ("Scott", 84, Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
   WALLY_S_TRAINING_85 ("Wally's Training", 85, Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
   DARKNESS_ENERGY_86 ("Darkness Energy", 86, Rarity.RARE, [SPECIAL_ENERGY, ENERGY]),
@@ -820,9 +822,7 @@ public enum Emerald implements LogicCardInfo {
             energyCost C, C, C
             onAttack {
               damage 40
-              afterDamage{
-                switchYourActive(may: true)
-              }
+              switchYourActive(may: true)
             }
           }
 
@@ -884,9 +884,7 @@ public enum Emerald implements LogicCardInfo {
             energyCost C, C, C
             onAttack {
               damage 40
-              afterDamage{
-                switchYourActive(may: true)
-              }
+              switchYourActive(may: true)
             }
           }
 
@@ -1882,7 +1880,7 @@ public enum Emerald implements LogicCardInfo {
       case METAL_ENERGY_88:
         return copy (RubySapphire.METAL_ENERGY_94, this);
       case MULTI_ENERGY_89:
-        return copy (Sandstorm.MULTI_ENERGY_93, this);
+        return copy (FireRedLeafGreen.MULTI_ENERGY_103, this);
       case ALTARIA_EX_90:
         return evolution (this, from:"Swablu", hp:HP100, type:COLORLESS, retreatCost:1) {
           pokeBody "Mist", {
@@ -2067,7 +2065,7 @@ public enum Emerald implements LogicCardInfo {
             text "Put 3 damage counters on your opponent’s Pokémon in any way you like."
             energyCost C, C
             onAttack {
-              3.times{ directDamage 10, opp.all.select("Put 1 damage counter to which pokémon?") }
+              putDamageCountersOnOpponentsPokemon(3)
             }
           }
           move "Sky Kick", {
@@ -2125,30 +2123,14 @@ public enum Emerald implements LogicCardInfo {
             text "Damage done to any of your Raichu ex in play by attacks from your opponent’s Pokémon-ex is reduced by 30 (after applying Weakness and Resistance). You can’t use more than 1 Rai-shield Poké-Body each turn."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  def raiShieldsApplied = keyStore("Rai_Shield", it.to, null)
-                  def conditions = [
-                    (it.from.owner == self.owner.opposite),
-                    (it.from.EX),
-                    (it.to.owner == self.owner),
-                    (it.to.name == "Raichu ex"),
-                    (raiShieldsApplied == 0),
-                    (it.dmg.value && it.notNoEffect)
-                  ]
-                  if(!conditions.any{it == false}){
-                    bc "Rai-shield : -30"
-                    it.dmg-=hp(30)
-                    raiShieldsApplied += 1
-                    keyStore("Rai_Shield", it.to, raiShieldsApplied)
+                if(bg.em().retrieveObject("Rai_Shield") != bg.turnCount) {
+                  bg.dm().each {
+                    if(it.from.owner == self.owner.opposite && it.from.EX && it.to.owner == self.owner && it.to.name == "Raichu ex" && it.dmg.value && it.notNoEffect){
+                      bc "Rai-shield -30"
+                      it.dmg-=hp(30)
+                    }
                   }
-                }
-              }
-              before BETWEEN_TURNS, {
-                if(bg.em().retrieveObject("Rai_shield") != bg.turnCount){
-                  bg.em().storeObject("Rai_shield",bg.turnCount)
-                  my.all.each{
-                    keyStore("Rai_Shield", it, 0)
-                  }
+                  bg.em().storeObject("Rai_Shield", bg.turnCount)
                 }
               }
             }

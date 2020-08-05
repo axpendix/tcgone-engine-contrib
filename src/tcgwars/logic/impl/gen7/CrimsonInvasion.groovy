@@ -312,9 +312,8 @@ public enum CrimsonInvasion implements LogicCardInfo {
               assert opp.bench.notEmpty : "Empty bench"
             }
             onAttack {
-              def pcs = opp.bench.select("Switch")
-              sw opp.active, pcs
-              damage 40
+              def target = opp.bench.select("Select the new Active Pokémon.")
+              if ( sw2(target) ) { damage 40, target }
             }
           }
 
@@ -2062,9 +2061,11 @@ public enum CrimsonInvasion implements LogicCardInfo {
           move "Bug Search", {
             text "Your opponent reveals their hand."
             energyCost C
+            attackRequirement {
+              assert opp.hand : "Your opponent has no cards in hand"
+            }
             onAttack {
-              opp.hand.showToMe("Opponent's hand")
-              opp.hand.shuffle()
+              if (opp.hand) opp.hand.shuffledCopy().showToMe("Opponent's hand")
             }
           }
           move "Flap", {
@@ -2280,10 +2281,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
         return itemCard (this) {
           text "You can play this card only if you have more Prize cards remaining than your opponent.\nSwitch 1 of your opponent's Benched Pokémon with their Active Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
           onPlay {
-            if(opp.bench){
-              def pcs = opp.bench.select("Switch")
-              sw opp.active, pcs, TRAINER_CARD
-            }
+            switchYourOpponentsBenchedWithActive(TRAINER_CARD)
           }
           playRequirement{
             assert my.prizeCardSet.size() > opp.prizeCardSet.size()
@@ -2367,7 +2365,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
         return itemCard (this) {
           text "Your opponent reveals their hand. You may have your opponent count the cards in their hand, shuffle those cards into their deck, then draw that many cards.\nYou may play as many Item cards as you like during your turn (before your attack)."
           onPlay {
-            opp.hand.showToMe("Opponent's hand")
+            opp.hand.shuffledCopy().showToMe("Opponent's hand")
             if(confirm("Replace opponent hand?")){
               def nbc = opp.hand.size()
               opp.hand.moveTo(hidden:true,opp.deck)

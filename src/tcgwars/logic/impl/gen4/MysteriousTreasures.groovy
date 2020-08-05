@@ -1,5 +1,7 @@
 package tcgwars.logic.impl.gen4;
 
+import tcgwars.logic.impl.gen3.FireRedLeafGreen;
+
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
@@ -268,6 +270,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 ) {
                   keyStore("Power_Cancel", self, bg.turnCount)
                   bc "$self activates Power Cancel to block ${ability.name}!"
+                  powerUsed()
                   self.owner.pbg.hand.select(count: 2, "Discard 2 hand from your hand", {true}, self.owner).discard()
                   prevent()
                 }
@@ -1791,7 +1794,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             onAttack {
               damage 30
               afterDamage{
-                opp.hand.showToMe("Opponent’s hand")
+                if (opp.hand) opp.hand.shuffledCopy().showToMe("Opponent’s hand")
               }
             }
           }
@@ -2235,12 +2238,12 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
             onAttack {
               if (opp.hand && !checkBodyguard()) {
-                def oppCard = opp.hand.select(hidden: true, count: count, "Choose a random card from your opponent's hand to be shuffled into his or her deck").showToMe("Selected card(s)").showToOpponent("Hidden Power: this card will be shuffled from your hand to your deck")
+                def oppCard = opp.hand.shuffledCopy().select(hidden: true, count: count, "Choose a random card from your opponent's hand to be shuffled into his or her deck").showToMe("Selected card(s)").showToOpponent("Hidden Power: this card will be shuffled from your hand to your deck")
                 oppCard.moveTo(opp.deck)
                 shuffleDeck(null, TargetPlayer.OPPONENT)
               }
               if (my.hand) {
-                def myCard = my.hand.oppSelect(hidden: true, count: 1, "Choose 1 random card from your opponent's hand to be shuffled into his or her deck").showToOpponent("Selected card(s)").showToMe("Hidden Power: this card will be shuffled from your hand to your deck")
+                def myCard = my.hand.shuffledCopy().oppSelect(hidden: true, count: 1, "Choose 1 random card from your opponent's hand to be shuffled into his or her deck").showToOpponent("Selected card(s)").showToMe("Hidden Power: this card will be shuffled from your hand to your deck")
                 myCard.moveTo(my.deck)
                 shuffleDeck()
               }
@@ -2969,7 +2972,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {
               assert opp.hand : "Opponent has no cards in hand."}
             onAttack {
-              opp.hand.showToMe("Opponent's hand")
+              if (opp.hand) opp.hand.shuffledCopy().showToMe("Opponent's hand")
             }
           }
           move "Snowball Fight", {
@@ -3155,14 +3158,14 @@ public enum MysteriousTreasures implements LogicCardInfo {
             def choice = 1
             def chosenCard
 
-            if(my.discard.any{isValidFossilCard(it)}){
-              choice = choose([1,2],['Search your deck', 'Search your discard pile'], "Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil, reveal it, and put it into your hand. Then, shuffle your deck.")
+            if(my.deck && my.discard.any{isValidFossilCard(it)}){
+              choice = choose([1,2],['Search your deck', 'Search your discard pile'], "Choose where to search for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil, reveal it, and put it into your hand?")
             }
 
-            if (choice == 1){
+            if (choice == 1 && my.deck){
               def validTargets = my.deck.findAll{isValidFossilCard(it)}
               chosenCard = my.deck.search(count:1, "Search your deck for a Trainer-Item card that has \"Fossil\" in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil.", { validTargets.contains(it) } )
-            } else /*if (choice == 2)*/ {
+            } else /*if (choice == 2 || !my.deck)*/ {
               chosenCard = my.discard.findAll{isValidFossilCard(it)}.select()
             }
 
@@ -3172,7 +3175,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             shuffleDeck()
           }
           playRequirement {
-            assert ( my.deck.notEmpty || my.discard.any{isValidFossilCard(it)}) : "You have no cards in deck, and there are no cards in your discard pile that satisfy this supporter's requirements."
+            assert ( my.deck.notEmpty || my.discard.any{isValidFossilCard(it)}) : "You have no cards in deck, and there are no cards in your discard pile that satisfy this supporter's requirements"
           }
         };
       case LAKE_BOUNDARY_112:
@@ -3405,7 +3408,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
           }
         };
       case MULTI_ENERGY_118:
-        return copy (Sandstorm.MULTI_ENERGY_93, this);
+        return copy(FireRedLeafGreen.MULTI_ENERGY_103, this);
       case DARKNESS_ENERGY_119:
         //TODO: This version of "Darkness Energy (Special Energy)" shouldn't work on "Dark ____" cards, only on [D] Type Pokémon.
         return specialEnergy (this, [[D]]) {

@@ -8,7 +8,7 @@ Please [read the wiki](https://github.com/axpendix/tcgone-engine-contrib/wiki) t
 
 ### About TCG ONE
 
-[TCG ONE](https://tcgone.net) is an Online Automated Pokémon Trading Card Game Simulator where players can gather online and play with their favorite cards in their respective formats. Its software is completely fan-made and is in no way affiliated with TPCI or its official game.
+[TCG ONE](https://tcgone.net) is an Online Automated Pokémon Trading Card Game Simulator where players can gather online and play with their favorite cards in their respective formats. Its software is completely fan-made and is in no way affiliated with TPCI or its official game. 
 
 Some of its features are: Automated Game Mechanics, Online 1-1 play, Deck Editor, Lobby & Chat, Real Card Images, Multiple Game Formats (including Standard, Expanded and Classic Old School formats), Spectation, Game scoring system and Scoreboards, Career and Quickplay game modes, Personal Inventory, Assemble/Dissolve cards with ink, Leveling, Booster Pack simulator, Daily Quests and Achievements.
 

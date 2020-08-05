@@ -468,12 +468,14 @@ public enum UnbrokenBonds implements LogicCardInfo {
             text "Once during your turn (before your attack), if your opponent's Bench isn't full, you may flip a coin. If heads, your opponent reveals their hand. Put a Basic Pokémon you find there onto their Bench."
             actionA {
               assert opp.bench.notFull : "There is no more space on your opponent bench"
+              assert opp.hand : "Your opponent has no cards in hand"
               checkLastTurn()
               powerUsed()
               flip {
-                opp.hand.showToMe("Opponent's hand")
-                if(opp.hand.findAll{it.cardTypes.is(BASIC)}){
-                  def card = opp.hand.findAll{it.cardTypes.is(BASIC)}.select("select the pokémon to put on the bench").first()
+                def randomOppHand = opp.hand.shuffledCopy()
+                randomOppHand.showToMe("Opponent's hand")
+                if(randomOppHand.any{it.cardTypes.is(BASIC)}){
+                  def card = randomOppHand.findAll{it.cardTypes.is(BASIC)}.select("select the pokémon to put on the bench").first()
                   opp.hand.remove(card)
                   benchPCS(card, OTHER, TargetPlayer.OPPONENT)
                 }
@@ -598,7 +600,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               damage 60
               afterDamage{
                 if(my.deck || my.hand){
-                  my.hand.moveTo(my.deck)
+                  my.hand.moveTo(hidden:true, my.deck)
                   shuffleDeck()
                   draw 10
                 }
@@ -686,7 +688,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               assertOppBench()
             }
             onAttack {
-              sw(opp.active, opp.bench.select())
+              switchYourOpponentsBenchedWithActive()
             }
           }
           move "Gentle Slap", {
@@ -980,14 +982,14 @@ public enum UnbrokenBonds implements LogicCardInfo {
             text "Your Pokémon's attacks do 30 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance). You can't apply more than 1 Strong Cheer Ability at a time."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                if(ef.attacker.owner == self.owner){
+                if(ef.attacker.owner == self.owner && bg.em().retrieveObject("Strong Cheer") != bg.turnCount){
                   bg.dm().each {
-                    if (it.from.active && it.from.owner == self.owner && it.to.active && it.to.owner != self.owner && it.dmg.value && bg.em().retrieveObject("Strong Cheer") != bg.turnCount) {//if not strong cheer has been used before
+                    if (it.from.active && it.from.owner == self.owner && it.to.active && it.to.owner != self.owner && it.dmg.value) {//if not strong cheer has been used before
                       bc "Strong Cheer +30"
                       it.dmg += hp(30)
-                      bg.em().storeObject("Strong Cheer", bg.turnCount)
                     }
                   }
+                  bg.em().storeObject("Strong Cheer", bg.turnCount)
                 }
               }
             }
@@ -2042,9 +2044,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             text "Put 3 damage counters on your opponent's Pokémon in any way you like."
             energyCost C
             onAttack {
-              (1..3).each {
-                if(opp.all) directDamage(10, opp.all.select("Put a damage counter on"))
-              }
+              putDamageCountersOnOpponentsPokemon(3)
             }
           }
 
@@ -2773,7 +2773,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
             onAttack {
               gxPerform()
-              opp.hand.select(count:2,"Opponent's hand. Discard 2").discard()
+              opp.hand.shuffledCopy().select(count:2,"Opponent's hand. Discard 2").discard()
             }
           }
 
@@ -2932,10 +2932,10 @@ public enum UnbrokenBonds implements LogicCardInfo {
             text "The Pokémon that has the least HP remaining, except for this Pokémon, is Knocked Out. (If multiple Pokémon are tied, choose one.)"
             energyCost C, C
             onAttack {
-              def list = all.findAll{it!=self}.sort(false) {p1,p2 -> p1.remainingHP.value <=> p2.remainingHP.value}
+              def list = all.findAll{it!=self}.sort(false) {p1,p2 -> p1.remainingHP.value <=> p2.remainingHP.value} as PcsList
               def tar = new PcsList()
               int min = list.get(0).remainingHP.value
-              while(list.get(0).remainingHP.value==min){
+              while (list.notEmpty && list.get(0).remainingHP.value==min) {
                 tar.add(list.remove(0))
               }
               //TODO: Heavily improve this selection, in case both players have tied Pokémon. Make it clearer to pick.
@@ -2976,23 +2976,26 @@ public enum UnbrokenBonds implements LogicCardInfo {
             text "Your opponent reveals their hand. You may discard a Pokémon you find there and use one of that Pokémon’s non-GX attacks as this attack."
             energyCost D
             attackRequirement {
-              assert opp.hand
+              assert opp.hand : "Your opponent has no cards in hand"
             }
             onAttack {
-              opp.hand.showToMe("Opponent's hand")
-              if(opp.hand.filterByType(POKEMON)){
-                def tmp = opp.hand.filterByType(POKEMON).select(min:0, "You may discard a Pokémon you find there and use one of that Pokémon’s non-GX attacks as this attack.")
-                if(tmp){
-                  def card = tmp.first()
-                  bc "$card was chosen"
-                  discard card
-                  def moves = card.asPokemonCard().moves.findAll{!it.name.contains("GX")}
-                  if(moves){
-                    def move = choose(moves, "Choose attack")
-                    bc "$move was chosen"
-                    def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
-                    attack (move as Move)
-                    bef.unregisterItself(bg().em())
+              if (opp.hand) {
+                def randomOppHand = opp.hand.shuffledCopy()
+                randomOppHand.showToMe("Opponent's hand")
+                if (randomOppHand.hasType(POKEMON)){
+                  def tmp = randomOppHand.filterByType(POKEMON).select(min:0, "You may discard a Pokémon you find there and use one of that Pokémon’s non-GX attacks as this attack.")
+                  if(tmp){
+                    def card = tmp.first()
+                    bc "$card was chosen"
+                    discard card
+                    def moves = card.asPokemonCard().moves.findAll{!it.name.contains("GX")}
+                    if(moves){
+                      def move = choose(moves, "Choose attack")
+                      bc "$move was chosen"
+                      def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
+                      attack (move as Move)
+                      bef.unregisterItself(bg().em())
+                    }
                   }
                 }
               }
@@ -3286,7 +3289,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               damage 200
               afterDamage{
                 if(self.cards.energySufficient(thisMove.energyCost + Y+Y+Y)){
-                  opp.hand.moveTo(opp.deck)
+                  opp.hand.moveTo(hidden:true, opp.deck)
                   shuffleDeck(null, TargetPlayer.OPPONENT)
                 }
               }
@@ -3302,7 +3305,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               checkLastTurn()
               powerUsed()
               flip {
-                my.hand.moveTo(my.deck)
+                my.hand.moveTo(hidden:true, my.deck)
                 shuffleDeck()
                 draw 6
               }
@@ -3521,8 +3524,8 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
             onAttack {
               flip 2,{
-                if(opp.hand) {
-                  opp.hand.select("Opponent's hand. Shuffle a card into their deck.").moveTo(opp.deck)
+                if (opp.hand) {
+                  opp.hand.shuffledCopy().select("Opponent's hand. Shuffle a card into their deck.").moveTo(opp.deck)
                   shuffleDeck(null, TargetPlayer.OPPONENT)
                 }
               }
@@ -3948,7 +3951,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             text "Shuffle your hand into your deck. Then, draw a card for each card in your opponent's hand."
             energyCost C
             onAttack {
-              my.hand.moveTo(my.deck)
+              my.hand.moveTo(hidden:true, my.deck)
               shuffleDeck()
               draw opp.hand.size()
             }
@@ -4251,6 +4254,14 @@ public enum UnbrokenBonds implements LogicCardInfo {
             bg.em().storeObject("KOGA_S_TRAP_TURN", bg.turnCount)
           }
           playRequirement{
+            def defendingConfused = opp.active.isSPC(CONFUSED)
+            def defendingPoisoned = opp.active.isSPC(POISONED)
+            def extraPoisonCount = 0
+            if (defendingPoisoned){
+              //Check for multi-counter poison; this only detects active increasers.
+              extraPoisonCount = bg.em().retrieveObject("extra_poison_counter_"+opp.active.hashCode()) ?: 0
+            }
+            assert !defendingConfused || !defendingPoisoned || extraPoisonCount : "Your opponent's Active Pokémon is already Confused and Poisoned"
           }
         };
       case LT_SURGE_S_STRATEGY_178:
@@ -4401,7 +4412,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             // TODO implement properly after source refactoring and/or RichSource captivation
             eff = delayed {
               before null, self, SRC_ABILITY, {
-                bc "Stealty Hood prevents effect"
+                bc "Stealthy Hood prevents effect"
                 prevent()
               }
             }
@@ -4427,11 +4438,16 @@ public enum UnbrokenBonds implements LogicCardInfo {
           text "During this turn, damage from your Ultra Beasts' attacks isn't affected by any effects on your opponent's Active Pokémon."
           onPlay {
             delayed {
-              before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each{if(it.from==ef.attacker && ef.attacker.topPokemonCard.cardTypes.is(ULTRA_BEAST)){
-                  it.flags.add(DamageManager.DamageFlag.NO_DEFENDING_EFFECT)
-                  bc "Ultra Forest Kartenvoy kicks in"
-                }}
+              //TODO Fix, not working currently against safeguard (Keldeo-GX)
+              before PROCESS_ATTACK_EFFECTS, {
+                if (ef.attacker.topPokemonCard.cardTypes.is(ULTRA_BEAST)){
+                  bg.dm().each{
+                    if (it.to.owner != self.owner && it.to.active) {
+                      bc "Ultra Forest Kartenvoy kicks in"
+                      it.flags.add(DamageManager.DamageFlag.NO_DEFENDING_EFFECT)
+                    }
+                  }
+                }
               }
               unregister {
                 bc "Ultra Forest Kartenvoy fades out"
@@ -4446,8 +4462,10 @@ public enum UnbrokenBonds implements LogicCardInfo {
         return supporter (this) {
           text "Attach up to 2 [R] Energy cards from your hand to 1 of your Pokémon. If you do, draw 3 cards."
           onPlay {
+            bg.em().storeObject("Welder_Played",true)
             attachEnergyFrom(max:2,type:R,my.hand,my.all)
             draw 3
+            bg.em().storeObject("Welder_Played",false)
           }
           playRequirement{
             assert my.hand.filterByEnergyType(R)

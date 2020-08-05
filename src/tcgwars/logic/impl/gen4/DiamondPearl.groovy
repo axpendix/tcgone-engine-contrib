@@ -411,8 +411,7 @@ public enum DiamondPearl implements LogicCardInfo {
             onActivate {reason ->
               if(reason==PLAY_FROM_HAND && opp.hand && opp.bench.notFull && confirm('Use Gleam Eyes?')){
                 powerUsed()
-                opp.hand.showToMe("Opponent's hand")
-                def list = opp.hand.filterByType(BASIC)
+                def list = opp.hand.shuffledCopy().showToMe("Opponent's hand").filterByType(BASIC)
                 if(list){
                   def card = list.select("Put a Basic Pokémon you find there onto your opponent's Bench").first()
                   opp.hand.remove(card)
@@ -836,6 +835,17 @@ public enum DiamondPearl implements LogicCardInfo {
               moveList.addAll(defending.topPokemonCard.moves);
               labelList.addAll(defending.topPokemonCard.moves.collect{it.name})
 
+              //
+              // [Temporary LV.X workaround]
+              if (defending.topPokemonCard.cardTypes.is(CardType.LEVEL_UP)){
+                //Only 3 LV.Xs right now, all stage 2 so this should do
+                def tpc = defending.cards.find{car -> car.cardTypes.is(STAGE2) && car != defending.topPokemonCard}
+                moveList.addAll(tpc.moves)
+                labelList.addAll(tpc.moves.collect{it.name})
+              }
+              // [End of LV.X workaround] TODO: Remove this when no longer needed
+              //
+
               def move=choose(moveList, labelList)
               def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
               attack (move as Move)
@@ -962,12 +972,20 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost P, P, C
             attackRequirement {}
             onAttack {
-              (1..4).each {
-                directDamage 10, opp.all.select("Put 1 damage counter to which Pokémon?")
+              def eff = delayed {
+                before KNOCKOUT, {
+                  prevent()
+                }
               }
+
+              4.times{ directDamage 10, opp.all.select("Put 1 damage counter to which pokémon? ${it}/4 counters placed") }
+
               if (my.bench) {
-                sw self, my.bench.select("Select the new active.")
+                sw self, my.bench.select("Select your new active.")
               }
+
+              eff.unregister()
+              checkFaint()
             }
           }
 
@@ -2300,11 +2318,11 @@ public enum DiamondPearl implements LogicCardInfo {
             text "Switch 1 of your opponent’s Benched Pokémon with 1 of the Defending Pokémon. The new Defending Pokémon is now Asleep."
             energyCost G
             attackRequirement {
-              assert opp.bench
+              assert opp.bench : "Your opponent has no Benched Pokémon"
             }
             onAttack {
-              sw opp.active, opp.bench.select()
-              apply ASLEEP, opp.active
+              def target = opp.bench.select("Select the new Active Pokémon.")
+              if ( sw2(target) ) { apply ASLEEP, target }
             }
           }
           move "Gust", {
@@ -2907,16 +2925,45 @@ public enum DiamondPearl implements LogicCardInfo {
           }
         };
       case PLUSPOWER_109:
-        return copy(BaseSet.PLUSPOWER, this)
-      // TODO this has to be implemented here again because base set version has a multiplying bug
-//        return basicTrainer (this) {
-//          text "Attach PlusPower to 1 of your Pokémon. Discard this card at the end of your turn.\nIf the Pokémon PlusPower is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance)."
-//          onPlay {
-//            //TODO
-//          }
-//          playRequirement{
-//          }
-//        };
+      // TODO this has to be implemented here again because base set version has a multiplying bug (also, this print increases before W/R when the old prints do it after W/R - starg)
+      return itemCard (this) {
+        text "Attach PlusPower to 1 of your Pokémon. Discard this card at the end of your turn.\nIf the Pokémon PlusPower is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance)."
+        def eff
+        onPlay {reason->
+          def pcs = my.active
+          if (my.bench) {
+            pcs = my.all.select("Which Pokémon will you attach $thisCard to?")
+          }
+          pcs.cards.add(thisCard)
+          my.hand.remove(thisCard)
+
+          eff = delayed {
+            after PROCESS_ATTACK_EFFECTS, {
+              if (ef.attacker == pcs) {
+                bg.dm().each {
+                  if (it.to.active && it.dmg.value) {
+                    bc "PlusPower +10"
+                    it.dmg += hp(10)
+                  }
+                }
+              }
+            }
+            after DISCARD, {
+              if(ef.card == thisCard){
+                eff.unregister()
+              }
+            }
+            before BETWEEN_TURNS, {
+              discard thisCard
+            }
+            after REMOVE_FROM_PLAY, pcs, null, {
+              if(ef.removedCards.contains(thisCard)) {
+                eff.unregister()
+              }
+            }
+          }
+        }
+      };
       case POKE_BALL_110:
       return itemCard (this) {
           text "Flip a coin. If heads, search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
@@ -3004,6 +3051,13 @@ public enum DiamondPearl implements LogicCardInfo {
           weakness L, PLUS30
           globalAbility {Card thisCard->
             delayed {
+              before EVOLVE, {
+                if ( (ef.evolutionCard as Card) == thisCard && ["Piplup", "Prinplup"].contains(ef.pokemonToBeEvolved.name)  ) {
+                  wcu "You cannot evolve ${ef.pokemonToBeEvolved} into $thisCard.name LV.X"
+                  bc "[ERROR] Level-Up cards are not yet fully implemented, try to avoid using Rare Candy or Wally's Training as they will fail and be discarded with no use."
+                  prevent()
+                }
+              }
               before PLAY_CARD, {
                 if(ef.cardToPlay == thisCard){
                   def currentActive = thisCard.player.pbg.active
@@ -3044,7 +3098,7 @@ public enum DiamondPearl implements LogicCardInfo {
               assert opp.hand : "Your Opponent has no cards in their hand."
               powerUsed()
 
-              def chosenCards = opp.hand.select(hidden: true, max: 2).showToOpponent("Cards randomly put aside by Supreme Command. They'll return to your hand at the end of your next turn.")
+              def chosenCards = opp.hand.shuffledCopy().select(hidden: true, max: 2).showToOpponent("Cards randomly put aside by Supreme Command. They'll return to your hand at the end of your next turn.")
               def supremeCommandBundles = bg.em().retrieveObject("supremeCommandBundles")
               if (!supremeCommandBundles)
                 supremeCommandBundles = [ : ]
@@ -3071,7 +3125,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost W, W, W
             attackRequirement {}
             onAttack {
-              damage 80, opp.all.findAll{it.numberOfDamageCounters}.select()
+              damage 80, opp.all.select()
               cantAttackNextTurn self
             }
           }
@@ -3083,6 +3137,13 @@ public enum DiamondPearl implements LogicCardInfo {
           def validPokemon
           globalAbility {Card thisCard->
             delayed {
+              before EVOLVE, {
+                if ( (ef.evolutionCard as Card) == thisCard && ["Chimchar", "Monferno"].contains(ef.pokemonToBeEvolved.name)  ) {
+                  wcu "You cannot evolve ${ef.pokemonToBeEvolved} into $thisCard.name LV.X"
+                  bc "[ERROR] Level-Up cards are not yet fully implemented, try to avoid using Rare Candy or Wally's Training as they will fail and be discarded with no use."
+                  prevent()
+                }
+              }
               before PLAY_CARD, {
                 if(ef.cardToPlay == thisCard){
                   def currentActive = thisCard.player.pbg.active
@@ -3150,6 +3211,13 @@ public enum DiamondPearl implements LogicCardInfo {
           weakness R, PLUS30
           globalAbility {Card thisCard->
             delayed {
+              before EVOLVE, {
+                if ( (ef.evolutionCard as Card) == thisCard && ["Turtwig", "Grotle"].contains(ef.pokemonToBeEvolved.name)  ) {
+                  wcu "You cannot evolve ${ef.pokemonToBeEvolved} into $thisCard.name LV.X"
+                  bc "[ERROR] Level-Up cards are not yet fully implemented, try to avoid using Rare Candy or Wally's Training as they will fail and be discarded with no use."
+                  prevent()
+                }
+              }
               before PLAY_CARD, {
                 if(ef.cardToPlay == thisCard){
                   def currentActive = thisCard.player.pbg.active

@@ -326,11 +326,8 @@ public enum UltraPrism implements LogicCardInfo {
               assert opp.bench.notEmpty
             }
             onAttack {
-              def pcs = opp.bench.select("Switch")
-              targeted(pcs) {
-                sw opp.active, pcs
-                apply POISONED, pcs
-              }
+              def target = opp.bench.select("Select the new Active Pokémon.")
+              if ( sw2(target) ) { apply POISONED, target }
             }
           }
           move "Flower Tornado", {
@@ -2315,7 +2312,7 @@ public enum UltraPrism implements LogicCardInfo {
             text "Move any number of damage counters on your opponent’s Pokémon to their other Pokémon in any way you like."
             energyCost Y, C
             attackRequirement {
-              assert opp.bench
+              assert opp.all.size() > 1 : "Your opponent only has one Pokémon in play"
             }
             def eff
             onAttack {
@@ -2327,7 +2324,7 @@ public enum UltraPrism implements LogicCardInfo {
               while(1){
                 def pl=(opp.all.findAll {it.numberOfDamageCounters})
                 if(!pl) break;
-                def src =pl.select("source for damage counter (cancel to stop)", false)
+                def src =pl.select("Source for damage counter (cancel to stop)", false)
                 if(!src) break;
                 def tar=opp.all.select("Target for damage counter (cancel to stop)", false)
                 if(!tar) break;
@@ -2498,6 +2495,7 @@ public enum UltraPrism implements LogicCardInfo {
                   // Enable the use of a 2nd Supporter
                   def eff
                   register {
+                    //TODO: This may not work properly against other extra supporter effects (mainly Lt. Surge's Strategy)
                     eff = getter (GET_MAX_SUPPORTER_PER_TURN) {h->
                       if(h.effect.playerType == thisCard.player && h.object < 2) h.object = 2
                     }
@@ -2704,7 +2702,7 @@ public enum UltraPrism implements LogicCardInfo {
             onAttack {
               damage 60
               if(opp.hand.size()>3)
-                opp.hand.select(hidden: true, count: opp.hand.size()-3).discard()
+                opp.hand.shuffledCopy().select(hidden: true, count: opp.hand.size()-3).discard()
             }
           }
 
@@ -2773,8 +2771,11 @@ public enum UltraPrism implements LogicCardInfo {
           move "Scout", {
             text "Your opponent reveals their hand."
             energyCost C
+            attackRequirement {
+              assert opp.hand : "Your opponent has no cards in hand"
+            }
             onAttack {
-              opp.hand.showToMe("Opponent's hand")
+              if (opp.hand) opp.hand.shuffledCopy().showToMe("Opponent's hand")
             }
           }
           move "Take Down", {
@@ -2795,8 +2796,8 @@ public enum UltraPrism implements LogicCardInfo {
             energyCost C, C
             onAttack {
               damage 20
-              opp.hand.showToMe("Opponent's hand")
-              if(opp.hand.filterByType(POKEMON)){
+              if (opp.hand) opp.hand.shuffledCopy().showToMe("Opponent's hand")
+              if (opp.hand.hasType(POKEMON)){
                 damage 80
               }
             }
@@ -2921,8 +2922,8 @@ public enum UltraPrism implements LogicCardInfo {
             opp.bench.findAll{!list.contains(it)}.each{
               it.cards.moveTo(opp.deck)
               removePCS(it)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
             }
+            shuffleDeck(null, TargetPlayer.OPPONENT)
           }
           playRequirement{
             assert my.active.types.contains(W) || my.active.types.contains(M) : "Your Active Pokémon needs to be [W] or [M]. (The card text was officially changed)"
@@ -3022,7 +3023,7 @@ public enum UltraPrism implements LogicCardInfo {
           text "Draw 2 cards. If you do, discard a random card from your opponent’s hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
             draw 2
-            if (opp.hand) opp.hand.select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be discarded").showToMe("Selected card").showToOpponent("this card will be discarded").discard()
+            if (opp.hand) opp.hand.shuffledCopy().select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be discarded").showToMe("Selected card").showToOpponent("this card will be discarded").discard()
           }
           playRequirement{
             assert my.deck
@@ -3033,7 +3034,7 @@ public enum UltraPrism implements LogicCardInfo {
           text "You may play 4 Missing Clover cards at once. \n-If you played 1 card, look at the top card of your deck \n if you played 4 cards, take a prize card \nYou may play as many Item cards as you like during your turn (before your attack)."
           onPlay {
             if(my.hand.findAll({it.name=="Missing Clover"}).size()>=4) {
-              if(confirm("Use your 4 Missing Clover and take a prize card?")){
+              if(!my.deck || confirm("Use your 4 Missing Clover and take a prize card?")){
                 bg.em().run(new TakePrize(thisCard.player, null))
                 my.hand.findAll({it.name=="Missing Clover"}).subList(0,4).discard()
               }
@@ -3042,6 +3043,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
           playRequirement{
+            assert (my.hand.count{it.name=="Missing Clover"} >= 4 || my.deck) : "You have no cards in your deck"
           }
         };
       case MT__CORONET_130:
@@ -3276,10 +3278,9 @@ public enum UltraPrism implements LogicCardInfo {
             }
             onAttack {
               gxPerform()
-              def card = opp.hand.select("Opponent's hand. Put one card as opponent prize").showToOpponent("This card from your hand is now in your prizes").first()
+              def card = opp.hand.shuffledCopy().select("Opponent's hand. Put one card as opponent prize").showToOpponent("This card from your hand is now in your prizes").first()
               opp.hand.remove(card)
               opp.prizeCardSet.add(card)
-              opp.prizeCardSet.shuffle()
               bc "Put 1 card to prizes and shuffled them"
             }
           }

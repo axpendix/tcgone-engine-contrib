@@ -360,9 +360,12 @@ public enum GuardiansRising implements LogicCardInfo {
           move "Poltergeist", {
             text "30× damage. Your opponent reveals their hand. This attack does 30 damage for each Trainer card you find there."
             energyCost C, C
+            attackRequirement {
+              assert opp.hand : "Your opponent has no cards in hand"
+            }
             onAttack {
-              opp.hand.showToMe("Opponent's hand")
-              damage 30*opp.hand.findAll {it.cardTypes.is(TRAINER)}.size()
+              if (opp.hand) opp.hand.shuffledCopy().showToMe("Opponent's hand")
+              damage 30*opp.hand.findAll{it.cardTypes.is(TRAINER)}.size()
             }
           }
           move "Horn Leech", {
@@ -497,8 +500,8 @@ public enum GuardiansRising implements LogicCardInfo {
               all.remove(src)
               tar=tar.select("Target for damage counter")
               src.damage-=hp(10)
-              tar.damage+=hp(10)
-              bc "Swapped a damage counter from $src to $tar"
+              directDamage 10, tar, SRC_ABILITY
+              bc "Moved 1 damage counter from $src to $tar"
               checkFaint()
             }
           }
@@ -1452,8 +1455,8 @@ public enum GuardiansRising implements LogicCardInfo {
               assert opp.bench
             }
             onAttack {
-              sw opp.active, opp.bench.select("Switch")
-              damage 30, opp.active
+              def target = opp.bench.select("Select the new Active Pokémon.")
+              if ( sw2(target) ) { damage 30, target }
             }
           }
           move "Link Blast", {
@@ -1709,6 +1712,21 @@ public enum GuardiansRising implements LogicCardInfo {
                   // TODO Fix it not blocking damage counters.
                 }}
               }
+              before DIRECT_DAMAGE, null, ATTACK, {
+                def pcs = ef.getResolvedTarget(bg, e)
+                if(bg.currentTurn == self.owner.opposite && pcs.owner == self.owner && !pcs.active) {
+                  bc "Daunting Pose prevents damage counters from being placed on $self.name"
+                  prevent()
+                }
+              }
+              before DIRECT_DAMAGE, null, SRC_ABILITY, {
+                def pcs = ef.getResolvedTarget(bg, e)
+                //FIXME this will also block own pokemon abilities. to fix this, "Source refactoring" must be done. (See omega stop)
+                if(/*bg.currentTurn == self.owner.opposite &&*/ pcs.owner == self.owner && !pcs.active) {
+                  bc "Daunting Pose prevents damage counters from being placed on $self.name"
+                  prevent()
+                }
+              }
             }
           }
           move "Cross Chop", {
@@ -1747,9 +1765,10 @@ public enum GuardiansRising implements LogicCardInfo {
           weakness WATER
           bwAbility "Roadblock", {
             text "Your opponent can't have more than 4 Benched Pokémon. If they have 5 or more Benched Pokémon, they discard Benched Pokémon until they have 4 Pokémon on the Bench. If more than one effect changes the number of Benched Pokémon allowed, use the smaller number."
-            getterA (GET_BENCH_SIZE) {h->
+            getterA (GET_BENCH_SIZE, BEFORE_LAST) {h->
               if(h.effect.playerType == self.owner.opposite) {
-                h.object = 4
+                //TODO: Check this working with CLEFAIRY_144 (CEC) placing Lillie's Poké Doll
+                h.object = Math.min(h.object, 4)
               }
             }
             onActivate {
@@ -1906,8 +1925,7 @@ public enum GuardiansRising implements LogicCardInfo {
             onActivate {r->
               if(r==PLAY_FROM_HAND && opp.bench.notEmpty && confirm('Use Bloodthirsty Eyes?')) {
                 powerUsed()
-                def pcs = opp.bench.select('New defending')
-                sw opp.active, pcs, SRC_ABILITY
+                switchYourOpponentsBenchedWithActive(SRC_ABILITY)
               }
             }
           }
@@ -2237,10 +2255,7 @@ public enum GuardiansRising implements LogicCardInfo {
               assert opp.bench.notEmpty
             }
             onAttack {
-              def pcs = opp.bench.select()
-              targeted (pcs) {
-                sw opp.active, pcs
-              }
+              switchYourOpponentsBenchedWithActive()
             }
           }
 
@@ -3070,6 +3085,7 @@ public enum GuardiansRising implements LogicCardInfo {
             draw(isGxPerformed() ? 7 : 4)
           }
           playRequirement{
+            assert (my.hand.getExcludedList(thisCard) || my.deck) : "You have no more cards in neither your deck nor your hand"
           }
         };
       case MALLOW_127:

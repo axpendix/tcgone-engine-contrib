@@ -543,12 +543,14 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "Your [G] Pokémon take 40 less damage from your opponent's attacks (after applying Weakness and Resistance). You can't apply more than 1 Blanket Weaver Ability at a time."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if (it.to.types.contains(G) && ef.attacker.owner != self.owner && it.notNoEffect && it.dmg.value && bg.em().retrieveObject("Blanket Weaver") != bg.turnCount) {//if Blanket Weaver hasn't been used yet
-                    bc "Blanket Weaver -40"
-                    it.dmg -= hp(40)
-                    bg.em().storeObject("Blanket Weaver", bg.turnCount)
+                if(bg.em().retrieveObject("Blanket_Weaver") != bg.turnCount) {
+                  bg.dm().each {
+                    if (it.from.owner != self.owner && it.to.owner == self.owner && it.to.types.contains(G) && it.notNoEffect && it.dmg.value) {
+                      bc "Blanket Weaver -40"
+                      it.dmg -= hp(40)
+                    }
                   }
+                  bg.em().storeObject("Blanket_Weaver", bg.turnCount)
                 }
               }
             }
@@ -838,8 +840,9 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "Once during your turn, when this Pokémon moves from your Bench to become your Active Pokémon, you may move any number of [R] Energy from your other Pokémon to it."
             delayedA{
               after SWITCH, {
-                if(bg.em().retrieveObject("Burning_Road") != bg.turnCount && self.active && bg.currentTurn == self.owner && ef.switchedOut==self && confirm("Use Burning Road?")){
-                  bg.em().storeObject("Burning_Road", bg.turnCount)
+                if(keyStore("Burning_Road", self, null) != bg.turnCount && self.active && my.all.any{it.cards.filterByEnergyType(R) && it != self} && bg.currentTurn == self.owner && ef.switchedOut==self && confirm("Use Burning Road?")){
+                  keyStore("Burning_Road", self, bg.turnCount)
+                  powerUsed()
                   while(1){
                     def pl=(my.all.findAll {it.cards.filterByEnergyType(R) && it!=self})
                     if(!pl) break;
@@ -1342,7 +1345,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               assertOppBench()
             }
             onAttack{
-              sw defending, opp.bench.select("Choose your opponent's new Active Pokémon.")
+              switchYourOpponentsBenchedWithActive()
             }
           }
           move "Sticky Web", {
@@ -1510,10 +1513,12 @@ public enum UnifiedMinds implements LogicCardInfo {
             }
             onAttack {
               def numL = self.cards.filterByEnergyType(L).size()
-              def toDiscard = self.cards.filterByEnergyType(L).select(min:0, max:numL, "Discard as much [L] Energy as you'd like to deal 30 damage to an opponent's Pokémon.")
+              //TODO: Allow to select how many energy does a multi-energy (Counter Energy) gives, in case you wanted to do less damage for some reason.
+              def toDiscard = self.cards.filterByEnergyType(L).select(min:0, max:numL, "Discard any amount of [L] Energy from this Pokémon. Then, for each Energy you discarded in this way, choose 1 of your opponent's Pokémon and do 30 damage to it. (You can choose the same Pokémon more than once.) This damage isn't affected by Weakness or Resistance.")
 
-              (1..toDiscard.size()).each {
-                damage 30, opp.all.select()
+              def dmgTimes = toDiscard.energyCount(L)
+              dmgTimes.times {
+                noWrDamage(30,opp.all.select("Which Pokémon will you do 30 damage to (${it}/${dmgTimes} selections made)"))
               }
               afterDamage{toDiscard.discard()}
             }
@@ -1826,9 +1831,8 @@ public enum UnifiedMinds implements LogicCardInfo {
             onAttack {
               gxPerform()
               int counters = (self.cards.energySufficient(thisMove.energyCost + [C,C,C])) ? 20 : 10
-              (1..counters).each { if(opp.all) {
-                directDamage 10, opp.all.select("Select a Pokémon to deal damage counters to. ($it/$counters)"), Source.ATTACK
-              }}
+
+              putDamageCountersOnOpponentsPokemon(counters)
             }
           }
         };
@@ -1955,6 +1959,9 @@ public enum UnifiedMinds implements LogicCardInfo {
                     }
                   }
                 }
+                after EVOLVE, self, {unregister()}
+                after DEVOLVE, self, {unregister()}
+                after SWITCH, self, {unregister()}
                 unregisterAfter 2
               }
             }
@@ -2049,7 +2056,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "Discard a random card from your opponent's hand."
             energyCost C, C
             onAttack {
-              opp.hand.select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be discarded.").showToMe("Selected card.").showToOpponent("This card will be discarded.").discard()
+              opp.hand.shuffledCopy().select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be discarded.").showToMe("Selected card.").showToOpponent("This card will be discarded.").discard()
             }
           }
           move "Bug Bite", {
@@ -2114,9 +2121,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             text " Put 3 damage counters on your opponent’s Pokémon in any way you like."
             energyCost C
             onAttack {
-              (1..3).each {
-                if (opp.all) directDamage(10, opp.all.select("Choose a Pokémon to put a damage counter on. ($it/3)"))
-              }
+              putDamageCountersOnOpponentsPokemon(3)
             }
           }
         };
@@ -2591,9 +2596,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "Put 4 damage counters on your opponent's Pokémon in any way you like."
             energyCost F
             onAttack {
-              (1..4).each {
-                directDamage 10, opp.all.select("Choose a Pokémon to put a damage counter on. ($it/4)")
-              }
+              putDamageCountersOnOpponentsPokemon(4)
             }
           }
           move "Master Strike", {
@@ -3037,6 +3040,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           bwAbility "Shadow Connection", {
             text "As often as you like during your turn (before your attack), you may move a basic [D] Energy from 1 of your Pokémon to another of your Pokémon."
             actionA {
+              powerUsed()
               moveEnergy(basic: true, type: D, my.all, my.all)
             }
           }
@@ -3245,11 +3249,12 @@ public enum UnifiedMinds implements LogicCardInfo {
           bwAbility "Captivating Wink", {
             text "When you play this Pokémon from your hand onto your Bench during your turn, you may have your opponent reveal their hand and put any number of Basic Pokémon you find there onto their Bench."
             onActivate {
-              if (it == PLAY_FROM_HAND && confirm("Use Captivating Wink?")) {
-                opp.hand.showToMe("Opponent's hand.")
+              if (it == PLAY_FROM_HAND && opp.hand && confirm("Use Captivating Wink?")) {
+                def randomOppHand = opp.hand.shuffledCopy()
+                randomOppHand.showToMe("Opponent's hand.")
 
-                if (opp.hand.findAll{it.cardTypes.is(BASIC)}) {
-                  def basicPokemon = opp.hand.findAll{ it.cardTypes.is(BASIC) }
+                if (randomOppHand.hasType(BASIC)) {
+                  def basicPokemon = randomOppHand.findAll{ it.cardTypes.is(BASIC) }
                   def maximumAllowed = Math.min(basicPokemon.size(), opp.bench.freeBenchCount)
                   basicPokemon.select(min: 0, max: maximumAllowed).each {
                     opp.hand.remove(it)
@@ -3273,8 +3278,8 @@ public enum UnifiedMinds implements LogicCardInfo {
             attackRequirement { gxCheck() }
             onAttack {
               gxPerform()
-              opp.hand.showToMe("Opponent's hand.")
-              opp.hand.filterByType(SUPPORTER).discard()
+              if (opp.hand) opp.hand.shuffledCopy().showToMe("Opponent's hand. All supporters in it will be discarded.")
+              opp.hand.filterByType(SUPPORTER).showToOpponent("Your opponent used Big Eater GX: These Supporter cards will now be discarded.").discard()
             }
           }
         };
@@ -3625,12 +3630,8 @@ public enum UnifiedMinds implements LogicCardInfo {
               assertOppBench()
             }
             onAttack {
-              def target = defending
-              if (opp.bench) {
-                target = opp.bench.select("Select the new Active Pokémon.")
-                sw defending, target
-                damage 30, target
-              }
+              def target = opp.bench.select("Select the new Active Pokémon.")
+              if ( sw2(target) ) { damage 30, target }
             }
           }
           move "Dragon Tail", {
@@ -3706,7 +3707,6 @@ public enum UnifiedMinds implements LogicCardInfo {
               def card = opp.discard.select("Select a card to add to your opponent's prizes.").showToOpponent("This card from your discard is now in your prizes.").first()
               opp.discard.remove(card)
               opp.prizeCardSet.add(card)
-              opp.prizeCardSet.shuffle()
               bc "Injection GX added 1 card to prizes and shuffled them."
             }
           }

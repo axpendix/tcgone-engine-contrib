@@ -619,8 +619,7 @@ public enum TeamRocketNG implements LogicCardInfo {
         return basicTrainer (this) {
           text "Look at your opponent’s hand. If he or she has any Trainer cards, choose 1 of them. Your opponent shuffles that card into his or her deck."
           onPlay {
-            opp.hand.showToMe("Opponent's hand")
-            def list = opp.hand.filterByType(TRAINER)
+            def list = opp.hand.shuffledCopy().showToMe("Opponent's hand").filterByType(TRAINER)
             if(list){
               list.select(count: 1, "Discard").moveTo(opp.deck)
               shuffleDeck(null, TargetPlayer.OPPONENT)
@@ -1613,7 +1612,7 @@ public enum TeamRocketNG implements LogicCardInfo {
         return basicTrainer (this) {
           text "Search your deck for an Evolution card with Dark in its name. Show it to your opponent and put it into your hand. Shuffle your deck afterward."
           onPlay {
-            def tar = my.deck.search(count : 1, "Search your deck for an Evolution card with Dark in its name", {it.name.contains("Dark")})
+            def tar = my.deck.search(count : 1, "Search your deck for an Evolution card with Dark in its name", {it.name.contains("Dark ")})
             tar.showToOpponent("selected card")
             tar.moveTo(my.hand)
             shuffleDeck()
@@ -1673,7 +1672,7 @@ public enum TeamRocketNG implements LogicCardInfo {
           text "Discard a card from your hand in order to play this card. Your opponent shuffles his or her hand into his or her deck, then draws 4 cards."
           onPlay {
             my.hand.findAll({it != thisCard}).select().discard()
-            opp.hand.moveTo(opp.deck)
+            opp.hand.moveTo(hidden:true, opp.deck)
             shuffleDeck(null,TargetPlayer.OPPONENT)
             draw(4, TargetPlayer.OPPONENT)
           }

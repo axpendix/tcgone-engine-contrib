@@ -439,12 +439,12 @@ class TcgStatics {
   static sw (PokemonCardSet old, PokemonCardSet newp, Source source=Source.ATTACK) {
     bg().em().run(new Switch(old,newp,source))
   }
-  //use for "Switch 1 of your opponent's Benched Pokémon with their Active Pokémon." If an additional effect depends on this, the method returns whether or not the switch happened.
-  static boolean swFromBench (PokemonCardSet old, PokemonCardSet newp, Source source=Source.ATTACK) {
-    targeted (newp, source) {
-      sw (old, newp, null)
+  static sw2 (PokemonCardSet pcs1, PokemonCardSet pcs2 = null, Source src = Source.ATTACK) {
+    if(pcs2 == null) {
+      return !(bg().em().run(new Switch(pcs1.owner.pbg.active, pcs1, src, pcs1)))
+    } else {
+      return !(bg().em().run(new Switch(pcs1, pcs2, src, pcs1)))
     }
-    return newp.active
   }
   static discardStadium(){
     if (bg().stadiumInfoStruct?.stadiumCard){
@@ -956,8 +956,8 @@ class TcgStatics {
   }
 
   static void astonish(int count=1){
-    if(checkBodyguard()) return
-    def sel=opp.hand.select(hidden: true, count: count, "Choose ${count==1?'a':count} random ${count==1?'card':'cards'} from your opponent's hand to be shuffled into his or her deck").showToMe("Selected card(s)").showToOpponent("Astonish: these cards will be shuffled from your hand to your deck")
+    if(checkBodyguard() || !opp.hand) return
+    def sel = opp.hand.shuffledCopy().select(hidden: true, count: count, "Choose ${count==1?'a':count} random ${count==1?'card':'cards'} from your opponent's hand to be shuffled into his or her deck").showToMe("Selected card(s)").showToOpponent("Astonish: these cards will be shuffled from your hand to your deck")
     sel.moveTo(opp.deck)
     shuffleDeck(null, TargetPlayer.OPPONENT)
 //		opp.hand.removeAll(sel)
@@ -970,7 +970,7 @@ class TcgStatics {
   }
 
   static void discardRandomCardFromOpponentsHand(){
-    if(opp.hand) opp.hand.select(hidden: true, "Discard a random card from your opponent's hand.").discard()
+    if (opp.hand) opp.hand.shuffledCopy().select(hidden: true, "Discard a random card from your opponent's hand.").discard()
   }
 
   static void switchYourActive(Map params=[:]){
@@ -992,6 +992,12 @@ class TcgStatics {
     }
   }
 
+  static void switchYourOpponentsBenchedWithActive(Source src = ATTACK){
+    if (opp.bench){
+      sw2(opp.bench.select("Select your opponent's new Active Pokémon."), null, src)
+    }
+  }
+
   static void spiritLink(delegate1, name){
     def eff
     delegate1.onPlay {
@@ -1006,53 +1012,53 @@ class TcgStatics {
     }
   }
 
-	static void defendingAttacksCostsMore (PokemonCardSet pcs, List<Type> energies) {
-		targeted(pcs) {
-			delayed {
-				def eff
-				register {
-					eff = getter (GET_MOVE_LIST, NORMAL, pcs) {h->
-						def list=[]
-						for(move in h.object){
-							def copy=move.shallowCopy()
-							copy.energyCost.addAll(energies)
-							list.add(copy)
-						}
-						h.object=list
-					}
-					bc "Attacks of $pcs will cost $energies more during next turn"
-				}
-				unregister {
-					eff.unregister()
-				}
-				unregisterAfter 2
+  static void defendingAttacksCostsMore (PokemonCardSet pcs, List<Type> energies) {
+    targeted(pcs) {
+      delayed {
+        def eff
+        register {
+          eff = getter (GET_MOVE_LIST, NORMAL, pcs) {h->
+            def list=[]
+            for(move in h.object){
+              def copy=move.shallowCopy()
+              copy.energyCost.addAll(energies)
+              list.add(copy)
+            }
+            h.object=list
+          }
+          bc "Attacks of $pcs will cost $energies more during next turn"
+        }
+        unregister {
+          eff.unregister()
+        }
+        unregisterAfter 2
         after SWITCH, pcs, {unregister()}
         after EVOLVE, pcs, {unregister()}
         after DEVOLVE, pcs, {unregister()}
-			}
-		}
-	}
+      }
+    }
+  }
 
-	static void defendingRetreatsCostsMore (PokemonCardSet pcs, List<Type> energies) {
-		targeted(pcs) {
-			delayed {
-				def eff
-				register {
+  static void defendingRetreatsCostsMore (PokemonCardSet pcs, List<Type> energies) {
+    targeted(pcs) {
+      delayed {
+        def eff
+        register {
           eff = getter (GET_RETREAT_COST, NORMAL, pcs) {h->
             h.object += 1
           }
-					bc "Retreat cost of $pcs will cost 1 more energy during the next turn."
-				}
-				unregister {
-					eff.unregister()
-				}
-				unregisterAfter 2
+          bc "Retreat cost of $pcs will cost 1 more energy during the next turn."
+        }
+        unregister {
+          eff.unregister()
+        }
+        unregisterAfter 2
         after SWITCH, pcs, {unregister()}
         after EVOLVE, pcs, {unregister()}
         after DEVOLVE, pcs, {unregister()}
-			}
-		}
-	}
+      }
+    }
+  }
 
   static void increasedDamageDoneToDefending (PokemonCardSet self, PokemonCardSet pcs, int value, String atkName=""){
     targeted(pcs){
@@ -1194,7 +1200,7 @@ class TcgStatics {
     def checkedArea = params.benched ? checkedPlayer.bench : checkedPlayer.all
 
     def variantsAllowed = params.hasVariants?:[]
-    if (!(variantsAllowed instanceof ArrayList<>)) variantsAllowed = [variantsAllowed]
+    if (!(variantsAllowed instanceof List)) variantsAllowed = [variantsAllowed]
     def variantFilters = [
       (CardType.POKEMON_V):   { it.pokemonV },
       (CardType.VMAX):        { it.pokemonVMAX },
@@ -1215,7 +1221,7 @@ class TcgStatics {
     ]
 
     def stageRequired = params.isStage?:[]
-    if (!(stageRequired instanceof ArrayList<>)) stageRequired = [stageRequired]
+    if (!(stageRequired instanceof List)) stageRequired = [stageRequired]
     def stageFilters = [
       (CardType.EVOLVED):     { it.evolution },
       (CardType.UNEVOLVED):   { it.notEvolution },
@@ -1404,6 +1410,19 @@ class TcgStatics {
     } */
   }
 
+  static putDamageCountersOnOpponentsPokemon(int counters, def selectArea = opp.all){
+    def eff = delayed {
+      before KNOCKOUT, {
+        prevent()
+      }
+    }
+
+    counters.times{directDamage 10, selectArea.select("Put 1 damage counter on which pokémon? ${it}/${counters} counters placed") }
+
+    eff.unregister()
+    checkFaint()
+  }
+
   static boolean wasSwitchedOutThisTurn(PokemonCardSet self){
     self.lastSwitchedOut == bg.turnCount && self.lastSwitchedOutName == self.name
   }
@@ -1413,7 +1432,7 @@ class TcgStatics {
 
   static boolean isValidFossilCard(Card potentialFossil){
     if(
-      (potentialFossil.cardTypes.is(ITEM) && potentialFossil.name.contains("Fossil")) ||
+    (potentialFossil.cardTypes.is(ITEM) && potentialFossil.name.contains("Fossil")) ||
       (potentialFossil.cardTypes.is(STAGE1) && potentialFossil.predecessor.contains("Fossil")) ||
       (potentialFossil.cardTypes.is(STAGE2) && bg().gm().getBasicsFromStage2(potentialFossil.name).any{it.contains("Fossil")})
     )
@@ -1452,10 +1471,10 @@ class TcgStatics {
 
           def markersInfo = (hasImprison || hasShockwave) ? "has ${(hasImprison ? "an Imprison" : "") + ((hasImprison && hasShockwave) ? " and " : "") + (hasShockwave ? "a Shock-wave" : "")} marker" : "doesn't have any markers"
 
-          resultInfo = "The ${currentPokemon.active?"Active":"selected"} $currentPokemon $markersInfo"
+          resultInfo = "The ${currentPokemon.active?"Active":"selected"} ${currentPokemon} ${markersInfo}. "
         }
 
-        currentPokemon = playerChecked.all.select("${resultInfo}.\n\n\nPlease select one of $playerText Pokémon (first one is the Active), or cancel to end this check.", false)
+        currentPokemon = playerChecked.all.select("${resultInfo}\n\n\nPlease select one of $playerText Pokémon (first one is the Active), or cancel to end this check.", false)
         if (!currentPokemon) break;
       }
     }

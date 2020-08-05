@@ -1105,7 +1105,8 @@ public enum FossilNG implements LogicCardInfo {
           pokemonPower "Clairvoyance", {
             text "Your opponent plays with his or her hand face up. This power stops working while Omanyte is Asleep, Confused, or Paralyzed."
             actionA {
-              opp.hand.showToMe("opponent's hand")
+              //TODO: Make cards visible, even to spectators.
+              opp.hand.shuffledCopy().showToMe("opponent's hand")
             }
           }
           move "Water Gun", {
@@ -1269,7 +1270,7 @@ public enum FossilNG implements LogicCardInfo {
         return basicTrainer (this) {
           text "Shuffle your hand into your deck. Flip a coin. If heads, draw 8 cards. If tails, draw 1 card."
           onPlay {
-            my.hand.getExcludedList(thisCard).moveTo(my.deck)
+            my.hand.getExcludedList(thisCard).moveTo(hidden:true, my.deck)
             shuffleDeck()
             flip 1,{draw 8},{draw 1}
           }

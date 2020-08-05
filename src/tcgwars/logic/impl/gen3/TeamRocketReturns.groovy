@@ -115,7 +115,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
   ROCKET_S_ADMIN__86 ("Rocket's Admin. ", 86, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   ROCKET_S_HIDEOUT_87 ("Rocket's Hideout", 87, Rarity.UNCOMMON, [TRAINER, STADIUM]),
   ROCKET_S_MISSION_88 ("Rocket's Mission", 88, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-  ROCKET_S_POKE_BALL_89 ("Rocket's Poké Ball", 89, Rarity.UNCOMMON, [TRAINER]),
+  ROCKET_S_POKE_BALL_89 ("Rocket's Poké Ball", 89, Rarity.UNCOMMON, [TRAINER, ITEM]),
   ROCKET_S_TRICKY_GYM_90 ("Rocket's Tricky Gym", 90, Rarity.UNCOMMON, [STADIUM, TRAINER]),
   SURPRISE__TIME_MACHINE_91 ("Surprise! Time Machine", 91, Rarity.UNCOMMON, [TRAINER, ROCKETS_SECRET_MACHINE]),
   SWOOP__TELEPORTER_92 ("Swoop! Teleporter", 92, Rarity.UNCOMMON, [TRAINER, ROCKETS_SECRET_MACHINE]),
@@ -137,7 +137,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
   TORCHIC_STAR_108 ("Torchic Star", 108, Rarity.ULTRARARE, [BASIC, POKEMON, _FIRE_]),
   TREECKO_STAR_109 ("Treecko Star", 109, Rarity.ULTRARARE, [BASIC, POKEMON, _GRASS_]),
   CHARMELEON_110 ("Charmeleon", 110, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
-  HERE_COMES_TEAM_ROCKET__111 ("Here Comes Team Rocket!", 111, Rarity.HOLORARE, [TRAINER]);
+  HERE_COMES_TEAM_ROCKET__111 ("Here Comes Team Rocket!", 111, Rarity.HOLORARE, [TRAINER, SUPPORTER]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS;
 
@@ -326,8 +326,8 @@ public enum TeamRocketReturns implements LogicCardInfo {
             energyCost D, C
             onAttack {
               damage 20
-              if(opp.hand){
-                opp.hand.select(hidden: true, "Select random card from opponent's hand").showToOpponent("Card to be discarded").discard()
+              afterDamage {
+                discardRandomCardFromOpponentsHand()
               }
             }
           }
@@ -351,14 +351,14 @@ public enum TeamRocketReturns implements LogicCardInfo {
             text "Flip a coin. If heads, choose an attack on 1 of your Pokémon in play that has Dark in its name (excluding this one). Dark Link copies that attack except for its Energy cost. (You must still do anything else required for that attack.) (No matter what type that Pokémon is, Dark Hypno’s type is still .) Dark Hypno performs that attack."
             energyCost C
             attackRequirement {
-              assert my.bench.find {it.name.contains("Dark") && it.topPokemonCard.moves} : "No moves to perform"
+              assert my.bench.find {it.name.contains("Dark ") && it.topPokemonCard.moves} : "No moves to perform"
             }
             onAttack {
               flip {
                 def moveList = []
                 def labelList = []
                 my.bench.each {pcs->
-                  if(pcs.name.contains("Dark")){
+                  if(pcs.name.contains("Dark ")){
                     moveList.addAll(pcs.topPokemonCard.moves);
                     labelList.addAll(pcs.topPokemonCard.moves.collect{pcs.name+"-"+it.name})
                   }
@@ -566,14 +566,14 @@ public enum TeamRocketReturns implements LogicCardInfo {
             text "Prevent all effects of attacks, including damage, done to Togetic by your opponent’s Pokémon that has Dark in its name."
             delayedA {
               before null, self, Source.ATTACK, {
-                if (self.owner.opposite.pbg.active.name.contains("Dark") && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                if (self.owner.opposite.pbg.active.name.contains("Dark ") && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
                   bc "Holy Shield prevents effect"
                   prevent()
                 }
               }
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if(it.to == self && it.notNoEffect && self.owner.opposite.pbg.active.name.contains("Dark")){
+                  if(it.to == self && it.notNoEffect && self.owner.opposite.pbg.active.name.contains("Dark ")){
                     it.dmg = hp(0)
                     bc "Holy Shield prevents damage"
                   }
@@ -581,7 +581,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               }
               after ENERGY_SWITCH, {
                 def efs = (ef as EnergySwitch)
-                if(self.owner.opposite.pbg.active.name.contains("Dark") && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
+                if(self.owner.opposite.pbg.active.name.contains("Dark ") && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
                   discard efs.card
                 }
               }
@@ -813,7 +813,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               assert self.active : "$self is not your active Pokémon."
               checkLastTurn()
               powerUsed()
-              my.hand.select("select card to shuffle into your deck").moveTo(my.deck)
+              my.hand.select("select card to shuffle into your deck").moveTo(hidden:true, my.deck)
               shuffleDeck()
               draw 1
             }
@@ -1684,7 +1684,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               assert opp.bench : "There is no Pokémon on your opponent’s bench."
             }
             onAttack {
-              sw opp.active, opp.bench.select()
+              switchYourOpponentsBenchedWithActive()
             }
           }
           move "Spit Poison", {
@@ -2303,7 +2303,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
                 choice = choose([0,1],["Move 1 Energy card attached to the Defending Pokémon to another of your opponent’s Pokémon","Switch 1 of your opponent’s Benched Pokémon with 1 of the Defending Pokémon"])
               }
               if(choice){
-                sw opp.active, opp.bench.select(), TRAINER_CARD
+                switchYourOpponentsBenchedWithActive(TRAINER_CARD)
               }else{
                 moveEnergy(basic: false, opp.active, opp.bench.select("Select the pokemon getting the Energy"), TRAINER_CARD)
               }
@@ -2365,7 +2365,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
         return basicTrainer (this) {
           text "Search your deck for a Pokémon that has Dark in its name, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
           onPlay {
-            my.deck.search(max:1,"Select a Pokémon with Dark in its name",{it.cardTypes.is(POKEMON) && it.name.contains("Dark")}).showToOpponent("Selected card.").moveTo(my.hand)
+            my.deck.search(max:1,"Select a Pokémon with Dark in its name",{it.cardTypes.is(POKEMON) && it.name.contains("Dark ")}).showToOpponent("Selected card.").moveTo(my.hand)
             shuffleDeck()
           }
           playRequirement{
@@ -2710,9 +2710,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 10
-              if(my.bench){
-                if(confirm("Switch Rocket’s Scyther ex with 1 of your Benched Pokémon?")) sw self, my.bench.select()
-              }
+              switchYourActive(may: true)
             }
           }
           move "Slashing Strike", {
@@ -2733,14 +2731,10 @@ public enum TeamRocketReturns implements LogicCardInfo {
             text "10 damage. Before doing damage, you may switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon. If you do, this attack does 10 damage to the new Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
             energyCost D
             onAttack {
-              def pcs = defending
-              if(opp.bench){
-                if(confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon.")){
-                  pcs = opp.bench.select()
-                  sw defending, pcs
-                }
+              if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon before doing damage?")) {
+                switchYourOpponentsBenchedWithActive()
               }
-              damage 10, pcs
+              damage 10
             }
           }
           move "Dark Ring", {

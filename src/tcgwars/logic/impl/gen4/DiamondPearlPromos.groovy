@@ -20,7 +20,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
   CHIMCHAR_DP02 ("Chimchar", 2, Rarity.PROMO, [BASIC, POKEMON, _FIRE_]),
   PIPLUP_DP03 ("Piplup", 3, Rarity.PROMO, [BASIC, POKEMON, _WATER_]),
   PACHIRISU_DP04 ("Pachirisu", 4, Rarity.PROMO, [BASIC, POKEMON, _LIGHTNING_]),
-  TROPICAL_WIND_DP05 ("Tropical Wind", 5, Rarity.PROMO, [TRAINER]),
+  TROPICAL_WIND_DP05 ("Tropical Wind", 5, Rarity.PROMO, [TRAINER, ITEM]),
   BUNEARY_DP06 ("Buneary", 6, Rarity.PROMO, [BASIC, POKEMON, _COLORLESS_]),
   CRANIDOS_DP07 ("Cranidos", 7, Rarity.PROMO, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
   SHIELDON_DP08 ("Shieldon", 8, Rarity.PROMO, [STAGE1, EVOLUTION, POKEMON, _METAL_]),

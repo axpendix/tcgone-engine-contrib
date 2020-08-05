@@ -524,7 +524,7 @@ public enum SwordShield implements LogicCardInfo {
             assertOppBench()
           }
           onAttack {
-            sw(opp.active, opp.bench.select())
+            switchYourOpponentsBenchedWithActive()
           }
         }
         move "Double Hit", {
@@ -739,11 +739,13 @@ public enum SwordShield implements LogicCardInfo {
           energyCost R, R, C
           onAttack {
             damage 90
-            def cards = my.deck.subList(0, 1)
-            if (cards.filterByEnergyType(R)) {
-              damage 90
+            if (my.deck) {
+              def cards = my.deck.subList(0, 1)
+              if (cards.filterByEnergyType(R)) {
+                damage 90
+              }
+              cards.discard()
             }
-            cards.discard()
           }
         }
         move "Steam Crush", {
@@ -924,9 +926,9 @@ public enum SwordShield implements LogicCardInfo {
           text "Once during your turn, when this Pokémon moves from your Bench to the Active Spot, you may attach up to 2 [R] Energy cards from your discard pile to it."
           delayedA{
             after SWITCH, {
-              if (bg.em().retrieveObject("Libero") != bg.turnCount && self.active && bg.currentTurn == self.owner && ef.switchedOut==self && confirm("Use Libero?")) {
+              if (keyStore("Libero", self, null) != bg.turnCount && self.active && bg.currentTurn == self.owner && ef.switchedOut==self && confirm("Use Libero?")) {
+                keyStore("Libero", self, bg.turnCount)
                 powerUsed()
-                bg.em().storeObject("Libero", bg.turnCount)
                 attachEnergyFrom(max: 2, type: FIRE, my.discard, self)
               }
             }
@@ -1381,7 +1383,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 40
-            opp.hand.select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be discarded.").showToMe("Selected card.").showToOpponent("This card will be discarded.").discard()
+            opp.hand.shuffledCopy().select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be discarded.").showToMe("Selected card.").showToOpponent("This card will be discarded.").discard()
           }
         }
         move "Hydro Snipe", {
@@ -1544,7 +1546,7 @@ public enum SwordShield implements LogicCardInfo {
             assertOppBench()
           }
           onAttack {
-            sw(opp.active, opp.bench.select())
+            switchYourOpponentsBenchedWithActive()
           }
         }
         move "Lightning Ball", {
@@ -1570,8 +1572,10 @@ public enum SwordShield implements LogicCardInfo {
           energyCost L, C, C
           onAttack {
             damage 90
-            opp.hand.showToMe("Your opponent's hand.")
-            if (opp.hand.filterByType(ENERGY)) apply PARALYZED
+            if (opp.hand) {
+              opp.hand.shuffledCopy().showToMe("Your opponent's hand.")
+              if (opp.hand.filterByType(ENERGY)) apply PARALYZED
+            }
           }
         }
       };
@@ -2002,9 +2006,14 @@ public enum SwordShield implements LogicCardInfo {
         move "Poltergeist", {
           text "50x damage. Your opponent reveals their hand. This attack does 50 damage for each Trainer card you find there."
           energyCost P, C
+          attackRequirement {
+            assert opp.hand : "Your opponent has no cards in their hand"
+          }
           onAttack {
-            opp.hand.showToMe("Your opponent's hand.")
-            damage 50*opp.hand.filterByType(TRAINER).size()
+            if (opp.hand) {
+              def itemsInOppHand = opp.hand.shuffledCopy().showToMe("Your opponent's hand.").filterByType(TRAINER)
+              damage 50 * itemsInOppHand.size()
+            }
           }
         }
       };
@@ -2692,8 +2701,10 @@ public enum SwordShield implements LogicCardInfo {
           energyCost D
           onAttack {
             damage 20
-            if (opp.hand) {
-              opp.hand.select("Choose 1 card to put on the bottom of their deck").moveTo(opp.deck)
+            afterDamage{
+              if (opp.hand) {
+                opp.hand.shuffledCopy().select("Choose 1 card to put on the bottom of their deck").moveTo(opp.deck)
+              }
             }
           }
         }
@@ -3466,7 +3477,6 @@ public enum SwordShield implements LogicCardInfo {
           def energies
           def pokemon
 
-          //TODO: Should be chosen before selecting.
           while (!energies && !pokemon) {
             if (my.discard.filterByType(BASIC_ENERGY)) {
               energies = my.discard.filterByType(BASIC_ENERGY).select(min: 0, max: 2, "Select up to 2 Basic Energy cards to shuffle into your deck.")
