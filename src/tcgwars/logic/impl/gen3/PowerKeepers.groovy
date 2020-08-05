@@ -2224,7 +2224,7 @@ public enum PowerKeepers implements LogicCardInfo {
         pokePower "Chilling Breath", {
           text "Once during your turn, when you play Walrein ex from your hand to evolve 1 of your Pokémon, you may use this power. Your opponent can't play any Trainer cards from his or her hand during your opponent's next turn."
           onActivate {r->
-            if (r==PLAY_FROM_HAND) {
+            if (r==PLAY_FROM_HAND && confirm("Use Chilling Breath?")) {
               bc "Chlling Breath activates"
               delayed {
                 def flag = false
