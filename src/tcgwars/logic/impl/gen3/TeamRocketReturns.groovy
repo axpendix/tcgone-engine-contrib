@@ -481,13 +481,11 @@ public enum TeamRocketReturns implements LogicCardInfo {
             delayedA {
               before KNOCKOUT, self, {
                 if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite){
-                  bg.setDeterministicCurrentThreadPlayerType(self.owner)
                   flip "Buffer", {
                     self.damage = self.fullHP - hp(10)
                     bc "Buffer saved $self!"
                     prevent()
-                  }
-                  bg.clearDeterministicCurrentThreadPlayerType()
+                  }, self.owner
                 }
               }
             }
@@ -1519,13 +1517,11 @@ public enum TeamRocketReturns implements LogicCardInfo {
             delayedA {
               before KNOCKOUT, self, {
                 if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite){
-                  bg.setDeterministicCurrentThreadPlayerType(self.owner)
                   flip "Buffer", {
                     self.damage = self.fullHP - hp(10)
                     bc "Buffer saved $self!"
                     prevent()
-                  }
-                  bg.clearDeterministicCurrentThreadPlayerType()
+                  }, self.owner
                 }
               }
             }
@@ -1711,13 +1707,11 @@ public enum TeamRocketReturns implements LogicCardInfo {
             delayedA {
               before KNOCKOUT, self, {
                 if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite){
-                  bg.setDeterministicCurrentThreadPlayerType(self.owner)
                   flip "Buffer", {
                     self.damage = self.fullHP - hp(10)
                     bc "Buffer saved $self!"
                     prevent()
-                  }
-                  bg.clearDeterministicCurrentThreadPlayerType()
+                  }, self.owner
                 }
               }
             }
