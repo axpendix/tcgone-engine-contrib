@@ -81,6 +81,12 @@ class TcgStatics {
       damage dmg,pcs
     }
   }
+  static flip (Closure eachHead, PlayerType playerType) {
+    flip("", 1, eachHead, {}, [:], playerType)
+  }
+  static flip (String info, Closure eachHead, PlayerType playerType) {
+    flip(info, 1, eachHead, {}, [:], playerType)
+  }
   static flip (Closure eachHead, Closure eachTail={}, multi=[:]){
     flip(1, eachHead, eachTail, multi)
   }
@@ -90,9 +96,13 @@ class TcgStatics {
   static flip (String info, Closure eachHead, Closure eachTail={}, multi=[:]){
     flip(info, 1, eachHead, eachTail, multi)
   }
-  static flip (String info, int count, Closure eachHead, Closure eachTail={}, multi=[:]){
+  static flip (String info, int count, Closure eachHead, Closure eachTail={}, multi=[:], playerType=null){
+    if(playerType == null) {
+      playerType = bg.getCurrentTurn()
+    }
     CoinFlip cf=new CoinFlip(count, toEffect (eachHead), toEffect (eachTail))
     cf.setInfo(info)
+    cf.setPlayer(playerType)
     for(entry in multi){
       cf.setEffectForANumberOfHeads(toEffect(entry.value as Closure), entry.key as Integer)
     }
@@ -101,9 +111,10 @@ class TcgStatics {
   static flipTails (Closure eachTail) {
     flip(1, {}, eachTail)
   }
-  static flipUntilTails (Closure eachHead){
+  static flipUntilTails (Closure eachHead, playerType=null){
     NeverEndingCoinFlip cf=new NeverEndingCoinFlip()
     cf.effectForEachHead = toEffect (eachHead)
+    cf.setPlayer(playerType)
     cf.run(bg)
   }
 
