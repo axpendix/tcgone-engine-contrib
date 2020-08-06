@@ -3522,10 +3522,12 @@ public enum LostThunder implements LogicCardInfo {
                 power=false
               }
               before null, null, Source.TRAINER_CARD, {
-                def target = ef.getResolvedTarget(bg, e)
-                if (power && target && self.benched && target.owner==self.owner && target.types.contains(Y)){
-                  bc "Mysterious Buzz prevents effect"
-                  prevent()
+                if (ef instanceof TargetedEffect){
+                  def target = ef.getResolvedTarget(bg, e)
+                  if (power && target && self.benched && target.owner==self.owner && target.types.contains(Y)){
+                    bc "Mysterious Buzz prevents effect"
+                    prevent()
+                  }
                 }
               }
             }
