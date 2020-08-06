@@ -1446,6 +1446,12 @@ class TcgStatics {
       return false
   }
 
+  static confirmScoopLastPokemon() {
+    if (my.bench.empty){
+      assert confirm("You have no other Pokémon in play. Playing this card may cause you to lose the game. Are you sure you want to play it anyway?") : "Use of the card was canceled"
+    }
+  }
+
   static void loadMarkerCheckerAction(def delegate, actions) {
     def isCheckerLoaded = bg.em().retrieveObject("Checker_Loaded")
     if (isCheckerLoaded)

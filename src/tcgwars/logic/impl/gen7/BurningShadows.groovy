@@ -2643,6 +2643,7 @@ public enum BurningShadows implements LogicCardInfo {
           }
           playRequirement{
             assert my.all.findAll {it.numberOfDamageCounters} : "No damaged pokemon in play"
+            confirmScoopLastPokemon()
           }
         };
       case BODYBUILDING_DUMBBELLS_113:

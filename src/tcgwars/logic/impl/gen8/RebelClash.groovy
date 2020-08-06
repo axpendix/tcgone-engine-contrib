@@ -3631,6 +3631,7 @@ public enum RebelClash implements LogicCardInfo {
         }
         playRequirement {
           assertMyAll(negateVariants: true, hasVariants: [POKEMON_V, POKEMON_GX])
+          confirmScoopLastPokemon()
         }
       };
       case SKYLA_166:
