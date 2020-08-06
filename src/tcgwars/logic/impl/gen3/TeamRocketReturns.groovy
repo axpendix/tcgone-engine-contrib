@@ -1798,7 +1798,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             //Errata'd, used to say "is Knocked Out by an opponent’s attack"
             delayedA {
               before KNOCKOUT, self, {
-                if((ef as Knockout).byDamageFromAttack){
+                if((ef as Knockout).byDamageFromAttack && self.active){
                   apply CONFUSED, self.owner.opposite.pbg.active
                   apply POISONED, self.owner.opposite.pbg.active
                 }
