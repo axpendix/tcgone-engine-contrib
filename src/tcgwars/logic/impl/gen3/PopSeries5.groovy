@@ -313,8 +313,8 @@ public enum PopSeries5 implements LogicCardInfo {
           onActivate {
             if (it==PLAY_FROM_HAND && opp.hand && confirm("Use Purple Ray?")) {
               powerUsed()
-              apply CONFUSED
-              apply CONFUSED, self
+              apply (CONFUSED, my.active, SRC_ABILITY)
+              apply (CONFUSED, opp.active, SRC_ABILITY)
             }
           }
         }
