@@ -614,7 +614,7 @@ public enum DragonMajesty implements LogicCardInfo {
           bwAbility "Downpour" , {
             text "As often as you like during your turn (before your attack), you may discard a [W] Energy card from your hand."
             actionA{
-              assert my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(W)
+              assert my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(W) : "You have no [W] Energy cards in your hand"
               my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(W).select("Select a [W] to discard").discard()
             }
           }
@@ -653,7 +653,8 @@ public enum DragonMajesty implements LogicCardInfo {
           bwAbility "Wash Out" , {
             text "As often as you like during your turn (before your attack), you may move a [W] Energy from 1 of your Benched Pokémon to your Active Pokémon."
             actionA{
-              assert my.bench : "You don't have Pokémon on your bench"
+              assertMyBench(info: "with any [W] Energy on them", {it.cards.energyCount(W)})
+              powerUsed()
               moveEnergy(type:W,my.bench,my.active)
             }
           }

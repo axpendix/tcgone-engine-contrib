@@ -2480,7 +2480,8 @@ public enum TeamRocketReturns implements LogicCardInfo {
           onRemoveFromPlay {
           }
           getEnergyTypesOverride {
-            return [[D,M] as Set]
+            if (self) return [[D, M] as Set]
+            else return [[] as Set]
           }
         };
       case R_ENERGY_95:
@@ -2518,7 +2519,8 @@ public enum TeamRocketReturns implements LogicCardInfo {
             to.name.contains("Dark ") || to.name.contains("Rocket's ")
           }
           getEnergyTypesOverride {
-            return [[D] as Set, [D] as Set]
+            if (self) return [[D] as Set, [D] as Set]
+            else return [[] as Set]
           }
         };
       case ROCKET_S_ARTICUNO_EX_96:

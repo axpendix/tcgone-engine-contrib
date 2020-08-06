@@ -1007,8 +1007,11 @@ public enum ForbiddenLight implements LogicCardInfo {
           bwAbility "Magnetic Circuit", {
             text "As often as you like during your turn (before your attack), you may attach a [L] Energy card from your hand to 1 of your Pokémon."
             actionA {
-              assert my.hand.findAll(basicEnergyFilter(L))
-              attachEnergyFrom(may: true, type: L, my.hand, my.all)
+              assert my.hand.filterByEnergyType(L) : "No [L] Energy in hand"
+              powerUsed()
+              def selEnergy = my.hand.filterByBasicEnergyType(L).first()
+              def pcs = my.all.select("Attach to?")
+              attachEnergy(pcs, selEnergy, PLAY_FROM_HAND)
             }
           }
           move "Zap Cannon", {
@@ -2086,7 +2089,10 @@ public enum ForbiddenLight implements LogicCardInfo {
             text "If you go second, this Pokémon can evolve during your first turn."
             delayedA {
               before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
-                if(bg.turnCount == 2) prevent()
+                if(bg.turnCount == 2 && bg.currentTurn == self.owner){
+                  powerUsed()
+                  prevent()
+                }
               }
             }
           }

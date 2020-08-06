@@ -1414,16 +1414,18 @@ class TcgStatics {
   }
 
   static putDamageCountersOnOpponentsPokemon(int counters, def selectArea = opp.all){
-    def eff = delayed {
-      before KNOCKOUT, {
-        prevent()
+    if (selectArea.notEmpty) {
+      def eff = delayed {
+        before KNOCKOUT, {
+          prevent()
+        }
       }
+
+      counters.times{directDamage 10, selectArea.select("Put 1 damage counter on which pokémon? ${it}/${counters} counters placed") }
+
+      eff.unregister()
+      checkFaint()
     }
-
-    counters.times{directDamage 10, selectArea.select("Put 1 damage counter on which pokémon? ${it}/${counters} counters placed") }
-
-    eff.unregister()
-    checkFaint()
   }
 
   static boolean wasSwitchedOutThisTurn(PokemonCardSet self){

@@ -3995,7 +3995,8 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "If your opponent’s Active Pokémon is a Pokémon-GX or Pokémon-EX, this Pokémon can evolve during the turn you play it."
             delayedA {
               before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
-                if (self.owner.opposite.pbg.active.pokemonGX || self.owner.opposite.pbg.active.pokemonEX) {
+                if (bg.currentTurn == self.owner && (self.owner.opposite.pbg.active.pokemonGX || self.owner.opposite.pbg.active.pokemonEX) ) {
+                  powerUsed()
                   prevent()
                 }
               }

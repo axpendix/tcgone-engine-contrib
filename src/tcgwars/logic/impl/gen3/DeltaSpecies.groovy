@@ -277,8 +277,9 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "Once during your turn (before your attack), you may attach a [L] Energy card from your discard pile to 1 of your Benched Pokémon. This power can't be used if Dragonite is affected by a Special Condition."
           actionA {
             checkLastTurn()
-            assert my.bench.notEmpty : "Bench is empty"
             checkNoSPC()
+            assert my.bench.notEmpty : "Bench is empty"
+            assert my.discard.filterByEnergyType(L) : "You have no [L] Energy cards in your discard pile"
             powerUsed()
 
             attachEnergyFrom(type:L, my.discard, my.bench)

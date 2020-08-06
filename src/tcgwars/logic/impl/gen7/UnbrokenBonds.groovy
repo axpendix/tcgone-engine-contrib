@@ -1465,10 +1465,12 @@ public enum UnbrokenBonds implements LogicCardInfo {
                 before APPLY_ATTACK_DAMAGES, {
                   bg.dm().each {
                     if(it.to == self && it.notNoEffect && it.dmg.value && bg.currentTurn != self.owner) {
+                      def newDmg = it.dmg
                       flip {
                         bc "Afterimage Strike prevents damage!"
-                        it.dmg = hp(0)
+                        newDmg = hp(0)
                       }
+                      it.dmg = newDmg
                     }
                   }
                 }
