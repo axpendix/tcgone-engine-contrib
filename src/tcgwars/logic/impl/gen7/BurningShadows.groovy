@@ -525,7 +525,7 @@ public enum BurningShadows implements LogicCardInfo {
                       }
                     }
                     unregisterAfter 2
-                    after SWITCH, pcs, {unregister()}
+                    after FALL_BACK, pcs, {unregister()}
                     after EVOLVE, pcs, {unregister()}
                     after DEVOLVE, pcs, {unregister()}
                   }
@@ -1455,7 +1455,7 @@ public enum BurningShadows implements LogicCardInfo {
                   unregister {
                     eff.unregister()
                   }
-                  after SWITCH, pcs, {unregister()}
+                  after FALL_BACK, pcs, {unregister()}
                   after EVOLVE, pcs, {unregister()}
                   after DEVOLVE, pcs, {unregister()}
                   unregisterAfter 2

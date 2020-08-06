@@ -3165,7 +3165,7 @@ public enum DarknessAblaze implements LogicCardInfo {
                 }
               }
               unregisterAfter 2
-              after SWITCH, self, {unregister()}
+              after FALL_BACK, self, {unregister()}
               after EVOLVE, self, {unregister()}
               after DEVOLVE, self, {unregister()}
             }

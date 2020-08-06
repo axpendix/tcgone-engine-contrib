@@ -1961,7 +1961,7 @@ public enum UnifiedMinds implements LogicCardInfo {
                 }
                 after EVOLVE, self, {unregister()}
                 after DEVOLVE, self, {unregister()}
-                after SWITCH, self, {unregister()}
+                after FALL_BACK, self, {unregister()}
                 unregisterAfter 2
               }
             }
@@ -3087,7 +3087,9 @@ public enum UnifiedMinds implements LogicCardInfo {
                   }
                 }
                 unregisterAfter 2
-                after SWITCH, self, {unregister()}
+                after FALL_BACK, self, {unregister()}
+                after EVOLVE, self, {unregister()}
+                after DEVOLVE, self, {unregister()}
               }
             }
           }
@@ -3841,7 +3843,7 @@ public enum UnifiedMinds implements LogicCardInfo {
                     }
                   }
                   unregisterAfter 2
-                  after SWITCH, pcs, {unregister()}
+                  after FALL_BACK, pcs, {unregister()}
                   after EVOLVE, pcs, {unregister()}
                   after DEVOLVE, pcs, {unregister()}
                 }
@@ -3924,7 +3926,7 @@ public enum UnifiedMinds implements LogicCardInfo {
                         }
                       }
                       unregisterAfter 2
-                      after SWITCH, self, { unregister() }
+                      after FALL_BACK, self, { unregister() }
                       after EVOLVE, self, { unregister() }
                       after DEVOLVE, self, { unregister() }
                     }

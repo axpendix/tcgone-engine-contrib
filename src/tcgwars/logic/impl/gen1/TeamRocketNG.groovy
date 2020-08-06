@@ -1061,7 +1061,7 @@ public enum TeamRocketNG implements LogicCardInfo {
 										bg.em().run(new DirectDamage(damage, pcs))*/
                   }
                 }
-                after SWITCH, self, {unregister()}
+                after FALL_BACK, self, {unregister()}
                 after EVOLVE, self, {unregister()}
                 after DEVOLVE, self, {unregister()}
 
@@ -1125,7 +1125,7 @@ public enum TeamRocketNG implements LogicCardInfo {
                     unregister {
                       eff.unregister()
                     }
-                    after SWITCH, defending, {unregister()}
+                    after FALL_BACK, defending, {unregister()}
                     after EVOLVE, defending, {unregister()}
                     after DEVOLVE, defending, {unregister()}
                   }

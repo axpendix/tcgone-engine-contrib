@@ -885,7 +885,8 @@ public enum JungleNG implements LogicCardInfo {
                 }
                 unregisterAfter 2
                 after EVOLVE,defending, {unregister()}
-                after SWITCH,defending, {unregister()}
+                after DEVOLVE,defending, {unregister()}
+                after FALL_BACK,defending, {unregister()}
               }
             }
           }
@@ -1081,8 +1082,12 @@ public enum JungleNG implements LogicCardInfo {
                   }
                 }
                 unregisterAfter 2
-                after SWITCH,defending, {unregister()}
-                after SWITCH,self, {unregister()}
+                after FALL_BACK,defending, {unregister()}
+                after EVOLVE,defending, {unregister()}
+                after DEVOLVE,defending, {unregister()}
+                after FALL_BACK,self, {unregister()}
+                after EVOLVE,self, {unregister()}
+                after DEVOLVE,self, {unregister()}
               }
             }
           }
@@ -1117,8 +1122,12 @@ public enum JungleNG implements LogicCardInfo {
                   }
 
                   unregisterAfter 2
-                  after SWITCH,defending, {unregister()}
-                  after SWITCH,self, {unregister()}
+                  after FALL_BACK,defending, {unregister()}
+                  after EVOLVE,defending, {unregister()}
+                  after DEVOLVE,defending, {unregister()}
+                  after FALL_BACK,self, {unregister()}
+                  after EVOLVE,self, {unregister()}
+                  after DEVOLVE,self, {unregister()}
                 }
               }
             }
@@ -1355,8 +1364,12 @@ public enum JungleNG implements LogicCardInfo {
                   }
 
                   unregisterAfter 2
-                  after SWITCH,defending, {unregister()}
-                  after SWITCH,self, {unregister()}
+                  after FALL_BACK,defending, {unregister()}
+                  after EVOLVE,defending, {unregister()}
+                  after DEVOLVE,defending, {unregister()}
+                  after FALL_BACK,self, {unregister()}
+                  after EVOLVE,self, {unregister()}
+                  after DEVOLVE,self, {unregister()}
                 }
               }
             }

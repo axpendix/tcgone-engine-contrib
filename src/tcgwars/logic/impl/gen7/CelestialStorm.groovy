@@ -487,7 +487,8 @@ public enum CelestialStorm implements LogicCardInfo {
                 }
                 unregisterAfter 2
                 after EVOLVE,self, {unregister()}
-                after SWITCH,self, {unregister()}
+                after DEVOLVE,self, {unregister()}
+                after FALL_BACK,self, {unregister()}
               }
             }
           }
@@ -1143,6 +1144,8 @@ public enum CelestialStorm implements LogicCardInfo {
                 }
                 unregisterAfter 2
                 after EVOLVE,self, {unregister()}
+                after DEVOLVE,self, {unregister()}
+                after FALL_BACK,self, {unregister()}
               }
             }
           }
@@ -1823,8 +1826,9 @@ public enum CelestialStorm implements LogicCardInfo {
                   }
                 }
                 unregisterAfter 3
-                after SWITCH,defending, {unregister()}
+                after FALL_BACK,defending, {unregister()}
                 after EVOLVE,defending, {unregister()}
+                after DEVOLVE,defending, {unregister()}
               }
             }
           }
@@ -1862,7 +1866,7 @@ public enum CelestialStorm implements LogicCardInfo {
                   unregisterAfter 2
                   after EVOLVE, self, {unregister()}
                   after DEVOLVE, self, {unregister()}
-                  after SWITCH, self, {unregister()}
+                  after FALL_BACK, self, {unregister()}
                 }
               }
             }
@@ -1959,7 +1963,7 @@ public enum CelestialStorm implements LogicCardInfo {
                   unregisterAfter 2
                   after EVOLVE, self, {unregister()}
                   after DEVOLVE, self, {unregister()}
-                  after SWITCH, self, {unregister()}
+                  after FALL_BACK, self, {unregister()}
                 }
               }
             }
@@ -2486,7 +2490,7 @@ public enum CelestialStorm implements LogicCardInfo {
                         new Knockout(pcs).run(bg)
                       }
                     }
-                    after SWITCH, pcs, {unregister()}
+                    after FALL_BACK, pcs, {unregister()}
                     after EVOLVE, pcs, {unregister()}
                     after DEVOLVE, pcs, {unregister()}
                     unregisterAfter 2

@@ -669,7 +669,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
                   bg.em().run(new CheckAbilities())
                 }
                 unregisterAfter 3
-                after SWITCH, pcs, {unregister()}
+                after FALL_BACK, pcs, {unregister()}
                 after EVOLVE, pcs, {unregister()}
                 after DEVOLVE, pcs, {unregister()}
               }
@@ -1476,7 +1476,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
                 }
                 after EVOLVE, self, {unregister()}
                 after DEVOLVE, self, {unregister()}
-                after SWITCH, self, {unregister()}
+                after FALL_BACK, self, {unregister()}
                 unregisterAfter 2
               }
             }
@@ -2148,7 +2148,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
                     }
                     after EVOLVE, pcs, {unregister()}
                     after DEVOLVE, pcs, {unregister()}
-                    after SWITCH, pcs, {unregister()}
+                    after FALL_BACK, pcs, {unregister()}
                     unregister {
                       ef.unregister()
                     }
@@ -2224,7 +2224,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
                   unregisterAfter 2
                   after EVOLVE, self, {unregister()}
                   after DEVOLVE, self, {unregister()} //Could be copied by an evolution.
-                  after SWITCH, self, {unregister()}
+                  after FALL_BACK, self, {unregister()}
                 }
               }
             }
@@ -3152,7 +3152,9 @@ public enum UnbrokenBonds implements LogicCardInfo {
                   }
                 }
                 unregisterAfter 2
-                after SWITCH, self, {unregister()}
+                after FALL_BACK, self, {unregister()}
+                after EVOLVE, self, {unregister()}
+                after DEVOLVE, self, {unregister()}
               }
             }
           }

@@ -429,7 +429,7 @@ public enum UnseenForces implements LogicCardInfo {
                     directDamage 30, pcs
                   }
                 }
-                after SWITCH, pcs, {unregister()}
+                after FALL_BACK, pcs, {unregister()}
                 after EVOLVE, pcs, {unregister()}
                 after DEVOLVE, pcs, {unregister()}
                 unregisterAfter 2
@@ -3030,7 +3030,7 @@ public enum UnseenForces implements LogicCardInfo {
                   new CheckAbilities().run(bg)
                 }
                 unregisterAfter 2
-                after SWITCH, pcs, {unregister()}
+                after FALL_BACK, pcs, {unregister()}
                 after EVOLVE, pcs, {unregister()}
                 after DEVOLVE, pcs, {unregister()}
               }

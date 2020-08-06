@@ -701,7 +701,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
                       directDamage 50, pcs
                     }
                   }
-                  after SWITCH, pcs, {unregister()}
+                  after FALL_BACK, pcs, {unregister()}
                   after EVOLVE, pcs, {unregister()}
                   after DEVOLVE, pcs, {unregister()}
                   unregisterAfter 2

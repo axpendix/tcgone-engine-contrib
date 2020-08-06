@@ -2445,10 +2445,10 @@ public enum SwordShield implements LogicCardInfo {
                     eff2.unregister()
                   }
 
-                  after SWITCH, self, {unregister()}
+                  after FALL_BACK, self, {unregister()}
                   after EVOLVE, self, {unregister()}
                   after DEVOLVE, self, {unregister()}
-                  after SWITCH, pcs, {unregister()}
+                  after FALL_BACK, pcs, {unregister()}
                   after EVOLVE, pcs, {unregister()}
                   after DEVOLVE, pcs, {unregister()}
                 }
@@ -2929,7 +2929,7 @@ public enum SwordShield implements LogicCardInfo {
                   }
 
                   unregisterAfter 2
-                  after SWITCH, self, { unregister() }
+                  after FALL_BACK, self, { unregister() }
                   after EVOLVE, self, { unregister() }
                   after DEVOLVE, self, { unregister() }
                 }

@@ -1184,7 +1184,7 @@ public enum BaseSetNG implements LogicCardInfo {
                   unregister {
                     eff.unregister()
                   }
-                  after SWITCH, defending, {unregister()}
+                  after FALL_BACK, defending, {unregister()}
                   after EVOLVE, defending, {unregister()}
                   after DEVOLVE, defending, {unregister()}
                 }
@@ -1401,7 +1401,7 @@ public enum BaseSetNG implements LogicCardInfo {
                 }
                 after EVOLVE, self, {unregister()}
                 after DEVOLVE, self, {unregister()}
-                after SWITCH, self, {unregister()}
+                after FALL_BACK, self, {unregister()}
                 unregisterAfter 2
               }
             }
