@@ -485,20 +485,14 @@ class TcgStatics {
       opp.bench.remove(pcs)
     }
   }
-  static PokemonCardSet benchPCS (Card card, ActivationReason reason=ActivationReason.OTHER, TargetPlayer targetPlayer=TargetPlayer.SELF){
+  static boolean benchPCS (Card card, ActivationReason reason=ActivationReason.OTHER, TargetPlayer targetPlayer=TargetPlayer.SELF){
     if(card.getCardTypes().is(BREAK)){
       bg.wcu("BREAK Pokémon cannot be brought to play")
     }
-    PlayerType playerType=targetPlayer.getPlayerType(bg())
     PlayerBattleground pbg=targetPlayer.getPbg(bg())
     assert pbg.bench.isNotFull() : "Bench is full"
-    PokemonCardSet bench = new PokemonCardSet(playerType);
-    bench.cards().add(card);
-    pbg.getBench().add(bench);
-    bc "$bench was put on bench"
-    bg().em().run(new CantEvolve(bench, bg().getTurnCount()));
-    bg().em().run(new ActivateAbilities((PokemonCard) card, bench, reason));
-    bench
+
+    return !bg().em().run(new PutOnBench(card, reason));
   }
   static evolve (PokemonCardSet pcs, Card card, ActivationReason reason=ActivationReason.PLAY_FROM_HAND) {
     bg().em().run(new Evolve(pcs, card));
@@ -755,14 +749,16 @@ class TcgStatics {
       }
       if(params.type){
         deck.search (max: maxSpace,{it.name.contains(pkmnName) && it.cardTypes.is(basicFilter) && it.asPokemonCard().types.contains(params.type)}).each {
-          deck.remove(it)
-          benchPCS(it)
+          if (benchPCS(it)) {
+            deck.remove(it)
+          }
         }
       }
       else{
         deck.search (max: maxSpace,{it.name.contains(pkmnName) && it.cardTypes.is(basicFilter)}).each{
-          deck.remove(it)
-          benchPCS(it)
+          if (benchPCS(it)) {
+            deck.remove(it)
+          }
         }
       }
       shuffleDeck()
