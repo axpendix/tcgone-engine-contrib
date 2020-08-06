@@ -1089,7 +1089,10 @@ public enum CelestialStorm implements LogicCardInfo {
             text "If you go second, this Pokémon can evolve during your first turn."
             delayedA {
               before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
-                if(bg.turnCount == 2) prevent()
+                if(bg.turnCount == 2 && bg.currentTurn == self.owner){
+                  powerUsed()
+                  prevent()
+                }
               }
             }
           }
@@ -2449,11 +2452,16 @@ public enum CelestialStorm implements LogicCardInfo {
           globalAbility{
             delayed{
               after TAKE_PRIZE, {
-                if(thisCard.player.pbg.prizeCardSet.notEmpty && ef.card != null && ef.card == thisCard
+                //def hasSmoke = bg.em().retrieveObject("Billowing_Smoke")
+                if (
+                  thisCard.player.pbg.prizeCardSet.notEmpty
+                  //&& !hasSmoke
+                  && ef.card != null && ef.card == thisCard
                   && thisCard.player.pbg.bench.notFull && bg.currentTurn == thisCard.player
                   && thisCard.player.pbg.hand.contains(thisCard)
                   && checkGlobalAbility(thisCard)
-                  && confirm("You've picked ${thisCard}. Would you like to use Wish Upon a Star?")){
+                  && confirm("You've picked ${thisCard}. Would you like to use Wish Upon a Star?")
+                ) {
                   bc "${thisCard} used Wish Upon a Star"
                   thisCard.player.pbg.hand.remove(thisCard)
                   benchPCS(thisCard, OTHER, thisCard.player.toTargetPlayer())
@@ -2900,8 +2908,15 @@ public enum CelestialStorm implements LogicCardInfo {
             }
             onAttack {
               delayed{
+                def flag = false
+                before PROCESS_ATTACK_EFFECTS, {
+                  flag = true
+                }
+                before BETWEEN_TURNS, {
+                  flag = false
+                }
                 before PLAY_TRAINER, {
-                  if (bg.currentTurn == self.owner.opposite) {
+                  if (bg.currentTurn == self.owner.opposite && !flag) {
                     wcu "Bawl prevents playing trainer cards"
                     prevent()
                   }
@@ -3310,13 +3325,16 @@ public enum CelestialStorm implements LogicCardInfo {
       case UNDERGROUND_EXPEDITION_150:
         return copy(Skyridge.UNDERGROUND_EXPEDITION_140, this);
       case RAINBOW_ENERGY_151:
-        return specialEnergy (this, [[R, D, F, G, W, Y, L, M, P]]) {
+        return specialEnergy (this, [[C]]) {
           text "Attach Rainbow Energy to 1 of your Pokémon. While in play, Rainbow Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.) When you attach this card from your hand to 1 of your Pokémon, put 1 damage counter on that Pokémon. (While not in play, Rainbow Energy counts as Colorless Energy.)"
           typeImagesOverride = [RAINBOW]
           onPlay {reason->
             if (reason == PLAY_FROM_HAND) {
               directDamage(10, self, Source.SRC_SPENERGY)
             }
+          }
+          getEnergyTypesOverride {
+            self != null ? [[R, D, F, G, W, Y, L, M, P] as Set] : [[C] as Set]
           }
         };
       case SHIFTRY_GX_152:

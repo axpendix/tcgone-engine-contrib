@@ -2896,8 +2896,15 @@ public enum UnifiedMinds implements LogicCardInfo {
               gxPerform()
 
               delayed{
+                def flag = false
+                before PROCESS_ATTACK_EFFECTS, {
+                  flag = true
+                }
+                before BETWEEN_TURNS, {
+                  flag = false
+                }
                 before PLAY_TRAINER, {
-                  if (bg.currentTurn == self.owner.opposite) {
+                  if (bg.currentTurn == self.owner.opposite && !flag) {
                     wcu "Dark Moon GX prevents you from playing Trainer cards."
                     prevent()
                   }
@@ -3033,6 +3040,8 @@ public enum UnifiedMinds implements LogicCardInfo {
           bwAbility "Shadow Connection", {
             text "As often as you like during your turn (before your attack), you may move a basic [D] Energy from 1 of your Pokémon to another of your Pokémon."
             actionA {
+              assertMyAll(info: "with any basic [D] Energy on them", {it.cards.filterByType(BASIC_ENERGY).energyCount(D)})
+              assert my.all.size() > 1 : "You only have one Pokémon in play"
               powerUsed()
               moveEnergy(basic: true, type: D, my.all, my.all)
             }
@@ -3543,8 +3552,15 @@ public enum UnifiedMinds implements LogicCardInfo {
           bwAbility "Unnerve", {
             text "Whenever your opponent plays an Item or Supporter card from their hand, prevent all effects of that card done to this Pokémon."
             delayedA {
+              def flag = false
+              before PROCESS_ATTACK_EFFECTS, {
+                flag = true
+              }
+              before BETWEEN_TURNS, {
+                flag = false
+              }
               before null, self, Source.TRAINER_CARD, {
-                if (bg.currentThreadPlayerType != self.owner){
+                if (bg.currentThreadPlayerType != self.owner && !flag){
                   bc "Unnerve prevents effects of Items and Supporters done to $self."
                   prevent()
                 }

@@ -5,6 +5,11 @@ import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
+import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
+import static tcgwars.logic.effect.EffectType.*;
+import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectPriority.*
+import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
 
@@ -1101,7 +1106,7 @@ public enum SupremeVictors implements LogicCardInfo {
           pokeBody "Natural Cure", {
             text "When you attach an Energy card from your hand to Roserade , remove all Special Conditions from Roserade ."
             delayedA {
-              before ATTACH_ENERGY, self {
+              after ATTACH_ENERGY, self, {
                 if (ef.reason == PLAY_FROM_HAND) {
                   clearSpecialCondition(self, SRC_ABILITY)
                 }

@@ -1443,8 +1443,15 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 60
               bg.em().storeObject("Cold_Snap" + self.owner, bg.turnCount)
               delayed {
+                def flag = false
+                before PROCESS_ATTACK_EFFECTS, {
+                  flag = true
+                }
+                before BETWEEN_TURNS, {
+                  flag = false
+                }
                 before PLAY_TRAINER, {
-                  if (bg.currentTurn == self.owner.opposite) {
+                  if (bg.currentTurn == self.owner.opposite && !flag) {
                     wcu "Cold Snap prevents you from playing Trainer cards."
                     prevent()
                   }
@@ -2715,6 +2722,13 @@ public enum CosmicEclipse implements LogicCardInfo {
           bwAbility "Obnoxious Whirring", {
             text "Whenever your opponent plays a Supporter card from their hand, prevent all effects of that card done to this Pokémon."
             delayedA {
+              def flag = false
+              before PROCESS_ATTACK_EFFECTS, {
+                flag = true
+              }
+              before BETWEEN_TURNS, {
+                flag = false
+              }
               def power=false
               before PLAY_TRAINER, {
                 if (ef.supporter && bg.currentTurn==self.owner.opposite && bg.currentTurn.pbg.hand.contains(ef.cardToPlay)) {
@@ -2725,7 +2739,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                 power=false
               }
               before null, self, Source.TRAINER_CARD, {
-                if (power) {
+                if (power && !flag) {
                   bc "Obnoxious Whirring prevents effects from Supporter cards done to $self."
                   prevent()
                 }
@@ -3982,7 +3996,8 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "If your opponent’s Active Pokémon is a Pokémon-GX or Pokémon-EX, this Pokémon can evolve during the turn you play it."
             delayedA {
               before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
-                if (self.owner.opposite.pbg.active.pokemonGX || self.owner.opposite.pbg.active.pokemonEX) {
+                if (bg.currentTurn == self.owner && (self.owner.opposite.pbg.active.pokemonGX || self.owner.opposite.pbg.active.pokemonEX) ) {
+                  powerUsed()
                   prevent()
                 }
               }

@@ -910,7 +910,6 @@ public enum Deoxys implements LogicCardInfo {
             text "Your opponent can’t play any Supporter Cards from his or hand during your opponent’s next turn."
             energyCost D
             onAttack {
-              //TODO: Fix the static so it uses this attack's name
               opponentCantPlaySupporterNextTurn(delegate)
             }
           }
@@ -1355,7 +1354,7 @@ public enum Deoxys implements LogicCardInfo {
               assert my.discard : "There are no cards in your discard pile"
             }
             onAttack {
-              my.discard.select("Select 1 card to put into your hand.").moveTo(my.hand)
+              my.discard.select("Select 1 card to put into your hand.").showToOpponent("Opponent used Sniff Out").moveTo(my.hand)
             }
           }
           move "Negative Spark", {
@@ -1800,8 +1799,24 @@ public enum Deoxys implements LogicCardInfo {
             onAttack {
               flip {
                 delayed{
+                  def flag = false
+                  before PROCESS_ATTACK_EFFECTS, {
+                    flag = true
+                  }
+                  before BETWEEN_TURNS, {
+                    flag = false
+                  }
+                  before USE_ABILITY, {
+                    flag = true
+                  }
+                  after POKEPOWER, {
+                    flag = false
+                  }
+                  after ACTIVATE_ABILITY, {
+                    flag = false
+                  }
                   before PLAY_TRAINER, {
-                    if (bg.currentTurn == self.owner.opposite) {
+                    if (bg.currentTurn == self.owner.opposite && !flag) {
                       wcu "High Voltage prevents playing this card"
                       prevent()
                     }

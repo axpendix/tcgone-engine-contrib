@@ -13,30 +13,35 @@ import tcgwars.logic.card.Type;
 /**
  * @author axpendix@hotmail.com
  */
-public class CardTypeSet extends TreeSet<CardType>{
+public class CardTypeSet extends TreeSet<CardType> {
 
   public CardTypeSet() {
     super(new CardTypeComparator());
   }
+
   public CardTypeSet(CardTypeSet oldset) {
     this();
     for (CardType cardType : oldset) {
       add(cardType);
     }
   }
+
   public CardTypeSet(CardType... cardTypes) {
     this();
     for (CardType cardType : cardTypes) {
       add(cardType);
     }
   }
-  public boolean is(CardType o){
+
+  public boolean is(CardType o) {
     return contains(o);
   }
-  public boolean isNot(CardType o){
+
+  public boolean isNot(CardType o) {
     return !contains(o);
   }
-  public boolean isIn(CardType...o){
+
+  public boolean isIn(CardType... o) {
     for (CardType cardType : o) {
       if (is(cardType)) {
         return true;
@@ -44,7 +49,8 @@ public class CardTypeSet extends TreeSet<CardType>{
     }
     return false;
   }
-  public boolean isAll(CardType...o){
+
+  public boolean isAll(CardType... o) {
     for (CardType cardType : o) {
       if (!is(cardType)) {
         return false;
@@ -53,7 +59,7 @@ public class CardTypeSet extends TreeSet<CardType>{
     return true;
   }
 
-  public boolean isIn(CardTypeSet cts){
+  public boolean isIn(CardTypeSet cts) {
     for (CardType cardType : cts) {
       if (is(cardType)) {
         return true;
@@ -62,7 +68,7 @@ public class CardTypeSet extends TreeSet<CardType>{
     return false;
   }
 
-  public int getHighestPriority(){
+  public int getHighestPriority() {
     int min = Integer.MAX_VALUE;
     for (CardType ct : this) {
       if (ct.getPriority() < min) {
@@ -71,12 +77,14 @@ public class CardTypeSet extends TreeSet<CardType>{
     }
     return min;
   }
-  public void add(CardType...cardTypes){
+
+  public void add(CardType... cardTypes) {
     for (CardType cardType : cardTypes) {
       add(cardType);
     }
   }
-  public CardType getSignificantType(){
+
+  public CardType getSignificantType() {
     int highestPriority = getHighestPriority();
     for (CardType ct : this) {
       if (ct.getPriority() == highestPriority) {
@@ -85,7 +93,8 @@ public class CardTypeSet extends TreeSet<CardType>{
     }
     return null;
   }
-  public CardType getMainlineType(){
+
+  public CardType getMainlineType() {
     if (is(POKEMON)) {
       return POKEMON;
     }
@@ -97,40 +106,48 @@ public class CardTypeSet extends TreeSet<CardType>{
     }
     return null;
   }
-  public CardTypeSet getSignificantTypes(){
+
+  public CardTypeSet getSignificantTypes() {
     CardTypeSet newset = new CardTypeSet();
     for (CardType ct : this) {
-      if (ct!=POKEMON && ct!=ENERGY) {
+      if (ct != POKEMON && ct != ENERGY) {
         newset.add(ct);
       }
     }
     return newset;
   }
-  public Set<Type> getElementalTypes(){
+
+  public Set<Type> getElementalTypes() {
     Set<Type> ts = new THashSet<>();
-    for(CardType ct:this){
+    for (CardType ct : this) {
       Type type = ct.toElementalType();
-      if (type!=null) {
+      if (type != null) {
         ts.add(type);
       }
     }
     return ts;
   }
-  public boolean isTrainer(){
+
+  public boolean isTrainer() {
     return is(CardType.TRAINER);
   }
-  public boolean isEnergy(){
+
+  public boolean isEnergy() {
     return is(CardType.ENERGY);
   }
-  public boolean isPokemon(){
+
+  public boolean isPokemon() {
     return is(CardType.POKEMON);
   }
-  public boolean isEvolution(){
+
+  public boolean isEvolution() {
     return is(CardType.EVOLUTION);
   }
-  public static CardTypeSet all(){
+
+  public static CardTypeSet all() {
     return new CardTypeSet(CardType.values());
   }
+
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();

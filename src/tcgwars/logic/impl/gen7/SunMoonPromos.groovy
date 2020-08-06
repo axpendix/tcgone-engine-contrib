@@ -820,6 +820,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             attackRequirement {
               assert opp.all.size() > 1 : "Your opponent only has one Pokémon in play"
             }
+            def eff
             onAttack {
               //Taken from UPR Tapu Lele
               eff = delayed {
@@ -832,7 +833,9 @@ public enum SunMoonPromos implements LogicCardInfo {
                 if(!pl) break;
                 def src =pl.select("Source for damage counter (cancel to stop)", false)
                 if(!src) break;
-                def tar=opp.all.select("Target for damage counter (cancel to stop)", false)
+                def tar = opp.all
+                tar.remove(src)
+                tar = tar.select("Target for damage counter (cancel to stop)", false)
                 if(!tar) break;
 
                 src.damage-=hp(10)

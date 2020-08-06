@@ -910,8 +910,15 @@ public enum CrimsonInvasion implements LogicCardInfo {
               gxPerform()
               damage 100
               delayed {
+                def flag = false
+                before PROCESS_ATTACK_EFFECTS, {
+                  flag = true
+                }
+                before BETWEEN_TURNS, {
+                  flag = false
+                }
                 before PLAY_TRAINER, {
-                  if(bg.currentTurn == self.owner.opposite)
+                  if(bg.currentTurn == self.owner.opposite && !flag)
                   {
                     wcu "Heavy Rock GX prevent you playing this card"
                     prevent()
@@ -2111,14 +2118,13 @@ public enum CrimsonInvasion implements LogicCardInfo {
               afterDamage{
                 delayed{
                   before KNOCKOUT, {
-                    if(my.bench && ef.pokemonToBeKnockedOut.owner==self.owner.opposite){
+                    if(my.bench && (ef as Knockout).byDamageFromAttack && ef.pokemonToBeKnockedOut.owner==self.owner.opposite){
                       def tar = my.bench.select("Select the Pokémon to switch with Staraptor")
                       sw self, tar
+                      unregister()
                     }
                   }
-                  unregisterAfter 3
-                  after SWITCH,self, {unregister()}
-                  after EVOLVE,self, {unregister()}
+                  unregisterAfter 1
                 }
               }
             }

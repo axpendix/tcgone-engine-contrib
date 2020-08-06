@@ -808,8 +808,15 @@ public enum TeamUp implements LogicCardInfo {
               damage 10
               flip {
                 delayed{
+                  def flag = false
+                  before PROCESS_ATTACK_EFFECTS, {
+                    flag = true
+                  }
+                  before BETWEEN_TURNS, {
+                    flag = false
+                  }
                   before PLAY_TRAINER, {
-                    if (bg.currentTurn == self.owner.opposite) {
+                    if (bg.currentTurn == self.owner.opposite && !flag) {
                       wcu "Bawl prevents playing trainer cards"
                       prevent()
                     }
@@ -938,9 +945,17 @@ public enum TeamUp implements LogicCardInfo {
             delayedA{
               // TODO
               def flag = false
+              //Workaround for "Supporters used as attack effect"
+              def flag2 = false
+              before PROCESS_ATTACK_EFFECTS, {
+                flag2 = true
+              }
+              before BETWEEN_TURNS, {
+                flag2 = false
+              }
               before PLAY_TRAINER, {
                 flag = false
-                if(self.active && ef.supporter && bg.currentTurn != self.owner){
+                if(self.active && ef.supporter && bg.currentTurn != self.owner && !flag2){
                   flag = true
                 }
               }
@@ -1302,8 +1317,15 @@ public enum TeamUp implements LogicCardInfo {
           bwAbility "Unnerve" , {
             text "Whenever your opponent plays an Item or Supporter card from their hand, prevent all effects of that card done to this Pokémon."
             delayedA {
+              def flag = false
+              before PROCESS_ATTACK_EFFECTS, {
+                flag = true
+              }
+              before BETWEEN_TURNS, {
+                flag = false
+              }
               before null, self, Source.TRAINER_CARD, {
-                if (bg.currentThreadPlayerType != self.owner){
+                if (bg.currentThreadPlayerType != self.owner && !flag){
                   bc "Unnerve prevent effect of item"
                   prevent()
                 }
@@ -1967,8 +1989,15 @@ public enum TeamUp implements LogicCardInfo {
           bwAbility "Fossilized Memories" , {
             text "As long as this Pokémon is your Active Pokémon, your opponent can't play any Supporter cards from their hand."
             delayedA {
+              def flag = false
+              before PROCESS_ATTACK_EFFECTS, {
+                flag = true
+              }
+              before BETWEEN_TURNS, {
+                flag = false
+              }
               before PLAY_TRAINER, {
-                if (ef.supporter && bg.currentTurn == self.owner.opposite && self.active) {
+                if (ef.supporter && bg.currentTurn == self.owner.opposite && self.active && !flag) {
                   wcu "Fossilized Memories prevents playing supporters"
                   prevent()
                 }
@@ -2476,7 +2505,10 @@ public enum TeamUp implements LogicCardInfo {
             text "If you go second, this Pokémon can evolve during your first turn."
             delayedA {
               before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
-                if(bg.turnCount == 2) prevent()
+                if(bg.turnCount == 2 && bg.currentTurn == self.owner){
+                  powerUsed()
+                  prevent()
+                }
               }
             }
           }

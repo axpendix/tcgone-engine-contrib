@@ -1037,15 +1037,15 @@ class TcgStatics {
         after FALL_BACK, pcs, {unregister()}
         after EVOLVE, pcs, {unregister()}
         after DEVOLVE, pcs, {unregister()}
-			}
-		}
-	}
+      }
+    }
+  }
 
-	static void defendingRetreatsCostsMore (PokemonCardSet pcs, List<Type> energies) {
-		targeted(pcs) {
-			delayed {
-				def eff
-				register {
+  static void defendingRetreatsCostsMore (PokemonCardSet pcs, List<Type> energies) {
+    targeted(pcs) {
+      delayed {
+        def eff
+        register {
           eff = getter (GET_RETREAT_COST, NORMAL, pcs) {h->
             h.object += 1
           }
@@ -1058,9 +1058,9 @@ class TcgStatics {
         after FALL_BACK, pcs, {unregister()}
         after EVOLVE, pcs, {unregister()}
         after DEVOLVE, pcs, {unregister()}
-			}
-		}
-	}
+      }
+    }
+  }
 
   static void increasedDamageDoneToDefending (PokemonCardSet self, PokemonCardSet pcs, int value, String atkName=""){
     targeted(pcs){
@@ -1320,9 +1320,26 @@ class TcgStatics {
     }
   }
   static void opponentCantPlaySupporterNextTurn(def _delegate){
+    bc "${_delegate.thisMove} - Supporters can't be played from ${opp.owner.getPlayerUsername(bg)}'s hand during their next turn"
     _delegate.delayed {
+      def flag = false
+      before USE_ABILITY, {
+        flag = true
+      }
+      after POKEPOWER, {
+        flag = false
+      }
+      after ACTIVATE_ABILITY, {
+        flag = false
+      }
+      before PROCESS_ATTACK_EFFECTS, {
+        flag = true
+      }
+      before BETWEEN_TURNS, {
+        flag = false
+      }
       before PLAY_TRAINER, {
-        if(ef.supporter && bg.currentTurn==_delegate.self.owner.opposite) {
+        if(ef.supporter && bg.currentTurn==_delegate.self.owner.opposite && !flag) {
           wcu "${_delegate.thisMove} prevents playing supporters"
           prevent()
         }
@@ -1399,16 +1416,18 @@ class TcgStatics {
   }
 
   static putDamageCountersOnOpponentsPokemon(int counters, def selectArea = opp.all){
-    def eff = delayed {
-      before KNOCKOUT, {
-        prevent()
+    if (selectArea.notEmpty) {
+      def eff = delayed {
+        before KNOCKOUT, {
+          prevent()
+        }
       }
+
+      counters.times{directDamage 10, selectArea.select("Put 1 damage counter on which pokémon? ${it}/${counters} counters placed") }
+
+      eff.unregister()
+      checkFaint()
     }
-
-    counters.times{directDamage 10, selectArea.select("Put 1 damage counter on which pokémon? ${it}/${counters} counters placed") }
-
-    eff.unregister()
-    checkFaint()
   }
 
   static boolean wasSwitchedOutThisTurn(PokemonCardSet self){
@@ -1420,13 +1439,19 @@ class TcgStatics {
 
   static boolean isValidFossilCard(Card potentialFossil){
     if(
-      (potentialFossil.cardTypes.is(ITEM) && potentialFossil.name.contains("Fossil")) ||
+    (potentialFossil.cardTypes.is(ITEM) && potentialFossil.name.contains("Fossil")) ||
       (potentialFossil.cardTypes.is(STAGE1) && potentialFossil.predecessor.contains("Fossil")) ||
       (potentialFossil.cardTypes.is(STAGE2) && bg().gm().getBasicsFromStage2(potentialFossil.name).any{it.contains("Fossil")})
     )
       return true
     else
       return false
+  }
+
+  static confirmScoopLastPokemon() {
+    if (my.bench.empty){
+      assert confirm("You have no other Pokémon in play. Playing this card may cause you to lose the game. Are you sure you want to play it anyway?") : "Use of the card was canceled"
+    }
   }
 
   static void loadMarkerCheckerAction(def delegate, actions) {

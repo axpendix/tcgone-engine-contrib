@@ -1881,6 +1881,9 @@ public enum BaseSetNG implements LogicCardInfo {
               removePCS pcs
             }
           }
+          playRequirement {
+            confirmScoopLastPokemon()
+          }
         };
       case SUPER_ENERGY_REMOVAL:
         return basicTrainer (this) {

@@ -2392,7 +2392,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
           playRequirement{
-            assert my.bench : "you don't have pokemon to return to your hand"
+            confirmScoopLastPokemon()
           }
         };
       case VS_SEEKER_100:

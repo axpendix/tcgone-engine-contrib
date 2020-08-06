@@ -753,8 +753,9 @@ public enum SwordShield implements LogicCardInfo {
           energyCost R, R, R, C
           onAttack {
             damage 120
-            discardDefendingEnergy()
-            discardDefendingEnergy()
+            afterDamage{
+              2.times{ discardDefendingEnergy() }
+            }
           }
         }
       };
@@ -1471,10 +1472,12 @@ public enum SwordShield implements LogicCardInfo {
         bwAbility "Ice Dance", {
           text "As often as you like during your turn, you may attach a [W] Energy card from your hand to 1 of your Benched [W] Pokémon."
           actionA {
-            if (confirm("Use Ice Dance?")) {
-              powerUsed()
-              attachEnergyFrom(type:W, my.hand, my.bench.findAll { it.types.contains(W) })
-            }
+            assert my.hand.filterByEnergyType(W) : "No [W] Energy in hand"
+            assertMyBench(hasType: W)
+            powerUsed()
+            def selEnergy = my.hand.filterByBasicEnergyType(W).first()
+            def pcs = my.bench.findAll{it.types.contains(W)}.select("Attach to?")
+            attachEnergy(pcs, selEnergy, PLAY_FROM_HAND)
           }
         }
         move "Aurora Beam", {
@@ -1867,6 +1870,7 @@ public enum SwordShield implements LogicCardInfo {
           text "As often as you like during your turn, you may move 1 damage counter from 1 of your [P] Pokémon to another of your [P] Pokémon."
           actionA {
             assertMyAll(hasType: P, info: "with damage counters on them", {it.numberOfDamageCounters})
+            assert my.all.count{it.types.contains(P)} > 1 : "You don't have another [P] Pokémon in play"
             powerUsed()
             def source = my.all.findAll { it.numberOfDamageCounters > 0 && it.types.contains(P) }.select("Source for the damage counter?")
             def target = my.all.findAll { it.types.contains(P) }

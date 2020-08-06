@@ -10,6 +10,7 @@ import java.util.List;
 public class BenchSet extends PcsList {
 
   private final int benchSize;
+
   public BenchSet(int benchSize) {
     this.benchSize = benchSize;
     for (int i = 0; i < benchSize; i++) {
@@ -64,11 +65,11 @@ public class BenchSet extends PcsList {
     return getNonNullList().isEmpty();
   }
 
-  public boolean isNotEmpty(){
+  public boolean isNotEmpty() {
     return !isEmpty();
   }
 
-  public boolean notEmpty(){
+  public boolean notEmpty() {
     return !isEmpty();
   }
 
@@ -125,7 +126,7 @@ public class BenchSet extends PcsList {
     return -1;
   }
 
-  public PcsList getNonNullList(){
+  public PcsList getNonNullList() {
     PcsList list = new PcsList();
     for (PokemonCardSet bench : this) {
       list.add(bench);
