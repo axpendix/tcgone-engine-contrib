@@ -1904,7 +1904,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
-            if(bg.stadiumInfoStruct.stadiumCard.name == "Glimwood Tangle"){
+            if(bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Glimwood Tangle"){
               damage 60
             }
           }
@@ -2216,7 +2216,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 80
-            discardDefendingEnergy()
+            afterDamage {
+              discardDefendingEnergy()
+            }
           }
         }
         move "Heavy Rock Cannon", {
@@ -2354,16 +2356,14 @@ public enum DarknessAblaze implements LogicCardInfo {
       return evolution (this, from:"Spinarak", hp:HP110, type:D, retreatCost:2) {
         weakness F
         bwAbility "Spider Net", {
-          text "When you play this card from your hand to evolve 1 of your Pokémon, you may switch 1 of your opponent’s Evolution Pokémon with their Active Pokémon."
-          actionA {
-            onActivate {r->
-              if(r==Ability.ActivationReason.PLAY_FROM_HAND && opp.bench.findAll{it.realEvolution} && confirm("Use Spider Net")){
-                powerUsed()
-                def pcs = opp.bench.findAll{it.realEvolution}.select("New active")
-                if(pcs){
-                  targeted (pcs, SRC_ABILITY) {
-                    sw(opp.active, pcs, SRC_ABILITY)
-                  }
+          text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may switch 1 of your opponent’s Benched Evolution Pokémon with their Active Pokémon."
+          onActivate {r->
+            if(r==Ability.ActivationReason.PLAY_FROM_HAND && opp.bench.findAll{it.realEvolution} && confirm("Use Spider Net")){
+              powerUsed()
+              def pcs = opp.bench.findAll{it.realEvolution}.select("New active")
+              if(pcs){
+                targeted (pcs, SRC_ABILITY) {
+                  sw(opp.active, pcs, SRC_ABILITY)
                 }
               }
             }
@@ -2410,7 +2410,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP120, type:D, retreatCost:2) {
         weakness G
         bwAbility "Dark Guard", {
-          text "If this Pokémon has a [D] Energy attached to it, it takes 20 less damage from attacks."
+          text "If this Pokémon has any [D] Energy attached, it takes 20 less damage from attacks (after applying Weakness and Resistance)."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               if(ef.attacker.owner == self.owner.opposite && self.cards.energyCount(D)) {
@@ -2464,7 +2464,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         bwAbility "Limber", {
           text "This Pokémon can’t be Paralyzed."
           delayedA{
-            before APPLY_SPECIAL_CONDITION, self {
+            before APPLY_SPECIAL_CONDITION, self, {
               if(ef.type == Paralyzed){
                 bc "$self's Limber pervents it from being Paralyzed"
                 prevent()
@@ -2520,12 +2520,13 @@ public enum DarknessAblaze implements LogicCardInfo {
       return evolution (this, from:"Zweilous", hp:HP160, type:D, retreatCost:3) {
         weakness G
         bwAbility "Dark Squall", {
-          text "As often as you like during your turn, you may attach a [D] Energy from your hand to 1 of your Pokemon."
+          text "As often as you like during your turn, you may attach a [D] Energy from your hand to one of your Pokémon in play."
           actionA {
-            assert my.hand.filterByBasicEnergyType(D) : "No [D] in hand"
+            assert my.hand.filterByEnergyType(D) : "No [D] Energy in hand"
             powerUsed()
-            def card = my.hand.filterByEnergyType(D).select("Choose a [D] Energy Card to attach")
-            attachEnergy(my.all.select("To?"), card)
+            def list = my.hand.filterByEnergyType(D).select("Choose a [D] Energy Card to attach")
+            def pcs = my.all.select("Attach to?")
+            attachEnergy(pcs, list.first(), PLAY_FROM_HAND)
           }
         }
         move "Jet Black Fangs", {
@@ -2642,16 +2643,19 @@ public enum DarknessAblaze implements LogicCardInfo {
       return basic (this, hp:HP220, type:D, retreatCost:2) {
         weakness F
         move "Power Accel", {
-          text "30 damage. You may attach a [D] Energy card from your hand to 1 of your Benched Pokemon."
+          text "30 damage. You may attach 1 [D] Energy from your hand to 1 of your Benched Pokémon."
           energyCost C
           attackRequirement {}
           onAttack {
             damage 30
             afterDamage{
-              def card = my.hand.filterByEnergyType(D).select(min:0, "Select a [D] Energy to attach from your hand.")
-              if(card){
-                def tar = my.bench.select("To?")
-                attachEnergy(tar, card)
+              def potentialEnergy = my.hand.filterByEnergyType(D)
+              if (my.bench && potentialEnergy){
+                def sel = potentialEnergy.select(min:0, "Select a [D] Energy to attach from your hand.")
+                if (sel) {
+                  def tar = my.bench.select("To?")
+                  attachEnergy(tar, sel.first(), PLAY_FROM_HAND)
+                }
               }
             }
           }
@@ -2942,7 +2946,7 @@ public enum DarknessAblaze implements LogicCardInfo {
                 }
               }
               unregisterAfter 2
-              after SWITCH, self, {unregister()}
+              after FALL_BACK, self, {unregister()}
               after EVOLVE, self, {unregister()}
               after DEVOLVE, self, {unregister()}
             }
@@ -3013,11 +3017,9 @@ public enum DarknessAblaze implements LogicCardInfo {
         bwAbility "Antibacterial Skin", {
           text "This Pokémon can’t be affected by Special Conditions."
           delayedA {
-            before APPLY_SPECIAL_CONDITION, {
-              if(e.getTarget(bg) == self){
-                bc "Antibacterial Skin prevents $self from being ${ef.type}"
-                prevent()
-              }
+            before APPLY_SPECIAL_CONDITION, self, {
+              bc "Antibacterial Skin prevents $self from being ${ef.type}"
+              prevent()
             }
           }
         }
@@ -3293,7 +3295,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             assert my.deck : "There are no cards left in your deck"
           }
           onAttack {
-            deck.select(count: 2).moveTo(hidden: true, hand)
+            my.deck.select(min:1, max:2, "Put up to 2 cards into your hand").moveTo(hidden: true, my.hand)
             shuffleDeck()
           }
         }
@@ -3553,11 +3555,65 @@ public enum DarknessAblaze implements LogicCardInfo {
       case BILLOWING_SMOKE_158:
       return pokemonTool (this) {
         text "If the Pokemon this card is attached to is Knocked Out by damage from an attack from your opponent’s Pokemon, that player discards any Prize cards they would take for that Knock Out instead of putting those cards into their hand."
+        def eff1, eff2
+        def itemActive = false
         onPlay {reason->
+          //
+          // Code following current compendium rulings
+          //
+          eff1 = delayed {
+            before KNOCKOUT, self, {
+              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite) {
+                bc "Billowing Smoke activates."
+                itemActive = true
+              }
+            }
+          }
+          eff2 = delayed {
+            before TAKE_PRIZE, {
+              if (itemActive && ef.pcs==self) {
+                prevent()
+                def tar = self.owner.opposite.pbg.prizeCardSet.oppSelect(hidden: true, count: 1, "The knocked out Pokémon had Billowing Smoke attached. Select a prize card, and it'll be discarded instead of taken and put into your hand.")
+                moveCard(suppressLog: true, tar.first(), self.owner.opposite.pbg.discard)
+                bc "$tar was discarded instead of taken as a Prize." // custom log entry
+                TakePrize.checkPrizes(bg)
+              }
+            }
+            after KNOCKOUT, self, {
+              if (itemActive) {
+                itemActive = false
+                unregister()
+              }
+            }
+          }
+          //
+          // TODO: Use this code (and update Jirachi Prism Star) if the rulings on this card are updated/fixed (JP says they counts as taken prizes, Compendium currently says they don't)
+          //
+          /* eff1 = delayed {
+            before KNOCKOUT, self, {
+              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite) {
+                bc "Billowing Smoke activates."
+                bg.em().storeObject("Billowing_Smoke", true)
+                delayed {
+                  after TAKE_PRIZE, {
+                    if(self.owner.opposite.prizeCardSet.notEmpty && ef.card != null && ef.card.player == self.owner.opposite){
+                      bc "${ef.card} gets discarded due to Billowing Smoke's effect."
+                      def prizeOwner = ef.card.player
+                      prizeOwner.pbg.hand.remove(ef.card)
+                      prizeOwner.pbg.discard.add(ef.card)
+                    }
+                  }
+                  after KNOCKOUT, self, {
+                    bg.em().storeObject("Billowing_Smoke", false)
+                    unregister()
+                  }
+                }
+              }
+            }
+          } */
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          eff1.unregister()
         }
       };
       case BIRD_KEEPER_159:
