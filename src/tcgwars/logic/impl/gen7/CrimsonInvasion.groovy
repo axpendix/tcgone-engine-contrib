@@ -2110,7 +2110,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
               afterDamage{
                 delayed{
                   before KNOCKOUT, {
-                    if(my.bench && ef.pokemonToBeKnockedOut.owner==self.owner.opposite){
+                    if(my.bench && (ef as Knockout).byDamageFromAttack && ef.pokemonToBeKnockedOut.owner==self.owner.opposite){
                       def tar = my.bench.select("Select the Pokémon to switch with Staraptor")
                       sw self, tar
                       unregister()
