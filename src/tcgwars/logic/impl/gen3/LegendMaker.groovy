@@ -2347,12 +2347,9 @@ public enum LegendMaker implements LogicCardInfo {
                       prevent()
                     }
                   }
-                  before APPLY_SPECIAL_CONDITION, {
-                    def pcs=e.getTarget(bg)
-                    if(pcs==self){
-                      bc "Claw Fossil is unaffected by Special Conditions"
-                      prevent()
-                    }
+                  before APPLY_SPECIAL_CONDITION, self, {
+                    bc "Claw Fossil is unaffected by Special Conditions"
+                    prevent()
                   }
                 }
                 if (!eff) {
@@ -2472,12 +2469,9 @@ public enum LegendMaker implements LogicCardInfo {
                       prevent()
                     }
                   }
-                  before APPLY_SPECIAL_CONDITION, {
-                    def pcs=e.getTarget(bg)
-                    if(pcs==self){
-                      bc "Root Fossil is unaffected by Special Conditions"
-                      prevent()
-                    }
+                  before APPLY_SPECIAL_CONDITION, self, {
+                    bc "Root Fossil is unaffected by Special Conditions"
+                    prevent()
                   }
                   before TAKE_PRIZE, {
                     if (ef.pcs==self) {

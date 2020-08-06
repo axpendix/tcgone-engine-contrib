@@ -2886,9 +2886,8 @@ public enum UnseenForces implements LogicCardInfo {
         pokeBody "Poison Resistance", {
           text "Steelix ex can't be Poisoned."
           delayedA {
-            before APPLY_SPECIAL_CONDITION, {
-              def pcs = e.getTarget(bg)
-              if (pcs == self && ef.type == POISONED) {
+            before APPLY_SPECIAL_CONDITION, self, {
+              if (ef.type == POISONED) {
                 bc "Poison Resistance prevents $self from being Poisoned"
                 prevent()
               }

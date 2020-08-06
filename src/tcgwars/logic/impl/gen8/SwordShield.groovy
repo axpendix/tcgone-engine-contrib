@@ -1807,7 +1807,7 @@ public enum SwordShield implements LogicCardInfo {
           }
           delayedA {
             before APPLY_SPECIAL_CONDITION, {
-              def pcs = e.getTarget(bg)
+              def pcs = ef.getResolvedTarget(bg, e)
               if (pcs.owner == self.owner) {
                 bc "Pastel Veil prevents Special Conditions."
                 prevent()

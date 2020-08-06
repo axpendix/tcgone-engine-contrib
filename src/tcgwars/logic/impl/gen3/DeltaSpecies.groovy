@@ -2943,8 +2943,8 @@ public enum DeltaSpecies implements LogicCardInfo {
             clearSpecialCondition(self)
           }
           eff = delayed {
-            before APPLY_SPECIAL_CONDITION, {
-              if(e.getTarget(bg)==self && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(G)){
+            before APPLY_SPECIAL_CONDITION, self, {
+              if ( !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(G) ){
                 bc "Holon Energy GL prevents special conditions"
                 prevent()
               }
