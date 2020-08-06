@@ -114,11 +114,11 @@ public enum DarknessAblaze implements LogicCardInfo {
   SNUBBULL_70 ("Snubbull", 70, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
   GRANBULL_71 ("Granbull", 71, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
   LUNATONE_72 ("Lunatone", 72, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  GOLETT_73 ("Golett", 73, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  GOLURK_74 ("Golurk", 74, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
-  GOTHITA_75 ("Gothita", 75, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
-  GOTHORITA_76 ("Gothorita", 76, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
-  GOTHITELLE_77 ("Gothitelle", 77, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _PSYCHIC_]),
+  GOTHITA_73 ("Gothita", 73, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  GOTHORITA_74 ("Gothorita", 74, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
+  GOTHITELLE_75 ("Gothitelle", 75, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _PSYCHIC_]),
+  GOLETT_76 ("Golett", 76, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
+  GOLURK_77 ("Golurk", 77, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
   DEDENNE_78 ("Dedenne", 78, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
   MORELULL_79 ("Morelull", 79, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
   SHIINOTIC_80 ("Shiinotic", 80, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
@@ -191,10 +191,10 @@ public enum DarknessAblaze implements LogicCardInfo {
   STARAPTOR_147 ("Staraptor", 147, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]),
   DUCKLETT_148 ("Ducklett", 148, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
   SWANNA_149 ("Swanna", 149, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
-  SKWOVET_150 ("Skwovet", 150, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
-  GREEDENT_151 ("Greedent", 151, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
-  BUNNELBY_152 ("Bunnelby", 152, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
-  FLETCHLING_153 ("Fletchling", 153, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
+  BUNNELBY_150 ("Bunnelby", 150, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
+  FLETCHLING_151 ("Fletchling", 151, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
+  SKWOVET_152 ("Skwovet", 152, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
+  GREEDENT_153 ("Greedent", 153, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
   ROOKIDEE_154 ("Rookidee", 154, Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
   CORVISQUIRE_155 ("Corvisquire", 155, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
   CORVIKNIGHT_156 ("Corviknight", 156, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]),
@@ -1728,53 +1728,11 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
       };
-      case GOLETT_73:
-      return basic (this, hp:HP090, type:P, retreatCost:3) {
-        weakness D
-        resistance F, MINUS30
-        move "Rollout", {
-          text "30 damage."
-          energyCost P, C
-          attackRequirement {}
-          onAttack {
-            damage 30
-          }
-        }
-        move "Hammer In", {
-          text "50 damage."
-          energyCost P, C, C
-          attackRequirement {}
-          onAttack {
-            damage 50
-          }
-        }
-      };
-      case GOLURK_74:
-      return evolution (this, from:"Golett", hp:HP150, type:P, retreatCost:4) {
-        weakness D
-        resistance F, MINUS30
-        move "Explosive Punch", {
-          text "80 damage."
-          energyCost P, C, C
-          attackRequirement {}
-          onAttack {
-            damage 80
-          }
-        }
-        move "Golurk Hammer", {
-          text "180 damage."
-          energyCost P, C, C, C, C
-          attackRequirement {}
-          onAttack {
-            damage 180
-          }
-        }
-      };
-      case GOTHITA_75:
+      case GOTHITA_73:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness D
         resistance F, MINUS30
-        move "Fortune Eye", {
+        move "Fortunate Eye", {
           text "Look at the top 5 cards of your opponent’s deck and put them back on top of their deck in any order."
           energyCost P
           attackRequirement {
@@ -1796,12 +1754,12 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
       };
-      case GOTHORITA_76:
+      case GOTHORITA_74:
       return evolution (this, from:"Gothita", hp:HP080, type:P, retreatCost:2) {
         weakness D
         resistance F, MINUS30
         move "Whiny Voice", {
-          text "Choose 1 random card from your opponent’s hand. Your opponent reveals that card and shuffles it into their deck."
+          text "Choose a random card from your opponent’s hand. Your opponent reveals that card and shuffles it into their deck."
           energyCost P
           attackRequirement {
             assert opp.hand : "Your opponent's hand is empty"
@@ -1812,7 +1770,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Double Spin", {
-          text "30x damage. Flip 2 coins. This attack does 30 damage times the number of heads."
+          text "30x damage. Flip 2 coins. This attack does 30 damage for each heads."
           energyCost P, C
           attackRequirement {}
           onAttack {
@@ -1822,11 +1780,11 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
       };
-      case GOTHITELLE_77:
+      case GOTHITELLE_75:
       return evolution (this, from:"Gothorita", hp:HP140, type:P, retreatCost:2) {
         weakness D
         resistance F, MINUS30
-        move "Psycho Trip", {
+        move "Mind Bend", {
           text "40 damage. Your opponent’s Active Pokémon is now Confused."
           energyCost P
           attackRequirement {}
@@ -1837,8 +1795,8 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-        move "Distort", {
-          text "90 damage. Choose 2 random cards from your opponent’s hand. Your opponent reveals them and shuffles them into their deck."
+        move "Bend", {
+          text "90 damage. Choose 2 random cards from your opponent’s hand. Your opponent reveals those cards and shuffles them into their deck."
           energyCost P, C
           attackRequirement {}
           onAttack {
@@ -1849,6 +1807,48 @@ public enum DarknessAblaze implements LogicCardInfo {
                 shuffleDeck(null, TargetPlayer.OPPONENT)
               }
             }
+          }
+        }
+      };
+      case GOLETT_76:
+      return basic (this, hp:HP090, type:P, retreatCost:3) {
+        weakness D
+        resistance F, MINUS30
+        move "Rollout", {
+          text "30 damage."
+          energyCost P, C
+          attackRequirement {}
+          onAttack {
+            damage 30
+          }
+        }
+        move "Hammer In", {
+          text "50 damage."
+          energyCost P, C, C
+          attackRequirement {}
+          onAttack {
+            damage 50
+          }
+        }
+      };
+      case GOLURK_77:
+      return evolution (this, from:"Golett", hp:HP150, type:P, retreatCost:4) {
+        weakness D
+        resistance F, MINUS30
+        move "Dynamic Chop", {
+          text "80 damage."
+          energyCost P, C, C
+          attackRequirement {}
+          onAttack {
+            damage 80
+          }
+        }
+        move "Golurk Hammer", {
+          text "180 damage."
+          energyCost P, C, C, C, C
+          attackRequirement {}
+          onAttack {
+            damage 180
           }
         }
       };
@@ -3403,7 +3403,32 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
       };
-      case SKWOVET_150:
+      case BUNNELBY_150:
+      return basic (this, hp:HP040, type:C, retreatCost:1) {
+        weakness F
+        move "Mad Party", {
+          text "20x damage. This attack does 20 damage for each Pokémon in your discard pile that has the Mad Party attack."
+          energyCost C, C
+          attackRequirement {}
+          onAttack {
+            damage 20 * my.discard.findAll{ it.cardTypes.is(POKEMON) && it.moves.any{it.name=="Mad Party"} }.size()
+          }
+        }
+      };
+      case FLETCHLING_151:
+      return basic (this, hp:HP060, type:C, retreatCost:1) {
+        weakness L
+        resistance F, MINUS30
+        move "Tackle", {
+          text "20 damage."
+          energyCost C
+          attackRequirement {}
+          onAttack {
+            damage 20
+          }
+        }
+      };
+      case SKWOVET_152:
       return basic (this, hp:HP070, type:C, retreatCost:1) {
         weakness F
         move "Whimsy Tackle", {
@@ -3415,11 +3440,11 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
       };
-      case GREEDENT_151:
+      case GREEDENT_153:
       return evolution (this, from:"Skwovet", hp:HP120, type:C, retreatCost:1) {
         weakness F
         move "Scrape Off", {
-          text "20 damage. Before doing damage, discard any Pokémon Tools attached to your opponent’s Active Pokémon."
+          text "20 damage. Before doing damage, discard all Pokémon Tools from your opponent’s Active Pokémon."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -3430,7 +3455,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
         }
         move "Hit and Run", {
-          text "100 damage. Return this Pokémon and all cards attached to it to your hand."
+          text "100 damage. Put this Pokémon and all attached cards into your hand."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -3439,31 +3464,6 @@ public enum DarknessAblaze implements LogicCardInfo {
               self.cards.moveTo(hand)
               removePCS(self)
             }
-          }
-        }
-      };
-      case BUNNELBY_152:
-      return basic (this, hp:HP040, type:C, retreatCost:1) {
-        weakness F
-        move "Mad Party", {
-          text "20x damage. This attack does 20 damage for each Pokemon in your discard pile that has the Mad Party attack."
-          energyCost C, C
-          attackRequirement {}
-          onAttack {
-            damage 20 * my.discard.findAll{ it.cardTypes.is(POKEMON) && it.moves.any{it.name=="Mad Party"} }.size()
-          }
-        }
-      };
-      case FLETCHLING_153:
-      return basic (this, hp:HP060, type:C, retreatCost:1) {
-        weakness L
-        resistance F, MINUS30
-        move "Tackle", {
-          text "20 damage."
-          energyCost C
-          attackRequirement {}
-          onAttack {
-            damage 20
           }
         }
       };
