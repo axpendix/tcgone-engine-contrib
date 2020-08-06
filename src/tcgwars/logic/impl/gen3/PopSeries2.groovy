@@ -1,6 +1,7 @@
 package tcgwars.logic.impl.gen3;
 
 import tcgwars.logic.impl.gen1.BaseSetNG;
+import tcgwars.logic.impl.gen2.Expedition;
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen7.CelestialStorm;
 
@@ -268,7 +269,9 @@ public enum PopSeries2 implements LogicCardInfo {
         }
       };
       case MULTI_TECHNICAL_MACHINE_01_9:
-      return basicTrainer (this) {
+      // Commented for now, TechnicalMachineGroovyImpl needs to be made first.
+        return copy(Expedition.MULTI_TECHNICAL_MACHINE_01_144, this);
+      /*return basicTrainer (this) {
         text "Attach this card to 1 of your Pokemon in play. This Pokemon may use this card's attack instead of its own. At the end of your turn, discard Multi Technical Machine 01"
         def eff1, eff2
         onPlay {reason->
@@ -304,7 +307,7 @@ public enum PopSeries2 implements LogicCardInfo {
             }
           }
         }
-      };
+      };*/
       case POKEMON_PARK_10:
       return stadium (this) {
         text "Once during each player's turn, when that player attaches an Energy card from his or her hand to 1 of his or her Benched Pokémon, he or she removes 1 damage counter from that Pokémon."

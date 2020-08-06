@@ -1798,7 +1798,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             //Errata'd, used to say "is Knocked Out by an opponent’s attack"
             delayedA {
               before KNOCKOUT, self, {
-                if((ef as Knockout).byDamageFromAttack){
+                if((ef as Knockout).byDamageFromAttack && self.active){
                   apply CONFUSED, self.owner.opposite.pbg.active
                   apply POISONED, self.owner.opposite.pbg.active
                 }
@@ -2461,11 +2461,12 @@ public enum TeamRocketReturns implements LogicCardInfo {
         return basicTrainer (this) {
           text "Flip a coin. If heads, put 1 damage counter on 1 of your opponent’s Pokémon. If tails, put 1 damage counter on 1 of your Pokémon."
           onPlay {
+            def info = "Select the target for Venture Bomb’s damage counter"
             flip 1,{
-              directDamage(10, opp.active,TRAINER_CARD)
+              directDamage(10, opp.all.select(info),TRAINER_CARD)
             },
               {
-                directDamage(10, my.active,TRAINER_CARD)
+                directDamage(10, my.all.select(info),TRAINER_CARD)
               }
           }
           playRequirement{
