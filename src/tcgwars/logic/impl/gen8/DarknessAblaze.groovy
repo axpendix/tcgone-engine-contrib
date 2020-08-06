@@ -217,7 +217,32 @@ public enum DarknessAblaze implements LogicCardInfo {
   YELL_HORN_173 ("Yell Horn", 173, Rarity.UNCOMMON, [TRAINER, ITEM]),
   HEAT_FIRE_ENERGY_174 ("Heat Fire Energy", 174, Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
   HIDING_DARKNESS_ENERGY_175 ("Hiding Darkness Energy", 175, Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
-  POWERFUL_COLORLESS_ENERGY_176 ("Powerful Colorless Energy", 176, Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]);
+  POWERFUL_COLORLESS_ENERGY_176 ("Powerful Colorless Energy", 176, Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
+  BUTTERFREE_V_177 ("Butterfree V", 177, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _GRASS_]),
+  HOUNDOOM_V_178 ("Houndoom V", 178, Rarity.ULTRARARE, [POKEMON, POKEMON_V, BASIC, _FIRE_]),
+  CENTISKORCH_V_179 ("Centiskorch V", 179, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _FIRE_]),
+  VIKAVOLT_V_180 ("Vikavolt V", 180, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _LIGHTNING_]),
+  RHYPERIOR_V_181 ("Rhyperior V", 181, Rarity.ULTRARARE, [POKEMON, POKEMON_V, BASIC, _FIGHTING_]),
+  CROBAT_V_182 ("Crobat V", 182, Rarity.ULTRARARE, [POKEMON, POKEMON_V, BASIC, _DARKNESS_]),
+  SCIZOR_V_183 ("Scizor V", 183, Rarity.ULTRARARE, [POKEMON, POKEMON_V, BASIC, _METAL_]),
+  GALARIAN_STUNFISK_V_184 ("Galarian Stunfisk V", 184, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _METAL_]),
+  SALAMENCE_V_185 ("Salamence V", 185, Rarity.ULTRARARE, [POKEMON, POKEMON_V, BASIC, _COLORLESS_]),
+  KABU_186 ("Kabu", 186, Rarity.ULTRARARE, [TRAINER, SUPPORTER]),
+  PIERS_187 ("Piers", 187, Rarity.ULTRARARE, [TRAINER, SUPPORTER]),
+  POKEMON_BREEDER_S_NURTURING_188 ("Pokémon Breeder's Nurturing", 188, Rarity.ULTRARARE, [TRAINER, SUPPORTER]),
+  ROSE_189 ("Rose", 189, Rarity.ULTRARARE, [TRAINER, SUPPORTER]),
+  BUTTERFREE_VMAX_190 ("Butterfree VMAX", 190, Rarity.SECRET, [POKEMON, EVOLUTION, VMAX, _GRASS_]),
+  CENTISKORCH_VMAX_191 ("Centiskorch VMAX", 191, Rarity.SECRET, [POKEMON, EVOLUTION, VMAX, _FIRE_]),
+  ETERNATUS_VMAX_192 ("Eternatus VMAX", 192, Rarity.SECRET, [POKEMON, EVOLUTION, VMAX, _DARKNESS_]),
+  SCIZOR_VMAX_193 ("Scizor VMAX", 193, Rarity.SECRET, [POKEMON, EVOLUTION, VMAX, _METAL_]),
+  SALAMENCE_VMAX_194 ("Salamence VMAX", 194, Rarity.SECRET, [POKEMON, EVOLUTION, VMAX, _COLORLESS_]),
+  POKEMON_BREEDER_S_NURTURING_195 ("Pokémon Breeder's Nurturing", 195, Rarity.SECRET, [TRAINER, SUPPORTER]),
+  ROSE_196 ("Rose", 196, Rarity.SECRET, [TRAINER, SUPPORTER]),
+  RILLABOOM_197 ("Rillaboom", 197, Rarity.SECRET, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
+  COALOSSAL_198 ("Coalossal", 198, Rarity.SECRET, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_]),
+  BIG_PARASOL_199 ("Big Parasol", 199, Rarity.SECRET, [TRAINER, ITEM, POKEMON_TOOL]),
+  TURBO_PATCH_200 ("Turbo Patch", 200, Rarity.SECRET, [TRAINER, ITEM]),
+  CAPTURE_ENERGY_201 ("Capture Energy", 201, Rarity.SECRET, [ENERGY, SPECIAL_ENERGY]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -4022,6 +4047,56 @@ public enum DarknessAblaze implements LogicCardInfo {
           eff.unregister()
         }
       };
+      case BUTTERFREE_V_177:
+      return copy (BUTTERFREE_V_1, this);
+      case HOUNDOOM_V_178:
+      return copy (HOUNDOOM_V_21, this);
+      case CENTISKORCH_V_179:
+      return copy (CENTISKORCH_V_33, this);
+      case VIKAVOLT_V_180:
+      return copy (VIKAVOLT_V_60, this);
+      case RHYPERIOR_V_181:
+      return copy (RHYPERIOR_V_95, this);
+      case CROBAT_V_182:
+      return copy (CROBAT_V_104, this);
+      case SCIZOR_V_183:
+      return copy (SCIZOR_V_118, this);
+      case GALARIAN_STUNFISK_V_184:
+      return copy (GALARIAN_STUNFISK_V_128, this);
+      case SALAMENCE_V_185:
+      return copy (SALAMENCE_V_143, this);
+      case KABU_186:
+      return copy (KABU_163, this);
+      case PIERS_187:
+      return copy (PIERS_165, this);
+      case POKEMON_BREEDER_S_NURTURING_188:
+      return copy (POKEMON_BREEDER_S_NURTURING_166, this);
+      case ROSE_189:
+      return copy (ROSE_168, this);
+      case BUTTERFREE_VMAX_190:
+      return copy (BUTTERFREE_VMAX_2, this);
+      case CENTISKORCH_VMAX_191:
+      return copy (CENTISKORCH_VMAX_34, this);
+      case ETERNATUS_VMAX_192:
+      return copy (ETERNATUS_VMAX_117, this);
+      case SCIZOR_VMAX_193:
+      return copy (SCIZOR_VMAX_119, this);
+      case SALAMENCE_VMAX_194:
+      return copy (SALAMENCE_VMAX_144, this);
+      case POKEMON_BREEDER_S_NURTURING_195:
+      return copy (POKEMON_BREEDER_S_NURTURING_166, this);
+      case ROSE_196:
+      return copy (ROSE_168, this);
+      case RILLABOOM_197:
+      return copy (RILLABOOM_14, this);
+      case COALOSSAL_198:
+      return copy (COALOSSAL_107, this);
+      case BIG_PARASOL_199:
+      return copy (BIG_PARASOL_157, this);
+      case TURBO_PATCH_200:
+      return copy (TURBO_PATCH_172, this);
+      case CAPTURE_ENERGY_201:
+      return copy (CAPTURE_ENERGY_171, this);
         default:
       return null;
     }
