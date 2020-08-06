@@ -63,7 +63,7 @@ public enum CardType {
   OWNERS_POKEMON(104, "Owner's"),
   DARK_POKEMON(105, "Dark"),
   LIGHT_POKEMON(106, "Light"),
-  SHINING_POKEMON(107, "Shining"),
+  SHINING_POKEMON(107, "Shining"), //Note: DO NOT mark SM era Shining Pokémon with this. Those don't follow the "You can’t have more than 1 Shining ______ in your deck" rule from older Shining Pokémon.
   TEAM_PLASMA(108),
   ACE_SPEC(109, "ACE Spec"),
   HAS_ANCIENT_TRAIT(110),
