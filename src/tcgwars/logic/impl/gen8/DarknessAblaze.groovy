@@ -363,7 +363,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           onAttack {
             damage 20
             def toDraw = 5 - hand.size()
-            if (toDraw > 0) draw toDraw
+            if (toDraw > 0 && confirm("Draw until you have 5 cards in your hand?")) {
+              draw toDraw
+            }
           }
         }
         move "Giga Drain", {
