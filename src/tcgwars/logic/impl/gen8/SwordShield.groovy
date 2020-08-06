@@ -2887,7 +2887,10 @@ public enum SwordShield implements LogicCardInfo {
           text "30+ damage. This attack does 30 more damage for each of your Benched Pawniard."
           energyCost C
           onAttack {
-            damage 30+30*my.bench.findAll{it.name=='Pawniard'}.size()
+            damage 30
+            if (my.bench) {
+              damage 30 * my.bench.count{it.name=='Pawniard'}
+            }
           }
         }
         move "Slicing Blade", {
