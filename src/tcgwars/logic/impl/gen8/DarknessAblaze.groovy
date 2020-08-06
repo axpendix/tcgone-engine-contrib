@@ -1669,7 +1669,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         weakness D
         resistance F, MINUS30
         move "X Ball", {
-          text "30x damage. This attack does 30 damage times the amount of Energy attached to this Pokemon and your opponent’s Active Pokemon"
+          text "30x damage. This attack does 30 damage for each Energy attached to both Active Pokémon."
           energyCost P, P
           attackRequirement {}
           onAttack {
@@ -2274,12 +2274,16 @@ public enum DarknessAblaze implements LogicCardInfo {
       case GALARIAN_SLOWBRO_V_99:
       return basic (this, hp:HP210, type:D, retreatCost:3) {
         weakness F
-        bwAbility "Quick Draw Poison", {
-          text "Once during your turn, if this Pokemon is your Active Pokemon, you may leave your opponent’s Active Pokemon Poisoned"
-          actionA {
+        bwAbility "Rapid-Fire Poison" , {
+          text "Once during your turn, if this Pokémon is in the Active Spot, you may make your opponent's Active Pokémon Poisoned."
+          actionA{
+            checkLastTurn()
+            assert self.active : "$self is not your active Pokémon."
+            powerUsed()
+            apply POISONED, opp.active, SRC_ABILITY
           }
         }
-        move "Stranding Shot", {
+        move "Tripping Shot", {
           text "130 damage. During your opponent’s next turn, the Defending Pokemon can’t retreat"
           energyCost D, D, C
           attackRequirement {}
