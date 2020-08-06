@@ -2332,7 +2332,9 @@ public enum UltraPrism implements LogicCardInfo {
                 if(!pl) break;
                 def src =pl.select("Source for damage counter (cancel to stop)", false)
                 if(!src) break;
-                def tar=opp.all.select("Target for damage counter (cancel to stop)", false)
+                def tar = opp.all
+                tar.remove(src)
+                tar = tar.select("Target for damage counter (cancel to stop)", false)
                 if(!tar) break;
 
                 src.damage-=hp(10)
