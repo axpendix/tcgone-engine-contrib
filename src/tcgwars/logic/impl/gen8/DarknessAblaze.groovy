@@ -1011,8 +1011,11 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40 + 40 * self.cards.energyCount(R)
+            def oldHp = defending.damage
             afterDamage {
-              attachEnergyFrom type: R, may:true, my.discard, self
+              if (oldHp != defending.damage) { // Did damage with the attack
+                attachEnergyFrom type: R, may: true, my.discard, self
+              }
             }
           }
         }
