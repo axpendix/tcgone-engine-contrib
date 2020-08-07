@@ -2762,7 +2762,7 @@ public enum UnseenForces implements LogicCardInfo {
               energyToBeDiscarded.each{
                 if (!cardsToBeDiscarded.contains(it[1])) cardsToBeDiscarded.add(it[1])
               }
-              
+
               //bc "> ${cardsToBeDiscarded}"
               //bc "> ${cardsToBeDiscarded.flatten()}"
               cardsToBeDiscarded.discard()
@@ -3451,12 +3451,15 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             def basics = opp.hand.shuffledCopy().showToMe("Opponent's hand.").filterByType(BASIC)
             if (basics) {
-              def tar
-              basics.select("Choose a pokemon to bench").each {
-                opp.hand.remove(it)
-                tar = benchPCS(it, OTHER, TargetPlayer.OPPONENT)
+              def tar = basics.select("Choose a pokemon to bench")
+              if (tar) {
+                def card = tar.first()
+                opp.hand.remove(card)
+                def benched = benchPCS(card, OTHER, TargetPlayer.OPPONENT)
+                if (benched) {
+                  sw2 (benched)
+                }
               }
-              sw2 (tar)
             }
           }
         }
