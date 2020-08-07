@@ -534,6 +534,10 @@ class TcgStatics {
   static extraPoison (int v){
     new ExtraPoisonDamage(v).run(bg())
   }
+  static increasePoison (int v) {
+    int poisonValue = bg.em().retrieveObject("extra_poison_counter_"+opp.active.hashCode()) ?: 0
+    extraPoison(poisonValue + v)
+  }
   static sandAttack (Move thisMove) {
     new SandAttack(thisMove.name).run(bg())
   }
