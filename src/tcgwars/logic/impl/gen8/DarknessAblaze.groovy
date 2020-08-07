@@ -1,7 +1,6 @@
-package tcgwars.logic.impl.gen8;
+package tcgwars.logic.impl.gen8
 
-import tcgwars.logic.impl.gen8.RebelClash;
-
+import tcgwars.logic.effect.gm.PlayEvolution
 import tcgwars.logic.effect.gm.PlayTrainer
 
 import static tcgwars.logic.card.HP.*;
@@ -16,21 +15,11 @@ import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
 import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
+import tcgwars.logic.card.*
 import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.basic.*
 import tcgwars.logic.effect.special.*;
 import tcgwars.logic.util.*;
 
@@ -374,7 +363,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           onAttack {
             damage 20
             def toDraw = 5 - hand.size()
-            if (toDraw > 0) draw toDraw
+            if (toDraw > 0 && confirm("Draw until you have 5 cards in your hand?")) {
+              draw toDraw
+            }
           }
         }
         move "Giga Drain", {
@@ -972,8 +963,11 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40 + 40 * self.cards.energyCount(R)
+            def oldHp = defending.damage
             afterDamage {
-              attachEnergyFrom type: R, may:true, my.discard, self
+              if (oldHp != defending.damage) { // Did damage with the attack
+                attachEnergyFrom type: R, may: true, my.discard, self
+              }
             }
           }
         }
@@ -1333,7 +1327,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             assert self.cards.energyCount(C) : "$self.name has no Energy attached"
           }
           onAttack {
-            self.cards.findAll {energyFilter C}.select("Select Energy to discard from $self.name.").discard()
+            self.cards.filterByType(ENERGY).findAll {energyFilter C}.select("Select Energy to discard from $self.name.").discard()
             healAll self
           }
         }
@@ -1353,10 +1347,20 @@ public enum DarknessAblaze implements LogicCardInfo {
         bwAbility "Primal Law", {
           text "As long as this Pokémon is in the Active Spot, your opponent can’t play any Pokémon from their hand to evolve their Pokémon."
           delayedA {
-            before PLAY_EVOLUTION, {
-              if (self.active && bg.currentTurn == self.owner.opposite && ef.cardToPlay.player.pbg.hand.contains(ef.cardToPlay)) {
-                wcu "$self.name's Primal Law prevents playing Pokémon from your hand to evolve your Pokémon"
+            def warnAndPrevent = {
+              if (self.active && bg.currentTurn == self.owner.opposite) {
+                wcu "$self's Primal Law prevents playing Pokémon from your hand to evolve your Pokémon"
                 prevent()
+              }
+            }
+            before EVOLVE_STANDARD, {
+              if ((ef as EvolveStandard).evolutionCard.player.pbg.hand.contains(ef.evolutionCard)) {
+                warnAndPrevent()
+              }
+            }
+            before PLAY_EVOLUTION, {
+              if ((ef as PlayEvolution).cardToPlay.player.pbg.hand.contains(ef.cardToPlay)) {
+                warnAndPrevent()
               }
             }
           }
