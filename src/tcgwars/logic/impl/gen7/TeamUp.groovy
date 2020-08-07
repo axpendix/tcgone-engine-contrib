@@ -817,7 +817,7 @@ public enum TeamUp implements LogicCardInfo {
                   }
                   before PLAY_TRAINER, {
                     if (bg.currentTurn == self.owner.opposite && !flag) {
-                      wcu "Bawl prevents playing trainer cards"
+                      wcu "Headache prevents playing trainer cards"
                       prevent()
                     }
                   }
