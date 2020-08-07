@@ -1,6 +1,6 @@
 package tcgwars.logic.impl.gen8
 
-
+import tcgwars.logic.effect.gm.PlayEvolution
 import tcgwars.logic.effect.gm.PlayTrainer
 
 import static tcgwars.logic.card.HP.*;
@@ -1387,10 +1387,20 @@ public enum DarknessAblaze implements LogicCardInfo {
         bwAbility "Primal Law", {
           text "If this Pokémon is your Active Pokémon, your opponent can’t play any Pokémon from their hand to evolve their Pokémon."
           delayedA {
-            before EVOLVE_STANDARD, {
-              if (self.active && bg.currentTurn == self.owner.opposite && (ef as EvolveStandard).evolutionCard.player.pbg.hand.contains(ef.evolutionCard)) {
+            def warnAndPrevent = {
+              if (self.active && bg.currentTurn == self.owner.opposite) {
                 wcu "$self's Primal Law prevents playing Pokémon from your hand to evolve your Pokémon"
                 prevent()
+              }
+            }
+            before EVOLVE_STANDARD, {
+              if ((ef as EvolveStandard).evolutionCard.player.pbg.hand.contains(ef.evolutionCard)) {
+                warnAndPrevent()
+              }
+            }
+            before PLAY_EVOLUTION, {
+              if ((ef as PlayEvolution).cardToPlay.player.pbg.hand.contains(ef.cardToPlay)) {
+                warnAndPrevent()
               }
             }
           }
