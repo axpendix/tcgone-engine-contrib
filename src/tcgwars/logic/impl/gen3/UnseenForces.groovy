@@ -3454,9 +3454,9 @@ public enum UnseenForces implements LogicCardInfo {
               def tar = basics.select("Choose a pokemon to bench")
               if (tar) {
                 def card = tar.first()
-                opp.hand.remove(card)
                 def benched = benchPCS(card, OTHER, TargetPlayer.OPPONENT)
                 if (benched) {
+                  opp.hand.remove(card)
                   sw2 (benched)
                 }
               }
