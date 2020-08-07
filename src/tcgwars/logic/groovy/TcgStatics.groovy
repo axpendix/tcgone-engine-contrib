@@ -485,14 +485,18 @@ class TcgStatics {
       opp.bench.remove(pcs)
     }
   }
-  static boolean benchPCS (Card card, ActivationReason reason=ActivationReason.OTHER, TargetPlayer targetPlayer=TargetPlayer.SELF){
+  static PokemonCardSet benchPCS (Card card, ActivationReason reason=ActivationReason.OTHER, TargetPlayer targetPlayer=TargetPlayer.SELF){
     if(card.getCardTypes().is(BREAK)){
       bg.wcu("BREAK Pokémon cannot be brought to play")
     }
     PlayerBattleground pbg=targetPlayer.getPbg(bg())
     assert pbg.bench.isNotFull() : "Bench is full"
 
-    return !bg().em().run(new PutOnBench(card, reason));
+    Effect effect = new PutOnBench(card, reason, targetPlayer);
+    if (!bg().em().run(effect)) {
+      return effect.pokemonToBench;
+    }
+    return null;
   }
   static evolve (PokemonCardSet pcs, Card card, ActivationReason reason=ActivationReason.PLAY_FROM_HAND) {
     bg().em().run(new Evolve(pcs, card));
