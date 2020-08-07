@@ -3460,9 +3460,9 @@ public enum UnbrokenBonds implements LogicCardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 def entry=bg.dm().find({it.to==self && it.dmg.value && it.notNoEffect})
                 if(entry){
-                  flip "Fluffy Cotton", {
+                  flip "Fluffy Cotton", self.owner, {
                     entry.dmg=hp(0)
-                  }, self.owner
+                  }
                 }
               }
             }
