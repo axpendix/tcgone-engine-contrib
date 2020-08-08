@@ -489,8 +489,6 @@ class TcgStatics {
     if(card.getCardTypes().is(BREAK)){
       bg.wcu("BREAK Pokémon cannot be brought to play")
     }
-    PlayerBattleground pbg=targetPlayer.getPbg(bg())
-    assert pbg.bench.isNotFull() : "Bench is full"
 
     Effect effect = new PutOnBench(card, reason);
     if (!bg().em().run(effect)) {
