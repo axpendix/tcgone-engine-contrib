@@ -414,7 +414,6 @@ public enum DiamondPearl implements LogicCardInfo {
                 def list = opp.hand.shuffledCopy().showToMe("Opponent's hand").filterByType(BASIC)
                 if(list){
                   def card = list.select("Put a Basic Pokémon you find there onto your opponent's Bench").first()
-                  opp.hand.remove(card)
                   def pcs = benchPCS(card, OTHER, TargetPlayer.OPPONENT)
                   sw opp.active, pcs, SRC_ABILITY
                 }
@@ -2027,7 +2026,6 @@ public enum DiamondPearl implements LogicCardInfo {
               powerUsed()
               flip {
                 deck.search (count: 1,{it.name.contains("Unown")}).each {
-                  deck.remove(it)
                   benchPCS(it)
                 }
                 shuffleDeck()

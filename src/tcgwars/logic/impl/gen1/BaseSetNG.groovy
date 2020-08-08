@@ -1746,7 +1746,6 @@ public enum BaseSetNG implements LogicCardInfo {
             }
             pokemonCard.player = trainerCard.player
             bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
-            hand.remove(pokemonCard)
             benchPCS(pokemonCard)
           }
           playRequirement{
@@ -1975,7 +1974,6 @@ public enum BaseSetNG implements LogicCardInfo {
           text "Choose 1 Basic Pokémon card from your opponent’s discard pile and put it onto his or her Bench. (You can’t play Pokémon Flute if your opponent’s Bench is full.)"
           onPlay {
             opp.discard.findAll(cardTypeFilter(BASIC)).select().each {
-              opp.discard.remove(it)
               benchPCS(it, OTHER, TargetPlayer.OPPONENT)
             }
           }
@@ -2003,7 +2001,6 @@ public enum BaseSetNG implements LogicCardInfo {
           onPlay {
             def tar = TargetPlayer.SELF
             my.discard.findAll(cardTypeFilter(BASIC)).select().each {
-              tar.pbg.discard.remove(it)
               def pcs = benchPCS(it, OTHER, tar)
               pcs.hp = ceil((pcs.fullHp/10)/2)*10
             }

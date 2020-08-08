@@ -1574,7 +1574,6 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             def maxSpace = Math.min(my.bench.freeBenchCount, 2)
             my.deck.search(max:maxSpace, "Select $maxSpace Scyther or Scyther ex to put onto your Bench", { it.name == "Scyther" || it.name == "Scyther ex" }).each {
-              my.deck.remove(it);
               benchPCS(it)
             }
             shuffleDeck()

@@ -237,7 +237,6 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
             onAttack {
               my.deck.search("Exeggcute", {it.name=="Exeggcute"}).each{
-                my.deck.remove(it)
                 benchPCS(it)
               }
             }

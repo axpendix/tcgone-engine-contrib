@@ -1083,7 +1083,6 @@ public enum FossilNG implements LogicCardInfo {
             }
             onAttack {
               deck.search (count: 1,{it.cardTypes.is(BASIC) && it.name == "Krabby"}).each {
-                deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()
@@ -1338,7 +1337,6 @@ public enum FossilNG implements LogicCardInfo {
             }
             pokemonCard.player = trainerCard.player
             bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
-            hand.remove(pokemonCard)
             benchPCS(pokemonCard)
           }
           playRequirement{

@@ -823,7 +823,6 @@ public enum LostThunder implements LogicCardInfo {
             onAttack {
               def maxSpace = Math.min(my.bench.freeBenchCount,4)
               deck.search (max: maxSpace,{it.name.contains("Silcoon") || it.name.contains("Cascoon")}).each{
-                deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()
@@ -875,7 +874,6 @@ public enum LostThunder implements LogicCardInfo {
             onAttack {
               def maxSpace = Math.min(my.bench.freeBenchCount,4)
               deck.search (max: maxSpace,{it.name.contains("Silcoon") || it.name.contains("Cascoon")}).each{
-                deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()
@@ -933,7 +931,6 @@ public enum LostThunder implements LogicCardInfo {
                 if(my.discard.findAll{it.name=='Shedinja'} && my.bench.notFull && confirm("Use Molting?")) {
                   powerUsed()
                   def card = my.discard.findAll{it.name=='Shedinja'}.select("Select the card to put on the bench").first()
-                  my.discard.remove(card)
                   benchPCS(card)
                 }
               }
@@ -2385,7 +2382,6 @@ public enum LostThunder implements LogicCardInfo {
               assert bg.turnCount!=lastTurn : "Already used"
               assert checkGlobalAbility(thisCard) : "Blocked"
               bc "$thisCard used Distortion Door"
-              my.discard.remove(thisCard)
               benchPCS(thisCard)
               if(thisCard.player.opposite.pbg.bench){
                 multiSelect(thisCard.player.opposite.pbg.bench,2).each{

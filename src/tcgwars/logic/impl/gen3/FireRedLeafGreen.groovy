@@ -1908,7 +1908,6 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
             onAttack {
               deck.search (count: 1,{it.cardTypes.is(BASIC) && (it.name == "Nidoran♀" || it.name == "Nidoran♂")}).each {
-                deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()
@@ -2181,7 +2180,6 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             onAttack {
               int count = bench.freeBenchCount>=2?2:1
               deck.search (max: count, {it.cardTypes.is(BASIC) && it.types.contains(G)}).each {
-                deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()
@@ -2279,7 +2277,6 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           text "Search your deck for a Basic Pokémon (excluding Pokémon-ex) and put it onto your Bench. Shuffle your deck afterward."
           onPlay {
             my.deck.search(count : 1,"Search your deck for a Basic Pokémon (excluding Pokémon-ex)",{it.cardTypes.is(BASIC) && it.cardTypes.isNot(EX)}).each{
-              deck.remove(it)
               benchPCS(it)
             }
             shuffleDeck()

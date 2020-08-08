@@ -474,7 +474,6 @@ public enum UnifiedMinds implements LogicCardInfo {
             onAttack {
               def maxSpace = Math.min(my.bench.freeBenchCount, 2)
               my.deck.search(max:maxSpace, "Select $maxSpace Sewaddle to put onto your Bench.", { it.name == "Sewaddle" }).each{
-                my.deck.remove(it);
                 benchPCS(it)
               }
               shuffleDeck()
@@ -960,7 +959,6 @@ public enum UnifiedMinds implements LogicCardInfo {
               afterDamage{
                 if (firePokemon && my.bench.freeBenchCount) {
                   firePokemon.select(max: my.bench.freeBenchCount, min: 0).each {
-                    my.discard.remove(it);
                     benchPCS(it);
                   }
                 }
@@ -1672,7 +1670,6 @@ public enum UnifiedMinds implements LogicCardInfo {
               assert bg.turnCount!=lastTurn : "Already used Electric Swamp this turn."
               assert checkGlobalAbility(thisCard) : "This card's ability is blocked."
               bc "$thisCard used Electric Swamp and is benched directly."
-              my.hand.remove(thisCard)
               def pcs = benchPCS(thisCard)
               while(1){
                 def pl=(my.all.findAll {it.cards.filterByEnergyType(L) && it!=pcs})
@@ -2100,7 +2097,6 @@ public enum UnifiedMinds implements LogicCardInfo {
             onAttack {
               def maxSpace = Math.min(my.bench.freeBenchCount, 3)
               my.deck.search(max:maxSpace, "Select $maxSpace Basic Pokémon to put onto your Bench.", { it.cardTypes.is(BASIC) }).each{
-                my.deck.remove(it);
                 benchPCS(it)
               }
               shuffleDeck()
@@ -3064,7 +3060,6 @@ public enum UnifiedMinds implements LogicCardInfo {
             onAttack {
               gxPerform()
               deck.search (max: my.bench.freeBenchCount,{it.cardTypes.is(BASIC)}).each{
-                deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()
@@ -3261,7 +3256,6 @@ public enum UnifiedMinds implements LogicCardInfo {
                   def basicPokemon = randomOppHand.findAll{ it.cardTypes.is(BASIC) }
                   def maximumAllowed = Math.min(basicPokemon.size(), opp.bench.freeBenchCount)
                   basicPokemon.select(min: 0, max: maximumAllowed).each {
-                    opp.hand.remove(it)
                     benchPCS(it, OTHER, TargetPlayer.OPPONENT)
                   }
                 }
@@ -4558,7 +4552,6 @@ public enum UnifiedMinds implements LogicCardInfo {
               deck.search(max: maxSpace, "Search for $maxSpace card(s) that evolve from Unidentified Fossil to place onto your Bench.", {
                 it.cardTypes.is(EVOLUTION) && it.predecessor == "Unidentified Fossil"
               }).each {
-                deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()

@@ -1161,7 +1161,6 @@ public enum CelestialStorm implements LogicCardInfo {
             }
             onAttack {
               my.deck.search(max:(opp.bench.size() - my.bench.size()),"Choose ${opp.bench.size() - my.bench.size()} basic pokémon",cardTypeFilter(BASIC)).each{
-                my.deck.remove(it)
                 benchPCS(it)
               }
             }
@@ -1664,7 +1663,6 @@ public enum CelestialStorm implements LogicCardInfo {
             onActivate {r->
               if(r==PLAY_FROM_HAND && opp.discard.filterByType(BASIC) && opp.bench.notFull && confirm('Use Red Eyes?')){
                 def pcs = opp.discard.filterByType(BASIC).select("Select the pokémon to put on the bench").first()
-                opp.discard.remove(pcs)
                 benchPCS(pcs, OTHER, TargetPlayer.OPPONENT)
               }
             }
@@ -2463,7 +2461,6 @@ public enum CelestialStorm implements LogicCardInfo {
                   && confirm("You've picked ${thisCard}. Would you like to use Wish Upon a Star?")
                 ) {
                   bc "${thisCard} used Wish Upon a Star"
-                  thisCard.player.pbg.hand.remove(thisCard)
                   benchPCS(thisCard, OTHER, thisCard.player.toTargetPlayer())
                   bg.em().run(new TakePrize(thisCard.player, ef.pcs))
                 }
@@ -2769,7 +2766,6 @@ public enum CelestialStorm implements LogicCardInfo {
               def maxSpace = Math.min(my.bench.freeBenchCount,3)
               def hasBenched = false
               deck.search (min: 0,max:maxSpace,cardTypeFilter(BASIC)).each {
-                deck.remove(it)
                 benchPCS(it)
                 hasBenched = true
               }

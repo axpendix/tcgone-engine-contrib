@@ -485,16 +485,16 @@ class TcgStatics {
       opp.bench.remove(pcs)
     }
   }
-  static PokemonCardSet benchPCS (Card card, ActivationReason reason=ActivationReason.OTHER, TargetPlayer targetPlayer=TargetPlayer.SELF){
+  static PokemonCardSet benchPCS (Card card, ActivationReason reason=OTHER, TargetPlayer targetPlayer=TargetPlayer.SELF){
     if(card.getCardTypes().is(BREAK)){
       bg.wcu("BREAK Pokémon cannot be brought to play")
     }
     PlayerBattleground pbg=targetPlayer.getPbg(bg())
     assert pbg.bench.isNotFull() : "Bench is full"
 
-    Effect effect = new PutOnBench(card, reason, targetPlayer);
+    Effect effect = new PutOnBench(card, reason);
     if (!bg().em().run(effect)) {
-      return effect.pokemonToBench;
+      return effect.getBench();
     }
     return null;
   }
@@ -753,16 +753,12 @@ class TcgStatics {
       }
       if(params.type){
         deck.search (max: maxSpace,{it.name.contains(pkmnName) && it.cardTypes.is(basicFilter) && it.asPokemonCard().types.contains(params.type)}).each {
-          if (benchPCS(it)) {
-            deck.remove(it)
-          }
+          benchPCS(it)
         }
       }
       else{
         deck.search (max: maxSpace,{it.name.contains(pkmnName) && it.cardTypes.is(basicFilter)}).each{
-          if (benchPCS(it)) {
-            deck.remove(it)
-          }
+          benchPCS(it)
         }
       }
       shuffleDeck()

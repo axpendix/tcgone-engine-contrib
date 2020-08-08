@@ -342,7 +342,6 @@ public enum TeamRocketNG implements LogicCardInfo {
                   def cnt = Math.min(my.bench.getFreeBenchCount(),2)
                   bc "$cnt"
                   my.deck.search (max: cnt,"Search for 2 basic pokemon",{it.cardTypes.is(BASIC)}).each {
-                    deck.remove(it)
                     benchPCS(it)
                   }
                   shuffleDeck()

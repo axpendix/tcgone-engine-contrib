@@ -401,7 +401,6 @@ public enum CrystalGuardians implements LogicCardInfo {
           onAttack {
             def maxSpace = Math.min(opp.all.size(), my.bench.freeBenchCount)
             deck.search (min: 0,max:maxSpace, cardTypeFilter(BASIC)).each {
-              deck.remove(it)
               benchPCS(it)
             }
             shuffleDeck()
