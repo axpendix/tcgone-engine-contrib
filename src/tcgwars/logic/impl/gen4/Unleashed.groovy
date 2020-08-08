@@ -1896,8 +1896,8 @@ public enum Unleashed implements LogicCardInfo {
             energyCost D, D, C, C
             onAttack {
               damage 120
-              afterDamage{
-                my.deck.sublist(0,min(3, my.deck.size())).discard()
+              afterDamage {
+                if (my.deck) my.deck.subList(0,Math.min(3, my.deck.size())).discard()
               }
             }
           }
