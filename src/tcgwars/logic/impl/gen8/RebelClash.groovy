@@ -459,7 +459,6 @@ public enum RebelClash implements LogicCardInfo {
           delayed {
             before DRAW_CARD, {
               if (thisCard.player.pbg.deck && bg.em().currentEffectStack.find{it instanceof BeginTurn} && thisCard.player.pbg.deck.get(0) == thisCard && bg.currentTurn == thisCard.player && thisCard.player.pbg.bench.notFull && confirm("Top Entry - Lombre",thisCard.player)) {
-                thisCard.player.pbg.deck.remove(0)
                 benchPCS(thisCard, OTHER, thisCard.player.toTargetPlayer())
                 bc"Top Entry activates"
                 prevent()// Top Entry activates instead of drawing the card
@@ -599,7 +598,6 @@ public enum RebelClash implements LogicCardInfo {
           }
           onAttack {
             def card = my.discard.filterByType(BASIC).select("Choose a Basic Pokémon to put onto your Bench.").first()
-            my.discard.remove(card)
             benchPCS(card)
           }
         }
@@ -963,7 +961,6 @@ public enum RebelClash implements LogicCardInfo {
           delayed {
             before DRAW_CARD, {
               if (thisCard.player.pbg.deck && bg.em().currentEffectStack.find{it instanceof BeginTurn} && thisCard.player.pbg.deck.get(0) == thisCard && bg.currentTurn == thisCard.player && thisCard.player.pbg.bench.notFull && confirm("Lampent - Use Top Entry", thisCard.player)) {
-                thisCard.player.pbg.deck.remove(0)
                 benchPCS(thisCard, OTHER, thisCard.player.toTargetPlayer())
                 bc"Top Entry activates"
                 prevent()
@@ -1541,7 +1538,6 @@ public enum RebelClash implements LogicCardInfo {
           delayed {
             before DRAW_CARD, {
               if (thisCard.player.pbg.deck && bg.em().currentEffectStack.find{it instanceof BeginTurn} && thisCard.player.pbg.deck.get(0) == thisCard && bg.currentTurn == thisCard.player && thisCard.player.pbg.bench.notFull && confirm("Luxio - Use Top Entry", thisCard.player)) {
-                thisCard.player.pbg.deck.remove(0)
                 benchPCS(thisCard, OTHER, thisCard.player.toTargetPlayer())
                 bc"Top Entry activates"
                 prevent()// Top Entry activates instead of drawing the card
@@ -2160,7 +2156,6 @@ public enum RebelClash implements LogicCardInfo {
           }
           onAttack {
             deck.search (count: 1, {it.name == "Dreepy"}).each {
-              deck.remove(it)
               benchPCS(it)
             }
             shuffleDeck()
@@ -3755,7 +3750,6 @@ public enum RebelClash implements LogicCardInfo {
         onPlay {reason->
           if (reason == PLAY_FROM_HAND && my.deck && my.bench.notFull) {
             my.deck.search (count: 1, { it.cardTypes.is(BASIC) }).each {
-              my.deck.remove(it)
               benchPCS(it)
             }
             shuffleDeck()
