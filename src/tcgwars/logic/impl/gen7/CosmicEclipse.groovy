@@ -4993,13 +4993,16 @@ public enum CosmicEclipse implements LogicCardInfo {
           onPlay {
             delayed {
               def doit = {
-                boolean res = choose([true,false],["HEADS","TAILS"],"A coin flip is about to occur. Choose HEADS or TAILS as the result.")
-                bc "Will changes the first coinflip to: ${res?'HEADS':'TAILS'}"
-                bg.deterministicCoinFlipQueue.offer(res)
-                unregister()
+                if ((ef.player && ef.player == bg.getCurrentTurn()) || !ef.player) {
+                  boolean res = choose([true, false], ["HEADS", "TAILS"], "A coin flip is about to occur. Choose HEADS or TAILS as the result.")
+                  bc "Will changes the first coinflip to: ${res ? 'HEADS' : 'TAILS'}"
+                  bg.deterministicCoinFlipQueue.offer(res)
+                  unregister()
+                }
               }
               before COIN_FLIP, {doit()}
               before COIN_FLIP_GETTER, {doit()}
+              before NEVER_ENDING_COIN_FLIP, {doit()}
               unregisterAfter 1
             }
           }
