@@ -3825,6 +3825,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         onPlay {
           eff = delayed {
             def act = false
+            def key = "VICTINI_14 Victory Star"
             before PROCESS_ATTACK_EFFECTS, {
               if(ef.attacker.owner == my.owner){
                 act = true
@@ -3836,6 +3837,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             before COIN_FLIP_BETWEEN_EXECUTION, {
               if (act && ef.object.player == bg.getCurrentTurn() && lastTurn != bg.turnCount && confirm("Glimwood Tangle: Result: $ef.object.lastResultString. Do you want to reflip?")) {
                 lastTurn = bg.turnCount
+                bg.em().storeObject(key, bg.turnCount)
                 bc "Used Glimwood Tangle and discarded those flips"
                 ef.object.run(bg) //flip again
                 prevent()
