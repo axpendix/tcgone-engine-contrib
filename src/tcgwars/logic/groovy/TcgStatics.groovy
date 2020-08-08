@@ -91,12 +91,11 @@ class TcgStatics {
     flip(info, 1, playerType, eachHead, eachTail, multi)
   }
   static flip (String info, int count, playerType=null, Closure eachHead, Closure eachTail={}, multi=[:]){
-    if(playerType == null) {
-      playerType = bg.getCurrentTurn()
-    }
     CoinFlip cf=new CoinFlip(count, toEffect (eachHead), toEffect (eachTail))
     cf.setInfo(info)
-    cf.setPlayer(playerType)
+    if(playerType) {
+      cf.setPlayer(playerType)
+    }
     for(entry in multi){
       cf.setEffectForANumberOfHeads(toEffect(entry.value as Closure), entry.key as Integer)
     }

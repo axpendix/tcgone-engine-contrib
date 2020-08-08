@@ -3838,7 +3838,7 @@ public enum DarknessAblaze implements LogicCardInfo {
               if (act && ef.object.player == bg.getCurrentTurn() && lastTurn != bg.turnCount && confirm("Glimwood Tangle: Result: $ef.object.lastResultString. Do you want to reflip?")) {
                 lastTurn = bg.turnCount
                 bg.em().storeObject(key, bg.turnCount)
-                bc "Used Glimwood Tangle and discarded those flips"
+                bc "${bg().getCurrentTurn().pbg.active} used Glimwood Tangle and discarded those flips"
                 ef.object.run(bg) //flip again
                 prevent()
               }
