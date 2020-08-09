@@ -21,33 +21,33 @@ import tcgwars.logic.util.*;
  */
 public enum DetectivePikachu implements LogicCardInfo {
 
-  BULBASAUR_1 ("Bulbasaur", 1, Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
-  LUDICOLO_2 ("Ludicolo", 2, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
-  MORELULL_3 ("Morelull", 3, Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
-  CHARMANDER_4 ("Charmander", 4, Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
-  CHARIZARD_5 ("Charizard", 5, Rarity.ULTRARARE, [POKEMON, EVOLUTION, STAGE2, _FIRE_]),
-  ARCANINE_6 ("Arcanine", 6, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
-  PSYDUCK_7 ("Psyduck", 7, Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
-  MAGIKARP_8 ("Magikarp", 8, Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
-  GRENINJA_9 ("Greninja", 9, Rarity.ULTRARARE, [POKEMON, EVOLUTION, STAGE2, _WATER_]),
-  DETECTIVE_PIKACHU_10 ("Detective Pikachu", 10, Rarity.RARE, [POKEMON, BASIC, _LIGHTNING_]),
-  MR_MIME_11 ("Mr. Mime", 11, Rarity.RARE, [POKEMON, BASIC, _PSYCHIC_]),
-  MEWTWO_12 ("Mewtwo", 12, Rarity.ULTRARARE, [POKEMON, BASIC, _PSYCHIC_]),
-  MACHAMP_13 ("Machamp", 13, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_]),
-  JIGGLYPUFF_14 ("Jigglypuff", 14, Rarity.COMMON, [POKEMON, BASIC, _FAIRY_]),
-  SNUBBULL_15 ("Snubbull", 15, Rarity.COMMON, [POKEMON, BASIC, _FAIRY_]),
-  LICKITUNG_16 ("Lickitung", 16, Rarity.COMMON, [POKEMON, BASIC, _COLORLESS_]),
-  DITTO_17 ("Ditto", 17, Rarity.ULTRARARE, [POKEMON, BASIC, _COLORLESS_]),
-  SLAKING_18 ("Slaking", 18, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]);
+  BULBASAUR_1 ("Bulbasaur", "1", Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
+  LUDICOLO_2 ("Ludicolo", "2", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
+  MORELULL_3 ("Morelull", "3", Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
+  CHARMANDER_4 ("Charmander", "4", Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
+  CHARIZARD_5 ("Charizard", "5", Rarity.ULTRARARE, [POKEMON, EVOLUTION, STAGE2, _FIRE_]),
+  ARCANINE_6 ("Arcanine", "6", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+  PSYDUCK_7 ("Psyduck", "7", Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
+  MAGIKARP_8 ("Magikarp", "8", Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
+  GRENINJA_9 ("Greninja", "9", Rarity.ULTRARARE, [POKEMON, EVOLUTION, STAGE2, _WATER_]),
+  DETECTIVE_PIKACHU_10 ("Detective Pikachu", "10", Rarity.RARE, [POKEMON, BASIC, _LIGHTNING_]),
+  MR_MIME_11 ("Mr. Mime", "11", Rarity.RARE, [POKEMON, BASIC, _PSYCHIC_]),
+  MEWTWO_12 ("Mewtwo", "12", Rarity.ULTRARARE, [POKEMON, BASIC, _PSYCHIC_]),
+  MACHAMP_13 ("Machamp", "13", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_]),
+  JIGGLYPUFF_14 ("Jigglypuff", "14", Rarity.COMMON, [POKEMON, BASIC, _FAIRY_]),
+  SNUBBULL_15 ("Snubbull", "15", Rarity.COMMON, [POKEMON, BASIC, _FAIRY_]),
+  LICKITUNG_16 ("Lickitung", "16", Rarity.COMMON, [POKEMON, BASIC, _COLORLESS_]),
+  DITTO_17 ("Ditto", "17", Rarity.ULTRARARE, [POKEMON, BASIC, _COLORLESS_]),
+  SLAKING_18 ("Slaking", "18", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
   protected CardTypeSet cardTypes;
   protected String name;
   protected Rarity rarity;
-  protected int collectionLineNo;
+  protected String collectionLineNo;
 
-  DetectivePikachu(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+  DetectivePikachu(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
     this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
     this.name = name;
     this.rarity = rarity;
@@ -70,7 +70,7 @@ public enum DetectivePikachu implements LogicCardInfo {
   }
 
   @Override
-  public int getCollectionLineNo() {
+  public String getNumber() {
     return collectionLineNo;
   }
 

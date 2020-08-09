@@ -37,47 +37,47 @@ import tcgwars.logic.util.*;
  */
 public enum SwordShieldPromos implements LogicCardInfo {
 
-  GROOKEY_SWSH01 ("Grookey", 1, Rarity.PROMO, [POKEMON, BASIC, _GRASS_]),
-  SCORBUNNY_SWSH02 ("Scorbunny", 2, Rarity.PROMO, [POKEMON, BASIC, _FIRE_]),
-  SOBBLE_SWSH03 ("Sobble", 3, Rarity.PROMO, [POKEMON, BASIC, _WATER_]),
-  MEOWTH_V_SWSH04 ("Meowth V", 4, Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _COLORLESS_]),
-  MEOWTH_VMAX_SWSH05 ("Meowth VMAX", 5, Rarity.PROMO, [POKEMON, EVOLUTION, VMAX, _COLORLESS_]),
-  RILLABOOM_SWSH06 ("Rillaboom", 6, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
-  FROSMOTH_SWSH07 ("Frosmoth", 7, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
-  GALARIAN_PERRSERKER_SWSH08 ("Galarian Perrserker", 8, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
-  CINCCINO_SWSH09 ("Cinccino", 9, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
-  GOSSIFLEUR_SWSH10 ("Gossifleur", 10, Rarity.PROMO, [POKEMON, BASIC, _GRASS_]),
-  WOOLOO_SWSH11 ("Wooloo", 11, Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
-  MORPEKO_SWSH12 ("Morpeko", 12, Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
-  GALARIAN_PONYTA_SWSH13 ("Galarian Ponyta", 13, Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
-  RILLABOOM_V_SWSH14 ("Rillaboom V", 14, Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _GRASS_]),
-  CINDERACE_V_SWSH15 ("Cinderace V", 15, Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _FIRE_]),
-  INTELEON_V_SWSH16 ("Inteleon V", 16, Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _WATER_]),
-  TOXTRICITY_V_SWSH17 ("Toxtricity V", 17, Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _LIGHTNING_]),
-  ZACIAN_V_SWSH18 ("Zacian V", 18, Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _METAL_]),
-  ZAMAZENTA_V_SWSH19 ("Zamazenta V", 19, Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _METAL_]),
-  PIKACHU_SWSH20 ("Pikachu", 20, Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
-  POLTEAGEIST_V_SWSH21 ("Polteageist V", 21, Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _PSYCHIC_]),
-  FLAPPLE_SWSH22 ("Flapple", 22, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
-  LUXRAY_SWSH23 ("Luxray", 23, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _LIGHTNING_]),
-  COALOSSAL_SWSH24 ("Coalossal", 24, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_]),
-  GARBODOR_SWSH25 ("Garbodor", 25, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
-  MANTINE_SWSH26 ("Mantine", 26, Rarity.PROMO, [POKEMON, BASIC, _WATER_]),
-  NOCTOWL_SWSH27 ("Noctowl", 27, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
-  DURALUDON_SWSH28 ("Duraludon", 28, Rarity.PROMO, [POKEMON, BASIC, _METAL_]),
-  RAYQUAZA_SWSH29 ("Rayquaza", 29, Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
-  COPPERAJAH_V_SWSH30 ("Copperajah V", 30, Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _METAL_]),
-  MORPEKO_SWSH31 ("Morpeko", 31, Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
-  SNORLAX_SWSH32 ("Snorlax", 32, Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]);
+  GROOKEY_SWSH01 ("Grookey", "1", Rarity.PROMO, [POKEMON, BASIC, _GRASS_]),
+  SCORBUNNY_SWSH02 ("Scorbunny", "2", Rarity.PROMO, [POKEMON, BASIC, _FIRE_]),
+  SOBBLE_SWSH03 ("Sobble", "3", Rarity.PROMO, [POKEMON, BASIC, _WATER_]),
+  MEOWTH_V_SWSH04 ("Meowth V", "4", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _COLORLESS_]),
+  MEOWTH_VMAX_SWSH05 ("Meowth VMAX", "5", Rarity.PROMO, [POKEMON, EVOLUTION, VMAX, _COLORLESS_]),
+  RILLABOOM_SWSH06 ("Rillaboom", "6", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
+  FROSMOTH_SWSH07 ("Frosmoth", "7", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
+  GALARIAN_PERRSERKER_SWSH08 ("Galarian Perrserker", "8", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
+  CINCCINO_SWSH09 ("Cinccino", "9", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
+  GOSSIFLEUR_SWSH10 ("Gossifleur", "10", Rarity.PROMO, [POKEMON, BASIC, _GRASS_]),
+  WOOLOO_SWSH11 ("Wooloo", "11", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
+  MORPEKO_SWSH12 ("Morpeko", "12", Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
+  GALARIAN_PONYTA_SWSH13 ("Galarian Ponyta", "13", Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
+  RILLABOOM_V_SWSH14 ("Rillaboom V", "14", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _GRASS_]),
+  CINDERACE_V_SWSH15 ("Cinderace V", "15", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _FIRE_]),
+  INTELEON_V_SWSH16 ("Inteleon V", "16", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _WATER_]),
+  TOXTRICITY_V_SWSH17 ("Toxtricity V", "17", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _LIGHTNING_]),
+  ZACIAN_V_SWSH18 ("Zacian V", "18", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _METAL_]),
+  ZAMAZENTA_V_SWSH19 ("Zamazenta V", "19", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _METAL_]),
+  PIKACHU_SWSH20 ("Pikachu", "20", Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
+  POLTEAGEIST_V_SWSH21 ("Polteageist V", "21", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _PSYCHIC_]),
+  FLAPPLE_SWSH22 ("Flapple", "22", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
+  LUXRAY_SWSH23 ("Luxray", "23", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _LIGHTNING_]),
+  COALOSSAL_SWSH24 ("Coalossal", "24", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_]),
+  GARBODOR_SWSH25 ("Garbodor", "25", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
+  MANTINE_SWSH26 ("Mantine", "26", Rarity.PROMO, [POKEMON, BASIC, _WATER_]),
+  NOCTOWL_SWSH27 ("Noctowl", "27", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
+  DURALUDON_SWSH28 ("Duraludon", "28", Rarity.PROMO, [POKEMON, BASIC, _METAL_]),
+  RAYQUAZA_SWSH29 ("Rayquaza", "29", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
+  COPPERAJAH_V_SWSH30 ("Copperajah V", "30", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _METAL_]),
+  MORPEKO_SWSH31 ("Morpeko", "31", Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
+  SNORLAX_SWSH32 ("Snorlax", "32", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
   protected CardTypeSet cardTypes;
   protected String name;
   protected Rarity rarity;
-  protected int collectionLineNo;
+  protected String collectionLineNo;
 
-  SwordShieldPromos(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+  SwordShieldPromos(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
     this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
     this.name = name;
     this.rarity = rarity;
@@ -100,7 +100,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
   }
 
   @Override
-  public int getCollectionLineNo() {
+  public String getNumber() {
     return collectionLineNo;
   }
 

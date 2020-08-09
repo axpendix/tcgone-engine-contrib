@@ -40,32 +40,32 @@ import tcgwars.logic.util.*;
  */
 public enum PopSeries5 implements LogicCardInfo {
 
-  HO_OH_1 ("Ho-oh", 1, Rarity.RARE, [POKEMON, BASIC, _FIRE_]),
-  LUGIA_2 ("Lugia", 2, Rarity.RARE, [POKEMON, BASIC, _PSYCHIC_]),
-  MEW_DELTA_3 ("Mew", 3, Rarity.RARE, [POKEMON, BASIC, DELTA, _FIRE_]),
-  DOUBLE_RAINBOW_ENERGY_4 ("Double Rainbow Energy", 4, Rarity.RARE, [ENERGY, SPECIAL_ENERGY]),
-  CHARMELEON_DELTA_5 ("Charmeleon", 5, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, DELTA, _LIGHTNING_]),
-  BILL_S_MAINTENANCE_6 ("Bill's Maintenance", 6, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-  RARE_CANDY_7 ("Rare Candy", 7, Rarity.UNCOMMON, [TRAINER, ITEM]),
-  BOOST_ENERGY_8 ("Boost Energy", 8, Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
-  DELTA_RAINBOW_ENERGY_9 ("δ Rainbow Energy", 9, Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
-  CHARMANDER_DELTA_10 ("Charmander", 10, Rarity.COMMON, [POKEMON, BASIC, DELTA, _LIGHTNING_]),
-  MEOWTH_DELTA_11 ("Meowth", 11, Rarity.COMMON, [POKEMON, BASIC, DELTA, _DARKNESS_]),
-  PIKACHU_12 ("Pikachu", 12, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
-  PIKACHU_DELTA_13 ("Pikachu", 13, Rarity.COMMON, [POKEMON, BASIC, DELTA, _METAL_]),
-  PELIPPER_DELTA_14 ("Pelipper", 14, Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, DELTA, _LIGHTNING_]),
-  ZANGOOSE_DELTA_15 ("Zangoose", 15, Rarity.COMMON, [POKEMON, BASIC, DELTA, _METAL_]),
-  ESPEON_STAR_16 ("Espeon Star", 16, Rarity.HOLORARE, [POKEMON_STAR, POKEMON, BASIC, _PSYCHIC_]),
-  UMBREON_STAR_17 ("Umbreon Star", 17, Rarity.HOLORARE, [POKEMON_STAR, POKEMON, BASIC, _DARKNESS_]);
+  HO_OH_1 ("Ho-oh", "1", Rarity.RARE, [POKEMON, BASIC, _FIRE_]),
+  LUGIA_2 ("Lugia", "2", Rarity.RARE, [POKEMON, BASIC, _PSYCHIC_]),
+  MEW_DELTA_3 ("Mew", "3", Rarity.RARE, [POKEMON, BASIC, DELTA, _FIRE_]),
+  DOUBLE_RAINBOW_ENERGY_4 ("Double Rainbow Energy", "4", Rarity.RARE, [ENERGY, SPECIAL_ENERGY]),
+  CHARMELEON_DELTA_5 ("Charmeleon", "5", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, DELTA, _LIGHTNING_]),
+  BILL_S_MAINTENANCE_6 ("Bill's Maintenance", "6", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  RARE_CANDY_7 ("Rare Candy", "7", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  BOOST_ENERGY_8 ("Boost Energy", "8", Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
+  DELTA_RAINBOW_ENERGY_9 ("δ Rainbow Energy", "9", Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
+  CHARMANDER_DELTA_10 ("Charmander", "10", Rarity.COMMON, [POKEMON, BASIC, DELTA, _LIGHTNING_]),
+  MEOWTH_DELTA_11 ("Meowth", "11", Rarity.COMMON, [POKEMON, BASIC, DELTA, _DARKNESS_]),
+  PIKACHU_12 ("Pikachu", "12", Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
+  PIKACHU_DELTA_13 ("Pikachu", "13", Rarity.COMMON, [POKEMON, BASIC, DELTA, _METAL_]),
+  PELIPPER_DELTA_14 ("Pelipper", "14", Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, DELTA, _LIGHTNING_]),
+  ZANGOOSE_DELTA_15 ("Zangoose", "15", Rarity.COMMON, [POKEMON, BASIC, DELTA, _METAL_]),
+  ESPEON_STAR_16 ("Espeon Star", "16", Rarity.HOLORARE, [POKEMON_STAR, POKEMON, BASIC, _PSYCHIC_]),
+  UMBREON_STAR_17 ("Umbreon Star", "17", Rarity.HOLORARE, [POKEMON_STAR, POKEMON, BASIC, _DARKNESS_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
   protected CardTypeSet cardTypes;
   protected String name;
   protected Rarity rarity;
-  protected int collectionLineNo;
+  protected String collectionLineNo;
 
-  PopSeries5(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+  PopSeries5(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
     this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
     this.name = name;
     this.rarity = rarity;
@@ -88,7 +88,7 @@ public enum PopSeries5 implements LogicCardInfo {
   }
 
   @Override
-  public int getCollectionLineNo() {
+  public String getNumber() {
     return collectionLineNo;
   }
 
