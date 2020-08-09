@@ -439,7 +439,7 @@ public enum BurningShadows implements LogicCardInfo {
             delayedA {
               before KNOCKOUT, self, {
                 if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite){
-                  flip "Guts", {
+                  flip "Guts", self.owner, {
                     self.damage = self.fullHP - hp(10)
                     bc "Guts saved $self!"
                     prevent()

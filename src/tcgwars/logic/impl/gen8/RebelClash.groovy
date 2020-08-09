@@ -1903,7 +1903,7 @@ public enum RebelClash implements LogicCardInfo {
           delayedA (priority: LAST) {
             before (KNOCKOUT, self) {
               if ((ef as Knockout).byDamageFromAttack && self.active && bg.currentTurn==self.owner.opposite && self.owner.opposite.pbg.active != null && self.owner.opposite.pbg.active.inPlay) {
-                flip "Perish Body", {
+                flip "Perish Body", self.owner, {
                   targeted (self.owner.opposite.pbg.active, SRC_ABILITY){
                     new Knockout(self.owner.opposite.pbg.active).run(bg)
                   }
@@ -2184,7 +2184,7 @@ public enum RebelClash implements LogicCardInfo {
             before APPLY_ATTACK_DAMAGES, {
               def entry=bg.dm().find({it.to==self && it.dmg.value && it.notNoEffect})
               if (entry) {
-                flip "Infiltrator", {
+                flip "Infiltrator", self.owner, {
                   entry.dmg=hp(0)
                 }
               }

@@ -239,7 +239,7 @@ public enum DetectivePikachu implements LogicCardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 def entry=bg.dm().find({it.to==self && it.dmg.value && it.notNoEffect})
                 if(entry){
-                  flip "Evasion Jutsu", {
+                  flip "Evasion Jutsu", self.owner, {
                     entry.dmg=hp(0)
                   }
                 }

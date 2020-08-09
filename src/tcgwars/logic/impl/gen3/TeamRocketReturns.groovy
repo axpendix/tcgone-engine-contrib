@@ -481,7 +481,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             delayedA {
               before KNOCKOUT, self, {
                 if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite){
-                  flip "Buffer", {
+                  flip "Buffer", self.owner, {
                     self.damage = self.fullHP - hp(10)
                     bc "Buffer saved $self!"
                     prevent()
@@ -1517,7 +1517,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             delayedA {
               before KNOCKOUT, self, {
                 if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite){
-                  flip "Buffer", {
+                  flip "Buffer", self.owner, {
                     self.damage = self.fullHP - hp(10)
                     bc "Buffer saved $self!"
                     prevent()
@@ -1707,7 +1707,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             delayedA {
               before KNOCKOUT, self, {
                 if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite){
-                  flip "Buffer", {
+                  flip "Buffer", self.owner, {
                     self.damage = self.fullHP - hp(10)
                     bc "Buffer saved $self!"
                     prevent()
