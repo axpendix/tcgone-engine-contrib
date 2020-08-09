@@ -2382,8 +2382,8 @@ public enum LostThunder implements LogicCardInfo {
               assert bg.turnCount!=lastTurn : "Already used"
               assert checkGlobalAbility(thisCard) : "Blocked"
               bc "$thisCard used Distortion Door"
-              benchPCS(thisCard)
-              if(thisCard.player.opposite.pbg.bench){
+              def pcs = benchPCS(thisCard)
+              if (pcs && thisCard.player.opposite.pbg.bench) {
                 multiSelect(thisCard.player.opposite.pbg.bench,2).each{
                   directDamage 10, it, SRC_ABILITY
                 }

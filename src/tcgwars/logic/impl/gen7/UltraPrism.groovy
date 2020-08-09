@@ -581,7 +581,6 @@ public enum UltraPrism implements LogicCardInfo {
                   }
                   return true
                 }).each {
-                my.deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()
@@ -2757,7 +2756,6 @@ public enum UltraPrism implements LogicCardInfo {
             onAttack {
               int count = bench.freeBenchCount>=2?2:1
               deck.search(max: count, cardTypeFilter(BASIC)).each{
-                deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()
@@ -3144,7 +3142,6 @@ public enum UltraPrism implements LogicCardInfo {
             }
             pokemonCard.player = trainerCard.player
             bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
-            hand.remove(pokemonCard)
             benchPCS(pokemonCard)
           }
           playRequirement{

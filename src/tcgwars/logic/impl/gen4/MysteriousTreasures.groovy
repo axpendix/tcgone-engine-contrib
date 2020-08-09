@@ -3324,7 +3324,6 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
             pokemonCard.player = trainerCard.player
             bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
-            hand.remove(pokemonCard)
             benchPCS(pokemonCard)
           }
           playRequirement{
@@ -3394,7 +3393,6 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
             pokemonCard.player = trainerCard.player
             bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
-            hand.remove(pokemonCard)
             benchPCS(pokemonCard)
           }
           playRequirement{

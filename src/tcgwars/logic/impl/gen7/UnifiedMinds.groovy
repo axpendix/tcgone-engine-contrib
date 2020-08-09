@@ -1671,6 +1671,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               assert checkGlobalAbility(thisCard) : "This card's ability is blocked."
               bc "$thisCard used Electric Swamp and is benched directly."
               def pcs = benchPCS(thisCard)
+              assert pcs : "Benching was unsuccessful."
               while(1){
                 def pl=(my.all.findAll {it.cards.filterByEnergyType(L) && it!=pcs})
                 if(!pl) break;
@@ -3256,7 +3257,7 @@ public enum UnifiedMinds implements LogicCardInfo {
                   def basicPokemon = randomOppHand.findAll{ it.cardTypes.is(BASIC) }
                   def maximumAllowed = Math.min(basicPokemon.size(), opp.bench.freeBenchCount)
                   basicPokemon.select(min: 0, max: maximumAllowed).each {
-                    benchPCS(it, OTHER, TargetPlayer.OPPONENT)
+                    benchPCS(it, OTHER)
                   }
                 }
               }

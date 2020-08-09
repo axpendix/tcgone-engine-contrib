@@ -459,7 +459,7 @@ public enum RebelClash implements LogicCardInfo {
           delayed {
             before DRAW_CARD, {
               if (thisCard.player.pbg.deck && bg.em().currentEffectStack.find{it instanceof BeginTurn} && thisCard.player.pbg.deck.get(0) == thisCard && bg.currentTurn == thisCard.player && thisCard.player.pbg.bench.notFull && confirm("Top Entry - Lombre",thisCard.player)) {
-                benchPCS(thisCard, OTHER, thisCard.player.toTargetPlayer())
+                benchPCS(thisCard, OTHER)
                 bc"Top Entry activates"
                 prevent()// Top Entry activates instead of drawing the card
               }
@@ -961,7 +961,7 @@ public enum RebelClash implements LogicCardInfo {
           delayed {
             before DRAW_CARD, {
               if (thisCard.player.pbg.deck && bg.em().currentEffectStack.find{it instanceof BeginTurn} && thisCard.player.pbg.deck.get(0) == thisCard && bg.currentTurn == thisCard.player && thisCard.player.pbg.bench.notFull && confirm("Lampent - Use Top Entry", thisCard.player)) {
-                benchPCS(thisCard, OTHER, thisCard.player.toTargetPlayer())
+                benchPCS(thisCard, OTHER)
                 bc"Top Entry activates"
                 prevent()
               }
@@ -1538,7 +1538,7 @@ public enum RebelClash implements LogicCardInfo {
           delayed {
             before DRAW_CARD, {
               if (thisCard.player.pbg.deck && bg.em().currentEffectStack.find{it instanceof BeginTurn} && thisCard.player.pbg.deck.get(0) == thisCard && bg.currentTurn == thisCard.player && thisCard.player.pbg.bench.notFull && confirm("Luxio - Use Top Entry", thisCard.player)) {
-                benchPCS(thisCard, OTHER, thisCard.player.toTargetPlayer())
+                benchPCS(thisCard, OTHER)
                 bc"Top Entry activates"
                 prevent()// Top Entry activates instead of drawing the card
               }

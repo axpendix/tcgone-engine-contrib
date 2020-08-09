@@ -528,7 +528,6 @@ public enum GuardiansRising implements LogicCardInfo {
             onAttack {
               int count = Math.min(bench.freeBenchCount, 3)
               deck.search (max: count, "Search your deck for up to 3 Basic [R] Pokémon and put them onto your Bench", {it.cardTypes.is(BASIC) && it.asPokemonCard().types.contains(R)}).each {
-                deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()
@@ -809,7 +808,6 @@ public enum GuardiansRising implements LogicCardInfo {
               my.deck.search(max: count, "Select a Poliwag, a Poliwhirl and a Poliwrath", {it.name == "Poliwag" || it.name == "Poliwhirl" || it.name == "Poliwrath"}, {CardList list ->
                 list.filterByNameEquals("Poliwag").size() <= 1 && list.filterByNameEquals("Poliwhirl").size() <= 1 && list.filterByNameEquals("Poliwrath").size() <= 1
               }).each {
-                deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()
@@ -1028,8 +1026,7 @@ public enum GuardiansRising implements LogicCardInfo {
               if(b2) cl += TargetPlayer.OPPONENT
               def tar = choose(cl)
               tar.pbg.discard.findAll(cardTypeFilter(BASIC)).select().each {
-                tar.pbg.discard.remove(it)
-                benchPCS(it, OTHER, tar)
+                benchPCS(it, OTHER)
               }
             }
           }
@@ -2446,7 +2443,6 @@ public enum GuardiansRising implements LogicCardInfo {
             onAttack {
               int count = Math.min(bench.freeBenchCount, 2)
               deck.search (max: count, "Search your deck for up to 2 Sliggoo and put them onto your Bench", {it.name=="Sliggoo"}).each {
-                deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()
@@ -2998,7 +2994,6 @@ public enum GuardiansRising implements LogicCardInfo {
               bc "Used Brooklet Hill effect"
               lastTurn = bg().turnCount
               deck.search {Card c->c.cardTypes.is(BASIC) && (c.asPokemonCard().types.contains(W) || c.asPokemonCard().types.contains(F))}.each {
-                deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()

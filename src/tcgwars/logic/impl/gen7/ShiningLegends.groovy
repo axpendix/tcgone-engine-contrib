@@ -1200,7 +1200,6 @@ public enum ShiningLegends implements LogicCardInfo {
             }
             onAttack {
               my.deck.search ("Search your deck for a Basic Pokémon and put it onto your Bench", cardTypeFilter(BASIC)).each {
-                my.deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()

@@ -1308,8 +1308,10 @@ public enum BurningShadows implements LogicCardInfo {
               def list = opp.hand.shuffledCopy().showToMe("Opponent's hand").filterByType(BASIC)
               if(list){
                 def card = list.select("Put a Basic Pokémon you find there onto your opponent's Bench").first()
-                def pcs = benchPCS(card, OTHER, TargetPlayer.OPPONENT)
-                directDamage(30, pcs, SRC_ABILITY)
+                def pcs = benchPCS(card, OTHER)
+                if (pcs) {
+                  directDamage(30, pcs, SRC_ABILITY)
+                }
               }
             }
           }

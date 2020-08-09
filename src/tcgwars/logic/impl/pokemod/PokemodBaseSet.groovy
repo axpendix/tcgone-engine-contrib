@@ -1589,7 +1589,6 @@ public enum PokemodBaseSet implements LogicCardInfo {
           }
           pokemonCard.player = trainerCard.player
           bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
-          hand.remove(pokemonCard)
           benchPCS(pokemonCard)
         }
         playRequirement{
@@ -1804,8 +1803,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         text "Choose 1 Basic Pokémon card from your opponent's discard pile and put it onto his or her Bench. (You can't play Pokémon Flute if your opponent's Bench is full.)"
         onPlay {
           opp.discard.findAll(cardTypeFilter(BASIC)).select().each {
-            opp.discard.remove(it)
-            benchPCS(it, OTHER, TargetPlayer.OPPONENT)
+            benchPCS(it, OTHER)
           }
         }
         playRequirement{
@@ -1840,7 +1838,6 @@ public enum PokemodBaseSet implements LogicCardInfo {
         text "Put 1 Basic Pokémon card (excluding Pokémon-ex) from your discard pile onto your Bench. Put damage counters on that Pokémon equal to half its HP (rounded down to the nearest 10). (You can't play Revive if your Bench is full.)"
         onPlay {
           my.discard.findAll(cardTypeFilter(BASIC) && !it.asPokemonCard().types.contains(EX)).select().each {
-            my.discard.remove(it)
             def pcs = benchPCS(it)
             pcs.hp = ceil((pcs.fullHp/10)/2)*10
           }

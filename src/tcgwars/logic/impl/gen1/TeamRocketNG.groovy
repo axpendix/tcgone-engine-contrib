@@ -1636,7 +1636,7 @@ public enum TeamRocketNG implements LogicCardInfo {
                 if(opp.bench.notFull) {
                   def oppCnt = opp.bench.getFreeBenchCount()
                   opp.deck.search(max:oppCnt,"search for at most $oppCnt Basic Pokemon",cardTypeFilter(BASIC)).each{
-                    benchPCS(it,OTHER, TargetPlayer.OPPONENT)
+                    benchPCS(it,OTHER)
                   }
                 }
               }

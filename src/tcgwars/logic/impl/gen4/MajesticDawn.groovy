@@ -178,7 +178,7 @@ public enum MajesticDawn implements LogicCardInfo {
           resistance F, MINUS20
           pokePower "Freezing Screech", {
             text "Once during your turn, when you put Articuno from your hand onto your Bench, you may flip a coin. If heads, choose 1 of the Defending Pokémon. That Pokémon is now Paralyzed."
-            onActivate { 
+            onActivate {
               if(it==PLAY_FROM_HAND && confirm("Use Freezing Screech?")) {
                 powerUsed()
                 flip {apply PARALYZED}
@@ -374,7 +374,7 @@ public enum MajesticDawn implements LogicCardInfo {
               after ATTACH_ENERGY, self, {
                 if (ef.reason==PLAY_FROM_HAND){
                   powerUsed()
-                  heal 20, self 
+                  heal 20, self
                 }
               }
             }
@@ -2031,12 +2031,11 @@ public enum MajesticDawn implements LogicCardInfo {
               bc "Used Call Energy effect"
               int count = bench.freeBenchCount>=2?2:1
               my.deck.search (max: count,"Search your deck for up to 2 Basic Pokemon and put them onto your Bench", cardTypeFilter(BASIC)).each {
-                my.deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()
               bg.gm().betweenTurns()
-            } 
+            }
           }
           onRemoveFromPlay {
             actions.each { bg().gm().unregisterAction(it) }

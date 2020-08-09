@@ -1398,13 +1398,11 @@ public enum SunMoonPromos implements LogicCardInfo {
             onAttack{
               if(my.bench.notFull && my.discard.filterByType(BASIC)){
                 my.discard.filterByType(BASIC).select().each{
-                  my.discard.remove(it)
                   benchPCS(it)
                 }
               }
               if(opp.bench.notFull && opp.discard.filterByType(BASIC)){
                 opp.discard.filterByType(BASIC).select().each{
-                  opp.discard.remove(it)
                   benchPCS(it)
                 }
               }
@@ -3312,7 +3310,6 @@ public enum SunMoonPromos implements LogicCardInfo {
               def maxSpace = my.bench.freeBenchCount
               if (maxSpace){
                 babyFossils().select(min:0, max: maxSpace, "Bench up to $maxSpace card(s) from the discard that evolve from Unidentified Fossil.").each{
-                    my.discard.remove(it);
                     benchPCS(it)
                 }
               } else {

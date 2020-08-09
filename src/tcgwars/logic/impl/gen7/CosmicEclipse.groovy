@@ -1706,12 +1706,10 @@ public enum CosmicEclipse implements LogicCardInfo {
               def basics = my.deck.subList(0, 12).filterByType(BASIC)
               if (basics) {
                 def maxSpace = Math.min(my.bench.freeBenchCount, basics.size())
-
                 def selected = basics.select(min:0, max:maxSpace, "Select as many Basic Pokémon you'd like to bench as possible.")
 
                 selected.each {
                   benchPCS(it)
-                  my.deck.remove(it)
                 }
               }
               shuffleDeck()
@@ -4118,7 +4116,6 @@ public enum CosmicEclipse implements LogicCardInfo {
             }
             onAttack {
               deck.search (max: my.bench.freeBenchCount, { it.name == "Eevee" || it.name == "Eevee-GX" }).each {
-                deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()
@@ -4778,7 +4775,6 @@ public enum CosmicEclipse implements LogicCardInfo {
             }
             pokemonCard.player = trainerCard.player
             bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
-            hand.remove(pokemonCard)
             benchPCS(pokemonCard)
           }
           playRequirement{
@@ -4879,7 +4875,6 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
               return true
             }).each {
-              my.deck.remove(it);
               benchPCS(it)
             }
             shuffleDeck()

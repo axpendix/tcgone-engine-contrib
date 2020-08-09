@@ -414,8 +414,10 @@ public enum DiamondPearl implements LogicCardInfo {
                 def list = opp.hand.shuffledCopy().showToMe("Opponent's hand").filterByType(BASIC)
                 if(list){
                   def card = list.select("Put a Basic Pokémon you find there onto your opponent's Bench").first()
-                  def pcs = benchPCS(card, OTHER, TargetPlayer.OPPONENT)
-                  sw opp.active, pcs, SRC_ABILITY
+                  def pcs = benchPCS(card, OTHER)
+                  if (pcs) {
+                    sw opp.active, pcs, SRC_ABILITY
+                  }
                 }
               }
             }

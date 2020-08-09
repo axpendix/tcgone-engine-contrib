@@ -2276,7 +2276,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             def eligible = my.hand.findAll { ["Omanyte", "Kabuto", "Aerodactyl", "Aerodactyl ex", "Lileep", "Anorith"].contains(it.name) }
             if(eligible){
               eligible.select("Select which Pokemon to bench").each {
-                hand.remove(it)
                 benchPCS(it)
               }
             }
@@ -2371,7 +2370,6 @@ public enum HolonPhantoms implements LogicCardInfo {
           }
           pokemonCard.player = trainerCard.player
           bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
-          hand.remove(pokemonCard)
           benchPCS(pokemonCard)
         }
         playRequirement{
