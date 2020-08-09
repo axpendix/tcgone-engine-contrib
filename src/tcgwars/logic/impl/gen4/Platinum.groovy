@@ -147,9 +147,9 @@ public enum Platinum implements LogicCardInfo {
   ELECTABUZZ_128 ("Electabuzz", "128", Rarity.SECRET, [BASIC, POKEMON, _LIGHTNING_]),
   HITMONCHAN_129 ("Hitmonchan", "129", Rarity.SECRET, [BASIC, POKEMON, _FIGHTING_]),
   SCYTHER_130 ("Scyther", "130", Rarity.SECRET, [BASIC, POKEMON, _GRASS_]),
-  LOTAD_SH4 ("Lotad", "131", Rarity.HOLORARE, [BASIC, POKEMON, _GRASS_]),
-  SWABLU_SH5 ("Swablu", "131", Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
-  VULPIX_SH6 ("Vulpix", "132", Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_]);
+  LOTAD_SH4 ("Lotad", "SH4", Rarity.HOLORARE, [BASIC, POKEMON, _GRASS_]),
+  SWABLU_SH5 ("Swablu", "SH5", Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
+  VULPIX_SH6 ("Vulpix", "SH6", Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
