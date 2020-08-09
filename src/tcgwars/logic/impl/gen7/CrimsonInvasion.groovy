@@ -90,6 +90,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
   ZWEILOUS_61 ("Zweilous", "61", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
   HYDREIGON_62 ("Hydreigon", "62", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _DARKNESS_]),
   GUZZLORD_GX_63 ("Guzzlord-GX", "63", Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, ULTRA_BEAST, _DARKNESS_]),
+  GUZZLORD_GX_63A ("Guzzlord-GX", "63a", Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, ULTRA_BEAST, _DARKNESS_]),
   MAWILE_64 ("Mawile", "64", Rarity.UNCOMMON, [BASIC, POKEMON, _METAL_]),
   ARON_65 ("Aron", "65", Rarity.COMMON, [BASIC, POKEMON, _METAL_]),
   LAIRON_66 ("Lairon", "66", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _METAL_]),
@@ -1634,6 +1635,8 @@ public enum CrimsonInvasion implements LogicCardInfo {
           }
 
         };
+      case GUZZLORD_GX_63A:
+        return copy (GUZZLORD_GX_63, this);
       case MAWILE_64:
         return basic (this, hp:HP080, type:METAL, retreatCost:1) {
           weakness FIRE

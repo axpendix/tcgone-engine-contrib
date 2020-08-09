@@ -171,9 +171,9 @@ public enum SupremeVictors implements LogicCardInfo {
   ARTICUNO_148 ("Articuno", "148", Rarity.ULTRARARE, [BASIC, POKEMON, _WATER_]),
   MOLTRES_149 ("Moltres", "149", Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_]),
   ZAPDOS_150 ("Zapdos", "150", Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
-  MILOTIC_SH7 ("Milotic", "151", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  RELICANTH_SH8 ("Relicanth", "152", Rarity.HOLORARE, [BASIC, POKEMON, _FIGHTING_]),
-  YANMA_SH9 ("Yanma", "153", Rarity.HOLORARE, [BASIC, POKEMON, _GRASS_]);
+  MILOTIC_SH7 ("Milotic", "SH7", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  RELICANTH_SH8 ("Relicanth", "SH8", Rarity.HOLORARE, [BASIC, POKEMON, _FIGHTING_]),
+  YANMA_SH9 ("Yanma", "SH9", Rarity.HOLORARE, [BASIC, POKEMON, _GRASS_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 

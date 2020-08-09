@@ -150,7 +150,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
   DARKNESS_ENERGY_121 ("Darkness Energy", "121", Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
   METAL_ENERGY_122 ("Metal Energy", "122", Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
   GYARADOS_123 ("Gyarados", "123", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  ALPH_LITHOGRAPH_ONE ("Alph Lithograph", "124", Rarity.HOLORARE, [TRAINER, ITEM]);
+  ALPH_LITHOGRAPH_ONE ("Alph Lithograph", "ONE", Rarity.HOLORARE, [TRAINER, ITEM]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
