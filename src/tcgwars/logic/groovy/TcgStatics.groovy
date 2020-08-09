@@ -81,10 +81,13 @@ class TcgStatics {
       damage dmg,pcs
     }
   }
-  static flip (playerType=null, Closure eachHead, Closure eachTail={}, multi=[:]){
+  static flip (int count = 1, Closure eachHead, Closure eachTail={}, multi=[:]){
+    flip(count, null, eachHead, eachTail, multi)
+  }
+  static flip (playerType, Closure eachHead, Closure eachTail={}, multi=[:]){
     flip(1, playerType, eachHead, eachTail, multi)
   }
-  static flip (int count, playerType=null, Closure eachHead, Closure eachTail={}, multi=[:]){
+  static flip (int count, playerType, Closure eachHead, Closure eachTail={}, multi=[:]){
     flip("", count, playerType, eachHead, eachTail, multi)
   }
   static flip (String info, playerType=null, Closure eachHead, Closure eachTail={}, multi=[:]){
