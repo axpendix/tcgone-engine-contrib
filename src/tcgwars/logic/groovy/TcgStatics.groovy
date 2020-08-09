@@ -84,6 +84,9 @@ class TcgStatics {
   static flip (Closure eachHead, Closure eachTail={}, multi=[:]){
     flip("", 1, eachHead, eachTail, multi)
   }
+  static flip (String info, Closure eachHead, Closure eachTail={}, multi=[:]){
+    flip(info, 1, null, eachHead, eachTail, multi)
+  }
   static flip (int count, Closure eachHead, Closure eachTail={}, multi=[:]){
     flip("", count, eachHead, eachTail, multi)
   }
