@@ -485,12 +485,8 @@ class TcgStatics {
       opp.bench.remove(pcs)
     }
   }
-  static PokemonCardSet benchPCS (Card card, ActivationReason reason=OTHER, TargetPlayer targetPlayer=TargetPlayer.SELF){
-    if(card.getCardTypes().is(BREAK)){
-      bg.wcu("BREAK Pokémon cannot be brought to play")
-    }
-
-    Effect effect = new PutOnBench(card, reason);
+  static PokemonCardSet benchPCS (Card card, ActivationReason reason=OTHER){
+    def effect = new PutOnBench(card, reason);
     if (!bg().em().run(effect)) {
       return effect.getBench();
     }
