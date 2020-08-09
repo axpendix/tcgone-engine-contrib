@@ -21,71 +21,71 @@ import tcgwars.logic.util.*;
  */
 public enum JungleNG implements LogicCardInfo {
 
-  CLEFABLE_1 ("Clefable", 1, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-  ELECTRODE_2 ("Electrode", 2, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-  FLAREON_3 ("Flareon", 3, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
-  JOLTEON_4 ("Jolteon", 4, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-  KANGASKHAN_5 ("Kangaskhan", 5, Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
-  MR_MIME_6 ("Mr. Mime", 6, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_]),
-  NIDOQUEEN_7 ("Nidoqueen", 7, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
-  PIDGEOT_8 ("Pidgeot", 8, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
-  PINSIR_9 ("Pinsir", 9, Rarity.HOLORARE, [BASIC, POKEMON, _GRASS_]),
-  SCYTHER_10 ("Scyther", 10, Rarity.HOLORARE, [BASIC, POKEMON, _GRASS_]),
-  SNORLAX_11 ("Snorlax", 11, Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
-  VAPOREON_12 ("Vaporeon", 12, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  VENOMOTH_13 ("Venomoth", 13, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  VICTREEBEL_14 ("Victreebel", 14, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  VILEPLUME_15 ("Vileplume", 15, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
-  WIGGLYTUFF_16 ("Wigglytuff", 16, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+  CLEFABLE_1 ("Clefable", "1", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+  ELECTRODE_2 ("Electrode", "2", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+  FLAREON_3 ("Flareon", "3", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
+  JOLTEON_4 ("Jolteon", "4", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+  KANGASKHAN_5 ("Kangaskhan", "5", Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
+  MR_MIME_6 ("Mr. Mime", "6", Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_]),
+  NIDOQUEEN_7 ("Nidoqueen", "7", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
+  PIDGEOT_8 ("Pidgeot", "8", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
+  PINSIR_9 ("Pinsir", "9", Rarity.HOLORARE, [BASIC, POKEMON, _GRASS_]),
+  SCYTHER_10 ("Scyther", "10", Rarity.HOLORARE, [BASIC, POKEMON, _GRASS_]),
+  SNORLAX_11 ("Snorlax", "11", Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
+  VAPOREON_12 ("Vaporeon", "12", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  VENOMOTH_13 ("Venomoth", "13", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  VICTREEBEL_14 ("Victreebel", "14", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  VILEPLUME_15 ("Vileplume", "15", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
+  WIGGLYTUFF_16 ("Wigglytuff", "16", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
 
-  CLEFABLE ("Clefable", 17, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-  ELECTRODE ("Electrode", 18, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-  FLAREON ("Flareon", 19, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
-  JOLTEON ("Jolteon", 20, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-  KANGASKHAN ("Kangaskhan", 21, Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
-  MR_MIME ("Mr. Mime", 22, Rarity.RARE, [BASIC, POKEMON, _PSYCHIC_]),
-  NIDOQUEEN ("Nidoqueen", 23, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
-  PIDGEOT ("Pidgeot", 24, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
-  PINSIR ("Pinsir", 25, Rarity.RARE, [BASIC, POKEMON, _GRASS_]),
-  SCYTHER ("Scyther", 26, Rarity.RARE, [BASIC, POKEMON, _GRASS_]),
-  SNORLAX ("Snorlax", 27, Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
-  VAPOREON ("Vaporeon", 28, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  VENOMOTH ("Venomoth", 29, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  VICTREEBEL ("Victreebel", 30, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  VILEPLUME ("Vileplume", 31, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
-  WIGGLYTUFF ("Wigglytuff", 32, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-  BUTTERFREE ("Butterfree", 33, Rarity.UNCOMMON, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
-  DODRIO ("Dodrio", 34, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-  EXEGGUTOR ("Exeggutor", 35, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  FEAROW ("Fearow", 36, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-  GLOOM ("Gloom", 37, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  LICKITUNG ("Lickitung", 38, Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
-  MAROWAK ("Marowak", 39, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-  NIDORINA ("Nidorina", 40, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  PARASECT ("Parasect", 41, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  PERSIAN ("Persian", 42, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-  PRIMEAPE ("Primeape", 43, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-  RAPIDASH ("Rapidash", 44, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
-  RHYDON ("Rhydon", 45, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-  SEAKING ("Seaking", 46, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  TAUROS ("Tauros", 47, Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
-  WEEPINBELL ("Weepinbell", 48, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  BELLSPROUT ("Bellsprout", 49, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  CUBONE ("Cubone", 50, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-  EEVEE ("Eevee", 51, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  EXEGGCUTE ("Exeggcute", 52, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  GOLDEEN ("Goldeen", 53, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-  JIGGLYPUFF ("Jigglypuff", 54, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  MANKEY ("Mankey", 55, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-  MEOWTH ("Meowth", 56, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  NIDORAN_FEMALE ("Nidoran♀", 57, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  ODDISH ("Oddish", 58, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  PARAS ("Paras", 59, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  PIKACHU ("Pikachu", 60, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-  RHYHORN ("Rhyhorn", 61, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-  SPEAROW ("Spearow", 62, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  VENONAT ("Venonat", 63, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  POKE_BALL ("Poké Ball", 64, Rarity.COMMON, [TRAINER]);
+  CLEFABLE ("Clefable", "17", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+  ELECTRODE ("Electrode", "18", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+  FLAREON ("Flareon", "19", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
+  JOLTEON ("Jolteon", "20", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+  KANGASKHAN ("Kangaskhan", "21", Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
+  MR_MIME ("Mr. Mime", "22", Rarity.RARE, [BASIC, POKEMON, _PSYCHIC_]),
+  NIDOQUEEN ("Nidoqueen", "23", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
+  PIDGEOT ("Pidgeot", "24", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
+  PINSIR ("Pinsir", "25", Rarity.RARE, [BASIC, POKEMON, _GRASS_]),
+  SCYTHER ("Scyther", "26", Rarity.RARE, [BASIC, POKEMON, _GRASS_]),
+  SNORLAX ("Snorlax", "27", Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
+  VAPOREON ("Vaporeon", "28", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  VENOMOTH ("Venomoth", "29", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  VICTREEBEL ("Victreebel", "30", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  VILEPLUME ("Vileplume", "31", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
+  WIGGLYTUFF ("Wigglytuff", "32", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+  BUTTERFREE ("Butterfree", "33", Rarity.UNCOMMON, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
+  DODRIO ("Dodrio", "34", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+  EXEGGUTOR ("Exeggutor", "35", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  FEAROW ("Fearow", "36", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+  GLOOM ("Gloom", "37", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  LICKITUNG ("Lickitung", "38", Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
+  MAROWAK ("Marowak", "39", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+  NIDORINA ("Nidorina", "40", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  PARASECT ("Parasect", "41", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  PERSIAN ("Persian", "42", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+  PRIMEAPE ("Primeape", "43", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+  RAPIDASH ("Rapidash", "44", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
+  RHYDON ("Rhydon", "45", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+  SEAKING ("Seaking", "46", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  TAUROS ("Tauros", "47", Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
+  WEEPINBELL ("Weepinbell", "48", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  BELLSPROUT ("Bellsprout", "49", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  CUBONE ("Cubone", "50", Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+  EEVEE ("Eevee", "51", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+  EXEGGCUTE ("Exeggcute", "52", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  GOLDEEN ("Goldeen", "53", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+  JIGGLYPUFF ("Jigglypuff", "54", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+  MANKEY ("Mankey", "55", Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+  MEOWTH ("Meowth", "56", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+  NIDORAN_FEMALE ("Nidoran♀", "57", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  ODDISH ("Oddish", "58", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  PARAS ("Paras", "59", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  PIKACHU ("Pikachu", "60", Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+  RHYHORN ("Rhyhorn", "61", Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+  SPEAROW ("Spearow", "62", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+  VENONAT ("Venonat", "63", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  POKE_BALL ("Poké Ball", "64", Rarity.COMMON, [TRAINER]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING;
 
@@ -142,9 +142,9 @@ public enum JungleNG implements LogicCardInfo {
   protected CardTypeSet cardTypes;
   protected String name;
   protected Rarity rarity;
-  protected int collectionLineNo;
+  protected String collectionLineNo;
 
-  JungleNG(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+  JungleNG(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
     this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
     this.name = name;
     this.rarity = rarity;
@@ -168,7 +168,7 @@ public enum JungleNG implements LogicCardInfo {
 
   @Override
   public String getNumber() {
-    return String.valueOf(collectionLineNo);
+    return collectionLineNo;
   }
 
   @Override

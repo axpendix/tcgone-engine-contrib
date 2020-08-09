@@ -16,31 +16,31 @@ import tcgwars.logic.util.*;
  */
 public enum PokemonRumble implements LogicCardInfo {
 
-  VENUSAUR_1 ("Venusaur", 1, Rarity.COMMON, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
-  CHERRIM_2 ("Cherrim", 2, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  NINETALES_3 ("Ninetales", 3, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
-  HEATRAN_4 ("Heatran", 4, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
-  STARMIE_5 ("Starmie", 5, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  GYRADOS_6 ("Gyrados", 6, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  PIKACHU_7 ("Pikachu", 7, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-  ZAPDOS_8 ("Zapdos", 8, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-  MEWTWO_9 ("Mewtwo", 9, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
-  MEW_10 ("Mew", 10, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
-  DIGLETT_11 ("Diglett", 11, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-  LUCARIO_12 ("Lucario", 12, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-  SKUNTANK_13 ("Skuntank", 13, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  BASTIODON_14 ("Bastiodon", 14, Rarity.COMMON, [STAGE2, EVOLUTION, POKEMON, _METAL_]),
-  RATTATA_15 ("Rattata", 15, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  BIBAREL_16 ("Bibarel", 16, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]);
+  VENUSAUR_1 ("Venusaur", "1", Rarity.COMMON, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
+  CHERRIM_2 ("Cherrim", "2", Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  NINETALES_3 ("Ninetales", "3", Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
+  HEATRAN_4 ("Heatran", "4", Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
+  STARMIE_5 ("Starmie", "5", Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  GYRADOS_6 ("Gyrados", "6", Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  PIKACHU_7 ("Pikachu", "7", Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+  ZAPDOS_8 ("Zapdos", "8", Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+  MEWTWO_9 ("Mewtwo", "9", Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+  MEW_10 ("Mew", "10", Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+  DIGLETT_11 ("Diglett", "11", Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+  LUCARIO_12 ("Lucario", "12", Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+  SKUNTANK_13 ("Skuntank", "13", Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
+  BASTIODON_14 ("Bastiodon", "14", Rarity.COMMON, [STAGE2, EVOLUTION, POKEMON, _METAL_]),
+  RATTATA_15 ("Rattata", "15", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+  BIBAREL_16 ("Bibarel", "16", Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
   protected CardTypeSet cardTypes;
   protected String name;
   protected Rarity rarity;
-  protected int collectionLineNo;
+  protected String collectionLineNo;
 
-  PokemonRumble(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+  PokemonRumble(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
     this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
     this.name = name;
     this.rarity = rarity;
@@ -64,7 +64,7 @@ public enum PokemonRumble implements LogicCardInfo {
 
   @Override
   public String getNumber() {
-    return String.valueOf(collectionLineNo);
+    return collectionLineNo;
   }
 
   @Override

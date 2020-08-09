@@ -37,32 +37,32 @@ import tcgwars.logic.util.*;
  */
 public enum PopSeries3 implements LogicCardInfo {
 
-  BLASTOISE_1 ("Blastoise", 1, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _WATER_]),
-  FLAREON_2 ("Flareon", 2, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
-  JOLTEON_3 ("Jolteon", 3, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
-  MINUN_4 ("Minun", 4, Rarity.RARE, [POKEMON, BASIC, _LIGHTNING_]),
-  PLUSLE_5 ("Plusle", 5, Rarity.RARE, [POKEMON, BASIC, _LIGHTNING_]),
-  VAPOREON_6 ("Vaporeon", 6, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
-  COMBUSKEN_7 ("Combusken", 7, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
-  DONPHAN_8 ("Donphan", 8, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
-  FORRETRESS_9 ("Forretress", 9, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
-  HIGH_PRESSURE_SYSTEM_10 ("High Pressure System", 10, Rarity.UNCOMMON, [TRAINER, STADIUM]),
-  LOW_PRESSURE_SYSTEM_11 ("Low Pressure System", 11, Rarity.UNCOMMON, [TRAINER, STADIUM]),
-  DITTO_12 ("Ditto", 12, Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
-  EEVEE_13 ("Eevee", 13, Rarity.COMMON, [POKEMON, BASIC, _COLORLESS_]),
-  IVYSAUR_14 ("Ivysaur", 14, Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
-  MARSHTOMP_15 ("Marshtomp", 15, Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
-  PICHU_BROS__16 ("Pichu Bros.", 16, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
-  HO_OH_EX_17 ("Ho-Oh ex", 17, Rarity.HOLORARE, [POKEMON, BASIC, _FIRE_]);
+  BLASTOISE_1 ("Blastoise", "1", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _WATER_]),
+  FLAREON_2 ("Flareon", "2", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+  JOLTEON_3 ("Jolteon", "3", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
+  MINUN_4 ("Minun", "4", Rarity.RARE, [POKEMON, BASIC, _LIGHTNING_]),
+  PLUSLE_5 ("Plusle", "5", Rarity.RARE, [POKEMON, BASIC, _LIGHTNING_]),
+  VAPOREON_6 ("Vaporeon", "6", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
+  COMBUSKEN_7 ("Combusken", "7", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+  DONPHAN_8 ("Donphan", "8", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
+  FORRETRESS_9 ("Forretress", "9", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
+  HIGH_PRESSURE_SYSTEM_10 ("High Pressure System", "10", Rarity.UNCOMMON, [TRAINER, STADIUM]),
+  LOW_PRESSURE_SYSTEM_11 ("Low Pressure System", "11", Rarity.UNCOMMON, [TRAINER, STADIUM]),
+  DITTO_12 ("Ditto", "12", Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
+  EEVEE_13 ("Eevee", "13", Rarity.COMMON, [POKEMON, BASIC, _COLORLESS_]),
+  IVYSAUR_14 ("Ivysaur", "14", Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
+  MARSHTOMP_15 ("Marshtomp", "15", Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
+  PICHU_BROS__16 ("Pichu Bros.", "16", Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
+  HO_OH_EX_17 ("Ho-Oh ex", "17", Rarity.HOLORARE, [POKEMON, BASIC, _FIRE_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
   protected CardTypeSet cardTypes;
   protected String name;
   protected Rarity rarity;
-  protected int collectionLineNo;
+  protected String collectionLineNo;
 
-  PopSeries3(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+  PopSeries3(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
     this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
     this.name = name;
     this.rarity = rarity;
@@ -86,7 +86,7 @@ public enum PopSeries3 implements LogicCardInfo {
 
   @Override
   public String getNumber() {
-    return String.valueOf(collectionLineNo);
+    return collectionLineNo;
   }
 
   @Override

@@ -16,32 +16,32 @@ import tcgwars.logic.util.*;
  */
 public enum PopSeries7 implements LogicCardInfo {
 
-  AMPHAROS_1 ("Ampharos", 1, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _LIGHTNING_]),
-  GALLADE_2 ("Gallade", 2, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
-  LATIAS_3 ("Latias", 3, Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
-  LATIOS_4 ("Latios", 4, Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
-  MOTHIM_5 ("Mothim", 5, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  DELIBIRD_6 ("Delibird", 6, Rarity.UNCOMMON, [BASIC, POKEMON, _WATER_]),
-  FLAAFFY_7 ("Flaaffy", 7, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-  KIRLIA_8 ("Kirlia", 8, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-  STANTLER_9 ("Stantler", 9, Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
-  WORMADAM_SANDY_CLOAK_10 ("Wormadam Sandy Cloak", 10, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-  BURMY_PLANT_CLOAK_11 ("Burmy Plant Cloak", 11, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  BURMY_SANDY_CLOAK_12 ("Burmy Sandy Cloak", 12, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  CORSOLA_13 ("Corsola", 13, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-  MAREEP_14 ("Mareep", 14, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-  RALTS_15 ("Ralts", 15, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
-  SENTRET_16 ("Sentret", 16, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  SPINDA_17 ("Spinda", 17, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]);
+  AMPHAROS_1 ("Ampharos", "1", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _LIGHTNING_]),
+  GALLADE_2 ("Gallade", "2", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
+  LATIAS_3 ("Latias", "3", Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
+  LATIOS_4 ("Latios", "4", Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
+  MOTHIM_5 ("Mothim", "5", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  DELIBIRD_6 ("Delibird", "6", Rarity.UNCOMMON, [BASIC, POKEMON, _WATER_]),
+  FLAAFFY_7 ("Flaaffy", "7", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+  KIRLIA_8 ("Kirlia", "8", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+  STANTLER_9 ("Stantler", "9", Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
+  WORMADAM_SANDY_CLOAK_10 ("Wormadam Sandy Cloak", "10", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+  BURMY_PLANT_CLOAK_11 ("Burmy Plant Cloak", "11", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  BURMY_SANDY_CLOAK_12 ("Burmy Sandy Cloak", "12", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  CORSOLA_13 ("Corsola", "13", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+  MAREEP_14 ("Mareep", "14", Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+  RALTS_15 ("Ralts", "15", Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+  SENTRET_16 ("Sentret", "16", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+  SPINDA_17 ("Spinda", "17", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
   protected CardTypeSet cardTypes;
   protected String name;
   protected Rarity rarity;
-  protected int collectionLineNo;
+  protected String collectionLineNo;
 
-  PopSeries7(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+  PopSeries7(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
     this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
     this.name = name;
     this.rarity = rarity;
@@ -65,7 +65,7 @@ public enum PopSeries7 implements LogicCardInfo {
 
   @Override
   public String getNumber() {
-    return String.valueOf(collectionLineNo);
+    return collectionLineNo;
   }
 
   @Override

@@ -16,32 +16,32 @@ import tcgwars.logic.util.*;
  */
 public enum PopSeries6 implements LogicCardInfo {
 
-  BASTIODON_1 ("Bastiodon", 1, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _METAL_]),
-  LUCARIO_2 ("Lucario", 2, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-  MANAPHY_3 ("Manaphy", 3, Rarity.RARE, [BASIC, POKEMON, _WATER_]),
-  PACHIRISU_4 ("Pachirisu", 4, Rarity.RARE, [BASIC, POKEMON, _LIGHTNING_]),
-  RAMPARDOS_5 ("Rampardos", 5, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
-  DRIFLOON_6 ("Drifloon", 6, Rarity.UNCOMMON, [BASIC, POKEMON, _PSYCHIC_]),
-  GIBLE_7 ("Gible", 7, Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
-  RIOLU_8 ("Riolu", 8, Rarity.UNCOMMON, [BASIC, POKEMON, _FIGHTING_]),
-  PIKACHU_9 ("Pikachu", 9, Rarity.UNCOMMON, [BASIC, POKEMON, _LIGHTNING_]),
-  STARAVIA_10 ("Staravia", 10, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-  BIDOOF_11 ("Bidoof", 11, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  BUNEARY_12 ("Buneary", 12, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  CHERUBI_13 ("Cherubi", 13, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  CHIMCHAR_14 ("Chimchar", 14, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
-  PIPLUP_15 ("Piplup", 15, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-  STARLY_16 ("Starly", 16, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  TURTWIG_17 ("Turtwig", 17, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]);
+  BASTIODON_1 ("Bastiodon", "1", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _METAL_]),
+  LUCARIO_2 ("Lucario", "2", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+  MANAPHY_3 ("Manaphy", "3", Rarity.RARE, [BASIC, POKEMON, _WATER_]),
+  PACHIRISU_4 ("Pachirisu", "4", Rarity.RARE, [BASIC, POKEMON, _LIGHTNING_]),
+  RAMPARDOS_5 ("Rampardos", "5", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
+  DRIFLOON_6 ("Drifloon", "6", Rarity.UNCOMMON, [BASIC, POKEMON, _PSYCHIC_]),
+  GIBLE_7 ("Gible", "7", Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
+  RIOLU_8 ("Riolu", "8", Rarity.UNCOMMON, [BASIC, POKEMON, _FIGHTING_]),
+  PIKACHU_9 ("Pikachu", "9", Rarity.UNCOMMON, [BASIC, POKEMON, _LIGHTNING_]),
+  STARAVIA_10 ("Staravia", "10", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+  BIDOOF_11 ("Bidoof", "11", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+  BUNEARY_12 ("Buneary", "12", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+  CHERUBI_13 ("Cherubi", "13", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  CHIMCHAR_14 ("Chimchar", "14", Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
+  PIPLUP_15 ("Piplup", "15", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+  STARLY_16 ("Starly", "16", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+  TURTWIG_17 ("Turtwig", "17", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
   protected CardTypeSet cardTypes;
   protected String name;
   protected Rarity rarity;
-  protected int collectionLineNo;
+  protected String collectionLineNo;
 
-  PopSeries6(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+  PopSeries6(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
     this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
     this.name = name;
     this.rarity = rarity;
@@ -65,7 +65,7 @@ public enum PopSeries6 implements LogicCardInfo {
 
   @Override
   public String getNumber() {
-    return String.valueOf(collectionLineNo);
+    return collectionLineNo;
   }
 
   @Override

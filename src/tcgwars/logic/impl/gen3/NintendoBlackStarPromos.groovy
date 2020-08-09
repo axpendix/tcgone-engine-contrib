@@ -39,55 +39,55 @@ import tcgwars.logic.util.*;
  */
 public enum NintendoBlackStarPromos implements LogicCardInfo {
 
-  KYOGRE_EX_1 ("Kyogre ex", 1, Rarity.RARE, [POKEMON, BASIC, _WATER_]),
-  GROUDON_EX_2 ("Groudon ex", 2, Rarity.RARE, [POKEMON, BASIC, _FIGHTING_]),
-  TREECKO_3 ("Treecko", 3, Rarity.RARE, [POKEMON, BASIC, _GRASS_]),
-  GROVYLE_4 ("Grovyle", 4, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
-  MUDKIP_5 ("Mudkip", 5, Rarity.RARE, [POKEMON, BASIC, _WATER_]),
-  TORCHIC_6 ("Torchic", 6, Rarity.RARE, [POKEMON, BASIC, _FIRE_]),
-  TREECKO_7 ("Treecko", 7, Rarity.RARE, [POKEMON, BASIC, _GRASS_]),
-  TORCHIC_8 ("Torchic", 8, Rarity.RARE, [POKEMON, BASIC, _FIRE_]),
-  COMBUSKEN_9 ("Combusken", 9, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
-  MUDKIP_10 ("Mudkip", 10, Rarity.RARE, [POKEMON, BASIC, _WATER_]),
-  MARSHTOMP_11 ("Marshtomp", 11, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
-  PIKACHU_12 ("Pikachu", 12, Rarity.RARE, [POKEMON, BASIC, _LIGHTNING_]),
-  MEOWTH_13 ("Meowth", 13, Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
-  LATIAS_14 ("Latias", 14, Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
-  LATIOS_15 ("Latios", 15, Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
-  TREECKO_16 ("Treecko", 16, Rarity.RARE, [POKEMON, BASIC, _GRASS_]),
-  TORCHIC_17 ("Torchic", 17, Rarity.RARE, [POKEMON, BASIC, _FIRE_]),
-  MUDKIP_18 ("Mudkip", 18, Rarity.RARE, [POKEMON, BASIC, _WATER_]),
-  WHISMUR_19 ("Whismur", 19, Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
-  LUDICOLO_20 ("Ludicolo", 20, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _WATER_]),
-  JIRACHI_21 ("Jirachi", 21, Rarity.RARE, [POKEMON, BASIC, _PSYCHIC_]),
-  BELDUM_22 ("Beldum", 22, Rarity.RARE, [POKEMON, BASIC, _METAL_]),
-  METANG_23 ("Metang", 23, Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
-  CHIMECHO_24 ("Chimecho", 24, Rarity.RARE, [POKEMON, BASIC, _PSYCHIC_]),
-  FLYGON_25 ("Flygon", 25, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]),
-  TROPICAL_WIND_26 ("Tropical Wind", 26, Rarity.RARE, [TRAINER, ITEM]),
-  TROPICAL_TIDAL_WAVE_27 ("Tropical Tidal Wave", 27, Rarity.RARE, [TRAINER, ITEM]),
-  CHAMPIONSHIP_ARENA_28 ("Championship Arena", 28, Rarity.RARE, [TRAINER, STADIUM]),
-  CELEBI_29 ("Celebi", 29, Rarity.RARE, [POKEMON, BASIC, _GRASS_]),
-  SUICUNE_30 ("Suicune", 30, Rarity.RARE, [POKEMON, BASIC, _WATER_]),
-  MOLTRES_EX_31 ("Moltres ex", 31, Rarity.RARE, [POKEMON, BASIC, _FIRE_]),
-  ARTICUNO_EX_32 ("Articuno ex", 32, Rarity.RARE, [POKEMON, BASIC, _WATER_]),
-  ZAPDOS_EX_33 ("Zapdos ex", 33, Rarity.RARE, [POKEMON, BASIC, _LIGHTNING_]),
-  TYPHLOSION_34 ("Typhlosion", 34, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _FIRE_]),
-  PIKACHU_DELTA_35 ("Pikachu", 35, Rarity.RARE, [POKEMON, BASIC, DELTA, _METAL_]),
-  TROPICAL_TIDAL_WAVE_36 ("Tropical Tidal Wave", 36, Rarity.RARE, [TRAINER, ITEM]),
-  KYOGRE_EX_37 ("Kyogre ex", 37, Rarity.RARE, [POKEMON, BASIC, _WATER_]),
-  GROUDON_EX_38 ("Groudon ex", 38, Rarity.RARE, [POKEMON, BASIC, _FIGHTING_]),
-  RAYQUAZA_EX_39 ("Rayquaza ex", 39, Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
-  MEW_40 ("Mew", 40, Rarity.RARE, [POKEMON, BASIC, _PSYCHIC_]);
+  KYOGRE_EX_1 ("Kyogre ex", "1", Rarity.RARE, [POKEMON, BASIC, _WATER_]),
+  GROUDON_EX_2 ("Groudon ex", "2", Rarity.RARE, [POKEMON, BASIC, _FIGHTING_]),
+  TREECKO_3 ("Treecko", "3", Rarity.RARE, [POKEMON, BASIC, _GRASS_]),
+  GROVYLE_4 ("Grovyle", "4", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
+  MUDKIP_5 ("Mudkip", "5", Rarity.RARE, [POKEMON, BASIC, _WATER_]),
+  TORCHIC_6 ("Torchic", "6", Rarity.RARE, [POKEMON, BASIC, _FIRE_]),
+  TREECKO_7 ("Treecko", "7", Rarity.RARE, [POKEMON, BASIC, _GRASS_]),
+  TORCHIC_8 ("Torchic", "8", Rarity.RARE, [POKEMON, BASIC, _FIRE_]),
+  COMBUSKEN_9 ("Combusken", "9", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+  MUDKIP_10 ("Mudkip", "10", Rarity.RARE, [POKEMON, BASIC, _WATER_]),
+  MARSHTOMP_11 ("Marshtomp", "11", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
+  PIKACHU_12 ("Pikachu", "12", Rarity.RARE, [POKEMON, BASIC, _LIGHTNING_]),
+  MEOWTH_13 ("Meowth", "13", Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
+  LATIAS_14 ("Latias", "14", Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
+  LATIOS_15 ("Latios", "15", Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
+  TREECKO_16 ("Treecko", "16", Rarity.RARE, [POKEMON, BASIC, _GRASS_]),
+  TORCHIC_17 ("Torchic", "17", Rarity.RARE, [POKEMON, BASIC, _FIRE_]),
+  MUDKIP_18 ("Mudkip", "18", Rarity.RARE, [POKEMON, BASIC, _WATER_]),
+  WHISMUR_19 ("Whismur", "19", Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
+  LUDICOLO_20 ("Ludicolo", "20", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _WATER_]),
+  JIRACHI_21 ("Jirachi", "21", Rarity.RARE, [POKEMON, BASIC, _PSYCHIC_]),
+  BELDUM_22 ("Beldum", "22", Rarity.RARE, [POKEMON, BASIC, _METAL_]),
+  METANG_23 ("Metang", "23", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
+  CHIMECHO_24 ("Chimecho", "24", Rarity.RARE, [POKEMON, BASIC, _PSYCHIC_]),
+  FLYGON_25 ("Flygon", "25", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]),
+  TROPICAL_WIND_26 ("Tropical Wind", "26", Rarity.RARE, [TRAINER, ITEM]),
+  TROPICAL_TIDAL_WAVE_27 ("Tropical Tidal Wave", "27", Rarity.RARE, [TRAINER, ITEM]),
+  CHAMPIONSHIP_ARENA_28 ("Championship Arena", "28", Rarity.RARE, [TRAINER, STADIUM]),
+  CELEBI_29 ("Celebi", "29", Rarity.RARE, [POKEMON, BASIC, _GRASS_]),
+  SUICUNE_30 ("Suicune", "30", Rarity.RARE, [POKEMON, BASIC, _WATER_]),
+  MOLTRES_EX_31 ("Moltres ex", "31", Rarity.RARE, [POKEMON, BASIC, _FIRE_]),
+  ARTICUNO_EX_32 ("Articuno ex", "32", Rarity.RARE, [POKEMON, BASIC, _WATER_]),
+  ZAPDOS_EX_33 ("Zapdos ex", "33", Rarity.RARE, [POKEMON, BASIC, _LIGHTNING_]),
+  TYPHLOSION_34 ("Typhlosion", "34", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _FIRE_]),
+  PIKACHU_DELTA_35 ("Pikachu", "35", Rarity.RARE, [POKEMON, BASIC, DELTA, _METAL_]),
+  TROPICAL_TIDAL_WAVE_36 ("Tropical Tidal Wave", "36", Rarity.RARE, [TRAINER, ITEM]),
+  KYOGRE_EX_37 ("Kyogre ex", "37", Rarity.RARE, [POKEMON, BASIC, _WATER_]),
+  GROUDON_EX_38 ("Groudon ex", "38", Rarity.RARE, [POKEMON, BASIC, _FIGHTING_]),
+  RAYQUAZA_EX_39 ("Rayquaza ex", "39", Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
+  MEW_40 ("Mew", "40", Rarity.RARE, [POKEMON, BASIC, _PSYCHIC_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
   protected CardTypeSet cardTypes;
   protected String name;
   protected Rarity rarity;
-  protected int collectionLineNo;
+  protected String collectionLineNo;
 
-  NintendoBlackStarPromos(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+  NintendoBlackStarPromos(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
     this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
     this.name = name;
     this.rarity = rarity;
@@ -111,7 +111,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
 
   @Override
   public String getNumber() {
-    return String.valueOf(collectionLineNo);
+    return collectionLineNo;
   }
 
   @Override

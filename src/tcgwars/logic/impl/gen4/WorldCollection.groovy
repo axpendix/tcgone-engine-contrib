@@ -16,24 +16,24 @@ import tcgwars.logic.util.*;
  */
 public enum WorldCollection implements LogicCardInfo {
 
-  PIKACHU_P1 ("Pikachu", 1, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-  PIKACHU_P2 ("Pikachu", 2, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-  PIKACHU_P3 ("Pikachu", 3, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-  PIKACHU_P4 ("Pikachu", 4, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-  PIKACHU_P5 ("Pikachu", 5, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-  PIKACHU_P6 ("Pikachu", 6, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-  PIKACHU_P7 ("Pikachu", 7, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-  PIKACHU_P8 ("Pikachu", 8, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-  PIKACHU_P9 ("Pikachu", 9, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]);
+  PIKACHU_P1 ("Pikachu", "1", Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+  PIKACHU_P2 ("Pikachu", "2", Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+  PIKACHU_P3 ("Pikachu", "3", Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+  PIKACHU_P4 ("Pikachu", "4", Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+  PIKACHU_P5 ("Pikachu", "5", Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+  PIKACHU_P6 ("Pikachu", "6", Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+  PIKACHU_P7 ("Pikachu", "7", Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+  PIKACHU_P8 ("Pikachu", "8", Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+  PIKACHU_P9 ("Pikachu", "9", Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
   protected CardTypeSet cardTypes;
   protected String name;
   protected Rarity rarity;
-  protected int collectionLineNo;
+  protected String collectionLineNo;
 
-  WorldCollection(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+  WorldCollection(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
     this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
     this.name = name;
     this.rarity = rarity;
@@ -57,7 +57,7 @@ public enum WorldCollection implements LogicCardInfo {
 
   @Override
   public String getNumber() {
-    return String.valueOf(collectionLineNo);
+    return collectionLineNo;
   }
 
   @Override

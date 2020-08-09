@@ -40,32 +40,32 @@ import tcgwars.logic.util.*;
  */
 public enum PopSeries4 implements LogicCardInfo {
 
-  CHIMECHO_DELTA_1 ("Chimecho", 1, Rarity.RARE, [POKEMON, BASIC, DELTA, _METAL_]),
-  DEOXYS_DELTA_2 ("Deoxys", 2, Rarity.RARE, [POKEMON, BASIC, DELTA, _COLORLESS_]),
-  FLYGON_3 ("Flygon", 3, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_]),
-  MEW_4 ("Mew", 4, Rarity.RARE, [POKEMON, BASIC, _PSYCHIC_]),
-  SCEPTILE_5 ("Sceptile", 5, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
-  COMBUSKEN_6 ("Combusken", 6, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
-  GROVYLE_7 ("Grovyle", 7, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
-  HEAL_ENERGY_8 ("Heal Energy", 8, Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
-  POKEMON_FAN_CLUB_9 ("Pokémon Fan Club", 9, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-  SCRAMBLE_ENERGY_10 ("Scramble Energy", 10, Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
-  MUDKIP_11 ("Mudkip", 11, Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
-  PIDGEY_12 ("Pidgey", 12, Rarity.COMMON, [POKEMON, BASIC, _COLORLESS_]),
-  PIKACHU_13 ("Pikachu", 13, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
-  SQUIRTLE_14 ("Squirtle", 14, Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
-  TREECKO_DELTA_15 ("Treecko", 15, Rarity.COMMON, [POKEMON, BASIC, DELTA, _PSYCHIC_]),
-  WOBBUFFET_16 ("Wobbuffet", 16, Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
-  DEOXYS_EX_17 ("Deoxys ex", 17, Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]);
+  CHIMECHO_DELTA_1 ("Chimecho", "1", Rarity.RARE, [POKEMON, BASIC, DELTA, _METAL_]),
+  DEOXYS_DELTA_2 ("Deoxys", "2", Rarity.RARE, [POKEMON, BASIC, DELTA, _COLORLESS_]),
+  FLYGON_3 ("Flygon", "3", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_]),
+  MEW_4 ("Mew", "4", Rarity.RARE, [POKEMON, BASIC, _PSYCHIC_]),
+  SCEPTILE_5 ("Sceptile", "5", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
+  COMBUSKEN_6 ("Combusken", "6", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+  GROVYLE_7 ("Grovyle", "7", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
+  HEAL_ENERGY_8 ("Heal Energy", "8", Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
+  POKEMON_FAN_CLUB_9 ("Pokémon Fan Club", "9", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  SCRAMBLE_ENERGY_10 ("Scramble Energy", "10", Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
+  MUDKIP_11 ("Mudkip", "11", Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
+  PIDGEY_12 ("Pidgey", "12", Rarity.COMMON, [POKEMON, BASIC, _COLORLESS_]),
+  PIKACHU_13 ("Pikachu", "13", Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
+  SQUIRTLE_14 ("Squirtle", "14", Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
+  TREECKO_DELTA_15 ("Treecko", "15", Rarity.COMMON, [POKEMON, BASIC, DELTA, _PSYCHIC_]),
+  WOBBUFFET_16 ("Wobbuffet", "16", Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
+  DEOXYS_EX_17 ("Deoxys ex", "17", Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
   protected CardTypeSet cardTypes;
   protected String name;
   protected Rarity rarity;
-  protected int collectionLineNo;
+  protected String collectionLineNo;
 
-  PopSeries4(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+  PopSeries4(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
     this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
     this.name = name;
     this.rarity = rarity;
@@ -89,7 +89,7 @@ public enum PopSeries4 implements LogicCardInfo {
 
   @Override
   public String getNumber() {
-    return String.valueOf(collectionLineNo);
+    return collectionLineNo;
   }
 
   @Override
