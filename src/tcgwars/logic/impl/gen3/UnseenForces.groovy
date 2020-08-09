@@ -225,8 +225,8 @@ public enum UnseenForces implements LogicCardInfo {
   }
 
   @Override
-  public int getCollectionLineNo() {
-    return collectionLineNo;
+  public String getNumber() {
+    return String.valueOf(collectionLineNo);
   }
 
   @Override
@@ -2762,7 +2762,7 @@ public enum UnseenForces implements LogicCardInfo {
               energyToBeDiscarded.each{
                 if (!cardsToBeDiscarded.contains(it[1])) cardsToBeDiscarded.add(it[1])
               }
-              
+
               //bc "> ${cardsToBeDiscarded}"
               //bc "> ${cardsToBeDiscarded.flatten()}"
               cardsToBeDiscarded.discard()

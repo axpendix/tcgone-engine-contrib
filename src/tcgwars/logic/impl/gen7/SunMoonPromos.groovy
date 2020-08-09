@@ -1,6 +1,5 @@
 package tcgwars.logic.impl.gen7
 
-import tcgwars.logic.impl.gen7.*;
 
 import tcgwars.logic.impl.gen5.BlackWhitePromos;
 
@@ -303,8 +302,8 @@ public enum SunMoonPromos implements LogicCardInfo {
   }
 
   @Override
-  public int getCollectionLineNo() {
-    return collectionLineNo;
+  public String getNumber() {
+    return String.valueOf(collectionLineNo);
   }
 
   @Override

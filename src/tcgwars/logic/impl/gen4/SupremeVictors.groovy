@@ -205,8 +205,8 @@ public enum SupremeVictors implements LogicCardInfo {
   }
 
   @Override
-  public int getCollectionLineNo() {
-    return collectionLineNo;
+  public String getNumber() {
+    return String.valueOf(collectionLineNo);
   }
 
   @Override

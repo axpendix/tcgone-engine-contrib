@@ -153,8 +153,8 @@ public enum GreatEncounters implements LogicCardInfo {
   }
 
   @Override
-  public int getCollectionLineNo() {
-    return collectionLineNo;
+  public String getNumber() {
+    return String.valueOf(collectionLineNo);
   }
 
   @Override
@@ -477,8 +477,8 @@ public enum GreatEncounters implements LogicCardInfo {
               def rearrangedCards = rearrange(list)
               rearrangedCards.moveTo(hidden:true, my.deck)
               draw 6 - my.hand.size()
-            } 
-          } 
+            }
+          }
           move "Spinning Attack", {
             text "40 damage. "
             energyCost F, C

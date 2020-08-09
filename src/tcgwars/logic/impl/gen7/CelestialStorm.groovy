@@ -3,8 +3,6 @@ package tcgwars.logic.impl.gen7
 import tcgwars.logic.impl.gen3.FireRedLeafGreen
 import tcgwars.logic.impl.gen3.TeamRocketReturns;
 import tcgwars.logic.impl.gen5.DarkExplorers
-import tcgwars.logic.impl.gen6.Xy
-
 import tcgwars.logic.impl.gen5.BlackWhite
 import tcgwars.logic.impl.gen6.Breakthrough
 import tcgwars.logic.impl.gen2.Skyridge
@@ -252,8 +250,8 @@ public enum CelestialStorm implements LogicCardInfo {
   }
 
   @Override
-  public int getCollectionLineNo() {
-    return collectionLineNo;
+  public String getNumber() {
+    return String.valueOf(collectionLineNo);
   }
 
   @Override

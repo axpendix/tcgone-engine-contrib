@@ -195,8 +195,8 @@ public enum LegendsAwakened implements LogicCardInfo {
   }
 
   @Override
-  public int getCollectionLineNo() {
-    return collectionLineNo;
+  public String getNumber() {
+    return String.valueOf(collectionLineNo);
   }
 
   @Override
@@ -355,8 +355,8 @@ public enum LegendsAwakened implements LogicCardInfo {
             actionA {
               checkLastTurn()
               checkNoSPC()
-              
-              
+
+
             }
           }
           move "Magma Storm", {
@@ -3222,7 +3222,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               powerUsed()
               def sel = my.deck.subList(0,2).select("Choose 1 card to put into your hand")
               my.deck.subList(0,2).getExcludedList(sel).moveTo(hidden: true, my.deck)
-              sel.moveTo(hidden: true, my.hand)          
+              sel.moveTo(hidden: true, my.hand)
             }
           }
           move "Zen Blade", {

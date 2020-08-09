@@ -1,7 +1,5 @@
-package tcgwars.logic.impl.gen4;
+package tcgwars.logic.impl.gen4
 
-import tcgwars.logic.impl.gen4.Unleashed;
-import tcgwars.logic.impl.gen4.MysteriousTreasures;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -155,8 +153,8 @@ public enum CallOfLegends implements LogicCardInfo {
   }
 
   @Override
-  public int getCollectionLineNo() {
-    return collectionLineNo;
+  public String getNumber() {
+    return String.valueOf(collectionLineNo);
   }
 
   @Override

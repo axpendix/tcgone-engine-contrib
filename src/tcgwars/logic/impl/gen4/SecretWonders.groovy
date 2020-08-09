@@ -203,8 +203,8 @@ public enum SecretWonders implements LogicCardInfo {
   }
 
   @Override
-  public int getCollectionLineNo() {
-    return collectionLineNo;
+  public String getNumber() {
+    return String.valueOf(collectionLineNo);
   }
 
   @Override
@@ -2696,7 +2696,7 @@ public enum SecretWonders implements LogicCardInfo {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nChoose a card from your hand and put it on top of your deck. Search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward. (If this is the only card in your hand, you can’t play this card.)"
           onPlay {
             my.hand.getExcludedList(thisCard).select("Choose the card to put back in your deck").showToOpponent("Chosen card").moveTo(addToTop: true, my.deck)
-            my.deck.search(count:1,"Choose the Pokémon to put back in your deck",cardTypeFilter(POKEMON)).showToOpponent("Chosen card").moveTo(my.hand) 
+            my.deck.search(count:1,"Choose the Pokémon to put back in your deck",cardTypeFilter(POKEMON)).showToOpponent("Chosen card").moveTo(my.hand)
             shuffleDeck()
           }
           playRequirement{
