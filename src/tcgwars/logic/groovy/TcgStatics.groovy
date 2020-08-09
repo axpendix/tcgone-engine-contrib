@@ -81,16 +81,25 @@ class TcgStatics {
       damage dmg,pcs
     }
   }
-  static flip (playerType=null, Closure eachHead, Closure eachTail={}, multi=[:]){
-    flip(1, playerType, eachHead, eachTail, multi)
+  static flip (Closure eachHead, Closure eachTail={}, multi=[:]){
+    flip("", 1, eachHead, eachTail, multi)
   }
-  static flip (int count, playerType=null, Closure eachHead, Closure eachTail={}, multi=[:]){
-    flip("", count, playerType, eachHead, eachTail, multi)
+  static flip (String info, Closure eachHead, Closure eachTail={}, multi=[:]){
+    flip(info, 1, null, eachHead, eachTail, multi)
   }
-  static flip (String info, playerType=null, Closure eachHead, Closure eachTail={}, multi=[:]){
+  static flip (int count, Closure eachHead, Closure eachTail={}, multi=[:]){
+    flip("", count, eachHead, eachTail, multi)
+  }
+  static flip (PlayerType playerType, Closure eachHead, Closure eachTail={}, multi=[:]){
+    flip("", playerType, eachHead, eachTail, multi)
+  }
+  static flip (String info, int count, Closure eachHead, Closure eachTail={}, multi=[:]){
+    flip(info, count, null, eachHead, eachTail, multi)
+  }
+  static flip (String info, PlayerType playerType, Closure eachHead, Closure eachTail={}, multi=[:]){
     flip(info, 1, playerType, eachHead, eachTail, multi)
   }
-  static flip (String info, int count, playerType=null, Closure eachHead, Closure eachTail={}, multi=[:]){
+  static flip (String info, int count, PlayerType playerType, Closure eachHead, Closure eachTail={}, multi=[:]){
     CoinFlip cf=new CoinFlip(count, toEffect (eachHead), toEffect (eachTail))
     cf.setInfo(info)
     if(playerType) {
