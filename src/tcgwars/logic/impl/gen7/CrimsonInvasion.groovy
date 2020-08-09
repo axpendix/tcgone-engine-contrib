@@ -183,7 +183,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return String.valueOf(collectionLineNo);
   }
 
   @Override
