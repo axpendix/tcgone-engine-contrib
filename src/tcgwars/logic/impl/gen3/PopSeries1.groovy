@@ -35,32 +35,32 @@ import tcgwars.logic.util.*;
  */
 public enum PopSeries1 implements LogicCardInfo {
 
-  BLAZIKEN_1 ("Blaziken", 1, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _FIRE_]),
-  METAGROSS_2 ("Metagross", 2, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _METAL_]),
-  RAYQUAZA_3 ("Rayquaza", 3, Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
-  SCEPTILE_4 ("Sceptile", 4, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
-  SWAMPERT_5 ("Swampert", 5, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _WATER_]),
-  BEAUTIFLY_6 ("Beautifly", 6, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
-  MASQUERAIN_7 ("Masquerain", 7, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
-  MURKROW_8 ("Murkrow", 8, Rarity.UNCOMMON, [POKEMON, BASIC, _DARKNESS_]),
-  PUPITAR_9 ("Pupitar", 9, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
-  TORKOAL_10 ("Torkoal", 10, Rarity.UNCOMMON, [POKEMON, BASIC, _FIGHTING_]),
-  LARVITAR_11 ("Larvitar", 11, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
-  MINUN_12 ("Minun", 12, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
-  PLUSLE_13 ("Plusle", 13, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
-  SURSKIT_14 ("Surskit", 14, Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
-  SWELLOW_15 ("Swellow", 15, Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
-  ARMALDO_EX_16 ("Armaldo ex", 16, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_]),
-  TYRANITAR_EX_17 ("Tyranitar ex", 17, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _DARKNESS_]);
+  BLAZIKEN_1 ("Blaziken", "1", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _FIRE_]),
+  METAGROSS_2 ("Metagross", "2", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _METAL_]),
+  RAYQUAZA_3 ("Rayquaza", "3", Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
+  SCEPTILE_4 ("Sceptile", "4", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
+  SWAMPERT_5 ("Swampert", "5", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _WATER_]),
+  BEAUTIFLY_6 ("Beautifly", "6", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
+  MASQUERAIN_7 ("Masquerain", "7", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
+  MURKROW_8 ("Murkrow", "8", Rarity.UNCOMMON, [POKEMON, BASIC, _DARKNESS_]),
+  PUPITAR_9 ("Pupitar", "9", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
+  TORKOAL_10 ("Torkoal", "10", Rarity.UNCOMMON, [POKEMON, BASIC, _FIGHTING_]),
+  LARVITAR_11 ("Larvitar", "11", Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
+  MINUN_12 ("Minun", "12", Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
+  PLUSLE_13 ("Plusle", "13", Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
+  SURSKIT_14 ("Surskit", "14", Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
+  SWELLOW_15 ("Swellow", "15", Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
+  ARMALDO_EX_16 ("Armaldo ex", "16", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_]),
+  TYRANITAR_EX_17 ("Tyranitar ex", "17", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _DARKNESS_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
   protected CardTypeSet cardTypes;
   protected String name;
   protected Rarity rarity;
-  protected int collectionLineNo;
+  protected String collectionLineNo;
 
-  PopSeries1(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+  PopSeries1(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
     this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
     this.name = name;
     this.rarity = rarity;
@@ -83,7 +83,7 @@ public enum PopSeries1 implements LogicCardInfo {
   }
 
   @Override
-  public int getCollectionLineNo() {
+  public String getNumber() {
     return collectionLineNo;
   }
 

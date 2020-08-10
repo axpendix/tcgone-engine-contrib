@@ -38,68 +38,68 @@ import tcgwars.logic.util.*;
  */
 public enum WizardsBlackStarPromosNG implements LogicCardInfo {
 
-  PIKACHU_1 ("Pikachu", 1, Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
-  ELECTABUZZ_2 ("Electabuzz", 2, Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
-  MEWTWO_3 ("Mewtwo", 3, Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
-  PIKACHU_4 ("Pikachu", 4, Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
-  DRAGONITE_5 ("Dragonite", 5, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]),
-  ARCANINE_6 ("Arcanine", 6, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
-  JIGGLYPUFF_7 ("Jigglypuff", 7, Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
-  MEW_8 ("Mew", 8, Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
-  MEW_9 ("Mew", 9, Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
-  MEOWTH_10 ("Meowth", 10, Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
-  EEVEE_11 ("Eevee", 11, Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
-  MEWTWO_12 ("Mewtwo", 12, Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
-  VENUSAUR_13 ("Venusaur", 13, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
-  MEWTWO_14 ("Mewtwo", 14, Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
-  COOL_PORYGON_15 ("Cool Porygon", 15, Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
-  COMPUTER_ERROR_16 ("Computer Error", 16, Rarity.PROMO, [TRAINER, ROCKETS_SECRET_MACHINE]),
-  DARK_PERSIAN_17 ("Dark Persian", 17, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
-  TEAM_ROCKET_S_MEOWTH_18 ("Team Rocket's Meowth", 18, Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
-  SABRINA_S_ABRA_19 ("Sabrina's Abra", 19, Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
-  PSYDUCK_20 ("Psyduck", 20, Rarity.PROMO, [POKEMON, BASIC, _WATER_]),
-  MOLTRES_21 ("Moltres", 21, Rarity.PROMO, [POKEMON, BASIC, _FIRE_]),
-  ARTICUNO_22 ("Articuno", 22, Rarity.PROMO, [POKEMON, BASIC, _WATER_]),
-  ZAPDOS_23 ("Zapdos", 23, Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
-  BIRTHDAY_PIKACHU_24 ("Birthday Pikachu", 24, Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
-  FLYING_PIKACHU_25 ("Flying Pikachu", 25, Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
-  PIKACHU_26 ("Pikachu", 26, Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
-  PIKACHU_27 ("Pikachu", 27, Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
-  SURFING_PIKACHU_28 ("Surfing Pikachu", 28, Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
-  MARILL_29 ("Marill", 29, Rarity.PROMO, [POKEMON, BASIC, _WATER_]),
-  TOGEPI_30 ("Togepi", 30, Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
-  CLEFFA_31 ("Cleffa", 31, Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
-  SMEARGLE_32 ("Smeargle", 32, Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
-  SCIZOR_33 ("Scizor", 33, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
-  ENTEI_34 ("Entei", 34, Rarity.PROMO, [POKEMON, BASIC, _FIRE_]),
-  PICHU_35 ("Pichu", 35, Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
-  IGGLYBUFF_36 ("Igglybuff", 36, Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
-  HITMONTOP_37 ("Hitmontop", 37, Rarity.PROMO, [POKEMON, BASIC, _FIGHTING_]),
-  UNOWN_J__38 ("Unown [J]", 38, Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
-  MISDREAVUS_39 ("Misdreavus", 39, Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
-  POKEMON_CENTER_40 ("Pokémon Center", 40, Rarity.PROMO, [TRAINER]),
-  LUCKY_STADIUM_41 ("Lucky Stadium", 41, Rarity.PROMO, [TRAINER]),
-  POKEMON_TOWER_42 ("Pokémon Tower", 42, Rarity.PROMO, [TRAINER]),
-  MACHAMP_43 ("Machamp", 43, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_]),
-  MAGMAR_44 ("Magmar", 44, Rarity.PROMO, [POKEMON, BASIC, _FIRE_]),
-  SCYTHER_45 ("Scyther", 45, Rarity.PROMO, [POKEMON, BASIC, _GRASS_]),
-  ELECTABUZZ_46 ("Electabuzz", 46, Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
-  MEW_47 ("Mew", 47, Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
-  ARTICUNO_48 ("Articuno", 48, Rarity.PROMO, [POKEMON, BASIC, _WATER_]),
-  SNORLAX_49 ("Snorlax", 49, Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
-  CELEBI_50 ("Celebi", 50, Rarity.PROMO, [POKEMON, BASIC, _GRASS_]),
-  RAPIDASH_51 ("Rapidash", 51, Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
-  HO_OH_52 ("Ho-oh", 52, Rarity.PROMO, [POKEMON, BASIC, _FIRE_]),
-  SUICUNE_53 ("Suicune", 53, Rarity.PROMO, [POKEMON, BASIC, _WATER_]);
+  PIKACHU_1 ("Pikachu", "1", Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
+  ELECTABUZZ_2 ("Electabuzz", "2", Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
+  MEWTWO_3 ("Mewtwo", "3", Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
+  PIKACHU_4 ("Pikachu", "4", Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
+  DRAGONITE_5 ("Dragonite", "5", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]),
+  ARCANINE_6 ("Arcanine", "6", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+  JIGGLYPUFF_7 ("Jigglypuff", "7", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
+  MEW_8 ("Mew", "8", Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
+  MEW_9 ("Mew", "9", Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
+  MEOWTH_10 ("Meowth", "10", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
+  EEVEE_11 ("Eevee", "11", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
+  MEWTWO_12 ("Mewtwo", "12", Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
+  VENUSAUR_13 ("Venusaur", "13", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
+  MEWTWO_14 ("Mewtwo", "14", Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
+  COOL_PORYGON_15 ("Cool Porygon", "15", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
+  COMPUTER_ERROR_16 ("Computer Error", "16", Rarity.PROMO, [TRAINER, ROCKETS_SECRET_MACHINE]),
+  DARK_PERSIAN_17 ("Dark Persian", "17", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
+  TEAM_ROCKET_S_MEOWTH_18 ("Team Rocket's Meowth", "18", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
+  SABRINA_S_ABRA_19 ("Sabrina's Abra", "19", Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
+  PSYDUCK_20 ("Psyduck", "20", Rarity.PROMO, [POKEMON, BASIC, _WATER_]),
+  MOLTRES_21 ("Moltres", "21", Rarity.PROMO, [POKEMON, BASIC, _FIRE_]),
+  ARTICUNO_22 ("Articuno", "22", Rarity.PROMO, [POKEMON, BASIC, _WATER_]),
+  ZAPDOS_23 ("Zapdos", "23", Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
+  BIRTHDAY_PIKACHU_24 ("Birthday Pikachu", "24", Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
+  FLYING_PIKACHU_25 ("Flying Pikachu", "25", Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
+  PIKACHU_26 ("Pikachu", "26", Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
+  PIKACHU_27 ("Pikachu", "27", Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
+  SURFING_PIKACHU_28 ("Surfing Pikachu", "28", Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
+  MARILL_29 ("Marill", "29", Rarity.PROMO, [POKEMON, BASIC, _WATER_]),
+  TOGEPI_30 ("Togepi", "30", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
+  CLEFFA_31 ("Cleffa", "31", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
+  SMEARGLE_32 ("Smeargle", "32", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
+  SCIZOR_33 ("Scizor", "33", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
+  ENTEI_34 ("Entei", "34", Rarity.PROMO, [POKEMON, BASIC, _FIRE_]),
+  PICHU_35 ("Pichu", "35", Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
+  IGGLYBUFF_36 ("Igglybuff", "36", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
+  HITMONTOP_37 ("Hitmontop", "37", Rarity.PROMO, [POKEMON, BASIC, _FIGHTING_]),
+  UNOWN_J__38 ("Unown [J]", "38", Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
+  MISDREAVUS_39 ("Misdreavus", "39", Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
+  POKEMON_CENTER_40 ("Pokémon Center", "40", Rarity.PROMO, [TRAINER]),
+  LUCKY_STADIUM_41 ("Lucky Stadium", "41", Rarity.PROMO, [TRAINER]),
+  POKEMON_TOWER_42 ("Pokémon Tower", "42", Rarity.PROMO, [TRAINER]),
+  MACHAMP_43 ("Machamp", "43", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_]),
+  MAGMAR_44 ("Magmar", "44", Rarity.PROMO, [POKEMON, BASIC, _FIRE_]),
+  SCYTHER_45 ("Scyther", "45", Rarity.PROMO, [POKEMON, BASIC, _GRASS_]),
+  ELECTABUZZ_46 ("Electabuzz", "46", Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
+  MEW_47 ("Mew", "47", Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
+  ARTICUNO_48 ("Articuno", "48", Rarity.PROMO, [POKEMON, BASIC, _WATER_]),
+  SNORLAX_49 ("Snorlax", "49", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
+  CELEBI_50 ("Celebi", "50", Rarity.PROMO, [POKEMON, BASIC, _GRASS_]),
+  RAPIDASH_51 ("Rapidash", "51", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+  HO_OH_52 ("Ho-oh", "52", Rarity.PROMO, [POKEMON, BASIC, _FIRE_]),
+  SUICUNE_53 ("Suicune", "53", Rarity.PROMO, [POKEMON, BASIC, _WATER_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
   protected CardTypeSet cardTypes;
   protected String name;
   protected Rarity rarity;
-  protected int collectionLineNo;
+  protected String collectionLineNo;
 
-  WizardsBlackStarPromosNG(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+  WizardsBlackStarPromosNG(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
     this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
     this.name = name;
     this.rarity = rarity;
@@ -122,7 +122,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
   }
 
   @Override
-  public int getCollectionLineNo() {
+  public String getNumber() {
     return collectionLineNo;
   }
 

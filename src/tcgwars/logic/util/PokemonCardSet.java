@@ -36,6 +36,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
   private CardList set;
 
   private HP damage;
+  private HP lastFullHP = null;
 
   private PlayerType owner;
 
@@ -180,11 +181,16 @@ public class PokemonCardSet implements PokemonStack, Serializable {
   }
 
   public HP getFullHP(Battleground bg) {
-    return bg.em().activateGetter(new GetFullHP(this));
+    lastFullHP = bg.em().activateGetter(new GetFullHP(this));
+    return lastFullHP;
   }
 
   public HP getFullHP() {
-    return TcgStatics.bg().em().activateGetter(new GetFullHP(this));
+    lastFullHP = TcgStatics.bg().em().activateGetter(new GetFullHP(this));
+    return lastFullHP;
+  }
+  public HP getLastFullHP() {
+    return lastFullHP;
   }
 
   public HP getRemainingHP(Battleground bg) {
