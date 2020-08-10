@@ -2740,7 +2740,7 @@ public enum TeamUp implements LogicCardInfo {
           weakness FIRE
           resistance PSYCHIC, MINUS20
           bwAbility "Key of Secrets" , {
-            text "Each of your [M] Pokémon's Resistance is now –40."
+            text "Each of your [M] Pokémon's Resistance is now -40."
             getter(GET_RESISTANCES) {holder->
               if(holder.effect.target.types.contains(M) && holder.effect.target.owner == self.owner){
                 def newR=[]
