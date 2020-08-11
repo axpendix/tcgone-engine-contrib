@@ -850,7 +850,7 @@ public enum PowerKeepers implements LogicCardInfo {
             if (my.deck) {
               def drawStart = Math.max(0, my.deck.size() - 2)
               def cardsDrawn = my.deck.size() - drawStart
-              my.deck.subList(drawStart, my.deck.size()).moveTo(hidden:true, my.hand)
+              my.deck.subList(drawStart, my.deck.size()).moveTo(supressLog:true, my.hand)
               bc "${my.owner.getPlayerUsername(bg)} drew ${cardsDrawn} cards from the bottom of their deck."
             }
           }
