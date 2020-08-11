@@ -476,8 +476,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
                 randomOppHand.showToMe("Opponent's hand")
                 if(randomOppHand.any{it.cardTypes.is(BASIC)}){
                   def card = randomOppHand.findAll{it.cardTypes.is(BASIC)}.select("select the pokémon to put on the bench").first()
-                  opp.hand.remove(card)
-                  benchPCS(card, OTHER, TargetPlayer.OPPONENT)
+                  benchPCS(card, OTHER)
                 }
               }
             }

@@ -1584,7 +1584,6 @@ public enum PowerKeepers implements LogicCardInfo {
             my.deck.search(min:0, max:maxSpace, "Search your deck for ${maxSpace == 2 ? "up to 2 cards" : "a card"} named Omanyte, Kabuto, Aerodactyl, Lileep, or Anorith", {
               ["Omanyte", "Kabuto", "Aerodactyl", "Lileep", "Anorith"].contains(it.name)
             }).each {
-              my.deck.remove(it)
               benchPCS(it)
             }
             shuffleDeck()

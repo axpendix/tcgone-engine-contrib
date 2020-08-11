@@ -868,7 +868,6 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             onAttack {
               def myBenchSpace = my.bench.freeBenchCount
               deck.search (max:myBenchSpace,"Search for up to $myBenchSpace Basic Pokemon",cardTypeFilter(BASIC)).each {
-                deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()
@@ -876,8 +875,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
               if(opp.bench.notFull) {
                 def oppBenchSpace = opp.bench.getFreeBenchCount()
                 opp.deck.search(max:oppBenchSpace,"Search for up to $oppBenchSpace Basic Pokemon",cardTypeFilter(BASIC)).each{
-                  opp.deck.remove(it)
-                  benchPCS(it, OTHER, TargetPlayer.OPPONENT)
+                  benchPCS(it, OTHER)
                 }
                 shuffleDeck(null, TargetPlayer.OPPONENT)
               }
