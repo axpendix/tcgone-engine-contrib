@@ -82,17 +82,29 @@ class TcgStatics {
     }
   }
   static flip (Closure eachHead, Closure eachTail={}, multi=[:]){
-    flip(1, eachHead, eachTail, multi)
+    flip("", 1, eachHead, eachTail, multi)
+  }
+  static flip (String info, Closure eachHead, Closure eachTail={}, multi=[:]){
+    flip(info, 1, null, eachHead, eachTail, multi)
   }
   static flip (int count, Closure eachHead, Closure eachTail={}, multi=[:]){
     flip("", count, eachHead, eachTail, multi)
   }
-  static flip (String info, Closure eachHead, Closure eachTail={}, multi=[:]){
-    flip(info, 1, eachHead, eachTail, multi)
+  static flip (PlayerType playerType, Closure eachHead, Closure eachTail={}, multi=[:]){
+    flip("", playerType, eachHead, eachTail, multi)
   }
   static flip (String info, int count, Closure eachHead, Closure eachTail={}, multi=[:]){
+    flip(info, count, null, eachHead, eachTail, multi)
+  }
+  static flip (String info, PlayerType playerType, Closure eachHead, Closure eachTail={}, multi=[:]){
+    flip(info, 1, playerType, eachHead, eachTail, multi)
+  }
+  static flip (String info, int count, PlayerType playerType, Closure eachHead, Closure eachTail={}, multi=[:]){
     CoinFlip cf=new CoinFlip(count, toEffect (eachHead), toEffect (eachTail))
     cf.setInfo(info)
+    if(playerType) {
+      cf.setPlayer(playerType)
+    }
     for(entry in multi){
       cf.setEffectForANumberOfHeads(toEffect(entry.value as Closure), entry.key as Integer)
     }
@@ -101,9 +113,10 @@ class TcgStatics {
   static flipTails (Closure eachTail) {
     flip(1, {}, eachTail)
   }
-  static flipUntilTails (Closure eachHead){
+  static flipUntilTails (Closure eachHead, playerType=null){
     NeverEndingCoinFlip cf=new NeverEndingCoinFlip()
     cf.effectForEachHead = toEffect (eachHead)
+    cf.setPlayer(playerType)
     cf.run(bg)
   }
 
@@ -427,7 +440,7 @@ class TcgStatics {
           }
         }
         unregisterAfter 2
-        after SWITCH, defending, {unregister()}
+        after FALL_BACK, defending, {unregister()}
         after EVOLVE, defending, {unregister()}
         after DEVOLVE, defending, {unregister()}
       }
@@ -485,20 +498,12 @@ class TcgStatics {
       opp.bench.remove(pcs)
     }
   }
-  static PokemonCardSet benchPCS (Card card, ActivationReason reason=ActivationReason.OTHER, TargetPlayer targetPlayer=TargetPlayer.SELF){
-    if(card.getCardTypes().is(BREAK)){
-      bg.wcu("BREAK Pokémon cannot be brought to play")
+  static PokemonCardSet benchPCS (Card card, ActivationReason reason=OTHER){
+    def effect = new PutOnBench(card, reason);
+    if (!bg().em().run(effect)) {
+      return effect.getBench();
     }
-    PlayerType playerType=targetPlayer.getPlayerType(bg())
-    PlayerBattleground pbg=targetPlayer.getPbg(bg())
-    assert pbg.bench.isNotFull() : "Bench is full"
-    PokemonCardSet bench = new PokemonCardSet(playerType);
-    bench.cards().add(card);
-    pbg.getBench().add(bench);
-    bc "$bench was put on bench"
-    bg().em().run(new CantEvolve(bench, bg().getTurnCount()));
-    bg().em().run(new ActivateAbilities((PokemonCard) card, bench, reason));
-    bench
+    return null;
   }
   static evolve (PokemonCardSet pcs, Card card, ActivationReason reason=ActivationReason.PLAY_FROM_HAND) {
     bg().em().run(new Evolve(pcs, card));
@@ -534,6 +539,10 @@ class TcgStatics {
   static extraPoison (int v){
     new ExtraPoisonDamage(v).run(bg())
   }
+  static increasePoison (int v) {
+    int poisonValue = bg.em().retrieveObject("extra_poison_counter_"+opp.active.hashCode()) ?: 0
+    extraPoison(poisonValue + v)
+  }
   static sandAttack (Move thisMove) {
     new SandAttack(thisMove.name).run(bg())
   }
@@ -553,7 +562,7 @@ class TcgStatics {
           }
         }
       }
-      after SWITCH, pcs, {unregister()}
+      after FALL_BACK, pcs, {unregister()}
       unregisterAfter 3
     }
   }
@@ -625,7 +634,7 @@ class TcgStatics {
         }
       }
       unregisterAfter 3
-      after SWITCH, self, {unregister()}
+      after FALL_BACK, self, {unregister()}
       after EVOLVE, self, {unregister()}
       after DEVOLVE, self, {unregister()}
       register{registeredOn=bg.turnCount}
@@ -698,7 +707,7 @@ class TcgStatics {
       unregisterAfter(2)
       after EVOLVE, self, {unregister()}
       after DEVOLVE, self, {unregister()}
-      after SWITCH, self, {unregister()}
+      after FALL_BACK, self, {unregister()}
     }
   }
 
@@ -721,7 +730,7 @@ class TcgStatics {
       unregisterAfter(2)
       after EVOLVE, self, {unregister()}
       after DEVOLVE, self, {unregister()}
-      after SWITCH, self, {unregister()}
+      after FALL_BACK, self, {unregister()}
     }
   }
 
@@ -738,7 +747,7 @@ class TcgStatics {
       unregisterAfter(2)
       after EVOLVE, self, {unregister()}
       after DEVOLVE, self, {unregister()}
-      after SWITCH, self, {unregister()}
+      after FALL_BACK, self, {unregister()}
     }
   }
   static callForFamily(Map params=[:],int count,Object delegate){
@@ -755,13 +764,11 @@ class TcgStatics {
       }
       if(params.type){
         deck.search (max: maxSpace,{it.name.contains(pkmnName) && it.cardTypes.is(basicFilter) && it.asPokemonCard().types.contains(params.type)}).each {
-          deck.remove(it)
           benchPCS(it)
         }
       }
       else{
         deck.search (max: maxSpace,{it.name.contains(pkmnName) && it.cardTypes.is(basicFilter)}).each{
-          deck.remove(it)
           benchPCS(it)
         }
       }
@@ -789,13 +796,13 @@ class TcgStatics {
     afterDamage { if (defending.active) { targeted(defending) {
       delayed {
         before RETREAT, defending, { wcu "${thisMove.name} prevents retreat."; prevent()}
-        before SWITCH, defending, { bc "${thisMove.name} prevents switch."; prevent()}
+        before FALL_BACK, defending, { bc "${thisMove.name} prevents switch."; prevent()}
         if(asLongAsSelfIsActive){
-          after SWITCH, self, {unregister()}
+          after FALL_BACK, self, {unregister()}
           after EVOLVE, self, {unregister()}
           after DEVOLVE, self, {unregister()}
         }
-        after SWITCH, defending, {unregister()}
+        after FALL_BACK, defending, {unregister()}
         after EVOLVE, defending, {unregister()}
         after DEVOLVE, defending, {unregister()}
         unregisterAfter 2
@@ -935,7 +942,9 @@ class TcgStatics {
         eff.unregister()
       }
       unregisterAfter 2
-      after SWITCH, self, {unregister()}
+      after FALL_BACK, self, {unregister()}
+      after EVOLVE, self, {unregister()}
+      after DEVOLVE, self, {unregister()}
     }
   }
 
@@ -1012,53 +1021,53 @@ class TcgStatics {
     }
   }
 
-	static void defendingAttacksCostsMore (PokemonCardSet pcs, List<Type> energies) {
-		targeted(pcs) {
-			delayed {
-				def eff
-				register {
-					eff = getter (GET_MOVE_LIST, NORMAL, pcs) {h->
-						def list=[]
-						for(move in h.object){
-							def copy=move.shallowCopy()
-							copy.energyCost.addAll(energies)
-							list.add(copy)
-						}
-						h.object=list
-					}
-					bc "Attacks of $pcs will cost $energies more during next turn"
-				}
-				unregister {
-					eff.unregister()
-				}
-				unregisterAfter 2
-        after SWITCH, pcs, {unregister()}
+  static void defendingAttacksCostsMore (PokemonCardSet pcs, List<Type> energies) {
+    targeted(pcs) {
+      delayed {
+        def eff
+        register {
+          eff = getter (GET_MOVE_LIST, NORMAL, pcs) {h->
+            def list=[]
+            for(move in h.object){
+              def copy=move.shallowCopy()
+              copy.energyCost.addAll(energies)
+              list.add(copy)
+            }
+            h.object=list
+          }
+          bc "Attacks of $pcs will cost $energies more during next turn"
+        }
+        unregister {
+          eff.unregister()
+        }
+        unregisterAfter 2
+        after FALL_BACK, pcs, {unregister()}
         after EVOLVE, pcs, {unregister()}
         after DEVOLVE, pcs, {unregister()}
-			}
-		}
-	}
+      }
+    }
+  }
 
-	static void defendingRetreatsCostsMore (PokemonCardSet pcs, List<Type> energies) {
-		targeted(pcs) {
-			delayed {
-				def eff
-				register {
+  static void defendingRetreatsCostsMore (PokemonCardSet pcs, List<Type> energies) {
+    targeted(pcs) {
+      delayed {
+        def eff
+        register {
           eff = getter (GET_RETREAT_COST, NORMAL, pcs) {h->
             h.object += 1
           }
-					bc "Retreat cost of $pcs will cost 1 more energy during the next turn."
-				}
-				unregister {
-					eff.unregister()
-				}
-				unregisterAfter 2
-        after SWITCH, pcs, {unregister()}
+          bc "Retreat cost of $pcs will cost 1 more energy during the next turn."
+        }
+        unregister {
+          eff.unregister()
+        }
+        unregisterAfter 2
+        after FALL_BACK, pcs, {unregister()}
         after EVOLVE, pcs, {unregister()}
         after DEVOLVE, pcs, {unregister()}
-			}
-		}
-	}
+      }
+    }
+  }
 
   static void increasedDamageDoneToDefending (PokemonCardSet self, PokemonCardSet pcs, int value, String atkName=""){
     targeted(pcs){
@@ -1070,7 +1079,7 @@ class TcgStatics {
           }}
         }
         unregisterAfter 3
-        after SWITCH, pcs, {unregister()}
+        after FALL_BACK, pcs, {unregister()}
         after EVOLVE, pcs, {unregister()}
         after DEVOLVE, pcs, {unregister()}
       }
@@ -1200,7 +1209,7 @@ class TcgStatics {
     def checkedArea = params.benched ? checkedPlayer.bench : checkedPlayer.all
 
     def variantsAllowed = params.hasVariants?:[]
-    if (!(variantsAllowed instanceof ArrayList<>)) variantsAllowed = [variantsAllowed]
+    if (!(variantsAllowed instanceof List)) variantsAllowed = [variantsAllowed]
     def variantFilters = [
       (CardType.POKEMON_V):   { it.pokemonV },
       (CardType.VMAX):        { it.pokemonVMAX },
@@ -1221,7 +1230,7 @@ class TcgStatics {
     ]
 
     def stageRequired = params.isStage?:[]
-    if (!(stageRequired instanceof ArrayList<>)) stageRequired = [stageRequired]
+    if (!(stageRequired instanceof List)) stageRequired = [stageRequired]
     def stageFilters = [
       (CardType.EVOLVED):     { it.evolution },
       (CardType.UNEVOLVED):   { it.notEvolution },
@@ -1308,7 +1317,7 @@ class TcgStatics {
     delayed {
       after EVOLVE, defending, {unregister()}
       after DEVOLVE, defending, {unregister()}
-      after SWITCH, defending, {unregister()}
+      after FALL_BACK, defending, {unregister()}
 
       before REMOVE_DAMAGE_COUNTER, defending, {
         bc "Healing was prevented due to an effect"
@@ -1318,9 +1327,26 @@ class TcgStatics {
     }
   }
   static void opponentCantPlaySupporterNextTurn(def _delegate){
+    bc "${_delegate.thisMove} - Supporters can't be played from ${opp.owner.getPlayerUsername(bg)}'s hand during their next turn"
     _delegate.delayed {
+      def flag = false
+      before USE_ABILITY, {
+        flag = true
+      }
+      after POKEPOWER, {
+        flag = false
+      }
+      after ACTIVATE_ABILITY, {
+        flag = false
+      }
+      before PROCESS_ATTACK_EFFECTS, {
+        flag = true
+      }
+      before BETWEEN_TURNS, {
+        flag = false
+      }
       before PLAY_TRAINER, {
-        if(ef.supporter && bg.currentTurn==_delegate.self.owner.opposite) {
+        if(ef.supporter && bg.currentTurn==_delegate.self.owner.opposite && !flag) {
           wcu "${_delegate.thisMove} prevents playing supporters"
           prevent()
         }
@@ -1396,6 +1422,21 @@ class TcgStatics {
     } */
   }
 
+  static putDamageCountersOnOpponentsPokemon(int counters, def selectArea = opp.all){
+    if (selectArea.notEmpty) {
+      def eff = delayed {
+        before KNOCKOUT, {
+          prevent()
+        }
+      }
+
+      counters.times{directDamage 10, selectArea.select("Put 1 damage counter on which pokémon? ${it}/${counters} counters placed") }
+
+      eff.unregister()
+      checkFaint()
+    }
+  }
+
   static boolean wasSwitchedOutThisTurn(PokemonCardSet self){
     self.lastSwitchedOut == bg.turnCount && self.lastSwitchedOutName == self.name
   }
@@ -1405,13 +1446,19 @@ class TcgStatics {
 
   static boolean isValidFossilCard(Card potentialFossil){
     if(
-      (potentialFossil.cardTypes.is(ITEM) && potentialFossil.name.contains("Fossil")) ||
+    (potentialFossil.cardTypes.is(ITEM) && potentialFossil.name.contains("Fossil")) ||
       (potentialFossil.cardTypes.is(STAGE1) && potentialFossil.predecessor.contains("Fossil")) ||
       (potentialFossil.cardTypes.is(STAGE2) && bg().gm().getBasicsFromStage2(potentialFossil.name).any{it.contains("Fossil")})
     )
       return true
     else
       return false
+  }
+
+  static confirmScoopLastPokemon() {
+    if (my.bench.empty){
+      assert confirm("You have no other Pokémon in play. Playing this card may cause you to lose the game. Are you sure you want to play it anyway?") : "Use of the card was canceled"
+    }
   }
 
   static void loadMarkerCheckerAction(def delegate, actions) {

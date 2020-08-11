@@ -28,25 +28,24 @@ It went live on 18 July 2013 and is being actively developed and maintained. [mo
 1. Inspect [implementations of some sets](https://github.com/axpendix/tcgone-engine-contrib/tree/master/src/tcgwars/logic/impl) to understand more.
 1. [Please join our Discord #dev room](https://discord.gg/JZP2qzU), ask any questions regarding implementations or contribution in there
 1. Decide on what you're going to contribute. You can investigate [some bug reports](https://forum.tcgone.net/c/bug-reports?solved=no) or work on missing sets.
-1. Please fork this repository, commit your changes then submit a pull request to `master`.
-1. I review your request and merge your changes to master. Please read and adhere to **Repository Rules** below or your request might be rejected.
+1. Please fork this repository, commit your changes to your fork, then submit a pull request to `master`.
+1. We will review your request and merge your changes to master. Please read and adhere to **Repository Rules** below or your request might be rejected.
 1. After your changes are merged to `master`, go to <https://dev.tcgone.net> and test your changes, fix any bugs that you encounter with additional commits.
-1. After you've submitted several good standing commits, I'll add you as a contributor so you'll be able to push directly to `master` branch. You will also get **developer** role in our Discord server and become a TCG ONE staff member!
 
 ### Repository Rules
 
-- NO MERGE COMMITS! ALWAYS USE REBASE! Please always run `git pull --rebase --autostash` to get changes from the server, else you may litter the repository history.
+- NO MERGE COMMITS! Please always run `git pull --rebase --autostash` to get changes from the server.
 - Please DO NOT commit any other file than card implementation files like metadata files, IDE garbage, etc, your merge request will not be accepted.
-- Please also be careful to NOT let your IDE/editor to enforce some whitespace ruling to change whitespaces of files, it makes really hard to track real changes.
+- Please DO NOT let your IDE/editor to push any other whitespace/indentation ruling than what's defined in `src/.editorconfig`. [ref](https://editorconfig.org/)
 - Licensing: We are using Apache License 2.0 for the source code. You confirm you accept the terms the moment you send any contribution to the repository. 
 
 ### What to do next?
 
 1. We usually have a lot of [unresolved bugs to sort out](https://forum.tcgone.net/c/bug-reports?solved=no), we'd appreciate a lot if you'd start hunting them!
 
-2. Start implementing Pokemod expansions under [pokemod package](https://github.com/axpendix/tcgone-engine-contrib/tree/master/src/tcgwars/logic/impl/pokemod).
+1. You may check out the [project trello board](https://trello.com/b/B8bwBnRv/tcg-one-tasks) and pick a task there.
 
-3. Other than that, you may start looking at the missing [gen4 sets](https://github.com/axpendix/tcgone-engine-contrib/tree/master/src/tcgwars/logic/impl/gen4) and start coding!
+1. You may start looking at the missing [gen4 sets](https://github.com/axpendix/tcgone-engine-contrib/tree/master/src/tcgwars/logic/impl/gen4)!
 
 [return-to-contribution-guide](https://forum.tcgone.net/t/26)
 

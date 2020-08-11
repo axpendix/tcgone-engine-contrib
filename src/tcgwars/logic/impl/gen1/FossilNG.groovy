@@ -21,70 +21,70 @@ import tcgwars.logic.util.*;
  */
 public enum FossilNG implements LogicCardInfo {
 
-  AERODACTYL_1 ("Aerodactyl", 1, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-  ARTICUNO_2 ("Articuno", 2, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_]),
-  DITTO_3 ("Ditto", 3, Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
-  DRAGONITE_4 ("Dragonite", 4, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
-  GENGAR_5 ("Gengar", 5, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
-  HAUNTER_6 ("Haunter", 6, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-  HITMONLEE_7 ("Hitmonlee", 7, Rarity.HOLORARE, [BASIC, POKEMON, _FIGHTING_]),
-  HYPNO_8 ("Hypno", 8, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-  KABUTOPS_9 ("Kabutops", 9, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
-  LAPRAS_10 ("Lapras", 10, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_]),
-  MAGNETON_11 ("Magneton", 11, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-  MOLTRES_12 ("Moltres", 12, Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_]),
-  MUK_13 ("Muk", 13, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  RAICHU_14 ("Raichu", 14, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-  ZAPDOS_15 ("Zapdos", 15, Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
+  AERODACTYL_1 ("Aerodactyl", "1", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+  ARTICUNO_2 ("Articuno", "2", Rarity.HOLORARE, [BASIC, POKEMON, _WATER_]),
+  DITTO_3 ("Ditto", "3", Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
+  DRAGONITE_4 ("Dragonite", "4", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
+  GENGAR_5 ("Gengar", "5", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
+  HAUNTER_6 ("Haunter", "6", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+  HITMONLEE_7 ("Hitmonlee", "7", Rarity.HOLORARE, [BASIC, POKEMON, _FIGHTING_]),
+  HYPNO_8 ("Hypno", "8", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+  KABUTOPS_9 ("Kabutops", "9", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
+  LAPRAS_10 ("Lapras", "10", Rarity.HOLORARE, [BASIC, POKEMON, _WATER_]),
+  MAGNETON_11 ("Magneton", "11", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+  MOLTRES_12 ("Moltres", "12", Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_]),
+  MUK_13 ("Muk", "13", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  RAICHU_14 ("Raichu", "14", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+  ZAPDOS_15 ("Zapdos", "15", Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
 
-  AERODACTYL ("Aerodactyl", 16, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-  ARTICUNO ("Articuno", 17, Rarity.RARE, [BASIC, POKEMON, _WATER_]),
-  DITTO ("Ditto", 18, Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
-  DRAGONITE ("Dragonite", 19, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
-  GENGAR ("Gengar", 20, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
-  HAUNTER ("Haunter", 21, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-  HITMONLEE ("Hitmonlee", 22, Rarity.RARE, [BASIC, POKEMON, _FIGHTING_]),
-  HYPNO ("Hypno", 23, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-  KABUTOPS ("Kabutops", 24, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
-  LAPRAS ("Lapras", 25, Rarity.RARE, [BASIC, POKEMON, _WATER_]),
-  MAGNETON ("Magneton", 26, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-  MOLTRES ("Moltres", 27, Rarity.RARE, [BASIC, POKEMON, _FIRE_]),
-  MUK ("Muk", 28, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  RAICHU ("Raichu", 29, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-  ZAPDOS ("Zapdos", 30, Rarity.RARE, [BASIC, POKEMON, _LIGHTNING_]),
-  ARBOK ("Arbok", 31, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  CLOYSTER ("Cloyster", 32, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  GASTLY ("Gastly", 33, Rarity.UNCOMMON, [BASIC, POKEMON, _PSYCHIC_]),
-  GOLBAT ("Golbat", 34, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  GOLDUCK ("Golduck", 35, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  GOLEM ("Golem", 36, Rarity.UNCOMMON, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
-  GRAVELER ("Graveler", 37, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-  KINGLER ("Kingler", 38, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  MAGMAR ("Magmar", 39, Rarity.UNCOMMON, [BASIC, POKEMON, _FIRE_]),
-  OMASTAR ("Omastar", 40, Rarity.UNCOMMON, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
-  SANDSLASH ("Sandslash", 41, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-  SEADRA ("Seadra", 42, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  SLOWBRO ("Slowbro", 43, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-  TENTACRUEL ("Tentacruel", 44, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  WEEZING ("Weezing", 45, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  EKANS ("Ekans", 46, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  GEODUDE ("Geodude", 47, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-  GRIMER ("Grimer", 48, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  HORSEA ("Horsea", 49, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-  KABUTO ("Kabuto", 50, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-  KRABBY ("Krabby", 51, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-  OMANYTE ("Omanyte", 52, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  PSYDUCK ("Psyduck", 53, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-  SHELLDER ("Shellder", 54, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-  SLOWPOKE ("Slowpoke", 55, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
-  TENTACOOL ("Tentacool", 56, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-  ZUBAT ("Zubat", 57, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  AERODACTYL ("Aerodactyl", "16", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+  ARTICUNO ("Articuno", "17", Rarity.RARE, [BASIC, POKEMON, _WATER_]),
+  DITTO ("Ditto", "18", Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
+  DRAGONITE ("Dragonite", "19", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
+  GENGAR ("Gengar", "20", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
+  HAUNTER ("Haunter", "21", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+  HITMONLEE ("Hitmonlee", "22", Rarity.RARE, [BASIC, POKEMON, _FIGHTING_]),
+  HYPNO ("Hypno", "23", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+  KABUTOPS ("Kabutops", "24", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
+  LAPRAS ("Lapras", "25", Rarity.RARE, [BASIC, POKEMON, _WATER_]),
+  MAGNETON ("Magneton", "26", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+  MOLTRES ("Moltres", "27", Rarity.RARE, [BASIC, POKEMON, _FIRE_]),
+  MUK ("Muk", "28", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  RAICHU ("Raichu", "29", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+  ZAPDOS ("Zapdos", "30", Rarity.RARE, [BASIC, POKEMON, _LIGHTNING_]),
+  ARBOK ("Arbok", "31", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  CLOYSTER ("Cloyster", "32", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  GASTLY ("Gastly", "33", Rarity.UNCOMMON, [BASIC, POKEMON, _PSYCHIC_]),
+  GOLBAT ("Golbat", "34", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  GOLDUCK ("Golduck", "35", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  GOLEM ("Golem", "36", Rarity.UNCOMMON, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
+  GRAVELER ("Graveler", "37", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+  KINGLER ("Kingler", "38", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  MAGMAR ("Magmar", "39", Rarity.UNCOMMON, [BASIC, POKEMON, _FIRE_]),
+  OMASTAR ("Omastar", "40", Rarity.UNCOMMON, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
+  SANDSLASH ("Sandslash", "41", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+  SEADRA ("Seadra", "42", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  SLOWBRO ("Slowbro", "43", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+  TENTACRUEL ("Tentacruel", "44", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  WEEZING ("Weezing", "45", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  EKANS ("Ekans", "46", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  GEODUDE ("Geodude", "47", Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+  GRIMER ("Grimer", "48", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  HORSEA ("Horsea", "49", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+  KABUTO ("Kabuto", "50", Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+  KRABBY ("Krabby", "51", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+  OMANYTE ("Omanyte", "52", Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  PSYDUCK ("Psyduck", "53", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+  SHELLDER ("Shellder", "54", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+  SLOWPOKE ("Slowpoke", "55", Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+  TENTACOOL ("Tentacool", "56", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+  ZUBAT ("Zubat", "57", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
 
-  MR_FUJI ("Mr. Fuji", 58, Rarity.UNCOMMON, [TRAINER]),
-  ENERGY_SEARCH ("Energy Search", 59, Rarity.COMMON, [TRAINER]),
-  GAMBLER ("Gambler", 60, Rarity.COMMON, [TRAINER]),
-  RECYCLE ("Recycle", 61, Rarity.COMMON, [TRAINER]),
-  MYSTERIOUS_FOSSIL ("Mysterious Fossil", 62, Rarity.COMMON, [TRAINER]);
+  MR_FUJI ("Mr. Fuji", "58", Rarity.UNCOMMON, [TRAINER]),
+  ENERGY_SEARCH ("Energy Search", "59", Rarity.COMMON, [TRAINER]),
+  GAMBLER ("Gambler", "60", Rarity.COMMON, [TRAINER]),
+  RECYCLE ("Recycle", "61", Rarity.COMMON, [TRAINER]),
+  MYSTERIOUS_FOSSIL ("Mysterious Fossil", "62", Rarity.COMMON, [TRAINER]);
 
   static SimpleDeck lockdown() {
     SimpleDeck deck = new SimpleDeck("LockDown Theme Deck");
@@ -140,9 +140,9 @@ public enum FossilNG implements LogicCardInfo {
   protected CardTypeSet cardTypes;
   protected String name;
   protected Rarity rarity;
-  protected int collectionLineNo;
+  protected String collectionLineNo;
 
-  FossilNG(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+  FossilNG(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
     this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
     this.name = name;
     this.rarity = rarity;
@@ -165,7 +165,7 @@ public enum FossilNG implements LogicCardInfo {
   }
 
   @Override
-  public int getCollectionLineNo() {
+  public String getNumber() {
     return collectionLineNo;
   }
 
@@ -764,7 +764,7 @@ public enum FossilNG implements LogicCardInfo {
                   }
                 }
                 unregisterAfter 2
-                after SWITCH, self,{unregister()}
+                after FALL_BACK, self,{unregister()}
                 after EVOLVE, self,{unregister()}
                 after DEVOLVE, self,{unregister()}
 
@@ -1083,7 +1083,6 @@ public enum FossilNG implements LogicCardInfo {
             }
             onAttack {
               deck.search (count: 1,{it.cardTypes.is(BASIC) && it.name == "Krabby"}).each {
-                deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()
@@ -1270,7 +1269,7 @@ public enum FossilNG implements LogicCardInfo {
         return basicTrainer (this) {
           text "Shuffle your hand into your deck. Flip a coin. If heads, draw 8 cards. If tails, draw 1 card."
           onPlay {
-            my.hand.getExcludedList(thisCard).moveTo(my.deck)
+            my.hand.getExcludedList(thisCard).moveTo(hidden:true, my.deck)
             shuffleDeck()
             flip 1,{draw 8},{draw 1}
           }
@@ -1338,7 +1337,6 @@ public enum FossilNG implements LogicCardInfo {
             }
             pokemonCard.player = trainerCard.player
             bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
-            hand.remove(pokemonCard)
             benchPCS(pokemonCard)
           }
           playRequirement{

@@ -1,6 +1,7 @@
 package tcgwars.logic.impl.gen3;
 
 import tcgwars.logic.impl.gen1.BaseSetNG;
+import tcgwars.logic.impl.gen2.Expedition;
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen7.CelestialStorm;
 
@@ -39,32 +40,32 @@ import tcgwars.logic.util.*;
  */
 public enum PopSeries2 implements LogicCardInfo {
 
-  ENTEI_1 ("Entei", 1, Rarity.RARE, [POKEMON, BASIC, _FIRE_]),
-  PIDGEOT_2 ("Pidgeot", 2, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]),
-  RAIKOU_3 ("Raikou", 3, Rarity.RARE, [POKEMON, BASIC, _LIGHTNING_]),
-  SUICUNE_4 ("Suicune", 4, Rarity.RARE, [POKEMON, BASIC, _WATER_]),
-  TAUROS_5 ("Tauros", 5, Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
-  VENUSAUR_6 ("Venusaur", 6, Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
-  IVYSAUR_7 ("Ivysaur", 7, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
-  MR__BRINEY_S_COMPASSION_8 ("Mr. Briney's Compassion", 8, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-  MULTI_TECHNICAL_MACHINE_01_9 ("Multi Technical Machine 01", 9, Rarity.UNCOMMON, [TRAINER, TECHNICAL_MACHINE]),
-  POKEMON_PARK_10 ("Pokémon Park", 10, Rarity.UNCOMMON, [TRAINER, STADIUM]),
-  TV_REPORTER_11 ("TV Reporter", 11, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-  BULBASAUR_12 ("Bulbasaur", 12, Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
-  CACNEA_13 ("Cacnea", 13, Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
-  LUVDISC_14 ("Luvdisc", 14, Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
-  PHANPY_15 ("Phanpy", 15, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
-  PIKACHU_16 ("Pikachu", 16, Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
-  CELEBI_EX_17 ("Celebi ex", 17, Rarity.HOLORARE, [POKEMON, BASIC, EX, _PSYCHIC_]);
+  ENTEI_1 ("Entei", "1", Rarity.RARE, [POKEMON, BASIC, _FIRE_]),
+  PIDGEOT_2 ("Pidgeot", "2", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]),
+  RAIKOU_3 ("Raikou", "3", Rarity.RARE, [POKEMON, BASIC, _LIGHTNING_]),
+  SUICUNE_4 ("Suicune", "4", Rarity.RARE, [POKEMON, BASIC, _WATER_]),
+  TAUROS_5 ("Tauros", "5", Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
+  VENUSAUR_6 ("Venusaur", "6", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
+  IVYSAUR_7 ("Ivysaur", "7", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
+  MR__BRINEY_S_COMPASSION_8 ("Mr. Briney's Compassion", "8", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  MULTI_TECHNICAL_MACHINE_01_9 ("Multi Technical Machine 01", "9", Rarity.UNCOMMON, [TRAINER, TECHNICAL_MACHINE]),
+  POKEMON_PARK_10 ("Pokémon Park", "10", Rarity.UNCOMMON, [TRAINER, STADIUM]),
+  TV_REPORTER_11 ("TV Reporter", "11", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  BULBASAUR_12 ("Bulbasaur", "12", Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
+  CACNEA_13 ("Cacnea", "13", Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
+  LUVDISC_14 ("Luvdisc", "14", Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
+  PHANPY_15 ("Phanpy", "15", Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
+  PIKACHU_16 ("Pikachu", "16", Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
+  CELEBI_EX_17 ("Celebi ex", "17", Rarity.HOLORARE, [POKEMON, BASIC, EX, _PSYCHIC_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
   protected CardTypeSet cardTypes;
   protected String name;
   protected Rarity rarity;
-  protected int collectionLineNo;
+  protected String collectionLineNo;
 
-  PopSeries2(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+  PopSeries2(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
     this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
     this.name = name;
     this.rarity = rarity;
@@ -87,7 +88,7 @@ public enum PopSeries2 implements LogicCardInfo {
   }
 
   @Override
-  public int getCollectionLineNo() {
+  public String getNumber() {
     return collectionLineNo;
   }
 
@@ -268,7 +269,9 @@ public enum PopSeries2 implements LogicCardInfo {
         }
       };
       case MULTI_TECHNICAL_MACHINE_01_9:
-      return basicTrainer (this) {
+      // Commented for now, TechnicalMachineGroovyImpl needs to be made first.
+        return copy(Expedition.MULTI_TECHNICAL_MACHINE_01_144, this);
+      /*return basicTrainer (this) {
         text "Attach this card to 1 of your Pokemon in play. This Pokemon may use this card's attack instead of its own. At the end of your turn, discard Multi Technical Machine 01"
         def eff1, eff2
         onPlay {reason->
@@ -304,7 +307,7 @@ public enum PopSeries2 implements LogicCardInfo {
             }
           }
         }
-      };
+      };*/
       case POKEMON_PARK_10:
       return stadium (this) {
         text "Once during each player's turn, when that player attaches an Energy card from his or her hand to 1 of his or her Benched Pokémon, he or she removes 1 damage counter from that Pokémon."

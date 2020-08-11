@@ -14,6 +14,7 @@ public enum EffectType {
   SWIFT_DAMAGE,
   MOVE,
   PLAY_CARD,
+  PUT_ON_BENCH,
   PLAY_BASIC_POKEMON,
   PLAY_EVOLUTION,
   PLAY_SPECIAL_ENERGY,
@@ -133,12 +134,10 @@ public enum EffectType {
   DEACTIVATE_ABILITY,
   BLOCK_ABILITY,
   CHECK_ABILITIES,
-
-
   ;
 
   @Override
   public String toString() {
     return name();
-  };
+  }
 }

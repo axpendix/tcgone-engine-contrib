@@ -27,126 +27,126 @@ import tcgwars.logic.effect.special.*;
  */
 public enum TeamRocketReturns implements LogicCardInfo {
 
-  AZUMARILL_1 ("Azumarill", 1, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  DARK_AMPHAROS_2 ("Dark Ampharos", 2, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _DARKNESS_]),
-  DARK_CROBAT_3 ("Dark Crobat", 3, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _DARKNESS_]),
-  DARK_ELECTRODE_4 ("Dark Electrode", 4, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  DARK_HOUNDOOM_5 ("Dark Houndoom", 5, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  DARK_HYPNO_6 ("Dark Hypno", 6, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  DARK_MAROWAK_7 ("Dark Marowak", 7, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  DARK_OCTILLERY_8 ("Dark Octillery", 8, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  DARK_SLOWKING_9 ("Dark Slowking", 9, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  DARK_STEELIX_10 ("Dark Steelix", 10, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  JUMPLUFF_11 ("Jumpluff", 11, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
-  KINGDRA_12 ("Kingdra", 12, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
-  PILOSWINE_13 ("Piloswine", 13, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-  TOGETIC_14 ("Togetic", 14, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-  DARK_DRAGONITE_15 ("Dark Dragonite", 15, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _DARKNESS_]),
-  DARK_MUK_16 ("Dark Muk", 16, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  DARK_RATICATE_17 ("Dark Raticate", 17, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  DARK_SANDSLASH_18 ("Dark Sandslash", 18, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  DARK_TYRANITAR_19 ("Dark Tyranitar", 19, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _DARKNESS_]),
-  DARK_TYRANITAR_20 ("Dark Tyranitar", 20, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _DARKNESS_]),
-  DELIBIRD_21 ("Delibird", 21, Rarity.RARE, [BASIC, POKEMON, _WATER_]),
-  FURRET_22 ("Furret", 22, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-  LEDIAN_23 ("Ledian", 23, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  MAGBY_24 ("Magby", 24, Rarity.RARE, [BASIC, POKEMON, _FIRE_]),
-  MISDREAVUS_25 ("Misdreavus", 25, Rarity.RARE, [BASIC, POKEMON, _PSYCHIC_]),
-  QUAGSIRE_26 ("Quagsire", 26, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  QWILFISH_27 ("Qwilfish", 27, Rarity.RARE, [BASIC, POKEMON, _WATER_]),
-  YANMA_28 ("Yanma", 28, Rarity.RARE, [BASIC, POKEMON, _GRASS_]),
-  DARK_ARBOK_29 ("Dark Arbok", 29, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  DARK_ARIADOS_30 ("Dark Ariados", 30, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  DARK_DRAGONAIR_31 ("Dark Dragonair", 31, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  DARK_DRAGONAIR_32 ("Dark Dragonair", 32, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  DARK_FLAAFFY_33 ("Dark Flaaffy", 33, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  DARK_GOLBAT_34 ("Dark Golbat", 34, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  DARK_GOLDUCK_35 ("Dark Golduck", 35, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  DARK_GYARADOS_36 ("Dark Gyarados", 36, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  DARK_HOUNDOOM_37 ("Dark Houndoom", 37, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  DARK_MAGCARGO_38 ("Dark Magcargo", 38, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  DARK_MAGNETON_39 ("Dark Magneton", 39, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  DARK_PUPITAR_40 ("Dark Pupitar", 40, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  DARK_PUPITAR_41 ("Dark Pupitar", 41, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  DARK_WEEZING_42 ("Dark Weezing", 42, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  HERACROSS_43 ("Heracross", 43, Rarity.UNCOMMON, [BASIC, POKEMON, _FIGHTING_]),
-  MAGMAR_44 ("Magmar", 44, Rarity.UNCOMMON, [BASIC, POKEMON, _FIRE_]),
-  MANTINE_45 ("Mantine", 45, Rarity.UNCOMMON, [BASIC, POKEMON, _WATER_]),
-  ROCKET_S_MEOWTH_46 ("Rocket's Meowth", 46, Rarity.UNCOMMON, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_]),
-  ROCKET_S_WOBBUFFET_47 ("Rocket's Wobbuffet", 47, Rarity.UNCOMMON, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_]),
-  SEADRA_48 ("Seadra", 48, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  SKIPLOOM_49 ("Skiploom", 49, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  TOGEPI_50 ("Togepi", 50, Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
-  CUBONE_51 ("Cubone", 51, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-  DRATINI_52 ("Dratini", 52, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  DRATINI_53 ("Dratini", 53, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  DROWZEE_54 ("Drowzee", 54, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
-  EKANS_55 ("Ekans", 55, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  GRIMER_56 ("Grimer", 56, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  HOPPIP_57 ("Hoppip", 57, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  HORSEA_58 ("Horsea", 58, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-  HOUNDOUR_59 ("Houndour", 59, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
-  HOUNDOUR_60 ("Houndour", 60, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
-  KOFFING_61 ("Koffing", 61, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  LARVITAR_62 ("Larvitar", 62, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-  LARVITAR_63 ("Larvitar", 63, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-  LEDYBA_64 ("Ledyba", 64, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  MAGIKARP_65 ("Magikarp", 65, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-  MAGNEMITE_66 ("Magnemite", 66, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-  MAREEP_67 ("Mareep", 67, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-  MARILL_68 ("Marill", 68, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-  ONIX_69 ("Onix", 69, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-  PSYDUCK_70 ("Psyduck", 70, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-  RATTATA_71 ("Rattata", 71, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  RATTATA_72 ("Rattata", 72, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  REMORAID_73 ("Remoraid", 73, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-  SANDSHREW_74 ("Sandshrew", 74, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-  SENTRET_75 ("Sentret", 75, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  SLOWPOKE_76 ("Slowpoke", 76, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
-  SLUGMA_77 ("Slugma", 77, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
-  SPINARAK_78 ("Spinarak", 78, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  SWINUB_79 ("Swinub", 79, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-  VOLTORB_80 ("Voltorb", 80, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-  WOOPER_81 ("Wooper", 81, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-  ZUBAT_82 ("Zubat", 82, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  COPYCAT_83 ("Copycat", 83, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-  POKEMON_RETRIEVER_84 ("Pokémon Retriever", 84, Rarity.UNCOMMON, [TRAINER, ROCKETS_SECRET_MACHINE]),
-  POW__HAND_EXTENSION_85 ("Pow! Hand Extension", 85, Rarity.UNCOMMON, [TRAINER, ROCKETS_SECRET_MACHINE]),
-  ROCKET_S_ADMIN__86 ("Rocket's Admin. ", 86, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-  ROCKET_S_HIDEOUT_87 ("Rocket's Hideout", 87, Rarity.UNCOMMON, [TRAINER, STADIUM]),
-  ROCKET_S_MISSION_88 ("Rocket's Mission", 88, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-  ROCKET_S_POKE_BALL_89 ("Rocket's Poké Ball", 89, Rarity.UNCOMMON, [TRAINER]),
-  ROCKET_S_TRICKY_GYM_90 ("Rocket's Tricky Gym", 90, Rarity.UNCOMMON, [STADIUM, TRAINER]),
-  SURPRISE__TIME_MACHINE_91 ("Surprise! Time Machine", 91, Rarity.UNCOMMON, [TRAINER, ROCKETS_SECRET_MACHINE]),
-  SWOOP__TELEPORTER_92 ("Swoop! Teleporter", 92, Rarity.UNCOMMON, [TRAINER, ROCKETS_SECRET_MACHINE]),
-  VENTURE_BOMB_93 ("Venture Bomb", 93, Rarity.UNCOMMON, [TRAINER, ROCKETS_SECRET_MACHINE]),
-  DARK_METAL_ENERGY_94 ("Dark Metal Energy", 94, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
-  R_ENERGY_95 ("R Energy", 95, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
-  ROCKET_S_ARTICUNO_EX_96 ("Rocket's Articuno ex", 96, Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
-  ROCKET_S_ENTEI_EX_97 ("Rocket's Entei ex", 97, Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
-  ROCKET_S_HITMONCHAN_EX_98 ("Rocket's Hitmonchan ex", 98, Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
-  ROCKET_S_MEWTWO_EX_99 ("Rocket's Mewtwo ex", 99, Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
-  ROCKET_S_MOLTRES_EX_100 ("Rocket's Moltres ex", 100, Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
-  ROCKET_S_SCIZOR_EX_101 ("Rocket's Scizor ex", 101, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
-  ROCKET_S_SCYTHER_EX_102 ("Rocket's Scyther ex", 102, Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
-  ROCKET_S_SNEASEL_EX_103 ("Rocket's Sneasel ex", 103, Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
-  ROCKET_S_SNORLAX_EX_104 ("Rocket's Snorlax ex", 104, Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
-  ROCKET_S_SUICUNE_EX_105 ("Rocket's Suicune ex", 105, Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
-  ROCKET_S_ZAPDOS_EX_106 ("Rocket's Zapdos ex", 106, Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
-  MUDKIP_STAR_107 ("Mudkip Star", 107, Rarity.ULTRARARE, [BASIC, POKEMON, _WATER_]),
-  TORCHIC_STAR_108 ("Torchic Star", 108, Rarity.ULTRARARE, [BASIC, POKEMON, _FIRE_]),
-  TREECKO_STAR_109 ("Treecko Star", 109, Rarity.ULTRARARE, [BASIC, POKEMON, _GRASS_]),
-  CHARMELEON_110 ("Charmeleon", 110, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
-  HERE_COMES_TEAM_ROCKET__111 ("Here Comes Team Rocket!", 111, Rarity.HOLORARE, [TRAINER]);
+  AZUMARILL_1 ("Azumarill", "1", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  DARK_AMPHAROS_2 ("Dark Ampharos", "2", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _DARKNESS_]),
+  DARK_CROBAT_3 ("Dark Crobat", "3", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _DARKNESS_]),
+  DARK_ELECTRODE_4 ("Dark Electrode", "4", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
+  DARK_HOUNDOOM_5 ("Dark Houndoom", "5", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
+  DARK_HYPNO_6 ("Dark Hypno", "6", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
+  DARK_MAROWAK_7 ("Dark Marowak", "7", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
+  DARK_OCTILLERY_8 ("Dark Octillery", "8", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
+  DARK_SLOWKING_9 ("Dark Slowking", "9", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
+  DARK_STEELIX_10 ("Dark Steelix", "10", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
+  JUMPLUFF_11 ("Jumpluff", "11", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
+  KINGDRA_12 ("Kingdra", "12", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
+  PILOSWINE_13 ("Piloswine", "13", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+  TOGETIC_14 ("Togetic", "14", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+  DARK_DRAGONITE_15 ("Dark Dragonite", "15", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _DARKNESS_]),
+  DARK_MUK_16 ("Dark Muk", "16", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
+  DARK_RATICATE_17 ("Dark Raticate", "17", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
+  DARK_SANDSLASH_18 ("Dark Sandslash", "18", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
+  DARK_TYRANITAR_19 ("Dark Tyranitar", "19", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _DARKNESS_]),
+  DARK_TYRANITAR_20 ("Dark Tyranitar", "20", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _DARKNESS_]),
+  DELIBIRD_21 ("Delibird", "21", Rarity.RARE, [BASIC, POKEMON, _WATER_]),
+  FURRET_22 ("Furret", "22", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+  LEDIAN_23 ("Ledian", "23", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  MAGBY_24 ("Magby", "24", Rarity.RARE, [BASIC, POKEMON, _FIRE_]),
+  MISDREAVUS_25 ("Misdreavus", "25", Rarity.RARE, [BASIC, POKEMON, _PSYCHIC_]),
+  QUAGSIRE_26 ("Quagsire", "26", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  QWILFISH_27 ("Qwilfish", "27", Rarity.RARE, [BASIC, POKEMON, _WATER_]),
+  YANMA_28 ("Yanma", "28", Rarity.RARE, [BASIC, POKEMON, _GRASS_]),
+  DARK_ARBOK_29 ("Dark Arbok", "29", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
+  DARK_ARIADOS_30 ("Dark Ariados", "30", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
+  DARK_DRAGONAIR_31 ("Dark Dragonair", "31", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
+  DARK_DRAGONAIR_32 ("Dark Dragonair", "32", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
+  DARK_FLAAFFY_33 ("Dark Flaaffy", "33", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
+  DARK_GOLBAT_34 ("Dark Golbat", "34", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
+  DARK_GOLDUCK_35 ("Dark Golduck", "35", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
+  DARK_GYARADOS_36 ("Dark Gyarados", "36", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
+  DARK_HOUNDOOM_37 ("Dark Houndoom", "37", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
+  DARK_MAGCARGO_38 ("Dark Magcargo", "38", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
+  DARK_MAGNETON_39 ("Dark Magneton", "39", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
+  DARK_PUPITAR_40 ("Dark Pupitar", "40", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
+  DARK_PUPITAR_41 ("Dark Pupitar", "41", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
+  DARK_WEEZING_42 ("Dark Weezing", "42", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
+  HERACROSS_43 ("Heracross", "43", Rarity.UNCOMMON, [BASIC, POKEMON, _FIGHTING_]),
+  MAGMAR_44 ("Magmar", "44", Rarity.UNCOMMON, [BASIC, POKEMON, _FIRE_]),
+  MANTINE_45 ("Mantine", "45", Rarity.UNCOMMON, [BASIC, POKEMON, _WATER_]),
+  ROCKET_S_MEOWTH_46 ("Rocket's Meowth", "46", Rarity.UNCOMMON, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_]),
+  ROCKET_S_WOBBUFFET_47 ("Rocket's Wobbuffet", "47", Rarity.UNCOMMON, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_]),
+  SEADRA_48 ("Seadra", "48", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  SKIPLOOM_49 ("Skiploom", "49", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  TOGEPI_50 ("Togepi", "50", Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
+  CUBONE_51 ("Cubone", "51", Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+  DRATINI_52 ("Dratini", "52", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+  DRATINI_53 ("Dratini", "53", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+  DROWZEE_54 ("Drowzee", "54", Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+  EKANS_55 ("Ekans", "55", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  GRIMER_56 ("Grimer", "56", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  HOPPIP_57 ("Hoppip", "57", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  HORSEA_58 ("Horsea", "58", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+  HOUNDOUR_59 ("Houndour", "59", Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
+  HOUNDOUR_60 ("Houndour", "60", Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
+  KOFFING_61 ("Koffing", "61", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  LARVITAR_62 ("Larvitar", "62", Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+  LARVITAR_63 ("Larvitar", "63", Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+  LEDYBA_64 ("Ledyba", "64", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  MAGIKARP_65 ("Magikarp", "65", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+  MAGNEMITE_66 ("Magnemite", "66", Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+  MAREEP_67 ("Mareep", "67", Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+  MARILL_68 ("Marill", "68", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+  ONIX_69 ("Onix", "69", Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+  PSYDUCK_70 ("Psyduck", "70", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+  RATTATA_71 ("Rattata", "71", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+  RATTATA_72 ("Rattata", "72", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+  REMORAID_73 ("Remoraid", "73", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+  SANDSHREW_74 ("Sandshrew", "74", Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+  SENTRET_75 ("Sentret", "75", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+  SLOWPOKE_76 ("Slowpoke", "76", Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+  SLUGMA_77 ("Slugma", "77", Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
+  SPINARAK_78 ("Spinarak", "78", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  SWINUB_79 ("Swinub", "79", Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+  VOLTORB_80 ("Voltorb", "80", Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+  WOOPER_81 ("Wooper", "81", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+  ZUBAT_82 ("Zubat", "82", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  COPYCAT_83 ("Copycat", "83", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  POKEMON_RETRIEVER_84 ("Pokémon Retriever", "84", Rarity.UNCOMMON, [TRAINER, ROCKETS_SECRET_MACHINE]),
+  POW__HAND_EXTENSION_85 ("Pow! Hand Extension", "85", Rarity.UNCOMMON, [TRAINER, ROCKETS_SECRET_MACHINE]),
+  ROCKET_S_ADMIN__86 ("Rocket's Admin. ", "86", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  ROCKET_S_HIDEOUT_87 ("Rocket's Hideout", "87", Rarity.UNCOMMON, [TRAINER, STADIUM]),
+  ROCKET_S_MISSION_88 ("Rocket's Mission", "88", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  ROCKET_S_POKE_BALL_89 ("Rocket's Poké Ball", "89", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  ROCKET_S_TRICKY_GYM_90 ("Rocket's Tricky Gym", "90", Rarity.UNCOMMON, [STADIUM, TRAINER]),
+  SURPRISE__TIME_MACHINE_91 ("Surprise! Time Machine", "91", Rarity.UNCOMMON, [TRAINER, ROCKETS_SECRET_MACHINE]),
+  SWOOP__TELEPORTER_92 ("Swoop! Teleporter", "92", Rarity.UNCOMMON, [TRAINER, ROCKETS_SECRET_MACHINE]),
+  VENTURE_BOMB_93 ("Venture Bomb", "93", Rarity.UNCOMMON, [TRAINER, ROCKETS_SECRET_MACHINE]),
+  DARK_METAL_ENERGY_94 ("Dark Metal Energy", "94", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
+  R_ENERGY_95 ("R Energy", "95", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
+  ROCKET_S_ARTICUNO_EX_96 ("Rocket's Articuno ex", "96", Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
+  ROCKET_S_ENTEI_EX_97 ("Rocket's Entei ex", "97", Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
+  ROCKET_S_HITMONCHAN_EX_98 ("Rocket's Hitmonchan ex", "98", Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
+  ROCKET_S_MEWTWO_EX_99 ("Rocket's Mewtwo ex", "99", Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
+  ROCKET_S_MOLTRES_EX_100 ("Rocket's Moltres ex", "100", Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
+  ROCKET_S_SCIZOR_EX_101 ("Rocket's Scizor ex", "101", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
+  ROCKET_S_SCYTHER_EX_102 ("Rocket's Scyther ex", "102", Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
+  ROCKET_S_SNEASEL_EX_103 ("Rocket's Sneasel ex", "103", Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
+  ROCKET_S_SNORLAX_EX_104 ("Rocket's Snorlax ex", "104", Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
+  ROCKET_S_SUICUNE_EX_105 ("Rocket's Suicune ex", "105", Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
+  ROCKET_S_ZAPDOS_EX_106 ("Rocket's Zapdos ex", "106", Rarity.HOLORARE, [BASIC, POKEMON, OWNERS_POKEMON, _DARKNESS_, EX]),
+  MUDKIP_STAR_107 ("Mudkip Star", "107", Rarity.ULTRARARE, [POKEMON_STAR, BASIC, POKEMON, _WATER_]),
+  TORCHIC_STAR_108 ("Torchic Star", "108", Rarity.ULTRARARE, [POKEMON_STAR, BASIC, POKEMON, _FIRE_]),
+  TREECKO_STAR_109 ("Treecko Star", "109", Rarity.ULTRARARE, [POKEMON_STAR, BASIC, POKEMON, _GRASS_]),
+  CHARMELEON_110 ("Charmeleon", "110", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
+  HERE_COMES_TEAM_ROCKET__111 ("Here Comes Team Rocket!", "111", Rarity.HOLORARE, [TRAINER, SUPPORTER]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS;
 
   protected CardTypeSet cardTypes;
   protected String name;
   protected Rarity rarity;
-  protected int collectionLineNo;
+  protected String collectionLineNo;
 
-  TeamRocketReturns(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+  TeamRocketReturns(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
     this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
     this.name = name;
     this.rarity = rarity;
@@ -169,7 +169,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
   }
 
   @Override
-  public int getCollectionLineNo() {
+  public String getNumber() {
     return collectionLineNo;
   }
 
@@ -481,7 +481,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             delayedA {
               before KNOCKOUT, self, {
                 if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite){
-                  flip "Buffer", {
+                  flip "Buffer", self.owner, {
                     self.damage = self.fullHP - hp(10)
                     bc "Buffer saved $self!"
                     prevent()
@@ -701,7 +701,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
                       directDamage 50, pcs
                     }
                   }
-                  after SWITCH, pcs, {unregister()}
+                  after FALL_BACK, pcs, {unregister()}
                   after EVOLVE, pcs, {unregister()}
                   after DEVOLVE, pcs, {unregister()}
                   unregisterAfter 2
@@ -813,7 +813,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               assert self.active : "$self is not your active Pokémon."
               checkLastTurn()
               powerUsed()
-              my.hand.select("select card to shuffle into your deck").moveTo(my.deck)
+              my.hand.select("select card to shuffle into your deck").moveTo(hidden:true, my.deck)
               shuffleDeck()
               draw 1
             }
@@ -1517,7 +1517,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             delayedA {
               before KNOCKOUT, self, {
                 if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite){
-                  flip "Buffer", {
+                  flip "Buffer", self.owner, {
                     self.damage = self.fullHP - hp(10)
                     bc "Buffer saved $self!"
                     prevent()
@@ -1707,7 +1707,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             delayedA {
               before KNOCKOUT, self, {
                 if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite){
-                  flip "Buffer", {
+                  flip "Buffer", self.owner, {
                     self.damage = self.fullHP - hp(10)
                     bc "Buffer saved $self!"
                     prevent()
@@ -1798,7 +1798,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             //Errata'd, used to say "is Knocked Out by an opponent’s attack"
             delayedA {
               before KNOCKOUT, self, {
-                if((ef as Knockout).byDamageFromAttack){
+                if((ef as Knockout).byDamageFromAttack && self.active){
                   apply CONFUSED, self.owner.opposite.pbg.active
                   apply POISONED, self.owner.opposite.pbg.active
                 }
@@ -1858,7 +1858,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
             }
             onAttack {
               my.deck.search (count: 1,{it.cardTypes.is(BASIC) && it.asPokemonCard().types.contains(G)}).each {
-                my.deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()
@@ -1886,7 +1885,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
             onAttack {
               int count = bench.freeBenchCount>=2?2:1
               deck.search (max: count, cardTypeFilter(BASIC)).each {
-                deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()
@@ -1982,7 +1980,23 @@ public enum TeamRocketReturns implements LogicCardInfo {
               flip{
                 delayed{
                   before PLAY_TRAINER, {
-                    if (bg.currentTurn == self.owner.opposite) {
+                    def flag = false
+                    before PROCESS_ATTACK_EFFECTS, {
+                      flag = true
+                    }
+                    before BETWEEN_TURNS, {
+                      flag = false
+                    }
+                    before USE_ABILITY, {
+                      flag = true
+                    }
+                    after POKEPOWER, {
+                      flag = false
+                    }
+                    after ACTIVATE_ABILITY, {
+                      flag = false
+                    }
+                    if (bg.currentTurn == self.owner.opposite && !flag) {
                       wcu "Psyduck's Headache prevents playing this card!"
                       prevent()
                     }
@@ -2445,11 +2459,12 @@ public enum TeamRocketReturns implements LogicCardInfo {
         return basicTrainer (this) {
           text "Flip a coin. If heads, put 1 damage counter on 1 of your opponent’s Pokémon. If tails, put 1 damage counter on 1 of your Pokémon."
           onPlay {
+            def info = "Select the target for Venture Bomb’s damage counter"
             flip 1,{
-              directDamage(10, opp.active,TRAINER_CARD)
+              directDamage(10, opp.all.select(info),TRAINER_CARD)
             },
               {
-                directDamage(10, my.active,TRAINER_CARD)
+                directDamage(10, my.all.select(info),TRAINER_CARD)
               }
           }
           playRequirement{
@@ -2464,7 +2479,8 @@ public enum TeamRocketReturns implements LogicCardInfo {
           onRemoveFromPlay {
           }
           getEnergyTypesOverride {
-            return [[D,M] as Set]
+            if (self) return [[D, M] as Set]
+            else return [[] as Set]
           }
         };
       case R_ENERGY_95:
@@ -2502,7 +2518,8 @@ public enum TeamRocketReturns implements LogicCardInfo {
             to.name.contains("Dark ") || to.name.contains("Rocket's ")
           }
           getEnergyTypesOverride {
-            return [[D] as Set, [D] as Set]
+            if (self) return [[D] as Set, [D] as Set]
+            else return [[] as Set]
           }
         };
       case ROCKET_S_ARTICUNO_EX_96:
@@ -2718,10 +2735,8 @@ public enum TeamRocketReturns implements LogicCardInfo {
             text "10 damage. Before doing damage, you may switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon. If you do, this attack does 10 damage to the new Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
             energyCost D
             onAttack {
-              def pcs = defending
-              if(opp.bench && confirm("Switch 1 of your opponent's Benched Pokémon with the Defending Pokémon?")){
-                def target = opp.bench.select("Select the new Active Pokémon.")
-                if ( sw2(target) ) { pcs = target }
+              if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon before doing damage?")) {
+                switchYourOpponentsBenchedWithActive()
               }
               damage 10
             }
@@ -2775,8 +2790,8 @@ public enum TeamRocketReturns implements LogicCardInfo {
           pokeBody "Dark and Clear", {
             text "As long as Rocket’s Suicune ex has any [D] Energy attached to it, Rocket’s Suicune ex can’t be affected by any Special Conditions."
             delayedA {
-              before APPLY_SPECIAL_CONDITION,self, {
-                if(e.getTarget(bg)==self && self.cards.energyCount(D)){
+              before APPLY_SPECIAL_CONDITION, self, {
+                if (self.cards.energyCount(D)) {
                   bc "Dark and Clear prevents special conditions"
                   prevent()
                 }

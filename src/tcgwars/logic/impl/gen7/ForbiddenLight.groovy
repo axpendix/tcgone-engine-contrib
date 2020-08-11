@@ -26,161 +26,161 @@ import tcgwars.logic.util.*;
  */
 public enum ForbiddenLight implements LogicCardInfo {
 
-  EXEGGCUTE_1 ("Exeggcute", 1, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  ALOLAN_EXEGGUTOR_2 ("Alolan Exeggutor", 2, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  SNOVER_3 ("Snover", 3, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  ABOMASNOW_4 ("Abomasnow", 4, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  SCATTERBUG_5 ("Scatterbug", 5, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  SCATTERBUG_6 ("Scatterbug", 6, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  SPEWPA_7 ("Spewpa", 7, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  VIVILLON_8 ("Vivillon", 8, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
-  SKIDDO_9 ("Skiddo", 9, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  GOGOAT_10 ("Gogoat", 10, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  PHEROMOSA_11 ("Pheromosa", 11, Rarity.HOLORARE, [BASIC, POKEMON, ULTRA_BEAST, _GRASS_]),
-  ALOLAN_MAROWAK_12 ("Alolan Marowak", 12, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
-  HEATRAN_13 ("Heatran", 13, Rarity.RARE, [BASIC, POKEMON, _FIRE_]),
-  FENNEKIN_14 ("Fennekin", 14, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
-  FENNEKIN_15 ("Fennekin", 15, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
-  BRAIXEN_16 ("Braixen", 16, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
-  DELPHOX_17 ("Delphox", 17, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIRE_]),
-  LITLEO_18 ("Litleo", 18, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
-  PYROAR_19 ("Pyroar", 19, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
-  PALKIA_GX_20 ("Palkia-GX", 20, Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, _WATER_]),
-  FROAKIE_21 ("Froakie", 21, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-  FROAKIE_22 ("Froakie", 22, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-  FROGADIER_23 ("Frogadier", 23, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  GRENINJA_GX_24 ("Greninja-GX", 24, Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, POKEMON_GX, _WATER_]),
-  CLAUNCHER_25 ("Clauncher", 25, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-  CLAWITZER_26 ("Clawitzer", 26, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  AMAURA_27 ("Amaura", 27, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  AURORUS_28 ("Aurorus", 28, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
-  BERGMITE_29 ("Bergmite", 29, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-  AVALUGG_30 ("Avalugg", 30, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  VOLCANION_PRISM_STAR_31 ("Volcanion Prism Star", 31, Rarity.HOLORARE, [BASIC, POKEMON, PRISM_STAR, _WATER_]),
-  DEWPIDER_32 ("Dewpider", 32, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-  ARAQUANID_33 ("Araquanid", 33, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  MAGNEMITE_34 ("Magnemite", 34, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-  MAGNETON_35 ("Magneton", 35, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-  MAGNEZONE_36 ("Magnezone", 36, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _LIGHTNING_]),
-  HELIOPTILE_37 ("Helioptile", 37, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-  HELIOLISK_38 ("Heliolisk", 38, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-  XURKITREE_39 ("Xurkitree", 39, Rarity.RARE, [BASIC, POKEMON, ULTRA_BEAST, _LIGHTNING_]),
-  ROTOM_40 ("Rotom", 40, Rarity.RARE, [BASIC, POKEMON, _PSYCHIC_]),
-  UXIE_41 ("Uxie", 41, Rarity.UNCOMMON, [BASIC, POKEMON, _PSYCHIC_]),
-  MESPRIT_42 ("Mesprit", 42, Rarity.UNCOMMON, [BASIC, POKEMON, _PSYCHIC_]),
-  AZELF_43 ("Azelf", 43, Rarity.UNCOMMON, [BASIC, POKEMON, _PSYCHIC_]),
-  ESPURR_44 ("Espurr", 44, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
-  MEOWSTIC_45 ("Meowstic", 45, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-  HONEDGE_46 ("Honedge", 46, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
-  HONEDGE_47 ("Honedge", 47, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
-  DOUBLADE_48 ("Doublade", 48, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-  AEGISLASH_49 ("Aegislash", 49, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
-  INKAY_50 ("Inkay", 50, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
-  MALAMAR_51 ("Malamar", 51, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-  SKRELP_52 ("Skrelp", 52, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
-  DRAGALGE_53 ("Dragalge", 53, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-  HOOPA_54 ("Hoopa", 54, Rarity.UNCOMMON, [BASIC, POKEMON, _PSYCHIC_]),
-  POIPOLE_55 ("Poipole", 55, Rarity.UNCOMMON, [BASIC, POKEMON, ULTRA_BEAST, _PSYCHIC_]),
-  NAGANADEL_GX_56 ("Naganadel-GX", 56, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, ULTRA_BEAST, POKEMON_GX, _PSYCHIC_]),
-  CUBONE_57 ("Cubone", 57, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-  TORTERRA_58 ("Torterra", 58, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
-  INFERNAPE_59 ("Infernape", 59, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
-  GIBLE_60 ("Gible", 60, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-  GABITE_61 ("Gabite", 61, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-  GARCHOMP_62 ("Garchomp", 62, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
-  CROAGUNK_63 ("Croagunk", 63, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-  TOXICROAK_64 ("Toxicroak", 64, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-  PANCHAM_65 ("Pancham", 65, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-  BINACLE_66 ("Binacle", 66, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-  BARBARACLE_67 ("Barbaracle", 67, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-  TYRUNT_68 ("Tyrunt", 68, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-  TYRANTRUM_69 ("Tyrantrum", 69, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
-  HAWLUCHA_70 ("Hawlucha", 70, Rarity.UNCOMMON, [BASIC, POKEMON, _FIGHTING_]),
-  ZYGARDE_71 ("Zygarde", 71, Rarity.UNCOMMON, [BASIC, POKEMON, _FIGHTING_]),
-  ZYGARDE_72 ("Zygarde", 72, Rarity.RARE, [BASIC, POKEMON, _FIGHTING_]),
-  ZYGARDE_GX_73 ("Zygarde-GX", 73, Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, _FIGHTING_]),
-  DIANCIE_PRISM_STAR_74 ("Diancie Prism Star", 74, Rarity.HOLORARE, [BASIC, POKEMON, PRISM_STAR, _FIGHTING_]),
-  ROCKRUFF_75 ("Rockruff", 75, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-  LYCANROC_76 ("Lycanroc", 76, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-  BUZZWOLE_77 ("Buzzwole", 77, Rarity.RARE, [BASIC, POKEMON, ULTRA_BEAST, _FIGHTING_]),
-  PANGORO_78 ("Pangoro", 78, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  YVELTAL_GX_79 ("Yveltal-GX", 79, Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, _DARKNESS_]),
-  GUZZLORD_80 ("Guzzlord", 80, Rarity.HOLORARE, [BASIC, POKEMON, ULTRA_BEAST, _DARKNESS_]),
-  EMPOLEON_81 ("Empoleon", 81, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _METAL_]),
-  DIALGA_GX_82 ("Dialga-GX", 82, Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, _METAL_]),
-  FLABEBE_83 ("Flabébé", 83, Rarity.COMMON, [BASIC, POKEMON, _FAIRY_]),
-  FLABEBE_84 ("Flabébé", 84, Rarity.COMMON, [BASIC, POKEMON, _FAIRY_]),
-  FLOETTE_85 ("Floette", 85, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FAIRY_]),
-  FLORGES_86 ("Florges", 86, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _FAIRY_]),
-  SYLVEON_87 ("Sylveon", 87, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FAIRY_]),
-  DEDENNE_88 ("Dedenne", 88, Rarity.UNCOMMON, [BASIC, POKEMON, _FAIRY_]),
-  KLEFKI_89 ("Klefki", 89, Rarity.UNCOMMON, [BASIC, POKEMON, _FAIRY_]),
-  XERNEAS_GX_90 ("Xerneas-GX", 90, Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, _FAIRY_]),
-  GOOMY_91 ("Goomy", 91, Rarity.COMMON, [BASIC, POKEMON, _DRAGON_]),
-  GOOMY_92 ("Goomy", 92, Rarity.COMMON, [BASIC, POKEMON, _DRAGON_]),
-  SLIGGOO_93 ("Sliggoo", 93, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DRAGON_]),
-  GOODRA_94 ("Goodra", 94, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _DRAGON_]),
-  ULTRA_NECROZMA_GX_95 ("Ultra Necrozma-GX", 95, Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, ULTRA_BEAST, _DRAGON_]),
-  ARCEUS_PRISM_STAR_96 ("Arceus Prism Star", 96, Rarity.HOLORARE, [BASIC, POKEMON, PRISM_STAR, _COLORLESS_]),
-  BUNNELBY_97 ("Bunnelby", 97, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  DIGGERSBY_98 ("Diggersby", 98, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-  FURFROU_99 ("Furfrou", 99, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  NOIBAT_100 ("Noibat", 100, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  NOIVERN_101 ("Noivern", 101, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-  BEAST_RING_102 ("Beast Ring", 102, Rarity.RARE, [ITEM, TRAINER]),
-  BONNIE_103 ("Bonnie", 103, Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
-  CRASHER_WAKE_104 ("Crasher Wake", 104, Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
-  DIANTHA_105 ("Diantha", 105, Rarity.HOLORARE, [SUPPORTER, TRAINER]),
-  ENEPORTER_106 ("Eneporter", 106, Rarity.UNCOMMON, [ITEM, TRAINER]),
-  FOSSIL_EXCAVATION_MAP_107 ("Fossil Excavation Map", 107, Rarity.UNCOMMON, [ITEM, TRAINER]),
-  JUDGE_108 ("Judge", 108, Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
-  LADY_109 ("Lady", 109, Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
-  LYSANDRE_PRISM_STAR_110 ("Lysandre Prism Star", 110, Rarity.HOLORARE, [SUPPORTER, TRAINER, PRISM_STAR]),
-  LYSANDRE_LABS_111 ("Lysandre Labs", 111, Rarity.UNCOMMON, [STADIUM, TRAINER]),
-  METAL_FRYING_PAN_112 ("Metal Frying Pan", 112, Rarity.UNCOMMON, [ITEM,POKEMON_TOOL, TRAINER]),
-  MYSTERIOUS_TREASURE_113 ("Mysterious Treasure", 113, Rarity.UNCOMMON, [ITEM, TRAINER]),
-  ULTRA_RECON_SQUAD_114 ("Ultra Recon Squad", 114, Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
-  ULTRA_SPACE_115 ("Ultra Space", 115, Rarity.UNCOMMON, [STADIUM, TRAINER]),
-  UNIDENTIFIED_FOSSIL_116 ("Unidentified Fossil", 116, Rarity.UNCOMMON, [ITEM, TRAINER]),
-  BEAST_ENERGY_PRISM_STAR_117 ("Beast Energy Prism Star", 117, Rarity.HOLORARE, [SPECIAL_ENERGY, ENERGY, PRISM_STAR]),
-  UNIT_ENERGY_FDY_118 ("Unit Energy FDY", 118, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
-  PALKIA_GX_119 ("Palkia-GX", 119, Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, _WATER_]),
-  GRENINJA_GX_120 ("Greninja-GX", 120, Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, POKEMON_GX, _WATER_]),
-  NAGANADEL_GX_121 ("Naganadel-GX", 121, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, POKEMON_GX, ULTRA_BEAST, _PSYCHIC_]),
-  LUCARIO_GX_122 ("Lucario-GX", 122, Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, POKEMON_GX, _FIGHTING_]),
-  ZYGARDE_GX_123 ("Zygarde-GX", 123, Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, _FIGHTING_]),
-  YVELTAL_GX_124 ("Yveltal-GX", 124, Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, _DARKNESS_]),
-  DIALGA_GX_125 ("Dialga-GX", 125, Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, _METAL_]),
-  XERNEAS_GX_126 ("Xerneas-GX", 126, Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, _FAIRY_]),
-  ULTRA_NECROZMA_GX_127 ("Ultra Necrozma-GX", 127, Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, ULTRA_BEAST, _DRAGON_]),
-  BONNIE_128 ("Bonnie", 128, Rarity.ULTRARARE, [SUPPORTER, TRAINER]),
-  CRASHER_WAKE_129 ("Crasher Wake", 129, Rarity.ULTRARARE, [SUPPORTER, TRAINER]),
-  DIANTHA_130 ("Diantha", 130, Rarity.ULTRARARE, [SUPPORTER, TRAINER]),
-  ULTRA_RECON_SQUAD_131 ("Ultra Recon Squad", 131, Rarity.ULTRARARE, [SUPPORTER, TRAINER]),
-  PALKIA_GX_132 ("Palkia-GX", 132, Rarity.SECRET, [BASIC, POKEMON, POKEMON_GX, _WATER_]),
-  GRENINJA_GX_133 ("Greninja-GX", 133, Rarity.SECRET, [STAGE2, EVOLUTION, POKEMON, POKEMON_GX, _WATER_]),
-  NAGANADEL_GX_134 ("Naganadel-GX", 134, Rarity.SECRET, [STAGE1, EVOLUTION, POKEMON, POKEMON_GX, ULTRA_BEAST, _PSYCHIC_]),
-  LUCARIO_GX_135 ("Lucario-GX", 135, Rarity.SECRET, [STAGE1, EVOLUTION, POKEMON, POKEMON_GX, _FIGHTING_]),
-  ZYGARDE_GX_136 ("Zygarde-GX", 136, Rarity.SECRET, [BASIC, POKEMON, POKEMON_GX, _FIGHTING_]),
-  YVELTAL_GX_137 ("Yveltal-GX", 137, Rarity.SECRET, [BASIC, POKEMON, POKEMON_GX, _DARKNESS_]),
-  DIALGA_GX_138 ("Dialga-GX", 138, Rarity.SECRET, [BASIC, POKEMON, POKEMON_GX, _METAL_]),
-  XERNEAS_GX_139 ("Xerneas-GX", 139, Rarity.SECRET, [BASIC, POKEMON, POKEMON_GX, _FAIRY_]),
-  ULTRA_NECROZMA_GX_140 ("Ultra Necrozma-GX", 140, Rarity.SECRET, [BASIC, POKEMON, POKEMON_GX, ULTRA_BEAST, _DRAGON_]),
-  BEAST_RING_141 ("Beast Ring", 141, Rarity.SECRET, [ITEM, TRAINER]),
-  ENEPORTER_142 ("Eneporter", 142, Rarity.SECRET, [ITEM, TRAINER]),
-  ENERGY_RECYCLER_143 ("Energy Recycler", 143, Rarity.SECRET, [ITEM, TRAINER]),
-  METAL_FRYING_PAN_144 ("Metal Frying Pan", 144, Rarity.SECRET, [ITEM,POKEMON_TOOL, TRAINER]),
-  MYSTERIOUS_TREASURE_145 ("Mysterious Treasure", 145, Rarity.SECRET, [ITEM, TRAINER]),
-  UNIT_ENERGY_FDY_146 ("Unit Energy FDY", 146, Rarity.SECRET, [SPECIAL_ENERGY, ENERGY]);
+  EXEGGCUTE_1 ("Exeggcute", "1", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  ALOLAN_EXEGGUTOR_2 ("Alolan Exeggutor", "2", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  SNOVER_3 ("Snover", "3", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  ABOMASNOW_4 ("Abomasnow", "4", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  SCATTERBUG_5 ("Scatterbug", "5", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  SCATTERBUG_6 ("Scatterbug", "6", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  SPEWPA_7 ("Spewpa", "7", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  VIVILLON_8 ("Vivillon", "8", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
+  SKIDDO_9 ("Skiddo", "9", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  GOGOAT_10 ("Gogoat", "10", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  PHEROMOSA_11 ("Pheromosa", "11", Rarity.HOLORARE, [BASIC, POKEMON, ULTRA_BEAST, _GRASS_]),
+  ALOLAN_MAROWAK_12 ("Alolan Marowak", "12", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
+  HEATRAN_13 ("Heatran", "13", Rarity.RARE, [BASIC, POKEMON, _FIRE_]),
+  FENNEKIN_14 ("Fennekin", "14", Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
+  FENNEKIN_15 ("Fennekin", "15", Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
+  BRAIXEN_16 ("Braixen", "16", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
+  DELPHOX_17 ("Delphox", "17", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIRE_]),
+  LITLEO_18 ("Litleo", "18", Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
+  PYROAR_19 ("Pyroar", "19", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
+  PALKIA_GX_20 ("Palkia-GX", "20", Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, _WATER_]),
+  FROAKIE_21 ("Froakie", "21", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+  FROAKIE_22 ("Froakie", "22", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+  FROGADIER_23 ("Frogadier", "23", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  GRENINJA_GX_24 ("Greninja-GX", "24", Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, POKEMON_GX, _WATER_]),
+  CLAUNCHER_25 ("Clauncher", "25", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+  CLAWITZER_26 ("Clawitzer", "26", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  AMAURA_27 ("Amaura", "27", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  AURORUS_28 ("Aurorus", "28", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
+  BERGMITE_29 ("Bergmite", "29", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+  AVALUGG_30 ("Avalugg", "30", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  VOLCANION_PRISM_STAR_31 ("Volcanion Prism Star", "31", Rarity.HOLORARE, [BASIC, POKEMON, PRISM_STAR, _WATER_]),
+  DEWPIDER_32 ("Dewpider", "32", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+  ARAQUANID_33 ("Araquanid", "33", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  MAGNEMITE_34 ("Magnemite", "34", Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+  MAGNETON_35 ("Magneton", "35", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+  MAGNEZONE_36 ("Magnezone", "36", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _LIGHTNING_]),
+  HELIOPTILE_37 ("Helioptile", "37", Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+  HELIOLISK_38 ("Heliolisk", "38", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+  XURKITREE_39 ("Xurkitree", "39", Rarity.RARE, [BASIC, POKEMON, ULTRA_BEAST, _LIGHTNING_]),
+  ROTOM_40 ("Rotom", "40", Rarity.RARE, [BASIC, POKEMON, _PSYCHIC_]),
+  UXIE_41 ("Uxie", "41", Rarity.UNCOMMON, [BASIC, POKEMON, _PSYCHIC_]),
+  MESPRIT_42 ("Mesprit", "42", Rarity.UNCOMMON, [BASIC, POKEMON, _PSYCHIC_]),
+  AZELF_43 ("Azelf", "43", Rarity.UNCOMMON, [BASIC, POKEMON, _PSYCHIC_]),
+  ESPURR_44 ("Espurr", "44", Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+  MEOWSTIC_45 ("Meowstic", "45", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+  HONEDGE_46 ("Honedge", "46", Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+  HONEDGE_47 ("Honedge", "47", Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+  DOUBLADE_48 ("Doublade", "48", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+  AEGISLASH_49 ("Aegislash", "49", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
+  INKAY_50 ("Inkay", "50", Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+  MALAMAR_51 ("Malamar", "51", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+  SKRELP_52 ("Skrelp", "52", Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+  DRAGALGE_53 ("Dragalge", "53", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+  HOOPA_54 ("Hoopa", "54", Rarity.UNCOMMON, [BASIC, POKEMON, _PSYCHIC_]),
+  POIPOLE_55 ("Poipole", "55", Rarity.UNCOMMON, [BASIC, POKEMON, ULTRA_BEAST, _PSYCHIC_]),
+  NAGANADEL_GX_56 ("Naganadel-GX", "56", Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, ULTRA_BEAST, POKEMON_GX, _PSYCHIC_]),
+  CUBONE_57 ("Cubone", "57", Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+  TORTERRA_58 ("Torterra", "58", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
+  INFERNAPE_59 ("Infernape", "59", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
+  GIBLE_60 ("Gible", "60", Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+  GABITE_61 ("Gabite", "61", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+  GARCHOMP_62 ("Garchomp", "62", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
+  CROAGUNK_63 ("Croagunk", "63", Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+  TOXICROAK_64 ("Toxicroak", "64", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+  PANCHAM_65 ("Pancham", "65", Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+  BINACLE_66 ("Binacle", "66", Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+  BARBARACLE_67 ("Barbaracle", "67", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+  TYRUNT_68 ("Tyrunt", "68", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+  TYRANTRUM_69 ("Tyrantrum", "69", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
+  HAWLUCHA_70 ("Hawlucha", "70", Rarity.UNCOMMON, [BASIC, POKEMON, _FIGHTING_]),
+  ZYGARDE_71 ("Zygarde", "71", Rarity.UNCOMMON, [BASIC, POKEMON, _FIGHTING_]),
+  ZYGARDE_72 ("Zygarde", "72", Rarity.RARE, [BASIC, POKEMON, _FIGHTING_]),
+  ZYGARDE_GX_73 ("Zygarde-GX", "73", Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, _FIGHTING_]),
+  DIANCIE_PRISM_STAR_74 ("Diancie Prism Star", "74", Rarity.HOLORARE, [BASIC, POKEMON, PRISM_STAR, _FIGHTING_]),
+  ROCKRUFF_75 ("Rockruff", "75", Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+  LYCANROC_76 ("Lycanroc", "76", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+  BUZZWOLE_77 ("Buzzwole", "77", Rarity.RARE, [BASIC, POKEMON, ULTRA_BEAST, _FIGHTING_]),
+  PANGORO_78 ("Pangoro", "78", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
+  YVELTAL_GX_79 ("Yveltal-GX", "79", Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, _DARKNESS_]),
+  GUZZLORD_80 ("Guzzlord", "80", Rarity.HOLORARE, [BASIC, POKEMON, ULTRA_BEAST, _DARKNESS_]),
+  EMPOLEON_81 ("Empoleon", "81", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _METAL_]),
+  DIALGA_GX_82 ("Dialga-GX", "82", Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, _METAL_]),
+  FLABEBE_83 ("Flabébé", "83", Rarity.COMMON, [BASIC, POKEMON, _FAIRY_]),
+  FLABEBE_84 ("Flabébé", "84", Rarity.COMMON, [BASIC, POKEMON, _FAIRY_]),
+  FLOETTE_85 ("Floette", "85", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FAIRY_]),
+  FLORGES_86 ("Florges", "86", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _FAIRY_]),
+  SYLVEON_87 ("Sylveon", "87", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FAIRY_]),
+  DEDENNE_88 ("Dedenne", "88", Rarity.UNCOMMON, [BASIC, POKEMON, _FAIRY_]),
+  KLEFKI_89 ("Klefki", "89", Rarity.UNCOMMON, [BASIC, POKEMON, _FAIRY_]),
+  XERNEAS_GX_90 ("Xerneas-GX", "90", Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, _FAIRY_]),
+  GOOMY_91 ("Goomy", "91", Rarity.COMMON, [BASIC, POKEMON, _DRAGON_]),
+  GOOMY_92 ("Goomy", "92", Rarity.COMMON, [BASIC, POKEMON, _DRAGON_]),
+  SLIGGOO_93 ("Sliggoo", "93", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DRAGON_]),
+  GOODRA_94 ("Goodra", "94", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _DRAGON_]),
+  ULTRA_NECROZMA_GX_95 ("Ultra Necrozma-GX", "95", Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, ULTRA_BEAST, _DRAGON_]),
+  ARCEUS_PRISM_STAR_96 ("Arceus Prism Star", "96", Rarity.HOLORARE, [BASIC, POKEMON, PRISM_STAR, _COLORLESS_]),
+  BUNNELBY_97 ("Bunnelby", "97", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+  DIGGERSBY_98 ("Diggersby", "98", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+  FURFROU_99 ("Furfrou", "99", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+  NOIBAT_100 ("Noibat", "100", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+  NOIVERN_101 ("Noivern", "101", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+  BEAST_RING_102 ("Beast Ring", "102", Rarity.RARE, [ITEM, TRAINER]),
+  BONNIE_103 ("Bonnie", "103", Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
+  CRASHER_WAKE_104 ("Crasher Wake", "104", Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
+  DIANTHA_105 ("Diantha", "105", Rarity.HOLORARE, [SUPPORTER, TRAINER]),
+  ENEPORTER_106 ("Eneporter", "106", Rarity.UNCOMMON, [ITEM, TRAINER]),
+  FOSSIL_EXCAVATION_MAP_107 ("Fossil Excavation Map", "107", Rarity.UNCOMMON, [ITEM, TRAINER]),
+  JUDGE_108 ("Judge", "108", Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
+  LADY_109 ("Lady", "109", Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
+  LYSANDRE_PRISM_STAR_110 ("Lysandre Prism Star", "110", Rarity.HOLORARE, [SUPPORTER, TRAINER, PRISM_STAR]),
+  LYSANDRE_LABS_111 ("Lysandre Labs", "111", Rarity.UNCOMMON, [STADIUM, TRAINER]),
+  METAL_FRYING_PAN_112 ("Metal Frying Pan", "112", Rarity.UNCOMMON, [ITEM,POKEMON_TOOL, TRAINER]),
+  MYSTERIOUS_TREASURE_113 ("Mysterious Treasure", "113", Rarity.UNCOMMON, [ITEM, TRAINER]),
+  ULTRA_RECON_SQUAD_114 ("Ultra Recon Squad", "114", Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
+  ULTRA_SPACE_115 ("Ultra Space", "115", Rarity.UNCOMMON, [STADIUM, TRAINER]),
+  UNIDENTIFIED_FOSSIL_116 ("Unidentified Fossil", "116", Rarity.UNCOMMON, [ITEM, TRAINER]),
+  BEAST_ENERGY_PRISM_STAR_117 ("Beast Energy Prism Star", "117", Rarity.HOLORARE, [SPECIAL_ENERGY, ENERGY, PRISM_STAR]),
+  UNIT_ENERGY_FDY_118 ("Unit Energy FDY", "118", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
+  PALKIA_GX_119 ("Palkia-GX", "119", Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, _WATER_]),
+  GRENINJA_GX_120 ("Greninja-GX", "120", Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, POKEMON_GX, _WATER_]),
+  NAGANADEL_GX_121 ("Naganadel-GX", "121", Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, POKEMON_GX, ULTRA_BEAST, _PSYCHIC_]),
+  LUCARIO_GX_122 ("Lucario-GX", "122", Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, POKEMON_GX, _FIGHTING_]),
+  ZYGARDE_GX_123 ("Zygarde-GX", "123", Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, _FIGHTING_]),
+  YVELTAL_GX_124 ("Yveltal-GX", "124", Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, _DARKNESS_]),
+  DIALGA_GX_125 ("Dialga-GX", "125", Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, _METAL_]),
+  XERNEAS_GX_126 ("Xerneas-GX", "126", Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, _FAIRY_]),
+  ULTRA_NECROZMA_GX_127 ("Ultra Necrozma-GX", "127", Rarity.ULTRARARE, [BASIC, POKEMON, POKEMON_GX, ULTRA_BEAST, _DRAGON_]),
+  BONNIE_128 ("Bonnie", "128", Rarity.ULTRARARE, [SUPPORTER, TRAINER]),
+  CRASHER_WAKE_129 ("Crasher Wake", "129", Rarity.ULTRARARE, [SUPPORTER, TRAINER]),
+  DIANTHA_130 ("Diantha", "130", Rarity.ULTRARARE, [SUPPORTER, TRAINER]),
+  ULTRA_RECON_SQUAD_131 ("Ultra Recon Squad", "131", Rarity.ULTRARARE, [SUPPORTER, TRAINER]),
+  PALKIA_GX_132 ("Palkia-GX", "132", Rarity.SECRET, [BASIC, POKEMON, POKEMON_GX, _WATER_]),
+  GRENINJA_GX_133 ("Greninja-GX", "133", Rarity.SECRET, [STAGE2, EVOLUTION, POKEMON, POKEMON_GX, _WATER_]),
+  NAGANADEL_GX_134 ("Naganadel-GX", "134", Rarity.SECRET, [STAGE1, EVOLUTION, POKEMON, POKEMON_GX, ULTRA_BEAST, _PSYCHIC_]),
+  LUCARIO_GX_135 ("Lucario-GX", "135", Rarity.SECRET, [STAGE1, EVOLUTION, POKEMON, POKEMON_GX, _FIGHTING_]),
+  ZYGARDE_GX_136 ("Zygarde-GX", "136", Rarity.SECRET, [BASIC, POKEMON, POKEMON_GX, _FIGHTING_]),
+  YVELTAL_GX_137 ("Yveltal-GX", "137", Rarity.SECRET, [BASIC, POKEMON, POKEMON_GX, _DARKNESS_]),
+  DIALGA_GX_138 ("Dialga-GX", "138", Rarity.SECRET, [BASIC, POKEMON, POKEMON_GX, _METAL_]),
+  XERNEAS_GX_139 ("Xerneas-GX", "139", Rarity.SECRET, [BASIC, POKEMON, POKEMON_GX, _FAIRY_]),
+  ULTRA_NECROZMA_GX_140 ("Ultra Necrozma-GX", "140", Rarity.SECRET, [BASIC, POKEMON, POKEMON_GX, ULTRA_BEAST, _DRAGON_]),
+  BEAST_RING_141 ("Beast Ring", "141", Rarity.SECRET, [ITEM, TRAINER]),
+  ENEPORTER_142 ("Eneporter", "142", Rarity.SECRET, [ITEM, TRAINER]),
+  ENERGY_RECYCLER_143 ("Energy Recycler", "143", Rarity.SECRET, [ITEM, TRAINER]),
+  METAL_FRYING_PAN_144 ("Metal Frying Pan", "144", Rarity.SECRET, [ITEM,POKEMON_TOOL, TRAINER]),
+  MYSTERIOUS_TREASURE_145 ("Mysterious Treasure", "145", Rarity.SECRET, [ITEM, TRAINER]),
+  UNIT_ENERGY_FDY_146 ("Unit Energy FDY", "146", Rarity.SECRET, [SPECIAL_ENERGY, ENERGY]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
   protected CardTypeSet cardTypes;
   protected String name;
   protected Rarity rarity;
-  protected int collectionLineNo;
+  protected String collectionLineNo;
 
-  ForbiddenLight(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+  ForbiddenLight(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
     this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
     this.name = name;
     this.rarity = rarity;
@@ -203,7 +203,7 @@ public enum ForbiddenLight implements LogicCardInfo {
   }
 
   @Override
-  public int getCollectionLineNo() {
+  public String getNumber() {
     return collectionLineNo;
   }
 
@@ -237,7 +237,6 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
             onAttack {
               my.deck.search("Exeggcute", {it.name=="Exeggcute"}).each{
-                my.deck.remove(it)
                 benchPCS(it)
               }
             }
@@ -574,6 +573,13 @@ public enum ForbiddenLight implements LogicCardInfo {
           bwAbility "Unnerve", {
             text "Whenever your opponent plays an Item or Supporter card from their hand, prevent all effects of that card done to this Pokémon."
             delayedA {
+              def flag = false
+              before PROCESS_ATTACK_EFFECTS, {
+                flag = true
+              }
+              before BETWEEN_TURNS, {
+                flag = false
+              }
               def power=false
               before PLAY_TRAINER, {
                 if ((ef.item || ef.supporter) && bg.currentTurn==self.owner.opposite && bg.currentTurn.pbg.hand.contains(ef.cardToPlay)) {
@@ -584,7 +590,7 @@ public enum ForbiddenLight implements LogicCardInfo {
                 power=false
               }
               before null, self, Source.TRAINER_CARD, {
-                if (power) {
+                if (power && !flag) {
                   bc "Unnerve prevents effects from Supporter or Item cards done to $self."
                   prevent()
                 }
@@ -1000,8 +1006,11 @@ public enum ForbiddenLight implements LogicCardInfo {
           bwAbility "Magnetic Circuit", {
             text "As often as you like during your turn (before your attack), you may attach a [L] Energy card from your hand to 1 of your Pokémon."
             actionA {
-              assert my.hand.findAll(basicEnergyFilter(L))
-              attachEnergyFrom(may: true, type: L, my.hand, my.all)
+              assert my.hand.filterByEnergyType(L) : "No [L] Energy in hand"
+              powerUsed()
+              def selEnergy = my.hand.filterByBasicEnergyType(L).first()
+              def pcs = my.all.select("Attach to?")
+              attachEnergy(pcs, selEnergy, PLAY_FROM_HAND)
             }
           }
           move "Zap Cannon", {
@@ -1279,7 +1288,8 @@ public enum ForbiddenLight implements LogicCardInfo {
                     }
                   }
                   before EVOLVE, defending, {unregister()}
-                  before SWITCH, defending, {unregister()}
+                  before DEVOLVE, defending, {unregister()}
+                  before FALL_BACK, defending, {unregister()}
                   unregisterAfter 3
                 }
               }
@@ -1415,7 +1425,8 @@ public enum ForbiddenLight implements LogicCardInfo {
                   }
                 }
                 before EVOLVE, self, {unregister()}
-                before SWITCH, self, {unregister()}
+                before DEVOLVE, self, {unregister()}
+                before FALL_BACK, self, {unregister()}
                 unregisterAfter 2
               }
             }
@@ -1443,8 +1454,8 @@ public enum ForbiddenLight implements LogicCardInfo {
             text "Both players shuffle their Prize cards into their decks. Then, each player puts the top 3 cards of their deck face down as their Prize cards. (You can’t use more than 1 GX attack in a game.)"
             energyCost C, C, C
             onAttack {
-              my.prizeCardSet.moveTo(my.deck)
-              opp.prizeCardSet.moveTo(opp.deck)
+              my.prizeCardSet.moveTo(hidden:true, my.deck)
+              opp.prizeCardSet.moveTo(hidden:true, opp.deck)
               shuffleDeck()
               shuffleDeck(null, TargetPlayer.OPPONENT)
               for(int i=0;i<3;i++){
@@ -2043,7 +2054,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             onAttack {
               gxPerform()
               damage 150
-              afterDamage{
+              afterDamage {
                 delayed (priority: BEFORE_LAST) {
                   before BETWEEN_TURNS, {
                     prevent()
@@ -2052,6 +2063,19 @@ public enum ForbiddenLight implements LogicCardInfo {
                     bc "Timeless GX started a new turn!"
                     unregister()
                   }
+
+                  // Enable the use of a 2nd Supporter
+                  def eff
+                  register {
+                    //TODO: This may not work properly against other extra supporter effects (mainly Lt. Surge's Strategy)
+                    eff = getter (GET_MAX_SUPPORTER_PER_TURN) {h->
+                      if(h.effect.playerType == thisCard.player && h.object < 2) h.object = 2
+                    }
+                  }
+                  unregister {
+                    eff.unregister()
+                  }
+                  unregisterAfter 1
                 }
               }
             }
@@ -2066,7 +2090,10 @@ public enum ForbiddenLight implements LogicCardInfo {
             text "If you go second, this Pokémon can evolve during your first turn."
             delayedA {
               before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
-                if(bg.turnCount == 2) prevent()
+                if(bg.turnCount == 2 && bg.currentTurn == self.owner){
+                  powerUsed()
+                  prevent()
+                }
               }
             }
           }
@@ -2709,9 +2736,9 @@ public enum ForbiddenLight implements LogicCardInfo {
             eff2 = delayed{
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if(it.to == self && self.types.contains(M)){
-                    bc "Metal Frying Pan -30"
-                    it.dmg-=hp(30)
+                  if(it.to == self && self.types.contains(M) && it.dmg.value && it.notNoEffect) {
+                      bc "Metal Frying Pan -30"
+                      it.dmg-=hp(30)
                   }
                 }
               }

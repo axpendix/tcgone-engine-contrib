@@ -29,131 +29,131 @@ import tcgwars.logic.util.*;
  */
 public enum FireRedLeafGreen implements LogicCardInfo {
 
-  BEEDRILL_1 ("Beedrill", 1, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
-  BUTTERFREE_2 ("Butterfree", 2, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
-  DEWGONG_3 ("Dewgong", 3, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  DITTO_4 ("Ditto", 4, Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
-  EXEGGUTOR_5 ("Exeggutor", 5, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-  KANGASKHAN_6 ("Kangaskhan", 6, Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
-  MAROWAK_7 ("Marowak", 7, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-  NIDOKING_8 ("Nidoking", 8, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
-  NIDOQUEEN_9 ("Nidoqueen", 9, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
-  PIDGEOT_10 ("Pidgeot", 10, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
-  POLIWRATH_11 ("Poliwrath", 11, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
-  RAICHU_12 ("Raichu", 12, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-  RAPIDASH_13 ("Rapidash", 13, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
-  SLOWBRO_14 ("Slowbro", 14, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-  SNORLAX_15 ("Snorlax", 15, Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
-  TAUROS_16 ("Tauros", 16, Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
-  VICTREEBEL_17 ("Victreebel", 17, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
-  ARCANINE_18 ("Arcanine", 18, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
-  CHANSEY_19 ("Chansey", 19, Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
-  CLOYSTER_20 ("Cloyster", 20, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  DODRIO_21 ("Dodrio", 21, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-  DUGTRIO_22 ("Dugtrio", 22, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-  FARFETCH_D_23 ("Farfetch'd", 23, Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
-  FEAROW_24 ("Fearow", 24, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-  HYPNO_25 ("Hypno", 25, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-  KINGLER_26 ("Kingler", 26, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  MAGNETON_27 ("Magneton", 27, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-  PRIMEAPE_28 ("Primeape", 28, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-  SCYTHER_29 ("Scyther", 29, Rarity.RARE, [BASIC, POKEMON, _GRASS_]),
-  TANGELA_30 ("Tangela", 30, Rarity.RARE, [BASIC, POKEMON, _GRASS_]),
-  CHARMELEON_31 ("Charmeleon", 31, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
-  DROWZEE_32 ("Drowzee", 32, Rarity.UNCOMMON, [BASIC, POKEMON, _PSYCHIC_]),
-  EXEGGCUTE_33 ("Exeggcute", 33, Rarity.UNCOMMON, [BASIC, POKEMON, _PSYCHIC_]),
-  HAUNTER_34 ("Haunter", 34, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-  IVYSAUR_35 ("Ivysaur", 35, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  KAKUNA_36 ("Kakuna", 36, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  LICKITUNG_37 ("Lickitung", 37, Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
-  MANKEY_38 ("Mankey", 38, Rarity.UNCOMMON, [BASIC, POKEMON, _FIGHTING_]),
-  METAPOD_39 ("Metapod", 39, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  NIDORINA_40 ("Nidorina", 40, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  NIDORINO_41 ("Nidorino", 41, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  ONIX_42 ("Onix", 42, Rarity.UNCOMMON, [BASIC, POKEMON, _FIGHTING_]),
-  PARASECT_43 ("Parasect", 43, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  PERSIAN_44 ("Persian", 44, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-  PIDGEOTTO_45 ("Pidgeotto", 45, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-  POLIWHIRL_46 ("Poliwhirl", 46, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  PORYGON_47 ("Porygon", 47, Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
-  RATICATE_48 ("Raticate", 48, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-  VENOMOTH_49 ("Venomoth", 49, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  WARTORTLE_50 ("Wartortle", 50, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  WEEPINBELL_51 ("Weepinbell", 51, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  WIGGLYTUFF_52 ("Wigglytuff", 52, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-  BELLSPROUT_53 ("Bellsprout", 53, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  BULBASAUR_54 ("Bulbasaur", 54, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  BULBASAUR_55 ("Bulbasaur", 55, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  CATERPIE_56 ("Caterpie", 56, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  CHARMANDER_57 ("Charmander", 57, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
-  CHARMANDER_58 ("Charmander", 58, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
-  CLEFAIRY_59 ("Clefairy", 59, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  CUBONE_60 ("Cubone", 60, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-  DIGLETT_61 ("Diglett", 61, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-  DODUO_62 ("Doduo", 62, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  GASTLY_63 ("Gastly", 63, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
-  GROWLITHE_64 ("Growlithe", 64, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
-  JIGGLYPUFF_65 ("Jigglypuff", 65, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  KRABBY_66 ("Krabby", 66, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-  MAGIKARP_67 ("Magikarp", 67, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-  MAGNEMITE_68 ("Magnemite", 68, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-  MEOWTH_69 ("Meowth", 69, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  NIDORAN_FEMALE_70 ("Nidoran♀", 70, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  NIDORAN_MALE_71 ("Nidoran♂", 71, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  PARAS_72 ("Paras", 72, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  PIDGEY_73 ("Pidgey", 73, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  PIKACHU_74 ("Pikachu", 74, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-  POLIWAG_75 ("Poliwag", 75, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-  PONYTA_76 ("Ponyta", 76, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
-  RATTATA_77 ("Rattata", 77, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  SEEL_78 ("Seel", 78, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-  SHELLDER_79 ("Shellder", 79, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-  SLOWPOKE_80 ("Slowpoke", 80, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
-  SPEAROW_81 ("Spearow", 81, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  SQUIRTLE_82 ("Squirtle", 82, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-  SQUIRTLE_83 ("Squirtle", 83, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-  VENONAT_84 ("Venonat", 84, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  VOLTORB_85 ("Voltorb", 85, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-  WEEDLE_86 ("Weedle", 86, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  BILL_S_MAINTENANCE_87 ("Bill's Maintenance", 87, Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
-  CELIO_S_NETWORK_88 ("Celio's Network", 88, Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
-  ENERGY_REMOVAL_2_89 ("Energy Removal 2", 89, Rarity.UNCOMMON, [TRAINER]),
-  ENERGY_SWITCH_90 ("Energy Switch", 90, Rarity.UNCOMMON, [TRAINER]),
-  EXP_ALL_91 ("EXP.ALL", 91, Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER]),
-  GREAT_BALL_92 ("Great Ball", 92, Rarity.UNCOMMON, [TRAINER]),
-  LIFE_HERB_93 ("Life Herb", 93, Rarity.UNCOMMON, [TRAINER]),
-  MT__MOON_94 ("Mt. Moon", 94, Rarity.UNCOMMON, [STADIUM, TRAINER]),
-  POKE_BALL_95 ("Poké Ball", 95, Rarity.UNCOMMON, [TRAINER]),
-  POKEDEX_HANDY909_96 ("PokéDex Handy909", 96, Rarity.UNCOMMON, [TRAINER]),
-  POKEMON_REVERSAL_97 ("Pokémon Reversal", 97, Rarity.UNCOMMON, [TRAINER]),
-  PROF__OAK_S_RESEARCH_98 ("Prof. Oak's Research", 98, Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
-  SUPER_SCOOP_UP_99 ("Super Scoop Up", 99, Rarity.UNCOMMON, [TRAINER]),
-  VS_SEEKER_100 ("VS Seeker", 100, Rarity.UNCOMMON, [TRAINER]),
-  POTION_101 ("Potion", 101, Rarity.COMMON, [TRAINER]),
-  SWITCH_102 ("Switch", 102, Rarity.COMMON, [TRAINER]),
-  MULTI_ENERGY_103 ("Multi Energy", 103, Rarity.RARE, [SPECIAL_ENERGY, ENERGY]),
-  BLASTOISE_EX_104 ("Blastoise ex", 104, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _WATER_, EX]),
-  CHARIZARD_EX_105 ("Charizard ex", 105, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIRE_, EX]),
-  CLEFABLE_EX_106 ("Clefable ex", 106, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_, EX]),
-  ELECTRODE_EX_107 ("Electrode ex", 107, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_, EX]),
-  GENGAR_EX_108 ("Gengar ex", 108, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_, EX]),
-  GYARADOS_EX_109 ("Gyarados ex", 109, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _WATER_, EX]),
-  MR__MIME_EX_110 ("Mr. Mime ex", 110, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_, EX]),
-  MR__MIME_EX_111 ("Mr. Mime ex", 111, Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_, EX]),
-  VENUSAUR_EX_112 ("Venusaur ex", 112, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_, EX]),
-  CHARMANDER_113 ("Charmander", 113, Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_]),
-  ARTICUNO_EX_114 ("Articuno ex", 114, Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, EX]),
-  MOLTRES_EX_115 ("Moltres ex", 115, Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_, EX]),
-  ZAPDOS_EX_116 ("Zapdos ex", 116, Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_, EX]);
+  BEEDRILL_1 ("Beedrill", "1", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
+  BUTTERFREE_2 ("Butterfree", "2", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
+  DEWGONG_3 ("Dewgong", "3", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  DITTO_4 ("Ditto", "4", Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
+  EXEGGUTOR_5 ("Exeggutor", "5", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+  KANGASKHAN_6 ("Kangaskhan", "6", Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
+  MAROWAK_7 ("Marowak", "7", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+  NIDOKING_8 ("Nidoking", "8", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
+  NIDOQUEEN_9 ("Nidoqueen", "9", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
+  PIDGEOT_10 ("Pidgeot", "10", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
+  POLIWRATH_11 ("Poliwrath", "11", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
+  RAICHU_12 ("Raichu", "12", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+  RAPIDASH_13 ("Rapidash", "13", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
+  SLOWBRO_14 ("Slowbro", "14", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+  SNORLAX_15 ("Snorlax", "15", Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
+  TAUROS_16 ("Tauros", "16", Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
+  VICTREEBEL_17 ("Victreebel", "17", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
+  ARCANINE_18 ("Arcanine", "18", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
+  CHANSEY_19 ("Chansey", "19", Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
+  CLOYSTER_20 ("Cloyster", "20", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  DODRIO_21 ("Dodrio", "21", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+  DUGTRIO_22 ("Dugtrio", "22", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+  FARFETCH_D_23 ("Farfetch'd", "23", Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
+  FEAROW_24 ("Fearow", "24", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+  HYPNO_25 ("Hypno", "25", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+  KINGLER_26 ("Kingler", "26", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  MAGNETON_27 ("Magneton", "27", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+  PRIMEAPE_28 ("Primeape", "28", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+  SCYTHER_29 ("Scyther", "29", Rarity.RARE, [BASIC, POKEMON, _GRASS_]),
+  TANGELA_30 ("Tangela", "30", Rarity.RARE, [BASIC, POKEMON, _GRASS_]),
+  CHARMELEON_31 ("Charmeleon", "31", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
+  DROWZEE_32 ("Drowzee", "32", Rarity.UNCOMMON, [BASIC, POKEMON, _PSYCHIC_]),
+  EXEGGCUTE_33 ("Exeggcute", "33", Rarity.UNCOMMON, [BASIC, POKEMON, _PSYCHIC_]),
+  HAUNTER_34 ("Haunter", "34", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+  IVYSAUR_35 ("Ivysaur", "35", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  KAKUNA_36 ("Kakuna", "36", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  LICKITUNG_37 ("Lickitung", "37", Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
+  MANKEY_38 ("Mankey", "38", Rarity.UNCOMMON, [BASIC, POKEMON, _FIGHTING_]),
+  METAPOD_39 ("Metapod", "39", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  NIDORINA_40 ("Nidorina", "40", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  NIDORINO_41 ("Nidorino", "41", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  ONIX_42 ("Onix", "42", Rarity.UNCOMMON, [BASIC, POKEMON, _FIGHTING_]),
+  PARASECT_43 ("Parasect", "43", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  PERSIAN_44 ("Persian", "44", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+  PIDGEOTTO_45 ("Pidgeotto", "45", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+  POLIWHIRL_46 ("Poliwhirl", "46", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  PORYGON_47 ("Porygon", "47", Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
+  RATICATE_48 ("Raticate", "48", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+  VENOMOTH_49 ("Venomoth", "49", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  WARTORTLE_50 ("Wartortle", "50", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  WEEPINBELL_51 ("Weepinbell", "51", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  WIGGLYTUFF_52 ("Wigglytuff", "52", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+  BELLSPROUT_53 ("Bellsprout", "53", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  BULBASAUR_54 ("Bulbasaur", "54", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  BULBASAUR_55 ("Bulbasaur", "55", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  CATERPIE_56 ("Caterpie", "56", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  CHARMANDER_57 ("Charmander", "57", Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
+  CHARMANDER_58 ("Charmander", "58", Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
+  CLEFAIRY_59 ("Clefairy", "59", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+  CUBONE_60 ("Cubone", "60", Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+  DIGLETT_61 ("Diglett", "61", Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+  DODUO_62 ("Doduo", "62", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+  GASTLY_63 ("Gastly", "63", Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+  GROWLITHE_64 ("Growlithe", "64", Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
+  JIGGLYPUFF_65 ("Jigglypuff", "65", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+  KRABBY_66 ("Krabby", "66", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+  MAGIKARP_67 ("Magikarp", "67", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+  MAGNEMITE_68 ("Magnemite", "68", Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+  MEOWTH_69 ("Meowth", "69", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+  NIDORAN_FEMALE_70 ("Nidoran♀", "70", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  NIDORAN_MALE_71 ("Nidoran♂", "71", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  PARAS_72 ("Paras", "72", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  PIDGEY_73 ("Pidgey", "73", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+  PIKACHU_74 ("Pikachu", "74", Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+  POLIWAG_75 ("Poliwag", "75", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+  PONYTA_76 ("Ponyta", "76", Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
+  RATTATA_77 ("Rattata", "77", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+  SEEL_78 ("Seel", "78", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+  SHELLDER_79 ("Shellder", "79", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+  SLOWPOKE_80 ("Slowpoke", "80", Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+  SPEAROW_81 ("Spearow", "81", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+  SQUIRTLE_82 ("Squirtle", "82", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+  SQUIRTLE_83 ("Squirtle", "83", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+  VENONAT_84 ("Venonat", "84", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  VOLTORB_85 ("Voltorb", "85", Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+  WEEDLE_86 ("Weedle", "86", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  BILL_S_MAINTENANCE_87 ("Bill's Maintenance", "87", Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
+  CELIO_S_NETWORK_88 ("Celio's Network", "88", Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
+  ENERGY_REMOVAL_2_89 ("Energy Removal 2", "89", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  ENERGY_SWITCH_90 ("Energy Switch", "90", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  EXP_ALL_91 ("EXP.ALL", "91", Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER, ITEM]),
+  GREAT_BALL_92 ("Great Ball", "92", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  LIFE_HERB_93 ("Life Herb", "93", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  MT__MOON_94 ("Mt. Moon", "94", Rarity.UNCOMMON, [STADIUM, TRAINER, ITEM]),
+  POKE_BALL_95 ("Poké Ball", "95", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  POKEDEX_HANDY909_96 ("PokéDex Handy909", "96", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  POKEMON_REVERSAL_97 ("Pokémon Reversal", "97", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  PROF__OAK_S_RESEARCH_98 ("Prof. Oak's Research", "98", Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
+  SUPER_SCOOP_UP_99 ("Super Scoop Up", "99", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  VS_SEEKER_100 ("VS Seeker", "100", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  POTION_101 ("Potion", "101", Rarity.COMMON, [TRAINER, ITEM]),
+  SWITCH_102 ("Switch", "102", Rarity.COMMON, [TRAINER, ITEM]),
+  MULTI_ENERGY_103 ("Multi Energy", "103", Rarity.RARE, [SPECIAL_ENERGY, ENERGY]),
+  BLASTOISE_EX_104 ("Blastoise ex", "104", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _WATER_, EX]),
+  CHARIZARD_EX_105 ("Charizard ex", "105", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIRE_, EX]),
+  CLEFABLE_EX_106 ("Clefable ex", "106", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_, EX]),
+  ELECTRODE_EX_107 ("Electrode ex", "107", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_, EX]),
+  GENGAR_EX_108 ("Gengar ex", "108", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_, EX]),
+  GYARADOS_EX_109 ("Gyarados ex", "109", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _WATER_, EX]),
+  MR__MIME_EX_110 ("Mr. Mime ex", "110", Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_, EX]),
+  MR__MIME_EX_111 ("Mr. Mime ex", "111", Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_, EX]),
+  VENUSAUR_EX_112 ("Venusaur ex", "112", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_, EX]),
+  CHARMANDER_113 ("Charmander", "113", Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_]),
+  ARTICUNO_EX_114 ("Articuno ex", "114", Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, EX]),
+  MOLTRES_EX_115 ("Moltres ex", "115", Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_, EX]),
+  ZAPDOS_EX_116 ("Zapdos ex", "116", Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_, EX]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
   protected CardTypeSet cardTypes;
   protected String name;
   protected Rarity rarity;
-  protected int collectionLineNo;
+  protected String collectionLineNo;
 
-  FireRedLeafGreen(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+  FireRedLeafGreen(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
     this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
     this.name = name;
     this.rarity = rarity;
@@ -176,7 +176,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
   }
 
   @Override
-  public int getCollectionLineNo() {
+  public String getNumber() {
     return collectionLineNo;
   }
 
@@ -317,12 +317,12 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             text "Shuffle your hand into your deck. Draw up to 8 cards."
             energyCost C
             attackRequirement {
-              assert my.hand.notEmpty && my.deck.notEmpty
+              assert my.hand.notEmpty || my.deck.notEmpty
             }
             onAttack {
-              my.hand.moveTo(my.deck)
+              my.hand.moveTo(hidden:true, my.deck)
               shuffleDeck()
-              draw 8
+              draw choose(1..8,"How many cards would you like to draw?")
             }
           }
           move "Big Eggsplosion", {
@@ -1717,7 +1717,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                       apply CONFUSED, pcs
                     }
                   }
-                  after SWITCH, pcs, {unregister()}
+                  after FALL_BACK, pcs, {unregister()}
                   after EVOLVE, pcs, {unregister()}
                   after DEVOLVE, pcs, {unregister()}
                   unregisterAfter 2
@@ -1908,7 +1908,6 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
             onAttack {
               deck.search (count: 1,{it.cardTypes.is(BASIC) && (it.name == "Nidoran♀" || it.name == "Nidoran♂")}).each {
-                deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()
@@ -2181,7 +2180,6 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             onAttack {
               int count = bench.freeBenchCount>=2?2:1
               deck.search (max: count, {it.cardTypes.is(BASIC) && it.types.contains(G)}).each {
-                deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()
@@ -2279,7 +2277,6 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           text "Search your deck for a Basic Pokémon (excluding Pokémon-ex) and put it onto your Bench. Shuffle your deck afterward."
           onPlay {
             my.deck.search(count : 1,"Search your deck for a Basic Pokémon (excluding Pokémon-ex)",{it.cardTypes.is(BASIC) && it.cardTypes.isNot(EX)}).each{
-              deck.remove(it)
               benchPCS(it)
             }
             shuffleDeck()
@@ -2392,7 +2389,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
           playRequirement{
-            assert my.bench : "you don't have pokemon to return to your hand"
+            confirmScoopLastPokemon()
           }
         };
       case VS_SEEKER_100:
@@ -2585,7 +2582,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                 def src = pl.select(info, false)
                 if(!src) break;
 
-                def selection = src.cards.filterByType(ENERGY).select("Card to discard")
+                def selection = src.cards.filterByType(ENERGY).findAll{enCard -> !toBeDiscarded.contains(enCard)}.select("Card to discard")
                 toBeDiscarded.addAll(selection)
               }
               damage 30+20*toBeDiscarded.size()
@@ -2762,11 +2759,11 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                 powerUsed()
                 sw my.active, self
                 while(1){
-                  def pl=(my.all.findAll {it.cards.filterByEnergyType(W) && it!=self})
+                  def pl=(my.all.findAll {it.cards.filterByBasicEnergyType(W) && it!=self})
                   if(!pl) break;
-                  def src=pl.select("Source for [W] energy (cancel to stop moving)", false)
+                  def src=pl.select("Source for basic [W] Energy (cancel to stop moving)", false)
                   if(!src) break;
-                  def card=src.cards.filterByEnergyType(W).select("Card to move").first()
+                  def card=src.cards.filterByBasicEnergyType(W).select("Card to move").first()
                   energySwitch(src, self, card)
                 }
               }
@@ -2777,9 +2774,11 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost W, W, C
             onAttack {
               damage 50
-              if(confirm("Discard an Energy card attached to $self?")){
-                discardSelfEnergy C
-                discardDefendingEnergy()
+              if (confirm("Discard an Energy card attached to $self?")) {
+                afterDamage {
+                  discardSelfEnergy C
+                  discardDefendingEnergy()
+                }
               }
             }
           }
@@ -2795,11 +2794,11 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                 powerUsed()
                 sw my.active, self
                 while (1) {
-                  def pl = (my.all.findAll { it.cards.filterByEnergyType(R) && it != self })
+                  def pl = (my.all.findAll { it.cards.filterByBasicEnergyType(R) && it != self })
                   if (!pl) break;
-                  def src = pl.select("Source for [R] energy (cancel to stop moving)", false)
+                  def src = pl.select("Source for basic [R] Energy (cancel to stop moving)", false)
                   if (!src) break;
-                  def card = src.cards.filterByEnergyType(R).select("Card to move").first()
+                  def card = src.cards.filterByBasicEnergyType(R).select("Card to move").first()
                   energySwitch(src, self, card)
                 }
               }
@@ -2811,8 +2810,8 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost R, R, C
             onAttack {
               damage 60
-              if(confirm("Discard an Energy card attached to $self?")){
-                discardSelfEnergy C
+              if (confirm("Discard an Energy card attached to $self?")) {
+                afterDamage {discardSelfEnergy C}
                 applyAfterDamage CONFUSED
               }
             }
@@ -2828,11 +2827,11 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                 powerUsed()
                 sw my.active, self
                 while (1) {
-                  def pl = (my.all.findAll { it.cards.filterByEnergyType(L) && it != self })
+                  def pl = (my.all.findAll { it.cards.filterByBasicEnergyType(L) && it != self })
                   if (!pl) break;
-                  def src = pl.select("Source for [L] energy (cancel to stop moving)", false)
+                  def src = pl.select("Source for basic [L] Energy (cancel to stop moving)", false)
                   if (!src) break;
-                  def card = src.cards.filterByEnergyType(L).select("Card to move").first()
+                  def card = src.cards.filterByBasicEnergyType(L).select("Card to move").first()
                   energySwitch(src, self, card)
                 }
               }
@@ -2843,9 +2842,9 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost L, L, C
             onAttack {
               damage 50
-              if(confirm("Discard an Energy card attached to $self for +20?")){
-                discardSelfEnergy C
+              if (confirm("Discard an Energy card attached to $self for +20?")) {
                 damage 20
+                afterDamage {discardSelfEnergy C}
               }
             }
           }

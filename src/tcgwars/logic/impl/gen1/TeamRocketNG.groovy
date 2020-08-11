@@ -23,90 +23,90 @@ import tcgwars.logic.util.*;
  */
 public enum TeamRocketNG implements LogicCardInfo {
 
-  DARK_ALAKAZAM_1 ("Dark Alakazam", 1, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
-  DARK_ARBOK_2 ("Dark Arbok", 2, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  DARK_BLASTOISE_3 ("Dark Blastoise", 3, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
-  DARK_CHARIZARD_4 ("Dark Charizard", 4, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIRE_]),
-  DARK_DRAGONITE_5 ("Dark Dragonite", 5, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
-  DARK_DUGTRIO_6 ("Dark Dugtrio", 6, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-  DARK_GOLBAT_7 ("Dark Golbat", 7, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  DARK_GYARADOS_8 ("Dark Gyarados", 8, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  DARK_HYPNO_9 ("Dark Hypno", 9, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-  DARK_MACHAMP_10 ("Dark Machamp", 10, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
-  DARK_MAGNETON_11 ("Dark Magneton", 11, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-  DARK_SLOWBRO_12 ("Dark Slowbro", 12, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-  DARK_VILEPLUME_13 ("Dark Vileplume", 13, Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
-  DARK_WEEZING_14 ("Dark Weezing", 14, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  HERE_COMES_TEAM_ROCKET_15 ("Here Comes Team Rocket!", 15, Rarity.HOLORARE, [TRAINER]),
-  ROCKETS_SNEAK_ATTACK_16 ("Rocket's Sneak Attack", 16, Rarity.HOLORARE, [TRAINER]),
-  RAINBOW_ENERGY_17 ("Rainbow Energy", 17, Rarity.HOLORARE, [SPECIAL_ENERGY, ENERGY]),
+  DARK_ALAKAZAM_1 ("Dark Alakazam", "1", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
+  DARK_ARBOK_2 ("Dark Arbok", "2", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  DARK_BLASTOISE_3 ("Dark Blastoise", "3", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
+  DARK_CHARIZARD_4 ("Dark Charizard", "4", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIRE_]),
+  DARK_DRAGONITE_5 ("Dark Dragonite", "5", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
+  DARK_DUGTRIO_6 ("Dark Dugtrio", "6", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+  DARK_GOLBAT_7 ("Dark Golbat", "7", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  DARK_GYARADOS_8 ("Dark Gyarados", "8", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  DARK_HYPNO_9 ("Dark Hypno", "9", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+  DARK_MACHAMP_10 ("Dark Machamp", "10", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
+  DARK_MAGNETON_11 ("Dark Magneton", "11", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+  DARK_SLOWBRO_12 ("Dark Slowbro", "12", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+  DARK_VILEPLUME_13 ("Dark Vileplume", "13", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
+  DARK_WEEZING_14 ("Dark Weezing", "14", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  HERE_COMES_TEAM_ROCKET_15 ("Here Comes Team Rocket!", "15", Rarity.HOLORARE, [TRAINER]),
+  ROCKETS_SNEAK_ATTACK_16 ("Rocket's Sneak Attack", "16", Rarity.HOLORARE, [TRAINER]),
+  RAINBOW_ENERGY_17 ("Rainbow Energy", "17", Rarity.HOLORARE, [SPECIAL_ENERGY, ENERGY]),
 
-  DARK_ALAKAZAM ("Dark Alakazam", 18, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
-  DARK_ARBOK ("Dark Arbok", 19, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  DARK_BLASTOISE ("Dark Blastoise", 20, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
-  DARK_CHARIZARD ("Dark Charizard", 21, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _FIRE_]),
-  DARK_DRAGONITE ("Dark Dragonite", 22, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
-  DARK_DUGTRIO ("Dark Dugtrio", 23, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-  DARK_GOLBAT ("Dark Golbat", 24, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  DARK_GYARADOS ("Dark Gyarados", 25, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  DARK_HYPNO ("Dark Hypno", 26, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-  DARK_MACHAMP ("Dark Machamp", 27, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
-  DARK_MAGNETON ("Dark Magneton", 28, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-  DARK_SLOWBRO ("Dark Slowbro", 29, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-  DARK_VILEPLUME ("Dark Vileplume", 30, Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
-  DARK_WEEZING ("Dark Weezing", 31, Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  DARK_CHARMELEON ("Dark Charmeleon", 32, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
-  DARK_DRAGONAIR ("Dark Dragonair", 33, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-  DARK_ELECTRODE ("Dark Electrode", 34, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-  DARK_FLAREON ("Dark Flareon", 35, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
-  DARK_GLOOM ("Dark Gloom", 36, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  DARK_GOLDUCK ("Dark Golduck", 37, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  DARK_JOLTEON ("Dark Jolteon", 38, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-  DARK_KADABRA ("Dark Kadabra", 39, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-  DARK_MACHOKE ("Dark Machoke", 40, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-  DARK_MUK ("Dark Muk", 41, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  DARK_PERSIAN ("Dark Persian", 42, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-  DARK_PRIMEAPE ("Dark Primeape", 43, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-  DARK_RAPIDASH ("Dark Rapidash", 44, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
-  DARK_VAPOREON ("Dark Vaporeon", 45, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  DARK_WARTORTLE ("Dark Wartortle", 46, Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  MAGIKARP ("Magikarp", 47, Rarity.UNCOMMON, [BASIC, POKEMON, _WATER_]),
-  PORYGON ("Porygon", 48, Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
-  ABRA ("Abra", 49, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
-  CHARMANDER ("Charmander", 50, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
-  DARK_RATICATE ("Dark Raticate", 51, Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-  DIGLETT ("Diglett", 52, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-  DRATINI ("Dratini", 53, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  DROWZEE ("Drowzee", 54, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
-  EEVEE ("Eevee", 55, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  EKANS ("Ekans", 56, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  GRIMER ("Grimer", 57, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  KOFFING ("Koffing", 58, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  MACHOP ("Machop", 59, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-  MAGNEMITE ("Magnemite", 60, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-  MANKEY ("Mankey", 61, Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-  MEOWTH ("Meowth", 62, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  ODDISH ("Oddish", 63, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  PONYTA ("Ponyta", 64, Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
-  PSYDUCK ("Psyduck", 65, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-  RATTATA ("Rattata", 66, Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  SLOWPOKE ("Slowpoke", 67, Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
-  SQUIRTLE ("Squirtle", 68, Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-  VOLTORB ("Voltorb", 69, Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
-  ZUBAT ("Zubat", 70, Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  HERE_COMES_TEAM_ROCKET ("Here Comes Team Rocket!", 71, Rarity.RARE, [TRAINER]),
-  ROCKETS_SNEAK_ATTACK ("Rocket's Sneak Attack", 72, Rarity.RARE, [TRAINER]),
-  THE_BOSSS_WAY ("The Boss's Way", 73, Rarity.UNCOMMON, [TRAINER]),
-  CHALLENGE ("Challenge!", 74, Rarity.UNCOMMON, [TRAINER]),
-  DIGGER ("Digger", 75, Rarity.UNCOMMON, [TRAINER, ROCKETS_SECRET_MACHINE]),
-  IMPOSTER_OAKS_REVENGE ("Imposter Oak's Revenge", 76, Rarity.UNCOMMON, [TRAINER]),
-  NIGHTLY_GARBAGE_RUN ("Nightly Garbage Run", 77, Rarity.UNCOMMON, [TRAINER, ROCKETS_SECRET_MACHINE]),
-  GOOP_GAS_ATTACK ("Goop Gas Attack", 78, Rarity.COMMON, [TRAINER]),
-  SLEEP ("Sleep!", 79, Rarity.COMMON, [TRAINER, ROCKETS_SECRET_MACHINE]),
-  RAINBOW_ENERGY ("Rainbow Energy", 80, Rarity.RARE, [SPECIAL_ENERGY, ENERGY]),
-  FULL_HEAL_ENERGY ("Full Heal Energy", 81, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
-  POTION_ENERGY ("Potion Energy", 82, Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
-  DARK_RAICHU ("Dark Raichu", 83, Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]);
+  DARK_ALAKAZAM ("Dark Alakazam", "18", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
+  DARK_ARBOK ("Dark Arbok", "19", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  DARK_BLASTOISE ("Dark Blastoise", "20", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
+  DARK_CHARIZARD ("Dark Charizard", "21", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _FIRE_]),
+  DARK_DRAGONITE ("Dark Dragonite", "22", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
+  DARK_DUGTRIO ("Dark Dugtrio", "23", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+  DARK_GOLBAT ("Dark Golbat", "24", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  DARK_GYARADOS ("Dark Gyarados", "25", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  DARK_HYPNO ("Dark Hypno", "26", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+  DARK_MACHAMP ("Dark Machamp", "27", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
+  DARK_MAGNETON ("Dark Magneton", "28", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+  DARK_SLOWBRO ("Dark Slowbro", "29", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+  DARK_VILEPLUME ("Dark Vileplume", "30", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
+  DARK_WEEZING ("Dark Weezing", "31", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  DARK_CHARMELEON ("Dark Charmeleon", "32", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
+  DARK_DRAGONAIR ("Dark Dragonair", "33", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+  DARK_ELECTRODE ("Dark Electrode", "34", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+  DARK_FLAREON ("Dark Flareon", "35", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
+  DARK_GLOOM ("Dark Gloom", "36", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  DARK_GOLDUCK ("Dark Golduck", "37", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  DARK_JOLTEON ("Dark Jolteon", "38", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+  DARK_KADABRA ("Dark Kadabra", "39", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
+  DARK_MACHOKE ("Dark Machoke", "40", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+  DARK_MUK ("Dark Muk", "41", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
+  DARK_PERSIAN ("Dark Persian", "42", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+  DARK_PRIMEAPE ("Dark Primeape", "43", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
+  DARK_RAPIDASH ("Dark Rapidash", "44", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
+  DARK_VAPOREON ("Dark Vaporeon", "45", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  DARK_WARTORTLE ("Dark Wartortle", "46", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  MAGIKARP ("Magikarp", "47", Rarity.UNCOMMON, [BASIC, POKEMON, _WATER_]),
+  PORYGON ("Porygon", "48", Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
+  ABRA ("Abra", "49", Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+  CHARMANDER ("Charmander", "50", Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
+  DARK_RATICATE ("Dark Raticate", "51", Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+  DIGLETT ("Diglett", "52", Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+  DRATINI ("Dratini", "53", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+  DROWZEE ("Drowzee", "54", Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+  EEVEE ("Eevee", "55", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+  EKANS ("Ekans", "56", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  GRIMER ("Grimer", "57", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  KOFFING ("Koffing", "58", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  MACHOP ("Machop", "59", Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+  MAGNEMITE ("Magnemite", "60", Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+  MANKEY ("Mankey", "61", Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+  MEOWTH ("Meowth", "62", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+  ODDISH ("Oddish", "63", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  PONYTA ("Ponyta", "64", Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
+  PSYDUCK ("Psyduck", "65", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+  RATTATA ("Rattata", "66", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+  SLOWPOKE ("Slowpoke", "67", Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
+  SQUIRTLE ("Squirtle", "68", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+  VOLTORB ("Voltorb", "69", Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
+  ZUBAT ("Zubat", "70", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  HERE_COMES_TEAM_ROCKET ("Here Comes Team Rocket!", "71", Rarity.RARE, [TRAINER]),
+  ROCKETS_SNEAK_ATTACK ("Rocket's Sneak Attack", "72", Rarity.RARE, [TRAINER]),
+  THE_BOSSS_WAY ("The Boss's Way", "73", Rarity.UNCOMMON, [TRAINER]),
+  CHALLENGE ("Challenge!", "74", Rarity.UNCOMMON, [TRAINER]),
+  DIGGER ("Digger", "75", Rarity.UNCOMMON, [TRAINER, ROCKETS_SECRET_MACHINE]),
+  IMPOSTER_OAKS_REVENGE ("Imposter Oak's Revenge", "76", Rarity.UNCOMMON, [TRAINER]),
+  NIGHTLY_GARBAGE_RUN ("Nightly Garbage Run", "77", Rarity.UNCOMMON, [TRAINER, ROCKETS_SECRET_MACHINE]),
+  GOOP_GAS_ATTACK ("Goop Gas Attack", "78", Rarity.COMMON, [TRAINER]),
+  SLEEP ("Sleep!", "79", Rarity.COMMON, [TRAINER, ROCKETS_SECRET_MACHINE]),
+  RAINBOW_ENERGY ("Rainbow Energy", "80", Rarity.RARE, [SPECIAL_ENERGY, ENERGY]),
+  FULL_HEAL_ENERGY ("Full Heal Energy", "81", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
+  POTION_ENERGY ("Potion Energy", "82", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
+  DARK_RAICHU ("Dark Raichu", "83", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]);
 
   public static SimpleDeck devastation() {
     SimpleDeck deck = new SimpleDeck("Devastation Theme Deck");
@@ -169,9 +169,9 @@ public enum TeamRocketNG implements LogicCardInfo {
   protected CardTypeSet cardTypes;
   protected String name;
   protected Rarity rarity;
-  protected int collectionLineNo;
+  protected String collectionLineNo;
 
-  TeamRocketNG(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+  TeamRocketNG(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
     this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
     this.name = name;
     this.rarity = rarity;
@@ -194,7 +194,7 @@ public enum TeamRocketNG implements LogicCardInfo {
   }
 
   @Override
-  public int getCollectionLineNo() {
+  public String getNumber() {
     return collectionLineNo;
   }
 
@@ -342,7 +342,6 @@ public enum TeamRocketNG implements LogicCardInfo {
                   def cnt = Math.min(my.bench.getFreeBenchCount(),2)
                   bc "$cnt"
                   my.deck.search (max: cnt,"Search for 2 basic pokemon",{it.cardTypes.is(BASIC)}).each {
-                    deck.remove(it)
                     benchPCS(it)
                   }
                   shuffleDeck()
@@ -1061,7 +1060,7 @@ public enum TeamRocketNG implements LogicCardInfo {
 										bg.em().run(new DirectDamage(damage, pcs))*/
                   }
                 }
-                after SWITCH, self, {unregister()}
+                after FALL_BACK, self, {unregister()}
                 after EVOLVE, self, {unregister()}
                 after DEVOLVE, self, {unregister()}
 
@@ -1112,6 +1111,7 @@ public enum TeamRocketNG implements LogicCardInfo {
                   if(opp.active.weaknesses)
                   {
                     def newWeakness = choose([R,F,G,W,P,L,M,D,Y,N],"Select the new weakness")
+                    bc "${defending}'s Weakness is now ${newWeakness}"
                     def eff
                     register {
                       eff = getter (GET_WEAKNESSES, defending) {h->
@@ -1124,7 +1124,7 @@ public enum TeamRocketNG implements LogicCardInfo {
                     unregister {
                       eff.unregister()
                     }
-                    after SWITCH, defending, {unregister()}
+                    after FALL_BACK, defending, {unregister()}
                     after EVOLVE, defending, {unregister()}
                     after DEVOLVE, defending, {unregister()}
                   }
@@ -1636,7 +1636,7 @@ public enum TeamRocketNG implements LogicCardInfo {
                 if(opp.bench.notFull) {
                   def oppCnt = opp.bench.getFreeBenchCount()
                   opp.deck.search(max:oppCnt,"search for at most $oppCnt Basic Pokemon",cardTypeFilter(BASIC)).each{
-                    benchPCS(it,OTHER, TargetPlayer.OPPONENT)
+                    benchPCS(it,OTHER)
                   }
                 }
               }
@@ -1672,7 +1672,7 @@ public enum TeamRocketNG implements LogicCardInfo {
           text "Discard a card from your hand in order to play this card. Your opponent shuffles his or her hand into his or her deck, then draws 4 cards."
           onPlay {
             my.hand.findAll({it != thisCard}).select().discard()
-            opp.hand.moveTo(opp.deck)
+            opp.hand.moveTo(hidden:true, opp.deck)
             shuffleDeck(null,TargetPlayer.OPPONENT)
             draw(4, TargetPlayer.OPPONENT)
           }

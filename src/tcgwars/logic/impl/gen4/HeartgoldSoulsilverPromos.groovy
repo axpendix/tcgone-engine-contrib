@@ -16,40 +16,40 @@ import tcgwars.logic.util.*;
  */
 public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
 
-  HO_OH_HGSS01 ("Ho-Oh", 1, Rarity.PROMO, [BASIC, POKEMON, _FIRE_]),
-  LUGIA_HGSS02 ("Lugia", 2, Rarity.PROMO, [BASIC, POKEMON, _WATER_]),
-  PIKACHU_HGSS03 ("Pikachu", 3, Rarity.PROMO, [BASIC, POKEMON, _LIGHTNING_]),
-  WOBBUFFET_HGSS04 ("Wobbuffet", 4, Rarity.PROMO, [BASIC, POKEMON, _PSYCHIC_]),
-  HOOTHOOT_HGSS05 ("Hoothoot", 5, Rarity.PROMO, [BASIC, POKEMON, _COLORLESS_]),
-  NOCTOWL_HGSS06 ("Noctowl", 6, Rarity.PROMO, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-  FERALIGATR_HGSS07 ("Feraligatr", 7, Rarity.PROMO, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
-  MEGANIUM_HGSS08 ("Meganium", 8, Rarity.PROMO, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
-  TYPHLOSION_HGSS09 ("Typhlosion", 9, Rarity.PROMO, [STAGE2, EVOLUTION, POKEMON, _FIRE_]),
-  LATIAS_HGSS10 ("Latias", 10, Rarity.PROMO, [BASIC, POKEMON, _COLORLESS_]),
-  LATIOS_HGSS11 ("Latios", 11, Rarity.PROMO, [BASIC, POKEMON, _COLORLESS_]),
-  CLEFFA_HGSS12 ("Cleffa", 12, Rarity.PROMO, [BASIC, POKEMON, _COLORLESS_]),
-  SMOOCHUM_HGSS13 ("Smoochum", 13, Rarity.PROMO, [BASIC, POKEMON, _PSYCHIC_]),
-  LAPRAS_HGSS14 ("Lapras", 14, Rarity.PROMO, [BASIC, POKEMON, _WATER_]),
-  SHUCKLE_HGSS15 ("Shuckle", 15, Rarity.PROMO, [BASIC, POKEMON, _FIGHTING_]),
-  PLUSLE_HGSS16 ("Plusle", 16, Rarity.PROMO, [BASIC, POKEMON, _LIGHTNING_]),
-  MINUN_HGSS17 ("Minun", 17, Rarity.PROMO, [BASIC, POKEMON, _LIGHTNING_]),
-  TROPICAL_TIDAL_WAVE_HGSS18 ("Tropical Tidal Wave", 18, Rarity.PROMO, [TRAINER]),
-  RAIKOU_HGSS19 ("Raikou", 19, Rarity.PROMO, [BASIC, POKEMON, _LIGHTNING_]),
-  ENTEI_HGSS20 ("Entei", 20, Rarity.PROMO, [BASIC, POKEMON, _FIRE_]),
-  SUICUNE_HGSS21 ("Suicune", 21, Rarity.PROMO, [BASIC, POKEMON, _WATER_]),
-  PORYGON_HGSS22 ("Porygon", 22, Rarity.PROMO, [BASIC, POKEMON, _COLORLESS_]),
-  PORYGON2_HGSS23 ("Porygon2", 23, Rarity.PROMO, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-  HITMONCHAN_HGSS24 ("Hitmonchan", 24, Rarity.PROMO, [BASIC, POKEMON, _FIGHTING_]),
-  HITMONLEE_HGSS25 ("Hitmonlee", 25, Rarity.PROMO, [BASIC, POKEMON, _FIGHTING_]);
+  HO_OH_HGSS01 ("Ho-Oh", "1", Rarity.PROMO, [BASIC, POKEMON, _FIRE_]),
+  LUGIA_HGSS02 ("Lugia", "2", Rarity.PROMO, [BASIC, POKEMON, _WATER_]),
+  PIKACHU_HGSS03 ("Pikachu", "3", Rarity.PROMO, [BASIC, POKEMON, _LIGHTNING_]),
+  WOBBUFFET_HGSS04 ("Wobbuffet", "4", Rarity.PROMO, [BASIC, POKEMON, _PSYCHIC_]),
+  HOOTHOOT_HGSS05 ("Hoothoot", "5", Rarity.PROMO, [BASIC, POKEMON, _COLORLESS_]),
+  NOCTOWL_HGSS06 ("Noctowl", "6", Rarity.PROMO, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+  FERALIGATR_HGSS07 ("Feraligatr", "7", Rarity.PROMO, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
+  MEGANIUM_HGSS08 ("Meganium", "8", Rarity.PROMO, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
+  TYPHLOSION_HGSS09 ("Typhlosion", "9", Rarity.PROMO, [STAGE2, EVOLUTION, POKEMON, _FIRE_]),
+  LATIAS_HGSS10 ("Latias", "10", Rarity.PROMO, [BASIC, POKEMON, _COLORLESS_]),
+  LATIOS_HGSS11 ("Latios", "11", Rarity.PROMO, [BASIC, POKEMON, _COLORLESS_]),
+  CLEFFA_HGSS12 ("Cleffa", "12", Rarity.PROMO, [BASIC, POKEMON, _COLORLESS_]),
+  SMOOCHUM_HGSS13 ("Smoochum", "13", Rarity.PROMO, [BASIC, POKEMON, _PSYCHIC_]),
+  LAPRAS_HGSS14 ("Lapras", "14", Rarity.PROMO, [BASIC, POKEMON, _WATER_]),
+  SHUCKLE_HGSS15 ("Shuckle", "15", Rarity.PROMO, [BASIC, POKEMON, _FIGHTING_]),
+  PLUSLE_HGSS16 ("Plusle", "16", Rarity.PROMO, [BASIC, POKEMON, _LIGHTNING_]),
+  MINUN_HGSS17 ("Minun", "17", Rarity.PROMO, [BASIC, POKEMON, _LIGHTNING_]),
+  TROPICAL_TIDAL_WAVE_HGSS18 ("Tropical Tidal Wave", "18", Rarity.PROMO, [TRAINER]),
+  RAIKOU_HGSS19 ("Raikou", "19", Rarity.PROMO, [BASIC, POKEMON, _LIGHTNING_]),
+  ENTEI_HGSS20 ("Entei", "20", Rarity.PROMO, [BASIC, POKEMON, _FIRE_]),
+  SUICUNE_HGSS21 ("Suicune", "21", Rarity.PROMO, [BASIC, POKEMON, _WATER_]),
+  PORYGON_HGSS22 ("Porygon", "22", Rarity.PROMO, [BASIC, POKEMON, _COLORLESS_]),
+  PORYGON2_HGSS23 ("Porygon2", "23", Rarity.PROMO, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
+  HITMONCHAN_HGSS24 ("Hitmonchan", "24", Rarity.PROMO, [BASIC, POKEMON, _FIGHTING_]),
+  HITMONLEE_HGSS25 ("Hitmonlee", "25", Rarity.PROMO, [BASIC, POKEMON, _FIGHTING_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
   protected CardTypeSet cardTypes;
   protected String name;
   protected Rarity rarity;
-  protected int collectionLineNo;
+  protected String collectionLineNo;
 
-  HeartgoldSoulsilverPromos(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+  HeartgoldSoulsilverPromos(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
     this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
     this.name = name;
     this.rarity = rarity;
@@ -72,7 +72,7 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
   }
 
   @Override
-  public int getCollectionLineNo() {
+  public String getNumber() {
     return collectionLineNo;
   }
 
