@@ -693,7 +693,7 @@ public enum Unleashed implements LogicCardInfo {
             text "Choose 1 of your opponent’s Pokémon. Flip a coin until you get tails. This attack does 50 damage times the number of heads to that Pokémon."
             energyCost F, F
             onAttack {
-              tar = opp.all.select()
+              def tar = opp.all.select()
               flipUntilTails {damage 50, tar}
             }
           }
