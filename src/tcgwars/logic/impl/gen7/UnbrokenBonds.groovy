@@ -4493,6 +4493,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               after DEVOLVE, self, {check(self)}
               after ATTACH_ENERGY, self, {check(self)}
             }
+            check(self)
           }
           onRemoveFromPlay {
             eff.unregister()
