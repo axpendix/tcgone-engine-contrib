@@ -2516,7 +2516,7 @@ public enum Deoxys implements LogicCardInfo {
                 discard thisCard
                 unregister()
               }
-              after EVOLVE, self, {check(self)} //some pokemon evolve into different type
+              after EVOLVE, self, {check(self)}
               after DEVOLVE, self, {check(self)}
               after ATTACH_ENERGY, self, {check(self)}
             }
