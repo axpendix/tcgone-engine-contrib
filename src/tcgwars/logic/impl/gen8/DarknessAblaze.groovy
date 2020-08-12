@@ -2412,7 +2412,9 @@ public enum DarknessAblaze implements LogicCardInfo {
             assert opp.deck : "Your opponent's deck is empty"
           }
           onAttack {
-            opp.deck.subList(0,1).discard()
+            if (opp.deck) {
+              opp.deck.subList(0, 1).discard()
+            }
           }
         }
         move "Sludge Whirlpool", {
