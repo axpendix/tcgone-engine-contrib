@@ -1083,13 +1083,16 @@ public enum HiddenFates implements LogicCardInfo {
       return supporter (this) {
         text "Each player discards 2 cards from their hand. Your opponent discards first."
         onPlay {
-          opp.hand.oppSelect(count:2, "Choose two cards to discard").discard()
-          my.hand.getExcludedList(thisCard).select(count:2, "Choose two cards to discard").discard().each {card ->
-            if (card instanceof PokemonCard) {
-              card.abilities.each {
-                if (it.name == "Surrender Now" && checkGlobalAbility(card) && confirm("Use Surrender Now?")) {
-                  bc "Surrender Now activates."
-                  opp.hand.oppSelect(count: 1, "Choose a card to discard").discard()
+          if (opp.hand)
+            opp.hand.oppSelect(count:2, "Choose two cards to discard").discard()
+          if (my.hand.getExcludedList(thisCard)) {
+            my.hand.getExcludedList(thisCard).select(count: 2, "Choose two cards to discard").discard().each { card ->
+              if (card instanceof PokemonCard) {
+                card.abilities.each {
+                  if (it.name == "Surrender Now" && checkGlobalAbility(card) && opp.hand && confirm("Use Surrender Now?")) {
+                    bc "Surrender Now activates."
+                    opp.hand.oppSelect(count: 1, "Choose a card to discard").discard()
+                  }
                 }
               }
             }
