@@ -2590,13 +2590,22 @@ public enum ForbiddenLight implements LogicCardInfo {
       case DIANTHA_105:
         return supporter (this) {
           text "You can play this card only if 1 of your [Y] Pokémon was Knocked Out during your opponent’s last turn.\nPut 2 cards from your discard pile into your hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
+          globalAbility {Card thisCard->
+            delayed {
+              before KNOCKOUT, {
+                if(ef.pokemonToBeKnockedOut.types.contains(Y) && ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite){
+                  keyStore("Diantha_KO", thisCard, bg.turnCount)
+                }
+              }
+            }
+          }
           onPlay {
             my.discard.select(count : Math.min(2,my.discard.size())).moveTo(my.hand)
           }
           playRequirement{
+            assert my.discard : "You have no cards in your discard pile"
             assert bg.turnCount
-            assert my.lastKnockoutByOpponentDamageTurn == bg.turnCount - 1: "No Pokémon has been Knocked Out during your opponent’s last turn"
-            assert my.knockoutTypesPerTurn.get(bg.turnCount - 1)?.contains(Y) : "The Pokémon Knocked Out was not Fairy"
+            assert keyStore("Diantha_KO", thisCard, null) == bg.turnCount - 1: "No Fairy Pokémon was Knocked Out during your opponent’s last turn"
           }
         };
       case ENEPORTER_106:
