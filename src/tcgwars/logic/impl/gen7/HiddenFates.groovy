@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen7
 
+import tcgwars.logic.card.pokemon.PokemonCard
 import tcgwars.logic.effect.basic.Knockout
 import tcgwars.logic.impl.gen6.*
 
@@ -636,22 +637,9 @@ public enum HiddenFates implements LogicCardInfo {
       case WEEZING_29:
       return evolution (this, from:"Koffing", hp:HP120, type:P, retreatCost:3) {
         weakness P
-        // TODO: May be more accurate to handle this ability on Jessie & James instead. See Roxie CEC
-        globalAbility {Card thisCard->
-          def lastTurn=0
-          action("$thisCard: Surrender Now", [TargetPlayer.fromPlayerType(thisCard.player)]) {
-            assert thisCard.player.pbg.discard.contains(thisCard) : "Not in discard"
-            assert bg.em().retrieveObject("jessie_james_discarded_cards")?.contains(thisCard) : "The card needs to be discarded by Jessie & James for the ability to work"
-            assert bg.turnCount!=lastTurn : "Already used"
-            assert checkGlobalAbility(thisCard) : "Blocked"
-            assert opp.hand.notEmpty : "Your opponent's hand is empty"
-            bc "$thisCard used Surrender Now"
-            lastTurn = bg.turnCount
-            opp.hand.oppSelect("Discard a card from your hand").discard()
-          }
-        }
         bwAbility "Surrender Now", {
           text "Once during your turn, if this Pokémon is discarded with the effect of Jessie & James, you may have your opponent discard a card from their hand. (They discard that card after the effect of Jessie & James.)"
+          // Implementation is in Jessie & James
         }
         move "Tackle", {
           text "40 damage. "
@@ -1095,19 +1083,13 @@ public enum HiddenFates implements LogicCardInfo {
       return supporter (this) {
         text "Each player discards 2 cards from their hand. Your opponent discards first."
         onPlay {
-          def key = "jessie_james_discarded_cards"
-          def list = []
-          list.addAll(opp.hand.oppSelect(count:2, "Choose two cards to discard").discard())
-          list.addAll(my.hand.getExcludedList(thisCard).select(count:2, "Choose two cards to discard").discard())
-          bg.em().retrieveAndStore(key, {it ?: []})
-          list.each {card ->
-            bg.em().retrieveAndStore(key, {it.add(card); it})
-            // setup a non-ending delayed effect that tracks all moved cards
-            // if the cards are moved back to somewhere other than discard, they must not be counted as discarded by j&j anymore.
-            delayed {
-              after MOVE_CARD, {
-                if(ef.cards.contains(card) && !ef.newLocation?.is(card.player.pbg.discard)){ // moved to somewhere else!
-                  bg.em().retrieveAndStore(key, {it.remove(card); it})
+          opp.hand.oppSelect(count:2, "Choose two cards to discard").discard()
+          my.hand.getExcludedList(thisCard).select(count:2, "Choose two cards to discard").discard().each {card ->
+            if (card instanceof PokemonCard) {
+              card.abilities.each {
+                if (it.name == "Surrender Now" && checkGlobalAbility(card) && confirm("Use Surrender Now?")) {
+                  bc "Surrender Now activates."
+                  opp.hand.oppSelect(count: 1, "Choose a card to discard").discard()
                 }
               }
             }
