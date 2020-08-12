@@ -2503,7 +2503,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               before BETWEEN_TURNS, {
                 discard thisCard
               }
-              after EVOLVE, self, {check(self)} //some pokemon evolve into different type
+              after EVOLVE, self, {check(self)}
               after DEVOLVE, self, {check(self)}
               after ATTACH_ENERGY, self, {check(self)}
             }

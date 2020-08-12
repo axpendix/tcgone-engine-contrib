@@ -2516,7 +2516,7 @@ public enum Deoxys implements LogicCardInfo {
                 discard thisCard
                 unregister()
               }
-              after EVOLVE, self, {check(self)} //some pokemon evolve into different type
+              after EVOLVE, self, {check(self)}
               after DEVOLVE, self, {check(self)}
               after ATTACH_ENERGY, self, {check(self)}
             }
@@ -3012,16 +3012,15 @@ public enum Deoxys implements LogicCardInfo {
             text "Whenever you attach a [D] Energy card from your hand to Rocket’s Raikou ex, you may choose 1 of the Defending Pokémon and switch it with 1 of your opponent’s Benched Pokémon. Your opponent chooses the Benched Pokémon to switch. This power can’t be used if Rocket’s Raikou ex is affected by a Special Condition."
             delayedA {
               after ATTACH_ENERGY, self, {
-                if(!self.specialConditions && ef.reason == PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(D))
-                  def oppPlayer = self.owner.opposite
-                  if(oppPlayer){
-                    if (confirm("Make your opponent switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon? (Your opponent chooses the Benched Pokémon to switch)")) {
-                      sw oppPlayer.pbg.active, oppPlayer.pbg.bench.select("Select the new active Pokémon.", oppPlayer)
-                    }
+                def oppPlayer = self.owner.opposite
+                if(!self.specialConditions && ef.reason == PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(D) && oppPlayer.pbg.bench){
+                  if (confirm("Make your opponent switch the Defending Pokémon with 1 of their Benched Pokémon? (Your opponent chooses the Benched Pokémon to switch)")) {
+                    powerUsed()
+                    sw oppPlayer.pbg.active, oppPlayer.pbg.bench.select("Select the new active Pokémon.", oppPlayer)
                   }
+                }
               }
             }
-
           }
           move "Thunderous Blow", {
             text "40+ damage. Does 40 damage plus 10 more damage for each [L] Energy attached to Rocket’s Raikou ex."

@@ -4240,7 +4240,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
         return supporter (this) {
           text "Look at the top 4 cards of your deck and put 2 of them into your hand. Shuffle the other cards back into your deck."
           onPlay {
-            deck.subList(0,4).select(count:2).moveTo(my.hand)
+            deck.subList(0,4).select(count:2, "Select 2 cards to put to your hand.").moveTo(hidden: true, my.hand)
             shuffleDeck()
             bg.em().storeObject("JANINE_TURN", bg.turnCount)
           }
@@ -4488,10 +4488,11 @@ public enum UnbrokenBonds implements LogicCardInfo {
               before BETWEEN_TURNS, {
                 discard thisCard
               }
-              after EVOLVE, self, {check(self)} //some pokemon evolve into different type
+              after EVOLVE, self, {check(self)}
               after DEVOLVE, self, {check(self)}
               after ATTACH_ENERGY, self, {check(self)}
             }
+            check(self)
           }
           onRemoveFromPlay {
             eff.unregister()

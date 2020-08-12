@@ -2,6 +2,7 @@ package tcgwars.logic.impl.gen7
 
 
 import tcgwars.logic.effect.gm.PlayTrainer
+import tcgwars.logic.groovy.TcgStatics
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -4406,13 +4407,11 @@ public enum LostThunder implements LogicCardInfo {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nWhen the [P] Pokémon this card is attached to is Knocked Out by damage from an opponent's attack, put 4 damage counters on your opponent's Pokémon in any way you like.\nYou may play as many Item cards as you like during your turn (before your attack)."
           def eff
           onPlay {reason->
-            eff = delayed {
+            eff = delayed (priority: BEFORE_LAST) {
               before (KNOCKOUT,self) {
                 if(self.types.contains(P) && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
                   bc "Spell Tag activates"
-                  for(int i=0;i<4;i++){
-                    if(self.owner.opposite.pbg.all) directDamage 10, self.owner.opposite.pbg.all.select("Put 1 damage counter to", true, self.owner), TRAINER_CARD
-                  }
+                  putDamageCountersOnOpponentsPokemon(4, opp.all, Source.GAME)//TODO add Tool Source?
                 }
               }
             }
