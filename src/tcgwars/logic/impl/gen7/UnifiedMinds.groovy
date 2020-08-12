@@ -2860,7 +2860,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             onAttack {
               damage 20
               def fightingInDiscard = my.discard.filterByEnergyType(F)
-              if (fightingInDiscard) {
+              if (fightingInDiscard && my.bench) {
                 fightingInDiscard.select().each{
                   attachEnergy(my.bench.select("Attach a [F] Energy to?"), it)
                 }
