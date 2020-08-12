@@ -521,8 +521,10 @@ public enum HiddenFates implements LogicCardInfo {
               fromHand = bg.currentTurn.pbg.hand.contains(ef.cardToPlay)
             }
             after ATTACH_ENERGY, {
-              if(self.active && fromHand && ef.resolvedTarget.owner == self.owner.opposite)
+              if(self.active && fromHand && ef.resolvedTarget.owner == self.owner.opposite) {
+                powerUsed()
                 directDamage 20, ef.resolvedTarget
+              }
             }
           }
         }
