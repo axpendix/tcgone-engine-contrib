@@ -1,6 +1,6 @@
 package tcgwars.logic.impl.gen7
 
-
+import tcgwars.logic.card.pokemon.PokemonCard
 import tcgwars.logic.effect.gm.PlayCard
 import tcgwars.logic.effect.gm.PlayStadium
 import tcgwars.logic.effect.gm.PlayTrainer
@@ -4969,13 +4969,15 @@ public enum CosmicEclipse implements LogicCardInfo {
           text "Discard up to 2 Pokémon that aren't Pokémon-GX or Pokémon-EX from your hand. Draw 3 cards for each card you discarded in this way."
           def list = { my.hand.findAll ({ !it.cardTypes.isIn(POKEMON_EX, POKEMON_GX) && it.cardTypes.isIn(POKEMON) }) }
           onPlay {
-            list().select(max:2, "Select up to 2 Pokémon that aren't Pokémon-GX or Pokémon-EX to discard.").discard().each {
+            list().select(max:2, "Select up to 2 Pokémon that aren't Pokémon-GX or Pokémon-EX to discard.").discard().each {discarded ->
               draw 3
-              it.abilities.each {
-                if (it.name == "Blow-Away Bomb" && confirm("Use Blow-Away Bomb?")) {
-                  bc "Blow-Away Bomb activates."
-                  opp.all.each { target ->
-                    directDamage 10, target, SRC_ABILITY
+              if (discarded instanceof PokemonCard) {
+                discarded.abilities.each {
+                  if (it.name == "Blow-Away Bomb" && checkGlobalAbility(discarded) && confirm("Use Blow-Away Bomb?")) {
+                    bc "Blow-Away Bomb activates."
+                    opp.all.each { target ->
+                      directDamage 10, target, SRC_ABILITY
+                    }
                   }
                 }
               }
