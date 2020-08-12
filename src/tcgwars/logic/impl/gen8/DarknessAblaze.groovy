@@ -3424,7 +3424,10 @@ public enum DarknessAblaze implements LogicCardInfo {
             assert my.deck : "You have no cards left in your deck"
           }
           onAttack {
-            my.deck.search("Put Energy Card into your hand",cardTypeFilter(ENERGY)).showToOpponent("Opponent's chosen Energy card").moveTo(my.hand)
+            if (my.deck) {
+              my.deck.search("Put Energy Card into your hand", cardTypeFilter(ENERGY)).showToOpponent("Opponent's chosen Energy card").moveTo(my.hand)
+              shuffleDeck()
+            }
           }
         }
         move "Cat Kick", {
