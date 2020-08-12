@@ -2502,10 +2502,11 @@ public enum DarknessAblaze implements LogicCardInfo {
         bwAbility "Night Asset", {
           text "Once during your turn, when you play this Pokémon from hand to your Bench, you may draw cards until you have 6 cards in your hand. You can’t use more than 1 Night Asset Ability during your turn."
           onActivate {
-            if(it==PLAY_FROM_HAND && bg.em().retrieveObject("Night_Asset")!=bg.turnCount && confirm("Use Night Asset?")){
+            def drawCount = 6 - hand.getExcludedList(thisCard).size()
+            if(it==PLAY_FROM_HAND && bg.em().retrieveObject("Night_Asset")!=bg.turnCount && drawCount > 0 && confirm("Use Night Asset?")){
               bg.em().storeObject("Night_Asset",bg.turnCount)
               powerUsed()
-              draw (6 - hand.getExcludedList(thisCard).size())
+              draw drawCount
             }
           }
         }
