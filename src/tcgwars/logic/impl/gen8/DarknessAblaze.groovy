@@ -2869,8 +2869,10 @@ public enum DarknessAblaze implements LogicCardInfo {
             assert my.deck : "Your deck is empty"
           }
           onAttack {
-            my.deck.search(max:2,"Select up to 2 cards",{true}).moveTo(hidden:true,my.hand)
-            shuffleDeck()
+            if (my.deck) {
+              my.deck.search(max: 2, "Select up to 2 cards", { true }).moveTo(hidden: true, my.hand)
+              shuffleDeck()
+            }
           }
         }
         move "Sharp Fang", {
