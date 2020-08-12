@@ -636,6 +636,7 @@ public enum HiddenFates implements LogicCardInfo {
       case WEEZING_29:
       return evolution (this, from:"Koffing", hp:HP120, type:P, retreatCost:3) {
         weakness P
+        // TODO: May be more accurate to handle this ability on Jessie & James instead. See Roxie CEC
         globalAbility {Card thisCard->
           def lastTurn=0
           action("$thisCard: Surrender Now", [TargetPlayer.fromPlayerType(thisCard.player)]) {
