@@ -1,6 +1,6 @@
 package tcgwars.logic.impl.gen7
 
-
+import tcgwars.logic.effect.basic.Knockout
 import tcgwars.logic.impl.gen6.*
 
 import static tcgwars.logic.card.CardType.*;
@@ -600,7 +600,7 @@ public enum HiddenFates implements LogicCardInfo {
           eff = delayed {
             after (KNOCKOUT, self) {
               // TODO: Make TcgStatics.astonish more flexible so that it actually works for this?
-              if(!checkBodyguard()) {
+              if(!checkBodyguard() && (ef as Knockout).byDamageFromAttack) {
                 bc "Last Pattern activates"
                 bg.deterministicCurrentThreadPlayerType = self.owner
                 def sel=opp.hand.shuffledCopy().select(hidden: true, count: 2, "Choose 2 random cards from your opponent's hand to be discarded.")
