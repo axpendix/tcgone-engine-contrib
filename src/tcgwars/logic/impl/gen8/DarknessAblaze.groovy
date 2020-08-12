@@ -1850,9 +1850,11 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
           onAttack {
             def deck=opp.deck
-            def deck2=rearrange(deck.subList(0,5))
-            deck.setSubList(0, deck2)
-            bc "Rearranged top 5 cards of opponent's deck."
+            if (deck) {
+              def deck2 = rearrange(deck.subList(0, 5))
+              deck.setSubList(0, deck2)
+              bc "Rearranged top 5 cards of opponent's deck."
+            }
           }
         }
         move "Gentle Slap", {
