@@ -3417,7 +3417,7 @@ public enum SwordShield implements LogicCardInfo {
         def eff
         onPlay {reason->
           eff = delayed {
-            before (KNOCKOUT, self) {
+            before (KNOCKOUT, self) (priority: BEFORE_LAST) {
               if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
                 bc "Lucky Egg activates"
                 def count = 7-self.owner.pbg.hand.size()

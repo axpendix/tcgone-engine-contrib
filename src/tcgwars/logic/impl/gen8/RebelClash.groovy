@@ -3512,12 +3512,13 @@ public enum RebelClash implements LogicCardInfo {
         text "Attach a Pokemon Tool to 1 of your Pokemon that doesn’t already have a Pokemon Tool attached to it. If the Pokemon this Tool is attached to is Knocked Out by damage from an opponent’s attack, discard the top 2 cards of your opponent’s deck. You may play as many Item cards as you like during your turn (before your attack)."
         def eff
         onPlay {reason->
-          eff = delayed {
+          eff = delayed (priority: BEFORE_LAST) {
             before (KNOCKOUT,self) {
               if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
                 bc "Cursed Shovel activates."
                 if (my.deck) { // from perspective of opponent's turn
                   my.deck.subList(0, 2).discard()
+                  //eff.unregister()
                 }
               }
             }
