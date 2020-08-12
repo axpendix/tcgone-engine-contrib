@@ -1877,8 +1877,10 @@ public enum DarknessAblaze implements LogicCardInfo {
             assert opp.hand : "Your opponent's hand is empty"
           }
           onAttack {
-            opp.hand.shuffledCopy().select(hidden: true, count: 1, "Choose a random card from your opponent's hand").showToMe("Selected card").showToOpponent("this card will be shuffled into your deck").moveTo(opp.deck)
-            shuffleDeck(null, TargetPlayer.OPPONENT)
+            if (opp.hand) {
+              opp.hand.shuffledCopy().select(hidden: true, count: 1, "Choose a random card from your opponent's hand").showToMe("Selected card").showToOpponent("this card will be shuffled into your deck").moveTo(opp.deck)
+              shuffleDeck(null, TargetPlayer.OPPONENT)
+            }
           }
         }
         move "Double Spin", {
