@@ -3905,6 +3905,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           draw(my.bench ? 4 : 8)
         }
         playRequirement{
+          assert my.hand || my.deck : "No cards in hand or in deck"
         }
       };
       case LOOKALIKE_BELL_172:
