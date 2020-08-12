@@ -3416,8 +3416,8 @@ public enum SwordShield implements LogicCardInfo {
         text "If the Pokémon this card is attached to is Knocked Out by damage from an opponent’s attack, draw cards until you have 7 cards in your hand."
         def eff
         onPlay {reason->
-          eff = delayed {
-            before (KNOCKOUT, self) (priority: BEFORE_LAST) {
+          eff = delayed (priority: BEFORE_LAST) {
+            before (KNOCKOUT, self) {
               if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
                 bc "Lucky Egg activates"
                 def count = 7-self.owner.pbg.hand.size()
