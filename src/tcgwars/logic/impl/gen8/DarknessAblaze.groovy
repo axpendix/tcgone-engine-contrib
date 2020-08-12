@@ -3226,6 +3226,9 @@ public enum DarknessAblaze implements LogicCardInfo {
               prevent()
             }
           }
+          onActivate {
+            clearSpecialCondition(self, SRC_ABILITY)
+          }
         }
         move "Revenge Stomp", {
           text "120+ damage. If any of your Benched Pokémon have any damage counters on them, this attack does 120 more damage."
