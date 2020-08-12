@@ -1076,19 +1076,23 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 130
             afterDamage {
               // TODO: Make a static method to do this
-              def targetCount = Math.min self.cards.energyCount(W), 2
-              def finalCount = 0
-              while (self.cards.energyCount(W) > 0 && finalCount < targetCount) {
-                def info = "Select [W] Energy to return to your hand."
-                def energy = self.cards.filterByType(ENERGY).select(info, energyFilter(W))
-                def energyCount = 1
-                if (energy.energyCount(W) > 1) {
-                  def choices = 1..energy.energyCount(W)
-                  def choiceInfo = "How many Energy do you want this card to count as?"
-                  energyCount = choose(choices, choiceInfo)
+              if (self.cards.energyCount(W) <= 2) {
+                self.cards.filterByEnergyType(W).moveTo my.hand
+              } else {
+                def targetCount = Math.min self.cards.energyCount(W), 2
+                def finalCount = 0
+                while (self.cards.energyCount(W) > 0 && finalCount < targetCount) {
+                  def info = "Select [W] Energy to return to your hand."
+                  def energy = self.cards.filterByType(ENERGY).select(info, energyFilter(W))
+                  def energyCount = 1
+                  if (energy.energyCount(W) > 1) {
+                    def choices = 1..energy.energyCount(W)
+                    def choiceInfo = "How many Energy do you want this card to count as?"
+                    energyCount = choose(choices, choiceInfo)
+                  }
+                  finalCount += energyCount
+                  energy.moveTo my.hand
                 }
-                finalCount += energyCount
-                energy.moveTo my.hand
               }
             }
           }
