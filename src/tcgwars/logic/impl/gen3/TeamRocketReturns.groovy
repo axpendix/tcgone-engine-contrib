@@ -1858,7 +1858,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
             }
             onAttack {
               my.deck.search (count: 1,{it.cardTypes.is(BASIC) && it.asPokemonCard().types.contains(G)}).each {
-                my.deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()
@@ -1886,7 +1885,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
             onAttack {
               int count = bench.freeBenchCount>=2?2:1
               deck.search (max: count, cardTypeFilter(BASIC)).each {
-                deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()

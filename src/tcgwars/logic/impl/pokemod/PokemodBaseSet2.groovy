@@ -725,7 +725,6 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
           }
           onAttack {
             my.deck.search("Choose Basic [f] Pokémon",{(it.cardTypes.is(BASIC) && it.asPokemonCard().types.contains(F))}).each{
-              my.deck.remove(it)
               benchPCS(it)
             }
             shuffleDeck()
@@ -927,7 +926,6 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
           }
           onAttack {
             my.deck.search("Choose Basic Pokémon named Bellsprout",{(it.cardTypes.is(BASIC) && it.name.contains("Bellsprout"))}).each{
-              my.deck.remove(it)
               benchPCS(it)
             }
             shuffleDeck()
@@ -1076,7 +1074,6 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
           }
           onAttack {
             my.deck.search("Choose Basic Pokémon named Nidoran M or Nidoran F",{(it.cardTypes.is(BASIC) && it.name.contains("Nidoran"))}).each{
-              my.deck.remove(it)
               benchPCS(it)
             }
             shuffleDeck()

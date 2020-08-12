@@ -2956,6 +2956,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         bwAbility "Infinity Zone", {
           text "If all of your Pokémon in play are [D], you may now have up to 8 [D] Pokémon on your Bench and can’t play any other type of Pokémon. (When this Ability no longer works, discard your Benched Pokémon until there are 5 left.)"
           actionA {
+
           }
         }
         move "Dread End", {
@@ -4008,7 +4009,6 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
           pokemonCard.player = trainerCard.player
           bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
-          hand.remove(pokemonCard)
           benchPCS(pokemonCard)
         }
         playRequirement{

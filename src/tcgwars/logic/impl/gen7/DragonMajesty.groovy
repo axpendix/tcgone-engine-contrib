@@ -888,7 +888,6 @@ public enum DragonMajesty implements LogicCardInfo {
             onAttack{
               def maxSpace = Math.min(my.bench.freeBenchCount,3)
               my.discard.findAll{it.cardTypes.pokemon && it.asPokemonCard().types.contains(N)}.select(max:maxSpace,"Select $maxSpace [N] Pokémon to put onto your Bench").each{
-                my.discard.remove(it);
                 benchPCS(it)
               }
             }
@@ -1400,7 +1399,6 @@ public enum DragonMajesty implements LogicCardInfo {
           onPlay {
             def maxSpace = Math.min(my.bench.freeBenchCount,2)
             my.deck.search(max:maxSpace,"Select $maxSpace [N] Pokémon to put onto your Bench",{it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(N)}).each{
-              my.deck.remove(it);
               benchPCS(it)
             }
             shuffleDeck()

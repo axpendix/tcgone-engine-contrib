@@ -698,7 +698,6 @@ public enum BurningShadows implements LogicCardInfo {
             onAttack {
               gxPerform()
               my.discard.filterByType(POKEMON_GX, POKEMON_EX).filterByType(_FIRE_).select(max: Math.min(3, my.bench.freeBenchCount)).each {
-                my.discard.remove(it);
                 benchPCS(it);
               }
             }
@@ -1261,7 +1260,6 @@ public enum BurningShadows implements LogicCardInfo {
             }
             onAttack {
               def card = my.discard.filterByType(BASIC).select().first()
-              my.discard.remove(card)
               benchPCS(card)
             }
           }
@@ -1310,9 +1308,10 @@ public enum BurningShadows implements LogicCardInfo {
               def list = opp.hand.shuffledCopy().showToMe("Opponent's hand").filterByType(BASIC)
               if(list){
                 def card = list.select("Put a Basic Pokémon you find there onto your opponent's Bench").first()
-                opp.hand.remove(card)
-                def pcs = benchPCS(card, OTHER, TargetPlayer.OPPONENT)
-                directDamage(30, pcs, SRC_ABILITY)
+                def pcs = benchPCS(card, OTHER)
+                if (pcs) {
+                  directDamage(30, pcs, SRC_ABILITY)
+                }
               }
             }
           }
@@ -1980,8 +1979,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
             onAttack {
               deck.search ("Alolan Grimer", {it.name=="Alolan Grimer"}).each {
-                deck.remove(it)
-                def pcs = benchPCS(it)
+                benchPCS(it)
               }
               shuffleDeck()
             }
@@ -2108,7 +2106,6 @@ public enum BurningShadows implements LogicCardInfo {
               assert bg.turnCount!=lastTurn : "Already used"
               assert checkGlobalAbility(thisCard) : "Blocked"
               bc "$thisCard used Restoration"
-              my.discard.remove(thisCard)
               def pcs = benchPCS(thisCard)
               attachEnergyFrom(type: D, my.discard, pcs)
             }

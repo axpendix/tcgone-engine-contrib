@@ -1,6 +1,6 @@
 package tcgwars.logic.impl.gen7
 
-
+import tcgwars.logic.card.pokemon.PokemonCard
 import tcgwars.logic.effect.gm.PlayCard
 import tcgwars.logic.effect.gm.PlayStadium
 import tcgwars.logic.effect.gm.PlayTrainer
@@ -1706,12 +1706,10 @@ public enum CosmicEclipse implements LogicCardInfo {
               def basics = my.deck.subList(0, 12).filterByType(BASIC)
               if (basics) {
                 def maxSpace = Math.min(my.bench.freeBenchCount, basics.size())
-
                 def selected = basics.select(min:0, max:maxSpace, "Select as many Basic Pokémon you'd like to bench as possible.")
 
                 selected.each {
                   benchPCS(it)
-                  my.deck.remove(it)
                 }
               }
               shuffleDeck()
@@ -4118,7 +4116,6 @@ public enum CosmicEclipse implements LogicCardInfo {
             }
             onAttack {
               deck.search (max: my.bench.freeBenchCount, { it.name == "Eevee" || it.name == "Eevee-GX" }).each {
-                deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()
@@ -4778,7 +4775,6 @@ public enum CosmicEclipse implements LogicCardInfo {
             }
             pokemonCard.player = trainerCard.player
             bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
-            hand.remove(pokemonCard)
             benchPCS(pokemonCard)
           }
           playRequirement{
@@ -4879,7 +4875,6 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
               return true
             }).each {
-              my.deck.remove(it);
               benchPCS(it)
             }
             shuffleDeck()
@@ -4974,13 +4969,15 @@ public enum CosmicEclipse implements LogicCardInfo {
           text "Discard up to 2 Pokémon that aren't Pokémon-GX or Pokémon-EX from your hand. Draw 3 cards for each card you discarded in this way."
           def list = { my.hand.findAll ({ !it.cardTypes.isIn(POKEMON_EX, POKEMON_GX) && it.cardTypes.isIn(POKEMON) }) }
           onPlay {
-            list().select(max:2, "Select up to 2 Pokémon that aren't Pokémon-GX or Pokémon-EX to discard.").discard().each {
+            list().select(max:2, "Select up to 2 Pokémon that aren't Pokémon-GX or Pokémon-EX to discard.").discard().each {discarded ->
               draw 3
-              it.abilities.each {
-                if (it.name == "Blow-Away Bomb" && confirm("Use Blow-Away Bomb?")) {
-                  bc "Blow-Away Bomb activates."
-                  opp.all.each { target ->
-                    directDamage 10, target, SRC_ABILITY
+              if (discarded instanceof PokemonCard) {
+                discarded.abilities.each {
+                  if (it.name == "Blow-Away Bomb" && checkGlobalAbility(discarded) && confirm("Use Blow-Away Bomb?")) {
+                    bc "Blow-Away Bomb activates."
+                    opp.all.each { target ->
+                      directDamage 10, target, SRC_ABILITY
+                    }
                   }
                 }
               }

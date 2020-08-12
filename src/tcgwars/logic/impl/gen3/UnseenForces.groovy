@@ -1573,7 +1573,6 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             def maxSpace = Math.min(my.bench.freeBenchCount, 2)
             my.deck.search(max:maxSpace, "Select $maxSpace Scyther or Scyther ex to put onto your Bench", { it.name == "Scyther" || it.name == "Scyther ex" }).each {
-              my.deck.remove(it);
               benchPCS(it)
             }
             shuffleDeck()
@@ -3450,12 +3449,14 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             def basics = opp.hand.shuffledCopy().showToMe("Opponent's hand.").filterByType(BASIC)
             if (basics) {
-              def tar
-              basics.select("Choose a pokemon to bench").each {
-                opp.hand.remove(it)
-                tar = benchPCS(it, OTHER, TargetPlayer.OPPONENT)
+              def tar = basics.select("Choose a pokemon to bench")
+              if (tar) {
+                def card = tar.first()
+                def benched = benchPCS(card, OTHER)
+                if (benched) {
+                  sw2 (benched)
+                }
               }
-              sw2 (tar)
             }
           }
         }

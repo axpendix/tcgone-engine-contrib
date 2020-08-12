@@ -804,7 +804,6 @@ public enum JungleNG implements LogicCardInfo {
             }
             onAttack {
               deck.search (count: 1,{it.cardTypes.is(BASIC) && it.asPokemonCard().types.contains(F)}).each {
-                deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()
@@ -1054,7 +1053,6 @@ public enum JungleNG implements LogicCardInfo {
             }
             onAttack {
               deck.search (count: 1,{it.cardTypes.is(BASIC) && it.name == "Bellsprout"}).each {
-                deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()
@@ -1271,7 +1269,6 @@ public enum JungleNG implements LogicCardInfo {
             }
             onAttack {
               deck.search (count: 1,{it.cardTypes.is(BASIC) && (it.name == "Nidoran♂" || it.name == "Nidoran♀")}).each {
-                deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()
@@ -1300,7 +1297,6 @@ public enum JungleNG implements LogicCardInfo {
             }
             onAttack {
               deck.search (count: 1,{it.cardTypes.is(BASIC) && it.name == "Oddish"}).each {
-                deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()

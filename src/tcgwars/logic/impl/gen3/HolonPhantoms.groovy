@@ -2268,7 +2268,6 @@ public enum HolonPhantoms implements LogicCardInfo {
           flip 1, {
             if(my.deck){
               my.deck.search(min:0, max:1, "Search your deck for a card named Omanyte, Kabuto, Aerodactyl, Aerodactyl ex, Lileep, or Anorith.", {["Omanyte", "Kabuto", "Aerodactyl", "Aerodactyl ex", "Lileep", "Anorith"].contains(it.name)}).each {
-                my.deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()
@@ -2277,7 +2276,6 @@ public enum HolonPhantoms implements LogicCardInfo {
             def eligible = my.hand.findAll { ["Omanyte", "Kabuto", "Aerodactyl", "Aerodactyl ex", "Lileep", "Anorith"].contains(it.name) }
             if(eligible){
               eligible.select("Select which Pokemon to bench").each {
-                hand.remove(it)
                 benchPCS(it)
               }
             }
@@ -2372,7 +2370,6 @@ public enum HolonPhantoms implements LogicCardInfo {
           }
           pokemonCard.player = trainerCard.player
           bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
-          hand.remove(pokemonCard)
           benchPCS(pokemonCard)
         }
         playRequirement{

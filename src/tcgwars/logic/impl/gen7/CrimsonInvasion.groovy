@@ -230,7 +230,6 @@ public enum CrimsonInvasion implements LogicCardInfo {
             onAttack {
               int count = Math.min(3, my.bench.freeBenchCount)
               deck.search (max: count,  {it.name=="Kakuna"}).each {
-                deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()
@@ -1651,7 +1650,6 @@ public enum CrimsonInvasion implements LogicCardInfo {
             onAttack {
               int count = bench.freeBenchCount>=2?2:1
               deck.search (max: count, cardTypeFilter(BASIC)).each {
-                deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()
@@ -2041,7 +2039,6 @@ public enum CrimsonInvasion implements LogicCardInfo {
             onAttack {
               flip {
                 deck.search ({it.asPokemonCard().types.contains(N)}).each {
-                  deck.remove(it)
                   benchPCS(it)
                 }
                 shuffleDeck()

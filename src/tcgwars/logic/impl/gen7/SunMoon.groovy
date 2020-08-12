@@ -993,7 +993,6 @@ public enum SunMoon implements LogicCardInfo {
             onAttack {
               int count = bench.freeBenchCount>=2?2:1
               deck.search (max: count, cardTypeFilter(BASIC)).each {
-                deck.remove(it)
                 benchPCS(it)
               }
               shuffleDeck()
@@ -2768,7 +2767,6 @@ public enum SunMoon implements LogicCardInfo {
           text "Search your deck for a Basic Pokémon and put it onto your Bench. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
           onPlay {
             my.deck.search ("Search your deck for a Basic Pokémon and put it onto your Bench", cardTypeFilter(BASIC)).each {
-              my.deck.remove(it)
               benchPCS(it)
             }
             shuffleDeck()
