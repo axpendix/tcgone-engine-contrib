@@ -3469,6 +3469,9 @@ public enum SwordShield implements LogicCardInfo {
           }
           draw 5
         }
+        playRequirement{
+          assert (my.hand.getExcludedList(thisCard) || opp.hand) : "One of the two players must be able to put any cards into their deck in order for you to play this card"
+        }
       };
       case METAL_SAUCER_170:
       return itemCard (this) {
