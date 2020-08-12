@@ -2152,11 +2152,13 @@ public enum DarknessAblaze implements LogicCardInfo {
           onAttack {
             damage 40
             afterDamage{
-              def tar = my.deck.search("Evolves from ${self.name}", {it.cardTypes.is(EVOLUTION) && it.predecessor == self.name})
-              if(tar){
-                evolve(self, tar.first(), OTHER)
+              if (my.deck) {
+                def tar = my.deck.search("Evolves from ${self.name}", { it.cardTypes.is(EVOLUTION) && it.predecessor == self.name })
+                if (tar) {
+                  evolve(self, tar.first(), OTHER)
+                }
+                shuffleDeck()
               }
-              shuffleDeck()
             }
           }
         }
