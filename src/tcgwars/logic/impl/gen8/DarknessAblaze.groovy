@@ -2541,7 +2541,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "If this Pokémon has any [D] Energy attached, it takes 20 less damage from attacks (after applying Weakness and Resistance)."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
-              if(ef.attacker.owner == self.owner.opposite && self.cards.energyCount(D)) {
+              if(self.cards.energyCount(D)) {
                 bg.dm().each{
                   if(it.to == self && it.notNoEffect && it.dmg.value) {
                     bc "Dark Guard -20"
