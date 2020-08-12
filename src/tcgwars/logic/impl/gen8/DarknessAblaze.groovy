@@ -3940,7 +3940,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             bg.em().storeObject("Piers", bg.turnCount)
           }
           playRequirement{
-            assert my.deck.notEmpty
+            assert my.deck.notEmpty : "Deck is empty"
           }
       };
       case POKEMON_BREEDER_S_NURTURING_174:
