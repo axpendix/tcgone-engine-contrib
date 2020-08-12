@@ -1064,8 +1064,8 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Pattern Distraction", {
           text "As long as Spinda is your Active Pokémon, whenever your opponent's Basic Pokémon tries to attack, your opponent flips a coin. If tails, that attack does nothing. You can't use more than 1 Pattern Distraction Poké-Body each turn."
           def endTurn = false
-          delayedA {
-            before PROCESS_ATTACK_EFFECTS, {
+          delayedA (priority: BEFORE_LAST) {
+            before CHECK_ATTACK_REQUIREMENTS, {
               if (ef.attacker.owner == self.owner.opposite && self.active && ef.attacker.notEvolution) {
                 flip 1, {}, {
                   bc "Pattern Distraction prevented this Pokémon from attacking"
