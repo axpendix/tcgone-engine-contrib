@@ -1,6 +1,7 @@
 package tcgwars.logic.impl.gen4;
 
-import tcgwars.logic.impl.gen4.MysteriousTreasures;
+import tcgwars.logic.impl.gen4.MysteriousTreasures
+import tcgwars.logic.impl.gen7.CelestialStorm;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -2256,13 +2257,7 @@ public enum RisingRivals implements LogicCardInfo {
           }
         };
       case UNDERGROUND_EXPEDITION_97:
-        return basicTrainer (this) {
-          text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nLook at the 4 cards from the bottom of your deck. Choose any 2 cards there and put them into your hand. Put the remaining cards back on the bottom of your deck in any order."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy(CelestialStorm.UNDERGROUND_EXPEDITION_150, this);
       case VOLKNER_S_PHILOSOPHY_98:
         return basicTrainer (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nYou may discard a card from your hand. Then, draw cards until you have 6 cards in your hand. (If you can’t draw any cards, you can’t play this card.)"

@@ -463,7 +463,10 @@ public enum PopSeries3 implements LogicCardInfo {
           text "20x damage. Flip 2 coins. This attack does 20 damage times the number of heads. If either coin is heads, the Defending Pokémon is now Confused."
           energyCost L, L
           onAttack {
-            flip "Bustle", 2, {damage 20 applyAfterDamage CONFUSED}, {}
+            def headsCount = 0
+            flip "Bustle", 2, {headsCount++}, {}
+            damage 20 * headsCount
+            if (headsCount) { applyAfterDamage CONFUSED }
           }
         }
       };

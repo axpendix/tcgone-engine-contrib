@@ -756,8 +756,9 @@ public enum GuardiansRising implements LogicCardInfo {
             onAttack {
               gxPerform()
               targeted (defending) {
-                defending.damage += self.damage
+                def currentDmg = self.damage.getValue()
                 self.damage = hp(0)
+                directDamage currentDmg, defending
               }
             }
           }

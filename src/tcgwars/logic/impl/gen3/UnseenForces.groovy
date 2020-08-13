@@ -779,11 +779,10 @@ public enum UnseenForces implements LogicCardInfo {
           text "As long as Typhlosion is your Active Pokémon, put 1 damage counter on each Active Pokémon (both yours and your opponent's) between turns."
           delayedA {
             before BEGIN_TURN, {
-              all.each {
-                if (self.active && it.active) {
-                  bc "Burning Aura activates"
-                  directDamage 10, it, SRC_ABILITY
-                }
+              if (self.active) {
+                bc "Burning Aura activates"
+                directDamage 10, opp.active, SRC_ABILITY
+                directDamage 10, my.active, SRC_ABILITY
               }
             }
           }

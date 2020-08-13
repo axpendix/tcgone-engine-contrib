@@ -3416,7 +3416,7 @@ public enum SwordShield implements LogicCardInfo {
         text "If the Pokémon this card is attached to is Knocked Out by damage from an opponent’s attack, draw cards until you have 7 cards in your hand."
         def eff
         onPlay {reason->
-          eff = delayed {
+          eff = delayed (priority: BEFORE_LAST) {
             before (KNOCKOUT, self) {
               if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
                 bc "Lucky Egg activates"
@@ -3453,15 +3453,24 @@ public enum SwordShield implements LogicCardInfo {
       return supporter (this) {
         text "Each player shuffles their hand and puts it on the bottom of their deck. If either player put any cards on the bottom of their deck in this way, you draw 5 cards, and your opponent draws 4 cards."
         onPlay {
-          opp.hand.shuffle()
-          opp.hand.moveTo(hidden:true, opp.deck)
+          if (opp.hand){
+            bc "${opp.owner.getPlayerUsername(bg)} shuffled their hand of ${opp.hand.size()} cards, and put it at the bottom of their deck."
+            opp.hand.shuffledCopy().moveTo(suppressLog: true, opp.deck)
+          } else {
+            bc "${opp.owner.getPlayerUsername(bg)} doesn't have any cards in hand, only needs to draw."
+          }
           draw 4, TargetPlayer.OPPONENT
 
-          if (my.hand.size()) {
-            my.hand.shuffle()
-            my.hand.getExcludedList(thisCard).moveTo(hidden:true, my.deck)
-            draw 5
+          if (my.hand.getExcludedList(thisCard).size()) {
+            bc "${my.owner.getPlayerUsername(bg)} shuffled their hand of ${my.hand.size() - 1} cards, and put it at the bottom of their deck."
+            my.hand.getExcludedList(thisCard).shuffledCopy().moveTo(suppressLog: true, my.deck)
+          } else {
+            bc "${my.owner.getPlayerUsername(bg)} doesn't have any cards in hand, only needs to draw."
           }
+          draw 5
+        }
+        playRequirement{
+          assert (my.hand.getExcludedList(thisCard) || opp.hand) : "One of the two players must be able to put any cards into their deck in order for you to play this card"
         }
       };
       case METAL_SAUCER_170:

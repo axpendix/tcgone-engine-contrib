@@ -3318,7 +3318,26 @@ public enum CelestialStorm implements LogicCardInfo {
           }
         };
       case UNDERGROUND_EXPEDITION_150:
-        return copy(Skyridge.UNDERGROUND_EXPEDITION_140, this);
+        return supporter(this) {
+          text "Look at the bottom 4 cards of your deck and put 2 of them into your hand. Put the other cards back on the bottom of your deck in any order.\nYou may play only 1 Supporter card during your turn (before your attack).\n"
+          onPlay {
+            if (my.deck) {
+              def drawStart = Math.max(0, my.deck.size() - 4)
+              def cardsInBottom = my.deck.size() - drawStart
+              def deckBottom = my.deck.subList(drawStart, my.deck.size())
+              def sel = deckBottom.select(count: 2, "Select 2 cards to put to your hand.").moveTo(supressLog: true, my.hand)
+              def list = deckBottom.getExcludedList(sel)
+              if (cardsInBottom > 3) {
+                list = rearrange(list, "Rearrange the other 2 cards before putting them back at the bottom of the deck")
+                my.deck.setSubList(Math.max(0, drawStart-2), list)
+              }
+              bc "${my.owner.getPlayerUsername(bg)} drew ${sel.size()} cards from the bottom of their deck."
+            }
+          }
+          playRequirement{
+            assert my.deck
+          }
+        };
       case RAINBOW_ENERGY_151:
         return specialEnergy (this, [[C]]) {
           text "Attach Rainbow Energy to 1 of your Pokémon. While in play, Rainbow Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.) When you attach this card from your hand to 1 of your Pokémon, put 1 damage counter on that Pokémon. (While not in play, Rainbow Energy counts as Colorless Energy.)"

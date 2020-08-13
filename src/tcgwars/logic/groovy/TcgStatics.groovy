@@ -1422,7 +1422,7 @@ class TcgStatics {
     } */
   }
 
-  static putDamageCountersOnOpponentsPokemon(int counters, def selectArea = opp.all){
+  static putDamageCountersOnOpponentsPokemon(int counters, def selectArea = opp.all, def src = Source.ATTACK){
     if (selectArea.notEmpty) {
       def eff = delayed {
         before KNOCKOUT, {
@@ -1430,7 +1430,7 @@ class TcgStatics {
         }
       }
 
-      counters.times{directDamage 10, selectArea.select("Put 1 damage counter on which pokémon? ${it}/${counters} counters placed") }
+      counters.times{directDamage (10, selectArea.select("Put 1 damage counter on which pokémon? ${it}/${counters} counters placed"), src) }
 
       eff.unregister()
       checkFaint()
