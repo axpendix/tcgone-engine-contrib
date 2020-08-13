@@ -632,7 +632,6 @@ public enum DarknessAblaze implements LogicCardInfo {
       case CHARIZARD_V_19:
       return basic (this, hp:HP220, type:R, retreatCost:3) {
         weakness W
-
         move "Claw Slash", {
           text "80 damage."
           energyCost C, C, C
