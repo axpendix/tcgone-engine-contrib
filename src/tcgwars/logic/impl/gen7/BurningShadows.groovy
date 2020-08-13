@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen7
 
+import tcgwars.logic.impl.gen3.FireRedLeafGreen
 import tcgwars.logic.impl.gen5.BlackWhite
 import tcgwars.logic.impl.gen5.PlasmaStorm
 import tcgwars.logic.impl.gen6.PrimalClash;
@@ -2788,7 +2789,7 @@ public enum BurningShadows implements LogicCardInfo {
           }
         };
       case SUPER_SCOOP_UP_124:
-        return copy (BlackWhite.SUPER_SCOOP_UP_103, this)
+        return copy(FireRedLeafGreen.SUPER_SCOOP_UP_99, this);
       case TORMENTING_SPRAY_125:
         return itemCard (this) {
           text "Choose a random card from your opponent's hand. Your opponent reveals that card. If it's a Supporter card, discard it.\nYou may play as many Item cards as you like during your turn (before your attack)."

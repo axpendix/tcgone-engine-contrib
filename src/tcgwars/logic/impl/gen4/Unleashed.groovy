@@ -1,5 +1,6 @@
-package tcgwars.logic.impl.gen4;
+package tcgwars.logic.impl.gen4
 
+import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen5.*;
 import tcgwars.logic.impl.gen7.*;
 import static tcgwars.logic.card.HP.*;
@@ -1746,7 +1747,7 @@ public enum Unleashed implements LogicCardInfo {
       case RARE_CANDY_82:
         return copy(DarkExplorers.RARE_CANDY_100, this)
       case SUPER_SCOOP_UP_83:
-        return copy (BlackWhite.SUPER_SCOOP_UP_103, this)
+        return copy(FireRedLeafGreen.SUPER_SCOOP_UP_99, this);
       case CROBAT_84:
         return evolution (this, from:"Golbat", hp:HP130, type:PSYCHIC, retreatCost:0) {
           weakness L
