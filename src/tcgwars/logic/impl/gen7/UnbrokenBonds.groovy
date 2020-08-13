@@ -1838,7 +1838,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           resistance F, MINUS20
           bwAbility "Swelling Spite", {
             text "When this Pokémon is Knocked Out, search your deck for up to 2 Haunter and put them onto your Bench. Then, shuffle your deck."
-            delayedA {
+            delayedA (priority: BEFORE_LAST) {
               before (KNOCKOUT,self) {
                 if(self.owner.pbg.deck.notEmpty) {
                   bc "Swelling Spite activates"
