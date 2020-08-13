@@ -2980,8 +2980,8 @@ public enum DarknessAblaze implements LogicCardInfo {
           def isOwnerPokemonAllDark = {
             return !self.owner.pbg.all.find {
               it.cards().first() &&
-                it.cards.first().cardTypes.contains(POKEMON) &&
-                !it.types.contains(D)
+              it.cards.first().cardTypes.contains(POKEMON) &&
+              !it.types.contains(D)
             }
           }
           def checkNewAbilities = { Effect ef ->
@@ -3002,7 +3002,6 @@ public enum DarknessAblaze implements LogicCardInfo {
               bg.em().storeObject("Infinity_Zone_"+self.hashCode(), false)
             }
             bg.em().retrieveObject("Infinity_Zone_" + self.hashCode())
-            bc "Activate $isAbilityActive, infinityZones is now $isInfinityZoneActive"
           }
 
           def isPokemonPlayable = { Effect ef ->
@@ -3033,6 +3032,16 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
             after REMOVE_FROM_PLAY, {
               if (ef.resolvedTarget.owner == self.owner && isOwnerPokemonAllDark()) {
+                self.owner.pbg.triggerBenchSizeCheck()
+              }
+            }
+            after DEVOLVE, {
+              if (ef.resolvedTarget.owner == self.owner) {
+                self.owner.pbg.triggerBenchSizeCheck()
+              }
+            }
+            after EVOLVE, {
+              if (ef.pokemonToBeEvolved.owner == self.owner) {
                 self.owner.pbg.triggerBenchSizeCheck()
               }
             }
