@@ -632,6 +632,7 @@ public enum DarknessAblaze implements LogicCardInfo {
       case CHARIZARD_V_19:
       return basic (this, hp:HP220, type:R, retreatCost:3) {
         weakness W
+
         move "Claw Slash", {
           text "80 damage."
           energyCost C, C, C
@@ -2976,8 +2977,91 @@ public enum DarknessAblaze implements LogicCardInfo {
         weakness F
         bwAbility "Infinity Zone", {
           text "If all of your Pokémon in play are [D], you may now have up to 8 [D] Pokémon on your Bench and can’t play any other type of Pokémon. (When this Ability no longer works, discard your Benched Pokémon until there are 5 left.)"
-          actionA {
+          def isOwnerPokemonAllDark = {
+            return !self.owner.pbg.all.find {
+              it.cards().first() &&
+                it.cards.first().cardTypes.contains(POKEMON) &&
+                !it.types.contains(D)
+            }
+          }
+          def checkNewAbilities = { Effect ef ->
+            if (ef.cardToPlay != thisCard && ef.cardToPlay.player == self.owner &&
+              self.owner.pbg.all.find { !it.types.contains(D) }
+            ) {
+              self.owner.pbg.triggerBenchSizeCheck()
+              new CheckAbilities().run(bg)
+            }
+          }
+          def updateActiveInfinityZoneCount = { Boolean isAbilityActive ->
+            def isInfinityZoneActive = bg.em().retrieveObject("Infinity_Zone_" + self.hashCode()) ?: false
 
+            if (isAbilityActive && isOwnerPokemonAllDark() && !isInfinityZoneActive) {
+              bg.em().storeObject("Infinity_Zone_"+self.hashCode(), true)
+            }
+            else if (!isAbilityActive && isInfinityZoneActive) {
+              bg.em().storeObject("Infinity_Zone_"+self.hashCode(), false)
+            }
+            bg.em().retrieveObject("Infinity_Zone_" + self.hashCode())
+            bc "Activate $isAbilityActive, infinityZones is now $isInfinityZoneActive"
+          }
+
+          def isPokemonPlayable = { Effect ef ->
+            def isInfinityZoneActive = bg.em().retrieveObject("Infinity_Zone_" + self.hashCode())
+
+            if (ef.cardToPlay.player == self.owner &&
+              isInfinityZoneActive && !ef.cardToPlay.types.contains(D)) {
+              return false
+            }
+            return true
+          }
+
+          getterA (GET_BENCH_SIZE) {h->
+            if (h.effect.playerType == self.owner && isOwnerPokemonAllDark()) {
+              updateActiveInfinityZoneCount(true)
+              h.object = 8
+            } else {
+              updateActiveInfinityZoneCount(false)
+            }
+          }
+
+          delayedA (priority: BEFORE_LAST) {
+            after PLAY_BASIC_POKEMON, {
+              checkNewAbilities(ef)
+            }
+            after PLAY_EVOLUTION, {
+              checkNewAbilities(ef)
+            }
+            after REMOVE_FROM_PLAY, {
+              if (ef.resolvedTarget.owner == self.owner && isOwnerPokemonAllDark()) {
+                self.owner.pbg.triggerBenchSizeCheck()
+              }
+            }
+            before PLAY_BASIC_POKEMON, {
+              if (!isPokemonPlayable(ef)) {
+                wcu "Cannot play non-Darkness Pokemon"
+                prevent()
+              }
+            }
+            before PLAY_EVOLUTION, {
+              if (!isPokemonPlayable(ef)) {
+                wcu "Cannot play non-Darkness Pokemon"
+                prevent()
+              }
+            }
+            before PUT_ON_BENCH, {
+              if (!isPokemonPlayable(ef)) {
+                wcu "Cannot play non-Darkness Pokemon"
+                prevent()
+              }
+            }
+          }
+          onActivate {
+            self.owner.pbg.triggerBenchSizeCheck()
+            new CheckAbilities().run(bg)
+          }
+          onDeactivate {
+            self.owner.pbg.triggerBenchSizeCheck()
+            new CheckAbilities().run(bg)
           }
         }
         move "Dread End", {
