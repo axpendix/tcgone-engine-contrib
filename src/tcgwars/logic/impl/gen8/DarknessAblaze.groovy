@@ -3031,7 +3031,7 @@ public enum DarknessAblaze implements LogicCardInfo {
               checkNewAbilities(ef)
             }
             after REMOVE_FROM_PLAY, {
-              if (ef.resolvedTarget.owner == self.owner && isOwnerPokemonAllDark()) {
+              if (ef.resolvedTarget.owner == self.owner) {
                 self.owner.pbg.triggerBenchSizeCheck()
               }
             }
@@ -3078,7 +3078,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost D, C
           attackRequirement {}
           onAttack {
-            damage 30
+            damage 30 * my.all.findAll{it.types.contains(D)}.size()
           }
         }
       };
