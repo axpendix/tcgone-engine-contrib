@@ -586,9 +586,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 100
-            if (confirm("Return an Energy attached to the Active $opp.active.name to your opponent's hand?")) {
-              def info = "Select the Energy to return to the opponent's hand."
-              def selectedEnergy = defending.cards.filterByType(ENERGY).select info
+            if (defending.cards.filterByType(ENERGY)) {
+              def info = "You may select the Energy to return to the opponent's hand."
+              def selectedEnergy = defending.cards.filterByType(ENERGY).select min:0, info
               if (selectedEnergy) selectedEnergy.moveTo opp.hand
             }
           }
@@ -1076,19 +1076,23 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 130
             afterDamage {
               // TODO: Make a static method to do this
-              def targetCount = Math.min self.cards.energyCount(W), 2
-              def finalCount = 0
-              while (self.cards.energyCount(W) > 0 && finalCount < targetCount) {
-                def info = "Select [W] Energy to return to your hand."
-                def energy = self.cards.filterByType(ENERGY).select(info, energyFilter(W))
-                def energyCount = 1
-                if (energy.energyCount(W) > 1) {
-                  def choices = 1..energy.energyCount(W)
-                  def choiceInfo = "How many Energy do you want this card to count as?"
-                  energyCount = choose(choices, choiceInfo)
+              if (self.cards.energyCount(W) <= 2) {
+                self.cards.filterByEnergyType(W).moveTo my.hand
+              } else {
+                def targetCount = Math.min self.cards.energyCount(W), 2
+                def finalCount = 0
+                while (self.cards.energyCount(W) > 0 && finalCount < targetCount) {
+                  def info = "Select [W] Energy to return to your hand."
+                  def energy = self.cards.filterByType(ENERGY).select(info, energyFilter(W))
+                  def energyCount = 1
+                  if (energy.energyCount(W) > 1) {
+                    def choices = 1..energy.energyCount(W)
+                    def choiceInfo = "How many Energy do you want this card to count as?"
+                    energyCount = choose(choices, choiceInfo)
+                  }
+                  finalCount += energyCount
+                  energy.moveTo my.hand
                 }
-                finalCount += energyCount
-                energy.moveTo my.hand
               }
             }
           }
@@ -1367,8 +1371,10 @@ public enum DarknessAblaze implements LogicCardInfo {
             assert self.numberOfDamageCounters : "$self.name has no damage counters on it"
           }
           onAttack {
-            self.cards.filterByType(ENERGY).findAll {energyFilter C}.select("Select Energy to discard from $self.name.").discard()
-            healAll self
+            if (self.cards.energyCount(C)) {
+              self.cards.filterByType(ENERGY).findAll { energyFilter C }.select("Select Energy to discard from $self.name.").discard()
+              healAll self
+            }
           }
         }
         move "Poison Whip", {
@@ -1583,7 +1589,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            increasedBaseDamageNextTurn "Rising Charge", hp(90)
+            increasedBaseDamageNextTurn thisMove.name, hp(90)
           }
         }
         move "Giga Impact", {
@@ -1844,9 +1850,11 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
           onAttack {
             def deck=opp.deck
-            def deck2=rearrange(deck.subList(0,5))
-            deck.setSubList(0, deck2)
-            bc "Rearranged top 5 cards of opponent's deck."
+            if (deck) {
+              def deck2 = rearrange(deck.subList(0, 5))
+              deck.setSubList(0, deck2)
+              bc "Rearranged top 5 cards of opponent's deck."
+            }
           }
         }
         move "Gentle Slap", {
@@ -1869,8 +1877,10 @@ public enum DarknessAblaze implements LogicCardInfo {
             assert opp.hand : "Your opponent's hand is empty"
           }
           onAttack {
-            opp.hand.shuffledCopy().select(hidden: true, count: 1, "Choose a random card from your opponent's hand").showToMe("Selected card").showToOpponent("this card will be shuffled into your deck").moveTo(opp.deck)
-            shuffleDeck(null, TargetPlayer.OPPONENT)
+            if (opp.hand) {
+              opp.hand.shuffledCopy().select(hidden: true, count: 1, "Choose a random card from your opponent's hand").showToMe("Selected card").showToOpponent("this card will be shuffled into your deck").moveTo(opp.deck)
+              shuffleDeck(null, TargetPlayer.OPPONENT)
+            }
           }
         }
         move "Double Spin", {
@@ -2142,11 +2152,13 @@ public enum DarknessAblaze implements LogicCardInfo {
           onAttack {
             damage 40
             afterDamage{
-              def tar = my.deck.search("Evolves from ${self.name}", {it.cardTypes.is(EVOLUTION) && it.predecessor == self.name})
-              if(tar){
-                evolve(self, tar.first(), OTHER)
+              if (my.deck) {
+                def tar = my.deck.search("Evolves from ${self.name}", { it.cardTypes.is(EVOLUTION) && it.predecessor == self.name })
+                if (tar) {
+                  evolve(self, tar.first(), OTHER)
+                }
+                shuffleDeck()
               }
-              shuffleDeck()
             }
           }
         }
@@ -2400,7 +2412,9 @@ public enum DarknessAblaze implements LogicCardInfo {
             assert opp.deck : "Your opponent's deck is empty"
           }
           onAttack {
-            opp.deck.subList(0,1).discard()
+            if (opp.deck) {
+              opp.deck.subList(0, 1).discard()
+            }
           }
         }
         move "Sludge Whirlpool", {
@@ -2488,10 +2502,11 @@ public enum DarknessAblaze implements LogicCardInfo {
         bwAbility "Night Asset", {
           text "Once during your turn, when you play this Pokémon from hand to your Bench, you may draw cards until you have 6 cards in your hand. You can’t use more than 1 Night Asset Ability during your turn."
           onActivate {
-            if(it==PLAY_FROM_HAND && bg.em().retrieveObject("Night_Asset")!=bg.turnCount && confirm("Use Night Asset?")){
+            def drawCount = 6 - hand.getExcludedList(thisCard).size()
+            if(it==PLAY_FROM_HAND && bg.em().retrieveObject("Night_Asset")!=bg.turnCount && drawCount > 0 && confirm("Use Night Asset?")){
               bg.em().storeObject("Night_Asset",bg.turnCount)
               powerUsed()
-              draw (6 - hand.getExcludedList(thisCard).size())
+              draw drawCount
             }
           }
         }
@@ -2526,7 +2541,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "If this Pokémon has any [D] Energy attached, it takes 20 less damage from attacks (after applying Weakness and Resistance)."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
-              if(ef.attacker.owner == self.owner.opposite && self.cards.energyCount(D)) {
+              if(self.cards.energyCount(D)) {
                 bg.dm().each{
                   if(it.to == self && it.notNoEffect && it.dmg.value) {
                     bc "Dark Guard -20"
@@ -2854,8 +2869,10 @@ public enum DarknessAblaze implements LogicCardInfo {
             assert my.deck : "Your deck is empty"
           }
           onAttack {
-            my.deck.search(max:2,"Select up to 2 cards",{true}).moveTo(hidden:true,my.hand)
-            shuffleDeck()
+            if (my.deck) {
+              my.deck.search(max: 2, "Select up to 2 cards", { true }).moveTo(hidden: true, my.hand)
+              shuffleDeck()
+            }
           }
         }
         move "Sharp Fang", {
@@ -2886,19 +2903,23 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 200
             afterDamage {
               // TODO: Make a static method to do this
-              def targetCount = Math.min self.cards.energyCount(D), 2
-              def finalCount = 0
-              while (self.cards.energyCount(D) > 0 && finalCount < targetCount) {
-                def info = "Select [D] Energy to return to your hand."
-                def energy = self.cards.filterByType(ENERGY).select(info, energyFilter(D))
-                def energyCount = 1
-                if (energy.energyCount(D) > 1) {
-                  def choices = 1..energy.energyCount(D)
-                  def choiceInfo = "How many Energy do you want this card to count as?"
-                  energyCount = choose(choices, choiceInfo)
+              if (self.cards.energyCount(D) <= 2) {
+                self.cards.filterByEnergyType(D).moveTo my.hand
+              } else {
+                def targetCount = Math.min self.cards.energyCount(D), 2
+                def finalCount = 0
+                while (self.cards.energyCount(D) > 0 && finalCount < targetCount) {
+                  def info = "Select [D] Energy to return to your hand."
+                  def energy = self.cards.filterByType(ENERGY).select(info, energyFilter(D))
+                  def energyCount = 1
+                  if (energy.energyCount(D) > 1) {
+                    def choices = 1..energy.energyCount(D)
+                    def choiceInfo = "How many Energy do you want this card to count as?"
+                    energyCount = choose(choices, choiceInfo)
+                  }
+                  finalCount += energyCount
+                  energy.moveTo my.hand
                 }
-                finalCount += energyCount
-                energy.moveTo my.hand
               }
             }
           }
@@ -3205,6 +3226,9 @@ public enum DarknessAblaze implements LogicCardInfo {
               prevent()
             }
           }
+          onActivate {
+            clearSpecialCondition(self, SRC_ABILITY)
+          }
         }
         move "Revenge Stomp", {
           text "120+ damage. If any of your Benched Pokémon have any damage counters on them, this attack does 120 more damage."
@@ -3400,7 +3424,10 @@ public enum DarknessAblaze implements LogicCardInfo {
             assert my.deck : "You have no cards left in your deck"
           }
           onAttack {
-            my.deck.search("Put Energy Card into your hand",cardTypeFilter(ENERGY)).showToOpponent("Opponent's chosen Energy card").moveTo(my.hand)
+            if (my.deck) {
+              my.deck.search("Put Energy Card into your hand", cardTypeFilter(ENERGY)).showToOpponent("Opponent's chosen Energy card").moveTo(my.hand)
+              shuffleDeck()
+            }
           }
         }
         move "Cat Kick", {
@@ -3878,6 +3905,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           draw(my.bench ? 4 : 8)
         }
         playRequirement{
+          assert my.hand || my.deck : "No cards in hand or in deck"
         }
       };
       case LOOKALIKE_BELL_172:
@@ -3912,14 +3940,14 @@ public enum DarknessAblaze implements LogicCardInfo {
             bg.em().storeObject("Piers", bg.turnCount)
           }
           playRequirement{
-            assert my.deck.notEmpty
+            assert my.deck.notEmpty : "Deck is empty"
           }
       };
       case POKEMON_BREEDER_S_NURTURING_174:
       return supporter (this) {
         text "Choose up to 2 of your Pokémon in play. Search your deck for a card that evolves from each of those Pokémon and put it on top of the Pokémon to evolve it. Then, shuffle your deck. (You can’t use this card during your first turn or on a Pokémon that just came into play.)"
         onPlay {
-          def tar = my.all.findAll{it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount}
+          def tar = my.all.findAll{it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount && bg().gm().hasEvolution(it.name)}
           def pl = new PcsList()
           def pcs
 
@@ -3956,7 +3984,8 @@ public enum DarknessAblaze implements LogicCardInfo {
         playRequirement{
           assert my.deck : "Your deck is empty."
           assert bg.turnCount > 2 : "Cannot use this card during your first turn."
-          assert my.all.any{it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount} : "Cannot use this on Pokémon put into play this turn"
+          assert my.all.any{bg().gm().hasEvolution(it.name)} : "No Pokemon with evolutions in play"
+          assert my.all.any{it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount && bg().gm().hasEvolution(it.name)} : "Cannot use this on Pokémon put into play this turn"
         }
       };
       case RARE_FOSSIL_175:
