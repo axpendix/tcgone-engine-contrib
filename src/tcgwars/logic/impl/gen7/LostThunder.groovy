@@ -4411,7 +4411,9 @@ public enum LostThunder implements LogicCardInfo {
               before (KNOCKOUT,self) {
                 if(self.types.contains(P) && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
                   bc "Spell Tag activates"
-                  putDamageCountersOnOpponentsPokemon(4, opp.all, Source.GAME)//TODO add Tool Source?
+                  4.times{
+                    directDamage (10, self.owner.opposite.pbg.all.select("Put 1 damage counter on which pokémon? ${it}/4 counters placed", self.owner), GAME) //TODO add Tool Source?
+                  }
                 }
               }
             }
