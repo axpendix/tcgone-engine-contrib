@@ -2879,7 +2879,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             discardDefendingSpecialEnergy(delegate)
             afterDamage{
               targeted (defending){
-                def attachedTools = self.cards.filterByType(POKEMON_TOOL)
+                def attachedTools = defending.cards.filterByType(POKEMON_TOOL)
                 if (attachedTools) {
                   attachedTools.select("Discard a Pokémon Tool from $defending.").discard()
                 }
