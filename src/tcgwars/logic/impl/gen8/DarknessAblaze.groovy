@@ -4125,15 +4125,15 @@ public enum DarknessAblaze implements LogicCardInfo {
       case ROSE_196:
       return copy (ROSE_168, this);
       case RILLABOOM_197:
-      return copy (RILLABOOM_14, this);
+      return copy (SwordShield.RILLABOOM_14, this);
       case COALOSSAL_198:
-      return copy (COALOSSAL_107, this);
+      return copy (RebelClash.COALOSSAL_107, this);
       case BIG_PARASOL_199:
       return copy (BIG_PARASOL_157, this);
       case TURBO_PATCH_200:
       return copy (TURBO_PATCH_172, this);
       case CAPTURE_ENERGY_201:
-      return copy (CAPTURE_ENERGY_171, this);
+      return copy (RebelClash.CAPTURE_ENERGY_171, this);
         default:
       return null;
     }
