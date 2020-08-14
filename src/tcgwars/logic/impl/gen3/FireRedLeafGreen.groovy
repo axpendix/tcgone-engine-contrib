@@ -2382,10 +2382,13 @@ public enum FireRedLeafGreen implements LogicCardInfo {
         return basicTrainer (this) {
           text "Flip a coin. If heads, return 1 of your Pokémon and all cards attached to it to your hand."
           onPlay {
-            flip{
+            flip {
               def pcs = my.all.select()
-              pcs.cards.moveTo(hand)
-              removePCS(pcs)
+              targeted (pcs, TRAINER_CARD) {
+                my.hand.addAll(pcs.cards)
+                bc "Scooped Up ${pcs.cards} to hand."
+                removePCS(pcs)
+              }
             }
           }
           playRequirement{

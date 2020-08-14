@@ -1,6 +1,7 @@
 package tcgwars.logic.impl.gen7
 
 import tcgwars.logic.impl.gen2.Aquapolis
+import tcgwars.logic.impl.gen3.FireRedLeafGreen
 import tcgwars.logic.impl.gen5.BlackWhite
 import tcgwars.logic.impl.gen5.DarkExplorers
 import tcgwars.logic.impl.gen5.EmergingPowers
@@ -1427,7 +1428,7 @@ public enum ShiningLegends implements LogicCardInfo {
       case SOPHOCLES_65:
         return copy (BurningShadows.SOPHOCLES_123, this)
       case SUPER_SCOOP_UP_66:
-        return copy (BlackWhite.SUPER_SCOOP_UP_103, this)
+        return copy(FireRedLeafGreen.SUPER_SCOOP_UP_99, this);
       case SWITCH_67:
         return copy (BlackWhite.SWITCH_104, this)
       case ULTRA_BALL_68:

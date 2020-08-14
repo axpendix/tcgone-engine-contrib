@@ -3274,7 +3274,7 @@ public enum CelestialStorm implements LogicCardInfo {
           }
         };
       case SUPER_SCOOP_UP_146:
-        return copy(BlackWhite.SUPER_SCOOP_UP_103, this);
+        return copy(FireRedLeafGreen.SUPER_SCOOP_UP_99, this);
       case SWITCH_147:
         return copy(BlackWhite.SWITCH_104, this);
       case TATE_LIZA_148:

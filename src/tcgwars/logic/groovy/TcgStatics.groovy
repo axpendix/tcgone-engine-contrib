@@ -478,8 +478,8 @@ class TcgStatics {
     }
     else if (my.bench.contains(pcs)){
       def r=new RemoveFromPlay(pcs,null)
-      r.run(bg)
       my.bench.remove(pcs)
+      r.run(bg)
     }
     else if(opp.active==pcs){
       def r=new RemoveFromPlay(pcs,null)
@@ -494,8 +494,8 @@ class TcgStatics {
     }
     else if (opp.bench.contains(pcs)){
       def r=new RemoveFromPlay(pcs,null)
-      r.run(bg)
       opp.bench.remove(pcs)
+      r.run(bg)
     }
   }
   static PokemonCardSet benchPCS (Card card, ActivationReason reason=OTHER){

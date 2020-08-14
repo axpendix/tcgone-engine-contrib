@@ -1,5 +1,6 @@
-package tcgwars.logic.impl.gen4;
+package tcgwars.logic.impl.gen4
 
+import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen4.MysteriousTreasures;
 import tcgwars.logic.impl.gen5.PlasmaStorm;
 
@@ -1986,13 +1987,7 @@ public enum MajesticDawn implements LogicCardInfo {
           }
         };
       case SUPER_SCOOP_UP_87:
-        return basicTrainer (this) {
-          text "Flip a coin. If heads, return 1 of your Pokémon and all cards attached to it to your hand."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy(FireRedLeafGreen.SUPER_SCOOP_UP_99, this);
       case WARP_POINT_88:
         return copy(PlasmaStorm.ESCAPE_ROPE_120, this)
       case DOME_FOSSIL_89:

@@ -3038,7 +3038,7 @@ public enum DiamondPearl implements LogicCardInfo {
           }
         };
       case SUPER_SCOOP_UP_115:
-        return copy (BlackWhite.SUPER_SCOOP_UP_103, this);
+        return copy(FireRedLeafGreen.SUPER_SCOOP_UP_99, this);
       case WARP_POINT_116:
         return copy(PlasmaStorm.ESCAPE_ROPE_120, this);
       case ENERGY_SEARCH_117:
