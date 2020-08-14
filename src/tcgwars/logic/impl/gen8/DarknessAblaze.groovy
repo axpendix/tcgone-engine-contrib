@@ -3056,6 +3056,18 @@ public enum DarknessAblaze implements LogicCardInfo {
                 prevent()
               }
             }
+            before EVOLVE_STANDARD, {
+              if (bg.em().retrieveObject("Infinity_Zone_" + self.hashCode()) && !ef.evolutionCard.types.contains(D)) {
+                wcu "Cannot play non-Darkness Pokemon"
+                prevent()
+              }
+            }
+            before EVOLVE, {
+              if (bg.em().retrieveObject("Infinity_Zone_" + self.hashCode()) && !ef.evolutionCard.types.contains(D)) {
+                wcu "Cannot play non-Darkness Pokemon"
+                prevent()
+              }
+            }
             before PUT_ON_BENCH, {
               if (!isPokemonPlayable(ef)) {
                 wcu "Cannot play non-Darkness Pokemon"
