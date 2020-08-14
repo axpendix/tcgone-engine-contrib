@@ -2879,7 +2879,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             discardDefendingSpecialEnergy(delegate)
             afterDamage{
               targeted (defending){
-                def attachedTools = sel.cards.filterByType(POKEMON_TOOL)
+                def attachedTools = defending.cards.filterByType(POKEMON_TOOL)
                 if (attachedTools) {
                   attachedTools.select("Discard a Pokémon Tool from $defending.").discard()
                 }
@@ -3987,7 +3987,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         text "Play this card as if it were a 70-HP Basic [C] Pokémon. At any time during your turn, you may discard this card from play. This card can’t be affected by any Special Conditions, and it can’t retreat."
         onPlay {
           Card pokemonCard, trainerCard = thisCard
-          pokemonCard = basic (new CustomCardInfo(RARE_FOSSIL_175).setCardTypes(BASIC, POKEMON), hp:HP070, type:COLORLESS, retreatCost:0) {
+          pokemonCard = basic (new CustomCardInfo(this[thisCard.enumName] as CardInfo).setCardTypes(BASIC, POKEMON), hp:HP070, type:COLORLESS, retreatCost:0) {
             customAbility{
               def ef2, acl
               onActivate{
