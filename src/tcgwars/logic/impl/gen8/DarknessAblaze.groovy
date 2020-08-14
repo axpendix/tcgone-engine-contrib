@@ -2732,7 +2732,129 @@ public enum DarknessAblaze implements LogicCardInfo {
         weakness F
         bwAbility "Eternal Zone", {
           text "If all of your Pokémon in play are [D] type, you can have up to 8 Pokémon on your Bench, and can’t put non-[D] Pokémon into play. (If this Ability stops working, discard Pokémon from your Bench until you have 5.)"
-          actionA {
+          def isOwnerPokemonAllDark = {
+            return !self.owner.pbg.all.find {
+              it.cards().first() &&
+              it.cards.first().cardTypes.contains(POKEMON) &&
+              !it.types.contains(D)
+            }
+          }
+          def checkNewAbilities = { Effect ef ->
+            if (ef.cardToPlay != thisCard && ef.cardToPlay.player == self.owner &&
+              self.owner.pbg.all.find { !it.types.contains(D) }
+            ) {
+              self.owner.pbg.triggerBenchSizeCheck()
+              new CheckAbilities().run(bg)
+            }
+          }
+          def updateActiveInfinityZoneCount = { Boolean isAbilityActive ->
+            def isInfinityZoneActive = bg.em().retrieveObject("Infinity_Zone_" + self.hashCode()) ?: false
+
+            if (isAbilityActive && isOwnerPokemonAllDark() && !isInfinityZoneActive) {
+              bg.em().storeObject("Infinity_Zone_"+self.hashCode(), true)
+            }
+            else if (!isAbilityActive && isInfinityZoneActive) {
+              bg.em().storeObject("Infinity_Zone_"+self.hashCode(), false)
+            }
+            bg.em().retrieveObject("Infinity_Zone_" + self.hashCode())
+          }
+
+          def isPokemonPlayable = { Effect ef ->
+            def isInfinityZoneActive = bg.em().retrieveObject("Infinity_Zone_" + self.hashCode())
+
+            if (ef.cardToPlay.player == self.owner &&
+              isInfinityZoneActive && !ef.cardToPlay.types.contains(D)) {
+              return false
+            }
+            return true
+          }
+
+          getterA (GET_BENCH_SIZE) {h->
+            if (h.effect.playerType == self.owner && isOwnerPokemonAllDark()) {
+              updateActiveInfinityZoneCount(true)
+              h.object = 8
+            } else {
+              updateActiveInfinityZoneCount(false)
+            }
+          }
+
+          delayedA (priority: BEFORE_LAST) {
+            after PLAY_BASIC_POKEMON, {
+              checkNewAbilities(ef)
+            }
+            after PLAY_EVOLUTION, {
+              checkNewAbilities(ef)
+            }
+            after REMOVE_FROM_PLAY, {
+              if (ef.resolvedTarget.owner == self.owner) {
+                self.owner.pbg.triggerBenchSizeCheck()
+              }
+            }
+            after DEVOLVE, {
+              if (ef.resolvedTarget.owner == self.owner) {
+                self.owner.pbg.triggerBenchSizeCheck()
+              }
+            }
+            after EVOLVE, {
+              if (ef.pokemonToBeEvolved.owner == self.owner) {
+                self.owner.pbg.triggerBenchSizeCheck()
+              }
+            }
+            before PLAY_BASIC_POKEMON, {
+              if (!isPokemonPlayable(ef)) {
+                wcu "Cannot play non-Darkness Pokemon"
+                prevent()
+              }
+            }
+            before PLAY_EVOLUTION, {
+              if (!isPokemonPlayable(ef)) {
+                wcu "Cannot play non-Darkness Pokemon"
+                prevent()
+              }
+            }
+            before EVOLVE_STANDARD, {
+              if (bg.em().retrieveObject("Infinity_Zone_" + self.hashCode()) && !ef.evolutionCard.types.contains(D)) {
+                wcu "Cannot play non-Darkness Pokemon"
+                prevent()
+              }
+            }
+            before EVOLVE, {
+              if (bg.em().retrieveObject("Infinity_Zone_" + self.hashCode()) && !ef.evolutionCard.types.contains(D)) {
+                wcu "Cannot play non-Darkness Pokemon"
+                prevent()
+              }
+            }
+            before PUT_ON_BENCH, {
+              if (!isPokemonPlayable(ef)) {
+                wcu "Cannot play non-Darkness Pokemon"
+                prevent()
+              }
+            }
+          }
+          onActivate {
+            self.owner.pbg.triggerBenchSizeCheck()
+            new CheckAbilities().run(bg)
+          }
+          onDeactivate {
+            if (it == Ability.DeactivationReason.REMOVE_FROM_PLAY && !self.active && !self.KOBYDMG) {
+              delayed {
+                before DEVOLVE, self, {
+                  self.owner.pbg.triggerBenchSizeCheck()
+                  new CheckAbilities().run(bg)
+                  unregister()
+                }
+                after null, {
+                  if (ef == bg().em().currentEffectStack[0]) {
+                    self.owner.pbg.triggerBenchSizeCheck()
+                    new CheckAbilities().run(bg)
+                    unregister()
+                  }
+                }
+              }
+            } else {
+              self.owner.pbg.triggerBenchSizeCheck()
+              new CheckAbilities().run(bg)
+            }
           }
         }
         move "Dread End", {
@@ -2740,7 +2862,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost D, C
           attackRequirement {}
           onAttack {
-            damage 30
+            damage 30 * my.all.findAll{it.types.contains(D)}.size()
           }
         }
       };
