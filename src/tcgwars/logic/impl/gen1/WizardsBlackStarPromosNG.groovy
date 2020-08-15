@@ -1002,12 +1002,28 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
         }
       };
       case MEW_47:
+      // Card used as base for WizardsBlackStarPromos.MEW_47
       return basic (this, hp:HP040, type:P, retreatCost:1) {
         weakness P
-        pokePower "Neutral Shield", {
-          text "Mew is not affected by attacks made by Evolved Pokémon. This power turns off if Mew is Asleep, Confused, or Paralyzed."
-          actionA {
-            // TODO
+        pokemonPower "Neutral Shield", {
+          text "Prevent all effects of attacks, including damage, done to Mew by Evolved Pokémon. You can’t use this power if Mew is Asleep, Confused, or Paralyzed"
+          delayedA {
+            before null, self, Source.ATTACK, {
+              if (bg.currentTurn.pbg.active.evolution && ef.effectType != DAMAGE && self.checkSpecialConditionsForClassic()) {
+                bc "Neutral Shield prevents effect"
+                prevent()
+              }
+            }
+            before APPLY_ATTACK_DAMAGES, {
+              if (ef.attacker.evolution && self.checkSpecialConditionsForClassic()) {
+                bg.dm().each {
+                  if(it.to == self && it.dmg.value && it.notNoEffect) {
+                    it.dmg = hp(0)
+                    bc "Neutral Shield prevents damage"
+                  }
+                }
+              }
+            }
           }
         }
         move "Psyshock", {
