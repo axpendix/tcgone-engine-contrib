@@ -1521,6 +1521,7 @@ public enum BaseSetNG implements LogicCardInfo {
           }
         };
       case PIKACHU:
+        // Card used as base for PopSeries2.PIKACHU_16
         return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
           move "Gnaw", {
