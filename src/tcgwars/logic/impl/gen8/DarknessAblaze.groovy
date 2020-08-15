@@ -1360,6 +1360,11 @@ public enum DarknessAblaze implements LogicCardInfo {
                 prevent()
               }
             }
+            before EVOLVE, {
+              if ((ef as Evolve).evolutionCard.player.pbg.hand.contains(ef.evolutionCard)) {
+                warnAndPrevent()
+              }
+            }
             before EVOLVE_STANDARD, {
               if ((ef as EvolveStandard).evolutionCard.player.pbg.hand.contains(ef.evolutionCard)) {
                 warnAndPrevent()
