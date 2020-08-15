@@ -940,8 +940,8 @@ public enum DarknessAblaze implements LogicCardInfo {
             if (self.cards.energyCount(C) && confirm("Discard an Energy from $self.name to discard an energy from $defending.name?")) {
               afterDamage {
                 discardSelfEnergy C
+                discardDefendingEnergy()
               }
-              discardDefendingEnergy()
             }
           }
         }
@@ -2171,7 +2171,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           onAttack {
             damage 130
             afterDamage{
-              if (bg.stadiumInfoStruct.stadiumCard.player != self.owner) {
+              if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player != self.owner) {
                 discard bg.stadiumInfoStruct.stadiumCard
                 preventAllEffectsNextTurn()
               }
@@ -3005,10 +3005,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
-            onAttack {
-              damage 10
-              flip 3,{},{},[1:{damage 20},2:{damage 70},3:{damage 140}]
-            }
+            flip 3,{},{},[1:{damage 20},2:{damage 70},3:{damage 140}]
           }
         }
         move "Seashell Attack", {
