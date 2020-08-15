@@ -2171,7 +2171,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           onAttack {
             damage 130
             afterDamage{
-              if (bg.stadiumInfoStruct.stadiumCard.player != self.owner) {
+              if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player != self.owner) {
                 discard bg.stadiumInfoStruct.stadiumCard
                 preventAllEffectsNextTurn()
               }
