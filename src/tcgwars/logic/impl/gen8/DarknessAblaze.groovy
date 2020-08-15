@@ -2836,25 +2836,8 @@ public enum DarknessAblaze implements LogicCardInfo {
             new CheckAbilities().run(bg)
           }
           onDeactivate {
-            if (it == Ability.DeactivationReason.REMOVE_FROM_PLAY && !self.active && !self.KOBYDMG) {
-              delayed {
-                before DEVOLVE, self, {
-                  self.owner.pbg.triggerBenchSizeCheck()
-                  new CheckAbilities().run(bg)
-                  unregister()
-                }
-                after null, {
-                  if (ef == bg().em().currentEffectStack[0]) {
-                    self.owner.pbg.triggerBenchSizeCheck()
-                    new CheckAbilities().run(bg)
-                    unregister()
-                  }
-                }
-              }
-            } else {
-              self.owner.pbg.triggerBenchSizeCheck()
-              new CheckAbilities().run(bg)
-            }
+            self.owner.pbg.triggerBenchSizeCheck()
+            new CheckAbilities().run(bg)
           }
         }
         move "Dread End", {
