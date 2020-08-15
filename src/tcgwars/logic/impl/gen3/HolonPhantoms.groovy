@@ -577,6 +577,11 @@ public enum HolonPhantoms implements LogicCardInfo {
               }
             }
           }
+          delayedA {
+            after PLAY_CARD, {
+              new CheckAbilities().run(bg)
+            }
+          }
           onActivate{
             new CheckAbilities().run(bg)
           }
@@ -611,6 +616,11 @@ public enum HolonPhantoms implements LogicCardInfo {
               if (h.effect.ability instanceof PokeBody) {
                 h.object = true
               }
+            }
+          }
+          delayedA {
+            after PLAY_CARD, {
+              new CheckAbilities().run(bg)
             }
           }
           onActivate{
@@ -673,6 +683,11 @@ public enum HolonPhantoms implements LogicCardInfo {
               if (h.effect.ability instanceof PokePower) {
                 h.object=true
               }
+            }
+          }
+          delayedA {
+            after PLAY_CARD, {
+              new CheckAbilities().run(bg)
             }
           }
           onActivate{
