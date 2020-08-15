@@ -1,12 +1,12 @@
 package tcgwars.logic.impl.gen8;
 
-import tcgwars.logic.impl.gen1.BaseSetNG;
 import tcgwars.logic.impl.gen3.Emerald;
 import tcgwars.logic.impl.gen5.BlackWhite;
 import tcgwars.logic.impl.gen5.DarkExplorers;
 import tcgwars.logic.impl.gen5.EmergingPowers;
 import tcgwars.logic.impl.gen6.Flashfire;
-import tcgwars.logic.impl.gen6.KalosStarterSet;
+import tcgwars.logic.impl.gen6.KalosStarterSet
+import tcgwars.logic.impl.gen6.Xy;
 import tcgwars.logic.impl.gen7.SunMoon;
 import tcgwars.logic.impl.gen7.UltraPrism;
 import tcgwars.logic.impl.gen7.UnbrokenBonds;
@@ -3535,7 +3535,7 @@ public enum SwordShield implements LogicCardInfo {
       case POTION_177:
       return copy(BlackWhite.POTION_100, this);
       case PROFESSOR_S_RESEARCH_178:
-      return copy(BaseSetNG.PROFESSOR_OAK, this);
+      return copy(Xy.PROFESSOR_SYCAMORE_122, this);
       case QUICK_BALL_179:
       return itemCard (this) {
         text "You can play this card only if you discard another card from your hand." +
