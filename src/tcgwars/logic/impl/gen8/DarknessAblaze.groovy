@@ -4072,7 +4072,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         onPlay {
           eff = delayed{
             before SWITCH, {
-              if (ef.fallenBack.owner == my.owner){
+              if (ef.fallenBack && ef.fallenBack.owner == my.owner){
                 switchedFromActive = ef.fallenBack
               }
             }
