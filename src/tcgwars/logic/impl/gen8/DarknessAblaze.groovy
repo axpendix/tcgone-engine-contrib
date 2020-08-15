@@ -2781,9 +2781,13 @@ public enum DarknessAblaze implements LogicCardInfo {
               checkNewAbilities(ef)
             }
             after REMOVE_FROM_PLAY, {
-              if (ef.resolvedTarget.owner == self.owner) {
+              if (ef.resolvedTarget && ef.resolvedTarget.owner == self.owner) {
                 self.owner.pbg.triggerBenchSizeCheck()
               }
+            }
+            // FIXME: Temp hack
+            after PLAY_CARD, {
+              self.owner.pbg.triggerBenchSizeCheck()
             }
             after DEVOLVE, {
               if (ef.resolvedTarget.owner == self.owner) {
@@ -2808,13 +2812,13 @@ public enum DarknessAblaze implements LogicCardInfo {
               }
             }
             before EVOLVE_STANDARD, {
-              if (bg.em().retrieveObject("Infinity_Zone_" + self.hashCode()) && !ef.evolutionCard.types.contains(D)) {
+              if (bg.em().retrieveObject("Infinity_Zone_" + self.hashCode()) && ef.evolutionCard.player == self.owner && !ef.evolutionCard.types.contains(D)) {
                 wcu "Cannot play non-Darkness Pokemon"
                 prevent()
               }
             }
             before EVOLVE, {
-              if (bg.em().retrieveObject("Infinity_Zone_" + self.hashCode()) && !ef.evolutionCard.types.contains(D)) {
+              if (bg.em().retrieveObject("Infinity_Zone_" + self.hashCode()) && ef.evolutionCard.player == self.owner  && !ef.evolutionCard.types.contains(D)) {
                 wcu "Cannot play non-Darkness Pokemon"
                 prevent()
               }
@@ -4072,7 +4076,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         onPlay {
           eff = delayed{
             before SWITCH, {
-              if (ef.fallenBack.owner == my.owner){
+              if (ef.fallenBack && ef.fallenBack.owner == my.owner){
                 switchedFromActive = ef.fallenBack
               }
             }
