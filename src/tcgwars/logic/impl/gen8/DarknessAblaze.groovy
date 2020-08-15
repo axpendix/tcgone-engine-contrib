@@ -2781,7 +2781,7 @@ public enum DarknessAblaze implements LogicCardInfo {
               checkNewAbilities(ef)
             }
             after SWITCH, {
-              if (ef.switchedOut && switchedOut.owner == self.owner || ef.fallenBack && ef.fallenBack.owner == self.owner) {
+              if (ef.switchedOut && ef.switchedOut.owner == self.owner || ef.fallenBack && ef.fallenBack.owner == self.owner) {
                 self.owner.pbg.triggerBenchSizeCheck()
               }
             }
