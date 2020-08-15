@@ -2780,14 +2780,15 @@ public enum DarknessAblaze implements LogicCardInfo {
             after PLAY_EVOLUTION, {
               checkNewAbilities(ef)
             }
+            after SWITCH, {
+              if (ef.switchedOut && switchedOut.owner == self.owner || ef.fallenBack && ef.fallenBack.owner == self.owner) {
+                self.owner.pbg.triggerBenchSizeCheck()
+              }
+            }
             after REMOVE_FROM_PLAY, {
               if (ef.resolvedTarget && ef.resolvedTarget.owner == self.owner) {
                 self.owner.pbg.triggerBenchSizeCheck()
               }
-            }
-            // FIXME: Temp hack
-            after PLAY_CARD, {
-              self.owner.pbg.triggerBenchSizeCheck()
             }
             after DEVOLVE, {
               if (ef.resolvedTarget.owner == self.owner) {
