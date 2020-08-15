@@ -2785,6 +2785,10 @@ public enum DarknessAblaze implements LogicCardInfo {
                 self.owner.pbg.triggerBenchSizeCheck()
               }
             }
+            // FIXME: Temp hack
+            after PLAY_CARD, {
+              self.owner.pbg.triggerBenchSizeCheck()
+            }
             after DEVOLVE, {
               if (ef.resolvedTarget.owner == self.owner) {
                 self.owner.pbg.triggerBenchSizeCheck()
