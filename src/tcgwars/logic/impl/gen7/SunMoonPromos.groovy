@@ -2952,7 +2952,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
             onAttack {
               gxPerform()
-              my.deck.search(min: 0, max:10, "Choose up to 10 cards to discard").discard()
+              my.deck.search(min: 0, max:10, "Choose up to 10 cards to discard", { true }).discard()
               shuffleDeck()
             }
           }
