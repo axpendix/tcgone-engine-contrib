@@ -2780,14 +2780,15 @@ public enum DarknessAblaze implements LogicCardInfo {
             after PLAY_EVOLUTION, {
               checkNewAbilities(ef)
             }
+            after SWITCH, {
+              if (ef.switchedOut && ef.switchedOut.owner == self.owner || ef.fallenBack && ef.fallenBack.owner == self.owner) {
+                self.owner.pbg.triggerBenchSizeCheck()
+              }
+            }
             after REMOVE_FROM_PLAY, {
               if (ef.resolvedTarget && ef.resolvedTarget.owner == self.owner) {
                 self.owner.pbg.triggerBenchSizeCheck()
               }
-            }
-            // FIXME: Temp hack
-            after PLAY_CARD, {
-              self.owner.pbg.triggerBenchSizeCheck()
             }
             after DEVOLVE, {
               if (ef.resolvedTarget.owner == self.owner) {
@@ -2835,25 +2836,8 @@ public enum DarknessAblaze implements LogicCardInfo {
             new CheckAbilities().run(bg)
           }
           onDeactivate {
-            if (it == Ability.DeactivationReason.REMOVE_FROM_PLAY && !self.active && !self.KOBYDMG) {
-              delayed {
-                before DEVOLVE, self, {
-                  self.owner.pbg.triggerBenchSizeCheck()
-                  new CheckAbilities().run(bg)
-                  unregister()
-                }
-                after null, {
-                  if (ef == bg().em().currentEffectStack[0]) {
-                    self.owner.pbg.triggerBenchSizeCheck()
-                    new CheckAbilities().run(bg)
-                    unregister()
-                  }
-                }
-              }
-            } else {
-              self.owner.pbg.triggerBenchSizeCheck()
-              new CheckAbilities().run(bg)
-            }
+            self.owner.pbg.triggerBenchSizeCheck()
+            new CheckAbilities().run(bg)
           }
         }
         move "Dread End", {
