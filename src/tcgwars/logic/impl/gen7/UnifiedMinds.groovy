@@ -4628,31 +4628,52 @@ public enum UnifiedMinds implements LogicCardInfo {
           text "The Retreat Cost of the Pokémon this card is attached to is [C] less." +
             "If this card is discarded from play, put it into your hand instead of the discard pile."
           def eff
+          def eff2
           onPlay {reason->
             eff = getter GET_RETREAT_COST, self, {h ->
               h.object -= 1
             }
+            eff2 = delayed {
+              def newLocationChanged = false
+              before MOVE_CARD, {
+                if (ef.cards.contains(thisCard) && ef.newLocation == self.owner.pbg.discard && !newLocationChanged) {
+                  newLocationChanged = true
+                  def res = moveCard(supresssLog: true, thisCard, thisCard.player.pbg.hand)
+                  if (!res) {
+                    prevent()
+                    bc "U-Turn Board was recycled into its owner's hand."
+                  }
+                }
+              }
+            }
           }
           onRemoveFromPlay {
             eff.unregister()
-            //TODO: Handle Scoop-Up Block on this.
-            if(thisCard.player.pbg.discard.contains(thisCard)){ // if in discard, move it back to hand
-              moveCard(suppressLog: true, thisCard, thisCard.player.pbg.hand)
-              bc "U-Turn Board was recycled into its owner's hand." // it deserves its own log entry
-            }
+            eff2.unregister()
           }
         };
       case RECYCLE_ENERGY_212:
         return specialEnergy (this, [[C]]) {
           text "This card provides [C] Energy." +
             "If this card is discarded from play, put it into your hand instead of the discard pile."
-          onPlay {reason->}
-          onRemoveFromPlay {
-            //TODO: Handle Scoop-Up Block on this.
-            if(thisCard.player.pbg.discard.contains(thisCard)){ // if in discard, move it back to hand
-              moveCard(suppressLog: true, thisCard, thisCard.player.pbg.hand)
-              bc "Recycle Energy was recycled into its owner's hand." // it deserves its own log entry
+          def eff
+          onPlay {reason->
+            eff = delayed {
+              def newLocationChanged = false
+              before MOVE_CARD, {
+                if (ef.cards.contains(thisCard) && ef.newLocation == self.owner.pbg.discard && !newLocationChanged) {
+                  newLocationChanged = true
+                  def res = moveCard(supresssLog: true, thisCard, thisCard.player.pbg.hand)
+                  if (!res) {
+                    prevent()
+                    bc "Recycle Energy was recycled into its owner's hand."
+                  }
+                }
+              }
             }
+          }
+          onRemoveFromPlay {
+            eff.unregister()
           }
         };
       case WEAKNESS_GUARD_ENERGY_213:
