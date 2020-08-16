@@ -1174,6 +1174,7 @@ public enum SunMoon implements LogicCardInfo {
               assert self.turnCount != bg.turnCount
               assert bg.turnCount > 2
               powerUsed()
+              // TODO: Get a ruling on this re:Scoop-Up Block (MR_MIME_66:TEAM_UP)
               self.cards.getExcludedList(self.topPokemonCard).discard()
               moveCard(self.topPokemonCard, my.hand)
               removePCS(self)
