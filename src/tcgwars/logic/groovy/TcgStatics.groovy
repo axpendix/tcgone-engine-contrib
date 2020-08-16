@@ -480,8 +480,12 @@ class TcgStatics {
     }
     else if (my.bench.contains(pcs)){
       def r=new RemoveFromPlay(pcs,null)
+      def idx = my.bench.indexOf(pcs)
       my.bench.remove(pcs)
-      r.run(bg)
+      def failed = r.run(bg)
+      if (failed) {
+        my.bench.add(idx, pcs)
+      }
     }
     else if(opp.active==pcs){
       def r=new RemoveFromPlay(pcs,null)
@@ -498,8 +502,12 @@ class TcgStatics {
     }
     else if (opp.bench.contains(pcs)){
       def r=new RemoveFromPlay(pcs,null)
+      def idx = my.bench.indexOf(pcs)
       opp.bench.remove(pcs)
-      r.run(bg)
+      def failed = r.run(bg)
+      if (!failed) {
+        opp.bench.add(idx, pcs)
+      }
     }
   }
   static PokemonCardSet benchPCS (Card card, ActivationReason reason=OTHER){
