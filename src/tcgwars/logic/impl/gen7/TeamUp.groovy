@@ -1,5 +1,7 @@
-package tcgwars.logic.impl.gen7;
+package tcgwars.logic.impl.gen7
 
+import tcgwars.logic.card.energy.BasicEnergyCard
+import tcgwars.logic.card.pokemon.PokemonCard;
 import tcgwars.logic.effect.gm.Attack
 import tcgwars.logic.effect.gm.PlayTrainer
 import tcgwars.logic.impl.gen5.BlackWhite
@@ -1732,19 +1734,59 @@ public enum TeamUp implements LogicCardInfo {
           bwAbility "Scoop-Up Block" , {
             text "Your opponent's Pokémon that have any damage counters on them, and any cards attached to those Pokémon, can't be put into your opponent's hand."
             delayedA {
-              def scoopUpBlock = false
-              before PLAY_TRAINER, {
-                scoopUpBlock = false
-                if ((ef.cardToPlay.name == "Scoop Up Net" || ef.cardToPlay.name == "Super Scoop Up" || ef.cardToPlay.name == "Acerola" || ef.cardToPlay.name == "AZ" || ef.cardToPlay.name == "Scoop Up Cyclone" || ef.cardToPlay.name == "Scoop Up") && bg.currentTurn != self.owner) {
-                  scoopUpBlock = true
+              def pcs = null
+              def doBlock = false
+              def messageDisplayed = false
+              // Retain targeted Pokemon through effects
+              // TODO: Make sure this doesn't break anything
+              before null, {
+                if (ef instanceof TargetedEffect) {
+                  if (ef.getResolvedTarget(bg, e) != null) {
+                    pcs = ef.getResolvedTarget(bg, e)
+                  }
                 }
               }
-              before null, null, Source.TRAINER_CARD, {
-                def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
-                if (scoopUpBlock && pcs.numberOfDamageCounters){
-                  bc "Scoop-Up Block prevents this."
+              before MOVE_CARD, {
+                if (ef.newLocation == self.owner.opposite.pbg.hand && pcs && pcs.numberOfDamageCounters) {
+                  doBlock = true
+                  if (!messageDisplayed) {
+                    messageDisplayed = true
+                    bc "Scoop-Up Block stopped cards from returning to the owner's hand."
+                  }
                   prevent()
                 }
+              }
+              before REMOVE_FROM_PLAY, {
+                if (ef.resolvedTarget && ef.resolvedTarget.numberOfDamageCounters && ef.resolvedTarget.cards && ef.removedCards.contains(ef.resolvedTarget.getTopPokemonCard()) && doBlock) {
+                  doBlock = false
+                  if (!messageDisplayed) {
+                    messageDisplayed = true
+                    bc "Scoop-Up Block stopped $ef.resolvedTarget.name from being removed from play."
+                  }
+                  prevent()
+                }
+              }
+              // Handle Trainers that discard attached cards when scooping up
+              def scoopUpBlock = false
+              def playedCard = null
+              before PLAY_TRAINER, {
+                scoopUpBlock = false
+                if ((ef.cardToPlay.name.contains("Scoop Up") || ef.cardToPlay.name == "AZ") && ef.cardToPlay.player == self.owner.opposite) {
+                  scoopUpBlock = true
+                  playedCard = ef.cardToPlay.name
+                }
+              }
+              before null, null, TRAINER_CARD, {
+                if (scoopUpBlock && pcs.numberOfDamageCounters){
+                  if (!messageDisplayed) {
+                    messageDisplayed = true
+                    bc "Scoop-Up Block prevents $playedCard's effect."
+                  }
+                  prevent()
+                }
+              }
+              after PLAY_CARD, {
+                messageDisplayed = false
               }
             }
           }
