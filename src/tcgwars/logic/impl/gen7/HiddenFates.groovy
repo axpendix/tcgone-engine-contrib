@@ -520,7 +520,7 @@ public enum HiddenFates implements LogicCardInfo {
           delayedA {
             after ATTACH_ENERGY, {
               if (self.active && ef.resolvedTarget.owner != self.owner && ef.reason == PLAY_FROM_HAND) {
-                bc "Electromagnetic Wall - $ef.resolvedTarget.name receives 2 damage counters."
+                bc "$thisAbility.name - $ef.resolvedTarget.name receives 2 damage counters."
                 directDamage 20, ef.resolvedTarget, SRC_ABILITY
               }
             }
