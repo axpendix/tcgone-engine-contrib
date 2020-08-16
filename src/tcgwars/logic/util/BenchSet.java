@@ -3,6 +3,8 @@ package tcgwars.logic.util;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * @author axpendix@hotmail.com
@@ -19,8 +21,14 @@ public class BenchSet extends PcsList {
   }
 
   @Override
-  public void add(int index, PokemonCardSet element) {
-    throw new UnsupportedOperationException();
+  public void add(int index, PokemonCardSet e) {
+    if (isFull()) {
+      throw new IllegalStateException("Bench is full");
+    }
+    if (!IntStream.of(getFreeIndexes()).boxed().collect(Collectors.toList()).contains(index)) {
+      throw new IllegalStateException("Bench spot already occupied");
+    }
+    set(index, e);
   }
 
   @Override
