@@ -387,7 +387,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
         return evolution (this, from:"Nidorino", hp:HP120, type:FIGHTING, retreatCost:3) {
           weakness WATER
           pokeBody "Power Gene", {
-            text "As long as Nidoking is in play, your attacks by Nidoran Female, Nidorina, Nidoqueen, Nidoran Male, and Nidorino do 10 more damage to the Defending Pokémon."
+            text "As long as Nidoking is in play, your attacks by Nidoran♀, Nidorina, Nidoqueen, Nidoran♂, and Nidorino do 10 more damage to the Defending Pokémon."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
@@ -422,7 +422,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           weakness GRASS
           def eff
           pokeBody "Family Bonds", {
-            text "As long as Nidoqueen is in play, the Retreat Cost for Nidoran Female, Nidorina, Nidoran Male, Nidorino and Nidoking is 0."
+            text "As long as Nidoqueen is in play, the Retreat Cost for Nidoran♀, Nidorina, Nidoran♂, Nidorino and Nidoking is 0."
             delayedA {
               eff = getter (GET_RETREAT_COST, BEFORE_LAST) {
                 if (it.effect.target.name == "Nidoran♂" || it.effect.target.name == "Nidoran♀" || it.effect.target.name == "Nidorino" || it.effect.target.name == "Nidorina" || it.effect.target.name == "Nidoking") {
@@ -1900,7 +1900,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
           move "Call for Family", {
-            text "Search your deck for a Nidoran Female or Nidoran Male card and put it onto your Bench. Shuffle your deck afterward."
+            text "Search your deck for a Nidoran♀ or Nidoran♂ card and put it onto your Bench. Shuffle your deck afterward."
             energyCost C
             attackRequirement {
               assert deck.notEmpty
