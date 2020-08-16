@@ -468,12 +468,12 @@ class TcgStatics {
     if(my.active==pcs){
       def r=new RemoveFromPlay(pcs,null)
       def failed = r.run(bg)
-      if (my.bench.isEmpty()){
-        my.active=null
-        bg.game.endGame(opp.owner, WinCondition.NOPOKEMON)
-        return
-      }
       if (!failed) {
+        if (my.bench.isEmpty()){
+          my.active=null
+          bg.game.endGame(opp.owner, WinCondition.NOPOKEMON)
+          return
+        }
         sw(null, my.bench.select("New active pokemon"))
       }
       //my.bench.remove(pcs)
@@ -490,12 +490,12 @@ class TcgStatics {
     else if(opp.active==pcs){
       def r=new RemoveFromPlay(pcs,null)
       def failed = r.run(bg)
-      if (opp.bench.isEmpty()){
-        opp.active=null
-        bg.game.endGame(my.owner, WinCondition.NOPOKEMON)
-        return
-      }
       if (!failed) {
+        if (opp.bench.isEmpty()){
+          opp.active=null
+          bg.game.endGame(my.owner, WinCondition.NOPOKEMON)
+          return
+        }
         sw(null, opp.bench.oppSelect("New active pokemon"))
       }
       //opp.bench.remove(pcs)
