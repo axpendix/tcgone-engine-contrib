@@ -2754,10 +2754,10 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
           move "Call for Family", {
-            text "Search your deck for Nidoran ♂ or Nidoran ♀ and put it onto your Bench. Shuffle your deck afterward."
+            text "Search your deck for Nidoran♂ or Nidoran♀ and put it onto your Bench. Shuffle your deck afterward."
             energyCost C
 
-            //TODO: Check this finding all Nidorans, male and female.
+            //TODO: Check this finding all Nidoran, male and female. Make it not find Giovanni's Nidoran
             callForFamily(name:"Nidoran",1,delegate)
           }
           move "Poison Sting", {

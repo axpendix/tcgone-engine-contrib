@@ -1579,7 +1579,7 @@ public enum Triumphant implements LogicCardInfo {
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P
           move "Pheromone Poison", {
-            text "10 damage. If Nidoran Female is on your Bench, the Defending Pokémon is now Poisoned."
+            text "10 damage. If Nidoran♀ is on your Bench, the Defending Pokémon is now Poisoned."
             energyCost C
             attackRequirement {}
             onAttack {

@@ -3403,7 +3403,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-            opp.all.each{ damage 30 }
+            opp.all.each{ damage 30, it }
           }
         }
         move "Heavy Storm", {
