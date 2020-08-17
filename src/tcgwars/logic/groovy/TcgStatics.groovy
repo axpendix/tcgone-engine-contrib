@@ -1507,7 +1507,7 @@ class TcgStatics {
       if (delegate.thisObject.cardTypes.is(ENERGY)) params.source = SRC_SPENERGY
     }
     if (params.discard == null) params.discard = true
-    if (bg.em().retrieveObject("ScoopUpBlock_$target.owner.opposite") && target.numberOfDamageCounters) {
+    if (bg.em().retrieveObject("ScoopUpBlock_Count$target.owner.opposite") && target.numberOfDamageCounters) {
       bc "Scoop-Up Block prevents $delegate.thisObject.name's effect."
       return
     }
