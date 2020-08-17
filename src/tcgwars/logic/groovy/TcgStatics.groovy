@@ -1500,4 +1500,43 @@ class TcgStatics {
     }
   }
 
+  static void scoopUpPokemon(params=[:], PokemonCardSet target, Object delegate, Source source=null) {
+    if (source == null) {
+      if (delegate.thisObject.cardTypes.is(TRAINER)) params.source = TRAINER_CARD
+      if (delegate.thisObject.cardTypes.is(POKEMON)) params.source = ATTACK
+      if (delegate.thisObject.cardTypes.is(ENERGY)) params.source = SRC_SPENERGY
+    }
+    if (params.discard == null) params.discard = true
+    if (bg.em().retrieveObject("ScoopUpBlock_$target.owner.opposite") && target.numberOfDamageCounters) {
+      bc "Scoop-Up Block prevents $delegate.thisObject.name's effect."
+      return
+    }
+    targeted(target, params.source) {
+      CardList pokemonList = []
+      CardList otherList = []
+      otherList.addAll(target.cards.filterByType(TRAINER, ENERGY))
+      pokemonList.addAll(target.cards.filterByType(POKEMON))
+      if (params.only) {
+        target.owner.pbg.discard.addAll(pokemonList.getExcludedList(params.only as Card))
+        target.owner.pbg.hand.add(params.only)
+      }
+      else {
+        target.owner.pbg.hand.addAll(pokemonList)
+      }
+      if (params.discard) {
+        otherList.discard()
+      }
+      else {
+        otherList.moveTo(target.owner.pbg.hand)
+      }
+      removePCS(target)
+      if (params.only) {
+        bc "Scooped up $params.only"
+      }
+      else {
+        bc "Scooped up $target"
+      }
+    }
+  }
+
 }
