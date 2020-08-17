@@ -1,7 +1,9 @@
 package tcgwars.logic.impl.gen7
 
 import tcgwars.logic.card.energy.BasicEnergyCard
-import tcgwars.logic.card.pokemon.PokemonCard;
+import tcgwars.logic.card.pokemon.PokemonCard
+import tcgwars.logic.effect.ability.Ability
+import tcgwars.logic.effect.ability.CheckAbilities;
 import tcgwars.logic.effect.gm.Attack
 import tcgwars.logic.effect.gm.PlayTrainer
 import tcgwars.logic.impl.gen5.BlackWhite
@@ -1766,28 +1768,14 @@ public enum TeamUp implements LogicCardInfo {
                   prevent()
                 }
               }
-              // Handle Trainers that discard attached cards when scooping up
-              def scoopUpBlock = false
-              def playedCard = null
-              before PLAY_TRAINER, {
-                scoopUpBlock = false
-                if ((ef.cardToPlay.name.contains("Scoop Up") || ef.cardToPlay.name == "AZ") && ef.cardToPlay.player == self.owner.opposite) {
-                  scoopUpBlock = true
-                  playedCard = ef.cardToPlay.name
-                }
-              }
-              before null, null, TRAINER_CARD, {
-                if (scoopUpBlock && pcs.numberOfDamageCounters){
-                  if (!messageDisplayed) {
-                    messageDisplayed = true
-                    bc "Scoop-Up Block prevents $playedCard's effect."
-                  }
-                  prevent()
-                }
-              }
-              after PLAY_CARD, {
-                messageDisplayed = false
-              }
+            }
+            onActivate {
+              bg.em().storeObject("ScoopUpBlock_LastTurn"+self.owner, bg.turnCount)
+              bg.em().storeObject("ScoopUpBlock_Count"+self.owner, bg.em().retrieveObject("ScoopUpBlock_Count"+self.owner) ? bg.em().retrieveObject("ScoopUpBlock_Count"+self.owner)+1 : 1)
+            }
+            onDeactivate {
+              bg.em().storeObject("ScoopUpBlock_LastTurn"+self.owner, bg.turnCount)
+              bg.em().storeObject("ScoopUpBlock_Count"+self.owner, bg.em().retrieveObject("ScoopUpBlock_Count"+self.owner)-1)
             }
           }
           move "Psy Bolt" , {
