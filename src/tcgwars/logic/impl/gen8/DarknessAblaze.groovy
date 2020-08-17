@@ -1634,8 +1634,8 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Whenever your opponent attaches an Energy card from their hand to 1 of their Pokémon, put 2 damage counters on that Pokémon."
           delayedA {
             after ATTACH_ENERGY, {
-              if (ef.reason == PLAY_FROM_HAND) {
-                bc "Biting Whirlpool - $ef.resolvedTarget.name receives 2 damage counters."
+              if (ef.resolvedTarget && ef.resolvedTarget.owner != self.owner && ef.reason == PLAY_FROM_HAND) {
+                bc "$thisAbility.name - $ef.resolvedTarget.name receives 2 damage counters."
                 directDamage 20, ef.resolvedTarget, SRC_ABILITY
               }
             }

@@ -9,6 +9,7 @@ import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Type.*
 import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.groovy.TcgBuilders.*;
@@ -517,14 +518,10 @@ public enum HiddenFates implements LogicCardInfo {
         bwAbility "Electromagnetic Wall", {
           text "As long as this Pokémon is your Active Pokémon, whenever your opponent attaches an Energy from his or her hand to 1 of his or her Pokémon, put 2 damage counters on that Pokémon."
           delayedA {
-            def fromHand
-            before PLAY_ENERGY, {
-              fromHand = bg.currentTurn.pbg.hand.contains(ef.cardToPlay)
-            }
             after ATTACH_ENERGY, {
-              if(self.active && fromHand && ef.resolvedTarget.owner == self.owner.opposite) {
-                powerUsed()
-                directDamage 20, ef.resolvedTarget
+              if (self.active && ef.resolvedTarget.owner != self.owner && ef.reason == PLAY_FROM_HAND) {
+                bc "$thisAbility.name - $ef.resolvedTarget.name receives 2 damage counters."
+                directDamage 20, ef.resolvedTarget, SRC_ABILITY
               }
             }
           }
