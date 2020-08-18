@@ -4545,6 +4545,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           onPlay {
             actions=action("Stadium: Pokemon Research Lab") {
               assert my.deck : "Your deck is empty."
+              assert my.bench.notFull : "You have no space in your bench"
               assert lastTurn != bg().turnCount : "You've already used Pokémon Research Lab this turn."
               bc "Player is using Pokémon Research Lab."
               lastTurn = bg().turnCount
