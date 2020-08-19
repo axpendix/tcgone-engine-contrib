@@ -4314,7 +4314,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           text "Basic [D] Pokémon in play (both your and your opponent’s) have no Retreat Cost."
           def eff
           onPlay {
-            eff = getter (GET_RETREAT_COST) {Holder h->
+            eff = getter (GET_RETREAT_COST, BEFORE_LAST) {Holder h->
               def pcs = h.effect.target
               if(pcs.types.contains(D) && pcs.basic){
                 h.object = 0
