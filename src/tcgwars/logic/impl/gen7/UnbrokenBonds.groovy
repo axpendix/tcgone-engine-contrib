@@ -4314,23 +4314,31 @@ public enum UnbrokenBonds implements LogicCardInfo {
         return pokemonTool (this) {
           text "If this card is attached to 1 of your Pokémon, discard it at the end of your opponent's turn." +
             "The [M] Pokémon this card is attached to takes 70 less damage from your opponent's attacks (after applying Weakness and Resistance)."
-          def eff
+          def eff1, eff2
           onPlay {reason->
-            eff=delayed{
+            eff1 = delayed {
               before APPLY_ATTACK_DAMAGES,{
-                if(self.types.contains(M)&&bg.currentTurn!=self.owner){
-                  bg.dm().each{if(it.from.owner!=it.to.owner&&it.to==self&&it.notZero&&it.notNoEffect){
-                    it.dmg-=hp(70)
-                    bc "Metal Core Barrier -70"
-                  }}
+                if(ef.attacker.owner != self.owner && self.types.contains(M) && bg.currentTurn!=self.owner){
+                  bg.dm().each{
+                    if(it.to==self && it.notZero && it.notNoEffect){
+                      bc "Metal Core Barrier -70"
+                      it.dmg -= hp(70)
+                    }
+                  }
                 }
               }
-              unregister {discard thisCard}
-              unregisterAfter 2
+            }
+            eff2 = delayed {
+              before BETWEEN_TURNS, {
+                if(bg.currentTurn != self.owner){
+                  discard thisCard
+                }
+              }
             }
           }
           onRemoveFromPlay {
-            eff.unregister()
+            eff1.unregister()
+            eff2.unregister()
           }
         };
       case MOLAYNE_181:
