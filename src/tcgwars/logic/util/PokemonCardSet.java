@@ -124,7 +124,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
       if (card.getCardTypes().is(CardType.BREAK)) continue;
       return card.asPokemonCard();
     }
-    return null;
+    return null; //Should an IllegalStateException be thrown here, same as above?
   }
 
   public CardList getCards() {

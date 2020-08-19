@@ -204,44 +204,16 @@ public enum DragonFrontiers implements LogicCardInfo {
         weakness F
         pokeBody "Holon Veil", {
           text "Treat each Basic Pokémon and Evolution card in your deck, in your discard pile, in your hand, and in play as a Pokémon that has δ on its card."
-          onActivate {
-            bg.em().retrieveAndStore("holon_veil_counter_${self.owner}", {
-              if(it) {
-                it+1
-              } else {
-                def list = new CardList()
-                list += my.deck.filterByType(POKEMON)
-                list += my.discard.filterByType(POKEMON)
-                list += my.hand.filterByType(POKEMON)
-                list += my.prizeCardSet.filterByType(POKEMON)
-                list += my.lostZone.filterByType(POKEMON)
-                my.all.each {list += it.cards.filterByType(POKEMON)}
-                list = list.findAll{it.cardTypes.isNot(DELTA)}
-                list.each {it.cardTypes.add(DELTA)}
-                bg.em().storeObject("holon_veil_pokemon_${self.owner}", list)
-                1
-              }
-            })
-          }
-          onDeactivate {
-            bg.em().retrieveAndStore("holon_veil_counter_${self.owner}", {
-              if (it == 1) {
-                bg.em().retrieveAndStore("holon_veil_pokemon_${self.owner}", { CardList list ->
-                  list.each { it.cardTypes.remove(DELTA) }
-                  null
-                })
-                null
-              } else {
-                it - 1
-              }
-            })
+          getterA(GET_CARD_TYPES, BEFORE_LAST) {holder ->
+            if (holder.effect.target.player == self.owner && holder.object.is(POKEMON))
+              holder.object.add(DELTA)
           }
         }
         move "Delta Circle", {
           text "20+ damage. Does 20 damage plus 10 more damage for each Pokémon you have in play that has δ on its card."
           energyCost C, C, C
           onAttack {
-            damage 20 + 10*my.all.findAll { it.cardTypes.is(DELTA) }.size()
+            damage 20 + 10*my.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) }.size()
           }
         }
       };

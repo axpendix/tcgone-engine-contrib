@@ -2810,9 +2810,11 @@ public enum DeltaSpecies implements LogicCardInfo {
           def toDiscard = my.hand.getExcludedList(thisCard).select(count:1, "Discard a card from your hand in order to play ${thisCard}.")
           toDiscard.discard()
 
+          Battleground bg_test = Battleground.getInstance()
+
           my.deck.search(max: 1, "Select a [M] or a Pokemon card with δ in its card.", {
             (it.cardTypes.is(ENERGY) && it.asEnergyCard().containsTypePlain(M)) ||
-            (it.cardTypes.is(POKEMON) && it.cardTypes.is(DELTA))
+              (it.cardTypes.is(POKEMON) && it.getCardTypes(bg_test).is(DELTA))
           }).showToOpponent("Opponent's used Holon Researcher, and will put this card into their hand.").moveTo(my.hand)
 
           shuffleDeck()
