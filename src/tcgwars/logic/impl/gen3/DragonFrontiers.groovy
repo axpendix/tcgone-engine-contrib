@@ -205,7 +205,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokeBody "Holon Veil", {
           text "Treat each Basic Pokémon and Evolution card in your deck, in your discard pile, in your hand, and in play as a Pokémon that has δ on its card."
           getterA(GET_CARD_TYPES, BEFORE_LAST) {holder ->
-            if (holder.effect.target.player == self.owner)
+            if (holder.effect.target.player == self.owner && holder.object.is(POKEMON))
               holder.object.add(DELTA)
           }
         }
