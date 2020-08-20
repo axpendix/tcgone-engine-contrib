@@ -387,7 +387,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
   }
 
   public boolean isTeamPlasma() {
-    return cards().filterByNameEquals("Team Plasma Badge").notEmpty() || getTopPokemonCard().getCardTypes().is(CardType.TEAM_PLASMA);
+    return getTopPokemonCard().getCardTypes().is(CardType.TEAM_PLASMA);
   }
 
   public boolean hasModernAbility() {

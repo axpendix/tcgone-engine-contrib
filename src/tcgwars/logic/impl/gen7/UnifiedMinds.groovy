@@ -4314,7 +4314,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           text "Basic [D] Pokémon in play (both your and your opponent’s) have no Retreat Cost."
           def eff
           onPlay {
-            eff = getter (GET_RETREAT_COST) {Holder h->
+            eff = getter (GET_RETREAT_COST, BEFORE_LAST) {Holder h->
               def pcs = h.effect.target
               if(pcs.types.contains(D) && pcs.basic){
                 h.object = 0
@@ -4545,6 +4545,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           onPlay {
             actions=action("Stadium: Pokemon Research Lab") {
               assert my.deck : "Your deck is empty."
+              assert my.bench.notFull : "You have no space in your bench"
               assert lastTurn != bg().turnCount : "You've already used Pokémon Research Lab this turn."
               bc "Player is using Pokémon Research Lab."
               lastTurn = bg().turnCount

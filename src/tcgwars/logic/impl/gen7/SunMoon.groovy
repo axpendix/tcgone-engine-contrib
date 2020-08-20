@@ -1577,8 +1577,8 @@ public enum SunMoon implements LogicCardInfo {
             text "Whenever your opponent's Active Pokémon retreats, their new Active Pokémon is Poisoned."
             delayedA {
               after RETREAT, {
-                if(ef.retreater.owner == self.owner.opposite){
-                  bc "Toxic Spikes"
+                if(ef.retreater.owner == self.owner.opposite && ef.newActive != null){
+                  bc "Toxic Spikes triggers"
                   apply POISONED, ef.newActive, SRC_ABILITY
                 }
               }
@@ -2867,10 +2867,12 @@ public enum SunMoon implements LogicCardInfo {
         return itemCard (this) {
           text "Flip 2 coins. For each heads, search your deck for an Evolution Pokémon, reveal it, and put it into your hand. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
           onPlay {
-            flip 2, {
-              my.deck.search (cardTypeFilter(EVOLUTION)).moveTo(my.hand)
+            def searchCnt = 0
+            flip 2, { searchCnt++ }
+            if (searchCnt) {
+              my.deck.search(max: searchCnt, cardTypeFilter(EVOLUTION)).moveTo(my.hand)
+              shuffleDeck()
             }
-            shuffleDeck()
           }
           playRequirement{
             assert my.deck.notEmpty

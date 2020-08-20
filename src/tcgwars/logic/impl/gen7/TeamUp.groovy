@@ -3273,7 +3273,7 @@ public enum TeamUp implements LogicCardInfo {
           text "Whenever any player's [D] Pokémon with any [D] Energy attached to it is Knocked Out by damage from an opponent's attack, that opponent takes 1 less Prize card.\nWhenever any player plays an Item or Supporter card from their hand, prevent all effects of that card done to this Stadium card.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card.\nPrism Star Rule: You can't have more than 1 Prism Star card with the same name in your deck. If a Prism Star card would go to the discard pile, put it in the Lost Zone instead."
           def eff=null
           onPlay {
-            eff=delayed{
+            eff=delayed (priority: BEFORE_LAST) {
               before KNOCKOUT, {
                 if(ef.byDamageFromAttack && ef.pokemonToBeKnockedOut.types.contains(D) && ef.pokemonToBeKnockedOut.cards.energyCount(D)){
                   bc "Black Market Prism Star prevents taking one prize card for "+ef.pokemonToBeKnockedOut
