@@ -4132,11 +4132,20 @@ public enum DarknessAblaze implements LogicCardInfo {
       case HEAT_FIRE_ENERGY_174:
       return specialEnergy (this, [[]]) {
         text "As long as this card is attached to a Pokémon, it provides [R] Energy. The [R] Pokémon this card is attached to gets +20 HP."
-        def eff
-        onPlay { reason->
-          eff = getter (GET_FULL_HP, self) {h->
+        def eff1, eff2
+        def getterRegister = {
+          eff1 = getter (GET_FULL_HP, self) {h->
             if (self.types.contains(R)) {
               h.object += hp(20)
+            }
+          }
+        }
+        onPlay { reason->
+          getterRegister()
+          eff2 = delayed {
+            after ENERGY_SWITCH, {
+              eff1.unregister()
+              getterRegister()
             }
           }
         }
@@ -4145,7 +4154,8 @@ public enum DarknessAblaze implements LogicCardInfo {
           else return [[] as Set]
         }
         onRemoveFromPlay {
-          eff.unregister()
+          if (eff1 != null) eff1.unregister()
+          eff2.unregister()
         }
       };
       case HIDING_DARKNESS_ENERGY_175:
