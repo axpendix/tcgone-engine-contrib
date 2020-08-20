@@ -1577,8 +1577,8 @@ public enum SunMoon implements LogicCardInfo {
             text "Whenever your opponent's Active Pokémon retreats, their new Active Pokémon is Poisoned."
             delayedA {
               after RETREAT, {
-                if(ef.retreater.owner == self.owner.opposite){
-                  bc "Toxic Spikes"
+                if(ef.retreater.owner == self.owner.opposite && ef.newActive != null){
+                  bc "Toxic Spikes triggers"
                   apply POISONED, ef.newActive, SRC_ABILITY
                 }
               }
