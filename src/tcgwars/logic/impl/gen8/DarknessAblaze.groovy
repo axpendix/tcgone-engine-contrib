@@ -2514,7 +2514,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "This Pokémon can’t be Paralyzed."
           delayedA{
             before APPLY_SPECIAL_CONDITION, self, {
-              if(ef.type == Paralyzed){
+              if(ef.type == PARALYZED){
                 bc "$self's Limber pervents it from being Paralyzed"
                 prevent()
               }
