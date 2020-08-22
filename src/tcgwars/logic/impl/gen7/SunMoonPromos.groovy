@@ -2276,10 +2276,10 @@ public enum SunMoonPromos implements LogicCardInfo {
             onAttack{
               damage 30
               afterDamage{
-                if(my.hand.filterByType(ENERGY).filterByEnergyType(R)){
-                  attachEnergyFrom(type:R,my.hand,my.all)
-                  attachEnergyFrom(type:R,my.hand,my.all)
-                  attachEnergyFrom(type:R,my.hand,my.all)
+                if(my.hand.filterByType(ENERGY).filterByEnergyType(R) && confirm("Do you want to attach up to 3 [R] Energy cards from your hand to your pokémon in any way you like?")){
+                  for (i in 1..3) {
+                    if ( (attachEnergyFrom(may: true, type: R , my.hand, my.all).get(0) as CardList).empty) break
+                  }
                 }
               }
             }
