@@ -6,7 +6,6 @@ import tcgwars.logic.impl.gen5.EmergingPowers
 import tcgwars.logic.impl.gen5.NextDestinies
 import tcgwars.logic.impl.gen6.KalosStarterSet
 import tcgwars.logic.impl.gen6.Xy
-import tcgwars.logic.impl.gen7.CelestialStorm
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -1175,9 +1174,10 @@ public enum SunMoon implements LogicCardInfo {
               assert bg.turnCount > 2
               powerUsed()
               // TODO: Get a ruling on this re:Scoop-Up Block (MR_MIME_66:TEAM_UP)
-              self.cards.getExcludedList(self.topPokemonCard).discard()
-              moveCard(self.topPokemonCard, my.hand)
-              removePCS(self)
+              scoopUpPokemon([:], self, delegate, SRC_ABILITY)
+//              self.cards.getExcludedList(self.topPokemonCard).discard()
+//              moveCard(self.topPokemonCard, my.hand)
+//              removePCS(self)
             }
           }
           move "Water Gun", {

@@ -2,8 +2,6 @@ package tcgwars.logic.impl.gen7
 
 import tcgwars.logic.card.energy.BasicEnergyCard
 import tcgwars.logic.card.pokemon.PokemonCard
-import tcgwars.logic.effect.ability.Ability
-import tcgwars.logic.effect.ability.CheckAbilities;
 import tcgwars.logic.effect.gm.Attack
 import tcgwars.logic.effect.gm.PlayTrainer
 import tcgwars.logic.impl.gen5.BlackWhite
