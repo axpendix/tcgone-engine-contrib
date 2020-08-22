@@ -1500,42 +1500,53 @@ class TcgStatics {
     }
   }
 
+  /**
+   * Scoop up PokemonCardSets if not blocked by Scoop-Up Block
+   *
+   * @param params Optional settings map
+   *  + discard: Indicates if any cards should be discarded. Default: true
+   *  + only: A card or list of cards to move to hand instead of discard.
+   * @param target PokemonCardSet to work on
+   * @param delegate Effect delegate used to determine most sources automatically, and to get the card name for the Scoop-Up Block message
+   * @param source Allows you to specify the source of the scoop up. Use intended manually setting SRC_ABILITY.
+   */
   static void scoopUpPokemon(params=[:], PokemonCardSet target, Object delegate, Source source=null) {
     if (source == null) {
-      if (delegate.thisObject.cardTypes.is(TRAINER)) params.source = TRAINER_CARD
-      if (delegate.thisObject.cardTypes.is(POKEMON)) params.source = ATTACK
-      if (delegate.thisObject.cardTypes.is(ENERGY)) params.source = SRC_SPENERGY
+      if (delegate.thisObject.cardTypes.is(TRAINER)) source = TRAINER_CARD
+      if (delegate.thisObject.cardTypes.is(POKEMON)) source = ATTACK
+      if (delegate.thisObject.cardTypes.is(ENERGY)) source = SRC_SPENERGY
     }
     if (params.discard == null) params.discard = true
     if (bg.em().retrieveObject("ScoopUpBlock_Count$target.owner.opposite") && target.numberOfDamageCounters) {
       bc "Scoop-Up Block prevents $delegate.thisObject.name's effect."
       return
     }
-    targeted(target, params.source) {
+    targeted(target, source) {
       CardList pokemonList = []
       CardList otherList = []
       otherList.addAll(target.cards.filterByType(TRAINER, ENERGY))
       pokemonList.addAll(target.cards.filterByType(POKEMON))
-      if (params.only) {
-        target.owner.pbg.discard.addAll(pokemonList.getExcludedList(params.only as Card))
-        target.owner.pbg.hand.add(params.only)
+      if (params.discard) {
+        if (params.only) {
+          if (params.only instanceof Card) params.only = new CardList(params.only)
+          bc "Scooped up ${params.only.getExcludedList(otherList)}"
+        }
+        else {
+          params.only = new CardList(pokemonList)
+          bc "Scooped up $target"
+        }
+        def toDiscard
+        toDiscard = pokemonList.getExcludedList(params.only as CardList)
+        target.owner.pbg.discard.addAll(toDiscard)
+        target.owner.pbg.hand.addAll(pokemonList.getExcludedList(toDiscard as CardList))
+        toDiscard = otherList.getExcludedList(params.only as CardList).discard()
+        otherList.getExcludedList(toDiscard).moveTo(target.owner.pbg.hand)
       }
       else {
         target.owner.pbg.hand.addAll(pokemonList)
-      }
-      if (params.discard) {
-        otherList.discard()
-      }
-      else {
         otherList.moveTo(target.owner.pbg.hand)
       }
       removePCS(target)
-      if (params.only) {
-        bc "Scooped up $params.only"
-      }
-      else {
-        bc "Scooped up $target"
-      }
     }
   }
 
