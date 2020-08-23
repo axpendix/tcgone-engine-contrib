@@ -4,6 +4,7 @@ import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen3.TeamRocketReturns;
 import tcgwars.logic.impl.gen5.BlackWhite;
 import tcgwars.logic.impl.gen6.KalosStarterSet;
+import tcgwars.logic.impl.gen7.CelestialStorm;
 import tcgwars.logic.impl.gen7.UnbrokenBonds;
 
 import static tcgwars.logic.card.HP.*;
