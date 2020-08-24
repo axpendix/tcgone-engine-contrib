@@ -2575,11 +2575,15 @@ public enum ForbiddenLight implements LogicCardInfo {
         return supporter (this) {
           text "You can play this card only if there is any Stadium card in play.\nDiscard that Stadium card. During this turn, your Zygarde-GX can use its GX attack even if you have used your GX attack.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
-            discard bg.stadiumInfoStruct.stadiumCard
+            if (stadiumCanBeAffectedByItemAndSupporter())
+              discard bg.stadiumInfoStruct.stadiumCard
+            else
+              bc "${bg.stadiumInfoStruct.stadiumCard.name} won't be discarded by ${thisCard}."
             bg.em().storeObject("Bonnie",bg.turnCount)
+            bc "During this turn, ${thisCard.player.getPlayerUsername(bg)}'s Zygarde-GX can use its GX attack even if they've already used their GX attack."
           }
           playRequirement{
-            assert bg.stadiumInfoStruct && stadiumCanBeAffectedByItemAndSupporter()
+            assert bg.stadiumInfoStruct
           }
         };
       case CRASHER_WAKE_104:
