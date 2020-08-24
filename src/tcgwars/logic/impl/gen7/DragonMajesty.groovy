@@ -1038,7 +1038,7 @@ public enum DragonMajesty implements LogicCardInfo {
           bwAbility "Dragon Lift" , {
             text "Your Pokémon in play have no Retreat Cost, except Pokémon-GX and Pokémon-EX."
             getterA (GET_RETREAT_COST, BEFORE_LAST) {h->
-              if(!h.effect.target.pokemonEX && !h.effect.target.pokemonGX) {
+              if(h.effect.target.owner == self.owner && !h.effect.target.pokemonEX && !h.effect.target.pokemonGX) {
                 h.object = 0
               }
             }
