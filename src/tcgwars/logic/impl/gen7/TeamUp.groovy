@@ -3072,9 +3072,8 @@ public enum TeamUp implements LogicCardInfo {
             text "Put your opponent's Active Pokémon and all cards attached to it into your opponent's hand."
             energyCost C,C,C
             onAttack{
-              def pcs = opp.all.select("Choose the Pokémon to put back in their hand.")
-              pcs.cards.moveTo(opp.hand)
-              removePCS(pcs)
+              opp.active.cards.moveTo(opp.hand)
+              removePCS(opp.active)
             }
           }
         };
