@@ -797,8 +797,12 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost R, R, R, C
             onAttack {
               damage 180
-              deck.select(min:0, max:3, "Select up to 3 cards to put in your hand.").moveTo(hidden:true, hand)
-              shuffleDeck()
+              afterDamage{
+                if (confirm("Search your deck for up to 3 cards and put them into your hand?")) {
+                  my.deck.select(max:3, "Select up to 3 cards to put in your hand.").moveTo(hidden:true, my.hand)
+                  shuffleDeck()
+                }
+              }
             }
           }
           move "Crimson Flame Pillar GX", {
