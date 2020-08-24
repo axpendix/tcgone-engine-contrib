@@ -2752,10 +2752,12 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
             eff2 = delayed{
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each{
-                  if(it.to == self && self.types.contains(M) && it.dmg.value && it.notNoEffect) {
+                if (ef.attacker.owner != self.owner){
+                  bg.dm().each{
+                    if(it.to == self && self.types.contains(M) && it.dmg.value && it.notNoEffect) {
                       bc "Metal Frying Pan -30"
                       it.dmg-=hp(30)
+                    }
                   }
                 }
               }
