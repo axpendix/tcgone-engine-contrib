@@ -961,7 +961,7 @@ public enum TeamUp implements LogicCardInfo {
               }
               before null, null, Source.TRAINER_CARD, {
                 def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
-                if (flag && self.active && pcs.types.contains(W)){
+                if (flag && self.active && pcs.owner == self.owner && pcs.benched && pcs.types.contains(W)){
                   bc "Blizzard Veil prevent effect of Supporter cards done to $pcs."
                   prevent()
                 }
