@@ -2151,7 +2151,7 @@ public enum ForbiddenLight implements LogicCardInfo {
               assert my.discard.hasType(ITEM)
               powerUsed()
               flip {
-                my.discard.filterByType(ITEM).select("Put an Item card from your discard pile on top of your deck").moveTo(addToTop: true, my.deck)
+                my.discard.filterByType(ITEM).select("Put an Item card from your discard pile on top of your deck").showToOpponent("Wondrous Gift - This Item Card will be put on top of your opponent's deck.").moveTo(addToTop: true, my.deck)
               }
             }
           }
