@@ -251,7 +251,19 @@ public enum DiamondPearl implements LogicCardInfo {
                 if(defending.evolution && confirm ("You may return all Energy cards attached to Dialga to your hand. If you do, remove the highest Stage Evolution card from the Defending Pokémon and shuffle that card into your opponent’s deck.")) {
                   self.cards.filterByType(ENERGY).moveTo(my.hand)
                   def top=defending.topPokemonCard
-                  devolve(defending, top, opp.deck)
+                  //
+                  // [Temporary LV.X workaround]
+                  if (top.cardTypes.is(LEVEL_UP) && defending.cards.filterByType(POKEMON).size() > 2){
+                    bc "${top}'s Level-Up card will be moved wherever the top evolution ends up at."
+                    moveCard(top, opp.hand)
+                    devolve(defending, top)
+                    top = defending.topPokemonCard
+                  }
+                  // [End of LV.X workaround] TODO: Remove this when no longer needed
+                  //
+                  bc "$top Devolved"
+                  moveCard(top, opp.hand)
+                  devolve(defending, top)
                 }
               }
             }
