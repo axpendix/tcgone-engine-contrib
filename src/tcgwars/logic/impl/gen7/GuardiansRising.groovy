@@ -2639,6 +2639,7 @@ public enum GuardiansRising implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 20
+              keyStore("Agility", self, bg.turnCount)
               flip{preventAllEffectsNextTurn()}
             }
           }
@@ -2647,7 +2648,7 @@ public enum GuardiansRising implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 40
-              increasedBaseDamageNextTurn("Agility", hp(80))
+              if (keyStore("Agility", self, null) == bg.turnCount - 2) damage 80
             }
           }
 
