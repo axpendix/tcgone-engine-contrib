@@ -164,9 +164,9 @@ public enum DiamondPearl implements LogicCardInfo {
   ENERGY_SEARCH_117 ("Energy Search", "117", Rarity.COMMON, [TRAINER, ITEM]),
   POTION_118 ("Potion", "118", Rarity.COMMON, [TRAINER, ITEM]),
   SWITCH_119 ("Switch", "119", Rarity.COMMON, [TRAINER, ITEM]),
-  EMPOLEON_LV_X_120 ("Empoleon", "120", Rarity.HOLORARE, [STAGE2, /* <- TODO: Remove that*/LEVEL_UP, EVOLUTION, POKEMON, _WATER_]),
-  INFERNAPE_LV_X_121 ("Infernape", "121", Rarity.HOLORARE, [STAGE2, /* <- TODO: Remove that*/LEVEL_UP, EVOLUTION, POKEMON, _FIRE_]),
-  TORTERRA_LV_X_122 ("Torterra", "122", Rarity.HOLORARE, [STAGE2, /* <- TODO: Remove that*/LEVEL_UP, EVOLUTION, POKEMON, _GRASS_]),
+  EMPOLEON_LV_X_120 ("Empoleon", "120", Rarity.HOLORARE, [STAGE2, LEVEL_UP, POKEMON, _WATER_]),
+  INFERNAPE_LV_X_121 ("Infernape", "121", Rarity.HOLORARE, [STAGE2, LEVEL_UP, POKEMON, _FIRE_]),
+  TORTERRA_LV_X_122 ("Torterra", "122", Rarity.HOLORARE, [STAGE2, LEVEL_UP, POKEMON, _GRASS_]),
   GRASS_ENERGY_123 ("Grass Energy", "123", Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
   FIRE_ENERGY_124 ("Fire Energy", "124", Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
   WATER_ENERGY_125 ("Water Energy", "125", Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
@@ -251,19 +251,7 @@ public enum DiamondPearl implements LogicCardInfo {
                 if(defending.evolution && confirm ("You may return all Energy cards attached to Dialga to your hand. If you do, remove the highest Stage Evolution card from the Defending Pokémon and shuffle that card into your opponent’s deck.")) {
                   self.cards.filterByType(ENERGY).moveTo(my.hand)
                   def top=defending.topPokemonCard
-                  //
-                  // [Temporary LV.X workaround]
-                  if (top.cardTypes.is(LEVEL_UP) && defending.cards.filterByType(POKEMON).size() > 2){
-                    bc "${top}'s Level-Up card will be moved wherever the top evolution ends up at."
-                    moveCard(top, opp.hand)
-                    devolve(defending, top)
-                    top = defending.topPokemonCard
-                  }
-                  // [End of LV.X workaround] TODO: Remove this when no longer needed
-                  //
-                  bc "$top Devolved"
-                  moveCard(top, opp.hand)
-                  devolve(defending, top)
+                  devolve(defending, top, opp.deck)
                 }
               }
             }
@@ -3049,7 +3037,7 @@ public enum DiamondPearl implements LogicCardInfo {
         return copy(FireRedLeafGreen.SWITCH_102, this);
       case EMPOLEON_LV_X_120:
         //TODO: Find how to mark these cards as "LEVEL_UP" cards instead of evolutions.
-        return evolution (this, from:"Empoleon", hp:HP140, type:WATER, retreatCost:2) {
+        return levelUp (this, from:"Empoleon", hp:HP140, type:WATER, retreatCost:2) {
           weakness L, PLUS30
           globalAbility {Card thisCard->
             delayed {

@@ -24,17 +24,17 @@ public enum DiamondPearlPromos implements LogicCardInfo {
   BUNEARY_DP06 ("Buneary", "6", Rarity.PROMO, [BASIC, POKEMON, _COLORLESS_]),
   CRANIDOS_DP07 ("Cranidos", "7", Rarity.PROMO, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
   SHIELDON_DP08 ("Shieldon", "8", Rarity.PROMO, [STAGE1, EVOLUTION, POKEMON, _METAL_]),
-  TORTERRA_LV_X_DP09 ("Torterra LV.X", "9", Rarity.PROMO, [LEVEL_UP, EVOLUTION, POKEMON, _GRASS_]),
-  INFERNAPE_LV_X_DP10 ("Infernape LV.X", "10", Rarity.PROMO, [LEVEL_UP, EVOLUTION, POKEMON, _FIRE_]),
-  EMPOLEON_LV_X_DP11 ("Empoleon LV.X", "11", Rarity.PROMO, [LEVEL_UP, EVOLUTION, POKEMON, _WATER_]),
-  LUCARIO_LV_X_DP12 ("Lucario LV.X", "12", Rarity.PROMO, [LEVEL_UP, EVOLUTION, POKEMON, _FIGHTING_]),
+  TORTERRA_LV_X_DP09 ("Torterra", "9", Rarity.PROMO, [LEVEL_UP, POKEMON, _GRASS_]),
+  INFERNAPE_LV_X_DP10 ("Infernape", "10", Rarity.PROMO, [LEVEL_UP, POKEMON, _FIRE_]),
+  EMPOLEON_LV_X_DP11 ("Empoleon", "11", Rarity.PROMO, [LEVEL_UP, POKEMON, _WATER_]),
+  LUCARIO_LV_X_DP12 ("Lucario", "12", Rarity.PROMO, [LEVEL_UP, POKEMON, _FIGHTING_]),
   BUIZEL_DP13 ("Buizel", "13", Rarity.PROMO, [BASIC, POKEMON, _WATER_]),
   CHATOT_DP14 ("Chatot", "14", Rarity.PROMO, [BASIC, POKEMON, _COLORLESS_]),
   SHINX_DP15 ("Shinx", "15", Rarity.PROMO, [BASIC, POKEMON, _LIGHTNING_]),
   PIKACHU_DP16 ("Pikachu", "16", Rarity.PROMO, [BASIC, POKEMON, _LIGHTNING_]),
-  DIALGA_LV_X_DP17 ("Dialga LV.X", "17", Rarity.PROMO, [LEVEL_UP, EVOLUTION, POKEMON, _METAL_]),
-  PALKIA_LV_X_DP18 ("Palkia LV.X", "18", Rarity.PROMO, [LEVEL_UP, EVOLUTION, POKEMON, _WATER_]),
-  DARKRAI_LV_X_DP19 ("Darkrai LV.X", "19", Rarity.PROMO, [LEVEL_UP, EVOLUTION, POKEMON, _DARKNESS_]),
+  DIALGA_LV_X_DP17 ("Dialga", "17", Rarity.PROMO, [LEVEL_UP, POKEMON, _METAL_]),
+  PALKIA_LV_X_DP18 ("Palkia", "18", Rarity.PROMO, [LEVEL_UP, POKEMON, _WATER_]),
+  DARKRAI_LV_X_DP19 ("Darkrai", "19", Rarity.PROMO, [LEVEL_UP, POKEMON, _DARKNESS_]),
   MAGMORTAR_DP20 ("Magmortar", "20", Rarity.PROMO, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
   RAICHU_DP21 ("Raichu", "21", Rarity.PROMO, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
   MIME_JR__DP22 ("Mime Jr.", "22", Rarity.PROMO, [BASIC, POKEMON, _PSYCHIC_]),
@@ -43,35 +43,35 @@ public enum DiamondPearlPromos implements LogicCardInfo {
   TROPICAL_WIND_DP25 ("Tropical Wind", "25", Rarity.PROMO, [TRAINER]),
   DIALGA_DP26 ("Dialga", "26", Rarity.PROMO, [BASIC, POKEMON, _METAL_]),
   PALKIA_DP27 ("Palkia", "27", Rarity.PROMO, [BASIC, POKEMON, _WATER_]),
-  MEWTWO_LV_X_DP28 ("Mewtwo LV.X", "28", Rarity.PROMO, [LEVEL_UP, EVOLUTION, POKEMON, _PSYCHIC_]),
-  RHYPERIOR_LV_X_DP29 ("Rhyperior LV.X", "29", Rarity.PROMO, [LEVEL_UP, EVOLUTION, POKEMON, _FIGHTING_]),
-  REGIGIGAS_LV_X_DP30 ("Regigigas LV.X", "30", Rarity.PROMO, [LEVEL_UP, EVOLUTION, POKEMON, _COLORLESS_]),
-  HEATRAN_LV_X_DP31 ("Heatran LV.X", "31", Rarity.PROMO, [LEVEL_UP, EVOLUTION, POKEMON, _FIRE_]),
+  MEWTWO_LV_X_DP28 ("Mewtwo", "28", Rarity.PROMO, [LEVEL_UP, POKEMON, _PSYCHIC_]),
+  RHYPERIOR_LV_X_DP29 ("Rhyperior", "29", Rarity.PROMO, [LEVEL_UP, POKEMON, _FIGHTING_]),
+  REGIGIGAS_LV_X_DP30 ("Regigigas", "30", Rarity.PROMO, [LEVEL_UP, POKEMON, _COLORLESS_]),
+  HEATRAN_LV_X_DP31 ("Heatran", "31", Rarity.PROMO, [LEVEL_UP, POKEMON, _FIRE_]),
   MAGNEZONE_DP32 ("Magnezone", "32", Rarity.PROMO, [STAGE2, EVOLUTION, POKEMON, _METAL_]),
   DUSKNOIR_DP33 ("Dusknoir", "33", Rarity.PROMO, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
   DRIFBLIM_DP34 ("Drifblim", "34", Rarity.PROMO, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
   PORYGON_Z_DP35 ("Porygon-Z", "35", Rarity.PROMO, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
   GLISCOR_DP36 ("Gliscor", "36", Rarity.PROMO, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-  DIALGA_LV_X_DP37 ("Dialga LV.X", "37", Rarity.PROMO, [LEVEL_UP, EVOLUTION, POKEMON, _METAL_]),
-  GIRATINA_LV_X_DP38 ("Giratina LV.X", "38", Rarity.PROMO, [LEVEL_UP, EVOLUTION, POKEMON, _PSYCHIC_]),
-  SHAYMIN_LV_X_DP39 ("Shaymin LV.X", "39", Rarity.PROMO, [LEVEL_UP, EVOLUTION, POKEMON, _GRASS_]),
+  DIALGA_LV_X_DP37 ("Dialga", "37", Rarity.PROMO, [LEVEL_UP, POKEMON, _METAL_]),
+  GIRATINA_LV_X_DP38 ("Giratina", "38", Rarity.PROMO, [LEVEL_UP, POKEMON, _PSYCHIC_]),
+  SHAYMIN_LV_X_DP39 ("Shaymin", "39", Rarity.PROMO, [LEVEL_UP, POKEMON, _GRASS_]),
   REGIGIGAS_DP40 ("Regigigas", "40", Rarity.PROMO, [BASIC, POKEMON, _COLORLESS_]),
   TOXICROAK_G_DP41 ("Toxicroak G", "41", Rarity.PROMO, [BASIC, POKEMON, _FIGHTING_]),
   CARNIVINE_G_DP42 ("Carnivine G", "42", Rarity.PROMO, [BASIC, POKEMON, _GRASS_]),
   PROBOPASS_G_DP43 ("Probopass G", "43", Rarity.PROMO, [BASIC, POKEMON, _FIGHTING_]),
   MAGNEZONE_DP44 ("Magnezone", "44", Rarity.PROMO, [STAGE2, EVOLUTION, POKEMON, _LIGHTNING_]),
-  CHARIZARD_G_LV_X_DP45 ("Charizard G LV.X", "45", Rarity.PROMO, [LEVEL_UP, EVOLUTION, POKEMON, _FIRE_]),
-  GARCHOMP_C_LV_X_DP46 ("Garchomp C LV.X", "46", Rarity.PROMO, [LEVEL_UP, EVOLUTION, POKEMON, _COLORLESS_]),
-  RAYQUAZA_C_LV_X_DP47 ("Rayquaza C LV.X", "47", Rarity.PROMO, [LEVEL_UP, EVOLUTION, POKEMON, _COLORLESS_]),
+  CHARIZARD_G_LV_X_DP45 ("Charizard G", "45", Rarity.PROMO, [LEVEL_UP, POKEMON, _FIRE_]),
+  GARCHOMP_C_LV_X_DP46 ("Garchomp C", "46", Rarity.PROMO, [LEVEL_UP, POKEMON, _COLORLESS_]),
+  RAYQUAZA_C_LV_X_DP47 ("Rayquaza C", "47", Rarity.PROMO, [LEVEL_UP, POKEMON, _COLORLESS_]),
   TROPICAL_WIND_DP48 ("Tropical Wind", "48", Rarity.PROMO, [TRAINER]),
   DIALGA_DP49 ("Dialga", "49", Rarity.PROMO, [BASIC, POKEMON, _METAL_]),
   ARCEUS_DP50 ("Arceus", "50", Rarity.PROMO, [BASIC, POKEMON, _COLORLESS_]),
   CRESSELIA_DP51 ("Cresselia", "51", Rarity.PROMO, [BASIC, POKEMON, _PSYCHIC_]),
   DARKRAI_DP52 ("Darkrai", "52", Rarity.PROMO, [BASIC, POKEMON, _DARKNESS_]),
-  ARCEUS_LV_X_DP53 ("Arceus LV.X", "53", Rarity.PROMO, [LEVEL_UP, EVOLUTION, POKEMON, _COLORLESS_]),
+  ARCEUS_LV_X_DP53 ("Arceus", "53", Rarity.PROMO, [LEVEL_UP, POKEMON, _COLORLESS_]),
   BEGINNING_DOOR_DP54 ("Beginning Door", "54", Rarity.PROMO, [TRAINER]),
   ULTIMATE_ZONE_DP55 ("Ultimate Zone", "55", Rarity.PROMO, [TRAINER]),
-  ARCEUS_LV_X_DP56 ("Arceus LV.X", "56", Rarity.PROMO, [LEVEL_UP, EVOLUTION, POKEMON, _COLORLESS_]);
+  ARCEUS_LV_X_DP56 ("Arceus", "56", Rarity.PROMO, [LEVEL_UP, POKEMON, _COLORLESS_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -194,7 +194,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
       case EMPOLEON_LV_X_DP11:
         return copy(DiamondPearl.EMPOLEON_LV_X_120, this);
       case LUCARIO_LV_X_DP12:
-        return evolution (this, from:"Lucario", hp:HP110, type:FIGHTING, retreatCost:1) {
+        return levelUp (this, from:"Lucario", hp:HP110, type:FIGHTING, retreatCost:1) {
           weakness P
           pokePower "Stance", {
             text "Once during your turn , when you put Lucario LV. from your hand onto your Active Lucario, you may use this power. Prevent all effects of an attack, including damage, done to Lucario during your opponent�s next turn. (If Lucario is no longer your Active Pok�mon, this effect ends.)"
@@ -202,22 +202,13 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             }
           }
           move "Close Combat", {
-            text "80 damage. ."
+            text "80 damage."
             energyCost F, F, C
             attackRequirement {}
             onAttack {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Lucario. Lucario LV. can use any attack, Pok�-Power, or Pok�-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case BUIZEL_DP13:
         return copy(DiamondPearl.BUIZEL_72, this);
@@ -246,7 +237,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
 
         };
       case DIALGA_LV_X_DP17:
-        return evolution (this, from:"Dialga", hp:HP110, type:METAL, retreatCost:2) {
+        return levelUp (this, from:"Dialga", hp:HP110, type:METAL, retreatCost:2) {
           weakness R
           resistance P, MINUS20
           pokePower "Time Skip", {
@@ -262,18 +253,9 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Dialga. Dialga LV. can use any attack, Pok�-Power, or Pok�-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case PALKIA_LV_X_DP18:
-        return evolution (this, from:"Palkia", hp:HP120, type:WATER, retreatCost:3) {
+        return levelUp (this, from:"Palkia", hp:HP120, type:WATER, retreatCost:3) {
           weakness L
           pokePower "Restructure", {
             text "Once during your turn , you may have your opponent switch 1 of your Active Pok�mon with 1 of your Bench Pok�mon. Then, you switch 1 of the Defending Pok�mon with 1 of your opponent�s Benched Pok�mon. This power can�t be used if Palkia is affected by a Special Condition."
@@ -288,18 +270,9 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Palkia. Palkia LV. can use any attack, Pok�-Power, or Pok�-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case DARKRAI_LV_X_DP19:
-        return evolution (this, from:"Darkrai", hp:HP100, type:DARKNESS, retreatCost:1) {
+        return levelUp (this, from:"Darkrai", hp:HP100, type:DARKNESS, retreatCost:1) {
           weakness F
           resistance P, MINUS20
           pokeBody "Dark Shadow", {
@@ -315,15 +288,6 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Darkrai. Darkrai LV. can use any attack, Pok�-Power, or Pok�-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case MAGMORTAR_DP20:
         return evolution (this, from:"Magmar", hp:HP100, type:FIRE, retreatCost:3) {
@@ -431,18 +395,9 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Mewtwo. Mewtwo LV. can use any attack, Pok�-Power, or Pok�-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case RHYPERIOR_LV_X_DP29:
-        return evolution (this, from:"Rhyperior", hp:HP170, type:FIGHTING, retreatCost:4) {
+        return levelUp (this, from:"Rhyperior", hp:HP170, type:FIGHTING, retreatCost:4) {
           weakness W
           resistance L, MINUS20
           move "Hard Crush", {
@@ -461,18 +416,9 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Rhyperior. Rhyperior LV. can use any attack, Pok�-Power, or Pok�-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case REGIGIGAS_LV_X_DP30:
-        return evolution (this, from:"Regigigas", hp:HP150, type:COLORLESS, retreatCost:4) {
+        return levelUp (this, from:"Regigigas", hp:HP150, type:COLORLESS, retreatCost:4) {
           weakness F
           pokePower "Sacrifice", {
             text "Once during your turn , you may choose 1 of your Pok�mon and that Pok�mon is Knocked Out. Then, search your discard pile for up to 2 basic Energy cards, attach them to Regigigas, and remove 8 damage counters from Regigigas. This power can�t be used if Regigigas is affected by a Special Condition."
@@ -487,18 +433,9 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Regigigas. Regigigas LV. can use any attack, Pok�-Power, or Pok�-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case HEATRAN_LV_X_DP31:
-        return evolution (this, from:"Heatran", hp:HP120, type:FIRE, retreatCost:4) {
+        return levelUp (this, from:"Heatran", hp:HP120, type:FIRE, retreatCost:4) {
           weakness W
           pokeBody "Heat Metal", {
             text "Your opponent can�t remove the Special Condition Burned by evolving or devolving his or her Burned Pok�mon. (This also includes putting a Pok�mon Level-Up card onto the Burned Pok�mon.) Whenever your opponent flips a coin for the Special Condition Burned between turns, treat it as tails."
@@ -510,15 +447,6 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             actionA {
             }
           }
-          move "", {
-            text "Put this card onto your Active Heatran. Heatran LV. can use any attack, Pok�-Power, or Pok�-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case MAGNEZONE_DP32:
         return evolution (this, from:"Magneton", hp:HP130, type:METAL, retreatCost:2) {
@@ -617,7 +545,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
 
         };
       case DIALGA_LV_X_DP37:
-        return evolution (this, from:"Dialga", hp:HP110, type:METAL, retreatCost:2) {
+        return levelUp (this, from:"Dialga", hp:HP110, type:METAL, retreatCost:2) {
           weakness R
           resistance P, MINUS20
           pokePower "Time Skip", {
@@ -633,18 +561,9 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Dialga. Dialga LV. can use any attack, Pok�-Power, or Pok�-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case GIRATINA_LV_X_DP38:
-        return evolution (this, from:"Giratina", hp:HP130, type:PSYCHIC, retreatCost:3) {
+        return levelUp (this, from:"Giratina", hp:HP130, type:PSYCHIC, retreatCost:3) {
           weakness D
           resistance C, MINUS20
           pokeBody "Invisible Tentacles", {
@@ -660,18 +579,9 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Giratina. Giratina LV. can use any attack, Pok�-Power, or Pok�-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case SHAYMIN_LV_X_DP39:
-        return evolution (this, from:"Shaymin", hp:HP110, type:GRASS, retreatCost:0) {
+        return levelUp (this, from:"Shaymin", hp:HP110, type:GRASS, retreatCost:0) {
           weakness R
           resistance F, MINUS20
           pokeBody "Revenge Seed", {
@@ -687,15 +597,6 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Shaymin. Shaymin LV. can use any attack, Pok�-Power, or Pok�-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case REGIGIGAS_DP40:
         return basic (this, hp:HP100, type:COLORLESS, retreatCost:4) {
@@ -811,7 +712,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
 
         };
       case CHARIZARD_G_LV_X_DP45:
-        return evolution (this, from:"Charizard G", hp:HP120, type:FIRE, retreatCost:3) {
+        return levelUp (this, from:"Charizard G", hp:HP120, type:FIRE, retreatCost:3) {
           weakness W
           resistance F, MINUS20
           pokePower "Call for Power", {
@@ -827,18 +728,9 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Charizard . Charizard LV. can use any attack, Pok�-Power, or Pok�-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case GARCHOMP_C_LV_X_DP46:
-        return evolution (this, from:"Garchomp C", hp:HP110, type:COLORLESS, retreatCost:0) {
+        return levelUp (this, from:"Garchomp C", hp:HP110, type:COLORLESS, retreatCost:0) {
           weakness C
           pokePower "Healing Breath", {
             text "Once during your turn , when you put Garchomp LV. from your hand onto your Active Garchomp , you may remove all damage counters from each of your Pok�mon ."
@@ -853,18 +745,9 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Garchomp . Garchomp LV. can use any attack, Pok�-Power, or Pok�-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case RAYQUAZA_C_LV_X_DP47:
-        return evolution (this, from:"Rayquaza C", hp:HP120, type:COLORLESS, retreatCost:3) {
+        return levelUp (this, from:"Rayquaza C", hp:HP120, type:COLORLESS, retreatCost:3) {
           weakness C
           resistance F, MINUS20
           pokeBody "Dragon Spirit", {
@@ -880,15 +763,6 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Rayquaza . Rayquaza LV. can use any attack, Pok�-Power, or Pok�-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case TROPICAL_WIND_DP48:
         return copy (TROPICAL_WIND_DP05, this)
@@ -972,7 +846,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
 
         };
       case ARCEUS_LV_X_DP53:
-        return evolution (this, from:"Arceus", hp:HP120, type:COLORLESS, retreatCost:1) {
+        return levelUp (this, from:"Arceus", hp:HP120, type:COLORLESS, retreatCost:1) {
           pokeBody "Multitype", {
             text "Arceus LV.�s type is the same type as its previous Level."
             delayedA {
@@ -991,15 +865,6 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Arceus. Arceus LV. can use any attack, Pok�-Power, or Pok�-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case BEGINNING_DOOR_DP54:
         return basicTrainer (this) {
@@ -1018,7 +883,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
           }
         };
       case ARCEUS_LV_X_DP56:
-        return evolution (this, from:"Arceus", hp:HP120, type:COLORLESS, retreatCost:1) {
+        return levelUp (this, from:"Arceus", hp:HP120, type:COLORLESS, retreatCost:1) {
           pokeBody "Multitype", {
             text "Arceus LV.�s type is the same as its previous Level."
             delayedA {
@@ -1040,15 +905,6 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Arceus. Arceus LV. can use any attack, Pok�-Power, or Pok�-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       default:
         return null;

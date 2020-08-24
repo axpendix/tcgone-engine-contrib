@@ -138,12 +138,12 @@ public enum Platinum implements LogicCardInfo {
   ARMOR_FOSSIL_119 ("Armor Fossil", "119", Rarity.COMMON, [ITEM, TRAINER]),
   SKULL_FOSSIL_120 ("Skull Fossil", "120", Rarity.COMMON, [ITEM, TRAINER]),
   RAINBOW_ENERGY_121 ("Rainbow Energy", "121", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
-  DIALGA_G_LV_X_122 ("Dialga G LV.X", "122", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _METAL_]),
-  DRAPION_LV_X_123 ("Drapion LV.X", "123", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _DARKNESS_]),
-  GIRATINA_LV_X_124 ("Giratina LV.X", "124", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _PSYCHIC_]),
-  PALKIA_G_LV_X_125 ("Palkia G LV.X", "125", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _WATER_]),
-  SHAYMIN_LV_X_126 ("Shaymin LV.X", "126", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _GRASS_]),
-  SHAYMIN_LV_X_127 ("Shaymin LV.X", "127", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _GRASS_]),
+  DIALGA_G_LV_X_122 ("Dialga G", "122", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _METAL_]),
+  DRAPION_LV_X_123 ("Drapion", "123", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _DARKNESS_]),
+  GIRATINA_LV_X_124 ("Giratina", "124", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _PSYCHIC_]),
+  PALKIA_G_LV_X_125 ("Palkia G", "125", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _WATER_]),
+  SHAYMIN_LV_X_126 ("Shaymin", "126", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _GRASS_]),
+  SHAYMIN_LV_X_127 ("Shaymin", "127", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _GRASS_]),
   ELECTABUZZ_128 ("Electabuzz", "128", Rarity.SECRET, [BASIC, POKEMON, _LIGHTNING_]),
   HITMONCHAN_129 ("Hitmonchan", "129", Rarity.SECRET, [BASIC, POKEMON, _FIGHTING_]),
   SCYTHER_130 ("Scyther", "130", Rarity.SECRET, [BASIC, POKEMON, _GRASS_]),
@@ -2694,7 +2694,7 @@ public enum Platinum implements LogicCardInfo {
           }
         };
       case DIALGA_G_LV_X_122:
-        return evolution (this, from:"Dialga G", hp:HP120, type:METAL, retreatCost:2) {
+        return levelUp (this, from:"Dialga G", hp:HP120, type:METAL, retreatCost:2) {
           weakness R
           resistance P, MINUS20
           pokeBody "Time Crystal", {
@@ -2711,22 +2711,13 @@ public enum Platinum implements LogicCardInfo {
               int heads = 0;
               flipUntilTails {c++}
               if (c && opp.active.cards.filterByType(ENERGY)) {
-              opp.active.cards.filterByType(ENERGY).select(count:c,"Choose the energy cards to put in the Lost Zone").moveTo(opp.lostZone)
+                opp.active.cards.filterByType(ENERGY).select(count:c,"Choose the energy cards to put in the Lost Zone").moveTo(opp.lostZone)
+              }
             }
           }
-        }
-          move "", {
-            text "Put this card onto your Active Dialga . Dialga LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case DRAPION_LV_X_123:
-        return evolution (this, from:"Drapion", hp:HP130, type:DARKNESS, retreatCost:3) {
+        return levelUp (this, from:"Drapion", hp:HP130, type:DARKNESS, retreatCost:3) {
           weakness P
           pokePower "Tri-Poison", {
             text "Once during your turn , you may flip a coin. If heads, choose 1 of the Defending Pokémon. That Pokémon is now Poisoned. Put 3 damage counters instead of 1 on that Pokémon between turns. This power can’t be used if Drapion is affected by a Special Condition."
@@ -2741,18 +2732,9 @@ public enum Platinum implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Drapion. Drapion LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case GIRATINA_LV_X_124:
-        return evolution (this, from:"Giratina", hp:HP130, type:PSYCHIC, retreatCost:3) {
+        return levelUp (this, from:"Giratina", hp:HP130, type:PSYCHIC, retreatCost:3) {
           weakness D
           resistance C, MINUS20
           pokeBody "Invisible Tentacles", {
@@ -2768,18 +2750,9 @@ public enum Platinum implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Giratina. Giratina LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case PALKIA_G_LV_X_125:
-        return evolution (this, from:"Palkia G", hp:HP120, type:WATER, retreatCost:2) {
+        return levelUp (this, from:"Palkia G", hp:HP120, type:WATER, retreatCost:2) {
           weakness L
           pokePower "Lost Cyclone", {
             text "Once during your turn , you may use this power. Any player who has 4 or more Benched Pokémon chooses 3 of his or her Benched Pokémon. Put the other Benched Pokémon and all cards attached to them in the Lost Zone. This power can’t be used it Palkia is affected by a Special Condition."
@@ -2794,18 +2767,9 @@ public enum Platinum implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Palkia . Palkia LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case SHAYMIN_LV_X_126:
-        return evolution (this, from:"Shaymin", hp:HP100, type:GRASS, retreatCost:1) {
+        return levelUp (this, from:"Shaymin", hp:HP100, type:GRASS, retreatCost:1) {
           weakness R
           resistance W, MINUS20
           pokeBody "Thankfulness", {
@@ -2821,18 +2785,9 @@ public enum Platinum implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Shaymin. Shaymin LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case SHAYMIN_LV_X_127:
-        return evolution (this, from:"Shaymin", hp:HP110, type:GRASS, retreatCost:0) {
+        return levelUp (this, from:"Shaymin", hp:HP110, type:GRASS, retreatCost:0) {
           weakness R
           resistance F, MINUS20
           pokeBody "Revenge Seed", {
@@ -2848,15 +2803,6 @@ public enum Platinum implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Shaymin. Shaymin LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case ELECTABUZZ_128:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:2) {

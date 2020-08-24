@@ -161,13 +161,13 @@ public enum SupremeVictors implements LogicCardInfo {
   NIGHT_TELEPORTER_138 ("Night Teleporter", "138", Rarity.UNCOMMON, [TRAINER]),
   PALMER_S_CONTRIBUTION_139 ("Palmer's Contribution", "139", Rarity.UNCOMMON, [TRAINER]),
   VS_SEEKER_140 ("VS Seeker", "140", Rarity.UNCOMMON, [TRAINER]),
-  ABSOL_G_LV_X_141 ("Absol G LV.X", "141", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _DARKNESS_]),
-  BLAZIKEN_FB_LV_X_142 ("Blaziken FB LV.X", "142", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _FIRE_]),
-  CHARIZARD_G_LV_X_143 ("Charizard G LV.X", "143", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _FIRE_]),
-  ELECTIVIRE_FB_LV_X_144 ("Electivire FB LV.X", "144", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _LIGHTNING_]),
-  GARCHOMP_C_LV_X_145 ("Garchomp C LV.X", "145", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _COLORLESS_]),
-  RAYQUAZA_C_LV_X_146 ("Rayquaza C LV.X", "146", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _COLORLESS_]),
-  STARAPTOR_FB_LV_X_147 ("Staraptor FB LV.X", "147", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _COLORLESS_]),
+  ABSOL_G_LV_X_141 ("Absol G", "141", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _DARKNESS_]),
+  BLAZIKEN_FB_LV_X_142 ("Blaziken FB", "142", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _FIRE_]),
+  CHARIZARD_G_LV_X_143 ("Charizard G", "143", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _FIRE_]),
+  ELECTIVIRE_FB_LV_X_144 ("Electivire FB", "144", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _LIGHTNING_]),
+  GARCHOMP_C_LV_X_145 ("Garchomp C", "145", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _COLORLESS_]),
+  RAYQUAZA_C_LV_X_146 ("Rayquaza C", "146", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _COLORLESS_]),
+  STARAPTOR_FB_LV_X_147 ("Staraptor FB", "147", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _COLORLESS_]),
   ARTICUNO_148 ("Articuno", "148", Rarity.ULTRARARE, [BASIC, POKEMON, _WATER_]),
   MOLTRES_149 ("Moltres", "149", Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_]),
   ZAPDOS_150 ("Zapdos", "150", Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
@@ -3092,7 +3092,7 @@ public enum SupremeVictors implements LogicCardInfo {
           }
         };
       case ABSOL_G_LV_X_141:
-        return evolution (this, from:"Absol G", hp:HP100, type:DARKNESS, retreatCost:1) {
+        return levelUp (this, from:"Absol G", hp:HP100, type:DARKNESS, retreatCost:1) {
           weakness F
           resistance P, MINUS20
           pokePower "Darkness Send", {
@@ -3108,18 +3108,9 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Absol . Absol LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case BLAZIKEN_FB_LV_X_142:
-        return evolution (this, from:"Blaziken FB", hp:HP110, type:FIRE, retreatCost:1) {
+        return levelUp (this, from:"Blaziken FB", hp:HP110, type:FIRE, retreatCost:1) {
           weakness W
           pokeBody "Burning Spirit", {
             text "Any damage done by attacks to a Burned Pokémon is increased by 40 . No more than 40 damage can be added by all Burning Spirit Poké-Bodies."
@@ -3134,18 +3125,9 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Blaziken . Blaziken LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case CHARIZARD_G_LV_X_143:
-        return evolution (this, from:"Charizard G", hp:HP120, type:FIRE, retreatCost:3) {
+        return levelUp (this, from:"Charizard G", hp:HP120, type:FIRE, retreatCost:3) {
           weakness W
           resistance F, MINUS20
           pokePower "Call for Power", {
@@ -3161,18 +3143,9 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Charizard . Charizard LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case ELECTIVIRE_FB_LV_X_144:
-        return evolution (this, from:"Electivire FB", hp:HP120, type:LIGHTNING, retreatCost:3) {
+        return levelUp (this, from:"Electivire FB", hp:HP120, type:LIGHTNING, retreatCost:3) {
           weakness F
           resistance M, MINUS20
           pokePower "Energy Recycle", {
@@ -3188,18 +3161,9 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Electivire . Electivire LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case GARCHOMP_C_LV_X_145:
-        return evolution (this, from:"Garchomp C", hp:HP110, type:COLORLESS, retreatCost:0) {
+        return levelUp (this, from:"Garchomp C", hp:HP110, type:COLORLESS, retreatCost:0) {
           weakness C
           pokePower "Healing Breath", {
             text "Once during your turn , when you put Garchomp LV. from your hand onto your Active Garchomp , you may remove all damage counters from each of your Pokémon ."
@@ -3214,18 +3178,9 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Garchomp . Garchomp LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case RAYQUAZA_C_LV_X_146:
-        return evolution (this, from:"Rayquaza C", hp:HP120, type:COLORLESS, retreatCost:3) {
+        return levelUp (this, from:"Rayquaza C", hp:HP120, type:COLORLESS, retreatCost:3) {
           weakness C
           resistance F, MINUS20
           pokeBody "Dragon Spirit", {
@@ -3241,18 +3196,9 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Rayquaza . Rayquaza LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case STARAPTOR_FB_LV_X_147:
-        return evolution (this, from:"Staraptor FB", hp:HP100, type:COLORLESS, retreatCost:0) {
+        return levelUp (this, from:"Staraptor FB", hp:HP100, type:COLORLESS, retreatCost:0) {
           weakness L
           resistance F, MINUS20
           pokePower "Fast Call", {
@@ -3268,15 +3214,6 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Staraptor . Staraptor LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case ARTICUNO_148:
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {

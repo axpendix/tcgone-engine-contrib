@@ -157,13 +157,13 @@ public enum LegendsAwakened implements LogicCardInfo {
   TECHNICAL_MACHINE_TS_2_137 ("Technical Machine TS-2", "137", Rarity.UNCOMMON, [TRAINER]),
   CLAW_FOSSIL_138 ("Claw Fossil", "138", Rarity.COMMON, [TRAINER]),
   ROOT_FOSSIL_139 ("Root Fossil", "139", Rarity.COMMON, [TRAINER]),
-  AZELF_LV_X_140 ("Azelf LV.X", "140", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _PSYCHIC_]),
-  GLISCOR_LV_X_141 ("Gliscor LV.X", "141", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _FIGHTING_]),
-  MAGNEZONE_LV_X_142 ("Magnezone LV.X", "142", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _METAL_]),
-  MESPRIT_LV_X_143 ("Mesprit LV.X", "143", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _PSYCHIC_]),
-  MEWTWO_LV_X_144 ("Mewtwo LV.X", "144", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _PSYCHIC_]),
-  RHYPERIOR_LV_X_145 ("Rhyperior LV.X", "145", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _FIGHTING_]),
-  UXIE_LV_X_146 ("Uxie LV.X", "146", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _PSYCHIC_]);
+  AZELF_LV_X_140 ("Azelf", "140", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _PSYCHIC_]),
+  GLISCOR_LV_X_141 ("Gliscor", "141", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _FIGHTING_]),
+  MAGNEZONE_LV_X_142 ("Magnezone", "142", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _METAL_]),
+  MESPRIT_LV_X_143 ("Mesprit", "143", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _PSYCHIC_]),
+  MEWTWO_LV_X_144 ("Mewtwo", "144", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _PSYCHIC_]),
+  RHYPERIOR_LV_X_145 ("Rhyperior", "145", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _FIGHTING_]),
+  UXIE_LV_X_146 ("Uxie", "146", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _PSYCHIC_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -3033,7 +3033,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           }
         };
       case AZELF_LV_X_140:
-        return evolution (this, from:"Azelf", hp:HP090, type:PSYCHIC, retreatCost:1) {
+        return levelUp (this, from:"Azelf", hp:HP090, type:PSYCHIC, retreatCost:1) {
           weakness P
           pokeBody "Psychic Aura", {
             text "Each of your Pokémon has no Weakness."
@@ -3055,18 +3055,9 @@ public enum LegendsAwakened implements LogicCardInfo {
               directDamage 10*count, tar
             }
           }
-          move "", {
-            text "Put this card onto your Active Azelf. Azelf LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case GLISCOR_LV_X_141:
-        return evolution (this, from:"Gliscor", hp:HP110, type:FIGHTING, retreatCost:0) {
+        return levelUp (this, from:"Gliscor", hp:HP110, type:FIGHTING, retreatCost:0) {
           weakness W
           resistance F, MINUS20
           pokePower "Shoot Poison", {
@@ -3082,18 +3073,9 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Gliscor. Gliscor LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case MAGNEZONE_LV_X_142:
-        return evolution (this, from:"Magnezone", hp:HP140, type:METAL, retreatCost:4) {
+        return levelUp (this, from:"Magnezone", hp:HP140, type:METAL, retreatCost:4) {
           weakness R
           resistance P, MINUS20
           pokePower "Electric Trans", {
@@ -3109,18 +3091,9 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Magnezone. Magnezone LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case MESPRIT_LV_X_143:
-        return evolution (this, from:"Mesprit", hp:HP090, type:PSYCHIC, retreatCost:1) {
+        return levelUp (this, from:"Mesprit", hp:HP090, type:PSYCHIC, retreatCost:1) {
           weakness P
           move "Healing Look", {
             text "Remove 3 damage counters from each of your Benched Pokémon."
@@ -3142,18 +3115,9 @@ public enum LegendsAwakened implements LogicCardInfo {
               discardAllSelfEnergy()
             }
           }
-          move "", {
-            text "Put this card onto your Active Mesprit. Mesprit LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case MEWTWO_LV_X_144:
-        return evolution (this, from:"Mewtwo", hp:HP120, type:PSYCHIC, retreatCost:2) {
+        return levelUp (this, from:"Mewtwo", hp:HP120, type:PSYCHIC, retreatCost:2) {
           weakness P
           pokeBody "Psybarrier", {
             text "Prevent all effects of attacks, including damage, done to Mewtwo by your opponent’s Pokémon that isn’t an Evolved Pokémon."
@@ -3168,18 +3132,9 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Mewtwo. Mewtwo LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case RHYPERIOR_LV_X_145:
-        return evolution (this, from:"Rhyperior", hp:HP170, type:FIGHTING, retreatCost:4) {
+        return levelUp (this, from:"Rhyperior", hp:HP170, type:FIGHTING, retreatCost:4) {
           weakness W
           resistance L, MINUS20
           move "Hard Crush", {
@@ -3198,18 +3153,9 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Rhyperior. Rhyperior LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case UXIE_LV_X_146:
-        return evolution (this, from:"Uxie", hp:HP090, type:PSYCHIC, retreatCost:1) {
+        return levelUp (this, from:"Uxie", hp:HP090, type:PSYCHIC, retreatCost:1) {
           weakness P
           pokePower "Trade Off", {
             text "Once during your turn , you may look at the top 2 cards of your deck, choose 1 of them, and put it into your hand. Put the other card on the bottom of your deck. This power can’t be used if Uxie is affected by a Special Condition. You can’t use more than 1 Trade Off Poké-Power each turn."
@@ -3234,15 +3180,6 @@ public enum LegendsAwakened implements LogicCardInfo {
               cantUseAttack thisMove, self
             }
           }
-          move "", {
-            text "Put this card onto your Active Uxie. Uxie LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       default:
         return null;

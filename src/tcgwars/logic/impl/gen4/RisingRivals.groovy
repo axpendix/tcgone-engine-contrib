@@ -121,15 +121,15 @@ public enum RisingRivals implements LogicCardInfo {
   METAL_ENERGY_100 ("Metal Energy", "100", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   SP_ENERGY_101 ("SP Energy", "101", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   UPPER_ENERGY_102 ("Upper Energy", "102", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
-  ALAKAZAM_E4_LV_X_103 ("Alakazam E4 LV.X", "103", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _PSYCHIC_]),
-  FLOATZEL_GL_LV_X_104 ("Floatzel GL LV.X", "104", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _WATER_]),
-  FLYGON_LV_X_105 ("Flygon LV.X", "105", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _COLORLESS_]),
-  GALLADE_E4_LV_X_106 ("Gallade E4 LV.X", "106", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _PSYCHIC_]),
-  HIPPOWDON_LV_X_107 ("Hippowdon LV.X", "107", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _FIGHTING_]),
-  INFERNAPE_E4_LV_X_108 ("Infernape E4 LV.X", "108", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _FIRE_]),
-  LUXRAY_GL_LV_X_109 ("Luxray GL LV.X", "109", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _LIGHTNING_]),
-  MISMAGIUS_GL_LV_X_110 ("Mismagius GL LV.X", "110", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _PSYCHIC_]),
-  SNORLAX_LV_X_111 ("Snorlax LV.X", "111", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _COLORLESS_]),
+  ALAKAZAM_E4_LV_X_103 ("Alakazam E4", "103", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _PSYCHIC_]),
+  FLOATZEL_GL_LV_X_104 ("Floatzel GL", "104", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _WATER_]),
+  FLYGON_LV_X_105 ("Flygon", "105", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _COLORLESS_]),
+  GALLADE_E4_LV_X_106 ("Gallade E4", "106", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _PSYCHIC_]),
+  HIPPOWDON_LV_X_107 ("Hippowdon", "107", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _FIGHTING_]),
+  INFERNAPE_E4_LV_X_108 ("Infernape E4", "108", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _FIRE_]),
+  LUXRAY_GL_LV_X_109 ("Luxray GL", "109", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _LIGHTNING_]),
+  MISMAGIUS_GL_LV_X_110 ("Mismagius GL", "110", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _PSYCHIC_]),
+  SNORLAX_LV_X_111 ("Snorlax", "111", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _COLORLESS_]),
   PIKACHU_112 ("Pikachu", "112", Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
   FLYING_PIKACHU_113 ("Flying Pikachu", "113", Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
   SURFING_PIKACHU_114 ("Surfing Pikachu", "114", Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
@@ -2305,7 +2305,7 @@ public enum RisingRivals implements LogicCardInfo {
           }
         };
       case ALAKAZAM_E4_LV_X_103:
-        return evolution (this, from:"Alakazam 4", hp:HP100, type:PSYCHIC, retreatCost:2) {
+        return levelUp (this, from:"Alakazam 4", hp:HP100, type:PSYCHIC, retreatCost:2) {
           weakness P
           pokePower "Damage Switch", {
             text "As often as you like during your turn , you may move 1 damage counter from 1 of your Pokémon to another of your Pokémon . This power can’t be used if Alakazam 4 is affected by a Special Condition."
@@ -2320,18 +2320,9 @@ public enum RisingRivals implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Alakazam 4. Alakazam LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case FLOATZEL_GL_LV_X_104:
-        return evolution (this, from:"Floatzel GL", hp:HP100, type:WATER, retreatCost:0) {
+        return levelUp (this, from:"Floatzel GL", hp:HP100, type:WATER, retreatCost:0) {
           weakness L
           pokeBody "Water Rescue", {
             text "Whenever any of your Pokémon (excluding any Floatzel) is Knocked Out by damage from your opponent’s attack, you may put that Pokémon and all cards that were attached to it from your discard pile into your hand."
@@ -2346,18 +2337,9 @@ public enum RisingRivals implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Floatzel . Floatzel LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case FLYGON_LV_X_105:
-        return evolution (this, from:"Flygon", hp:HP140, type:COLORLESS, retreatCost:0) {
+        return levelUp (this, from:"Flygon", hp:HP140, type:COLORLESS, retreatCost:0) {
           weakness C
           resistance L, MINUS20
           pokeBody "Wind Erosion", {
@@ -2373,18 +2355,9 @@ public enum RisingRivals implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Flygon. Flygon LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case GALLADE_E4_LV_X_106:
-        return evolution (this, from:"Gallade 4", hp:HP100, type:PSYCHIC, retreatCost:1) {
+        return levelUp (this, from:"Gallade 4", hp:HP100, type:PSYCHIC, retreatCost:1) {
           weakness P
           pokePower "Blade Storm", {
             text "Once during your turn , when you put Gallade LV. from your hand onto your Active Gallade , you may put 1 damage counter on each of your opponent’s Pokémon."
@@ -2399,18 +2372,9 @@ public enum RisingRivals implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Gallade 4. Gallade LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case HIPPOWDON_LV_X_107:
-        return evolution (this, from:"Hippowdon", hp:HP130, type:FIGHTING, retreatCost:4) {
+        return levelUp (this, from:"Hippowdon", hp:HP130, type:FIGHTING, retreatCost:4) {
           weakness W
           resistance L, MINUS20
           pokePower "Sand Reset", {
@@ -2426,18 +2390,9 @@ public enum RisingRivals implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Hippowdon. Hippowdon LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case INFERNAPE_E4_LV_X_108:
-        return evolution (this, from:"Infernape 4", hp:HP110, type:FIRE, retreatCost:0) {
+        return levelUp (this, from:"Infernape 4", hp:HP110, type:FIRE, retreatCost:0) {
           weakness W
           pokePower "Intimidating Roar", {
             text "Once during your turn , you may have your opponent switch his or her Active Pokémon with one of his or her Benched Pokémon. This power can’t be used if Infernape 4 is affected by a Special Condition."
@@ -2452,18 +2407,9 @@ public enum RisingRivals implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Infernape 4. Infernape LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case LUXRAY_GL_LV_X_109:
-        return evolution (this, from:"Luxray GL", hp:HP110, type:LIGHTNING, retreatCost:0) {
+        return levelUp (this, from:"Luxray GL", hp:HP110, type:LIGHTNING, retreatCost:0) {
           weakness F
           resistance M, MINUS20
           move "", {
@@ -2486,18 +2432,9 @@ public enum RisingRivals implements LogicCardInfo {
               damage 30, my.all.choose("Choose Pokemon to do 30 damage to")
             }
           }
-          move "", {
-            text "Put this card onto your Active Luxray . Luxray LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case MISMAGIUS_GL_LV_X_110:
-        return evolution (this, from:"Mismagius GL", hp:HP100, type:PSYCHIC, retreatCost:1) {
+        return levelUp (this, from:"Mismagius GL", hp:HP100, type:PSYCHIC, retreatCost:1) {
           weakness D
           resistance C, MINUS20
           pokePower "Magical Return", {
@@ -2513,18 +2450,9 @@ public enum RisingRivals implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Mismagius . Mismagius LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case SNORLAX_LV_X_111:
-        return evolution (this, from:"Snorlax", hp:HP130, type:COLORLESS, retreatCost:4) {
+        return levelUp (this, from:"Snorlax", hp:HP130, type:COLORLESS, retreatCost:4) {
           weakness F
           pokePower "Big Appetite", {
             text "Once during your turn , if Snorlax is your Active Pokémon, you may draw cards until you have 6 cards in your hand. If you do, Snorlax is now Asleep. This power can’t be used if Snorlax is affected by a Special Condition."
@@ -2539,15 +2467,6 @@ public enum RisingRivals implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Snorlax. Snorlax LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case PIKACHU_112:
         return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {

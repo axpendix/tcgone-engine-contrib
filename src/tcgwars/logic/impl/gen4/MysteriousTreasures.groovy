@@ -157,9 +157,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
   MULTI_ENERGY_118 ("Multi Energy", "118", Rarity.RARE, [SPECIAL_ENERGY, ENERGY]),
   DARKNESS_ENERGY_119 ("Darkness Energy", "119", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   METAL_ENERGY_120 ("Metal Energy", "120", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
-  ELECTIVIRE_LV_X_121 ("Electivire LV.X", "121", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _LIGHTNING_]),
-  LUCARIO_LV_X_122 ("Lucario LV.X", "122", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _FIGHTING_]),
-  MAGMORTAR_LV_X_123 ("Magmortar LV.X", "123", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _FIRE_]),
+  ELECTIVIRE_LV_X_121 ("Electivire", "121", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _LIGHTNING_]),
+  LUCARIO_LV_X_122 ("Lucario", "122", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _FIGHTING_]),
+  MAGMORTAR_LV_X_123 ("Magmortar", "123", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _FIRE_]),
   TIME_SPACE_DISTORTION_124 ("Time-Space Distortion", "124", Rarity.HOLORARE, [TRAINER, ITEM]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
@@ -1379,6 +1379,11 @@ public enum MysteriousTreasures implements LogicCardInfo {
             text "Your opponent can’t remove the Special Condition Poisoned by evolving or devolving his or her Poisoned Pokémon. (This also includes putting a Pokémon Level-Up card onto the Poisoned Pokémon.)"
             delayedA {
               before POISONED_SPC, null, null, EVOLVE, {
+                if(ef.target == self.owner.opposite){
+                  prevent()
+                }
+              }
+              before POISONED_SPC, null, null, LEVELLING_UP, {
                 if(ef.target == self.owner.opposite){
                   prevent()
                 }
