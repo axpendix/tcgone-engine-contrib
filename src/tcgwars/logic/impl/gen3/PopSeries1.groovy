@@ -50,8 +50,8 @@ public enum PopSeries1 implements LogicCardInfo {
   PLUSLE_13 ("Plusle", "13", Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
   SURSKIT_14 ("Surskit", "14", Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
   SWELLOW_15 ("Swellow", "15", Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
-  ARMALDO_EX_16 ("Armaldo ex", "16", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_]),
-  TYRANITAR_EX_17 ("Tyranitar ex", "17", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _DARKNESS_]);
+  ARMALDO_EX_16 ("Armaldo ex", "16", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, EX, _FIGHTING_]),
+  TYRANITAR_EX_17 ("Tyranitar ex", "17", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, EX, _DARKNESS_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
