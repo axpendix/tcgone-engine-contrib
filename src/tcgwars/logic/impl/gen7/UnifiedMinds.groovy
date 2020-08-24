@@ -4460,7 +4460,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           text "Look at the top 6 cards of your deck and put 2 of them into your hand. Discard the other cards."
           onPlay {
             def cards = my.deck.subList(0,6)
-            def moved = cards.select(count:2,"Choose 2 cards to put in your hand. The rest will be discarded.").moveTo(my.hand)
+            def moved = cards.select(count:2,"Choose 2 cards to put in your hand. The rest will be discarded.").moveTo(hidden: true, my.hand)
             cards.removeAll(moved)
             cards.discard()
           }
