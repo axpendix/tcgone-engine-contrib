@@ -1237,6 +1237,7 @@ public enum BurningShadows implements LogicCardInfo {
         };
       case WOBBUFFET_49:
         return basic (this, hp:HP120, type:PSYCHIC, retreatCost:3) {
+          weakness PSYCHIC
           move "Shadowy Knot", {
             text "50× damage. This attack does 50 damage times the number of [C] in your opponent's Active Pokémon's Retreat Cost."
             energyCost P, P, P
