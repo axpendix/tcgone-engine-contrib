@@ -1747,7 +1747,7 @@ public enum TeamUp implements LogicCardInfo {
                 }
               }
               before MOVE_CARD, {
-                if (ef.newLocation == self.owner.opposite.pbg.hand && pcs && pcs.numberOfDamageCounters) {
+                if (ef.newLocation == self.owner.opposite.pbg.hand && pcs && pcs.numberOfDamageCounters && !hasThetaStop(pcs)) {
                   doBlock = true
                   if (!messageDisplayed) {
                     messageDisplayed = true
