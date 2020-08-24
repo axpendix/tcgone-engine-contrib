@@ -1883,8 +1883,9 @@ public enum TeamUp implements LogicCardInfo {
             energyCost F,C,C
             onAttack{
               damage 80
-              afterDamage {
-                if(bg.stadiumInfoStruct){
+              if(bg.stadiumInfoStruct){
+                damage 80
+                afterDamage {
                   discard bg.stadiumInfoStruct.stadiumCard
                 }
               }
