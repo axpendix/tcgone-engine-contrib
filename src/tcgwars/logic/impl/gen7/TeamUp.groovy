@@ -498,7 +498,7 @@ public enum TeamUp implements LogicCardInfo {
             energyCost G,G
             onAttack{
               my.all.each{
-                damage 30*it.cards.energyCount()
+                damage 30 * it.cards.filterByType(BASIC_ENERGY).energyCount()
               }
             }
           }
