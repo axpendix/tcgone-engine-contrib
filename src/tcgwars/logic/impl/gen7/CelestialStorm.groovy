@@ -1133,10 +1133,12 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 30
               delayed{
                 before APPLY_ATTACK_DAMAGES, {
-                  bg.dm().each {
-                    if(it.to == self && it.from.realEvolution && it.dmg.value <= 40 && it.notNoEffect) {
-                      bc "Deflecting Splash prevents damage from Evolution Pokémon"
-                      it.dmg = hp(0)
+                  if (ef.attacker.realEvolution){
+                    bg.dm().each {
+                      if(it.to == self && it.dmg.value && it.notNoEffect) {
+                        bc "Deflecting Splash prevents damage from Evolution Pokémon"
+                        it.dmg = hp(0)
+                      }
                     }
                   }
                 }
