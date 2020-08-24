@@ -2871,7 +2871,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             energyCost F
             onAttack {
               damage 30
-              if(self.lastEvolved == bg.turnCount){
+              if(self.lastEvolved == bg.turnCount && self.cards.any{it.name.contains("Riolu")}){
                 damage 90
               }
             }
