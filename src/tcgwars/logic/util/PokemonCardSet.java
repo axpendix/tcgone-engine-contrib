@@ -127,6 +127,14 @@ public class PokemonCardSet implements PokemonStack, Serializable {
     return null; //Should an IllegalStateException be thrown here, same as above?
   }
 
+  public PokemonCard getTopNonLevelUpPokemonCard() {
+    for (Card card : cards().filterByType(CardType.POKEMON)) {
+      if (card.getCardTypes().is(CardType.LEVEL_UP)) continue;
+      return card.asPokemonCard();
+    }
+    return null; //Should an IllegalStateException be thrown here, same as above?
+  }
+
   public CardList getCards() {
     return set;
   }
@@ -297,6 +305,10 @@ public class PokemonCardSet implements PokemonStack, Serializable {
 
   public boolean isPokemonEX() {
     return getTopPokemonCard().getCardTypes().is(CardType.POKEMON_EX);
+  }
+
+  public boolean isPokemonLevelUp() {
+    return getTopPokemonCard().getCardTypes().is(CardType.LEVEL_UP);
   }
 
   public boolean isPokemonBreak() {

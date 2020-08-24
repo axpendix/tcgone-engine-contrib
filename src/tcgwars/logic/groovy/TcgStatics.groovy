@@ -510,12 +510,20 @@ class TcgStatics {
     bg().em().run(new CantEvolve(pcs, bg().getTurnCount()));
     bg().em().run(new ActivateAbilities((PokemonCard) card, pcs, reason));
   }
-  static devolve (PokemonCardSet pcs, Card card){
+  static devolve (PokemonCardSet pcs, Card card, CardList newLocation) {
     bg().em().run(new Devolve(pcs));
     if (all.contains(pcs)) { //not dead yet.
+      bg().em().run(new MoveCard(card, newLocation));
       bg().em().run(new RemoveFromPlay(pcs, new CardList(card)));
       bg().em().run(new CantEvolve(pcs, bg().getTurnCount()));
-//			bg().em().run(new ActivateAbilities(pcs.getTopPokemonCard(), pcs, ActivationReason.OTHER));
+
+      // Remove the highest stage non-level up card if devolved from level-up
+      if (card.cardTypes.is(LEVEL_UP) && pcs.cards.filterByType(POKEMON).size() > 1) {
+        bg().em().run(new MoveCard(pcs.topNonLevelUpPokemonCard, newLocation));
+        bg().em().run(new RemoveFromPlay(pcs, new CardList(pcs.topNonLevelUpPokemonCard)));
+      }
+
+      bc "$card Devolved"
     }
   }
   static babyEvolution(String evolName, PokemonCardSet baby){
