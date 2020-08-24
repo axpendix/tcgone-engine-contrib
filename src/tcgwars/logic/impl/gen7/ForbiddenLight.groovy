@@ -2393,7 +2393,13 @@ public enum ForbiddenLight implements LogicCardInfo {
             energyCost P, M
             onAttack {
               damage 20
-              damage 80*self.cards.filterByBasicEnergyType(P).discard().size()
+              def basicPsyEnergies = self.cards.filterByBasicEnergyType(P)
+              if (basicPsyEnergies) {
+                damage 80 * basicPsyEnergies.size()
+                afterDamage {
+                  basicPsyEnergies.discard()
+                }
+              }
             }
           }
           move "Sky-Scorching Light GX", {
