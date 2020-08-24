@@ -2148,12 +2148,10 @@ public enum ForbiddenLight implements LogicCardInfo {
             text "Once during your turn (before your attack), you may flip a coin. If heads, put an Item card from your discard pile on top of your deck."
             actionA {
               checkLastTurn()
-              assert my.discard.filterByType(ITEM)
+              assert my.discard.hasType(ITEM)
               powerUsed()
               flip {
-                def tar = my.discard.filterByType(ITEM).select().first()
-                my.discard.remove(tar)
-                my.deck.add(0, tar)
+                my.discard.filterByType(ITEM).select("Put an Item card from your discard pile on top of your deck").moveTo(addToTop: true, my.deck)
               }
             }
           }
