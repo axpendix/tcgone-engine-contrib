@@ -1,6 +1,7 @@
 package tcgwars.logic.impl.gen3;
 
-import tcgwars.logic.impl.gen1.WizardsBlackStarPromosNG;
+import tcgwars.logic.impl.gen1.WizardsBlackStarPromosNG
+import tcgwars.logic.impl.gen2.Aquapolis;
 import tcgwars.logic.impl.gen3.UnseenForces;
 import tcgwars.logic.impl.gen3.LegendMaker;
 
@@ -39,46 +40,46 @@ import tcgwars.logic.util.*;
  */
 public enum NintendoBlackStarPromos implements LogicCardInfo {
 
-  KYOGRE_EX_1 ("Kyogre ex", "1", Rarity.RARE, [POKEMON, BASIC, _WATER_]),
-  GROUDON_EX_2 ("Groudon ex", "2", Rarity.RARE, [POKEMON, BASIC, _FIGHTING_]),
-  TREECKO_3 ("Treecko", "3", Rarity.RARE, [POKEMON, BASIC, _GRASS_]),
-  GROVYLE_4 ("Grovyle", "4", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
-  MUDKIP_5 ("Mudkip", "5", Rarity.RARE, [POKEMON, BASIC, _WATER_]),
-  TORCHIC_6 ("Torchic", "6", Rarity.RARE, [POKEMON, BASIC, _FIRE_]),
-  TREECKO_7 ("Treecko", "7", Rarity.RARE, [POKEMON, BASIC, _GRASS_]),
-  TORCHIC_8 ("Torchic", "8", Rarity.RARE, [POKEMON, BASIC, _FIRE_]),
-  COMBUSKEN_9 ("Combusken", "9", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
-  MUDKIP_10 ("Mudkip", "10", Rarity.RARE, [POKEMON, BASIC, _WATER_]),
-  MARSHTOMP_11 ("Marshtomp", "11", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
-  PIKACHU_12 ("Pikachu", "12", Rarity.RARE, [POKEMON, BASIC, _LIGHTNING_]),
-  MEOWTH_13 ("Meowth", "13", Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
-  LATIAS_14 ("Latias", "14", Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
-  LATIOS_15 ("Latios", "15", Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
-  TREECKO_16 ("Treecko", "16", Rarity.RARE, [POKEMON, BASIC, _GRASS_]),
-  TORCHIC_17 ("Torchic", "17", Rarity.RARE, [POKEMON, BASIC, _FIRE_]),
-  MUDKIP_18 ("Mudkip", "18", Rarity.RARE, [POKEMON, BASIC, _WATER_]),
-  WHISMUR_19 ("Whismur", "19", Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
-  LUDICOLO_20 ("Ludicolo", "20", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _WATER_]),
-  JIRACHI_21 ("Jirachi", "21", Rarity.RARE, [POKEMON, BASIC, _PSYCHIC_]),
-  BELDUM_22 ("Beldum", "22", Rarity.RARE, [POKEMON, BASIC, _METAL_]),
-  METANG_23 ("Metang", "23", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
-  CHIMECHO_24 ("Chimecho", "24", Rarity.RARE, [POKEMON, BASIC, _PSYCHIC_]),
-  FLYGON_25 ("Flygon", "25", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]),
-  TROPICAL_WIND_26 ("Tropical Wind", "26", Rarity.RARE, [TRAINER, ITEM]),
-  TROPICAL_TIDAL_WAVE_27 ("Tropical Tidal Wave", "27", Rarity.RARE, [TRAINER, ITEM]),
-  CHAMPIONSHIP_ARENA_28 ("Championship Arena", "28", Rarity.RARE, [TRAINER, STADIUM]),
-  CELEBI_29 ("Celebi", "29", Rarity.RARE, [POKEMON, BASIC, _GRASS_]),
-  SUICUNE_30 ("Suicune", "30", Rarity.RARE, [POKEMON, BASIC, _WATER_]),
-  MOLTRES_EX_31 ("Moltres ex", "31", Rarity.RARE, [POKEMON, BASIC, _FIRE_]),
-  ARTICUNO_EX_32 ("Articuno ex", "32", Rarity.RARE, [POKEMON, BASIC, _WATER_]),
-  ZAPDOS_EX_33 ("Zapdos ex", "33", Rarity.RARE, [POKEMON, BASIC, _LIGHTNING_]),
-  TYPHLOSION_34 ("Typhlosion", "34", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _FIRE_]),
-  PIKACHU_DELTA_35 ("Pikachu", "35", Rarity.RARE, [POKEMON, BASIC, DELTA, _METAL_]),
-  TROPICAL_TIDAL_WAVE_36 ("Tropical Tidal Wave", "36", Rarity.RARE, [TRAINER, ITEM]),
-  KYOGRE_EX_37 ("Kyogre ex", "37", Rarity.RARE, [POKEMON, BASIC, _WATER_]),
-  GROUDON_EX_38 ("Groudon ex", "38", Rarity.RARE, [POKEMON, BASIC, _FIGHTING_]),
-  RAYQUAZA_EX_39 ("Rayquaza ex", "39", Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
-  MEW_40 ("Mew", "40", Rarity.RARE, [POKEMON, BASIC, _PSYCHIC_]);
+  KYOGRE_EX_1 ("Kyogre ex", "001", Rarity.PROMO, [POKEMON, BASIC, EX, _WATER_]),
+  GROUDON_EX_2 ("Groudon ex", "002", Rarity.PROMO, [POKEMON, BASIC, EX, _FIGHTING_]),
+  TREECKO_3 ("Treecko", "003", Rarity.PROMO, [POKEMON, BASIC, _GRASS_]),
+  GROVYLE_4 ("Grovyle", "004", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
+  MUDKIP_5 ("Mudkip", "005", Rarity.PROMO, [POKEMON, BASIC, _WATER_]),
+  TORCHIC_6 ("Torchic", "006", Rarity.PROMO, [POKEMON, BASIC, _FIRE_]),
+  TREECKO_7 ("Treecko", "007", Rarity.PROMO, [POKEMON, BASIC, _GRASS_]),
+  TORCHIC_8 ("Torchic", "008", Rarity.PROMO, [POKEMON, BASIC, _FIRE_]),
+  COMBUSKEN_9 ("Combusken", "009", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+  MUDKIP_10 ("Mudkip", "010", Rarity.PROMO, [POKEMON, BASIC, _WATER_]),
+  MARSHTOMP_11 ("Marshtomp", "011", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
+  PIKACHU_12 ("Pikachu", "012", Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
+  MEOWTH_13 ("Meowth", "013", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
+  LATIAS_14 ("Latias", "014", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
+  LATIOS_15 ("Latios", "015", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
+  TREECKO_16 ("Treecko", "016", Rarity.PROMO, [POKEMON, BASIC, _GRASS_]),
+  TORCHIC_17 ("Torchic", "017", Rarity.PROMO, [POKEMON, BASIC, _FIRE_]),
+  MUDKIP_18 ("Mudkip", "018", Rarity.PROMO, [POKEMON, BASIC, _WATER_]),
+  WHISMUR_19 ("Whismur", "019", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
+  LUDICOLO_20 ("Ludicolo", "020", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _WATER_]),
+  JIRACHI_21 ("Jirachi", "021", Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
+  BELDUM_22 ("Beldum", "022", Rarity.PROMO, [POKEMON, BASIC, _METAL_]),
+  METANG_23 ("Metang", "023", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
+  CHIMECHO_24 ("Chimecho", "024", Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
+  FLYGON_25 ("Flygon", "025", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]),
+  TROPICAL_WIND_26 ("Tropical Wind", "026", Rarity.PROMO, [TRAINER, ITEM]),
+  TROPICAL_TIDAL_WAVE_27 ("Tropical Tidal Wave", "027", Rarity.PROMO, [TRAINER, ITEM]),
+  CHAMPIONSHIP_ARENA_28 ("Championship Arena", "028", Rarity.PROMO, [TRAINER, STADIUM]),
+  CELEBI_29 ("Celebi", "029", Rarity.PROMO, [POKEMON, BASIC, _GRASS_]),
+  SUICUNE_30 ("Suicune", "030", Rarity.PROMO, [POKEMON, BASIC, _WATER_]),
+  MOLTRES_EX_31 ("Moltres ex", "031", Rarity.PROMO, [POKEMON, BASIC, EX, _FIRE_]),
+  ARTICUNO_EX_32 ("Articuno ex", "032", Rarity.PROMO, [POKEMON, BASIC, EX, _WATER_]),
+  ZAPDOS_EX_33 ("Zapdos ex", "033", Rarity.PROMO, [POKEMON, BASIC, EX, _LIGHTNING_]),
+  TYPHLOSION_34 ("Typhlosion", "034", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _FIRE_]),
+  PIKACHU_DELTA_35 ("Pikachu", "035", Rarity.PROMO, [POKEMON, BASIC, DELTA, _METAL_]),
+  TROPICAL_TIDAL_WAVE_36 ("Tropical Tidal Wave", "036", Rarity.PROMO, [TRAINER, ITEM]),
+  KYOGRE_EX_37 ("Kyogre ex", "037", Rarity.PROMO, [POKEMON, BASIC, EX, _WATER_]),
+  GROUDON_EX_38 ("Groudon ex", "038", Rarity.PROMO, [POKEMON, BASIC, EX, _FIGHTING_]),
+  RAYQUAZA_EX_39 ("Rayquaza ex", "039", Rarity.PROMO, [POKEMON, BASIC, EX, _COLORLESS_]),
+  MEW_40 ("Mew", "040", Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -140,6 +141,14 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
           energyCost W, W, W, W
           onAttack {
             damage 60
+            all.each {
+              if (it.benched) {
+                damage 10, it
+              }
+            }
+            afterDamage {
+              discardSelfEnergy(W)
+            }
           }
         }
       };
@@ -151,125 +160,33 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
           energyCost F, F, F, F
           onAttack {
             damage 80
+            my.bench.each {
+              damage 10, it
+            }
+            afterDamage {
+              discardSelfEnergy(F)
+            }
           }
         }
       };
       case TREECKO_3:
-      return basic (this, hp:HP040, type:G, retreatCost:1) {
-        weakness R
-        resistance W, MINUS30
-        move "Tail Slap", {
-          text "10 damage. "
-          energyCost C
-          onAttack {
-            damage 10
-          }
-        }
-        move "Razor Leaf", {
-          text "20 damage. "
-          energyCost G, C
-          onAttack {
-            damage 20
-          }
-        }
-      };
+        return copy(RubySapphire.TREECKO_76, this);
       case GROVYLE_4:
-      return evolution (this, from:"Treecko", hp:HP070, type:G, retreatCost:1) {
-        weakness R
-        resistance W, MINUS30
-        move "Poison Breath", {
-          text "The Defending Pokémon is now Poisoned."
-          energyCost C, C
-          onAttack {
-
-          }
-        }
-        move "Swift", {
-          text "30 damage. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
-          energyCost G, C, C
-          onAttack {
-            damage 30
-          }
-        }
-      };
+        return copy(RubySapphire.GROVYLE_31, this);
       case MUDKIP_5:
-      return basic (this, hp:HP050, type:W, retreatCost:1) {
-        weakness L
-        move "Pound", {
-          text "10 damage. "
-          energyCost C
-          onAttack {
-            damage 10
-          }
-        }
-        move "Fury Swipes", {
-          text "10x damage. Flip 3 coins. This attack does 10 damage times the number of heads."
-          energyCost C, C
-          onAttack {
-            damage 10
-          }
-        }
-      };
+        return copy(RubySapphire.MUDKIP_60, this);
       case TORCHIC_6:
-      return basic (this, hp:HP040, type:R, retreatCost:1) {
-        weakness W
-        move "Peck", {
-          text "10 damage. "
-          energyCost C
-          onAttack {
-            damage 10
-          }
-        }
-        move "Fireworks", {
-          text "30 damage. Flip a coin. If tails, discard a [R] Energy card attached to Torchic."
-          energyCost R, C
-          onAttack {
-            damage 30
-          }
-        }
-      };
+        return copy(RubySapphire.TORCHIC_73, this);
       case TREECKO_7:
       return copy (TREECKO_3, this);
       case TORCHIC_8:
       return copy (TORCHIC_6, this);
       case COMBUSKEN_9:
-      return evolution (this, from:"Torchic", hp:HP070, type:R, retreatCost:1) {
-        weakness W
-        move "Flare", {
-          text "20 damage. "
-          energyCost R
-          onAttack {
-            damage 20
-          }
-        }
-        move "Double Kick", {
-          text "40x damage. Flip 2 coins. This attack does 40 damage times the number of heads."
-          energyCost C, C, C
-          onAttack {
-            damage 40
-          }
-        }
-      };
+        return copy(RubySapphire.COMBUSKEN_27, this);
       case MUDKIP_10:
       return copy (MUDKIP_5, this);
       case MARSHTOMP_11:
-      return evolution (this, from:"Mudkip", hp:HP070, type:W, retreatCost:1) {
-        weakness L
-        move "Bubble", {
-          text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-          energyCost W
-          onAttack {
-            damage 10
-          }
-        }
-        move "Slash", {
-          text "40 damage. "
-          energyCost C, C, C
-          onAttack {
-            damage 40
-          }
-        }
-      };
+        return copy(RubySapphire.MARSHTOMP_40, this);
       case PIKACHU_12:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -277,7 +194,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
           text "Flip a coin. If heads, prevent all effects of an attack, including damage, done to Pikachu during your opponent's next turn."
           energyCost C
           onAttack {
-
+            flip { preventAllDamageNextTurn() }
           }
         }
         move "Thundershock", {
@@ -285,6 +202,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
           energyCost L, C
           onAttack {
             damage 20
+            flip { applyAfterDamage(PARALYZED) }
           }
         }
       };
@@ -295,6 +213,9 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
           text "10 damage. Before doing damage, discard all Trainer cards attached to the Defending Pokémon (before they affect the damage)."
           energyCost C
           onAttack {
+            if (defending.cards.hasType(TRAINER)){
+              defending.cards.filterByType(TRAINER).discard()
+            }
             damage 10
           }
         }
@@ -321,6 +242,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
           energyCost R, W
           onAttack {
             damage 20
+            flip { applyAfterDamage(BURNED) }
           }
         }
       };
@@ -339,6 +261,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
           energyCost W, P, L
           onAttack {
             damage 30
+            flip { applyAfterDamage(PARALYZED) }
           }
         }
       };
@@ -358,6 +281,9 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
           energyCost G
           onAttack {
             damage 10
+            afterDamage {
+              flip { heal 10, self }
+            }
           }
         }
       };
@@ -369,6 +295,9 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
           energyCost R, C
           onAttack {
             damage 30
+            afterDamage {
+              discardSelfEnergy(R)
+            }
           }
         }
       };
@@ -387,6 +316,9 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
           energyCost W, C
           onAttack {
             damage 10
+            afterDamage {
+              flip { discardDefendingEnergy() }
+            }
           }
         }
       };
@@ -397,7 +329,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
           text "Flip a coin. If heads, the Defending Pokémon is now Confused."
           energyCost C
           onAttack {
-
+            flip { apply CONFUSED }
           }
         }
         move "Pound", {
@@ -414,13 +346,19 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         pokeBody "Rain Dish", {
           text "At any time between turns, remove 1 damage counter from Ludicolo."
           delayedA {
+            before BEGIN_TURN, {
+              if (self.numberOfDamageCounters) {
+                bc "Rain Dish activates"
+                heal 10, self
+              }
+            }
           }
         }
         move "Fury Swipes", {
           text "30x damage. Flip 3 coins. This attack does 30 damage times the number of heads."
           energyCost W, C, C
           onAttack {
-            damage 30
+            flip 3, { damage 30 }
           }
         }
       };
@@ -431,53 +369,22 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
           text "Discard an Energy card attached to Jirachi and draw 3 cards."
           energyCost C
           onAttack {
-
+            discardSelfEnergy(C)
+            draw 3
           }
         }
         move "Psywave", {
           text "10x damage. Does 10 damage times the amount of Energy attached to the Defending Pokémon."
           energyCost P
           onAttack {
-            damage 10
+            damage 10 * defending.cards.energyCount(C)
           }
         }
       };
       case BELDUM_22:
-      return basic (this, hp:HP050, type:M, retreatCost:2) {
-        weakness R
-        resistance G, MINUS30
-        pokePower "Magnetic Call", {
-          text "Once during your turn (before your attack), you may flip a coin. If heads, search your deck for a Metal Basic Pokémon and put it onto your Bench. Shuffle your deck afterward. This power can't be used if Beldum is affected by a Special Condition."
-          actionA {
-          }
-        }
-        move "Metal Charge", {
-          text "30 damage. Put 1 damage counter on Beldum."
-          energyCost M, C
-          onAttack {
-            damage 30
-          }
-        }
-      };
+        return copy(HiddenLegends.BELDUM_29, this);
       case METANG_23:
-      return evolution (this, from:"Beldum", hp:HP080, type:M, retreatCost:2) {
-        weakness R
-        resistance G, MINUS30
-        move "Metal Load", {
-          text "Search your discard pile for a [M] Energy card and attach it to Metang."
-          energyCost C
-          onAttack {
-
-          }
-        }
-        move "Metal Claw", {
-          text "30 damage. "
-          energyCost M, C
-          onAttack {
-            damage 30
-          }
-        }
-      };
+        return copy(HiddenLegends.METANG_21, this);
       case CHIMECHO_24:
       return basic (this, hp:HP070, type:P, retreatCost:1) {
         weakness P
@@ -485,14 +392,15 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
           text "Your opponent switches each Defending Pokémon with his or her Benched Pokémon. If your opponent has only 1 Benched Pokémon, you choose the Defending Pokémon to switch."
           energyCost C
           onAttack {
-
+            whirlwind()
           }
         }
         move "Healing Sound", {
           text "Remove 3 damage counters from each of your Active Pokémon. Each Defending Pokémon is now Asleep."
           energyCost C, C
           onAttack {
-
+            heal 30, my.active
+            apply ASLEEP
           }
         }
       };
@@ -506,13 +414,17 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 20
+            cantRetreat defending
           }
         }
         move "Dragonbreath", {
           text "80 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed. If tails, this attack does nothing."
           energyCost G, L, C, C
           onAttack {
-            damage 80
+            flip {
+              damage 80
+              applyAfterDamage PARALYZED
+            }
           }
         }
       };
@@ -520,13 +432,20 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
       return itemCard (this) {
         text "Flip a coin. If heads, remove 2 damage counters from each Active Pokémon (remove 1 damage counter if a Pokémon has only 1). If tails, each Active Pokémon is now Asleep."
         onPlay {
+          flip 1, {
+            [my.active, opp.active].each{ heal 20, it, TRAINER_CARD }
+          }, {
+            [my.active, opp.active].each{apply ASLEEP, it, TRAINER_CARD }
+          }
         }
         playRequirement{
+          assert [my.active, opp.active].any{it.numberOfDamageCounters || !it.isSPC(ASLEEP)} : "Neither Active Pokémon has any damage counters on it, and both are already asleep"
         }
       };
       case TROPICAL_TIDAL_WAVE_27:
       return itemCard (this) {
         text "Flip a coin. If heads, discard all Trainer cards your opponent has in play. If tails, discard all Trainer cards (excluding Supporter cards) you have in play."
+        //TODO
         onPlay {
         }
         playRequirement{
@@ -535,35 +454,51 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
       case CHAMPIONSHIP_ARENA_28:
       return stadium (this) {
         text "At the end of each player's turn, if that player has 8 or more cards in his or her hand, that player discards a number of cards until the player has 7 cards left in his or her hand."
+        def eff
         onPlay {
+          eff = delayed {
+            before BETWEEN_TURNS, {
+              if (my.hand.size() >= 8) {
+                def discNum = my.hand.size() - 7
+                my.hand.select(count: discNum, "Championship Arena - Select {discNum} cards to discard from your hand.").discard()
+              }
+            }
+          }
         }
         onRemoveFromPlay{
+          eff.unregister()
         }
       };
       case CELEBI_29:
-      return copy(WizardsBlackStarPromosNG.CELEBI_50, this);
+        return copy(WizardsBlackStarPromosNG.CELEBI_50, this);
       case SUICUNE_30:
-      return basic (this, hp:HP070, type:W, retreatCost:1) {
-        weakness L
-        pokemonPower "Pure Body", {
-          text "Whenever you attach a [W] Energy card from your hand to Suicune, discard an Energy card attached to Suicune. (You can't attach a [W] Energy card from your hand if Suicune has no Energy cards attached.)"
-          actionA {
-          }
-        }
-        move "Hypno Wave", {
-          text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 20 more damage. If tails, this attack does 30 damage and the Defending Pokémon is now Asleep."
-          energyCost W, C, C
-          onAttack {
-            damage 30
-          }
-        }
-      };
+        return copy(Aquapolis.SUICUNE_H25, this);
+        //TODO: Implement in Groovy.
+//      return basic (this, hp:HP070, type:W, retreatCost:1) {
+//        weakness L
+//        pokemonPower "Pure Body", {
+//          text "Whenever you attach a [W] Energy card from your hand to Suicune, discard an Energy card attached to Suicune. (You can't attach a [W] Energy card from your hand if Suicune has no Energy cards attached.)"
+//          actionA {
+//          }
+//        }
+//        move "Hypno Wave", {
+//          text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 20 more damage. If tails, this attack does 30 damage and the Defending Pokémon is now Asleep."
+//          energyCost W, C, C
+//          onAttack {
+//            damage 30
+//            flip 1, { damage 20 }, { applyAfterDamage ASLEEP }
+//          }
+//        }
+//      };
       case MOLTRES_EX_31:
       return basic (this, hp:HP100, type:R, retreatCost:2) {
         weakness W
         pokeBody "Synchronized Lift", {
           text "As long as you have Articuno ex and Zapdos ex in play, the Retreat Cost for Moltres ex is 0."
-          delayedA {
+          getterA (GET_RETREAT_COST, BEFORE_LAST, self) {holder->
+            if (my.all.any{it.name == "Articuno ex"} && my.all.any{it.name == "Zapdos ex"}) {
+              holder.object = 0
+            }
           }
         }
         move "Flame Gift", {
@@ -571,6 +506,11 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 10
+            afterDamage {
+              if ( my.bench && self.cards.energyCount(R) && confirm("Move a [R] Energy card attached to $self to 1 of your Pokémon?") ) {
+                moveEnergy(type: R, self, my.bench.select("Which pokémon will recieve the [R] Energy?"))
+              }
+            }
           }
         }
         move "Scorching Wing", {
@@ -578,6 +518,9 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
           energyCost R, R, C
           onAttack {
             damage 90
+            afterDamage {
+              discardAllSelfEnergy(R)
+            }
           }
         }
       };
@@ -586,7 +529,10 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         weakness M
         pokeBody "Synchronized Lift", {
           text "As long as you have Zapdos ex and Moltres ex in play, the Retreat Cost for Articuno ex is 0."
-          delayedA {
+          getterA (GET_RETREAT_COST, BEFORE_LAST, self) {holder->
+            if (my.all.any{it.name == "Zapdos ex"} && my.all.any{it.name == "Moltres ex"}) {
+              holder.object = 0
+            }
           }
         }
         move "Ice Gift", {
@@ -594,6 +540,11 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 10
+            afterDamage {
+              if ( my.bench && self.cards.energyCount(W) && confirm("Move a [W] Energy card attached to $self to 1 of your Pokémon?") ) {
+                moveEnergy(type: W, self, my.bench.select("Which pokémon will recieve the [W] Energy?"))
+              }
+            }
           }
         }
         move "Freezing Wing", {
@@ -601,6 +552,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
           energyCost W, W, C
           onAttack {
             damage 50
+            flip { applyAfterDamage ASLEEP }
           }
         }
       };
@@ -609,7 +561,10 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         weakness L
         pokeBody "Synchronized Lift", {
           text "As long as you have Articuno ex and Moltres ex in play, the Retreat Cost for Zapdos ex is 0."
-          delayedA {
+          getterA (GET_RETREAT_COST, BEFORE_LAST, self) {holder->
+            if (my.all.any{it.name == "Articuno ex"} && my.all.any{it.name == "Moltres ex"}) {
+              holder.object = 0
+            }
           }
         }
         move "Thunder Gift", {
@@ -617,6 +572,11 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 10
+            afterDamage {
+              if ( my.bench && self.cards.energyCount(L) && confirm("Move a [L] Energy card attached to $self to 1 of your Pokémon?") ) {
+                moveEnergy(type: L, self, my.bench.select("Which pokémon will recieve the [L] Energy?"))
+              }
+            }
           }
         }
         move "Lightning Wing", {
@@ -624,6 +584,9 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
           energyCost L, L, C
           onAttack {
             damage 60
+            if (my.bench) {
+              damage 10, my.bench.select("Deal 10 damage to which Benched Pokémon?")
+            }
           }
         }
       };
@@ -639,6 +602,16 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         pokeBody "Frenzy", {
           text "As long as your opponent has Groudon, Groudon ex, Rayquaza, or Rayquaza ex in play, Kyogre ex's attacks do 40 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
           delayedA {
+            after PROCESS_ATTACK_EFFECTS, {
+              if (ef.attacker == self && opp.all.any{["Groudon", "Groudon ex", "Rayquaza", "Rayquaza ex"].contains(it.name)}) {
+                bg.dm().each {
+                  if (it.to.active && it.to.owner != self.owner && it.dmg.value) {
+                    bc "Frenzy +40"
+                    it.dmg += hp(40)
+                  }
+                }
+              }
+            }
           }
         }
         move "Aqua Supply", {
@@ -646,6 +619,9 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
           energyCost W, C
           onAttack {
             damage 30
+            afterDamage {
+              attachEnergyFrom(basic: true, my.hand, my.all)
+            }
           }
         }
         move "Tsunami", {
@@ -653,6 +629,9 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
           energyCost W, W, C
           onAttack {
             damage 40
+            opp.bench.each{
+              damage 10, it
+            }
           }
         }
       };
@@ -662,6 +641,16 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         pokeBody "Frenzy", {
           text "As long as your opponent has Kyogre, Kyogre ex, Rayquaza, or Rayquaza ex in play, Groudon ex's attacks do 40 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
           delayedA {
+            after PROCESS_ATTACK_EFFECTS, {
+              if (ef.attacker == self && opp.all.any{["Kyogre", "Kyogre ex", "Rayquaza", "Rayquaza ex"].contains(it.name)}) {
+                bg.dm().each {
+                  if (it.to.active && it.to.owner != self.owner && it.dmg.value) {
+                    bc "Frenzy +40"
+                    it.dmg += hp(40)
+                  }
+                }
+              }
+            }
           }
         }
         move "Mix-Up", {
@@ -669,6 +658,10 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
           energyCost F, C
           onAttack {
             damage 30
+            if (opp.deck) {
+              flip { opp.deck.subList(0,1).discard() }
+            }
+
           }
         }
         move "Earthquake", {
@@ -676,6 +669,9 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
           energyCost F, C, C
           onAttack {
             damage 60
+            my.bench.each{
+              damage 10, it
+            }
           }
         }
       };
@@ -687,6 +683,16 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         pokeBody "Frenzy", {
           text "As long as your opponent has Kyogre, Kyogre ex, Groudon, or Groudon ex in play, Rayquaza ex's attacks do 40 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
           delayedA {
+            after PROCESS_ATTACK_EFFECTS, {
+              if (ef.attacker == self && opp.all.any{["Kyogre", "Kyogre ex", "Groudon", "Groudon ex"].contains(it.name)}) {
+                bg.dm().each {
+                  if (it.to.active && it.to.owner != self.owner && it.dmg.value) {
+                    bc "Frenzy +40"
+                    it.dmg += hp(40)
+                  }
+                }
+              }
+            }
           }
         }
         move "Dragon Bind", {
@@ -694,13 +700,21 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 20
+            flip { applyAfterDamage PARALYZED }
           }
         }
         move "Twister", {
           text "50 damage. Flip 2 coins. If both are tails, this attack does nothing. For each heads, discard an Energy attached to the Defending Pokémon."
           energyCost R, L, C
           onAttack {
-            damage 50
+            def discardTimes = 0
+
+            flip 2, { discardTimes += 1}
+            if (discardTimes) damage 50 else bc "$thisMove failed due to 2 TAILS."
+
+            afterDamage {
+              discardTimes.times{ discardDefendingEnergy() }
+            }
           }
         }
       };
@@ -711,14 +725,36 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
           text "10x damage. Does 10 damage times the amount of Energy attached to the Defending Pokémon."
           energyCost C
           onAttack {
-            damage 10
+            damage 10 * defending.cards.energyCount(C)
           }
         }
         move "Devolution Beam", {
           text "Flip a coin. If heads, choose 1 of either player's Evolved Pokémon, remove the highest Stage Evolution card from that Pokémon, and put it into that player's hand."
           energyCost P
           onAttack {
-
+            //Taken from UnseenForces.UNOWN_122
+            flip {
+              if (all.findAll { it.evolution }) {
+                def list = all.findAll { it.evolution }
+                def pcs = list.select("Devolve one Evolved Pokémon")
+                def top = pcs.topPokemonCard
+                //
+                // [Temporary LV.X workaround]
+                if (top.cardTypes.is(LEVEL_UP && defending.cards.filterByType(POKEMON).size() > 2)){
+                  bc "${top}'s Level-Up card will be moved wherever the top evolution ends up at."
+                  pcs.cards.remove(top)
+                  pcs.owner.pbg.hand.add(top)
+                  devolve(pcs, top)
+                  top = pcs.topPokemonCard
+                }
+                // [End of LV.X workaround] TODO: Remove this when no longer needed
+                //
+                bc "$top Devolved"
+                pcs.cards.remove(top)
+                pcs.owner.pbg.hand.add(top)
+                devolve(pcs, top)
+              }
+            }
           }
         }
       };
