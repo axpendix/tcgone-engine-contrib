@@ -3943,10 +3943,11 @@ public enum LostThunder implements LogicCardInfo {
               ll.showToOpponent("$thisCard is using Mountain Migration")
               ll.moveTo(thisCard.player.pbg.lostZone)
               def revCard = thisCard.player.opposite.pbg.deck.subList(0,1)
-              revCard.showToOpponent("Top card of your deck")
               revCard.showToMe("Top card of your opponent's deck")
               if(revCard.filterByType(SUPPORTER) && confirm("Put that card in the lost zone")){
                 revCard.moveTo(thisCard.player.opposite.pbg.lostZone)
+              } else {
+                bc "${thisCard.player} put the checked card back on top of their opponent's deck."
               }
             }
           }
