@@ -937,10 +937,12 @@ public enum DragonMajesty implements LogicCardInfo {
             text "Your [N] Pokémon's attacks do 20 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
             delayedA{
               after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each {
-                  if(it.from.owner == self.owner && it.dmg.value && it.from.types.contains(N)) {
-                    bc "Fight Song +20"
-                    it.dmg += hp(20)
+                if (ef.attacker.owner == self.owner && ef.attacker.types.contains(N)){
+                  bg.dm().each {
+                    if(it.to.owner != self.owner && it.to.active && it.dmg.value) {
+                      bc "Fight Song +20"
+                      it.dmg += hp(20)
+                    }
                   }
                 }
               }
