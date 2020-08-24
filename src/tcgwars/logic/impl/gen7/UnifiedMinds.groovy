@@ -3691,7 +3691,9 @@ public enum UnifiedMinds implements LogicCardInfo {
             energyCost P, C, C, C
             onAttack {
               damage 170, opp.all.select("Deal 170 damage to which Pokémon?")
-              discardSelfEnergy C, C
+              afterDamage{
+                discardSelfEnergy C, C
+              }
             }
           }
           move "Injection GX", {
