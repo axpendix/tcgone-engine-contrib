@@ -1577,10 +1577,14 @@ public enum GuardiansRising implements LogicCardInfo {
             }
             onAttack {
               def lastMove = keySHtore("MimiCopycatMove", thisCard.player, null) as Move
-              def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
-              bc "Copycat copies ${lastMove.name}"
-              attack (lastMove)
-              bef.unregisterItself(bg().em())
+              if (!lastMove.name.contains("GX")){
+                def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
+                bc "Copycat copies ${lastMove.name}"
+                attack (lastMove)
+                bef.unregisterItself(bg().em())
+              } else{
+                bc "The move failed! Last attack was a GX attack."
+              }
             }
           }
 
