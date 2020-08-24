@@ -3346,8 +3346,11 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "20 damage. You may draw cards until you have 6 cards in your hand."
             energyCost C
             onAttack {
-              if(confirm("Draw cards until you have 6 cards in your hand?")) {
-                draw (6 - my.hand.size())
+              damage 20
+              afterDamage {
+                if (my.hand.size() < 6 && confirm("Draw cards until you have 6 cards in your hand?")) {
+                  draw (6 - my.hand.size())
+                }
               }
             }
           }
