@@ -1002,19 +1002,7 @@ public enum SunMoonPromos implements LogicCardInfo {
           }
         };
       case LUCARIO_SM54:
-        return 	evolution (this, from:"Riolu", hp:HP120, type:FIGHTING, retreatCost:1) {
-          weakness PSYCHIC
-          bwAbility "Stance" , {
-            text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may prevent all effects of your opponent's attacks, including damage, done to this Pokémon until the end of your opponent's next turn."
-          }
-          move "Submarine Blow" , {
-            text "120 damage."
-            energyCost F,F,F
-            onAttack{
-              damage 120
-            }
-          }
-        };
+        return copy(BurningShadows.LUCARIO_71, this);
       case DECIDUEYE_SM55:
         return 	evolution (this, from:"Dartrix", hp:HP140, type:GRASS, retreatCost:1) {
           weakness FIRE
