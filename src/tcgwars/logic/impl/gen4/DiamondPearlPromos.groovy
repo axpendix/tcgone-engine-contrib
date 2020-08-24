@@ -136,7 +136,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
       case PACHIRISU_DP04:
         return copy(DiamondPearl.PACHIRISU_35, this);
       case TROPICAL_WIND_DP05:
-        return copy(NintendoBlackStarPromos.TROPICAL_WIND_26)
+        return copy(NintendoBlackStarPromos.TROPICAL_WIND_26, this);
       case BUNEARY_DP06:
         return copy(DiamondPearl.BUNEARY_73, this);
       case CRANIDOS_DP07:
