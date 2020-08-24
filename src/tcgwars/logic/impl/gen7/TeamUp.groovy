@@ -1262,7 +1262,7 @@ public enum TeamUp implements LogicCardInfo {
             energyCost L,C
             onAttack{
               damage 30
-              if(self.lastEvolved == bg.turnCount){
+              if(self.lastEvolved == bg.turnCount && self.cards.any{it.name.contains("Blitzle")}){
                 damage 90
               }
             }
