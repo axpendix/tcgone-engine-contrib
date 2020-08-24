@@ -795,8 +795,7 @@ public enum SunMoon implements LogicCardInfo {
             text "10+ damage. This attack does 20 more damage for each of your benched [R] Pokémon."
             energyCost R
             onAttack {
-              damage 10
-              damage 20*my.bench.size()
+              damage 10 + 20 * my.bench.findAll{it.types.contains(R)}.size()
             }
           }
           move "Tiger Swing", {
