@@ -2583,7 +2583,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             bc "During this turn, ${thisCard.player.getPlayerUsername(bg)}'s Zygarde-GX can use its GX attack even if they've already used their GX attack."
           }
           playRequirement{
-            assert bg.stadiumInfoStruct
+            assert bg.stadiumInfoStruct : "There is no stadium in play"
           }
         };
       case CRASHER_WAKE_104:
