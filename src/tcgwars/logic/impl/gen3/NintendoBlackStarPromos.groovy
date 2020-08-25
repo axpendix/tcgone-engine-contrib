@@ -194,7 +194,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
           text "Flip a coin. If heads, prevent all effects of an attack, including damage, done to Pikachu during your opponent's next turn."
           energyCost C
           onAttack {
-            flip { preventAllDamageNextTurn() }
+            flip { preventAllEffectsNextTurn() }
           }
         }
         move "Thundershock", {
