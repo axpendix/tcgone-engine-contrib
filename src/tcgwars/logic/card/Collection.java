@@ -40,6 +40,7 @@ public enum Collection {
   SKYRIDGE(173, "SKR", "gen2.Skyridge"),
 
   //EX
+  NINTENDO_BLACK_STAR_PROMOS(210, "Nintendo Black Star Promos", "NBSP", "gen3.NintendoBlackStarPromos"),
   RUBY_SAPPHIRE(211, "Ruby & Sapphire", "RS", "gen3.RubySapphire"),
   SANDSTORM(212, "SS", "gen3.Sandstorm"),
   DRAGON(213, "DR", "gen3.Dragon"),
