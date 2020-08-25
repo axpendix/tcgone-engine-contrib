@@ -1042,11 +1042,16 @@ public enum SunMoonPromos implements LogicCardInfo {
             energyCost G, G, C
             attackRequirement {
               gxCheck()
-              assert opp.deck
             }
             onAttack {
               gxPerform()
-              opp.deck.subList(0,4).discard()
+              if (opp.hand.empty) {
+                bc "The attack failed! Opponent has no cards in hand."
+              } else if (opp.hand.size <= 4) {
+                opp.hand.discard()
+              } else{
+                opp.hand.oppSelect(count: 4, "Queen's Command GX - Discard 4 cards from your hand").discard()
+              }
             }
           }
         };
@@ -1592,7 +1597,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             text "Flip a coin. If heads, prevent all effects of attacks, including damage, done to this Pokémon during your opponent's next turn.\n"
             energyCost C
             onAttack{
-              flip{preventAllDamageNextTurn()}
+              flip{preventAllEffectsNextTurn()}
             }
           }
           move "Thunder" , {
@@ -1793,8 +1798,8 @@ public enum SunMoonPromos implements LogicCardInfo {
           move "Liberation GX" , {
             text "120× damage. Your opponent reveals their hand. This attack does 120 damage for each Energy card you find there. (You can't use more than 1 GX attack in a game.)"
             energyCost F,F,C,C
-            attackRequirement{
-              gxCheck()
+            attackRequirement {
+              assert !bg.em().retrieveObject("gx_"+my.owner) || bg.em().retrieveObject("Bonnie")==bg.turnCount : "Already used a GX attack this game"
             }
             onAttack{
               gxPerform()
@@ -2266,7 +2271,8 @@ public enum SunMoonPromos implements LogicCardInfo {
               afterDamage{
                 if(my.hand.filterByType(ENERGY).filterByEnergyType(R) && confirm("Do you want to attach up to 3 [R] Energy cards from your hand to your pokémon in any way you like?")){
                   for (i in 1..3) {
-                    if ( (attachEnergyFrom(may: true, type: R , my.hand, my.all).get(0) as CardList).empty) break
+                    def attachedEnergy = attachEnergyFrom(may: true, type: R , my.hand, my.all).get(0)
+                    if (attachedEnergy == null || (attachedEnergy as CardList).empty) break
                   }
                 }
               }

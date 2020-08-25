@@ -1820,7 +1820,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             text "150 damage. Prevent all damage done to this Pokémon by attacks from Pokémon-GX and Pokémon-EX during your opponent’s next turn. (You can’t use more than 1 GX attack in a game.)"
             energyCost F, F, C, C
             attackRequirement {
-              assert !bg.em().retrieveObject("gx_"+my.owner) || bg.em().retrieveObject("Bonnie")==bg.turnCount
+              assert !bg.em().retrieveObject("gx_"+my.owner) || bg.em().retrieveObject("Bonnie")==bg.turnCount : "Already used a GX attack this game"
             }
             onAttack {
               gxPerform()
