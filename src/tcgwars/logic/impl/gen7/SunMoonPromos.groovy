@@ -1793,8 +1793,8 @@ public enum SunMoonPromos implements LogicCardInfo {
           move "Liberation GX" , {
             text "120× damage. Your opponent reveals their hand. This attack does 120 damage for each Energy card you find there. (You can't use more than 1 GX attack in a game.)"
             energyCost F,F,C,C
-            attackRequirement{
-              gxCheck()
+            attackRequirement {
+              assert !bg.em().retrieveObject("gx_"+my.owner) || bg.em().retrieveObject("Bonnie")==bg.turnCount : "Already used a GX attack this game"
             }
             onAttack{
               gxPerform()
