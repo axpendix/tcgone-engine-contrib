@@ -3604,7 +3604,7 @@ public enum RebelClash implements LogicCardInfo {
           def validTargets = my.all.findAll{ !it.pokemonV && !it.pokemonGX }
 
           def tar = validTargets.select("Which Pokémon to put back into your hand?")
-          scoopUpPokemon(tar, delegate)
+          scoopUpPokemon(all:false, tar, delegate)
         }
         playRequirement {
           assertMyAll(negateVariants: true, hasVariants: [POKEMON_V, POKEMON_GX])

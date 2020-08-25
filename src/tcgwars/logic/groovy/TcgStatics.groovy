@@ -1508,8 +1508,8 @@ class TcgStatics {
    * Scoop up PokemonCardSets if not blocked by Scoop-Up Block
    *
    * @param params Optional settings map
-   *  + discard: Indicates if any cards should be discarded. Default: true
-   *  + only: A card or list of cards to move to hand instead of discard.
+   *  + all: boolean - if true, scoops up all cards, else all pokemon cards. discards the rest.
+   *  + only: CardList - only scoops up them, discards the rest.
    * @param target PokemonCardSet to work on
    * @param delegate Effect delegate used to determine most sources automatically, and to get the card name for the Scoop-Up Block message
    * @param source Allows you to specify the source of the scoop up. Use intended manually setting SRC_ABILITY.
@@ -1520,7 +1520,7 @@ class TcgStatics {
       if (delegate.thisObject.cardTypes.is(POKEMON)) source = ATTACK
       if (delegate.thisObject.cardTypes.is(ENERGY)) source = SRC_SPENERGY
     }
-    if (params.discard == null) params.discard = true
+    if (params.all == null) params.all = true
     if (bg.em().retrieveObject("ScoopUpBlock_Count$target.owner.opposite") && target.numberOfDamageCounters && !hasThetaStop(target)) {
       bc "Scoop-Up Block prevents $delegate.thisObject.name's effect."
       return
@@ -1530,7 +1530,7 @@ class TcgStatics {
       CardList otherList = []
       otherList.addAll(target.cards.filterByType(TRAINER, ENERGY))
       pokemonList.addAll(target.cards.filterByType(POKEMON))
-      if (params.discard) {
+      if (!params.all) {
         if (params.only) {
           if (params.only instanceof Card) params.only = new CardList(params.only)
           bc "Scooped up ${params.only.getExcludedList(otherList)}"

@@ -2384,7 +2384,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           onPlay {
             flip {
               def pcs = my.all.select()
-              scoopUpPokemon(discard:false, pcs, delegate)
+              scoopUpPokemon(pcs, delegate)
             }
           }
           playRequirement{

@@ -1867,7 +1867,7 @@ public enum BaseSetNG implements LogicCardInfo {
           onPlay {
             PokemonCardSet pcs = my.all.select()
             def tar = pcs.pokemonCards[pcs.pokemonCards.size() - 1]
-            scoopUpPokemon(only:tar, pcs, delegate)
+            scoopUpPokemon(all:false, only:tar, pcs, delegate)
           }
           playRequirement {
             confirmScoopLastPokemon()

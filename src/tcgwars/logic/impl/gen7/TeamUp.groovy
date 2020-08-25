@@ -1,9 +1,5 @@
 package tcgwars.logic.impl.gen7
 
-import tcgwars.logic.card.energy.BasicEnergyCard
-import tcgwars.logic.card.pokemon.PokemonCard
-import tcgwars.logic.effect.gm.Attack
-import tcgwars.logic.effect.gm.PlayTrainer
 import tcgwars.logic.impl.gen5.BlackWhite
 
 import static tcgwars.logic.card.HP.*;
@@ -22,6 +18,7 @@ import tcgwars.logic.*;
 import tcgwars.logic.card.*
 import tcgwars.logic.effect.*
 import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.gm.*
 import tcgwars.logic.util.*;
 
 public enum TeamUp implements LogicCardInfo {
