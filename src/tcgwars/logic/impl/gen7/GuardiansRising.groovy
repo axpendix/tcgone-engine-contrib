@@ -1555,9 +1555,10 @@ public enum GuardiansRising implements LogicCardInfo {
           globalAbility {Card thisCard->
             delayed (priority: LAST) {
               after PROCESS_ATTACK_EFFECTS, {
-                if(ef.attacker.owner!=thisCard.player && !(ef as Attack).move.name.endsWith("-GX")){
-                  keyStore("MimiCopycatMove", thisCard.player, ef.move)
-                  keyStore("MimiCopycatTC", thisCard.player, bg.turnCount)
+                //TODO: Refactor, make these checks be stored somewhere globally as to fix opponent copying Copycat and similar (e.g. with Trickster GX)
+                if(ef.attacker.owner!=thisCard.player){
+                  bg.em().storeObject("MimiCopycatMove_" + thisCard.player, ef.move)
+                  bg.em().storeObject("MimiCopycatTC_" + thisCard.player, bg.turnCount)
                 }
               }
             }
@@ -1573,11 +1574,15 @@ public enum GuardiansRising implements LogicCardInfo {
             text "If your opponent's Pokémon used an attack that isn't a GX attack during their last turn, use it as this attack."
             energyCost P, C
             attackRequirement {
-              assert keyStore("MimiCopycatTC", thisCard.player, null) == bg.turnCount - 1 : "Opponent did not used a valid move last turn"
+              def tc = bg.em().retrieveObject("MimiCopycatTC_" + thisCard.player)
+              assert (tc != null && tc == bg.turnCount - 1) : "Opponent did not use a move last turn"
+              def lastMove = bg.em().retrieveObject("MimiCopycatMove_" + thisCard.player) as Move
+              assert (lastMove != null && !lastMove.name.endsWith("GX")) : "Opponent's last attack was a GX attack"
             }
             onAttack {
-              def lastMove = keySHtore("MimiCopycatMove", thisCard.player, null) as Move
-              if (!lastMove.name.contains("GX")){
+              //TODO Mark this and all "copy last attack" attacks as such, since copying them causes an infinite loop and attack should just fail.
+              def lastMove = bg.em().retrieveObject("MimiCopycatMove_" + thisCard.player) as Move
+              if (lastMove != null && !lastMove.name.endsWith("GX")){
                 def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
                 bc "Copycat copies ${lastMove.name}"
                 attack (lastMove)
