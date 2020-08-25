@@ -3104,9 +3104,8 @@ public enum DiamondPearl implements LogicCardInfo {
               assert my.prizeCardSet.size() > opp.prizeCardSet.size() : "You need to have more Prize cards left than your opponent in order to use this Poké-Power"
               assert opp.bench : "Your opponent has no benched Pokémon."
               powerUsed()
-              def pcs = opp.bench.select('Choose 1 of your opponent’s Benched Pokémon and switch it with the Defending Pokémon.')
-              //TODO: This should switch the benched with the defending, not the other way around. Check against inmune to pokébody cards to see if this properly blocks only when the blocker is benched.
-              sw opp.active, pcs, SRC_ABILITY
+              //TODO: Check against immunity to pokéPower.
+              switchYourOpponentsBenchedWithActive(SRC_ABILITY)
             }
           }
           move "Vigorous Dash", {
