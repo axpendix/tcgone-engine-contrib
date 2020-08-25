@@ -763,3 +763,4 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
     }
   }
 }
+
