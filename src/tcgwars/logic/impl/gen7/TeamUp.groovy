@@ -1,7 +1,5 @@
-package tcgwars.logic.impl.gen7;
+package tcgwars.logic.impl.gen7
 
-import tcgwars.logic.effect.gm.Attack
-import tcgwars.logic.effect.gm.PlayTrainer
 import tcgwars.logic.impl.gen5.BlackWhite
 
 import static tcgwars.logic.card.HP.*;
@@ -20,6 +18,7 @@ import tcgwars.logic.*;
 import tcgwars.logic.card.*
 import tcgwars.logic.effect.*
 import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.gm.*
 import tcgwars.logic.util.*;
 
 public enum TeamUp implements LogicCardInfo {
@@ -1464,10 +1463,30 @@ public enum TeamUp implements LogicCardInfo {
                 shuffleDeck()
               }
               delayed{
-                before PLAY_CARD, {
+                def warnAndPrevent = {
                   if (bg.currentTurn == self.owner.opposite) {
                     wcu "Horror House GX prevents playing this card"
                     prevent()
+                  }
+                }
+                before ATTACH_ENERGY, {
+                  if((ef as AttachEnergy).reason == PLAY_FROM_HAND){
+                    warnAndPrevent()
+                  }
+                }
+                before EVOLVE, {
+                  if ((ef as Evolve).evolutionCard.player.pbg.hand.contains(ef.evolutionCard)) {
+                    warnAndPrevent()
+                  }
+                }
+                before EVOLVE_STANDARD, {
+                  if ((ef as EvolveStandard).evolutionCard.player.pbg.hand.contains(ef.evolutionCard)) {
+                    warnAndPrevent()
+                  }
+                }
+                before PLAY_CARD, {
+                  if ((ef as PlayCard).cardToPlay.player.pbg.hand.contains(ef.cardToPlay)) {
+                    warnAndPrevent()
                   }
                 }
                 unregisterAfter 2
