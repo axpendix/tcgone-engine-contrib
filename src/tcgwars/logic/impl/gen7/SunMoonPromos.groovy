@@ -1597,7 +1597,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             text "Flip a coin. If heads, prevent all effects of attacks, including damage, done to this Pokémon during your opponent's next turn.\n"
             energyCost C
             onAttack{
-              flip{preventAllDamageNextTurn()}
+              flip{preventAllEffectsNextTurn()}
             }
           }
           move "Thunder" , {
