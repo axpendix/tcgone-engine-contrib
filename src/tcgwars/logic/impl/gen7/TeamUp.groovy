@@ -498,7 +498,7 @@ public enum TeamUp implements LogicCardInfo {
             energyCost G,G
             onAttack{
               my.all.each{
-                damage 30*it.cards.energyCount()
+                damage 30 * it.cards.filterByType(BASIC_ENERGY).energyCount()
               }
             }
           }
@@ -961,7 +961,7 @@ public enum TeamUp implements LogicCardInfo {
               }
               before null, null, Source.TRAINER_CARD, {
                 def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
-                if (flag && self.active && pcs.types.contains(W)){
+                if (flag && self.active && pcs.owner == self.owner && pcs.benched && pcs.types.contains(W)){
                   bc "Blizzard Veil prevent effect of Supporter cards done to $pcs."
                   prevent()
                 }
@@ -1262,7 +1262,7 @@ public enum TeamUp implements LogicCardInfo {
             energyCost L,C
             onAttack{
               damage 30
-              if(self.lastEvolved == bg.turnCount){
+              if(self.lastEvolved == bg.turnCount && self.cards.any{it.name.contains("Blitzle")}){
                 damage 90
               }
             }
@@ -1883,8 +1883,9 @@ public enum TeamUp implements LogicCardInfo {
             energyCost F,C,C
             onAttack{
               damage 80
-              afterDamage {
-                if(bg.stadiumInfoStruct){
+              if(bg.stadiumInfoStruct){
+                damage 80
+                afterDamage {
                   discard bg.stadiumInfoStruct.stadiumCard
                 }
               }
@@ -3071,9 +3072,8 @@ public enum TeamUp implements LogicCardInfo {
             text "Put your opponent's Active Pokémon and all cards attached to it into your opponent's hand."
             energyCost C,C,C
             onAttack{
-              def pcs = opp.all.select("Choose the Pokémon to put back in their hand.")
-              pcs.cards.moveTo(opp.hand)
-              removePCS(pcs)
+              opp.active.cards.moveTo(opp.hand)
+              removePCS(opp.active)
             }
           }
         };
@@ -3319,7 +3319,7 @@ public enum TeamUp implements LogicCardInfo {
         return supporter(this) {
           text "You can play this card only if your opponent's Active Pokémon is a Stage 2 Pokémon. Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
-            my.deck.search(count:2,"Choose 2 cards to put in your hand",{true}).moveTo(my.hand)
+            my.deck.search(max: 2,"Choose 2 cards to put in your hand",{true}).moveTo(hidden: true, my.hand)
             shuffleDeck()
           }
           playRequirement{

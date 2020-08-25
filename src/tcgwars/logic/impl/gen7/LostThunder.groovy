@@ -3943,10 +3943,11 @@ public enum LostThunder implements LogicCardInfo {
               ll.showToOpponent("$thisCard is using Mountain Migration")
               ll.moveTo(thisCard.player.pbg.lostZone)
               def revCard = thisCard.player.opposite.pbg.deck.subList(0,1)
-              revCard.showToOpponent("Top card of your deck")
               revCard.showToMe("Top card of your opponent's deck")
               if(revCard.filterByType(SUPPORTER) && confirm("Put that card in the lost zone")){
                 revCard.moveTo(thisCard.player.opposite.pbg.lostZone)
+              } else {
+                bc "${thisCard.player} put the checked card back on top of their opponent's deck."
               }
             }
           }
@@ -4080,7 +4081,7 @@ public enum LostThunder implements LogicCardInfo {
               after PROCESS_ATTACK_EFFECTS, {
                 if(ef.attacker.owner == thisCard.player && ef.attacker.types.contains(L)) {
                   bg.dm().each{
-                    if(it.from == ef.attacker && it.notNoEffect && it.dmg.value && it.to.active && it.to.owner != it.from.owner) {
+                    if(it.from == ef.attacker && it.dmg.value && it.to.active && it.to.owner != it.from.owner) {
                       bc "Electropower +30"
                       it.dmg += hp(30)
                     }

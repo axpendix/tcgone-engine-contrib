@@ -56,7 +56,7 @@ public enum PopSeries2 implements LogicCardInfo {
   LUVDISC_14 ("Luvdisc", "14", Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
   PHANPY_15 ("Phanpy", "15", Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
   PIKACHU_16 ("Pikachu", "16", Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
-  CELEBI_EX_17 ("Celebi ex", "17", Rarity.HOLORARE, [POKEMON, BASIC, EX, _PSYCHIC_]);
+  CELEBI_EX_17 ("Celebi ex", "17", Rarity.RARE, [POKEMON, BASIC, EX, _PSYCHIC_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 

@@ -614,7 +614,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             text "Each of your [G] Pokémon's and [R] Pokémon's attacks does 20 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                if(ef.attacker.owner == self.owner && (ef.attacker.types.contains(G) || ef.attacker.types.contains(R))){
+                if(ef.attacker && ef.attacker.owner == self.owner && (ef.attacker.types.contains(G) || ef.attacker.types.contains(R))){
                   bg.dm().each {
                     if (it.from.active && it.from.owner == self.owner && it.to.active && it.to.owner != self.owner && it.dmg.value) {
                       bc "Sunny Day +20"
@@ -1002,19 +1002,7 @@ public enum SunMoonPromos implements LogicCardInfo {
           }
         };
       case LUCARIO_SM54:
-        return 	evolution (this, from:"Riolu", hp:HP120, type:FIGHTING, retreatCost:1) {
-          weakness PSYCHIC
-          bwAbility "Stance" , {
-            text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may prevent all effects of your opponent's attacks, including damage, done to this Pokémon until the end of your opponent's next turn."
-          }
-          move "Submarine Blow" , {
-            text "120 damage."
-            energyCost F,F,F
-            onAttack{
-              damage 120
-            }
-          }
-        };
+        return copy(BurningShadows.LUCARIO_71, this);
       case DECIDUEYE_SM55:
         return 	evolution (this, from:"Dartrix", hp:HP140, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -2276,10 +2264,10 @@ public enum SunMoonPromos implements LogicCardInfo {
             onAttack{
               damage 30
               afterDamage{
-                if(my.hand.filterByType(ENERGY).filterByEnergyType(R)){
-                  attachEnergyFrom(type:R,my.hand,my.all)
-                  attachEnergyFrom(type:R,my.hand,my.all)
-                  attachEnergyFrom(type:R,my.hand,my.all)
+                if(my.hand.filterByType(ENERGY).filterByEnergyType(R) && confirm("Do you want to attach up to 3 [R] Energy cards from your hand to your pokémon in any way you like?")){
+                  for (i in 1..3) {
+                    if ( (attachEnergyFrom(may: true, type: R , my.hand, my.all).get(0) as CardList).empty) break
+                  }
                 }
               }
             }

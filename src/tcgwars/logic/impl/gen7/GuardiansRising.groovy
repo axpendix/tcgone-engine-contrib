@@ -1556,8 +1556,8 @@ public enum GuardiansRising implements LogicCardInfo {
             delayed (priority: LAST) {
               after PROCESS_ATTACK_EFFECTS, {
                 if(ef.attacker.owner!=thisCard.player && !(ef as Attack).move.name.endsWith("-GX")){
-                  bg.em().storeObject("MimiCopycatMove_${thisCard.hashCode()}", ef.move)
-                  bg.em().storeObject("MimiCopycatTC_${thisCard.hashCode()}", bg.turnCount)
+                  keyStore("MimiCopycatMove", thisCard.player, ef.move)
+                  keyStore("MimiCopycatTC", thisCard.player, bg.turnCount)
                 }
               }
             }
@@ -1573,15 +1573,18 @@ public enum GuardiansRising implements LogicCardInfo {
             text "If your opponent's Pokémon used an attack that isn't a GX attack during their last turn, use it as this attack."
             energyCost P, C
             attackRequirement {
-              def tc = bg.em().retrieveObject("MimiCopycatTC_${self.topPokemonCard.hashCode()}") ?: -1
-              assert tc+1 == bg.turnCount : "Opponent did not used a valid move last turn"
+              assert keyStore("MimiCopycatTC", thisCard.player, null) == bg.turnCount - 1 : "Opponent did not used a valid move last turn"
             }
             onAttack {
-              def lastMove = bg.em().retrieveObject("MimiCopycatMove_${self.topPokemonCard.hashCode()}") as Move
-              def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
-              bc "Copycat copies ${lastMove.name}"
-              attack (lastMove)
-              bef.unregisterItself(bg().em())
+              def lastMove = keySHtore("MimiCopycatMove", thisCard.player, null) as Move
+              if (!lastMove.name.contains("GX")){
+                def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
+                bc "Copycat copies ${lastMove.name}"
+                attack (lastMove)
+                bef.unregisterItself(bg().em())
+              } else{
+                bc "The move failed! Last attack was a GX attack."
+              }
             }
           }
 
@@ -2640,6 +2643,7 @@ public enum GuardiansRising implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 20
+              keyStore("Agility", self, bg.turnCount)
               flip{preventAllEffectsNextTurn()}
             }
           }
@@ -2648,7 +2652,7 @@ public enum GuardiansRising implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 40
-              increasedBaseDamageNextTurn("Agility", hp(80))
+              if (keyStore("Agility", self, null) == bg.turnCount - 2) damage 80
             }
           }
 

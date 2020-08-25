@@ -3346,8 +3346,11 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "20 damage. You may draw cards until you have 6 cards in your hand."
             energyCost C
             onAttack {
-              if(confirm("Draw cards until you have 6 cards in your hand?")) {
-                draw (6 - my.hand.size())
+              damage 20
+              afterDamage {
+                if (my.hand.size() < 6 && confirm("Draw cards until you have 6 cards in your hand?")) {
+                  draw (6 - my.hand.size())
+                }
               }
             }
           }
@@ -3691,7 +3694,9 @@ public enum UnifiedMinds implements LogicCardInfo {
             energyCost P, C, C, C
             onAttack {
               damage 170, opp.all.select("Deal 170 damage to which Pokémon?")
-              discardSelfEnergy C, C
+              afterDamage{
+                discardSelfEnergy C, C
+              }
             }
           }
           move "Injection GX", {
@@ -4458,7 +4463,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           text "Look at the top 6 cards of your deck and put 2 of them into your hand. Discard the other cards."
           onPlay {
             def cards = my.deck.subList(0,6)
-            def moved = cards.select(count:2,"Choose 2 cards to put in your hand. The rest will be discarded.").moveTo(my.hand)
+            def moved = cards.select(count:2,"Choose 2 cards to put in your hand. The rest will be discarded.").moveTo(hidden: true, my.hand)
             cards.removeAll(moved)
             cards.discard()
           }

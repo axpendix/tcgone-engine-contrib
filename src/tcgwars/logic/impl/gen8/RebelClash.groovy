@@ -1565,7 +1565,7 @@ public enum RebelClash implements LogicCardInfo {
           onAttack {
             damage 60
 
-            if (self.lastEvolved == bg.turnCount && self.cards.findAll {it.name.contains("Luxio")}) {
+            if (self.lastEvolved == bg.turnCount && self.cards.any{it.name.contains("Luxio")}) {
               damage 100
             }
           }
@@ -2912,7 +2912,7 @@ public enum RebelClash implements LogicCardInfo {
           onAttack {
             damage 30
 
-            if (self.lastEvolved == bg.turnCount && self.cards.findAll {it.name.contains("Scyther")}) {
+            if (self.lastEvolved == bg.turnCount && self.cards.any{it.name.contains("Scyther")}) {
               damage 90
             }
           }
