@@ -1174,7 +1174,7 @@ public enum SunMoon implements LogicCardInfo {
               assert bg.turnCount > 2
               powerUsed()
               // TODO: Get a ruling on this re:Scoop-Up Block (MR_MIME_66:TEAM_UP)
-              scoopUpPokemon(all:false, self, delegate, SRC_ABILITY)
+              scoopUpPokemon(pokemonOnly:true, self, delegate, SRC_ABILITY)
             }
           }
           move "Water Gun", {
