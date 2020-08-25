@@ -2263,7 +2263,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             onAttack {
               damage 10
               //TODO: Add "Slakoth was asleep" check for the extra damage.
-              if(self.lastEvolved == bg.turnCount/* && asleepBeforeEvolve*/){
+              if(self.lastEvolved == bg.turnCount && it.cards.any{it.name == "Slakoth"}/* && asleepBeforeEvolve*/){
                 damage 50
               }
             }
