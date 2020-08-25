@@ -1989,7 +1989,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              if(self.lastEvolved == bg.turnCount){
+              if(self.lastEvolved == bg.turnCount && self.cards.any{it.name == "Paras"}){
                 damage 20
                 applyAfterDamage(ASLEEP)
                 applyAfterDamage(POISONED)
