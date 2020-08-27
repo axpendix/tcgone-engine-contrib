@@ -1383,7 +1383,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                   prevent()
                 }
               }
-              before POISONED_SPC, null, null, LEVELLING_UP, {
+              before POISONED_SPC, null, null, LEVEL_UP, {
                 if(ef.target == self.owner.opposite){
                   prevent()
                 }
