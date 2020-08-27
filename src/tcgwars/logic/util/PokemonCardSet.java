@@ -100,12 +100,18 @@ public class PokemonCardSet implements PokemonStack, Serializable {
   }
 
   /**
-   * this will check the top card being a basic or evolution
+   * this will check the top non-level-up card in the PCS being Basic stage.
    *
-   * @see #isNotEvolution()
+   * @see #isNotEvolution() for checking EX and earlier definition of "Basic Pokémon" in play.
    */
   public boolean isBasic() {
-    return getTopPokemonCard().getCardTypes().is(CardType.BASIC);
+    return getTopNonLevelUpPokemonCard().getCardTypes().is(CardType.BASIC);
+  }
+  public boolean isStage1() {
+    return getTopNonLevelUpPokemonCard().getCardTypes().is(CardType.STAGE1);
+  }
+  public boolean isStage2() {
+    return getTopNonLevelUpPokemonCard().getCardTypes().is(CardType.STAGE2);
   }
 
   public PokemonCard getTopPokemonCard() {
