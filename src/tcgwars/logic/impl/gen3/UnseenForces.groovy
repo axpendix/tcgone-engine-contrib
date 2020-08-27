@@ -620,7 +620,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost W, C, C
           onAttack {
             damage 60
-            if (defending.evolution && defending.topPokemonCard.cardTypes.is(STAGE2)) {
+            if (defending.evolution && defending.stage2) {
               damage 30
             }
           }
@@ -2304,7 +2304,7 @@ public enum UnseenForces implements LogicCardInfo {
           "Draw a card. If you don't have any Stage 2 Evolved Pokémon in play, draw 2 more cards."
         onPlay {
           draw 1
-          if (!my.all.find{it.evolution && it.topPokemonCard.cardTypes.is(STAGE2)}) draw 2
+          if (!my.all.any{it.evolution && it.stage2}) draw 2
         }
         playRequirement{
           assert my.deck : "Deck is empty"
@@ -2792,7 +2792,7 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             def target = opp.all.select("Put 1 damage counter to which pokémon?")
             def amount = 30
-            if (target.evolution && target.topPokemonCard.cardTypes.contains(STAGE2)) {
+            if (target.evolution && target.stage2) {
               amount = 50
             }
             damage amount, target

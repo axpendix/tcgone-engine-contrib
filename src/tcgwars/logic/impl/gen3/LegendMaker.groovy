@@ -610,11 +610,11 @@ public enum LegendMaker implements LogicCardInfo {
           actionA {
             checkLastTurn()
             checkNoSPC()
-            assert opp.bench.any{ it.evolution && it.topPokemonCard.cardTypes.is(STAGE2) } : "Opponent's bench does not have any evolved Stage 2 Pokemon."
+            assert opp.bench.any{ it.evolution && it.stage2 } : "Opponent's bench does not have any evolved Stage 2 Pokemon."
 
             powerUsed()
 
-            def pcs = opp.bench.findAll { it.evolution && it.topPokemonCard.cardTypes.is(STAGE2) }.select("Select a Stage 2 Pokemon to become the new Active.")
+            def pcs = opp.bench.findAll { it.evolution && it.stage2 }.select("Select a Stage 2 Pokemon to become the new Active.")
             sw2 (pcs, null, SRC_ABILITY)
           }
         }
@@ -662,7 +662,7 @@ public enum LegendMaker implements LogicCardInfo {
           text "40+ damage. Does 40 damage plus 10 more damage for each of your Benched Stage 1 Evolved Pokémon."
           energyCost W, W, C, C
           onAttack {
-            def friends = my.bench.findAll{ it.evolution && it.topPokemonCard.cardTypes.is(STAGE1) }.size()
+            def friends = my.bench.findAll{ it.evolution && it.stage1 }.size()
             damage 40+10*friends
           }
         }

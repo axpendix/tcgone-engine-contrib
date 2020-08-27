@@ -2508,7 +2508,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost D, C, C
           onAttack {
             damage 50
-            if (opp.active.evolution && opp.active.topPokemonCard.cardTypes.is(STAGE2)) {
+            if (opp.active.evolution && opp.active.stage2) {
               damage 40
             }
           }

@@ -2650,7 +2650,7 @@ public enum BurningShadows implements LogicCardInfo {
           def eff
           onPlay {reason->
             eff = getter (GET_FULL_HP, self) {h->
-              if (self.topPokemonCard.cardTypes.is(STAGE1)) {
+              if (self.stage1) {
                 h.object += hp(40)
               }
             }

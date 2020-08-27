@@ -2801,7 +2801,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             energyCost W, W, C
             onAttack {
               damage 50
-              if(opp.active.topPokemonCard.cardTypes.is(STAGE2)) damage 40
+              if(opp.active.evolution && opp.active.stage2) damage 40
             }
           }
 
