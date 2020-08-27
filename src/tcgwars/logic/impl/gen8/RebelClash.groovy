@@ -672,7 +672,9 @@ public enum RebelClash implements LogicCardInfo {
           onAttack {
             def grassEnergies = self.cards.filterByEnergyType(G).select(min: 0, max: 3, "Discard up to 3 [G] Energy.")
             damage 130+grassEnergies.size()*50
-            grassEnergies.discard()
+            afterDamage {
+              grassEnergies.discard()
+            }
           }
         }
       };
