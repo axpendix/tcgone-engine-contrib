@@ -18,8 +18,8 @@ public enum CardType {
   TRAINER(30),
 
   MEGA_POKEMON(-6, "MEGA"),
-  LVL_X(-5, "LV.X"),
-  BREAK(-4, "BREAK"),
+  BREAK(-5, "BREAK"),
+  LVL_X(-4, "LV.X"),
   STAGE2(-2, "Stage 2"),
   STAGE1(-1, "Stage 1"),
   EVOLUTION(0),
