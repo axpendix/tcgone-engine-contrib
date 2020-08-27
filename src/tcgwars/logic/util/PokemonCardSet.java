@@ -132,7 +132,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
       if (card.getCardTypes().is(CardType.LEVEL_UP)) continue;
       return card.asPokemonCard();
     }
-    return null; //Should an IllegalStateException be thrown here, same as above?
+    return null;
   }
 
   public CardList getCards() {
