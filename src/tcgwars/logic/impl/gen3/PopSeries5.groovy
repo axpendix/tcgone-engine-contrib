@@ -164,7 +164,7 @@ public enum PopSeries5 implements LogicCardInfo {
             def moveOptions = defending.topPokemonCard.moves
             //
             // [Temporary LV.X workaround]
-            if (defending.topPokemonCard.cardTypes.is(CardType.LEVEL_UP)){
+            if (defending.topPokemonCard.cardTypes.is(CardType.LVL_X)){
               //Only 3 LV.Xs right now, all stage 2 so this should do
               def tpc = defending.cards.find{car -> car.cardTypes.is(STAGE2) && car != defending.topPokemonCard}
               moveOptions += tpc.moves

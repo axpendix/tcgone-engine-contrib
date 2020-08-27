@@ -157,9 +157,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
   MULTI_ENERGY_118 ("Multi Energy", "118", Rarity.RARE, [SPECIAL_ENERGY, ENERGY]),
   DARKNESS_ENERGY_119 ("Darkness Energy", "119", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   METAL_ENERGY_120 ("Metal Energy", "120", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
-  ELECTIVIRE_LV_X_121 ("Electivire", "121", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _LIGHTNING_]),
-  LUCARIO_LV_X_122 ("Lucario", "122", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _FIGHTING_]),
-  MAGMORTAR_LV_X_123 ("Magmortar", "123", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _FIRE_]),
+  ELECTIVIRE_LV_X_121 ("Electivire", "121", Rarity.HOLORARE, [LVL_X, POKEMON, _LIGHTNING_]),
+  LUCARIO_LV_X_122 ("Lucario", "122", Rarity.HOLORARE, [LVL_X, POKEMON, _FIGHTING_]),
+  MAGMORTAR_LV_X_123 ("Magmortar", "123", Rarity.HOLORARE, [LVL_X, POKEMON, _FIRE_]),
   TIME_SPACE_DISTORTION_124 ("Time-Space Distortion", "124", Rarity.HOLORARE, [TRAINER, ITEM]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
@@ -1389,7 +1389,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 }
               }
               // Potential addition once level-up is implemented
-              // before POISONED_SPC, null, null, LEVEL_UP, {
+              // before POISONED_SPC, null, null, LVL_X, {
               //   if(ef.target == self.owner.opposite){
               //     prevent()
               //   }

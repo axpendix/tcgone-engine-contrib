@@ -2475,7 +2475,7 @@ public enum HolonPhantoms implements LogicCardInfo {
                 def top=defending.topPokemonCard
                 //
                 // [Temporary LV.X workaround]
-                if (top.cardTypes.is(LEVEL_UP) && defending.cards.filterByType(POKEMON).size() > 2){
+                if (top.cardTypes.is(LVL_X) && defending.cards.filterByType(POKEMON).size() > 2){
                   bc "${top}'s Level-Up card will be moved wherever the top evolution ends up at."
                   moveCard(top, opp.deck)
                   devolve(defending, top)

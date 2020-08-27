@@ -773,7 +773,7 @@ public enum PowerKeepers implements LogicCardInfo {
               def top = it.topPokemonCard
               //
               // [Temporary LV.X workaround]
-              if (top.cardTypes.is(LEVEL_UP) && it.cards.filterByType(POKEMON).size() > 2){
+              if (top.cardTypes.is(LVL_X) && it.cards.filterByType(POKEMON).size() > 2){
                 bc "${top}'s Level-Up card will be moved wherever the top evolution ends up at."
                 moveCard(top, opp.hand)
                 devolve(it, top)

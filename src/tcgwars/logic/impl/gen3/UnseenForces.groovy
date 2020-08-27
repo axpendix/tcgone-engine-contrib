@@ -727,7 +727,7 @@ public enum UnseenForces implements LogicCardInfo {
             def moveOptions = defending.topPokemonCard.moves
             //
             // [Temporary LV.X workaround]
-            if (defending.topPokemonCard.cardTypes.is(CardType.LEVEL_UP)){
+            if (defending.topPokemonCard.cardTypes.is(CardType.LVL_X)){
               //Only 3 LV.Xs right now, all stage 2 so this should do
               def tpc = defending.cards.find{car -> car.cardTypes.is(STAGE2) && car != defending.topPokemonCard}
               moveOptions += tpc.moves
@@ -2522,7 +2522,7 @@ public enum UnseenForces implements LogicCardInfo {
               def top = pcs.topPokemonCard
               //
               // [Temporary LV.X workaround]
-              if (top.cardTypes.is(LEVEL_UP) && pcs.cards.filterByType(POKEMON).size() > 2){
+              if (top.cardTypes.is(LVL_X) && pcs.cards.filterByType(POKEMON).size() > 2){
                 bc "${top}'s Level-Up card will be moved wherever the top evolution ends up at."
                 pcs.cards.remove(top)
                 opp.hand.add(top)
@@ -3394,7 +3394,7 @@ public enum UnseenForces implements LogicCardInfo {
                 def top = pcs.topPokemonCard
                 //
                 // [Temporary LV.X workaround]
-                if (top.cardTypes.is(LEVEL_UP && defending.cards.filterByType(POKEMON).size() > 2)){
+                if (top.cardTypes.is(LVL_X && defending.cards.filterByType(POKEMON).size() > 2)){
                   bc "${top}'s Level-Up card will be moved wherever the top evolution ends up at."
                   pcs.cards.remove(top)
                   pcs.owner.pbg.hand.add(top)

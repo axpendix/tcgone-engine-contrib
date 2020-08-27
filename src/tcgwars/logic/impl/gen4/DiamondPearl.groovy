@@ -164,9 +164,9 @@ public enum DiamondPearl implements LogicCardInfo {
   ENERGY_SEARCH_117 ("Energy Search", "117", Rarity.COMMON, [TRAINER, ITEM]),
   POTION_118 ("Potion", "118", Rarity.COMMON, [TRAINER, ITEM]),
   SWITCH_119 ("Switch", "119", Rarity.COMMON, [TRAINER, ITEM]),
-  EMPOLEON_LV_X_120 ("Empoleon", "120", Rarity.HOLORARE, [STAGE2, LEVEL_UP, POKEMON, _WATER_]),
-  INFERNAPE_LV_X_121 ("Infernape", "121", Rarity.HOLORARE, [STAGE2, LEVEL_UP, POKEMON, _FIRE_]),
-  TORTERRA_LV_X_122 ("Torterra", "122", Rarity.HOLORARE, [STAGE2, LEVEL_UP, POKEMON, _GRASS_]),
+  EMPOLEON_LV_X_120 ("Empoleon", "120", Rarity.HOLORARE, [STAGE2, LVL_X, POKEMON, _WATER_]),
+  INFERNAPE_LV_X_121 ("Infernape", "121", Rarity.HOLORARE, [STAGE2, LVL_X, POKEMON, _FIRE_]),
+  TORTERRA_LV_X_122 ("Torterra", "122", Rarity.HOLORARE, [STAGE2, LVL_X, POKEMON, _GRASS_]),
   GRASS_ENERGY_123 ("Grass Energy", "123", Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
   FIRE_ENERGY_124 ("Fire Energy", "124", Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
   WATER_ENERGY_125 ("Water Energy", "125", Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
@@ -253,7 +253,7 @@ public enum DiamondPearl implements LogicCardInfo {
                   def top=defending.topPokemonCard
                   //
                   // [Temporary LV.X workaround]
-                  if (top.cardTypes.is(LEVEL_UP) && defending.cards.filterByType(POKEMON).size() > 2){
+                  if (top.cardTypes.is(LVL_X) && defending.cards.filterByType(POKEMON).size() > 2){
                     bc "${top}'s Level-Up card will be moved wherever the top evolution ends up at."
                     moveCard(top, opp.hand)
                     devolve(defending, top)
@@ -609,7 +609,7 @@ public enum DiamondPearl implements LogicCardInfo {
                 def top = pcs.topPokemonCard
                 //
                 // [Temporary LV.X workaround]
-                if (top.cardTypes.is(LEVEL_UP) && pcs.cards.filterByType(POKEMON).size() > 2){
+                if (top.cardTypes.is(LVL_X) && pcs.cards.filterByType(POKEMON).size() > 2){
                   bc "${top}'s Level-Up card will be moved wherever the top evolution ends up at."
                   moveCard(top, opp.hand)
                   devolve(pcs, top)
@@ -838,7 +838,7 @@ public enum DiamondPearl implements LogicCardInfo {
 
               //
               // [Temporary LV.X workaround]
-              if (defending.topPokemonCard.cardTypes.is(CardType.LEVEL_UP)){
+              if (defending.topPokemonCard.cardTypes.is(CardType.LVL_X)){
                 //Only 3 LV.Xs right now, all stage 2 so this should do
                 def tpc = defending.cards.find{car -> car.cardTypes.is(STAGE2) && car != defending.topPokemonCard}
                 moveList.addAll(tpc.moves)
@@ -3048,7 +3048,7 @@ public enum DiamondPearl implements LogicCardInfo {
       case SWITCH_119:
         return copy(FireRedLeafGreen.SWITCH_102, this);
       case EMPOLEON_LV_X_120:
-        //TODO: Find how to mark these cards as "LEVEL_UP" cards instead of evolutions.
+        //TODO: Find how to mark these cards as "LVL_X" cards instead of evolutions.
         return levelUp (this, from:"Empoleon", hp:HP140, type:WATER, retreatCost:2) {
           weakness L, PLUS30
           globalAbility {Card thisCard->
@@ -3065,7 +3065,7 @@ public enum DiamondPearl implements LogicCardInfo {
                   def currentActive = thisCard.player.pbg.active
                   if (thisCard.predecessor != currentActive.name){
                     wcu "You can only level-up a ${thisCard.name} placed as your Active Pokémon"
-                  } else if (currentActive.topPokemonCard.cardTypes.is(LEVEL_UP)) {
+                  } else if (currentActive.topPokemonCard.cardTypes.is(LVL_X)) {
                     wcu "You can't level-up a ${thisCard.name} LV.X"
                   } else if (currentActive.turnCount >= bg.turnCount) {
                     wcu "You can't level-up a ${thisCard.name} that was put in play during this turn."
@@ -3086,7 +3086,7 @@ public enum DiamondPearl implements LogicCardInfo {
             //TODO: Remove this once Lv.X are properly implemented.
             getterA (GET_MOVE_LIST,self) {holder->
               for(card in holder.effect.target.cards.filterByType(POKEMON)){
-                if(!card.cardTypes.is(LEVEL_UP) && card.name == self.name){
+                if(!card.cardTypes.is(LVL_X) && card.name == self.name){
                   holder.object.addAll(card.moves)
                 }
               }
@@ -3151,7 +3151,7 @@ public enum DiamondPearl implements LogicCardInfo {
                   def currentActive = thisCard.player.pbg.active
                   if (thisCard.predecessor != currentActive.name){
                     wcu "You can only level-up a ${thisCard.name} placed as your Active Pokémon"
-                  } else if (currentActive.topPokemonCard.cardTypes.is(LEVEL_UP)) {
+                  } else if (currentActive.topPokemonCard.cardTypes.is(LVL_X)) {
                     wcu "You can't level-up a ${thisCard.name} LV.X"
                   } else if (currentActive.turnCount >= bg.turnCount) {
                     wcu "You can't level-up a ${thisCard.name} that was put in play during this turn."
@@ -3172,7 +3172,7 @@ public enum DiamondPearl implements LogicCardInfo {
             //TODO: Remove this once Lv.X are properly implemented.
             getterA (GET_MOVE_LIST,self) {holder->
               for(card in holder.effect.target.cards.filterByType(POKEMON)){
-                if(!card.cardTypes.is(LEVEL_UP) && card.name == self.name){
+                if(!card.cardTypes.is(LVL_X) && card.name == self.name){
                   holder.object.addAll(card.moves)
                 }
               }
@@ -3225,7 +3225,7 @@ public enum DiamondPearl implements LogicCardInfo {
                   def currentActive = thisCard.player.pbg.active
                   if (thisCard.predecessor != currentActive.name){
                     wcu "You can only level-up a ${thisCard.name} placed as your Active Pokémon"
-                  } else if (currentActive.topPokemonCard.cardTypes.is(LEVEL_UP)) {
+                  } else if (currentActive.topPokemonCard.cardTypes.is(LVL_X)) {
                     wcu "You can't level-up a ${thisCard.name} LV.X"
                   } else if (currentActive.turnCount >= bg.turnCount) {
                     wcu "You can't level-up a ${thisCard.name} that was put in play during this turn."
@@ -3246,7 +3246,7 @@ public enum DiamondPearl implements LogicCardInfo {
             //TODO: Remove this once Lv.X are properly implemented.
             getterA (GET_MOVE_LIST,self) {holder->
               for(card in holder.effect.target.cards.filterByType(POKEMON)){
-                if(!card.cardTypes.is(LEVEL_UP) && card.name == self.name){
+                if(!card.cardTypes.is(LVL_X) && card.name == self.name){
                   holder.object.addAll(card.moves)
                 }
               }

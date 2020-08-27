@@ -170,8 +170,8 @@ public enum SecretWonders implements LogicCardInfo {
   SWITCH_128 ("Switch", "128", Rarity.COMMON, [TRAINER]),
   DARKNESS_ENERGY_129 ("Darkness Energy", "129", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   METAL_ENERGY_130 ("Metal Energy", "130", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
-  GARDEVOIR_LV_X_131 ("Gardevoir ", "131", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _PSYCHIC_]),
-  HONCHKROW_LV_X_132 ("Honchkrow ", "132", Rarity.HOLORARE, [LEVEL_UP, POKEMON, _DARKNESS_]);
+  GARDEVOIR_LV_X_131 ("Gardevoir ", "131", Rarity.HOLORARE, [LVL_X, POKEMON, _PSYCHIC_]),
+  HONCHKROW_LV_X_132 ("Honchkrow ", "132", Rarity.HOLORARE, [LVL_X, POKEMON, _DARKNESS_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 

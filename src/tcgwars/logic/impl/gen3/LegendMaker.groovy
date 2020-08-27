@@ -283,7 +283,7 @@ public enum LegendMaker implements LogicCardInfo {
               def top = it.topPokemonCard
               //
               // [Temporary LV.X workaround]
-              if (top.cardTypes.is(LEVEL_UP) && it.cards.filterByType(POKEMON).size() > 2){
+              if (top.cardTypes.is(LVL_X) && it.cards.filterByType(POKEMON).size() > 2){
                 bc "${top}'s Level-Up card will be moved wherever the top evolution ends up at."
                 moveCard(top, opp.deck)
                 devolve(it, top)
@@ -1349,7 +1349,7 @@ public enum LegendMaker implements LogicCardInfo {
               def top = pcs.topPokemonCard
               //
               // [Temporary LV.X workaround]
-              if (top.cardTypes.is(LEVEL_UP) && pcs.cards.filterByType(POKEMON).size() > 2){
+              if (top.cardTypes.is(LVL_X) && pcs.cards.filterByType(POKEMON).size() > 2){
                 bc "${top}'s Level-Up card will be moved wherever the top evolution ends up at."
                 pcs.cards.remove(top)
                 opp.deck.add(top)
@@ -2734,7 +2734,7 @@ public enum LegendMaker implements LogicCardInfo {
                 holder.object.addAll(it.topPokemonCard.moves)
                 //
                 // [Temporary LV.X workaround]
-                if (it.topPokemonCard.cardTypes.is(CardType.LEVEL_UP)){
+                if (it.topPokemonCard.cardTypes.is(CardType.LVL_X)){
                   //Only 3 LV.Xs right now, all stage 2 so this should do
                   def tpc = it.cards.find{car -> car.cardTypes.is(STAGE2) && car != it.topPokemonCard}
                   holder.object.addAll(tpc.moves)

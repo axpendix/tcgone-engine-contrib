@@ -145,7 +145,7 @@ public class CardTypeSet extends TreeSet<CardType> {
   }
 
   public boolean isLevelUp() {
-    return is(CardType.LEVEL_UP);
+    return is(CardType.LVL_X);
   }
 
   public static CardTypeSet all() {
