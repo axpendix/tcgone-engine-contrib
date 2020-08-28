@@ -2328,9 +2328,10 @@ public enum LostThunder implements LogicCardInfo {
               trcard = pokemonTool(new CustomCardInfo(top.realInfo).setCardTypes(TRAINER, ITEM, POKEMON_TOOL)) {
                 def eff
                 onPlay {
-                  eff = delayed {
-                    before KNOCKOUT, self, {
-                      blockingEffect(TAKE_PRIZE).setUnregisterImmediately(true)
+                  eff = getter GET_GIVEN_PRIZES, self, {holder->
+                    if (holder.object > 0) {
+                      bc "Vessel of Life reduces the number of prizes taken due to ${self} being Knocked Out by one."
+                      holder.object -= 1
                     }
                   }
                 }
