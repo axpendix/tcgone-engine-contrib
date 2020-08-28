@@ -2311,19 +2311,28 @@ public enum GuardiansRising implements LogicCardInfo {
             text "If the Defending Pokémon is Knocked Out during your next turn, take 2 more Prize cards."
             energyCost C
             onAttack {
-              delayed (priority: LAST) {
+              targeted (defending) {
                 def pcs = defending
-                before KNOCKOUT, pcs, {
-                  if(turnCount + 2 == bg.turnCount) {
-                    bc "The Wages of Fluff kicks in"
-                    bg.em().run(new TakePrize(self.owner, pcs))
-                    bg.em().run(new TakePrize(self.owner, pcs))
+                def fluffTurn = bg.turnCount + 2
+                bc "If the Defending ${defending} is Knocked Out during ${self.owner}'s next turn, they'll take 2 more Prize cards. (This effect can be removed by benching/evolving ${defending}.)"
+                delayed {
+                  def eff
+                  register {
+                    eff = getter GET_GIVEN_PRIZES, BEFORE_LAST, pcs, {Holder holder ->
+                      if (holder.object > 0 && fluffTurn == bg().turnCount) {
+                        bc "The Wages of Fluff gives the player two additional prizes."
+                        holder.object += 2
+                      }
+                    }
                   }
+                  unregister {
+                    eff.unregister()
+                  }
+                  after FALL_BACK, pcs, {unregister()}
+                  after EVOLVE, pcs, {unregister()}
+                  after DEVOLVE, pcs, {unregister()}
+                  unregisterAfter 3
                 }
-                after FALL_BACK, pcs, {unregister()}
-                after EVOLVE, pcs, {unregister()}
-                after DEVOLVE, pcs, {unregister()}
-                unregisterAfter 3
               }
             }
           }
