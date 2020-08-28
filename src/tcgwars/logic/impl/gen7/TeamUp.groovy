@@ -3365,7 +3365,7 @@ public enum TeamUp implements LogicCardInfo {
               choice = 2
             }
             else{
-              if(bg.stadiumInfoStruct){
+              if(bg.stadiumInfoStruct && stadiumCanBeAffectedByItemAndSupporter()){
                 choice = choose([1,2],["A Pokémon Tool or Special Energy card from 1 of your opponent's Pokémon", "The stadium card in play"], "What to discard?")
               }
             }
@@ -3381,7 +3381,7 @@ public enum TeamUp implements LogicCardInfo {
           }
           playRequirement{
             assert my.hand.filterByType(POKEMON).findAll{it.asPokemonCard().types.contains(D)}: "There is no [D] pokémon in your hand"
-            assert opp.all.findAll{it.cards.filterByType(POKEMON_TOOL, SPECIAL_ENERGY)} || bg.stadiumInfoStruct : "There is no cards to discard"
+            assert opp.all.findAll{it.cards.filterByType(POKEMON_TOOL, SPECIAL_ENERGY)} || ( bg.stadiumInfoStruct && stadiumCanBeAffectedByItemAndSupporter() ) : "There is no cards to discard"
           }
         };
       case ELECTROCHARGER_139:
