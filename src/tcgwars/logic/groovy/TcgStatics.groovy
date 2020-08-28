@@ -846,8 +846,25 @@ class TcgStatics {
   static barrier(PokemonCardSet self, Object delegate){
     delegate.delayedA {
       //TODO make sure all trainers have correct source definitions and add extra source types
+      def flag = false
+      def power=false
+
+      before PROCESS_ATTACK_EFFECTS, {
+        flag = true
+      }
+      before BETWEEN_TURNS, {
+        flag = false
+      }
+      before PLAY_TRAINER, {
+        if (!(ef.stadium || ef.pokemonTool) && bg.currentThreadPlayerType != self.owner && bg.currentTurn.pbg.hand.contains(ef.cardToPlay)) {
+          power=true
+        }
+      }
+      after PLAY_TRAINER, {
+        power=false
+      }
       before (null, self, Source.TRAINER_CARD) {
-        if (bg.currentThreadPlayerType != self.owner){ //only opponent's trainer cards
+        if (power && !flag && bg.currentThreadPlayerType != self.owner){ //only opponent's trainer cards
           bc "Barrier prevents effect"
           prevent()
         }
