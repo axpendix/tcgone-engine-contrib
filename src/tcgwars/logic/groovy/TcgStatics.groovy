@@ -880,17 +880,17 @@ class TcgStatics {
   }
 
   static delta_plus(PokemonCardSet self, Object delegate){
+    def power = false
     delegate.delayedA (priority: LAST) {
-      def power=false
       after APPLY_ATTACK_DAMAGES, {
-        power= (ef.attacker==self)
+        power = (ef.attacker==self)
       }
-      before KNOCKOUT, {
-        if(ef.pokemonToBeKnockedOut.owner==self.owner.opposite
-          && ef.byDamageFromAttack && power){
-          bc "Δ Plus: take 1 more Prize card"
-          bg.em().run(new TakePrize(self.owner, ef.pokemonToBeKnockedOut))
-        }
+    }
+    delegate.getterA GET_GIVEN_PRIZES, BEFORE_LAST, {Holder holder ->
+      def pcs = holder.effect.target
+      if (pcs.owner != self.owner && pcs.KOBYDMG == bg.turnCount && holder.object > 0) {
+        bc "Altered Creation GX gives the player an additional prize."
+        holder.object += 1
       }
     }
   }
