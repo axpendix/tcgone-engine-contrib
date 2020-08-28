@@ -3829,12 +3829,15 @@ public enum CosmicEclipse implements LogicCardInfo {
               gxPerform()
 
               bc "For the rest of the game, this player Pokémon’s attacks do 30 more damage to their opponent’s Active Pokémon."
+              def selfOwner = self.owner
               delayed { // a permanent delayed effect
                 after PROCESS_ATTACK_EFFECTS, {
-                  bg.dm().each {
-                    if (it.from.owner == self.owner && it.dmg.value && it.to.active && it.to.owner  == self.owner.opposite) {
-                      bc "Altered Creation GX +30"
-                      it.dmg += hp(30)
+                  if (ef.attacker.owner == selfOwner) {
+                    bg.dm().each {
+                      if (it.dmg.value && it.to.active && it.to.owner == selfOwner.opposite) {
+                        bc "Altered Creation GX +30"
+                        it.dmg += hp(30)
+                      }
                     }
                   }
                 }
@@ -3843,12 +3846,11 @@ public enum CosmicEclipse implements LogicCardInfo {
               if (self.cards.energySufficient( thisMove.energyCost + W )) {
                 bc "[Additional cost covered] Also for the rest of the game, when the opponent’s Active Pokémon is Knocked Out by damage from those attacks, this player takes 1 more Prize card."
                 delayed (priority: LAST) {
-                  def pt = self.owner
                   before KNOCKOUT, {
                     def pcs = ef.pokemonToBeKnockedOut
-                    if (pcs.owner == self.owner.opposite && pcs.active && ef.byDamageFromAttack) {
+                    if (pcs.owner == selfOwner.opposite && pcs.active && ef.byDamageFromAttack) {
                       bc "Altered Creation GX gives the player an additional prize."
-                      bg.em().run(new TakePrize(self.owner, pcs))
+                      bg.em().run(new TakePrize(selfOwner, pcs))
                     }
                   }
                 }
