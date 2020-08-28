@@ -3349,8 +3349,10 @@ public enum CosmicEclipse implements LogicCardInfo {
                 def eff2
                 register {
                   eff2 = getter GET_GIVEN_PRIZES, BEFORE_LAST, pcs, {Holder holder ->
-                    if (holder.object > 0 && holder.effect.target.KOBYDMG == bg.turnCount)
+                    if (holder.object > 0 && holder.effect.target.KOBYDMG == bg.turnCount) {
+                      bc "Red Banquet gives the player an additional prize."
                       holder.object += 1
+                    }
                   }
                 }
                 unregister {
@@ -3361,27 +3363,6 @@ public enum CosmicEclipse implements LogicCardInfo {
                 }
                 unregisterAfter 1
               }
-              /*delayed {
-                def pcs = defending
-                def flag = false
-                before KNOCKOUT, pcs, {
-                  if ( (ef as Knockout).isByDamageFromAttack() ) {
-                    flag = true
-                  }
-                }
-                after TAKE_PRIZE, {
-                  if (flag && (ef as TakePrize).pcs == pcs){
-                    bc "Red Banquet gives the player an additional prize."
-                    flag = false
-                    bg.em().run(new TakePrize(self.owner, pcs))
-                    unregister()
-                  }
-                }
-                after KNOCKOUT, pcs, {
-                  flag = false
-                  unregister()
-                }
-              }*/
               damage 120
             }
           }
