@@ -2473,16 +2473,6 @@ public enum HolonPhantoms implements LogicCardInfo {
               if (defending.evolution && !defending.slatedToKO && confirm("Discard 2 Energy to devolve Defending?")) {
                 discardSelfEnergy(C, C)
                 def top=defending.topPokemonCard
-                //
-                // [Temporary LV.X workaround]
-                if (top.cardTypes.is(LVL_X) && defending.cards.filterByType(POKEMON).size() > 2){
-                  bc "${top}'s Level-Up card will be moved wherever the top evolution ends up at."
-                  moveCard(top, opp.deck)
-                  devolve(defending, top)
-                  top = defending.topPokemonCard
-                }
-                // [End of LV.X workaround] TODO: Remove this when no longer needed
-                //
                 bc "$top Devolved"
                 moveCard(top, opp.deck)
                 devolve(defending, top)

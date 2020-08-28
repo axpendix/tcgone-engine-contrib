@@ -2420,15 +2420,6 @@ public enum DragonFrontiers implements LogicCardInfo {
             def tar = opp.all.select("Choose Pokemon to copy moves from")
             if (tar.topPokemonCard.moves) {
               def moveOptions = tar.topPokemonCard.moves
-              //
-              // [Temporary LV.X workaround]
-              if (tar.topPokemonCard.cardTypes.is(CardType.LVL_X)){
-                //Only 3 LV.Xs right now, all stage 2 so this should do
-                def tpc = tar.cards.find{car -> car.cardTypes.is(STAGE2) && car != tar.topPokemonCard}
-                moveOptions += tpc.moves
-              }
-              // [End of LV.X workaround] TODO: Remove this when no longer needed
-              //
               def move = choose(moveOptions + ["End Turn (Skip)"], "Choose 1 of the Pokémon's attacks.")
               if (move instanceof String) return
               def bef = blockingEffect(BETWEEN_TURNS)

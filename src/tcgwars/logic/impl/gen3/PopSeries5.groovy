@@ -162,15 +162,6 @@ public enum PopSeries5 implements LogicCardInfo {
           }
           onAttack {
             def moveOptions = defending.topPokemonCard.moves
-            //
-            // [Temporary LV.X workaround]
-            if (defending.topPokemonCard.cardTypes.is(CardType.LVL_X)){
-              //Only 3 LV.Xs right now, all stage 2 so this should do
-              def tpc = defending.cards.find{car -> car.cardTypes.is(STAGE2) && car != defending.topPokemonCard}
-              moveOptions += tpc.moves
-            }
-            // [End of LV.X workaround] TODO: Remove this when no longer needed
-            //
             def move = choose(moveOptions + ["End Turn (Skip)"], "Choose 1 of the Defending Pokémon's attacks. (Do not select a move if you don't have necessary energy or it will fail) ")
             if (move instanceof String) return
             def bef = blockingEffect(BETWEEN_TURNS)

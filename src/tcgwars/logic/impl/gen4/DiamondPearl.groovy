@@ -251,16 +251,6 @@ public enum DiamondPearl implements LogicCardInfo {
                 if(defending.evolution && confirm ("You may return all Energy cards attached to Dialga to your hand. If you do, remove the highest Stage Evolution card from the Defending Pokémon and shuffle that card into your opponent’s deck.")) {
                   self.cards.filterByType(ENERGY).moveTo(my.hand)
                   def top=defending.topPokemonCard
-                  //
-                  // [Temporary LV.X workaround]
-                  if (top.cardTypes.is(LVL_X) && defending.cards.filterByType(POKEMON).size() > 2){
-                    bc "${top}'s Level-Up card will be moved wherever the top evolution ends up at."
-                    moveCard(top, opp.hand)
-                    devolve(defending, top)
-                    top = defending.topPokemonCard
-                  }
-                  // [End of LV.X workaround] TODO: Remove this when no longer needed
-                  //
                   bc "$top Devolved"
                   moveCard(top, opp.hand)
                   devolve(defending, top)
@@ -607,16 +597,6 @@ public enum DiamondPearl implements LogicCardInfo {
               flip {
                 def pcs = list.select("Devolve one of your opponent's evolved Benched Pokémon.")
                 def top = pcs.topPokemonCard
-                //
-                // [Temporary LV.X workaround]
-                if (top.cardTypes.is(LVL_X) && pcs.cards.filterByType(POKEMON).size() > 2){
-                  bc "${top}'s Level-Up card will be moved wherever the top evolution ends up at."
-                  moveCard(top, opp.hand)
-                  devolve(pcs, top)
-                  top = pcs.topPokemonCard
-                }
-                // [End of LV.X workaround] TODO: Remove this when no longer needed
-                //
                 bc "$top devolved."
                 moveCard(top, opp.hand)
                 devolve(pcs, top)
@@ -835,17 +815,6 @@ public enum DiamondPearl implements LogicCardInfo {
 
               moveList.addAll(defending.topPokemonCard.moves);
               labelList.addAll(defending.topPokemonCard.moves.collect{it.name})
-
-              //
-              // [Temporary LV.X workaround]
-              if (defending.topPokemonCard.cardTypes.is(CardType.LVL_X)){
-                //Only 3 LV.Xs right now, all stage 2 so this should do
-                def tpc = defending.cards.find{car -> car.cardTypes.is(STAGE2) && car != defending.topPokemonCard}
-                moveList.addAll(tpc.moves)
-                labelList.addAll(tpc.moves.collect{it.name})
-              }
-              // [End of LV.X workaround] TODO: Remove this when no longer needed
-              //
 
               def move=choose(moveList, labelList)
               def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
@@ -3048,50 +3017,8 @@ public enum DiamondPearl implements LogicCardInfo {
       case SWITCH_119:
         return copy(FireRedLeafGreen.SWITCH_102, this);
       case EMPOLEON_LV_X_120:
-        //TODO: Find how to mark these cards as "LVL_X" cards instead of evolutions.
         return levelUp (this, from:"Empoleon", hp:HP140, type:WATER, retreatCost:2) {
           weakness L, PLUS30
-          globalAbility {Card thisCard->
-            delayed {
-              before EVOLVE, {
-                if ( (ef.evolutionCard as Card) == thisCard && ["Piplup", "Prinplup"].contains(ef.pokemonToBeEvolved.name)  ) {
-                  wcu "You cannot evolve ${ef.pokemonToBeEvolved} into $thisCard.name LV.X"
-                  bc "[ERROR] Level-Up cards are not yet fully implemented, try to avoid using Rare Candy or Wally's Training as they will fail and be discarded with no use."
-                  prevent()
-                }
-              }
-              before PLAY_CARD, {
-                if(ef.cardToPlay == thisCard){
-                  def currentActive = thisCard.player.pbg.active
-                  if (thisCard.predecessor != currentActive.name){
-                    wcu "You can only level-up a ${thisCard.name} placed as your Active Pokémon"
-                  } else if (currentActive.topPokemonCard.cardTypes.is(LVL_X)) {
-                    wcu "You can't level-up a ${thisCard.name} LV.X"
-                  } else if (currentActive.turnCount >= bg.turnCount) {
-                    wcu "You can't level-up a ${thisCard.name} that was put in play during this turn."
-                  } else if (currentActive.lastEvolved >= bg.turnCount) {
-                    wcu "You can't level-up a ${thisCard.name} that was evolved during this turn."
-                  } else {
-                    //All is good, evolve the active
-                    evolve(currentActive, thisCard, PLAY_FROM_HAND)
-                    bc "$currentActive is now LV.X!"
-                  }
-                  prevent()
-                }
-              }
-            }
-          }
-          customAbility {
-            //Temp workaround for Worlds 2007 format.
-            //TODO: Remove this once Lv.X are properly implemented.
-            getterA (GET_MOVE_LIST,self) {holder->
-              for(card in holder.effect.target.cards.filterByType(POKEMON)){
-                if(!card.cardTypes.is(LVL_X) && card.name == self.name){
-                  holder.object.addAll(card.moves)
-                }
-              }
-            }
-          }
           pokePower "Supreme Command", {
             text "Once during your turn (before your attack), you may choose up to 2 cards from your opponent’s hand without looking and put them face down next to the Defending Pokémon. (These cards are not in play or in your opponent’s hand.) At the end of your opponent’s next turn, return those cards to your opponent’s hand. This power can’t be used if Empoleon is affected by a Special Condition."
             actionA {
@@ -3136,48 +3063,6 @@ public enum DiamondPearl implements LogicCardInfo {
       case INFERNAPE_LV_X_121:
         return evolution (this, from:"Infernape", hp:HP120, type:FIRE, retreatCost:0) {
           weakness W, PLUS30
-          def validPokemon
-          globalAbility {Card thisCard->
-            delayed {
-              before EVOLVE, {
-                if ( (ef.evolutionCard as Card) == thisCard && ["Chimchar", "Monferno"].contains(ef.pokemonToBeEvolved.name)  ) {
-                  wcu "You cannot evolve ${ef.pokemonToBeEvolved} into $thisCard.name LV.X"
-                  bc "[ERROR] Level-Up cards are not yet fully implemented, try to avoid using Rare Candy or Wally's Training as they will fail and be discarded with no use."
-                  prevent()
-                }
-              }
-              before PLAY_CARD, {
-                if(ef.cardToPlay == thisCard){
-                  def currentActive = thisCard.player.pbg.active
-                  if (thisCard.predecessor != currentActive.name){
-                    wcu "You can only level-up a ${thisCard.name} placed as your Active Pokémon"
-                  } else if (currentActive.topPokemonCard.cardTypes.is(LVL_X)) {
-                    wcu "You can't level-up a ${thisCard.name} LV.X"
-                  } else if (currentActive.turnCount >= bg.turnCount) {
-                    wcu "You can't level-up a ${thisCard.name} that was put in play during this turn."
-                  } else if (currentActive.lastEvolved >= bg.turnCount) {
-                    wcu "You can't level-up a ${thisCard.name} that was evolved during this turn."
-                  } else {
-                    //All is good, evolve the active
-                    evolve(currentActive, thisCard, PLAY_FROM_HAND)
-                    bc "$currentActive is now LV.X!"
-                  }
-                  prevent()
-                }
-              }
-            }
-          }
-          customAbility {
-            //Temp workaround for Worlds 2007 format.
-            //TODO: Remove this once Lv.X are properly implemented.
-            getterA (GET_MOVE_LIST,self) {holder->
-              for(card in holder.effect.target.cards.filterByType(POKEMON)){
-                if(!card.cardTypes.is(LVL_X) && card.name == self.name){
-                  holder.object.addAll(card.moves)
-                }
-              }
-            }
-          }
           pokePower "Burning Head", {
             text "Once during your turn (before your attack), you may look at the top 3 cards of your deck, choose 1 of them, and put it into your hand. Discard the other 2 cards. This power can’t be used if Infernape is affected by a Special Condition."
             actionA {
@@ -3211,47 +3096,6 @@ public enum DiamondPearl implements LogicCardInfo {
       case TORTERRA_LV_X_122:
         return evolution (this, from:"Torterra", hp:HP160, type:GRASS, retreatCost:4) {
           weakness R, PLUS30
-          globalAbility {Card thisCard->
-            delayed {
-              before EVOLVE, {
-                if ( (ef.evolutionCard as Card) == thisCard && ["Turtwig", "Grotle"].contains(ef.pokemonToBeEvolved.name)  ) {
-                  wcu "You cannot evolve ${ef.pokemonToBeEvolved} into $thisCard.name LV.X"
-                  bc "[ERROR] Level-Up cards are not yet fully implemented, try to avoid using Rare Candy or Wally's Training as they will fail and be discarded with no use."
-                  prevent()
-                }
-              }
-              before PLAY_CARD, {
-                if(ef.cardToPlay == thisCard){
-                  def currentActive = thisCard.player.pbg.active
-                  if (thisCard.predecessor != currentActive.name){
-                    wcu "You can only level-up a ${thisCard.name} placed as your Active Pokémon"
-                  } else if (currentActive.topPokemonCard.cardTypes.is(LVL_X)) {
-                    wcu "You can't level-up a ${thisCard.name} LV.X"
-                  } else if (currentActive.turnCount >= bg.turnCount) {
-                    wcu "You can't level-up a ${thisCard.name} that was put in play during this turn."
-                  } else if (currentActive.lastEvolved >= bg.turnCount) {
-                    wcu "You can't level-up a ${thisCard.name} that was evolved during this turn."
-                  } else {
-                    //All is good, evolve the active
-                    evolve(currentActive, thisCard, PLAY_FROM_HAND)
-                    bc "$currentActive is now LV.X!"
-                  }
-                  prevent()
-                }
-              }
-            }
-          }
-          customAbility {
-            //Temp workaround for Worlds 2007 format.
-            //TODO: Remove this once Lv.X are properly implemented.
-            getterA (GET_MOVE_LIST,self) {holder->
-              for(card in holder.effect.target.cards.filterByType(POKEMON)){
-                if(!card.cardTypes.is(LVL_X) && card.name == self.name){
-                  holder.object.addAll(card.moves)
-                }
-              }
-            }
-          }
           pokePower "Forest Murmurs", {
             text "Once during your turn (before your attack), if you have more Prize cards left than your opponent, you may choose 1 of your opponent’s Benched Pokémon and switch it with 1 of the Defending Pokémon. This power can’t be used if Torterra is affected by a Special Condition."
             actionA {
