@@ -1626,7 +1626,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
                 def eff2
                 register {
                   eff2 = getter GET_GIVEN_PRIZES, BEFORE_LAST, pcs, {Holder holder ->
-                    if (holder.object > 0 && holder.effect.target.KOBYDMG == bg.turnCount) {
+                    if (holder.object > 0 && pcs.KOBYDMG == bg.turnCount) {
                       bc "Glutton GX gives the player 2 additional prizes."
                       holder.object += 2
                     }
