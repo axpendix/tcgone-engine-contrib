@@ -3312,10 +3312,15 @@ public enum RebelClash implements LogicCardInfo {
             assert my.deck : "Your deck is empty."
           }
           onAttack {
-            def num =  choose([0,1,2,3,4,5,6], ["0","1","2","3","4","5","6"], "Discard how many from the top of your deck?", 6)
-            num = Math.min(num, deck.size())
-            my.deck.subList(0,num).discard()
-            damage 30*num
+            def n = 0
+            while (n < 6) {
+              my.deck.subList(0,1).discard()
+              n++
+              if (!my.deck || (n < 6 && !confirm("Cards Discarded: ${n}/6. Damage being dealt: ${n * 30}. Discard another card from the top of the deck for +30 damage?") ) )
+                break;
+            }
+
+            damage 30 * n
           }
         }
         move "Headbutt Bounce", {
