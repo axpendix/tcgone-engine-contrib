@@ -116,10 +116,10 @@ public enum MajesticDawn implements LogicCardInfo {
   HEALTH_ENERGY_94 ("Health Energy", "94", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   METAL_ENERGY_95 ("Metal Energy", "95", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   RECOVER_ENERGY_96 ("Recover Energy", "96", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
-  GARCHOMP_LV_X_97 ("Garchomp Lv.X", "97", Rarity.HOLORARE, [STAGE2, LVL_X, POKEMON, _COLORLESS_]),
-  GLACEON_LV_X_98 ("Glaceon Lv.X", "98", Rarity.HOLORARE, [STAGE1, LVL_X, POKEMON, _WATER_]),
-  LEAFEON_LV_X_99 ("Leafeon Lv.X", "99", Rarity.HOLORARE, [STAGE1, LVL_X, POKEMON, _GRASS_]),
-  PORYGON_Z_LV_X_100 ("Porygon-Z Lv.X", "100", Rarity.HOLORARE, [STAGE2, LVL_X, POKEMON, _COLORLESS_]);
+  GARCHOMP_LV_X_97 ("Garchomp Lv.X", "97", Rarity.HOLORARE, [LVL_X, POKEMON, _COLORLESS_]),
+  GLACEON_LV_X_98 ("Glaceon Lv.X", "98", Rarity.HOLORARE, [LVL_X, POKEMON, _WATER_]),
+  LEAFEON_LV_X_99 ("Leafeon Lv.X", "99", Rarity.HOLORARE, [LVL_X, POKEMON, _GRASS_]),
+  PORYGON_Z_LV_X_100 ("Porygon-Z Lv.X", "100", Rarity.HOLORARE, [LVL_X, POKEMON, _COLORLESS_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
