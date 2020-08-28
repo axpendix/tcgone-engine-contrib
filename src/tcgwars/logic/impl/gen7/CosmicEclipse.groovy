@@ -4683,14 +4683,10 @@ public enum CosmicEclipse implements LogicCardInfo {
                 h.object -= hp(100)
               }
             }
-            effPrize = delayed (priority: BEFORE_LAST) {
-              before KNOCKOUT, self, {
-                if (self.pokemonEX || self.pokemonGX) {
-                  if(ef.byDamageFromAttack) {
-                    bc "$thisCard forces the opponent to take one less prize card."
-                    blockingEffect(TAKE_PRIZE).setUnregisterImmediately(true)
-                  }
-                }
+            effPrize = getter GET_GIVEN_PRIZES, self, {holder->
+              if ( (self.pokemonEX || self.pokemonGX) && self.KOBYDMG == bg.turnCount && holder.object > 0) {
+                bc "Island Challenge Amulet reduces prizes taken from KOing ${self} by one."
+                holder.object -= 1
               }
             }
             checkFaint()
