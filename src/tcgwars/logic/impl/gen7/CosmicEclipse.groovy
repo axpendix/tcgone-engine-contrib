@@ -4296,7 +4296,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             }
             delayedA {
               before (KNOCKOUT,self) {
-                if (self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
+                if ( self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && confirm("Use Arf Arf Bark?") ) {
                   bc "Arf Arf Bark activates"
                   if (self.owner.opposite.pbg.active.cards.filterByType(ENERGY)) {
                     self.owner.opposite.pbg.active.cards.filterByType(ENERGY).select("Discard which Energy?").discard()
