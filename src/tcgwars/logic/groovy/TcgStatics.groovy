@@ -1525,30 +1525,27 @@ class TcgStatics {
       return
     }
     targeted(target, source) {
-      CardList pokemonList = []
-      CardList otherList = []
-      otherList.addAll(target.cards.filterByType(TRAINER, ENERGY))
-      pokemonList.addAll(target.cards.filterByType(POKEMON))
-      if (params.pokemonOnly || params.only) {
-        if (params.only) {
-          if (params.only instanceof Card) params.only = new CardList(params.only)
-          bc "Scooped up ${params.only.getExcludedList(otherList)}"
-        }
-        else {
-          params.only = new CardList(pokemonList)
-          bc "Scooped up $target"
-        }
-        def toDiscard
-        toDiscard = pokemonList.getExcludedList(params.only as CardList)
-        target.owner.pbg.discard.addAll(toDiscard)
-        target.owner.pbg.hand.addAll(pokemonList.getExcludedList(toDiscard as CardList))
-        toDiscard = otherList.getExcludedList(params.only as CardList).discard()
-        otherList.getExcludedList(toDiscard).moveTo(target.owner.pbg.hand)
+      CardList toHand
+      if(params.only) {
+        if (params.only instanceof Card) toHand = new CardList(params.only)
+        else if (params.only instanceof CardList) toHand = params.only as CardList
+        else throw new IllegalArgumentException("scoopUpPokemon() params.only=${params.only} type not supported")
+      } else if(params.pokemonOnly) {
+        toHand = target.cards.filterByType(POKEMON)
+      } else {
+        toHand = new CardList(target.cards)
       }
-      else {
-        target.owner.pbg.hand.addAll(pokemonList)
-        otherList.moveTo(target.owner.pbg.hand)
-      }
+      CardList toDiscard = target.cards.getExcludedList(toHand)
+
+      bc "Scooped up ${toHand}"
+
+      CardList toHand2 = toHand.filterByType(POKEMON)
+      target.owner.pbg.hand.addAll(toHand2)
+      toHand.getExcludedList(toHand2).moveTo(target.owner.pbg.hand)
+
+      CardList toDiscard2 = toDiscard.filterByType(POKEMON)
+      target.owner.pbg.discard.addAll(toDiscard2)
+      toDiscard.getExcludedList(toDiscard2).discard()
       removePCS(target)
     }
   }
