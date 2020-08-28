@@ -3344,15 +3344,45 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "120 damage. If your opponent's Pokémon is Knocked Out by damage from this attack, take 1 more Prize card."
             energyCost D, D, C, C
             onAttack {
-              damage 120
-              delayed (priority: LAST) {
-                def pcs = defending
-                before KNOCKOUT, pcs, {
-                  bc "Red Banquet gives the player an additional prize."
-                  bg.em().run(new TakePrize(self.owner, pcs))
+              def pcs = defending
+              delayed {
+                def eff2
+                register {
+                  eff2 = getter GET_GIVEN_PRIZES, BEFORE_LAST, pcs, {Holder holder ->
+                    if (holder.object > 0 && holder.effect.target.KOBYDMG == bg.turnCount)
+                      holder.object += 1
+                  }
+                }
+                unregister {
+                  eff2.unregister()
+                }
+                after KNOCKOUT, pcs, {
                   unregister()
                 }
+                unregisterAfter 1
               }
+              /*delayed {
+                def pcs = defending
+                def flag = false
+                before KNOCKOUT, pcs, {
+                  if ( (ef as Knockout).isByDamageFromAttack() ) {
+                    flag = true
+                  }
+                }
+                after TAKE_PRIZE, {
+                  if (flag && (ef as TakePrize).pcs == pcs){
+                    bc "Red Banquet gives the player an additional prize."
+                    flag = false
+                    bg.em().run(new TakePrize(self.owner, pcs))
+                    unregister()
+                  }
+                }
+                after KNOCKOUT, pcs, {
+                  flag = false
+                  unregister()
+                }
+              }*/
+              damage 120
             }
           }
         };
