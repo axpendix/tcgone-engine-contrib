@@ -4290,9 +4290,9 @@ public enum CosmicEclipse implements LogicCardInfo {
           bwAbility "Arf Arf Bark", {
             text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may discard an Energy from your opponent's Active Pokémon. If this Pokémon is your Active Pokémon and is Knocked Out by damage from an opponent's attack, you may discard an Energy from your opponent's Active Pokémon."
             onActivate { r ->
-              if (r==PLAY_FROM_HAND && my.deck && confirm("Use Arf Arf Bark?")) {
+              if (r==PLAY_FROM_HAND && my.deck && confirm("Use Arf Arf Bark?", self.owner)) {
                 if(opp.active.cards.filterByType(ENERGY)) {
-                  opp.active.cards.filterByType(ENERGY).select("Discard which Energy?").discard()
+                  opp.active.cards.filterByType(ENERGY).select("Discard which Energy?", self.owner).discard()
                 }
               }
             }
