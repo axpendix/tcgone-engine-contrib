@@ -272,7 +272,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
 
   public String getName() {
     try {
-      lastName = getTopPokemonCard().getName();
+      lastName = getTopPokemonCard().getName().replace(" Lv.X", "");
       return lastName;
     } catch (Exception e) {
       return lastName;
