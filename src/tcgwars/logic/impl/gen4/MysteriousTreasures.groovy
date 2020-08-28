@@ -279,6 +279,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
           }
           move "Psychic Guard", {
             text "50 damage. During your opponent’s next turn, any damage done to Alakazam by attacks from your opponent’s Stage 2 Pokémon is reduced by 30 (after applying Weakness and Resistance)."
+            //Errata Applied: Original card said "Evolved Stage 2 Pokémon".
             energyCost P, P, C
             attackRequirement {}
             onAttack {
@@ -287,7 +288,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 delayed {
                   before APPLY_ATTACK_DAMAGES, {
                     bg.dm().each {
-                      if (it.to==self && it.dmg.value && it.notNoEffect && it.from.topPokemonCard.cardTypes.is(STAGE2)) {
+                      if (it.to==self && it.dmg.value && it.notNoEffect && it.from.stage2) {
                         bc "-30 to $self ($thisMove)"
                         it.dmg-=hp(30)
                       }
@@ -993,11 +994,12 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return evolution (this, from:"Snorunt", hp:HP090, type:WATER, retreatCost:2) {
           weakness M, PLUS20
           pokeBody "Craggy Face", {
-            text "As long as Glalie is your Active Pokémon, any damage done by attacks from your opponent’s Stage 2 Evolved Pokémon is reduced by 20 (before applying Weakness and Resistance)."
+            text "As long as Glalie is your Active Pokémon, any damage done by attacks from your opponent’s Stage 2 Pokémon is reduced by 20 (before applying Weakness and Resistance)."
+            //Errata, used to say "Stage 2 Evolved Pokémon"
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each{
-                  if(self.active && it.from.owner != self.owner && it.from.evolution && it.from.topPokemonCard.cardTypes.is(STAGE2)) {
+                  if(self.active && it.from.owner != self.owner && it.from.stage2) {
                     bc "Craggy Face -20"
                     it.dmg -= hp(20)
                   }

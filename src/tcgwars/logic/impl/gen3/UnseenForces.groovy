@@ -620,7 +620,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost W, C, C
           onAttack {
             damage 60
-            if (defending.evolution && defending.topPokemonCard.cardTypes.is(STAGE2)) {
+            if (defending.evolution && defending.stage2) {
               damage 30
             }
           }
@@ -725,15 +725,6 @@ public enum UnseenForces implements LogicCardInfo {
           }
           onAttack {
             def moveOptions = defending.topPokemonCard.moves
-            //
-            // [Temporary LV.X workaround]
-            if (defending.topPokemonCard.cardTypes.is(CardType.LVL_X)){
-              //Only 3 LV.Xs right now, all stage 2 so this should do
-              def tpc = defending.cards.find{car -> car.cardTypes.is(STAGE2) && car != defending.topPokemonCard}
-              moveOptions += tpc.moves
-            }
-            // [End of LV.X workaround] TODO: Remove this when no longer needed
-            //
             def move = choose(moveOptions + ["End Turn (Skip)"], "Choose 1 of the Defending Pokémon's attacks. (Do not select a move if you don't have necessary energy or it will fail) ")
             if (move instanceof String) return
             def bef = blockingEffect(BETWEEN_TURNS)
@@ -2313,7 +2304,7 @@ public enum UnseenForces implements LogicCardInfo {
           "Draw a card. If you don't have any Stage 2 Evolved Pokémon in play, draw 2 more cards."
         onPlay {
           draw 1
-          if (!my.all.find{it.evolution && it.topPokemonCard.cardTypes.is(STAGE2)}) draw 2
+          if (!my.all.any{it.evolution && it.stage2}) draw 2
         }
         playRequirement{
           assert my.deck : "Deck is empty"
@@ -2520,17 +2511,6 @@ public enum UnseenForces implements LogicCardInfo {
               def list = opp.bench.findAll { it.evolution }
               def pcs = list.select("Devolve one of your opponent's evolved Pokémon")
               def top = pcs.topPokemonCard
-              //
-              // [Temporary LV.X workaround]
-              if (top.cardTypes.is(LVL_X) && pcs.cards.filterByType(POKEMON).size() > 2){
-                bc "${top}'s Level-Up card will be moved wherever the top evolution ends up at."
-                pcs.cards.remove(top)
-                opp.hand.add(top)
-                devolve(pcs, top)
-                top = pcs.topPokemonCard
-              }
-              // [End of LV.X workaround] TODO: Remove this when no longer needed
-              //
               bc "$top Devolved"
               pcs.cards.remove(top)
               opp.hand.add(top)
@@ -2812,7 +2792,7 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             def target = opp.all.select("Put 1 damage counter to which pokémon?")
             def amount = 30
-            if (target.evolution && target.topPokemonCard.cardTypes.contains(STAGE2)) {
+            if (target.evolution && target.stage2) {
               amount = 50
             }
             damage amount, target
@@ -3392,17 +3372,6 @@ public enum UnseenForces implements LogicCardInfo {
                 def list = all.findAll { it.evolution }
                 def pcs = list.select("Devolve one Evolved Pokémon")
                 def top = pcs.topPokemonCard
-                //
-                // [Temporary LV.X workaround]
-                if (top.cardTypes.is(LVL_X && defending.cards.filterByType(POKEMON).size() > 2)){
-                  bc "${top}'s Level-Up card will be moved wherever the top evolution ends up at."
-                  pcs.cards.remove(top)
-                  pcs.owner.pbg.hand.add(top)
-                  devolve(pcs, top)
-                  top = pcs.topPokemonCard
-                }
-                // [End of LV.X workaround] TODO: Remove this when no longer needed
-                //
                 bc "$top Devolved"
                 pcs.cards.remove(top)
                 pcs.owner.pbg.hand.add(top)

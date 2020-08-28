@@ -2176,7 +2176,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
       case MIRACLE_ENERGY_OPTION_1:
       return specialEnergy (this, [[]]) {
         def check = {
-          if(it && !it.topPokemonCard.cardTypes.is(STAGE2)){discard thisCard}
+          if(it && !it.stage2){discard thisCard}
         }
         typeImagesOverride = [RAINBOW, RAINBOW]
         def eff
@@ -2218,7 +2218,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
           check(to)
         }
         allowAttach {to->
-          to.topPokemonCard.cardTypes.is(STAGE2) && !bg.em().retrieveObject("G_SPEC_"+thisCard.player)
+          to.stage2 && !bg.em().retrieveObject("G_SPEC_"+thisCard.player)
         }
         getEnergyTypesOverride{
           return [[R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set]
@@ -2227,7 +2227,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
       case MIRACLE_ENERGY_OPTION_2:
       return specialEnergy (this, [[]]) {
         def check = {
-          if(!it.topPokemonCard.cardTypes.is(STAGE2)){discard thisCard}
+          if(!it.stage2){discard thisCard}
         }
         typeImagesOverride = [RAINBOW, RAINBOW]
         def eff
@@ -2266,7 +2266,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
           check(to)
         }
         allowAttach {to->
-          to.topPokemonCard.cardTypes.is(STAGE2) && !bg.em().retrieveObject("G_SPEC_"+thisCard.player)
+          to.stage2 && !bg.em().retrieveObject("G_SPEC_"+thisCard.player)
         }
         getEnergyTypesOverride{
           return [[R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set]

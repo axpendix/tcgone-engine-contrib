@@ -901,7 +901,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "Each of your Stage 2 Pokémon-ex does 10 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
           delayedA {
             after PROCESS_ATTACK_EFFECTS, {
-              if (ef.attacker.owner == self.owner && ef.attacker.EX && ef.attacker.topPokemonCard.cardTypes.is(STAGE2)) {
+              if (ef.attacker.owner == self.owner && ef.attacker.EX && ef.attacker.stage2) {
                 bg.dm().each {
                   if (it.to.active && it.to.owner != self.owner && it.dmg.value) {
                     bc "Extra Feather +10"
@@ -1193,7 +1193,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "The Retreat Cost for each of your Stage 2 Pokémon-ex is 0."
           getterA (GET_RETREAT_COST, BEFORE_LAST) {holder->
             def target = holder.effect.target
-            if (target.topPokemonCard.cardTypes.is(STAGE2) && target.EX) {
+            if (target.stage2 && target.EX) {
               holder.object = 0
             }
           }
@@ -1866,9 +1866,9 @@ public enum DragonFrontiers implements LogicCardInfo {
             checkLastTurn()
             checkNoSPC()
             assert my.hand.filterByType(BASIC_ENERGY) : "No Basic Energy in Hand"
-            assert my.all.any{ it.EX && it.topPokemonCard.cardTypes.is(STAGE2) } : "No Stage 2 Pokemon-ex in play"
+            assert my.all.any{ it.EX && it.stage2 } : "No Stage 2 Pokemon-ex in play"
             powerUsed()
-            def tar = my.all.findAll{ it.EX && it.topPokemonCard.cardTypes.is(STAGE2) }.select()
+            def tar = my.all.findAll{ it.EX && it.stage2 }.select()
             attachEnergyFrom(basic: true, my.hand, tar)
           }
         }
@@ -2075,7 +2075,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             after PROCESS_ATTACK_EFFECTS, {
               if (ef.attacker.owner != self.owner) {
                 bg.dm().each {
-                  if (it.to.owner == self.owner && it.to.EX && it.to.topPokemonCard.cardTypes.is(STAGE2) && it.dmg.value) {
+                  if (it.to.owner == self.owner && it.to.EX && it.to.stage2 && it.dmg.value) {
                     bc "Extra Smoke -10"
                     it.dmg -= hp(10)
                   }
@@ -2347,7 +2347,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost L, C, C
           onAttack {
             damage 70
-            if (opp.active.topPokemonCard.cardTypes.is(STAGE2)) {
+            if (opp.active.evolution && opp.active.stage2) {
               damage 20
             }
           }
@@ -2420,15 +2420,6 @@ public enum DragonFrontiers implements LogicCardInfo {
             def tar = opp.all.select("Choose Pokemon to copy moves from")
             if (tar.topPokemonCard.moves) {
               def moveOptions = tar.topPokemonCard.moves
-              //
-              // [Temporary LV.X workaround]
-              if (tar.topPokemonCard.cardTypes.is(CardType.LVL_X)){
-                //Only 3 LV.Xs right now, all stage 2 so this should do
-                def tpc = tar.cards.find{car -> car.cardTypes.is(STAGE2) && car != tar.topPokemonCard}
-                moveOptions += tpc.moves
-              }
-              // [End of LV.X workaround] TODO: Remove this when no longer needed
-              //
               def move = choose(moveOptions + ["End Turn (Skip)"], "Choose 1 of the Pokémon's attacks.")
               if (move instanceof String) return
               def bef = blockingEffect(BETWEEN_TURNS)

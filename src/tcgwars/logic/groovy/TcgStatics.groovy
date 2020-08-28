@@ -1235,9 +1235,8 @@ class TcgStatics {
       (CardType.EVOLVED):     { it.evolution },
       (CardType.UNEVOLVED):   { it.notEvolution },
       (CardType.BASIC):       { it.basic },
-      //TODO: Remove !it.pokemonVMAX from STAGE1 once solved.
-      (CardType.STAGE1):      { it.topPokemonCard.cardTypes.is(STAGE1) && !it.pokemonVMAX },
-      (CardType.STAGE2):      { it.topPokemonCard.cardTypes.is(STAGE2) },
+      (CardType.STAGE1):      { it.stage1},
+      (CardType.STAGE2):      { it.stage2 },
       (CardType.EVOLUTION):   { it.realEvolution }
     ]
 

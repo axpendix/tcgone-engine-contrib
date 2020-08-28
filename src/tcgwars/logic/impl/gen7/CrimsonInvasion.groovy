@@ -747,7 +747,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             delayedA {
               before null, self, Source.ATTACK, {
                 if(self.owner.pbg.all.findAll{it.name=="Regirock"}){
-                  if (self.owner.opposite.pbg.active.topPokemonCard.is(STAGE2) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                  if (self.owner.opposite.pbg.active.stage2 && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
                     bc "Iceberg Shield prevents effect"
                     prevent()
                   }
@@ -757,7 +757,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
                 if(self.owner.pbg.all.findAll{it.name=="Regirock"}){
                   bc "Iceberg Shield: Regirock is in play"
                   bg.dm().each {
-                    if(it.to == self && it.notNoEffect && it.from.topPokemonCard.cardTypes.is(STAGE2)){
+                    if(it.to == self && it.notNoEffect && it.from.stage2){
                       it.dmg = hp(0)
                       bc "Iceberg Shield prevents damage"
                     }
@@ -2253,7 +2253,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
           bwAbility "Gyro Unit", {
             text "Your Basic Pokémon in play have no Retreat Cost."
             getterA (GET_RETREAT_COST,BEFORE_LAST) {h->
-              if(h.effect.target.owner == self.owner && h.effect.target.topPokemonCard.cardTypes.is(BASIC)) {
+              if(h.effect.target.owner == self.owner && h.effect.target.basic) {
                 h.object = 0
               }
             }

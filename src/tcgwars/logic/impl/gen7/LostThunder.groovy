@@ -676,7 +676,7 @@ public enum LostThunder implements LogicCardInfo {
             energyCost G,C
             onAttack{
               damage 30
-              if(my.bench.find{it.topPokemonCard.cardTypes.is(STAGE2)}) damage 90
+              if(my.bench.find{it.stage2}) damage 90
             }
           }
         };
