@@ -118,10 +118,10 @@ public enum GreatEncounters implements LogicCardInfo {
   MOONLIGHT_STADIUM_100 ("Moonlight Stadium", "100", Rarity.UNCOMMON, [TRAINER, STADIUM]),
   PREMIER_BALL_101 ("Premier Ball", "101", Rarity.UNCOMMON, [TRAINER]),
   RARE_CANDY_102 ("Rare Candy", "102", Rarity.UNCOMMON, [TRAINER]),
-  CRESSELIA_LV_X_103 ("Cresselia", "103", Rarity.ULTRARARE, [LVL_X, POKEMON, _PSYCHIC_]),
-  DARKRAI_LV_X_104 ("Darkrai", "104", Rarity.ULTRARARE, [LVL_X, POKEMON, _DARKNESS_]),
-  DIALGA_LV_X_105 ("Dialga", "105", Rarity.HOLORARE, [LVL_X, POKEMON, _METAL_]),
-  PALKIA_LV_X_106 ("Palkia", "106", Rarity.HOLORARE, [LVL_X, POKEMON, _WATER_]);
+  CRESSELIA_LV_X_103 ("Cresselia Lv.X", "103", Rarity.ULTRARARE, [LVL_X, POKEMON, _PSYCHIC_]),
+  DARKRAI_LV_X_104 ("Darkrai Lv.X", "104", Rarity.ULTRARARE, [LVL_X, POKEMON, _DARKNESS_]),
+  DIALGA_LV_X_105 ("Dialga Lv.X", "105", Rarity.HOLORARE, [LVL_X, POKEMON, _METAL_]),
+  PALKIA_LV_X_106 ("Palkia Lv.X", "106", Rarity.HOLORARE, [LVL_X, POKEMON, _WATER_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 

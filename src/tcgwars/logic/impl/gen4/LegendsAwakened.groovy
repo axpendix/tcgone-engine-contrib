@@ -157,13 +157,13 @@ public enum LegendsAwakened implements LogicCardInfo {
   TECHNICAL_MACHINE_TS_2_137 ("Technical Machine TS-2", "137", Rarity.UNCOMMON, [TRAINER]),
   CLAW_FOSSIL_138 ("Claw Fossil", "138", Rarity.COMMON, [TRAINER]),
   ROOT_FOSSIL_139 ("Root Fossil", "139", Rarity.COMMON, [TRAINER]),
-  AZELF_LV_X_140 ("Azelf", "140", Rarity.HOLORARE, [LVL_X, POKEMON, _PSYCHIC_]),
-  GLISCOR_LV_X_141 ("Gliscor", "141", Rarity.HOLORARE, [LVL_X, POKEMON, _FIGHTING_]),
-  MAGNEZONE_LV_X_142 ("Magnezone", "142", Rarity.HOLORARE, [LVL_X, POKEMON, _METAL_]),
-  MESPRIT_LV_X_143 ("Mesprit", "143", Rarity.HOLORARE, [LVL_X, POKEMON, _PSYCHIC_]),
-  MEWTWO_LV_X_144 ("Mewtwo", "144", Rarity.HOLORARE, [LVL_X, POKEMON, _PSYCHIC_]),
-  RHYPERIOR_LV_X_145 ("Rhyperior", "145", Rarity.HOLORARE, [LVL_X, POKEMON, _FIGHTING_]),
-  UXIE_LV_X_146 ("Uxie", "146", Rarity.HOLORARE, [LVL_X, POKEMON, _PSYCHIC_]);
+  AZELF_LV_X_140 ("Azelf Lv.X", "140", Rarity.HOLORARE, [LVL_X, POKEMON, _PSYCHIC_]),
+  GLISCOR_LV_X_141 ("Gliscor Lv.X", "141", Rarity.HOLORARE, [LVL_X, POKEMON, _FIGHTING_]),
+  MAGNEZONE_LV_X_142 ("Magnezone Lv.X", "142", Rarity.HOLORARE, [LVL_X, POKEMON, _METAL_]),
+  MESPRIT_LV_X_143 ("Mesprit Lv.X", "143", Rarity.HOLORARE, [LVL_X, POKEMON, _PSYCHIC_]),
+  MEWTWO_LV_X_144 ("Mewtwo Lv.X", "144", Rarity.HOLORARE, [LVL_X, POKEMON, _PSYCHIC_]),
+  RHYPERIOR_LV_X_145 ("Rhyperior Lv.X", "145", Rarity.HOLORARE, [LVL_X, POKEMON, _FIGHTING_]),
+  UXIE_LV_X_146 ("Uxie Lv.X", "146", Rarity.HOLORARE, [LVL_X, POKEMON, _PSYCHIC_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
