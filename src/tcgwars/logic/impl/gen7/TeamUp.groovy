@@ -3299,19 +3299,25 @@ public enum TeamUp implements LogicCardInfo {
       case BLACK_MARKET_PRISM_STAR_134:
         return stadium(this) {
           text "Whenever any player's [D] Pokémon with any [D] Energy attached to it is Knocked Out by damage from an opponent's attack, that opponent takes 1 less Prize card.\nWhenever any player plays an Item or Supporter card from their hand, prevent all effects of that card done to this Stadium card.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card.\nPrism Star Rule: You can't have more than 1 Prism Star card with the same name in your deck. If a Prism Star card would go to the discard pile, put it in the Lost Zone instead."
-          def eff=null
+          def eff1 = null, eff2 = null
+          def power
           onPlay {
-            eff=delayed (priority: BEFORE_LAST) {
-              before KNOCKOUT, {
-                if(ef.byDamageFromAttack && ef.pokemonToBeKnockedOut.types.contains(D) && ef.pokemonToBeKnockedOut.cards.energyCount(D)){
-                  bc "Black Market Prism Star prevents taking one prize card for "+ef.pokemonToBeKnockedOut
-                  blockingEffect(TAKE_PRIZE).setUnregisterImmediately(true)
-                }
+            eff1 = delayed (priority: LAST) {
+              after APPLY_ATTACK_DAMAGES, {
+                power = (ef.attacker.owner == opp.owner)
+              }
+            }
+            eff2 = getter GET_GIVEN_PRIZES, {holder->
+              def pcs = holder.effect.target
+              if (holder.object > 0 && power && pcs.owner == my.owner && pcs.KOBYDMG == bg.turnCount && pcs.types.contains(D) && pcs.cards.energyCount(D)) {
+                bc "Black Market Prism Star reduces the number of prizes taken due to ${self} being Knocked Out by one."
+                holder.object -= 1
               }
             }
           }
           onRemoveFromPlay {
-            eff.unregister()
+            eff1.unregister()
+            eff2.unregister()
           }
 
         };
