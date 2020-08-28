@@ -929,6 +929,10 @@ class TcgStatics {
     }
   }
 
+  static boolean hasThetaStop(PokemonCardSet pcs) {
+    return pcs.lastAbilities.find {it.key instanceof AncientTrait && it.key.name.contains("Stop")}
+  }
+
   static omega_double(Object delegate){
     delegate.ancientTrait "θ Double", {
       text "This Pokémon may have up to 2 Pokémon Tool cards attached to it."
@@ -1514,6 +1518,52 @@ class TcgStatics {
         currentPokemon = playerChecked.all.select("${resultInfo}\n\n\nPlease select one of $playerText Pokémon (first one is the Active), or cancel to end this check.", false)
         if (!currentPokemon) break;
       }
+    }
+  }
+
+  /**
+   * Scoop up PokemonCardSets if not blocked by Scoop-Up Block
+   *
+   * @param params Optional settings map
+   *  + pokemonOnly: boolean - if true, scoops up all cards, else all pokemon cards. discards the rest.
+   *  + only: CardList - only scoops up them, discards the rest.
+   * @param target PokemonCardSet to work on
+   * @param delegate Effect delegate used to determine most sources automatically, and to get the card name for the Scoop-Up Block message
+   * @param source Allows you to specify the source of the scoop up. Use intended manually setting SRC_ABILITY.
+   */
+  static void scoopUpPokemon(params=[:], PokemonCardSet target, Object delegate, Source source=null) {
+    if (source == null) {
+      if (delegate.thisObject.cardTypes.is(TRAINER)) source = TRAINER_CARD
+      if (delegate.thisObject.cardTypes.is(POKEMON)) source = ATTACK
+      if (delegate.thisObject.cardTypes.is(ENERGY)) source = SRC_SPENERGY
+    }
+    if (bg.em().retrieveObject("ScoopUpBlock_Count$target.owner.opposite") && target.numberOfDamageCounters && !hasThetaStop(target)) {
+      bc "Scoop-Up Block prevents $delegate.thisObject.name's effect."
+      return
+    }
+    targeted(target, source) {
+      CardList toHand
+      if(params.only) {
+        if (params.only instanceof Card) toHand = new CardList(params.only)
+        else if (params.only instanceof CardList) toHand = params.only as CardList
+        else throw new IllegalArgumentException("scoopUpPokemon() params.only=${params.only} type not supported")
+      } else if(params.pokemonOnly) {
+        toHand = target.cards.filterByType(POKEMON)
+      } else {
+        toHand = new CardList(target.cards)
+      }
+      CardList toDiscard = target.cards.getExcludedList(toHand)
+
+      bc "Scooped up ${toHand}"
+
+      CardList toHand2 = toHand.filterByType(POKEMON)
+      target.owner.pbg.hand.addAll(toHand2)
+      toHand.getExcludedList(toHand2).moveTo(target.owner.pbg.hand)
+
+      CardList toDiscard2 = toDiscard.filterByType(POKEMON)
+      target.owner.pbg.discard.addAll(toDiscard2)
+      toDiscard.getExcludedList(toDiscard2).discard()
+      removePCS(target)
     }
   }
 

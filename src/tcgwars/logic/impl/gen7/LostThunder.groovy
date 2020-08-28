@@ -1018,8 +1018,7 @@ public enum LostThunder implements LogicCardInfo {
               while(my.all){
                 def tar = my.all.select("Select a Pokémon to put in your hand.", false)
                 if(tar){
-                  tar.cards.moveTo(my.hand)
-                  removePCS(tar)
+                  scoopUpPokemon(tar, delegate)
                 } else {
                   break
                 }
