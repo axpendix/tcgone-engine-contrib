@@ -1281,8 +1281,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
             onAttack {
               gxPerform()
-              opp.prizeCardSet.add(opp.deck.remove(0))
-              opp.prizeCardSet.add(opp.deck.remove(0))
+              2.times{ if (opp.deck) opp.prizeCardSet.add(opp.deck.remove(0)) }
             }
           }
 
