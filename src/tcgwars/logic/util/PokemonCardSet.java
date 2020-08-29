@@ -135,7 +135,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
 
   public PokemonCard getTopNonLevelUpPokemonCard() {
     for (Card card : cards().filterByType(CardType.POKEMON)) {
-      if (card.getCardTypes().is(CardType.LVL_X)) continue;
+      if (card.getStaticCardTypes().is(CardType.LVL_X)) continue;
       return card.asPokemonCard();
     }
     return null;
