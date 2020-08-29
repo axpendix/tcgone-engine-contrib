@@ -944,6 +944,7 @@ public enum TeamUp implements LogicCardInfo {
             delayedA{
               // TODO
               def flag = false
+              def selfOwner = self.owner
               //Workaround for "Supporters used as attack effect"
               def flag2 = false
               before PROCESS_ATTACK_EFFECTS, {
@@ -954,13 +955,13 @@ public enum TeamUp implements LogicCardInfo {
               }
               before PLAY_TRAINER, {
                 flag = false
-                if(self.active && ef.supporter && bg.currentTurn != self.owner && !flag2){
+                if(self.active && ef.supporter && bg.currentTurn != selfOwner && !flag2){
                   flag = true
                 }
               }
               before null, null, Source.TRAINER_CARD, {
                 def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
-                if (flag && self.active && pcs.owner == self.owner && pcs.benched && pcs.types.contains(W)){
+                if (flag && self.active && pcs.owner == selfOwner && pcs.benched && pcs.types.contains(W)){
                   bc "Blizzard Veil prevent effect of Supporter cards done to $pcs."
                   prevent()
                 }
