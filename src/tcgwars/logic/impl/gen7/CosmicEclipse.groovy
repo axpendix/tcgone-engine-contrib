@@ -4497,7 +4497,8 @@ public enum CosmicEclipse implements LogicCardInfo {
             if(opp.deck) opp.deck.subList(0, 3).discard()
             if(my.deck) my.deck.subList(0, 3).discard()
 
-            if (my.hand.getExcludedList(thisCard).size() >= 3 && confirm("Discard 3 cards to force both players to discard their Benched Pokémon until they have 3 Benched Pokémon?")) {
+            def benchReduceCond = ( (my.bench.size() > 3 || opp.bench.size() > 3) && my.hand.getExcludedList(thisCard).size() >= 3 )
+            if ( benchReduceCond && confirm("Discard 3 cards to force both players to discard their Benched Pokémon until they have 3 Benched Pokémon?") ) {
               my.hand.getExcludedList(thisCard).select(count:3, "Select cards to discard.").discard()
 
               eff = getter (GET_BENCH_SIZE) {h->
@@ -4514,7 +4515,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             }
           }
           playRequirement {
-            assert my.deck || opp.deck
+            assert (my.deck || opp.deck) || (my.bench.size() > 3 || opp.bench.size() > 3) : "You can only play this card if either player has cards left in their deck, or more than 3 Pokémon in their bench"
           }
         };
       case CHAOTIC_SWELL_187:
