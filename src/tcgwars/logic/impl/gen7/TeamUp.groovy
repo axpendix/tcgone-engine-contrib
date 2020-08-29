@@ -3374,11 +3374,11 @@ public enum TeamUp implements LogicCardInfo {
         return supporter(this) {
           text "You can play this card only if your opponent's Active Pokémon is a Stage 2 Pokémon. Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
-            my.deck.search(max: 2,"Choose 2 cards to put in your hand",{true}).moveTo(hidden: true, my.hand)
+            my.deck.search(min: 1, max: 2,"Choose 2 cards to put in your hand",{true}).moveTo(hidden: true, my.hand)
             shuffleDeck()
           }
           playRequirement{
-            assert opp.active.topPokemonCard.cardTypes.contains(STAGE2) : "There is no more card in your deck"
+            assert opp.active.topPokemonCard.cardTypes.contains(STAGE2) : "Your opponent's Active Pokémon is not a Stage 2 Pokémon"
             assert my.deck : "There are no more cards in your deck"
           }
         };
