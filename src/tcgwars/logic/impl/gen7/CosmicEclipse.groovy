@@ -2588,7 +2588,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               assert my.deck : "Your deck is empty."
               assertMyAll(info: "named Solgaleo", {it.name == 'Solgaleo'}) //TODO: Add "params.name" to assertAnyPokemonInPlay(), bit of an recurring case.
               powerUsed()
-              my.deck.search (max: 2, cardTypeFilter(BASIC_ENERGY)).each {
+              my.deck.search (max: 2, cardTypeFilter(ENERGY)).each {
                 def tar = my.all.findAll({ it.name == "Solgaleo" || it.name == "Lunala" })
                 attachEnergy(tar.select("Attach this Energy to which Pokémon?"), it)
               }
