@@ -798,7 +798,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             onAttack {
               damage 180
               afterDamage{
-                if (confirm("Search your deck for up to 3 cards and put them into your hand?")) {
+                if (my.deck && confirm("Search your deck for up to 3 cards and put them into your hand?")) {
                   my.deck.select(max:3, "Select up to 3 cards to put in your hand.").moveTo(hidden:true, my.hand)
                   shuffleDeck()
                 }
