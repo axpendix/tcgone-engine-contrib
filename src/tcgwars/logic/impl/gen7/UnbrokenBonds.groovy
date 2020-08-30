@@ -1659,8 +1659,8 @@ public enum UnbrokenBonds implements LogicCardInfo {
             onAttack {
               damage 120
               if(confirm("You may discard all [L] Energy from this Pokémon. If you do, this attack does 100 more damage.")){
-                discardAllSelfEnergy(L)
                 damage 100
+                afterDamage { discardAllSelfEnergy(L) }
               }
             }
           }
