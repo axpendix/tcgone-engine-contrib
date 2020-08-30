@@ -339,16 +339,21 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS20
           pokeBody "Downer Material", {
+            def target = []
+            def source = []
+            bg.em().storeObject("Downer_Material_target", target)
+            bg.em().storeObject("Downer_Material_source", source)
             text "If you have Uxie and Mesprit in play, the attack cost of each of your opponent’s Basic Pokémon’s attacks is [C] more. You can’t use more than 1 Downer Material Poké-Body each turn."
-            def condition = my.all.find{it.name == "Uxie"} && my.all.find{it.name == "Mesprit"}
+            def selfOwner = self.owner
             //Adapted from Sceptile-ex Delta (CG 96)
             getterA GET_MOVE_LIST, { h ->
-              if (condition && h.effect.target.topPokemonCard.cardTypes.is(BASIC)) {
+              def condition = selfOwner.pbg.all.any{it.name == "Uxie"} && selfOwner.pbg.all.any{it.name == "Mesprit"}
+              if (condition && h.effect.target.owner != selfOwner && h.effect.target.basic) {
                 def list = []
                 for (move in h.object) {
                   def copy = move.shallowCopy()
-                  target = bg.em().retrieveObject("Downer Material_target")
-                  source = bg.em().retrieveObject("Downer Material_source")
+                  target = bg.em().retrieveObject("Downer_Material_target")
+                  source = bg.em().retrieveObject("Downer_Material_source")
                   if(!target.contains(h.effect.target)){
                     copy.energyCost.add(C)
                     target.add(h.effect.target)
