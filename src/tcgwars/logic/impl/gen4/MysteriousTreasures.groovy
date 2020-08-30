@@ -1379,16 +1379,18 @@ public enum MysteriousTreasures implements LogicCardInfo {
             text "Your opponent can’t remove the Special Condition Poisoned by evolving or devolving his or her Poisoned Pokémon. (This also includes putting a Pokémon Level-Up card onto the Poisoned Pokémon.)"
             delayedA {
               before POISONED_SPC, null, null, EVOLVE, {
-                if(ef.target == self.owner.opposite){
+                if ((ef as Poisoned).getTarget().owner != self.owner) {
+                  bc "$thisAbility prevents removing the Special Condition Poisoned by evolving or devolving"
                   prevent()
                 }
               }
-              // Potential addition once level-up is implemented
-              // before POISONED_SPC, null, null, LEVEL_UP, {
-              //   if(ef.target == self.owner.opposite){
-              //     prevent()
-              //   }
-              // }
+              //TODO: Uncomment this when LV.X are implemented.
+//              before POISONED_SPC, null, null, LEVEL_UP, {
+//                if ((ef as Poisoned).getTarget().owner != self.owner) {
+//                  bc "$thisAbility prevents removing the Special Condition Poisoned by leveling up."
+//                  prevent()
+//                }
+//              }
             }
           }
           move "Knuckle Claws", {
