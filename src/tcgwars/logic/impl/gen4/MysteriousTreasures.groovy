@@ -2257,15 +2257,24 @@ public enum MysteriousTreasures implements LogicCardInfo {
       case VIGOROTH_68:
         return evolution (this, from:"Slakoth", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS20
-          /*def asleepBeforeEvolve = false*/
+          def asleepBeforeEvolve = false
+          globalAbility {Card thisCard->
+            delayed {
+              before EVOLVE_STANDARD, {
+                if ( (ef as EvolveStandard).evolutionCard == thisCard) {
+                  def preEvo = (ef as EvolveStandard).pokemonToBeEvolved
+                  asleepBeforeEvolve = ( preEvo.name == "Slakoth" && preEvo.isSPC(ASLEEP) )
+                }
+              }
+            }
+          }
           move "Wake-up Punch", {
             text "10 damage. If Vigoroth evolved from Slakoth during this turn and Slakoth was Asleep, this attack’s base damage is 60 instead of 10."
             energyCost C
             attackRequirement {}
             onAttack {
               damage 10
-              //TODO: Add "Slakoth was asleep" check for the extra damage.
-              if(self.lastEvolved == bg.turnCount && it.cards.any{it.name == "Slakoth"}/* && asleepBeforeEvolve*/){
+              if(self.lastEvolved == bg.turnCount && self.cards.any{it.name == "Slakoth"} && asleepBeforeEvolve){
                 damage 50
               }
             }
