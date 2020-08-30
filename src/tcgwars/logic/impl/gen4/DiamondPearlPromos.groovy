@@ -380,7 +380,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
       case PALKIA_DP27:
         return copy(DiamondPearl.PALKIA_11, this);
       case MEWTWO_LV_X_DP28:
-        return evolution (this, from:"Mewtwo", hp:HP120, type:PSYCHIC, retreatCost:2) {
+        return levelUp (this, from:"Mewtwo", hp:HP120, type:PSYCHIC, retreatCost:2) {
           weakness P
           pokeBody "Psybarrier", {
             text "Prevent all effects of attacks, including damage, done to Mewtwo by your opponent�s Pok�mon that isn�t an Evolved Pok�mon."
