@@ -1481,12 +1481,13 @@ public enum MysteriousTreasures implements LogicCardInfo {
               def oneInBench = false
               def oneDamaged = false
               damage 60
-              my.bench.each {
-                if(it.name.contains("Teddiursa")){
+              // Looked at in JP FAQs: If multiple teddiursa have counters, all of them are healed. Only one dmg boost though.
+              my.bench.each {benchPoke ->
+                if(benchPoke.name == "Teddiursa"){
                   oneInBench = true
-                  if(it.numberOfDamageCounters) {
+                  if(benchPoke.numberOfDamageCounters) {
                     oneDamaged = true
-                    afterDamage{healAll it}
+                    afterDamage{healAll benchPoke}
                   }
                 }
               }
