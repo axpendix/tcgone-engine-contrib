@@ -2919,7 +2919,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
           }
           move "Plasma", {
             text "10 damage. Flip a coin. If heads, search your discard pile for a [L] Energy card and attach it to Shinx."
-            energyCost L, L
+            energyCost L
             attackRequirement {}
             onAttack {
               damage 10
