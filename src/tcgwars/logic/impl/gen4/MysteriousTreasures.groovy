@@ -406,7 +406,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               def list = my.hand.select(max: energyCount, "Select up to $energyCount ${(energyCount>1) ? "cards" : "card"} to shuffle into your deck.")
               def drawCount = list.size()
 
-              list.moveTo(my.deck)
+              list.moveTo(hidden: true, my.deck)
               shuffleDeck()
 
               draw drawCount
