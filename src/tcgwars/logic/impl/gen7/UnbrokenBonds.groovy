@@ -4036,14 +4036,14 @@ public enum UnbrokenBonds implements LogicCardInfo {
           def eff1, eff2
           def power = false
           onPlay {reason->
-            eff1 = delayed (priority: LAST) {
-              after APPLY_ATTACK_DAMAGES, {
-                power = (ef.attacker==self && ef.attacker.topPokemonCard.cardTypes.is(ULTRA_BEAST) && self.owner.pbg.prizeCardSet.size()==6)
+            eff1 = delayed {
+              before ATTACK_MAIN, {
+                power = ( ef.attacker==self && ef.attacker.topPokemonCard.cardTypes.is(ULTRA_BEAST) && self.owner.pbg.prizeCardSet.size() == 6 )
               }
             }
             eff2 = getter GET_GIVEN_PRIZES, BEFORE_LAST, {Holder holder ->
               def pcs = holder.effect.target
-              if ( holder.object > 0 && power && pcs.owner != self.owner && pcs.active && pcs.KOBYDMG == bg.turnCount && pcs.pokemonGX || pcs.pokemonEX ) {
+              if ( power && holder.object > 0 && pcs.owner != self.owner && pcs.active && pcs.KOBYDMG == bg.turnCount && (pcs.pokemonGX || pcs.pokemonEX) ) {
                 bc "Beast Bringer gives the player an additional prize."
                 holder.object += 1
               }

@@ -3328,14 +3328,14 @@ public enum TeamUp implements LogicCardInfo {
           def eff1 = null, eff2 = null
           def power
           onPlay {
-            eff1 = delayed (priority: LAST) {
-              after APPLY_ATTACK_DAMAGES, {
+            eff1 = delayed {
+              before ATTACK_MAIN, {
                 power = (ef.attacker.owner == opp.owner)
               }
             }
             eff2 = getter GET_GIVEN_PRIZES, {holder->
               def pcs = holder.effect.target
-              if (holder.object > 0 && power && pcs.owner == my.owner && pcs.KOBYDMG == bg.turnCount && pcs.types.contains(D) && pcs.cards.energyCount(D)) {
+              if (power && holder.object > 0 && pcs.owner == my.owner && pcs.KOBYDMG == bg.turnCount && pcs.types.contains(D) && pcs.cards.energyCount(D)) {
                 bc "Black Market Prism Star reduces the number of prizes taken due to ${self} being Knocked Out by one."
                 holder.object -= 1
               }
