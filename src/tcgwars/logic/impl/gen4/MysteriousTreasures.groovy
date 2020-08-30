@@ -3204,7 +3204,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             //TODO: "Shuffle [up to] x basic pokemon/energy from discard" could be modularized.
             //TODO: Test if min:1 is needed on the select
             def tar = my.discard.findAll{it.cardTypes.is(BASIC_ENERGY) || it.cardTypes.is(POKEMON)}
-            def maxSel = Math.min(6,tar.size())
+            def maxSel = Math.min(3,tar.size())
             tar.select(max: maxSel,"Choose up to $maxSel cards to shuffle into your deck").moveTo(my.deck)
             shuffleDeck()
           }
