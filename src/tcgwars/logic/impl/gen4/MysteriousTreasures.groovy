@@ -497,11 +497,11 @@ public enum MysteriousTreasures implements LogicCardInfo {
           move "Energy Cyclone", {
             text "20× damage. Choose as many Energy cards from your hand as you like and show them to your opponent. This attack does 20 damage times the number of Energy cards you chose. Put those Energy cards on top of your deck. Shuffle your deck afterward."
             energyCost W, W
-            def energyInHand = my.hand.filterByType(ENERGY)
             attackRequirement {
-              assert energyInHand : "No Energy cards in hand"
+              assert my.hand.hasType(ENERGY) : "No Energy cards in hand"
             }
             onAttack {
+              def energyInHand = my.hand.filterByType(ENERGY)
               def tar = energyInHand.select(max: energyInHand.size())
               def num = tar.size()
               tar.showToOpponent("Your opponent will shuffle these Energy cards back into their deck, doing 20 damage for each of them.")
