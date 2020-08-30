@@ -1159,7 +1159,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             delayedA {
               before null, self, Source.ATTACK, {
                 if (self.getPokemonCards().any{it.name.contains("Mime Jr.")} && ((self.owner.opposite.pbg.active as PokemonCardSet).cards.energyCount(C) <= 2) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
-                  bc "$pokeBody prevents effect"
+                  bc "$thisAbility prevents effect"
                   prevent()
                 }
               }
@@ -1168,7 +1168,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                   bg.dm().each {
                     if (it.to == self && it.notNoEffect) {
                       it.dmg = hp(0)
-                      bc "$pokeBody prevents damage"
+                      bc "$thisAbility prevents damage"
                     }
                   }
                 }
@@ -1180,8 +1180,12 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost P, C
             attackRequirement {}
             onAttack {
-              //TODO: Check for proper way to do this effect. Sounds straight-forward but just to confirm.
-              damage 0
+              def playerPick = choose([0, 1], ["Heads", "Tails"], "You're putting a coin next to your active Pokémon without showing your opponent. Pick which side they must guess:")
+              def oppPick = choose([0, 1], ["Heads", "Tails"], "Your opponent put a coin next to their active Pokémon without showing you. You must guess if it's Heads or Tails. If you guess incorrectly, ${self} will do 50 damage to the Defending Pokémon. If you guess correctly, ${self} will do 20 damage to itself (ignoring W/R in this case):")
+              if (playerPick != oppPick)
+                damage 50
+              else
+                noWrDamage(20, self)
             }
           }
 
