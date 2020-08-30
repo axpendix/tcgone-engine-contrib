@@ -983,6 +983,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               my.deck.search(max : 2,"Search your deck for up to 2 [G] Energy cards",basicEnergyFilter(G)).each{
                 attachEnergy(my.all.select("Attach this energy to?"), it)
               }
+              shuffleDeck()
             }
           }
 
