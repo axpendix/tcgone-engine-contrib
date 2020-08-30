@@ -905,7 +905,7 @@ class TcgStatics {
     }
     delegate.getterA GET_GIVEN_PRIZES, BEFORE_LAST, {Holder holder ->
       def pcs = holder.effect.target
-      if (pcs.owner != self.owner && pcs.KOBYDMG == bg.turnCount && holder.object > 0) {
+      if (power && pcs.owner != self.owner && pcs.KOBYDMG == bg.turnCount && holder.object > 0) {
         bc "Δ Plus gives the player an additional prize."
         holder.object += 1
       }
