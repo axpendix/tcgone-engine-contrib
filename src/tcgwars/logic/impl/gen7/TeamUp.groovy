@@ -1751,20 +1751,46 @@ public enum TeamUp implements LogicCardInfo {
           bwAbility "Scoop-Up Block" , {
             text "Your opponent's Pokémon that have any damage counters on them, and any cards attached to those Pokémon, can't be put into your opponent's hand."
             delayedA {
-              def scoopUpBlock = false
-              before PLAY_TRAINER, {
-                scoopUpBlock = false
-                if ((ef.cardToPlay.name == "Scoop Up Net" || ef.cardToPlay.name == "Super Scoop Up" || ef.cardToPlay.name == "Acerola" || ef.cardToPlay.name == "AZ" || ef.cardToPlay.name == "Scoop Up Cyclone" || ef.cardToPlay.name == "Scoop Up") && bg.currentTurn != self.owner) {
-                  scoopUpBlock = true
+              def pcs = null
+              def doBlock = false
+              def messageDisplayed = false
+              // Retain targeted Pokemon through effects
+              // TODO: Make sure this doesn't break anything
+              before null, {
+                if (ef instanceof TargetedEffect) {
+                  if (ef.getResolvedTarget(bg, e) != null) {
+                    pcs = ef.getResolvedTarget(bg, e)
+                  }
                 }
               }
-              before null, null, Source.TRAINER_CARD, {
-                def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
-                if (scoopUpBlock && pcs.numberOfDamageCounters){
-                  bc "Scoop-Up Block prevents this."
+              before MOVE_CARD, {
+                if (ef.newLocation == self.owner.opposite.pbg.hand && pcs && pcs.numberOfDamageCounters && !hasThetaStop(pcs)) {
+                  doBlock = true
+                  if (!messageDisplayed) {
+                    messageDisplayed = true
+                    bc "Scoop-Up Block stopped cards from returning to the owner's hand."
+                  }
                   prevent()
                 }
               }
+              before REMOVE_FROM_PLAY, {
+                if (ef.resolvedTarget && ef.resolvedTarget.numberOfDamageCounters && ef.resolvedTarget.cards && ef.removedCards.contains(ef.resolvedTarget.getTopPokemonCard()) && doBlock) {
+                  doBlock = false
+                  if (!messageDisplayed) {
+                    messageDisplayed = true
+                    bc "Scoop-Up Block stopped $ef.resolvedTarget.name from being removed from play."
+                  }
+                  prevent()
+                }
+              }
+            }
+            onActivate {
+              bg.em().storeObject("ScoopUpBlock_LastTurn"+self.owner, bg.turnCount)
+              bg.em().storeObject("ScoopUpBlock_Count"+self.owner, bg.em().retrieveObject("ScoopUpBlock_Count"+self.owner) ? bg.em().retrieveObject("ScoopUpBlock_Count"+self.owner)+1 : 1)
+            }
+            onDeactivate {
+              bg.em().storeObject("ScoopUpBlock_LastTurn"+self.owner, bg.turnCount)
+              bg.em().storeObject("ScoopUpBlock_Count"+self.owner, bg.em().retrieveObject("ScoopUpBlock_Count"+self.owner)-1)
             }
           }
           move "Psy Bolt" , {
@@ -3371,7 +3397,7 @@ public enum TeamUp implements LogicCardInfo {
               choice = 2
             }
             else{
-              if(bg.stadiumInfoStruct){
+              if(bg.stadiumInfoStruct && stadiumCanBeAffectedByItemAndSupporter()){
                 choice = choose([1,2],["A Pokémon Tool or Special Energy card from 1 of your opponent's Pokémon", "The stadium card in play"], "What to discard?")
               }
             }
@@ -3387,7 +3413,7 @@ public enum TeamUp implements LogicCardInfo {
           }
           playRequirement{
             assert my.hand.filterByType(POKEMON).findAll{it.asPokemonCard().types.contains(D)}: "There is no [D] pokémon in your hand"
-            assert opp.all.findAll{it.cards.filterByType(POKEMON_TOOL, SPECIAL_ENERGY)} || bg.stadiumInfoStruct : "There is no cards to discard"
+            assert opp.all.findAll{it.cards.filterByType(POKEMON_TOOL, SPECIAL_ENERGY)} || ( bg.stadiumInfoStruct && stadiumCanBeAffectedByItemAndSupporter() ) : "There is no cards to discard"
           }
         };
       case ELECTROCHARGER_139:

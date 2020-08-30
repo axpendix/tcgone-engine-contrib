@@ -1047,7 +1047,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               gxPerform()
               if (opp.hand.empty) {
                 bc "The attack failed! Opponent has no cards in hand."
-              } else if (opp.hand.size <= 4) {
+              } else if (opp.hand.size() <= 4) {
                 opp.hand.discard()
               } else{
                 opp.hand.oppSelect(count: 4, "Queen's Command GX - Discard 4 cards from your hand").discard()
