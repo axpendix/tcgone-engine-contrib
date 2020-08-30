@@ -2205,7 +2205,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               assert self.active : "$self is not your Active Pokémon"
               assert opp.bench : "Your opponent has no Pokémon in their bench."
               powerUsed()
-              flip { sw (defending, opp.bench.select("Select the new active"), SRC_ABILITY/*, Source.POKEMONPOWER*/) }
+              switchYourOpponentsBenchedWithActive(SRC_ABILITY /*POKEPOWER*/)
             }
           }
           move "Hidden Power", {
@@ -2213,7 +2213,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              flip 1, {noWrDamage(110,defending)}, {noWrDamage(110,my.all.select())}
+              flip 1, {damage 30}, {noWrDamage(30,my.all.select())}
             }
           }
 
