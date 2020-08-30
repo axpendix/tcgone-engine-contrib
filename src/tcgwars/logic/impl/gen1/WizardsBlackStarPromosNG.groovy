@@ -1085,7 +1085,6 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
           energyCost G, C
           attackRequirement {}
           onAttack {
-            damage 20
             flip 2, { damage 20 }
           }
         }
