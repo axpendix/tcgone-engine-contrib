@@ -1,5 +1,6 @@
-package tcgwars.logic.impl.gen4;
+package tcgwars.logic.impl.gen4
 
+import tcgwars.logic.effect.gm.Attack;
 import tcgwars.logic.impl.gen3.RubySapphire;
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 
@@ -1034,30 +1035,28 @@ public enum MysteriousTreasures implements LogicCardInfo {
           weakness L, PLUS30
           resistance F, MINUS20
           pokeBody "Dragon DNA", {
+            def boostedMoves = []
             text "Gyarados can use any attack from its Basic Pokémon. (You still have to pay for that attack’s Energy cost.) If Gyarados uses any attack from its Basic Pokémon, that attack does 30 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
-            actionA {
-              assert self.active: "This Gyarados is not the Active Pokemon."
-              def moves = []
-              self.cards.filterByType(BASIC).each {
-                moves.addAll(it.moves)
+            getterA(GET_MOVE_LIST, self) { holder ->
+              boostedMoves.clear()
+              self.cards.filterByType(BASIC).each { Card karp ->
+                karp.asPokemonCard().moves.each {
+                  boostedMoves.add(it.name)
+                  holder.object.add(it)
+                }
+
               }
-              assert !moves.isEmpty(): "There are no moves to copy from ${self}'s Basic Pokémon"
-
-              def chosenMove = choose(moves+["Cancel"], moves.collect({it.name})+["Cancel"], "Choose a move to perform")
-
-              if (chosenMove && chosenMove != "Cancel") {
-                delayed{
-                  before APPLY_ATTACK_DAMAGES, {
-                    bg.dm().each {
-                      if(it.from == self && it.dmg.value && it.notNoEffect) {
-                        bc "TODO: Make attacks from this $self's Basic Pokémon do 30 more damage to the Defending Pokémon."
-                        //it.dmg += hp(30)
-                      }
+            }
+            delayedA {
+              after PROCESS_ATTACK_EFFECTS, {
+                if (ef.attacker == self && boostedMoves.contains((ef as Attack).move.name)) {
+                  bg.dm().each {
+                    if (it.to.active && it.to.owner != self.owner && it.dmg.value) {
+                      bc "Dragon DNA +30"
+                      it.dmg += hp(30)
                     }
                   }
-                  unregisterAfter 1
                 }
-                attack (chosenMove as Move)
               }
             }
           }
@@ -1070,11 +1069,13 @@ public enum MysteriousTreasures implements LogicCardInfo {
               afterDamage {
                 def headsFlipped = 0
                 flipUntilTails {
-                  discardRandomCardFromOpponentsHand()
                   headsFlipped += 1
                 }
 
-                if (!headsFlipped) apply CONFUSED, self
+                if (headsFlipped > 0)
+                  headsFlipped.times{ discardRandomCardFromOpponentsHand() }
+                else
+                  apply CONFUSED, self
               }
             }
           }
