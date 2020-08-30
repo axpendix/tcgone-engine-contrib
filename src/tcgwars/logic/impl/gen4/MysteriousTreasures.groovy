@@ -2735,7 +2735,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
       case MURKROW_90:
         return basic (this, hp:HP060, type:DARKNESS, retreatCost:1) {
           weakness L, PLUS10
-          resistance L, MINUS20
+          resistance F, MINUS20
           move "Swarm", {
             text "Search your deck for Murkrow and put it onto your Bench. Shuffle your deck afterward."
             energyCost ()
