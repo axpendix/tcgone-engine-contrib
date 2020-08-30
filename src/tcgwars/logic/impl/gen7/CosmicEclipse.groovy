@@ -2779,7 +2779,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 120
               if (bg.stadiumInfoStruct) {
                 damage 120
-                discard bg.stadiumInfoStruct.stadiumCard
+                afterDamage{ discard bg.stadiumInfoStruct.stadiumCard }
               }
             }
           }
