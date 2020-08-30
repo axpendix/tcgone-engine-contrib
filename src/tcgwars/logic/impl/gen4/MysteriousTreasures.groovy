@@ -534,12 +534,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 def typesOfBasicEn = Type.values().toList().findAll{self.cards.filterByEnergyType(it)}
                 if(ef.attacker == self && !self.cards.filterByType(SPECIAL_ENERGY)){
                   bg.dm().each {
-                    def conditions = [
-                      ( it.from == self ),
-                      ( it.to.active ),
-                      ( it.to.getWeaknesses().any{typesOfBasicEn.contains(it)} )
-                    ]
-                    if (!conditions.any{it == false}) {
+                    if (it.to.active && it.to.getWeaknesses().any{we -> typesOfBasicEn.contains(we.type)} && it.dmg.value) {
                       bc "Rainbow Scale +40"
                       it.dmg += hp(40)
                     }
