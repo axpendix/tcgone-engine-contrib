@@ -2675,7 +2675,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
 
         };
       case ROCKET_S_SCIZOR_EX_101:
-        return evolution (this, from:"Rocket's Scyther Ex", hp:HP120, type:DARKNESS, retreatCost:1) {
+        return evolution (this, from:"Rocket's Scyther ex", hp:HP120, type:DARKNESS, retreatCost:1) {
           weakness FIRE
           resistance GRASS, MINUS30
           pokeBody "Dual Armor", {
