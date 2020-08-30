@@ -1508,9 +1508,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 def doEff = true
                 flip 2, {}, {doEff = false}
                 if (doEff){
-                  targeted (defending, SRC_ABILITY/*, Source.POKEMONPOWER*/) {
-                    defending.cards.reverse().discard()
-                    removePCS(defending)
+                  targeted (opp.active, SRC_ABILITY/*, Source.POKEPOWER*/) {
+                    opp.active.cards.reverse().discard()
+                    removePCS(opp.active)
                   }
                 }
               }
