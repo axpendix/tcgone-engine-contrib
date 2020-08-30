@@ -2230,7 +2230,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               assert my.hand : "You don't have any cards in your hand"
               powerUsed()
               my.hand.select("Discard a card in order to use THROW").discard()
-              flip { directDamage 20, opp.all.select() }
+              flip { directDamage 20, opp.bench.select() }
             }
           }
           move "Hidden Power", {
@@ -2241,7 +2241,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
             onAttack {
               if (opp.hand && !checkBodyguard()) {
-                def oppCard = opp.hand.shuffledCopy().select(hidden: true, count: count, "Choose a random card from your opponent's hand to be shuffled into his or her deck").showToMe("Selected card(s)").showToOpponent("Hidden Power: this card will be shuffled from your hand to your deck")
+                def oppCard = opp.hand.shuffledCopy().select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be shuffled into his or her deck").showToMe("Selected card(s)").showToOpponent("Hidden Power: this card will be shuffled from your hand to your deck")
                 oppCard.moveTo(opp.deck)
                 shuffleDeck(null, TargetPlayer.OPPONENT)
               }
