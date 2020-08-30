@@ -472,23 +472,24 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              afterDamage{
-                //Adapted from Mewtwo Delta (DS 12)
-                if (confirm("Move basic [G] Energy cards around?")) {
-                  while (1) {
-                    def pl=(my.all.findAll {it.cards.filterByBasicEnergyType(G)})
-                    if(!pl) break;
-                    def src =pl.select("Source for energy (cancel to stop)", false)
-                    if(!src) break;
-                    def card=src.cards.select("Card to move",filterByBasicEnergyType(G)).first()
-                    def target = my.all.findAll{ it != src }.select("Move Energy to?")
-                    energySwitch(src, target, card)
-                  }
+              afterDamage {
+                // Adapted from Staraptor (DAA)
+                // TODO: Use this in Mewtwo Delta (DS 12)
+                if (my.bench && confirm("Do you want to move any amount of basic [G] Energy cards from your Pokémon to your other Pokémon in any way you like?"))
+                while (true) {
+                  def pl = (my.all.findAll { it.cards.filterByBasicEnergyType(G) })
+                  if (!pl) break;
+                  def src = pl.select("Source for energy (cancel to stop)", false)
+                  if (!src) break;
+                  def card = src.cards.filterByBasicEnergyType(G).select("Energy to move").first()
+
+                  def tar = my.all.findAll { it != src }.select("Target for energy (cancel to stop)", false)
+                  if (!tar) break;
+                  energySwitch(src, tar, card)
                 }
               }
             }
           }
-
         };
       case FERALIGATR_8:
         return evolution (this, from:"Croconaw", hp:HP130, type:WATER, retreatCost:2) {
