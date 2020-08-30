@@ -1314,12 +1314,12 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 delayed{
                   before CHECK_ATTACK_REQUIREMENTS, {
                     if (ef.attacker == self) {
-                      wcu "$pokePower prevents $self from attacking."
+                      wcu "$thisAbility prevents $self from attacking."
                       prevent()
                     }
                   }
                   before RETREAT, self, {
-                    wcu "$pokePower prevents $self from attacking."
+                    wcu "$thisAbility prevents $self from attacking."
                     prevent()
                   }
                   after FALL_BACK, self, {unregister()}
