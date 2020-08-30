@@ -587,8 +587,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               assert opp.bench.any{it.fullHP.value >= 100} : "Your opponent has no benched Pokémon with a maximum HP of 100 or more."
               powerUsed()
               def pcs = opp.bench.findAll{it.fullHP.value >= 100}.select('Choose 1 of your opponent’s Benched Pokémon that has a maximum HP of 100 or more and switch it with 1 of the Defending Pokémon.')
-              //TODO: This should switch the benched with the defending, not the other way around. Check against inmune to pokébody cards to see if this properly blocks only when the blocker is benched. (Same as Torterra LV.X)
-              sw opp.active, pcs, SRC_ABILITY
+              sw2(pcs, SRC_ABILITY)
             }
           }
           move "Reverse Stream", {
@@ -644,7 +643,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             onAttack {
               damage 20
               afterDamage{
-                [ POISONED, BURNED, PARALYZED ].each{ flip { apply it } }
+                [ POISONED, BURNED, PARALYZED ].each{ SpecialConditionType spc -> flip "$spc", { apply spc } }
               }
             }
           }
