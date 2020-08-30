@@ -2709,9 +2709,9 @@ public enum Platinum implements LogicCardInfo {
             onAttack {
               damage 80
               int heads = 0;
-              flipUntilTails {c++}
-              if (c && opp.active.cards.filterByType(ENERGY)) {
-                opp.active.cards.filterByType(ENERGY).select(count:c,"Choose the energy cards to put in the Lost Zone").moveTo(opp.lostZone)
+              flipUntilTails { heads += 1 }
+              if (heads && opp.active.cards.filterByType(ENERGY)) {
+                opp.active.cards.filterByType(ENERGY).select(count:heads,"Choose the energy cards to put in the Lost Zone").moveTo(opp.lostZone)
               }
             }
           }
