@@ -425,20 +425,16 @@ public enum MysteriousTreasures implements LogicCardInfo {
           pokePower "Miracle Oracle", {
             text "Once during your turn (before your attack), you may draw a card. Then, discard a card from your hand. If you discard an Energy card, draw 1 more card. This power can’t be used if Bronzong is affected by a Special Condition."
             actionA {
-              bc "debug for alakazam 1 - just started"
               checkNoSPC()
               checkLastTurn()
               assert my.deck : "You have no cards in your deck"
-              bc "debug for alakazam 2 - before powerUsed()"
               powerUsed()
-              bc "debug for alakazam 3 - after powerUsed"
               draw 1
               def selected = my.hand.select("Choose a card to discard")
               if (selected.first().cardTypes.is(ENERGY)) {
                 draw 1
               }
               selected.discard()
-              bc "debug for alakazam 4 - end of the power"
             }
           }
           move "Shady Stamp", {
