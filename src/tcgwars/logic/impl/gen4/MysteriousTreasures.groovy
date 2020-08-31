@@ -1068,9 +1068,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               damage 80
               afterDamage {
                 def headsFlipped = 0
-                flipUntilTails {
-                  headsFlipped += 1
-                }
+                flipUntilTails { headsFlipped++ }
 
                 if (headsFlipped > 0)
                   headsFlipped.times{ discardRandomCardFromOpponentsHand() }
