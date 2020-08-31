@@ -897,17 +897,17 @@ class TcgStatics {
   }
 
   static delta_plus(PokemonCardSet self, Object delegate){
+    def power = false
     delegate.delayedA (priority: LAST) {
-      def power=false
       after APPLY_ATTACK_DAMAGES, {
-        power= (ef.attacker==self)
+        power = (ef.attacker==self)
       }
-      before KNOCKOUT, {
-        if(ef.pokemonToBeKnockedOut.owner==self.owner.opposite
-          && ef.byDamageFromAttack && power){
-          bc "Δ Plus: take 1 more Prize card"
-          bg.em().run(new TakePrize(self.owner, ef.pokemonToBeKnockedOut))
-        }
+    }
+    delegate.getterA GET_GIVEN_PRIZES, BEFORE_LAST, {Holder holder ->
+      def pcs = holder.effect.target
+      if (power && pcs.owner != self.owner && pcs.KOBYDMG == bg.turnCount && holder.object > 0) {
+        bc "Δ Plus gives the player an additional prize."
+        holder.object += 1
       }
     }
   }
@@ -1558,6 +1558,9 @@ class TcgStatics {
 
       CardList toHand2 = toHand.filterByType(POKEMON)
       target.owner.pbg.hand.addAll(toHand2)
+      // FIXME: Remove duplicate Pokemon cards from discard if called after a knockout
+      // See: Breakpoint SPLASH_ENERGY_113, DragonsExalted RESCUE_SCARF_115, Triumphant RESCUE_ENERGY_90
+      target.owner.pbg.discard.removeAll(toHand2)
       toHand.getExcludedList(toHand2).moveTo(target.owner.pbg.hand)
 
       CardList toDiscard2 = toDiscard.filterByType(POKEMON)

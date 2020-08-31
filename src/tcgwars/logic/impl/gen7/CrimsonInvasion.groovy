@@ -1620,11 +1620,22 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
             onAttack {
               gxPerform()
-              delayed (priority: LAST) {
-                def pcs = defending
-                before KNOCKOUT, pcs, {
-                  bg.em().run(new TakePrize(self.owner, pcs))
-                  bg.em().run(new TakePrize(self.owner, pcs))
+              def pcs = defending
+              delayed {
+                def eff2
+                register {
+                  eff2 = getter GET_GIVEN_PRIZES, BEFORE_LAST, pcs, {Holder holder ->
+                    if (holder.object > 0 && pcs.KOBYDMG == bg.turnCount) {
+                      bc "Glutton GX gives the player 2 additional prizes."
+                      holder.object += 2
+                    }
+                  }
+                }
+                unregister {
+                  eff2.unregister()
+                }
+                after KNOCKOUT, pcs, {
+                  unregister()
                 }
                 unregisterAfter 1
               }

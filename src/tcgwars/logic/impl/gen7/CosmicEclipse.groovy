@@ -3344,15 +3344,26 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "120 damage. If your opponent's Pokémon is Knocked Out by damage from this attack, take 1 more Prize card."
             energyCost D, D, C, C
             onAttack {
-              damage 120
-              delayed (priority: LAST) {
-                def pcs = defending
-                before KNOCKOUT, pcs, {
-                  bc "Red Banquet gives the player an additional prize."
-                  bg.em().run(new TakePrize(self.owner, pcs))
+              def pcs = defending
+              delayed {
+                def eff2
+                register {
+                  eff2 = getter GET_GIVEN_PRIZES, BEFORE_LAST, pcs, {Holder holder ->
+                    if (holder.object > 0 && pcs.KOBYDMG == bg.turnCount) {
+                      bc "Red Banquet gives the player an additional prize."
+                      holder.object += 1
+                    }
+                  }
+                }
+                unregister {
+                  eff2.unregister()
+                }
+                after KNOCKOUT, pcs, {
                   unregister()
                 }
+                unregisterAfter 1
               }
+              damage 120
             }
           }
         };
@@ -3550,6 +3561,9 @@ public enum CosmicEclipse implements LogicCardInfo {
             onAttack {
               damage 60
               afterDamage {
+                if (bg.em().retrieveObject("ScoopUpBlock_Count$self.owner.opposite") && self.numberOfDamageCounters) {
+                  return
+                }
                 def doll = my.hand.find{it.name=="Lillie's Poké Doll"}
                 if(doll && confirm("Play Lillie's Poké Doll from your hand as your new Active Pokémon?")) {
                   def eff = getter (GET_BENCH_SIZE, BEFORE_LAST) { h->
@@ -3564,8 +3578,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                   eff.unregister()
                   self.owner.pbg.triggerBenchSizeCheck()
                 }
-                self.cards.moveTo(hand)
-                removePCS(self)
+                scoopUpPokemon(self, delegate)
               }
             }
           }
@@ -3845,13 +3858,11 @@ public enum CosmicEclipse implements LogicCardInfo {
 
               if (self.cards.energySufficient( thisMove.energyCost + W )) {
                 bc "[Additional cost covered] Also for the rest of the game, when the opponent’s Active Pokémon is Knocked Out by damage from those attacks, this player takes 1 more Prize card."
-                delayed (priority: LAST) {
-                  before KNOCKOUT, {
-                    def pcs = ef.pokemonToBeKnockedOut
-                    if (pcs.owner == selfOwner.opposite && pcs.active && ef.byDamageFromAttack) {
-                      bc "Altered Creation GX gives the player an additional prize."
-                      bg.em().run(new TakePrize(selfOwner, pcs))
-                    }
+                getter GET_GIVEN_PRIZES, BEFORE_LAST, {Holder holder ->
+                  def pcs = holder.effect.target
+                  if (pcs.owner != self.owner && pcs.KOBYDMG == bg.turnCount && holder.object > 0) {
+                    bc "Altered Creation GX gives the player an additional prize."
+                    holder.object += 1
                   }
                 }
               }
@@ -4678,14 +4689,10 @@ public enum CosmicEclipse implements LogicCardInfo {
                 h.object -= hp(100)
               }
             }
-            effPrize = delayed (priority: BEFORE_LAST) {
-              before KNOCKOUT, self, {
-                if (self.pokemonEX || self.pokemonGX) {
-                  if(ef.byDamageFromAttack) {
-                    bc "$thisCard forces the opponent to take one less prize card."
-                    blockingEffect(TAKE_PRIZE).setUnregisterImmediately(true)
-                  }
-                }
+            effPrize = getter GET_GIVEN_PRIZES, self, {holder->
+              if ( (self.pokemonEX || self.pokemonGX) && self.KOBYDMG == bg.turnCount && holder.object > 0) {
+                bc "Island Challenge Amulet reduces prizes taken from KOing ${self} by one."
+                holder.object -= 1
               }
             }
             checkFaint()
