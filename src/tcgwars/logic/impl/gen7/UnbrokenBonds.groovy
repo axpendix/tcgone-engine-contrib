@@ -340,19 +340,28 @@ public enum UnbrokenBonds implements LogicCardInfo {
               gxCheck()
             }
             onAttack{
-              damage 50
               gxPerform()
-              delayed (priority: LAST) {
-                def pcs = defending
-                before KNOCKOUT, pcs, {
-                  bg.em().run(new TakePrize(self.owner, pcs))
-                  if(self.cards.energySufficient(thisMove.energyCost + C + C+ C+ C+ C+ C+ C)){
-                    bg.em().run(new TakePrize(self.owner, pcs))
-                    bg.em().run(new TakePrize(self.owner, pcs))
+              def pcs = defending
+              delayed {
+                def eff2
+                register {
+                  eff2 = getter GET_GIVEN_PRIZES, BEFORE_LAST, pcs, {Holder holder ->
+                    if (holder.object > 0 && pcs.KOBYDMG == bg.turnCount) {
+                      def extraPrizes = (self.cards.energySufficient(thisMove.energyCost + C + C+ C+ C+ C+ C+ C)) ? 3 : 1
+                      bc "Beast Game GX gives the player ${extraPrizes} additional prizes."
+                      holder.object += extraPrizes
+                    }
                   }
+                }
+                unregister {
+                  eff2.unregister()
+                }
+                after KNOCKOUT, pcs, {
+                  unregister()
                 }
                 unregisterAfter 1
               }
+              damage 50
             }
           }
 
@@ -4024,27 +4033,25 @@ public enum UnbrokenBonds implements LogicCardInfo {
       case BEAST_BRINGER_164:
         return pokemonTool (this) {
           text "If you have exactly 6 Prize cards remaining, and if your opponent's Active Pokémon-GX or Pokémon-EX is Knocked Out by damage from an attack of the Ultra Beast this card is attached to, take 1 more Prize card."
-          def eff
+          def eff1, eff2
+          def power = false
           onPlay {reason->
-            eff = delayed (priority: LAST) {
-              def power=false
-              after APPLY_ATTACK_DAMAGES, {
-                power= (ef.attacker==self && ef.attacker.topPokemonCard.cardTypes.is(ULTRA_BEAST) && self.owner.pbg.prizeCardSet.size()==6)
+            eff1 = delayed {
+              before ATTACK_MAIN, {
+                power = ( ef.attacker==self && ef.attacker.topPokemonCard.cardTypes.is(ULTRA_BEAST) && self.owner.pbg.prizeCardSet.size() == 6 )
               }
-              before KNOCKOUT, {
-                if(ef.pokemonToBeKnockedOut.owner==self.owner.opposite
-                  && ef.pokemonToBeKnockedOut.active
-                  && (ef.pokemonToBeKnockedOut.pokemonGX || ef.pokemonToBeKnockedOut.pokemonEX)
-                  && ef.byDamageFromAttack
-                  && power){
-                  bc "Beast Bringer: take 1 more Prize card"
-                  bg.em().run(new TakePrize(self.owner, ef.pokemonToBeKnockedOut))
-                }
+            }
+            eff2 = getter GET_GIVEN_PRIZES, BEFORE_LAST, {Holder holder ->
+              def pcs = holder.effect.target
+              if ( power && holder.object > 0 && pcs.owner != self.owner && pcs.active && pcs.KOBYDMG == bg.turnCount && (pcs.pokemonGX || pcs.pokemonEX) ) {
+                bc "Beast Bringer gives the player an additional prize."
+                holder.object += 1
               }
             }
           }
           onRemoveFromPlay {
-            eff.unregister()
+            eff1.unregister()
+            eff2.unregister()
           }
         };
       case CHIP_CHIP_ICE_AXE_165:

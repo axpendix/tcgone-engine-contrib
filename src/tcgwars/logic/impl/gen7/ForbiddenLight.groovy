@@ -1417,17 +1417,21 @@ public enum ForbiddenLight implements LogicCardInfo {
             text "During your opponent’s next turn, if this Pokémon is Knocked Out, your opponent can’t take any Prize cards for it."
             energyCost P, C
             onAttack {
-              delayed{
-                before TAKE_PRIZE, {
-                  if(ef.pcs==self){
-                    bc "No prize card for Mysterious Fossil"
-                    prevent()
+              delayed {
+                def eff
+                register {
+                  eff = getter (GET_GIVEN_PRIZES, self) {holder ->
+                    bc "$thisMove prevents taking any prize card from ${self} during this turn"
+                    holder.object = 0
                   }
                 }
-                before EVOLVE, self, {unregister()}
-                before DEVOLVE, self, {unregister()}
-                before FALL_BACK, self, {unregister()}
+                unregister {
+                  eff.unregister()
+                }
                 unregisterAfter 2
+                after FALL_BACK, self, { unregister() }
+                after EVOLVE, self, { unregister() }
+                after DEVOLVE, self, { unregister() }
               }
             }
           }

@@ -601,12 +601,9 @@ public enum Deoxys implements LogicCardInfo {
 
           pokeBody "Empty Shell", {
             text "When Shedinja is Knocked Out, your opponent doesn’t take any Prize cards."
-            delayedA {
-              before KNOCKOUT, self, {
-                def eff=blockingEffect(TAKE_PRIZE)
-                eff.unregisterImmediately=true
-                bc "Empty Shell blocks taking a prize card"
-              }
+            getterA GET_GIVEN_PRIZES, self, {holder ->
+              bc "Empty Shell prevents taking any prize card from ${self}"
+              holder.object = 0
             }
           }
           move "Extra Curse", {
