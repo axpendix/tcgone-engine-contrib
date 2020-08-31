@@ -3293,19 +3293,19 @@ public enum MysteriousTreasures implements LogicCardInfo {
               }
               customAbility {
                 def eff, acl
-                onActivate{
-                  delayed {
-                    before RETREAT, self, {
-                      if(self.topPokemonCard == thisCard){
-                        wcu "Cannot retreat"
-                        prevent()
-                      }
-                    }
-                    before APPLY_SPECIAL_CONDITION, self, {
-                      bc "Armor Fossil is unaffected by Special Conditions"
+                delayedA {
+                  before RETREAT, self, {
+                    if(self.topPokemonCard == thisCard){
+                      wcu "Cannot retreat"
                       prevent()
                     }
                   }
+                  before APPLY_SPECIAL_CONDITION, self, {
+                    bc "Armor Fossil is unaffected by Special Conditions"
+                    prevent()
+                  }
+                }
+                onActivate{
                   if (!eff) {
                     eff = delayed {
                       after REMOVE_FROM_PLAY, {
@@ -3362,19 +3362,19 @@ public enum MysteriousTreasures implements LogicCardInfo {
               }
               customAbility {
                 def eff, acl
-                onActivate{
-                  delayed {
-                    before RETREAT, self, {
-                      if(self.topPokemonCard == thisCard){
-                        wcu "Cannot retreat"
-                        prevent()
-                      }
-                    }
-                    before APPLY_SPECIAL_CONDITION, self, {
-                      bc "Skull Fossil is unaffected by Special Conditions"
+                delayedA {
+                  before RETREAT, self, {
+                    if(self.topPokemonCard == thisCard){
+                      wcu "Cannot retreat"
                       prevent()
                     }
                   }
+                  before APPLY_SPECIAL_CONDITION, self, {
+                    bc "Skull Fossil is unaffected by Special Conditions"
+                    prevent()
+                  }
+                }
+                onActivate{
                   if (!eff) {
                     eff = delayed {
                       after REMOVE_FROM_PLAY, {
