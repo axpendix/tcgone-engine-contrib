@@ -3860,7 +3860,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                 bc "[Additional cost covered] Also for the rest of the game, when the opponent’s Active Pokémon is Knocked Out by damage from those attacks, this player takes 1 more Prize card."
                 getter GET_GIVEN_PRIZES, BEFORE_LAST, {Holder holder ->
                   def pcs = holder.effect.target
-                  if (pcs.owner != self.owner && pcs.KOBYDMG == bg.turnCount && holder.object > 0) {
+                  if (pcs.owner != selfOwner && pcs.KOBYDMG == bg.turnCount && holder.object > 0) {
                     bc "Altered Creation GX gives the player an additional prize."
                     holder.object += 1
                   }
