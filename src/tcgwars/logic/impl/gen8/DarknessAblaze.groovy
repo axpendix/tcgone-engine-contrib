@@ -2626,7 +2626,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
           onAttack {
             if (my.deck) {
-              my.deck.search(max: 2, "Select up to 2 cards", { true }).moveTo(hidden: true, my.hand)
+              my.deck.search(min:1, max: 2, "Select up to 2 cards", { true }).moveTo(hidden: true, my.hand)
               shuffleDeck()
             }
           }
