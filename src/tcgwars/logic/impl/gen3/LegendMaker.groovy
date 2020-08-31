@@ -2391,22 +2391,24 @@ public enum LegendMaker implements LogicCardInfo {
           Card pokemonCard, trainerCard = thisCard
           pokemonCard = basic (new CustomCardInfo(MYSTERIOUS_FOSSIL_79).setCardTypes(BASIC, POKEMON), hp:HP050, type:COLORLESS, retreatCost:0) {
             customAbility{
-              def ef2, acl
+              def ef1, ef2, acl
               onActivate{
-                delayed {
+                ef1 = delayed {
                   before RETREAT, self, {
                     wcu "Cannot retreat"
                     prevent()
                   }
+                  before APPLY_SPECIAL_CONDITION, self, {
+                    wcu "Mysterious Fossil can't have special conditions"
+                    prevent()
+                  }
+                }
+                delayed {
                   before TAKE_PRIZE, {
                     if(ef.pcs==self){
                       bc "No prize card for Mysterious Fossil"
                       prevent()
                     }
-                  }
-                  before APPLY_SPECIAL_CONDITION, self, {
-                    wcu "Mysterious Fossil can't have special conditions"
-                    prevent()
                   }
                 }
                 if(!ef2){
@@ -2425,6 +2427,7 @@ public enum LegendMaker implements LogicCardInfo {
                 }
               }
               onDeactivate{
+                ef1.unregister()
                 acl.each{bg.gm().unregisterAction(it)}
               }
             }

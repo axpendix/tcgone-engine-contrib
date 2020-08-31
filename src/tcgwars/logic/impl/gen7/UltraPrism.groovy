@@ -3103,9 +3103,9 @@ public enum UltraPrism implements LogicCardInfo {
             Card pokemonCard, trainerCard = thisCard
             pokemonCard = basic (new CustomCardInfo(UNIDENTIFIED_FOSSIL_134).setCardTypes(BASIC, POKEMON), hp:HP060, type:COLORLESS, retreatCost:0) {
               customAbility{
-                def ef2, acl
+                def ef1, ef2, acl
                 onActivate{
-                  delayed {
+                  ef1 = delayed {
                     before RETREAT, self, {
                       if(self.topPokemonCard == thisCard){
                         wcu "Cannot retreat"
@@ -3136,6 +3136,7 @@ public enum UltraPrism implements LogicCardInfo {
                   }
                 }
                 onDeactivate{
+                  ef1.unregister()
                   acl.each{bg.gm().unregisterAction(it)}
                 }
               }

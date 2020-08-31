@@ -3974,9 +3974,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           Card pokemonCard, trainerCard = thisCard
           pokemonCard = basic (new CustomCardInfo(this[thisCard.enumName] as CardInfo).setCardTypes(BASIC, POKEMON), hp:HP070, type:COLORLESS, retreatCost:0) {
             customAbility{
-              def ef2, acl
+              def ef1, ef2, acl
               onActivate{
-                delayed {
+                ef1 = delayed {
                   before RETREAT, self, {
                     if(self.topPokemonCard == thisCard){
                       wcu "Cannot retreat"
@@ -4012,6 +4012,7 @@ public enum DarknessAblaze implements LogicCardInfo {
               }
               onDeactivate{
                 acl.each{bg.gm().unregisterAction(it)}
+                ef1.unregister()
               }
             }
           }
