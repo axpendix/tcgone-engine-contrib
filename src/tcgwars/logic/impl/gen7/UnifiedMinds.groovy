@@ -3995,10 +3995,8 @@ public enum UnifiedMinds implements LogicCardInfo {
               assert my.discard : "Your discard pile is empty."
               if (confirm("Use Snack Search?")) {
                 powerUsed()
-                flip{
-                  def target = my.discard.select()
-                  my.deck.addAll(0, target)
-                  my.discard.removeAll(target)
+                flip {
+                  my.discard.filterByType(ITEM).select("Put a card from your discard pile on top of your deck").showToOpponent("Snack Search - This Card will be put on top of your opponent's deck.").moveTo(addToTop: true, my.deck)
                 }
                 bg.gm().betweenTurns()
               }

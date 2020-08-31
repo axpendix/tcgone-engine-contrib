@@ -3324,7 +3324,7 @@ public enum SwordShield implements LogicCardInfo {
             assert my.deck : "Your deck is empty."
           }
           onAttack {
-            my.deck.search(max:2,"Choose 2 cards to put in your hand.",{true}).moveTo(hidden: true, my.hand)
+            my.deck.search(min:1, max:2,"Choose 2 cards to put in your hand.",{true}).moveTo(hidden: true, my.hand)
           }
         }
         move "Spit Shot", {

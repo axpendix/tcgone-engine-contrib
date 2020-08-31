@@ -2626,7 +2626,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
           onAttack {
             if (my.deck) {
-              my.deck.search(max: 2, "Select up to 2 cards", { true }).moveTo(hidden: true, my.hand)
+              my.deck.search(min:1, max: 2, "Select up to 2 cards", { true }).moveTo(hidden: true, my.hand)
               shuffleDeck()
             }
           }
@@ -3969,27 +3969,27 @@ public enum DarknessAblaze implements LogicCardInfo {
           Card pokemonCard, trainerCard = thisCard
           pokemonCard = basic (new CustomCardInfo(this[thisCard.enumName] as CardInfo).setCardTypes(BASIC, POKEMON), hp:HP070, type:COLORLESS, retreatCost:0) {
             customAbility{
-              def ef2, acl
-              onActivate{
-                delayed {
-                  before RETREAT, self, {
-                    if(self.topPokemonCard == thisCard){
-                      wcu "Cannot retreat"
-                      prevent()
-                    }
-                  }
-                  before APPLY_SPECIAL_CONDITION, self, {
-                    bc "Rare Fossil can't be affected by Special Conditions"
+              def eff, acl
+              delayedA {
+                before RETREAT, self, {
+                  if(self.topPokemonCard == thisCard){
+                    wcu "Cannot retreat"
                     prevent()
                   }
                 }
-                if(!ef2){
-                  ef2 = delayed {
+                before APPLY_SPECIAL_CONDITION, self, {
+                  bc "Rare Fossil can't be affected by Special Conditions"
+                  prevent()
+                }
+              }
+              onActivate{
+                if(!eff){
+                  eff = delayed {
                     after REMOVE_FROM_PLAY, {
                       if(ef.removedCards.contains(pokemonCard)){
                         bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
                         unregister()
-                        ef2 = null
+                        eff = null
                       }
                     }
                   }

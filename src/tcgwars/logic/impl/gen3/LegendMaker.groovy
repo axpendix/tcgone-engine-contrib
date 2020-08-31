@@ -2331,24 +2331,23 @@ public enum LegendMaker implements LogicCardInfo {
             }
             customAbility {
               def eff, acl
-              onActivate{
-                delayed {
-                  before RETREAT, self, {
-                    if(self.topPokemonCard == thisCard){
-                      wcu "Cannot retreat"
-                      prevent()
-                    }
-                  }
-                  before TAKE_PRIZE, {
-                    if (ef.pcs==self) {
-                      prevent()
-                    }
-                  }
-                  before APPLY_SPECIAL_CONDITION, self, {
-                    bc "Claw Fossil is unaffected by Special Conditions"
+              delayedA {
+                before RETREAT, self, {
+                  if(self.topPokemonCard == thisCard){
+                    wcu "Cannot retreat"
                     prevent()
                   }
                 }
+                before APPLY_SPECIAL_CONDITION, self, {
+                  bc "Claw Fossil is unaffected by Special Conditions"
+                  prevent()
+                }
+              }
+              getterA GET_GIVEN_PRIZES, self, {holder ->
+                bc "Claw Fossil gives no prizes"
+                holder.object = 0
+              }
+              onActivate{
                 if (!eff) {
                   eff = delayed {
                     after REMOVE_FROM_PLAY, {
@@ -2391,31 +2390,29 @@ public enum LegendMaker implements LogicCardInfo {
           Card pokemonCard, trainerCard = thisCard
           pokemonCard = basic (new CustomCardInfo(MYSTERIOUS_FOSSIL_79).setCardTypes(BASIC, POKEMON), hp:HP050, type:COLORLESS, retreatCost:0) {
             customAbility{
-              def ef2, acl
-              onActivate{
-                delayed {
-                  before RETREAT, self, {
-                    wcu "Cannot retreat"
-                    prevent()
-                  }
-                  before TAKE_PRIZE, {
-                    if(ef.pcs==self){
-                      bc "No prize card for Mysterious Fossil"
-                      prevent()
-                    }
-                  }
-                  before APPLY_SPECIAL_CONDITION, self, {
-                    wcu "Mysterious Fossil can't have special conditions"
-                    prevent()
-                  }
+              def eff, acl
+              getterA GET_GIVEN_PRIZES, self, {holder ->
+                bc "Mysterious Fossil gives no prizes"
+                holder.object = 0
+              }
+              delayedA {
+                before RETREAT, self, {
+                  wcu "Cannot retreat"
+                  prevent()
                 }
-                if(!ef2){
-                  ef2 = delayed {
+                before APPLY_SPECIAL_CONDITION, self, {
+                  wcu "Mysterious Fossil can't have special conditions"
+                  prevent()
+                }
+              }
+              onActivate{
+                if(!eff){
+                  eff = delayed {
                     after REMOVE_FROM_PLAY, {
                       if(ef.removedCards.contains(pokemonCard)){
                         bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
                         unregister()
-                        ef2 = null
+                        eff = null
                       }
                     }
                   }
@@ -2456,24 +2453,23 @@ public enum LegendMaker implements LogicCardInfo {
             }
             customAbility {
               def eff, acl
-              onActivate{
-                delayed {
-                  before RETREAT, self, {
-                    if(self.topPokemonCard == thisCard){
-                      wcu "Cannot retreat"
-                      prevent()
-                    }
-                  }
-                  before APPLY_SPECIAL_CONDITION, self, {
-                    bc "Root Fossil is unaffected by Special Conditions"
+              getterA GET_GIVEN_PRIZES, self, {holder ->
+                bc "Root Fossil gives no prizes"
+                holder.object = 0
+              }
+              delayedA {
+                before RETREAT, self, {
+                  if(self.topPokemonCard == thisCard){
+                    wcu "Cannot retreat"
                     prevent()
                   }
-                  before TAKE_PRIZE, {
-                    if (ef.pcs==self) {
-                      prevent()
-                    }
-                  }
                 }
+                before APPLY_SPECIAL_CONDITION, self, {
+                  bc "Root Fossil is unaffected by Special Conditions"
+                  prevent()
+                }
+              }
+              onActivate{
                 if (!eff) {
                   eff = delayed {
                     after REMOVE_FROM_PLAY, {

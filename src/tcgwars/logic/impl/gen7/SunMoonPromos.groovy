@@ -2937,16 +2937,15 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-          move "Critical Error-Gx", {
+          move "Critical Error GX", {
             text "Search your deck for up to 10 cards and discard them. Then shuffle your deck. (You can't use more than 1 gx attack in a game)."
             energyCost C
             attackRequirement {
               gxCheck()
-              assert my.deck : "There is no cards in your deck"
             }
             onAttack {
               gxPerform()
-              my.deck.search(min: 0, max:10, "Choose up to 10 cards to discard", { true }).discard()
+              if (my.deck) my.deck.search(min: 1, max:10, "Choose up to 10 cards to discard", { true }).discard()
               shuffleDeck()
             }
           }

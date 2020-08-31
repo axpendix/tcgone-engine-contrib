@@ -3073,8 +3073,9 @@ public enum GuardiansRising implements LogicCardInfo {
           onPlay {
             def i = 2
             while(i-- > 0){
-              if (bg.stadiumInfoStruct && stadiumCanBeAffectedByItemAndSupporter() && confirm("Would you like to discard stadium in play (${bg.stadiumInfoStruct.stadiumCard})? If not, you can select a Pokemon Tool in play")) {
-                discard bg.stadiumInfoStruct.stadiumCard
+              if (bg.stadiumInfoStruct && confirm("Would you like to discard stadium in play (${bg.stadiumInfoStruct.stadiumCard})? If not, you can select a Pokemon Tool in play")) {
+                if (stadiumCanBeAffectedByItemAndSupporter())
+                  discard bg.stadiumInfoStruct.stadiumCard
                 continue
               }
               def tar = all.findAll {it.cards.hasType(POKEMON_TOOL)}
@@ -3090,7 +3091,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
           playRequirement{
-            assert all.findAll {it.cards.hasType(POKEMON_TOOL)} || (bg.stadiumInfoStruct && stadiumCanBeAffectedByItemAndSupporter())
+            assert all.findAll {it.cards.hasType(POKEMON_TOOL)} || (bg.stadiumInfoStruct)
           }
         };
       case HALA_126:

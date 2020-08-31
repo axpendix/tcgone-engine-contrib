@@ -944,6 +944,7 @@ public enum TeamUp implements LogicCardInfo {
             delayedA{
               // TODO
               def flag = false
+              def selfOwner = self.owner
               //Workaround for "Supporters used as attack effect"
               def flag2 = false
               before PROCESS_ATTACK_EFFECTS, {
@@ -954,13 +955,13 @@ public enum TeamUp implements LogicCardInfo {
               }
               before PLAY_TRAINER, {
                 flag = false
-                if(self.active && ef.supporter && bg.currentTurn != self.owner && !flag2){
+                if(self.active && ef.supporter && bg.currentTurn != selfOwner && !flag2){
                   flag = true
                 }
               }
               before null, null, Source.TRAINER_CARD, {
                 def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
-                if (flag && self.active && pcs.owner == self.owner && pcs.benched && pcs.types.contains(W)){
+                if (flag && self.active && pcs.owner == selfOwner && pcs.benched && pcs.types.contains(W)){
                   bc "Blizzard Veil prevent effect of Supporter cards done to $pcs."
                   prevent()
                 }
@@ -3378,11 +3379,11 @@ public enum TeamUp implements LogicCardInfo {
         return supporter(this) {
           text "You can play this card only if your opponent's Active Pokémon is a Stage 2 Pokémon. Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
-            my.deck.search(max: 2,"Choose 2 cards to put in your hand",{true}).moveTo(hidden: true, my.hand)
+            my.deck.search(min: 1, max: 2,"Choose 2 cards to put in your hand",{true}).moveTo(hidden: true, my.hand)
             shuffleDeck()
           }
           playRequirement{
-            assert opp.active.topPokemonCard.cardTypes.contains(STAGE2) : "There is no more card in your deck"
+            assert opp.active.topPokemonCard.cardTypes.contains(STAGE2) : "Your opponent's Active Pokémon is not a Stage 2 Pokémon"
             assert my.deck : "There are no more cards in your deck"
           }
         };
@@ -3396,7 +3397,7 @@ public enum TeamUp implements LogicCardInfo {
               choice = 2
             }
             else{
-              if(bg.stadiumInfoStruct && stadiumCanBeAffectedByItemAndSupporter()){
+              if(bg.stadiumInfoStruct){
                 choice = choose([1,2],["A Pokémon Tool or Special Energy card from 1 of your opponent's Pokémon", "The stadium card in play"], "What to discard?")
               }
             }
@@ -3407,12 +3408,13 @@ public enum TeamUp implements LogicCardInfo {
               }
             }
             else{
-              discard bg.stadiumInfoStruct.stadiumCard
+              if (stadiumCanBeAffectedByItemAndSupporter())
+                discard bg.stadiumInfoStruct.stadiumCard
             }
           }
           playRequirement{
             assert my.hand.filterByType(POKEMON).findAll{it.asPokemonCard().types.contains(D)}: "There is no [D] pokémon in your hand"
-            assert opp.all.findAll{it.cards.filterByType(POKEMON_TOOL, SPECIAL_ENERGY)} || ( bg.stadiumInfoStruct && stadiumCanBeAffectedByItemAndSupporter() ) : "There is no cards to discard"
+            assert opp.all.findAll{it.cards.filterByType(POKEMON_TOOL, SPECIAL_ENERGY)} || ( bg.stadiumInfoStruct ) : "There is no cards to discard"
           }
         };
       case ELECTROCHARGER_139:

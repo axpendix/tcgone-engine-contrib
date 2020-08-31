@@ -626,7 +626,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         }
         move "Tsunami", {
           text "40 damage. Does 10 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
-          energyCost W, W, C
+          energyCost W, C, C
           onAttack {
             damage 40
             opp.bench.each{

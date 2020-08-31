@@ -113,7 +113,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
     if (card == null) {
       throw new NullPointerException("topPokemonCard. lastName:" + lastName);
     }
-    if (!card.getCardTypes().isPokemon()) {
+    if (!card.getStaticCardTypes().isPokemon()) {
       throw new IllegalStateException("Top card is not a pokemon card. lastName:" + lastName);
     }
     return (PokemonCard) card;
@@ -121,7 +121,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
 
   public PokemonCard getTopNonBreakPokemonCard() {
     for (Card card : cards().filterByType(CardType.POKEMON)) {
-      if (card.getCardTypes().is(CardType.BREAK)) continue;
+      if (card.getStaticCardTypes().is(CardType.BREAK)) continue;
       return card.asPokemonCard();
     }
     return null; //Should an IllegalStateException be thrown here, same as above?

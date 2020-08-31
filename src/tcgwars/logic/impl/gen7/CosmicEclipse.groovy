@@ -798,7 +798,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             onAttack {
               damage 180
               afterDamage{
-                if (confirm("Search your deck for up to 3 cards and put them into your hand?")) {
+                if (my.deck && confirm("Search your deck for up to 3 cards and put them into your hand?")) {
                   my.deck.select(max:3, "Select up to 3 cards to put in your hand.").moveTo(hidden:true, my.hand)
                   shuffleDeck()
                 }
@@ -2588,7 +2588,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               assert my.deck : "Your deck is empty."
               assertMyAll(info: "named Solgaleo", {it.name == 'Solgaleo'}) //TODO: Add "params.name" to assertAnyPokemonInPlay(), bit of an recurring case.
               powerUsed()
-              my.deck.search (max: 2, cardTypeFilter(BASIC_ENERGY)).each {
+              my.deck.search (max: 2, cardTypeFilter(ENERGY)).each {
                 def tar = my.all.findAll({ it.name == "Solgaleo" || it.name == "Lunala" })
                 attachEnergy(tar.select("Attach this Energy to which Pokémon?"), it)
               }
@@ -2779,7 +2779,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 120
               if (bg.stadiumInfoStruct) {
                 damage 120
-                discard bg.stadiumInfoStruct.stadiumCard
+                afterDamage{ discard bg.stadiumInfoStruct.stadiumCard }
               }
             }
           }
@@ -3842,12 +3842,15 @@ public enum CosmicEclipse implements LogicCardInfo {
               gxPerform()
 
               bc "For the rest of the game, this player Pokémon’s attacks do 30 more damage to their opponent’s Active Pokémon."
+              def selfOwner = self.owner
               delayed { // a permanent delayed effect
                 after PROCESS_ATTACK_EFFECTS, {
-                  bg.dm().each {
-                    if (it.from.owner == self.owner && it.dmg.value && it.to.active && it.to.owner  == self.owner.opposite) {
-                      bc "Altered Creation GX +30"
-                      it.dmg += hp(30)
+                  if (ef.attacker.owner == selfOwner) {
+                    bg.dm().each {
+                      if (it.dmg.value && it.to.active && it.to.owner == selfOwner.opposite) {
+                        bc "Altered Creation GX +30"
+                        it.dmg += hp(30)
+                      }
                     }
                   }
                 }
@@ -4298,9 +4301,9 @@ public enum CosmicEclipse implements LogicCardInfo {
           bwAbility "Arf Arf Bark", {
             text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may discard an Energy from your opponent's Active Pokémon. If this Pokémon is your Active Pokémon and is Knocked Out by damage from an opponent's attack, you may discard an Energy from your opponent's Active Pokémon."
             onActivate { r ->
-              if (r==PLAY_FROM_HAND && my.deck && confirm("Use Arf Arf Bark?")) {
+              if (r==PLAY_FROM_HAND && my.deck && confirm("Use Arf Arf Bark?", self.owner)) {
                 if(opp.active.cards.filterByType(ENERGY)) {
-                  opp.active.cards.filterByType(ENERGY).select("Discard which Energy?").discard()
+                  opp.active.cards.filterByType(ENERGY).select("Discard which Energy?", self.owner).discard()
                 }
               }
             }
@@ -4505,7 +4508,8 @@ public enum CosmicEclipse implements LogicCardInfo {
             if(opp.deck) opp.deck.subList(0, 3).discard()
             if(my.deck) my.deck.subList(0, 3).discard()
 
-            if (my.hand.getExcludedList(thisCard).size() >= 3 && confirm("Discard 3 cards to force both players to discard their Benched Pokémon until they have 3 Benched Pokémon?")) {
+            def benchReduceCond = ( (my.bench.size() > 3 || opp.bench.size() > 3) && my.hand.getExcludedList(thisCard).size() >= 3 )
+            if ( benchReduceCond && confirm("Discard 3 cards to force both players to discard their Benched Pokémon until they have 3 Benched Pokémon?") ) {
               my.hand.getExcludedList(thisCard).select(count:3, "Select cards to discard.").discard()
 
               eff = getter (GET_BENCH_SIZE) {h->
@@ -4522,7 +4526,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             }
           }
           playRequirement {
-            assert my.deck || opp.deck
+            assert (my.deck || opp.deck) || (my.bench.size() > 3 || opp.bench.size() > 3) : "You can only play this card if either player has cards left in their deck, or more than 3 Pokémon in their bench"
           }
         };
       case CHAOTIC_SWELL_187:
@@ -4905,21 +4909,19 @@ public enum CosmicEclipse implements LogicCardInfo {
               toDiscard.discard()
             }
 
-            def names = my.all.findAll {it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount}.collect { it.name }
+            def names = my.all.findAll {it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount && bg().gm().hasGxEvolution(it.name)}.collect { it.name }
             def sel = deck.search ("Select a Pokémon-GX that evolves from $names.", {
               it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor) && it.cardTypes.is(POKEMON_GX)
             })
             if (sel) {
+              //Not using the API call again here, since the selected card should have a valid target at this point
               def opts = my.all.findAll ({
-                it.name==sel.first().predecessor && it.turnCount < bg.turnCount
+                it.name==sel.first().predecessor && it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount
               })
-              def pcs = opts.select("Evolve which Pokémon?")
-              if (pcs) {
-                evolve(pcs, sel.first(), OTHER)
-
-                if (toDiscard) {
-                  attachEnergyFrom(min: 0, max: 2, basic:true, my.deck, pcs)
-                }
+              def pcs = (opts.size() == 1) ? opts.first() : opts.select("Evolve which Pokémon?")
+              evolve(pcs, sel.first(), OTHER)
+              if (toDiscard && my.deck) {
+                attachEnergyFrom(min: 0, max: 2, basic:true, my.deck, pcs)
               }
             }
 
@@ -4928,10 +4930,10 @@ public enum CosmicEclipse implements LogicCardInfo {
           playRequirement{
             assert my.deck : "Your deck is empty."
             assert bg.turnCount > 2 : "Cannot use this card during your first turn."
-              //TODO: Change this filter. Currently can't learn if a Pokémon has a GX evolution.
-            assertMyAll(info: "that weren't put into play this turn.", {
-              (it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount)
-            })
+            assertMyAll(
+              info: "that weren't put into play this turn, and can evolve into a Pokémon-GX",
+              { it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount && bg().gm().hasGxEvolution(it.name) }
+            )
           }
         };
       case ROLLER_SKATER_203:

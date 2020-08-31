@@ -391,7 +391,6 @@ public enum PopSeries2 implements LogicCardInfo {
           text "10x damage. Flip 2 coins. This attack does 10 damage times the number of heads."
           energyCost F
           onAttack {
-            damage 10
             flip 2, { damage 10 }
           }
         }

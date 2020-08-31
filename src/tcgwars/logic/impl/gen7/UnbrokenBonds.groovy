@@ -1667,8 +1667,8 @@ public enum UnbrokenBonds implements LogicCardInfo {
             onAttack {
               damage 120
               if(confirm("You may discard all [L] Energy from this Pokémon. If you do, this attack does 100 more damage.")){
-                discardAllSelfEnergy(L)
                 damage 100
+                afterDamage { discardAllSelfEnergy(L) }
               }
             }
           }
@@ -3490,11 +3490,10 @@ public enum UnbrokenBonds implements LogicCardInfo {
             energyCost Y
             attackRequirement {
               gxCheck()
-              assert deck
             }
             onAttack {
               gxPerform()
-              deck.search(max:5,"Put to hand",{true}).moveTo(hidden:true,hand)
+              if (my.deck) my.deck.search(min:1, max:5,"Put to hand",{true}).moveTo(hidden:true,hand)
               shuffleDeck()
             }
           }
