@@ -3626,8 +3626,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           onAttack {
             damage 100
             afterDamage{
-              self.cards.moveTo(hand)
-              removePCS(self)
+              scoopUpPokemon(self, delegate)
             }
           }
         }

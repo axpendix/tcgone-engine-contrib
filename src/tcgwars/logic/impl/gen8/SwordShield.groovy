@@ -1836,8 +1836,7 @@ public enum SwordShield implements LogicCardInfo {
           onAttack {
             damage 20
             afterDamage {
-              self.cards.moveTo(hand)
-              removePCS(self)
+              scoopUpPokemon(self, delegate)
             }
           }
         }
