@@ -3561,6 +3561,9 @@ public enum CosmicEclipse implements LogicCardInfo {
             onAttack {
               damage 60
               afterDamage {
+                if (bg.em().retrieveObject("ScoopUpBlock_Count$self.owner.opposite") && self.numberOfDamageCounters) {
+                  return
+                }
                 def doll = my.hand.find{it.name=="Lillie's Poké Doll"}
                 if(doll && confirm("Play Lillie's Poké Doll from your hand as your new Active Pokémon?")) {
                   def eff = getter (GET_BENCH_SIZE, BEFORE_LAST) { h->
@@ -3575,8 +3578,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                   eff.unregister()
                   self.owner.pbg.triggerBenchSizeCheck()
                 }
-                self.cards.moveTo(hand)
-                removePCS(self)
+                scoopUpPokemon(self, delegate)
               }
             }
           }

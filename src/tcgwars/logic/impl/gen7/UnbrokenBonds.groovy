@@ -1603,8 +1603,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               damage 50
               afterDamage {
                 apply PARALYZED
-                self.cards.moveTo(hand)
-                removePCS(self)
+                scoopUpPokemon(self, delegate)
               }
             }
           }

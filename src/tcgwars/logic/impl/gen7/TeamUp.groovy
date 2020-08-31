@@ -3126,8 +3126,7 @@ public enum TeamUp implements LogicCardInfo {
             text "Put your opponent's Active Pokémon and all cards attached to it into your opponent's hand."
             energyCost C,C,C
             onAttack{
-              opp.active.cards.moveTo(opp.hand)
-              removePCS(opp.active)
+              scoopUpPokemon(defending, delegate)
             }
           }
         };
