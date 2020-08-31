@@ -4303,16 +4303,16 @@ public enum CosmicEclipse implements LogicCardInfo {
             onActivate { r ->
               if (r==PLAY_FROM_HAND && my.deck && confirm("Use Arf Arf Bark?", self.owner)) {
                 if(opp.active.cards.filterByType(ENERGY)) {
-                  opp.active.cards.filterByType(ENERGY).select("Discard which Energy?", self.owner).discard()
+                  opp.active.cards.filterByType(ENERGY).select("Discard which Energy?", { true }, self.owner).discard()
                 }
               }
             }
             delayedA {
               before (KNOCKOUT,self) {
-                if ( self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && confirm("Use Arf Arf Bark?") ) {
+                if ( self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && confirm("Use Arf Arf Bark?", self.owner) ) {
                   bc "Arf Arf Bark activates"
                   if (self.owner.opposite.pbg.active.cards.filterByType(ENERGY)) {
-                    self.owner.opposite.pbg.active.cards.filterByType(ENERGY).select("Discard which Energy?").discard()
+                    self.owner.opposite.pbg.active.cards.filterByType(ENERGY).select("Discard which Energy?", { true }, self.owner).discard()
                   }
                 }
               }
