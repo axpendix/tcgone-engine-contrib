@@ -4909,21 +4909,19 @@ public enum CosmicEclipse implements LogicCardInfo {
               toDiscard.discard()
             }
 
-            def names = my.all.findAll {it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount}.collect { it.name }
+            def names = my.all.findAll {it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount && bg().gm().hasGxEvolution(it.name)}.collect { it.name }
             def sel = deck.search ("Select a Pokémon-GX that evolves from $names.", {
               it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor) && it.cardTypes.is(POKEMON_GX)
             })
             if (sel) {
+              //Not using the API call again here, since the selected card should have a valid target at this point
               def opts = my.all.findAll ({
-                it.name==sel.first().predecessor && it.turnCount < bg.turnCount
+                it.name==sel.first().predecessor && it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount
               })
-              def pcs = opts.select("Evolve which Pokémon?")
-              if (pcs) {
-                evolve(pcs, sel.first(), OTHER)
-
-                if (toDiscard) {
-                  attachEnergyFrom(min: 0, max: 2, basic:true, my.deck, pcs)
-                }
+              def pcs = (opts.size() == 1) ? opts.first() : opts.select("Evolve which Pokémon?")
+              evolve(pcs, sel.first(), OTHER)
+              if (toDiscard && my.deck) {
+                attachEnergyFrom(min: 0, max: 2, basic:true, my.deck, pcs)
               }
             }
 
@@ -4932,10 +4930,10 @@ public enum CosmicEclipse implements LogicCardInfo {
           playRequirement{
             assert my.deck : "Your deck is empty."
             assert bg.turnCount > 2 : "Cannot use this card during your first turn."
-              //TODO: Change this filter. Currently can't learn if a Pokémon has a GX evolution.
-            assertMyAll(info: "that weren't put into play this turn.", {
-              (it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount)
-            })
+            assertMyAll(
+              info: "that weren't put into play this turn, and can evolve into a Pokémon-GX",
+              { it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount && bg().gm().hasGxEvolution(it.name) }
+            )
           }
         };
       case ROLLER_SKATER_203:
