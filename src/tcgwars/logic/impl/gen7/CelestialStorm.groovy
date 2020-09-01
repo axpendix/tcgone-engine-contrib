@@ -3331,7 +3331,7 @@ public enum CelestialStorm implements LogicCardInfo {
               def list = deckBottom.getExcludedList(sel)
               if (cardsInBottom > 3) {
                 list = rearrange(list, "Rearrange the other 2 cards before putting them back at the bottom of the deck")
-                my.deck.setSubList(Math.max(0, drawStart-2), list)
+                deckBottom.setSubList(0, list)
               }
               bc "${my.owner.getPlayerUsername(bg)} drew ${sel.size()} cards from the bottom of their deck."
             }
