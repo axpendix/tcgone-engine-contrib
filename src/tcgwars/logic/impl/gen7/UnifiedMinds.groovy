@@ -3996,7 +3996,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               if (confirm("Use Snack Search?")) {
                 powerUsed()
                 flip {
-                  my.discard.filterByType(ITEM).select("Put a card from your discard pile on top of your deck").showToOpponent("Snack Search - This Card will be put on top of your opponent's deck.").moveTo(addToTop: true, my.deck)
+                  my.discard.select("Put a card from your discard pile on top of your deck").showToOpponent("Snack Search - This Card will be put on top of your opponent's deck.").moveTo(addToTop: true, my.deck)
                 }
                 bg.gm().betweenTurns()
               }

@@ -3860,7 +3860,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                 bc "[Additional cost covered] Also for the rest of the game, when the opponent’s Active Pokémon is Knocked Out by damage from those attacks, this player takes 1 more Prize card."
                 getter GET_GIVEN_PRIZES, BEFORE_LAST, {Holder holder ->
                   def pcs = holder.effect.target
-                  if (pcs.owner != self.owner && pcs.KOBYDMG == bg.turnCount && holder.object > 0) {
+                  if (pcs.owner != selfOwner && pcs.KOBYDMG == bg.turnCount && holder.object > 0) {
                     bc "Altered Creation GX gives the player an additional prize."
                     holder.object += 1
                   }
@@ -4303,16 +4303,16 @@ public enum CosmicEclipse implements LogicCardInfo {
             onActivate { r ->
               if (r==PLAY_FROM_HAND && my.deck && confirm("Use Arf Arf Bark?", self.owner)) {
                 if(opp.active.cards.filterByType(ENERGY)) {
-                  opp.active.cards.filterByType(ENERGY).select("Discard which Energy?", self.owner).discard()
+                  opp.active.cards.filterByType(ENERGY).select("Discard which Energy?", { true }, self.owner).discard()
                 }
               }
             }
             delayedA {
               before (KNOCKOUT,self) {
-                if ( self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && confirm("Use Arf Arf Bark?") ) {
+                if ( self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && confirm("Use Arf Arf Bark?", self.owner) ) {
                   bc "Arf Arf Bark activates"
                   if (self.owner.opposite.pbg.active.cards.filterByType(ENERGY)) {
-                    self.owner.opposite.pbg.active.cards.filterByType(ENERGY).select("Discard which Energy?").discard()
+                    self.owner.opposite.pbg.active.cards.filterByType(ENERGY).select("Discard which Energy?", { true }, self.owner).discard()
                   }
                 }
               }
