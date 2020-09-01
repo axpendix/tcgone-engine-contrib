@@ -7,6 +7,9 @@ import tcgwars.logic.impl.gen5.PlasmaStorm;
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
+import static tcgwars.logic.effect.EffectType.*;
+import static tcgwars.logic.effect.special.SpecialConditionType.*
+import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
@@ -116,10 +119,10 @@ public enum MajesticDawn implements LogicCardInfo {
   HEALTH_ENERGY_94 ("Health Energy", "94", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   METAL_ENERGY_95 ("Metal Energy", "95", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   RECOVER_ENERGY_96 ("Recover Energy", "96", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
-  GARCHOMP_LV_X_97 ("Garchomp LV.X", "97", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _COLORLESS_]),
-  GLACEON_LV_X_98 ("Glaceon LV.X", "98", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _WATER_]),
-  LEAFEON_LV_X_99 ("Leafeon LV.X", "99", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _GRASS_]),
-  PORYGON_Z_LV_X_100 ("Porygon-Z LV.X", "100", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _COLORLESS_]);
+  GARCHOMP_LV_X_97 ("Garchomp Lv.X", "97", Rarity.HOLORARE, [LVL_X, POKEMON, _COLORLESS_]),
+  GLACEON_LV_X_98 ("Glaceon Lv.X", "98", Rarity.HOLORARE, [LVL_X, POKEMON, _WATER_]),
+  LEAFEON_LV_X_99 ("Leafeon Lv.X", "99", Rarity.HOLORARE, [LVL_X, POKEMON, _GRASS_]),
+  PORYGON_Z_LV_X_100 ("Porygon-Z Lv.X", "100", Rarity.HOLORARE, [LVL_X, POKEMON, _COLORLESS_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -2075,7 +2078,7 @@ public enum MajesticDawn implements LogicCardInfo {
           }
         };
       case GARCHOMP_LV_X_97:
-        return evolution (this, from:"Garchomp", hp:HP140, type:COLORLESS, retreatCost:0) {
+        return levelUp (this, from:"Garchomp", hp:HP140, type:COLORLESS, retreatCost:0) {
           weakness C
           pokePower "Dragon Pulse", {
             text "Once during your turn , when you put Garchomp LV. from your hand onto your Active Garchomp, you may flip 3 coins. For each heads, put 1 damage counter on each of your opponent’s Benched Pokémon."
@@ -2090,18 +2093,9 @@ public enum MajesticDawn implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Garchomp. Garchomp LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case GLACEON_LV_X_98:
-        return evolution (this, from:"Glaceon", hp:HP100, type:WATER, retreatCost:1) {
+        return levelUp (this, from:"Glaceon", hp:HP100, type:WATER, retreatCost:1) {
           weakness M, PLUS30
           pokeBody "Chilly Breath", {
             text "As long as Glaceon is your Active Pokémon, your opponent’s Pokémon can’t use any Poké-Powers."
@@ -2116,18 +2110,9 @@ public enum MajesticDawn implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Glaceon. Glaceon LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case LEAFEON_LV_X_99:
-        return evolution (this, from:"Leafeon", hp:HP110, type:GRASS, retreatCost:2) {
+        return levelUp (this, from:"Leafeon", hp:HP110, type:GRASS, retreatCost:2) {
           weakness R, PLUS30
           resistance W, MINUS20
           pokePower "Energy Forcing", {
@@ -2143,18 +2128,9 @@ public enum MajesticDawn implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Leafeon. Leafeon LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case PORYGON_Z_LV_X_100:
-        return evolution (this, from:"Porygon Z", hp:HP130, type:COLORLESS, retreatCost:2) {
+        return levelUp (this, from:"Porygon Z", hp:HP130, type:COLORLESS, retreatCost:2) {
           weakness F
           pokePower "Mode Crash", {
             text "Once during your turn , when you put Porygon-Z LV. from your hand onto your Active Porygon-Z, you may discard all of your opponent’s Special Energy cards in play."
@@ -2166,15 +2142,6 @@ public enum MajesticDawn implements LogicCardInfo {
             actionA {
             }
           }
-          move "", {
-            text "Put this card onto your Active Porygon Z. Porygon-Z LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       default:
         return null;

@@ -118,10 +118,10 @@ public enum GreatEncounters implements LogicCardInfo {
   MOONLIGHT_STADIUM_100 ("Moonlight Stadium", "100", Rarity.UNCOMMON, [TRAINER, STADIUM]),
   PREMIER_BALL_101 ("Premier Ball", "101", Rarity.UNCOMMON, [TRAINER]),
   RARE_CANDY_102 ("Rare Candy", "102", Rarity.UNCOMMON, [TRAINER]),
-  CRESSELIA_LV_X_103 ("Cresselia LV.X", "103", Rarity.ULTRARARE, [LEVEL_UP, EVOLUTION, POKEMON, _PSYCHIC_]),
-  DARKRAI_LV_X_104 ("Darkrai LV.X", "104", Rarity.ULTRARARE, [LEVEL_UP, EVOLUTION, POKEMON, _DARKNESS_]),
-  DIALGA_LV_X_105 ("Dialga LV.X", "105", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _METAL_]),
-  PALKIA_LV_X_106 ("Palkia LV.X", "106", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _WATER_]);
+  CRESSELIA_LV_X_103 ("Cresselia Lv.X", "103", Rarity.ULTRARARE, [LVL_X, POKEMON, _PSYCHIC_]),
+  DARKRAI_LV_X_104 ("Darkrai Lv.X", "104", Rarity.ULTRARARE, [LVL_X, POKEMON, _DARKNESS_]),
+  DIALGA_LV_X_105 ("Dialga Lv.X", "105", Rarity.HOLORARE, [LVL_X, POKEMON, _METAL_]),
+  PALKIA_LV_X_106 ("Palkia Lv.X", "106", Rarity.HOLORARE, [LVL_X, POKEMON, _WATER_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -2220,7 +2220,7 @@ public enum GreatEncounters implements LogicCardInfo {
       case RARE_CANDY_102:
         return copy (Sandstorm.RARE_CANDY_88, this);
       case CRESSELIA_LV_X_103:
-        return evolution (this, from:"Cresselia", hp:HP100, type:PSYCHIC, retreatCost:1) {
+        return levelUp (this, from:"Cresselia", hp:HP100, type:PSYCHIC, retreatCost:1) {
           weakness P
           pokePower "Full Moon Dance", {
             text "Once during your turn , you may move 1 damage counter from either player’s Pokémon to another Pokémon . This power can’t be used if Cresselia is affected by a Special Condition."
@@ -2235,18 +2235,9 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Cresselia. Cresselia LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case DARKRAI_LV_X_104:
-        return evolution (this, from:"Darkrai", hp:HP100, type:DARKNESS, retreatCost:1) {
+        return levelUp (this, from:"Darkrai", hp:HP100, type:DARKNESS, retreatCost:1) {
           weakness F
           resistance P, MINUS20
           pokeBody "Dark Shadow", {
@@ -2262,18 +2253,9 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Darkrai. Darkrai LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case DIALGA_LV_X_105:
-        return evolution (this, from:"Dialga", hp:HP110, type:METAL, retreatCost:2) {
+        return levelUp (this, from:"Dialga", hp:HP110, type:METAL, retreatCost:2) {
           weakness R
           resistance P, MINUS20
           pokePower "Time Skip", {
@@ -2289,18 +2271,9 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Dialga. Dialga LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case PALKIA_LV_X_106:
-        return evolution (this, from:"Palkia", hp:HP120, type:WATER, retreatCost:3) {
+        return levelUp (this, from:"Palkia", hp:HP120, type:WATER, retreatCost:3) {
           weakness L
           pokePower "Restructure", {
             text "Once during your turn , you may have your opponent switch 1 of your Active Pokémon with 1 of your Bench Pokémon. Then, you switch 1 of the Defending Pokémon with 1 of your opponent’s Benched Pokémon. This power can’t be used if Palkia is affected by a Special Condition."
@@ -2315,15 +2288,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Palkia. Palkia LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       default:
         return null;

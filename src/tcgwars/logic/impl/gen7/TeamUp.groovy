@@ -3383,7 +3383,7 @@ public enum TeamUp implements LogicCardInfo {
             shuffleDeck()
           }
           playRequirement{
-            assert opp.active.topPokemonCard.cardTypes.contains(STAGE2) : "Your opponent's Active Pokémon is not a Stage 2 Pokémon"
+            assert opp.active.stage2 : "The opponent's Active Pokémon is not a Stage 2 Pokémon"
             assert my.deck : "There are no more cards in your deck"
           }
         };
@@ -3449,7 +3449,7 @@ public enum TeamUp implements LogicCardInfo {
             draw 4
           }
           playRequirement{
-            assert opp.active.topPokemonCard.cardTypes.contains(STAGE1) : "Your opponent's Active Pokémon is not a Stage 1 Pokémon"
+            assert opp.active.stage1 : "Your opponent's Active Pokémon is not a Stage 1 Pokémon"
             assert my.deck : "There are no more cards in your deck"
           }
         };
@@ -3649,7 +3649,7 @@ public enum TeamUp implements LogicCardInfo {
             }
           }
           playRequirement{
-            assert opp.active.basic
+            assert opp.active.basic : "Your opponent's Active Pokémon is not a Basic Pokémon"
             assert opp.active.cards.filterByType(ENERGY) : "There is no energy attached to your opponent's Active Pokémon"
           }
         };

@@ -159,9 +159,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
   MULTI_ENERGY_118 ("Multi Energy", "118", Rarity.RARE, [SPECIAL_ENERGY, ENERGY]),
   DARKNESS_ENERGY_119 ("Darkness Energy", "119", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   METAL_ENERGY_120 ("Metal Energy", "120", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
-  ELECTIVIRE_LV_X_121 ("Electivire LV.X", "121", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _LIGHTNING_]),
-  LUCARIO_LV_X_122 ("Lucario LV.X", "122", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _FIGHTING_]),
-  MAGMORTAR_LV_X_123 ("Magmortar LV.X", "123", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _FIRE_]),
+  ELECTIVIRE_LV_X_121 ("Electivire Lv.X", "121", Rarity.HOLORARE, [LVL_X, POKEMON, _LIGHTNING_]),
+  LUCARIO_LV_X_122 ("Lucario Lv.X", "122", Rarity.HOLORARE, [LVL_X, POKEMON, _FIGHTING_]),
+  MAGMORTAR_LV_X_123 ("Magmortar Lv.X", "123", Rarity.HOLORARE, [LVL_X, POKEMON, _FIRE_]),
   TIME_SPACE_DISTORTION_124 ("Time-Space Distortion", "124", Rarity.HOLORARE, [TRAINER, ITEM]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
@@ -281,6 +281,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
           }
           move "Psychic Guard", {
             text "50 damage. During your opponent’s next turn, any damage done to Alakazam by attacks from your opponent’s Stage 2 Pokémon is reduced by 30 (after applying Weakness and Resistance)."
+            //Errata Applied: Original card said "Evolved Stage 2 Pokémon".
             energyCost P, P, C
             attackRequirement {}
             onAttack {
@@ -289,7 +290,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 delayed {
                   before APPLY_ATTACK_DAMAGES, {
                     bg.dm().each {
-                      if (it.to==self && it.dmg.value && it.notNoEffect && it.from.topPokemonCard.cardTypes.is(STAGE2)) {
+                      if (it.to==self && it.dmg.value && it.notNoEffect && it.from.stage2) {
                         bc "-30 to $self ($thisMove)"
                         it.dmg-=hp(30)
                       }
@@ -993,11 +994,12 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return evolution (this, from:"Snorunt", hp:HP090, type:WATER, retreatCost:2) {
           weakness M, PLUS20
           pokeBody "Craggy Face", {
-            text "As long as Glalie is your Active Pokémon, any damage done by attacks from your opponent’s Stage 2 Evolved Pokémon is reduced by 20 (before applying Weakness and Resistance)."
+            text "As long as Glalie is your Active Pokémon, any damage done by attacks from your opponent’s Stage 2 Pokémon is reduced by 20 (before applying Weakness and Resistance)."
+            //Errata, used to say "Stage 2 Evolved Pokémon"
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each{
-                  if(self.active && it.from.owner != self.owner && it.from.evolution && it.from.topPokemonCard.cardTypes.is(STAGE2)) {
+                  if(self.active && it.from.owner != self.owner && it.from.stage2) {
                     bc "Craggy Face -20"
                     it.dmg -= hp(20)
                   }
@@ -1383,13 +1385,17 @@ public enum MysteriousTreasures implements LogicCardInfo {
                   prevent()
                 }
               }
-              //TODO: Uncomment this when LV.X are implemented.
-//              before POISONED_SPC, null, null, LEVEL_UP, {
-//                if ((ef as Poisoned).getTarget().owner != self.owner) {
-//                  bc "$thisAbility prevents removing the Special Condition Poisoned by leveling up."
-//                  prevent()
-//                }
-//              }
+              before POISONED_SPC, null, null, LEVEL_UP, {
+                if(ef.target == self.owner.opposite){
+                  prevent()
+                }
+              }
+              // Potential addition once level-up is implemented
+              // before POISONED_SPC, null, null, LVL_X, {
+              //   if(ef.target == self.owner.opposite){
+              //     prevent()
+              //   }
+              // }
             }
           }
           move "Knuckle Claws", {

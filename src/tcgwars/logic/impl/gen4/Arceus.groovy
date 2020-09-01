@@ -128,12 +128,12 @@ public enum Arceus implements LogicCardInfo {
   ULTIMATE_ZONE_91 ("Ultimate Zone", "91", Rarity.UNCOMMON, [TRAINER]),
   DOME_FOSSIL_92 ("Dome Fossil", "92", Rarity.COMMON, [TRAINER]),
   HELIX_FOSSIL_93 ("Helix Fossil", "93", Rarity.COMMON, [TRAINER]),
-  ARCEUS_LV_X_94 ("Arceus LV.X", "94", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _COLORLESS_]),
-  ARCEUS_LV_X_95 ("Arceus LV.X", "95", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _COLORLESS_]),
-  ARCEUS_LV_X_96 ("Arceus LV.X", "96", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _COLORLESS_]),
-  GENGAR_LV_X_97 ("Gengar LV.X", "97", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _PSYCHIC_]),
-  SALAMENCE_LV_X_98 ("Salamence LV.X", "98", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _COLORLESS_]),
-  TANGROWTH_LV_X_99 ("Tangrowth LV.X", "99", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _GRASS_]),
+  ARCEUS_LV_X_94 ("Arceus Lv.X", "94", Rarity.HOLORARE, [LVL_X, POKEMON, _COLORLESS_]),
+  ARCEUS_LV_X_95 ("Arceus Lv.X", "95", Rarity.HOLORARE, [LVL_X, POKEMON, _COLORLESS_]),
+  ARCEUS_LV_X_96 ("Arceus Lv.X", "96", Rarity.HOLORARE, [LVL_X, POKEMON, _COLORLESS_]),
+  GENGAR_LV_X_97 ("Gengar Lv.X", "97", Rarity.HOLORARE, [LVL_X, POKEMON, _PSYCHIC_]),
+  SALAMENCE_LV_X_98 ("Salamence Lv.X", "98", Rarity.HOLORARE, [LVL_X, POKEMON, _COLORLESS_]),
+  TANGROWTH_LV_X_99 ("Tangrowth Lv.X", "99", Rarity.HOLORARE, [LVL_X, POKEMON, _GRASS_]),
   BAGON_SH10 ("Bagon", "SH10", Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
   PONYTA_SH11 ("Ponyta", "SH11", Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_]),
   SHINX_SH12 ("Shinx", "SH12", Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
@@ -2039,7 +2039,7 @@ public enum Arceus implements LogicCardInfo {
           }
         };
       case ARCEUS_LV_X_94:
-        return evolution (this, from:"Arceus", hp:HP120, type:COLORLESS, retreatCost:1) {
+        return levelUp (this, from:"Arceus", hp:HP120, type:COLORLESS, retreatCost:1) {
           pokeBody "Multitype", {
             text "Arceus LV.‘s type is the same type as its previous Level."
             delayedA {
@@ -2058,18 +2058,9 @@ public enum Arceus implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Arceus. Arceus LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case ARCEUS_LV_X_95:
-        return evolution (this, from:"Arceus", hp:HP120, type:COLORLESS, retreatCost:1) {
+        return levelUp (this, from:"Arceus", hp:HP120, type:COLORLESS, retreatCost:1) {
           pokeBody "Multitype", {
             text "Arceus LV.‘s type is the same as its previous Level."
             delayedA {
@@ -2091,18 +2082,9 @@ public enum Arceus implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Arceus. Arceus LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case ARCEUS_LV_X_96:
-        return evolution (this, from:"Arceus", hp:HP120, type:COLORLESS, retreatCost:1) {
+        return levelUp (this, from:"Arceus", hp:HP120, type:COLORLESS, retreatCost:1) {
           pokeBody "Multitype", {
             text "Arceus LV.‘s type is the same type as its previous Level."
             delayedA {
@@ -2124,18 +2106,9 @@ public enum Arceus implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Arceus. Arceus LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case GENGAR_LV_X_97:
-        return evolution (this, from:"Gengar", hp:HP140, type:PSYCHIC, retreatCost:0) {
+        return levelUp (this, from:"Gengar", hp:HP140, type:PSYCHIC, retreatCost:0) {
           weakness D
           resistance C, MINUS20
           pokePower "Level-Down", {
@@ -2151,18 +2124,9 @@ public enum Arceus implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Gengar. Gengar LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case SALAMENCE_LV_X_98:
-        return evolution (this, from:"Salamence", hp:HP160, type:COLORLESS, retreatCost:2) {
+        return levelUp (this, from:"Salamence", hp:HP160, type:COLORLESS, retreatCost:2) {
           weakness C
           resistance F, MINUS20
           pokePower "Double Fall", {
@@ -2178,18 +2142,9 @@ public enum Arceus implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Salamence. Salamence LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case TANGROWTH_LV_X_99:
-        return evolution (this, from:"Tangrowth", hp:HP130, type:GRASS, retreatCost:3) {
+        return levelUp (this, from:"Tangrowth", hp:HP130, type:GRASS, retreatCost:3) {
           weakness R
           resistance W, MINUS20
           pokePower "Healing Growth", {
@@ -2205,15 +2160,6 @@ public enum Arceus implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Tangrowth. Tangrowth LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case BAGON_SH10:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {

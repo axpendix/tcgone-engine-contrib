@@ -281,16 +281,6 @@ public enum LegendMaker implements LogicCardInfo {
             }
             toBeDevolved.each{
               def top = it.topPokemonCard
-              //
-              // [Temporary LV.X workaround]
-              if (top.cardTypes.is(LEVEL_UP) && it.cards.filterByType(POKEMON).size() > 2){
-                bc "${top}'s Level-Up card will be moved wherever the top evolution ends up at."
-                moveCard(top, opp.deck)
-                devolve(it, top)
-                top = it.topPokemonCard
-              }
-              // [End of LV.X workaround] TODO: Remove this when no longer needed
-              //
               bc "$top Devolved"
               moveCard(top, opp.deck)
               devolve(it, top)
@@ -620,11 +610,11 @@ public enum LegendMaker implements LogicCardInfo {
           actionA {
             checkLastTurn()
             checkNoSPC()
-            assert opp.bench.any{ it.evolution && it.topPokemonCard.cardTypes.is(STAGE2) } : "Opponent's bench does not have any evolved Stage 2 Pokemon."
+            assert opp.bench.any{ it.evolution && it.stage2 } : "Opponent's bench does not have any evolved Stage 2 Pokemon."
 
             powerUsed()
 
-            def pcs = opp.bench.findAll { it.evolution && it.topPokemonCard.cardTypes.is(STAGE2) }.select("Select a Stage 2 Pokemon to become the new Active.")
+            def pcs = opp.bench.findAll { it.evolution && it.stage2 }.select("Select a Stage 2 Pokemon to become the new Active.")
             sw2 (pcs, null, SRC_ABILITY)
           }
         }
@@ -672,7 +662,7 @@ public enum LegendMaker implements LogicCardInfo {
           text "40+ damage. Does 40 damage plus 10 more damage for each of your Benched Stage 1 Evolved Pokémon."
           energyCost W, W, C, C
           onAttack {
-            def friends = my.bench.findAll{ it.evolution && it.topPokemonCard.cardTypes.is(STAGE1) }.size()
+            def friends = my.bench.findAll{ it.evolution && it.stage1 }.size()
             damage 40+10*friends
           }
         }
@@ -1347,17 +1337,6 @@ public enum LegendMaker implements LogicCardInfo {
             def pcs = list.select("Choose one of your opponent's evolved Pokémon.")
             flip {
               def top = pcs.topPokemonCard
-              //
-              // [Temporary LV.X workaround]
-              if (top.cardTypes.is(LEVEL_UP) && pcs.cards.filterByType(POKEMON).size() > 2){
-                bc "${top}'s Level-Up card will be moved wherever the top evolution ends up at."
-                pcs.cards.remove(top)
-                opp.deck.add(top)
-                devolve(pcs, top)
-                top = pcs.topPokemonCard
-              }
-              // [End of LV.X workaround] TODO: Remove this when no longer needed
-              //
               bc "$top Devolved"
               pcs.cards.remove(top)
               opp.deck.add(top)
@@ -2728,15 +2707,6 @@ public enum LegendMaker implements LogicCardInfo {
             all.each {
               if(it!=self) {
                 holder.object.addAll(it.topPokemonCard.moves)
-                //
-                // [Temporary LV.X workaround]
-                if (it.topPokemonCard.cardTypes.is(CardType.LEVEL_UP)){
-                  //Only 3 LV.Xs right now, all stage 2 so this should do
-                  def tpc = it.cards.find{car -> car.cardTypes.is(STAGE2) && car != it.topPokemonCard}
-                  holder.object.addAll(tpc.moves)
-                }
-                // [End of LV.X workaround] TODO: Remove this when no longer needed
-                //
               }
             }
           }

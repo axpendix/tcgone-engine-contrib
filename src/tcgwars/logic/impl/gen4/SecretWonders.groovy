@@ -170,8 +170,8 @@ public enum SecretWonders implements LogicCardInfo {
   SWITCH_128 ("Switch", "128", Rarity.COMMON, [TRAINER]),
   DARKNESS_ENERGY_129 ("Darkness Energy", "129", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   METAL_ENERGY_130 ("Metal Energy", "130", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
-  GARDEVOIR_LV_X_131 ("Gardevoir LV.X", "131", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _PSYCHIC_]),
-  HONCHKROW_LV_X_132 ("Honchkrow LV.X", "132", Rarity.HOLORARE, [LEVEL_UP, EVOLUTION, POKEMON, _DARKNESS_]);
+  GARDEVOIR_LV_X_131 ("Gardevoir Lv.X", "131", Rarity.HOLORARE, [LVL_X, POKEMON, _PSYCHIC_]),
+  HONCHKROW_LV_X_132 ("Honchkrow Lv.X", "132", Rarity.HOLORARE, [LVL_X, POKEMON, _DARKNESS_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -2777,17 +2777,19 @@ public enum SecretWonders implements LogicCardInfo {
       case METAL_ENERGY_130:
         return copy (RubySapphire.METAL_ENERGY_94, this);
       case GARDEVOIR_LV_X_131:
-        return evolution (this, from:"Gardevoir", hp:HP130, type:PSYCHIC, retreatCost:2) {
+        return levelUp (this, from:"Gardevoir", hp:HP130, type:PSYCHIC, retreatCost:2) {
           weakness P
           pokePower "Teleportation", {
             text "Once during your turn , choose 1 of your Active Pokémon or 1 or your Benched Pokémon and switch Gardevoir with that Pokémon. This power can’t be used if Gardevoir is affected by a Special Condition."
             actionA {
               checkNoSPC()
               checkLastTurn()
+              assert my.bench : "Your bench is empty"
+
               if (self.active) {
                 sw self, my.bench.select()
               } else {
-                sw self, my.active
+                sw my.active, self
               }
               powerUsed()
             }
@@ -2806,17 +2808,9 @@ public enum SecretWonders implements LogicCardInfo {
               new Knockout(tar.select("Knock Out")).run(bg)
             }
           }
-          move "", {
-            text "Put this card onto your Active Gardevoir. Gardevoir LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
         };
       case HONCHKROW_LV_X_132:
-        return evolution (this, from:"Honchkrow", hp:HP110, type:DARKNESS, retreatCost:0) {
+        return levelUp (this, from:"Honchkrow", hp:HP110, type:DARKNESS, retreatCost:0) {
           weakness L, PLUS30
           resistance F, MINUS20
           move "Feint Attack", {
@@ -2835,15 +2829,6 @@ public enum SecretWonders implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Honchkrow. Honchkrow LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       default:
         return null;

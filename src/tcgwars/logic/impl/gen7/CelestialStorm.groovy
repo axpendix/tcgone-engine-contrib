@@ -3182,10 +3182,10 @@ public enum CelestialStorm implements LogicCardInfo {
         return supporter(this) {
           text "Attach a basic Energy card from your hand to one of your Stage 2 [G], [R], or [W] Pokémon.\nYou may play only 1 Supporter card during your turn (before your attack).\n"
           onPlay {
-            attachEnergyFrom(basic:true,my.hand,my.all.findAll{it.topPokemonCard.cardTypes.is(STAGE2) && (it.types.contains(G) || it.types.contains(R) || it.types.contains(W))})
+            attachEnergyFrom(basic:true,my.hand,my.all.findAll{it.stage2 && (it.types.contains(G) || it.types.contains(R) || it.types.contains(W))})
           }
           playRequirement{
-            assert my.all.findAll{it.topPokemonCard.cardTypes.is(STAGE2) && (it.types.contains(G) || it.types.contains(R) || it.types.contains(W))} && my.hand.filterByType(BASIC_ENERGY)
+            assert my.all.any{it.stage2 && (it.types.contains(G) || it.types.contains(R) || it.types.contains(W))} && my.hand.filterByType(BASIC_ENERGY)
           }
         };
       case POKENAV_140:
