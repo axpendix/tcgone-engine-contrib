@@ -3103,23 +3103,23 @@ public enum UltraPrism implements LogicCardInfo {
             Card pokemonCard, trainerCard = thisCard
             pokemonCard = basic (new CustomCardInfo(UNIDENTIFIED_FOSSIL_134).setCardTypes(BASIC, POKEMON), hp:HP060, type:COLORLESS, retreatCost:0) {
               customAbility{
-                def ef2, acl
-                onActivate{
-                  delayed {
-                    before RETREAT, self, {
-                      if(self.topPokemonCard == thisCard){
-                        wcu "Cannot retreat"
-                        prevent()
-                      }
+                def eff, acl
+                delayedA {
+                  before RETREAT, self, {
+                    if(self.topPokemonCard == thisCard){
+                      wcu "Cannot retreat"
+                      prevent()
                     }
                   }
-                  if(!ef2){
-                    ef2 = delayed {
+                }
+                onActivate{
+                  if(!eff){
+                    eff = delayed {
                       after REMOVE_FROM_PLAY, {
                         if(ef.removedCards.contains(pokemonCard)){
                           bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
                           unregister()
-                          ef2 = null
+                          eff = null
                         }
                       }
                     }

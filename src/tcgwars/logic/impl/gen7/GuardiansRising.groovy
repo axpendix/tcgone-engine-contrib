@@ -1047,6 +1047,7 @@ public enum GuardiansRising implements LogicCardInfo {
             text "Once during your turn (before your attack), you may switch this Pokémon with a Wishiwashi-GX in your hand. Any attached cards, damage counters, Special Conditions, turns in play, and any other effects remain on the new Pokémon."
             actionA {
               assert my.hand.find{it.name=='Wishiwashi-GX'}
+              assert !bg.em().retrieveObject("ScoopUpBlock_Count$self.owner.opposite") || !self.numberOfDamageCounters : "Scoop-Up Block prevents $thisAbility.name's effect."
               checkLastTurn()
               powerUsed()
               def card = my.hand.findAll{it.name=='Wishiwashi-GX'}.select().first()
@@ -2311,19 +2312,28 @@ public enum GuardiansRising implements LogicCardInfo {
             text "If the Defending Pokémon is Knocked Out during your next turn, take 2 more Prize cards."
             energyCost C
             onAttack {
-              delayed (priority: LAST) {
+              targeted (defending) {
                 def pcs = defending
-                before KNOCKOUT, pcs, {
-                  if(turnCount + 2 == bg.turnCount) {
-                    bc "The Wages of Fluff kicks in"
-                    bg.em().run(new TakePrize(self.owner, pcs))
-                    bg.em().run(new TakePrize(self.owner, pcs))
+                def fluffTurn = bg.turnCount + 2
+                bc "If the Defending ${defending} is Knocked Out during ${self.owner}'s next turn, they'll take 2 more Prize cards. (This effect can be removed by benching/evolving ${defending}.)"
+                delayed {
+                  def eff
+                  register {
+                    eff = getter GET_GIVEN_PRIZES, BEFORE_LAST, pcs, {Holder holder ->
+                      if (holder.object > 0 && fluffTurn == bg().turnCount) {
+                        bc "The Wages of Fluff gives the player two additional prizes."
+                        holder.object += 2
+                      }
+                    }
                   }
+                  unregister {
+                    eff.unregister()
+                  }
+                  after FALL_BACK, pcs, {unregister()}
+                  after EVOLVE, pcs, {unregister()}
+                  after DEVOLVE, pcs, {unregister()}
+                  unregisterAfter 3
                 }
-                after FALL_BACK, pcs, {unregister()}
-                after EVOLVE, pcs, {unregister()}
-                after DEVOLVE, pcs, {unregister()}
-                unregisterAfter 3
               }
             }
           }
@@ -3063,8 +3073,9 @@ public enum GuardiansRising implements LogicCardInfo {
           onPlay {
             def i = 2
             while(i-- > 0){
-              if (bg.stadiumInfoStruct && stadiumCanBeAffectedByItemAndSupporter() && confirm("Would you like to discard stadium in play (${bg.stadiumInfoStruct.stadiumCard})? If not, you can select a Pokemon Tool in play")) {
-                discard bg.stadiumInfoStruct.stadiumCard
+              if (bg.stadiumInfoStruct && confirm("Would you like to discard stadium in play (${bg.stadiumInfoStruct.stadiumCard})? If not, you can select a Pokemon Tool in play")) {
+                if (stadiumCanBeAffectedByItemAndSupporter())
+                  discard bg.stadiumInfoStruct.stadiumCard
                 continue
               }
               def tar = all.findAll {it.cards.hasType(POKEMON_TOOL)}
@@ -3080,7 +3091,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
           playRequirement{
-            assert all.findAll {it.cards.hasType(POKEMON_TOOL)} || (bg.stadiumInfoStruct && stadiumCanBeAffectedByItemAndSupporter())
+            assert all.findAll {it.cards.hasType(POKEMON_TOOL)} || (bg.stadiumInfoStruct)
           }
         };
       case HALA_126:

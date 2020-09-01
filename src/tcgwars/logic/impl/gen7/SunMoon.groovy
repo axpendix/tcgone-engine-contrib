@@ -358,10 +358,9 @@ public enum SunMoon implements LogicCardInfo {
             energyCost C, C
             onAttack {
               flip {
-                afterDamage { targeted (defending) {
-                  defending.cards.moveTo(opp.hand)
-                  removePCS(defending)
-                } }
+                afterDamage {
+                  scoopUpPokemon(defending, delegate)
+                }
               }
             }
           }
@@ -1031,8 +1030,7 @@ public enum SunMoon implements LogicCardInfo {
             }
             onAttack {
               def pcs = my.bench.select()
-              pcs.cards.moveTo(my.hand)
-              removePCS(pcs)
+              scoopUpPokemon(pcs, delegate)
             }
           }
           move "Fly", {

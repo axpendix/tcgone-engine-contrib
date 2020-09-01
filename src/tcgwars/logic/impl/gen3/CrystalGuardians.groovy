@@ -1822,21 +1822,11 @@ public enum CrystalGuardians implements LogicCardInfo {
         def eff
         onPlay {
           boolean flag = false
-          eff = delayed {
-            before null, null, Source.ATTACK, {
-              bc "Holon Circle prevents the attack"
+          eff = delayed (priority: FIRST) {
+            before PROCESS_ATTACK_EFFECTS, {
+              bc "Holon Circle ends the Attack Step"
               flag = true
-              bg.gm().betweenTurns()
               prevent()
-            }
-            before APPLY_ATTACK_DAMAGES, {
-              flag = true
-              bg.dm().each {
-                if(it.notNoEffect && it.dmg.value){
-                  it.dmg = hp(0)
-                  bc "Holon Circle prevents damage"
-                }
-              }
             }
             before BETWEEN_TURNS, {
               if(flag){

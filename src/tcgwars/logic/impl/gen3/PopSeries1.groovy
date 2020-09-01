@@ -295,7 +295,7 @@ public enum PopSeries1 implements LogicCardInfo {
         weakness W
         move "Amnesia", {
           text "Choose 1 of the Defending Pokémon's attacks. That Pokémon can't use that attack during your opponent's next turn."
-          energyCost F
+          energyCost C
           onAttack {
             amnesia delegate
           }
@@ -414,7 +414,7 @@ public enum PopSeries1 implements LogicCardInfo {
         }
         move "Supersonic Claws", {
           text "80 damage. This attack's damage is not affected by Resistance."
-          energyCost F, F, F, C, C
+          energyCost F, F, C, C, C
           onAttack {
             damage 80
             dontApplyResistance()

@@ -2298,11 +2298,10 @@ public enum UnifiedMinds implements LogicCardInfo {
               before (KNOCKOUT, self) {
                 if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
                   def pcs=self
-                  def list=pcs.cards.filterByType(POKEMON)
                   delayed(inline: true){
                     after KNOCKOUT, pcs, {
                       bc "Durable Blade activates."
-                      list.moveTo(pcs.owner.pbg.hand)
+                      scoopUpPokemon([:], pcs, delegate, SRC_ABILITY)
                       owner.delegate.unregister()
                     }
                   }
@@ -2926,17 +2925,26 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "210 damage. If your opponent's Pokémon-GX or Pokémon-EX is Knocked Out by damage from this attack, take 1 more Prize card."
             energyCost D, D, D, D, C
             onAttack {
-              damage 210
-              delayed (priority: LAST) {
-                if (defending.pokemonGX || defending.pokemonEX) {
-                  def pcs = defending
-                  before KNOCKOUT, pcs, {
-                    bc "Knocked Out Pokémon was GX or EX. Player gets to take an additional prize."
-                    bg.em().run(new TakePrize(self.owner, pcs))
+              def pcs = defending
+              delayed {
+                def eff2
+                register {
+                  eff2 = getter GET_GIVEN_PRIZES, BEFORE_LAST, pcs, {Holder holder ->
+                    if (holder.object > 0 && (pcs.pokemonGX || pcs.pokemonEX) && pcs.KOBYDMG == bg.turnCount) {
+                      bc "Knocked Out Pokémon was a Pokémon-GX or Pokémon-EX. Greedy Crush gives the player an additional prize."
+                      holder.object += 2
+                    }
                   }
-                  unregisterAfter 1
                 }
+                unregister {
+                  eff2.unregister()
+                }
+                after KNOCKOUT, pcs, {
+                  unregister()
+                }
+                unregisterAfter 1
               }
+              damage 210
             }
           }
           move "Gigafall GX", {
@@ -3987,10 +3995,8 @@ public enum UnifiedMinds implements LogicCardInfo {
               assert my.discard : "Your discard pile is empty."
               if (confirm("Use Snack Search?")) {
                 powerUsed()
-                flip{
-                  def target = my.discard.select()
-                  my.deck.addAll(0, target)
-                  my.discard.removeAll(target)
+                flip {
+                  my.discard.filterByType(ITEM).select("Put a card from your discard pile on top of your deck").showToOpponent("Snack Search - This Card will be put on top of your opponent's deck.").moveTo(addToTop: true, my.deck)
                 }
                 bg.gm().betweenTurns()
               }

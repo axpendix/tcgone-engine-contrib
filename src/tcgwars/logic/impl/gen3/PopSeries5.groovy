@@ -143,7 +143,7 @@ public enum PopSeries5 implements LogicCardInfo {
           text "Before doing damage, you may flip a coin. If tails, this attack does nothing. If heads, this attack does 60 damage instead."
           energyCost P, C, C
           onAttack {
-            if (choose("You may flip a coin, if heads, this attack does 60 damage instead, if tails, this attack does nothing.")) {
+            if (confirm("You may flip a coin, if heads, this attack does 60 damage instead, if tails, this attack does nothing.")) {
               flip { damage 60 }
             } else {
               damage 30

@@ -944,6 +944,7 @@ public enum TeamUp implements LogicCardInfo {
             delayedA{
               // TODO
               def flag = false
+              def selfOwner = self.owner
               //Workaround for "Supporters used as attack effect"
               def flag2 = false
               before PROCESS_ATTACK_EFFECTS, {
@@ -954,13 +955,13 @@ public enum TeamUp implements LogicCardInfo {
               }
               before PLAY_TRAINER, {
                 flag = false
-                if(self.active && ef.supporter && bg.currentTurn != self.owner && !flag2){
+                if(self.active && ef.supporter && bg.currentTurn != selfOwner && !flag2){
                   flag = true
                 }
               }
               before null, null, Source.TRAINER_CARD, {
                 def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
-                if (flag && self.active && pcs.owner == self.owner && pcs.benched && pcs.types.contains(W)){
+                if (flag && self.active && pcs.owner == selfOwner && pcs.benched && pcs.types.contains(W)){
                   bc "Blizzard Veil prevent effect of Supporter cards done to $pcs."
                   prevent()
                 }
@@ -3126,8 +3127,7 @@ public enum TeamUp implements LogicCardInfo {
             text "Put your opponent's Active Pokémon and all cards attached to it into your opponent's hand."
             energyCost C,C,C
             onAttack{
-              opp.active.cards.moveTo(opp.hand)
-              removePCS(opp.active)
+              scoopUpPokemon(defending, delegate)
             }
           }
         };
@@ -3325,19 +3325,25 @@ public enum TeamUp implements LogicCardInfo {
       case BLACK_MARKET_PRISM_STAR_134:
         return stadium(this) {
           text "Whenever any player's [D] Pokémon with any [D] Energy attached to it is Knocked Out by damage from an opponent's attack, that opponent takes 1 less Prize card.\nWhenever any player plays an Item or Supporter card from their hand, prevent all effects of that card done to this Stadium card.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card.\nPrism Star Rule: You can't have more than 1 Prism Star card with the same name in your deck. If a Prism Star card would go to the discard pile, put it in the Lost Zone instead."
-          def eff=null
+          def eff1 = null, eff2 = null
+          def power
           onPlay {
-            eff=delayed (priority: BEFORE_LAST) {
-              before KNOCKOUT, {
-                if(ef.byDamageFromAttack && ef.pokemonToBeKnockedOut.types.contains(D) && ef.pokemonToBeKnockedOut.cards.energyCount(D)){
-                  bc "Black Market Prism Star prevents taking one prize card for "+ef.pokemonToBeKnockedOut
-                  blockingEffect(TAKE_PRIZE).setUnregisterImmediately(true)
-                }
+            eff1 = delayed {
+              before ATTACK_MAIN, {
+                power = (ef.attacker.owner == opp.owner)
+              }
+            }
+            eff2 = getter GET_GIVEN_PRIZES, {holder->
+              def pcs = holder.effect.target
+              if (power && holder.object > 0 && pcs.owner == my.owner && pcs.KOBYDMG == bg.turnCount && pcs.types.contains(D) && pcs.cards.energyCount(D)) {
+                bc "Black Market Prism Star reduces the number of prizes taken due to ${self} being Knocked Out by one."
+                holder.object -= 1
               }
             }
           }
           onRemoveFromPlay {
-            eff.unregister()
+            eff1.unregister()
+            eff2.unregister()
           }
 
         };
@@ -3373,7 +3379,7 @@ public enum TeamUp implements LogicCardInfo {
         return supporter(this) {
           text "You can play this card only if your opponent's Active Pokémon is a Stage 2 Pokémon. Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
-            my.deck.search(max: 2,"Choose 2 cards to put in your hand",{true}).moveTo(hidden: true, my.hand)
+            my.deck.search(min: 1, max: 2,"Choose 2 cards to put in your hand",{true}).moveTo(hidden: true, my.hand)
             shuffleDeck()
           }
           playRequirement{
@@ -3391,7 +3397,7 @@ public enum TeamUp implements LogicCardInfo {
               choice = 2
             }
             else{
-              if(bg.stadiumInfoStruct && stadiumCanBeAffectedByItemAndSupporter()){
+              if(bg.stadiumInfoStruct){
                 choice = choose([1,2],["A Pokémon Tool or Special Energy card from 1 of your opponent's Pokémon", "The stadium card in play"], "What to discard?")
               }
             }
@@ -3402,12 +3408,13 @@ public enum TeamUp implements LogicCardInfo {
               }
             }
             else{
-              discard bg.stadiumInfoStruct.stadiumCard
+              if (stadiumCanBeAffectedByItemAndSupporter())
+                discard bg.stadiumInfoStruct.stadiumCard
             }
           }
           playRequirement{
             assert my.hand.filterByType(POKEMON).findAll{it.asPokemonCard().types.contains(D)}: "There is no [D] pokémon in your hand"
-            assert opp.all.findAll{it.cards.filterByType(POKEMON_TOOL, SPECIAL_ENERGY)} || ( bg.stadiumInfoStruct && stadiumCanBeAffectedByItemAndSupporter() ) : "There is no cards to discard"
+            assert opp.all.findAll{it.cards.filterByType(POKEMON_TOOL, SPECIAL_ENERGY)} || ( bg.stadiumInfoStruct ) : "There is no cards to discard"
           }
         };
       case ELECTROCHARGER_139:

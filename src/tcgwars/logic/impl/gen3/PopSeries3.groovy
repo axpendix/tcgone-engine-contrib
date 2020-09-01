@@ -124,7 +124,9 @@ public enum PopSeries3 implements LogicCardInfo {
           onAttack {
             damage 60
             damage 10, self
-            flip { preventAllDamageNextTurn() }
+            afterDamage {
+              flip { preventAllDamageNextTurn() }
+            }
           }
         }
       };
@@ -141,7 +143,7 @@ public enum PopSeries3 implements LogicCardInfo {
         }
         move "Fire Spin", {
           text "70 damage. Discard 2 Basic energy cards attached to Flareon or this attack does nothing."
-          energyCost F, F, C
+          energyCost R, R, C
           attackRequirement {
             assert self.cards.filterByType(BASIC_ENERGY).size() >= 2 : "Needs at least 2 Basic Energy cards attached"
           }
@@ -267,7 +269,7 @@ public enum PopSeries3 implements LogicCardInfo {
         }
         move "Water Gun", {
           text "30+ damage. Does 30 damage plus 20 more damage for each [W] Energy attached to Vaporeon but not used to pay for this attack's Energy cost. You can't add more than 40 damage in this way."
-          energyCost L, C
+          energyCost W, C
           onAttack {
             damage 30
             extraEnergyDamage(2, hp(20), W, thisMove)
@@ -323,10 +325,10 @@ public enum PopSeries3 implements LogicCardInfo {
           }
         }
         move "Toxic", {
-          text "40 damage. The Defending Pokémon is now Poisoned. Put 2 damage counters instead of 1 on the Defending Pokémon between turns."
+          text "20 damage. The Defending Pokémon is now Poisoned. Put 2 damage counters instead of 1 on the Defending Pokémon between turns."
           energyCost G, G, C
           onAttack {
-            damage 40
+            damage 20
             afterDamage {
               apply POISONED
               extraPoison 1

@@ -2327,9 +2327,10 @@ public enum LostThunder implements LogicCardInfo {
               trcard = pokemonTool(new CustomCardInfo(top.realInfo).setCardTypes(TRAINER, ITEM, POKEMON_TOOL)) {
                 def eff
                 onPlay {
-                  eff = delayed {
-                    before KNOCKOUT, self, {
-                      blockingEffect(TAKE_PRIZE).setUnregisterImmediately(true)
+                  eff = getter GET_GIVEN_PRIZES, self, {holder->
+                    if (holder.object > 0) {
+                      bc "Vessel of Life reduces the number of prizes taken due to ${self} being Knocked Out by one."
+                      holder.object -= 1
                     }
                   }
                 }
@@ -4098,11 +4099,11 @@ public enum LostThunder implements LogicCardInfo {
           text "Choose a Pokémon Tool or Special Energy card attached to 1 of your opponent's Pokémon, or any Stadium card in play, and put it in the Lost Zone.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
             def choice = 0
-            if((bg.stadiumInfoStruct && stadiumCanBeAffectedByItemAndSupporter()) && opp.all.findAll({it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY)})){
+            if((bg.stadiumInfoStruct) && opp.all.findAll({it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY)})){
               choice = choose([0,1],["Put a Pokémon Tool or Special Energy card attached to 1 of your opponent's Pokémon to the Lost Zone","Put the Stadium card in play in the Lost Zone"],"what do you want to do?")
             }
             else{
-              if(bg.stadiumInfoStruct && stadiumCanBeAffectedByItemAndSupporter()){
+              if(bg.stadiumInfoStruct){
                 choice = 1
               }
             }
@@ -4113,11 +4114,12 @@ public enum LostThunder implements LogicCardInfo {
               }
             }
             else{
-              new CardList(bg.stadiumInfoStruct.stadiumCard).moveTo(bg.stadiumInfoStruct.stadiumCard.player.pbg.lostZone)
+              if (stadiumCanBeAffectedByItemAndSupporter())
+                new CardList(bg.stadiumInfoStruct.stadiumCard).moveTo(bg.stadiumInfoStruct.stadiumCard.player.pbg.lostZone)
             }
           }
           playRequirement{
-            assert (bg.stadiumInfoStruct && stadiumCanBeAffectedByItemAndSupporter()) || opp.all.findAll({it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY)})
+            assert (bg.stadiumInfoStruct) || opp.all.findAll({it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY)})
           }
         };
       case FAIRY_CHARM_G_174:
