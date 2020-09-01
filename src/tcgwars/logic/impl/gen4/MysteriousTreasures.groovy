@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen4;
 
+import tcgwars.logic.impl.gen3.RubySapphire;
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 
 import static tcgwars.logic.card.HP.*;
@@ -1995,7 +1996,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              if(self.lastEvolved == bg.turnCount){
+              if(self.lastEvolved == bg.turnCount && self.cards.any{it.name == "Paras"}){
                 damage 20
                 applyAfterDamage(ASLEEP)
                 applyAfterDamage(POISONED)
@@ -2269,7 +2270,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             onAttack {
               damage 10
               //TODO: Add "Slakoth was asleep" check for the extra damage.
-              if(self.lastEvolved == bg.turnCount/* && asleepBeforeEvolve*/){
+              if(self.lastEvolved == bg.turnCount && it.cards.any{it.name == "Slakoth"}/* && asleepBeforeEvolve*/){
                 damage 50
               }
             }
@@ -3409,16 +3410,17 @@ public enum MysteriousTreasures implements LogicCardInfo {
       case MULTI_ENERGY_118:
         return copy(FireRedLeafGreen.MULTI_ENERGY_103, this);
       case DARKNESS_ENERGY_119:
-        //TODO: This version of "Darkness Energy (Special Energy)" shouldn't work on "Dark ____" cards, only on [D] Type Pokémon.
+        //This version of "Darkness Energy (Special Energy)" doesn't work on "Dark ____" cards, only on [D] Type Pokémon.
         return specialEnergy (this, [[D]]) {
           text: "If the Pokémon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). Ignore this effect if the Pokémon that Darkness Energy is attached to isn’t [D]. Darkness Energy provides [D] Energy. (Doesn’t count as a basic Energy card.)"
           def eff
           onPlay {reason->
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
-                if (self.types.contains(D)){
+                if (ef.attacker == self && self.types.contains(D)){
                   bg.dm().each(){
-                    if(it.from == self && it.to.active && it.to.owner != self.owner && it.dmg.value) {
+                    //Self damage appears to be increased as well, similar to PlusPower
+                    if(it.to.active && it.dmg.value) {
                       it.dmg += hp(10)
                     }
                   }

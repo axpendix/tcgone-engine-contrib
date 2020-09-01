@@ -1,8 +1,7 @@
 package tcgwars.logic.impl.gen8;
 
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
-import tcgwars.logic.impl.gen4.HeartgoldSoulsilver;
-import tcgwars.logic.impl.gen8.SwordShield;
+import tcgwars.logic.impl.gen4.HeartgoldSoulsilver
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -16,22 +15,10 @@ import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
+import tcgwars.logic.card.*
 import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.basic.*
 import tcgwars.logic.util.*;
 
 /**
@@ -672,7 +659,9 @@ public enum RebelClash implements LogicCardInfo {
           onAttack {
             def grassEnergies = self.cards.filterByEnergyType(G).select(min: 0, max: 3, "Discard up to 3 [G] Energy.")
             damage 130+grassEnergies.size()*50
-            grassEnergies.discard()
+            afterDamage {
+              grassEnergies.discard()
+            }
           }
         }
       };
@@ -1565,7 +1554,7 @@ public enum RebelClash implements LogicCardInfo {
           onAttack {
             damage 60
 
-            if (self.lastEvolved == bg.turnCount && self.cards.findAll {it.name.contains("Luxio")}) {
+            if (self.lastEvolved == bg.turnCount && self.cards.any{it.name.contains("Luxio")}) {
               damage 100
             }
           }
@@ -2912,7 +2901,7 @@ public enum RebelClash implements LogicCardInfo {
           onAttack {
             damage 30
 
-            if (self.lastEvolved == bg.turnCount && self.cards.findAll {it.name.contains("Scyther")}) {
+            if (self.lastEvolved == bg.turnCount && self.cards.any{it.name.contains("Scyther")}) {
               damage 90
             }
           }
@@ -3617,13 +3606,7 @@ public enum RebelClash implements LogicCardInfo {
           def validTargets = my.all.findAll{ !it.pokemonV && !it.pokemonGX }
 
           def tar = validTargets.select("Which Pokémon to put back into your hand?")
-          targeted(tar, Source.TRAINER_CARD) {
-            tar.cards.filterByType(TRAINER).discard()
-            tar.cards.filterByType(ENERGY).discard()
-
-            tar.cards.moveTo(my.hand)
-            removePCS(tar)
-          }
+          scoopUpPokemon(pokemonOnly:true, tar, delegate)
         }
         playRequirement {
           assertMyAll(negateVariants: true, hasVariants: [POKEMON_V, POKEMON_GX])

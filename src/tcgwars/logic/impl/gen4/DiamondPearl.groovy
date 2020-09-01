@@ -1322,12 +1322,10 @@ public enum DiamondPearl implements LogicCardInfo {
             }
             onAttack {
               flip {
-                targeted (defending) {
-                  //TODO: Solve this not being blocked by stuff like Metal Goggles (blockers of "putting damage counters"). Problem also affects Xerneas-GX.
-                  defending.damage += self.damage
-                  self.damage = hp(0)
-                  bc "Moved damage counters from $self to $defending."
-                }
+                def movedDmg = self.damage.value
+                self.damage = hp(0)
+                bc "Moved ${movedDmg / 10} damage counters from $self to $defending."
+                directDamage movedDmg, defending
               }
             }
           }
@@ -2368,9 +2366,9 @@ public enum DiamondPearl implements LogicCardInfo {
               assert self.numberOfDamageCounters
             }
             onAttack {
-              //TODO. Won't work properly, see Wobbuffet.
+              def tar = opp.all.select("Which Pokémon will you move the damage counter to?")
               self.damage -= hp(10)
-              opp.all.select().damage += hp(10)
+              directDamage 10, tar
             }
           }
 

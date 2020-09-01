@@ -6,7 +6,6 @@ import tcgwars.logic.impl.gen5.EmergingPowers
 import tcgwars.logic.impl.gen5.NextDestinies
 import tcgwars.logic.impl.gen6.KalosStarterSet
 import tcgwars.logic.impl.gen6.Xy
-import tcgwars.logic.impl.gen7.CelestialStorm
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -795,8 +794,7 @@ public enum SunMoon implements LogicCardInfo {
             text "10+ damage. This attack does 20 more damage for each of your benched [R] Pokémon."
             energyCost R
             onAttack {
-              damage 10
-              damage 20*my.bench.size()
+              damage 10 + 20 * my.bench.findAll{it.types.contains(R)}.size()
             }
           }
           move "Tiger Swing", {
@@ -1174,9 +1172,8 @@ public enum SunMoon implements LogicCardInfo {
               assert self.turnCount != bg.turnCount
               assert bg.turnCount > 2
               powerUsed()
-              self.cards.getExcludedList(self.topPokemonCard).discard()
-              moveCard(self.topPokemonCard, my.hand)
-              removePCS(self)
+              // TODO: Get a ruling on this re:Scoop-Up Block (MR_MIME_66:TEAM_UP)
+              scoopUpPokemon(pokemonOnly:true, self, delegate, SRC_ABILITY)
             }
           }
           move "Water Gun", {

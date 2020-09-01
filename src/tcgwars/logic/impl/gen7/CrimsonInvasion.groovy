@@ -1258,10 +1258,10 @@ public enum CrimsonInvasion implements LogicCardInfo {
             onActivate {reason ->
               if(reason == PLAY_FROM_HAND && self.benched && confirm("Use Empty Light?")){
                 powerUsed()
-                apply CONFUSED
-                apply POISONED
-                apply CONFUSED, my.active
-                apply POISONED, my.active
+                apply CONFUSED, opp.active, SRC_ABILITY
+                apply POISONED, opp.active, SRC_ABILITY
+                apply CONFUSED, my.active, SRC_ABILITY
+                apply POISONED, my.active, SRC_ABILITY
               }
             }
           }

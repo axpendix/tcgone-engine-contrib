@@ -1865,18 +1865,9 @@ public enum BaseSetNG implements LogicCardInfo {
         return basicTrainer (this) {
           text "Choose 1 of your own Pokémon in play and return its Basic Pokémon card to your hand. (Discard all cards attached to that card.)"
           onPlay {
-            def pcs = my.all.select()
-            targeted(pcs, Source.TRAINER_CARD) {
-              def temp = pcs.cards
-              def tar = temp.get(0)
-              while(temp.getExcludedList(tar).findAll{it.cardTypes.is(POKEMON)}){
-                temp = temp.getExcludedList(tar)
-                tar = temp.get(0)
-              }
-              pcs.cards.findAll{it==tar}.moveTo(my.hand)
-              pcs.cards.discard()
-              removePCS pcs
-            }
+            PokemonCardSet pcs = my.all.select()
+            def tar = pcs.pokemonCards[pcs.pokemonCards.size() - 1]
+            scoopUpPokemon(only:tar, pcs, delegate)
           }
           playRequirement {
             confirmScoopLastPokemon()

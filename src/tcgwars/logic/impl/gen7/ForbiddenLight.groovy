@@ -1453,7 +1453,11 @@ public enum ForbiddenLight implements LogicCardInfo {
           move "Stinger-GX", {
             text "Both players shuffle their Prize cards into their decks. Then, each player puts the top 3 cards of their deck face down as their Prize cards. (You can’t use more than 1 GX attack in a game.)"
             energyCost C, C, C
+            attackRequirement{
+              gxCheck()
+            }
             onAttack {
+              gxPerform()
               my.prizeCardSet.moveTo(hidden:true, my.deck)
               opp.prizeCardSet.moveTo(hidden:true, opp.deck)
               shuffleDeck()
@@ -1816,7 +1820,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             text "150 damage. Prevent all damage done to this Pokémon by attacks from Pokémon-GX and Pokémon-EX during your opponent’s next turn. (You can’t use more than 1 GX attack in a game.)"
             energyCost F, F, C, C
             attackRequirement {
-              assert !bg.em().retrieveObject("gx_"+my.owner) || bg.em().retrieveObject("Bonnie")==bg.turnCount
+              assert !bg.em().retrieveObject("gx_"+my.owner) || bg.em().retrieveObject("Bonnie")==bg.turnCount : "Already used a GX attack this game"
             }
             onAttack {
               gxPerform()
@@ -2148,12 +2152,10 @@ public enum ForbiddenLight implements LogicCardInfo {
             text "Once during your turn (before your attack), you may flip a coin. If heads, put an Item card from your discard pile on top of your deck."
             actionA {
               checkLastTurn()
-              assert my.discard.filterByType(ITEM)
+              assert my.discard.hasType(ITEM)
               powerUsed()
               flip {
-                def tar = my.discard.filterByType(ITEM).select().first()
-                my.discard.remove(tar)
-                my.deck.add(0, tar)
+                my.discard.filterByType(ITEM).select("Put an Item card from your discard pile on top of your deck").showToOpponent("Wondrous Gift - This Item Card will be put on top of your opponent's deck.").moveTo(addToTop: true, my.deck)
               }
             }
           }
@@ -2391,7 +2393,13 @@ public enum ForbiddenLight implements LogicCardInfo {
             energyCost P, M
             onAttack {
               damage 20
-              damage 80*self.cards.filterByBasicEnergyType(P).discard().size()
+              def basicPsyEnergies = self.cards.filterByBasicEnergyType(P)
+              if (basicPsyEnergies) {
+                damage 80 * basicPsyEnergies.size()
+                afterDamage {
+                  basicPsyEnergies.discard()
+                }
+              }
             }
           }
           move "Sky-Scorching Light GX", {
@@ -2567,11 +2575,15 @@ public enum ForbiddenLight implements LogicCardInfo {
         return supporter (this) {
           text "You can play this card only if there is any Stadium card in play.\nDiscard that Stadium card. During this turn, your Zygarde-GX can use its GX attack even if you have used your GX attack.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
-            discard bg.stadiumInfoStruct.stadiumCard
+            if (stadiumCanBeAffectedByItemAndSupporter())
+              discard bg.stadiumInfoStruct.stadiumCard
+            else
+              bc "${bg.stadiumInfoStruct.stadiumCard.name} won't be discarded by ${thisCard}."
             bg.em().storeObject("Bonnie",bg.turnCount)
+            bc "During this turn, ${thisCard.player.getPlayerUsername(bg)}'s Zygarde-GX can use its GX attack even if they've already used their GX attack."
           }
           playRequirement{
-            assert bg.stadiumInfoStruct && stadiumCanBeAffectedByItemAndSupporter()
+            assert bg.stadiumInfoStruct : "There is no stadium in play"
           }
         };
       case CRASHER_WAKE_104:
@@ -2744,10 +2756,12 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
             eff2 = delayed{
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each{
-                  if(it.to == self && self.types.contains(M) && it.dmg.value && it.notNoEffect) {
+                if (ef.attacker.owner != self.owner){
+                  bg.dm().each{
+                    if(it.to == self && self.types.contains(M) && it.dmg.value && it.notNoEffect) {
                       bc "Metal Frying Pan -30"
                       it.dmg-=hp(30)
+                    }
                   }
                 }
               }
@@ -2861,7 +2875,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             energyCost F
             onAttack {
               damage 30
-              if(self.lastEvolved == bg.turnCount){
+              if(self.lastEvolved == bg.turnCount && self.cards.any{it.name.contains("Riolu")}){
                 damage 90
               }
             }

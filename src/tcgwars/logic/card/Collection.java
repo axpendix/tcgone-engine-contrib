@@ -40,6 +40,7 @@ public enum Collection {
   SKYRIDGE(173, "SKR", "gen2.Skyridge"),
 
   //EX
+  NINTENDO_BLACK_STAR_PROMOS(210, "Nintendo Black Star Promos", "NBSP", "gen3.NintendoBlackStarPromos"),
   RUBY_SAPPHIRE(211, "Ruby & Sapphire", "RS", "gen3.RubySapphire"),
   SANDSTORM(212, "SS", "gen3.Sandstorm"),
   DRAGON(213, "DR", "gen3.Dragon"),
@@ -128,7 +129,7 @@ public enum Collection {
 
   //Sun & Moon
   SUN_MOON_PROMOS(410, "Sun & Moon Promos", "SMP", "gen7.SunMoonPromos"),
-  SUN_MOON(411, "Sun & Moon", "SM", "gen7.SunMoon"),
+  SUN_MOON(411, "Sun & Moon", "SUM", "gen7.SunMoon"),
   GUARDIANS_RISING(412, "GRI", "gen7.GuardiansRising"),
   BURNING_SHADOWS(413, "BUS", "gen7.BurningShadows"),
   SHINING_LEGENDS(414, "SLG", "gen7.ShiningLegends"),

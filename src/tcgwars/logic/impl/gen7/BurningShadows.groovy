@@ -1237,6 +1237,7 @@ public enum BurningShadows implements LogicCardInfo {
         };
       case WOBBUFFET_49:
         return basic (this, hp:HP120, type:PSYCHIC, retreatCost:3) {
+          weakness PSYCHIC
           move "Shadowy Knot", {
             text "50× damage. This attack does 50 damage times the number of [C] in your opponent's Active Pokémon's Retreat Cost."
             energyCost P, P, P
@@ -2634,10 +2635,7 @@ public enum BurningShadows implements LogicCardInfo {
           text "Put 1 of your Pokémon that has any damage counters on it and all cards attached to it into your hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
             def pcs = my.all.findAll {it.numberOfDamageCounters}.select()
-            targeted (pcs, TRAINER_CARD) {
-              pcs.cards.moveTo(hand)
-              removePCS(pcs)
-            }
+            scoopUpPokemon(pcs, delegate)
           }
           playRequirement{
             assert my.all.findAll {it.numberOfDamageCounters} : "No damaged pokemon in play"

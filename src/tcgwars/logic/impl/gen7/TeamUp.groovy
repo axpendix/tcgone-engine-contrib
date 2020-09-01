@@ -1,7 +1,5 @@
-package tcgwars.logic.impl.gen7;
+package tcgwars.logic.impl.gen7
 
-import tcgwars.logic.effect.gm.Attack
-import tcgwars.logic.effect.gm.PlayTrainer
 import tcgwars.logic.impl.gen5.BlackWhite
 
 import static tcgwars.logic.card.HP.*;
@@ -20,6 +18,7 @@ import tcgwars.logic.*;
 import tcgwars.logic.card.*
 import tcgwars.logic.effect.*
 import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.gm.*
 import tcgwars.logic.util.*;
 
 public enum TeamUp implements LogicCardInfo {
@@ -498,7 +497,7 @@ public enum TeamUp implements LogicCardInfo {
             energyCost G,G
             onAttack{
               my.all.each{
-                damage 30*it.cards.energyCount()
+                damage 30 * it.cards.filterByType(BASIC_ENERGY).energyCount()
               }
             }
           }
@@ -961,7 +960,7 @@ public enum TeamUp implements LogicCardInfo {
               }
               before null, null, Source.TRAINER_CARD, {
                 def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
-                if (flag && self.active && pcs.types.contains(W)){
+                if (flag && self.active && pcs.owner == self.owner && pcs.benched && pcs.types.contains(W)){
                   bc "Blizzard Veil prevent effect of Supporter cards done to $pcs."
                   prevent()
                 }
@@ -1262,7 +1261,7 @@ public enum TeamUp implements LogicCardInfo {
             energyCost L,C
             onAttack{
               damage 30
-              if(self.lastEvolved == bg.turnCount){
+              if(self.lastEvolved == bg.turnCount && self.cards.any{it.name.contains("Blitzle")}){
                 damage 90
               }
             }
@@ -1464,10 +1463,30 @@ public enum TeamUp implements LogicCardInfo {
                 shuffleDeck()
               }
               delayed{
-                before PLAY_CARD, {
+                def warnAndPrevent = {
                   if (bg.currentTurn == self.owner.opposite) {
                     wcu "Horror House GX prevents playing this card"
                     prevent()
+                  }
+                }
+                before ATTACH_ENERGY, {
+                  if((ef as AttachEnergy).reason == PLAY_FROM_HAND){
+                    warnAndPrevent()
+                  }
+                }
+                before EVOLVE, {
+                  if ((ef as Evolve).evolutionCard.player.pbg.hand.contains(ef.evolutionCard)) {
+                    warnAndPrevent()
+                  }
+                }
+                before EVOLVE_STANDARD, {
+                  if ((ef as EvolveStandard).evolutionCard.player.pbg.hand.contains(ef.evolutionCard)) {
+                    warnAndPrevent()
+                  }
+                }
+                before PLAY_CARD, {
+                  if ((ef as PlayCard).cardToPlay.player.pbg.hand.contains(ef.cardToPlay)) {
+                    warnAndPrevent()
                   }
                 }
                 unregisterAfter 2
@@ -1732,20 +1751,46 @@ public enum TeamUp implements LogicCardInfo {
           bwAbility "Scoop-Up Block" , {
             text "Your opponent's Pokémon that have any damage counters on them, and any cards attached to those Pokémon, can't be put into your opponent's hand."
             delayedA {
-              def scoopUpBlock = false
-              before PLAY_TRAINER, {
-                scoopUpBlock = false
-                if ((ef.cardToPlay.name == "Scoop Up Net" || ef.cardToPlay.name == "Super Scoop Up" || ef.cardToPlay.name == "Acerola" || ef.cardToPlay.name == "AZ" || ef.cardToPlay.name == "Scoop Up Cyclone" || ef.cardToPlay.name == "Scoop Up") && bg.currentTurn != self.owner) {
-                  scoopUpBlock = true
+              def pcs = null
+              def doBlock = false
+              def messageDisplayed = false
+              // Retain targeted Pokemon through effects
+              // TODO: Make sure this doesn't break anything
+              before null, {
+                if (ef instanceof TargetedEffect) {
+                  if (ef.getResolvedTarget(bg, e) != null) {
+                    pcs = ef.getResolvedTarget(bg, e)
+                  }
                 }
               }
-              before null, null, Source.TRAINER_CARD, {
-                def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
-                if (scoopUpBlock && pcs.numberOfDamageCounters){
-                  bc "Scoop-Up Block prevents this."
+              before MOVE_CARD, {
+                if (ef.newLocation == self.owner.opposite.pbg.hand && pcs && pcs.numberOfDamageCounters && !hasThetaStop(pcs)) {
+                  doBlock = true
+                  if (!messageDisplayed) {
+                    messageDisplayed = true
+                    bc "Scoop-Up Block stopped cards from returning to the owner's hand."
+                  }
                   prevent()
                 }
               }
+              before REMOVE_FROM_PLAY, {
+                if (ef.resolvedTarget && ef.resolvedTarget.numberOfDamageCounters && ef.resolvedTarget.cards && ef.removedCards.contains(ef.resolvedTarget.getTopPokemonCard()) && doBlock) {
+                  doBlock = false
+                  if (!messageDisplayed) {
+                    messageDisplayed = true
+                    bc "Scoop-Up Block stopped $ef.resolvedTarget.name from being removed from play."
+                  }
+                  prevent()
+                }
+              }
+            }
+            onActivate {
+              bg.em().storeObject("ScoopUpBlock_LastTurn"+self.owner, bg.turnCount)
+              bg.em().storeObject("ScoopUpBlock_Count"+self.owner, bg.em().retrieveObject("ScoopUpBlock_Count"+self.owner) ? bg.em().retrieveObject("ScoopUpBlock_Count"+self.owner)+1 : 1)
+            }
+            onDeactivate {
+              bg.em().storeObject("ScoopUpBlock_LastTurn"+self.owner, bg.turnCount)
+              bg.em().storeObject("ScoopUpBlock_Count"+self.owner, bg.em().retrieveObject("ScoopUpBlock_Count"+self.owner)-1)
             }
           }
           move "Psy Bolt" , {
@@ -1883,8 +1928,9 @@ public enum TeamUp implements LogicCardInfo {
             energyCost F,C,C
             onAttack{
               damage 80
-              afterDamage {
-                if(bg.stadiumInfoStruct){
+              if(bg.stadiumInfoStruct){
+                damage 80
+                afterDamage {
                   discard bg.stadiumInfoStruct.stadiumCard
                 }
               }
@@ -2782,9 +2828,11 @@ public enum TeamUp implements LogicCardInfo {
           globalAbility {Card thisCard->
             delayed (priority: LAST) {
               after PROCESS_ATTACK_EFFECTS, {
-                if(ef.attacker.owner!=thisCard.player && !(ef as Attack).move.name.endsWith("-GX")){
-                  bg.em().storeObject("MimiCopycatMove_${thisCard.hashCode()}", ef.move)
-                  bg.em().storeObject("MimiCopycatTC_${thisCard.hashCode()}", bg.turnCount)
+                //TODO: Refactor, make these checks be stored somewhere globally as to fix opponent copying Copycat and similar (e.g. with Trickster GX)
+                //See: MIMIKYU_58 from GuardiansRising
+                if(ef.attacker.owner!=thisCard.player){
+                  bg.em().storeObject("MimiCopycatMove_" + thisCard.player, ef.move)
+                  bg.em().storeObject("MimiCopycatTC_" + thisCard.player, bg.turnCount)
                 }
               }
             }
@@ -2800,15 +2848,22 @@ public enum TeamUp implements LogicCardInfo {
             text "If your opponent's Pokémon used an attack that isn't a GX attack during their last turn, use it as this attack."
             energyCost Y, C
             attackRequirement {
-              def tc = bg.em().retrieveObject("MimiCopycatTC_${self.topPokemonCard.hashCode()}") ?: -1
-              assert tc+1 == bg.turnCount : "Opponent did not used a valid move last turn"
+              def tc = bg.em().retrieveObject("MimiCopycatTC_" + thisCard.player)
+              assert (tc != null && tc == bg.turnCount - 1) : "Opponent did not use a move last turn"
+              def lastMove = bg.em().retrieveObject("MimiCopycatMove_" + thisCard.player) as Move
+              assert (lastMove != null && !lastMove.name.endsWith("GX")) : "Opponent's last attack was a GX attack"
             }
             onAttack {
-              def lastMove = bg.em().retrieveObject("MimiCopycatMove_${self.topPokemonCard.hashCode()}") as Move
-              def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
-              bc "Copycat copies ${lastMove.name}"
-              attack (lastMove)
-              bef.unregisterItself(bg().em())
+              //TODO Mark this and all "copy last attack" attacks as such, since copying them causes an infinite loop and attack should just fail.
+              def lastMove = bg.em().retrieveObject("MimiCopycatMove_" + thisCard.player) as Move
+              if (lastMove != null && !lastMove.name.endsWith("GX")){
+                def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
+                bc "Copycat copies ${lastMove.name}"
+                attack (lastMove)
+                bef.unregisterItself(bg().em())
+              } else{
+                bc "The move failed! Last attack was a GX attack."
+              }
             }
           }
         };
@@ -3071,9 +3126,8 @@ public enum TeamUp implements LogicCardInfo {
             text "Put your opponent's Active Pokémon and all cards attached to it into your opponent's hand."
             energyCost C,C,C
             onAttack{
-              def pcs = opp.all.select("Choose the Pokémon to put back in their hand.")
-              pcs.cards.moveTo(opp.hand)
-              removePCS(pcs)
+              opp.active.cards.moveTo(opp.hand)
+              removePCS(opp.active)
             }
           }
         };
@@ -3319,7 +3373,7 @@ public enum TeamUp implements LogicCardInfo {
         return supporter(this) {
           text "You can play this card only if your opponent's Active Pokémon is a Stage 2 Pokémon. Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
-            my.deck.search(count:2,"Choose 2 cards to put in your hand",{true}).moveTo(my.hand)
+            my.deck.search(max: 2,"Choose 2 cards to put in your hand",{true}).moveTo(hidden: true, my.hand)
             shuffleDeck()
           }
           playRequirement{
@@ -3337,7 +3391,7 @@ public enum TeamUp implements LogicCardInfo {
               choice = 2
             }
             else{
-              if(bg.stadiumInfoStruct){
+              if(bg.stadiumInfoStruct && stadiumCanBeAffectedByItemAndSupporter()){
                 choice = choose([1,2],["A Pokémon Tool or Special Energy card from 1 of your opponent's Pokémon", "The stadium card in play"], "What to discard?")
               }
             }
@@ -3353,7 +3407,7 @@ public enum TeamUp implements LogicCardInfo {
           }
           playRequirement{
             assert my.hand.filterByType(POKEMON).findAll{it.asPokemonCard().types.contains(D)}: "There is no [D] pokémon in your hand"
-            assert opp.all.findAll{it.cards.filterByType(POKEMON_TOOL, SPECIAL_ENERGY)} || bg.stadiumInfoStruct : "There is no cards to discard"
+            assert opp.all.findAll{it.cards.filterByType(POKEMON_TOOL, SPECIAL_ENERGY)} || ( bg.stadiumInfoStruct && stadiumCanBeAffectedByItemAndSupporter() ) : "There is no cards to discard"
           }
         };
       case ELECTROCHARGER_139:

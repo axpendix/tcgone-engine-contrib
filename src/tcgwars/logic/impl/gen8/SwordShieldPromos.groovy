@@ -147,10 +147,10 @@ public enum SwordShieldPromos implements LogicCardInfo {
       return basic (this, hp:HP060, type:R, retreatCost:1) {
         weakness W
         move "Super Singe", {
-          text "30 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Burned."
+          text "10 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Burned."
           energyCost R
           onAttack {
-            damage 30
+            damage 10
             flip { apply BURNED }
           }
         }
