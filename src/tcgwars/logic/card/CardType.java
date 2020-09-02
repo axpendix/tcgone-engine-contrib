@@ -14,8 +14,8 @@ public enum CardType {
   TOP(-100),
 
   POKEMON(10),
-  ENERGY(20),
-  TRAINER(30),
+  TRAINER(20),
+  ENERGY(30),
 
   MEGA_POKEMON(-6, "MEGA"),
   BREAK(-5, "BREAK"),
