@@ -431,9 +431,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             heal 40, self
 
             def top=self.topPokemonCard
-            bc "$top Devolved"
-            moveCard(top, my.discard)
-            devolve(self, top)
+            devolve(self, top, my.discard)
 
             if (my.deck) {
               def tar = my.deck.search("Evolves from Vulpix", {it.cardTypes.is(EVOLUTION) && (it.name == "Ninetales" || it.name == "Ninetales ex")})

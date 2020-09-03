@@ -738,21 +738,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
                 def list = all.findAll { it.evolution }
                 def pcs = list.select("Devolve one Evolved Pokémon")
                 def top = pcs.topPokemonCard
-                //
-                // [Temporary LV.X workaround]
-                if (top.cardTypes.is(LEVEL_UP && defending.cards.filterByType(POKEMON).size() > 2)){
-                  bc "${top}'s Level-Up card will be moved wherever the top evolution ends up at."
-                  pcs.cards.remove(top)
-                  pcs.owner.pbg.hand.add(top)
-                  devolve(pcs, top)
-                  top = pcs.topPokemonCard
-                }
-                // [End of LV.X workaround] TODO: Remove this when no longer needed
-                //
-                bc "$top Devolved"
-                pcs.cards.remove(top)
-                pcs.owner.pbg.hand.add(top)
-                devolve(pcs, top)
+                devolve(pcs, top, pcs.owner.pbg.hand)
               }
             }
           }

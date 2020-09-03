@@ -696,10 +696,7 @@ public enum LostThunder implements LogicCardInfo {
                 def pcs = list.select("Devolve (or cancel)", false)
                 if(!pcs) break;
                 def top=pcs.topPokemonCard
-                bc "$top Devolved"
-                pcs.cards.remove(top)
-                my.hand.add(top)
-                devolve(pcs, top)
+                devolve(pcs, top, my.hand)
               }
             }
           }
@@ -3062,9 +3059,7 @@ public enum LostThunder implements LogicCardInfo {
               afterDamage {
                 if(defending.evolution && !defending.slatedToKO) {
                   def top=defending.topPokemonCard
-                  bc "$top Devolved"
-                  moveCard(top, opp.hand)
-                  devolve(defending, top)
+                  devolve(defending, top, opp.hand)
                 }
               }
             }
