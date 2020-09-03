@@ -512,7 +512,11 @@ class TcgStatics {
   }
   static devolve (PokemonCardSet pcs, Card card, CardList newLocation){
     bg().em().run(new Devolve(pcs));
-    bg().em().run(new MoveCard(card, newLocation));
+    def blocked = bg().em().run(new MoveCard(card, newLocation));
+    if (blocked) {
+      return;
+    }
+
     if (all.contains(pcs)) { //not dead yet.
       bc "$card Devolved"
       bg().em().run(new RemoveFromPlay(pcs, new CardList(card)));
