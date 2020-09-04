@@ -2210,7 +2210,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               assert self.active : "$self is not your Active Pokémon"
               assert opp.bench : "Your opponent has no Pokémon in their bench."
               powerUsed()
-              switchYourOpponentsBenchedWithActive(SRC_ABILITY /*POKEPOWER*/)
+              flip { switchYourOpponentsBenchedWithActive(SRC_ABILITY /*POKEPOWER*/) }
             }
           }
           move "Hidden Power", {
