@@ -1241,7 +1241,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 register {
                   eff = getter GET_POKEMON_TYPE, self, { h->
                     h.object.clear()
-                    chosenTypes.each{
+                    chosenPCS.types.each{
                       h.object.add(it)
                     }
                   }
