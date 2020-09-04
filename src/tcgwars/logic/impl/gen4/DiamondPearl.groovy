@@ -651,8 +651,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 30
               flip {
+                damage 30
                 //TODO: preventAllDamageNextTurn() won't cut it here sadly.
                 preventAllDamageNextTurn()
               }
