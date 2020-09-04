@@ -2232,10 +2232,11 @@ public enum MysteriousTreasures implements LogicCardInfo {
               checkNoSPC()
               checkLastTurn()
               assert self.active : "$self is not your Active Pokémon"
+              assertOppBench() // Checked in JP, you can't discard if there's no bench.
               assert my.hand : "You don't have any cards in your hand"
               powerUsed()
               my.hand.select("Discard a card in order to use THROW").discard()
-              flip { directDamage 20, opp.bench.select() }
+              flip { directDamage 20, opp.bench.select(), SRC_ABILITY }
             }
           }
           move "Hidden Power", {
@@ -2246,12 +2247,12 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
             onAttack {
               if (opp.hand && !checkBodyguard()) {
-                def oppCard = opp.hand.shuffledCopy().select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be shuffled into his or her deck").showToMe("Selected card(s)").showToOpponent("Hidden Power: this card will be shuffled from your hand to your deck")
+                def oppCard = opp.hand.shuffledCopy().select(count: 1, "Choose a random card from your opponent's hand to be shuffled into his or her deck").showToOpponent("Hidden Power: this card will be shuffled from your hand to your deck")
                 oppCard.moveTo(opp.deck)
                 shuffleDeck(null, TargetPlayer.OPPONENT)
               }
               if (my.hand) {
-                def myCard = my.hand.shuffledCopy().oppSelect(hidden: true, count: 1, "Choose 1 random card from your opponent's hand to be shuffled into his or her deck").showToOpponent("Selected card(s)").showToMe("Hidden Power: this card will be shuffled from your hand to your deck")
+                def myCard = my.hand.shuffledCopy().oppSelect(count: 1, "Choose 1 random card from your opponent's hand to be shuffled into his or her deck").showToMe("Hidden Power: this card will be shuffled from your hand to your deck")
                 myCard.moveTo(my.deck)
                 shuffleDeck()
               }
