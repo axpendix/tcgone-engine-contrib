@@ -68,7 +68,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
   KRICKETUNE_27 ("Kricketune", "27", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
   MANECTRIC_28 ("Manectric", "28", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
   MANTINE_29 ("Mantine", "29", Rarity.RARE, [BASIC, POKEMON, _WATER_]),
-  MR__MIME_30 ("Mr. Mime", "30", Rarity.RARE, [BASIC, POKEMON, _PSYCHIC_]),
+  MR_MIME_30 ("Mr. Mime", "30", Rarity.RARE, [BASIC, POKEMON, _PSYCHIC_]),
   NIDOQUEEN_31 ("Nidoqueen", "31", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
   NINETALES_32 ("Ninetales", "32", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
   RAMPARDOS_33 ("Rampardos", "33", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
@@ -589,7 +589,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               assert opp.bench.any{it.fullHP.value >= 100} : "Your opponent has no benched Pokémon with a maximum HP of 100 or more."
               powerUsed()
               def pcs = opp.bench.findAll{it.fullHP.value >= 100}.select('Choose 1 of your opponent’s Benched Pokémon that has a maximum HP of 100 or more and switch it with 1 of the Defending Pokémon.')
-              sw2(pcs, SRC_ABILITY)
+              sw2(pcs, null, SRC_ABILITY)
             }
           }
           move "Reverse Stream", {
@@ -1152,7 +1152,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
           }
 
         };
-      case MR__MIME_30:
+      case MR_MIME_30:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS20
           pokeBody "Airy Wall", {
@@ -1160,7 +1160,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             delayedA {
               before null, self, Source.ATTACK, {
                 if (self.getPokemonCards().any{it.name.contains("Mime Jr.")} && ((self.owner.opposite.pbg.active as PokemonCardSet).cards.energyCount(C) <= 2) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
-                  bc "$thisAbility prevents effect"
+                  bc "$thisAbility.name prevents effect"
                   prevent()
                 }
               }
@@ -1169,7 +1169,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                   bg.dm().each {
                     if (it.to == self && it.notNoEffect) {
                       it.dmg = hp(0)
-                      bc "$thisAbility prevents damage"
+                      bc "$thisAbility.name prevents damage"
                     }
                   }
                 }
@@ -1233,8 +1233,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               powerUsed()
-              def chosenPCS = opp.all.select("Choose which Pokémon should have its types copied by Ninetales' ${thisAbility.name}?")
-              bc "${thisAbility.name} - $chosenPCS was chosen"
+              def chosenPCS = opp.all.select("Choose which Pokémon should have its types copied by Ninetales' $thisAbility.name?")
+              bc "$thisAbility.name - $chosenPCS was chosen"
               bc "$self is now the following types: ${chosenPCS.types}"
               delayed {
                 def eff
@@ -1315,12 +1315,12 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 delayed{
                   before CHECK_ATTACK_REQUIREMENTS, {
                     if (ef.attacker == self) {
-                      wcu "$thisAbility prevents $self from attacking."
+                      wcu "$thisAbility.name prevents $self from attacking."
                       prevent()
                     }
                   }
                   before RETREAT, self, {
-                    wcu "$thisAbility prevents $self from attacking."
+                    wcu "$thisAbility.name prevents $self from attacking."
                     prevent()
                   }
                   after FALL_BACK, self, {unregister()}
@@ -1381,7 +1381,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             delayedA {
               before POISONED_SPC, null, null, EVOLVE, {
                 if ((ef as Poisoned).getTarget().owner != self.owner) {
-                  bc "$thisAbility prevents removing the Special Condition Poisoned by evolving or devolving"
+                  bc "$thisAbility.name prevents removing the Special Condition Poisoned by evolving or devolving"
                   prevent()
                 }
               }
