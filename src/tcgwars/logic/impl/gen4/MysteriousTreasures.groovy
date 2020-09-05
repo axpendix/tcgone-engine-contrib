@@ -2136,7 +2136,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               assert my.bench.any{it.numberOfDamageCounters && it.cards().energyCount(G)} : "None of your Benched Pokémon with damage counters has any [G] Energy attached to them."
             }
             onAttack {
-              my.bench.findAll{it.numberOfDamageCounters && it.cards().energyCount(G)}.each{heal 20, it}
+              my.bench.findAll{it.numberOfDamageCounters && it.cards().energyCount(G)}.each{heal 30, it}
             }
           }
           move "Whirlwind", {
