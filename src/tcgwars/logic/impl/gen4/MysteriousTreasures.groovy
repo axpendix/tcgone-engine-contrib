@@ -2104,7 +2104,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
       case SHIELDON_63:
         return evolution (this, from:"Armor Fossil", hp:HP080, type:METAL, retreatCost:2) {
           weakness R, PLUS20
-          resistance M, MINUS20
+          resistance P, MINUS20
           move "Hard Face", {
             text "20 Damage. During your opponent’s next turn, any damage done to Shieldon by attacks is reduced by 20 (after applying Weakness and Resistance)"
             energyCost M, C
@@ -2528,7 +2528,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
           }
           move "Live Coal", {
             text "20 damage."
-            energyCost F, C
+            energyCost R, C
             attackRequirement {}
             onAttack {
               damage 20
