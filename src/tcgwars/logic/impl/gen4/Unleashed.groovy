@@ -1727,6 +1727,7 @@ public enum Unleashed implements LogicCardInfo {
         };
       case PLUSPOWER_80:
         return basicTrainer (this) {
+          //TODO: Handle errata here (and in all prints of pluspower in general).
           text "During this turn, your Pokémon’s attacks do 10 more damage to the Active Pokémon (before applying Weakness and Resistance)."
           onPlay {
             delayed {
@@ -1911,9 +1912,9 @@ public enum Unleashed implements LogicCardInfo {
             text "If Ursaring has any damage counters on it, each of Ursaring’s attacks does 60 more damage."
             delayedA {
               after PROCESS_ATTACK_EFFECTS,{
-                if(self.numberOfDamageCounters){
+                if(ef.attacker == self && self.numberOfDamageCounters){
                   bg.dm().each{
-                    if(it.from == self && it.dmg.value) {
+                    if(it.notZero) {
                       bc "Berserk +60"
                       it.dmg += hp(60)
                     }
