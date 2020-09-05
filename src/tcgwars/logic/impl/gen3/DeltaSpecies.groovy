@@ -1684,7 +1684,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             after PROCESS_ATTACK_EFFECTS, {
               if (self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size()) {
                 bg.dm().each {
-                  if (it.from == self && it.to.active && it.to.owner != self.owner && it.dmg.value) {
+                  if (it.from == self && it.to.active && it.to.owner != self.owner && it.notZero) {
                     bc "Reversal Aura +20"
                     it.dmg += hp(20)
                   }

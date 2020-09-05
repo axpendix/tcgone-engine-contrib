@@ -2480,7 +2480,7 @@ public enum Deoxys implements LogicCardInfo {
               }
               after PROCESS_ATTACK_EFFECTS, {
                 if(attackUsed) bg.dm().each {
-                  if(it.from==self && it.to.active && it.to.owner!=self.owner && it.dmg.value){
+                  if(it.from==self && it.to.active && it.to.owner!=self.owner && it.notZero){
                     it.dmg += hp(10)
                     attackUsed=true
                     bc "Strength Charm +10"
