@@ -2033,7 +2033,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
             onAttack {
               damage 50
               damage 10, self
-              flip{preventAllDamageNextTurn()}
+              afterDamage {
+                flip { preventAllDamageNextTurn() }
+              }
             }
           }
 
