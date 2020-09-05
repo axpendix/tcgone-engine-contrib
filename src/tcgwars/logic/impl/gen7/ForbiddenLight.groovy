@@ -2595,7 +2595,7 @@ public enum ForbiddenLight implements LogicCardInfo {
           text "Discard 2 [W] Energy cards from your hand. If you do, search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
             my.hand.filterByEnergyType(W).select(count : 2).discard()
-            my.deck.search(max : 2,"Select 2 cards",{true}).moveTo(hidden:true,my.hand)
+            my.deck.search(min: 1, max: 2,"Select 2 cards",{true}).moveTo(hidden:true,my.hand)
             shuffleDeck()
           }
           playRequirement{
