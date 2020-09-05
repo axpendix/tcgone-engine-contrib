@@ -414,10 +414,12 @@ public enum Emerald implements LogicCardInfo {
             onAttack {
               delayed{
                 after PROCESS_ATTACK_EFFECTS, {
-                  bg.dm().each{
-                    if(it.from == self && it.to.active && it.notNoEffect && it.dmg.value) {
-                      bc "Dragon Dance +30"
-                      it.dmg += hp(30)
+                  if (ef.attacker == self) {
+                    bg.dm().each{
+                      if(it.to.active && it.notZero) {
+                        bc "Dragon Dance +30"
+                        it.dmg += hp(30)
+                      }
                     }
                   }
                 }
@@ -1824,9 +1826,9 @@ public enum Emerald implements LogicCardInfo {
           onPlay {reason->
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
-                if (self.types.contains(D) || self.topPokemonCard.name.contains("Dark ")){
+                if ( ef.attacker == self && ( self.types.contains(D) || self.topPokemonCard.name.contains("Dark ") ) ){
                   bg.dm().each(){
-                    if(it.from == self && it.to.active && it.to.owner != self.owner && it.dmg.value) {
+                    if(it.to.active && it.to.owner != self.owner && it.notZero) {
                       it.dmg += hp(10)
                     }
                   }

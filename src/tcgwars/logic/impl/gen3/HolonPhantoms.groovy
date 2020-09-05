@@ -355,10 +355,12 @@ public enum HolonPhantoms implements LogicCardInfo {
             afterDamage{
               delayed{
                 after PROCESS_ATTACK_EFFECTS, {
-                  bg.dm().each{
-                    if(it.from.owner == self.owner.opposite && it.to == self && it.notNoEffect && it.dmg.value) {
-                      bc "Delta Reduction -30 (before W/R)"
-                      it.dmg -= hp(30)
+                  if (ef.attacker.owner == self.owner.opposite) {
+                    bg.dm().each{
+                      if(it.to == self && it.notNoEffect && it.notZero) {
+                        bc "Delta Reduction -30 (before W/R)"
+                        it.dmg -= hp(30)
+                      }
                     }
                   }
                 }
@@ -480,7 +482,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             after PROCESS_ATTACK_EFFECTS, {
               if (ef.attacker.owner == self.owner && bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name.contains("Holon") && ef.attacker.topPokemonCard.cardTypes.is(DELTA)) {
                 bg.dm().each {
-                  if (it.to != self.owner && it.to.active && it.notNoEffect && it.dmg.value) {
+                  if (it.to != self.owner && it.to.active && it.notZero) {
                     bc "Delta Reactor +10"
                     it.dmg += hp(10)
                   }
