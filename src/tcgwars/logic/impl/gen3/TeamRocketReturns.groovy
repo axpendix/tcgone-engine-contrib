@@ -835,9 +835,9 @@ public enum TeamRocketReturns implements LogicCardInfo {
             text "Choose up to 3 cards in your hand and put them on top of your deck. Then, search your deck for that many cards and put them into your hand. Shuffle your deck afterward."
             energyCost C
             onAttack {
-              def drawNb = my.hand.select(max:3,"select 3 card to put at the top of your deck").moveTo(my.deck).size()
+              def drawNb = my.hand.select(max:3,"select 3 card to put at the top of your deck").moveTo(hidden: true, my.deck).size()
+              my.deck.search(min : drawNb,max : drawNb,"Select $drawNb card(s).",{true}).moveTo(hidden: true, my.hand)
               shuffleDeck()
-              my.deck.search(min : drawNb,max : drawNb,"Select $drawNb card(s).",{true}).moveTo(my.hand)
             }
           }
           move "Quick Tail Smash", {
