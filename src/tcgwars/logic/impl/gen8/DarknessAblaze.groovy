@@ -3843,7 +3843,6 @@ public enum DarknessAblaze implements LogicCardInfo {
       return stadium (this) {
         text "Once during each player’s turn, after that player flips any coins for an attack, they may ignore all results of those coin flips and begin flipping those coins again."
         // Heavy reference to Victini's Victory Star
-        def lastTurn = 0
         def eff
         onPlay {
           eff = delayed {
@@ -3858,8 +3857,8 @@ public enum DarknessAblaze implements LogicCardInfo {
               act = false
             }
             before COIN_FLIP_BETWEEN_EXECUTION, {
+              def lastTurn = bg.em().retrieveObject(key)
               if (act && ef.object.player == bg.getCurrentTurn() && lastTurn != bg.turnCount && confirm("Glimwood Tangle: Result: $ef.object.lastResultString. Do you want to reflip?")) {
-                lastTurn = bg.turnCount
                 bg.em().storeObject(key, bg.turnCount)
                 bc "${bg().getCurrentTurn().pbg.active} used Glimwood Tangle and discarded those flips"
                 ef.object.run(bg) //flip again
