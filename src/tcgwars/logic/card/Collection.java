@@ -95,7 +95,7 @@ public enum Collection {
   POKEMON_RUMBLE(290, "Pokemon Rumble", "RUMBLE", "gen4.PokemonRumble"),
 
   //BLACK & WHITE
-  BLACK_WHITE_PROMOS(310, "Black & White Promos", "BLWP", "gen5.BlackWhitePromos"),
+  BLACK_WHITE_PROMOS(310, "Black & White Promos", "BWP", "gen5.BlackWhitePromos"),
   BLACK_WHITE(311, "Black & White", "BLW", "gen5.BlackWhite"),
   EMERGING_POWERS(312, "EPO", "gen5.EmergingPowers"),
   NOBLE_VICTORIES(313, "NVI", "gen5.NobleVictories"),
@@ -114,9 +114,9 @@ public enum Collection {
   XY_PROMOS(360, "XY Promos", "XYP", "gen6.XyPromos"),
   XY(361, "XY", "XY", "gen6.Xy"),
   FLASHFIRE(362, "FLF", "gen6.Flashfire"),
-  FURIOUS_FISTS(363, "FUF", "gen6.FuriousFists"),
+  FURIOUS_FISTS(363, "FFI", "gen6.FuriousFists"),
   PHANTOM_FORCES(364, "PHF", "gen6.PhantomForces"),
-  PRIMAL_CLASH(365, "PCL", "gen6.PrimalClash"),
+  PRIMAL_CLASH(365, "PRC", "gen6.PrimalClash"),
   DOUBLE_CRISIS(366, "DCR", "gen6.DoubleCrisis"),
   ROARING_SKIES(367, "ROS", "gen6.RoaringSkies"),
   ANCIENT_ORIGINS(368, "AOR", "gen6.AncientOrigins"),
@@ -144,11 +144,11 @@ public enum Collection {
   UNBROKEN_BONDS(423, "UNB", "gen7.UnbrokenBonds"),
   UNIFIED_MINDS(424, "UNM", "gen7.UnifiedMinds"),
   HIDDEN_FATES(425, "HIF", "gen7.HiddenFates"),
-  SHINY_VAULT(426, "SMA", "gen7.ShinyVault"),
+  SHINY_VAULT(426, "SHINYV", "gen7.ShinyVault"),
   COSMIC_ECLIPSE(427, "CEC", "gen7.CosmicEclipse"),
 
   // Sword & Shield
-  SWORD_SHIELD_PROMOS(429, "SSHP", "gen8.SwordShieldPromos"),
+  SWORD_SHIELD_PROMOS(429, "SWSHP", "gen8.SwordShieldPromos"),
   SWORD_SHIELD(430, "SSH", "gen8.SwordShield"),
   REBEL_CLASH(431, "RCL", "gen8.RebelClash"),
   DARKNESS_ABLAZE(432, "DAA", "gen8.DarknessAblaze"),
