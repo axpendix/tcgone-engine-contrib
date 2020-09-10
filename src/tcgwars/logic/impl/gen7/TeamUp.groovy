@@ -2434,6 +2434,7 @@ public enum TeamUp implements LogicCardInfo {
             }
             onAttack{
               my.deck.search(min:1, max:2,"Choose 2 card to put in your hand",{true}).moveTo(hidden: true, my.hand)
+              shuffleDeck()
             }
           }
           move "Dark Strike" , {
