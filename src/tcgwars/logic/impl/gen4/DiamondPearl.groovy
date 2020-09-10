@@ -252,8 +252,9 @@ public enum DiamondPearl implements LogicCardInfo {
                   self.cards.filterByType(ENERGY).moveTo(my.hand)
                   def top=defending.topPokemonCard
                   bc "$top Devolved"
-                  moveCard(top, opp.hand)
+                  moveCard(top, opp.deck)
                   devolve(defending, top)
+                  shuffleDeck(null, TargetPlayer.OPPONENT)
                 }
               }
             }
