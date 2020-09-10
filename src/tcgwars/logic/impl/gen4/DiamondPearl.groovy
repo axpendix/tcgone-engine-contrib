@@ -854,10 +854,12 @@ public enum DiamondPearl implements LogicCardInfo {
           move "Wind Wave", {
             text "Search your discard pile for up to 5 in any combination of Pokémon and Supporter cards. Show them to your opponent and shuffle them into your deck."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.discard.any{it.cardTypes.is(SUPPORTER) || it.cardTypes.is(POKEMON)} : "You have neither Pokémon nor Supporter cards in your discard pile"
+            }
             onAttack {
               def tar = my.discard.findAll{it.cardTypes.is(SUPPORTER) || it.cardTypes.is(POKEMON)}
-              tar.select(min: 0, max: 5,"Choose up to 5 in any combination of Pokémon and Supporter cards to put back into your deck").moveTo(my.deck)
+              tar.select(min: 1, max: 5,"Choose up to 5 in any combination of Pokémon and Supporter cards to put back into your deck").moveTo(my.deck)
               shuffleDeck()
             }
           }
