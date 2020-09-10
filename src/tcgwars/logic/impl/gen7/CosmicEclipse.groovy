@@ -4721,15 +4721,15 @@ public enum CosmicEclipse implements LogicCardInfo {
           onPlay { reason ->
             bg.em().storeObject("LILLIE_S_FULL_FORCE_TURN", bg.turnCount)
             draw 4
-
             delayed {
-              unregisterAfter 1
-              unregister {
-                while (my.hand.size() >= 3) {
-                  my.hand.select("Select cards to shuffle back into the deck.").moveTo(hidden:true, my.deck)
+              before BEGIN_TURN, {
+                if (my.hand.size() >= 3) {
+                  def toShuffle = my.hand.size() - 2
+                  my.hand.shuffledCopy().select(min: toShuffle, max: toShuffle, "Select cards to shuffle back into the deck.").moveTo(suppressLog: true, my.deck)
+                  bc "Due to ${thisCard.name}, ${my.owner.getPlayerUsername(bg)} shuffled ${toShuffle} cards from their hand to their deck."
+                  shuffleDeck()
                 }
-                shuffleDeck()
-                draw 2 - my.hand.size()
+                unregister()
               }
             }
           }
