@@ -724,12 +724,13 @@ public enum MysteriousTreasures implements LogicCardInfo {
           pokePower "Firestarter", {
             text "Once during your turn (before your attack), you may attach a [R] Energy card from your discard pile to 1 of your Benched Pokémon. This power can’t be used if Typhlosion is affected by a Special Condition."
             actionA {
-              checkNoSPC()
               checkLastTurn()
+              checkNoSPC()
               assert my.bench : "No benched Pokemon"
+              assert my.discard.filterByEnergyType(R) : "You have no [R] Energy cards in your discard pile"
+              powerUsed()
 
               attachEnergyFrom(type: R, my.discard, my.bench)
-              powerUsed()
             }
           }
           move "Evaporating Heat", {
