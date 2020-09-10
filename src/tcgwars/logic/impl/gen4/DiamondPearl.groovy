@@ -2886,10 +2886,17 @@ public enum DiamondPearl implements LogicCardInfo {
           text "Choose 1 of your Pokémon. Flip 2 coins. If both are heads, remove all damage counters from that Pokémon. If both are tails, discard all Energy cards attached to that Pokémon."
           onPlay {
             def pcs = my.all.findAll{it.numberOfDamageCounters || it.cards.energyCount()}.select("Select 1 of you Pokémon with either damage counters, energy attached, or both.")
-            flip 1, {
-              if (pcs.numberOfDamageCounters) healAll pcs
-            }, {
-              pcs.cards.filterByType(ENERGY).discard()
+            def headCount = 0
+            flip 2, {headCount++}
+            switch (headCount) {
+              case 0:
+                pcs.cards.filterByType(ENERGY).discard()
+                break;
+              case 2:
+                if (pcs.numberOfDamageCounters) healAll pcs
+                break;
+              default:
+                break;
             }
           }
           playRequirement {
