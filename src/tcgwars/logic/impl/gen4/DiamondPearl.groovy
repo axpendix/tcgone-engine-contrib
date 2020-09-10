@@ -1828,6 +1828,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost F, F, C
             attackRequirement {}
             onAttack {
+              def pcs = opp.active
               damage 60
               damage 10, self
               afterDamage{
