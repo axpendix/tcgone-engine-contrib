@@ -1853,7 +1853,7 @@ public enum ForbiddenLight implements LogicCardInfo {
               after PROCESS_ATTACK_EFFECTS, {
                 if (ef.attacker.owner == self.owner && self.benched) {
                   bg.dm().each {
-                    if (it.from.types.contains(F) && it.to.active && it.to != self.owner && it.notNoEffect && it.dmg.value) {
+                    if (it.from.types.contains(F) && it.to.active && it.to != self.owner && it.notZero) {
                       bc "Princess’s Cheers +20"
                       it.dmg += hp(20)
                     }
