@@ -1098,12 +1098,12 @@ public enum UnbrokenBonds implements LogicCardInfo {
         return evolution (this, from:"Squirtle", hp:HP070, type:W, retreatCost:2) {
           weakness G
           bwAbility "Solid Shell", {
-            text "This Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+            text "This Pokémon takes 20 less damage from attacks (after applying Weakness and Resistance)."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{if(it.to == self && it.notNoEffect && it.dmg.value) {
-                  bc "Solid Shell -30"
-                  it.dmg -= hp(30)
+                  bc "Solid Shell -20"
+                  it.dmg -= hp(20)
                 }}
               }
             }

@@ -1037,24 +1037,25 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 130
             afterDamage {
               // TODO: Make a static method to do this
-              if (self.cards.energyCount(W) <= 2) {
-                self.cards.filterByEnergyType(W).moveTo my.hand
-              } else {
-                def targetCount = Math.min self.cards.energyCount(W), 2
-                def finalCount = 0
-                while (self.cards.energyCount(W) > 0 && finalCount < targetCount) {
-                  def info = "Select [W] Energy to return to your hand."
-                  def energy = self.cards.filterByType(ENERGY).select(info, energyFilter(W))
-                  def energyCount = 1
-                  if (energy.energyCount(W) > 1) {
-                    def choices = 1..energy.energyCount(W)
-                    def choiceInfo = "How many Energy do you want this card to count as?"
-                    energyCount = choose(choices, choiceInfo)
+              if (self.cards.energyCount(W))
+                if (self.cards.energyCount(W) <= 2) {
+                  self.cards.filterByEnergyType(W).moveTo my.hand
+                } else {
+                  def targetCount = Math.min self.cards.energyCount(W), 2
+                  def finalCount = 0
+                  while (self.cards.energyCount(W) > 0 && finalCount < targetCount) {
+                    def info = "Select [W] Energy to return to your hand."
+                    def energy = self.cards.filterByType(ENERGY).select(info, energyFilter(W))
+                    def energyCount = 1
+                    if (energy.energyCount(W) > 1) {
+                      def choices = 1..energy.energyCount(W)
+                      def choiceInfo = "How many Energy do you want this card to count as?"
+                      energyCount = choose(choices, choiceInfo)
+                    }
+                    finalCount += energyCount
+                    energy.moveTo my.hand
                   }
-                  finalCount += energyCount
-                  energy.moveTo my.hand
                 }
-              }
             }
           }
         }
@@ -2659,24 +2660,25 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 200
             afterDamage {
               // TODO: Make a static method to do this
-              if (self.cards.energyCount(D) <= 2) {
-                self.cards.filterByEnergyType(D).moveTo my.hand
-              } else {
-                def targetCount = Math.min self.cards.energyCount(D), 2
-                def finalCount = 0
-                while (self.cards.energyCount(D) > 0 && finalCount < targetCount) {
-                  def info = "Select [D] Energy to return to your hand."
-                  def energy = self.cards.filterByType(ENERGY).select(info, energyFilter(D))
-                  def energyCount = 1
-                  if (energy.energyCount(D) > 1) {
-                    def choices = 1..energy.energyCount(D)
-                    def choiceInfo = "How many Energy do you want this card to count as?"
-                    energyCount = choose(choices, choiceInfo)
+              if (self.cards.energyCount(D))
+                if (self.cards.energyCount(D) <= 2) {
+                  self.cards.filterByEnergyType(D).moveTo my.hand
+                } else {
+                  def targetCount = Math.min self.cards.energyCount(D), 2
+                  def finalCount = 0
+                  while (self.cards.energyCount(D) > 0 && finalCount < targetCount) {
+                    def info = "Select [D] Energy to return to your hand."
+                    def energy = self.cards.filterByType(ENERGY).select(info, energyFilter(D))
+                    def energyCount = 1
+                    if (energy.energyCount(D) > 1) {
+                      def choices = 1..energy.energyCount(D)
+                      def choiceInfo = "How many Energy do you want this card to count as?"
+                      energyCount = choose(choices, choiceInfo)
+                    }
+                    finalCount += energyCount
+                    energy.moveTo my.hand
                   }
-                  finalCount += energyCount
-                  energy.moveTo my.hand
                 }
-              }
             }
           }
         }
@@ -3843,7 +3845,6 @@ public enum DarknessAblaze implements LogicCardInfo {
       return stadium (this) {
         text "Once during each player’s turn, after that player flips any coins for an attack, they may ignore all results of those coin flips and begin flipping those coins again."
         // Heavy reference to Victini's Victory Star
-        def lastTurn = 0
         def eff
         onPlay {
           eff = delayed {
@@ -3858,8 +3859,8 @@ public enum DarknessAblaze implements LogicCardInfo {
               act = false
             }
             before COIN_FLIP_BETWEEN_EXECUTION, {
+              def lastTurn = bg.em().retrieveObject(key)
               if (act && ef.object.player == bg.getCurrentTurn() && lastTurn != bg.turnCount && confirm("Glimwood Tangle: Result: $ef.object.lastResultString. Do you want to reflip?")) {
-                lastTurn = bg.turnCount
                 bg.em().storeObject(key, bg.turnCount)
                 bc "${bg().getCurrentTurn().pbg.active} used Glimwood Tangle and discarded those flips"
                 ef.object.run(bg) //flip again

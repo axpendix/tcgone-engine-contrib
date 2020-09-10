@@ -2866,6 +2866,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             }
             onAttack {
               my.discard.select("Select a card to shuffle into your deck.").moveTo(my.deck)
+              shuffleDeck()
             }
           }
           move "Mud-Slap", {
@@ -3860,7 +3861,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                 bc "[Additional cost covered] Also for the rest of the game, when the opponent’s Active Pokémon is Knocked Out by damage from those attacks, this player takes 1 more Prize card."
                 getter GET_GIVEN_PRIZES, BEFORE_LAST, {Holder holder ->
                   def pcs = holder.effect.target
-                  if (pcs.owner != self.owner && pcs.KOBYDMG == bg.turnCount && holder.object > 0) {
+                  if (pcs.owner != selfOwner && pcs.KOBYDMG == bg.turnCount && holder.object > 0) {
                     bc "Altered Creation GX gives the player an additional prize."
                     holder.object += 1
                   }
@@ -4303,16 +4304,16 @@ public enum CosmicEclipse implements LogicCardInfo {
             onActivate { r ->
               if (r==PLAY_FROM_HAND && my.deck && confirm("Use Arf Arf Bark?", self.owner)) {
                 if(opp.active.cards.filterByType(ENERGY)) {
-                  opp.active.cards.filterByType(ENERGY).select("Discard which Energy?", self.owner).discard()
+                  opp.active.cards.filterByType(ENERGY).select("Discard which Energy?", { true }, self.owner).discard()
                 }
               }
             }
             delayedA {
               before (KNOCKOUT,self) {
-                if ( self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && confirm("Use Arf Arf Bark?") ) {
+                if ( self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && confirm("Use Arf Arf Bark?", self.owner) ) {
                   bc "Arf Arf Bark activates"
                   if (self.owner.opposite.pbg.active.cards.filterByType(ENERGY)) {
-                    self.owner.opposite.pbg.active.cards.filterByType(ENERGY).select("Discard which Energy?").discard()
+                    self.owner.opposite.pbg.active.cards.filterByType(ENERGY).select("Discard which Energy?", { true }, self.owner).discard()
                   }
                 }
               }
@@ -4721,15 +4722,15 @@ public enum CosmicEclipse implements LogicCardInfo {
           onPlay { reason ->
             bg.em().storeObject("LILLIE_S_FULL_FORCE_TURN", bg.turnCount)
             draw 4
-
             delayed {
-              unregisterAfter 1
-              unregister {
-                while (my.hand.size() >= 3) {
-                  my.hand.select("Select cards to shuffle back into the deck.").moveTo(hidden:true, my.deck)
+              before BEGIN_TURN, {
+                if (my.hand.size() >= 3) {
+                  def toShuffle = my.hand.size() - 2
+                  my.hand.shuffledCopy().select(min: toShuffle, max: toShuffle, "Select cards to shuffle back into the deck.").moveTo(suppressLog: true, my.deck)
+                  bc "Due to ${thisCard.name}, ${my.owner.getPlayerUsername(bg)} shuffled ${toShuffle} cards from their hand to their deck."
+                  shuffleDeck()
                 }
-                shuffleDeck()
-                draw 2 - my.hand.size()
+                unregister()
               }
             }
           }

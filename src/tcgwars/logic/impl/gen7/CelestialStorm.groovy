@@ -3266,7 +3266,7 @@ public enum CelestialStorm implements LogicCardInfo {
         return supporter(this) {
           text "Search your deck for up to 3 cards and put them into your hand. Then, shuffle your deck. Your turn ends.\nYou may play only 1 Supporter card during your turn (before your attack).\n"
           onPlay {
-            my.deck.search(max:3,"Select up to 3 cards",{true}).moveTo(hidden:true,my.hand)
+            my.deck.search(min:1,max:3,"Select up to 3 cards",{true}).moveTo(hidden:true,my.hand)
             if(!bg.em().retrieveObject("Extend_"+thisCard.player)){
               bg.gm().betweenTurns()
             }
@@ -3327,11 +3327,11 @@ public enum CelestialStorm implements LogicCardInfo {
               def drawStart = Math.max(0, my.deck.size() - 4)
               def cardsInBottom = my.deck.size() - drawStart
               def deckBottom = my.deck.subList(drawStart, my.deck.size())
-              def sel = deckBottom.select(count: 2, "Select 2 cards to put to your hand.").moveTo(supressLog: true, my.hand)
+              def sel = deckBottom.select(count: 2, "Select 2 cards to put to your hand.").moveTo(suppressLog: true, my.hand)
               def list = deckBottom.getExcludedList(sel)
               if (cardsInBottom > 3) {
                 list = rearrange(list, "Rearrange the other 2 cards before putting them back at the bottom of the deck")
-                my.deck.setSubList(Math.max(0, drawStart-2), list)
+                deckBottom.setSubList(0, list)
               }
               bc "${my.owner.getPlayerUsername(bg)} drew ${sel.size()} cards from the bottom of their deck."
             }

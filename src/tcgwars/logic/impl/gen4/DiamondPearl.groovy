@@ -252,6 +252,7 @@ public enum DiamondPearl implements LogicCardInfo {
                   self.cards.filterByType(ENERGY).moveTo(my.hand)
                   def top=defending.topPokemonCard
                   devolve(defending, top, opp.deck)
+                  shuffleDeck(null, TargetPlayer.OPPONENT)
                 }
               }
             }
@@ -646,8 +647,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 30
               flip {
+                damage 30
                 //TODO: preventAllDamageNextTurn() won't cut it here sadly.
                 preventAllDamageNextTurn()
               }
@@ -849,10 +850,12 @@ public enum DiamondPearl implements LogicCardInfo {
           move "Wind Wave", {
             text "Search your discard pile for up to 5 in any combination of Pokémon and Supporter cards. Show them to your opponent and shuffle them into your deck."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.discard.any{it.cardTypes.is(SUPPORTER) || it.cardTypes.is(POKEMON)} : "You have neither Pokémon nor Supporter cards in your discard pile"
+            }
             onAttack {
               def tar = my.discard.findAll{it.cardTypes.is(SUPPORTER) || it.cardTypes.is(POKEMON)}
-              tar.select(min: 0, max: 5,"Choose up to 5 in any combination of Pokémon and Supporter cards to put back into your deck").moveTo(my.deck)
+              tar.select(min: 1, max: 5,"Choose up to 5 in any combination of Pokémon and Supporter cards to put back into your deck").moveTo(my.deck)
               shuffleDeck()
             }
           }
@@ -1262,7 +1265,9 @@ public enum DiamondPearl implements LogicCardInfo {
           move "Leaf Honey", {
             text "Discard a [G] Energy attached to Vespiquen and remove all damage counters from 1 of your Benched [G] Pokémon."
             energyCost G
-            attackRequirement { my.bench.findAll{it.types.contains(G) && it.numberOfDamageCounters} }
+            attackRequirement {
+              assertMyBench(hasType: G, info:"with damage on them", {it.numberOfDamageCounters})
+            }
             onAttack {
               discardSelfEnergy G
               def pcs = my.bench.findAll{it.types.contains(G) && it.numberOfDamageCounters}.select()
@@ -1820,6 +1825,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost F, F, C
             attackRequirement {}
             onAttack {
+              def pcs = opp.active
               damage 60
               damage 10, self
               afterDamage{
@@ -2878,10 +2884,17 @@ public enum DiamondPearl implements LogicCardInfo {
           text "Choose 1 of your Pokémon. Flip 2 coins. If both are heads, remove all damage counters from that Pokémon. If both are tails, discard all Energy cards attached to that Pokémon."
           onPlay {
             def pcs = my.all.findAll{it.numberOfDamageCounters || it.cards.energyCount()}.select("Select 1 of you Pokémon with either damage counters, energy attached, or both.")
-            flip 1, {
-              if (pcs.numberOfDamageCounters) healAll pcs
-            }, {
-              pcs.cards.filterByType(ENERGY).discard()
+            def headCount = 0
+            flip 2, {headCount++}
+            switch (headCount) {
+              case 0:
+                pcs.cards.filterByType(ENERGY).discard()
+                break;
+              case 2:
+                if (pcs.numberOfDamageCounters) healAll pcs
+                break;
+              default:
+                break;
             }
           }
           playRequirement {

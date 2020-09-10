@@ -307,6 +307,8 @@ public enum CrystalGuardians implements LogicCardInfo {
                 def pcs = my.all.select("Which Pokémon will you attach the selected energy to?")
                 sel.each{ attachEnergy(pcs, it) }
                 tar.getExcludedList(sel).discard()
+              } else {
+                tar.discard()
               }
             }
           }

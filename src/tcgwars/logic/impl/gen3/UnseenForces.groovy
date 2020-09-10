@@ -317,7 +317,7 @@ public enum UnseenForces implements LogicCardInfo {
             assert my.deck : "There are no more cards in your deck"
           }
           onAttack {
-            def cards = deck.search(count: 2, pokemonTypeFilter(G))
+            def cards = deck.search(min:0, max: 2, pokemonTypeFilter(G))
             if (cards) {
               cards.moveTo(hand)
               shuffleDeck()
