@@ -4266,8 +4266,11 @@ public enum UnifiedMinds implements LogicCardInfo {
           text "At the end of this turn, draw cards until you have 8 cards in your hand."
           onPlay {reason->
             delayed {
-              unregisterAfter 1
-              unregister {draw (8 - hand.getExcludedList(thisCard).size())}
+              before BETWEEN_TURNS, {
+                if (my.hand.size() < 8)
+                draw (8 - hand.getExcludedList(thisCard).size())
+                unregister()
+              }
             }
           }
           playRequirement{

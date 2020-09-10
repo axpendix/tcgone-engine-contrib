@@ -4741,7 +4741,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             bg.em().storeObject("LILLIE_S_FULL_FORCE_TURN", bg.turnCount)
             draw 4
             delayed {
-              before BEGIN_TURN, {
+              before BETWEEN_TURNS, {
                 if (my.hand.size() >= 3) {
                   def toShuffle = my.hand.size() - 2
                   my.hand.shuffledCopy().select(min: toShuffle, max: toShuffle, "Select cards to shuffle back into the deck.").moveTo(suppressLog: true, my.deck)
