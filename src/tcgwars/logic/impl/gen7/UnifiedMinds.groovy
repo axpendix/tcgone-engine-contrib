@@ -4267,8 +4267,10 @@ public enum UnifiedMinds implements LogicCardInfo {
           onPlay {reason->
             delayed {
               before BETWEEN_TURNS, {
-                if (my.hand.size() < 8)
-                draw (8 - hand.getExcludedList(thisCard).size())
+                if (my.hand.size() < 8) {
+                  bc "${thisCard.name} effect triggers"
+                  draw (8 - hand.getExcludedList(thisCard).size())
+                }
                 unregister()
               }
             }
