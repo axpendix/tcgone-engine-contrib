@@ -2487,8 +2487,15 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost W, W, W, C
             onAttack {
               damage 80
-              flipUntilTails {
-                discardDefendingEnergy()
+              afterDamage {
+                def toDiscard = 0
+                flipUntilTails {
+                  toDiscard++
+                }
+                while (defending.cards.energyCount() || toDiscard > 0) {
+                  discardDefendingEnergy()
+                  toDiscard--
+                }
               }
             }
           }
