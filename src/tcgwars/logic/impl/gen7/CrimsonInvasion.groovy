@@ -1173,21 +1173,21 @@ public enum CrimsonInvasion implements LogicCardInfo {
             text "10+ damage. Before doing damage, you may discard any number of Pokémon Tool cards from your Pokémon. This attack does 40 more damage for each card you discarded in this way."
             energyCost C, C
             onAttack {
-              damage 10
-              def tar = my.all.findAll{it.cards.filterByType(POKEMON_TOOL)}
-              if(tar){
+              def toolsDiscarded = 0
+              while(true) {
+                def pl = my.all.findAll{ it.cards.hasType(POKEMON_TOOL) }
+                if(!pl) break;
 
-                tar.each {
-                  def poktool = new CardList(it.topPokemonCard);
-                  poktool.add(it.cards.filterByType(POKEMON_TOOL).first())
-                  poktool.showToMe("Pokemon with tool")
+                def info = "Tools already discarded: ${toolsDiscarded}<br>Current base damage: 10 + ${40 * toolsDiscarded}<br>Discard a Pokémon Tool card from which Pokémon? (cancel to stop)"
+                def src = pl.select(info, false)
+                if(!src) break;
 
-                  if(confirm("discard this tool for 40 more damages?")){
-                    it.cards.filterByType(POKEMON_TOOL).discard()
-                    damage 40
-                  }
-                }
+                def options = src.cards.filterByType(POKEMON_TOOL)
+                def toDiscard = options.select(min: 0, max: options.size(), "Select any tools you want to discard from ${src}. Each will add 40 damage to $thisMove's base damage.")
+                toolsDiscarded += toDiscard.size()
+                toDiscard.discard()
               }
+              damage 10 + 40 * toolsDiscarded
             }
           }
 

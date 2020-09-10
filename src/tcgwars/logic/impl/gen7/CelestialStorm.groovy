@@ -3266,7 +3266,7 @@ public enum CelestialStorm implements LogicCardInfo {
         return supporter(this) {
           text "Search your deck for up to 3 cards and put them into your hand. Then, shuffle your deck. Your turn ends.\nYou may play only 1 Supporter card during your turn (before your attack).\n"
           onPlay {
-            my.deck.search(max:3,"Select up to 3 cards",{true}).moveTo(hidden:true,my.hand)
+            my.deck.search(min:1,max:3,"Select up to 3 cards",{true}).moveTo(hidden:true,my.hand)
             if(!bg.em().retrieveObject("Extend_"+thisCard.player)){
               bg.gm().betweenTurns()
             }
