@@ -248,18 +248,15 @@ public enum DiamondPearl implements LogicCardInfo {
             onAttack {
               damage 40
               afterDamage {
-                if(defending.evolution && confirm ("You may return all Energy cards attached to Dialga to your hand. If you do, remove the highest Stage Evolution card from the Defending Pokémon and shuffle that card into your opponent’s deck.")) {
+                if (defending.evolution && confirm ("You may return all Energy cards attached to Dialga to your hand. If you do, remove the highest Stage Evolution card from the Defending Pokémon and shuffle that card into your opponent’s deck.")) {
                   self.cards.filterByType(ENERGY).moveTo(my.hand)
                   def top=defending.topPokemonCard
-                  bc "$top Devolved"
-                  moveCard(top, opp.deck)
-                  devolve(defending, top)
+                  devolve(defending, top, opp.deck)
                   shuffleDeck(null, TargetPlayer.OPPONENT)
                 }
               }
             }
           }
-
         };
       case DUSKNOIR_2:
         return evolution (this, from:"Dusclops", hp:HP120, type:PSYCHIC, retreatCost:3) {
@@ -598,9 +595,7 @@ public enum DiamondPearl implements LogicCardInfo {
               flip {
                 def pcs = list.select("Devolve one of your opponent's evolved Benched Pokémon.")
                 def top = pcs.topPokemonCard
-                bc "$top devolved."
-                moveCard(top, opp.hand)
-                devolve(pcs, top)
+                devolve(pcs, top, opp.hand)
               }
             }
           }

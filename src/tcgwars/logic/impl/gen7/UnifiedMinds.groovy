@@ -438,11 +438,8 @@ public enum UnifiedMinds implements LogicCardInfo {
               assert list
               def pcs = list.select("Devolve one of your opponent's evolved Pokémon.")
               def top=pcs.topPokemonCard
-              bc "$top devolved."
-              pcs.cards.remove(top)
-              opp.deck.add(top)
+              devolve(pcs, top, opp.deck)
               shuffleDeck(null, TargetPlayer.OPPONENT)
-              devolve(pcs, top)
             }
           }
           move "Mind Bend", {

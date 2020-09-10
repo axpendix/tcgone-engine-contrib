@@ -771,9 +771,7 @@ public enum PowerKeepers implements LogicCardInfo {
           onAttack {
             opp.all.findAll { it.evolution }.each {
               def top = it.topPokemonCard
-              bc "$top Devolved"
-              moveCard(top, opp.hand)
-              devolve(it, top)
+              devolve(it, top, opp.hand)
             }
           }
         }

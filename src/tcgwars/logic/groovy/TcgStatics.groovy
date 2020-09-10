@@ -505,17 +505,28 @@ class TcgStatics {
     }
     return null;
   }
-  static evolve (PokemonCardSet pcs, Card card, ActivationReason reason=ActivationReason.PLAY_FROM_HAND) {
+  static evolve (PokemonCardSet pcs, Card card, ActivationReason reason=PLAY_FROM_HAND) {
     bg().em().run(new Evolve(pcs, card));
     bg().em().run(new CantEvolve(pcs, bg().getTurnCount()));
     bg().em().run(new ActivateAbilities((PokemonCard) card, pcs, reason));
   }
-  static devolve (PokemonCardSet pcs, Card card){
+  static devolve (PokemonCardSet pcs, Card card, CardList newLocation){
     bg().em().run(new Devolve(pcs));
+    def blocked = bg().em().run(new MoveCard(card, newLocation));
+    if (blocked) {
+      return;
+    }
+
     if (all.contains(pcs)) { //not dead yet.
+      bc "$card Devolved"
       bg().em().run(new RemoveFromPlay(pcs, new CardList(card)));
       bg().em().run(new CantEvolve(pcs, bg().getTurnCount()));
-//			bg().em().run(new ActivateAbilities(pcs.getTopPokemonCard(), pcs, ActivationReason.OTHER));
+
+      // Remove the highest stage non-level up card if devolved from level-up
+      if (card.cardTypes.is(LEVEL_UP) && pcs.cards.filterByType(POKEMON).size() > 1) {
+        bg().em().run(new MoveCard(pcs.topNonLevelUpPokemonCard, newLocation));
+        bg().em().run(new RemoveFromPlay(pcs, new CardList(pcs.topNonLevelUpPokemonCard)));
+      }
     }
   }
   static babyEvolution(String evolName, PokemonCardSet baby){

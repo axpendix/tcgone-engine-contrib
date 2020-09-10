@@ -281,9 +281,7 @@ public enum LegendMaker implements LogicCardInfo {
             }
             toBeDevolved.each{
               def top = it.topPokemonCard
-              bc "$top Devolved"
-              moveCard(top, opp.deck)
-              devolve(it, top)
+              devolve(it, top, opp.deck)
             }
             if (toBeDevolved) { shuffleDeck(null, TargetPlayer.OPPONENT) }
           }
@@ -1337,10 +1335,7 @@ public enum LegendMaker implements LogicCardInfo {
             def pcs = list.select("Choose one of your opponent's evolved Pokémon.")
             flip {
               def top = pcs.topPokemonCard
-              bc "$top Devolved"
-              pcs.cards.remove(top)
-              opp.deck.add(top)
-              devolve(pcs, top)
+              devolve(pcs, top, opp.deck)
               shuffleDeck(null, TargetPlayer.OPPONENT)
             }
           }

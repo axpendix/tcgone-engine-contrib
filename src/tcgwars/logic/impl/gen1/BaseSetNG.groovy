@@ -1777,8 +1777,7 @@ public enum BaseSetNG implements LogicCardInfo {
             def stage = pkmn.size()>1 ? pkmn.select("Choose stage to devolve to").first() : pkmn.first()
             for(PokemonCard t7:pcs.pokemonCards){
               if (t7 == stage) break
-              discard(t7)
-              devolve(pcs, t7)
+              devolve(pcs, t7, my.discard)
             }
           }
           playRequirement{

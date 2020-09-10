@@ -1033,9 +1033,7 @@ public enum ShiningLegends implements LogicCardInfo {
                 while(defending.evolution) {
                   targeted (defending) {
                     top=defending.topPokemonCard
-                    bc "$top Devolved"
-                    moveCard(top, opp.hand)
-                    devolve(defending, top)
+                    devolve(defending, top, opp.hand)
                   }
                 }
               }
