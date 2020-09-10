@@ -2246,7 +2246,10 @@ public enum UltraPrism implements LogicCardInfo {
               def tar = my.all.findAll{it.cards.filterByType(POKEMON_TOOL)}
               assert tar : "None of your pokemon have a Pokémon Tool card attached to it"
               powerUsed()
-              tar.select().cards.filterByType(POKEMON_TOOL).moveTo(my.hand)
+              def pcs = tar.select()
+              targeted(pcs, SRC_ABILITY) {
+                pcs.cards.filterByType(POKEMON_TOOL).moveTo(my.hand)
+              }
             }
           }
           move "Rolling Attack", {
