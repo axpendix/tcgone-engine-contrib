@@ -1687,6 +1687,11 @@ public enum TeamUp implements LogicCardInfo {
                   prevent()
                 }
               }
+              before POISONED_SPC, null, null, DEVOLVE, {
+                if(ef.target == self.owner.opposite){
+                  prevent()
+                }
+              }
             }
           }
           move "Toxic Secretion" , {
