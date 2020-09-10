@@ -2750,6 +2750,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             }
             onAttack {
               my.discard.select(count:4, "Choose 4 cards to shuffle into your deck.").moveTo(my.deck)
+              shuffleDeck()
             }
           }
           move "Slash", {

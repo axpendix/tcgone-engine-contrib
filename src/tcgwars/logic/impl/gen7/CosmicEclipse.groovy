@@ -2866,6 +2866,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             }
             onAttack {
               my.discard.select("Select a card to shuffle into your deck.").moveTo(my.deck)
+              shuffleDeck()
             }
           }
           move "Mud-Slap", {
