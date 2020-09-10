@@ -1382,7 +1382,13 @@ public enum MysteriousTreasures implements LogicCardInfo {
             delayedA {
               before POISONED_SPC, null, null, EVOLVE, {
                 if ((ef as Poisoned).getTarget().owner != self.owner) {
-                  bc "$thisAbility.name prevents removing the Special Condition Poisoned by evolving or devolving"
+                  bc "$thisAbility.name prevents removing the Special Condition Poisoned by evolving"
+                  prevent()
+                }
+              }
+              before POISONED_SPC, null, null, DEVOLVE, {
+                if ((ef as Poisoned).getTarget().owner != self.owner) {
+                  bc "$thisAbility.name prevents removing the Special Condition Poisoned by devolving"
                   prevent()
                 }
               }
@@ -1391,12 +1397,6 @@ public enum MysteriousTreasures implements LogicCardInfo {
                   prevent()
                 }
               }
-              // Potential addition once level-up is implemented
-              // before POISONED_SPC, null, null, LVL_X, {
-              //   if(ef.target == self.owner.opposite){
-              //     prevent()
-              //   }
-              // }
             }
           }
           move "Knuckle Claws", {

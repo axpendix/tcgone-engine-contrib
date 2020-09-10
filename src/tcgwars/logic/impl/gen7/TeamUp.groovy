@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen7
 
+import tcgwars.logic.effect.special.Poisoned
 import tcgwars.logic.impl.gen5.BlackWhite
 
 import static tcgwars.logic.card.HP.*;
@@ -1683,12 +1684,14 @@ public enum TeamUp implements LogicCardInfo {
             text "The Special Condition Poisoned is not removed when your opponent's Pokémon evolve or devolve."
             delayedA{
               before POISONED_SPC, null, null, EVOLVE, {
-                if(ef.target == self.owner.opposite){
+                if ((ef as Poisoned).getTarget().owner != self.owner) {
+                  bc "$thisAbility.name prevents removing the Special Condition Poisoned by evolving"
                   prevent()
                 }
               }
               before POISONED_SPC, null, null, DEVOLVE, {
-                if(ef.target == self.owner.opposite){
+                if ((ef as Poisoned).getTarget().owner != self.owner) {
+                  bc "$thisAbility.name prevents removing the Special Condition Poisoned by devolving"
                   prevent()
                 }
               }
