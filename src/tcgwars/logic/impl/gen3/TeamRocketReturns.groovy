@@ -2320,7 +2320,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nEach player shuffles his or her hand into his or her deck. Then, each player counts his or her Prize cards left and draws up to that many cards. (You draw your cards first.)"
           onPlay {
             my.hand.getExcludedList(thisCard).moveTo(hidden:true, my.deck)
-            opp.hand.getExcludedList(thisCard).moveTo(hidden:true, opp.deck)
+            opp.hand.moveTo(hidden:true, opp.deck)
             shuffleDeck()
             shuffleDeck(null,TargetPlayer.OPPONENT)
             draw choose(1..my.prizeCardSet.size(),"How many cards would you like to draw?")
