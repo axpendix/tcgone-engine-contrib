@@ -1270,7 +1270,9 @@ public enum DiamondPearl implements LogicCardInfo {
           move "Leaf Honey", {
             text "Discard a [G] Energy attached to Vespiquen and remove all damage counters from 1 of your Benched [G] Pokémon."
             energyCost G
-            attackRequirement { my.bench.findAll{it.types.contains(G) && it.numberOfDamageCounters} }
+            attackRequirement {
+              assertMyBench(hasType: G, info:"with damage on them", {it.numberOfDamageCounters})
+            }
             onAttack {
               discardSelfEnergy G
               def pcs = my.bench.findAll{it.types.contains(G) && it.numberOfDamageCounters}.select()
