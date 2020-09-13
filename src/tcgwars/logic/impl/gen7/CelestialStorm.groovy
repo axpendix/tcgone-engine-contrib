@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen7
 
+import tcgwars.logic.effect.gm.PlayCard
 import tcgwars.logic.impl.gen3.FireRedLeafGreen
 import tcgwars.logic.impl.gen3.TeamRocketReturns;
 import tcgwars.logic.impl.gen5.DarkExplorers
@@ -2322,19 +2323,10 @@ public enum CelestialStorm implements LogicCardInfo {
               assert my.deck : "There is no more card in your deck"
             }
             onAttack {
-              def selCrd = my.deck.search(count:1,"Select an item card",cardTypeFilter(ITEM))
-              selCrd.each{
-                if(it.cardTypes.is(POKEMON_TOOL)){
-                  if(my.all.findAll{!it.cards.filterByType(POKEMON_TOOL)} && confirm("Attach this tool to one of your pokémon?")){
-                    selCrd.moveTo(my.all.findAll{!it.cards.filterByType(POKEMON_TOOL)}.select("Attach $it to which pokémon?").cards)
-                  }
-                  else{
-                    selCrd.moveTo(my.hand)
-                  }
-                }
-                else{
-                  selCrd.moveTo(my.hand)
-                }
+              def trainer = my.deck.search(count:1, "Select an Trainer card",cardTypeFilter(ITEM)).showToOpponent("Mining - This is the Item card your opponent picked.")
+              trainer.moveTo(my.hand)
+              if (trainer.first().cardTypes.is(POKEMON_TOOL)) {
+                bg.em().run(new PlayCard(trainer.first()))
               }
               shuffleDeck()
             }
