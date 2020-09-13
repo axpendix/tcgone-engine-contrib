@@ -1757,20 +1757,13 @@ public enum TeamUp implements LogicCardInfo {
           bwAbility "Scoop-Up Block" , {
             text "Your opponent's Pokémon that have any damage counters on them, and any cards attached to those Pokémon, can't be put into your opponent's hand."
             delayedA {
-              def pcs = null
-              // Retain targeted Pokemon through effects
-              // TODO: Make sure this doesn't break anything
-              before null, {
-                if (ef instanceof TargetedEffect) {
-                  if (ef.getResolvedTarget(bg, e) != null) {
-                    pcs = ef.getResolvedTarget(bg, e)
-                  }
-                }
-              }
               before MOVE_CARD, {
-                if (ef.newLocation == self.owner.opposite.pbg.hand && pcs && pcs.numberOfDamageCounters && !hasThetaStop(pcs)) {
-                  bc "Scoop-Up Block stopped cards from returning to the owner's hand."
-                  prevent()
+                if (ef.newLocation == self.owner.opposite.pbg.hand) {
+                  def pcs = self.owner.opposite.pbg.all.find { it.cards.contains(ef.cards.first()) }
+                  if (pcs && pcs.numberOfDamageCounters && !hasThetaStop(pcs)) {
+                    bc "Scoop-Up Block stopped cards from returning to the owner's hand."
+                    prevent()
+                  }
                 }
               }
             }
