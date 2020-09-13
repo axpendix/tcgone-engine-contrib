@@ -2272,7 +2272,7 @@ public enum UnseenForces implements LogicCardInfo {
           if (it.topPokemonCard.name.contains("Dark ") || it.topPokemonCard.cardTypes.is(OWNERS_POKEMON) || it.EX){ discard thisCard }
         }
         onPlay {reason->
-          eff1 = getter GET_RETREAT_COST, self, { h ->
+          eff1 = getter GET_RETREAT_COST, LAST, self, { h ->
             h.object = 0
           }
           eff2 = delayed {
