@@ -1,8 +1,15 @@
-package tcgwars.logic.impl.gen4;
+package tcgwars.logic.impl.gen4
+
+import tcgwars.logic.effect.basic.Knockout;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.effect.EffectType.ATTACH_ENERGY
+import static tcgwars.logic.effect.EffectType.DEVOLVE
+import static tcgwars.logic.effect.EffectType.EVOLVE
+import static tcgwars.logic.effect.EffectType.KNOCKOUT
+import static tcgwars.logic.effect.EffectType.KNOCKOUT;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
@@ -1897,13 +1904,47 @@ public enum Triumphant implements LogicCardInfo {
       case RESCUE_ENERGY_90:
         return specialEnergy (this, [[C]]) {
           text "Rescue Energy provides 1 [C] Energy. IF the Pokémon this card is attached to is Knocked Out by damage from an attack, put that Pokémon back into your hand. (Discard all cards attached to that Pokémon.)"
+          def eff
           onPlay {reason->
+            eff = delayed {
+              before KNOCKOUT, self, {
+                if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite ){
+                  def pcs=self
+                  delayed(inline: true){
+                    after KNOCKOUT, pcs, {
+                      bc "Rescue Energy activates"
+                      /* FIXME with Robo Substitute (or any other similar card), this causes duplication of card
+                      I guess it can be resolved when inheritance of internal Card types are flattened into a single class
+                      then we can completely remove ChangeImplementation logic and simply replace the contents of the card
+                      instead of replacing the whole object
+                       */
+                      def scooped = scoopUpPokemon(pokemonOnly:true, pcs, delegate)
+
+                      /* FIXME workaround for above (if scoop up not blocked) */
+                      if (scooped) {
+                        def toCleanup = []
+                        pcs.cards.filterByType(POKEMON).each { pcsCard ->
+                          toCleanup.add(pcs.owner.pbg.discard.find { it.customInfo.cardInfo == pcsCard.customInfo.cardInfo })
+                        }
+                        pcs.owner.pbg.discard.removeAll(toCleanup)
+                      }
+                      owner.delegate.unregister()
+                    }
+                  }
+                }
+              }
+            }
           }
           onRemoveFromPlay {
+            eff.unregister()
           }
           onMove {to->
           }
           allowAttach {to->
+          }
+          getEnergyTypesOverride {
+            if (self) return [[C] as Set]
+            else return [[] as Set]
           }
         };
       case ABSOL_91:
