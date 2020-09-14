@@ -1872,8 +1872,18 @@ public enum Triumphant implements LogicCardInfo {
         return basicTrainer (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nEach player returns 1 of his or her Benched Pokémon and all cards attached to it to his or her hand. (You return your Pokémon first.)"
           onPlay {
+            def pcs
+            if (my.bench) {
+              pcs = my.bench.select("Which Pokémon to return to hand?")
+              scoopUpPokemon(pcs, delegate)
+            }
+            if (opp.bench) {
+              pcs = opp.bench.oppSelect("Which Pokémon to return to hand?")
+              scoopUpPokemon(pcs, delegate)
+            }
           }
           playRequirement{
+            assert my.bench || opp.bench : "No benched Pokémon in play"
           }
         };
       case TWINS_89:
@@ -2164,7 +2174,8 @@ public enum Triumphant implements LogicCardInfo {
             energyCost W, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              def pcs = opp.bench.select("Which Pokémon to return to Opponent's hand?")
+              scoopUpPokemon(pcs, delegate)
             }
           }
           move "Time Control", {

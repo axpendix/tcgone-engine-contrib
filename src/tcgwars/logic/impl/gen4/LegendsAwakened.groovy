@@ -331,8 +331,7 @@ public enum LegendsAwakened implements LogicCardInfo {
                 apply POISONED
               }
               if (confirm("Return Gliscor and all cards attached to it to your hand?")) {
-                self.cards.moveTo(hand)
-                removePCS(self)
+                scoopUpPokemon(self, delegate)
               }
             }
           }
@@ -681,7 +680,9 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost W, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip({
+                scoopUpPokemon(defending, delegate)
+              })
             }
           }
           move "Prop-up Pinchers", {
@@ -1723,7 +1724,10 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              if (confirm("Return $self and all cards attached to it to your hand?")) {
+                scoopUpPokemon(self, delegate)
+              }
             }
           }
           move "Core Flash", {

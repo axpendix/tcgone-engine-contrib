@@ -176,26 +176,7 @@ public enum CallOfLegends implements LogicCardInfo {
   public Card getImplementation() {
     switch (this) {
       case CLEFABLE_1:
-        return evolution (this, from:"Clefairy", hp:HP080, type:COLORLESS, retreatCost:1) {
-          weakness F
-          move "Fairy Power", {
-            text "Return 1 of your Pokémon and all cards attached to it in your hand."
-            energyCost C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Moon Impact", {
-            text "40 damage. "
-            energyCost C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(HeartgoldSoulsilver.CLEFABLE_3, this)
       case DEOXYS_2:
         return basic (this, hp:HP080, type:PSYCHIC, retreatCost:1) {
           weakness P

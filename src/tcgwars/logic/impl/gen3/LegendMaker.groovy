@@ -6,7 +6,8 @@ import tcgwars.logic.impl.gen7.CelestialStorm;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.effect.Source.POKEPOWER;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
@@ -572,9 +573,7 @@ public enum LegendMaker implements LogicCardInfo {
               if (my.all.any{ it.evolution && it.name != "Shiftry" } && confirm("Evolutionary Fan - Return 1 of your evolved Pokemon, and all cards attached to it, back to your hand?")){
                 powerUsed()
                 def pcs = my.all.findAll{ it.evolution && it.name != "Shiftry" }.select("Which Pokemon, and all cards attached to it, will you bring back to your hand?")
-
-                pcs.cards.moveTo(my.hand)
-                removePCS(pcs)
+                scoopUpPokemon([:], pcs, delegate, POKEPOWER)
               }
             }
           }
