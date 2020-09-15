@@ -2264,7 +2264,7 @@ public enum Stormfront implements LogicCardInfo {
           }
         };
       case DUSKNOIR_LV_X_96:
-        return evolution (this, from:"Dusknoir", hp:HP140, type:PSYCHIC, retreatCost:3) {
+        return levelUp (this, from:"Dusknoir", hp:HP140, type:PSYCHIC, retreatCost:3) {
           weakness D
           resistance C, MINUS20
           pokePower "Ectoplasm", {
@@ -2283,7 +2283,7 @@ public enum Stormfront implements LogicCardInfo {
 
         };
       case HEATRAN_LV_X_97:
-        return evolution (this, from:"Heatran", hp:HP120, type:FIRE, retreatCost:4) {
+        return levelUp (this, from:"Heatran", hp:HP120, type:FIRE, retreatCost:4) {
           weakness W
           pokeBody "Heat Metal", {
             text "Your opponent can’t remove the Special Condition Burned by evolving or devolving his or her Burned Pokémon. (This also includes putting a Pokémon Level-Up card onto the Burned Pokémon.) Whenever your opponent flips a coin for the Special Condition Burned between turns, treat it as tails."
@@ -2295,18 +2295,9 @@ public enum Stormfront implements LogicCardInfo {
             actionA {
             }
           }
-          move "", {
-            text "Put this card onto your Active Heatran. Heatran LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case MACHAMP_LV_X_98:
-        return evolution (this, from:"Machamp", hp:HP150, type:FIGHTING, retreatCost:3) {
+        return levelUp (this, from:"Machamp", hp:HP150, type:FIGHTING, retreatCost:3) {
           weakness P
           pokeBody "No Guard", {
             text "As long as Machamp is your Active Pokémon, each of Machamp’s attacks does 60 more damage to the Active Pokémon and any damage done to Machamp by your opponent’s Pokémon is increased by 60 ."
@@ -2321,18 +2312,9 @@ public enum Stormfront implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Machamp. Machamp LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case RAICHU_LV_X_99:
-        return evolution (this, from:"Raichu", hp:HP110, type:LIGHTNING, retreatCost:0) {
+        return levelUp (this, from:"Raichu", hp:HP110, type:LIGHTNING, retreatCost:0) {
           weakness F
           resistance M, MINUS20
           pokeBody "Link Lightning", {
@@ -2348,18 +2330,9 @@ public enum Stormfront implements LogicCardInfo {
               damage 0
             }
           }
-          move "", {
-            text "Put this card onto your Active Raichu. Raichu LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case REGIGIGAS_LV_X_100:
-        return evolution (this, from:"Regigigas", hp:HP150, type:COLORLESS, retreatCost:4) {
+        return levelUp (this, from:"Regigigas", hp:HP150, type:COLORLESS, retreatCost:4) {
           weakness F
           pokePower "Sacrifice", {
             text "Once during your turn , you may choose 1 of your Pokémon and that Pokémon is Knocked Out. Then, search your discard pile for up to 2 basic Energy cards, attach them to Regigigas, and remove 8 damage counters from Regigigas. This power can’t be used if Regigigas is affected by a Special Condition."
@@ -2386,15 +2359,6 @@ public enum Stormfront implements LogicCardInfo {
               if (opp.hand) opp.hand.shuffledCopy().select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be discarded").showToMe("Selected card").showToOpponent("This card will be discarded").discard()
             }
           }
-          move "", {
-            text "Put this card onto your Active Regigigas. Regigigas LV. can use any attack, Poké-Power, or Poké-Body from its previous level."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
         };
       case CHARMANDER_101:
         return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
