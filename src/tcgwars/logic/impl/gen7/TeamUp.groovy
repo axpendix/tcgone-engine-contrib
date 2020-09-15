@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen7
 
+import tcgwars.logic.effect.special.Poisoned
 import tcgwars.logic.impl.gen5.BlackWhite
 
 import static tcgwars.logic.card.HP.*;
@@ -1683,12 +1684,14 @@ public enum TeamUp implements LogicCardInfo {
             text "The Special Condition Poisoned is not removed when your opponent's Pokémon evolve or devolve."
             delayedA{
               before POISONED_SPC, null, null, EVOLVE, {
-                if(ef.target == self.owner.opposite){
+                if ((ef as Poisoned).getTarget().owner != self.owner) {
+                  bc "$thisAbility.name prevents removing the Special Condition Poisoned by evolving"
                   prevent()
                 }
               }
               before POISONED_SPC, null, null, DEVOLVE, {
-                if(ef.target == self.owner.opposite){
+                if ((ef as Poisoned).getTarget().owner != self.owner) {
+                  bc "$thisAbility.name prevents removing the Special Condition Poisoned by devolving"
                   prevent()
                 }
               }
@@ -2408,6 +2411,7 @@ public enum TeamUp implements LogicCardInfo {
             }
             onAttack{
               my.deck.search(min:1, max:2,"Choose 2 card to put in your hand",{true}).moveTo(hidden: true, my.hand)
+              shuffleDeck()
             }
           }
           move "Dark Strike" , {
@@ -3312,13 +3316,13 @@ public enum TeamUp implements LogicCardInfo {
           onPlay {
             eff1 = delayed {
               before ATTACK_MAIN, {
-                power = (ef.attacker.owner == opp.owner)
+                power = ef.attacker.owner
               }
             }
             eff2 = getter GET_GIVEN_PRIZES, {holder->
               def pcs = holder.effect.target
-              if (power && holder.object > 0 && pcs.owner == my.owner && pcs.KOBYDMG == bg.turnCount && pcs.types.contains(D) && pcs.cards.energyCount(D)) {
-                bc "Black Market Prism Star reduces the number of prizes taken due to ${self} being Knocked Out by one."
+              if (power == pcs.owner.opposite && holder.object > 0 && pcs.KOBYDMG == bg.turnCount && pcs.types.contains(D) && pcs.cards.energyCount(D)) {
+                bc "Black Market Prism Star reduces the number of prizes taken due to ${pcs} being Knocked Out by one."
                 holder.object -= 1
               }
             }

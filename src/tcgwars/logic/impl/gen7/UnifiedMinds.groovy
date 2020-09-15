@@ -2930,7 +2930,7 @@ public enum UnifiedMinds implements LogicCardInfo {
                   eff2 = getter GET_GIVEN_PRIZES, BEFORE_LAST, pcs, {Holder holder ->
                     if (holder.object > 0 && (pcs.pokemonGX || pcs.pokemonEX) && pcs.KOBYDMG == bg.turnCount) {
                       bc "Knocked Out Pokémon was a Pokémon-GX or Pokémon-EX. Greedy Crush gives the player an additional prize."
-                      holder.object += 2
+                      holder.object += 1
                     }
                   }
                 }
@@ -4266,8 +4266,13 @@ public enum UnifiedMinds implements LogicCardInfo {
           text "At the end of this turn, draw cards until you have 8 cards in your hand."
           onPlay {reason->
             delayed {
-              unregisterAfter 1
-              unregister {draw (8 - hand.getExcludedList(thisCard).size())}
+              before BETWEEN_TURNS, {
+                if (my.hand.size() < 8) {
+                  bc "${thisCard.name} effect triggers"
+                  draw (8 - hand.getExcludedList(thisCard).size())
+                }
+                unregister()
+              }
             }
           }
           playRequirement{

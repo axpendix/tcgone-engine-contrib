@@ -4253,8 +4253,10 @@ public enum UnbrokenBonds implements LogicCardInfo {
         return supporter (this) {
           text "Your opponent's Active Pokémon is now Confused and Poisoned."
           onPlay {
-            apply CONFUSED, opp.active, TRAINER_CARD
-            apply POISONED, opp.active, TRAINER_CARD
+            if ( !opp.active.isSPC(CONFUSED) )
+              apply CONFUSED, opp.active, TRAINER_CARD
+            if ( !opp.active.isSPC(POISONED) || (bg.em().retrieveObject("extra_poison_counter_"+opp.active.hashCode()) ?: 0) )
+              apply POISONED, opp.active, TRAINER_CARD
             bg.em().storeObject("KOGA_S_TRAP_TURN", bg.turnCount)
           }
           playRequirement{

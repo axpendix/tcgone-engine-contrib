@@ -1,4 +1,4 @@
-package tcgwars.logic.impl.gen3;
+package tcgwars.logic.impl.gen3
 
 import tcgwars.logic.impl.gen3.Deoxys;
 import tcgwars.logic.impl.gen3.Emerald;
@@ -9,6 +9,7 @@ import tcgwars.logic.impl.gen5.BlackWhite;
 import tcgwars.logic.impl.gen7.GuardiansRising;
 
 import tcgwars.logic.effect.gm.Attack
+import tcgwars.logic.effect.gm.PlayCard;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -467,20 +468,10 @@ public enum CrystalGuardians implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            def trainer = my.deck.search(count:1, "Select an Trainer card",cardTypeFilter(TRAINER))
-            trainer.each {
-              if (it.cardTypes.is(POKEMON_TOOL)) {
-                //TODO: Should use some PCS method for checking if tools can be attached, as to cover multi-tool Pokémon (Ancient Trait Gyarados, Genesect-GX, etc.)
-                if (my.all.findAll{!it.cards.filterByType(POKEMON_TOOL)} && confirm("Attach this tool to one of your pokémon?")) {
-                  trainer.moveTo(my.all.findAll{!it.cards.filterByType(POKEMON_TOOL)}.select("Attach $it to which pokémon?").cards)
-                }
-                else {
-                  trainer.moveTo(my.hand)
-                }
-              }
-              else {
-                trainer.moveTo(my.hand)
-              }
+            def trainer = my.deck.search(count:1, "Select an Trainer card",cardTypeFilter(TRAINER)).showToOpponent("Mining - This is the Trainer card your opponent picked.")
+            trainer.moveTo(my.hand)
+            if (trainer.first().cardTypes.is(POKEMON_TOOL)) {
+              bg.em().run(new PlayCard(trainer.first()))
             }
             shuffleDeck()
           }
@@ -1850,7 +1841,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         onPlay { reason ->
           eff = getter (GET_MOVE_LIST) { holder->
             if(holder.effect.target.active && holder.effect.target.evolution) {
-              for(card in holder.effect.target.cards.filterByType(STAGE_1, BASIC)) {
+              for(card in holder.effect.target.cards.filterByType(STAGE1, BASIC)) {
                 if(card!=holder.effect.target.topPokemonCard){
                   holder.object.addAll(card.moves)
                 }

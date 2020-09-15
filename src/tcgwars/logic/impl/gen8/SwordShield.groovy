@@ -1206,8 +1206,26 @@ public enum SwordShield implements LogicCardInfo {
           onAttack {
             damage 210
             afterDamage {
-              self.cards.filterByEnergyType(W).select("Which [W] Energy to move to your hand?").moveTo(my.hand)
-              self.cards.filterByEnergyType(W).select("Which [W] Energy to move to your hand?").moveTo(my.hand)
+              // TODO: Make a static method to do this
+              if (self.cards.energyCount(W))
+                if (self.cards.energyCount(W) <= 2) {
+                  self.cards.filterByEnergyType(W).moveTo my.hand
+                } else {
+                  def targetCount = Math.min self.cards.energyCount(W), 2
+                  def finalCount = 0
+                  while (self.cards.energyCount(W) > 0 && finalCount < targetCount) {
+                    def info = "Select [W] Energy to return to your hand."
+                    def energy = self.cards.filterByType(ENERGY).select(info, energyFilter(W))
+                    def energyCount = 1
+                    if (energy.energyCount(W) > 1) {
+                      def choices = 1..energy.energyCount(W)
+                      def choiceInfo = "How many Energy do you want this card to count as?"
+                      energyCount = choose(choices, choiceInfo)
+                    }
+                    finalCount += energyCount
+                    energy.moveTo my.hand
+                  }
+                }
             }
           }
         }
