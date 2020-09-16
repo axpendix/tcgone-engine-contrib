@@ -2536,7 +2536,11 @@ public enum RisingRivals implements LogicCardInfo {
           move "Spin Storm", {
             text "Flip a coin. If heads, your opponent returns the Defending Pokémon and all cards attached to it to his or her hand."
             energyCost C, C
-            attackRequirement {}
+            attackRequirement {
+              flip ({
+                scoopUpPokemon(defending, delegate)
+              })
+            }
             onAttack {
               damage 0
             }

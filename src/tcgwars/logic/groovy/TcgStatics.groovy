@@ -1535,13 +1535,15 @@ class TcgStatics {
    * Scoop up PokemonCardSets if not blocked by Scoop-Up Block
    *
    * @param params Optional settings map
-   *  + pokemonOnly: boolean - if true, scoops up all cards, else all pokemon cards. discards the rest.
+   *  + pokemonOnly: boolean - if true, scoops up all pokemon cards and discards the rest.
    *  + only: CardList - only scoops up them, discards the rest.
    * @param target PokemonCardSet to work on
    * @param delegate Effect delegate used to determine most sources automatically, and to get the card name for the Scoop-Up Block message
    * @param source Allows you to specify the source of the scoop up. Use intended manually setting SRC_ABILITY.
+   *
+   * @return boolean suceeded
    */
-  static void scoopUpPokemon(params=[:], PokemonCardSet target, Object delegate, Source source=null) {
+  static boolean scoopUpPokemon(params=[:], PokemonCardSet target, Object delegate, Source source=null) {
     if (source == null) {
       if (delegate.thisObject.cardTypes.is(TRAINER)) source = TRAINER_CARD
       if (delegate.thisObject.cardTypes.is(POKEMON)) source = ATTACK
@@ -1549,7 +1551,7 @@ class TcgStatics {
     }
     if (bg.em().retrieveObject("ScoopUpBlock_Count$target.owner.opposite") && target.numberOfDamageCounters && !hasThetaStop(target)) {
       bc "Scoop-Up Block prevents $delegate.thisObject.name's effect."
-      return
+      return false
     }
     targeted(target, source) {
       CardList toHand
@@ -1577,7 +1579,9 @@ class TcgStatics {
       target.owner.pbg.discard.addAll(toDiscard2)
       toDiscard.getExcludedList(toDiscard2).discard()
       removePCS(target)
+      return true
     }
+    return false
   }
 
 }

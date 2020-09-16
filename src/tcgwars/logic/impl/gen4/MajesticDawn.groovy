@@ -1312,8 +1312,7 @@ public enum MajesticDawn implements LogicCardInfo {
             onAttack {
               if (my.bench.notEmpty) {
                 damage 20
-                self.cards.moveTo(hand)
-                removePCS(self)
+                scoopUpPokemon(self, delegate)
               }
             }
           }

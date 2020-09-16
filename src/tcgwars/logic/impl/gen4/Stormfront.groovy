@@ -352,7 +352,11 @@ public enum Stormfront implements LogicCardInfo {
             energyCost P, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              if (opp.bench.size() >= 4) {
+                def pcs = opp.bench.select("Which Pokémon to return to opponent's hand?")
+                scoopUpPokemon(pcs, delegate)
+              }
             }
           }
 

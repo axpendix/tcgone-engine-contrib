@@ -355,7 +355,8 @@ public enum DeltaSpecies implements LogicCardInfo {
 
             afterDamage {
               if (confirm("Return an Energy card from $self to your hand?")) {
-                self.cards.filterByType(ENERGY).select(count:1).moveTo(my.hand)
+                def moved = self.cards.filterByType(ENERGY).select(count:1).moveTo(my.hand)
+                if (moved.stream().anyMatch(self.cards.&contains)) return
                 apply BURNED
               }
             }
@@ -424,7 +425,8 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 50
 
             if (confirm("Return an Energy card from $self to your hand?")) {
-              self.cards.filterByType(ENERGY).select(count:1).moveTo(my.hand)
+              def moved = self.cards.filterByType(ENERGY).select(count:1).moveTo(my.hand)
+              if (moved.stream().anyMatch(self.cards.&contains)) return
 
               if (opp.bench) {
                 damage 20, opp.bench.select("Deal 20 damage to which Benched Pokemon?")
@@ -787,8 +789,8 @@ public enum DeltaSpecies implements LogicCardInfo {
             afterDamage {
               if (confirm("Return an Energy card from $self to your hand in order to use the additional effect of 'Return Wave'?")) {
 
-                self.cards.filterByType(ENERGY).select(count:1).moveTo(my.hand)
-                //TODO: Add a check for the energy not being here anymore (Scoop-Up Block)
+                def moved = self.cards.filterByType(ENERGY).select(count:1).moveTo(my.hand)
+                if (moved.stream().anyMatch(self.cards.&contains)) return
                 defending.cards.filterByType(ENERGY).select(count:1).moveTo(opp.hand)
               }
             }

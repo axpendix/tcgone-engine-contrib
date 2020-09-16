@@ -1842,7 +1842,9 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip ({
+                scoopUpPokemon(defending, delegate)
+              })
             }
           }
           move "Sever", {

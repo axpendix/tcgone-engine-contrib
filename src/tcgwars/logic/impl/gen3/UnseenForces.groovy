@@ -3948,8 +3948,7 @@ public enum UnseenForces implements LogicCardInfo {
           attackRequirement { assert opp.bench: "Opponent's bench is empty" }
           onAttack {
             flip {
-              defending.cards.moveTo(hand)
-              removePCS(defending)
+              scoopUpPokemon(defending, delegate)
             }
           }
         }

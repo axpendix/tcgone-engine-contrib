@@ -9,6 +9,7 @@ import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
+import static tcgwars.logic.effect.Source.*;
 
 import tcgwars.logic.card.*
 import tcgwars.logic.util.*;
@@ -629,6 +630,13 @@ public enum DiamondPearlPromos implements LogicCardInfo {
           pokePower "Leap Away", {
             text "Once during your turn , if Toxicroak is your Active Pok�mon, you may flip a coin. If heads, return Toxicroak and all cards attached to it to your hand. This power can�t be used if Toxicroak is affected by a Special Condition."
             actionA {
+              assert self.active : "$self is not your Active Pokémon"
+              checkLastTurn()
+              checkNoSPC()
+              powerUsed()
+              flip ({
+                scoopUpPokemon([:], self, delegate, POKEPOWER)
+              })
             }
           }
           move "Poison Revenge", {

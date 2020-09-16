@@ -2307,7 +2307,10 @@ public enum Platinum implements LogicCardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              if (my.bench.notEmpty) {
+                damage 30
+                scoopUpPokemon(self, delegate)
+              }
             }
           }
 
@@ -2660,9 +2663,13 @@ public enum Platinum implements LogicCardInfo {
       case POKE_TURN_118:
         return itemCard (this) {
           text "Return 1 of your Pokémon SP and all cards attached to it to your hand."
+          // TODO: Check for Pokémon SP in onPlay and playRequirement
           onPlay {
+            def pcs = my.bench.findAll { true }.select("Which Pokémon SP to return to hand?")
+            scoopUpPokemon(pcs, delegate)
           }
           playRequirement{
+            my.bench.any { true }
           }
         };
       case ARMOR_FOSSIL_119:

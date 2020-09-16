@@ -2799,8 +2799,7 @@ public enum SunMoonPromos implements LogicCardInfo {
           onAttack {
             gxPerform()
             def pcs = opp.bench.select()
-            pcs.cards.moveTo(opp.hand)
-            removePCS(pcs)
+            scoopUpPokemon(pcs, delegate)
             }
           }
         };

@@ -2378,10 +2378,7 @@ public enum GuardiansRising implements LogicCardInfo {
             onAttack {
               gxPerform()
               multiSelect(opp.bench, 2).each{
-                targeted(it){
-                  it.cards.moveTo(opp.hand)
-                  removePCS(it)
-                }
+                scoopUpPokemon(it, delegate)
               }
             }
           }

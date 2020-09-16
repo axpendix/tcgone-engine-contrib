@@ -274,8 +274,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
             onAttack {
               def pcs = my.all.select()
-              pcs.cards.moveTo(hand)
-              removePCS(pcs)
+              scoopUpPokemon(pcs, delegate)
             }
           }
           move "Moon Impact", {
@@ -1179,8 +1178,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             onAttack {
               damage 20
               afterDamage {
-                self.cards.moveTo(hand)
-                removePCS(self)
+                scoopUpPokemon(self, delegate)
               }
 
             }
