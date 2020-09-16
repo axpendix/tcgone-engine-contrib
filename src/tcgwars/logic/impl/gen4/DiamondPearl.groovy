@@ -249,7 +249,8 @@ public enum DiamondPearl implements LogicCardInfo {
               damage 40
               afterDamage {
                 if (defending.evolution && confirm ("You may return all Energy cards attached to Dialga to your hand. If you do, remove the highest Stage Evolution card from the Defending Pokémon and shuffle that card into your opponent’s deck.")) {
-                  self.cards.filterByType(ENERGY).moveTo(my.hand)
+                  def moved = self.cards.filterByType(ENERGY).moveTo(my.hand)
+                  if(moved.stream().anyMatch(self.cards.&contains)) return
                   def top=defending.topPokemonCard
                   devolve(defending, top, opp.deck)
                   shuffleDeck(null, TargetPlayer.OPPONENT)
