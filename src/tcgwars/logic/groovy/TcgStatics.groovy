@@ -1581,6 +1581,7 @@ class TcgStatics {
       removePCS(target)
       return true
     }
+    return false
   }
 
 }
