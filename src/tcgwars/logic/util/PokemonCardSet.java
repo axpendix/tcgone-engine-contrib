@@ -285,7 +285,14 @@ public class PokemonCardSet implements PokemonStack, Serializable {
     }
   }
 
-  public String getWholeName() { return getTopPokemonCard().getWholeName(); }
+  public String getWholeName() {
+    try {
+      lastName = getTopPokemonCard().getWholeName();
+      return lastName;
+    } catch (Exception e) {
+      return lastName;
+    }
+  }
 
   public boolean isActive() {
     return TcgStatics.bg().getPBG(owner).getActive() == this;
