@@ -2903,7 +2903,7 @@ public enum DiamondPearl implements LogicCardInfo {
           }
         };
       case PLUSPOWER_109:
-      // TODO this has to be implemented here again because base set version has a multiplying bug (also, this print increases before W/R when the old prints do it after W/R - starg)
+      // This print increases before W/R, do not use it as copy for older prints that do it after W/R. Another diference is it affecting damage to any active, not just the defending like old prints.
       return itemCard (this) {
         text "Attach PlusPower to 1 of your Pokémon. Discard this card at the end of your turn.\nIf the Pokémon PlusPower is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance)."
         def eff
