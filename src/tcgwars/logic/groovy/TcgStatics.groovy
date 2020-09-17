@@ -1553,7 +1553,7 @@ class TcgStatics {
       bc "Scoop-Up Block prevents $delegate.thisObject.name's effect."
       return false
     }
-    targeted(target, source) {
+    return !targeted(target, source) {
       CardList toHand
       if(params.only) {
         if (params.only instanceof Card) toHand = new CardList(params.only)
@@ -1579,9 +1579,7 @@ class TcgStatics {
       target.owner.pbg.discard.addAll(toDiscard2)
       toDiscard.getExcludedList(toDiscard2).discard()
       removePCS(target)
-      return true
     }
-    return false
   }
 
 }
