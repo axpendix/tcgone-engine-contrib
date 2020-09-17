@@ -1938,10 +1938,6 @@ public enum Triumphant implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-          onMove {to->
-          }
-          allowAttach {to->
-          }
           getEnergyTypesOverride {
             if (self) return [[C] as Set]
             else return [[] as Set]
