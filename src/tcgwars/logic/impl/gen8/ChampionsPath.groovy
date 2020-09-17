@@ -170,828 +170,828 @@ public enum ChampionsPath implements LogicCardInfo {
     switch (this) {
       case VENUSAUR_V_1:
       return basic (this, hp:HP220, type:G, retreatCost:3) {
-				weakness R
-				move "Pollen Bomb", {
-					text "The opponent’s Active Pokémon is now Poisoned and Asleep."
-					energyCost G, G, C
-					attackRequirement {}
-					onAttack {
+        weakness R
+        move "Pollen Bomb", {
+          text "The opponent’s Active Pokémon is now Poisoned and Asleep."
+          energyCost G, G, C
+          attackRequirement {}
+          onAttack {
 
-					}
-				}
-				move "Solar Typhoon", {
-					text "220 damage. This Pokémon can’t use Solar Typhoon during your next turn."
-					energyCost G, G, G, C
-					attackRequirement {}
-					onAttack {
-						damage 220
-					}
-				}
-			};
+          }
+        }
+        move "Solar Typhoon", {
+          text "220 damage. This Pokémon can’t use Solar Typhoon during your next turn."
+          energyCost G, G, G, C
+          attackRequirement {}
+          onAttack {
+            damage 220
+          }
+        }
+      };
       case WEEDLE_2:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
-				weakness R
-				move "Call for Family", {
-					text "Search your deck for a Basic Pokemon and put it on your Bench. Then, shuffle your deck."
-					energyCost C
-					attackRequirement {}
-					onAttack {
+        weakness R
+        move "Call for Family", {
+          text "Search your deck for a Basic Pokemon and put it on your Bench. Then, shuffle your deck."
+          energyCost C
+          attackRequirement {}
+          onAttack {
 
-					}
-				}
-			};
+          }
+        }
+      };
       case KAKUNA_3:
       return evolution (this, from:"Weedle", hp:HP060, type:G, retreatCost:3) {
-				weakness R
-				move "Bug Bite", {
-					text "30 damage."
-					energyCost G
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-			};
+        weakness R
+        move "Bug Bite", {
+          text "30 damage."
+          energyCost G
+          attackRequirement {}
+          onAttack {
+            damage 30
+          }
+        }
+      };
       case BEEDRILL_4:
       return evolution (this, from:"Kakuna", hp:HP140, type:G, retreatCost:1) {
-				weakness R
-				move "Poison Jab", {
-					text "80 damage. Your opponent’s Active Pokemon is now Poisoned."
-					energyCost G
-					attackRequirement {}
-					onAttack {
-						damage 80
-					}
-				}
-			};
+        weakness R
+        move "Poison Jab", {
+          text "80 damage. Your opponent’s Active Pokemon is now Poisoned."
+          energyCost G
+          attackRequirement {}
+          onAttack {
+            damage 80
+          }
+        }
+      };
       case ELDEGOSS_5:
       return copy (RebelClash.ELDEGOSS_19, this);
       case VULPIX_6:
       return basic (this, hp:HP060, type:R, retreatCost:1) {
-				weakness W
-				move "Gnaw", {
-					text "10 damage."
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-				move "Singe", {
-					text "Your opponent's Active Pokémon is now Burned."
-					energyCost R, C
-					attackRequirement {}
-					onAttack {
+        weakness W
+        move "Gnaw", {
+          text "10 damage."
+          energyCost C
+          attackRequirement {}
+          onAttack {
+            damage 10
+          }
+        }
+        move "Singe", {
+          text "Your opponent's Active Pokémon is now Burned."
+          energyCost R, C
+          attackRequirement {}
+          onAttack {
 
-					}
-				}
-			};
+          }
+        }
+      };
       case VICTINI_7:
       return basic (this, hp:HP070, type:R, retreatCost:1) {
-				weakness W
-				move "Quick Draw", {
-					text "Draw a card."
-					energyCost C
-					attackRequirement {}
-					onAttack {
+        weakness W
+        move "Quick Draw", {
+          text "Draw a card."
+          energyCost C
+          attackRequirement {}
+          onAttack {
 
-					}
-				}
-				move "Combustion", {
-					text "30 damage."
-					energyCost R, C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-			};
+          }
+        }
+        move "Combustion", {
+          text "30 damage."
+          energyCost R, C
+          attackRequirement {}
+          onAttack {
+            damage 30
+          }
+        }
+      };
       case INCINEROAR_V:
       return basic (this, hp:HP220, type:R, retreatCost:3) {
-				weakness R
-				move "Grand Flame", {
-					text "90 damage. Attach up to 2 [R] Energy cards from your discard pile to 1 of your Benched Pokémon."
-					energyCost R, R, C
-					attackRequirement {}
-					onAttack {
-						damage 90
-					}
-				}
-				move "Flare Blitzer", {
-					text "90 damage. This Pokémon also does 30 damage to itself."
-					energyCost R, R, R, C
-					attackRequirement {}
-					onAttack {
-						damage 90
-					}
-				}
-			};
+        weakness R
+        move "Grand Flame", {
+          text "90 damage. Attach up to 2 [R] Energy cards from your discard pile to 1 of your Benched Pokémon."
+          energyCost R, R, C
+          attackRequirement {}
+          onAttack {
+            damage 90
+          }
+        }
+        move "Flare Blitzer", {
+          text "90 damage. This Pokémon also does 30 damage to itself."
+          energyCost R, R, R, C
+          attackRequirement {}
+          onAttack {
+            damage 90
+          }
+        }
+      };
       case SIZZLIPEDE_9:
       return basic (this, hp:HP070, type:R, retreatCost:1) {
-				weakness W
-				move "Bite", {
-					text "10 damage."
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-				move "Combustion", {
-					text "50 damage."
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 50
-					}
-				}
-			};
+        weakness W
+        move "Bite", {
+          text "10 damage."
+          energyCost C
+          attackRequirement {}
+          onAttack {
+            damage 10
+          }
+        }
+        move "Combustion", {
+          text "50 damage."
+          energyCost C
+          attackRequirement {}
+          onAttack {
+            damage 50
+          }
+        }
+      };
       case CENTISKORCH_10:
       return evolution (this, from:"Sizzlipede", hp:HP130, type:R, retreatCost:3) {
-				weakness W
-				move "Searing Flame", {
-					text "50 damage. Your opponent's Active Pokémon is now Burned."
-					energyCost R, C, C
-					attackRequirement {}
-					onAttack {
-						damage 50
-					}
-				}
-				move "Heat Crawler", {
-					text "140 damage."
-					energyCost R, R, C, C
-					attackRequirement {}
-					onAttack {
-						damage 140
-					}
-				}
-			};
+        weakness W
+        move "Searing Flame", {
+          text "50 damage. Your opponent's Active Pokémon is now Burned."
+          energyCost R, C, C
+          attackRequirement {}
+          onAttack {
+            damage 50
+          }
+        }
+        move "Heat Crawler", {
+          text "140 damage."
+          energyCost R, R, C, C
+          attackRequirement {}
+          onAttack {
+            damage 140
+          }
+        }
+      };
       case CARVANHA_11:
       return basic (this, hp:HP060, type:W, retreatCost:1) {
-				weakness L
-				move "Bite", {
-					text "10 damage."
-					energyCost W
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-			};
+        weakness L
+        move "Bite", {
+          text "10 damage."
+          energyCost W
+          attackRequirement {}
+          onAttack {
+            damage 10
+          }
+        }
+      };
       case SHARPEDO_12:
       return evolution (this, from:"Carvanha", hp:HP110, type:W, retreatCost:1) {
-				weakness L
-				move "Aqua Jet", {
-					text "50 damage. This attack also does 20 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
-					energyCost W
-					attackRequirement {}
-					onAttack {
-						damage 50
-					}
-				}
-			};
+        weakness L
+        move "Aqua Jet", {
+          text "50 damage. This attack also does 20 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+          energyCost W
+          attackRequirement {}
+          onAttack {
+            damage 50
+          }
+        }
+      };
       case WAILORD_V_13:
       return basic (this, hp:HP280, type:W, retreatCost:4) {
-				weakness L
-				move "Draw Up", {
-					text "Attach up to 3 [W] Energy cards from your discard pile to this Pokémon."
-					energyCost W
-					attackRequirement {}
-					onAttack {
+        weakness L
+        move "Draw Up", {
+          text "Attach up to 3 [W] Energy cards from your discard pile to this Pokémon."
+          energyCost W
+          attackRequirement {}
+          onAttack {
 
-					}
-				}
-				move "Ocean Waves", {
-					text "120x damage. Flip 3 coins. This attack does 120 damage for each heads."
-					energyCost W
-					attackRequirement {}
-					onAttack {
-						damage 120
-					}
-				}
-			};
+          }
+        }
+        move "Ocean Waves", {
+          text "120x damage. Flip 3 coins. This attack does 120 damage for each heads."
+          energyCost W
+          attackRequirement {}
+          onAttack {
+            damage 120
+          }
+        }
+      };
       case DREDNAW_V_14:
       return basic (this, hp:HP210, type:W, retreatCost:4) {
-				weakness L
-				bwAbility "Solid Shell", {
-					text "This Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
-					actionA {
-					}
-				}
-				move "Powerful Bite", {
-					text "During your opponent's next turn, the Defending Pokémon can't retreat."
-					energyCost W, W, C
-					attackRequirement {}
-					onAttack {
+        weakness L
+        bwAbility "Solid Shell", {
+          text "This Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+          actionA {
+          }
+        }
+        move "Powerful Bite", {
+          text "During your opponent's next turn, the Defending Pokémon can't retreat."
+          energyCost W, W, C
+          attackRequirement {}
+          onAttack {
 
-					}
-				}
-			};
+          }
+        }
+      };
       case DREDNAW_VMAX_15:
       return evolution (this, from:"Drednaw V", hp:HP320, type:W, retreatCost:4) {
-				weakness L
-				bwAbility "Solid Shell", {
-					text "This Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
-					actionA {
-					}
-				}
-				move "G-Max Headbutt", {
-					text "160+ damage. Flip a coin. If heads, this attack does 80 more damage."
-					energyCost W, W, C
-					attackRequirement {}
-					onAttack {
-						damage 160
-					}
-				}
-			};
+        weakness L
+        bwAbility "Solid Shell", {
+          text "This Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+          actionA {
+          }
+        }
+        move "G-Max Headbutt", {
+          text "160+ damage. Flip a coin. If heads, this attack does 80 more damage."
+          energyCost W, W, C
+          attackRequirement {}
+          onAttack {
+            damage 160
+          }
+        }
+      };
       case GARDEVOIR_V_16:
       return basic (this, hp:HP210, type:P, retreatCost:2) {
-				weakness M
-				move "Magical Shot", {
-					text "30 damage."
-					energyCost P
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-				move "Swelling Pulse", {
-					text "120+ damage. If this Pokémon was healed during this turn, this attack does 80 more damage."
-					energyCost P, P, C
-					attackRequirement {}
-					onAttack {
-						damage 120
-					}
-				}
-			};
+        weakness M
+        move "Magical Shot", {
+          text "30 damage."
+          energyCost P
+          attackRequirement {}
+          onAttack {
+            damage 30
+          }
+        }
+        move "Swelling Pulse", {
+          text "120+ damage. If this Pokémon was healed during this turn, this attack does 80 more damage."
+          energyCost P, P, C
+          attackRequirement {}
+          onAttack {
+            damage 120
+          }
+        }
+      };
       case GARDEVOIR_VMAX_17:
       return evolution (this, from:"Gardevoir V", hp:HP320, type:P, retreatCost:2) {
-				weakness M
-				move "Max Cure", {
-					text "180 damage. Heal 50 damage from this Pokémon."
-					energyCost P, P, C
-					attackRequirement {}
-					onAttack {
-						damage 180
-					}
-				}
-			};
+        weakness M
+        move "Max Cure", {
+          text "180 damage. Heal 50 damage from this Pokémon."
+          energyCost P, P, C
+          attackRequirement {}
+          onAttack {
+            damage 180
+          }
+        }
+      };
       case HATENNA_18:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
-				weakness D
+        weakness D
         resistance F, MINUS30
-				move "Stampede", {
-					text "10 damage."
-					energyCost P
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-				move "Magical Shot", {
-					text "30 damage."
-					energyCost P, C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-			};
+        move "Stampede", {
+          text "10 damage."
+          energyCost P
+          attackRequirement {}
+          onAttack {
+            damage 10
+          }
+        }
+        move "Magical Shot", {
+          text "30 damage."
+          energyCost P, C
+          attackRequirement {}
+          onAttack {
+            damage 30
+          }
+        }
+      };
       case HATTREM_19:
       return evolution (this, from:"Hatenna", hp:HP090, type:P, retreatCost:2) {
-				weakness D
+        weakness D
         resistance F, MINUS30
-				move "Beat", {
-					text "20 damage."
-					energyCost P
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-				move "Super Psy Bolt", {
-					text "40 damage."
-					energyCost P, C
-					attackRequirement {}
-					onAttack {
-						damage 40
-					}
-				}
-			};
+        move "Beat", {
+          text "20 damage."
+          energyCost P
+          attackRequirement {}
+          onAttack {
+            damage 20
+          }
+        }
+        move "Super Psy Bolt", {
+          text "40 damage."
+          energyCost P, C
+          attackRequirement {}
+          onAttack {
+            damage 40
+          }
+        }
+      };
       case HATTERENE_20:
       return evolution (this, from:"Hattrem", hp:HP150, type:P, retreatCost:2) {
-				weakness D
+        weakness D
         resistance F, MINUS30
-				bwAbility "Hazard Sensor", {
-					text "If this Pokémon is in the Active Spot and is damaged by an attack from your opponent's Pokémon (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Confused."
-					actionA {
-					}
-				}
-				move "Life Sucker", {
-					text "100 damage. Heal 30 damage from this Pokémon."
-					energyCost P, C
-					attackRequirement {}
-					onAttack {
-						damage 100
-					}
-				}
-			};
+        bwAbility "Hazard Sensor", {
+          text "If this Pokémon is in the Active Spot and is damaged by an attack from your opponent's Pokémon (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Confused."
+          actionA {
+          }
+        }
+        move "Life Sucker", {
+          text "100 damage. Heal 30 damage from this Pokémon."
+          energyCost P, C
+          attackRequirement {}
+          onAttack {
+            damage 100
+          }
+        }
+      };
       case GALARIAN_CURSOLA_V_21:
       return basic (this, hp:HP190, type:P, retreatCost:2) {
-				weakness D
-				resistance F, MINUS30
-				bwAbility "Gnawing Aura", {
-					text "As long as this Pokémon is in the Active Spot, whenever your opponent attaches an Energy card from their hand to 1 of their Pokémon, put 3 damage counters on that Pokémon."
-					actionA {
-					}
-				}
-				move "Hollow Missile", {
-					text "60 damage. Put 3 damage counters on your opponent's Benched Pokémon in any way you like."
-					energyCost P, C
-					attackRequirement {}
-					onAttack {
-						damage 60
-					}
-				}
-			};
+        weakness D
+        resistance F, MINUS30
+        bwAbility "Gnawing Aura", {
+          text "As long as this Pokémon is in the Active Spot, whenever your opponent attaches an Energy card from their hand to 1 of their Pokémon, put 3 damage counters on that Pokémon."
+          actionA {
+          }
+        }
+        move "Hollow Missile", {
+          text "60 damage. Put 3 damage counters on your opponent's Benched Pokémon in any way you like."
+          energyCost P, C
+          attackRequirement {}
+          onAttack {
+            damage 60
+          }
+        }
+      };
       case ALCREMIE_V_22:
       return basic (this, hp:HP170, type:P, retreatCost:2) {
-				weakness M
-				move "Sugary Sprinkles", {
-					text "Heal 30 damage from each of your Benched Pokémon."
-					energyCost P
-					attackRequirement {}
-					onAttack {
+        weakness M
+        move "Sugary Sprinkles", {
+          text "Heal 30 damage from each of your Benched Pokémon."
+          energyCost P
+          attackRequirement {}
+          onAttack {
 
-					}
-				}
-				move "Sweet Splash", {
-					text "100 damage. If the Defending Pokémon is a Basic Pokémon, it can't attack during your opponent's next turn."
-					energyCost P, C, C
-					attackRequirement {}
-					onAttack {
-						damage 100
-					}
-				}
-			};
+          }
+        }
+        move "Sweet Splash", {
+          text "100 damage. If the Defending Pokémon is a Basic Pokémon, it can't attack during your opponent's next turn."
+          energyCost P, C, C
+          attackRequirement {}
+          onAttack {
+            damage 100
+          }
+        }
+      };
       case ALCREMIE_VMAX_23:
       return evolution (this, from:"Alcremie V", hp:HP310, type:P, retreatCost:3) {
-				weakness M
-				move "Adornment", {
-					text "For each of your Benched Pokémon, search your deck for a [P] Energy card and attach it to that Pokémon. Then, shuffle your deck."
-					energyCost C
-					attackRequirement {}
-					onAttack {
+        weakness M
+        move "Adornment", {
+          text "For each of your Benched Pokémon, search your deck for a [P] Energy card and attach it to that Pokémon. Then, shuffle your deck."
+          energyCost C
+          attackRequirement {}
+          onAttack {
 
-					}
-				}
-				move "G-Max Whisk", {
-					text "60x damage. Discard any amount of Energy from your Pokémon. This attack does 60 damage for each card you discarded in this way."
-					energyCost P, P
-					attackRequirement {}
-					onAttack {
-						damage 60
-					}
-				}
-			};
+          }
+        }
+        move "G-Max Whisk", {
+          text "60x damage. Discard any amount of Energy from your Pokémon. This attack does 60 damage for each card you discarded in this way."
+          energyCost P, P
+          attackRequirement {}
+          onAttack {
+            damage 60
+          }
+        }
+      };
       case MACHOP_24:
       return basic (this, hp:HP070, type:F, retreatCost:2) {
-				weakness P
-				move "Low Kick", {
-					text "10 damage."
-					energyCost F
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-				move "Steady Punch", {
-					text "20+ damage. Flip a coin. If heads, this attack does 40 more damage."
-					energyCost F, C
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-			};
+        weakness P
+        move "Low Kick", {
+          text "10 damage."
+          energyCost F
+          attackRequirement {}
+          onAttack {
+            damage 10
+          }
+        }
+        move "Steady Punch", {
+          text "20+ damage. Flip a coin. If heads, this attack does 40 more damage."
+          energyCost F, C
+          attackRequirement {}
+          onAttack {
+            damage 20
+          }
+        }
+      };
       case MACHOKE_25:
       return evolution (this, from:"Machop", hp:HP110, type:F, retreatCost:3) {
-				weakness P
-				move "Low Kick", {
-					text "30 damage."
-					energyCost F
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-				move "Pummel", {
-					text "50+ damage. Flip a coin. If heads, this attack does 70 more damage."
-					energyCost F, F, C
-					attackRequirement {}
-					onAttack {
-						damage 50
-					}
-				}
-			};
+        weakness P
+        move "Low Kick", {
+          text "30 damage."
+          energyCost F
+          attackRequirement {}
+          onAttack {
+            damage 30
+          }
+        }
+        move "Pummel", {
+          text "50+ damage. Flip a coin. If heads, this attack does 70 more damage."
+          energyCost F, F, C
+          attackRequirement {}
+          onAttack {
+            damage 50
+          }
+        }
+      };
       case MACHAMP_26:
       return evolution (this, from:"Machoke", hp:HP170, type:F, retreatCost:3) {
-				weakness P
-				move "Macho Revenge", {
-					text "20x damage. This attack does 20 damage for each Fighting Pokémon in your discard pile."
-					energyCost F, C
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-				move "Dynamite Punch", {
-					text "200 damage. This Pokémon also does 50 damage to itself."
-					energyCost F, F, C
-					attackRequirement {}
-					onAttack {
-						damage 200
-					}
-				}
-			};
+        weakness P
+        move "Macho Revenge", {
+          text "20x damage. This attack does 20 damage for each Fighting Pokémon in your discard pile."
+          energyCost F, C
+          attackRequirement {}
+          onAttack {
+            damage 20
+          }
+        }
+        move "Dynamite Punch", {
+          text "200 damage. This Pokémon also does 50 damage to itself."
+          energyCost F, F, C
+          attackRequirement {}
+          onAttack {
+            damage 200
+          }
+        }
+      };
       case LUCARIO_27:
       return basic (this, hp:HP210, type:F, retreatCost:2) {
-				weakness P
-				move "Aura Sphere", {
-					text "40 damage. This attack also does 20 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
-					energyCost F
-					attackRequirement {}
-					onAttack {
-						damage 40
-					}
-				}
-				move "Beatdown Smash", {
-					text "180 damage. During your next turn, this Pokémon can't use Beatdown Smash."
-					energyCost F, F, C
-					attackRequirement {}
-					onAttack {
-						damage 180
-					}
-				}
-			};
+        weakness P
+        move "Aura Sphere", {
+          text "40 damage. This attack also does 20 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+          energyCost F
+          attackRequirement {}
+          onAttack {
+            damage 40
+          }
+        }
+        move "Beatdown Smash", {
+          text "180 damage. During your next turn, this Pokémon can't use Beatdown Smash."
+          energyCost F, F, C
+          attackRequirement {}
+          onAttack {
+            damage 180
+          }
+        }
+      };
       case ZYGARDE_28:
       return basic (this, hp:HP140, type:F, retreatCost:3) {
-				weakness G
-				move "Bite", {
-					text "30 damage."
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-				move "Power Blast", {
-					text "130 damage. Discard a [F] Energy from this Pokémon."
-					energyCost F, F, C, C
-					attackRequirement {}
-					onAttack {
-						damage 130
-					}
-				}
-			};
+        weakness G
+        move "Bite", {
+          text "30 damage."
+          energyCost C
+          attackRequirement {}
+          onAttack {
+            damage 30
+          }
+        }
+        move "Power Blast", {
+          text "130 damage. Discard a [F] Energy from this Pokémon."
+          energyCost F, F, C, C
+          attackRequirement {}
+          onAttack {
+            damage 130
+          }
+        }
+      };
       case ROCKRUFF_29:
       return basic (this, hp:HP070, type:F, retreatCost:1) {
-				weakness G
-				move "Collect", {
-					text "Draw a card."
-					energyCost C
-					attackRequirement {}
-					onAttack {
+        weakness G
+        move "Collect", {
+          text "Draw a card."
+          energyCost C
+          attackRequirement {}
+          onAttack {
 
-					}
-				}
-				move "Bite", {
-					text "20 damage."
-					energyCost F, C
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-			};
+          }
+        }
+        move "Bite", {
+          text "20 damage."
+          energyCost F, C
+          attackRequirement {}
+          onAttack {
+            damage 20
+          }
+        }
+      };
       case LYCANROC_30:
       return evolution (this, from:"Rockruff", hp:HP120, type:F, retreatCost:2) {
-				weakness G
-				move "Rock Throw", {
-					text "30 damage."
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-				move "Slashing Strike", {
-					text "150 damage. During your next turn, this Pokémon can't use Slashing Strike."
-					energyCost F, F, C
-					attackRequirement {}
-					onAttack {
-						damage 150
-					}
-				}
-			};
+        weakness G
+        move "Rock Throw", {
+          text "30 damage."
+          energyCost C
+          attackRequirement {}
+          onAttack {
+            damage 30
+          }
+        }
+        move "Slashing Strike", {
+          text "150 damage. During your next turn, this Pokémon can't use Slashing Strike."
+          energyCost F, F, C
+          attackRequirement {}
+          onAttack {
+            damage 150
+          }
+        }
+      };
       case ROLYCOLY_31:
       return basic (this, hp:HP070, type:F, retreatCost:2) {
-				weakness G
-				move "Ram", {
-					text "10 damage."
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-			};
+        weakness G
+        move "Ram", {
+          text "10 damage."
+          energyCost C
+          attackRequirement {}
+          onAttack {
+            damage 10
+          }
+        }
+      };
       case GRAPPLOCT_V_32:
       return basic (this, hp:HP210, type:F, retreatCost:2) {
-				weakness P
-				move "Tie Up", {
-					text "20 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
-					energyCost F
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-				move "Moonsault Press", {
-					text "120+ damage. Flip a coin. If heads, this attack does 100 more damage."
-					energyCost F, F, C
-					attackRequirement {}
-					onAttack {
-						damage 120
-					}
-				}
-			};
+        weakness P
+        move "Tie Up", {
+          text "20 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+          energyCost F
+          attackRequirement {}
+          onAttack {
+            damage 20
+          }
+        }
+        move "Moonsault Press", {
+          text "120+ damage. Flip a coin. If heads, this attack does 100 more damage."
+          energyCost F, F, C
+          attackRequirement {}
+          onAttack {
+            damage 120
+          }
+        }
+      };
       case EKANS_33:
       return basic (this, hp:HP070, type:D, retreatCost:1) {
-				weakness F
-				move "Ram", {
-					text "10 damage."
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-				move "Tail Snap", {
-					text "30 damage."
-					energyCost D, C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-			};
+        weakness F
+        move "Ram", {
+          text "10 damage."
+          energyCost C
+          attackRequirement {}
+          onAttack {
+            damage 10
+          }
+        }
+        move "Tail Snap", {
+          text "30 damage."
+          energyCost D, C
+          attackRequirement {}
+          onAttack {
+            damage 30
+          }
+        }
+      };
       case ARBOK_34:
       return evolution (this, from:"Ekans", hp:HP120, type:D, retreatCost:1) {
-				weakness F
-				move "Sharp Fang", {
-					text "30 damage."
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-				move "Tail Snap", {
-					text "70 damage."
-					energyCost D, C
-					attackRequirement {}
-					onAttack {
-						damage 70
-					}
-				}
-			};
+        weakness F
+        move "Sharp Fang", {
+          text "30 damage."
+          energyCost C
+          attackRequirement {}
+          onAttack {
+            damage 30
+          }
+        }
+        move "Tail Snap", {
+          text "70 damage."
+          energyCost D, C
+          attackRequirement {}
+          onAttack {
+            damage 70
+          }
+        }
+      };
       case GALARIAN_ZIGZAGOON_35:
       return basic (this, hp:HP070, type:D, retreatCost:2) {
-				weakness G
-				move "Pin Missile", {
-					text "Flip 4 coins. This attack does 10 damage for each heads."
-					energyCost C
-					attackRequirement {}
-					onAttack {
+        weakness G
+        move "Pin Missile", {
+          text "Flip 4 coins. This attack does 10 damage for each heads."
+          energyCost C
+          attackRequirement {}
+          onAttack {
 
-					}
-				}
-			};
+          }
+        }
+      };
       case GALARIAN_LINOONE_36:
       return evolution (this, from:"Galarian Zigzagoon", hp:HP100, type:D, retreatCost:2) {
-				weakness G
-				move "Double-Edge", {
-					text "60 damage. This Pokémon also does 20 damage to itself."
-					energyCost C, C
-					attackRequirement {}
-					onAttack {
-						damage 60
-					}
-				}
-			};
+        weakness G
+        move "Double-Edge", {
+          text "60 damage. This Pokémon also does 20 damage to itself."
+          energyCost C, C
+          attackRequirement {}
+          onAttack {
+            damage 60
+          }
+        }
+      };
       case GALARIAN_OBSTAGOON_37:
       return evolution (this, from:"Galarian Linoone", hp:HP170, type:D, retreatCost:2) {
-				weakness G
-				bwAbility "Wicked Ruler", {
-					text "Once during your turn, you may have your opponent discard cards from their hand until they have 4 cards in their hand."
-					actionA {
-					}
-				}
-				move "Knuckle Impact", {
-					text "180 damage. During your next turn, this Pokémon can't attack."
-					energyCost C, C, C
-					attackRequirement {}
-					onAttack {
-						damage 180
-					}
-				}
-			};
+        weakness G
+        bwAbility "Wicked Ruler", {
+          text "Once during your turn, you may have your opponent discard cards from their hand until they have 4 cards in their hand."
+          actionA {
+          }
+        }
+        move "Knuckle Impact", {
+          text "180 damage. During your next turn, this Pokémon can't attack."
+          energyCost C, C, C
+          attackRequirement {}
+          onAttack {
+            damage 180
+          }
+        }
+      };
       case ABSOL_38:
       return basic (this, hp:HP100, type:D, retreatCost:1) {
-				weakness G
-				move "Dark Cutter", {
-					text "70 damage."
-					energyCost D, D
-					attackRequirement {}
-					onAttack {
-						damage 70
-					}
-				}
-			};
+        weakness G
+        move "Dark Cutter", {
+          text "70 damage."
+          energyCost D, D
+          attackRequirement {}
+          onAttack {
+            damage 70
+          }
+        }
+      };
       case PURRLION_39:
       return basic (this, hp:HP070, type:D, retreatCost:1) {
-				weakness G
-				move "Dig Claws", {
-					text "10 damage."
-					energyCost D
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-				move "Fake Out", {
-					text "20 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
-					energyCost C, C
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-			};
+        weakness G
+        move "Dig Claws", {
+          text "10 damage."
+          energyCost D
+          attackRequirement {}
+          onAttack {
+            damage 10
+          }
+        }
+        move "Fake Out", {
+          text "20 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+          energyCost C, C
+          attackRequirement {}
+          onAttack {
+            damage 20
+          }
+        }
+      };
       case LIEPARD_40:
       return copy (DarknessAblaze.LIEPARD_107, this);
       case SCRAGGY_41:
       return basic (this, hp:HP070, type:D, retreatCost:1) {
-				weakness G
-				move "Stampede", {
-					text "10 damage."
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-				move "Ram", {
-					text "20 damage."
-					energyCost D, C
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-			};
+        weakness G
+        move "Stampede", {
+          text "10 damage."
+          energyCost C
+          attackRequirement {}
+          onAttack {
+            damage 10
+          }
+        }
+        move "Ram", {
+          text "20 damage."
+          energyCost D, C
+          attackRequirement {}
+          onAttack {
+            damage 20
+          }
+        }
+      };
       case SCRAFTY_42:
       return evolution (this, from:"Scraggy", hp:HP120, type:D, retreatCost:2) {
-				weakness G
-				move "Corner", {
-					text "30 damage. During your opponent's next turn, the Defending Pokémon can't retreat."
-					energyCost D
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-				move "Bad Brawl", {
-					text "110 damage. If you played Piers from your hand during this turn, this attack does 90 more damage."
-					energyCost D, C, C
-					attackRequirement {}
-					onAttack {
-						damage 110
-					}
-				}
-			};
+        weakness G
+        move "Corner", {
+          text "30 damage. During your opponent's next turn, the Defending Pokémon can't retreat."
+          energyCost D
+          attackRequirement {}
+          onAttack {
+            damage 30
+          }
+        }
+        move "Bad Brawl", {
+          text "110 damage. If you played Piers from your hand during this turn, this attack does 90 more damage."
+          energyCost D, C, C
+          attackRequirement {}
+          onAttack {
+            damage 110
+          }
+        }
+      };
       case TRUBBISH_43:
       return copy (RebelClash.TRUBBISH_117, this);
       case INKAY_44:
       return basic (this, hp:HP060, type:D, retreatCost:1) {
-				weakness G
-				move "Tackle", {
-					text "10 damage."
-					energyCost D
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-				move "Attack from Behind", {
-					text "20+ damage. If your opponent's Active Pokémon is Confused, this attack does 50 more damage."
-					energyCost C, C
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-			};
+        weakness G
+        move "Tackle", {
+          text "10 damage."
+          energyCost D
+          attackRequirement {}
+          onAttack {
+            damage 10
+          }
+        }
+        move "Attack from Behind", {
+          text "20+ damage. If your opponent's Active Pokémon is Confused, this attack does 50 more damage."
+          energyCost C, C
+          attackRequirement {}
+          onAttack {
+            damage 20
+          }
+        }
+      };
       case MALAMAR_45:
       return evolution (this, from:"Inkay", hp:HP120, type:D, retreatCost:3) {
-				weakness G
-				move "Eerie Wave", {
-					text "50 damage. Your opponent's Active Pokémon is now Confused."
-					energyCost D, C
-					attackRequirement {}
-					onAttack {
-						damage 50
-					}
-				}
-				move "Random Peck", {
-					text "80+ damage. Flip 2 coins. This attack does 40 more damage for each heads."
-					energyCost D, D, C
-					attackRequirement {}
-					onAttack {
-						damage 80
-					}
-				}
-			};
+        weakness G
+        move "Eerie Wave", {
+          text "50 damage. Your opponent's Active Pokémon is now Confused."
+          energyCost D, C
+          attackRequirement {}
+          onAttack {
+            damage 50
+          }
+        }
+        move "Random Peck", {
+          text "80+ damage. Flip 2 coins. This attack does 40 more damage for each heads."
+          energyCost D, D, C
+          attackRequirement {}
+          onAttack {
+            damage 80
+          }
+        }
+      };
       case NICKIT_46:
       return basic (this, hp:HP070, type:D, retreatCost:1) {
-				weakness G
-				move "Filch", {
-					text "Draw a card."
-					energyCost C
-					attackRequirement {}
-					onAttack {
+        weakness G
+        move "Filch", {
+          text "Draw a card."
+          energyCost C
+          attackRequirement {}
+          onAttack {
 
-					}
-				}
-				move "Tail Smack", {
-					text "30 damage."
-					energyCost D, C
-					attackRequirement {}
-					onAttack {
-						damage 30
-					}
-				}
-			};
+          }
+        }
+        move "Tail Smack", {
+          text "30 damage."
+          energyCost D, C
+          attackRequirement {}
+          onAttack {
+            damage 30
+          }
+        }
+      };
       case DURALUDON_V_47:
       return basic (this, hp:HP220, type:M, retreatCost:3) {
-				weakness R
+        weakness R
         resistance G, MINUS30
-				bwAbility "Hard Coat", {
-					text "This Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
-					actionA {
-					}
-				}
-				move "Gatling Slug", {
-					text "10+ damage. This attack does 40 more damage for each [M] Energy attached to this Pokémon."
-					energyCost C, C, C
-					attackRequirement {}
-					onAttack {
-						damage 10
-					}
-				}
-			};
+        bwAbility "Hard Coat", {
+          text "This Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+          actionA {
+          }
+        }
+        move "Gatling Slug", {
+          text "10+ damage. This attack does 40 more damage for each [M] Energy attached to this Pokémon."
+          energyCost C, C, C
+          attackRequirement {}
+          onAttack {
+            damage 10
+          }
+        }
+      };
       case SWABLU_48:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
-				weakness L
+        weakness L
         resistance F, MINUS30
-				move "Peck", {
-					text "20 damage."
-					energyCost C
-					attackRequirement {}
-					onAttack {
-						damage 20
-					}
-				}
-			};
+        move "Peck", {
+          text "20 damage."
+          energyCost C
+          attackRequirement {}
+          onAttack {
+            damage 20
+          }
+        }
+      };
       case ALTARIA_49:
       return evolution (this, from:"Swablu", hp:HP110, type:C, retreatCost:1) {
-				weakness L
-				resistance F, MINUS30
-				bwAbility "Miraculous Charm", {
-					text "Prevent all damage done to this Pokémon by attacks from your opponent's Pokémon V and Pokémon-GX."
-					actionA {
-					}
-				}
-				move "Speed Dive", {
-					text "60 damage."
-					energyCost C, C
-					attackRequirement {}
-					onAttack {
-						damage 60
-					}
-				}
-			};
+        weakness L
+        resistance F, MINUS30
+        bwAbility "Miraculous Charm", {
+          text "Prevent all damage done to this Pokémon by attacks from your opponent's Pokémon V and Pokémon-GX."
+          actionA {
+          }
+        }
+        move "Speed Dive", {
+          text "60 damage."
+          energyCost C, C
+          attackRequirement {}
+          onAttack {
+            damage 60
+          }
+        }
+      };
       case BEDE_50:
       return copy (SwordShield.BEDE_157, this);
       case FULL_HEAL_51:
@@ -1022,22 +1022,22 @@ public enum ChampionsPath implements LogicCardInfo {
       return copy (SwordShield.ROTOM_BIKE_181, this);
       case ROTOM_PHONE_64:
       return itemCard (this) {
-				text "Look at the top 5 cards of your deck. Choose a card you find there, shuffle your deck, then put that card on top of your deck."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+        text "Look at the top 5 cards of your deck. Choose a card you find there, shuffle your deck, then put that card on top of your deck."
+        onPlay {
+        }
+        playRequirement{
+        }
+      };
       case SONIA_65:
       return copy (RebelClash.SONIA_167, this);
       case STRANGE_CANNED_FOOD_66:
       return itemCard (this) {
-				text "Heal 80 damage from 1 of your Pokemon with a [P] Energy attached to it. Then, discard a [P] Energy from that Pokemon."
-				onPlay {
-				}
-				playRequirement{
-				}
-			};
+        text "Heal 80 damage from 1 of your Pokemon with a [P] Energy attached to it. Then, discard a [P] Energy from that Pokemon."
+        onPlay {
+        }
+        playRequirement{
+        }
+      };
       case TEAM_YELL_GRUNT_67:
       return copy (SwordShield.TEAM_YELL_GRUNT_184, this);
       case TURRFIELD_68:
