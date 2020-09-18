@@ -77,7 +77,7 @@ public enum PokemodFossil implements LogicCardInfo {
   RECYCLE_61 ("Recycle", "61", Rarity.COMMON, [TRAINER]),
   MYSTERIOUS_FOSSIL_62 ("Mysterious Fossil", "62", Rarity.COMMON, [TRAINER]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING;
+ static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
   protected CardTypeSet cardTypes;
   protected String name;
@@ -130,129 +130,801 @@ public enum PokemodFossil implements LogicCardInfo {
   public Card getImplementation() {
     switch (this) {
       case AERODACTYL_1:
-        break
+        break 
       case ARTICUNO_2:
-        break
+        return basic (this, hp:HP070, type:WATER, retreatCost:2) {
+          weakness METAL
+          resistance FIGHTING, MINUS30
+          move "Freeze Dry", {
+            text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+            energyCost W, W, W
+            attackRequirement {}
+            onAttack {
+              damage 30
+              flip {applyAfterDamage PARALYZED}
+            }
+          }
+          move "Blizzard", {
+            text "50 damage. Flip a coin. If heads, this attack does 10 damage to each of your opponent’s Benched Pokémon. If tails, this attack does 10 damage to each of your own Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+            energyCost W, W, W, W
+            attackRequirement {}
+            onAttack {
+              damage 50
+              flip 1,{
+                opp.bench.each{damage 10, it}
+              },{
+                my.bench.each{damage 10, it}
+              }
+            }
+          }
+
+        };
       case DITTO_3:
         break
       case DRAGONITE_4:
-        break
+        return copy (Fossil.DRAGONITE_4, this);
       case GENGAR_5:
-        break
+        return evolution (this, from:"Haunter", hp:HP080, type:PSYCHIC, retreatCost:1) {
+          weakness DARKNESS
+          resistance FIGHTING, MINUS30
+          pokePower "Curse", {
+            text "Once during your turn (before your attack), you may move 1 damage counter from 1 of your opponent’s Pokémon to another (even if it would Knock Out the other Pokémon). This power can’t be used if Gengar is Asleep, Confused, or Paralyzed."
+            actionA {
+              checkLastTurn()
+              assert opp.bench : "There is only one Pokémon"
+              assert opp.all.find{it.numberOfDamageCounters} : "None of your opponent’s Pokémon have damage counter to move"
+              powerUsed()
+              def src = opp.all.findAll{it.numberOfDamageCounters}.select()
+              def tar = opp.all.findAll{it != src}.select()
+              src.damage-=hp(10)
+              tar.damage+=hp(10)
+            }
+          }
+          move "Dark Mind", {
+            text "30 damage. If you opponent has any Benched Pokémon, choose 1 of them and this attack does 10 damage to it. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+            energyCost P, C, C
+            attackRequirement {}
+            onAttack {
+              damage 30
+              if(opp.bench) damage 10, opp.bench.select()
+            }
+          }
+
+        };
       case HAUNTER_6:
-        break
+        return evolution (this, from:"Gastly", hp:HP060, type:PSYCHIC, retreatCost:0) {
+          weakness DARKNESS
+          resistance FIGHTING, MINUS30
+          pokePower "Transparency", {
+            text "sWhenever an attack does anything to Haunter, flip a coin. If heads, prevent all effects of that attack, including damage, done to Haunter. This power stops working while Haunter is affected by a Special Condition."
+            delayedA {
+              def coinRes = false
+              before null, self, Source.ATTACK, {
+                if(!self.specialConditions){
+                  flip 1,{coinRes = true},{coinRes = false}
+                  if (coinRes&& bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                    bc "Safeguard prevents effect"
+                    prevent()
+                  }
+                }
+              }
+              before APPLY_ATTACK_DAMAGES, {
+                if(!self.specialConditions){
+                  bg.dm().each {
+                    if(coinRes && it.to == self && it.notNoEffect){
+                      it.dmg = hp(0)
+                      bc "Safeguard prevents damage"
+                    }
+                  }
+                }
+              }
+              after ENERGY_SWITCH, {
+                def efs = (ef as EnergySwitch)
+                if(!self.specialConditions){
+                  if(coinRes && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
+                    discard efs.card
+                  }
+                }
+              }
+            }
+          }
+          move "Nightmare", {
+            text "10 damage. The Defending Pokémon is now Asleep."
+            energyCost P, C
+            attackRequirement {}
+            onAttack {
+              damage 10
+              applyAfterDamage ASLEEP
+            }
+          }
+
+        };
       case HITMONLEE_7:
-        break
+        return basic (this, hp:HP080, type:FIGHTING, retreatCost:1) {
+          weakness PSYCHIC
+          move "Stretch Kick", {
+            text "If you opponent has any Benched Pokémon, choose 1 of them and this attack does 20 damage to it. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+            energyCost F, C
+            attackRequirement {
+              assert opp.bench : "There is no Benched Pokémon"
+            }
+            onAttack {
+              damage 20, opp.bench.select()
+            }
+          }
+          move "High Jump Kick", {
+            text "50 damage."
+            energyCost F, F, C
+            attackRequirement {}
+            onAttack {
+              damage 50
+            }
+          }
+
+        };
       case HYPNO_8:
-        break
+        return evolution (this, from:"Drowzee", hp:HP090, type:PSYCHIC, retreatCost:2) {
+          weakness PSYCHIC
+          move "Prophecy", {
+            text "Look at up to 3 cards from the top of either player’s deck and rearrange them as you like."
+            energyCost P
+            attackRequirement {
+              assert my.deck || opp.deck
+            }
+            onAttack {
+              def mySize = Math.min(my.deck.size(),3)
+              def oppSize = Math.min(opp.deck.size(),3)
+              if(mySize) my.deck.setSubList(0,rearrange(my.deck.subList(0,mySize)))
+              if(oppSize) opp.deck.setSubList(0,rearrange(opp.deck.subList(0,oppSize)))
+            }
+          }
+          move "Dark Mind", {
+            text "30 damage. If you opponent has any Benched Pokémon, choose 1 of them and this attack does 10 damage to it. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+            energyCost P, C, C
+            attackRequirement {}
+            onAttack {
+              damage 30
+              if(opp.bench) damage 10, opp.bench.select()
+            }
+          }
+
+        };
       case KABUTOPS_9:
-        break
+        return evolution (this, from:"Kabuto", hp:HP080, type:FIGHTING, retreatCost:1) {
+          weakness GRASS
+          resistance FIRE, MINUS30
+          move "Sharp Sickle", {
+            text "30 damage."
+            energyCost F, C
+            attackRequirement {}
+            onAttack {
+              damage 30
+            }
+          }
+          move "Absorb", {
+            text "40 damage. Remove a number of damage counters from Kabutops equal to half the damage done to the Defending Pokémon (after applying Weakness and Resistance) (rounded up to the nearest 10). If Kabutops has fewer damage counters than that, remove all of them."
+            energyCost F, F, F, C
+            attackRequirement {}
+            onAttack {
+              damage 40
+              removeDamageCounterEqualToHalfDamageDone()
+            }
+          }
+
+        };
       case LAPRAS_10:
-        break
+        return basic (this, hp:HP080, type:WATER, retreatCost:2) {
+          weakness LIGHTNING
+          move "Water Gun", {
+            text "10+ damage. Does 10 damage plus 10 more damage for each [W] Energy attached to Lapras but not used to pay for this attack’s Energy cost. You can’t add more than 20 damage in this way."
+            energyCost W
+            attackRequirement {}
+            onAttack {
+              damage 10
+              extraEnergyDamage(2,hp(10),W,thisMove)
+
+            }
+          }
+          move "Confuse Ray", {
+            text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
+            energyCost W, W
+            attackRequirement {}
+            onAttack {
+              damage 20
+              afterDamage{flipThenApplySC CONFUSED}
+            }
+          }
+
+        };
       case MAGNETON_11:
-        break
+       return copy (Fossil.MAGNETON_11, this);
       case MOLTRES_12:
-        break
+        return basic (this, hp:HP080, type:FIRE, retreatCost:2) {
+          resistance FIGHTING, MINUS30
+          move "Wildfire", {
+            text "You may discard any number of [R] Energy cards attached to Moltres when you use this attack. If you do, discard that many cards from the top of your opponent’s deck."
+            energyCost R
+            attackRequirement {}
+            onAttack {
+              def src = self.cards.filterByEnergyType(R)
+              def tar = src.select(max : src.size())
+              if(tar){
+                opp.deck.subList(0,tar.size()).moveTo(opp.discard)
+                tar.moveTo(my.discard)
+              }
+            }
+          }
+          move "Dive Bomb", {
+            text "80 damage. Flip a coin. If tails, this attack does nothing."
+            energyCost R, R, R, R
+            attackRequirement {}
+            onAttack {
+              flip {damage 80}
+            }
+          }
+
+        };
       case MUK_13:
         break
       case RAICHU_14:
-        break
+        return evolution (this, from:"Pikachu", hp:HP090, type:LIGHTNING, retreatCost:1) {
+          weakness FIGHTING
+          move "Gigashock", {
+            text "30 damage. Choose 3 of your opponent’s Benched Pokémon and this attack does 10 damage to each of them. (Don’t apply Weakness and Resistance for Benched Pokémon.) If your opponent has fewer than 3 Benched Pokémon, do that damage to each of them."
+            energyCost L, L, L, C
+            attackRequirement {}
+            onAttack {
+              damage 30
+              if(opp.bench){
+                multiSelect(opp.bench, 3).each{
+                  targeted(it){
+                    damage 10,it
+                  }
+                }
+              }
+            }
+          }
+
+        };
       case ZAPDOS_15:
-        break
+        return basic (this, hp:HP080, type:LIGHTNING, retreatCost:2) {
+          move "Thunderstorm", {
+            text "40 damage. For each of your opponent’s Benched Pokémon, flip a coin. If heads, this attack does 20 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.) Then, Zapdos does 10 damage times the number of tails to itself."
+            energyCost L, L, L, L
+            attackRequirement {}
+            onAttack {
+              damage 40
+              def selfDmg = 0
+              if(opp.bench){
+                def benchDmg = false
+                opp.bench.each{
+                  benchDmg = false
+                  flip 1,{
+                    benchDmg= true
+                  },{selfDmg += 1}
+                  if(benchDmg) damage 20, it
+                }
+                damage 10*selfDmg, self
+              }
+            }
+          }
+
+        };
       case AERODACTYL_16:
-        break
+        return copy (PokemodFossil.AERODACTYL_1, this);
       case ARTICUNO_17:
-        break
+       return copy (PokemodFossil.ARTICUNO_2, this);
       case DITTO_18:
-        break
+        return copy (PokemodFossil.DITTO_3, this);
       case DRAGONITE_19:
-        break
+       return copy (Fossil.DRAGONITE_4, this);
       case GENGAR_20:
-        break
+        return copy (PokemodFossil.GENGAR_5, this);
       case HAUNTER_21:
-        break
+        return copy (PokemodFossil.HAUNTER_6, this);
       case HITMONLEE_22:
-        break
+        return copy (PokemodFossil.HITMONLEE_7, this);
       case HYPNO_23:
-        break
+        return copy (PokemodFossil.HYPNO_8, this);
       case KABUTOPS_24:
-        break
+        return copy (PokemodFossil.KABUTOPS_9, this);
       case LAPRAS_25:
-        break
+        return copy (PokemodFossil.LAPRAS_10, this);
       case MAGNETON_26:
-        break
+        return copy (Fossil.MAGNETON_11, this);
       case MOLTRES_27:
-        break
+        return copy (PokemodFossil.MOLTRES_12, this);
       case MUK_28:
-        break
+        return copy (PokemodFossil.MUK_13, this);
       case RAICHU_29:
-        break
+        return copy (PokemodFossil.RAICHU_14, this);
       case ZAPDOS_30:
-        break
+        return copy (PokemodFossil.ZAPDOS_15, this);
       case ARBOK_31:
-        break
+        return evolution (this, from:"Ekans", hp:HP060, type:GRASS, retreatCost:2) {
+          weakness PSYCHIC
+          move "Terror Strike", {
+            text "Flip a coin. If heads and if your opponent has any Benched Pokémon, he or she chooses 1 of them and switches it with the Defending Pokémon. (Do the damage before switching the Pokémon.)"
+            energyCost G
+            attackRequirement {}
+            onAttack {
+              damage 20
+              if(opp.bench)
+                flip {whirlwind()}
+            }
+          }
+          move "Poison Fang", {
+            text "20 damage. The Defending Pokémon is now Poisoned."
+            energyCost G, G, C
+            attackRequirement {}
+            onAttack {
+              damage 20
+              applyAfterDamage POISONED
+            }
+          }
+
+        };
       case CLOYSTER_32:
-        break
+        return evolution (this, from:"Shellder", hp:HP080, type:WATER, retreatCost:2) {
+          weakness LIGHTNING
+          move "Clamp", {
+            text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed. If tails, this attack does nothing (not even damage)."
+            energyCost W, W
+            attackRequirement {}
+            onAttack {
+              flip {
+                damage 30
+                applyAfterDamage PARALYZED
+              }
+            }
+          }
+          move "Spike Cannon", {
+            text "30× damage. Flip 2 coins. This attack does 30 damage times the number of heads."
+            energyCost W, W
+            attackRequirement {}
+            onAttack {
+              flip 2, {damage 30}
+            }
+          }
+
+        };
       case GASTLY_33:
-        break
+        return basic (this, hp:HP050, type:PSYCHIC, retreatCost:0) {
+          weakness DARKNESS
+          resistance FIGHTING, MINUS30
+          move "Lick", {
+            text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+            energyCost P
+            attackRequirement {}
+            onAttack {
+              damage 10
+              afterDamage {flipThenApplySC PARALYZED}
+            }
+          }
+          move "Energy Conversion", {
+            text "Put up to 2 Energy cards from your discard pile into your hand. Gastly does 10 damage to itself."
+            energyCost P, C
+            attackRequirement {}
+            onAttack {
+              def tar = my.discard.filterByType(ENERGY)
+              if(tar) tar.select(max : 2).moveTo(my.hand)
+              damage 10, self
+            }
+          }
+
+        };
       case GOLBAT_34:
-        break
+        return evolution (this, from:"Zubat", hp:HP060, type:GRASS, retreatCost:0) {
+          weakness PSYCHIC
+          resistance FIGHTING, MINUS30
+          move "Wing Attack", {
+            text "30 damage."
+            energyCost C, C, C
+            attackRequirement {}
+            onAttack {
+              damage 30
+            }
+          }
+          move "Leech Life", {
+            text "20 damage. Remove a number of damage counters from Golbat equal to the damage done to the Defending Pokémon (after applying Weakness and Resistance). If Golbat has fewer damage counters than that, remove all of them."
+            energyCost G, C
+            attackRequirement {}
+            onAttack {
+              damage 20
+              removeDamageCounterEqualToDamageDone()
+            }
+          }
+
+        };
       case GOLDUCK_35:
-        break
+        return evolution (this, from:"Psyduck", hp:HP080, type:WATER, retreatCost:1) {
+          weakness LIGHTNING
+          move "Psyshock", {
+            text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+            energyCost P
+            attackRequirement {}
+            onAttack {
+              damage 10
+              afterDamage {flipThenApplySC PARALYZED}
+            }
+          }
+          move "Hyper Beam", {
+            text "20 damage. If the Defending Pokémon has any Energy cards attached to it, choose 1 of them and discard it."
+            energyCost W, W, C
+            attackRequirement {}
+            onAttack {
+              damage 20
+              discardDefendingEnergy()
+            }
+          }
+
+        };
       case GOLEM_36:
-        break
+        return evolution (this, from:"Graveler", hp:HP100, type:FIGHTING, retreatCost:4) {
+          weakness GRASS
+          move "Avalanche", {
+            text "60 damage."
+            energyCost F, F, F, C
+            attackRequirement {}
+            onAttack {
+              damage 60
+            }
+          }
+          move "Selfdestruct", {
+            text "100 damage. Does 20 damage to each Pokémon on each player’s Bench. (Don’t apply Weakness and Resistance for Benched Pokémon.) Golem does 100 damage to itself."
+            energyCost F, F, F, F
+            attackRequirement {}
+            onAttack {
+              damage 100
+              if (my.bench) my.bench.each{damage 20, it}
+              if (opp.bench) opp.bench.each{damage 20, it}
+              damage 100, self
+            }
+          }
+
+        };
       case GRAVELER_37:
-        break
+        return evolution (this, from:"Geodude", hp:HP070, type:FIGHTING, retreatCost:2) {
+          weakness GRASS
+          move "Harden", {
+            text "During your opponent’s next turn, whenever 30 of less damage is done to Graveler (after applying Weakness and Resistance), prevent that damage. (Any other effects of attacks still happen.)"
+            energyCost F, F
+            attackRequirement {}
+            onAttack {
+              delayed {
+                before APPLY_ATTACK_DAMAGES, {
+                  bg.dm().each {
+                    if(it.to == self & it.dmg.value <= 30) {
+                      bc "Graveler Harden prevents damage!"
+                      it.dmg = hp(0)
+                    }
+                  }
+                }
+                unregisterAfter 2
+                after FALL_BACK, self,{unregister()}
+                after EVOLVE, self,{unregister()}
+                after DEVOLVE, self,{unregister()}
+
+              }
+            }
+          }
+          move "Rock Throw", {
+            text "40 damage."
+            energyCost F, F, C
+            attackRequirement {}
+            onAttack {
+              damage 40
+            }
+          }
+
+        };
       case KINGLER_38:
-        break
+        return evolution (this, from:"Krabby", hp:HP060, type:WATER, retreatCost:3) {
+          weakness LIGHTNING
+          move "Flail", {
+            text "10× damage. Does 10 damage times the number of damage counters on Kingler."
+            energyCost W
+            attackRequirement {}
+            onAttack {
+              damage 10*self.numberOfDamageCounters
+            }
+          }
+          move "Crabhammer", {
+            text "40 damage."
+            energyCost W, C, C
+            attackRequirement {}
+            onAttack {
+              damage 40
+            }
+          }
+
+        };
       case MAGMAR_39:
-        break
+        return copy (Fossil.MAGMAR_39, this);
       case OMASTAR_40:
-        break
+        return evolution (this, from:"Omanyte", hp:HP070, type:WATER, retreatCost:1) {
+          weakness GRASS
+          resistance FIRE, MINUS30
+          move "Water Gun", {
+            text "20+ damage. Does 20 damage plus 10 more damage for each [W] Energy attached to Omastar but not used to pay for this attack’s Energy cost. You can’t add more than 20 damage in this way."
+            energyCost W
+            attackRequirement {}
+            onAttack {
+              damage 20
+              extraEnergyDamage(2,hp(10),W,thisMove)
+            }
+          }
+          move "Spike Cannon", {
+            text "30× damage. Flip 2 coins. This attack does 30 damage times the number of heads."
+            energyCost W, W
+            attackRequirement {}
+            onAttack {
+              flip 2,{damage 30}
+            }
+          }
+
+        };
       case SANDSLASH_41:
-        break
+        return evolution (this, from:"Sandshrew", hp:HP070, type:FIGHTING, retreatCost:1) {
+          weakness GRASS
+          resistance LIGHTNING, MINUS30
+          move "Slash", {
+            text "20 damage."
+            energyCost F
+            attackRequirement {}
+            onAttack {
+              damage 20
+            }
+          }
+          move "Fury Swipes", {
+            text "20× damage. Flip 3 coins. This attack does 20 damage times the number of heads."
+            energyCost F, F
+            attackRequirement {}
+            onAttack {
+              flip 3, {damage 20}
+            }
+          }
+
+        };
       case SEADRA_42:
-        break
+        return evolution (this, from:"Horsea", hp:HP070, type:WATER, retreatCost:1) {
+          weakness LIGHTNING
+          move "Water Gun", {
+            text "20+ damage. Does 20 damage plus 10 more damage for each [W] Energy attached to Seadra but not use dto pay for this attack’s Energy cost. You can’t add more than 20 damage in this way."
+            energyCost W
+            attackRequirement {}
+            onAttack {
+              damage 20
+              extraEnergyDamage(2,hp(10),W,thisMove)
+            }
+          }
+          move "Agility", {
+            text "20 damage. Flip a coin. If heads, during your opponent’s next turn prevent all effects of attacks, including damage, done to Seadra."
+            energyCost W, C, C
+            attackRequirement {}
+            onAttack {
+              damage 20
+              flip {preventAllEffectsNextTurn()}
+            }
+          }
+
+        };
       case SLOWBRO_43:
-        break
+        return evolution (this, from:"Slowbro", hp:HP060, type:PSYCHIC, retreatCost:1) {
+          weakness PSYCHIC
+          pokePower "Strange Behavior", {
+            text "As often as you like during your turn (before your attack), you may move 1 damage counter from 1 of your Pokémon to Slowbro as long as you don't Knock Out Slowbro. This power can't be used if Slowbro is affected by a Special Condition."
+            actionA {
+              assert !self.specialConditions
+              assert self.damage != self.fullHP - hp(10) : "Slowbro can't be Knocked Out by Strange Behavior!"
+              def tar = my.all.findAll{it != self && it.numberOfDamageCounters}
+              assert tar : "There is no Pokemon with damage counter outside Slowbro"
+              def pcs = tar.select()
+
+              self.damage+=hp(10)
+              pcs.damage-=hp(10)
+            }
+          }
+          move "Psyshock", {
+            text "20 damage. Flip a coin. If heads, the defending Pokémon is now Paralyzed."
+            energyCost P, C
+            attackRequirement {}
+            onAttack {
+              damage 20
+              afterDamage {flipThenApplySC PARALYZED}
+            }
+          }
+
+        };
       case TENTACRUEL_44:
-        break
+        return evolution (this, from:"Tentacool", hp:HP060, type:WATER, retreatCost:0) {
+          weakness LIGHTNING
+          move "Supersonic", {
+            text "Flip a coin. If heads, the Defending Pokémon is now Confused."
+            energyCost W
+            attackRequirement {}
+            onAttack {
+              damage 10
+              flipThenApplySC CONFUSED
+            }
+          }
+          move "Jellyfish Sting", {
+            text "10 damage. The Defending Pokémon is now Poisoned."
+            energyCost W, W
+            attackRequirement {}
+            onAttack {
+              damage 20
+              applyAfterDamage POISONED
+            }
+          }
+
+        };
       case WEEZING_45:
-        break
+        return copy (Fossil.WEEZING_45, this);
       case EKANS_46:
-        break
+       return copy (Fossil.EKANS_46, this);
       case GEODUDE_47:
-        break
+        return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
+          weakness GRASS
+          move "Stone Barrage", {
+            text "10× damage. Flip a coin until you get tails. This attack does 10 damage times the number of heads."
+            energyCost F
+            attackRequirement {}
+            onAttack {
+              flipUntilTails {damage 10}
+            }
+          }
+
+        };
       case GRIMER_48:
-        break
+       return copy (Fossil.GRIMER_48, this);
       case HORSEA_49:
-        break
+       return copy (Fossil.HORSEA_49, this);
       case KABUTO_50:
-        break
+        return evolution (this, from:"Mysterious Fossil", hp:HP040, type:FIGHTING, retreatCost:1) {
+          weakness GRASS
+          pokeBody "Kabuto Armor", {
+            text "Whenever an attack (even your own) does damage to Kabuto (after applying Weakness and Resistance), that attack only does half the damage to Kabuto (rounded down to nearest 10). (Any other effects of attacks still happen.) This power stops working while Kabuto is affected by a Special Condition."
+            delayedA {
+              before APPLY_ATTACK_DAMAGES, {
+                if(!(self.specialConditions)){
+                  bg.dm().each {
+                    if(it.to == self){
+                      def dmgVal = it.dmg.value
+                      int dmgInt = (int) dmgVal.intValue()
+                      bc "Kabuto Armor halves damage"
+                      if(((int) (dmgInt / 10)) % 2){
+                        it.dmg = hp((int) ((dmgInt - 10)/2))
+                      }
+                      else{
+                        it.dmg = hp((int) (dmgInt / 2))
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          move "Scratch", {
+            text "10 damage."
+            energyCost C
+            attackRequirement {}
+            onAttack {
+              damage 10
+            }
+          }
+
+        };
       case KRABBY_51:
-        break
+        return basic (this, hp:HP050, type:WATER, retreatCost:2) {
+          move "Call for Family", {
+            text "Search your deck for a Basic Pokémon named Krabby and put it onto your Bench. Shuffle your deck afterward. (You can’t use this attack if your Bench if full.)"
+            energyCost W
+            attackRequirement {
+              assert deck.notEmpty
+              assert my.bench.notFull
+            }
+            onAttack {
+              deck.search (count: 1,{it.cardTypes.is(BASIC) && it.name == "Krabby"}).each {
+                benchPCS(it)
+              }
+              shuffleDeck()
+            }
+          }
+          move "Irongrip", {
+            text "20 damage."
+            energyCost C, C
+            attackRequirement {}
+            onAttack {
+              damage 20
+            }
+          }
+
+        };
       case OMANYTE_52:
-        break
+        return evolution (this, from:"Mysterious Fossil", hp:HP050, type:WATER, retreatCost:1) {
+          weakness GRASS
+          resistance FIRE, MINUS30
+          pokeBody "Clairvoyance", {
+            text "Your opponent plays with his or her hand face up. This power stops working while Omanyte is affected by a Special Condition."
+            actionA {
+              //TODO: Make cards visible, even to spectators.
+              opp.hand.shuffledCopy().showToMe("opponent's hand")
+            }
+          }
+          move "Water Gun", {
+            text "10+ damage. Does 10 damage plus 10 more damage for each [W] Energy attached to Omanyte but not used to pay for this attack’s Energy cost. You can’t add more than 20 damage in this way."
+            energyCost W
+            attackRequirement {}
+            onAttack {
+              damage 10
+              extraEnergyDamage(2,hp(10),W,thisMove)
+            }
+          }
+
+        };
       case PSYDUCK_53:
         break
       case SHELLDER_54:
-        break
+        return basic (this, hp:HP050, type:WATER, retreatCost:1) {
+          weakness LIGHTNING
+          move "Supersonic", {
+            text "Flip a coin. If heads, the Defending Pokémon is now Confused."
+            energyCost W
+            attackRequirement {}
+            onAttack {
+              damage 10
+              flipThenApplySC CONFUSED
+            }
+          }
+          move "Hide in Shell", {
+            text "Flip a coin. If heads, prevent all damage done to Shellder during your opponent’s next turn. (Any other effects of attacks still happen.)"
+            energyCost W
+            attackRequirement {}
+            onAttack {
+              flip{preventAllDamageNextTurn()}
+            }
+          }
+
+        };
       case SLOWPOKE_55:
-        break
+        return copy (Fossil.SLOWPOKE_55, this);
       case TENTACOOL_56:
-        break
+        return basic (this, hp:HP040, type:WATER, retreatCost:0) {
+          weakness LIGHTNING
+          pokemonPower "Cowardice", {
+            text "At any time during your turn (before your attack), you may return Tentacool to your hand. (Discard all cards attached to Tentacool.) This power can’t be used the turn you put Tentacool into play or if Tentacool is Asleep, Confused, or Paralyzed."
+            actionA {
+              assert !self.specialConditions : "Cowardice can't be used if Tentacool has a status"
+              assert self.lastEvolved != bg.turnCount : "Cowardice can't be used the turn you put Tentacool into play"
+              assert my.bench : "You have no other Pokémon"
+              self.cards.getExcludedList(self.topPokemonCard).discard()
+              moveCard(self.topPokemonCard, my.hand)
+              removePCS(self)
+            }
+          }
+          move "Acid", {
+            text "10 damage."
+            energyCost W
+            attackRequirement {}
+            onAttack {
+              damage 10
+            }
+          }
+
+        };
       case ZUBAT_57:
-        break
+       return copy (Fossil.ZUBAT_57, this);
       case MR_FUJI_58:
         break
       case ENERGY_SEARCH_59:
-        break
+        return copy (Fossil.ENERGY_SEARCH_59, this);
       case GAMBLER_60:
-        break
+        return copy (Fossil.GAMBLER_60, this);
       case RECYCLE_61:
-        break
+        return copy (Fossil.RECYCLE_61, this);
       case MYSTERIOUS_FOSSIL_62:
-        break
+        return copy (Fossil.MYSTERIOUS_FOSSIL_62, this);
       default:
         return null;
     }
