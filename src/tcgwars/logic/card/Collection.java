@@ -144,7 +144,7 @@ public enum Collection {
   UNBROKEN_BONDS(423, "UNB", "gen7.UnbrokenBonds"),
   UNIFIED_MINDS(424, "UNM", "gen7.UnifiedMinds"),
   HIDDEN_FATES(425, "HIF", "gen7.HiddenFates"),
-  SHINY_VAULT(426, "SHINYV", "gen7.ShinyVault"),
+  SHINY_VAULT(426, "SMA", "gen7.ShinyVault"),
   COSMIC_ECLIPSE(427, "CEC", "gen7.CosmicEclipse"),
 
   // Sword & Shield
