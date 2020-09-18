@@ -2926,11 +2926,6 @@ public enum DiamondPearl implements LogicCardInfo {
                 }
               }
             }
-            after DISCARD, {
-              if(ef.card == thisCard){
-                eff.unregister()
-              }
-            }
             before BETWEEN_TURNS, {
               discard thisCard
             }
