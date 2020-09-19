@@ -3931,11 +3931,11 @@ public enum UnifiedMinds implements LogicCardInfo {
                           it.dmg+=hp(100)
                         }
                       }
-                      unregisterAfter 2
-                      after FALL_BACK, self, { unregister() }
-                      after EVOLVE, self, { unregister() }
-                      after DEVOLVE, self, { unregister() }
                     }
+                    unregisterAfter 2
+                    after FALL_BACK, self, { unregister() }
+                    after EVOLVE, self, { unregister() }
+                    after DEVOLVE, self, { unregister() }
                   }
                 }
               }
