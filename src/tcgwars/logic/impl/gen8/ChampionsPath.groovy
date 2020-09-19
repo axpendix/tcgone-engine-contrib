@@ -252,9 +252,11 @@ public enum ChampionsPath implements LogicCardInfo {
         move "Quick Draw", {
           text "Draw a card."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Your deck is empty"
+          }
           onAttack {
-
+            draw 1
           }
         }
         move "Combustion", {
@@ -421,6 +423,7 @@ public enum ChampionsPath implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 120
+            if(self.lastHealedTurn == bg.turnCount) damage 80
           }
         }
       };
@@ -433,6 +436,7 @@ public enum ChampionsPath implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 180
+            heal 50, self
           }
         }
       };
@@ -651,6 +655,9 @@ public enum ChampionsPath implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 130
+            afterDamage {
+              discardSelfEnergy F
+            }
           }
         }
       };
@@ -774,7 +781,9 @@ public enum ChampionsPath implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            flip 4, {
+              damage 10
+            }
           }
         }
       };
@@ -787,6 +796,7 @@ public enum ChampionsPath implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
+            damage 20, self
           }
         }
       };
@@ -796,6 +806,11 @@ public enum ChampionsPath implements LogicCardInfo {
         bwAbility "Wicked Ruler", {
           text "Once during your turn, you may have your opponent discard cards from their hand until they have 4 cards in their hand."
           actionA {
+            assert opp.hand.size() > 4 :"Your opponent has 4 or fewer cards in hand"
+            checkLastTurn()
+            powerUsed()
+            def hand = opp.hand.oppSelect(count: 4, "Bad Ruler - Select 4 cards to KEEP (the rest will be discarded)")
+            opp.hand.getExcludedList(hand).discard()
           }
         }
         move "Knuckle Impact", {
@@ -804,6 +819,7 @@ public enum ChampionsPath implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 180
+            cantAttackNextTurn self
           }
         }
       };
@@ -870,6 +886,7 @@ public enum ChampionsPath implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            cantRetreat defending
           }
         }
         move "Bad Brawl", {
@@ -877,7 +894,10 @@ public enum ChampionsPath implements LogicCardInfo {
           energyCost D, C, C
           attackRequirement {}
           onAttack {
-            damage 110
+            damage 90
+            if(bg.em().retrieveObject("Piers") == bg.turnCount){
+              damage 90
+            }
           }
         }
       };
@@ -900,6 +920,9 @@ public enum ChampionsPath implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            if(defending.isSPC(CONFUSED)){
+              damage 50
+            }
           }
         }
       };
@@ -912,6 +935,9 @@ public enum ChampionsPath implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            afterDamage{
+              apply CONFUSED
+            }
           }
         }
         move "Random Peck", {
@@ -920,6 +946,9 @@ public enum ChampionsPath implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 80
+            flip 2, {
+              damage 40
+            }
           }
         }
       };
@@ -931,7 +960,7 @@ public enum ChampionsPath implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-
+            draw 1
           }
         }
         move "Tail Smack", {
@@ -1024,8 +1053,13 @@ public enum ChampionsPath implements LogicCardInfo {
       return itemCard (this) {
         text "Look at the top 5 cards of your deck. Choose a card you find there, shuffle your deck, then put that card on top of your deck."
         onPlay {
+          def card = my.deck.subList(0,5).select("Choose a card to put on top of your deck.").first()
+          my.deck.remove(card)
+          shuffleDeck()
+          my.deck.add(0, card)
         }
         playRequirement{
+          assert my.deck.notEmpty : "Your deck is empty"
         }
       };
       case SONIA_65:
@@ -1034,8 +1068,12 @@ public enum ChampionsPath implements LogicCardInfo {
       return itemCard (this) {
         text "Heal 80 damage from 1 of your Pokemon with a [P] Energy attached to it. Then, discard a [P] Energy from that Pokemon."
         onPlay {
+          def pcs = my.all.findAll{it.cards.energyCount(P) && it.numberOfDamageCounters}.select("Choose which Pokémon to heal 80 damage from")
+          heal 80, pcs
+          pcs.cards.filterByEnergyType(P).select("Select a [P] Energy to discard from $pcs").discard()
         }
         playRequirement{
+          assert my.all.findAll{it.cards.energyCount(P) && it.numberOfDamageCounters} : "You have no damaged Pokémon with [P] Energy attached to them"
         }
       };
       case TEAM_YELL_GRUNT_67:
