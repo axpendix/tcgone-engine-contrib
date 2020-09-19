@@ -2412,8 +2412,8 @@ public enum RisingRivals implements LogicCardInfo {
         return levelUp (this, from:"Luxray GL", hp:HP110, type:LIGHTNING, retreatCost:0) {
           weakness F
           resistance M, MINUS20
-          move "", {
-            text ", you may switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon."
+          move "Bright Look", {
+            text "Once during your turn (before your attack), when you put Luxray GL LV.X from your hand onto your Active Luxray GL, you may switch the Defending Pokémon with 1 of your opponent's Benched Pokémon"
             energyCost ()
             attackRequirement {}
             onAttack {

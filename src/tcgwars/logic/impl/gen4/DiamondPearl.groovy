@@ -3063,7 +3063,7 @@ public enum DiamondPearl implements LogicCardInfo {
 
         };
       case INFERNAPE_LV_X_121:
-        return evolution (this, from:"Infernape", hp:HP120, type:FIRE, retreatCost:0) {
+        return levelUp (this, from:"Infernape", hp:HP120, type:FIRE, retreatCost:0) {
           weakness W, PLUS30
           pokePower "Burning Head", {
             text "Once during your turn (before your attack), you may look at the top 3 cards of your deck, choose 1 of them, and put it into your hand. Discard the other 2 cards. This power can’t be used if Infernape is affected by a Special Condition."
@@ -3096,7 +3096,7 @@ public enum DiamondPearl implements LogicCardInfo {
 
         };
       case TORTERRA_LV_X_122:
-        return evolution (this, from:"Torterra", hp:HP160, type:GRASS, retreatCost:4) {
+        return levelUp (this, from:"Torterra", hp:HP160, type:GRASS, retreatCost:4) {
           weakness R, PLUS30
           pokePower "Forest Murmurs", {
             text "Once during your turn (before your attack), if you have more Prize cards left than your opponent, you may choose 1 of your opponent’s Benched Pokémon and switch it with 1 of the Defending Pokémon. This power can’t be used if Torterra is affected by a Special Condition."
