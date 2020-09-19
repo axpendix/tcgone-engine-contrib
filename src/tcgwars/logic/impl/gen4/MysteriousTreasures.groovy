@@ -3448,7 +3448,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
       case METAL_ENERGY_120:
         return copy (RubySapphire.METAL_ENERGY_94, this);
       case ELECTIVIRE_LV_X_121:
-        return evolution (this, from:"Electivire", hp:HP120, type:LIGHTNING, retreatCost:3) {
+        return levelUp (this, from:"Electivire", hp:HP120, type:LIGHTNING, retreatCost:3) {
           weakness F
           resistance M, MINUS20
           pokeBody "Shocking Tail", {
@@ -3481,7 +3481,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
 
         };
       case LUCARIO_LV_X_122:
-        return evolution (this, from:"Lucario", hp:HP110, type:FIGHTING, retreatCost:1) {
+        return levelUp (this, from:"Lucario", hp:HP110, type:FIGHTING, retreatCost:1) {
           weakness P
           pokePower "Stance", {
             text "Once during your turn (before your attack), when you put Lucario LV.X from your hand onto your Active Lucario, you may use this power. Prevent all effects of an attack, including damage, done to Lucario during your opponent’s next turn. (If Lucario is no longer your Active Pokémon, this effect ends.)"
@@ -3544,7 +3544,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
 
         };
       case MAGMORTAR_LV_X_123:
-        return evolution (this, from:"Magmortar", hp:HP130, type:FIRE, retreatCost:3) {
+        return levelUp (this, from:"Magmortar", hp:HP130, type:FIRE, retreatCost:3) {
           weakness W
           pokePower "Torrid Wave", {
             text "Once during your turn (before your attack), if Magmortar is your Active Pokémon, you may choose 1 of the Defending Pokémon. That Pokémon is now Burned. Put 3 damage counters instead of 2 on that Pokémon between turns. This power can’t be used if Magmortar is affected by a Special Condition."
