@@ -1,10 +1,35 @@
 package tcgwars.logic.impl.pokemod
 
+import tcgwars.logic.impl.gen1.Fossil
 
+import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.card.CardType.*;
+import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.groovy.TcgStatics.*
+import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
+import static tcgwars.logic.effect.EffectType.*;
+import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectPriority.*
+import static tcgwars.logic.effect.special.SpecialConditionType.*
+import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import tcgwars.logic.card.*
+import java.util.*;
+import org.apache.commons.lang.WordUtils;
+import tcgwars.entity.*;
+import tcgwars.logic.*;
+import tcgwars.logic.card.*;
+import tcgwars.logic.card.energy.*;
+import tcgwars.logic.card.pokemon.*;
+import tcgwars.logic.card.trainer.*;
+import tcgwars.logic.effect.*;
+import tcgwars.logic.effect.ability.*;
+import tcgwars.logic.effect.advanced.*;
+import tcgwars.logic.effect.basic.*;
+import tcgwars.logic.effect.blocking.*;
+import tcgwars.logic.effect.event.*;
+import tcgwars.logic.effect.getter.*;
+import tcgwars.logic.effect.special.*;
 import tcgwars.logic.util.*;
 
 /**
@@ -71,11 +96,37 @@ public enum PokemodFossil implements LogicCardInfo {
   TENTACOOL_56 ("Tentacool", "56", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
   ZUBAT_57 ("Zubat", "57", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
 
-  MR_FUJI_58 ("Mr. Fuji", "58", Rarity.UNCOMMON, [TRAINER]),
+  MR_FUJI_58 ("Mr. Fuji", "58", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   ENERGY_SEARCH_59 ("Energy Search", "59", Rarity.COMMON, [TRAINER]),
   GAMBLER_60 ("Gambler", "60", Rarity.COMMON, [TRAINER]),
   RECYCLE_61 ("Recycle", "61", Rarity.COMMON, [TRAINER]),
-  MYSTERIOUS_FOSSIL_62 ("Mysterious Fossil", "62", Rarity.COMMON, [TRAINER]);
+  MYSTERIOUS_FOSSIL_62 ("Mysterious Fossil", "62", Rarity.COMMON, [TRAINER]),
+  CRYSTAL_GUARD_63 ("Crystal Guard", "63", Rarity.UNCOMMON, [TRAINER, POKEMON_TOOL]),
+  HEAVY_BALL_64 ("Heavy Ball", "64", Rarity.UNCOMMON, [TRAINER]),
+  POKEMON_BREEDER_FIELDS_65 ("Pokemon Breeder Fields", "65", Rarity.UNCOMMON, [TRAINER]),
+  RELIC_HUNTER_66 ("Relic Hunter", "66", Rarity.UNCOMMON, [TRAINER]),
+  LOST_EXPEDITION_67 ("Lost Expedition", "67", Rarity.UNCOMMON, [TRAINER]),
+  UNDERGROUND_EXPEDITION_68 ("Underground Expedition", "68", Rarity.UNCOMMON, [TRAINER]),
+  LOST_WORLD_69 ("Lost World", "69", Rarity.RARE, [TRAINER, STADIUM]),
+  CRYSTAL_BEACH_70 ("Crystal Beach","70", Rarity.RARE, [TRAINER, STADIUM]),
+  DNA_ENERGY_71 ("DNA Energy", "71", Rarity.RARE, [ENERGY, SPECIAL_ENERGY]),
+  DOUBLE_COLORLESS_ENERGY_72 ("Double Colorless", "72", Rarity.RARE, [ENERGY, SPECIAL_ENERGY]),
+  LOST_ENERGY_73 ("Lost Energy", "73", Rarity.RARE, [ENERGY, SPECIAL_ENERGY]),
+  SEEKER_74 ("Seeker", "74", Rarity.SECRET, [TRAINER, SUPPORTER, G_SPEC] ),
+  LOST_MEDALLION_75 ("Lost Medallion", "75", Rarity.SECRET [TRAINER, POKEMON_TOOL, G_SPEC]),
+  CASTAWAY_76 ("Castaway", "76", Rarity.SECRET [TRAINER, SUPPORTER, G_SPEC]),
+  
+  PSYDUCK_77 ("Psyduck", "77", Rarity.RARE, [BASIC, POKEMON, _WATER_]),
+  DRAGONITE_78 ("Dragonite", "78", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
+  GENGAR_79 ("Gengar", "79", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
+  HO_OH_80 ("Ho-oh", "80", Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
+  LUGIA_81 ("Lugia", "81", Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
+  ARTICUNO_82 ("Articuno", "82", Rarity.RARE, [BASIC, POKEMON, _WATER_]),
+  MOLTRES_83 ("Moltres", "83", Rarity.RARE, [BASIC, POKEMON, _FIRE_]),
+  ZAPDOS_84 ("Zapdos", "84", Rarity.RARE, [BASIC, POKEMON, _LIGHTNING_]),
+  ARTICUNO_EX_85 ("Articuno", "85", Rarity.ULTRARARE, [BASIC, POKEMON, _WATER_]),
+  MOLTRES_EX_86 ("Moltres", "86", Rarity.ULTRARARE, [BASIC, POKEMON, _FIRE_]),
+  ZAPDOS_EX_87 ("Zapdos", "87", Rarity.ULTRARARE, [BASIC, POKEMON, _LIGHTNING_]),
 
  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -130,7 +181,32 @@ public enum PokemodFossil implements LogicCardInfo {
   public Card getImplementation() {
     switch (this) {
       case AERODACTYL_1:
-        break 
+        return evolution (this, from:"Mysterious Fossil", hp:HP060, type:FIGHTING, retreatCost:2) {
+          weakness GRASS
+          resistance FIGHTING, MINUS30
+          pokemonPower "Prehistoric Power", {
+            text "No more Evolution cards can be played. This power stops working while Aerodactyl is Asleep, Confused, or Paralyzed."
+            delayedA {
+              if (self.cards.filterByType(POKEMON_TOOL)) {
+              before PLAY_EVOLUTION, {
+                if(!self.specialConditions){
+                  wcu "Prehistoric Power prevents you from playing Evolution cards!"
+                  prevent()
+                }
+              }
+            }
+            }
+          }
+          move "Wing Attack", {
+            text "30 damage."
+            energyCost C, C, C
+            attackRequirement {}
+            onAttack {
+              damage 30
+            }
+          }
+
+        }; 
       case ARTICUNO_2:
         return basic (this, hp:HP070, type:WATER, retreatCost:2) {
           weakness METAL
@@ -172,9 +248,10 @@ public enum PokemodFossil implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert opp.bench : "There is only one Pokémon"
-              assert opp.all.find{it.numberOfDamageCounters} : "None of your opponent’s Pokémon have damage counter to move"
+              def choices = opp.all.findAll {it.numberOfDamageCounters}
+              assert choices : "None of your opponent’s Pokémon have damage counter to move"
               powerUsed()
-              def src = opp.all.findAll{it.numberOfDamageCounters}.select()
+              def src =chocies.select()
               def tar = opp.all.findAll{it != src}.select()
               src.damage-=hp(10)
               tar.damage+=hp(10)
@@ -196,14 +273,14 @@ public enum PokemodFossil implements LogicCardInfo {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           pokePower "Transparency", {
-            text "sWhenever an attack does anything to Haunter, flip a coin. If heads, prevent all effects of that attack, including damage, done to Haunter. This power stops working while Haunter is affected by a Special Condition."
+            text "Whenever an attack does anything to Haunter, flip a coin. If heads, prevent all effects of that attack, including damage, done to Haunter. This power stops working while Haunter is affected by a Special Condition."
             delayedA {
               def coinRes = false
               before null, self, Source.ATTACK, {
                 if(!self.specialConditions){
                   flip 1,{coinRes = true},{coinRes = false}
                   if (coinRes&& bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
-                    bc "Safeguard prevents effect"
+                    bc "Transparency prevents effect"
                     prevent()
                   }
                 }
@@ -213,7 +290,7 @@ public enum PokemodFossil implements LogicCardInfo {
                   bg.dm().each {
                     if(coinRes && it.to == self && it.notNoEffect){
                       it.dmg = hp(0)
-                      bc "Safeguard prevents damage"
+                      bc "Transparency prevents damage"
                     }
                   }
                 }
@@ -268,15 +345,7 @@ public enum PokemodFossil implements LogicCardInfo {
           move "Prophecy", {
             text "Look at up to 3 cards from the top of either player’s deck and rearrange them as you like."
             energyCost P
-            attackRequirement {
-              assert my.deck || opp.deck
-            }
-            onAttack {
-              def mySize = Math.min(my.deck.size(),3)
-              def oppSize = Math.min(opp.deck.size(),3)
-              if(mySize) my.deck.setSubList(0,rearrange(my.deck.subList(0,mySize)))
-              if(oppSize) opp.deck.setSubList(0,rearrange(opp.deck.subList(0,oppSize)))
-            }
+            foresight(3, delegate)
           }
           move "Dark Mind", {
             text "30 damage. If you opponent has any Benched Pokémon, choose 1 of them and this attack does 10 damage to it. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
@@ -331,7 +400,7 @@ public enum PokemodFossil implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              afterDamage{flipThenApplySC CONFUSED}
+              flipThenApplySC CONFUSED
             }
           }
 
@@ -349,8 +418,8 @@ public enum PokemodFossil implements LogicCardInfo {
               def src = self.cards.filterByEnergyType(R)
               def tar = src.select(max : src.size())
               if(tar){
-                opp.deck.subList(0,tar.size()).moveTo(opp.discard)
-                tar.moveTo(my.discard)
+                opp.deck.subList(0,tar.size()).discard()
+                tar.discard()
               }
             }
           }
@@ -925,6 +994,56 @@ public enum PokemodFossil implements LogicCardInfo {
         return copy (Fossil.RECYCLE_61, this);
       case MYSTERIOUS_FOSSIL_62:
         return copy (Fossil.MYSTERIOUS_FOSSIL_62, this);
+      case CRYSTAL_GUARD_63:
+       break
+      case HEAVY_BALL_64:
+       break
+      case POKEMON_BREEDER_FIELDS_65:
+       break
+      case RELIC_HUNTER_66:
+       break
+      case LOST_EXPEDITION_67:
+       break
+      case UNDERGROUND_EXPEDITION_68:
+       return copy (CelestialStorm.UNDERGROUND_EXPEDITION_150, this);
+      case LOST_WORLD_69:
+       break
+      case CRYSTAL_BEACH_70:
+       break
+      case DNA_ENERGY_71:
+       break
+      case DOUBLE_COLORLESS_ENERGY_72:
+       return copy (GuardiansRising.DOUBLE_COLORLESS_ENERGY_166, this);
+      case LOST_ENERGY_73:
+       break
+      case SEEKER_74:
+       break
+      case LOST_MEDALLION_75:
+       break
+      case CASTAWAY_76:
+       break
+      case PSYDUCK_77:
+       return copy (PokemodFossil.PSYDUCK_53, this);
+      case DRAGONITE_78:
+       return copy (PokemodFossil.DRAGONITE_4, this);
+      case GENGAR_79:
+       return copy (PokemodFossil.GENGAR_5, this);
+      case HO_OH_80:
+       break
+      case LUGIA_81:
+       break
+      case ARTICUNO_82:
+       return copy (PokemodFossil.ARTICUNO_2, this);
+      case MOLTRES_83:
+       return copy (PokemodFossil.MOLTRES_12, this);
+      case ZAPDOS_84:
+       return copy (PokemodFossil.ZAPDOS_15, this);
+      case ARTICUNO_EX_85:
+       break
+      case MOLTRES_EX_86:
+       break
+      case ZAPDOS_EX_87:
+      break
       default:
         return null;
     }
