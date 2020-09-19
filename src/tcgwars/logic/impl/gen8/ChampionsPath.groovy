@@ -43,7 +43,7 @@ public enum ChampionsPath implements LogicCardInfo {
   WEEDLE_2 ("Weedle", 2, Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
   KAKUNA_3 ("Kakuna", 3, Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
   BEEDRILL_4 ("Beedrill", 4, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
-  ELDEGOSS_5 ("Eldegoss V", 5, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _GRASS_]),
+  ELDEGOSS_V_5 ("Eldegoss V", 5, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _GRASS_]),
   VULPIX_6 ("Vulpix", 6, Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
   VICTINI_7 ("Victini", 7, Rarity.UNCOMMON, [POKEMON, BASIC, _FIRE_]),
   INCINEROAR_V ("Incineroar V", 8, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _FIRE_]),
@@ -228,7 +228,7 @@ public enum ChampionsPath implements LogicCardInfo {
           }
         }
       };
-      case ELDEGOSS_5:
+      case ELDEGOSS_V_5:
       return copy (RebelClash.ELDEGOSS_V_19, this);
       case VULPIX_6:
       return basic (this, hp:HP060, type:R, retreatCost:1) {
