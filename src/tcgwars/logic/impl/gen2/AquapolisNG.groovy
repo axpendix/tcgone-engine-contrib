@@ -616,7 +616,7 @@ public enum AquapolisNG implements LogicCardInfo {
       return evolution (this, from:"Chinchou", hp:HP080, type:W, retreatCost:1) {
         weakness G
         move "Lightning Ball", {
-          text "20 damage. "
+          text "20 damage."
           energyCost L
           attackRequirement {}
           onAttack {
@@ -1004,7 +1004,7 @@ public enum AquapolisNG implements LogicCardInfo {
           }
         }
         move "Tail Slap", {
-          text "30 damage. "
+          text "30 damage."
           energyCost D, C, C
           attackRequirement {}
           onAttack {
@@ -1163,7 +1163,7 @@ public enum AquapolisNG implements LogicCardInfo {
           }
         }
         move "Spinning Attack", {
-          text "30 damage. "
+          text "30 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -1192,7 +1192,7 @@ public enum AquapolisNG implements LogicCardInfo {
       return evolution (this, from:"Psyduck", hp:HP070, type:W, retreatCost:1) {
         weakness L
         move "Slash", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -1233,7 +1233,7 @@ public enum AquapolisNG implements LogicCardInfo {
           }
         }
         move "Tackle", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -1245,7 +1245,7 @@ public enum AquapolisNG implements LogicCardInfo {
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
         move "Headbutt", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1338,7 +1338,7 @@ public enum AquapolisNG implements LogicCardInfo {
       return evolution (this, from:"Horsea", hp:HP070, type:W, retreatCost:1) {
         weakness L
         move "Wave Splash", {
-          text "20 damage. "
+          text "20 damage."
           energyCost W
           attackRequirement {}
           onAttack {
@@ -1407,7 +1407,7 @@ public enum AquapolisNG implements LogicCardInfo {
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
         move "Gnaw", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1438,7 +1438,7 @@ public enum AquapolisNG implements LogicCardInfo {
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
         move "Rollout", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1478,7 +1478,7 @@ public enum AquapolisNG implements LogicCardInfo {
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness G
         move "Tail Whap", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1538,7 +1538,7 @@ public enum AquapolisNG implements LogicCardInfo {
       return basic (this, hp:HP100, type:C, retreatCost:2) {
         weakness F
         move "Rollout", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1566,7 +1566,7 @@ public enum AquapolisNG implements LogicCardInfo {
           }
         }
         move "Headbutt", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -1607,7 +1607,7 @@ public enum AquapolisNG implements LogicCardInfo {
           }
         }
         move "Tackle", {
-          text "10 damage. "
+          text "10 damage."
           energyCost F
           attackRequirement {}
           onAttack {
@@ -1628,7 +1628,7 @@ public enum AquapolisNG implements LogicCardInfo {
           }
         }
         move "Rear Kick", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -1648,7 +1648,7 @@ public enum AquapolisNG implements LogicCardInfo {
           }
         }
         move "Tackle", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -1854,7 +1854,7 @@ public enum AquapolisNG implements LogicCardInfo {
           }
         }
         move "Flare", {
-          text "20 damage. "
+          text "20 damage."
           energyCost R, C
           attackRequirement {}
           onAttack {
@@ -1887,7 +1887,7 @@ public enum AquapolisNG implements LogicCardInfo {
           }
         }
         move "Mega Punch", {
-          text "30 damage. "
+          text "30 damage."
           energyCost C, C, C
           attackRequirement {}
           onAttack {
@@ -1984,7 +1984,7 @@ public enum AquapolisNG implements LogicCardInfo {
           }
         }
         move "Tail Slap", {
-          text "20 damage. "
+          text "20 damage."
           energyCost L, C
           attackRequirement {}
           onAttack {
@@ -1996,7 +1996,7 @@ public enum AquapolisNG implements LogicCardInfo {
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness F
         move "Tackle", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -2036,7 +2036,7 @@ public enum AquapolisNG implements LogicCardInfo {
           }
         }
         move "Scratch", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -2056,7 +2056,7 @@ public enum AquapolisNG implements LogicCardInfo {
           }
         }
         move "Ram", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -2109,7 +2109,7 @@ public enum AquapolisNG implements LogicCardInfo {
           }
         }
         move "Rollout", {
-          text "20 damage. "
+          text "20 damage."
           energyCost F, C
           attackRequirement {}
           onAttack {
@@ -2141,7 +2141,7 @@ public enum AquapolisNG implements LogicCardInfo {
       return basic (this, hp:HP040, type:R, retreatCost:1) {
         weakness W
         move "Tackle", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -2169,7 +2169,7 @@ public enum AquapolisNG implements LogicCardInfo {
           }
         }
         move "Peck", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -2181,7 +2181,7 @@ public enum AquapolisNG implements LogicCardInfo {
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
         move "Headbutt", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -2189,7 +2189,7 @@ public enum AquapolisNG implements LogicCardInfo {
           }
         }
         move "Scratch", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -2214,7 +2214,7 @@ public enum AquapolisNG implements LogicCardInfo {
         weakness L
         resistance F, MINUS30
         move "Slash", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -2262,7 +2262,7 @@ public enum AquapolisNG implements LogicCardInfo {
           }
         }
         move "Bite", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -2376,7 +2376,7 @@ public enum AquapolisNG implements LogicCardInfo {
           }
         }
         move "Pound", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -2420,7 +2420,7 @@ public enum AquapolisNG implements LogicCardInfo {
           }
         }
         move "Wave Splash", {
-          text "20 damage. "
+          text "20 damage."
           energyCost W, C
           attackRequirement {}
           onAttack {
