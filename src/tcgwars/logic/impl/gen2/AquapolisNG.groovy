@@ -186,6 +186,14 @@ public enum AquapolisNG implements LogicCardInfo {
   LUGIA_149 ("Lugia", "149", Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
   NIDOKING_150 ("Nidoking", "150", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]),
   AMPHAROS_H1 ("Ampharos", "H1", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _LIGHTNING_]),
+  ARCANINE_H2 ("Arcanine", "H2", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+  ARIADOS_H3 ("Ariados", "H3", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
+  AZUMARILL_H4 ("Azumarill", "H4", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
+  BELLOSSOM_H5 ("Bellossom", "H5", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
+  BLISSEY_H6 ("Blissey", "H6", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
+  ELECTRODE_H7 ("Electrode", "H7", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
+  ENTEI_H8 ("Entei", "H8", Rarity.RARE, [POKEMON, BASIC, _FIRE_]),
+  ESPEON_H9 ("Espeon", "H9", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
   EXEGGUTOR_H10 ("Exeggutor", "H10", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
   HOUNDOOM_H11 ("Houndoom", "H11", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
   HYPNO_H12 ("Hypno", "H12", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
@@ -196,7 +204,6 @@ public enum AquapolisNG implements LogicCardInfo {
   MUK_H17 ("Muk", "H17", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
   NIDOKING_H18 ("Nidoking", "H18", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_]),
   NINETALES_H19 ("Ninetales", "H19", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
-  ARCANINE_H2 ("Arcanine", "H2", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
   OCTILLERY_H20 ("Octillery", "H20", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
   SCIZOR_H21 ("Scizor", "H21", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
   SLOWKING_H22 ("Slowking", "H22", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
@@ -207,16 +214,9 @@ public enum AquapolisNG implements LogicCardInfo {
   TOGETIC_H27 ("Togetic", "H27", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
   TYRANITAR_H28 ("Tyranitar", "H28", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _DARKNESS_]),
   UMBREON_H29 ("Umbreon", "H29", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
-  ARIADOS_H3 ("Ariados", "H3", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
   VICTREEBEL_H30 ("Victreebel", "H30", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
   VILEPLUME_H31 ("Vileplume", "H31", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
-  ZAPDOS_H32 ("Zapdos", "H32", Rarity.RARE, [POKEMON, BASIC, _LIGHTNING_]),
-  AZUMARILL_H4 ("Azumarill", "H4", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
-  BELLOSSOM_H5 ("Bellossom", "H5", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
-  BLISSEY_H6 ("Blissey", "H6", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
-  ELECTRODE_H7 ("Electrode", "H7", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
-  ENTEI_H8 ("Entei", "H8", Rarity.RARE, [POKEMON, BASIC, _FIRE_]),
-  ESPEON_H9 ("Espeon", "H9", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]);
+  ZAPDOS_H32 ("Zapdos", "H32", Rarity.RARE, [POKEMON, BASIC, _LIGHTNING_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -2770,6 +2770,52 @@ public enum AquapolisNG implements LogicCardInfo {
       };
       case AMPHAROS_H1:
       return copy (AMPHAROS_1, this);
+      case ARCANINE_H2:
+      return evolution (this, from:"Growlithe", hp:HP090, type:R, retreatCost:3) {
+        weakness W
+        pokeBody "Extreme Speed", {
+          text "You pay [C] less to retreat Arcanine for each Energy attached to it."
+          delayedA {
+          }
+        }
+        move "Fire Blow", {
+          text "30+ damage. You may discard any number of [R] Energy cards attached to Arcanine when you use this attack. If you do, flip a number of coins equal to the number of [R] Energy cards you discarded. This attack does 30 damage plus 30 more damage for each heads."
+          energyCost C, C, C
+          attackRequirement {}
+          onAttack {
+            damage 30
+          }
+        }
+      };
+      case ARIADOS_H3:
+        return copy (ARIADOS_3, this);
+      case AZUMARILL_H4:
+        return copy (AZUMARILL_4, this);
+      case BELLOSSOM_H5:
+        return copy (BELLOSSOM_5, this);
+      case BLISSEY_H6:
+        return copy (BLISSEY_6, this);
+      case ELECTRODE_H7:
+        return copy (ELECTRODE_8, this);
+      case ENTEI_H8:
+        return copy (ENTEI_10, this);
+      case ESPEON_H9:
+      return evolution (this, from:"Eevee", hp:HP080, type:P, retreatCost:null) {
+        weakness P
+        pokePower "Energy Return", {
+          text "As often as you like during your turn (before your attack), you choose an Energy card attached to 1 of your Pokémon and return to your hand. This power can't be used if Espeon is affected by a Special Condition."
+          actionA {
+          }
+        }
+        move "Damage Blast", {
+          text "30+ damage. Flip a number of coins equal to the number of damage counters on the Defending Pokémon. This attack does 30 damage plus 10 more damage for each heads."
+          energyCost P, C, C
+          attackRequirement {}
+          onAttack {
+            damage 30
+          }
+        }
+      };
       case EXEGGUTOR_H10:
       return evolution (this, from:"Exeggcute", hp:HP080, type:G, retreatCost:1) {
         weakness R
@@ -2842,23 +2888,6 @@ public enum AquapolisNG implements LogicCardInfo {
       return copy (NIDOKING_24, this);
       case NINETALES_H19:
       return copy (NINETALES_25, this);
-      case ARCANINE_H2:
-      return evolution (this, from:"Growlithe", hp:HP090, type:R, retreatCost:3) {
-        weakness W
-        pokeBody "Extreme Speed", {
-          text "You pay [C] less to retreat Arcanine for each Energy attached to it."
-          delayedA {
-          }
-        }
-        move "Fire Blow", {
-          text "30+ damage. You may discard any number of [R] Energy cards attached to Arcanine when you use this attack. If you do, flip a number of coins equal to the number of [R] Energy cards you discarded. This attack does 30 damage plus 30 more damage for each heads."
-          energyCost C, C, C
-          attackRequirement {}
-          onAttack {
-            damage 30
-          }
-        }
-      };
       case OCTILLERY_H20:
       return copy (OCTILLERY_26, this);
       case SCIZOR_H21:
@@ -2895,8 +2924,6 @@ public enum AquapolisNG implements LogicCardInfo {
       return copy (TYRANITAR_40, this);
       case UMBREON_H29:
       return copy (UMBREON_41, this);
-      case ARIADOS_H3:
-      return copy (ARIADOS_3, this);
       case VICTREEBEL_H30:
       return copy (VICTREEBEL_42, this);
       case VILEPLUME_H31:
@@ -2924,33 +2951,6 @@ public enum AquapolisNG implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
-          }
-        }
-      };
-      case AZUMARILL_H4:
-      return copy (AZUMARILL_4, this);
-      case BELLOSSOM_H5:
-      return copy (BELLOSSOM_5, this);
-      case BLISSEY_H6:
-      return copy (BLISSEY_6, this);
-      case ELECTRODE_H7:
-      return copy (ELECTRODE_8, this);
-      case ENTEI_H8:
-      return copy (ENTEI_10, this);
-      case ESPEON_H9:
-      return evolution (this, from:"Eevee", hp:HP080, type:P, retreatCost:null) {
-        weakness P
-        pokePower "Energy Return", {
-          text "As often as you like during your turn (before your attack), you choose an Energy card attached to 1 of your Pokémon and return to your hand. This power can't be used if Espeon is affected by a Special Condition."
-          actionA {
-          }
-        }
-        move "Damage Blast", {
-          text "30+ damage. Flip a number of coins equal to the number of damage counters on the Defending Pokémon. This attack does 30 damage plus 10 more damage for each heads."
-          energyCost P, C, C
-          attackRequirement {}
-          onAttack {
-            damage 30
           }
         }
       };
