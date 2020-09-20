@@ -1166,6 +1166,22 @@ class TcgStatics {
     }
   }
 
+  /**
+   * Attach an energy card from a CardList to a PokemonCardList
+   *
+   * @param params  Optional settings Map
+   * @param params.count  Number of energy to attach. All must be attached. Overrides max and may.
+   * @param params.max  Maximum number of energy that can be chosen to attach
+   * @param params.tostrOverride  Override for the
+   * @param params.type The type of energy to attach
+   * @param params.basic  Whether the energy should be a Basic energy card
+   * @param params.may  Whether the player can fail the attachment (e.g. from Hand or Deck)
+   *
+   * @param from  CardList to choose the energy from
+   * @param to  PokemonCardSet or PcsList to choose PCS to attach the energy to
+   *
+   * @return  Tuple of the CardList of selected energy and the PokemonCardSet attached to
+   */
   static Tuple attachEnergyFrom (params=[:], CardList from, def to){
     if(to instanceof PcsList && to.empty) return
     Integer count = params.count ?: null
@@ -1221,15 +1237,15 @@ class TcgStatics {
    *
    * Does a customized assert with an automated fail warning, looking for any Pokémon following the given filters.
    *
-   * @param params Optional settings that can be added:
-   *   + benched: If true, checks for only Benched Pokémon; otherwise also includes the Active.
-   *   + opp: If true, checks for the opponent's bench instead of "my" bench.
-   *   + hasType: If set, restricts to benched Pokémon of a single specific type.
-   *   + hasVariants: A list of specific CardType values (currently: POKEMON_V | VMAX | TAG_TEAM | POKEMON_GX | POKEMON_EX | DELTA | EX). If set, the area filter will only accept PCS that have at least one of these CardTypes on its top card; otherwise, it'll take any Pokémon.
-   *   + negateVariants: If set to true, hasVariants will be inverted: only PCS that are __not__ any of the variants provided will be accepted.
-   *   + isStage: A list of specific CardType values (currently: EVOLVED | UNEVOLVED | BASIC | STAGE1 | STAGE2 | EVOLUTION). If set, the area filter will only accept PCS that return true for every single one of the included values; otherwise, it'll take any Pokémon regardless of stage.
-   *   + info: If set, it'll replace the end of the failed assert warning with a custom text, instead of the default "follow the stated condition(s)".
-   *   + overrideText: If true, params.info will override the entirety of the failed assert warning.
+   * @param params Optional settings that can be added
+   * @param params.benched: If true, checks for only Benched Pokémon; otherwise also includes the Active.
+   * @param params.opp: If true, checks for the opponent's bench instead of "my" bench.
+   * @param params.hasType: If set, restricts to benched Pokémon of a single specific type.
+   * @param params.hasVariants: A list of specific CardType values (currently: POKEMON_V | VMAX | TAG_TEAM | POKEMON_GX | POKEMON_EX | DELTA | EX). If set, the area filter will only accept PCS that have at least one of these CardTypes on its top card; otherwise, it'll take any Pokémon.
+   * @param params.negateVariants: If set to true, hasVariants will be inverted: only PCS that are __not__ any of the variants provided will be accepted.
+   * @param params.isStage: A list of specific CardType values (currently: EVOLVED | UNEVOLVED | BASIC | STAGE1 | STAGE2 | EVOLUTION). If set, the area filter will only accept PCS that return true for every single one of the included values; otherwise, it'll take any Pokémon regardless of stage.
+   * @param params.info: If set, it'll replace the end of the failed assert warning with a custom text, instead of the default "follow the stated condition(s)".
+   * @param params.overrideText: If true, params.info will override the entirety of the failed assert warning.
    *
    * @param filter Additional condition the filtered benched Pokémon must follow. Defaults to true (so any Pokémon).
    *
@@ -1535,13 +1551,16 @@ class TcgStatics {
    * Scoop up PokemonCardSets if not blocked by Scoop-Up Block
    *
    * @param params Optional settings map
-   *  + pokemonOnly: boolean - if true, scoops up all pokemon cards and discards the rest.
-   *  + only: CardList - only scoops up them, discards the rest.
+   * @param params.pokemonOnly: boolean - if true, scoops up all pokemon cards and discards the rest.
+   * @param params.only: CardList - only scoops up them, discards the rest.
+   *
    * @param target PokemonCardSet to work on
    * @param delegate Effect delegate used to determine most sources automatically, and to get the card name for the Scoop-Up Block message
    * @param source Allows you to specify the source of the scoop up. Use intended manually setting SRC_ABILITY.
    *
-   * @return boolean suceeded
+   * @return boolean successful scoop up
+   *
+   * @throws IllegalArgumentException If params.only was an unsupported type
    */
   static boolean scoopUpPokemon(params=[:], PokemonCardSet target, Object delegate, Source source=null) {
     if (source == null) {

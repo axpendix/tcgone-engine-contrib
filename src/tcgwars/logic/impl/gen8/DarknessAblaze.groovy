@@ -503,7 +503,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each{
-                def info = "Deep Forest Camo prevents all damage from Pokémon V and Pokémon-GX"
+                def info = "$thisAbility prevents all damage from Pokémon V and Pokémon-GX"
                 def filter = { attacker -> attacker.pokemonGX || attacker.pokemonV }
                 if (it.to == self && it.from.owner != self.owner && filter(it.from) && it.notNoEffect && it.dmg.value) {
                   bc info
@@ -912,7 +912,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               if (self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})) {
-                bc "Scorching Feather activates"
+                bc "$thisAbility activates"
                 apply BURNED, ef.attacker, SRC_ABILITY
               }
             }
@@ -1641,7 +1641,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           delayedA {
             after ATTACH_ENERGY, {
               if (ef.resolvedTarget && ef.resolvedTarget.owner != self.owner && ef.reason == PLAY_FROM_HAND) {
-                bc "$thisAbility.name - $ef.resolvedTarget.name receives 2 damage counters."
+                bc "$thisAbility - $ef.resolvedTarget receives 2 damage counters."
                 directDamage 20, ef.resolvedTarget, SRC_ABILITY
               }
             }
