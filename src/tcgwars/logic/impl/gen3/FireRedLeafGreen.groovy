@@ -2492,7 +2492,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                 flipUntilTails {
                   toDiscard++
                 }
-                while (defending.cards.energyCount() || toDiscard > 0) {
+                while (defending.cards.energyCount() && toDiscard > 0) {
                   discardDefendingEnergy()
                   toDiscard--
                 }
