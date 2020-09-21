@@ -115,18 +115,19 @@ public enum PokemodFossil implements LogicCardInfo {
   SEEKER_74 ("Seeker", "74", Rarity.SECRET, [TRAINER, SUPPORTER, G_SPEC] ),
   LOST_MEDALLION_75 ("Lost Medallion", "75", Rarity.SECRET [TRAINER, POKEMON_TOOL, G_SPEC]),
   CASTAWAY_76 ("Castaway", "76", Rarity.SECRET [TRAINER, SUPPORTER, G_SPEC]),
+  DITTO_77 ("Ditto", "77", Rarity.SECRET [BASIC, POKEMON, G_SPEC, _COLORLESS_])
   
-  PSYDUCK_77 ("Psyduck", "77", Rarity.RARE, [BASIC, POKEMON, _WATER_]),
-  DRAGONITE_78 ("Dragonite", "78", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
-  GENGAR_79 ("Gengar", "79", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
-  HO_OH_80 ("Ho-oh", "80", Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
-  LUGIA_81 ("Lugia", "81", Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
-  ARTICUNO_82 ("Articuno", "82", Rarity.RARE, [BASIC, POKEMON, _WATER_]),
-  MOLTRES_83 ("Moltres", "83", Rarity.RARE, [BASIC, POKEMON, _FIRE_]),
-  ZAPDOS_84 ("Zapdos", "84", Rarity.RARE, [BASIC, POKEMON, _LIGHTNING_]),
-  ARTICUNO_EX_85 ("Articuno", "85", Rarity.ULTRARARE, [BASIC, POKEMON, _WATER_]),
-  MOLTRES_EX_86 ("Moltres", "86", Rarity.ULTRARARE, [BASIC, POKEMON, _FIRE_]),
-  ZAPDOS_EX_87 ("Zapdos", "87", Rarity.ULTRARARE, [BASIC, POKEMON, _LIGHTNING_]),
+  PSYDUCK_78 ("Psyduck", "77", Rarity.RARE, [BASIC, POKEMON, _WATER_]),
+  DRAGONITE_79 ("Dragonite", "78", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
+  GENGAR_80 ("Gengar", "79", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
+  HO_OH_81 ("Ho-oh", "80", Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
+  LUGIA_82 ("Lugia", "81", Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
+  ARTICUNO_83 ("Articuno", "82", Rarity.RARE, [BASIC, POKEMON, _WATER_]),
+  MOLTRES_84 ("Moltres", "83", Rarity.RARE, [BASIC, POKEMON, _FIRE_]),
+  ZAPDOS_85 ("Zapdos", "84", Rarity.RARE, [BASIC, POKEMON, _LIGHTNING_]),
+  ARTICUNO_EX_86 ("Articuno", "85", Rarity.ULTRARARE, [BASIC, POKEMON, _WATER_]),
+  MOLTRES_EX_87 ("Moltres", "86", Rarity.ULTRARARE, [BASIC, POKEMON, _FIRE_]),
+  ZAPDOS_EX_88 ("Zapdos", "87", Rarity.ULTRARARE, [BASIC, POKEMON, _LIGHTNING_]),
 
  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -251,7 +252,7 @@ public enum PokemodFossil implements LogicCardInfo {
               def choices = opp.all.findAll {it.numberOfDamageCounters}
               assert choices : "None of your opponent’s Pokémon have damage counter to move"
               powerUsed()
-              def src =chocies.select()
+              def src =choices.select()
               def tar = opp.all.findAll{it != src}.select()
               src.damage-=hp(10)
               tar.damage+=hp(10)
@@ -480,35 +481,35 @@ public enum PokemodFossil implements LogicCardInfo {
 
         };
       case AERODACTYL_16:
-        return copy (PokemodFossil.AERODACTYL_1, this);
+        return copy (AERODACTYL_1, this);
       case ARTICUNO_17:
-       return copy (PokemodFossil.ARTICUNO_2, this);
+       return copy (ARTICUNO_2, this);
       case DITTO_18:
-        return copy (PokemodFossil.DITTO_3, this);
+        return copy (DITTO_3, this);
       case DRAGONITE_19:
        return copy (Fossil.DRAGONITE_4, this);
       case GENGAR_20:
-        return copy (PokemodFossil.GENGAR_5, this);
+        return copy (GENGAR_5, this);
       case HAUNTER_21:
-        return copy (PokemodFossil.HAUNTER_6, this);
+        return copy (HAUNTER_6, this);
       case HITMONLEE_22:
-        return copy (PokemodFossil.HITMONLEE_7, this);
+        return copy (HITMONLEE_7, this);
       case HYPNO_23:
-        return copy (PokemodFossil.HYPNO_8, this);
+        return copy (HYPNO_8, this);
       case KABUTOPS_24:
-        return copy (PokemodFossil.KABUTOPS_9, this);
+        return copy (KABUTOPS_9, this);
       case LAPRAS_25:
-        return copy (PokemodFossil.LAPRAS_10, this);
+        return copy (LAPRAS_10, this);
       case MAGNETON_26:
         return copy (Fossil.MAGNETON_11, this);
       case MOLTRES_27:
-        return copy (PokemodFossil.MOLTRES_12, this);
+        return copy (MOLTRES_12, this);
       case MUK_28:
-        return copy (PokemodFossil.MUK_13, this);
+        return copy (MUK_13, this);
       case RAICHU_29:
-        return copy (PokemodFossil.RAICHU_14, this);
+        return copy (RAICHU_14, this);
       case ZAPDOS_30:
-        return copy (PokemodFossil.ZAPDOS_15, this);
+        return copy (ZAPDOS_15, this);
       case ARBOK_31:
         return evolution (this, from:"Ekans", hp:HP060, type:GRASS, retreatCost:2) {
           weakness PSYCHIC
@@ -1022,27 +1023,29 @@ public enum PokemodFossil implements LogicCardInfo {
        break
       case CASTAWAY_76:
        break
-      case PSYDUCK_77:
-       return copy (PokemodFossil.PSYDUCK_53, this);
-      case DRAGONITE_78:
-       return copy (PokemodFossil.DRAGONITE_4, this);
-      case GENGAR_79:
-       return copy (PokemodFossil.GENGAR_5, this);
-      case HO_OH_80:
+      case DITTO_77:
        break
-      case LUGIA_81:
+      case PSYDUCK_78:
+       return copy (PSYDUCK_53, this);
+      case DRAGONITE_79:
+       return copy (DRAGONITE_4, this);
+      case GENGAR_80:
+       return copy (GENGAR_5, this);
+      case HO_OH_81:
        break
-      case ARTICUNO_82:
-       return copy (PokemodFossil.ARTICUNO_2, this);
-      case MOLTRES_83:
-       return copy (PokemodFossil.MOLTRES_12, this);
-      case ZAPDOS_84:
-       return copy (PokemodFossil.ZAPDOS_15, this);
-      case ARTICUNO_EX_85:
+      case LUGIA_82:
        break
-      case MOLTRES_EX_86:
+      case ARTICUNO_83:
+       return copy (ARTICUNO_2, this);
+      case MOLTRES_84:
+       return copy (MOLTRES_12, this);
+      case ZAPDOS_85:
+       return copy (ZAPDOS_15, this);
+      case ARTICUNO_EX_86:
        break
-      case ZAPDOS_EX_87:
+      case MOLTRES_EX_87:
+       break
+      case ZAPDOS_EX_88:
       break
       default:
         return null;
