@@ -2741,9 +2741,9 @@ public enum Deoxys implements LogicCardInfo {
                     discard efs.card
                   }
                 }
-                before FALL_BACK, self, {unregister()}
-                before EVOLVE, self, {unregister()}
-                before DEVOLVE, self, {unregister()}
+                after FALL_BACK, self, {unregister()}
+                after EVOLVE, self, {unregister()}
+                after DEVOLVE, self, {unregister()}
                 unregisterAfter 2
               }
             }

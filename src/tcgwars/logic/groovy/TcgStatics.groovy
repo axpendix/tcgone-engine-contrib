@@ -511,7 +511,6 @@ class TcgStatics {
     bg().em().run(new ActivateAbilities((PokemonCard) card, pcs, reason));
   }
   static devolve (PokemonCardSet pcs, Card card, CardList newLocation){
-    bg().em().run(new Devolve(pcs));
     def blocked = bg().em().run(new MoveCard(card, newLocation));
     if (blocked) {
       return;
@@ -527,6 +526,8 @@ class TcgStatics {
         bg().em().run(new MoveCard(pcs.topNonLevelUpPokemonCard, newLocation));
         bg().em().run(new RemoveFromPlay(pcs, new CardList(pcs.topNonLevelUpPokemonCard)));
       }
+
+      bg().em().run(new Devolve(pcs));
     }
   }
   static babyEvolution(String evolName, PokemonCardSet baby){

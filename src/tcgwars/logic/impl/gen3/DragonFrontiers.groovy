@@ -1995,17 +1995,15 @@ public enum DragonFrontiers implements LogicCardInfo {
                 bg.em().storeObject("Imprison",Imprison)
               }
             }
-            before DEVOLVE, {temp = opp.all}
             after DEVOLVE, {
-              opp.all.findAll{!temp.contains(it)}.each{
-                if(bg.em().retrieveObject("Imprison") != null){
-                  Imprison = bg.em().retrieveObject("Imprison")
-                }
-                if (Imprison.contains(it)) {
-                  bc "${it} loses its Imprison marker when devolved!"
-                  Imprison.remove(it)
-                  bg.em().storeObject("Imprison",Imprison)
-                }
+              if(bg.em().retrieveObject("Imprison") != null){
+                Imprison = bg.em().retrieveObject("Imprison")
+              }
+              def pcs = ef.resolvedTarget
+              if (Imprison.contains(pcs)) {
+                bc "${pcs} loses its Imprison marker when devolved!"
+                Imprison.remove(pcs)
+                bg.em().storeObject("Imprison",Imprison)
               }
             }
             //TODO: Find correct replacement for "pokemonToBeDevolved", to remove above code and use the one below.
@@ -2289,17 +2287,15 @@ public enum DragonFrontiers implements LogicCardInfo {
                 bg.em().storeObject("Shock_Wave",Shock_Wave)
               }
             }
-            before DEVOLVE, {temp = opp.all}
             after DEVOLVE, {
-              opp.all.findAll{!temp.contains(it)}.each{
-                if(bg.em().retrieveObject("Shock_Wave") != null){
-                  Shock_Wave = bg.em().retrieveObject("Shock_Wave")
-                }
-                if (Shock_Wave.contains(it)) {
-                  bc "${it} loses its Shock-wave marker when devolved!"
-                  Shock_Wave.remove(it)
-                  bg.em().storeObject("Shock_Wave",Shock_Wave)
-                }
+              if(bg.em().retrieveObject("Shock_Wave") != null){
+                Shock_Wave = bg.em().retrieveObject("Shock_Wave")
+              }
+              def pcs = ef.resolvedTarget
+              if (Shock_Wave.contains(pcs)) {
+                bc "${pcs} loses its Shock-wave marker when devolved!"
+                Shock_Wave.remove(pcs)
+                bg.em().storeObject("Shock_Wave",Shock_Wave)
               }
             }
             //TODO: Find correct term, to replace pokemonToBeDevolved

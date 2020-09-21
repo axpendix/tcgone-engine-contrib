@@ -1287,9 +1287,9 @@ public enum ForbiddenLight implements LogicCardInfo {
                       }
                     }
                   }
-                  before EVOLVE, defending, {unregister()}
-                  before DEVOLVE, defending, {unregister()}
-                  before FALL_BACK, defending, {unregister()}
+                  after EVOLVE, defending, {unregister()}
+                  after DEVOLVE, defending, {unregister()}
+                  after FALL_BACK, defending, {unregister()}
                   unregisterAfter 3
                 }
               }
