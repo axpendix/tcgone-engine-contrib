@@ -197,7 +197,7 @@ public enum SandstormNG implements LogicCardInfo {
           }
         }
         move "Blade Arms", {
-          text "60 damage. "
+          text "60 damage."
           energyCost R, R, C
           attackRequirement {}
           onAttack {
@@ -343,7 +343,7 @@ public enum SandstormNG implements LogicCardInfo {
           }
         }
         move "Lunar Blast", {
-          text "30 damage. "
+          text "30 damage."
           energyCost P, C
           attackRequirement {}
           onAttack {
@@ -445,7 +445,7 @@ public enum SandstormNG implements LogicCardInfo {
           }
         }
         move "Solar Blast", {
-          text "40 damage. "
+          text "40 damage."
           energyCost F, C, C
           attackRequirement {}
           onAttack {
@@ -618,7 +618,7 @@ public enum SandstormNG implements LogicCardInfo {
           }
         }
         move "Slash", {
-          text "60 damage. "
+          text "60 damage."
           energyCost G, C, C, C
           attackRequirement {}
           onAttack {
@@ -660,7 +660,7 @@ public enum SandstormNG implements LogicCardInfo {
           }
         }
         move "Moon Impact", {
-          text "40 damage. "
+          text "40 damage."
           energyCost D, C, C
           attackRequirement {}
           onAttack {
@@ -672,7 +672,7 @@ public enum SandstormNG implements LogicCardInfo {
       return evolution (this, from:"Eevee", hp:HP070, type:W, retreatCost:1) {
         weakness L
         move "Aurora Beam", {
-          text "30 damage. "
+          text "30 damage."
           energyCost W, C
           attackRequirement {}
           onAttack {
@@ -717,7 +717,7 @@ public enum SandstormNG implements LogicCardInfo {
           }
         }
         move "Pierce", {
-          text "30 damage. "
+          text "30 damage."
           energyCost F, C
           attackRequirement {}
           onAttack {
@@ -729,7 +729,7 @@ public enum SandstormNG implements LogicCardInfo {
       return evolution (this, from:"Claw Fossil", hp:HP080, type:F, retreatCost:2) {
         weakness G
         move "Slash", {
-          text "20 damage. "
+          text "20 damage."
           energyCost F
           attackRequirement {}
           onAttack {
@@ -835,7 +835,7 @@ public enum SandstormNG implements LogicCardInfo {
       return evolution (this, from:"Skitty", hp:HP080, type:C, retreatCost:1) {
         weakness F
         move "Scratch", {
-          text "30 damage. "
+          text "30 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -952,7 +952,7 @@ public enum SandstormNG implements LogicCardInfo {
           }
         }
         move "Pierce", {
-          text "20 damage. "
+          text "20 damage."
           energyCost F, C
           attackRequirement {}
           onAttack {
@@ -993,7 +993,7 @@ public enum SandstormNG implements LogicCardInfo {
           }
         }
         move "Headbutt", {
-          text "50 damage. "
+          text "50 damage."
           energyCost M, C, C
           attackRequirement {}
           onAttack {
@@ -1033,7 +1033,7 @@ public enum SandstormNG implements LogicCardInfo {
           }
         }
         move "Headbutt", {
-          text "30 damage. "
+          text "30 damage."
           energyCost G, C
           attackRequirement {}
           onAttack {
@@ -1131,7 +1131,7 @@ public enum SandstormNG implements LogicCardInfo {
           }
         }
         move "Razor Leaf", {
-          text "40 damage. "
+          text "40 damage."
           energyCost G, C, C
           attackRequirement {}
           onAttack {
@@ -1176,7 +1176,7 @@ public enum SandstormNG implements LogicCardInfo {
       return evolution (this, from:"Cyndaquil", hp:HP080, type:R, retreatCost:2) {
         weakness W
         move "Slash", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -1204,7 +1204,7 @@ public enum SandstormNG implements LogicCardInfo {
           }
         }
         move "Slash", {
-          text "40 damage. "
+          text "40 damage."
           energyCost C, C, C
           attackRequirement {}
           onAttack {
@@ -1294,7 +1294,7 @@ public enum SandstormNG implements LogicCardInfo {
           }
         }
         move "Light Punch", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1318,7 +1318,7 @@ public enum SandstormNG implements LogicCardInfo {
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
         move "Tackle", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1437,7 +1437,7 @@ public enum SandstormNG implements LogicCardInfo {
           }
         }
         move "Flare", {
-          text "20 damage. "
+          text "20 damage."
           energyCost R, C
           attackRequirement {}
           onAttack {
@@ -1454,7 +1454,7 @@ public enum SandstormNG implements LogicCardInfo {
           }
         }
         move "Ram", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1466,7 +1466,7 @@ public enum SandstormNG implements LogicCardInfo {
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
         move "Tackle", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1498,7 +1498,7 @@ public enum SandstormNG implements LogicCardInfo {
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
         move "Peck", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1558,7 +1558,7 @@ public enum SandstormNG implements LogicCardInfo {
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
         move "Scratch", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1566,7 +1566,7 @@ public enum SandstormNG implements LogicCardInfo {
           }
         }
         move "Pika Bolt", {
-          text "40 damage. "
+          text "40 damage."
           energyCost L, C, C
           attackRequirement {}
           onAttack {
@@ -1634,7 +1634,7 @@ public enum SandstormNG implements LogicCardInfo {
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
         move "Tackle", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1708,7 +1708,7 @@ public enum SandstormNG implements LogicCardInfo {
           }
         }
         move "Peck", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1728,7 +1728,7 @@ public enum SandstormNG implements LogicCardInfo {
           }
         }
         move "Irongrip", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -1740,7 +1740,7 @@ public enum SandstormNG implements LogicCardInfo {
       return basic (this, hp:HP080, type:W, retreatCost:3) {
         weakness L
         move "Rollout", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -1781,7 +1781,7 @@ public enum SandstormNG implements LogicCardInfo {
           }
         }
         move "Headbutt", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -1879,7 +1879,7 @@ public enum SandstormNG implements LogicCardInfo {
           }
         }
         move "Wing Attack", {
-          text "60 damage. "
+          text "60 damage."
           energyCost C, C, C
           attackRequirement {}
           onAttack {
