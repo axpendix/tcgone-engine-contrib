@@ -301,7 +301,7 @@ public enum Emerald implements LogicCardInfo {
             actionA {
               checkNoSPC()
               checkLastTurn()
-              assert bg.em().retrieveObject("Heal_Dance") != bg.turnCount : "You cannot use $thisAbility.name more than once per turn!"
+              assert bg.em().retrieveObject("Heal_Dance") != bg.turnCount : "You cannot use $thisAbility more than once per turn!"
               assert my.all.find{it.numberOfDamageCounters} : "There are no pokémon to heal on your side of the field"
               bg.em().storeObject("Heal_Dance",bg.turnCount)
               powerUsed()

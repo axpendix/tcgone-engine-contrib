@@ -1161,7 +1161,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             delayedA {
               before null, self, Source.ATTACK, {
                 if (self.getPokemonCards().any{it.name.contains("Mime Jr.")} && ((self.owner.opposite.pbg.active as PokemonCardSet).cards.energyCount(C) <= 2) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
-                  bc "$thisAbility.name prevents effect"
+                  bc "$thisAbility prevents effect"
                   prevent()
                 }
               }
@@ -1170,7 +1170,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                   bg.dm().each {
                     if (it.to == self && it.notNoEffect) {
                       it.dmg = hp(0)
-                      bc "$thisAbility.name prevents damage"
+                      bc "$thisAbility prevents damage"
                     }
                   }
                 }
@@ -1234,8 +1234,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               powerUsed()
-              def chosenPCS = opp.all.select("Choose which Pokémon should have its types copied by Ninetales' $thisAbility.name?")
-              bc "$thisAbility.name - $chosenPCS was chosen"
+              def chosenPCS = opp.all.select("Choose which Pokémon should have its types copied by Ninetales' $thisAbility?")
+              bc "$thisAbility - $chosenPCS was chosen"
               bc "$self is now the following types: ${chosenPCS.types}"
               delayed {
                 def eff
@@ -1316,12 +1316,12 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 delayed{
                   before CHECK_ATTACK_REQUIREMENTS, {
                     if (ef.attacker == self) {
-                      wcu "$thisAbility.name prevents $self from attacking."
+                      wcu "$thisAbility prevents $self from attacking."
                       prevent()
                     }
                   }
                   before RETREAT, self, {
-                    wcu "$thisAbility.name prevents $self from attacking."
+                    wcu "$thisAbility prevents $self from attacking."
                     prevent()
                   }
                   after FALL_BACK, self, {unregister()}
@@ -1382,13 +1382,13 @@ public enum MysteriousTreasures implements LogicCardInfo {
             delayedA {
               before POISONED_SPC, null, null, EVOLVE, {
                 if ((ef as Poisoned).getTarget().owner != self.owner) {
-                  bc "$thisAbility.name prevents removing the Special Condition Poisoned by evolving"
+                  bc "$thisAbility prevents removing the Special Condition Poisoned by evolving"
                   prevent()
                 }
               }
               before POISONED_SPC, null, null, DEVOLVE, {
                 if ((ef as Poisoned).getTarget().owner != self.owner) {
-                  bc "$thisAbility.name prevents removing the Special Condition Poisoned by devolving"
+                  bc "$thisAbility prevents removing the Special Condition Poisoned by devolving"
                   prevent()
                 }
               }
