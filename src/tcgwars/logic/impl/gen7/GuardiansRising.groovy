@@ -1047,7 +1047,7 @@ public enum GuardiansRising implements LogicCardInfo {
             text "Once during your turn (before your attack), you may switch this Pokémon with a Wishiwashi-GX in your hand. Any attached cards, damage counters, Special Conditions, turns in play, and any other effects remain on the new Pokémon."
             actionA {
               assert my.hand.find{it.name=='Wishiwashi-GX'}
-              assert !bg.em().retrieveObject("ScoopUpBlock_Count$self.owner.opposite") || !self.numberOfDamageCounters : "Scoop-Up Block prevents $thisAbility.name's effect."
+              assert !bg.em().retrieveObject("ScoopUpBlock_Count$self.owner.opposite") || !self.numberOfDamageCounters : "Scoop-Up Block prevents $thisAbility's effect."
               checkLastTurn()
               powerUsed()
               def card = my.hand.findAll{it.name=='Wishiwashi-GX'}.select().first()

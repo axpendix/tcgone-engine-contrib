@@ -1685,13 +1685,13 @@ public enum TeamUp implements LogicCardInfo {
             delayedA{
               before POISONED_SPC, null, null, EVOLVE, {
                 if ((ef as Poisoned).getTarget().owner != self.owner) {
-                  bc "$thisAbility.name prevents removing the Special Condition Poisoned by evolving"
+                  bc "$thisAbility prevents removing the Special Condition Poisoned by evolving"
                   prevent()
                 }
               }
               before POISONED_SPC, null, null, DEVOLVE, {
                 if ((ef as Poisoned).getTarget().owner != self.owner) {
-                  bc "$thisAbility.name prevents removing the Special Condition Poisoned by devolving"
+                  bc "$thisAbility prevents removing the Special Condition Poisoned by devolving"
                   prevent()
                 }
               }
