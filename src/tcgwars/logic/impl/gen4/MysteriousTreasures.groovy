@@ -1234,7 +1234,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               powerUsed()
-              def chosenPCS = opp.all.select("Choose which Pokémon should have its types copied by Ninetales' $thisAbility?")
+              def chosenPCS = opp.all.select("Choose which Pokémon should have its types copied by $self through $thisAbility?")
               bc "$thisAbility - $chosenPCS was chosen"
               bc "$self is now the following types: ${chosenPCS.types}"
               delayed {
