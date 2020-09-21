@@ -117,11 +117,11 @@ public enum PokemodFossil implements LogicCardInfo {
   CASTAWAY_76 ("Castaway", "76", Rarity.SECRET [TRAINER, SUPPORTER, G_SPEC]),
   DITTO_77 ("Ditto", "77", Rarity.SECRET [BASIC, POKEMON, G_SPEC, _COLORLESS_])
   
-  PSYDUCK_78 ("Psyduck", "77", Rarity.RARE, [BASIC, POKEMON, _WATER_]),
-  DRAGONITE_79 ("Dragonite", "78", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
-  GENGAR_80 ("Gengar", "79", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
-  HO_OH_81 ("Ho-oh", "80", Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
-  LUGIA_82 ("Lugia", "81", Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
+  PSYDUCK_78 ("Psyduck", "78", Rarity.RARE, [BASIC, POKEMON, _WATER_]),
+  DRAGONITE_79 ("Dragonite", "79", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
+  GENGAR_80 ("Gengar", "80", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
+  HO_OH_81 ("Ho-oh", "81", Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
+  LUGIA_82 ("Lugia", "82", Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
   ARTICUNO_83 ("Articuno", "82", Rarity.RARE, [BASIC, POKEMON, _WATER_]),
   MOLTRES_84 ("Moltres", "83", Rarity.RARE, [BASIC, POKEMON, _FIRE_]),
   ZAPDOS_85 ("Zapdos", "84", Rarity.RARE, [BASIC, POKEMON, _LIGHTNING_]),
@@ -1046,7 +1046,7 @@ public enum PokemodFossil implements LogicCardInfo {
       case MOLTRES_EX_87:
        break
       case ZAPDOS_EX_88:
-      break
+       break
       default:
         return null;
     }

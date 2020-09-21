@@ -1,6 +1,6 @@
 package tcgwars.logic.impl.pokemod
 
-import tcgwars.logic.impl.gen1.Fossil
+import tcgwars.logic.impl.gen1.Jungle
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
