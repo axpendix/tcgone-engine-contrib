@@ -240,7 +240,7 @@ public enum DragonNG implements LogicCardInfo {
           }
         }
         move "Guillotine", {
-          text "50 damage. "
+          text "50 damage."
           energyCost W, C, C
           attackRequirement {}
           onAttack {
@@ -406,7 +406,7 @@ public enum DragonNG implements LogicCardInfo {
           }
         }
         move "Dragon Claw", {
-          text "60 damage. "
+          text "60 damage."
           energyCost R, W, C, C
           attackRequirement {}
           onAttack {
@@ -593,7 +593,7 @@ public enum DragonNG implements LogicCardInfo {
           }
         }
         move "Rolling Attack", {
-          text "50 damage. "
+          text "50 damage."
           energyCost R, W, C
           attackRequirement {}
           onAttack {
@@ -658,7 +658,7 @@ public enum DragonNG implements LogicCardInfo {
           }
         }
         move "Combustion", {
-          text "20 damage. "
+          text "20 damage."
           energyCost R, C
           attackRequirement {}
           onAttack {
@@ -678,7 +678,7 @@ public enum DragonNG implements LogicCardInfo {
           }
         }
         move "Ram", {
-          text "50 damage. "
+          text "50 damage."
           energyCost R, C, C
           attackRequirement {}
           onAttack {
@@ -698,7 +698,7 @@ public enum DragonNG implements LogicCardInfo {
           }
         }
         move "Combustion", {
-          text "40 damage. "
+          text "40 damage."
           energyCost R, C, C
           attackRequirement {}
           onAttack {
@@ -720,7 +720,7 @@ public enum DragonNG implements LogicCardInfo {
           }
         }
         move "Tail Slap", {
-          text "10 damage. "
+          text "10 damage."
           energyCost L
           attackRequirement {}
           onAttack {
@@ -741,7 +741,7 @@ public enum DragonNG implements LogicCardInfo {
           }
         }
         move "Lightning Ball", {
-          text "30 damage. "
+          text "30 damage."
           energyCost L, C
           attackRequirement {}
           onAttack {
@@ -802,7 +802,7 @@ public enum DragonNG implements LogicCardInfo {
           }
         }
         move "Rollout", {
-          text "40 damage. "
+          text "40 damage."
           energyCost F, C, C
           attackRequirement {}
           onAttack {
@@ -888,7 +888,7 @@ public enum DragonNG implements LogicCardInfo {
       return evolution (this, from:"Magnemite", hp:HP080, type:L, retreatCost:1) {
         weakness F
         move "Ram", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -920,7 +920,7 @@ public enum DragonNG implements LogicCardInfo {
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness P
         move "Punch", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -988,7 +988,7 @@ public enum DragonNG implements LogicCardInfo {
           }
         }
         move "Waterfall", {
-          text "40 damage. "
+          text "40 damage."
           energyCost W, C, C
           attackRequirement {}
           onAttack {
@@ -1004,7 +1004,7 @@ public enum DragonNG implements LogicCardInfo {
           }
         }
         move "Rollout", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -1023,7 +1023,7 @@ public enum DragonNG implements LogicCardInfo {
           }
         }
         move "Flare", {
-          text "40 damage. "
+          text "40 damage."
           energyCost R, C, C
           attackRequirement {}
           onAttack {
@@ -1093,7 +1093,7 @@ public enum DragonNG implements LogicCardInfo {
           }
         }
         move "Razor Wing", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -1104,7 +1104,7 @@ public enum DragonNG implements LogicCardInfo {
       case VIBRAVA_47:
       return evolution (this, from:"Trapinch", hp:HP070, type:C, retreatCost:1) {
         move "Dive", {
-          text "20 damage. "
+          text "20 damage."
           energyCost G, C
           attackRequirement {}
           onAttack {
@@ -1129,7 +1129,7 @@ public enum DragonNG implements LogicCardInfo {
           }
         }
         move "Surf", {
-          text "30 damage. "
+          text "30 damage."
           energyCost W, C
           attackRequirement {}
           onAttack {
@@ -1148,7 +1148,7 @@ public enum DragonNG implements LogicCardInfo {
       case BAGON_49:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         move "Headbutt", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1156,7 +1156,7 @@ public enum DragonNG implements LogicCardInfo {
           }
         }
         move "Flare", {
-          text "20 damage. "
+          text "20 damage."
           energyCost R, C
           attackRequirement {}
           onAttack {
@@ -1187,7 +1187,7 @@ public enum DragonNG implements LogicCardInfo {
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness G
         move "Splash", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1195,7 +1195,7 @@ public enum DragonNG implements LogicCardInfo {
           }
         }
         move "Mud Slap", {
-          text "20 damage. "
+          text "20 damage."
           energyCost F, C
           attackRequirement {}
           onAttack {
@@ -1227,7 +1227,7 @@ public enum DragonNG implements LogicCardInfo {
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
         move "Irongrip", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1235,7 +1235,7 @@ public enum DragonNG implements LogicCardInfo {
           }
         }
         move "Slash", {
-          text "20 damage. "
+          text "20 damage."
           energyCost W, C
           attackRequirement {}
           onAttack {
@@ -1247,7 +1247,7 @@ public enum DragonNG implements LogicCardInfo {
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
         move "Beat", {
-          text "10 damage. "
+          text "10 damage."
           energyCost W
           attackRequirement {}
           onAttack {
@@ -1267,7 +1267,7 @@ public enum DragonNG implements LogicCardInfo {
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness W
         move "Light Punch", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1299,7 +1299,7 @@ public enum DragonNG implements LogicCardInfo {
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness P
         move "Pound", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1327,7 +1327,7 @@ public enum DragonNG implements LogicCardInfo {
           }
         }
         move "Wave Splash", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -1348,7 +1348,7 @@ public enum DragonNG implements LogicCardInfo {
           }
         }
         move "Bite", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -1368,7 +1368,7 @@ public enum DragonNG implements LogicCardInfo {
           }
         }
         move "Tackle", {
-          text "20 damage. "
+          text "20 damage."
           energyCost W, C
           attackRequirement {}
           onAttack {
@@ -1381,7 +1381,7 @@ public enum DragonNG implements LogicCardInfo {
         weakness F
         resistance M, MINUS30
         move "Rollout", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1389,7 +1389,7 @@ public enum DragonNG implements LogicCardInfo {
           }
         }
         move "Hook", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -1463,7 +1463,7 @@ public enum DragonNG implements LogicCardInfo {
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
         move "Bite", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1503,7 +1503,7 @@ public enum DragonNG implements LogicCardInfo {
           }
         }
         move "Tackle", {
-          text "20 damage. "
+          text "20 damage."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -1515,7 +1515,7 @@ public enum DragonNG implements LogicCardInfo {
       return basic (this, hp:HP050, type:R, retreatCost:2) {
         weakness W
         move "Rollout", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1540,7 +1540,7 @@ public enum DragonNG implements LogicCardInfo {
           }
         }
         move "Tackle", {
-          text "20 damage. "
+          text "20 damage."
           energyCost G, C
           attackRequirement {}
           onAttack {
@@ -1552,7 +1552,7 @@ public enum DragonNG implements LogicCardInfo {
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
         move "Ram", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1584,7 +1584,7 @@ public enum DragonNG implements LogicCardInfo {
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
         move "Hop", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1650,7 +1650,7 @@ public enum DragonNG implements LogicCardInfo {
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness G
         move "Dig", {
-          text "10 damage. "
+          text "10 damage."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1979,7 +1979,7 @@ public enum DragonNG implements LogicCardInfo {
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
         move "Flare", {
-          text "10 damage. "
+          text "10 damage."
           energyCost R
           attackRequirement {}
           onAttack {
