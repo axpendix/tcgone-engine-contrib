@@ -186,6 +186,14 @@ public enum SkyridgeNG implements LogicCardInfo {
   HO_OH_149 ("Ho-oh", "149", Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
   KABUTOPS_150 ("Kabutops", "150", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]),
   ALAKAZAM_H1 ("Alakazam", "H1", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _PSYCHIC_]),
+  ARCANINE_H2 ("Arcanine", "H2", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+  ARTICUNO_H3 ("Articuno", "H3", Rarity.RARE, [POKEMON, BASIC, _WATER_]),
+  BEEDRILL_H4 ("Beedrill", "H4", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
+  CROBAT_H5 ("Crobat", "H5", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
+  DEWGONG_H6 ("Dewgong", "H6", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
+  FLAREON_H7 ("Flareon", "H7", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+  FORRETRESS_H8 ("Forretress", "H8", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
+  GENGAR_H9 ("Gengar", "H9", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _PSYCHIC_]),
   GYARADOS_H10 ("Gyarados", "H10", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
   HOUNDOOM_H11 ("Houndoom", "H11", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
   JOLTEON_H12 ("Jolteon", "H12", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
@@ -196,7 +204,6 @@ public enum SkyridgeNG implements LogicCardInfo {
   MAGCARGO_H17 ("Magcargo", "H17", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
   MAGNETON_H18 ("Magneton", "H18", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
   MAGNETON_H19 ("Magneton", "H19", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
-  ARCANINE_H2 ("Arcanine", "H2", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
   MOLTRES_H20 ("Moltres", "H20", Rarity.RARE, [POKEMON, BASIC, _FIRE_]),
   NIDOQUEEN_H21 ("Nidoqueen", "H21", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
   PILOSWINE_H22 ("Piloswine", "H22", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
@@ -207,16 +214,9 @@ public enum SkyridgeNG implements LogicCardInfo {
   RHYDON_H27 ("Rhydon", "H27", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
   STARMIE_H28 ("Starmie", "H28", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
   STEELIX_H29 ("Steelix", "H29", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
-  ARTICUNO_H3 ("Articuno", "H3", Rarity.RARE, [POKEMON, BASIC, _WATER_]),
   UMBREON_H30 ("Umbreon", "H30", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
   VAPOREON_H31 ("Vaporeon", "H31", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
-  XATU_H32 ("Xatu", "H32", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
-  BEEDRILL_H4 ("Beedrill", "H4", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
-  CROBAT_H5 ("Crobat", "H5", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
-  DEWGONG_H6 ("Dewgong", "H6", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
-  FLAREON_H7 ("Flareon", "H7", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
-  FORRETRESS_H8 ("Forretress", "H8", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
-  GENGAR_H9 ("Gengar", "H9", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _PSYCHIC_]);
+  XATU_H32 ("Xatu", "H32", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -2906,6 +2906,22 @@ public enum SkyridgeNG implements LogicCardInfo {
       };
       case ALAKAZAM_H1:
       return copy (ALAKAZAM_2, this);
+      case ARCANINE_H2:
+      return copy (ARCANINE_3, this);
+      case ARTICUNO_H3:
+      return copy (ARTICUNO_4, this);
+      case BEEDRILL_H4:
+      return copy (BEEDRILL_5, this);
+      case CROBAT_H5:
+      return copy (CROBAT_6, this);
+      case DEWGONG_H6:
+      return copy (DEWGONG_7, this);
+      case FLAREON_H7:
+      return copy (FLAREON_8, this);
+      case FORRETRESS_H8:
+      return copy (FORRETRESS_9, this);
+      case GENGAR_H9:
+      return copy (GENGAR_10, this);
       case GYARADOS_H10:
       return copy (GYARADOS_11, this);
       case HOUNDOOM_H11:
@@ -2945,8 +2961,6 @@ public enum SkyridgeNG implements LogicCardInfo {
           }
         }
       };
-      case ARCANINE_H2:
-      return copy (ARCANINE_3, this);
       case MOLTRES_H20:
       return copy (MOLTRES_21, this);
       case NIDOQUEEN_H21:
@@ -3026,26 +3040,12 @@ public enum SkyridgeNG implements LogicCardInfo {
       return copy (STARMIE_30, this);
       case STEELIX_H29:
       return copy (STEELIX_31, this);
-      case ARTICUNO_H3:
-      return copy (ARTICUNO_4, this);
       case UMBREON_H30:
       return copy (UMBREON_32, this);
       case VAPOREON_H31:
       return copy (VAPOREON_33, this);
       case XATU_H32:
       return copy (XATU_35, this);
-      case BEEDRILL_H4:
-      return copy (BEEDRILL_5, this);
-      case CROBAT_H5:
-      return copy (CROBAT_6, this);
-      case DEWGONG_H6:
-      return copy (DEWGONG_7, this);
-      case FLAREON_H7:
-      return copy (FLAREON_8, this);
-      case FORRETRESS_H8:
-      return copy (FORRETRESS_9, this);
-      case GENGAR_H9:
-      return copy (GENGAR_10, this);
       default:
       return null;
     }
