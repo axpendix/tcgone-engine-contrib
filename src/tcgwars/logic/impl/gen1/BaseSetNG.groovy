@@ -1943,15 +1943,12 @@ public enum BaseSetNG implements LogicCardInfo {
           }
         }
       case PLUSPOWER:
-        // This print increases after W/R, do not use it as copy for DP-era prints that do it before W/R (and affects both actives, while this one only affects the defending Pokémon).
+        // This print increases after W/R, do not use it as copy for DP-era prints that do it before W/R (and affects both actives, while this one only affects the defending Pokémon; also can only be attached to active here).
         return basicTrainer (this) {
           text "Attach PlusPower to your Active Pokémon. At the end of your turn, discard PlusPower. If this Pokémon’s attack does damage to the Defending Pokémon (after applying Weakness and Resistance), the attack does 10 more damage to the Defending Pokémon."
           def eff
           onPlay {reason->
-            def pcs = my.active
-            if (my.bench) {
-              pcs = my.all.select("Which Pokémon will you attach $thisCard to?")
-            }
+            def pcs = my.active //No PCS Selection in this print
             pcs.cards.add(thisCard)
             my.hand.remove(thisCard)
 
