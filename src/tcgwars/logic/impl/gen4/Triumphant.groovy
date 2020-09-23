@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen4
 
+import tcgwars.logic.effect.EffectPriority
 import tcgwars.logic.effect.basic.Knockout;
 
 import static tcgwars.logic.card.HP.*;
@@ -1906,7 +1907,7 @@ public enum Triumphant implements LogicCardInfo {
           text "Rescue Energy provides 1 [C] Energy. IF the Pokémon this card is attached to is Knocked Out by damage from an attack, put that Pokémon back into your hand. (Discard all cards attached to that Pokémon.)"
           def eff
           onPlay {reason->
-            eff = delayed {
+            eff = delayed priority:EffectPriority.BEFORE_LAST, {
               before KNOCKOUT, self, {
                 if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite ){
                   def pcs=self
