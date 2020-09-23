@@ -248,17 +248,16 @@ public enum DiamondPearl implements LogicCardInfo {
             onAttack {
               damage 40
               afterDamage {
-                if(defending.evolution && confirm ("You may return all Energy cards attached to Dialga to your hand. If you do, remove the highest Stage Evolution card from the Defending Pokémon and shuffle that card into your opponent’s deck.")) {
-                  self.cards.filterByType(ENERGY).moveTo(my.hand)
+                if (defending.evolution && confirm ("You may return all Energy cards attached to Dialga to your hand. If you do, remove the highest Stage Evolution card from the Defending Pokémon and shuffle that card into your opponent’s deck.")) {
+                  def moved = self.cards.filterByType(ENERGY).moveTo(my.hand)
+                  if(moved.stream().anyMatch(self.cards.&contains)) return
                   def top=defending.topPokemonCard
-                  bc "$top Devolved"
-                  moveCard(top, opp.hand)
-                  devolve(defending, top)
+                  devolve(defending, top, opp.deck)
+                  shuffleDeck(null, TargetPlayer.OPPONENT)
                 }
               }
             }
           }
-
         };
       case DUSKNOIR_2:
         return evolution (this, from:"Dusclops", hp:HP120, type:PSYCHIC, retreatCost:3) {
@@ -597,9 +596,7 @@ public enum DiamondPearl implements LogicCardInfo {
               flip {
                 def pcs = list.select("Devolve one of your opponent's evolved Benched Pokémon.")
                 def top = pcs.topPokemonCard
-                bc "$top devolved."
-                moveCard(top, opp.hand)
-                devolve(pcs, top)
+                devolve(pcs, top, opp.hand)
               }
             }
           }
@@ -651,8 +648,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 30
               flip {
+                damage 30
                 //TODO: preventAllDamageNextTurn() won't cut it here sadly.
                 preventAllDamageNextTurn()
               }
@@ -854,10 +851,12 @@ public enum DiamondPearl implements LogicCardInfo {
           move "Wind Wave", {
             text "Search your discard pile for up to 5 in any combination of Pokémon and Supporter cards. Show them to your opponent and shuffle them into your deck."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.discard.any{it.cardTypes.is(SUPPORTER) || it.cardTypes.is(POKEMON)} : "You have neither Pokémon nor Supporter cards in your discard pile"
+            }
             onAttack {
               def tar = my.discard.findAll{it.cardTypes.is(SUPPORTER) || it.cardTypes.is(POKEMON)}
-              tar.select(min: 0, max: 5,"Choose up to 5 in any combination of Pokémon and Supporter cards to put back into your deck").moveTo(my.deck)
+              tar.select(min: 1, max: 5,"Choose up to 5 in any combination of Pokémon and Supporter cards to put back into your deck").moveTo(my.deck)
               shuffleDeck()
             }
           }
@@ -1267,7 +1266,9 @@ public enum DiamondPearl implements LogicCardInfo {
           move "Leaf Honey", {
             text "Discard a [G] Energy attached to Vespiquen and remove all damage counters from 1 of your Benched [G] Pokémon."
             energyCost G
-            attackRequirement { my.bench.findAll{it.types.contains(G) && it.numberOfDamageCounters} }
+            attackRequirement {
+              assertMyBench(hasType: G, info:"with damage on them", {it.numberOfDamageCounters})
+            }
             onAttack {
               discardSelfEnergy G
               def pcs = my.bench.findAll{it.types.contains(G) && it.numberOfDamageCounters}.select()
@@ -1825,6 +1826,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost F, F, C
             attackRequirement {}
             onAttack {
+              def pcs = opp.active
               damage 60
               damage 10, self
               afterDamage{
@@ -2883,10 +2885,17 @@ public enum DiamondPearl implements LogicCardInfo {
           text "Choose 1 of your Pokémon. Flip 2 coins. If both are heads, remove all damage counters from that Pokémon. If both are tails, discard all Energy cards attached to that Pokémon."
           onPlay {
             def pcs = my.all.findAll{it.numberOfDamageCounters || it.cards.energyCount()}.select("Select 1 of you Pokémon with either damage counters, energy attached, or both.")
-            flip 1, {
-              if (pcs.numberOfDamageCounters) healAll pcs
-            }, {
-              pcs.cards.filterByType(ENERGY).discard()
+            def headCount = 0
+            flip 2, {headCount++}
+            switch (headCount) {
+              case 0:
+                pcs.cards.filterByType(ENERGY).discard()
+                break;
+              case 2:
+                if (pcs.numberOfDamageCounters) healAll pcs
+                break;
+              default:
+                break;
             }
           }
           playRequirement {
@@ -2894,7 +2903,7 @@ public enum DiamondPearl implements LogicCardInfo {
           }
         };
       case PLUSPOWER_109:
-      // TODO this has to be implemented here again because base set version has a multiplying bug (also, this print increases before W/R when the old prints do it after W/R - starg)
+      // This print increases before W/R, do not use it as copy for older prints that do it after W/R. Another diference is it affecting damage to any active, not just the defending like old prints.
       return itemCard (this) {
         text "Attach PlusPower to 1 of your Pokémon. Discard this card at the end of your turn.\nIf the Pokémon PlusPower is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance)."
         def eff
@@ -2915,11 +2924,6 @@ public enum DiamondPearl implements LogicCardInfo {
                     it.dmg += hp(10)
                   }
                 }
-              }
-            }
-            after DISCARD, {
-              if(ef.card == thisCard){
-                eff.unregister()
               }
             }
             before BETWEEN_TURNS, {
@@ -3059,7 +3063,7 @@ public enum DiamondPearl implements LogicCardInfo {
 
         };
       case INFERNAPE_LV_X_121:
-        return evolution (this, from:"Infernape", hp:HP120, type:FIRE, retreatCost:0) {
+        return levelUp (this, from:"Infernape", hp:HP120, type:FIRE, retreatCost:0) {
           weakness W, PLUS30
           pokePower "Burning Head", {
             text "Once during your turn (before your attack), you may look at the top 3 cards of your deck, choose 1 of them, and put it into your hand. Discard the other 2 cards. This power can’t be used if Infernape is affected by a Special Condition."
@@ -3092,7 +3096,7 @@ public enum DiamondPearl implements LogicCardInfo {
 
         };
       case TORTERRA_LV_X_122:
-        return evolution (this, from:"Torterra", hp:HP160, type:GRASS, retreatCost:4) {
+        return levelUp (this, from:"Torterra", hp:HP160, type:GRASS, retreatCost:4) {
           weakness R, PLUS30
           pokePower "Forest Murmurs", {
             text "Once during your turn (before your attack), if you have more Prize cards left than your opponent, you may choose 1 of your opponent’s Benched Pokémon and switch it with 1 of the Defending Pokémon. This power can’t be used if Torterra is affected by a Special Condition."

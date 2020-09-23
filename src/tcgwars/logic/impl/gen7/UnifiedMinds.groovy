@@ -438,11 +438,8 @@ public enum UnifiedMinds implements LogicCardInfo {
               assert list
               def pcs = list.select("Devolve one of your opponent's evolved Pokémon.")
               def top=pcs.topPokemonCard
-              bc "$top devolved."
-              pcs.cards.remove(top)
-              opp.deck.add(top)
+              devolve(pcs, top, opp.deck)
               shuffleDeck(null, TargetPlayer.OPPONENT)
-              devolve(pcs, top)
             }
           }
           move "Mind Bend", {
@@ -2750,6 +2747,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             }
             onAttack {
               my.discard.select(count:4, "Choose 4 cards to shuffle into your deck.").moveTo(my.deck)
+              shuffleDeck()
             }
           }
           move "Slash", {
@@ -2932,7 +2930,7 @@ public enum UnifiedMinds implements LogicCardInfo {
                   eff2 = getter GET_GIVEN_PRIZES, BEFORE_LAST, pcs, {Holder holder ->
                     if (holder.object > 0 && (pcs.pokemonGX || pcs.pokemonEX) && pcs.KOBYDMG == bg.turnCount) {
                       bc "Knocked Out Pokémon was a Pokémon-GX or Pokémon-EX. Greedy Crush gives the player an additional prize."
-                      holder.object += 2
+                      holder.object += 1
                     }
                   }
                 }
@@ -3933,11 +3931,11 @@ public enum UnifiedMinds implements LogicCardInfo {
                           it.dmg+=hp(100)
                         }
                       }
-                      unregisterAfter 2
-                      after FALL_BACK, self, { unregister() }
-                      after EVOLVE, self, { unregister() }
-                      after DEVOLVE, self, { unregister() }
                     }
+                    unregisterAfter 2
+                    after FALL_BACK, self, { unregister() }
+                    after EVOLVE, self, { unregister() }
+                    after DEVOLVE, self, { unregister() }
                   }
                 }
               }
@@ -4268,8 +4266,13 @@ public enum UnifiedMinds implements LogicCardInfo {
           text "At the end of this turn, draw cards until you have 8 cards in your hand."
           onPlay {reason->
             delayed {
-              unregisterAfter 1
-              unregister {draw (8 - hand.getExcludedList(thisCard).size())}
+              before BETWEEN_TURNS, {
+                if (my.hand.size() < 8) {
+                  bc "${thisCard.name} effect triggers"
+                  draw (8 - hand.getExcludedList(thisCard).size())
+                }
+                unregister()
+              }
             }
           }
           playRequirement{

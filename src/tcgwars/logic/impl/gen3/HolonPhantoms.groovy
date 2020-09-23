@@ -2382,8 +2382,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             assert opp.bench.size() >= 4 : "Opponent needs to have 4 or more Benched Pokémon"
             powerUsed()
             def tar = opp.bench.select("Choose a pokemon to return to your opponent's hand.")
-            tar.cards.moveTo(opp.hand)
-            removePCS(tar)
+            scoopUpPokemon([:], tar, delegate, SRC_ABILITY)
           }
         }
         move "Power Blow", {
@@ -2424,9 +2423,7 @@ public enum HolonPhantoms implements LogicCardInfo {
               if (defending.evolution && !defending.slatedToKO && confirm("Discard 2 Energy to devolve Defending?")) {
                 discardSelfEnergy(C, C)
                 def top=defending.topPokemonCard
-                bc "$top Devolved"
-                moveCard(top, opp.deck)
-                devolve(defending, top)
+                devolve(defending, top, opp.deck)
                 shuffleDeck(null, TargetPlayer.OPPONENT)
               }
             }

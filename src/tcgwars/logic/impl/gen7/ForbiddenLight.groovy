@@ -1287,9 +1287,9 @@ public enum ForbiddenLight implements LogicCardInfo {
                       }
                     }
                   }
-                  before EVOLVE, defending, {unregister()}
-                  before DEVOLVE, defending, {unregister()}
-                  before FALL_BACK, defending, {unregister()}
+                  after EVOLVE, defending, {unregister()}
+                  after DEVOLVE, defending, {unregister()}
+                  after FALL_BACK, defending, {unregister()}
                   unregisterAfter 3
                 }
               }
@@ -1853,7 +1853,7 @@ public enum ForbiddenLight implements LogicCardInfo {
               after PROCESS_ATTACK_EFFECTS, {
                 if (ef.attacker.owner == self.owner && self.benched) {
                   bg.dm().each {
-                    if (it.from.types.contains(F) && it.to.active && it.to != self.owner && it.notNoEffect && it.dmg.value) {
+                    if (it.from.types.contains(F) && it.to.active && it.to != self.owner && it.notZero) {
                       bc "Princess’s Cheers +20"
                       it.dmg += hp(20)
                     }
@@ -2595,7 +2595,7 @@ public enum ForbiddenLight implements LogicCardInfo {
           text "Discard 2 [W] Energy cards from your hand. If you do, search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
             my.hand.filterByEnergyType(W).select(count : 2).discard()
-            my.deck.search(max : 2,"Select 2 cards",{true}).moveTo(hidden:true,my.hand)
+            my.deck.search(min: 1, max: 2,"Select 2 cards",{true}).moveTo(hidden:true,my.hand)
             shuffleDeck()
           }
           playRequirement{

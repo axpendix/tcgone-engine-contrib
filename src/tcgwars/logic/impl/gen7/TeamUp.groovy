@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen7
 
+import tcgwars.logic.effect.special.Poisoned
 import tcgwars.logic.impl.gen5.BlackWhite
 
 import static tcgwars.logic.card.HP.*;
@@ -1683,7 +1684,14 @@ public enum TeamUp implements LogicCardInfo {
             text "The Special Condition Poisoned is not removed when your opponent's Pokémon evolve or devolve."
             delayedA{
               before POISONED_SPC, null, null, EVOLVE, {
-                if(ef.target == self.owner.opposite){
+                if ((ef as Poisoned).getTarget().owner != self.owner) {
+                  bc "$thisAbility prevents removing the Special Condition Poisoned by evolving"
+                  prevent()
+                }
+              }
+              before POISONED_SPC, null, null, DEVOLVE, {
+                if ((ef as Poisoned).getTarget().owner != self.owner) {
+                  bc "$thisAbility prevents removing the Special Condition Poisoned by devolving"
                   prevent()
                 }
               }
@@ -1752,36 +1760,13 @@ public enum TeamUp implements LogicCardInfo {
           bwAbility "Scoop-Up Block" , {
             text "Your opponent's Pokémon that have any damage counters on them, and any cards attached to those Pokémon, can't be put into your opponent's hand."
             delayedA {
-              def pcs = null
-              def doBlock = false
-              def messageDisplayed = false
-              // Retain targeted Pokemon through effects
-              // TODO: Make sure this doesn't break anything
-              before null, {
-                if (ef instanceof TargetedEffect) {
-                  if (ef.getResolvedTarget(bg, e) != null) {
-                    pcs = ef.getResolvedTarget(bg, e)
-                  }
-                }
-              }
               before MOVE_CARD, {
-                if (ef.newLocation == self.owner.opposite.pbg.hand && pcs && pcs.numberOfDamageCounters && !hasThetaStop(pcs)) {
-                  doBlock = true
-                  if (!messageDisplayed) {
-                    messageDisplayed = true
+                if (ef.newLocation == self.owner.opposite.pbg.hand) {
+                  def pcs = self.owner.opposite.pbg.all.find { it.cards.contains(ef.cards.first()) }
+                  if (pcs && pcs.numberOfDamageCounters && !hasThetaStop(pcs)) {
                     bc "Scoop-Up Block stopped cards from returning to the owner's hand."
+                    prevent()
                   }
-                  prevent()
-                }
-              }
-              before REMOVE_FROM_PLAY, {
-                if (ef.resolvedTarget && ef.resolvedTarget.numberOfDamageCounters && ef.resolvedTarget.cards && ef.removedCards.contains(ef.resolvedTarget.getTopPokemonCard()) && doBlock) {
-                  doBlock = false
-                  if (!messageDisplayed) {
-                    messageDisplayed = true
-                    bc "Scoop-Up Block stopped $ef.resolvedTarget.name from being removed from play."
-                  }
-                  prevent()
                 }
               }
             }
@@ -2425,7 +2410,8 @@ public enum TeamUp implements LogicCardInfo {
               assert my.deck : "There is no card in your deck"
             }
             onAttack{
-              my.deck.search(max:2,"Choose 2 card to put in your hand",{true}).moveTo(hidden: true, my.hand)
+              my.deck.search(min:1, max:2,"Choose 2 card to put in your hand",{true}).moveTo(hidden: true, my.hand)
+              shuffleDeck()
             }
           }
           move "Dark Strike" , {
@@ -3330,13 +3316,13 @@ public enum TeamUp implements LogicCardInfo {
           onPlay {
             eff1 = delayed {
               before ATTACK_MAIN, {
-                power = (ef.attacker.owner == opp.owner)
+                power = ef.attacker.owner
               }
             }
             eff2 = getter GET_GIVEN_PRIZES, {holder->
               def pcs = holder.effect.target
-              if (power && holder.object > 0 && pcs.owner == my.owner && pcs.KOBYDMG == bg.turnCount && pcs.types.contains(D) && pcs.cards.energyCount(D)) {
-                bc "Black Market Prism Star reduces the number of prizes taken due to ${self} being Knocked Out by one."
+              if (power == pcs.owner.opposite && holder.object > 0 && pcs.KOBYDMG == bg.turnCount && pcs.types.contains(D) && pcs.cards.energyCount(D)) {
+                bc "Black Market Prism Star reduces the number of prizes taken due to ${pcs} being Knocked Out by one."
                 holder.object -= 1
               }
             }

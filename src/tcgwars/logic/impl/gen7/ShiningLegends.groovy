@@ -1031,12 +1031,13 @@ public enum ShiningLegends implements LogicCardInfo {
               afterDamage {
                 def top
                 while(defending.evolution) {
+                  def devolveFailed = false
                   targeted (defending) {
                     top=defending.topPokemonCard
-                    bc "$top Devolved"
-                    moveCard(top, opp.hand)
-                    devolve(defending, top)
+                    devolve(defending, top, opp.hand)
+                    devolveFailed = defending.cards.contains(top) //TODO: Make devolve() return a value depending on it working or not.
                   }
+                  if (devolveFailed) break;
                 }
               }
             }

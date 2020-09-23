@@ -6,7 +6,8 @@ import tcgwars.logic.impl.gen7.CelestialStorm;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.effect.Source.POKEPOWER;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
@@ -283,9 +284,7 @@ public enum LegendMaker implements LogicCardInfo {
             }
             toBeDevolved.each{
               def top = it.topPokemonCard
-              bc "$top Devolved"
-              moveCard(top, opp.deck)
-              devolve(it, top)
+              devolve(it, top, opp.deck)
             }
             if (toBeDevolved) { shuffleDeck(null, TargetPlayer.OPPONENT) }
           }
@@ -576,9 +575,7 @@ public enum LegendMaker implements LogicCardInfo {
               if (my.all.any{ it.evolution && it.name != "Shiftry" } && confirm("Evolutionary Fan - Return 1 of your evolved Pokemon, and all cards attached to it, back to your hand?")){
                 powerUsed()
                 def pcs = my.all.findAll{ it.evolution && it.name != "Shiftry" }.select("Which Pokemon, and all cards attached to it, will you bring back to your hand?")
-
-                pcs.cards.moveTo(my.hand)
-                removePCS(pcs)
+                scoopUpPokemon([:], pcs, delegate, POKEPOWER)
               }
             }
           }
@@ -1339,10 +1336,7 @@ public enum LegendMaker implements LogicCardInfo {
             def pcs = list.select("Choose one of your opponent's evolved Pokémon.")
             flip {
               def top = pcs.topPokemonCard
-              bc "$top Devolved"
-              pcs.cards.remove(top)
-              opp.deck.add(top)
-              devolve(pcs, top)
+              devolve(pcs, top, opp.deck)
               shuffleDeck(null, TargetPlayer.OPPONENT)
             }
           }

@@ -211,9 +211,7 @@ public enum Unleashed implements LogicCardInfo {
                 def pcs = tar.select("Choose which Pokemon to devolve", false)
                 if(!pcs) break
                 def top=pcs.topPokemonCard
-                bc "$top Devolved"
-                moveCard(top, opp.hand)
-                devolve(pcs, top)
+                devolve(pcs, top, opp.hand)
               }
             }
           }

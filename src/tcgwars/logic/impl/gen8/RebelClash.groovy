@@ -3445,7 +3445,7 @@ public enum RebelClash implements LogicCardInfo {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
                 if (it.to == self && it.dmg.value && it.notNoEffect) {
-                  bc "Soft Wool -30"
+                  bc "$thisAbility -30"
                   it.dmg -= hp(30)
                 }
               }

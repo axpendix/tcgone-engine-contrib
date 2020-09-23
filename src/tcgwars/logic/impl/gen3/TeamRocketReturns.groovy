@@ -835,9 +835,9 @@ public enum TeamRocketReturns implements LogicCardInfo {
             text "Choose up to 3 cards in your hand and put them on top of your deck. Then, search your deck for that many cards and put them into your hand. Shuffle your deck afterward."
             energyCost C
             onAttack {
-              def drawNb = my.hand.select(max:3,"select 3 card to put at the top of your deck").moveTo(my.deck).size()
+              def drawNb = my.hand.select(max:3,"select 3 card to put at the top of your deck").moveTo(hidden: true, my.deck).size()
+              my.deck.search(min : drawNb,max : drawNb,"Select $drawNb card(s).",{true}).moveTo(hidden: true, my.hand)
               shuffleDeck()
-              my.deck.search(min : drawNb,max : drawNb,"Select $drawNb card(s).",{true}).moveTo(my.hand)
             }
           }
           move "Quick Tail Smash", {
@@ -2320,7 +2320,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nEach player shuffles his or her hand into his or her deck. Then, each player counts his or her Prize cards left and draws up to that many cards. (You draw your cards first.)"
           onPlay {
             my.hand.getExcludedList(thisCard).moveTo(hidden:true, my.deck)
-            opp.hand.getExcludedList(thisCard).moveTo(hidden:true, opp.deck)
+            opp.hand.moveTo(hidden:true, opp.deck)
             shuffleDeck()
             shuffleDeck(null,TargetPlayer.OPPONENT)
             draw choose(1..my.prizeCardSet.size(),"How many cards would you like to draw?")
@@ -2407,9 +2407,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             if(pcs.evolution) {
               targeted (pcs, SRC_ABILITY) {
                 def top=pcs.topPokemonCard
-                bc "$top Devolved"
-                moveCard(top, my.deck)
-                devolve(pcs, top)
+                devolve(pcs, top, my.deck)
                 checkFaint()
                 if(pcs) {
                   def tar = my.deck.search(max:1,"Search for an Evolution card that evolves from that Pokémon",{it.cardTypes.is(EVOLUTION) && it.predecessor==pcs.name})

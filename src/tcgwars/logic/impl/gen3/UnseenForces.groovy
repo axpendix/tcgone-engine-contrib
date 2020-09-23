@@ -2278,7 +2278,7 @@ public enum UnseenForces implements LogicCardInfo {
           if (it.topPokemonCard.name.contains("Dark ") || it.topPokemonCard.cardTypes.is(OWNERS_POKEMON) || it.EX){ discard thisCard }
         }
         onPlay {reason->
-          eff1 = getter GET_RETREAT_COST, self, { h ->
+          eff1 = getter GET_RETREAT_COST, LAST, self, { h ->
             h.object = 0
           }
           eff2 = delayed {
@@ -2521,10 +2521,7 @@ public enum UnseenForces implements LogicCardInfo {
               def list = opp.bench.findAll { it.evolution }
               def pcs = list.select("Devolve one of your opponent's evolved Pokémon")
               def top = pcs.topPokemonCard
-              bc "$top Devolved"
-              pcs.cards.remove(top)
-              opp.hand.add(top)
-              devolve(pcs, top)
+              devolve(pcs, top, opp.hand)
             }
           }
         }
@@ -3385,10 +3382,7 @@ public enum UnseenForces implements LogicCardInfo {
                 def list = all.findAll { it.evolution }
                 def pcs = list.select("Devolve one Evolved Pokémon")
                 def top = pcs.topPokemonCard
-                bc "$top Devolved"
-                pcs.cards.remove(top)
-                pcs.owner.pbg.hand.add(top)
-                devolve(pcs, top)
+                devolve(pcs, top, pcs.owner.pbg.hand)
               }
             }
           }
@@ -3964,8 +3958,7 @@ public enum UnseenForces implements LogicCardInfo {
           attackRequirement { assert opp.bench: "Opponent's bench is empty" }
           onAttack {
             flip {
-              defending.cards.moveTo(hand)
-              removePCS(defending)
+              scoopUpPokemon(defending, delegate)
             }
           }
         }

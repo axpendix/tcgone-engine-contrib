@@ -1093,8 +1093,26 @@ public enum CosmicEclipse implements LogicCardInfo {
             onAttack {
               damage 160
               afterDamage {
-                self.cards.filterByEnergyType(R).select("Choose [R] Energy to move into your hand.").moveTo(my.hand)
-                self.cards.filterByEnergyType(R).select("Choose [R] Energy to move into your hand.").moveTo(my.hand)
+                // TODO: Make a static method to do this
+                if (self.cards.energyCount(R))
+                  if (self.cards.energyCount(R) <= 2) {
+                    self.cards.filterByEnergyType(R).moveTo my.hand
+                  } else {
+                    def targetCount = Math.min self.cards.energyCount(R), 2
+                    def finalCount = 0
+                    while (self.cards.energyCount(R) > 0 && finalCount < targetCount) {
+                      def info = "Select [R] Energy to return to your hand."
+                      def energy = self.cards.filterByType(ENERGY).select(info, energyFilter(R))
+                      def energyCount = 1
+                      if (energy.energyCount(R) > 1) {
+                        def choices = 1..energy.energyCount(R)
+                        def choiceInfo = "How many Energy do you want this card to count as?"
+                        energyCount = choose(choices, choiceInfo)
+                      }
+                      finalCount += energyCount
+                      energy.moveTo my.hand
+                    }
+                  }
               }
             }
           }
@@ -2866,6 +2884,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             }
             onAttack {
               my.discard.select("Select a card to shuffle into your deck.").moveTo(my.deck)
+              shuffleDeck()
             }
           }
           move "Mud-Slap", {
@@ -3860,7 +3879,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                 bc "[Additional cost covered] Also for the rest of the game, when the opponent’s Active Pokémon is Knocked Out by damage from those attacks, this player takes 1 more Prize card."
                 getter GET_GIVEN_PRIZES, BEFORE_LAST, {Holder holder ->
                   def pcs = holder.effect.target
-                  if (pcs.owner != selfOwner && pcs.KOBYDMG == bg.turnCount && holder.object > 0) {
+                  if (pcs.owner != selfOwner && pcs.active && pcs.KOBYDMG == bg.turnCount && holder.object > 0) {
                     bc "Altered Creation GX gives the player an additional prize."
                     holder.object += 1
                   }
@@ -4721,15 +4740,15 @@ public enum CosmicEclipse implements LogicCardInfo {
           onPlay { reason ->
             bg.em().storeObject("LILLIE_S_FULL_FORCE_TURN", bg.turnCount)
             draw 4
-
             delayed {
-              unregisterAfter 1
-              unregister {
-                while (my.hand.size() >= 3) {
-                  my.hand.select("Select cards to shuffle back into the deck.").moveTo(hidden:true, my.deck)
+              before BETWEEN_TURNS, {
+                if (my.hand.size() >= 3) {
+                  def toShuffle = my.hand.size() - 2
+                  my.hand.shuffledCopy().select(min: toShuffle, max: toShuffle, "Select cards to shuffle back into the deck.").moveTo(suppressLog: true, my.deck)
+                  bc "Due to ${thisCard.name}, ${my.owner.getPlayerUsername(bg)} shuffled ${toShuffle} cards from their hand to their deck."
+                  shuffleDeck()
                 }
-                shuffleDeck()
-                draw 2 - my.hand.size()
+                unregister()
               }
             }
           }
@@ -4801,14 +4820,13 @@ public enum CosmicEclipse implements LogicCardInfo {
             "When you play this card, you may discard 2 other cards from your hand. If you do, heal 120 damage from the Pokémon you moved to your Bench."
           onPlay {
             def healingEff = false
-            def switchedPCS
-            if (my.hand.getExcludedList(thisCard).size() >= 2 && confirm("Discard 2 cards to be able to heal the Pokémon you moved to the bench?")) {
+            def switchedPCS = my.active
+            if (switchedPCS.numberOfDamageCounters && my.hand.getExcludedList(thisCard).size() >= 2 && confirm("Discard 2 cards to be able to heal the Pokémon you moved to the bench?")) {
               my.hand.getExcludedList(thisCard).select(count:2, "Choose 2 cards to discard.").discard()
-              switchedPCS = my.active
               healingEff = true
             }
 
-            sw my.active, my.bench.select("Select the new Active Pokémon."), Source.TRAINER_CARD
+            sw switchedPCS, my.bench.select("Select the new Active Pokémon."), Source.TRAINER_CARD
 
             if (healingEff) {
               heal 120, switchedPCS

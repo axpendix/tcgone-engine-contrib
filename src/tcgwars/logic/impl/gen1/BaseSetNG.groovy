@@ -1777,8 +1777,7 @@ public enum BaseSetNG implements LogicCardInfo {
             def stage = pkmn.size()>1 ? pkmn.select("Choose stage to devolve to").first() : pkmn.first()
             for(PokemonCard t7:pcs.pokemonCards){
               if (t7 == stage) break
-              discard(t7)
-              devolve(pcs, t7)
+              devolve(pcs, t7, my.discard)
             }
           }
           playRequirement{
@@ -1944,7 +1943,37 @@ public enum BaseSetNG implements LogicCardInfo {
           }
         }
       case PLUSPOWER:
-        return copy(Unleashed.PLUSPOWER_80, this);
+        // This print increases after W/R, do not use it as copy for DP-era prints that do it before W/R (and affects both actives, while this one only affects the defending Pokémon; also can only be attached to active here).
+        return basicTrainer (this) {
+          text "Attach PlusPower to your Active Pokémon. At the end of your turn, discard PlusPower. If this Pokémon’s attack does damage to the Defending Pokémon (after applying Weakness and Resistance), the attack does 10 more damage to the Defending Pokémon."
+          def eff
+          onPlay {reason->
+            def pcs = my.active //No PCS Selection in this print
+            pcs.cards.add(thisCard)
+            my.hand.remove(thisCard)
+
+            eff = delayed {
+              before APPLY_ATTACK_DAMAGES, {
+                if (ef.attacker == pcs) {
+                  bg.dm().each {
+                    if (it.to.active && it.to.owner != pcs.owner && it.dmg.value) {
+                      bc "PlusPower +10"
+                      it.dmg += hp(10)
+                    }
+                  }
+                }
+              }
+              before BETWEEN_TURNS, {
+                discard thisCard
+              }
+              after REMOVE_FROM_PLAY, pcs, null, {
+                if(ef.removedCards.contains(thisCard)) {
+                  eff.unregister()
+                }
+              }
+            }
+          }
+        };
       case POKEMON_CENTER:
         return basicTrainer (this) {
           text "Remove all damage counters from all of your own Pokémon with damage counters on them, then discard all Energy cards attached to those Pokémon."

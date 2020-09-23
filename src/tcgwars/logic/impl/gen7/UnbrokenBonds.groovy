@@ -1098,12 +1098,12 @@ public enum UnbrokenBonds implements LogicCardInfo {
         return evolution (this, from:"Squirtle", hp:HP070, type:W, retreatCost:2) {
           weakness G
           bwAbility "Solid Shell", {
-            text "This Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+            text "This Pokémon takes 20 less damage from attacks (after applying Weakness and Resistance)."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{if(it.to == self && it.notNoEffect && it.dmg.value) {
-                  bc "Solid Shell -30"
-                  it.dmg -= hp(30)
+                  bc "Solid Shell -20"
+                  it.dmg -= hp(20)
                 }}
               }
             }
@@ -4071,14 +4071,10 @@ public enum UnbrokenBonds implements LogicCardInfo {
           onPlay {
             def pcs = my.all.findAll{it.evolution}.select("Pokemon to devolve")
             def top = pcs.topPokemonCard
-            moveCard(top, my.deck)
-            bc "$top devolved"
-            devolve(pcs, top)
+            devolve(pcs, top, my.deck)
             while(pcs.evolution && confirm("$top was devolved. Devolve the next evolution?")){
               top = pcs.topPokemonCard
-              moveCard(top, my.deck)
-              bc "$top devolved"
-              devolve(pcs, top)
+              devolve(pcs, top, my.deck)
             }
             shuffleDeck()
           }
@@ -4257,8 +4253,10 @@ public enum UnbrokenBonds implements LogicCardInfo {
         return supporter (this) {
           text "Your opponent's Active Pokémon is now Confused and Poisoned."
           onPlay {
-            apply CONFUSED, opp.active, TRAINER_CARD
-            apply POISONED, opp.active, TRAINER_CARD
+            if ( !opp.active.isSPC(CONFUSED) )
+              apply CONFUSED, opp.active, TRAINER_CARD
+            if ( !opp.active.isSPC(POISONED) || (bg.em().retrieveObject("extra_poison_counter_"+opp.active.hashCode()) ?: 0) )
+              apply POISONED, opp.active, TRAINER_CARD
             bg.em().storeObject("KOGA_S_TRAP_TURN", bg.turnCount)
           }
           playRequirement{

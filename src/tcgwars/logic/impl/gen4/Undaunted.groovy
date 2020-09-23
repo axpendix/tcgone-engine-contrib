@@ -1788,6 +1788,13 @@ public enum Undaunted implements LogicCardInfo {
           pokePower "Cloud-Covered Moon", {
             text "Once during your turn , if Umbreon is your Active Pokémon, you may flip a coin. If heads, return Umbreon and all cards attached to it to your hand. This power can’t be used if Umbreon is affected by a Special Condition."
             actionA {
+              assert self.active : "$self is not your Active Pokémon"
+              checkLastTurn()
+              checkNoSPC()
+              powerUsed()
+              flip ({
+                scoopUpPokemon([:], self, delegate, POKEPOWER)
+              })
             }
           }
           move "Evoblast", {
