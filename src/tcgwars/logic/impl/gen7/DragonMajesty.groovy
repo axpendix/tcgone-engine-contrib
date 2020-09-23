@@ -200,12 +200,16 @@ public enum DragonMajesty implements LogicCardInfo {
           bwAbility "Resolute Flame" , {
             text "This Pokémon's attacks do 30 more damage to your opponent's Active Pokémon for each of their Pokémon-GX and Pokémon-EX in play."
             delayedA{
-              before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
+              after PROCESS_ATTACK_EFFECTS, {
+                if (ef.attacker == self) {
                   def plusDmg = self.owner.opposite.pbg.all.findAll{it.pokemonEX || it.pokemonGX}.size() * 30
-                  if(it.from == self && plusDmg && it.dmg.value && it.notNoEffect) {
-                    bc "Resolute Flame +$plusDmg"
-                    it.dmg += hp(plusDmg)
+                  if (plusDmg) {
+                    bg.dm().each {
+                      if(it.to.owner == self.owner.opposite && it.to.active && it.notZero) {
+                        bc "Resolute Flame +$plusDmg"
+                        it.dmg += hp(plusDmg)
+                      }
+                    }
                   }
                 }
               }
@@ -777,12 +781,15 @@ public enum DragonMajesty implements LogicCardInfo {
               }
               effect2 = delayed{
                 after PROCESS_ATTACK_EFFECTS, {
-                  bg.dm().each {
-                    if(it.from.name == "Wishiwashi-GX" && it.from.owner == self.owner && it.dmg.value && it.notNoEffect) {
-                      bc "Meet Up +20"
-                      it.dmg += hp(20)
+                  if (ef.attacker.name ==  "Wishiwashi-GX" && ef.attacker.owner == self.owner) {
+                    bg.dm().each {
+                      if(it.to.owner == self.owner.opposite && it.to.active && it.notZero) {
+                        bc "Meet Up +20"
+                        it.dmg += hp(20)
+                      }
                     }
                   }
+
                 }
               }
             }
@@ -939,7 +946,7 @@ public enum DragonMajesty implements LogicCardInfo {
               after PROCESS_ATTACK_EFFECTS, {
                 if (ef.attacker.owner == self.owner && ef.attacker.types.contains(N)){
                   bg.dm().each {
-                    if(it.to.owner != self.owner && it.to.active && it.dmg.value) {
+                    if(it.to.owner != self.owner && it.to.active && it.notZero) {
                       bc "Fight Song +20"
                       it.dmg += hp(20)
                     }
@@ -1018,7 +1025,7 @@ public enum DragonMajesty implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if(it.to==self && it.to.cards.filterByType(BASIC_ENERGY) && it.dmg.value && it.notNoEffect){
+                  if(it.to==self && it.to.cards.hasType(BASIC_ENERGY) && it.dmg.value && it.notNoEffect){
                     bc "Energy Guard -20"
                     it.dmg -= hp(20)
                   }

@@ -1277,10 +1277,11 @@ public enum ForbiddenLight implements LogicCardInfo {
               targeted (defending) {
                 bc "During ${self.owner}'s next turn, if $defending is damaged by an attack, it will be Knocked Out. (This effect can be removed by benching/evolving $defending)"
                 delayed {
+                  //TODO: Confirm this only happens when damage is actually done (maybe needs priority LAST?)
                   before APPLY_ATTACK_DAMAGES, {
                     if (bg.currentTurn == self.owner){
                       bg.dm().each {
-                        if(it.to == defending && it.dmg.value && it.notNoEffect) {
+                        if(it.to == defending && it.dmg.value) {
                           bc "Ticking Knock Out"
                           new Knockout(opp.active).run(bg)
                         }
@@ -1705,7 +1706,7 @@ public enum ForbiddenLight implements LogicCardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 if(self.owner.pbg.all.size() <= self.owner.opposite.pbg.all.size()){
                   bg.dm().each{
-                    if(it.from==self && it.dmg.value && it.notNoEffect){
+                    if(it.from==self && it.notZero){
                       bc "+60 from Tyrantrum (Tyrannical Heart)"
                       it.dmg+=hp(60)
                     }
@@ -2830,7 +2831,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each{
-                  if(it.from == self && it.to.active && it.to.owner != self.owner && self.topPokemonCard.cardTypes.is(ULTRA_BEAST) && it.dmg.value) {
+                  if(it.from == self && it.to.active && it.to.owner != self.owner && self.topPokemonCard.cardTypes.is(ULTRA_BEAST) && it.notZero) {
                     bc "Beast Energy +30"
                     it.dmg += hp(30)
                   }

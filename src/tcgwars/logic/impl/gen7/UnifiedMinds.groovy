@@ -539,9 +539,9 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "Your [G] Pokémon take 40 less damage from your opponent's attacks (after applying Weakness and Resistance). You can't apply more than 1 Blanket Weaver Ability at a time."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                if(bg.em().retrieveObject("Blanket_Weaver") != bg.turnCount) {
+                if(ef.attacker.owner == self.owner.opposite && bg.em().retrieveObject("Blanket_Weaver") != bg.turnCount) {
                   bg.dm().each {
-                    if (it.from.owner != self.owner && it.to.owner == self.owner && it.to.types.contains(G) && it.notNoEffect && it.dmg.value) {
+                    if (it.to.owner == self.owner && it.to.types.contains(G) && it.notNoEffect && it.dmg.value) {
                       bc "Blanket Weaver -40"
                       it.dmg -= hp(40)
                     }
@@ -1947,10 +1947,12 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 120
               delayed{
                 before APPLY_ATTACK_DAMAGES, {
-                  bg.dm().each {
-                    if (it.to == self && it.from.topPokemonCard.cardTypes.is(TAG_TEAM) && it.dmg.value && it.notNoEffect) {
-                      bc "Tag Purge prevents damage from Tag Team Pokémon."
-                      it.dmg = hp(0)
+                  if (ef.attacker.owner == self.owner.opposite && ef.attacker.topPokemonCard.cardTypes.is(TAG_TEAM)) {
+                    bg.dm().each {
+                      if (it.to == self && it.dmg.value && it.notNoEffect) {
+                        bc "Tag Purge prevents damage from Tag Team Pokémon."
+                        it.dmg = hp(0)
+                      }
                     }
                   }
                 }
@@ -2665,9 +2667,9 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "If you have more Prize cards remaining than your opponent, this Pokémon's attacks do 80 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
             delayedA{
               after PROCESS_ATTACK_EFFECTS, {
-                if (my.prizeCardSet.size() > opp.prizeCardSet.size()) {
+                if (ef.attacker == self && my.prizeCardSet.size() > opp.prizeCardSet.size()) {
                   bg.dm().each {
-                    if (it.from == self && it.to.active && it.to.owner != self.owner && it.dmg.value) {
+                    if (it.to.active && it.to.owner != self.owner && it.notZero) {
                       bc "Avenging Aura +80"
                       it.dmg += hp(80)
                     }
@@ -2708,10 +2710,12 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "Your TAG TEAM Pokémon take 20 less damage from your opponent's attacks (after applying Weakness and Resistance)."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if(it.to.owner == self.owner && it.dmg.value && it.notNoEffect && it.to.topPokemonCard.cardTypes.is(TAG_TEAM)) {
-                    bc "Tag Coach -20"
-                    it.dmg -= hp(20)
+                if (ef.attacker.owner == self.owner.opposite) {
+                  bg.dm().each {
+                    if(it.to.owner == self.owner && it.to.topPokemonCard.cardTypes.is(TAG_TEAM) && it.dmg.value && it.notNoEffect) {
+                      bc "Tag Coach -20"
+                      it.dmg -= hp(20)
+                    }
                   }
                 }
               }
@@ -2842,10 +2846,12 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "As long as this Pokémon is on your Bench, your Zygarde's and Zygarde-GX's attacks do 20 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each{
-                  if(!self.active && it.from.active && it.from.owner == self.owner && it.to.active && it.to.owner != self.owner && it.dmg.value && (it.from.name == "Zygarde" || it.from.name == "Zygarde-GX")) {
-                    bc "Cellular Companions +20"
-                    it.dmg += hp(20)
+                if (self.benched && ef.attacker.owner == self.owner && ["Zygarde", "Zygarde-GX"].contains(ef.attacker.name)) {
+                  bg.dm().each{
+                    if(it.to.active && it.to.owner != self.owner && it.notZero) {
+                      bc "Cellular Companions +20"
+                      it.dmg += hp(20)
+                    }
                   }
                 }
               }
@@ -3926,7 +3932,7 @@ public enum UnifiedMinds implements LogicCardInfo {
                   delayed {
                     before APPLY_ATTACK_DAMAGES, {
                       bg.dm().each{
-                        if (it.to==self && it.dmg.value) {
+                        if (it.to==self && it.dmg.value && it.notNoEffect) {
                           bc "+100 to $self (Dynamic Swing)"
                           it.dmg+=hp(100)
                         }

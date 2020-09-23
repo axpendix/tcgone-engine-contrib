@@ -1815,19 +1815,21 @@ public enum CelestialStorm implements LogicCardInfo {
             text "During your next turn, the Defending Pokémon takes 20 more damage from attacks (after applying Weakness and Resistance)."
             energyCost C
             onAttack {
-              delayed{
-                before APPLY_ATTACK_DAMAGES,{
-                  bg.dm().each {
-                    if(it.to == defending && it.dmg.value && it.notNoEffect) {
-                      bc "screech +20"
-                      it.dmg += hp(20)
+              targeted (defending) {
+                delayed{
+                  before APPLY_ATTACK_DAMAGES,{
+                    bg.dm().each {
+                      if(it.to == defending && it.dmg.value && it.notNoEffect) {
+                        bc "Screech +20"
+                        it.dmg += hp(20)
+                      }
                     }
                   }
+                  unregisterAfter 3
+                  after FALL_BACK,defending, {unregister()}
+                  after EVOLVE,defending, {unregister()}
+                  after DEVOLVE,defending, {unregister()}
                 }
-                unregisterAfter 3
-                after FALL_BACK,defending, {unregister()}
-                after EVOLVE,defending, {unregister()}
-                after DEVOLVE,defending, {unregister()}
               }
             }
           }
@@ -2280,9 +2282,9 @@ public enum CelestialStorm implements LogicCardInfo {
             text "If this Pokémon's remaining HP is 100 or less, its attacks do 80 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
             delayedA{
               after PROCESS_ATTACK_EFFECTS,{
-                if(self.remainingHP.value <= 100){
+                if(ef.attacker == self && self.remainingHP.value <= 100){
                   bg.dm().each{
-                    if(it.from == self && it.to.active && it.to.owner != self.owner && it.dmg.value) {
+                    if(it.to.active && it.to.owner != self.owner && it.notZero) {
                       bc "Danger Perception +80"
                       it.dmg += hp(80)
                     }
@@ -2591,10 +2593,12 @@ public enum CelestialStorm implements LogicCardInfo {
             text "Your Ultra Beasts take 10 less damage from your opponent's attacks (after applying Weakness and Resistance)."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if(it.to.owner == self.owner && it.to.topPokemonCard.cardTypes.is(ULTRA_BEAST) && it.dmg.value && it.notNoEffect) {
-                    bc "Ultra Wall -10"
-                    it.dmg -= hp(10)
+                if (ef.attacker.owner == self.owner.opposite) {
+                  bg.dm().each {
+                    if(it.to.owner == self.owner && it.to.topPokemonCard.cardTypes.is(ULTRA_BEAST) && it.dmg.value && it.notNoEffect) {
+                      bc "Ultra Wall -10"
+                      it.dmg -= hp(10)
+                    }
                   }
                 }
               }
@@ -3114,9 +3118,9 @@ public enum CelestialStorm implements LogicCardInfo {
           onPlay {reason->
             eff=delayed{
               after PROCESS_ATTACK_EFFECTS, {
-                if(self.getRemainingHP().value <= 30 && self.numberOfDamageCounters){
+                if(ef.attacker == self && self.getRemainingHP().value <= 30 && self.numberOfDamageCounters){
                   bg.dm().each{
-                    if(it.from == self && it.notNoEffect && it.dmg.value) {
+                    if(it.to.active && it.to.owner == self.owner.opposite && it.notZero) {
                       bc "Hustle Belt +60"
                       it.dmg += hp(60)
                     }

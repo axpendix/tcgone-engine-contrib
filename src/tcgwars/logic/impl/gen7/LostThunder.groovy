@@ -4076,7 +4076,7 @@ public enum LostThunder implements LogicCardInfo {
               after PROCESS_ATTACK_EFFECTS, {
                 if(ef.attacker.owner == thisCard.player && ef.attacker.types.contains(L)) {
                   bg.dm().each{
-                    if(it.from == ef.attacker && it.dmg.value && it.to.active && it.to.owner != it.from.owner) {
+                    if(it.notZero && it.to.active && it.to.owner != it.from.owner) {
                       bc "Electropower +30"
                       it.dmg += hp(30)
                     }
@@ -4284,10 +4284,12 @@ public enum LostThunder implements LogicCardInfo {
           onPlay{
             delayed {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if(ef.attacker.owner != thisCard.player && it.to.owner == thisCard.player && it.to.topPokemonCard.cardTypes.is(ULTRA_BEAST) && it.notNoEffect && it.dmg.value){
-                    bc "Lusamine prevent damage done to Ultra Beasts"
-                    it.dmg = hp(0)
+                if (ef.attacker.owner != thisCard.player) {
+                  bg.dm().each {
+                    if(it.to.owner == thisCard.player && it.to.topPokemonCard.cardTypes.is(ULTRA_BEAST) && it.notNoEffect && it.dmg.value){
+                      bc "Lusamine prevent damage done to Ultra Beasts"
+                      it.dmg = hp(0)
+                    }
                   }
                 }
               }

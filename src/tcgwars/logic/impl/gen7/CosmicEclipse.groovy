@@ -769,12 +769,14 @@ public enum CosmicEclipse implements LogicCardInfo {
           bwAbility "Beast Boost", {
             text "This Pokémon's attacks do 20 more damage to your opponent's Active Pokémon for each Prize card you have taken (before applying Weakness and Resistance)."
             delayedA {
-              before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if (it.from == self && my.prizeCardSet.takenCount > 0 && it.dmg.value && it.notNoEffect) {
-                    def plusDmg = 20*my.prizeCardSet.takenCount
-                    bc "Beast Boost +$plusDmg"
-                    it.dmg += hp(plusDmg)
+              after PROCESS_ATTACK_EFFECTS, {
+                if (ef.attacker == self && my.prizeCardSet.takenCount > 0) {
+                  bg.dm().each {
+                    if (it.notZero) {
+                      def plusDmg = 20 * my.prizeCardSet.takenCount
+                      bc "Beast Boost +$plusDmg"
+                      it.dmg += hp(plusDmg)
+                    }
                   }
                 }
               }
@@ -873,9 +875,9 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "The attacks of your Pokémon-GX in play that evolve from Eevee do 30 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance). You can't apply more than 1 Power Cheer Ability at a time."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                if (bg.em().retrieveObject("Power_Cheer") != bg.turnCount){
+                if (bg.em().retrieveObject("Power_Cheer") != bg.turnCount && ef.attacker.owner == self.owner && ef.attacker.pokemonGX && ef.attacker.realEvolution ){
                   bg.dm().each{
-                    if(it.from.owner == self.owner && it.from.pokemonGX && it.from.realEvolution && it.from.topPokemonCard.predecessor == "Eevee" && it.to.active && it.to.owner != self.owner && it.dmg.value && it.notNoEffect) {
+                    if(it.from.owner == self.owner && it.from.pokemonGX && it.from.realEvolution && it.from.topPokemonCard.predecessor == "Eevee" && it.to.active && it.to.owner != self.owner && it.notZero) {
                       bc "Power Cheer +30"
                       it.dmg += hp(30)
                     }
@@ -3792,8 +3794,8 @@ public enum CosmicEclipse implements LogicCardInfo {
                   after PROCESS_ATTACK_EFFECTS, {
                     if (ef.attacker == pcs){
                       bg.dm().each {
-                        if(it.notNoEffect && it.dmg.value){
-                          bc "${thisMove.name} reduces damage"
+                        if(it.notZero){
+                          bc "${thisMove.name} reduces damage by 30"
                           it.dmg-=hp(30)
                         }
                       }
@@ -4506,7 +4508,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               after PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each {
                   def plusDmg = 10*my.prizeCardSet.takenCount
-                  if (it.from == self && it.to.active && it.to.owner != self.owner && self.topPokemonCard.cardTypes.is(ULTRA_BEAST) && it.dmg.value) {
+                  if (it.from == self && it.to.active && it.to.owner != self.owner && self.topPokemonCard.cardTypes.is(ULTRA_BEAST) && it.notZero) {
                     bc "Beastite +$plusDmg"
                     it.dmg += hp(plusDmg)
                   }

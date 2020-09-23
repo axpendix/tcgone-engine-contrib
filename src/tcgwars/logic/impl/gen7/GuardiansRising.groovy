@@ -1603,10 +1603,12 @@ public enum GuardiansRising implements LogicCardInfo {
             text "Your [M] Pokémon's attacks do 10 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each {
-                  if (it.from.owner == self.owner && it.from.types.contains(M) && it.to.active && it.to.owner != self.owner && it.dmg.value) {
-                    it.dmg += hp(10)
-                    bc "Steelworker +10"
+                if (ef.attacker.owner == self.owner && ef.attacker.types.contains(M)) {
+                  bg.dm().each {
+                    if (it.to.active && it.to.owner != self.owner && it.notZero) {
+                      bc "Steelworker +10"
+                      it.dmg += hp(10)
+                    }
                   }
                 }
               }
@@ -3028,7 +3030,7 @@ public enum GuardiansRising implements LogicCardInfo {
             eff1=delayed {
               after PROCESS_ATTACK_EFFECTS, {
                 if(ef.attacker==self) bg.dm().each {
-                  if(it.from==self && it.to.active && it.to.owner!=self.owner && (it.to.pokemonGX || it.to.pokemonEX) && it.dmg.value){
+                  if(it.to.active && it.to.owner != self.owner && (it.to.pokemonGX || it.to.pokemonEX) && it.notZero){
                     it.dmg += hp(30)
                     bc "Choice Band +30"
                   }

@@ -990,9 +990,9 @@ public enum UnbrokenBonds implements LogicCardInfo {
             text "Your Pokémon's attacks do 30 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance). You can't apply more than 1 Strong Cheer Ability at a time."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                if(ef.attacker.owner == self.owner && bg.em().retrieveObject("Strong Cheer") != bg.turnCount){
+                if(ef.attacker.owner == self.owner && bg.em().retrieveObject("Strong Cheer") != bg.turnCount){//if not strong cheer has been used before
                   bg.dm().each {
-                    if (it.from.active && it.from.owner == self.owner && it.to.active && it.to.owner != self.owner && it.dmg.value) {//if not strong cheer has been used before
+                    if (it.to.active && it.to.owner != self.owner && it.notZero) {
                       bc "Strong Cheer +30"
                       it.dmg += hp(30)
                     }
@@ -2042,10 +2042,14 @@ public enum UnbrokenBonds implements LogicCardInfo {
             text "Prevent all damage done to your Benched Pokémon by your opponent's attacks."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {if(it.to.owner==self.owner && it.from.owner!=self.owner && it.to.benched && it.dmg.value && it.notNoEffect){
-                  bc "Bench Barrier reduces damage"
-                  it.dmg=hp(0)
-                }}
+                if (ef.attacker.owner == self.owner.opposite) {
+                  bg.dm().each {
+                    if(it.to.owner == self.owner && it.to.benched && it.dmg.value && it.notNoEffect){
+                      bc "Bench Barrier prevents damage"
+                      it.dmg=hp(0)
+                    }
+                  }
+                }
               }
             }
           }
@@ -2854,10 +2858,14 @@ public enum UnbrokenBonds implements LogicCardInfo {
             text "As long as this Pokémon is your Active Pokémon, your opponent's Active Pokémon's attacks do 20 less damage (before applying Weakness and Resistance)."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each {if(self.active && it.from.active && it.from.owner!=self.owner && it.dmg.value && it.notNoEffect){
-                  bc "Intimidating Fang -20"
-                  it.dmg -= hp(20)
-                }}
+                if (self.active && ef.attacker.owner == self.owner.opposite) {
+                  bg.dm().each {
+                    if(it.notZero){
+                      bc "Intimidating Fang -20"
+                      it.dmg -= hp(20)
+                    }
+                  }
+                }
               }
             }
           }
@@ -3084,10 +3092,12 @@ public enum UnbrokenBonds implements LogicCardInfo {
             text "Your [M] Pokémon take 10 less damage from your opponent's attacks (after applying Weakness and Resistance)."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if(it.to.owner == self.owner && it.to.types.contains(M) && it.dmg.value && it.notNoEffect) {
-                    bc "Hair Wall -10"
-                    it.dmg -= hp(10)
+                if (ef.attacker.owner == self.owner.opposite) {
+                  bg.dm().each {
+                    if(it.to.owner == self.owner && it.to.types.contains(M) && it.dmg.value && it.notNoEffect) {
+                      bc "Hair Wall -10"
+                      it.dmg -= hp(10)
+                    }
                   }
                 }
               }
