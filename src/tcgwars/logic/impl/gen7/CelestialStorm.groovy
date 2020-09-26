@@ -1295,7 +1295,7 @@ public enum CelestialStorm implements LogicCardInfo {
                   if (!tarCards) break
                   toDiscard.addAll tarCards
                   workMap.get(tar).removeAll(tarCards)
-                  damageAmount = 60 * toDiscard.size()
+                  damageAmount = 30 + 50 * toDiscard.size()
                   mapTar = workMap.keySet().findAll { workMap.get(it).notEmpty() }
                 }
                 afterDamage { toDiscard.discard() }
