@@ -1242,56 +1242,56 @@ public enum CelestialStorm implements LogicCardInfo {
           }
         };
       case ELECTRODE_GX_48:
-        return 	evolution (this, from:"Voltorb", hp:HP190, type:LIGHTNING, retreatCost:1) {
+        return evolution(this, from: "Voltorb", hp: HP190, type: LIGHTNING, retreatCost: 1) {
           weakness FIGHTING
           resistance METAL, MINUS20
-          bwAbility "Extra Energy Bomb" , {
+          bwAbility "Extra Energy Bomb", {
             text "Once during your turn (before your attack), you may attach 5 Energy cards from your discard pile to your Pokémon, except Pokémon-GX or Pokémon-EX, in any way you like. If you do, this Pokémon is Knocked Out."
             actionA {
               checkLastTurn()
-              assert my.discard.filterByType(ENERGY) : "No energy in your discard pile"
-              assert my.all.any{!(it.pokemonEX) && !(it.pokemonGX)} : "No Pokémon that aren't EX or GX"
+              assert my.discard.filterByType(ENERGY): "No energy in your discard pile"
+              assert my.all.any { !(it.pokemonEX) && !(it.pokemonGX) }: "No Pokémon that aren't EX or GX"
               powerUsed()
               //Must attach at least one energy
-              attachEnergyFrom(my.discard, my.all.findAll{!(it.pokemonEX) && !(it.pokemonGX)})
-              if (my.discard.filterByType(ENERGY)){
-                for (i in 1..4){
+              attachEnergyFrom(my.discard, my.all.findAll { !(it.pokemonEX) && !(it.pokemonGX) })
+              if (my.discard.filterByType(ENERGY)) {
+                for (i in 1..4) {
                   def tup = attachEnergyFrom(
-                    may : true ,my.discard, my.all.findAll{!(it.pokemonEX) && !(it.pokemonGX)}
+                    may: true, my.discard, my.all.findAll { !(it.pokemonEX) && !(it.pokemonGX) }
                   )
-                  if (tup[0] == []) break;
+                  if (tup[0] == []) break
                 }
               }
               new Knockout(self).run(bg)
             }
           }
-          move "Electro Ball" , {
+          move "Electro Ball", {
             text "50 damage."
-            energyCost L,C
+            energyCost L, C
             onAttack {
               damage 50
             }
           }
-          move "Crush and Burn GX" , {
+          move "Crush and Burn GX", {
             text "30+ damage. Discard any amount of Energy from your Pokémon. This attack does 50 more damage for each card you discarded in this way. (You can't use more than 1 GX attack in a game.)"
-            energyCost L,C
+            energyCost L, C
             attackRequirement {
               gxCheck()
             }
             onAttack {
               gxPerform()
               def damageAmount = 30
-              if(confirm("Discard energy from your Pokémon for 50 extra damage per energy discarded?")){
+              if (my.all.any { it.cards.energyCount() } && confirm("Discard energy from your Pokémon for 50 extra damage per energy discarded?")) {
                 CardList toDiscard = []
                 Map<PokemonCardSet, CardList> workMap = [:]
                 for (PokemonCardSet pcs : my.all) {
                   if (pcs.cards.filterByType(ENERGY)) workMap.put(pcs, pcs.cards.filterByType(ENERGY))
                 }
                 PcsList mapTar = workMap.keySet().findAll { workMap.get(it).notEmpty() }
-                while(mapTar) {
+                while (mapTar) {
                   PokemonCardSet tar = mapTar.select("Choose the Pokémon to discard energy from. Current Damage: $damageAmount", false)
                   if (!tar) break
-                  def tarCards = workMap.get(tar).select(min:0,max : tar.cards.filterByType(ENERGY).size(), "Choose the energies to discard. Current Damage: $damageAmount")
+                  def tarCards = workMap.get(tar).select(min: 0, max: tar.cards.filterByType(ENERGY).size(), "Choose the energies to discard. Current Damage: $damageAmount")
                   if (!tarCards) break
                   toDiscard.addAll tarCards
                   workMap.get(tar).removeAll(tarCards)
