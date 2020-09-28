@@ -152,7 +152,7 @@ public enum Collection {
   SWORD_SHIELD(430, "SSH", "gen8.SwordShield"),
   REBEL_CLASH(431, "RCL", "gen8.RebelClash"),
   DARKNESS_ABLAZE(432, "DAA", "gen8.DarknessAblaze"),
-  CHAMPIONS_PATH(433, "CHP", "gen8.ChampionsPath"),
+  CHAMPIONS_PATH(433, "CPA", "gen8.ChampionsPath"),
 
   //POKEMOD
   POKEMOD_BASE_SET(910, "MODBS", "pokemod.PokemodBaseSet"),

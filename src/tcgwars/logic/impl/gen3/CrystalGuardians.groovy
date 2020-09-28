@@ -2377,7 +2377,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         weakness R
         pokePower "Time Travel", {
           text "If Celebi Star would be Knocked Out by damage from an opponent's attack, you may flip a coin. If heads, Celebi Star is not Knocked Out, discard all cards attached to Celebi Star, and put Celebi Star on the bottom of your deck."
-          delayedA {
+          delayedA priority:BEFORE_LAST, {
             before KNOCKOUT, self, {
               if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
                 bc "$self - Time Travel activated"

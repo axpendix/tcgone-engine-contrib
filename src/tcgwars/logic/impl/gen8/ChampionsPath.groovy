@@ -65,13 +65,13 @@ public enum ChampionsPath implements LogicCardInfo {
   MACHOP_24 ("Machop", 24, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
   MACHOKE_25 ("Machoke", 25, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
   MACHAMP_26 ("Machamp", 26, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_]),
-  LUCARIO_27 ("Lucario", 27, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _FIGHTING_]),
+  LUCARIO_V_27 ("Lucario V", 27, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _FIGHTING_]),
   ZYGARDE_28 ("Zygarde", 28, Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
   ROCKRUFF_29 ("Rockruff", 29, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
   LYCANROC_30 ("Lycanroc", 30, Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
   ROLYCOLY_31 ("Rolycoly", 31, Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
   GRAPPLOCT_V_32 ("Grapploct V", 32, Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _FIGHTING_]),
-  EKANS_33 ("EKans", 33, Rarity.COMMON, [POKEMON, BASIC, _DARKNESS_]),
+  EKANS_33 ("Ekans", 33, Rarity.COMMON, [POKEMON, BASIC, _DARKNESS_]),
   ARBOK_34 ("Arbok", 34, Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
   GALARIAN_ZIGZAGOON_35 ("Galarian Zigzagoon", 35, Rarity.COMMON, [POKEMON, BASIC, _DARKNESS_]),
   GALARIAN_LINOONE_36 ("Galarian Linoone", 36, Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
@@ -176,13 +176,14 @@ public enum ChampionsPath implements LogicCardInfo {
       return basic (this, hp:HP220, type:G, retreatCost:3) {
         weakness R
         move "Pollen Bomb", {
-          text "The opponent’s Active Pokémon is now Poisoned and Asleep."
+          text "80 Damage. The opponent’s Active Pokémon is now Poisoned and Asleep."
           energyCost G, G, C
           attackRequirement {
             assert !defending.specialConditions.contains(POISONED) || !defending.specialConditions.contains(ASLEEP) :
             "$defending is already Poisoned and Asleep"
           }
           onAttack {
+            damage 80
             apply POISONED
             apply ASLEEP
           }
@@ -206,7 +207,7 @@ public enum ChampionsPath implements LogicCardInfo {
         }
       };
       case KAKUNA_3:
-      return evolution (this, from:"Weedle", hp:HP060, type:G, retreatCost:3) {
+      return evolution (this, from:"Weedle", hp:HP080, type:G, retreatCost:3) {
         weakness R
         move "Bug Bite", {
           text "30 damage."
@@ -274,7 +275,7 @@ public enum ChampionsPath implements LogicCardInfo {
       };
       case INCINEROAR_V:
       return basic (this, hp:HP220, type:R, retreatCost:3) {
-        weakness R
+        weakness W
         move "Grand Flame", {
           text "90 damage. Attach up to 2 [R] Energy cards from your discard pile to 1 of your Benched Pokémon."
           energyCost R, R, C
@@ -286,33 +287,17 @@ public enum ChampionsPath implements LogicCardInfo {
           }
         }
         move "Flare Blitzer", {
-          text "90 damage. This Pokémon also does 30 damage to itself."
+          text "220 damage. This Pokémon also does 30 damage to itself."
           energyCost R, R, R, C
           attackRequirement {}
           onAttack {
-            damage 90
+            damage 220
             damage 30, self
           }
         }
       };
       case SIZZLIPEDE_9:
-      return basic (this, hp:HP070, type:R, retreatCost:1) {
-        weakness W
-        move "Bite", {
-          text "10 damage."
-          energyCost C
-          onAttack {
-            damage 10
-          }
-        }
-        move "Combustion", {
-          text "50 damage."
-          energyCost C
-          onAttack {
-            damage 50
-          }
-        }
-      };
+      return copy(SwordShield.SIZZLIPEDE_37, this)
       case CENTISKORCH_10:
       return evolution (this, from:"Sizzlipede", hp:HP130, type:R, retreatCost:3) {
         weakness W
@@ -372,7 +357,7 @@ public enum ChampionsPath implements LogicCardInfo {
         }
         move "Ocean Waves", {
           text "120x damage. Flip 3 coins. This attack does 120 damage for each heads."
-          energyCost W
+          energyCost W, W, W, W
           onAttack {
             flip 3, { damage 120 }
           }
@@ -592,14 +577,24 @@ public enum ChampionsPath implements LogicCardInfo {
           }
           onAttack {
             def damageAmount = 0
-            while(my.all.any{it.cards.energyCount(C)}){
-              if(confirm("Discard energy from one pokémon for 60 damage by energy discarded? Current Damage: $damageAmount")){
-                def tar = my.all.findAll{it.cards.energyCount(C)}.select("Choose the pokémon to discard energy")
-                damageAmount += 60*tar.cards.filterByType(ENERGY).select(min:1,max : tar.cards.filterByType(ENERGY).size()).discard().size()
+            if(confirm("Discard energy from your Pokémon for 60 damage per energy discarded?")){
+              CardList toDiscard = []
+              Map<PokemonCardSet, CardList> workMap = [:]
+              for (PokemonCardSet pcs : my.all) {
+                if (pcs.cards.filterByType(ENERGY)) workMap.put(pcs, pcs.cards.filterByType(ENERGY))
               }
-              else{
-                break
+              PcsList mapTar = workMap.keySet().findAll { workMap.get(it).notEmpty() }
+              while(mapTar) {
+                PokemonCardSet tar = mapTar.select("Choose the Pokémon to discard energy from. Current Damage: $damageAmount", false)
+                if (!tar) break
+                def tarCards = workMap.get(tar).select(min:0,max : tar.cards.filterByType(ENERGY).size(), "Choose the energies to discard. Current Damage: $damageAmount")
+                if (!tarCards) break
+                toDiscard.addAll tarCards
+                workMap.get(tar).removeAll(tarCards)
+                damageAmount = 60 * toDiscard.size()
+                mapTar = workMap.keySet().findAll { workMap.get(it).notEmpty() }
               }
+              afterDamage { toDiscard.discard() }
             }
             damage damageAmount
           }
@@ -667,7 +662,7 @@ public enum ChampionsPath implements LogicCardInfo {
           }
         }
       };
-      case LUCARIO_27:
+      case LUCARIO_V_27:
       return basic (this, hp:HP210, type:F, retreatCost:2) {
         weakness P
         move "Aura Sphere", {
@@ -764,11 +759,13 @@ public enum ChampionsPath implements LogicCardInfo {
       return basic (this, hp:HP210, type:F, retreatCost:2) {
         weakness P
         move "Tie Up", {
-          text "20 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+          text "20 damage. If the Defending Pokémon is a Basic Pokémon, it can't attack during your opponent's next turn."
           energyCost F
           onAttack {
             damage 20
-            cantRetreat defending
+            if (defending.basic) {
+              cantAttackNextTurn(defending)
+            }
           }
         }
         move "Moonsault Press", {
@@ -919,7 +916,7 @@ public enum ChampionsPath implements LogicCardInfo {
         }
       };
       case TRUBBISH_43:
-      return copy (TRUBBISH_117, this);
+      return copy (RebelClash.TRUBBISH_117, this);
       case INKAY_44:
       return basic (this, hp:HP060, type:D, retreatCost:1) {
         weakness G
@@ -1102,8 +1099,9 @@ public enum ChampionsPath implements LogicCardInfo {
         text "Heal 80 damage from 1 of your Pokemon with a [P] Energy attached to it. Then, discard a [P] Energy from that Pokemon."
         onPlay {
           def pcs = my.all.findAll{it.cards.energyCount(P) && it.numberOfDamageCounters}.select("Choose which Pokémon to heal 80 damage from")
-          heal 80, pcs
-          pcs.cards.filterByEnergyType(P).select("Select a [P] Energy to discard from $pcs").discard()
+          def prevented = heal 80, pcs
+          def toDiscard = pcs.cards.filterByEnergyType(P).select("Select a [P] Energy to discard from $pcs")
+          if (!prevented) toDiscard.discard()
         }
         playRequirement{
           assert my.all.findAll{it.cards.energyCount(P) && it.numberOfDamageCounters} : "You have no damaged Pokémon with [P] Energy attached to them"
