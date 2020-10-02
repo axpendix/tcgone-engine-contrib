@@ -1207,7 +1207,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 20
             afterDamage {
               if (opp.hand) {
-                def list = opp.hand.shuffledCopy().showToMe("Opponent's hand").filterByType(TRAINER)
+                def list = opp.hand.shuffledCopy().filterByType(TRAINER)
                 if(list){
                   list.select("Select a Trainer card to discard").discard()
                 }
