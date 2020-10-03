@@ -78,7 +78,11 @@ public enum SwordShieldPromos implements LogicCardInfo {
   PIKACHU_SWSH39 ("Pikachu", "SWSH039", Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
   HATENNA_SWSH40 ("Hatenna", "SWSH040", Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
   FLAREON_SWSH41 ("Flareon", "SWSH041", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
-  EEVEE_SWSH42 ("Eevee", "SWSH042", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]);
+  EEVEE_SWSH42 ("Eevee", "SWSH042", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
+  CHARIZARD_V_SWSH50 ("Charizard V", "SWSH050", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _FIRE_]),
+  PIKACHU_V_SWSH63 ("Pikachu V", "SWSH063", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _LIGHTNING_]),
+  ETERNATUS_V_SWSH64 ("Eternatus V", "SWSH064", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _DARKNESS_]),
+  EEVEE_V_SWSH65 ("Eevee V", "SWSH065", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _COLORLESS_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -549,6 +553,107 @@ public enum SwordShieldPromos implements LogicCardInfo {
           }
         }
       };
+      case GALARIAN_SIRFETCH_D_V_SWSH43:
+      return basic (this, hp:HP210, type:F, retreatCost:2) {
+        weakness P
+        bwAbility "Resolute Spear", {
+          text "Once during your turn, when this Pokémon moves from your Bench to the Active Spot, you may move any amount of [F] Energy from your other Pokémon to it."
+          delayedA {
+            after SWITCH, {
+              if (keyStore("$thisAbility", self, null) != bg.turnCount && self.active && bg.currentTurn == self.owner && ef.switchedOut==self && confirm("Use $thisAbility?")) {
+                keyStore("$thisAbility", self, bg.turnCount)
+                powerUsed()
+              }
+            }
+          }
+        }
+        move "Meteor Smash", {
+          text "200 damage. During your next turn, this Pokémon can't attack."
+          energyCost F, F, C
+          onAttack {
+            damage 200
+            cantAttackNextTurn self
+          }
+        }
+      };
+      case ETERNATUS_V_SWSH44:
+      return copy(DarknessAblaze.ETERNATUS_V_116, this);
+      case ETERNATUS_VMAX_SWSH45:
+      return copy(DarknessAblaze.ETERNATUS_VMAX_117, this);
+      case ELDEGOSS_SWSH46:
+      return copy(SwordShield.ELDEGOSS_21, this);
+      case DREDNAW_SWSH47:
+      return copy(SwordShield.DREDNAW_61, this);
+      case CENTISKORCH_SWSH48:
+      return copy(SwordShield.CENTISKORCH_39, this);
+      case DUBWOOL_V_SWSH49:
+      return copy(RebelClash.DUBWOOL_V_153, this);
+      case CHARIZARD_V_SWSH50:
+      return copy(DarknessAblaze.CHARIZARD_V_19, this);
+      case LAPRAS_SWSH51:
+      return copy(SwordShield.LAPRAS_48, this);
+      case GENGAR_SWSH52:
+      return copy(SwordShield.GENGAR_85, this);
+      case MACHAMP_SWSH53:
+      return copy(ChampionsPath.MACHAMP_26, this);
+      case COALOSSAL_SWSH54:
+      return copy (RebelClash.COALOSSAL_107, this);
+      case HATTERENE_V_SWSH55:
+      case MORPEKO_SWSH56:
+      case GRIMMSNARL_V_SWSH57:
+      case _SWSH58:
+      case _SWSH59:
+      case _SWSH60:
+      case _SWSH61:
+      case _SWSH62:
+      case PIKACHU_V_SWSH63:
+      return basic(this, hp:HP190, type:L, retreatCost:1) {
+        weakness F
+        move "Pika Ball", {
+          text "30 damage."
+          energyCost L
+          onAttack {
+            damage 30
+          }
+        }
+        move "Circle Circuit", {
+          text "30x damage. This attack does 30 damage for each of your Benched Pokémon."
+          energyCost L, L
+          attackRequirement {
+            assert my.bench : "No benched Pokémon"
+          }
+          onAttack {
+            damage 30 * my.bench.size()
+          }
+        }
+      }
+      case ETERNATUS_V_SWSH64:
+      return copy(DarknessAblaze.ETERNATUS_V_116, this);
+      case EEVEE_V_SWSH65:
+      return basic(this, hp:HP190, type:C, retreatCost:1) {
+        weakness F
+        move "Collect", {
+          text "Draw 3 cards."
+          energyCost C
+          attackRequirement {
+            assert my.deck : "Deck is empty"
+          }
+          onAttack {
+            draw 3
+          }
+        }
+        move "Brave Buddies", {
+          text "80+ damage. If you played a Supporter card from your hand during this turn, this attack does 80 more damage."
+          energyCost C, C, C
+          onAttack {
+            damage 80
+            // TODO: Handle supporters not played from hand
+            if (bg.em().retrieveObject("last_supporter_play_turn") == bg.turnCount) {
+              damage 80
+            }
+          }
+        }
+      }
         default:
       return null;
     }
