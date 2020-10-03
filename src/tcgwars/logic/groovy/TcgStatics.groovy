@@ -1602,4 +1602,59 @@ class TcgStatics {
     }
   }
 
+  /**
+   * Do additional damage per Energy card discarded from owner's PokemonCardSets
+   * @param damagePerCard Integer damage amount to add per card discarded
+   * @return
+   */
+  static additionalDamageByDiscardingEnergyFromPokemon(int baseDamage = 0, int damagePerCard) {
+    def additionalDamage = 0
+    def pcsMsgOverride = baseDamage ? "Base Damage: $baseDamage + $additionalDamage." : "Base Damage: $additionalDamage."
+    def params = [
+      pcsMsg : pcsMsgOverride,
+    ]
+    def updateDamageAmount = { CardList list ->
+      additionalDamage = damagePerCard * list.size()
+      params.pcsMsg = "Energy cards already marked for discard: ${list.size()}\n"
+      params.pcsMsg += baseDamage ? "Base Damage: $baseDamage + $additionalDamage." : "Base Damage: $additionalDamage."
+    }
+    CardList toDiscard = selectEnergyFromPokemon params, updateDamageAmount
+    afterDamage { toDiscard.discard() }
+    damage baseDamage + additionalDamage
+  }
+
+  /**
+   * Select any number of Energy from any of your Pokémon
+   * @param params Optional settings map
+   * @param params.pcsMsg Override message for selecting the PokemonCardSet
+   * @param params.cardMsg Override message for selecting the Energy card
+   *
+   * @param c Closure passed the list of energies after selecting them from a Pokémon. Use for additional processing.
+   */
+  static CardList selectEnergyFromPokemon(params=[:], Closure c = {}) {
+    CardList energies = []
+    def pcsSelectMessage = (params.pcsMsg ? params.pcsMsg as String : "Choose the Pokémon to select an energy from.") + " Cancel to choose none."
+    def energySelectMessage = (params.cardMsg ? params.cardMsg as String : "Choose the Energy cards to discard.") + " Select 0 to return to the Pokémon list"
+    Map<PokemonCardSet, CardList> workMap = [:]
+    for (PokemonCardSet pcs : my.all) {
+      if (pcs.cards.filterByType(ENERGY)) workMap.put(pcs, pcs.cards.filterByType(ENERGY))
+    }
+    PcsList mapTar = workMap.keySet().findAll { workMap.get(it).notEmpty() }
+    while (mapTar) {
+      PokemonCardSet tar = mapTar.select(pcsSelectMessage, false)
+      if (!tar) break
+      def tarCards = workMap.get(tar).select(min:0,max : tar.cards.filterByType(ENERGY).size(), energySelectMessage)
+      if (!tarCards) continue
+      energies.addAll(tarCards)
+      workMap.get(tar).removeAll(tarCards)
+
+      // Update values
+      c(energies)
+      pcsSelectMessage = (params.pcsMsg ? params.pcsMsg as String : "Choose the Pokémon to select an energy from.") + " Cancel to choose none."
+      energySelectMessage = (params.cardMsg ? params.cardMsg as String : "Choose the Energy cards to discard.") + " Select none to return to the Pokémon list"
+      mapTar = workMap.keySet().findAll { workMap.get(it).notEmpty() }
+    }
+    return energies
+  }
+
 }

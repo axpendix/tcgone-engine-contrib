@@ -576,27 +576,7 @@ public enum ChampionsPath implements LogicCardInfo {
             assert my.all.any { it.cards.energyCount() } : "No Pokémon with energy cards attached"
           }
           onAttack {
-            def damageAmount = 0
-            if(confirm("Discard energy from your Pokémon for 60 damage per energy discarded?")){
-              CardList toDiscard = []
-              Map<PokemonCardSet, CardList> workMap = [:]
-              for (PokemonCardSet pcs : my.all) {
-                if (pcs.cards.filterByType(ENERGY)) workMap.put(pcs, pcs.cards.filterByType(ENERGY))
-              }
-              PcsList mapTar = workMap.keySet().findAll { workMap.get(it).notEmpty() }
-              while(mapTar) {
-                PokemonCardSet tar = mapTar.select("Choose the Pokémon to discard energy from. Current Damage: $damageAmount", false)
-                if (!tar) break
-                def tarCards = workMap.get(tar).select(min:0,max : tar.cards.filterByType(ENERGY).size(), "Choose the energies to discard. Current Damage: $damageAmount")
-                if (!tarCards) break
-                toDiscard.addAll tarCards
-                workMap.get(tar).removeAll(tarCards)
-                damageAmount = 60 * toDiscard.size()
-                mapTar = workMap.keySet().findAll { workMap.get(it).notEmpty() }
-              }
-              afterDamage { toDiscard.discard() }
-            }
-            damage damageAmount
+            additionalDamageByDiscardingEnergyFromPokemon 60
           }
         }
       };
