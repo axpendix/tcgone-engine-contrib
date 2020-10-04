@@ -104,6 +104,7 @@ public enum UnifiedMinds implements LogicCardInfo {
   WYNAUT_77 ("Wynaut", "77", Rarity.UNCOMMON, [POKEMON, BASIC, _PSYCHIC_]),
   LATIOS_GX_78 ("Latios-GX", "78", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, _PSYCHIC_]),
   JIRACHI_GX_79 ("Jirachi-GX", "79", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, _PSYCHIC_]),
+  JIRACHI_GX_79A ("Jirachi-GX", "79a", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, _PSYCHIC_]),
   DRIFLOON_80 ("Drifloon", "80", Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
   DRIFBLIM_81 ("Drifblim", "81", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
   SKORUPI_82 ("Skorupi", "82", Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
@@ -1980,6 +1981,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             }
           }
         };
+      case JIRACHI_GX_79A:
       case JIRACHI_GX_79:
         return basic (this, hp:HP160, type:P, retreatCost:1) {
           weakness P

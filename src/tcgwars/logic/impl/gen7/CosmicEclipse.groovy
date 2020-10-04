@@ -173,6 +173,7 @@ public enum CosmicEclipse implements LogicCardInfo {
   PROBOPASS_141 ("Probopass", "141", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
   SOLGALEO_142 ("Solgaleo", "142", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _METAL_]),
   TOGEPI_CLEFFA_IGGLYBUFF_GX_143 ("Togepi & Cleffa & Igglybuff-GX", "143", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _FAIRY_]),
+  TOGEPI_CLEFFA_IGGLYBUFF_GX_143A ("Togepi & Cleffa & Igglybuff-GX", "143a", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _FAIRY_]),
   CLEFAIRY_144 ("Clefairy", "144", Rarity.UNCOMMON, [POKEMON, BASIC, _FAIRY_]),
   ALOLAN_NINETALES_145 ("Alolan Ninetales", "145", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FAIRY_]),
   AZURILL_146 ("Azurill", "146", Rarity.COMMON, [POKEMON, BASIC, _FAIRY_]),
@@ -3527,6 +3528,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             }
           }
         };
+      case TOGEPI_CLEFFA_IGGLYBUFF_GX_143A:
       case TOGEPI_CLEFFA_IGGLYBUFF_GX_143:
         return basic (this, hp:HP240, type:Y, retreatCost:2) {
           weakness M

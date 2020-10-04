@@ -1591,6 +1591,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
           }
 
         };
+      case GUZZLORD_GX_63A:
       case GUZZLORD_GX_63:
         return basic (this, hp:HP210, type:DARKNESS, retreatCost:4) {
           weakness FIGHTING
@@ -1644,8 +1645,6 @@ public enum CrimsonInvasion implements LogicCardInfo {
           }
 
         };
-      case GUZZLORD_GX_63A:
-        return copy (GUZZLORD_GX_63, this);
       case MAWILE_64:
         return basic (this, hp:HP080, type:METAL, retreatCost:1) {
           weakness FIRE
