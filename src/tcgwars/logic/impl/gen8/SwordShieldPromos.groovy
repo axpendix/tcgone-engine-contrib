@@ -79,7 +79,17 @@ public enum SwordShieldPromos implements LogicCardInfo {
   HATENNA_SWSH40 ("Hatenna", "SWSH040", Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
   FLAREON_SWSH41 ("Flareon", "SWSH041", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
   EEVEE_SWSH42 ("Eevee", "SWSH042", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
+  ETERNATUS_V_SWSH44 ("Eternatus V", "SWSH044", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _DARKNESS_]),
+  ETERNATUS_VMAX_SWSH45 ("Eternatus VMAX", "SWSH045", Rarity.PROMO, [POKEMON, EVOLUTION, VMAX, _DARKNESS_]),
+  ELDEGOSS_SWSH46 ("Eldegoss", "SWSH046", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
+  DREDNAW_SWSH47 ("Drednaw", "SWSH047", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
+  CENTISKORCH_SWSH48 ("Centiskorch", "SWSH048", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+  DUBWOOL_V_SWSH49 ("Dubwool V", "SWSH049", Rarity.PROMO, [POKEMON, POKEMON_V, BASIC, _COLORLESS_]),
   CHARIZARD_V_SWSH50 ("Charizard V", "SWSH050", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _FIRE_]),
+  LAPRAS_SWSH51 ("Lapras", "SWSH51", Rarity.PROMO, [POKEMON, BASIC, _WATER_]),
+  GENGAR_SWSH52 ("Gengar", "SWSH52", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _PSYCHIC_]),
+  MACHAMP_SWSH53 ("Machamp", "SWSH53", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_]),
+  COALOSSAL_SWSH54 ("Coalossal", "SWSH54", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_]),
   PIKACHU_V_SWSH63 ("Pikachu V", "SWSH063", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _LIGHTNING_]),
   ETERNATUS_V_SWSH64 ("Eternatus V", "SWSH064", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _DARKNESS_]),
   EEVEE_V_SWSH65 ("Eevee V", "SWSH065", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _COLORLESS_]);
@@ -553,29 +563,6 @@ public enum SwordShieldPromos implements LogicCardInfo {
           }
         }
       };
-      case GALARIAN_SIRFETCH_D_V_SWSH43:
-      return basic (this, hp:HP210, type:F, retreatCost:2) {
-        weakness P
-        bwAbility "Resolute Spear", {
-          text "Once during your turn, when this Pokémon moves from your Bench to the Active Spot, you may move any amount of [F] Energy from your other Pokémon to it."
-          delayedA {
-            after SWITCH, {
-              if (keyStore("$thisAbility", self, null) != bg.turnCount && self.active && bg.currentTurn == self.owner && ef.switchedOut==self && confirm("Use $thisAbility?")) {
-                keyStore("$thisAbility", self, bg.turnCount)
-                powerUsed()
-              }
-            }
-          }
-        }
-        move "Meteor Smash", {
-          text "200 damage. During your next turn, this Pokémon can't attack."
-          energyCost F, F, C
-          onAttack {
-            damage 200
-            cantAttackNextTurn self
-          }
-        }
-      };
       case ETERNATUS_V_SWSH44:
       return copy(DarknessAblaze.ETERNATUS_V_116, this);
       case ETERNATUS_VMAX_SWSH45:
@@ -598,14 +585,6 @@ public enum SwordShieldPromos implements LogicCardInfo {
       return copy(ChampionsPath.MACHAMP_26, this);
       case COALOSSAL_SWSH54:
       return copy (RebelClash.COALOSSAL_107, this);
-      case HATTERENE_V_SWSH55:
-      case MORPEKO_SWSH56:
-      case GRIMMSNARL_V_SWSH57:
-      case _SWSH58:
-      case _SWSH59:
-      case _SWSH60:
-      case _SWSH61:
-      case _SWSH62:
       case PIKACHU_V_SWSH63:
       return basic(this, hp:HP190, type:L, retreatCost:1) {
         weakness F
