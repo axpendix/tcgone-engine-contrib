@@ -1914,21 +1914,7 @@ public enum Triumphant implements LogicCardInfo {
                   delayed(inline: true){
                     after KNOCKOUT, pcs, {
                       bc "Rescue Energy activates"
-                      /* FIXME with Robo Substitute (or any other similar card), this causes duplication of card
-                      I guess it can be resolved when inheritance of internal Card types are flattened into a single class
-                      then we can completely remove ChangeImplementation logic and simply replace the contents of the card
-                      instead of replacing the whole object
-                       */
-                      def scooped = scoopUpPokemon(pokemonOnly:true, pcs, delegate)
-
-                      /* FIXME workaround for above (if scoop up not blocked) */
-                      if (scooped) {
-                        def toCleanup = []
-                        pcs.cards.filterByType(POKEMON).each { pcsCard ->
-                          toCleanup.add(pcs.owner.pbg.discard.find { it.customInfo.cardInfo == pcsCard.customInfo.cardInfo })
-                        }
-                        pcs.owner.pbg.discard.removeAll(toCleanup)
-                      }
+                      scoopUpPokemon(pokemonOnly:true, pcs, delegate)
                       owner.delegate.unregister()
                     }
                   }

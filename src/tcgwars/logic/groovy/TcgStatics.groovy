@@ -1574,6 +1574,11 @@ class TcgStatics {
       return false
     }
     return !targeted(target, source) {
+      def eff = delayed {
+        before KNOCKOUT, {
+          prevent()
+        }
+      }
       CardList toHand
       if(params.only) {
         if (params.only instanceof Card) toHand = new CardList(params.only)
@@ -1588,17 +1593,27 @@ class TcgStatics {
 
       bc "Scooped up ${toHand}"
 
-      CardList toHand2 = toHand.filterByType(POKEMON)
-      target.owner.pbg.hand.addAll(toHand2)
-      // FIXME: Remove duplicate Pokemon cards from discard if called after a knockout
-      // See: Breakpoint SPLASH_ENERGY_113, DragonsExalted RESCUE_SCARF_115, Triumphant RESCUE_ENERGY_90
-      target.owner.pbg.discard.removeAll(toHand2)
-      toHand.getExcludedList(toHand2).moveTo(target.owner.pbg.hand)
+      // Only add true POKEMON cards to hand, let moveTo handle removing changed implementations from play
+      CardList toHand2 = toHand.filterByType(POKEMON).findAll { it.customInfo.cardInfo.cardTypes.contains(POKEMON) }
 
-      CardList toDiscard2 = toDiscard.filterByType(POKEMON)
+      // Special handling for knocked out Pokémon
+      if (target.slatedToKO) {
+        toHand2.moveTo(target.owner.pbg.hand)
+        // Move any cards that changed implementation from POKEMON when removed from play to hand as well
+        CardList toCleanup = []
+        toHand.getExcludedList(toHand2).each { pcsCard -> toCleanup.add(target.owner.pbg.discard.find { it.customInfo.cardInfo == pcsCard.customInfo.cardInfo })}
+        toCleanup.moveTo(target.owner.pbg.hand)
+      }
+      else {
+        target.owner.pbg.hand.addAll(toHand2)
+        toHand.getExcludedList(toHand2).moveTo(target.owner.pbg.hand)
+      }
+
+      CardList toDiscard2 = toDiscard.filterByType(POKEMON).findAll { it.customInfo.cardInfo.cardTypes.contains(POKEMON) }
       target.owner.pbg.discard.addAll(toDiscard2)
       toDiscard.getExcludedList(toDiscard2).discard()
       removePCS(target)
+      eff.unregister()
     }
   }
 
