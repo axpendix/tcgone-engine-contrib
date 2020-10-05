@@ -1628,16 +1628,26 @@ class TcgStatics {
    * @param params Optional settings map
    * @param params.pcsMsg Override message for selecting the PokemonCardSet
    * @param params.cardMsg Override message for selecting the Energy card
+   * @param params.type Type of Energy to allow for selection
+   * @param params.exclude PcsList of Pokémon to exclude from selection
    *
    * @param c Closure passed the list of energies after selecting them from a Pokémon. Use for additional processing.
    */
   static CardList selectEnergyFromPokemon(params=[:], Closure c = {}) {
+    if (params.type && !(params.type instanceof Type)) throw new IllegalArgumentException("selectEnergyFromPokemon() params.type=${params.type} type not supported")
+    Type eType = params.type ? params.type as Type : C
+
+    PcsList excludedPcs = []
+    if (params.exclude && params.exclude instanceof PokemonCardSet) excludedPcs.add(params.exclude)
+    else if (params.exclude && !(params.exclude instanceof PcsList)) throw new IllegalArgumentException("selectEnergyFromPokemon() params.exclude=${params.exclude} type not supported")
+
     CardList energies = []
-    def pcsSelectMessage = (params.pcsMsg ? params.pcsMsg as String : "Choose the Pokémon to select an energy from.") + " Cancel to choose none."
+    def pcsSelectMessage = (params.pcsMsg ? params.pcsMsg as String : "Choose the Pokémon to select an energy from. Current count: ${energies.size()}") + " Cancel to choose none."
     def energySelectMessage = (params.cardMsg ? params.cardMsg as String : "Choose the Energy cards to discard.") + " Select 0 to return to the Pokémon list"
     Map<PokemonCardSet, CardList> workMap = [:]
     for (PokemonCardSet pcs : my.all) {
-      if (pcs.cards.filterByType(ENERGY)) workMap.put(pcs, pcs.cards.filterByType(ENERGY))
+      if (excludedPcs.contains(pcs)) continue
+      if (pcs.cards.filterByType(ENERGY).filterByEnergyType(eType)) workMap.put(pcs, pcs.cards.filterByType(ENERGY).filterByEnergyType(eType))
     }
     PcsList mapTar = workMap.keySet().findAll { workMap.get(it).notEmpty() }
     while (mapTar) {
@@ -1650,7 +1660,7 @@ class TcgStatics {
 
       // Update values
       c(energies)
-      pcsSelectMessage = (params.pcsMsg ? params.pcsMsg as String : "Choose the Pokémon to select an energy from.") + " Cancel to choose none."
+      pcsSelectMessage = (params.pcsMsg ? params.pcsMsg as String : "Choose the Pokémon to select an energy from. Current count: ${energies.size()}") + " Cancel to choose none."
       energySelectMessage = (params.cardMsg ? params.cardMsg as String : "Choose the Energy cards to discard.") + " Select none to return to the Pokémon list"
       mapTar = workMap.keySet().findAll { workMap.get(it).notEmpty() }
     }
