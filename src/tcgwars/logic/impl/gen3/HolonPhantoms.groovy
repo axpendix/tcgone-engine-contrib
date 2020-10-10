@@ -2469,11 +2469,11 @@ public enum HolonPhantoms implements LogicCardInfo {
           onAttack {
             damage 20
             afterDamage {
-              def n = 0
-              flipUntilTails { n++ }
-              n = Math.min(n, my.discard.filterByType(BASIC_ENERGY).size())
+              def count = 0
+              flipUntilTails { count++ }
+              count = Math.min(count, my.discard.filterByType(BASIC_ENERGY).size())
 
-              if (n) attachEnergyFrom(count: n, my.discard, self)
+              if (count) attachEnergyFrom(count: count, my.discard, self)
             }
           }
         }

@@ -836,10 +836,10 @@ public enum GuardiansRising implements LogicCardInfo {
             text "Flip a coin until you get tails. For each heads, you may search your deck for a card and put it into your hand. Then, shuffle your deck."
             energyCost C
             onAttack {
-              int c=0
-              flipUntilTails {c++}
-              if(c && my.deck){
-                my.deck.select(min: 0, max: c).moveTo(hidden:true, my.hand)
+              int count = 0
+              flipUntilTails { count++ }
+              if (count && my.deck) {
+                my.deck.select(min: 0, max: count).moveTo(hidden:true, my.hand)
                 shuffleDeck()
               }
             }
@@ -3136,9 +3136,8 @@ public enum GuardiansRising implements LogicCardInfo {
             "Shuffle 3 Pokémon from your discard pile into your deck.\n" +
             "You may play as many Item cards as you like during your turn (before your attack)."
           onPlay {
-            def cl=[1,2]
-            def c=choose(cl,['Put a Pokémon from your discard pile into your hand', 'Shuffle 3 Pokémon from your discard pile into your deck'], "Choose 1")
-            if(c==1){
+            def choice = choose([1,2],['Put a Pokémon from your discard pile into your hand', 'Shuffle 3 Pokémon from your discard pile into your deck'], "Choose 1")
+            if (choice == 1) {
               my.discard.filterByType(POKEMON).select("Put to hand").moveTo(my.hand)
             } else {
               my.discard.filterByType(POKEMON).select(count: 3, "Shuffle 3 to deck").moveTo(my.deck)

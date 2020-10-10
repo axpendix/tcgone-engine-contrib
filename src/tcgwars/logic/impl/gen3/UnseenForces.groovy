@@ -2649,12 +2649,12 @@ public enum UnseenForces implements LogicCardInfo {
                 if (enTypes.size() == 1){
                   potentialEnergy.add([enTypes.first(), enCard, "${enCard}",0])
                 } else {
-                  def i = 1
+                  def count = 1
                   def total = enTypes.size()
                   //TODO: Cover multiple of the same energy, add some identifier for e.g. 2 Holon's Castform
                   for (enTypeSet in enTypes) {
-                    potentialEnergy.add([enTypeSet, enCard, "${enCard} - Energy #${i}/${total}",i])
-                    i++
+                    potentialEnergy.add([enTypeSet, enCard, "${enCard} - Energy #${count}/${total}", count])
+                    count++
                   }
                 }
               }
