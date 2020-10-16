@@ -686,7 +686,7 @@ public enum SwordShield implements LogicCardInfo {
             assertMyBench()
           }
           onAttack {
-            my.deck.filterByEnergyType(G).select(max: 3).each {
+            my.deck.search(max:3, basicEnergyFilter(G)).each {
               attachEnergy(my.bench.select("Attach"), it)
             }
           }
