@@ -79,6 +79,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
   HATENNA_SWSH40 ("Hatenna", "SWSH040", Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
   FLAREON_SWSH41 ("Flareon", "SWSH041", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
   EEVEE_SWSH42 ("Eevee", "SWSH042", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
+  GALARIAN_SIRFETCH_D_V_SWSH43 ("Galarian Sirfetch'd V", "SWSH043", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _FIGHTING_]),
   ETERNATUS_V_SWSH44 ("Eternatus V", "SWSH044", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _DARKNESS_]),
   ETERNATUS_VMAX_SWSH45 ("Eternatus VMAX", "SWSH045", Rarity.PROMO, [POKEMON, EVOLUTION, VMAX, _DARKNESS_]),
   ELDEGOSS_SWSH46 ("Eldegoss", "SWSH046", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
@@ -560,6 +561,40 @@ public enum SwordShieldPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             flip { damage 30 }
+          }
+        }
+      };
+      case GALARIAN_SIRFETCH_D_V_SWSH43:
+      return basic (this, hp:HP210, type:F, retreatCost:2) {
+        weakness P
+        bwAbility "Resolute Spear", {
+          text "Once during your turn, when this Pokémon moves from your Bench to the Active Spot, you may move any amount of [F] Energy from your other Pokémon to it."
+          delayedA {
+            after SWITCH, {
+              if (lastUsedTurn != bg.turnCount && self.active && bg.currentTurn == self.owner && ef.switchedOut==self && confirm("Use $thisAbility?")) {
+                powerUsed()
+                def energiesToMove = selectEnergyFromPokemon type:F, cardMsg:"Choose the Energy cards to move to $self", exclude:self
+                def pcsMap = [:]
+                energiesToMove.each {
+                  def pcs = it.findPCS()
+                  if (pcsMap.containsKey(pcs)) (pcsMap[pcs] as CardList).add(it)
+                  else pcsMap.put(pcs, new CardList(it))
+                }
+                energiesToMove.moveTo suppressLog:true, self.cards()
+
+                pcsMap.each { key, val ->
+                  bc "$val moved from $key to $self"
+                }
+              }
+            }
+          }
+        }
+        move "Meteor Smash", {
+          text "200 damage. During your next turn, this Pokémon can't attack."
+          energyCost F, F, C
+          onAttack {
+            damage 200
+            cantAttackNextTurn self
           }
         }
       };
