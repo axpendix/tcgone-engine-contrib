@@ -69,7 +69,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
   VOLTORB_32 ("Voltorb", "32", Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
   ELECTRODE_33 ("Electrode", "33", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
   JOLTEON_34 ("Jolteon", "34", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
-  ZAPDOS_35 ("Zapdos", "35", Rarity.HOLORARE, [POKEMON, BASIC, POKEMON_V, _LIGHTNING_]),
+  ZAPDOS_35 ("Zapdos", "35", Rarity.HOLORARE, [POKEMON, BASIC, _LIGHTNING_]),
   BLITZLE_36 ("Blitzle", "36", Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
   ZEBSTRIKA_37 ("Zebstrika", "37", Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
   TYNAMO_38 ("Tynamo", "38", Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
@@ -80,7 +80,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
   DUSKULL_43 ("Duskull", "43", Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
   DUSCLOPS_44 ("Dusclops", "44", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
   DUSKNOIR_45 ("Dusknoir", "45", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _PSYCHIC_]),
-  CHIMECHO_46 ("Chimecho", "46", Rarity.COMMON, [TRAINER, SUPPORTER]),
+  CHIMECHO_46 ("Chimecho", "46", Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
   WOOBAT_47 ("Woobat", "47", Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
   SWOOBAT_48 ("Swoobat", "48", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
   COTTONEE_49 ("Cottonee", "49", Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
@@ -94,7 +94,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
   DONPHAN_57 ("Donphan", "57", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
   HITMONTOP_58 ("Hitmontop", "58", Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
   DRILBUR_59 ("Drilbur", "59", Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
-  TERRAKION_60 ("Terrakion", "60", Rarity.HOLORARE, [TRAINER, STADIUM]),
+  TERRAKION_60 ("Terrakion", "60", Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
   MUDBRAY_61 ("Mudbray", "61", Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
   MUDSDALE_62 ("Mudsdale", "62", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
   CLOBBOPUS_63 ("Clobbopus", "63", Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
@@ -107,7 +107,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
   SANDILE_70 ("Sandile", "70", Rarity.COMMON, [POKEMON, BASIC, _DARKNESS_]),
   KROKOROK_71 ("Krokorok", "71", Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
   KROOKODILE_72 ("Krookodile", "72", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE2, _DARKNESS_]),
-  TRUBBISH_73 ("Trubbish", "73", Rarity.COMMON, [TRAINER, ITEM]),
+  TRUBBISH_73 ("Trubbish", "73", Rarity.COMMON, [POKEMON, BASIC, _DARKNESS_]),
   GARBODOR_74 ("Garbodor", "74", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
   GALARIAN_MEOWTH_75 ("Galarian Meowth", "75", Rarity.COMMON, [POKEMON, BASIC, _METAL_]),
   GALARIAN_PERRSERKER_76 ("Galarian Perrserker", "76", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
@@ -125,14 +125,14 @@ public enum AmazingVoltTackle implements LogicCardInfo {
   LOUDRED_88 ("Loudred", "88", Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
   EXPLOUD_89 ("Exploud", "89", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]),
   DRONE_ROTOM_90 ("Drone Rotom", "90", Rarity.UNCOMMON, [TRAINER, ITEM]),
-  TELEPHOTO_SCOPE_91 ("Telephoto Scope", "91", Rarity.UNCOMMON, [POKEMON, BASIC, POKEMON_V]),
+  TELEPHOTO_SCOPE_91 ("Telephoto Scope", "91", Rarity.UNCOMMON, [TRAINER, ITEM]),
   MEMORY_CAPSULE_92 ("Memory Capsule", "92", Rarity.UNCOMMON, [TRAINER, ITEM]),
   BEA_93 ("Bea", "93", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   LEON_94 ("Leon", "94", Rarity.HOLORARE, [TRAINER, SUPPORTER]),
   LEAGUE_STAFF_95 ("League Staff", "95", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   NESSA_96 ("Nessa", "96", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   HERO_S_BATH_97 ("Hero's Bath", "97", Rarity.UNCOMMON, [TRAINER, STADIUM]),
-  WYNDON_STADIUM_98 ("Wyndon Stadium", "98", Rarity.UNCOMMON, [POKEMON, BASIC, POKEMON_V]),
+  WYNDON_STADIUM_98 ("Wyndon Stadium", "98", Rarity.UNCOMMON, [TRAINER, STADIUM]),
   WASH_W_ENERGY_99 ("Wash W Energy", "99", Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
   COATING_M_ENERGY_100 ("Coating M Energy", "100", Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
   ORBEETLE_V_101 ("Orbeetle V", "101", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _GRASS_]),
@@ -154,7 +154,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
   LEON_117 ("Leon", "117", Rarity.HOLORARE, [TRAINER, SUPPORTER]),
   NESSA_118 ("Nessa", "118", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   GALARIAN_OBSTAGOON_119 ("Galarian Obstagoon", "119", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _DARKNESS_]),
-  TELEPHOTO_SCOPE_120 ("Telephoto Scope", "120", Rarity.UNCOMMON, [POKEMON, BASIC, POKEMON_V]),
+  TELEPHOTO_SCOPE_120 ("Telephoto Scope", "120", Rarity.UNCOMMON, [TRAINER, ITEM]),
   MEMORY_CAPSULE_121 ("Memory Capsule", "121", Rarity.UNCOMMON, [TRAINER, ITEM]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
@@ -210,7 +210,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
   public Card getImplementation() {
     switch (this) {
       case SEEDOT_1:
-      return basic (this, hp:HP060, type:Grass, retreatCost:1) {
+      return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
         move "Ram", {
           text "10 damage."
@@ -222,7 +222,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case NUZLEAF_2:
-      return evolution (this, from:"Seedot", hp:HP080, type:Grass, retreatCost:1) {
+      return evolution (this, from:"Seedot", hp:HP080, type:G, retreatCost:1) {
         weakness R
         move "Razor Leaf", {
           text "40 damage."
@@ -234,7 +234,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case SHIFTRY_3:
-      return evolution (this, from:"Nuzleaf", hp:HP150, type:Grass, retreatCost:3) {
+      return evolution (this, from:"Nuzleaf", hp:HP150, type:G, retreatCost:3) {
         weakness R
         bwAbility "Tengu Double", {
           text "The effect of each Supporter card in your opponent's hand becomes 'Draw 3 cards'."
@@ -251,7 +251,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case NINCADA_4:
-      return basic (this, hp:HP040, type:Grass, retreatCost:1) {
+      return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
         move "Absorb", {
           text "10 damage. Heal 10 damage from this Pokémon."
@@ -263,7 +263,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case NINJASK_5:
-      return evolution (this, from:"Nincada", hp:HP060, type:Grass, retreatCost:null) {
+      return evolution (this, from:"Nincada", hp:HP060, type:G, retreatCost:0) {
         weakness R
         bwAbility "Shell Cast-off", {
           text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may search your deck for a Shedinja and put it onto your Bench. Then, shuffle your deck."
@@ -280,7 +280,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case SKIDDO_6:
-      return basic (this, hp:HP070, type:Grass, retreatCost:1) {
+      return basic (this, hp:HP070, type:G, retreatCost:1) {
         weakness R
         move "Synthesis", {
           text " Search your deck for a Energy card and attach it to 1 of your Pokémon. Then, shuffle your deck."
@@ -300,7 +300,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case GOGOAT_7:
-      return evolution (this, from:"Skiddo", hp:HP130, type:Grass, retreatCost:2) {
+      return evolution (this, from:"Skiddo", hp:HP130, type:G, retreatCost:2) {
         weakness R
         move "Razor Leaf", {
           text "50 damage."
@@ -320,7 +320,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case ORBEETLE_V_8:
-      return basic (this, hp:HP180, type:Grass, retreatCost:1) {
+      return basic (this, hp:HP180, type:G, retreatCost:1) {
         weakness R
         move "Strafe", {
           text "20 damage. You may switch this Pokémon with 1 of your Benched Pokémon."
@@ -340,7 +340,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case ORBEETLE_VMAX_9:
-      return evolution (this, from:"Orbeetle", hp:HP310, type:Grass, retreatCost:1) {
+      return evolution (this, from:"Orbeetle", hp:HP310, type:G, retreatCost:1) {
         weakness R
         bwAbility "Mysterious Beam", {
           text "Once during your turn, if this Pokémon is in the Active Spot, you may put 1 damage counter on each of your opponent's Pokémon."
@@ -357,7 +357,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case CHARMANDER_10:
-      return basic (this, hp:HP070, type:Fire, retreatCost:1) {
+      return basic (this, hp:HP070, type:R, retreatCost:1) {
         weakness W
         move "Collect", {
           text " Draw a card."
@@ -377,7 +377,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case CHARMELEON_11:
-      return evolution (this, from:"Charmander", hp:HP090, type:Fire, retreatCost:2) {
+      return evolution (this, from:"Charmander", hp:HP090, type:R, retreatCost:2) {
         weakness W
         move "Slash", {
           text "20 damage."
@@ -397,7 +397,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case CHARIZARD_12:
-      return evolution (this, from:"Charmeleon", hp:HP170, type:Fire, retreatCost:3) {
+      return evolution (this, from:"Charmeleon", hp:HP170, type:R, retreatCost:3) {
         weakness W
         bwAbility "Battle Sense", {
           text "Once during your turn, you may look at the top 3 cards of your deck and put 1 of them into your hand. Discard the other cards."
@@ -414,7 +414,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case FLAREON_13:
-      return evolution (this, from:"Eevee", hp:HP110, type:Fire, retreatCost:2) {
+      return evolution (this, from:"Eevee", hp:HP110, type:R, retreatCost:2) {
         weakness W
         bwAbility "Scorching Awakening", {
           text "If this Pokémon has a Memory Capsule card attached to it, each player's Pokémon has no Abilities."
@@ -431,7 +431,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case SLUGMA_14:
-      return basic (this, hp:HP070, type:Fire, retreatCost:2) {
+      return basic (this, hp:HP070, type:R, retreatCost:2) {
         weakness W
         move "Yawn", {
           text " Your opponent's Active Pokémon is now Asleep."
@@ -451,7 +451,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case MAGCARGO_15:
-      return evolution (this, from:"Slugma", hp:HP130, type:Fire, retreatCost:3) {
+      return evolution (this, from:"Slugma", hp:HP130, type:R, retreatCost:3) {
         weakness W
         move "Heat Blast", {
           text "60 damage."
@@ -471,7 +471,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case TALONFLAME_V_16:
-      return basic (this, hp:HP190, type:Fire, retreatCost:null) {
+      return basic (this, hp:HP190, type:R, retreatCost:0) {
         weakness L
         resistance F, MINUS30
         move "Fast Flight", {
@@ -492,7 +492,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case VAPOREON_17:
-      return evolution (this, from:"Eevee", hp:HP110, type:Water, retreatCost:2) {
+      return evolution (this, from:"Eevee", hp:HP110, type:W, retreatCost:2) {
         weakness L
         bwAbility "Torrent Awakening", {
           text "If this Pokémon has a Memory Capsule card attached to it, each player's Pokémon has no Abilities."
@@ -509,7 +509,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case WAILMER_18:
-      return basic (this, hp:HP100, type:Water, retreatCost:3) {
+      return basic (this, hp:HP100, type:W, retreatCost:3) {
         weakness L
         move "Hydro Pump", {
           text "10 damage. This attack does 20 more damage for each Energy attached to this Pokémon."
@@ -521,7 +521,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case WAILORD_19:
-      return evolution (this, from:"Wailmer", hp:HP200, type:Water, retreatCost:4) {
+      return evolution (this, from:"Wailmer", hp:HP200, type:W, retreatCost:4) {
         weakness L
         bwAbility "Water Veil", {
           text "Whenever you attach an Energy card from your hand to this Pokémon, it recovers from all Special Conditions."
@@ -538,7 +538,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case OSHAWOTT_20:
-      return basic (this, hp:HP070, type:Water, retreatCost:1) {
+      return basic (this, hp:HP070, type:W, retreatCost:1) {
         weakness L
         move "Water Gun", {
           text "10 damage."
@@ -558,7 +558,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case DEWOTT_21:
-      return evolution (this, from:"Oshawott", hp:HP090, type:Water, retreatCost:2) {
+      return evolution (this, from:"Oshawott", hp:HP090, type:W, retreatCost:2) {
         weakness L
         move "Water Gun", {
           text "20 damage."
@@ -578,7 +578,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case SAMUROTT_22:
-      return evolution (this, from:"Dewott", hp:HP160, type:Water, retreatCost:2) {
+      return evolution (this, from:"Dewott", hp:HP160, type:W, retreatCost:2) {
         weakness L
         bwAbility "Shell Armor", {
           text "This Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
@@ -595,7 +595,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case GALARIAN_DARMANITAN_V_23:
-      return basic (this, hp:HP220, type:Water, retreatCost:2) {
+      return basic (this, hp:HP220, type:W, retreatCost:2) {
         weakness M
         move "Freezing Headbutt", {
           text "50 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
@@ -615,7 +615,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case GALARIAN_DARMANITAN_VMAX_24:
-      return evolution (this, from:"Darmanitan", hp:HP320, type:Water, retreatCost:3) {
+      return evolution (this, from:"Darmanitan", hp:HP320, type:W, retreatCost:3) {
         weakness M
         move "Max Snowfall", {
           text "200 damage. This attack also does 30 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
@@ -627,7 +627,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case CHEWTLE_25:
-      return basic (this, hp:HP080, type:Water, retreatCost:2) {
+      return basic (this, hp:HP080, type:W, retreatCost:2) {
         weakness L
         move "Jaw Lock", {
           text "40 damage. During your opponent's next turn, the Defending Pokémon can't retreat."
@@ -639,7 +639,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case DREDNAW_26:
-      return evolution (this, from:"Chewtle", hp:HP140, type:Water, retreatCost:4) {
+      return evolution (this, from:"Chewtle", hp:HP140, type:W, retreatCost:4) {
         weakness L
         move "Vise Wave", {
           text "80 damage. If you played Nessa from your hand during this turn, your opponent's Active Pokémon is now Paralyzed."
@@ -659,7 +659,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case CRAMORANT_27:
-      return basic (this, hp:HP110, type:Water, retreatCost:1) {
+      return basic (this, hp:HP110, type:W, retreatCost:1) {
         weakness L
         resistance F, MINUS30
         move "Continuous Gulp Missile", {
@@ -672,7 +672,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case ARROKUDA_28:
-      return basic (this, hp:HP060, type:Water, retreatCost:1) {
+      return basic (this, hp:HP060, type:W, retreatCost:1) {
         weakness L
         move "Flock", {
           text " Search your deck for up to 2 Arrokuda and put them onto your Bench. Then, shuffle your deck."
@@ -692,7 +692,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case BARRASKEWDA_29:
-      return evolution (this, from:"Arrokuda", hp:HP120, type:Water, retreatCost:1) {
+      return evolution (this, from:"Arrokuda", hp:HP120, type:W, retreatCost:1) {
         weakness L
         move "Target Skewer", {
           text " This attack does 20 damage to 1 of your opponent's Benched Pokémon for each damage counter on that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
@@ -712,7 +712,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case PIKACHU_V_30:
-      return basic (this, hp:HP190, type:Lightning, retreatCost:1) {
+      return basic (this, hp:HP190, type:L, retreatCost:1) {
         weakness F
         move "Charge", {
           text " Search your deck for up to 2 Energy cards and attach them to this Pokémon. Then, shuffle your deck."
@@ -732,7 +732,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case PIKACHU_VMAX_31:
-      return evolution (this, from:"Pikachu", hp:HP310, type:Lightning, retreatCost:2) {
+      return evolution (this, from:"Pikachu", hp:HP310, type:L, retreatCost:2) {
         weakness F
         move "GMax Volt Tackle", {
           text "120 damage. You may discard all Energy from this Pokémon. If you do, this attack does 150 more damage."
@@ -744,7 +744,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case VOLTORB_32:
-      return basic (this, hp:HP060, type:Lightning, retreatCost:1) {
+      return basic (this, hp:HP060, type:L, retreatCost:1) {
         weakness F
         move "Electro Ball", {
           text "40 damage."
@@ -756,7 +756,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case ELECTRODE_33:
-      return evolution (this, from:"Voltorb", hp:HP090, type:Lightning, retreatCost:1) {
+      return evolution (this, from:"Voltorb", hp:HP090, type:L, retreatCost:1) {
         weakness F
         bwAbility "Ene-Ene Generator", {
           text "Once during your turn, if this Pokémon is on your Bench, you may Knock Out this Pokémon. If you do, search your deck for up to 2 Energy cards and attach them to your Pokémon in any way you like. Then, shuffle your deck."
@@ -773,7 +773,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case JOLTEON_34:
-      return evolution (this, from:"Eevee", hp:HP100, type:Lightning, retreatCost:1) {
+      return evolution (this, from:"Eevee", hp:HP100, type:L, retreatCost:1) {
         weakness F
         bwAbility "Thunderclap Awakening", {
           text "If this Pokémon has a Memory Capsule card attached to it, each player's Pokémon has no Abilities."
@@ -790,7 +790,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case ZAPDOS_35:
-      return basic (this, hp:HP110, type:Lightning, retreatCost:1) {
+      return basic (this, hp:HP110, type:L, retreatCost:1) {
         weakness L
         resistance F, MINUS30
         move "Drill Peck", {
@@ -811,7 +811,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case BLITZLE_36:
-      return basic (this, hp:HP060, type:Lightning, retreatCost:1) {
+      return basic (this, hp:HP060, type:L, retreatCost:1) {
         weakness F
         move "Zap Kick", {
           text "20 damage."
@@ -823,7 +823,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case ZEBSTRIKA_37:
-      return evolution (this, from:"Blitzle", hp:HP110, type:Lightning, retreatCost:1) {
+      return evolution (this, from:"Blitzle", hp:HP110, type:L, retreatCost:1) {
         weakness F
         move "Low Kick", {
           text "30 damage."
@@ -843,7 +843,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case TYNAMO_38:
-      return basic (this, hp:HP040, type:Lightning, retreatCost:1) {
+      return basic (this, hp:HP040, type:L, retreatCost:1) {
         weakness F
         bwAbility "Floating", {
           text "If this Pokémon has any Energy attached to it, it has no Retreat Cost."
@@ -860,7 +860,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case EELEKTRIK_39:
-      return evolution (this, from:"Tynamo", hp:HP090, type:Lightning, retreatCost:2) {
+      return evolution (this, from:"Tynamo", hp:HP090, type:L, retreatCost:2) {
         weakness F
         move "Stun Crash", {
           text " Flip a coin. If heads, discard an Energy from 1 of your opponent's Pokémon."
@@ -880,7 +880,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case EELEKTROSS_40:
-      return evolution (this, from:"Eelektrik", hp:HP160, type:Lightning, retreatCost:3) {
+      return evolution (this, from:"Eelektrik", hp:HP160, type:L, retreatCost:3) {
         weakness F
         move "Stun Fang", {
           text "60 damage. During your opponent's next turn, if they attach an Energy card from their hand to the Defending Pokémon, put 6 damage counters on that Pokémon."
@@ -900,7 +900,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case ALAKAZAM_V_41:
-      return basic (this, hp:HP190, type:Psychic, retreatCost:1) {
+      return basic (this, hp:HP190, type:P, retreatCost:1) {
         weakness D
         resistance F, MINUS30
         move "Zen Spoon", {
@@ -921,7 +921,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case SHEDINJA_42:
-      return basic (this, hp:HP030, type:Psychic, retreatCost:1) {
+      return basic (this, hp:HP030, type:P, retreatCost:1) {
         bwAbility "Shell Bind", {
           text "This card can only be put into play with the effect of Ninjask's Cast-off Shell Ability (you can't play this card when you are setting up to play)."
           actionA {
@@ -937,7 +937,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case DUSKULL_43:
-      return basic (this, hp:HP060, type:Psychic, retreatCost:1) {
+      return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness D
         resistance F, MINUS30
         move "Future Sight", {
@@ -950,7 +950,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case DUSCLOPS_44:
-      return evolution (this, from:"Duskull", hp:HP090, type:Psychic, retreatCost:2) {
+      return evolution (this, from:"Duskull", hp:HP090, type:P, retreatCost:2) {
         weakness D
         resistance F, MINUS30
         move "Confuse Ray", {
@@ -971,7 +971,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case DUSKNOIR_45:
-      return evolution (this, from:"Dusclops", hp:HP150, type:Psychic, retreatCost:2) {
+      return evolution (this, from:"Dusclops", hp:HP150, type:P, retreatCost:2) {
         weakness D
         resistance F, MINUS30
         bwAbility "Ghost Bleach", {
@@ -989,15 +989,28 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case CHIMECHO_46:
-      return supporter (this) {
-        text "null"
-        onPlay {
+      return basic (this, hp:HP070, type:P, retreatCost:1) {
+        weakness D
+        resistance F, MINUS30
+        move "Vibrating Tone", {
+          text " Search your deck for a Pokémon and a Supporter card, reveal them, and put them into your hand. Then, shuffle your deck."
+          energyCost C
+          attackRequirement {}
+          onAttack {
+
+          }
         }
-        playRequirement{
+        move "Hypnoblast", {
+          text "30 damage. Your opponent's Active Pokémon is now Asleep."
+          energyCost P, C
+          attackRequirement {}
+          onAttack {
+            damage 30
+          }
         }
       };
       case WOOBAT_47:
-      return basic (this, hp:HP060, type:Psychic, retreatCost:1) {
+      return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness L
         resistance F, MINUS30
         move "Unarmed Wave", {
@@ -1010,7 +1023,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case SWOOBAT_48:
-      return evolution (this, from:"Woobat", hp:HP100, type:Psychic, retreatCost:1) {
+      return evolution (this, from:"Woobat", hp:HP100, type:P, retreatCost:1) {
         weakness L
         resistance F, MINUS30
         bwAbility "Airhead", {
@@ -1028,7 +1041,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case COTTONEE_49:
-      return basic (this, hp:HP060, type:Psychic, retreatCost:1) {
+      return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness M
         move "Rolling Tackle", {
           text "10 damage."
@@ -1040,7 +1053,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case WHIMSICOTT_50:
-      return evolution (this, from:"Cottonee", hp:HP090, type:Psychic, retreatCost:null) {
+      return evolution (this, from:"Cottonee", hp:HP090, type:P, retreatCost:0) {
         weakness M
         move "Triple Draw", {
           text " Draw 3 cards."
@@ -1060,7 +1073,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case MILCERY_51:
-      return basic (this, hp:HP050, type:Psychic, retreatCost:1) {
+      return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness M
         move "Sweet Scent", {
           text " Heal 20 damage from 1 of your Pokémon."
@@ -1080,7 +1093,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case ALCREMIE_52:
-      return evolution (this, from:"Milcery", hp:HP090, type:Psychic, retreatCost:1) {
+      return evolution (this, from:"Milcery", hp:HP090, type:P, retreatCost:1) {
         weakness M
         bwAbility "Sweet Share", {
           text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, each player draws a card."
@@ -1097,7 +1110,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case MACHOP_53:
-      return basic (this, hp:HP070, type:Fighting, retreatCost:2) {
+      return basic (this, hp:HP070, type:F, retreatCost:2) {
         weakness P
         move "Low Kick", {
           text "10 damage."
@@ -1117,7 +1130,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case MACHOKE_54:
-      return evolution (this, from:"Machop", hp:HP110, type:Fighting, retreatCost:3) {
+      return evolution (this, from:"Machop", hp:HP110, type:F, retreatCost:3) {
         weakness P
         move "Low Kick", {
           text "30 damage."
@@ -1137,7 +1150,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case MACHAMP_55:
-      return evolution (this, from:"Machoke", hp:HP170, type:Fighting, retreatCost:3) {
+      return evolution (this, from:"Machoke", hp:HP170, type:F, retreatCost:3) {
         weakness P
         move "Macho Revenge 20x", {
           text " This attack does 20 damage for each Pokémon in your discard pile."
@@ -1157,7 +1170,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case PHANPY_56:
-      return basic (this, hp:HP070, type:Fighting, retreatCost:2) {
+      return basic (this, hp:HP070, type:F, retreatCost:2) {
         weakness G
         move "Stampede", {
           text "10 damage."
@@ -1177,7 +1190,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case DONPHAN_57:
-      return evolution (this, from:"Phanpy", hp:HP150, type:Fighting, retreatCost:4) {
+      return evolution (this, from:"Phanpy", hp:HP150, type:F, retreatCost:4) {
         weakness G
         move "Earthquake", {
           text "120 damage. This attack does 20 damage to each of your Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
@@ -1197,7 +1210,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case HITMONTOP_58:
-      return basic (this, hp:HP090, type:Fighting, retreatCost:1) {
+      return basic (this, hp:HP090, type:F, retreatCost:1) {
         weakness P
         move "Cycle Draw", {
           text " Discard a card from your hand. If you do, draw 3 cards."
@@ -1217,7 +1230,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case DRILBUR_59:
-      return basic (this, hp:HP070, type:Fighting, retreatCost:2) {
+      return basic (this, hp:HP070, type:F, retreatCost:2) {
         weakness G
         move "Scratch", {
           text "10 damage."
@@ -1237,15 +1250,27 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case TERRAKION_60:
-      return stadium (this) {
-        text "null"
-        onPlay {
+      return basic (this, hp:HP140, type:F, retreatCost:4) {
+        weakness G
+        move "Guard Press", {
+          text "30 damage. During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+          energyCost F, C
+          attackRequirement {}
+          onAttack {
+            damage 30
+          }
         }
-        onRemoveFromPlay{
+        move "Ground Power", {
+          text "80 damage. If you have a Stadium in play, this attack does 80 more damage."
+          energyCost F, F, C
+          attackRequirement {}
+          onAttack {
+            damage 80
+          }
         }
       };
       case MUDBRAY_61:
-      return basic (this, hp:HP080, type:Fighting, retreatCost:2) {
+      return basic (this, hp:HP080, type:F, retreatCost:2) {
         weakness G
         move "Ram", {
           text "10 damage."
@@ -1265,7 +1290,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case MUDSDALE_62:
-      return evolution (this, from:"Mudbray", hp:HP140, type:Fighting, retreatCost:3) {
+      return evolution (this, from:"Mudbray", hp:HP140, type:F, retreatCost:3) {
         weakness G
         move "Mud Bomb", {
           text "50 damage."
@@ -1285,7 +1310,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case CLOBBOPUS_63:
-      return basic (this, hp:HP080, type:Fighting, retreatCost:2) {
+      return basic (this, hp:HP080, type:F, retreatCost:2) {
         weakness P
         move "Beat", {
           text "20 damage."
@@ -1305,7 +1330,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case GRAPPLOCT_64:
-      return evolution (this, from:"Clobbopus", hp:HP130, type:Fighting, retreatCost:2) {
+      return evolution (this, from:"Clobbopus", hp:HP130, type:F, retreatCost:2) {
         weakness P
         move "Headlock", {
           text "30 damage. During your opponent's next turn, the Defending Pokémon can't retreat."
@@ -1325,7 +1350,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case GALARIAN_SIRFETCH_D_V_65:
-      return basic (this, hp:HP210, type:Fighting, retreatCost:2) {
+      return basic (this, hp:HP210, type:F, retreatCost:2) {
         weakness P
         bwAbility "Pledge Spear", {
           text "Once during your turn, when this Pokémon moves from your Bench to the Active Spot, you may move any amount of Energy from your other Pokémon to it."
@@ -1342,7 +1367,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case POOCHYENA_66:
-      return basic (this, hp:HP070, type:Darkness, retreatCost:1) {
+      return basic (this, hp:HP070, type:D, retreatCost:1) {
         weakness G
         move "Bite", {
           text "10 damage."
@@ -1362,7 +1387,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case MIGHTYENA_67:
-      return evolution (this, from:"Poochyena", hp:HP110, type:Darkness, retreatCost:1) {
+      return evolution (this, from:"Poochyena", hp:HP110, type:D, retreatCost:1) {
         weakness G
         move "Ferocious Bellow", {
           text "20 damage. During your opponent's next turn, the Defending Pokémon's attacks do 50 less damage (before applying Weakness and Resistance)."
@@ -1382,7 +1407,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case SABLEYE_68:
-      return basic (this, hp:HP070, type:Darkness, retreatCost:1) {
+      return basic (this, hp:HP070, type:D, retreatCost:1) {
         weakness G
         move "Filch", {
           text " Draw a card."
@@ -1402,7 +1427,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case DRAPION_V_69:
-      return basic (this, hp:HP210, type:Darkness, retreatCost:3) {
+      return basic (this, hp:HP210, type:D, retreatCost:3) {
         weakness F
         move "Wrack Down", {
           text "70 damage."
@@ -1422,7 +1447,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case SANDILE_70:
-      return basic (this, hp:HP070, type:Darkness, retreatCost:2) {
+      return basic (this, hp:HP070, type:D, retreatCost:2) {
         weakness G
         move "Devastating Dig", {
           text " Discard the top 3 cards of your opponent's deck."
@@ -1434,7 +1459,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case KROKOROK_71:
-      return evolution (this, from:"Sandile", hp:HP090, type:Darkness, retreatCost:2) {
+      return evolution (this, from:"Sandile", hp:HP090, type:D, retreatCost:2) {
         weakness G
         move "Bite", {
           text "20 damage."
@@ -1454,7 +1479,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case KROOKODILE_72:
-      return evolution (this, from:"Krokorok", hp:HP150, type:Darkness, retreatCost:3) {
+      return evolution (this, from:"Krokorok", hp:HP150, type:D, retreatCost:3) {
         weakness G
         move "Devastating Dig", {
           text " Discard the top 3 cards of your opponent's deck."
@@ -1474,15 +1499,27 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case TRUBBISH_73:
-      return itemCard (this) {
-        text "null"
-        onPlay {
+      return basic (this, hp:HP070, type:D, retreatCost:2) {
+        weakness F
+        move "Lucky Find", {
+          text " Search your deck for an Item card, reveal it, and put it into your hand. Then, shuffle your deck."
+          energyCost C, C
+          attackRequirement {}
+          onAttack {
+
+          }
         }
-        playRequirement{
+        move "Sludge Toss", {
+          text "30 damage."
+          energyCost D, C, C
+          attackRequirement {}
+          onAttack {
+            damage 30
+          }
         }
       };
       case GARBODOR_74:
-      return evolution (this, from:"Trubbish", hp:HP120, type:Darkness, retreatCost:3) {
+      return evolution (this, from:"Trubbish", hp:HP120, type:D, retreatCost:3) {
         weakness F
         move "Dust Cyclone", {
           text "30 damage. This attack does 30 damage for each Pokémon Tool in your discard pile. Then, shuffle those cards into your deck."
@@ -1502,7 +1539,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case GALARIAN_MEOWTH_75:
-      return basic (this, hp:HP070, type:Metal, retreatCost:1) {
+      return basic (this, hp:HP070, type:M, retreatCost:1) {
         weakness R
         resistance G, MINUS30
         move "Scratch", {
@@ -1523,7 +1560,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case GALARIAN_PERRSERKER_76:
-      return evolution (this, from:"Meowth", hp:HP120, type:Metal, retreatCost:2) {
+      return evolution (this, from:"Meowth", hp:HP120, type:M, retreatCost:2) {
         weakness R
         resistance G, MINUS30
         move "Snatch Claw", {
@@ -1544,7 +1581,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case EXCADRILL_77:
-      return evolution (this, from:"Drilbur", hp:HP130, type:Metal, retreatCost:3) {
+      return evolution (this, from:"Drilbur", hp:HP130, type:M, retreatCost:3) {
         weakness R
         resistance G, MINUS30
         move "Drill Run", {
@@ -1565,7 +1602,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case FERROSEED_78:
-      return basic (this, hp:HP060, type:Metal, retreatCost:3) {
+      return basic (this, hp:HP060, type:M, retreatCost:3) {
         weakness R
         resistance G, MINUS30
         move "Reaction", {
@@ -1578,7 +1615,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case FERROTHORN_79:
-      return evolution (this, from:"Ferroseed", hp:HP110, type:Metal, retreatCost:3) {
+      return evolution (this, from:"Ferroseed", hp:HP110, type:M, retreatCost:3) {
         weakness R
         resistance G, MINUS30
         move "Buzzing Swing", {
@@ -1591,7 +1628,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case AEGISLASH_V_80:
-      return basic (this, hp:HP210, type:Metal, retreatCost:3) {
+      return basic (this, hp:HP210, type:M, retreatCost:3) {
         weakness R
         resistance G, MINUS30
         move "Slash", {
@@ -1612,7 +1649,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case AEGISLASH_VMAX_81:
-      return evolution (this, from:"Aegislash", hp:HP320, type:Metal, retreatCost:3) {
+      return evolution (this, from:"Aegislash", hp:HP320, type:M, retreatCost:3) {
         weakness R
         resistance G, MINUS30
         move "Max Slash", {
@@ -1625,7 +1662,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case DURALUDON_82:
-      return basic (this, hp:HP130, type:Metal, retreatCost:2) {
+      return basic (this, hp:HP130, type:M, retreatCost:2) {
         weakness R
         resistance G, MINUS30
         move "Raging Claws", {
@@ -1646,7 +1683,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case EEVEE_83:
-      return basic (this, hp:HP070, type:Colorless, retreatCost:1) {
+      return basic (this, hp:HP070, type:C, retreatCost:1) {
         weakness F
         move "Gnaw", {
           text "10 damage."
@@ -1666,7 +1703,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case SNORLAX_84:
-      return basic (this, hp:HP130, type:Colorless, retreatCost:3) {
+      return basic (this, hp:HP130, type:C, retreatCost:3) {
         weakness F
         bwAbility "Stuff Face", {
           text "Once during your turn, if this Pokémon is in the Active Spot, you may draw cards until you have 7 cards in your hand. If you use this Ability, your turn ends."
@@ -1683,7 +1720,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case TAILLOW_85:
-      return basic (this, hp:HP060, type:Colorless, retreatCost:1) {
+      return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness L
         resistance F, MINUS30
         move "Double Peck", {
@@ -1696,7 +1733,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case SWELLOW_86:
-      return evolution (this, from:"Taillow", hp:HP090, type:Colorless, retreatCost:null) {
+      return evolution (this, from:"Taillow", hp:HP090, type:C, retreatCost:0) {
         weakness L
         resistance F, MINUS30
         move "Quick Attack", {
@@ -1717,7 +1754,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case WHISMUR_87:
-      return basic (this, hp:HP060, type:Colorless, retreatCost:1) {
+      return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness F
         move "Continuous Tumble", {
           text "40 damage. Flip a coin until you get tails. This attack does 40 damage for each heads."
@@ -1729,7 +1766,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case LOUDRED_88:
-      return evolution (this, from:"Whismur", hp:HP100, type:Colorless, retreatCost:2) {
+      return evolution (this, from:"Whismur", hp:HP100, type:C, retreatCost:2) {
         weakness F
         move "Round", {
           text "20 damage. This attack does 20 damage for each of your Pokémon that have the Round attack."
@@ -1749,7 +1786,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case EXPLOUD_89:
-      return evolution (this, from:"Loudred", hp:HP160, type:Colorless, retreatCost:3) {
+      return evolution (this, from:"Loudred", hp:HP160, type:C, retreatCost:3) {
         weakness F
         move "Round", {
           text "50 damage. This attack does 50 damage for each of your Pokémon that have the Round attack."
@@ -1770,15 +1807,20 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       };
       case DRONE_ROTOM_90:
       return itemCard (this) {
-        text "Your opponent reveals their hand. Then look at the top card of your opponent's deck."
+        text "Your opponent reveals their hand. Then" +
+          "look at the top card of your opponent's deck."
         onPlay {
         }
         playRequirement{
         }
       };
       case TELEPHOTO_SCOPE_91:
-      return basic (this, hp:HPnull, type:null, retreatCost:null) {
-
+      return itemCard (this) {
+        text "The attacks of the Pokémon this card is attached to do 30 more damage to your opponent's Benched Pokémon V or Benched Pokémon-GX (before applying Weakness and Resistance)."
+        onPlay {
+        }
+        playRequirement{
+        }
       };
       case MEMORY_CAPSULE_92:
       return itemCard (this) {
@@ -1833,15 +1875,19 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       };
       case WYNDON_STADIUM_98:
       return stadium (this) {
-        text "Whenever either player plays a Pokémon VMAX from their hand during their turn to evolve their Pokémon V, heal 100 damage from that Pokémon."
+        text "Whenever either player plays a Pokémon VMAX from their hand during their turn to evolve their Pokémon V" +
+          "heal 100 damage from that Pokémon."
         onPlay {
         }
         onRemoveFromPlay{
         }
       };
       case WASH_W_ENERGY_99:
-      return specialEnergy (this, [[W]]) {
-        text "As long as this card is attached to a Pokémon, it provides Water Energy. Prevent all effects of your opponent's attacks, except damage, done to the Water Pokémon this card is attached to. (Existing effects are not removed.)"
+      return specialEnergy (this, [[C]]) {
+        text "As long as this card is attached to a Pokémon" +
+          "it provides Energy. Prevent all effects of your opponent's attacks" +
+          "except damage" +
+          "done to the Pokémon this card is attached to. (Existing effects are not removed.)"
         onPlay {reason->
         }
         onRemoveFromPlay {
@@ -1852,8 +1898,9 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case COATING_M_ENERGY_100:
-      return specialEnergy (this, [[M]]) {
-        text "As long as this card is attached to a Pokémon, it provides Metal Energy. The Metal Pokémon this card is attached to has no Weakness."
+      return specialEnergy (this, [[C]]) {
+        text "As long as this card is attached to a Pokémon" +
+          "it provides Energy. The Pokémon this card is attached to has no Weakness."
         onPlay {reason->
         }
         onRemoveFromPlay {
@@ -1900,7 +1947,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       case NESSA_118:
       return copy (NESSA_96, this);
       case GALARIAN_OBSTAGOON_119:
-      return evolution (this, from:"Linoone", hp:HP160, type:Darkness, retreatCost:2) {
+      return evolution (this, from:"Linoone", hp:HP160, type:D, retreatCost:2) {
         weakness G
         bwAbility "Wild Shout", {
           text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may put 3 damage counters on 1 of your opponent's Pokémon."
