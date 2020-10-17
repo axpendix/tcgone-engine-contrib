@@ -46,7 +46,7 @@ public enum Collection {
   DRAGON(213, "DR", "gen3.Dragon"),
   TEAM_MAGMA_VS_TEAM_AQUA(214, "Team Magma vs Team Aqua", "MA", "gen3.TeamMagmaVsTeamAqua"),
   HIDDEN_LEGENDS(215, "HL", "gen3.HiddenLegends"),
-  FIRERED_LEAFGREEN(216, "FireRed & LeafGreen", "FRLG", "gen3.FireRedLeafGreen"),
+  FIRERED_LEAFGREEN(216, "FireRed & LeafGreen", "RG", "gen3.FireRedLeafGreen"),
   TEAM_ROCKET_RETURNS(217, "TRR", "gen3.TeamRocketReturns"),
   DEOXYS(218, "DX", "gen3.Deoxys"),
   EMERALD(219, "EM", "gen3.Emerald"),
