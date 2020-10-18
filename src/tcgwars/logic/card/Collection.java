@@ -2,6 +2,7 @@ package tcgwars.logic.card;
 
 import org.apache.commons.lang.WordUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -253,6 +254,23 @@ public enum Collection {
       if (item.shortName.equals(shortName)) return item;
     }
     throw new IllegalArgumentException("Collection " + shortName + " not found");
+  }
+
+  private static List<Integer> getDevExpansionIds() {
+    List<Integer> expansionIds = new ArrayList<>();
+    expansionIds.add(WIZARDS_BLACK_STAR_PROMOS_NG.id);
+    return expansionIds;
+  }
+
+  public static List<Collection> getLiveExpansions() {
+    List<Collection> expansions = new ArrayList<>();
+    List<Integer> devIds = getDevExpansionIds();
+    for(Collection expansion : Arrays.asList(Collection.values())) {
+      if(!devIds.contains(expansion.id)) {
+        expansions.add(expansion);
+      }
+    }
+    return expansions;
   }
 
 }
