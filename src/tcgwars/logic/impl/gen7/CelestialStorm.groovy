@@ -2551,8 +2551,10 @@ public enum CelestialStorm implements LogicCardInfo {
             text "160 damage. If the total of both players' remaining Prize cards is exactly 6, this attack can be used for [M]."
             energyCost M
             attackRequirement {
-              def i = my.prizeCardSet.size() + opp.prizeCardSet.size()
-              if(i != 6) assert self.cards.energySufficient(M,C,C,C,C) : "Not enough energy. Total prize count was $i"
+              def totalPrizeCount = my.prizeCardSet.size() + opp.prizeCardSet.size()
+              if (totalPrizeCount != 6)  {
+                assert self.cards.energySufficient(M,C,C,C,C) : "Not enough energy. Total prize count was $totalPrizeCount"
+              }
             }
             onAttack {
               damage 160
@@ -3077,14 +3079,14 @@ public enum CelestialStorm implements LogicCardInfo {
               my.deck.add(0, card)
             }
             else{
-              def c=choose([1,2],["Your deck", "Your opponent's deck"], "Look at the top 5 cards of which player's deck?")
-              if(c==1){
+              def choice = choose([1,2],["Your deck", "Your opponent's deck"], "Look at the top 5 cards of which player's deck?")
+              if (choice == 1) {
                 def card = my.deck.subList(0,5).select("Choose a card to put on top of your deck").first()
                 my.deck.remove(card)
                 shuffleDeck()
                 my.deck.add(0, card)
               }
-              if(c==2){
+              if (choice == 2) {
                 def card = opp.deck.subList(0,5).select("Choose a card to put on top of your opponent's deck").first()
                 opp.deck.remove(card)
                 shuffleDeck(null, TargetPlayer.OPPONENT)
@@ -3280,10 +3282,9 @@ public enum CelestialStorm implements LogicCardInfo {
               a2()
             }
             else{
-              def cl=[1,2]
-              def c=choose(cl,["Shuffle your hand into your deck. Then, draw 5 cards.", "Switch your Active Pokémon with 1 of your Benched Pokémon."], "What do you want to do?")
-              if(c==1) a1()
-              if(c==2) a2()
+              def choice = choose([1,2], ["Shuffle your hand into your deck. Then, draw 5 cards.", "Switch your Active Pokémon with 1 of your Benched Pokémon."], "What do you want to do?")
+              if (choice == 1) a1()
+              if (choice == 2) a2()
             }
           }
           playRequirement{

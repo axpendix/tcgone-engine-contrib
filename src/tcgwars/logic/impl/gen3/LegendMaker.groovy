@@ -269,16 +269,16 @@ public enum LegendMaker implements LogicCardInfo {
           }
           onAttack {
             def evolvedPoke = opp.all.findAll{it.evolution}
-            def max = Math.min(self.cards.findAll{it.name == "React Energy"}.size(), evolvedPoke.size())
+            def maxTargets = Math.min(self.cards.findAll{it.name == "React Energy"}.size(), evolvedPoke.size())
             def toBeDevolved = new PcsList()
-            def i = max
-            while (evolvedPoke && i > 0) {
-              def info = "Select one of your opponent's devolved Pokémon to mark it for devolution, or press Cancel to stop. You have ${i} out of ${max} potential devolutions remaining."
-              def sel = evolvedPoke.select(info, (i == max), self.owner) // Mandatory to devolve at least one, if attacking.
+            def remainingTargets = maxTargets
+            while (evolvedPoke && remainingTargets > 0) {
+              def info = "Select one of your opponent's devolved Pokémon to mark it for devolution, or press Cancel to stop. You have ${remainingTargets} out of ${maxTargets} potential devolutions remaining."
+              def sel = evolvedPoke.select(info, (remainingTargets == maxTargets), self.owner) // Mandatory to devolve at least one, if attacking.
               if (!sel) break; //TODO: Allow to unmark a Pokémon. Ideal way would be a search-like pop-up.
               toBeDevolved.add(sel)
               evolvedPoke.remove(sel)
-              i--
+              remainingTargets--
             }
             toBeDevolved.each{
               def top = it.topPokemonCard

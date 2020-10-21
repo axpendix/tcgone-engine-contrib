@@ -1422,13 +1422,13 @@ class TcgStatics {
       assert my.deck || opp.deck : "Both players' decks are empty"
     }
     delegate.onAttack {
-      def c = !opp.deck ? 1 : 2
+      def choice = !opp.deck ? 1 : 2
       if (my.deck && opp.deck){
-        c = choose([1,2],["Your deck", "Your opponent's deck"], "Rearrange the top $count cards of which player's deck?")
+        choice = choose([1,2],["Your deck", "Your opponent's deck"], "Rearrange the top $count cards of which player's deck?")
       }
 
       def chosenDeck, playerString, bcString
-      if (c == 1) {
+      if (choice == 1) {
         chosenDeck = my.deck
         playerString = "your"
         bcString = "owner's"
