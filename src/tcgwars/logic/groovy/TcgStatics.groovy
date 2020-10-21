@@ -1650,7 +1650,7 @@ class TcgStatics {
    */
   static CardList selectEnergyFromPokemon(params=[:], Closure c = {}) {
     if (params.type && !(params.type instanceof Type)) throw new IllegalArgumentException("selectEnergyFromPokemon() params.type=${params.type} type not supported")
-    Type eType = params.type ? params.type as Type : C
+    Type eType = params.type ? params.type as Type : null
 
     PcsList excludedPcs = []
     if (params.exclude && params.exclude instanceof PokemonCardSet) excludedPcs.add(params.exclude)
@@ -1662,7 +1662,14 @@ class TcgStatics {
     Map<PokemonCardSet, CardList> workMap = [:]
     for (PokemonCardSet pcs : my.all) {
       if (excludedPcs.contains(pcs)) continue
-      if (pcs.cards.filterByType(ENERGY).filterByEnergyType(eType)) workMap.put(pcs, pcs.cards.filterByType(ENERGY).filterByEnergyType(eType))
+      if (pcs.cards.filterByType(ENERGY)) {
+        if (params.type) {
+          workMap.put(pcs, pcs.cards.filterByType(ENERGY).filterByEnergyType(eType))
+        }
+        else {
+          workMap.put(pcs, pcs.cards.filterByType(ENERGY));
+        }
+      }
     }
     PcsList mapTar = workMap.keySet().findAll { workMap.get(it).notEmpty() }
     while (mapTar) {
