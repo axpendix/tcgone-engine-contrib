@@ -1,11 +1,10 @@
 package tcgwars.logic.card;
 
 import org.apache.commons.lang.WordUtils;
+import tcgwars.logic.GameFormat;
+import tcgwars.logic.GameType;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * @author axpendix@hotmail.com
@@ -256,18 +255,11 @@ public enum Collection {
     throw new IllegalArgumentException("Collection " + shortName + " not found");
   }
 
-  private static List<Integer> getDevExpansionIds() {
-    List<Integer> expansionIds = new ArrayList<>();
-    expansionIds.add(WIZARDS_BLACK_STAR_PROMOS_NG.id);
-    return expansionIds;
-  }
-
-  public static List<Collection> getLiveExpansions() {
-    List<Collection> expansions = new ArrayList<>();
-    List<Integer> devIds = getDevExpansionIds();
-    for(Collection expansion : Arrays.asList(Collection.values())) {
-      if(!devIds.contains(expansion.id)) {
-        expansions.add(expansion);
+  public static Set<Collection> getLiveExpansions() {
+    Set<Collection> expansions = new HashSet<>();
+    for (GameType gameType : GameType.values()) {
+      for (GameFormat gameFormat : gameType.getAvailableFormats()) {
+        expansions.addAll(gameFormat.getIncludedCollections());
       }
     }
     return expansions;
