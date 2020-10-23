@@ -484,9 +484,12 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Amazing Shot", {
           text "120 damage. This attack also does 120 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost G, L, M
-          attackRequirement {}
           onAttack {
             damage 120
+            if (opp.bench) {
+              def info = "Pokémon to deal 120 damage to?"
+              damage 120, opp.bench.select(info)
+            }
           }
         }
       };
