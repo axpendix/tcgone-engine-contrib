@@ -576,7 +576,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Slash", {
           text "30 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -584,9 +583,10 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Wild Shock", {
           text "130 damage. This Pokémon does 60 damage to itself. Your opponent's Active Pokémon is now Paralyzed."
           energyCost L, L, C
-          attackRequirement {}
           onAttack {
             damage 130
+            damage 60, self
+            apply PARALYZED
           }
         }
       };
