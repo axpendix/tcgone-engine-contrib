@@ -762,15 +762,26 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         weakness M
         bwAbility "Twinkling Veil", {
           text "As long as this Pokémon is in the Active Spot, all of your Pokémon take 30 less damage from your opponent's attacks (after applying Weakness and Resistance)."
-          actionA {
+          delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if(self.active && it.to.owner==self.owner && it.from.owner!=it.to.owner && it.notNoEffect && it.notZero){
+                  bc "$thisAbility -30"
+                  it.dmg -= hp(30)
+                }
+              }
+            }
           }
         }
         move "Sensitive Ray", {
           text "50 damage. If you played a Supporter card from your hand during this turn, this attack does 70 more damage."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
             damage 50
+            // TODO: Handle supporters not played from hand
+            if (bg.em().retrieveObject("last_supporter_play_turn") == bg.turnCount) {
+              damage 70
+            }
           }
         }
       };
