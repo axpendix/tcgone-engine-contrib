@@ -340,19 +340,28 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
         move "Energy Press", {
-          text "30 damage. This attack does 30 damage for each Energy attached to your opponent's Active Pokémon."
+          text "30x damage. This attack does 30 damage for each Energy attached to your opponent's Active Pokémon."
           energyCost G
-          attackRequirement {}
           onAttack {
-            damage 30
+            damage 30 * defending.getEnergyCount(bg)
           }
         }
         move "Amazing Bloom", {
           text " For each of your Benched Pokémon, search your deck for a card that evolves from that Pokémon and put it onto that Pokémon to evolve it. Then, shuffle your deck."
           energyCost L, P
-          attackRequirement {}
+          attackRequirement {
+            assert my.bench.any { bg.gm().hasEvolution(it.name) } : "No Pokémon with evolutions in play"
+          }
           onAttack {
-
+            my.bench.each {pcs ->
+              if (!bg.gm().hasEvolution(pcs.name)) return
+              def evolution = my.deck.search ("Evolve $pcs to?", {Card card ->
+                if (!(card instanceof EvolutionPokemonCard)) return false
+                (card as EvolutionPokemonCard).predecessor == pcs.name
+              }).first()
+              if (!evolution) return
+              evolve(pcs, evolution, OTHER)
+            }
           }
         }
       };
