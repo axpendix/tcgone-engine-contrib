@@ -626,7 +626,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Pound", {
           text "10 damage."
           energyCost P
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -634,9 +633,11 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "MiniMetronome", {
           text " Flip a coin. If heads, choose 1 of your opponent's Active Pokémon's attacks and use it as this attack."
           energyCost C, C
-          attackRequirement {}
+          attackRequirement {
+            assert defending.getTopPokemonCard().getMoves() : "Defending Pokémon has no moves to copy"
+          }
           onAttack {
-
+            flip { metronome defending, delegate }
           }
         }
       };
@@ -644,14 +645,20 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       return evolution (this, from:"Clefairy", hp:HP100, type:P, retreatCost:1) {
         weakness M
         bwAbility "Moon's Blessing", {
+          // TODO: Does it only cure exactly 1 Special Condition?
           text "Once during your turn, you may heal 20 damage from your Active Pokémon with any Energy attached, and it recovers from a Special Condition."
           actionA {
+            checkLastTurn()
+            assert active.getEnergyCount(bg) : "Active Pokémon does not have an Energy attached"
+            assert active.numberOfDamageCounters || active.specialConditions : "Active Pokémon is not damaged and is not affected by a Special Condition"
+            powerUsed()
+            heal 20, active
+            clearSpecialCondition active, SRC_ABILITY
           }
         }
         move "Magical Shot", {
           text "80 damage."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
             damage 80
           }
