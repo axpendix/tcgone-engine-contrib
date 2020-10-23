@@ -324,7 +324,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Ram", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -332,9 +331,8 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Iron Defense", {
           text " Flip a coin. If heads, during your opponent's next turn, prevent all damage done to this Pokémon by attacks."
           energyCost C, C
-          attackRequirement {}
           onAttack {
-
+            flip { preventAllDamageNextTurn() }
           }
         }
       };
@@ -1008,17 +1006,17 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Take Down", {
           text "120 damage. This Pokémon does 30 damage to itself."
           energyCost M, C, C
-          attackRequirement {}
           onAttack {
             damage 120
+            damage 30, self
           }
         }
         move "Tie Blast", {
           text " Both Active Pokémon are Knocked Out."
           energyCost M, M, C, C
-          attackRequirement {}
           onAttack {
-
+            new Knockout(defending).run(bg)
+            new Knockout(self).run(bg)
           }
         }
       };
