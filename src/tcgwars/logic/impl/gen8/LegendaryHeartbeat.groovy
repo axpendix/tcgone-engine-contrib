@@ -727,9 +727,9 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Tail Trickery", {
           text "10 damage. Your opponent's Active Pokémon is now Confused."
           energyCost P
-          attackRequirement {}
           onAttack {
             damage 10
+            apply CONFUSED
           }
         }
       };
@@ -739,17 +739,21 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Geo Hunt", {
           text " Put a card from your discard pile into your hand."
           energyCost P
-          attackRequirement {}
+          attackRequirement {
+            assert my.discard : "Discard pile is empty"
+          }
           onAttack {
-
+            my.discard.select("Card to return to hand?")
+              .showToOpponent("Card opponent returned to hand from discard pile.")
+              .moveTo my.hand
           }
         }
         move "Aurora Gain", {
           text "100 damage. Heal 30 damage from this Pokémon."
           energyCost P, P, C
-          attackRequirement {}
           onAttack {
             damage 100
+            heal 30, self
           }
         }
       };
