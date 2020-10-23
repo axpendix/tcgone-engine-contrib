@@ -786,45 +786,9 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         }
       };
       case ALCREMIE_V_31:
-      return basic (this, hp:HP170, type:P, retreatCost:2) {
-        weakness M
-        move "Sugary Sprinkles", {
-          text " Heal 30 damage from each of your Benched Pokémon."
-          energyCost P
-          attackRequirement {}
-          onAttack {
-
-          }
-        }
-        move "Sweet Splash", {
-          text "100 damage. If the Defending Pokémon is a Basic Pokémon, it can't attack during your opponent's next turn."
-          energyCost P, C, C
-          attackRequirement {}
-          onAttack {
-            damage 100
-          }
-        }
-      };
+      return copy(ChampionsPath.ALCREMIE_V_22, this);
       case ALCREMIE_VMAX_32:
-      return evolution (this, from:"Alcremie", hp:HP310, type:P, retreatCost:3) {
-        weakness M
-        move "Adornment", {
-          text " For each of your Benched Pokémon, search your deck for a Energy card and attach it to that Pokémon. Then, shuffle your deck."
-          energyCost C
-          attackRequirement {}
-          onAttack {
-
-          }
-        }
-        move "GMax Whisk", {
-          text "60 damage. Discard any amount of Energy from your Pokémon. This attack does 60 damage for each card you discarded in this way."
-          energyCost P, P
-          attackRequirement {}
-          onAttack {
-            damage 60
-          }
-        }
-      };
+      return copy(ChampionsPath.ALCREMIE_VMAX_23, this);
       case ZACIAN_33:
       return basic (this, hp:HP110, type:P, retreatCost:2) {
         weakness M
