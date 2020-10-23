@@ -464,17 +464,17 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Dazzle Blast", {
           text "50 damage. Your opponent's Active Pokémon is now Confused."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 50
+            apply CONFUSED
           }
         }
         move "Damage Spark", {
           text "120 damage. This attack does 30 damage to each of your opponent's Benched Pokémon that has any damage counters on it. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost L, L, C
-          attackRequirement {}
           onAttack {
             damage 120
+            opp.all.each { if(it.numberOfDamageCounters) damage(30, it) }
           }
         }
       };
