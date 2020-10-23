@@ -416,7 +416,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Hook", {
           text "20 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -424,9 +423,11 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Special Anchor", {
           text "60 damage. If this Pokémon has any Special Energy attached, this attack does 60 more damage."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 60
+            if (self.energyCards.any { it.cardTypes.contains(SPECIAL_ENERGY) }) {
+              damage 60
+            }
           }
         }
       };
