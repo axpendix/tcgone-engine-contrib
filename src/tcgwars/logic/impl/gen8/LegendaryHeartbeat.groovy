@@ -188,29 +188,63 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Bug Hunch", {
           text " Search your deck for up to 2 Pokémon, reveal them, and put them into your hand. Then, shuffle your deck."
           energyCost G
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Your deck is empty"
+          }
           onAttack {
-
+            def info = "Opponent chose the following Pokémon from their deck using $thisMove."
+            my.deck.search(max:2, cardTypeFilter(POKEMON)).showToOpponent(bg, info).moveTo my.hand
           }
         }
       };
       case KAKUNA_2:
       return evolution (this, from:"Weedle", hp:HP080, type:G, retreatCost:3) {
         weakness R
-
+        move "Shed Skin", {
+          text "Heal 30 damage from this Pokémon"
+          energyCost C
+          attackRequirement {
+            assert self.numberOfDamageCounters : "$self is not damaged"
+          }
+          onAttack {
+            heal 30, self
+          }
+        }
+        move "Bug Bite", {
+          energyCost G
+          onAttack {
+            damage 20
+          }
+        }
       };
       case BEEDRILL_3:
       return evolution (this, from:"Kakuna", hp:HP130, type:G, retreatCost:0) {
         weakness R
+        globalAbility {
+          delayed {
+            def abilityUsed = false
+            before PLAY_CARD, {
+              if (ef.cardToPlay == thisCard && my.hand.getExcludedList(thisCard).empty && my.bench.freeBenchCount) {
+                def abilityName = "Sudden Appearance"
+                abilityUsed = confirm("Use $abilityName?")
+                if (abilityUsed && benchPCS(thisCard, PLAY_FROM_HAND)) {
+                  bc("$thisCard.name has used $abilityName")
+                  draw 3
+                }
+              }
+            }
+            before PLAY_EVOLUTION, {
+              if (abilityUsed) prevent()
+              abilityUsed = false
+            }
+          }
+        }
         bwAbility "Sudden Appearance", {
           text "Once during your turn (before your attack), if this Pokémon is the last card in your hand, you may play it onto your Bench. If you do, draw 3 cards."
-          actionA {
-          }
         }
         move "Sharp Sting", {
           text "120 damage."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 120
           }
