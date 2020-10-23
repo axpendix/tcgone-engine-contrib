@@ -608,15 +608,13 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Spinning Fan", {
           text " This attack does 10 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost L
-          attackRequirement {}
           onAttack {
-
+            opp.all.each { damage 10, it }
           }
         }
         move "Peck", {
           text "30 damage."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
