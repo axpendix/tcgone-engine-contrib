@@ -795,17 +795,17 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Metal Arms", {
           text "30 damage. Attach a basic Energy card from your discard pile to this Pokémon."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 30
+            attachEnergyFrom count:1, basic:true, my.discard, self
           }
         }
         move "Amazing Sword", {
           text "150 damage. If your opponent has a Pokémon VMAX in play, this attack does 150 more damage."
           energyCost G, P, M
-          attackRequirement {}
           onAttack {
             damage 150
+            if (opp.all.any { it.pokemonVMAX }) damage 150
           }
         }
       };
