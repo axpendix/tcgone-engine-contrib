@@ -194,6 +194,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           onAttack {
             def info = "Opponent chose the following Pokémon from their deck using $thisMove."
             my.deck.search(max:2, cardTypeFilter(POKEMON)).showToOpponent(bg, info).moveTo my.hand
+            shuffleDeck()
           }
         }
       };
@@ -362,6 +363,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
               if (!evolution) return
               evolve(pcs, evolution, OTHER)
             }
+            shuffleDeck()
           }
         }
       };
