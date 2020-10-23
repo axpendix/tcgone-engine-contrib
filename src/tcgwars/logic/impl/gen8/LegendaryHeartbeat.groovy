@@ -596,9 +596,9 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Fighting Thunder", {
           text "30 damage. If your opponent's Active Pokémon is a Pokémon V or Pokémon-GX, this attack does 80 more damage."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 30
+            if (defending.pokemonGX || defending.pokemonV) damage 80
           }
         }
       };
