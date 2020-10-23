@@ -396,17 +396,17 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Linear Attack", {
           text " This attack does 50 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost G, C
-          attackRequirement {}
           onAttack {
-
+            def info = "Pokémon to deal 50 damage to"
+            damage 50, opp.all.select(info)
           }
         }
         move "Techno Blast", {
           text "120 damage. During your next turn, this Pokémon can't attack."
           energyCost G, G, C
-          attackRequirement {}
           onAttack {
             damage 120
+            cantAttackNextTurn self
           }
         }
       };
