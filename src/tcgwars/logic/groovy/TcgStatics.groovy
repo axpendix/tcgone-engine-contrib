@@ -1692,4 +1692,25 @@ class TcgStatics {
     return energies
   }
 
+  /**
+   * Copies an attack from another PokemonCardSet
+   * @param target A PokemonCardSet or PcsList to choose a move from
+   * @param delegate onAttack delegate
+   */
+  static metronome(params = [:], target, delegate) {
+    if (target instanceof PokemonCardSet) {
+      target = new PcsList(target)
+    }
+    def moveList = []
+    def labelList = []
+    target.each {pcs ->
+      moveList.addAll pcs.topPokemonCard.moves
+      labelList.addAll pcs.topPokemonCard.moves.collect {"$pcs.name - $it.name" }
+    }
+    Move move = (choose(moveList, labelList, "Choose an attack to use as this attack.") as Move).shallowCopy()
+    move.energyCost = delegate.thisMove.energyCost
+    move.process bg, null
+    bc "$delegate.self copied $move.name"
+  }
+
 }
