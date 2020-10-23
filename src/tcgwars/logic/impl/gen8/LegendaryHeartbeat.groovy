@@ -499,15 +499,16 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Collect", {
           text " Draw a card."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Your deck is empty"
+          }
           onAttack {
-
+            draw 1
           }
         }
         move "Bite", {
           text "20 damage."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -518,13 +519,15 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         weakness F
         bwAbility "High Speed", {
           text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may draw 3 cards."
-          actionA {
+          onActivate { reason ->
+            if (reason == PLAY_FROM_HAND && self.evolution && bg.currentTurn == self.owner && confirm("Use $thisAbility?")) {
+              draw 3
+            }
           }
         }
         move "Electric Ball", {
           text "100 damage."
           energyCost L, C, C
-          attackRequirement {}
           onAttack {
             damage 100
           }
