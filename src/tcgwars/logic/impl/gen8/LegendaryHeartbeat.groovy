@@ -671,17 +671,20 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Psypower", {
           text " Put 2 damage counters on your opponent's Pokémon in any way you like."
           energyCost P
-          attackRequirement {}
           onAttack {
-
+            putDamageCountersOnOpponentsPokemon 2
           }
         }
         move "Tail Order", {
           text "30 damage. You may have your opponent shuffle their hand into their deck and draw 4 cards."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 30
+            if (confirm("Have your opponent shuffle their hand into their deck and draw 4 cards?")) {
+              opp.hand.moveTo hidden:true, opp.deck
+              shuffleDeck null, TargetPlayer.OPPONENT
+              draw 4
+            }
           }
         }
       };
