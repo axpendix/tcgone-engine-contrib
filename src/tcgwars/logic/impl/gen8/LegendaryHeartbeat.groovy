@@ -286,15 +286,14 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Uturn", {
           text "10 damage. Switch this Pokémon with 1 of your Benched Pokémon."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
+            switchYourActive()
           }
         }
         move "Cutting Wind", {
           text "60 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -306,15 +305,14 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Uturn", {
           text "50 damage. Switch this Pokémon with 1 of your Benched Pokémon."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 50
+            switchYourActive()
           }
         }
         move "Cutting Wind", {
           text "130 damage."
           energyCost C, C, C, C
-          attackRequirement {}
           onAttack {
             damage 130
           }
