@@ -236,6 +236,8 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             }
             before PLAY_EVOLUTION, {
               if (abilityUsed) prevent()
+            }
+            after PLAY_CARD, {
               abilityUsed = false
             }
           }
@@ -541,7 +543,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Bug Bite", {
           text "20 damage."
           energyCost L
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -553,17 +554,19 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Stun Needle", {
           text "20 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
           energyCost L
-          attackRequirement {}
           onAttack {
             damage 20
+            flipThenApplySC PARALYZED
           }
         }
         move "Pursuit Shock", {
-          text "20 damage. This attack does 20 damage for each damage counter on your opponent's Active Pokémon."
+          text "20x damage. This attack does 20 damage for each damage counter on your opponent's Active Pokémon."
           energyCost L, C
-          attackRequirement {}
+          attackRequirement {
+            assert defending.numberOfDamageCounters : "Defending Pokémon is not damaged"
+          }
           onAttack {
-            damage 20
+            damage 20 * defending.numberOfDamageCounters
           }
         }
       };
