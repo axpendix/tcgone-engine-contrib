@@ -695,9 +695,8 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Haunt", {
           text " Put 1 damage counter on your opponent's Active Pokémon."
           energyCost P
-          attackRequirement {}
           onAttack {
-
+            directDamage 10, defending
           }
         }
       };
@@ -707,13 +706,16 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         resistance F, MINUS30
         bwAbility "Degeneration Curse", {
           text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may devolve 1 of your opponent's Benched Evolution Pokémon by putting the highest Stage Evolution card on it into your opponent's hand."
-          actionA {
+          onActivate { reason ->
+            if (reason == PLAY_FROM_HAND && self.evolution && bg.currentTurn == self.owner && opp.bench.any { it.evolution } && confirm("Use $thisAbility?")) {
+              def pcs = opp.bench.findAll { it.evolution }.select("Pokémon to devolve?")
+              devolve pcs, pcs.topPokemonCard as Card, opp.hand
+            }
           }
         }
         move "Spooky Shot", {
           text "40 damage."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
