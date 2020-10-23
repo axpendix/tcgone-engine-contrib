@@ -371,17 +371,22 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Leech Seed", {
           text "20 damage. Heal 20 damage from this Pokémon."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 20
+            heal 20, self
           }
         }
         move "Flower Transport", {
           text " Flip a coin. If heads, your opponent shuffles their Active Pokémon and all attached cards and puts them on the bottom of their deck."
           energyCost G, C
-          attackRequirement {}
           onAttack {
-
+            flip {
+              def pcsCards = defending.cards()
+              pcsCards.setAutosort false
+              pcsCards.shuffle()
+              pcsCards.moveTo opp.deck
+              removePCS defending
+            }
           }
         }
       };
