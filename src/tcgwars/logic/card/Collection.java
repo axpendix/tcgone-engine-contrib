@@ -1,10 +1,10 @@
 package tcgwars.logic.card;
 
 import org.apache.commons.lang.WordUtils;
+import tcgwars.logic.GameFormat;
+import tcgwars.logic.GameType;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * @author axpendix@hotmail.com
@@ -253,6 +253,16 @@ public enum Collection {
       if (item.shortName.equals(shortName)) return item;
     }
     throw new IllegalArgumentException("Collection " + shortName + " not found");
+  }
+
+  public static Set<Collection> getLiveExpansions() {
+    Set<Collection> expansions = new HashSet<>();
+    for (GameType gameType : GameType.values()) {
+      for (GameFormat gameFormat : gameType.getAvailableFormats()) {
+        expansions.addAll(gameFormat.getIncludedCollections());
+      }
+    }
+    return expansions;
   }
 
 }
