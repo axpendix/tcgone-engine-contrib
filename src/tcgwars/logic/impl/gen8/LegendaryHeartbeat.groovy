@@ -256,7 +256,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Seed Bomb", {
           text "10 damage."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -268,15 +267,14 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Head Split", {
           text "30 damage. Choose 1 of your opponent's Active Pokémon's attacks. During your opponent's next turn, that Pokémon can't use that attack."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 30
+            amnesia(delegate)
           }
         }
         move "Solar Beam", {
           text "90 damage."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 90
           }
