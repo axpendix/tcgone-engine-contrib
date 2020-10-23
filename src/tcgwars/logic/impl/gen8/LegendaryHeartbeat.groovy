@@ -437,17 +437,24 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Bind Down", {
           text "50 damage. During your opponent's next turn, the Defending Pokémon can't retreat."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 50
+            cantRetreat defending
           }
         }
         move "Jungle Rise", {
           text "100 damage. You may attach up to 2 Basic Energy cards from your hand to your Benched Pokémon in any way you like. If you attached Energy to a Pokémon in this way, heal all damage from that Pokémon."
           energyCost G, G
-          attackRequirement {}
           onAttack {
             damage 100
+            afterDamage {
+              2.times {
+                def energyAttachment = attachEnergyFrom basic: true, my.hand, my.bench
+                if (!energyAttachment.empty && (energyAttachment.get(0) as CardList).notEmpty) {
+                  healAll energyAttachment.get(1) as PokemonCardSet
+                }
+              }
+            }
           }
         }
       };
