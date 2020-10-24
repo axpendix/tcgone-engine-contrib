@@ -962,15 +962,14 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Searing Flame", {
           text "90 damage. Your opponent's Active Pokémon is now Burned."
           energyCost F, F, C
-          attackRequirement {}
           onAttack {
             damage 90
+            apply BURNED
           }
         }
         move "Boulder Crush", {
           text "180 damage."
           energyCost F, F, F, C
-          attackRequirement {}
           onAttack {
             damage 180
           }
@@ -982,15 +981,17 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Eruption Bomb", {
           text "40 damage. Discard the top card of your deck. If that card is an Energy card, this attack does 90 more damage. Then, attach that Energy card to this Pokémon."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 40
+            def discarded = my.deck.subList(0, 1).discard().first()
+            if (!(discarded instanceof EnergyCard)) return
+            damage 90
+            attachEnergy self, discarded
           }
         }
         move "GMax Rock", {
           text "240 damage."
           energyCost F, F, F, C
-          attackRequirement {}
           onAttack {
             damage 240
           }
