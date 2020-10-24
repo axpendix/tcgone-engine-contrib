@@ -856,15 +856,16 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Mountain Squeeze", {
           text " Flip a coin until you get tails. For each heads, discard the top card of your opponent's deck."
           energyCost F
-          attackRequirement {}
+          attackRequirement {
+            assert opp.deck : "Opponent's deck is empty"
+          }
           onAttack {
-
+            flipUntilTails { opp.deck.subList(0, 1).discard() }
           }
         }
         move "Rock Throw", {
           text "50 damage."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
