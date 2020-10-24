@@ -1246,7 +1246,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Gust", {
           text "40 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -1254,8 +1253,11 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Wind Pressure", {
           text "250 damage. If your opponent has 5 or fewer cards in their hand, this attack does nothing."
           energyCost C, C, C, C
-          attackRequirement {}
+          attackRequirement {
+            assert opp.hand.size() > 5 : "Opponent hand has 5 or fewer cards"
+          }
           onAttack {
+            if (opp.hand.size() <= 5) return
             damage 250
           }
         }
