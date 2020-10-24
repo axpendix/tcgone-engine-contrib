@@ -173,6 +173,9 @@ public enum Collection {
   POKEMOD_PROMOS(925, "MODPRO", "pokemod.PokemodPromos"),
 //	POKEMOD_(900, "MOD", "pokemod.Pokemod"),
 
+  // DEV/TESTING ONLY
+  LEGENDARY_HEARTBEAT(1010, "JS3A", "gen8.LegendaryHeartbeat"),
+
   ;
 
   int id;
