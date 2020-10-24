@@ -1355,17 +1355,17 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Jet Draft", {
           text "30 damage. Discard a Special Energy from your opponent's Active Pokémon."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 30
+            discardDefendingSpecialEnergy delegate
           }
         }
         move "Air Slash", {
           text "120 damage. Discard an Energy from this Pokémon."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 120
+            discardSelfEnergy C
           }
         }
       };
