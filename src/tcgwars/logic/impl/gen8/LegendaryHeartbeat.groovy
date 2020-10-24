@@ -1066,15 +1066,11 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Call for Family", {
           text " Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Then, shuffle your deck."
           energyCost M
-          attackRequirement {}
-          onAttack {
-
-          }
+          callForFamily basic:true, 2, delegate
         }
         move "Ram", {
           text "20 damage."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1087,7 +1083,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Metal Claw", {
           text "30 damage."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -1095,7 +1090,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Magnetic Blast", {
           text "60 damage."
           energyCost M, C, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -1107,15 +1101,17 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         resistance G, MINUS30
         bwAbility "Magnetic Field Floating", {
           text "All of your Pokémon have no Retreat Cost."
-          actionA {
+          getterA GET_RETREAT_COST, { h ->
+            if (h.effect.target.owner == self.owner) h.object.clear()
           }
         }
         move "Leg Quake", {
           text "100 damage. If the Defending Pokémon is an Evolution Pokémon, during your opponent's next turn, it can't attack."
           energyCost M, C, C
-          attackRequirement {}
           onAttack {
             damage 100
+            // TODO: Double check that Evolution Pokémon means realEvolution
+            if (defending.realEvolution) cantAttackNextTurn defending
           }
         }
       };
