@@ -341,6 +341,9 @@ class TcgStatics {
   static noWeaknessDamage (int dmg, PokemonCardSet to){
     new ResolvedDamage(hp(dmg), my.active, to, Source.ATTACK, DamageManager.DamageFlag.NO_WEAKNESS).run(bg)
   }
+  static noResistanceDamage (int dmg, PokemonCardSet to) {
+    new ResolvedDamage(hp(dmg), my.active, to, Source.ATTACK, DamageManager.DamageFlag.NO_RESISTANCE).run(bg)
+  }
   static noResistanceOrAnyEffectDamage(int dmg, PokemonCardSet to){
     new ResolvedDamage(hp(dmg), my.active, to, Source.ATTACK, DamageManager.DamageFlag.NO_RESISTANCE, DamageManager.DamageFlag.NO_DEFENDING_EFFECT).run(bg)
   }

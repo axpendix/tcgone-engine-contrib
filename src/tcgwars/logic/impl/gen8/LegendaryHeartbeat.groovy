@@ -1276,7 +1276,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             Set<Type> energyTypes = []
             CardList discardEnergies = []
             self.energyCards.each {
-              if (!it.cardTypes.contains BASIC_ENERGY) return
+              if (!it.cardTypes.contains(BASIC_ENERGY)) return
               energyTypes.add it.energyTypes.get(0)[0]
               discardEnergies.add it
             }
@@ -1341,7 +1341,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 120
-            if (confirm "Search your deck for up to 2 cards to put in your hand?") {
+            if (confirm("Search your deck for up to 2 cards to put in your hand?")) {
               deck.search(min:1, max:2, { true }).moveTo my.hand
               shuffleDeck()
             }
