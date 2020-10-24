@@ -1267,11 +1267,23 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         weakness L
         resistance F, MINUS30
         move "Amazing Burst", {
-          text "80 damage. Discard all basic Energy from this Pokémon. This attack does 80 damage for each type of Energy you discarded in this way."
+          text "80x damage. Discard all basic Energy from this Pokémon. This attack does 80 damage for each type of Energy you discarded in this way."
           energyCost G, L, F
-          attackRequirement {}
+          attackRequirement {
+            assert self.energyCards.any { it.cardTypes.contains BASIC_ENERGY } : "No Basic Energy attached to $self"
+          }
           onAttack {
-            damage 80
+            Set<Type> energyTypes = []
+            CardList discardEnergies = []
+            self.energyCards.each {
+              if (!it.cardTypes.contains BASIC_ENERGY) return
+              energyTypes.add it.energyTypes.get(0)[0]
+              discardEnergies.add it
+            }
+            damage 80 * energyTypes.size()
+            afterDamage {
+              discardEnergies.discard()
+            }
           }
         }
       };
