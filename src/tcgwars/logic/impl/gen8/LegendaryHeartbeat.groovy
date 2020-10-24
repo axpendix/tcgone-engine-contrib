@@ -1045,17 +1045,17 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Raging Hammer", {
           text "30 damage. This attack does 10 more damage for each damage counter on this Pokémon."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 30
+            damage self.numberOfDamageCounters * 10
           }
         }
         move "Iron Tackle", {
           text "210 damage. This Pokémon also does 30 damage to itself."
           energyCost M, C, C, C, C
-          attackRequirement {}
           onAttack {
             damage 210
+            damage 30, self
           }
         }
       };
