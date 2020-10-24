@@ -1,4 +1,9 @@
-package tcgwars.logic.impl.gen8;
+package tcgwars.logic.impl.gen8
+
+import tcgwars.logic.impl.gen3.FireRedLeafGreen
+import tcgwars.logic.impl.gen5.EmergingPowers
+import tcgwars.logic.impl.gen5.NobleVictories
+import tcgwars.logic.impl.gen6.KalosStarterSet;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -102,8 +107,8 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
   SWITCH_65 ("Switch", "65", Rarity.COMMON, [TRAINER, ITEM]),
   POKÉMON_CATCHER_66 ("Pokémon Catcher", "66", Rarity.UNCOMMON, [TRAINER, ITEM]),
   MOOMOO_CHEESE_67 ("Moomoo Cheese", "67", Rarity.UNCOMMON, [TRAINER, ITEM]),
-  HERO_S_MEDAL_68 ("Hero's Medal", "68", Rarity.UNCOMMON, [TRAINER, ITEM]),
-  ROCKY_HELMET_69 ("Rocky Helmet", "69", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  HERO_S_MEDAL_68 ("Hero's Medal", "68", Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER, ITEM]),
+  ROCKY_HELMET_69 ("Rocky Helmet", "69", Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER, ITEM]),
   BEAUTY_70 ("Beauty", "70", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   ALLISTER_71 ("Allister", "71", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   OPAL_72 ("Opal", "72", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
@@ -127,8 +132,8 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
   ALLISTER_90 ("Allister", "90", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   OPAL_91 ("Opal", "91", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   ORANGURU_92 ("Oranguru", "92", Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
-  HERO_S_MEDAL_93 ("Hero's Medal", "93", Rarity.UNCOMMON, [TRAINER, ITEM]),
-  CAPE_OF_TOUGHNESS_94 ("Cape of Toughness", "94", Rarity.UNCOMMON, [TRAINER, ITEM]);
+  HERO_S_MEDAL_93 ("Hero's Medal", "93", Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER, ITEM]),
+  CAPE_OF_TOUGHNESS_94 ("Cape of Toughness", "94", Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER, ITEM]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -1431,62 +1436,59 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         }
       };
       case GREAT_BALL_64:
-      return itemCard (this) {
-        text "Search your deck for a Basic Pokémon (excluding Pokémon-ex) and put it onto your Bench. Shuffle your deck afterward."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy(EmergingPowers.GREAT_BALL_93, this)
       case SWITCH_65:
-      return itemCard (this) {
-        text "Switch 1 of your Benched Pokémon with your Active Pokémon."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy(FireRedLeafGreen.SWITCH_102, this)
       case POKÉMON_CATCHER_66:
-      return itemCard (this) {
-        text "Switch your opponent's Active Pokémon with 1 of his or her Benched Pokémon."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy (KalosStarterSet.POKEMON_CATCHER_36, this)
       case MOOMOO_CHEESE_67:
       return itemCard (this) {
         text "Heal 30 damage from up to 2 of your Pokémon that have any Energy attached to them."
         onPlay {
+          2.times {
+            def tar = my.all.findAll { it.energyCards && it.numberOfDamageCounters }
+            if (!tar) return
+            def pcs = tar.select("Heal 30 damage from?", it == 0)
+            if (pcs) heal 30, pcs, TRAINER_CARD
+          }
         }
         playRequirement{
+          assert my.all.any { it.energyCards && it.numberOfDamageCounters } : "No Pokémon with Energy Cards that have damage"
         }
       };
       case HERO_S_MEDAL_68:
-      return itemCard (this) {
+      return pokemonTool (this) {
         text "The Pokémon VMAX this card is attached to gets -100 HP" +
           "and when it is Knocked Out by damage from an opponent's attack" +
           "that player takes 1 fewer Prize card."
-        onPlay {
+        def hpEff
+        def prizeEff
+        onPlay { reason ->
+          hpEff = getter GET_FULL_HP, self, { holder ->
+            if (self.pokemonVMAX) holder.object -= hp(100)
+          }
+          prizeEff = getter GET_GIVEN_PRIZES, self, { holder ->
+            if (self.pokemonVMAX && holder.object > 0) {
+              bc "$thisCard reduces prizes taken from KOing $self by one."
+              holder.object -= 1
+            }
+          }
         }
-        playRequirement{
+        onRemoveFromPlay {
+          hpEff.unregister()
+          prizeEff.unregister()
         }
       };
       case ROCKY_HELMET_69:
-      return itemCard (this) {
-        text "If the Pokémon this card is attached to is your Active Pokémon and is damaged by an opponent's attack (even if that Pokémon is Knocked Out)" +
-          "put 2 damage counters on the Attacking Pokémon."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy(NobleVictories.ROCKY_HELMET_94, this);
       case BEAUTY_70:
       return supporter (this) {
         text "This card can be played on the first turn of the first player. Draw 2 cards."
         onPlay {
+          draw 2
         }
         playRequirement{
+          assert my.deck : "Your deck is empty"
         }
       };
       case ALLISTER_71:
@@ -1494,8 +1496,11 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         text "Draw 3 cards. If you do" +
           "discard up to 3 cards from your hand. (You must discard at least 1 card.)"
         onPlay {
+          draw 3
+          my.hand.select(min:1, max:3, "Card(s) to discard?").discard()
         }
         playRequirement{
+          assert my.deck : "Your deck is empty"
         }
       };
       case OPAL_72:
@@ -1504,20 +1509,19 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           "you may search your deck for a card and put it into your hand. Then" +
           "shuffle your deck."
         onPlay {
+          def count = 0
+          flip 2, { count++ }
+          // TODO: Need clarification on "may" here.
+          //  Can be 0? Must be at least 1? Must be all and you just choose whether or not to look?
+          my.deck.search min:count, max:count, { true }
+          shuffleDeck()
         }
         playRequirement{
+          assert my.deck : "Your deck is empty"
         }
       };
       case MARNIE_73:
-      return supporter (this) {
-        text "Each player shuffles their hand and puts it on the bottom of their deck. If either player put any cards on the bottom of their deck in this way" +
-          "you draw 5 cards" +
-          "and your opponent draws 4 cards."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy(SwordShield.MARNIE_169, this)
       case AROMA_G_ENERGY_74:
       return specialEnergy (this, [[C]]) {
         text "This card provides Energy only while this card is attached to a Pokémon. The Pokémon this card is attached to recovers from all Special Conditions and can't be affected by any Special Conditions."
@@ -1543,19 +1547,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         }
       };
       case TWIN_ENERGY_76:
-      return specialEnergy (this, [[C]]) {
-        text "As long as this card is attached to a Pokémon that isn't a Pokémon V or a Pokémon-GX" +
-          "it provides Energy. If this card is attached to a Pokémon V or a Pokémon-GX" +
-          "it provides Energy instead."
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      };
+      return copy (RebelClash.TWIN_ENERGY_174, this)
       case ZARUDE_V_77:
       return copy (ZARUDE_V_13, this);
       case AMPHAROS_V_78:
@@ -1587,33 +1579,11 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       case OPAL_91:
       return copy (OPAL_72, this);
       case ORANGURU_92:
-      return basic (this, hp:HP120, type:C, retreatCost:2) {
-        weakness F
-        bwAbility "Monkey Wisdom", {
-          text "Once during your turn, you may switch a card from your hand with the top card of your deck."
-          actionA {
-          }
-        }
-        move "Whap Down", {
-          text "70 damage."
-          energyCost C, C, C
-          attackRequirement {}
-          onAttack {
-            damage 70
-          }
-        }
-      };
+      return copy (SwordShield.ORANGURU_148, this)
       case HERO_S_MEDAL_93:
       return copy (HERO_S_MEDAL_68, this);
       case CAPE_OF_TOUGHNESS_94:
-      return itemCard (this) {
-        text "The Basic Pokémon this card is attached to gets +50 HP" +
-          "except Pokémon-GX."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy (DarknessAblaze.CAPE_OF_TOUGHNESS_160, this)
       default:
       return null;
     }
