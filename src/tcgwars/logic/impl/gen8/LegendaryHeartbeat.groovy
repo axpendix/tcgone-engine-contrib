@@ -1294,15 +1294,19 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Minor ErrandRunning", {
           text " Search your deck for up to 2 basic Energy cards, reveal them, and put them into your hand. Then, shuffle your deck."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Your deck is empty"
+          }
           onAttack {
-
+            deck.search(max:2,{ it.cardTypes.contiains BASIC_ENERGY })
+              .showToOpponent("Energy your opponent moved from their deck to their hand.")
+              .moveTo my.hand
+            shuffleDeck()
           }
         }
         move "Peck", {
           text "20 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
           }
