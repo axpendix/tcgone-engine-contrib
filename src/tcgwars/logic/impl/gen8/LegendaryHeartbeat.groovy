@@ -815,7 +815,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Mud Shot", {
           text "10 damage."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -823,7 +822,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Beat", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -835,7 +833,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Beat", {
           text "30 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -843,9 +840,13 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Whimsy Impact", {
           text "180 damage. If you have exactly 2, 4, or 6 Prize cards remaining, this attack does nothing."
           energyCost F, C, C
-          attackRequirement {}
+          attackRequirement {
+            def prizes = my.prizeCardSet.size()
+            assert prizes != 2 && prizes != 4 && prizes != 6 : "You have exactly 2, 4, or 6 Prize cards remaining"
+          }
           onAttack {
-            damage 180
+            def prizes = my.prizeCardSet.size()
+            if (prizes != 2 && prizes != 4 && prizes != 6) damage 180
           }
         }
       };
