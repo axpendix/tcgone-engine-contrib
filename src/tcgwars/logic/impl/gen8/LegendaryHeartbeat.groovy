@@ -926,7 +926,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Tackle", {
           text "10 damage."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -934,7 +933,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Rear Kick", {
           text "20 damage."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -946,7 +944,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Rock Throw", {
           text "40 damage."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -954,7 +951,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Sharp Mane", {
           text "70 damage."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 70
           }
