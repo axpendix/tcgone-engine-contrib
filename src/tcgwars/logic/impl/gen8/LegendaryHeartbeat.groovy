@@ -1003,17 +1003,17 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Metal Arms", {
           text "30 damage. Attach a basic Energy card from your discard pile to this Pokémon."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 30
+            attachEnergyFrom basic:true, count:1, my.discard, self
           }
         }
         move "Amazing Shield", {
           text "180 damage. During your opponent's next turn, prevent all damage done to this Pokémon by attacks from Pokémon VMAX."
           energyCost L, F, M
-          attackRequirement {}
           onAttack {
             damage 180
+            preventAllDamageFromCustomPokemonNextTurn thisMove, self, { it.pokemonVMAX }
           }
         }
       };
