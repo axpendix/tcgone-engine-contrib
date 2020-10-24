@@ -1376,7 +1376,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Peck", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1388,13 +1387,17 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         resistance F, MINUS30
         bwAbility "Assault Trumpet", {
           text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may look at the top 3 cards of your deck. Attach any number of basic Energy cards you find there to your Pokémon in any way you like. Shuffle the other cards back into your deck."
-          actionA {
+          onActivate { reason ->
+            if (reason == PLAY_FROM_HAND && self.evolution && bg.currentTurn == self.owner && confirm("Use $thisAbility?")) {
+              def peekedCards = my.deck.subList(0, 3)
+              def selectedEnergy = peekedCards.select(min:0, max:3, "Select Basic Energies to attach to your Pokémon", { it.cardType.contains BASIC_ENERGY })
+              selectedEnergy.each { attachEnergy my.all.select("Attach $it.name to?"), it }
+            }
           }
         }
         move "Drill Peck", {
           text "50 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -1407,17 +1410,23 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Energy Cutoff", {
           text "60 damage. Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 60
+            flip { discardDefendingEnergy() }
           }
         }
         move "Loop Cannon", {
           text "160 damage. Return 2 Energy attached to this Pokémon to your hand."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 160
+            afterDamage {
+              if (self.cards.filterByType(ENERGY)) {
+                self.cards.filterByType(ENERGY)
+                  .select(count: 2, "Choose the energy to return to your hand")
+                  .moveTo(my.hand)
+              }
+            }
           }
         }
       };
