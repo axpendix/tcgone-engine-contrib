@@ -877,17 +877,16 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Rock Tumble", {
           text "40 damage. This attack's damage isn't affected by Resistance."
           energyCost F, C
-          attackRequirement {}
           onAttack {
-            damage 40
+            noResistanceDamage 40, defending
           }
         }
         move "Megaton Fall", {
           text "130 damage. This Pokémon does 30 damage to itself."
           energyCost F, F, C
-          attackRequirement {}
           onAttack {
             damage 130
+            damage 30, self
           }
         }
       };
