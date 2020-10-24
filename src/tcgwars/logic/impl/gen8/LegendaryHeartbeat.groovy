@@ -105,7 +105,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
   TOUCANNON_63 ("Toucannon", "63", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]),
   GREAT_BALL_64 ("Great Ball", "64", Rarity.UNCOMMON, [TRAINER, ITEM]),
   SWITCH_65 ("Switch", "65", Rarity.COMMON, [TRAINER, ITEM]),
-  POKÉMON_CATCHER_66 ("Pokémon Catcher", "66", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  POKEMON_CATCHER_66 ("Pokémon Catcher", "66", Rarity.UNCOMMON, [TRAINER, ITEM]),
   MOOMOO_CHEESE_67 ("Moomoo Cheese", "67", Rarity.UNCOMMON, [TRAINER, ITEM]),
   HERO_S_MEDAL_68 ("Hero's Medal", "68", Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER, ITEM]),
   ROCKY_HELMET_69 ("Rocky Helmet", "69", Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER, ITEM]),
@@ -1439,7 +1439,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       return copy(EmergingPowers.GREAT_BALL_93, this)
       case SWITCH_65:
       return copy(FireRedLeafGreen.SWITCH_102, this)
-      case POKÉMON_CATCHER_66:
+      case POKEMON_CATCHER_66:
       return copy (KalosStarterSet.POKEMON_CATCHER_36, this)
       case MOOMOO_CHEESE_67:
       return itemCard (this) {
