@@ -907,7 +907,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Beam", {
           text "30 damage."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -915,9 +914,9 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Core Revenger", {
           text "80 damage. If you have more Prize cards remaining than your opponent, this attack does 80 more damage."
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             damage 80
+            if (my.prizeCardSet.size() > opp.prizeCardSet.size()) damage 80
           }
         }
       };
