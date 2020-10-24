@@ -1523,27 +1523,55 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       case MARNIE_73:
       return copy(SwordShield.MARNIE_169, this)
       case AROMA_G_ENERGY_74:
-      return specialEnergy (this, [[C]]) {
-        text "This card provides Energy only while this card is attached to a Pokémon. The Pokémon this card is attached to recovers from all Special Conditions and can't be affected by any Special Conditions."
+      return specialEnergy (this, [[]]) {
+        text "This card provides [G] Energy only while this card is attached to a [G] Pokémon. The [G] Pokémon this card is attached to recovers from all Special Conditions and can't be affected by any Special Conditions."
+        def spcEff
         onPlay {reason->
+          spcEff = delayed {
+            before APPLY_SPECIAL_CONDITION, self, {
+              if (!self.types.contains(G)) return
+              bc "$thisCard.name prevents Special Conitions on $self"
+              prevent()
+            }
+            // TODO: Find out if this should prevent Special Conditions on [G] Pokémon it is attached to always
+            before null, self, {
+              if(!self.specialConditions || !self.types.contains(G)) return
+              bc "$thisCard.name clears Special Conditions on $self"
+              clearSpecialCondition self, SRC_SPENERGY
+            }
+          }
+          if(!self.specialConditions || !self.types.contains(G)) return
+          bc "$thisCard.name clears Special Conditions on $self"
+          clearSpecialCondition self, SRC_SPENERGY
+        }
+        getEnergyTypesOverride {
+          if (self.types.contains(G)) return [[G] as Set]
+          else return [[] as Set]
         }
         onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
+          spcEff.unregsiter()
         }
       };
       case STONE_F_ENERGY_75:
-      return specialEnergy (this, [[C]]) {
-        text "This card provides Energy only while this card is attached to a Pokémon. The Pokémon this card is attached to takes 20 less damage from your opponent's attacks (after applying Weakness and Resistance)."
+      return specialEnergy (this, [[]]) {
+        text "This card provides [F] Energy only while this card is attached to a [F] Pokémon. The [F] Pokémon this card is attached to takes 20 less damage from your opponent's attacks (after applying Weakness and Resistance)."
+        def dmgRedEff
         onPlay {reason->
+          dmgRedEff = delayed {
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {if(it.to == self && it.from.owner == self.owner.opposite && self.types.contains(F) && it.dmg.value && it.notNoEffect) {
+                bc "$thisCard.name -20"
+                it.dmg -= hp(20)
+              }}
+            }
+          }
         }
         onRemoveFromPlay {
+          dmgRedEff.unregister()
         }
-        onMove {to->
-        }
-        allowAttach {to->
+        getEnergyTypesOverride {
+          if (self.types.contains(F)) return [[F] as Set]
+          else return [[] as Set]
         }
       };
       case TWIN_ENERGY_76:
