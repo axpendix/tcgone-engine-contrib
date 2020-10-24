@@ -1221,17 +1221,21 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Overhaul", {
           text " Shuffle your hand into your deck. Then, draw 6 cards."
           energyCost M
-          attackRequirement {}
+          attackRequirement {
+            assert my.hand || my.deck : "Both hand and deck are empty"
+          }
           onAttack {
-
+            my.hand.moveTo my.deck
+            shuffleDeck()
+            draw 6
           }
         }
         move "Automaton Cannon", {
           text "10 damage. This attack does 20 more damage for each of your opponent's Benched Pokémon."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 10
+            damage 20 * opp.bench.size()
           }
         }
       };
