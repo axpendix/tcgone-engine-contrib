@@ -896,9 +896,8 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "AllOut Punch", {
           text "30 damage. Flip a coin. If tails, this attack does nothing."
           energyCost C
-          attackRequirement {}
           onAttack {
-            damage 30
+            flip { damage 30 }
           }
         }
       };
@@ -1149,17 +1148,17 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Spike Draw", {
           text "40 damage. Draw a card."
           energyCost M
-          attackRequirement {}
           onAttack {
             damage 40
+            draw 1
           }
         }
         move "Knuckle Impact", {
           text "160 damage. During your next turn, this Pokémon can't attack."
           energyCost M, M, C
-          attackRequirement {}
           onAttack {
             damage 160
+            cantAttackNextTurn self
           }
         }
       };
