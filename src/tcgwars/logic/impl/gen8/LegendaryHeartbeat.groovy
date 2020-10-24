@@ -1122,14 +1122,27 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         bwAbility "Dream Oracle", {
           text "Once during your turn, if this Pokémon is in the Active Spot, you may look at the top 2 cards of your deck and put 1 of them into your hand. Put the other card back on top of your deck."
           actionA {
+            checkLastTurn()
+            assert self.active : "$self is not your active Pokémon"
+            assert my.deck : "Your deck is empty"
+            powerUsed()
+            def viewedCards = my.deck.subList(0, 2)
+              .select("Card to add to hand?")
+              .moveTo my.hand
           }
         }
         move "Amazing Star", {
           text " Search your deck for up to 7 Basic Energy cards and attach them to your Pokémon in any way you like. Then, shuffle your deck."
           energyCost P, F, M
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Your deck is empty"
+          }
           onAttack {
-
+            def energies = my.deck.search max:7, cardTypeFilter(BASIC_ENERGY)
+            energies.each {
+              attachEnergy my.all.select("Attach $it.name to?"), it
+            }
+            shuffleDeck()
           }
         }
       };
