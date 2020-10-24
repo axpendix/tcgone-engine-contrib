@@ -1319,15 +1319,14 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "White Wind", {
           text "20 damage. If your opponent's Active Pokémon is an Evolution Pokémon, this attack does 70 more damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
+            if (defending.realEvolution) damage 70
           }
         }
         move "Speed Wing", {
           text "130 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 130
           }
@@ -1340,9 +1339,12 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Max Glide", {
           text "120 damage. You may search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 120
+            if (confirm "Search your deck for up to 2 cards to put in your hand?") {
+              deck.search(min:1, max:2, { true }).moveTo my.hand
+              shuffleDeck()
+            }
           }
         }
       };
