@@ -388,7 +388,10 @@ class TcgStatics {
     }
   }
   static energySwitch (PokemonCardSet from, PokemonCardSet to, Card card){
-    bg().em().run(new EnergySwitch(from,to,card))
+    energySwitch(from, to, card, false)
+  }
+  static energySwitch (PokemonCardSet from, PokemonCardSet to, Card card, Boolean suppressLog){
+    bg().em().run(new EnergySwitch(from,to,card, suppressLog))
   }
   static int MAX=Short.MAX_VALUE
   static cantUseAttack(Move move, PokemonCardSet t, int turns=3){

@@ -579,8 +579,8 @@ public enum SwordShieldPromos implements LogicCardInfo {
                   def pcs = it.findPCS()
                   if (pcsMap.containsKey(pcs)) (pcsMap[pcs] as CardList).add(it)
                   else pcsMap.put(pcs, new CardList(it))
+                  energySwitch pcs, self, it, true
                 }
-                energiesToMove.moveTo suppressLog:true, self.cards()
 
                 pcsMap.each { key, val ->
                   bc "$val moved from $key to $self"
