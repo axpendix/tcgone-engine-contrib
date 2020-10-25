@@ -1398,8 +1398,9 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           onActivate { reason ->
             if (reason == PLAY_FROM_HAND && self.evolution && bg.currentTurn == self.owner && confirm("Use $thisAbility?")) {
               def peekedCards = my.deck.subList(0, 3)
-              def selectedEnergy = peekedCards.select(min:0, max:3, "Select Basic Energies to attach to your Pokémon", { it.cardType.contains BASIC_ENERGY })
+              def selectedEnergy = peekedCards.select(min:0, max:3, "Select Basic Energies to attach to your Pokémon", { it.cardTypes.contains BASIC_ENERGY })
               selectedEnergy.each { attachEnergy my.all.select("Attach $it.name to?"), it }
+              shuffleDeck()
             }
           }
         }
