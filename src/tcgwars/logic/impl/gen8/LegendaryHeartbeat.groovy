@@ -486,7 +486,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           energyCost L, L, C
           onAttack {
             damage 120
-            opp.all.each { if(it.numberOfDamageCounters) damage(30, it) }
+            opp.bench.each { if(it.numberOfDamageCounters) damage(30, it) }
           }
         }
       };
