@@ -1307,7 +1307,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           }
           onAttack {
             deck.search(max:2,{ it.cardTypes.contiains BASIC_ENERGY })
-              .showToOpponent("Energy your opponent moved from their deck to their hand.")
+              .showToOpponent("Opponent chose the following Energy from their deck using $thisMove.")
               .moveTo my.hand
             shuffleDeck()
           }
