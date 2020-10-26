@@ -3509,10 +3509,17 @@ public enum RebelClash implements LogicCardInfo {
           eff = delayed (priority: BEFORE_LAST) {
             before (KNOCKOUT,self) {
               if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
-                bc "Cursed Shovel activates."
-                if (my.deck) { // from perspective of opponent's turn
-                  my.deck.subList(0, 2).discard()
-                  //eff.unregister()
+                def pcs=self
+                delayed inline:true, {
+                  after KNOCKOUT, pcs, {
+                    bc "Cursed Shovel activates."
+                    if (pcs.owner.opposite.pbg.deck) {
+                      def discardInfo = "Cards discarded by Cursed Shovel."
+                      pcs.owner.opposite.pbg.deck.subList(0, 2).discard()
+                        .showToMe(discardInfo)
+                        .showToOpponent(discardInfo)
+                    }
+                  }
                 }
               }
             }
