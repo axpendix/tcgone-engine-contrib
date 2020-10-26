@@ -1597,14 +1597,14 @@ class TcgStatics {
       bc "Scooped up ${toHand}"
 
       // Only add true POKEMON cards to hand, let moveTo handle removing changed implementations from play
-      CardList toHand2 = toHand.filterByType(POKEMON).findAll { it.customInfo.cardInfo.cardTypes.contains(POKEMON) }
+      CardList toHand2 = toHand.filterByType(POKEMON).findAll { it.staticInfo.cardTypes.contains(POKEMON) }
 
       // Special handling for knocked out Pokémon
       if (target.slatedToKO) {
         toHand2.moveTo(target.owner.pbg.hand)
         // Move any cards that changed implementation from POKEMON when removed from play to hand as well
         CardList toCleanup = []
-        toHand.getExcludedList(toHand2).each { pcsCard -> toCleanup.add(target.owner.pbg.discard.find { it.customInfo.cardInfo == pcsCard.customInfo.cardInfo })}
+        toHand.getExcludedList(toHand2).each { pcsCard -> toCleanup.add(target.owner.pbg.discard.find { it.staticInfo == pcsCard.staticInfo })}
         toCleanup.moveTo(target.owner.pbg.hand)
       }
       else {
@@ -1612,7 +1612,7 @@ class TcgStatics {
         toHand.getExcludedList(toHand2).moveTo(target.owner.pbg.hand)
       }
 
-      CardList toDiscard2 = toDiscard.filterByType(POKEMON).findAll { it.customInfo.cardInfo.cardTypes.contains(POKEMON) }
+      CardList toDiscard2 = toDiscard.filterByType(POKEMON).findAll { it.staticInfo.cardTypes.contains(POKEMON) }
       target.owner.pbg.discard.addAll(toDiscard2)
       toDiscard.getExcludedList(toDiscard2).discard()
       removePCS(target)

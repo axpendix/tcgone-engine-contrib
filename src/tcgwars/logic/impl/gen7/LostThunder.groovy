@@ -2321,7 +2321,7 @@ public enum LostThunder implements LogicCardInfo {
               self.cards.getExcludedList(top).discard()
               removePCS(self)
               def trcard
-              trcard = pokemonTool(new CustomCardInfo(top.realInfo).setCardTypes(TRAINER, ITEM, POKEMON_TOOL)) {
+              trcard = pokemonTool(new CustomCardInfo(top.staticInfo).setCardTypes(TRAINER, ITEM, POKEMON_TOOL)) {
                 def eff
                 onPlay {
                   eff = getter GET_GIVEN_PRIZES, self, {holder->
