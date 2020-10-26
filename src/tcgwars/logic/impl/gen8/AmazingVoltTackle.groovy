@@ -125,8 +125,8 @@ public enum AmazingVoltTackle implements LogicCardInfo {
   LOUDRED_88 ("Loudred", "88", Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
   EXPLOUD_89 ("Exploud", "89", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]),
   DRONE_ROTOM_90 ("Drone Rotom", "90", Rarity.UNCOMMON, [TRAINER, ITEM]),
-  TELEPHOTO_SCOPE_91 ("Telephoto Scope", "91", Rarity.UNCOMMON, [TRAINER, ITEM]),
-  MEMORY_CAPSULE_92 ("Memory Capsule", "92", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  TELEPHOTO_SCOPE_91 ("Telephoto Scope", "91", Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER, ITEM]),
+  MEMORY_CAPSULE_92 ("Memory Capsule", "92", Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER, ITEM]),
   BEA_93 ("Bea", "93", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   LEON_94 ("Leon", "94", Rarity.HOLORARE, [TRAINER, SUPPORTER]),
   LEAGUE_STAFF_95 ("League Staff", "95", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
@@ -154,8 +154,8 @@ public enum AmazingVoltTackle implements LogicCardInfo {
   LEON_117 ("Leon", "117", Rarity.HOLORARE, [TRAINER, SUPPORTER]),
   NESSA_118 ("Nessa", "118", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   GALARIAN_OBSTAGOON_119 ("Galarian Obstagoon", "119", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _DARKNESS_]),
-  TELEPHOTO_SCOPE_120 ("Telephoto Scope", "120", Rarity.UNCOMMON, [TRAINER, ITEM]),
-  MEMORY_CAPSULE_121 ("Memory Capsule", "121", Rarity.UNCOMMON, [TRAINER, ITEM]);
+  TELEPHOTO_SCOPE_120 ("Telephoto Scope", "120", Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER, ITEM]),
+  MEMORY_CAPSULE_121 ("Memory Capsule", "121", Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER, ITEM]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
