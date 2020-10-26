@@ -772,8 +772,9 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           text "As long as this Pokémon is in the Active Spot, all of your Pokémon take 30 less damage from your opponent's attacks (after applying Weakness and Resistance)."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
+              if (!(self.active && ef.attacker.owner != self.owner)) return
               bg.dm().each {
-                if(self.active && it.to.owner==self.owner && it.from.owner!=it.to.owner && it.notNoEffect && it.notZero){
+                if(it.to.owner==self.owner && it.notNoEffect && it.notZero){
                   bc "$thisAbility -30"
                   it.dmg -= hp(30)
                 }
@@ -1134,9 +1135,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             assert self.active : "$self is not your active Pokémon"
             assert my.deck : "Your deck is empty"
             powerUsed()
-            def viewedCards = my.deck.subList(0, 2)
-              .select("Card to add to hand?")
-              .moveTo my.hand
+            my.deck.subList(0, 2).select("Card to add to hand?").moveTo my.hand
           }
         }
         move "Amazing Star", {
@@ -1206,10 +1205,10 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           text "If this Pokémon is in the Active Spot and is damaged by an opponent's attack (even if it is Knocked Out), put 3 damage counters on the Attacking Pokémon."
           delayedA (priority: LAST) {
             before APPLY_ATTACK_DAMAGES, {
-              if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                bc "$thisAbility activates"
-                directDamage 30, opp.active
-              }
+              if (!(self.active && ef.attacker.owner != self.owner)) return
+              if(!bg.dm().find({it.to==self && it.dmg.value})) return
+              bc "$thisAbility activates"
+              directDamage 30, ef.attacker
             }
           }
         }
@@ -1563,7 +1562,8 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         onPlay {reason->
           dmgRedEff = delayed {
             before APPLY_ATTACK_DAMAGES, {
-              bg.dm().each {if(it.to == self && it.from.owner == self.owner.opposite && self.types.contains(F) && it.dmg.value && it.notNoEffect) {
+              if (!(ef.attacker.owner != self.owner && self.types.contains(F))) return
+              bg.dm().each {if(it.to == self && it.dmg.value && it.notNoEffect) {
                 bc "$thisCard.name -20"
                 it.dmg -= hp(20)
               }}
