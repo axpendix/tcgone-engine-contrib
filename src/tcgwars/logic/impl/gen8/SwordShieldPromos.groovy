@@ -91,6 +91,9 @@ public enum SwordShieldPromos implements LogicCardInfo {
   GENGAR_SWSH52 ("Gengar", "SWSH52", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _PSYCHIC_]),
   MACHAMP_SWSH53 ("Machamp", "SWSH53", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_]),
   COALOSSAL_SWSH54 ("Coalossal", "SWSH54", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_]),
+  HATTERENE_V_SWSH55 ("Hatterene V", "SWSH55", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _PSYCHIC_]),
+  MORPEKO_V_SWSH56 ("Morpeko V", "SWSH56", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _LIGHTNING_]),
+  GRIMMSNARL_V_SWSH57 ("Grimmsnarl V", "SWSH57", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _DARKNESS_]),
   PIKACHU_V_SWSH63 ("Pikachu V", "SWSH063", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _LIGHTNING_]),
   ETERNATUS_V_SWSH64 ("Eternatus V", "SWSH064", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _DARKNESS_]),
   EEVEE_V_SWSH65 ("Eevee V", "SWSH065", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _COLORLESS_]);
@@ -619,7 +622,36 @@ public enum SwordShieldPromos implements LogicCardInfo {
       case MACHAMP_SWSH53:
       return copy(ChampionsPath.MACHAMP_26, this);
       case COALOSSAL_SWSH54:
-      return copy (RebelClash.COALOSSAL_107, this);
+      return copy(RebelClash.COALOSSAL_107, this);
+      case HATTERENE_V_SWSH55:
+      return basic(this, hp:HP200, type:P, retreatCost:2) {
+        weakness D
+        resistance F, MINUS30
+        move "Confounding Pulse", {
+          text "Switch 1 of your opponent's Benched Pokémon with their Active Pokémon. The new Active Pokémon is now Confused."
+          energyCost P, C
+          attackRequirement {
+            assert opp.bench : "Opponent's Bench is empty"
+          }
+          onAttack {
+            if (!opp.bench) return
+            switchYourOpponentsBenchedWithActive()
+            applyAfterDamage CONFUSED
+          }
+        }
+        move "Mental Crush", {
+          text "90 damage. If your opponent's Active Pokémon is Confused, this attack does 90 more damage."
+          energyCost P, P, C
+          onAttack {
+            damage 90
+            if (defending.isSPC(CONFUSED)) damage 90
+          }
+        }
+      }
+      case MORPEKO_V_SWSH56:
+      return copy (SwordShield.MORPEKO_V_79, this)
+      case GRIMMSNARL_V_SWSH57:
+      return copy(DarknessAblaze.GRIMMSNARL_V_114, this)
       case PIKACHU_V_SWSH63:
       return basic(this, hp:HP190, type:L, retreatCost:1) {
         weakness F
