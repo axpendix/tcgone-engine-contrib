@@ -257,9 +257,9 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Absorb", {
           text "10 damage. Heal 10 damage from this Pokémon."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 10
+            heal 10, self
           }
         }
       };
@@ -268,15 +268,20 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         weakness R
         bwAbility "Shell Cast-off", {
           text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may search your deck for a Shedinja and put it onto your Bench. Then, shuffle your deck."
-          actionA {
+          onActivate { reason ->
+            if (reason == PLAY_FROM_HAND && self.evolution && bg.currentTurn == self.owner && my.bench.notFull && deck.notEmpty && confirm("Use $thisAbility?")) {
+              def shedinja = deck.search { it.name == "Shedinja" }.first()
+              if (shedinja) benchPCS(shedinja)
+              shuffleDeck()
+            }
           }
         }
         move "Absorb", {
           text "30 damage. Heal 30 damage from this Pokémon."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 30
+            heal 30, self
           }
         }
       };
@@ -286,15 +291,16 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Synthesis", {
           text " Search your deck for a Energy card and attach it to 1 of your Pokémon. Then, shuffle your deck."
           energyCost G
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Deck is empty"
+          }
           onAttack {
-
+            attachEnergyFrom my.deck, my.all
           }
         }
         move "Razor Leaf", {
           text "50 damage."
           energyCost G, G, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -306,7 +312,6 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Razor Leaf", {
           text "50 damage."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -314,9 +319,9 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Take Down", {
           text "160 damage. This Pokémon also does 30 damage to itself."
           energyCost G, G, C
-          attackRequirement {}
           onAttack {
             damage 160
+            damage 30, self
           }
         }
       };
@@ -326,17 +331,17 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Strafe", {
           text "20 damage. You may switch this Pokémon with 1 of your Benched Pokémon."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 20
+            switchYourActive may:true
           }
         }
         move "Mystery Wave", {
-          text "50 damage. This attack does 30 more damage times the amount of Energy attached to your opponent's Active Pokémon."
+          text "50+ damage. This attack does 30 more damage times the amount of Energy attached to your opponent's Active Pokémon."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 50
+            damage 30 * defending.getEnergyCount(bg)
           }
         }
       };
@@ -346,14 +351,18 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         bwAbility "Mysterious Beam", {
           text "Once during your turn, if this Pokémon is in the Active Spot, you may put 1 damage counter on each of your opponent's Pokémon."
           actionA {
+            checkLastTurn()
+            assert self.active : "$self is not your active Pokémon"
+            powerUsed()
+            opp.all.each { directDamage 10, it, SRC_ABILITY }
           }
         }
         move "GMax Wave", {
-          text "50 damage. This attack does 50 more damage times the amount of Energy attached to your opponent's Active Pokémon."
+          text "50+ damage. This attack does 50 more damage times the amount of Energy attached to your opponent's Active Pokémon."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 50
+            damage 50 * defending.getEnergyCount(bg)
           }
         }
       };
@@ -923,10 +932,20 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       };
       case SHEDINJA_42:
       return basic (this, hp:HP030, type:P, retreatCost:1) {
+        globalAbility {
+          delayed {
+            def abilityUsed = false
+            before PLAY_CARD, {
+              if (ef.cardToPlay == thisCard) {
+                def abilityName = "Shell Bind"
+                wcu("$abilityName prevents playing $thisCard")
+                prevent()
+              }
+            }
+          }
+        }
         bwAbility "Shell Bind", {
           text "This card can only be put into play with the effect of Ninjask's Cast-off Shell Ability (you can't play this card when you are setting up to play)."
-          actionA {
-          }
         }
         move "Squeeze Life", {
           text " Put damage counters on your opponent's Active Pokémon until its remaining HP is 10."
