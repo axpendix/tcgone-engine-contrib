@@ -215,7 +215,6 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Ram", {
           text "10 damage."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -227,7 +226,6 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Razor Leaf", {
           text "40 damage."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -237,6 +235,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return evolution (this, from:"Nuzleaf", hp:HP150, type:G, retreatCost:3) {
         weakness R
         bwAbility "Tengu Double", {
+          // TODO: Implement abiltiy
           text "The effect of each Supporter card in your opponent's hand becomes 'Draw 3 cards'."
           actionA {
           }
@@ -244,9 +243,11 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Fan Tornado", {
           text "110 damage. You may have your opponent switch their Active Pokémon with 1 of their Benched Pokémon."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 110
+            bg.deterministicCurrentThreadPlayerType=bg.currentTurn.opposite
+            switchYourActive()
+            bg.clearDeterministicCurrentThreadPlayerType()
           }
         }
       };
