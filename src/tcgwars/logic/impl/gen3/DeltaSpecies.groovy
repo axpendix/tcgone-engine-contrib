@@ -879,7 +879,7 @@ public enum DeltaSpecies implements LogicCardInfo {
                       energyCard.player = thisCard.player
                       bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
                       bc "$energyCard is now a Special Energy Card"
-                      attachEnergy(pcs, energyCard)
+                      attachEnergy(pcs, energyCard, PLAY_FROM_HAND)
                       prevent()
                     } else {
                       prevent()
