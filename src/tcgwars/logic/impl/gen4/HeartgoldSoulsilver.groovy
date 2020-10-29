@@ -866,15 +866,14 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
               assert my.bench.notFull
             }
             onAttack {
-              def myBenchSpace = my.bench.freeBenchCount
-              deck.search (max:myBenchSpace,"Search for up to $myBenchSpace Basic Pokemon",cardTypeFilter(BASIC)).each {
-                benchPCS(it)
+              if(my.bench.notFull) {
+                deck.search (max:my.bench.freeBenchCount,"Please search for Basic Pokemon to put on your bench.",cardTypeFilter(BASIC)).each {
+                  benchPCS(it)
+                }
+                shuffleDeck()
               }
-              shuffleDeck()
-
               if(opp.bench.notFull) {
-                def oppBenchSpace = opp.bench.getFreeBenchCount()
-                opp.deck.search(max:oppBenchSpace,"Search for up to $oppBenchSpace Basic Pokemon",cardTypeFilter(BASIC)).each{
+                opp.deck.oppSelect(min:0,max:opp.bench.getFreeBenchCount(),"Pichu used Playground: Each player may search his or her deck for as many Basic Pokémon as he or she likes, put them onto his or her Bench. Please search for Basic Pokemon to put on your bench.",cardTypeFilter(BASIC)).each{
                   benchPCS(it, OTHER)
                 }
                 shuffleDeck(null, TargetPlayer.OPPONENT)
