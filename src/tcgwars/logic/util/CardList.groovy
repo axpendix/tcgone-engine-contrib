@@ -472,6 +472,12 @@ public class CardList extends ArrayList<Card> {
       filterByEnergyType(type).size();
   }
 
+  public int basicEnergyCardCount(Type type = Type.COLORLESS) {
+    return type == Type.COLORLESS ?
+      filterByType(CardType.BASIC_ENERGY).size() :
+      filterByEnergyType(type).size();
+  }
+
   public boolean energySufficient(Type... types) {
     return Battleground.getInstance().em().activateGetter(new EnergySufficientGetter(getAsEnergyCards(), types))
   }
