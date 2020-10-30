@@ -99,7 +99,6 @@ public enum EffectType {
    * getter effects
    */
 
-  GET_ENERGY_COUNT,
   GET_ENERGY_CARD_COUNT,
   GET_ENERGY_TYPES,
   SELECT_ENERGY,

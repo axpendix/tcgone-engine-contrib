@@ -13,6 +13,7 @@ import tcgwars.logic.card.energy.EnergyCard;
 import tcgwars.logic.card.pokemon.PokemonCard;
 import tcgwars.logic.effect.ability.*;
 import tcgwars.logic.effect.ability.Ability.*;
+import tcgwars.logic.effect.advanced.ExtraEnergyCalculator;
 import tcgwars.logic.effect.getter.*;
 import tcgwars.logic.effect.special.SpecialConditionType;
 import tcgwars.logic.groovy.TcgStatics;
@@ -362,7 +363,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
   }
 
   public Integer getEnergyCount(Battleground bg) {
-    return bg.em().activateGetter(new GetEnergyCount(this));
+    return bg.em().activateGetter(new ExtraEnergyCalculator(this, Type.COLORLESS));
   }
 
   public boolean noSPC() {
