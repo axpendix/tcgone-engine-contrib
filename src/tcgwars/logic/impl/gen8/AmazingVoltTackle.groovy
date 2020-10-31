@@ -717,17 +717,22 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Charge", {
           text " Search your deck for up to 2 Energy cards and attach them to this Pokémon. Then, shuffle your deck."
           energyCost L
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Deck is empty"
+          }
           onAttack {
-
+            def info = "Choose up to 2 Energy cards to attach to $self"
+            def energies = my.deck.search max:2, info, { it.cardTypes.contains ENERGY }
+            energies.each { attachEnergy self, it }
+            shuffleDeck()
           }
         }
         move "Thunderbolt", {
           text "200 damage. Discard all Energy from this Pokémon."
           energyCost L, L, C
-          attackRequirement {}
           onAttack {
             damage 200
+            discardAllSelfEnergy()
           }
         }
       };
@@ -735,11 +740,14 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return evolution (this, from:"Pikachu", hp:HP310, type:L, retreatCost:2) {
         weakness F
         move "GMax Volt Tackle", {
-          text "120 damage. You may discard all Energy from this Pokémon. If you do, this attack does 150 more damage."
+          text "120+ damage. You may discard all Energy from this Pokémon. If you do, this attack does 150 more damage."
           energyCost L, L, L
-          attackRequirement {}
           onAttack {
             damage 120
+            if (confirm("Discard all Energy from $self to do 150 more damage?")) {
+              discardAllSelfEnergy()
+              damage 150
+            }
           }
         }
       };
@@ -749,7 +757,6 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Electro Ball", {
           text "40 damage."
           energyCost L, L
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -761,12 +768,22 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         bwAbility "Ene-Ene Generator", {
           text "Once during your turn, if this Pokémon is on your Bench, you may Knock Out this Pokémon. If you do, search your deck for up to 2 Energy cards and attach them to your Pokémon in any way you like. Then, shuffle your deck."
           actionA {
+            checkLastTurn()
+            assert self.benched : "$self is not on your Bench"
+            assert confirm("$thisAbility: Are you sure?") : "Cancelled $thisAbility"
+            powerUsed()
+            bg.em().run(new Knockout(self))
+            def info = "Choose up to 2 Energy cards to attach to your remaining Pokémon."
+            def energies = my.deck.search max:2, info, { it.cardTypes.contains ENERGY }
+            energies.each {
+              attachEnergy my.all.select("Pokémon to attach $it to?"), it
+            }
+            shuffleDeck()
           }
         }
         move "Electric Ball", {
           text "100 damage."
           energyCost L, L, C
-          attackRequirement {}
           onAttack {
             damage 100
           }
@@ -777,13 +794,34 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         weakness F
         bwAbility "Thunderclap Awakening", {
           text "If this Pokémon has a Memory Capsule card attached to it, each player's Pokémon has no Abilities."
-          actionA {
+          onActivate {
+            bg.em().run(new CheckAbilities())
+          }
+          onDeactivate {
+            bg.em().run(new CheckAbilities())
+          }
+          getterA IS_ABILITY_BLOCKED, {holder->
+            if (self.cards.any { it.name == "Memory Capsule" } && thisAbility.name != holder.effect.ability.name && holder.effect.ability instanceof BwAbility) {
+              holder.object = true
+            }
+          }
+          getterA IS_GLOBAL_ABILITY_BLOCKED, {holder->
+            if (self.cards.any { it.name == "Memory Capsule" } && thisAbility.name != holder.effect.ability.name && holder.effect.ability instanceof BwAbility) {
+              holder.object = true
+            }
+          }
+          delayedA {
+            after PLAY_POKEMON_TOOL, {
+              bg.em().run(new CheckAbilities())
+            }
+            after DISCARD, {
+              if (ef.card.name == "Memory Capsule") bg.em().run(new CheckAbilities())
+            }
           }
         }
         move "Electric Ball", {
           text "90 damage."
           energyCost L, C, C
-          attackRequirement {}
           onAttack {
             damage 90
           }
@@ -796,7 +834,6 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Drill Peck", {
           text "20 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -804,9 +841,21 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Snipe Thunder", {
           text " Discard all Energy from this Pokémon. This attack does 160 damage to 1 of your opponent's Pokémon V or Pokémon-GX. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost L, L, C
-          attackRequirement {}
+          attackRequirement {
+            assert opp.bench.any { it.pokemonV || it.pokemonGX } : "Opponent has no Pokémon V or Pokémon-GX on their Bench"
+          }
           onAttack {
-
+            if (!opp.bench.any {it.pokemonV || it.pokemonGX}) return
+            def pcs = null
+            while (!pcs) {
+              pcs = opp.bench.select"Pokémon V or Pokémon-GX to inflict 160 damage to?"
+              if (!pcs) return
+              if (!pcs.pokemonGX && !pcs.pokemonV) {
+                wcu "$pcs is not a Pokémon V or Pokémon-GX"
+                pcs = null
+              }
+            }
+            damage 160, pcs
           }
         }
       };
@@ -816,7 +865,6 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Zap Kick", {
           text "20 damage."
           energyCost L
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -828,7 +876,6 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Low Kick", {
           text "30 damage."
           energyCost L
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -836,7 +883,6 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Zap Kick", {
           text "70 damage."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 70
           }
@@ -847,13 +893,13 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         weakness F
         bwAbility "Floating", {
           text "If this Pokémon has any Energy attached to it, it has no Retreat Cost."
-          actionA {
+          getterA GET_RETREAT_COST, BEFORE_LAST, self, {h->
+            if (self.energyCards) h.object = 0
           }
         }
         move "Mini Electricity", {
           text "10 damage."
           energyCost L
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -865,15 +911,26 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Stun Crash", {
           text " Flip a coin. If heads, discard an Energy from 1 of your opponent's Pokémon."
           energyCost L
-          attackRequirement {}
+          attackRequirement {
+            assert opp.all.any { it.energyCards }
+          }
           onAttack {
-
+            if (!opp.all.any {it.energyCards}) return
+            flip {
+              def pcs = null
+              while (!pcs) {
+                pcs = opp.bench.select("Pokémon to discard an Energy from?")
+                if (!pcs.energyCards) {
+                  wcu "$pcs is has no Energy attached"
+                  pcs = null
+                }
+              }
+            }
           }
         }
         move "Head Bolt", {
           text "60 damage."
           energyCost L, C, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -885,17 +942,40 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Stun Fang", {
           text "60 damage. During your opponent's next turn, if they attach an Energy card from their hand to the Defending Pokémon, put 6 damage counters on that Pokémon."
           energyCost L
-          attackRequirement {}
           onAttack {
             damage 60
+            targeted defending, {
+              bc ("Attaching an Energy from hand to the Defending Pokémon ($defending) during ${self.owner.opposite.getPlayerUsername(bg)}'s next turn"
+                + " will place 6 damage counters on the Defending Pokémon. (This effect can be removed by benching/evolving ${defending})")
+              def pcs = defending
+              delayed {
+                after ATTACH_ENERGY, {
+                  if (ef.reason == PLAY_FROM_HAND && bg.currentTurn == self.owner.opposite && ef.resolvedTarget == pcs) {
+                    directDamage 60, pcs
+                  }
+                }
+                unregisterAfter 2
+                after FALL_BACK, pcs, {unregister()}
+                after EVOLVE, pcs, {unregister()}
+                after DEVOLVE, pcs, {unregister()}
+              }
+            }
           }
         }
         move "Electric Sprinkler", {
           text "120 damage. This attack also does 30 damage to 1 of your Benched Pokémon and 30 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost L, C, C
-          attackRequirement {}
           onAttack {
             damage 120
+            def pokes = []
+            if (my.bench) {
+              pokes.add my.bench.select("Deal 30 damage to which of your own Pokémon?")
+            }
+            if (opp.bench) {
+              pokes.add opp.bench.select("Deal 30 damage to which of your opponent's Pokémon?")
+            }
+            if (!pokes) return
+            damage 30, pokes
           }
         }
       };
