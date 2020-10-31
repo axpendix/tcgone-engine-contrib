@@ -245,9 +245,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           energyCost G, C
           onAttack {
             damage 110
-            bg.deterministicCurrentThreadPlayerType=bg.currentTurn.opposite
-            switchYourActive()
-            bg.clearDeterministicCurrentThreadPlayerType()
+            whirlwind()
           }
         }
       };
