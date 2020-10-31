@@ -1,4 +1,7 @@
-package tcgwars.logic.impl.gen8;
+package tcgwars.logic.impl.gen8
+
+import tcgwars.logic.effect.gm.PlayCard
+import tcgwars.logic.effect.gm.PlayTrainer;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -235,9 +238,38 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return evolution (this, from:"Nuzleaf", hp:HP150, type:G, retreatCost:3) {
         weakness R
         bwAbility "Tengu Double", {
-          // TODO: Implement abiltiy
+          /* FIXME: In theory just ChangeImplementation should work here and simplify everything.
+               In Practice, just using a ChangeImplementation or trying to use a new Play* effect both use the old
+               implementation PlayRequirements for checking if the card can be played. I'm pretty sure it also used the
+               old onPlay, but that should be verified as this was a long implementation session and I'm not entirely
+               sure anymore.
+           */
           text "The effect of each Supporter card in your opponent's hand becomes 'Draw 3 cards'."
-          actionA {
+          delayedA {
+            def playedFromOppHand = false
+            def oldImpl = null
+            def newImpl = null
+            before PLAY_CARD, {
+              if (self.owner.opposite.pbg.hand.contains(ef.cardToPlay)) playedFromOppHand = true
+            }
+            before PLAY_TRAINER, {
+              if (!ef.supporter) return
+              oldImpl = ef.cardToPlay
+              newImpl = supporter(new CustomCardInfo(ef.cardToPlay.customInfo).setCardTypes(TRAINER, SUPPORTER), "Test") {
+                onPlay { draw 3 }
+                playRequirement { assert my.deck : "Deck is empty" }
+              }
+              bg.em().run(new ChangeImplementation(newImpl, oldImpl))
+              // FIXME
+              newImpl.player = oldImpl.player
+              ef.cardToPlay = newImpl
+            }
+            after PLAY_TRAINER, {
+              playedFromOppHand = false
+              bg.em().run(new ChangeImplementation(oldImpl, newImpl))
+              newImpl = null
+              oldImpl = null
+            }
           }
         }
         move "Fan Tornado", {
