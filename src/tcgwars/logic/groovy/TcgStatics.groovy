@@ -1712,7 +1712,7 @@ class TcgStatics {
     }
     Move move = (choose(moveList, labelList, "Choose an attack to use as this attack.") as Move).shallowCopy()
     move.energyCost = delegate.thisMove.energyCost
-    move.process bg, null
+    attack(move)
     bc "$delegate.self copied $move.name"
   }
 
