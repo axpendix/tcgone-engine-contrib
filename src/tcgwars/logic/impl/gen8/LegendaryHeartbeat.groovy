@@ -390,8 +390,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           energyCost G, C
           onAttack {
             flip {
-              def pcsCards = defending.cards()
-              pcsCards.setAutosort false
+              def pcsCards = new CardList(defending.cards())
               pcsCards.shuffle()
               pcsCards.moveTo opp.deck
               removePCS defending
@@ -478,7 +477,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           energyCost L, C
           onAttack {
             damage 50
-            apply CONFUSED
+            applyAfterDamage CONFUSED
           }
         }
         move "Damage Spark", {
@@ -594,7 +593,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           onAttack {
             damage 130
             damage 60, self
-            apply PARALYZED
+            applyAfterDamage PARALYZED
           }
         }
       };
@@ -661,7 +660,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             assert active.numberOfDamageCounters || active.specialConditions : "Active Pokémon is not damaged and is not affected by a Special Condition"
             powerUsed()
             heal 20, active
-            clearSpecialCondition active, SRC_ABILITY
+            if(active.specialConditions) clearSpecialCondition active, SRC_ABILITY, choose(active.specialConditions.toList(), "Clear")
           }
         }
         move "Magical Shot", {
@@ -691,7 +690,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             if (confirm("Have your opponent shuffle their hand into their deck and draw 4 cards?")) {
               opp.hand.moveTo hidden:true, opp.deck
               shuffleDeck null, TargetPlayer.OPPONENT
-              draw 4
+              draw 4, TargetPlayer.OPPONENT
             }
           }
         }
@@ -737,7 +736,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           energyCost P
           onAttack {
             damage 10
-            apply CONFUSED
+            applyAfterDamage CONFUSED
           }
         }
       };
@@ -869,7 +868,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             assert opp.deck : "Opponent's deck is empty"
           }
           onAttack {
-            flipUntilTails { opp.deck.subList(0, 1).discard() }
+            flipUntilTails { if(opp.deck) opp.deck.subList(0, 1).discard() }
           }
         }
         move "Rock Throw", {
@@ -992,10 +991,12 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           energyCost F
           onAttack {
             damage 40
-            def discarded = my.deck.subList(0, 1).discard().first()
-            if (!(discarded instanceof EnergyCard)) return
-            damage 90
-            attachEnergy self, discarded
+            if(my.deck) {
+              def discarded = my.deck.subList(0, 1).discard().first()
+              if (!(discarded instanceof EnergyCard)) return
+              damage 90
+              attachEnergy self, discarded
+            }
           }
         }
         move "GMax Rock", {
@@ -1284,7 +1285,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             CardList discardEnergies = []
             self.energyCards.each {
               if (!it.cardTypes.contains(BASIC_ENERGY)) return
-              energyTypes.add it.energyTypes.get(0)[0]
+              energyTypes.add it.basicType
               discardEnergies.add it
             }
             damage 80 * energyTypes.size()
@@ -1305,7 +1306,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             assert my.deck : "Your deck is empty"
           }
           onAttack {
-            deck.search(max:2,{ it.cardTypes.contiains BASIC_ENERGY })
+            deck.search(max:2, cardTypeFilter(BASIC_ENERGY))
               .showToOpponent("Opponent chose the following Energy from their deck using $thisMove.")
               .moveTo my.hand
             shuffleDeck()
