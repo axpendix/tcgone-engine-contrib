@@ -853,8 +853,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             assert prizes != 2 && prizes != 4 && prizes != 6 : "You have exactly 2, 4, or 6 Prize cards remaining"
           }
           onAttack {
-            def prizes = my.prizeCardSet.size()
-            if (prizes != 2 && prizes != 4 && prizes != 6) damage 180
+            damage 180
           }
         }
       };
