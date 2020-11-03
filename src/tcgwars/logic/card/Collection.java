@@ -153,6 +153,7 @@ public enum Collection {
   REBEL_CLASH(431, "RCL", "gen8.RebelClash"),
   DARKNESS_ABLAZE(432, "DAA", "gen8.DarknessAblaze"),
   CHAMPIONS_PATH(433, "CPA", "gen8.ChampionsPath"),
+  VIVID_VOLTAGE(434, "VIV", "gen8.VividVoltage"),
 
   //POKEMOD
   POKEMOD_BASE_SET(910, "MODBS", "pokemod.PokemodBaseSet"),
