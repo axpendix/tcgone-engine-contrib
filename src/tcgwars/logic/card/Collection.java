@@ -153,6 +153,7 @@ public enum Collection {
   REBEL_CLASH(431, "RCL", "gen8.RebelClash"),
   DARKNESS_ABLAZE(432, "DAA", "gen8.DarknessAblaze"),
   CHAMPIONS_PATH(433, "CPA", "gen8.ChampionsPath"),
+  VIVID_VOLTAGE(434, "VIV", "gen8.VividVoltage"),
 
   //POKEMOD
   POKEMOD_BASE_SET(910, "MODBS", "pokemod.PokemodBaseSet"),
@@ -172,6 +173,9 @@ public enum Collection {
   POKEMOD_VENDING_MACHINE(924, "MODVM", "pokemod.PokemodVendingMachine"),
   POKEMOD_PROMOS(925, "MODPRO", "pokemod.PokemodPromos"),
 //	POKEMOD_(900, "MOD", "pokemod.Pokemod"),
+
+  // DEV/TESTING ONLY
+  LEGENDARY_HEARTBEAT(1010, "JS3A", "gen8.LegendaryHeartbeat"),
 
   ;
 

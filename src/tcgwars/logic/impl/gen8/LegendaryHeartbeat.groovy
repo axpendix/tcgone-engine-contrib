@@ -1,4 +1,9 @@
-package tcgwars.logic.impl.gen8;
+package tcgwars.logic.impl.gen8
+
+import tcgwars.logic.impl.gen3.FireRedLeafGreen
+import tcgwars.logic.impl.gen5.EmergingPowers
+import tcgwars.logic.impl.gen5.NobleVictories
+import tcgwars.logic.impl.gen6.KalosStarterSet;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -100,10 +105,10 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
   TOUCANNON_63 ("Toucannon", "63", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]),
   GREAT_BALL_64 ("Great Ball", "64", Rarity.UNCOMMON, [TRAINER, ITEM]),
   SWITCH_65 ("Switch", "65", Rarity.COMMON, [TRAINER, ITEM]),
-  POKÉMON_CATCHER_66 ("Pokémon Catcher", "66", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  POKEMON_CATCHER_66 ("Pokémon Catcher", "66", Rarity.UNCOMMON, [TRAINER, ITEM]),
   MOOMOO_CHEESE_67 ("Moomoo Cheese", "67", Rarity.UNCOMMON, [TRAINER, ITEM]),
-  HERO_S_MEDAL_68 ("Hero's Medal", "68", Rarity.UNCOMMON, [TRAINER, ITEM]),
-  ROCKY_HELMET_69 ("Rocky Helmet", "69", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  HERO_S_MEDAL_68 ("Hero's Medal", "68", Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER, ITEM]),
+  ROCKY_HELMET_69 ("Rocky Helmet", "69", Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER, ITEM]),
   BEAUTY_70 ("Beauty", "70", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   ALLISTER_71 ("Allister", "71", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   OPAL_72 ("Opal", "72", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
@@ -127,8 +132,8 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
   ALLISTER_90 ("Allister", "90", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   OPAL_91 ("Opal", "91", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   ORANGURU_92 ("Oranguru", "92", Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
-  HERO_S_MEDAL_93 ("Hero's Medal", "93", Rarity.UNCOMMON, [TRAINER, ITEM]),
-  CAPE_OF_TOUGHNESS_94 ("Cape of Toughness", "94", Rarity.UNCOMMON, [TRAINER, ITEM]);
+  HERO_S_MEDAL_93 ("Hero's Medal", "93", Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER, ITEM]),
+  CAPE_OF_TOUGHNESS_94 ("Cape of Toughness", "94", Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER, ITEM]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -188,29 +193,66 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Bug Hunch", {
           text " Search your deck for up to 2 Pokémon, reveal them, and put them into your hand. Then, shuffle your deck."
           energyCost G
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Your deck is empty"
+          }
           onAttack {
-
+            def info = "Opponent chose the following Pokémon from their deck using $thisMove."
+            my.deck.search(max:2, cardTypeFilter(POKEMON)).showToOpponent(bg, info).moveTo my.hand
+            shuffleDeck()
           }
         }
       };
       case KAKUNA_2:
       return evolution (this, from:"Weedle", hp:HP080, type:G, retreatCost:3) {
         weakness R
-
+        move "Shed Skin", {
+          text "Heal 30 damage from this Pokémon"
+          energyCost C
+          attackRequirement {
+            assert self.numberOfDamageCounters : "$self is not damaged"
+          }
+          onAttack {
+            heal 30, self
+          }
+        }
+        move "Bug Bite", {
+          energyCost G
+          onAttack {
+            damage 20
+          }
+        }
       };
       case BEEDRILL_3:
       return evolution (this, from:"Kakuna", hp:HP130, type:G, retreatCost:0) {
         weakness R
+        globalAbility {
+          delayed {
+            def abilityUsed = false
+            before PLAY_CARD, {
+              if (ef.cardToPlay == thisCard && my.hand.getExcludedList(thisCard).empty && my.bench.freeBenchCount) {
+                def abilityName = "Sudden Appearance"
+                abilityUsed = confirm("Use $abilityName?")
+                if (abilityUsed && benchPCS(thisCard, PLAY_FROM_HAND)) {
+                  bc("$thisCard.name has used $abilityName")
+                  draw 3
+                }
+              }
+            }
+            before PLAY_EVOLUTION, {
+              if (abilityUsed) prevent()
+            }
+            after PLAY_CARD, {
+              abilityUsed = false
+            }
+          }
+        }
         bwAbility "Sudden Appearance", {
           text "Once during your turn (before your attack), if this Pokémon is the last card in your hand, you may play it onto your Bench. If you do, draw 3 cards."
-          actionA {
-          }
         }
         move "Sharp Sting", {
           text "120 damage."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 120
           }
@@ -222,7 +264,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Seed Bomb", {
           text "10 damage."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -234,15 +275,14 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Head Split", {
           text "30 damage. Choose 1 of your opponent's Active Pokémon's attacks. During your opponent's next turn, that Pokémon can't use that attack."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 30
+            amnesia(delegate)
           }
         }
         move "Solar Beam", {
           text "90 damage."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 90
           }
@@ -254,15 +294,14 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Uturn", {
           text "10 damage. Switch this Pokémon with 1 of your Benched Pokémon."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
+            switchYourActive()
           }
         }
         move "Cutting Wind", {
           text "60 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -274,15 +313,14 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Uturn", {
           text "50 damage. Switch this Pokémon with 1 of your Benched Pokémon."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 50
+            switchYourActive()
           }
         }
         move "Cutting Wind", {
           text "130 damage."
           energyCost C, C, C, C
-          attackRequirement {}
           onAttack {
             damage 130
           }
@@ -294,7 +332,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Ram", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -302,9 +339,8 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Iron Defense", {
           text " Flip a coin. If heads, during your opponent's next turn, prevent all damage done to this Pokémon by attacks."
           energyCost C, C
-          attackRequirement {}
           onAttack {
-
+            flip { preventAllDamageNextTurn() }
           }
         }
       };
@@ -312,19 +348,29 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
         move "Energy Press", {
-          text "30 damage. This attack does 30 damage for each Energy attached to your opponent's Active Pokémon."
+          text "30x damage. This attack does 30 damage for each Energy attached to your opponent's Active Pokémon."
           energyCost G
-          attackRequirement {}
           onAttack {
-            damage 30
+            damage 30 * defending.getEnergyCount(bg)
           }
         }
         move "Amazing Bloom", {
           text " For each of your Benched Pokémon, search your deck for a card that evolves from that Pokémon and put it onto that Pokémon to evolve it. Then, shuffle your deck."
           energyCost L, P
-          attackRequirement {}
+          attackRequirement {
+            assert my.bench.any { bg.gm().hasEvolution(it.name) } : "No Pokémon with evolutions in play"
+          }
           onAttack {
-
+            my.bench.each {pcs ->
+              if (!bg.gm().hasEvolution(pcs.name)) return
+              def evolution = my.deck.search ("Evolve $pcs to?", {Card card ->
+                if (!(card instanceof EvolutionPokemonCard)) return false
+                (card as EvolutionPokemonCard).predecessor == pcs.name
+              }).first()
+              if (!evolution) return
+              evolve(pcs, evolution, OTHER)
+            }
+            shuffleDeck()
           }
         }
       };
@@ -334,17 +380,21 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Leech Seed", {
           text "20 damage. Heal 20 damage from this Pokémon."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 20
+            heal 20, self
           }
         }
         move "Flower Transport", {
           text " Flip a coin. If heads, your opponent shuffles their Active Pokémon and all attached cards and puts them on the bottom of their deck."
           energyCost G, C
-          attackRequirement {}
           onAttack {
-
+            flip {
+              def pcsCards = new CardList(defending.cards())
+              pcsCards.shuffle()
+              pcsCards.moveTo opp.deck
+              removePCS defending
+            }
           }
         }
       };
@@ -354,17 +404,17 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Linear Attack", {
           text " This attack does 50 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost G, C
-          attackRequirement {}
           onAttack {
-
+            def info = "Pokémon to deal 50 damage to"
+            damage 50, opp.all.select(info)
           }
         }
         move "Techno Blast", {
           text "120 damage. During your next turn, this Pokémon can't attack."
           energyCost G, G, C
-          attackRequirement {}
           onAttack {
             damage 120
+            cantAttackNextTurn self
           }
         }
       };
@@ -374,7 +424,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Hook", {
           text "20 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -382,9 +431,11 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Special Anchor", {
           text "60 damage. If this Pokémon has any Special Energy attached, this attack does 60 more damage."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 60
+            if (self.energyCards.any { it.cardTypes.contains(SPECIAL_ENERGY) }) {
+              damage 60
+            }
           }
         }
       };
@@ -394,17 +445,27 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Bind Down", {
           text "50 damage. During your opponent's next turn, the Defending Pokémon can't retreat."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 50
+            cantRetreat defending
           }
         }
         move "Jungle Rise", {
           text "100 damage. You may attach up to 2 Basic Energy cards from your hand to your Benched Pokémon in any way you like. If you attached Energy to a Pokémon in this way, heal all damage from that Pokémon."
           energyCost G, G
-          attackRequirement {}
           onAttack {
             damage 100
+            afterDamage {
+              def skipped = false
+              2.times {
+                if (skipped) return
+                def energyAttachment = attachEnergyFrom may: true, basic: true, my.hand, my.bench
+                if (!energyAttachment.empty && (energyAttachment.get(0) as CardList).notEmpty) {
+                  healAll energyAttachment.get(1) as PokemonCardSet
+                }
+                else skipped = true
+              }
+            }
           }
         }
       };
@@ -414,17 +475,17 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Dazzle Blast", {
           text "50 damage. Your opponent's Active Pokémon is now Confused."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 50
+            applyAfterDamage CONFUSED
           }
         }
         move "Damage Spark", {
           text "120 damage. This attack does 30 damage to each of your opponent's Benched Pokémon that has any damage counters on it. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost L, L, C
-          attackRequirement {}
           onAttack {
             damage 120
+            opp.bench.each { if(it.numberOfDamageCounters) damage(30, it) }
           }
         }
       };
@@ -434,9 +495,12 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Amazing Shot", {
           text "120 damage. This attack also does 120 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost G, L, M
-          attackRequirement {}
           onAttack {
             damage 120
+            if (opp.bench) {
+              def info = "Pokémon to deal 120 damage to?"
+              damage 120, opp.bench.select(info)
+            }
           }
         }
       };
@@ -446,15 +510,16 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Collect", {
           text " Draw a card."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Your deck is empty"
+          }
           onAttack {
-
+            draw 1
           }
         }
         move "Bite", {
           text "20 damage."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -465,13 +530,15 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         weakness F
         bwAbility "High Speed", {
           text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may draw 3 cards."
-          actionA {
+          onActivate { reason ->
+            if (reason == PLAY_FROM_HAND && self.evolution && bg.currentTurn == self.owner && confirm("Use $thisAbility?")) {
+              draw 3
+            }
           }
         }
         move "Electric Ball", {
           text "100 damage."
           energyCost L, C, C
-          attackRequirement {}
           onAttack {
             damage 100
           }
@@ -483,7 +550,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Bug Bite", {
           text "20 damage."
           energyCost L
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -495,17 +561,19 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Stun Needle", {
           text "20 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
           energyCost L
-          attackRequirement {}
           onAttack {
             damage 20
+            flipThenApplySC PARALYZED
           }
         }
         move "Pursuit Shock", {
-          text "20 damage. This attack does 20 damage for each damage counter on your opponent's Active Pokémon."
+          text "20x damage. This attack does 20 damage for each damage counter on your opponent's Active Pokémon."
           energyCost L, C
-          attackRequirement {}
+          attackRequirement {
+            assert defending.numberOfDamageCounters : "Defending Pokémon is not damaged"
+          }
           onAttack {
-            damage 20
+            damage 20 * defending.numberOfDamageCounters
           }
         }
       };
@@ -515,7 +583,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Slash", {
           text "30 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -523,9 +590,10 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Wild Shock", {
           text "130 damage. This Pokémon does 60 damage to itself. Your opponent's Active Pokémon is now Paralyzed."
           energyCost L, L, C
-          attackRequirement {}
           onAttack {
             damage 130
+            damage 60, self
+            applyAfterDamage PARALYZED
           }
         }
       };
@@ -535,9 +603,9 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Fighting Thunder", {
           text "30 damage. If your opponent's Active Pokémon is a Pokémon V or Pokémon-GX, this attack does 80 more damage."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 30
+            if (defending.pokemonGX || defending.pokemonV) damage 80
           }
         }
       };
@@ -547,15 +615,13 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Spinning Fan", {
           text " This attack does 10 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost L
-          attackRequirement {}
           onAttack {
-
+            opp.all.each { damage 10, it }
           }
         }
         move "Peck", {
           text "30 damage."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -567,7 +633,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Pound", {
           text "10 damage."
           energyCost P
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -575,9 +640,11 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "MiniMetronome", {
           text " Flip a coin. If heads, choose 1 of your opponent's Active Pokémon's attacks and use it as this attack."
           energyCost C, C
-          attackRequirement {}
+          attackRequirement {
+            assert defending.getTopPokemonCard().getMoves() : "Defending Pokémon has no moves to copy"
+          }
           onAttack {
-
+            flip { metronome defending, delegate }
           }
         }
       };
@@ -585,14 +652,20 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       return evolution (this, from:"Clefairy", hp:HP100, type:P, retreatCost:1) {
         weakness M
         bwAbility "Moon's Blessing", {
+          // TODO: Does it only cure exactly 1 Special Condition?
           text "Once during your turn, you may heal 20 damage from your Active Pokémon with any Energy attached, and it recovers from a Special Condition."
           actionA {
+            checkLastTurn()
+            assert active.getEnergyCount(bg) : "Active Pokémon does not have an Energy attached"
+            assert active.numberOfDamageCounters || active.specialConditions : "Active Pokémon is not damaged and is not affected by a Special Condition"
+            powerUsed()
+            heal 20, active
+            if(active.specialConditions) clearSpecialCondition active, SRC_ABILITY, choose(active.specialConditions.toList(), "Clear")
           }
         }
         move "Magical Shot", {
           text "80 damage."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
             damage 80
           }
@@ -605,17 +678,20 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Psypower", {
           text " Put 2 damage counters on your opponent's Pokémon in any way you like."
           energyCost P
-          attackRequirement {}
           onAttack {
-
+            putDamageCountersOnOpponentsPokemon 2
           }
         }
         move "Tail Order", {
           text "30 damage. You may have your opponent shuffle their hand into their deck and draw 4 cards."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 30
+            if (confirm("Have your opponent shuffle their hand into their deck and draw 4 cards?")) {
+              opp.hand.moveTo hidden:true, opp.deck
+              shuffleDeck null, TargetPlayer.OPPONENT
+              draw 4, TargetPlayer.OPPONENT
+            }
           }
         }
       };
@@ -626,9 +702,8 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Haunt", {
           text " Put 1 damage counter on your opponent's Active Pokémon."
           energyCost P
-          attackRequirement {}
           onAttack {
-
+            directDamage 10, defending
           }
         }
       };
@@ -638,13 +713,16 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         resistance F, MINUS30
         bwAbility "Degeneration Curse", {
           text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may devolve 1 of your opponent's Benched Evolution Pokémon by putting the highest Stage Evolution card on it into your opponent's hand."
-          actionA {
+          onActivate { reason ->
+            if (reason == PLAY_FROM_HAND && self.evolution && bg.currentTurn == self.owner && opp.bench.any { it.evolution } && confirm("Use $thisAbility?")) {
+              def pcs = opp.bench.findAll { it.evolution }.select("Pokémon to devolve?")
+              devolve pcs, pcs.topPokemonCard as Card, opp.hand
+            }
           }
         }
         move "Spooky Shot", {
           text "40 damage."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -656,9 +734,9 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Tail Trickery", {
           text "10 damage. Your opponent's Active Pokémon is now Confused."
           energyCost P
-          attackRequirement {}
           onAttack {
             damage 10
+            applyAfterDamage CONFUSED
           }
         }
       };
@@ -668,17 +746,21 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Geo Hunt", {
           text " Put a card from your discard pile into your hand."
           energyCost P
-          attackRequirement {}
+          attackRequirement {
+            assert my.discard : "Discard pile is empty"
+          }
           onAttack {
-
+            my.discard.select("Card to return to hand?")
+              .showToOpponent("Card opponent returned to hand from discard pile.")
+              .moveTo my.hand
           }
         }
         move "Aurora Gain", {
           text "100 damage. Heal 30 damage from this Pokémon."
           energyCost P, P, C
-          attackRequirement {}
           onAttack {
             damage 100
+            heal 30, self
           }
         }
       };
@@ -687,75 +769,51 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         weakness M
         bwAbility "Twinkling Veil", {
           text "As long as this Pokémon is in the Active Spot, all of your Pokémon take 30 less damage from your opponent's attacks (after applying Weakness and Resistance)."
-          actionA {
+          delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              if (!(self.active && ef.attacker.owner != self.owner)) return
+              bg.dm().each {
+                if(it.to.owner==self.owner && it.notNoEffect && it.notZero){
+                  bc "$thisAbility -30"
+                  it.dmg -= hp(30)
+                }
+              }
+            }
           }
         }
         move "Sensitive Ray", {
           text "50 damage. If you played a Supporter card from your hand during this turn, this attack does 70 more damage."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
             damage 50
+            // TODO: Handle supporters not played from hand
+            if (bg.em().retrieveObject("last_supporter_play_turn") == bg.turnCount) {
+              damage 70
+            }
           }
         }
       };
       case ALCREMIE_V_31:
-      return basic (this, hp:HP170, type:P, retreatCost:2) {
-        weakness M
-        move "Sugary Sprinkles", {
-          text " Heal 30 damage from each of your Benched Pokémon."
-          energyCost P
-          attackRequirement {}
-          onAttack {
-
-          }
-        }
-        move "Sweet Splash", {
-          text "100 damage. If the Defending Pokémon is a Basic Pokémon, it can't attack during your opponent's next turn."
-          energyCost P, C, C
-          attackRequirement {}
-          onAttack {
-            damage 100
-          }
-        }
-      };
+      return copy(ChampionsPath.ALCREMIE_V_22, this);
       case ALCREMIE_VMAX_32:
-      return evolution (this, from:"Alcremie", hp:HP310, type:P, retreatCost:3) {
-        weakness M
-        move "Adornment", {
-          text " For each of your Benched Pokémon, search your deck for a Energy card and attach it to that Pokémon. Then, shuffle your deck."
-          energyCost C
-          attackRequirement {}
-          onAttack {
-
-          }
-        }
-        move "GMax Whisk", {
-          text "60 damage. Discard any amount of Energy from your Pokémon. This attack does 60 damage for each card you discarded in this way."
-          energyCost P, P
-          attackRequirement {}
-          onAttack {
-            damage 60
-          }
-        }
-      };
+      return copy(ChampionsPath.ALCREMIE_VMAX_23, this);
       case ZACIAN_33:
       return basic (this, hp:HP110, type:P, retreatCost:2) {
         weakness M
         move "Metal Arms", {
           text "30 damage. Attach a basic Energy card from your discard pile to this Pokémon."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 30
+            attachEnergyFrom count:1, basic:true, my.discard, self
           }
         }
         move "Amazing Sword", {
           text "150 damage. If your opponent has a Pokémon VMAX in play, this attack does 150 more damage."
           energyCost G, P, M
-          attackRequirement {}
           onAttack {
             damage 150
+            if (opp.all.any { it.pokemonVMAX }) damage 150
           }
         }
       };
@@ -765,7 +823,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Mud Shot", {
           text "10 damage."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -773,7 +830,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Beat", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -785,7 +841,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Beat", {
           text "30 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -793,7 +848,10 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Whimsy Impact", {
           text "180 damage. If you have exactly 2, 4, or 6 Prize cards remaining, this attack does nothing."
           energyCost F, C, C
-          attackRequirement {}
+          attackRequirement {
+            def prizes = my.prizeCardSet.size()
+            assert prizes != 2 && prizes != 4 && prizes != 6 : "You have exactly 2, 4, or 6 Prize cards remaining"
+          }
           onAttack {
             damage 180
           }
@@ -805,15 +863,16 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Mountain Squeeze", {
           text " Flip a coin until you get tails. For each heads, discard the top card of your opponent's deck."
           energyCost F
-          attackRequirement {}
+          attackRequirement {
+            assert opp.deck : "Opponent's deck is empty"
+          }
           onAttack {
-
+            flipUntilTails { if(opp.deck) opp.deck.subList(0, 1).discard() }
           }
         }
         move "Rock Throw", {
           text "50 damage."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -825,17 +884,16 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Rock Tumble", {
           text "40 damage. This attack's damage isn't affected by Resistance."
           energyCost F, C
-          attackRequirement {}
           onAttack {
-            damage 40
+            noResistanceDamage 40, defending
           }
         }
         move "Megaton Fall", {
           text "130 damage. This Pokémon does 30 damage to itself."
           energyCost F, F, C
-          attackRequirement {}
           onAttack {
             damage 130
+            damage 30, self
           }
         }
       };
@@ -845,9 +903,8 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "AllOut Punch", {
           text "30 damage. Flip a coin. If tails, this attack does nothing."
           energyCost C
-          attackRequirement {}
           onAttack {
-            damage 30
+            flip { damage 30 }
           }
         }
       };
@@ -857,7 +914,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Beam", {
           text "30 damage."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -865,9 +921,9 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Core Revenger", {
           text "80 damage. If you have more Prize cards remaining than your opponent, this attack does 80 more damage."
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             damage 80
+            if (my.prizeCardSet.size() > opp.prizeCardSet.size()) damage 80
           }
         }
       };
@@ -877,7 +933,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Tackle", {
           text "10 damage."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -885,7 +940,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Rear Kick", {
           text "20 damage."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -897,7 +951,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Rock Throw", {
           text "40 damage."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -905,7 +958,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Sharp Mane", {
           text "70 damage."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 70
           }
@@ -917,15 +969,14 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Searing Flame", {
           text "90 damage. Your opponent's Active Pokémon is now Burned."
           energyCost F, F, C
-          attackRequirement {}
           onAttack {
             damage 90
+            apply BURNED
           }
         }
         move "Boulder Crush", {
           text "180 damage."
           energyCost F, F, F, C
-          attackRequirement {}
           onAttack {
             damage 180
           }
@@ -937,15 +988,19 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Eruption Bomb", {
           text "40 damage. Discard the top card of your deck. If that card is an Energy card, this attack does 90 more damage. Then, attach that Energy card to this Pokémon."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 40
+            if(my.deck) {
+              def discarded = my.deck.subList(0, 1).discard().first()
+              if (!(discarded instanceof EnergyCard)) return
+              damage 90
+              attachEnergy self, discarded
+            }
           }
         }
         move "GMax Rock", {
           text "240 damage."
           energyCost F, F, F, C
-          attackRequirement {}
           onAttack {
             damage 240
           }
@@ -957,17 +1012,17 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Metal Arms", {
           text "30 damage. Attach a basic Energy card from your discard pile to this Pokémon."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 30
+            attachEnergyFrom basic:true, count:1, my.discard, self
           }
         }
         move "Amazing Shield", {
           text "180 damage. During your opponent's next turn, prevent all damage done to this Pokémon by attacks from Pokémon VMAX."
           energyCost L, F, M
-          attackRequirement {}
           onAttack {
             damage 180
+            preventAllDamageFromCustomPokemonNextTurn thisMove, self, { it.pokemonVMAX }
           }
         }
       };
@@ -978,17 +1033,17 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Take Down", {
           text "120 damage. This Pokémon does 30 damage to itself."
           energyCost M, C, C
-          attackRequirement {}
           onAttack {
             damage 120
+            damage 30, self
           }
         }
         move "Tie Blast", {
           text " Both Active Pokémon are Knocked Out."
           energyCost M, M, C, C
-          attackRequirement {}
           onAttack {
-
+            new Knockout(defending).run(bg)
+            new Knockout(self).run(bg)
           }
         }
       };
@@ -999,17 +1054,17 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Raging Hammer", {
           text "30 damage. This attack does 10 more damage for each damage counter on this Pokémon."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 30
+            damage self.numberOfDamageCounters * 10
           }
         }
         move "Iron Tackle", {
           text "210 damage. This Pokémon also does 30 damage to itself."
           energyCost M, C, C, C, C
-          attackRequirement {}
           onAttack {
             damage 210
+            damage 30, self
           }
         }
       };
@@ -1020,15 +1075,11 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Call for Family", {
           text " Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Then, shuffle your deck."
           energyCost M
-          attackRequirement {}
-          onAttack {
-
-          }
+          callForFamily basic:true, 2, delegate
         }
         move "Ram", {
           text "20 damage."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1041,7 +1092,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Metal Claw", {
           text "30 damage."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -1049,7 +1099,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Magnetic Blast", {
           text "60 damage."
           energyCost M, C, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -1061,15 +1110,17 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         resistance G, MINUS30
         bwAbility "Magnetic Field Floating", {
           text "All of your Pokémon have no Retreat Cost."
-          actionA {
+          getterA GET_RETREAT_COST, { h ->
+            if (h.effect.target.owner == self.owner) h.object.clear()
           }
         }
         move "Leg Quake", {
           text "100 damage. If the Defending Pokémon is an Evolution Pokémon, during your opponent's next turn, it can't attack."
           energyCost M, C, C
-          attackRequirement {}
           onAttack {
             damage 100
+            // TODO: Double check that Evolution Pokémon means realEvolution
+            if (defending.realEvolution) cantAttackNextTurn defending
           }
         }
       };
@@ -1080,14 +1131,25 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         bwAbility "Dream Oracle", {
           text "Once during your turn, if this Pokémon is in the Active Spot, you may look at the top 2 cards of your deck and put 1 of them into your hand. Put the other card back on top of your deck."
           actionA {
+            checkLastTurn()
+            assert self.active : "$self is not your active Pokémon"
+            assert my.deck : "Your deck is empty"
+            powerUsed()
+            my.deck.subList(0, 2).select("Card to add to hand?").moveTo my.hand
           }
         }
         move "Amazing Star", {
           text " Search your deck for up to 7 Basic Energy cards and attach them to your Pokémon in any way you like. Then, shuffle your deck."
           energyCost P, F, M
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Your deck is empty"
+          }
           onAttack {
-
+            def energies = my.deck.search max:7, cardTypeFilter(BASIC_ENERGY)
+            energies.each {
+              attachEnergy my.all.select("Attach $it.name to?"), it
+            }
+            shuffleDeck()
           }
         }
       };
@@ -1098,17 +1160,17 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Spike Draw", {
           text "40 damage. Draw a card."
           energyCost M
-          attackRequirement {}
           onAttack {
             damage 40
+            draw 1
           }
         }
         move "Knuckle Impact", {
           text "160 damage. During your next turn, this Pokémon can't attack."
           energyCost M, M, C
-          attackRequirement {}
           onAttack {
             damage 160
+            cantAttackNextTurn self
           }
         }
       };
@@ -1119,17 +1181,19 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Clock Back", {
           text " Attach up to 2 Energy cards from your discard pile to 1 of your Pokémon."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.discard.any { it.cardTypes.contains ENERGY } : "No Energy cards in discard pile"
+          }
           onAttack {
-
+            attachEnergyFrom max:2, my.discard, my.all
           }
         }
         move "Flash of Destruction", {
           text "130 damage. Discard 2 Energy from this Pokémon."
           energyCost M, M, C
-          attackRequirement {}
           onAttack {
             damage 130
+            discardSelfEnergy C, C
           }
         }
       };
@@ -1139,15 +1203,21 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         resistance G, MINUS30
         bwAbility "Counterattack", {
           text "If this Pokémon is in the Active Spot and is damaged by an opponent's attack (even if it is Knocked Out), put 3 damage counters on the Attacking Pokémon."
-          actionA {
+          delayedA (priority: LAST) {
+            before APPLY_ATTACK_DAMAGES, {
+              if (!(self.active && ef.attacker.owner != self.owner)) return
+              if(!bg.dm().find({it.to==self && it.dmg.value})) return
+              bc "$thisAbility activates"
+              directDamage 30, ef.attacker
+            }
           }
         }
         move "Grip and Squeeze", {
           text "90 damage. During your opponent's next turn, the Defending Pokémon can't retreat."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 90
+            cantRetreat defending
           }
         }
       };
@@ -1158,17 +1228,21 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Overhaul", {
           text " Shuffle your hand into your deck. Then, draw 6 cards."
           energyCost M
-          attackRequirement {}
+          attackRequirement {
+            assert my.hand || my.deck : "Both hand and deck are empty"
+          }
           onAttack {
-
+            my.hand.moveTo my.deck
+            shuffleDeck()
+            draw 6
           }
         }
         move "Automaton Cannon", {
           text "10 damage. This attack does 20 more damage for each of your opponent's Benched Pokémon."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 10
+            damage 20 * opp.bench.size()
           }
         }
       };
@@ -1179,7 +1253,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Gust", {
           text "40 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -1187,8 +1260,11 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Wind Pressure", {
           text "250 damage. If your opponent has 5 or fewer cards in their hand, this attack does nothing."
           energyCost C, C, C, C
-          attackRequirement {}
+          attackRequirement {
+            assert opp.hand.size() > 5 : "Opponent hand has 5 or fewer cards"
+          }
           onAttack {
+            if (opp.hand.size() <= 5) return
             damage 250
           }
         }
@@ -1198,11 +1274,23 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         weakness L
         resistance F, MINUS30
         move "Amazing Burst", {
-          text "80 damage. Discard all basic Energy from this Pokémon. This attack does 80 damage for each type of Energy you discarded in this way."
+          text "80x damage. Discard all basic Energy from this Pokémon. This attack does 80 damage for each type of Energy you discarded in this way."
           energyCost G, L, F
-          attackRequirement {}
+          attackRequirement {
+            assert self.energyCards.any { it.cardTypes.contains BASIC_ENERGY } : "No Basic Energy attached to $self"
+          }
           onAttack {
-            damage 80
+            Set<Type> energyTypes = []
+            CardList discardEnergies = []
+            self.energyCards.each {
+              if (!it.cardTypes.contains(BASIC_ENERGY)) return
+              energyTypes.add it.basicType
+              discardEnergies.add it
+            }
+            damage 80 * energyTypes.size()
+            afterDamage {
+              discardEnergies.discard()
+            }
           }
         }
       };
@@ -1213,15 +1301,19 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Minor ErrandRunning", {
           text " Search your deck for up to 2 basic Energy cards, reveal them, and put them into your hand. Then, shuffle your deck."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Your deck is empty"
+          }
           onAttack {
-
+            deck.search(max:2, cardTypeFilter(BASIC_ENERGY))
+              .showToOpponent("Opponent chose the following Energy from their deck using $thisMove.")
+              .moveTo my.hand
+            shuffleDeck()
           }
         }
         move "Peck", {
           text "20 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1234,15 +1326,14 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "White Wind", {
           text "20 damage. If your opponent's Active Pokémon is an Evolution Pokémon, this attack does 70 more damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
+            if (defending.realEvolution) damage 70
           }
         }
         move "Speed Wing", {
           text "130 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 130
           }
@@ -1255,9 +1346,12 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Max Glide", {
           text "120 damage. You may search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 120
+            if (confirm("Search your deck for up to 2 cards to put in your hand?")) {
+              deck.search(min:1, max:2, { true }).moveTo my.hand
+              shuffleDeck()
+            }
           }
         }
       };
@@ -1268,17 +1362,17 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Jet Draft", {
           text "30 damage. Discard a Special Energy from your opponent's Active Pokémon."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 30
+            discardDefendingSpecialEnergy delegate
           }
         }
         move "Air Slash", {
           text "120 damage. Discard an Energy from this Pokémon."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 120
+            discardSelfEnergy C
           }
         }
       };
@@ -1289,7 +1383,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Peck", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1301,13 +1394,18 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         resistance F, MINUS30
         bwAbility "Assault Trumpet", {
           text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may look at the top 3 cards of your deck. Attach any number of basic Energy cards you find there to your Pokémon in any way you like. Shuffle the other cards back into your deck."
-          actionA {
+          onActivate { reason ->
+            if (reason == PLAY_FROM_HAND && self.evolution && bg.currentTurn == self.owner && confirm("Use $thisAbility?")) {
+              def peekedCards = my.deck.subList(0, 3)
+              def selectedEnergy = peekedCards.select(min:0, max:3, "Select Basic Energies to attach to your Pokémon", { it.cardTypes.contains BASIC_ENERGY })
+              selectedEnergy.each { attachEnergy my.all.select("Attach $it.name to?"), it }
+              shuffleDeck()
+            }
           }
         }
         move "Drill Peck", {
           text "50 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -1320,77 +1418,80 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Energy Cutoff", {
           text "60 damage. Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 60
+            flip { discardDefendingEnergy() }
           }
         }
         move "Loop Cannon", {
           text "160 damage. Return 2 Energy attached to this Pokémon to your hand."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 160
+            afterDamage {
+              if (self.cards.filterByType(ENERGY)) {
+                self.cards.filterByType(ENERGY)
+                  .select(count: 2, "Choose the energy to return to your hand")
+                  .moveTo(my.hand)
+              }
+            }
           }
         }
       };
       case GREAT_BALL_64:
-      return itemCard (this) {
-        text "Search your deck for a Basic Pokémon (excluding Pokémon-ex) and put it onto your Bench. Shuffle your deck afterward."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy(EmergingPowers.GREAT_BALL_93, this)
       case SWITCH_65:
-      return itemCard (this) {
-        text "Switch 1 of your Benched Pokémon with your Active Pokémon."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
-      case POKÉMON_CATCHER_66:
-      return itemCard (this) {
-        text "Switch your opponent's Active Pokémon with 1 of his or her Benched Pokémon."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy(FireRedLeafGreen.SWITCH_102, this)
+      case POKEMON_CATCHER_66:
+      return copy (KalosStarterSet.POKEMON_CATCHER_36, this)
       case MOOMOO_CHEESE_67:
       return itemCard (this) {
         text "Heal 30 damage from up to 2 of your Pokémon that have any Energy attached to them."
         onPlay {
+          2.times {
+            def tar = my.all.findAll { it.energyCards && it.numberOfDamageCounters }
+            if (!tar) return
+            def pcs = tar.select("Heal 30 damage from?", it == 0)
+            if (pcs) heal 30, pcs, TRAINER_CARD
+          }
         }
         playRequirement{
+          assert my.all.any { it.energyCards && it.numberOfDamageCounters } : "No Pokémon with Energy Cards that have damage"
         }
       };
       case HERO_S_MEDAL_68:
-      return itemCard (this) {
+      return pokemonTool (this) {
         text "The Pokémon VMAX this card is attached to gets -100 HP" +
           "and when it is Knocked Out by damage from an opponent's attack" +
           "that player takes 1 fewer Prize card."
-        onPlay {
+        def hpEff
+        def prizeEff
+        onPlay { reason ->
+          hpEff = getter GET_FULL_HP, self, { holder ->
+            if (self.pokemonVMAX) holder.object -= hp(100)
+          }
+          prizeEff = getter GET_GIVEN_PRIZES, self, { holder ->
+            if (self.pokemonVMAX && holder.object > 0) {
+              bc "$thisCard reduces prizes taken from KOing $self by one."
+              holder.object -= 1
+            }
+          }
         }
-        playRequirement{
+        onRemoveFromPlay {
+          hpEff.unregister()
+          prizeEff.unregister()
         }
       };
       case ROCKY_HELMET_69:
-      return itemCard (this) {
-        text "If the Pokémon this card is attached to is your Active Pokémon and is damaged by an opponent's attack (even if that Pokémon is Knocked Out)" +
-          "put 2 damage counters on the Attacking Pokémon."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy(NobleVictories.ROCKY_HELMET_94, this);
       case BEAUTY_70:
       return supporter (this) {
         text "This card can be played on the first turn of the first player. Draw 2 cards."
         onPlay {
+          draw 2
         }
         playRequirement{
+          assert my.deck : "Your deck is empty"
         }
       };
       case ALLISTER_71:
@@ -1398,8 +1499,11 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         text "Draw 3 cards. If you do" +
           "discard up to 3 cards from your hand. (You must discard at least 1 card.)"
         onPlay {
+          draw 3
+          my.hand.select(min:1, max:3, "Card(s) to discard?").discard()
         }
         playRequirement{
+          assert my.deck : "Your deck is empty"
         }
       };
       case OPAL_72:
@@ -1408,58 +1512,74 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           "you may search your deck for a card and put it into your hand. Then" +
           "shuffle your deck."
         onPlay {
+          def count = 0
+          flip 2, { count++ }
+          // TODO: Need clarification on "may" here.
+          //  Can be 0? Must be at least 1? Must be all and you just choose whether or not to look?
+          my.deck.search min:count, max:count, { true }
+          shuffleDeck()
         }
         playRequirement{
+          assert my.deck : "Your deck is empty"
         }
       };
       case MARNIE_73:
-      return supporter (this) {
-        text "Each player shuffles their hand and puts it on the bottom of their deck. If either player put any cards on the bottom of their deck in this way" +
-          "you draw 5 cards" +
-          "and your opponent draws 4 cards."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy(SwordShield.MARNIE_169, this)
       case AROMA_G_ENERGY_74:
-      return specialEnergy (this, [[C]]) {
-        text "This card provides Energy only while this card is attached to a Pokémon. The Pokémon this card is attached to recovers from all Special Conditions and can't be affected by any Special Conditions."
+      return specialEnergy (this, [[]]) {
+        text "This card provides [G] Energy only while this card is attached to a [G] Pokémon. The [G] Pokémon this card is attached to recovers from all Special Conditions and can't be affected by any Special Conditions."
+        def spcEff
         onPlay {reason->
+          spcEff = delayed {
+            before APPLY_SPECIAL_CONDITION, self, {
+              if (!self.types.contains(G)) return
+              bc "$thisCard.name prevents Special Conitions on $self"
+              prevent()
+            }
+            // TODO: Find out if this should prevent Special Conditions on [G] Pokémon it is attached to always
+            before null, self, {
+              if(!self.specialConditions || !self.types.contains(G)) return
+              bc "$thisCard.name clears Special Conditions on $self"
+              clearSpecialCondition self, SRC_SPENERGY
+            }
+          }
+          if(!self.specialConditions || !self.types.contains(G)) return
+          bc "$thisCard.name clears Special Conditions on $self"
+          clearSpecialCondition self, SRC_SPENERGY
+        }
+        getEnergyTypesOverride {
+          if (self.types.contains(G)) return [[G] as Set]
+          else return [[] as Set]
         }
         onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
+          spcEff.unregsiter()
         }
       };
       case STONE_F_ENERGY_75:
-      return specialEnergy (this, [[C]]) {
-        text "This card provides Energy only while this card is attached to a Pokémon. The Pokémon this card is attached to takes 20 less damage from your opponent's attacks (after applying Weakness and Resistance)."
+      return specialEnergy (this, [[]]) {
+        text "This card provides [F] Energy only while this card is attached to a [F] Pokémon. The [F] Pokémon this card is attached to takes 20 less damage from your opponent's attacks (after applying Weakness and Resistance)."
+        def dmgRedEff
         onPlay {reason->
+          dmgRedEff = delayed {
+            before APPLY_ATTACK_DAMAGES, {
+              if (!(ef.attacker.owner != self.owner && self.types.contains(F))) return
+              bg.dm().each {if(it.to == self && it.dmg.value && it.notNoEffect) {
+                bc "$thisCard.name -20"
+                it.dmg -= hp(20)
+              }}
+            }
+          }
         }
         onRemoveFromPlay {
+          dmgRedEff.unregister()
         }
-        onMove {to->
-        }
-        allowAttach {to->
+        getEnergyTypesOverride {
+          if (self.types.contains(F)) return [[F] as Set]
+          else return [[] as Set]
         }
       };
       case TWIN_ENERGY_76:
-      return specialEnergy (this, [[C]]) {
-        text "As long as this card is attached to a Pokémon that isn't a Pokémon V or a Pokémon-GX" +
-          "it provides Energy. If this card is attached to a Pokémon V or a Pokémon-GX" +
-          "it provides Energy instead."
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      };
+      return copy (RebelClash.TWIN_ENERGY_174, this)
       case ZARUDE_V_77:
       return copy (ZARUDE_V_13, this);
       case AMPHAROS_V_78:
@@ -1491,33 +1611,11 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       case OPAL_91:
       return copy (OPAL_72, this);
       case ORANGURU_92:
-      return basic (this, hp:HP120, type:C, retreatCost:2) {
-        weakness F
-        bwAbility "Monkey Wisdom", {
-          text "Once during your turn, you may switch a card from your hand with the top card of your deck."
-          actionA {
-          }
-        }
-        move "Whap Down", {
-          text "70 damage."
-          energyCost C, C, C
-          attackRequirement {}
-          onAttack {
-            damage 70
-          }
-        }
-      };
+      return copy (SwordShield.ORANGURU_148, this)
       case HERO_S_MEDAL_93:
       return copy (HERO_S_MEDAL_68, this);
       case CAPE_OF_TOUGHNESS_94:
-      return itemCard (this) {
-        text "The Basic Pokémon this card is attached to gets +50 HP" +
-          "except Pokémon-GX."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy (DarknessAblaze.CAPE_OF_TOUGHNESS_160, this)
       default:
       return null;
     }
