@@ -1481,6 +1481,9 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           hpEff.unregister()
           prizeEff.unregister()
         }
+        allowAttach {PokemonCardSet to->
+          (!to.pokemonVMAX || to.remainingHP > hp(100))
+        }
       };
       case ROCKY_HELMET_69:
       return copy(NobleVictories.ROCKY_HELMET_94, this);
