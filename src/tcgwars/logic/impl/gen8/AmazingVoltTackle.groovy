@@ -430,13 +430,13 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           onDeactivate {
             bg.em().run(new CheckAbilities())
           }
-          getterA IS_ABILITY_BLOCKED, {holder->
-            if (self.cards.any { it.name == "Memory Capsule" } && thisAbility.name != holder.effect.ability.name && holder.effect.ability instanceof BwAbility) {
-              holder.object = true
+          getterA GET_ABILITIES, BEFORE_LAST, {Holder holder->
+            if (self.cards.any { it.name == "Memory Capsule" } && holder.effect.target != self) {
+              holder.object.keySet().removeIf { it instanceof BwAbility }
             }
           }
-          getterA IS_GLOBAL_ABILITY_BLOCKED, {holder->
-            if (self.cards.any { it.name == "Memory Capsule" } && thisAbility.name != holder.effect.ability.name && holder.effect.ability instanceof BwAbility) {
+          getterA IS_GLOBAL_ABILITY_BLOCKED, {Holder holder->
+            if (self.cards.any { it.name == "Memory Capsule" }) {
               holder.object = true
             }
           }
