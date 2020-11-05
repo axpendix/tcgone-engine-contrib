@@ -1533,19 +1533,18 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           spcEff = delayed {
             before APPLY_SPECIAL_CONDITION, self, {
               if (!self.types.contains(G)) return
-              bc "$thisCard.name prevents Special Conitions on $self"
+              bc "$thisCard.name prevents ${(ef as ApplySpecialCondition).type} on $self"
               prevent()
             }
-            // TODO: Find out if this should prevent Special Conditions on [G] Pokémon it is attached to always
-            before null, self, {
-              if(!self.specialConditions || !self.types.contains(G)) return
-              bc "$thisCard.name clears Special Conditions on $self"
+            after ATTACH_ENERGY, {
+              if (self == null || !self.types.contains(G)) return
+              clearSpecialCondition self, SRC_SPENERGY
+            }
+            after ENERGY_SWITCH, {
+              if (self == null || !self.types.contains(G)) return
               clearSpecialCondition self, SRC_SPENERGY
             }
           }
-          if(!self.specialConditions || !self.types.contains(G)) return
-          bc "$thisCard.name clears Special Conditions on $self"
-          clearSpecialCondition self, SRC_SPENERGY
         }
         getEnergyTypesOverride {
           if (self.types.contains(G)) return [[G] as Set]
