@@ -983,7 +983,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         }
       };
       case COALOSSAL_VMAX_43:
-      return evolution (this, from:"Coalossal", hp:HP330, type:F, retreatCost:4) {
+      return evolution (this, from:"Coalossal V", hp:HP330, type:F, retreatCost:4) {
         weakness G
         move "Eruption Bomb", {
           text "40 damage. Discard the top card of your deck. If that card is an Energy card, this attack does 90 more damage. Then, attach that Energy card to this Pokémon."
@@ -1340,7 +1340,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         }
       };
       case TOGEKISS_VMAX_59:
-      return evolution (this, from:"Togekiss", hp:HP310, type:C, retreatCost:0) {
+      return evolution (this, from:"Togekiss V", hp:HP310, type:C, retreatCost:0) {
         weakness L
         resistance F, MINUS30
         move "Max Glide", {
