@@ -186,14 +186,14 @@ public enum PokemodFossil implements LogicCardInfo {
           weakness GRASS
           resistance FIGHTING, MINUS30
           pokemonPower "Prehistoric Power", {
-            text "No more Evolution cards can be played. This power stops working while Aerodactyl is Asleep, Confused, or Paralyzed."
+            text "As long as this Pokémon has a Pokémon Tool card attached to it, no more evolution cards can be played. This power stops working while Aerodactyl is affected by a Special Condition."
             delayedA {
-              if (self.cards.filterByType(POKEMON_TOOL)) {
               before PLAY_EVOLUTION, {
-                if(!self.specialConditions){
+                if(!self.specialConditions && self.cards.filterByType(POKEMON_TOOL)){
                   wcu "Prehistoric Power prevents you from playing Evolution cards!"
                   prevent()
                 }
+              }
               }
             }
             }
@@ -222,7 +222,7 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
           move "Blizzard", {
-            text "50 damage. Flip a coin. If heads, this attack does 10 damage to each of your opponent’s Benched Pokémon. If tails, this attack does 10 damage to each of your own Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+            text "50 damage. Flip a coin. If heads, this attack does 10 damage to each of your opponent's Benched Pokémon. If tails, this attack does 10 damage to each of your own Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost W, W, W, W
             attackRequirement {}
             onAttack {
@@ -245,7 +245,8 @@ public enum PokemodFossil implements LogicCardInfo {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           pokePower "Curse", {
-            text "Once during your turn (before your attack), you may move 1 damage counter from 1 of your opponent’s Pokémon to another (even if it would Knock Out the other Pokémon). This power can’t be used if Gengar is Asleep, Confused, or Paralyzed."
+            text "
+Once during your turn (before your attack), you may move 1 damage counter from 1 of your opponent's Pokémon to another (even if it would Knock Out the other Pokémon). This power can't be used if Gengar is affected by a Special Condition."
             actionA {
               checkLastTurn()
               assert opp.bench : "There is only one Pokémon"
@@ -259,7 +260,7 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
           move "Dark Mind", {
-            text "30 damage. If you opponent has any Benched Pokémon, choose 1 of them and this attack does 10 damage to it. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+            text "30 damage. If your opponent has any Benched Pokémon, choose 1 of them and this attack does 10 damage to it. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost P, C, C
             attackRequirement {}
             onAttack {
@@ -321,7 +322,7 @@ public enum PokemodFossil implements LogicCardInfo {
         return basic (this, hp:HP080, type:FIGHTING, retreatCost:1) {
           weakness PSYCHIC
           move "Stretch Kick", {
-            text "If you opponent has any Benched Pokémon, choose 1 of them and this attack does 20 damage to it. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+            text "If your opponent has any Benched Pokémon, choose 1 of them and this attack does 20 damage to it. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost F, C
             attackRequirement {
               assert opp.bench : "There is no Benched Pokémon"
@@ -344,12 +345,12 @@ public enum PokemodFossil implements LogicCardInfo {
         return evolution (this, from:"Drowzee", hp:HP090, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
           move "Prophecy", {
-            text "Look at up to 3 cards from the top of either player’s deck and rearrange them as you like."
+            text "Look at up to 3 cards from the top of either player's deck and rearrange them as you like."
             energyCost P
             foresight(3, delegate)
           }
           move "Dark Mind", {
-            text "30 damage. If you opponent has any Benched Pokémon, choose 1 of them and this attack does 10 damage to it. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+            text "30 damage. If your opponent has any Benched Pokémon, choose 1 of them and this attack does 10 damage to it. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost P, C, C
             attackRequirement {}
             onAttack {
@@ -372,7 +373,7 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
           move "Absorb", {
-            text "40 damage. Remove a number of damage counters from Kabutops equal to half the damage done to the Defending Pokémon (after applying Weakness and Resistance) (rounded up to the nearest 10). If Kabutops has fewer damage counters than that, remove all of them."
+            text "40 damage. Remove a number of damage counters from Kabutops equal to half the damage done to Defending Pokémon (after applying Weakness and Resistance) (rounded up to the nearest 10). If Kabutops has fewer damage counters than that, remove all of them."
             energyCost F, F, F, C
             attackRequirement {}
             onAttack {
@@ -386,12 +387,12 @@ public enum PokemodFossil implements LogicCardInfo {
         return basic (this, hp:HP080, type:WATER, retreatCost:2) {
           weakness LIGHTNING
           move "Water Gun", {
-            text "10+ damage. Does 10 damage plus 10 more damage for each [W] Energy attached to Lapras but not used to pay for this attack’s Energy cost. You can’t add more than 20 damage in this way."
+            text "10+ damage. Does 10 damage plus 10 more damage for each [W] E."
             energyCost W
             attackRequirement {}
             onAttack {
               damage 10
-              extraEnergyDamage(2,hp(10),W,thisMove)
+              extraEnergyDamage(2,hp(10),W,thisMove)nergy attached to Lapras but not used to pay for this attack’s Energy cost. You can’t add more than 20 damage in this way
 
             }
           }
@@ -440,7 +441,7 @@ public enum PokemodFossil implements LogicCardInfo {
         return evolution (this, from:"Pikachu", hp:HP090, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
           move "Gigashock", {
-            text "30 damage. Choose 3 of your opponent’s Benched Pokémon and this attack does 10 damage to each of them. (Don’t apply Weakness and Resistance for Benched Pokémon.) If your opponent has fewer than 3 Benched Pokémon, do that damage to each of them."
+            text "30 damage. Choose 3 of your opponent's Benched Pokémon and this attack does 10 damage to each of them. (Don't apply Weakness and Resistance for Benched Pokémon.) If your opponent has fewer than 3 Benched Pokémon, do the damage to each of them."
             energyCost L, L, L, C
             attackRequirement {}
             onAttack {
@@ -459,7 +460,7 @@ public enum PokemodFossil implements LogicCardInfo {
       case ZAPDOS_15:
         return basic (this, hp:HP080, type:LIGHTNING, retreatCost:2) {
           move "Thunderstorm", {
-            text "40 damage. For each of your opponent’s Benched Pokémon, flip a coin. If heads, this attack does 20 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.) Then, Zapdos does 10 damage times the number of tails to itself."
+            text "40 damage. For each of your opponent's Benched Pokémon, flip a coin. If heads, this attack does 20 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.) Then, Zapdos does 10 damage times the number of tails to itself."
             energyCost L, L, L, L
             attackRequirement {}
             onAttack {
@@ -514,7 +515,7 @@ public enum PokemodFossil implements LogicCardInfo {
         return evolution (this, from:"Ekans", hp:HP060, type:GRASS, retreatCost:2) {
           weakness PSYCHIC
           move "Terror Strike", {
-            text "Flip a coin. If heads and if your opponent has any Benched Pokémon, he or she chooses 1 of them and switches it with the Defending Pokémon. (Do the damage before switching the Pokémon.)"
+            text "20 damage. Flip a coin. If heads and if your opponent has any Benched Pokémon, he or she chooses 1 of them and switches it with the Defending Pokémon. (Do the damage before switching the Pokémon.)"
             energyCost G
             attackRequirement {}
             onAttack {
@@ -596,7 +597,7 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
           move "Leech Life", {
-            text "20 damage. Remove a number of damage counters from Golbat equal to the damage done to the Defending Pokémon (after applying Weakness and Resistance). If Golbat has fewer damage counters than that, remove all of them."
+            text "20 damage. Remove a number of damage counters from Golbat equal to the damage done to the Defending Pokémon (after applying Weakness and Resistance). If Golbat has fewer damage counters than that, remove all of them.Remove a number of damage counters from Golbat equal to the damage done to the Defending Pokémon (after applying Weakness and Resistance). If Golbat has fewer damage counters than that, remove all of them."
             energyCost G, C
             attackRequirement {}
             onAttack {
@@ -610,7 +611,7 @@ public enum PokemodFossil implements LogicCardInfo {
         return evolution (this, from:"Psyduck", hp:HP080, type:WATER, retreatCost:1) {
           weakness LIGHTNING
           move "Psyshock", {
-            text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+            text "10 damage.  Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost P
             attackRequirement {}
             onAttack {
@@ -641,7 +642,7 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
           move "Selfdestruct", {
-            text "100 damage. Does 20 damage to each Pokémon on each player’s Bench. (Don’t apply Weakness and Resistance for Benched Pokémon.) Golem does 100 damage to itself."
+            text "100 damage. Does 20 damage to each Pokémon on each player's Bench. (Don't apply Weakness and Resistance for Benched Pokémon.) Golem does 100 damage to itself."
             energyCost F, F, F, F
             attackRequirement {}
             onAttack {
@@ -657,7 +658,7 @@ public enum PokemodFossil implements LogicCardInfo {
         return evolution (this, from:"Geodude", hp:HP070, type:FIGHTING, retreatCost:2) {
           weakness GRASS
           move "Harden", {
-            text "During your opponent’s next turn, whenever 30 of less damage is done to Graveler (after applying Weakness and Resistance), prevent that damage. (Any other effects of attacks still happen.)"
+            text "During your opponent's next turn, whenever 30 or less damage is done to Graveler (after applying Weakness and Resistance), prevent that damage. (Any other effects of attacks still happen.)"
             energyCost F, F
             attackRequirement {}
             onAttack {
@@ -760,7 +761,7 @@ public enum PokemodFossil implements LogicCardInfo {
         return evolution (this, from:"Horsea", hp:HP070, type:WATER, retreatCost:1) {
           weakness LIGHTNING
           move "Water Gun", {
-            text "20+ damage. Does 20 damage plus 10 more damage for each [W] Energy attached to Seadra but not use dto pay for this attack’s Energy cost. You can’t add more than 20 damage in this way."
+            text "20+ damage. Does 20 damage plus 10 more damage for each [W] Energy attached to Seadra but not used to pay for this attack's Energy cost. You can't add more than 20 damage in this way."
             energyCost W
             attackRequirement {}
             onAttack {
@@ -769,7 +770,7 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
           move "Agility", {
-            text "20 damage. Flip a coin. If heads, during your opponent’s next turn prevent all effects of attacks, including damage, done to Seadra."
+            text "20 damage. Flip a coin. If heads, during your opponent's next turn, prevent all effects of attacks, including damage, done to Seadra."
             energyCost W, C, C
             attackRequirement {}
             onAttack {
@@ -796,7 +797,7 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
           move "Psyshock", {
-            text "20 damage. Flip a coin. If heads, the defending Pokémon is now Paralyzed."
+            text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost P, C
             attackRequirement {}
             onAttack {
@@ -888,7 +889,7 @@ public enum PokemodFossil implements LogicCardInfo {
       case KRABBY_51:
         return basic (this, hp:HP050, type:WATER, retreatCost:2) {
           move "Call for Family", {
-            text "Search your deck for a Basic Pokémon named Krabby and put it onto your Bench. Shuffle your deck afterward. (You can’t use this attack if your Bench if full.)"
+            text "Search your deck for a Basic Pokémon named Krabby and put it onto your Bench. Shuffle your deck afterward. (You can't use this attack if your Bench is full.)"
             energyCost W
             attackRequirement {
               assert deck.notEmpty
@@ -919,11 +920,12 @@ public enum PokemodFossil implements LogicCardInfo {
             text "Your opponent plays with his or her hand face up. This power stops working while Omanyte is affected by a Special Condition."
             actionA {
               //TODO: Make cards visible, even to spectators.
+              // could you potentialy make it say the hand in chat?
               opp.hand.shuffledCopy().showToMe("opponent's hand")
             }
           }
           move "Water Gun", {
-            text "10+ damage. Does 10 damage plus 10 more damage for each [W] Energy attached to Omanyte but not used to pay for this attack’s Energy cost. You can’t add more than 20 damage in this way."
+            text "10+ damage. Does 10 damage plus 10 more damage for each [W] Energy attached to Omanyte but not used to pay for this attack's Energy cost. You can't add more than 20 damage in this way."
             energyCost W
             attackRequirement {}
             onAttack {
