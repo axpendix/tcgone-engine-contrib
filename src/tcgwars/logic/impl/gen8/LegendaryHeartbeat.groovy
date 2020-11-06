@@ -292,11 +292,11 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       return basic (this, hp:HP080, type:G, retreatCost:1) {
         weakness R
         move "Uturn", {
-          text "10 damage. Switch this Pokémon with 1 of your Benched Pokémon."
+          text "10 damage. You may switch this Pokémon with 1 of your Benched Pokémon."
           energyCost C
           onAttack {
             damage 10
-            switchYourActive()
+            switchYourActive may:true
           }
         }
         move "Cutting Wind", {
@@ -311,11 +311,11 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       return evolution (this, from:"Yanma", hp:HP130, type:G, retreatCost:0) {
         weakness R
         move "Uturn", {
-          text "50 damage. Switch this Pokémon with 1 of your Benched Pokémon."
+          text "50 damage. You may switch this Pokémon with 1 of your Benched Pokémon."
           energyCost C, C
           onAttack {
             damage 50
-            switchYourActive()
+            switchYourActive may:true
           }
         }
         move "Cutting Wind", {
