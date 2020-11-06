@@ -1577,7 +1577,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           dmgRedEff.unregister()
         }
         getEnergyTypesOverride {
-          if (self.types.contains(F)) return [[F] as Set]
+          if (self != null) return [[F] as Set]
           else return [[] as Set]
         }
       };
