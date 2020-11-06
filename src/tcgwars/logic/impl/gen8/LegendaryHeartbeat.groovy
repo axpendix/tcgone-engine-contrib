@@ -1234,7 +1234,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             assert my.hand || my.deck : "Both hand and deck are empty"
           }
           onAttack {
-            my.hand.moveTo my.deck
+            my.hand.moveTo hidden:true, my.deck
             shuffleDeck()
             draw 6
           }
