@@ -1434,7 +1434,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
               // TODO: Make a static method to do this
               if (self.cards.energyCount())
                 if (self.cards.energyCount() <= 2) {
-                  self.cards.filterByEnergyType(W).moveTo my.hand
+                  self.cards.filterByType(ENERGY).moveTo my.hand
                 } else {
                   def targetCount = Math.min self.cards.energyCount(), 2
                   def finalCount = 0
