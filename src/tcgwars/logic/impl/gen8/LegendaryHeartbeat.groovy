@@ -1431,11 +1431,26 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           onAttack {
             damage 160
             afterDamage {
-              if (self.cards.filterByType(ENERGY)) {
-                self.cards.filterByType(ENERGY)
-                  .select(count: 2, "Choose the energy to return to your hand")
-                  .moveTo(my.hand)
-              }
+              // TODO: Make a static method to do this
+              if (self.cards.energyCount())
+                if (self.cards.energyCount() <= 2) {
+                  self.cards.filterByEnergyType(W).moveTo my.hand
+                } else {
+                  def targetCount = Math.min self.cards.energyCount(), 2
+                  def finalCount = 0
+                  while (self.cards.energyCount() > 0 && finalCount < targetCount) {
+                    def info = "Select Energy to return to your hand."
+                    def energy = self.cards.filterByType(ENERGY).select(info)
+                    def energyCount = 1
+                    if (energy.energyCount() > 1) {
+                      def choices = 1..energy.energyCount()
+                      def choiceInfo = "How many Energy do you want this card to count as?"
+                      energyCount = choose(choices, choiceInfo)
+                    }
+                    finalCount += energyCount
+                    energy.moveTo my.hand
+                  }
+                }
             }
           }
         }
