@@ -1113,7 +1113,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         bwAbility "Magnetic Field Floating", {
           text "All of your Pokémon have no Retreat Cost."
           getterA GET_RETREAT_COST, { h ->
-            if (h.effect.target.owner == self.owner) h.object.clear()
+            if (h.effect.target.owner == self.owner) h.object = 0
           }
         }
         move "Leg Quake", {
