@@ -652,7 +652,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       return evolution (this, from:"Clefairy", hp:HP100, type:P, retreatCost:1) {
         weakness M
         bwAbility "Moon's Blessing", {
-          // TODO: Does it only cure exactly 1 Special Condition?
           text "Once during your turn, you may heal 20 damage from your Active Pokémon with any Energy attached, and it recovers from a Special Condition."
           actionA {
             checkLastTurn()
@@ -660,7 +659,10 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             assert active.numberOfDamageCounters || active.specialConditions : "Active Pokémon is not damaged and is not affected by a Special Condition"
             powerUsed()
             heal 20, active
-            if(active.specialConditions) clearSpecialCondition active, SRC_ABILITY, choose(active.specialConditions.toList(), "Clear")
+            if(active.specialConditions) {
+              def conditionToCure = [choose(active.specialConditions.toList(), "Clear") as SpecialConditionType]
+              clearSpecialCondition(active, SRC_ABILITY, conditionToCure)
+            }
           }
         }
         move "Magical Shot", {
