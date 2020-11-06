@@ -496,13 +496,34 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         weakness L
         bwAbility "Torrent Awakening", {
           text "If this Pokémon has a Memory Capsule card attached to it, each player's Pokémon has no Abilities."
-          actionA {
+          onActivate {
+            bg.em().run(new CheckAbilities())
+          }
+          onDeactivate {
+            bg.em().run(new CheckAbilities())
+          }
+          getterA GET_ABILITIES, BEFORE_LAST, {Holder holder->
+            if (self.cards.any { it.name == "Memory Capsule" } && holder.effect.target != self) {
+              holder.object.keySet().removeIf { it instanceof BwAbility }
+            }
+          }
+          getterA IS_GLOBAL_ABILITY_BLOCKED, {Holder holder->
+            if (self.cards.any { it.name == "Memory Capsule" }) {
+              holder.object = true
+            }
+          }
+          delayedA {
+            after PLAY_POKEMON_TOOL, {
+              bg.em().run(new CheckAbilities())
+            }
+            after DISCARD, {
+              if (ef.card.name == "Memory Capsule") bg.em().run(new CheckAbilities())
+            }
           }
         }
         move "Aurora Beam", {
           text "70 damage."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 70
           }
@@ -512,11 +533,11 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return basic (this, hp:HP100, type:W, retreatCost:3) {
         weakness L
         move "Hydro Pump", {
-          text "10 damage. This attack does 20 more damage for each Energy attached to this Pokémon."
+          text "10+ damage. This attack does 20 more damage for each Energy attached to this Pokémon."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 10
+            damage 20 * self.getEnergyCount(bg)
           }
         }
       };
@@ -525,15 +546,21 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         weakness L
         bwAbility "Water Veil", {
           text "Whenever you attach an Energy card from your hand to this Pokémon, it recovers from all Special Conditions."
-          actionA {
+          delayedA {
+            after ATTACH_ENERGY, self, {
+              if (ef.reason == PLAY_FROM_HAND && self.specialConditions) {
+                bc "$thisAbility activates"
+                clearSpecialCondition self, SRC_ABILITY
+              }
+            }
           }
         }
         move "Hydro Pump", {
-          text "10 damage. This attack does 40 more damage for each Energy attached to this Pokémon."
+          text "10+ damage. This attack does 40 more damage for each Energy attached to this Pokémon."
           energyCost C, C, C, C
-          attackRequirement {}
           onAttack {
             damage 10
+            damage 40 * self.getEnergyCount(bg)
           }
         }
       };
@@ -543,7 +570,6 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Water Gun", {
           text "10 damage."
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -551,7 +577,6 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Seashell Attack", {
           text "20 damage."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -563,7 +588,6 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Water Gun", {
           text "20 damage."
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -571,9 +595,12 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Aqua Wash", {
           text "50 damage. You may put an Energy attached to your opponent's Active Pokémon into their hand."
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 50
+            if (!defending.cards.filterByType(ENERGY)) return
+            def info = "You may select the Energy to return to the opponent's hand."
+            def selectedEnergy = defending.cards.filterByType(ENERGY).select min:0, info
+            if (selectedEnergy) selectedEnergy.moveTo opp.hand
           }
         }
       };
@@ -582,15 +609,17 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         weakness L
         bwAbility "Shell Armor", {
           text "This Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
-          actionA {
-          }
+          reducedDamageFromAttacksAbility self, 30, delegate
         }
         move "Aqua Wash", {
           text "120 damage. You may put 2 Energy attached to your opponent's Active Pokémon into their hand."
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 120
+            if (!defending.cards.filterByType(ENERGY)) return
+            def info = "You may select up to 2 Energy to return to the opponent's hand."
+            def selectedEnergy = defending.cards.filterByType(ENERGY).select min:0, max:2, info
+            if (selectedEnergy) selectedEnergy.moveTo opp.hand
           }
         }
       };
@@ -600,17 +629,17 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Freezing Headbutt", {
           text "50 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 50
+            flipThenApplySC PARALYZED
           }
         }
         move "Frozen Slice", {
           text "190 damage. This Pokémon also does 30 damage to itself."
           energyCost W, W, C
-          attackRequirement {}
           onAttack {
             damage 190
+            damage 30, self
           }
         }
       };
@@ -620,9 +649,9 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Max Snowfall", {
           text "200 damage. This attack also does 30 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W, W, W, W
-          attackRequirement {}
           onAttack {
             damage 200
+            opp.bench.each { damage 30, it }
           }
         }
       };
@@ -632,9 +661,9 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Jaw Lock", {
           text "40 damage. During your opponent's next turn, the Defending Pokémon can't retreat."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 40
+            cantRetreat defending
           }
         }
       };
@@ -644,15 +673,15 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Vise Wave", {
           text "80 damage. If you played Nessa from your hand during this turn, your opponent's Active Pokémon is now Paralyzed."
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 80
+            if (bg.em().retrieveObject("NESSA") != bg.turnCount) return
+            apply PARALYZED
           }
         }
         move "Surf", {
           text "140 damage."
           energyCost W, C, C, C
-          attackRequirement {}
           onAttack {
             damage 140
           }
@@ -663,11 +692,26 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         weakness L
         resistance F, MINUS30
         move "Continuous Gulp Missile", {
-          text "60 damage. Discard any number of Arrokuda from your Bench. This attack does 60 damage for each card you discarded in this way."
+          text "60x damage. Discard any number of Arrokuda from your Bench. This attack does 60 damage for each card you discarded in this way."
           energyCost C, C
-          attackRequirement {}
+          attackRequirement {
+            assert my.bench.any { it.name == "Arrokuda" } : "No Arrokuda on your bench"
+          }
           onAttack {
-            damage 60
+            def count = 0
+            while (true) {
+              def pcs = my.bench.select("Arrokuda to discard?", false)
+              if (!pcs) break
+              if (pcs.name != "Arrokuda") {
+                wcu "Not an Arrokuda"
+                continue
+              }
+              pcs.cards.discard()
+              removePCS(pcs)
+              count++
+              if (!my.bench.any { it.name == "Arrokuda" }) break
+            }
+            damage 60 * count
           }
         }
       };
@@ -677,15 +721,18 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Flock", {
           text " Search your deck for up to 2 Arrokuda and put them onto your Bench. Then, shuffle your deck."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Deck is empty"
+            assert my.bench.notFull : "Bench is full"
+          }
           onAttack {
-
+            my.deck.search(max:2, {it.name == "Arrokuda"}).each { benchPCS it }
+            shuffleDeck()
           }
         }
         move "Peck", {
           text "20 damage."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -697,15 +744,18 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Target Skewer", {
           text " This attack does 20 damage to 1 of your opponent's Benched Pokémon for each damage counter on that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W
-          attackRequirement {}
+          attackRequirement {
+            assert opp.bench : "Opponent's bench is empty"
+            assert opp.bench.any { it.numberOfDamageCounters } : "No Pokémon on opponent's bench are damaged"
+          }
           onAttack {
-
+            def pcs = opp.bench.select "Deal 20 damage to which Pokémon for each damage counter already on it?"
+            damage 20 * pcs.numberOfDamageCounters
           }
         }
         move "Jet Headbutt", {
           text "60 damage."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 60
           }

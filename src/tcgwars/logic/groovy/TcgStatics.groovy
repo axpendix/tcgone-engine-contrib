@@ -706,6 +706,19 @@ class TcgStatics {
       }
     }
   }
+  static reducedDamageFromAttacksAbility(PokemonCardSet self, int amount, Object delegate) {
+    // TODO: Add additional params for similar abilities if it makes sense to
+    delegate.delayedA {
+      before APPLY_ATTACK_DAMAGES, {
+        bg.dm().each {
+          if (it.to == self && it.dmg.value && it.notNoEffect) {
+            bc "$delegate.name -$amount"
+            it.dmg -= hp(amount)
+          }
+        }
+      }
+    }
+  }
   static preventAllEffectsFromPokemonExNextTurn(Move thisMove, PokemonCardSet self){
     delayed {
       before null, self, Source.ATTACK, {
