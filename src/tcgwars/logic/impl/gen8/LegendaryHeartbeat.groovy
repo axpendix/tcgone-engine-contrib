@@ -1181,13 +1181,13 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         weakness R
         resistance G, MINUS30
         move "Clock Back", {
-          text " Attach up to 2 Energy cards from your discard pile to 1 of your Pokémon."
+          text " Attach up to 2 [M] Energy cards from your discard pile to 1 of your Pokémon."
           energyCost C
           attackRequirement {
-            assert my.discard.any { it.cardTypes.contains ENERGY } : "No Energy cards in discard pile"
+            assert my.discard.filterByEnergyType(M) : "No [M] Energy cards in discard pile"
           }
           onAttack {
-            attachEnergyFrom max:2, my.discard, my.all
+            attachEnergyFrom max:2, type:M, my.discard, my.all
           }
         }
         move "Flash of Destruction", {
