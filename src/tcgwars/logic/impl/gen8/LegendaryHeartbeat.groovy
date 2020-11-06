@@ -1519,9 +1519,8 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         onPlay {
           def count = 0
           flip 2, { count++ }
-          // TODO: Need clarification on "may" here.
-          //  Can be 0? Must be at least 1? Must be all and you just choose whether or not to look?
-          my.deck.search min:count, max:count, { true }
+          if (count == 0) return
+          my.deck.search(min:count, max:count, { true }).moveTo my.hand
           shuffleDeck()
         }
         playRequirement{
