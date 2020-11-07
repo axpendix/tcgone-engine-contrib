@@ -402,15 +402,16 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Collect", {
           text " Draw a card."
           energyCost R
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Deck is empty"
+          }
           onAttack {
-
+            draw 1
           }
         }
         move "Flare", {
           text "30 damage."
           energyCost R, R
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -422,7 +423,6 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Slash", {
           text "20 damage."
           energyCost R
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -430,9 +430,9 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Wild Blaze", {
           text "60 damage. Discard the top 3 cards of your deck."
           energyCost R, R
-          attackRequirement {}
           onAttack {
             damage 60
+            if (my.deck) my.deck.subList(0, 3).discard()
           }
         }
       };
@@ -442,14 +442,20 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         bwAbility "Battle Sense", {
           text "Once during your turn, you may look at the top 3 cards of your deck and put 1 of them into your hand. Discard the other cards."
           actionA {
+            checkLastTurn()
+            assert my.deck : "Deck is empty"
+            powerUsed()
+            def viewed = my.deck.subList 0, 3
+            viewed.select().moveTo my.hand
+            viewed.discard()
           }
         }
         move "King Blaze", {
           text "100 damage. This attack does 50 more damage for each Leon in your discard pile."
           energyCost R, R
-          attackRequirement {}
           onAttack {
             damage 100
+            damage 50 * my.discard.findAll { it.name == "Leon" }.size()
           }
         }
       };
@@ -458,13 +464,34 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         weakness W
         bwAbility "Scorching Awakening", {
           text "If this Pokémon has a Memory Capsule card attached to it, each player's Pokémon has no Abilities."
-          actionA {
+          onActivate {
+            bg.em().run(new CheckAbilities())
+          }
+          onDeactivate {
+            bg.em().run(new CheckAbilities())
+          }
+          getterA GET_ABILITIES, BEFORE_LAST, {Holder holder->
+            if (self.cards.any { it.name == "Memory Capsule" } && holder.effect.target != self) {
+              holder.object.keySet().removeIf { it instanceof BwAbility }
+            }
+          }
+          getterA IS_GLOBAL_ABILITY_BLOCKED, {Holder holder->
+            if (self.cards.any { it.name == "Memory Capsule" }) {
+              holder.object = true
+            }
+          }
+          delayedA {
+            after PLAY_POKEMON_TOOL, {
+              bg.em().run(new CheckAbilities())
+            }
+            after DISCARD, {
+              if (ef.card.name == "Memory Capsule") bg.em().run(new CheckAbilities())
+            }
           }
         }
         move "Fire Mane", {
           text "100 damage."
           energyCost R, R, C
-          attackRequirement {}
           onAttack {
             damage 100
           }
@@ -476,15 +503,16 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Yawn", {
           text " Your opponent's Active Pokémon is now Asleep."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert !defending.isSPC(ASLEEP) : "$defending is already asleep"
+          }
           onAttack {
-
+            apply ASLEEP
           }
         }
         move "Flare", {
           text "30 damage."
           energyCost R, C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -496,7 +524,6 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Heat Blast", {
           text "60 damage."
           energyCost R, C, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -504,9 +531,9 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Bright Flame", {
           text "180 damage. Discard 2 Energy from this Pokémon."
           energyCost R, R, C, C
-          attackRequirement {}
           onAttack {
             damage 180
+            discardSelfEnergy C, C
           }
         }
       };
@@ -517,17 +544,20 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Fast Flight", {
           text " If you go first, you can use this attack on your first turn. Discard your hand and draw 6 cards."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Deck is empty"
+          }
           onAttack {
-
+            my.hand.discard()
+            draw 6
           }
         }
         move "Bright Wing", {
           text "160 damage. Discard an Energy from this Pokémon."
           energyCost R, R, C
-          attackRequirement {}
           onAttack {
             damage 160
+            discardSelfEnergy C
           }
         }
       };
