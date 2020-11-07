@@ -1,4 +1,7 @@
-package tcgwars.logic.impl.gen8;
+package tcgwars.logic.impl.gen8
+
+import tcgwars.logic.effect.gm.PlayCard
+import tcgwars.logic.effect.gm.PlayTrainer;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -125,8 +128,8 @@ public enum AmazingVoltTackle implements LogicCardInfo {
   LOUDRED_88 ("Loudred", "88", Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
   EXPLOUD_89 ("Exploud", "89", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]),
   DRONE_ROTOM_90 ("Drone Rotom", "90", Rarity.UNCOMMON, [TRAINER, ITEM]),
-  TELEPHOTO_SCOPE_91 ("Telephoto Scope", "91", Rarity.UNCOMMON, [TRAINER, ITEM]),
-  MEMORY_CAPSULE_92 ("Memory Capsule", "92", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  TELEPHOTO_SCOPE_91 ("Telephoto Scope", "91", Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER, ITEM]),
+  MEMORY_CAPSULE_92 ("Memory Capsule", "92", Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER, ITEM]),
   BEA_93 ("Bea", "93", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   LEON_94 ("Leon", "94", Rarity.HOLORARE, [TRAINER, SUPPORTER]),
   LEAGUE_STAFF_95 ("League Staff", "95", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
@@ -154,8 +157,8 @@ public enum AmazingVoltTackle implements LogicCardInfo {
   LEON_117 ("Leon", "117", Rarity.HOLORARE, [TRAINER, SUPPORTER]),
   NESSA_118 ("Nessa", "118", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   GALARIAN_OBSTAGOON_119 ("Galarian Obstagoon", "119", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _DARKNESS_]),
-  TELEPHOTO_SCOPE_120 ("Telephoto Scope", "120", Rarity.UNCOMMON, [TRAINER, ITEM]),
-  MEMORY_CAPSULE_121 ("Memory Capsule", "121", Rarity.UNCOMMON, [TRAINER, ITEM]);
+  TELEPHOTO_SCOPE_120 ("Telephoto Scope", "120", Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER, ITEM]),
+  MEMORY_CAPSULE_121 ("Memory Capsule", "121", Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER, ITEM]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -215,7 +218,6 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Ram", {
           text "10 damage."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -227,7 +229,6 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Razor Leaf", {
           text "40 damage."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -237,16 +238,46 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return evolution (this, from:"Nuzleaf", hp:HP150, type:G, retreatCost:3) {
         weakness R
         bwAbility "Tengu Double", {
+          /* FIXME: In theory just ChangeImplementation should work here and simplify everything.
+               In Practice, just using a ChangeImplementation or trying to use a new Play* effect both use the old
+               implementation PlayRequirements for checking if the card can be played. I'm pretty sure it also used the
+               old onPlay, but that should be verified as this was a long implementation session and I'm not entirely
+               sure anymore.
+           */
           text "The effect of each Supporter card in your opponent's hand becomes 'Draw 3 cards'."
-          actionA {
+          delayedA {
+            def playedFromOppHand = false
+            def oldImpl = null
+            def newImpl = null
+            before PLAY_CARD, {
+              if (self.owner.opposite.pbg.hand.contains(ef.cardToPlay)) playedFromOppHand = true
+            }
+            before PLAY_TRAINER, {
+              if (!ef.supporter) return
+              oldImpl = ef.cardToPlay
+              newImpl = supporter(new CustomCardInfo(ef.cardToPlay.customInfo).setCardTypes(TRAINER, SUPPORTER), "Test") {
+                onPlay { draw 3 }
+                playRequirement { assert my.deck : "Deck is empty" }
+              }
+              bg.em().run(new ChangeImplementation(newImpl, oldImpl))
+              // FIXME
+              newImpl.player = oldImpl.player
+              ef.cardToPlay = newImpl
+            }
+            after PLAY_TRAINER, {
+              playedFromOppHand = false
+              bg.em().run(new ChangeImplementation(oldImpl, newImpl))
+              newImpl = null
+              oldImpl = null
+            }
           }
         }
         move "Fan Tornado", {
           text "110 damage. You may have your opponent switch their Active Pokémon with 1 of their Benched Pokémon."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 110
+            whirlwind()
           }
         }
       };
@@ -256,9 +287,9 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Absorb", {
           text "10 damage. Heal 10 damage from this Pokémon."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 10
+            heal 10, self
           }
         }
       };
@@ -267,15 +298,20 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         weakness R
         bwAbility "Shell Cast-off", {
           text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may search your deck for a Shedinja and put it onto your Bench. Then, shuffle your deck."
-          actionA {
+          onActivate { reason ->
+            if (reason == PLAY_FROM_HAND && self.evolution && bg.currentTurn == self.owner && my.bench.notFull && deck.notEmpty && confirm("Use $thisAbility?")) {
+              def shedinja = deck.search { it.name == "Shedinja" }.first()
+              if (shedinja) benchPCS(shedinja)
+              shuffleDeck()
+            }
           }
         }
         move "Absorb", {
           text "30 damage. Heal 30 damage from this Pokémon."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 30
+            heal 30, self
           }
         }
       };
@@ -285,15 +321,16 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Synthesis", {
           text " Search your deck for a Energy card and attach it to 1 of your Pokémon. Then, shuffle your deck."
           energyCost G
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Deck is empty"
+          }
           onAttack {
-
+            attachEnergyFrom my.deck, my.all
           }
         }
         move "Razor Leaf", {
           text "50 damage."
           energyCost G, G, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -305,7 +342,6 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Razor Leaf", {
           text "50 damage."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -313,9 +349,9 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Take Down", {
           text "160 damage. This Pokémon also does 30 damage to itself."
           energyCost G, G, C
-          attackRequirement {}
           onAttack {
             damage 160
+            damage 30, self
           }
         }
       };
@@ -325,17 +361,17 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Strafe", {
           text "20 damage. You may switch this Pokémon with 1 of your Benched Pokémon."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 20
+            switchYourActive may:true
           }
         }
         move "Mystery Wave", {
-          text "50 damage. This attack does 30 more damage times the amount of Energy attached to your opponent's Active Pokémon."
+          text "50+ damage. This attack does 30 more damage times the amount of Energy attached to your opponent's Active Pokémon."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 50
+            damage 30 * defending.getEnergyCount(bg)
           }
         }
       };
@@ -345,14 +381,18 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         bwAbility "Mysterious Beam", {
           text "Once during your turn, if this Pokémon is in the Active Spot, you may put 1 damage counter on each of your opponent's Pokémon."
           actionA {
+            checkLastTurn()
+            assert self.active : "$self is not your active Pokémon"
+            powerUsed()
+            opp.all.each { directDamage 10, it, SRC_ABILITY }
           }
         }
         move "GMax Wave", {
-          text "50 damage. This attack does 50 more damage times the amount of Energy attached to your opponent's Active Pokémon."
+          text "50+ damage. This attack does 50 more damage times the amount of Energy attached to your opponent's Active Pokémon."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 50
+            damage 50 * defending.getEnergyCount(bg)
           }
         }
       };
@@ -972,10 +1012,20 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       };
       case SHEDINJA_42:
       return basic (this, hp:HP030, type:P, retreatCost:1) {
+        globalAbility {
+          delayed {
+            def abilityUsed = false
+            before PLAY_CARD, {
+              if (ef.cardToPlay == thisCard) {
+                def abilityName = "Shell Bind"
+                wcu("$abilityName prevents playing $thisCard")
+                prevent()
+              }
+            }
+          }
+        }
         bwAbility "Shell Bind", {
           text "This card can only be put into play with the effect of Ninjask's Cast-off Shell Ability (you can't play this card when you are setting up to play)."
-          actionA {
-          }
         }
         move "Squeeze Life", {
           text " Put damage counters on your opponent's Active Pokémon until its remaining HP is 10."
