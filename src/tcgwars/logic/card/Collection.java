@@ -260,7 +260,7 @@ public enum Collection {
   }
 
   public static Set<Collection> getLiveExpansions() {
-    Set<Collection> expansions = new HashSet<>();
+    Set<Collection> expansions = new TreeSet<>();
     for (GameType gameType : GameType.values()) {
       for (GameFormat gameFormat : gameType.getAvailableFormats()) {
         expansions.addAll(gameFormat.getIncludedCollections());
