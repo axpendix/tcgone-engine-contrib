@@ -176,7 +176,7 @@ public enum Collection {
 
   // DEV/TESTING ONLY
   LEGENDARY_HEARTBEAT(1010, "JS3A", "gen8.LegendaryHeartbeat"),
-  AMAZING_VOLT_TACKLE(1010, "JS4", "gen8.AmazingVoltTackle"),
+  AMAZING_VOLT_TACKLE(1011, "JS4", "gen8.AmazingVoltTackle"),
 
   ;
 
