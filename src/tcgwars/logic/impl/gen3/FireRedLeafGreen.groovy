@@ -2577,7 +2577,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             //Errata'd, original text said "each Energy you discarded"
             energyCost L, C
             onAttack {
-              additionalDamageByDiscardingEnergyFromPokemon 30, 20
+              additionalDamageByDiscardingCardTypeFromPokemon 30, 20, ENERGY
             }
           }
 
