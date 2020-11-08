@@ -1106,17 +1106,18 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Zen Spoon", {
           text " Put 3 damage counters on your opponent's Pokémon in any way you like."
           energyCost P
-          attackRequirement {}
           onAttack {
-
+            putDamageCountersOnOpponentsPokemon 3
           }
         }
         move "Mind Ruler", {
-          text "30 damage. This attack does 30 damage for each card in your opponent's hand."
+          text "30x damage. This attack does 30 damage for each card in your opponent's hand."
           energyCost P, P
-          attackRequirement {}
+          attackRequirement {
+            assert opp.hand : "Opponent's hand is empty"
+          }
           onAttack {
-            damage 30
+            damage 30 * opp.hand.size()
           }
         }
       };
@@ -1140,9 +1141,11 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Squeeze Life", {
           text " Put damage counters on your opponent's Active Pokémon until its remaining HP is 10."
           energyCost C, C, C
-          attackRequirement {}
+          attackRequirement {
+            assert defending.remainingHP > hp(10) : "$defending will not receive anymore damage counters"
+          }
           onAttack {
-
+            directDamage defending.remainingHP.value - 10, defending
           }
         }
       };
@@ -1153,10 +1156,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Future Sight", {
           text " Look at the top 4 cards of either player's deck and put them back in any order."
           energyCost C
-          attackRequirement {}
-          onAttack {
-
-          }
+          foresight 4, delegate
         }
       };
       case DUSCLOPS_44:
@@ -1166,15 +1166,16 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Confuse Ray", {
           text " Your opponent's Active Pokémon is now Confused."
           energyCost C
-          attackRequirement {}
+          attackRequirment {
+            assert !defending.isSPC(CONFUSED) : "$defending is already confused"
+          }
           onAttack {
-
+            applyAfterDamage CONFUSED
           }
         }
         move "Psypunch", {
           text "60 damage."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -1185,14 +1186,25 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         weakness D
         resistance F, MINUS30
         bwAbility "Ghost Bleach", {
-          text "Special Energy cards attached to each player's Pokémon have no effect and only provide Energy instead."
-          actionA {
+          text "Special Energy cards attached to each player's Pokémon have no effect and only provide [C] Energy instead."
+          delayedA {
+            // FIXME: Figure out the best way to deal with unsourced effects from Special Energy
+            //  also applicable to LIGHT_DRAGONITE NeoDestiny Miraculous Wind
+            bc "$thisAbility is not fully implemented yet and my not work as intended."
+            before null, null, SRC_SPENERGY, {
+              bc "$thisAbility"
+              prevent()
+            }
+          }
+          getterA GET_ENERGY_TYPES, { holder->
+            if(holder.effect.target != null && holder.effect.card.cardTypes.is(SPECIAL_ENERGY)) {
+              holder.object = [[C] as Set]
+            }
           }
         }
         move "Spooky Shot", {
           text "120 damage."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
             damage 120
           }
@@ -1205,17 +1217,24 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Vibrating Tone", {
           text " Search your deck for a Pokémon and a Supporter card, reveal them, and put them into your hand. Then, shuffle your deck."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Deck is empty"
+          }
           onAttack {
-
+            def cards = my.deck.search max:2, "Select a Pokémon and a Supporter card",
+              {it.cardTypes.is(POKEMON) || it.cardTypes.is(SUPPORTER)}, {CardList list->
+              list.filterByType(POKEMON).size() <= 1 && list.filterByType(SUPPORTER).size() <= 1
+            }
+            cards.showToOpponent("Opponent's selected Pokémon and Supporter cards").moveTo(my.hand)
+            shuffleDeck()
           }
         }
         move "Hypnoblast", {
           text "30 damage. Your opponent's Active Pokémon is now Asleep."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 30
+            applyAfterDamage ASLEEP
           }
         }
       };
@@ -1226,9 +1245,11 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Unarmed Wave", {
           text " This attack does 30 damage to each of your opponent's Pokémon. If you have any cards in your hand, this attack does nothing. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost P
-          attackRequirement {}
+          attackRequirement {
+            assert my.hand.empty : "Hand is not empty"
+          }
           onAttack {
-
+            opp.all.each { damage 30, it }
           }
         }
       };
@@ -1238,13 +1259,18 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         resistance F, MINUS30
         bwAbility "Airhead", {
           text "Prevent all effects of your opponent's attacks, except damage, done to this Pokémon."
-          actionA {
+          delayedA {
+            before null, null, ATTACK, {
+              if (ef instanceof TargetedEffect && bg.currentTurn == self.owner.opposite && ef.effectType != DAMAGE && (ef as TargetedEffect).getResolvedTarget(bg, e) == self) {
+                bc "$thisAbility prevents all effects done to $self."
+                prevent()
+              }
+            }
           }
         }
         move "Heart Stamp", {
           text "70 damage."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 70
           }
@@ -1256,7 +1282,6 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Rolling Tackle", {
           text "10 damage."
           energyCost P
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1268,17 +1293,18 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Triple Draw", {
           text " Draw 3 cards."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Deck is empty"
+          }
           onAttack {
-
+            draw 3
           }
         }
         move "Fling Rush", {
           text "10 damage. Before doing damage, discard any number of Pokémon Tools from all of your Pokémon. This attack does 40 more damage for each card you discarded in this way."
           energyCost P
-          attackRequirement {}
           onAttack {
-            damage 10
+            additionalDamageByDiscardingCardTypeFromPokemon 10, 40, POKEMON_TOOL
           }
         }
       };
@@ -1288,15 +1314,16 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Sweet Scent", {
           text " Heal 20 damage from 1 of your Pokémon."
           energyCost P
-          attackRequirement {}
+          attackRequirement {
+            assert my.all.any { it.numberOfDamageCounters } : "None of your Pokémon have damage counters on them"
+          }
           onAttack {
-
+            heal 20, my.all.select("Heal 20 from?")
           }
         }
         move "Tackle", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1307,15 +1334,18 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         weakness M
         bwAbility "Sweet Share", {
           text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, each player draws a card."
-          actionA {
+          onActivate { reason ->
+            if (reason == PLAY_FROM_HAND && self.evolution && bg.currentTurn == self.owner && confirm("Use $thisAbility?")) {
+              draw 1
+            }
           }
         }
         move "Wonder Shine", {
           text "60 damage. Your opponent's Active Pokémon is now Confused."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
             damage 60
+            applyAfterDamage CONFUSED
           }
         }
       };
