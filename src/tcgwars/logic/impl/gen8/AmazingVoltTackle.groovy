@@ -448,8 +448,9 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             assert my.deck : "Deck is empty"
             powerUsed()
             def viewed = my.deck.subList 0, 3
-            viewed.select().moveTo my.hand
-            viewed.discard()
+            def selected = viewed.select()
+            selected.moveTo my.hand
+            viewed.getExcludedList(selected).discard()
           }
         }
         move "King Blaze", {
