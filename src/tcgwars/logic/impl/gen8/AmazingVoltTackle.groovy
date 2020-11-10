@@ -1755,17 +1755,15 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Scratch", {
           text "10 damage."
           energyCost M
-          attackRequirement {}
           onAttack {
             damage 10
           }
         }
         move "Fury Swipes", {
-          text "20 damage. Flip 3 coins. This attack does 20 damage for each heads."
+          text "20x damage. Flip 3 coins. This attack does 20 damage for each heads."
           energyCost M, C
-          attackRequirement {}
           onAttack {
-            damage 20
+            flip { damage 20 }
           }
         }
       };
@@ -1776,15 +1774,21 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Snatch Claw", {
           text "20 damage. Flip 3 coins. If any of them are heads, your opponent reveals their hand. Then, for each heads, discard a Trainer card you find there."
           energyCost M
-          attackRequirement {}
           onAttack {
             damage 20
+            afterDamage {
+              def count = 0
+              flip 3, { count++ }
+              if (count == 0) return
+              count = Math.min count, opp.hand.findAll { it.cardTypes.is TRAINER }.size()
+              def trainerCards = opp.hand.select count:count, "Discard $count Trainers from opponent's hand.", { it.cardTypes.is TRAINER }
+              trainerCards.discard()
+            }
           }
         }
         move "Claw Slash", {
           text "90 damage."
           energyCost M, C, C
-          attackRequirement {}
           onAttack {
             damage 90
           }
@@ -1797,15 +1801,14 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Drill Run", {
           text "30 damage. Discard an Energy from your opponent's Active Pokémon."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 30
+            discardDefendingEnergy()
           }
         }
         move "Slashing Claw", {
           text "130 damage."
           energyCost M, M, C
-          attackRequirement {}
           onAttack {
             damage 130
           }
@@ -1818,9 +1821,9 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Reaction", {
           text "10 damage. Switch this Pokémon with 1 of your Benched Pokémon."
           energyCost M
-          attackRequirement {}
           onAttack {
             damage 10
+            switchYourActive()
           }
         }
       };
@@ -1829,11 +1832,14 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         weakness R
         resistance G, MINUS30
         move "Buzzing Swing", {
-          text "30 damage. This attack does 30 damage for each Energy attached to this Pokémon. Then, switch this Pokémon with 1 of your Benched Pokémon."
+          text "30x damage. This attack does 30 damage for each [M] Energy attached to this Pokémon. Then, switch this Pokémon with 1 of your Benched Pokémon."
           energyCost M
-          attackRequirement {}
+          attackRequirement {
+            assert my.bench || self.cards.energyCount(M) : "No benched Pokémon and no [M] energy attached to $self"
+          }
           onAttack {
-            damage 30
+            damage 30 * self.cards.energyCount(M)
+            switchYourActive()
           }
         }
       };
@@ -1844,7 +1850,6 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Slash", {
           text "50 damage."
           energyCost M, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -1852,9 +1857,8 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Sonic Edge", {
           text "130 damage. This attack's damage isn't affected by any effects on your opponent's Active Pokémon."
           energyCost M, M, C
-          attackRequirement {}
           onAttack {
-            damage 130
+            shredDamage 130
           }
         }
       };
@@ -1863,11 +1867,11 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         weakness R
         resistance G, MINUS30
         move "Max Slash", {
-          text "160 damage. This attack does 30 more damage for each Prize card you have taken."
+          text "160+ damage. This attack does 30 more damage for each Prize card you have taken."
           energyCost M, M, C
-          attackRequirement {}
           onAttack {
             damage 160
+            damage 30 * my.prizeCardSet.takenCount
           }
         }
       };
@@ -1876,19 +1880,21 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         weakness R
         resistance G, MINUS30
         move "Raging Claws", {
-          text "20 damage. This attack does 10 more damage for each damage counter on this Pokémon."
+          text "20+ damage. This attack does 10 more damage for each damage counter on this Pokémon."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
+            damage 10 * self.numberOfDamageCounters
           }
         }
         move "Power Blast", {
           text "120 damage. Discard an Energy from this Pokémon."
           energyCost M, M, C
-          attackRequirement {}
           onAttack {
             damage 120
+            afterDamage {
+              discardSelfEnergy C
+            }
           }
         }
       };
