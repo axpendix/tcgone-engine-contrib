@@ -1422,7 +1422,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 60
-            flip { discardDefendingEnergy() }
+            discardDefendingEnergy()
           }
         }
         move "Loop Cannon", {
