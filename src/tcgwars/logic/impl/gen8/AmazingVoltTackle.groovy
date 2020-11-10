@@ -889,17 +889,17 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return evolution (this, from:"Voltorb", hp:HP090, type:L, retreatCost:1) {
         weakness F
         bwAbility "Ene-Ene Generator", {
-          text "Once during your turn, if this Pokémon is on your Bench, you may Knock Out this Pokémon. If you do, search your deck for up to 2 Energy cards and attach them to your Pokémon in any way you like. Then, shuffle your deck."
+          text "Once during your turn, if this Pokémon is on your Bench, you may Knock Out this Pokémon. If you do, search your deck for up to 2 [L] Energy cards and attach them to your [L] Pokémon in any way you like. Then, shuffle your deck."
           actionA {
             checkLastTurn()
             assert self.benched : "$self is not on your Bench"
             assert confirm("$thisAbility: Are you sure?") : "Cancelled $thisAbility"
             powerUsed()
             bg.em().run(new Knockout(self))
-            def info = "Choose up to 2 Energy cards to attach to your remaining Pokémon."
-            def energies = my.deck.search max:2, info, { it.cardTypes.contains ENERGY }
+            def info = "Choose up to 2 [L] Energy cards to attach to your remaining Pokémon."
+            def energies = my.deck.search max:2, info, energyFilter(L)
             energies.each {
-              attachEnergy my.all.select("Pokémon to attach $it to?"), it
+              attachEnergy my.all.findAll { it.types.contains L }.select("Pokémon to attach $it to?"), it
             }
             shuffleDeck()
           }
