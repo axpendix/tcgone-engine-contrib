@@ -838,14 +838,14 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return basic (this, hp:HP190, type:L, retreatCost:1) {
         weakness F
         move "Charge", {
-          text " Search your deck for up to 2 Energy cards and attach them to this Pokémon. Then, shuffle your deck."
+          text " Search your deck for up to 2 [L] Energy cards and attach them to this Pokémon. Then, shuffle your deck."
           energyCost L
           attackRequirement {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            def info = "Choose up to 2 Energy cards to attach to $self"
-            def energies = my.deck.search max:2, info, { it.cardTypes.contains ENERGY }
+            def info = "Choose up to 2 [L] Energy cards to attach to $self"
+            def energies = my.deck.search max:2, info, energyFilter(L)
             energies.each { attachEnergy self, it }
             shuffleDeck()
           }
