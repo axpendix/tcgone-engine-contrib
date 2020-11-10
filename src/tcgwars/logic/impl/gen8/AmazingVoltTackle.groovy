@@ -277,6 +277,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           energyCost G, C
           onAttack {
             damage 110
+            if (!confirm("Have your opponent switch their Active Pokémon?"))
             whirlwind()
           }
         }
