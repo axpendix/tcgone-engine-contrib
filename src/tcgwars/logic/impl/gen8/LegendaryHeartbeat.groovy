@@ -1422,7 +1422,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 60
-            flip { discardDefendingEnergy() }
+            discardDefendingEnergy()
           }
         }
         move "Loop Cannon", {
@@ -1481,20 +1481,32 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         text "The Pokémon VMAX this card is attached to gets -100 HP" +
           "and when it is Knocked Out by damage from an opponent's attack" +
           "that player takes 1 fewer Prize card."
+        def fromOppAttackEff
+        def fromOppAttackFlag
         def hpEff
         def prizeEff
         onPlay { reason ->
+          fromOppAttackEff = delayed {
+            before KNOCKOUT, self, {
+              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite)
+                fromOppAttackFlag = true
+            }
+            after KNOCKOUT, {
+              fromOppAttackFlag = false
+            }
+          }
           hpEff = getter GET_FULL_HP, self, { holder ->
             if (self.pokemonVMAX) holder.object -= hp(100)
           }
           prizeEff = getter GET_GIVEN_PRIZES, self, { holder ->
-            if (self.pokemonVMAX && holder.object > 0) {
+            if (self.pokemonVMAX && fromOppAttackFlag && holder.object > 0) {
               bc "$thisCard reduces prizes taken from KOing $self by one."
               holder.object -= 1
             }
           }
         }
         onRemoveFromPlay {
+          fromOppAttackEff.unregister()
           hpEff.unregister()
           prizeEff.unregister()
         }
