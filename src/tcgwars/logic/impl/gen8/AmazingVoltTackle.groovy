@@ -2028,19 +2028,19 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case TELEPHOTO_SCOPE_91:
-      return itemCard (this) {
+      return pokemonTool (this) {
         text "The attacks of the Pokémon this card is attached to do 30 more damage to your opponent's Benched Pokémon V or Benched Pokémon-GX (before applying Weakness and Resistance)."
         onPlay {
         }
-        playRequirement{
+        onRemoveFromPlay {
         }
       };
       case MEMORY_CAPSULE_92:
-      return itemCard (this) {
+      return pokemonTool (this) {
         text "The Pokémon this card is attached to can use any attack from its previous Evolutions. (You still need the necessary Energy to use each attack.)"
         onPlay {
         }
-        playRequirement{
+        onRemoveFromPlay {
         }
       };
       case BEA_93:
