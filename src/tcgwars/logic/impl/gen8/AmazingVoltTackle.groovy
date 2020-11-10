@@ -320,13 +320,14 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return basic (this, hp:HP070, type:G, retreatCost:1) {
         weakness R
         move "Synthesis", {
-          text " Search your deck for a Energy card and attach it to 1 of your Pokémon. Then, shuffle your deck."
+          text " Search your deck for a [G] Energy card and attach it to 1 of your Pokémon. Then, shuffle your deck."
           energyCost G
           attackRequirement {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            attachEnergyFrom my.deck, my.all
+            attachEnergyFrom type:G, my.deck, my.all
+            shuffleDeck()
           }
         }
         move "Razor Leaf", {
