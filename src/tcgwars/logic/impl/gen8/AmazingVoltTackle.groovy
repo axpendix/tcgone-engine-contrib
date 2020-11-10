@@ -823,7 +823,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           }
           onAttack {
             def pcs = opp.bench.select "Deal 20 damage to which Pokémon for each damage counter already on it?"
-            damage 20 * pcs.numberOfDamageCounters
+            damage 20 * pcs.numberOfDamageCounters, pcs
           }
         }
         move "Jet Headbutt", {
