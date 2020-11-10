@@ -610,7 +610,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           energyCost C, C, C
           onAttack {
             damage 10
-            damage 20 * self.getEnergyCount(bg)
+            damage 20 * self.cards.filterByEnergyType(W).size()
           }
         }
       };
@@ -633,7 +633,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           energyCost C, C, C, C
           onAttack {
             damage 10
-            damage 40 * self.getEnergyCount(bg)
+            damage 40 * self.cards.filterByEnergyType(W).size()
           }
         }
       };
