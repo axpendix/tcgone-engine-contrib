@@ -378,7 +378,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case ORBEETLE_VMAX_9:
-      return evolution (this, from:"Orbeetle", hp:HP310, type:G, retreatCost:1) {
+      return evolution (this, from:"Orbeetle V", hp:HP310, type:G, retreatCost:1) {
         weakness R
         bwAbility "Mysterious Beam", {
           text "Once during your turn, if this Pokémon is in the Active Spot, you may put 1 damage counter on each of your opponent's Pokémon."
@@ -717,7 +717,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case GALARIAN_DARMANITAN_VMAX_24:
-      return evolution (this, from:"Darmanitan", hp:HP320, type:W, retreatCost:3) {
+      return evolution (this, from:"Darmanitan V", hp:HP320, type:W, retreatCost:3) {
         weakness M
         move "Max Snowfall", {
           text "200 damage. This attack also does 30 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
@@ -860,7 +860,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case PIKACHU_VMAX_31:
-      return evolution (this, from:"Pikachu", hp:HP310, type:L, retreatCost:2) {
+      return evolution (this, from:"Pikachu V", hp:HP310, type:L, retreatCost:2) {
         weakness F
         move "GMax Volt Tackle", {
           text "120+ damage. You may discard all Energy from this Pokémon. If you do, this attack does 150 more damage."
@@ -1865,7 +1865,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case AEGISLASH_VMAX_81:
-      return evolution (this, from:"Aegislash", hp:HP320, type:M, retreatCost:3) {
+      return evolution (this, from:"Aegislash V", hp:HP320, type:M, retreatCost:3) {
         weakness R
         resistance G, MINUS30
         move "Max Slash", {
