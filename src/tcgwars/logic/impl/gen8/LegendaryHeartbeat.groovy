@@ -292,11 +292,11 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       return basic (this, hp:HP080, type:G, retreatCost:1) {
         weakness R
         move "Uturn", {
-          text "10 damage. Switch this Pokémon with 1 of your Benched Pokémon."
+          text "10 damage. You may switch this Pokémon with 1 of your Benched Pokémon."
           energyCost C
           onAttack {
             damage 10
-            switchYourActive()
+            switchYourActive may:true
           }
         }
         move "Cutting Wind", {
@@ -311,11 +311,11 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       return evolution (this, from:"Yanma", hp:HP130, type:G, retreatCost:0) {
         weakness R
         move "Uturn", {
-          text "50 damage. Switch this Pokémon with 1 of your Benched Pokémon."
+          text "50 damage. You may switch this Pokémon with 1 of your Benched Pokémon."
           energyCost C, C
           onAttack {
             damage 50
-            switchYourActive()
+            switchYourActive may:true
           }
         }
         move "Cutting Wind", {
@@ -652,7 +652,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       return evolution (this, from:"Clefairy", hp:HP100, type:P, retreatCost:1) {
         weakness M
         bwAbility "Moon's Blessing", {
-          // TODO: Does it only cure exactly 1 Special Condition?
           text "Once during your turn, you may heal 20 damage from your Active Pokémon with any Energy attached, and it recovers from a Special Condition."
           actionA {
             checkLastTurn()
@@ -660,7 +659,10 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             assert active.numberOfDamageCounters || active.specialConditions : "Active Pokémon is not damaged and is not affected by a Special Condition"
             powerUsed()
             heal 20, active
-            if(active.specialConditions) clearSpecialCondition active, SRC_ABILITY, choose(active.specialConditions.toList(), "Clear")
+            if(active.specialConditions) {
+              def conditionToCure = [choose(active.specialConditions.toList(), "Clear") as SpecialConditionType]
+              clearSpecialCondition(active, SRC_ABILITY, conditionToCure)
+            }
           }
         }
         move "Magical Shot", {
@@ -983,7 +985,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         }
       };
       case COALOSSAL_VMAX_43:
-      return evolution (this, from:"Coalossal", hp:HP330, type:F, retreatCost:4) {
+      return evolution (this, from:"Coalossal V", hp:HP330, type:F, retreatCost:4) {
         weakness G
         move "Eruption Bomb", {
           text "40 damage. Discard the top card of your deck. If that card is an Energy card, this attack does 90 more damage. Then, attach that Energy card to this Pokémon."
@@ -1111,7 +1113,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         bwAbility "Magnetic Field Floating", {
           text "All of your Pokémon have no Retreat Cost."
           getterA GET_RETREAT_COST, { h ->
-            if (h.effect.target.owner == self.owner) h.object.clear()
+            if (h.effect.target.owner == self.owner) h.object = 0
           }
         }
         move "Leg Quake", {
@@ -1179,13 +1181,13 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         weakness R
         resistance G, MINUS30
         move "Clock Back", {
-          text " Attach up to 2 Energy cards from your discard pile to 1 of your Pokémon."
+          text " Attach up to 2 [M] Energy cards from your discard pile to 1 of your Pokémon."
           energyCost C
           attackRequirement {
-            assert my.discard.any { it.cardTypes.contains ENERGY } : "No Energy cards in discard pile"
+            assert my.discard.filterByEnergyType(M) : "No [M] Energy cards in discard pile"
           }
           onAttack {
-            attachEnergyFrom max:2, my.discard, my.all
+            attachEnergyFrom max:2, type:M, my.discard, my.all
           }
         }
         move "Flash of Destruction", {
@@ -1232,7 +1234,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             assert my.hand || my.deck : "Both hand and deck are empty"
           }
           onAttack {
-            my.hand.moveTo my.deck
+            my.hand.moveTo hidden:true, my.deck
             shuffleDeck()
             draw 6
           }
@@ -1340,7 +1342,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         }
       };
       case TOGEKISS_VMAX_59:
-      return evolution (this, from:"Togekiss", hp:HP310, type:C, retreatCost:0) {
+      return evolution (this, from:"Togekiss V", hp:HP310, type:C, retreatCost:0) {
         weakness L
         resistance F, MINUS30
         move "Max Glide", {
@@ -1429,11 +1431,26 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           onAttack {
             damage 160
             afterDamage {
-              if (self.cards.filterByType(ENERGY)) {
-                self.cards.filterByType(ENERGY)
-                  .select(count: 2, "Choose the energy to return to your hand")
-                  .moveTo(my.hand)
-              }
+              // TODO: Make a static method to do this
+              if (self.cards.energyCount())
+                if (self.cards.energyCount() <= 2) {
+                  self.cards.filterByType(ENERGY).moveTo my.hand
+                } else {
+                  def targetCount = Math.min self.cards.energyCount(), 2
+                  def finalCount = 0
+                  while (self.cards.energyCount() > 0 && finalCount < targetCount) {
+                    def info = "Select Energy to return to your hand."
+                    def energy = self.cards.filterByType(ENERGY).select(info)
+                    def energyCount = 1
+                    if (energy.energyCount() > 1) {
+                      def choices = 1..energy.energyCount()
+                      def choiceInfo = "How many Energy do you want this card to count as?"
+                      energyCount = choose(choices, choiceInfo)
+                    }
+                    finalCount += energyCount
+                    energy.moveTo my.hand
+                  }
+                }
             }
           }
         }
@@ -1481,6 +1498,9 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           hpEff.unregister()
           prizeEff.unregister()
         }
+        allowAttach {PokemonCardSet to->
+          (!to.pokemonVMAX || to.remainingHP > hp(100))
+        }
       };
       case ROCKY_HELMET_69:
       return copy(NobleVictories.ROCKY_HELMET_94, this);
@@ -1514,9 +1534,8 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         onPlay {
           def count = 0
           flip 2, { count++ }
-          // TODO: Need clarification on "may" here.
-          //  Can be 0? Must be at least 1? Must be all and you just choose whether or not to look?
-          my.deck.search min:count, max:count, { true }
+          if (count == 0) return
+          my.deck.search(min:count, max:count, { true }).moveTo my.hand
           shuffleDeck()
         }
         playRequirement{
@@ -1533,22 +1552,21 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           spcEff = delayed {
             before APPLY_SPECIAL_CONDITION, self, {
               if (!self.types.contains(G)) return
-              bc "$thisCard.name prevents Special Conitions on $self"
+              bc "$thisCard.name prevents ${(ef as ApplySpecialCondition).type} on $self"
               prevent()
             }
-            // TODO: Find out if this should prevent Special Conditions on [G] Pokémon it is attached to always
-            before null, self, {
-              if(!self.specialConditions || !self.types.contains(G)) return
-              bc "$thisCard.name clears Special Conditions on $self"
+            after ATTACH_ENERGY, {
+              if (self == null || !self.types.contains(G)) return
+              clearSpecialCondition self, SRC_SPENERGY
+            }
+            after ENERGY_SWITCH, {
+              if (self == null || !self.types.contains(G)) return
               clearSpecialCondition self, SRC_SPENERGY
             }
           }
-          if(!self.specialConditions || !self.types.contains(G)) return
-          bc "$thisCard.name clears Special Conditions on $self"
-          clearSpecialCondition self, SRC_SPENERGY
         }
         getEnergyTypesOverride {
-          if (self.types.contains(G)) return [[G] as Set]
+          if (self != null) return [[G] as Set]
           else return [[] as Set]
         }
         onRemoveFromPlay {
@@ -1574,7 +1592,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           dmgRedEff.unregister()
         }
         getEnergyTypesOverride {
-          if (self.types.contains(F)) return [[F] as Set]
+          if (self != null) return [[F] as Set]
           else return [[] as Set]
         }
       };

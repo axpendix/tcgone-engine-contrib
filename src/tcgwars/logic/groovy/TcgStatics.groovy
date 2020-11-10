@@ -1725,8 +1725,11 @@ class TcgStatics {
     }
     Move move = (choose(moveList, labelList, "Choose an attack to use as this attack.") as Move).shallowCopy()
     move.energyCost = delegate.thisMove.energyCost
+    // TODO: Why can't we just skip BetweenTurns if it is a sub attack?
+    def bef = blockingEffect(BETWEEN_TURNS)
     attack(move)
     bc "$delegate.self copied $move.name"
+    bef.unregisterItself bg.em()
   }
 
 }
