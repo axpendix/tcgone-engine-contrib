@@ -1043,14 +1043,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           onAttack {
             if (!opp.all.any {it.energyCards}) return
             flip {
-              def pcs = null
-              while (!pcs) {
-                pcs = opp.all.select("Pokémon to discard an Energy from?")
-                if (!pcs.energyCards) {
-                  wcu "$pcs has no Energy attached"
-                  pcs = null
-                }
-              }
+              discardOpponentEnergy Target.OPP_ANY_YOU_SELECT
             }
           }
         }
