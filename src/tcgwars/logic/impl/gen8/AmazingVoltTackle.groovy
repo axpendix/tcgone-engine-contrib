@@ -277,6 +277,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           energyCost G, C
           onAttack {
             damage 110
+            if (!confirm("Have your opponent switch their Active Pokémon?"))
             whirlwind()
           }
         }
@@ -319,13 +320,14 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return basic (this, hp:HP070, type:G, retreatCost:1) {
         weakness R
         move "Synthesis", {
-          text " Search your deck for a Energy card and attach it to 1 of your Pokémon. Then, shuffle your deck."
+          text " Search your deck for a [G] Energy card and attach it to 1 of your Pokémon. Then, shuffle your deck."
           energyCost G
           attackRequirement {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            attachEnergyFrom my.deck, my.all
+            attachEnergyFrom type:G, my.deck, my.all
+            shuffleDeck()
           }
         }
         move "Razor Leaf", {
@@ -376,7 +378,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case ORBEETLE_VMAX_9:
-      return evolution (this, from:"Orbeetle", hp:HP310, type:G, retreatCost:1) {
+      return evolution (this, from:"Orbeetle V", hp:HP310, type:G, retreatCost:1) {
         weakness R
         bwAbility "Mysterious Beam", {
           text "Once during your turn, if this Pokémon is in the Active Spot, you may put 1 damage counter on each of your opponent's Pokémon."
@@ -446,8 +448,9 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             assert my.deck : "Deck is empty"
             powerUsed()
             def viewed = my.deck.subList 0, 3
-            viewed.select().moveTo my.hand
-            viewed.discard()
+            def selected = viewed.select()
+            selected.moveTo my.hand
+            viewed.getExcludedList(selected).discard()
           }
         }
         move "King Blaze", {
@@ -607,7 +610,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           energyCost C, C, C
           onAttack {
             damage 10
-            damage 20 * self.getEnergyCount(bg)
+            damage 20 * self.cards.filterByEnergyType(W).size()
           }
         }
       };
@@ -630,7 +633,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           energyCost C, C, C, C
           onAttack {
             damage 10
-            damage 40 * self.getEnergyCount(bg)
+            damage 40 * self.cards.filterByEnergyType(W).size()
           }
         }
       };
@@ -714,7 +717,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case GALARIAN_DARMANITAN_VMAX_24:
-      return evolution (this, from:"Darmanitan", hp:HP320, type:W, retreatCost:3) {
+      return evolution (this, from:"Darmanitan V", hp:HP320, type:W, retreatCost:3) {
         weakness M
         move "Max Snowfall", {
           text "200 damage. This attack also does 30 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
@@ -820,7 +823,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           }
           onAttack {
             def pcs = opp.bench.select "Deal 20 damage to which Pokémon for each damage counter already on it?"
-            damage 20 * pcs.numberOfDamageCounters
+            damage 20 * pcs.numberOfDamageCounters, pcs
           }
         }
         move "Jet Headbutt", {
@@ -835,14 +838,14 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return basic (this, hp:HP190, type:L, retreatCost:1) {
         weakness F
         move "Charge", {
-          text " Search your deck for up to 2 Energy cards and attach them to this Pokémon. Then, shuffle your deck."
+          text " Search your deck for up to 2 [L] Energy cards and attach them to this Pokémon. Then, shuffle your deck."
           energyCost L
           attackRequirement {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            def info = "Choose up to 2 Energy cards to attach to $self"
-            def energies = my.deck.search max:2, info, { it.cardTypes.contains ENERGY }
+            def info = "Choose up to 2 [L] Energy cards to attach to $self"
+            def energies = my.deck.search max:2, info, energyFilter(L)
             energies.each { attachEnergy self, it }
             shuffleDeck()
           }
@@ -857,7 +860,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case PIKACHU_VMAX_31:
-      return evolution (this, from:"Pikachu", hp:HP310, type:L, retreatCost:2) {
+      return evolution (this, from:"Pikachu V", hp:HP310, type:L, retreatCost:2) {
         weakness F
         move "GMax Volt Tackle", {
           text "120+ damage. You may discard all Energy from this Pokémon. If you do, this attack does 150 more damage."
@@ -886,17 +889,17 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return evolution (this, from:"Voltorb", hp:HP090, type:L, retreatCost:1) {
         weakness F
         bwAbility "Ene-Ene Generator", {
-          text "Once during your turn, if this Pokémon is on your Bench, you may Knock Out this Pokémon. If you do, search your deck for up to 2 Energy cards and attach them to your Pokémon in any way you like. Then, shuffle your deck."
+          text "Once during your turn, if this Pokémon is on your Bench, you may Knock Out this Pokémon. If you do, search your deck for up to 2 [L] Energy cards and attach them to your [L] Pokémon in any way you like. Then, shuffle your deck."
           actionA {
             checkLastTurn()
             assert self.benched : "$self is not on your Bench"
             assert confirm("$thisAbility: Are you sure?") : "Cancelled $thisAbility"
             powerUsed()
             bg.em().run(new Knockout(self))
-            def info = "Choose up to 2 Energy cards to attach to your remaining Pokémon."
-            def energies = my.deck.search max:2, info, { it.cardTypes.contains ENERGY }
+            def info = "Choose up to 2 [L] Energy cards to attach to your remaining Pokémon."
+            def energies = my.deck.search max:2, info, energyFilter(L)
             energies.each {
-              attachEnergy my.all.select("Pokémon to attach $it to?"), it
+              attachEnergy my.all.findAll { it.types.contains L }.select("Pokémon to attach $it to?"), it
             }
             shuffleDeck()
           }
@@ -976,6 +979,9 @@ public enum AmazingVoltTackle implements LogicCardInfo {
               }
             }
             damage 160, pcs
+            afterDamage {
+              discardAllSelfEnergy()
+            }
           }
         }
       };
@@ -1039,9 +1045,9 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             flip {
               def pcs = null
               while (!pcs) {
-                pcs = opp.bench.select("Pokémon to discard an Energy from?")
+                pcs = opp.all.select("Pokémon to discard an Energy from?")
                 if (!pcs.energyCards) {
-                  wcu "$pcs is has no Energy attached"
+                  wcu "$pcs has no Energy attached"
                   pcs = null
                 }
               }
@@ -1859,7 +1865,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case AEGISLASH_VMAX_81:
-      return evolution (this, from:"Aegislash", hp:HP320, type:M, retreatCost:3) {
+      return evolution (this, from:"Aegislash V", hp:HP320, type:M, retreatCost:3) {
         weakness R
         resistance G, MINUS30
         move "Max Slash", {
@@ -2025,19 +2031,19 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case TELEPHOTO_SCOPE_91:
-      return itemCard (this) {
+      return pokemonTool (this) {
         text "The attacks of the Pokémon this card is attached to do 30 more damage to your opponent's Benched Pokémon V or Benched Pokémon-GX (before applying Weakness and Resistance)."
         onPlay {
         }
-        playRequirement{
+        onRemoveFromPlay {
         }
       };
       case MEMORY_CAPSULE_92:
-      return itemCard (this) {
+      return pokemonTool (this) {
         text "The Pokémon this card is attached to can use any attack from its previous Evolutions. (You still need the necessary Energy to use each attack.)"
         onPlay {
         }
-        playRequirement{
+        onRemoveFromPlay {
         }
       };
       case BEA_93:
