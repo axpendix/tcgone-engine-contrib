@@ -979,6 +979,9 @@ public enum AmazingVoltTackle implements LogicCardInfo {
               }
             }
             damage 160, pcs
+            afterDamage {
+              discardAllSelfEnergy()
+            }
           }
         }
       };
