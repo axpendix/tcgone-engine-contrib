@@ -1992,8 +1992,8 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             after PROCESS_ATTACK_EFFECTS, {
               bg.dm().each {
                 if(it.from==self && it.to.benched && (it.to.pokemonV || it.to.pokemonGX) && it.dmg.value){
-                  it.dmg -= hp(30)
-                  bc "$thisCard -30"
+                  it.dmg += hp(30)
+                  bc "$thisCard +30"
                 }
               }
             }
