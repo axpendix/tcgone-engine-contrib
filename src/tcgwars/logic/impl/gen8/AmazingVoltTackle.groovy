@@ -709,7 +709,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case GALARIAN_DARMANITAN_VMAX_24:
-      return evolution (this, from:"Darmanitan V", hp:HP320, type:W, retreatCost:3) {
+      return evolution (this, from:"Galarian Darmanitan V", hp:HP320, type:W, retreatCost:3) {
         weakness M
         move "Max Snowfall", {
           text "200 damage. This attack also does 30 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
@@ -1718,7 +1718,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case GALARIAN_PERRSERKER_76:
-      return evolution (this, from:"Meowth", hp:HP120, type:M, retreatCost:2) {
+      return evolution (this, from:"Galarian Meowth", hp:HP120, type:M, retreatCost:2) {
         weakness R
         resistance G, MINUS30
         move "Snatch Claw", {
