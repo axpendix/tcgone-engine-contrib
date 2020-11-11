@@ -233,6 +233,10 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
               if (ef.cardToPlay == thisCard && my.hand.getExcludedList(thisCard).empty && my.bench.freeBenchCount) {
                 def abilityName = "Sudden Appearance"
                 abilityUsed = confirm("Use $abilityName?")
+                if(abilityUsed && !checkGlobalAbility(thisCard)) {
+                  wcu "$abilityName was blocked."
+                  return
+                }
                 if (abilityUsed && benchPCS(thisCard, PLAY_FROM_HAND)) {
                   bc("$thisCard.name has used $abilityName")
                   draw 3
