@@ -1731,7 +1731,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
               flip 3, { count++ }
               if (count == 0) return
               count = Math.min count, opp.hand.findAll { it.cardTypes.is TRAINER }.size()
-              def trainerCards = opp.hand.select count:count, "Discard $count Trainers from opponent's hand.", { it.cardTypes.is TRAINER }
+              def trainerCards = opp.hand.shuffledCopy().select count:count, "Discard $count Trainers from opponent's hand.", { it.cardTypes.is TRAINER }
               trainerCards.discard()
             }
           }
@@ -1976,7 +1976,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         text "Your opponent reveals their hand. Then" +
           "look at the top card of your opponent's deck."
         onPlay {
-          opp.hand.showToMe "Opponent's hand."
+          opp.hand.shuffledCopy().showToMe "Opponent's hand."
           opp.deck.subList(0, 1).showToMe "Top card of Oppoenent's deck."
         }
         playRequirement{
