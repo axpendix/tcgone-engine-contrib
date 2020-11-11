@@ -1165,7 +1165,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Confuse Ray", {
           text " Your opponent's Active Pokémon is now Confused."
           energyCost C
-          attackRequirment {
+          attackRequirement {
             assert !defending.isSPC(CONFUSED) : "$defending is already confused"
           }
           onAttack {
