@@ -1713,7 +1713,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           text "20x damage. Flip 3 coins. This attack does 20 damage for each heads."
           energyCost M, C
           onAttack {
-            flip { damage 20 }
+            flip 3, { damage 20 }
           }
         }
       };
