@@ -1920,6 +1920,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             assert my.hand.size() < 7 : "Your hand already has 7 or more cards"
             powerUsed()
             draw 7 - my.hand.size()
+            bg.gm().betweenTurns()
           }
         }
         move "Body Slam", {
