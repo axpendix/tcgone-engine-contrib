@@ -2019,33 +2019,66 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         text "Your opponent reveals their hand. Then" +
           "look at the top card of your opponent's deck."
         onPlay {
+          opp.hand.showToMe "Opponent's hand."
+          opp.deck.subList(0, 1).showToMe "Top card of Oppoenent's deck."
         }
         playRequirement{
+          assert opp.hand : "Opponent's hand is empty"
         }
       };
       case TELEPHOTO_SCOPE_91:
       return pokemonTool (this) {
         text "The attacks of the Pokémon this card is attached to do 30 more damage to your opponent's Benched Pokémon V or Benched Pokémon-GX (before applying Weakness and Resistance)."
-        onPlay {
+        def eff
+        onPlay {reason->
+          eff = delayed {
+            after PROCESS_ATTACK_EFFECTS, {
+              bg.dm().each {
+                if(it.from==self && it.to.benched && (it.to.pokemonV || it.to.pokemonGX) && it.dmg.value){
+                  it.dmg -= hp(30)
+                  bc "$thisCard -30"
+                }
+              }
+            }
+          }
         }
-        onRemoveFromPlay {
+        onRemoveFromPlay{
+          eff.unregister()
         }
       };
       case MEMORY_CAPSULE_92:
       return pokemonTool (this) {
         text "The Pokémon this card is attached to can use any attack from its previous Evolutions. (You still need the necessary Energy to use each attack.)"
+        def moveListGetter
         onPlay {
+          moveListGetter = getter GET_MOVE_LIST, {holder->
+            if(holder.effect.target.owner==self.owner && holder.effect.target.evolution){
+              for(card in holder.effect.target.cards.filterByType(POKEMON)){
+                if(card!=holder.effect.target.topPokemonCard){
+                  holder.object.addAll(card.moves)
+                }
+              }
+            }
+          }
         }
         onRemoveFromPlay {
+          moveListGetter.unregister()
         }
       };
       case BEA_93:
       return supporter (this) {
         text "Discard the top 5 cards of your deck. If any of those cards are Energy cards" +
-          "attach them to your Benched Pokémon in any way you like."
-        onPlay {
+          "attach them to your Benched [F] Pokémon in any way you like."
+        onPlay { reason->
+          if (reason == PLAY_FROM_HAND) bg.em().storeObject "BEA", bg.turnCount
+          def discarded = my.deck.subList(0, 5).discard()
+          discarded.findAll { it.cardTypes.is ENERGY }.each {
+            attachEnergy my.bench.findAll { it.types.contains F }.select("Attach $it to?"), it
+          }
         }
         playRequirement{
+          assert my.deck : "Deck is empty"
+          assert my.bench.any { it.types.contains F } : "No $F Pokémon on your bench"
         }
       };
       case LEON_94:
@@ -2053,8 +2086,17 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         text "During this turn" +
           "your Pokémon's attacks do 30 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
         onPlay {
-        }
-        playRequirement{
+          delayed {
+            after PROCESS_ATTACK_EFFECTS, {
+              bg.dm().each {
+                if (it.to.owner != thisCard.player && it.to.active) {
+                  bc "$thisCard +30"
+                  it.dmg += hp(30)
+                }
+              }
+            }
+            unregisterAfter 1
+          }
         }
       };
       case LEAGUE_STAFF_95:
@@ -2062,61 +2104,107 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         text "Draw 2 cards. If Wyndon Stadium is in play" +
           "draw 2 more cards."
         onPlay {
+          draw 2
+          if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Wyndon Stadium") draw 2
         }
         playRequirement{
+          assert my.deck : "Your deck is empty"
         }
       };
       case NESSA_96:
       return supporter (this) {
-        text "Put up to 4 in any combination of Pokémon and Energy cards from your discard pile into your hand."
-        onPlay {
+        text "Put up to 4 in any combination of [W] Pokémon and [W] Energy cards from your discard pile into your hand."
+        onPlay { reason->
+          if (reason == PLAY_FROM_HAND) bg.em().storeObject "NESSA", bg.turnCount
+          def info = "$W Pokémon and $W Energy to put into your hand?"
+          def filter = {(it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(W)) || (it.cardTypes.is(ENERGY) && it.asEnergyCard().energyTypes.any { it.contains W }) }
+          def selected = my.discard.select max:4, info, filter
+          selected.moveTo my.hand
         }
         playRequirement{
+          assert my.discard.any {
+            (it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(W))
+          } || my.discard.filterByEnergyType(W) : "No $W Pokémon or $W Energy in your discard pile"
         }
       };
       case HERO_S_BATH_97:
       return stadium (this) {
         text "Basic Pokémon in play (both yours and your opponent's) take 20 less damage from attacks (after applying Weakness and Resistance)."
+        def eff
         onPlay {
+          eff = delayed {
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if (it.to.basic && it.notZero && it.notNoEffect) {
+                  bc "$thisCard -20"
+                  it.dmg -= hp(20)
+                }
+              }
+            }
+          }
         }
         onRemoveFromPlay{
+          eff.unregister()
         }
       };
       case WYNDON_STADIUM_98:
       return stadium (this) {
         text "Whenever either player plays a Pokémon VMAX from their hand during their turn to evolve their Pokémon V" +
           "heal 100 damage from that Pokémon."
+        def eff
         onPlay {
+          eff = delayed {
+            after EVOLVE, {
+              if (ef.pokemonToBeEvolved.pokemonV && ef.evolutionCard.cardTypes.is(VMAX))
+                heal 100, ef.pokemonToBeEvolved
+            }
+          }
         }
         onRemoveFromPlay{
+          eff.unregister()
         }
       };
       case WASH_W_ENERGY_99:
-      return specialEnergy (this, [[C]]) {
+      return specialEnergy (this, [[]]) {
         text "As long as this card is attached to a Pokémon" +
-          "it provides Energy. Prevent all effects of your opponent's attacks" +
+          "it provides [W] Energy. Prevent all effects of your opponent's attacks" +
           "except damage" +
-          "done to the Pokémon this card is attached to. (Existing effects are not removed.)"
+          "done to the [W] Pokémon this card is attached to. (Existing effects are not removed.)"
+        def eff
         onPlay {reason->
+          eff = delayed {
+            before null, self, ATTACK, {
+              if (self.types.contains(W) && ef.effectType != DAMAGE) {
+                bc "$thisCard prevents effect"
+                prevent()
+              }
+            }
+          }
         }
         onRemoveFromPlay {
+          eff.unregister()
         }
-        onMove {to->
-        }
-        allowAttach {to->
+        getEnergyTypesOverride {
+          if (self != null) return [[W] as Set]
+          else  return [[] as Set]
         }
       };
       case COATING_M_ENERGY_100:
-      return specialEnergy (this, [[C]]) {
+      return specialEnergy (this, [[]]) {
         text "As long as this card is attached to a Pokémon" +
-          "it provides Energy. The Pokémon this card is attached to has no Weakness."
+          "it provides [M] Energy. The [M] Pokémon this card is attached to has no Weakness."
+        def eff
         onPlay {reason->
+          eff = getter GET_WEAKNESSES, self, { holder ->
+            if(self.types.contains(M)) holder.object.clear()
+          }
         }
         onRemoveFromPlay {
+          eff.unregister()
         }
-        onMove {to->
-        }
-        allowAttach {to->
+        getEnergyTypesOverride {
+          if (self != null) return [[M] as Set]
+          else  return [[] as Set]
         }
       };
       case ORBEETLE_V_101:
@@ -2156,22 +2244,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       case NESSA_118:
       return copy (NESSA_96, this);
       case GALARIAN_OBSTAGOON_119:
-      return evolution (this, from:"Linoone", hp:HP160, type:D, retreatCost:2) {
-        weakness G
-        bwAbility "Wild Shout", {
-          text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may put 3 damage counters on 1 of your opponent's Pokémon."
-          actionA {
-          }
-        }
-        move "Obstruct", {
-          text "90 damage. During your opponent's next turn, prevent all damage done to this Pokémon by attacks from Basic Pokémon."
-          energyCost D, C
-          attackRequirement {}
-          onAttack {
-            damage 90
-          }
-        }
-      };
+      return copy (SwordShield.GALARIAN_OBSTAGOON_119, this)
       case TELEPHOTO_SCOPE_120:
       return copy (TELEPHOTO_SCOPE_91, this);
       case MEMORY_CAPSULE_121:
