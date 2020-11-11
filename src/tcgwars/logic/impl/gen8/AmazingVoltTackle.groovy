@@ -2024,8 +2024,8 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return supporter (this) {
         text "Discard the top 5 cards of your deck. If any of those cards are Energy cards" +
           "attach them to your Benched [F] Pokémon in any way you like."
-        onPlay { reason->
-          if (reason == PLAY_FROM_HAND) bg.em().storeObject "BEA", bg.turnCount
+        onPlay {
+          if (my.hand.contains(thisCard)) bg.em().storeObject "BEA", bg.turnCount
           def discarded = my.deck.subList(0, 5).discard()
           discarded.findAll { it.cardTypes.is ENERGY }.each {
             attachEnergy my.bench.findAll { it.types.contains F }.select("Attach $it to?"), it
@@ -2070,7 +2070,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return supporter (this) {
         text "Put up to 4 in any combination of [W] Pokémon and [W] Energy cards from your discard pile into your hand."
         onPlay { reason->
-          if (reason == PLAY_FROM_HAND) bg.em().storeObject "NESSA", bg.turnCount
+          if (my.hand.contains(thisCard)) bg.em().storeObject "NESSA", bg.turnCount
           def info = "$W Pokémon and $W Energy to put into your hand?"
           def filter = {(it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(W)) || (it.cardTypes.is(ENERGY) && it.asEnergyCard().energyTypes.any { it.contains W }) }
           def selected = my.discard.select max:4, info, filter
