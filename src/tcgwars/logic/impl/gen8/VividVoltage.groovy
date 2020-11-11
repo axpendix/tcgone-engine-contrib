@@ -1,4 +1,6 @@
-package tcgwars.logic.impl.gen8;
+package tcgwars.logic.impl.gen8
+
+import tcgwars.logic.effect.gm.PlayTrainer;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -592,18 +594,20 @@ public enum VividVoltage implements LogicCardInfo {
         text "Search your deck for up to 2 Rare Fossil cards and put them onto your Bench. Then" +
           "shuffle your deck."
         onPlay {
+          def info = "Select up to 2 Rare Fossil cards to put on your bench."
+          my.deck.search(max:2, info, {it.name == "Rare Fossil"}).each {fossil ->
+            my.deck.remove(fossil)
+            bg.em().run(new PlayTrainer(fossil))
+          }
+          shuffleDeck()
         }
-        playRequirement{
+        playRequirement {
+          assert my.bench.notFull : "Bench is already full"
+          assert my.deck : "Deck is empty"
         }
       };
       case CIRCHESTER_BATH_150:
-      return stadium (this) {
-        text "All Basic Pokémon (both yours and your opponent's) take 20 less damage from attacks from the opponent's Pokémon (after applying Weakness and Resistance)."
-        onPlay {
-        }
-        onRemoveFromPlay{
-        }
-      };
+      return copy (AmazingVoltTackle.HERO_S_BATH_97, this)
       case DRONE_ROTOM_151:
       return copy (AmazingVoltTackle.DRONE_ROTOM_90, this);
       case HERO_S_MEDAL_152:
@@ -623,15 +627,7 @@ public enum VividVoltage implements LogicCardInfo {
       case ROCKY_HELMET_159:
       return copy (LegendaryHeartbeat.ROCKY_HELMET_69, this);
       case TELESCOPIC_SIGHT_160:
-      return pokemonTool (this) {
-        text "The attacks of the Pokémon this card is attached to do 30 more damage to your opponent's Benched Pokémon V and Benched Pokémon-GX."
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        allowAttach {to->
-        }
-      };
+      return copy (AmazingVoltTackle.TELEPHOTO_SCOPE_91, this);
       case WYNDON_STADIUM_161:
       return copy (AmazingVoltTackle.WYNDON_STADIUM_98, this);
       case AROMATIC_G_ENERGY_162:
