@@ -1280,7 +1280,7 @@ public enum CelestialStorm implements LogicCardInfo {
             }
             onAttack {
               gxPerform()
-              additionalDamageByDiscardingEnergyFromPokemon 30, 50
+              additionalDamageByDiscardingCardTypeFromPokemon 30, 50, ENERGY
             }
           }
         };
