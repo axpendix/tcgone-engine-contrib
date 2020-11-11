@@ -607,26 +607,7 @@ public enum VividVoltage implements LogicCardInfo {
         }
       };
       case CIRCHESTER_BATH_150:
-      return stadium (this) {
-        text "All Basic Pokémon (both yours and your opponent's) take 20 less damage from attacks from the opponent's Pokémon (after applying Weakness and Resistance)."
-        def eff
-        // TODO: Can probably adapt reducedDamageFromAttacksAbility to work for this as well
-        onPlay {
-          eff = delayed {
-            before APPLY_ATTACK_DAMAGES, {
-              bg.dm().each {
-                if (it.to.basic && it.dmg.value && it.notNoEffect && it.from.owner == it.to.owner.opposite) {
-                  bc "$thisCard.name -20"
-                  it.dmg -= hp(20)
-                }
-              }
-            }
-          }
-        }
-        onRemoveFromPlay {
-          eff.unregister()
-        }
-      };
+      return copy (AmazingVoltTackle.HERO_S_BATH_97, this)
       case DRONE_ROTOM_151:
       return copy (AmazingVoltTackle.DRONE_ROTOM_90, this);
       case HERO_S_MEDAL_152:
