@@ -1349,82 +1349,29 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case MACHOP_53:
-      return basic (this, hp:HP070, type:F, retreatCost:2) {
-        weakness P
-        move "Low Kick", {
-          text "10 damage."
-          energyCost F
-          attackRequirement {}
-          onAttack {
-            damage 10
-          }
-        }
-        move "Steady Punch", {
-          text "20 damage. Flip a coin. If heads, this attack does 40 more damage."
-          energyCost F, C
-          attackRequirement {}
-          onAttack {
-            damage 20
-          }
-        }
-      };
+      return copy(ChampionsPath.MACHOP_24, this)
       case MACHOKE_54:
-      return evolution (this, from:"Machop", hp:HP110, type:F, retreatCost:3) {
-        weakness P
-        move "Low Kick", {
-          text "30 damage."
-          energyCost F
-          attackRequirement {}
-          onAttack {
-            damage 30
-          }
-        }
-        move "Pummel", {
-          text "50 damage. Flip a coin. If heads, this attack does 70 more damage."
-          energyCost F, F, C
-          attackRequirement {}
-          onAttack {
-            damage 50
-          }
-        }
-      };
+      return copy(ChampionsPath.MACHOKE_25, this)
       case MACHAMP_55:
-      return evolution (this, from:"Machoke", hp:HP170, type:F, retreatCost:3) {
-        weakness P
-        move "Macho Revenge 20x", {
-          text " This attack does 20 damage for each Pokémon in your discard pile."
-          energyCost F, C
-          attackRequirement {}
-          onAttack {
-
-          }
-        }
-        move "Dynamite Punch", {
-          text "200 damage. This Pokémon also does 50 damage to itself."
-          energyCost F, F, C
-          attackRequirement {}
-          onAttack {
-            damage 200
-          }
-        }
-      };
+      return copy(ChampionsPath.MACHAMP_26, this)
       case PHANPY_56:
       return basic (this, hp:HP070, type:F, retreatCost:2) {
         weakness G
         move "Stampede", {
           text "10 damage."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 10
           }
         }
         move "Strike Back", {
-          text "30 damage. This attack does 30 damage times the number of damage counters on this Pokémon."
+          text "30x damage. This attack does 30 damage times the number of damage counters on this Pokémon."
           energyCost F, C
-          attackRequirement {}
+          attackRequirement {
+            assert self.numberOfDamageCounters : "$self has no damage counters"
+          }
           onAttack {
-            damage 30
+            damage 30 * self.numberOfDamageCounters
           }
         }
       };
@@ -1434,15 +1381,14 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Earthquake", {
           text "120 damage. This attack does 20 damage to each of your Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 120
+            my.bench.each {damage 20, it}
           }
         }
         move "Heavy Impact", {
           text "90 damage."
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             damage 90
           }
@@ -1454,17 +1400,21 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Cycle Draw", {
           text " Discard a card from your hand. If you do, draw 3 cards."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.hand && my.deck : "Deck and hand are empty"
+          }
           onAttack {
-
+            my.hand.select("To discard?").discard()
+            draw 3
           }
         }
         move "Twister Kick", {
           text "50 damage. If you played Bea from your hand during this turn, this attack does 80 more damage."
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             damage 50
+            if (bg.em().retrieveObject("BEA") != bg.turnCount) return
+            damage 80
           }
         }
       };
@@ -1474,7 +1424,6 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Scratch", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1482,9 +1431,8 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Focus Fist", {
           text "50 damage. Flip a coin. If tails, this attack does nothing."
           energyCost C, C
-          attackRequirement {}
           onAttack {
-            damage 50
+            flip { damage 50 }
           }
         }
       };
@@ -1494,17 +1442,19 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Guard Press", {
           text "30 damage. During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 30
+            reduceDamageNextTurn hp(30), thisMove
           }
         }
         move "Ground Power", {
           text "80 damage. If you have a Stadium in play, this attack does 80 more damage."
           energyCost F, F, C
-          attackRequirement {}
           onAttack {
             damage 80
+            if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player == self.owner) {
+              damage 80
+            }
           }
         }
       };
@@ -1514,7 +1464,6 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Ram", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1522,7 +1471,6 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Rear Kick", {
           text "60 damage."
           energyCost F, F, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -1534,17 +1482,15 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Mud Bomb", {
           text "50 damage."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
         }
         move "Heavy Slam", {
-          text "180 damage. This attack does 30 less damage for each in your opponent's Active Pokémon's Retreat Cost."
+          text "180- damage. This attack does 30 less damage for each [C] in your opponent's Active Pokémon's Retreat Cost."
           energyCost F, F, C
-          attackRequirement {}
           onAttack {
-            damage 180
+            damage 180 - (defending.retreatCost * 30)
           }
         }
       };
@@ -1554,7 +1500,6 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Beat", {
           text "20 damage."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1562,7 +1507,6 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Hammer In", {
           text "40 damage."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -1574,37 +1518,25 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Headlock", {
           text "30 damage. During your opponent's next turn, the Defending Pokémon can't retreat."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 30
+            cantRetreat defending
+            keyStore "Headlock", self, bg.turnCount
           }
         }
         move "Tentacle Buster", {
           text "50 damage. If this Pokémon used Headlock during your last turn, this attack does 120 more damage."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 50
+            if (keyStore("Headlock", self, null) == bg.turnCount - 2) {
+              damage 120
+            }
           }
         }
       };
       case GALARIAN_SIRFETCH_D_V_65:
-      return basic (this, hp:HP210, type:F, retreatCost:2) {
-        weakness P
-        bwAbility "Pledge Spear", {
-          text "Once during your turn, when this Pokémon moves from your Bench to the Active Spot, you may move any amount of Energy from your other Pokémon to it."
-          actionA {
-          }
-        }
-        move "Meteor Smash", {
-          text "200 damage. During your next turn, this Pokémon can't attack."
-          energyCost F, F, C
-          attackRequirement {}
-          onAttack {
-            damage 200
-          }
-        }
-      };
+      return copy(SwordShieldPromos.GALARIAN_SIRFETCH_D_V_SWSH43, this)
       case POOCHYENA_66:
       return basic (this, hp:HP070, type:D, retreatCost:1) {
         weakness G
