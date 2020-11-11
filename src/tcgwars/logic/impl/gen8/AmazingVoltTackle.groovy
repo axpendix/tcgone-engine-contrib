@@ -2143,7 +2143,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         onPlay {reason->
           eff = delayed {
             before null, self, ATTACK, {
-              if (self.types.contains(W) && ef.effectType != DAMAGE) {
+              if (self.types.contains(W) && ef.effectType != DAMAGE && ef.attacker.owner == self.owner.opposite) {
                 bc "$thisCard prevents effect"
                 prevent()
               }
