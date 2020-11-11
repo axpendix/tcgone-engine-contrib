@@ -1336,6 +1336,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           onActivate { reason ->
             if (reason == PLAY_FROM_HAND && self.evolution && bg.currentTurn == self.owner && confirm("Use $thisAbility?")) {
               draw 1
+              draw 1, TargetPlayer.OPPONENT
             }
           }
         }
