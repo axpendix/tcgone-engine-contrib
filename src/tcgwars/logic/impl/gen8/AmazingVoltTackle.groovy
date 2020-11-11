@@ -916,7 +916,8 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             bg.em().run(new CheckAbilities())
           }
           getterA GET_ABILITIES, BEFORE_LAST, {Holder holder->
-            if (self.cards.any { it.name == "Memory Capsule" } && holder.effect.target != self) {
+            if (self.cards.any { it.name == "Memory Capsule" } && holder.effect.target != self
+              && holder.effect.target.types.contains(W)) {
               holder.object.keySet().removeIf { it instanceof BwAbility }
             }
           }
