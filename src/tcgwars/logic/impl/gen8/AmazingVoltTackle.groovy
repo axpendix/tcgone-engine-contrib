@@ -466,7 +466,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return evolution (this, from:"Eevee", hp:HP110, type:R, retreatCost:2) {
         weakness W
         bwAbility "Scorching Awakening", {
-          text "If this Pokémon has a Memory Capsule card attached to it, each player's Pokémon has no Abilities."
+          text "If this Pokémon has a Memory Capsule card attached to it, each player's [G] Pokémon has no Abilities."
           onActivate {
             bg.em().run(new CheckAbilities())
           }
@@ -474,12 +474,14 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             bg.em().run(new CheckAbilities())
           }
           getterA GET_ABILITIES, BEFORE_LAST, {Holder holder->
-            if (self.cards.any { it.name == "Memory Capsule" } && holder.effect.target != self) {
+            if (self.cards.any { it.name == "Memory Capsule" }
+              && holder.effect.target.types.contains(G)) {
               holder.object.keySet().removeIf { it instanceof BwAbility }
             }
           }
           getterA IS_GLOBAL_ABILITY_BLOCKED, {Holder holder->
-            if (self.cards.any { it.name == "Memory Capsule" }) {
+            if (self.cards.any { it.name == "Memory Capsule" }
+              && holder.effect.target.types.contains(G)) {
               holder.object = true
             }
           }
