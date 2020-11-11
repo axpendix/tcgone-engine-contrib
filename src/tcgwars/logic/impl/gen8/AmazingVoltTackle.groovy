@@ -1865,7 +1865,6 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Gnaw", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1873,7 +1872,6 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Tail Whap", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1885,14 +1883,20 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         bwAbility "Stuff Face", {
           text "Once during your turn, if this Pokémon is in the Active Spot, you may draw cards until you have 7 cards in your hand. If you use this Ability, your turn ends."
           actionA {
+            checkLastTurn()
+            assert self.active : "$self is not the Active Pokémon"
+            assert my.hand.size() < 7 : "Your hand already has 7 or more cards"
+            powerUsed()
+            draw 7 - my.hand.size()
+            bg.gm().betweenTurns()
           }
         }
         move "Body Slam", {
           text "100 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
           energyCost C, C, C, C
-          attackRequirement {}
           onAttack {
             damage 100
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -1901,11 +1905,10 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         weakness L
         resistance F, MINUS30
         move "Double Peck", {
-          text "20 damage. Flip 2 coins. This attack does 20 damage for each heads."
+          text "20x damage. Flip 2 coins. This attack does 20 damage for each heads."
           energyCost C, C
-          attackRequirement {}
           onAttack {
-            damage 20
+            flip 2, { damage 20 }
           }
         }
       };
@@ -1914,19 +1917,21 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         weakness L
         resistance F, MINUS30
         move "Quick Attack", {
-          text "20 damage. Flip a coin. If heads, this attack does 40 more damage."
+          text "20+ damage. Flip a coin. If heads, this attack does 40 more damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
+            flip { damage 40 }
           }
         }
         move "Energy Assist", {
           text "40 damage. Attach up to 2 basic Energy cards from your discard pile to 1 of your Benched Pokémon."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 40
+            if (my.bench && my.discard.any { it.cardTypes.is BASIC_ENERGY }) {
+              attachEnergyFrom max: 2, basic: true, my.discard, my.bench
+            }
           }
         }
       };
@@ -1934,11 +1939,10 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness F
         move "Continuous Tumble", {
-          text "40 damage. Flip a coin until you get tails. This attack does 40 damage for each heads."
+          text "40x damage. Flip a coin until you get tails. This attack does 40 damage for each heads."
           energyCost C, C
-          attackRequirement {}
           onAttack {
-            damage 40
+            flipUntilTails { damage 40 }
           }
         }
       };
@@ -1946,17 +1950,15 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return evolution (this, from:"Whismur", hp:HP100, type:C, retreatCost:2) {
         weakness F
         move "Round", {
-          text "20 damage. This attack does 20 damage for each of your Pokémon that have the Round attack."
+          text "20x damage. This attack does 20 damage for each of your Pokémon that have the Round attack."
           energyCost C, C
-          attackRequirement {}
           onAttack {
-            damage 20
+            damage 20 * my.all.findAll {it.topPokemonCard.moves.find { it.name=="Round" }}.size()
           }
         }
         move "Hyper Voice", {
           text "50 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -1966,17 +1968,15 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return evolution (this, from:"Loudred", hp:HP160, type:C, retreatCost:3) {
         weakness F
         move "Round", {
-          text "50 damage. This attack does 50 damage for each of your Pokémon that have the Round attack."
+          text "50x damage. This attack does 50 damage for each of your Pokémon that have the Round attack."
           energyCost C, C
-          attackRequirement {}
           onAttack {
-            damage 50
+            damage 50 * my.all.findAll {it.topPokemonCard.moves.find { it.name=="Round" }}.size()
           }
         }
         move "Hyper Voice", {
           text "120 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 120
           }
