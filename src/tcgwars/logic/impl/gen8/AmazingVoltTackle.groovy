@@ -2131,19 +2131,20 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return stadium (this) {
         text "Basic Pokémon in play (both yours and your opponent's) take 20 less damage from attacks (after applying Weakness and Resistance)."
         def eff
+        // TODO: Can probably adapt reducedDamageFromAttacksAbility to work for this as well
         onPlay {
           eff = delayed {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if (it.to.basic && it.notZero && it.notNoEffect) {
-                  bc "$thisCard -20"
+                if (it.to.basic && it.dmg.value && it.notNoEffect && it.from.owner == it.to.owner.opposite) {
+                  bc "$thisCard.name -20"
                   it.dmg -= hp(20)
                 }
               }
             }
           }
         }
-        onRemoveFromPlay{
+        onRemoveFromPlay {
           eff.unregister()
         }
       };
