@@ -81,7 +81,11 @@ public enum SwordShieldPromos implements LogicCardInfo {
   DURALUDON_SWSH60 ("Duraludon", "SWSH060", Rarity.PROMO, [POKEMON, BASIC, _METAL_]),
   PIKACHU_V_SWSH63 ("Pikachu V", "SWSH063", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _LIGHTNING_]),
   ETERNATUS_V_SWSH64 ("Eternatus V", "SWSH064", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _DARKNESS_]),
-  EEVEE_V_SWSH65 ("Eevee V", "SWSH065", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _COLORLESS_]);
+  EEVEE_V_SWSH65 ("Eevee V", "SWSH065", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _COLORLESS_]),
+  CHARIZARD_SWSH66 ("Charizard", "SWSH066", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _FIRE_]),
+  DONPHAN_SWSH67 ("Donphan", "SWSH067", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
+  SNORLAX_SWSH68 ("Snorlax", "SWSH068", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
+  LUGIA_SWSH69 ("Lugia", "SWSH069", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -692,7 +696,15 @@ public enum SwordShieldPromos implements LogicCardInfo {
           }
         }
       }
-        default:
+      case CHARIZARD_SWSH66:
+      return copy (AmazingVoltTackle.CHARIZARD_12, this)
+      case DONPHAN_SWSH67:
+      return copy (AmazingVoltTackle.DONPHAN_57, this)
+      case SNORLAX_SWSH68:
+      return copy (AmazingVoltTackle.SNORLAX_84, this)
+      case LUGIA_SWSH69:
+      return copy (LegendaryHeartbeat.LUGIA_55, this)
+      default:
       return null;
     }
   }
