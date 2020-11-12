@@ -76,6 +76,9 @@ public enum SwordShieldPromos implements LogicCardInfo {
   HATTERENE_V_SWSH55 ("Hatterene V", "SWSH055", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _PSYCHIC_]),
   MORPEKO_V_SWSH56 ("Morpeko V", "SWSH056", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _LIGHTNING_]),
   GRIMMSNARL_V_SWSH57 ("Grimmsnarl V", "SWSH057", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _DARKNESS_]),
+  ALCREMIE_SWSH58 ("Alcremie", "SWSH058", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
+  GALARIAN_OBSTAGOON_SWSH59 ("Galarian Obstagoon", "SWSH059", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _DARKNESS_]),
+  DURALUDON_SWSH60 ("Duraludon", "SWSH060", Rarity.PROMO, [POKEMON, BASIC, _METAL_]),
   PIKACHU_V_SWSH63 ("Pikachu V", "SWSH063", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _LIGHTNING_]),
   ETERNATUS_V_SWSH64 ("Eternatus V", "SWSH064", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _DARKNESS_]),
   EEVEE_V_SWSH65 ("Eevee V", "SWSH065", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _COLORLESS_]);
@@ -635,6 +638,12 @@ public enum SwordShieldPromos implements LogicCardInfo {
       return copy (SwordShield.MORPEKO_V_79, this)
       case GRIMMSNARL_V_SWSH57:
       return copy(DarknessAblaze.GRIMMSNARL_V_114, this)
+      case ALCREMIE_SWSH58:
+      return copy(RebelClash.ALCREMIE_87, this)
+      case GALARIAN_OBSTAGOON_SWSH59:
+      return copy(SwordShield.GALARIAN_OBSTAGOON_119, this)
+      case DURALUDON_SWSH60:
+      return copy(RebelClash.DURALUDON_138, this)
       case PIKACHU_V_SWSH63:
       return basic(this, hp:HP190, type:L, retreatCost:1) {
         weakness F
