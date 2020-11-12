@@ -433,7 +433,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
         }
       };
       case SNORLAX_SWSH32:
-      return copy(SwordShield.SNORLAX_140, this);
+      return copy (SwordShield.SNORLAX_140, this);
       case ZACIAN_SWSH33:
       return basic (this, hp:HP130, type:M, retreatCost:2) {
         weakness R
@@ -483,13 +483,13 @@ public enum SwordShieldPromos implements LogicCardInfo {
         }
       };
       case DECIDUEYE_SWSH35:
-      return copy(DarknessAblaze.DECIDUEYE_13, this);
+      return copy (DarknessAblaze.DECIDUEYE_13, this);
       case ARCTOZOLT_SWSH36:
-      return copy(DarknessAblaze.ARCTOZOLT_66, this);
+      return copy (DarknessAblaze.ARCTOZOLT_66, this);
       case HYDREIGON_SWSH37:
-      return copy(DarknessAblaze.HYDREIGON_110, this);
+      return copy (DarknessAblaze.HYDREIGON_110, this);
       case KANGASKHAN_SWSH38:
-      return copy(DarknessAblaze.KANGASKHAN_133, this);
+      return copy (DarknessAblaze.KANGASKHAN_133, this);
       case PIKACHU_SWSH39:
       return basic (this, hp:HP060, type:L, retreatCost:1) {
         weakness F
@@ -511,7 +511,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
         }
       };
       case HATENNA_SWSH40:
-      return copy(RebelClash.HATENNA_83, this);
+      return copy (RebelClash.HATENNA_83, this);
       case FLAREON_SWSH41:
       return evolution (this, from:"Eevee", hp:HP110, type:R, retreatCost:2) {
         weakness W
@@ -596,29 +596,29 @@ public enum SwordShieldPromos implements LogicCardInfo {
         }
       };
       case ETERNATUS_V_SWSH44:
-      return copy(DarknessAblaze.ETERNATUS_V_116, this);
+      return copy (DarknessAblaze.ETERNATUS_V_116, this);
       case ETERNATUS_VMAX_SWSH45:
-      return copy(DarknessAblaze.ETERNATUS_VMAX_117, this);
+      return copy (DarknessAblaze.ETERNATUS_VMAX_117, this);
       case ELDEGOSS_SWSH46:
-      return copy(SwordShield.ELDEGOSS_21, this);
+      return copy (SwordShield.ELDEGOSS_21, this);
       case DREDNAW_SWSH47:
-      return copy(SwordShield.DREDNAW_61, this);
+      return copy (SwordShield.DREDNAW_61, this);
       case CENTISKORCH_SWSH48:
-      return copy(SwordShield.CENTISKORCH_39, this);
+      return copy (SwordShield.CENTISKORCH_39, this);
       case DUBWOOL_V_SWSH49:
-      return copy(RebelClash.DUBWOOL_V_153, this);
+      return copy (RebelClash.DUBWOOL_V_153, this);
       case CHARIZARD_V_SWSH50:
-      return copy(DarknessAblaze.CHARIZARD_V_19, this);
+      return copy (DarknessAblaze.CHARIZARD_V_19, this);
       case LAPRAS_SWSH51:
-      return copy(SwordShield.LAPRAS_48, this);
+      return copy (SwordShield.LAPRAS_48, this);
       case GENGAR_SWSH52:
-      return copy(SwordShield.GENGAR_85, this);
+      return copy (SwordShield.GENGAR_85, this);
       case MACHAMP_SWSH53:
-      return copy(ChampionsPath.MACHAMP_26, this);
+      return copy (ChampionsPath.MACHAMP_26, this);
       case COALOSSAL_SWSH54:
-      return copy(RebelClash.COALOSSAL_107, this);
+      return copy (RebelClash.COALOSSAL_107, this);
       case HATTERENE_V_SWSH55:
-      return basic(this, hp:HP200, type:P, retreatCost:2) {
+      return basic (this, hp:HP200, type:P, retreatCost:2) {
         weakness D
         resistance F, MINUS30
         move "Confounding Pulse", {
@@ -645,15 +645,15 @@ public enum SwordShieldPromos implements LogicCardInfo {
       case MORPEKO_V_SWSH56:
       return copy (SwordShield.MORPEKO_V_79, this)
       case GRIMMSNARL_V_SWSH57:
-      return copy(DarknessAblaze.GRIMMSNARL_V_114, this)
+      return copy (DarknessAblaze.GRIMMSNARL_V_114, this)
       case ALCREMIE_SWSH58:
-      return copy(RebelClash.ALCREMIE_87, this)
+      return copy (RebelClash.ALCREMIE_87, this)
       case GALARIAN_OBSTAGOON_SWSH59:
-      return copy(SwordShield.GALARIAN_OBSTAGOON_119, this)
+      return copy (SwordShield.GALARIAN_OBSTAGOON_119, this)
       case DURALUDON_SWSH60:
-      return copy(RebelClash.DURALUDON_138, this)
+      return copy (RebelClash.DURALUDON_138, this)
       case PIKACHU_V_SWSH63:
-      return basic(this, hp:HP190, type:L, retreatCost:1) {
+      return basic (this, hp:HP190, type:L, retreatCost:1) {
         weakness F
         move "Pika Ball", {
           text "30 damage."
@@ -674,9 +674,9 @@ public enum SwordShieldPromos implements LogicCardInfo {
         }
       }
       case ETERNATUS_V_SWSH64:
-      return copy(DarknessAblaze.ETERNATUS_V_116, this);
+      return copy (DarknessAblaze.ETERNATUS_V_116, this);
       case EEVEE_V_SWSH65:
-      return basic(this, hp:HP190, type:C, retreatCost:1) {
+      return basic (this, hp:HP190, type:C, retreatCost:1) {
         weakness F
         move "Collect", {
           text "Draw 3 cards."
@@ -709,7 +709,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
       case LUGIA_SWSH69:
       return copy (LegendaryHeartbeat.LUGIA_55, this)
       case GROOKEY_SWSH70:
-      return basic(this, hp:HP060, type:G, retreatCost:1) {
+      return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
         move "Full On", {
           text "30 damage. Flip a coin. If tails, this attack does nothing."
@@ -720,7 +720,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
         }
       }
       case SCORBUNNY_SWSH71:
-      return basic(this, hp:HP060, type:R, retreatCost:1) {
+      return basic (this, hp:HP060, type:R, retreatCost:1) {
         weakness W
         move "Me First", {
           text "Draw a card."
@@ -741,7 +741,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
         }
       }
       case VAPOREON_SWSH72:
-      return evolution(this, from:"Eevee", hp:HP110, type:W, retreatCost:2) {
+      return evolution (this, from:"Eevee", hp:HP110, type:W, retreatCost:2) {
         weakness L
         // TODO: Static candidate
         bwAbility "Watery Shroud", {
@@ -767,7 +767,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
         }
       }
       case SOBBLE_SWSH73:
-      return basic(this, hp:HP060, type:W, retreatCost:1) {
+      return basic (this, hp:HP060, type:W, retreatCost:1) {
         weakness L
         move "Growl", {
           text "During your opponent's next turn, the Defending Pokémon's attacks do 20 less damage (before applying Weakness and Resistance)."
