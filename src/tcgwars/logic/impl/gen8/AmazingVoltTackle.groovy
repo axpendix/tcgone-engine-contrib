@@ -466,7 +466,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return evolution (this, from:"Eevee", hp:HP110, type:R, retreatCost:2) {
         weakness W
         bwAbility "Scorching Awakening", {
-          text "If this Pokémon has a Memory Capsule card attached to it, each player's Pokémon has no Abilities."
+          text "If this Pokémon has a Memory Capsule card attached to it, each player's [G] Pokémon in play has no Abilities."
           onActivate {
             bg.em().run(new CheckAbilities())
           }
@@ -474,13 +474,9 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             bg.em().run(new CheckAbilities())
           }
           getterA GET_ABILITIES, BEFORE_LAST, {Holder holder->
-            if (self.cards.any { it.name == "Memory Capsule" } && holder.effect.target != self) {
+            if (self.cards.any { it.name == "Memory Capsule" }
+              && holder.effect.target.types.contains(G)) {
               holder.object.keySet().removeIf { it instanceof BwAbility }
-            }
-          }
-          getterA IS_GLOBAL_ABILITY_BLOCKED, {Holder holder->
-            if (self.cards.any { it.name == "Memory Capsule" }) {
-              holder.object = true
             }
           }
           delayedA {
@@ -568,7 +564,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return evolution (this, from:"Eevee", hp:HP110, type:W, retreatCost:2) {
         weakness L
         bwAbility "Torrent Awakening", {
-          text "If this Pokémon has a Memory Capsule card attached to it, each player's Pokémon has no Abilities."
+          text "If this Pokémon has a Memory Capsule card attached to it, each player's [R] Pokémon in play has no Abilities."
           onActivate {
             bg.em().run(new CheckAbilities())
           }
@@ -576,13 +572,9 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             bg.em().run(new CheckAbilities())
           }
           getterA GET_ABILITIES, BEFORE_LAST, {Holder holder->
-            if (self.cards.any { it.name == "Memory Capsule" } && holder.effect.target != self) {
+            if (self.cards.any { it.name == "Memory Capsule" } && holder.effect.target != self
+              && holder.effect.target.types.contains(R)) {
               holder.object.keySet().removeIf { it instanceof BwAbility }
-            }
-          }
-          getterA IS_GLOBAL_ABILITY_BLOCKED, {Holder holder->
-            if (self.cards.any { it.name == "Memory Capsule" }) {
-              holder.object = true
             }
           }
           delayedA {
@@ -717,7 +709,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         }
       };
       case GALARIAN_DARMANITAN_VMAX_24:
-      return evolution (this, from:"Darmanitan V", hp:HP320, type:W, retreatCost:3) {
+      return evolution (this, from:"Galarian Darmanitan V", hp:HP320, type:W, retreatCost:3) {
         weakness M
         move "Max Snowfall", {
           text "200 damage. This attack also does 30 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
@@ -916,7 +908,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return evolution (this, from:"Eevee", hp:HP100, type:L, retreatCost:1) {
         weakness F
         bwAbility "Thunderclap Awakening", {
-          text "If this Pokémon has a Memory Capsule card attached to it, each player's Pokémon has no Abilities."
+          text "If this Pokémon has a Memory Capsule card attached to it, each player's [W] Pokémon in play has no Abilities."
           onActivate {
             bg.em().run(new CheckAbilities())
           }
@@ -924,13 +916,9 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             bg.em().run(new CheckAbilities())
           }
           getterA GET_ABILITIES, BEFORE_LAST, {Holder holder->
-            if (self.cards.any { it.name == "Memory Capsule" } && holder.effect.target != self) {
+            if (self.cards.any { it.name == "Memory Capsule" } && holder.effect.target != self
+              && holder.effect.target.types.contains(W)) {
               holder.object.keySet().removeIf { it instanceof BwAbility }
-            }
-          }
-          getterA IS_GLOBAL_ABILITY_BLOCKED, {Holder holder->
-            if (self.cards.any { it.name == "Memory Capsule" }) {
-              holder.object = true
             }
           }
           delayedA {
@@ -1165,7 +1153,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Confuse Ray", {
           text " Your opponent's Active Pokémon is now Confused."
           energyCost C
-          attackRequirment {
+          attackRequirement {
             assert !defending.isSPC(CONFUSED) : "$defending is already confused"
           }
           onAttack {
@@ -1336,6 +1324,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           onActivate { reason ->
             if (reason == PLAY_FROM_HAND && self.evolution && bg.currentTurn == self.owner && confirm("Use $thisAbility?")) {
               draw 1
+              draw 1, TargetPlayer.OPPONENT
             }
           }
         }
@@ -1724,12 +1713,12 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           text "20x damage. Flip 3 coins. This attack does 20 damage for each heads."
           energyCost M, C
           onAttack {
-            flip { damage 20 }
+            flip 3, { damage 20 }
           }
         }
       };
       case GALARIAN_PERRSERKER_76:
-      return evolution (this, from:"Meowth", hp:HP120, type:M, retreatCost:2) {
+      return evolution (this, from:"Galarian Meowth", hp:HP120, type:M, retreatCost:2) {
         weakness R
         resistance G, MINUS30
         move "Snatch Claw", {
@@ -1742,7 +1731,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
               flip 3, { count++ }
               if (count == 0) return
               count = Math.min count, opp.hand.findAll { it.cardTypes.is TRAINER }.size()
-              def trainerCards = opp.hand.select count:count, "Discard $count Trainers from opponent's hand.", { it.cardTypes.is TRAINER }
+              def trainerCards = opp.hand.shuffledCopy().select count:count, "Discard $count Trainers from opponent's hand.", { it.cardTypes.is TRAINER }
               trainerCards.discard()
             }
           }
@@ -1987,7 +1976,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         text "Your opponent reveals their hand. Then" +
           "look at the top card of your opponent's deck."
         onPlay {
-          opp.hand.showToMe "Opponent's hand."
+          opp.hand.shuffledCopy().showToMe "Opponent's hand."
           opp.deck.subList(0, 1).showToMe "Top card of Oppoenent's deck."
         }
         playRequirement{
@@ -2003,8 +1992,8 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             after PROCESS_ATTACK_EFFECTS, {
               bg.dm().each {
                 if(it.from==self && it.to.benched && (it.to.pokemonV || it.to.pokemonGX) && it.dmg.value){
-                  it.dmg -= hp(30)
-                  bc "$thisCard -30"
+                  it.dmg += hp(30)
+                  bc "$thisCard +30"
                 }
               }
             }
@@ -2037,8 +2026,8 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return supporter (this) {
         text "Discard the top 5 cards of your deck. If any of those cards are Energy cards" +
           "attach them to your Benched [F] Pokémon in any way you like."
-        onPlay { reason->
-          if (reason == PLAY_FROM_HAND) bg.em().storeObject "BEA", bg.turnCount
+        onPlay {
+          if (my.hand.contains(thisCard)) bg.em().storeObject "BEA", bg.turnCount
           def discarded = my.deck.subList(0, 5).discard()
           discarded.findAll { it.cardTypes.is ENERGY }.each {
             attachEnergy my.bench.findAll { it.types.contains F }.select("Attach $it to?"), it
@@ -2083,7 +2072,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return supporter (this) {
         text "Put up to 4 in any combination of [W] Pokémon and [W] Energy cards from your discard pile into your hand."
         onPlay { reason->
-          if (reason == PLAY_FROM_HAND) bg.em().storeObject "NESSA", bg.turnCount
+          if (my.hand.contains(thisCard)) bg.em().storeObject "NESSA", bg.turnCount
           def info = "$W Pokémon and $W Energy to put into your hand?"
           def filter = {(it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(W)) || (it.cardTypes.is(ENERGY) && it.asEnergyCard().energyTypes.any { it.contains W }) }
           def selected = my.discard.select max:4, info, filter
@@ -2143,7 +2132,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         onPlay {reason->
           eff = delayed {
             before null, self, ATTACK, {
-              if (self.types.contains(W) && ef.effectType != DAMAGE) {
+              if (self.types.contains(W) && ef.effectType != DAMAGE && ef.attacker.owner == self.owner.opposite) {
                 bc "$thisCard prevents effect"
                 prevent()
               }
