@@ -1532,7 +1532,6 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Bite", {
           text "10 damage."
           energyCost D
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1540,7 +1539,6 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Rear Kick", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1552,15 +1550,14 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Ferocious Bellow", {
           text "20 damage. During your opponent's next turn, the Defending Pokémon's attacks do 50 less damage (before applying Weakness and Resistance)."
           energyCost D
-          attackRequirement {}
           onAttack {
             damage 20
+            reduceDamageFromDefendingNextTurn hp(50), thisMove, defending
           }
         }
         move "PitchBlack Fangs", {
           text "100 damage."
           energyCost D, C, C
-          attackRequirement {}
           onAttack {
             damage 100
           }
@@ -1572,17 +1569,19 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Filch", {
           text " Draw a card."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Deck is empty"
+          }
           onAttack {
-
+            draw 1
           }
         }
         move "Torment", {
           text "30 damage. Choose 1 of your opponent's Active Pokémon's attacks. During your opponent's next turn, that Pokémon can't use that attack."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
+            amnesia delegate
           }
         }
       };
@@ -1592,7 +1591,6 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Wrack Down", {
           text "70 damage."
           energyCost D, C, C
-          attackRequirement {}
           onAttack {
             damage 70
           }
@@ -1600,9 +1598,32 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Hazard Claw", {
           text "130 damage. Discard 2 Energy from this Pokémon. Your opponent's Active Pokémon is now Paralyzed and Poisoned."
           energyCost D, C, C, C
-          attackRequirement {}
           onAttack {
             damage 130
+            afterDamage {
+              // TODO: Make a static method to do this
+              if (self.cards.energyCount())
+                if (self.cards.energyCount() <= 2) {
+                  self.cards.filterByType(ENERGY).moveTo my.hand
+                } else {
+                  def targetCount = Math.min self.cards.energyCount(), 2
+                  def finalCount = 0
+                  while (self.cards.energyCount() > 0 && finalCount < targetCount) {
+                    def info = "Select Energy to return to your hand."
+                    def energy = self.cards.filterByType(ENERGY).select(info)
+                    def energyCount = 1
+                    if (energy.energyCount() > 1) {
+                      def choices = 1..energy.energyCount()
+                      def choiceInfo = "How many Energy do you want this card to count as?"
+                      energyCount = choose(choices, choiceInfo)
+                    }
+                    finalCount += energyCount
+                    energy.moveTo my.hand
+                  }
+                }
+            }
+            applyAfterDamage PARALYZED
+            applyAfterDamage POISONED
           }
         }
       };
@@ -1612,9 +1633,11 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Devastating Dig", {
           text " Discard the top 3 cards of your opponent's deck."
           energyCost C, C, C, C
-          attackRequirement {}
+          attackRequirement {
+            assert opp.deck : "Opponent's deck is empty"
+          }
           onAttack {
-
+            opp.deck.subList(0, 3).discard()
           }
         }
       };
@@ -1624,7 +1647,6 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Bite", {
           text "20 damage."
           energyCost D
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1632,9 +1654,11 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Devastating Dig", {
           text " Discard the top 3 cards of your opponent's deck."
           energyCost C, C, C
-          attackRequirement {}
+          attackRequirement {
+            assert opp.deck : "Opponent's deck is empty"
+          }
           onAttack {
-
+            opp.deck.subList(0, 3).discard()
           }
         }
       };
@@ -1644,17 +1668,19 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Devastating Dig", {
           text " Discard the top 3 cards of your opponent's deck."
           energyCost C, C
-          attackRequirement {}
+          attackRequirement {
+            assert opp.deck : "Opponent's deck is empty"
+          }
           onAttack {
-
+            opp.deck.subList(0, 3).discard()
           }
         }
         move "Tantrum", {
           text "180 damage. This Pokémon is now Confused."
           energyCost D, C, C, C
-          attackRequirement {}
           onAttack {
             damage 180
+            applyAfterDamage CONFUSED
           }
         }
       };
@@ -1664,15 +1690,18 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         move "Lucky Find", {
           text " Search your deck for an Item card, reveal it, and put it into your hand. Then, shuffle your deck."
           energyCost C, C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Deck is empty"
+          }
           onAttack {
-
+            def chosenCard = my.deck.search { it.cardTypes.is ITEM }
+            chosenCard.showToOpponent("Opponent's chosen Item card.").moveTo my.hand
+            shuffleDeck()
           }
         }
         move "Sludge Toss", {
           text "30 damage."
           energyCost D, C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -1682,19 +1711,21 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return evolution (this, from:"Trubbish", hp:HP120, type:D, retreatCost:3) {
         weakness F
         move "Dust Cyclone", {
-          text "30 damage. This attack does 30 damage for each Pokémon Tool in your discard pile. Then, shuffle those cards into your deck."
+          text "30x damage. This attack does 30 damage for each Pokémon Tool in your discard pile. Then, shuffle those cards into your deck."
           energyCost C, C
-          attackRequirement {}
+          attackRequirement {
+            assert my.discard.any { it.cardTypes.is ITEM }
+          }
           onAttack {
-            damage 30
+            damage 30 * my.discard.findAll { it.cardTypes.is ITEM }.size()
           }
         }
         move "Poison Spray", {
           text "80 damage. Your opponent's Active Pokémon is now Poisoned."
           energyCost D, C, C
-          attackRequirement {}
           onAttack {
             damage 80
+            applyAfterDamage POISONED
           }
         }
       };
