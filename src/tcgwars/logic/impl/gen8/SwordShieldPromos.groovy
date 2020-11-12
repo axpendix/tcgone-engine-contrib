@@ -85,7 +85,11 @@ public enum SwordShieldPromos implements LogicCardInfo {
   CHARIZARD_SWSH66 ("Charizard", "SWSH066", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _FIRE_]),
   DONPHAN_SWSH67 ("Donphan", "SWSH067", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
   SNORLAX_SWSH68 ("Snorlax", "SWSH068", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
-  LUGIA_SWSH69 ("Lugia", "SWSH069", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]);
+  LUGIA_SWSH69 ("Lugia", "SWSH069", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
+  GROOKEY_SWSH70 ("Grookey", "SWSH070", Rarity.PROMO, [POKEMON, BASIC, _GRASS_]),
+  SCORBUNNY_SWSH71 ("Scorbunny", "SWSH071", Rarity.PROMO, [POKEMON, BASIC, _FIRE_]),
+  VAPOREON_SWSH72 ("Vaporeon", "SWSH072", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
+  SOBBLE_SWSH73 ("Sobble", "SWSH073", Rarity.PROMO, [POKEMON, BASIC, _WATER_]),
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -704,6 +708,82 @@ public enum SwordShieldPromos implements LogicCardInfo {
       return copy (AmazingVoltTackle.SNORLAX_84, this)
       case LUGIA_SWSH69:
       return copy (LegendaryHeartbeat.LUGIA_55, this)
+      case GROOKEY_SWSH70:
+      return basic(this, hp:HP060, type:G, retreatCost:1) {
+        weakness R
+        move "Full On", {
+          text "30 damage. Flip a coin. If tails, this attack does nothing."
+          energyCost G
+          onAttack {
+            flip { damage 30 }
+          }
+        }
+      }
+      case SCORBUNNY_SWSH71:
+      return basic(this, hp:HP060, type:R, retreatCost:1) {
+        weakness W
+        move "Me First", {
+          text "Draw a card."
+          energyCost C
+          attackRequirement {
+            assert my.deck : "Deck is empty"
+          }
+          onAttack {
+            draw 1
+          }
+        }
+        move "Live Coal", {
+          text "20 damage."
+          energyCost R, R
+          onAttack {
+            damage 20
+          }
+        }
+      }
+      case VAPOREON_SWSH72:
+      return evolution(this, from:"Eevee", hp:HP110, type:W, retreatCost:2) {
+        weakness L
+        // TODO: Static candidate
+        bwAbility "Watery Shroud", {
+          text "As long as this Pokémon is on your Bench, prevent all damage done to this Pokémon by attacks (both yours and your opponent's)."
+          delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each{
+                if(!self.active && it.to == self){
+                  bc "$thisAbility prevent all damage"
+                  it.dmg=hp(0)
+                }
+              }
+            }
+          }
+        }
+        move "Hydro Pump", {
+          text "60+ damage. This attack does 20 more damage for each [W] Energy attached to this Pokémon"
+          energyCost C, C, C
+          onAttack {
+            damage 60
+            damage 20 * self.cards.energyCount(W)
+          }
+        }
+      }
+      case SOBBLE_SWSH73:
+      return basic(this, hp:HP060, type:W, retreatCost:1) {
+        weakness L
+        move "Growl", {
+          text "During your opponent's next turn, the Defending Pokémon's attacks do 20 less damage (before applying Weakness and Resistance)."
+          energyCost C
+          onAttack {
+            reduceDamageFromDefendingNextTurn hp(20), thisMove, defending
+          }
+        }
+        move "Rain Splash", {
+          text "10 damage."
+          energyCost W
+          onAttack {
+            damage 10
+          }
+        }
+      }
       default:
       return null;
     }
