@@ -1717,7 +1717,10 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             assert my.discard.any { it.cardTypes.is ITEM }
           }
           onAttack {
-            damage 30 * my.discard.findAll { it.cardTypes.is ITEM }.size()
+            def itemCards = my.discard.findAll { it.cardTypes.is ITEM }
+            damage 30 * itemCards.size()
+            itemCards.moveTo my.deck
+            shuffleDeck()
           }
         }
         move "Poison Spray", {
