@@ -1680,7 +1680,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           energyCost D, C, C, C
           onAttack {
             damage 180
-            applyAfterDamage CONFUSED
+            apply CONFUSED, self
           }
         }
       };
