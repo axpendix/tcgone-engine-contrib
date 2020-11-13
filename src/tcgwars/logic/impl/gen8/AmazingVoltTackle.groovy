@@ -237,14 +237,15 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       case SHIFTRY_3:
       return evolution (this, from:"Nuzleaf", hp:HP150, type:G, retreatCost:3) {
         weakness R
-        bwAbility "Tengu Double", {
+        bwAbility "Shiftry Substitution", {
           /* FIXME: In theory just ChangeImplementation should work here and simplify everything.
                In Practice, just using a ChangeImplementation or trying to use a new Play* effect both use the old
                implementation PlayRequirements for checking if the card can be played. I'm pretty sure it also used the
                old onPlay, but that should be verified as this was a long implementation session and I'm not entirely
                sure anymore.
            */
-          text "The effect of each Supporter card in your opponent's hand becomes 'Draw 3 cards'."
+          text "As long as this Pokémon is in the Active Spot, each Supporter card in your opponent's hand has the" +
+            "effect 'Draw 3 cards.' (This happens instead of the card's usual effect.)"
           delayedA {
             def playedFromOppHand = false
             def oldImpl = null
@@ -297,7 +298,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       case NINJASK_5:
       return evolution (this, from:"Nincada", hp:HP060, type:G, retreatCost:0) {
         weakness R
-        bwAbility "Shell Cast-off", {
+        bwAbility "Cast-Off Shell", {
           text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may search your deck for a Shedinja and put it onto your Bench. Then, shuffle your deck."
           onActivate { reason ->
             if (reason == PLAY_FROM_HAND && self.evolution && bg.currentTurn == self.owner && my.bench.notFull && deck.notEmpty && confirm("Use $thisAbility?")) {
@@ -380,7 +381,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       case ORBEETLE_VMAX_9:
       return evolution (this, from:"Orbeetle V", hp:HP310, type:G, retreatCost:1) {
         weakness R
-        bwAbility "Mysterious Beam", {
+        bwAbility "Eerie Beam", {
           text "Once during your turn, if this Pokémon is in the Active Spot, you may put 1 damage counter on each of your opponent's Pokémon."
           actionA {
             checkLastTurn()
@@ -389,7 +390,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             opp.all.each { directDamage 10, it, SRC_ABILITY }
           }
         }
-        move "GMax Wave", {
+        move "G-Max Wave", {
           text "50+ damage. This attack does 50 more damage times the amount of Energy attached to your opponent's Active Pokémon."
           energyCost G, C
           onAttack {
@@ -429,7 +430,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 20
           }
         }
-        move "Wild Blaze", {
+        move "Raging Flames", {
           text "60 damage. Discard the top 3 cards of your deck."
           energyCost R, R
           onAttack {
@@ -453,8 +454,8 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             viewed.getExcludedList(selected).discard()
           }
         }
-        move "King Blaze", {
-          text "100 damage. This attack does 50 more damage for each Leon in your discard pile."
+        move "Royal Blaze", {
+          text "100+ damage. This attack does 50 more damage for each Leon in your discard pile."
           energyCost R, R
           onAttack {
             damage 100
@@ -465,7 +466,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       case FLAREON_13:
       return evolution (this, from:"Eevee", hp:HP110, type:R, retreatCost:2) {
         weakness W
-        bwAbility "Scorching Awakening", {
+        bwAbility "Incandescent Awakening", {
           text "If this Pokémon has a Memory Capsule card attached to it, each player's [G] Pokémon in play has no Abilities."
           onActivate {
             bg.em().run(new CheckAbilities())
@@ -563,7 +564,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       case VAPOREON_17:
       return evolution (this, from:"Eevee", hp:HP110, type:W, retreatCost:2) {
         weakness L
-        bwAbility "Torrent Awakening", {
+        bwAbility "Torrential Awakening", {
           text "If this Pokémon has a Memory Capsule card attached to it, each player's [R] Pokémon in play has no Abilities."
           onActivate {
             bg.em().run(new CheckAbilities())
@@ -711,7 +712,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       case GALARIAN_DARMANITAN_VMAX_24:
       return evolution (this, from:"Galarian Darmanitan V", hp:HP320, type:W, retreatCost:3) {
         weakness M
-        move "Max Snowfall", {
+        move "Max Whiteout", {
           text "200 damage. This attack also does 30 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W, W, W, W
           onAttack {
@@ -806,7 +807,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       case BARRASKEWDA_29:
       return evolution (this, from:"Arrokuda", hp:HP120, type:W, retreatCost:1) {
         weakness L
-        move "Target Skewer", {
+        move "Targeted Skewer", {
           text " This attack does 20 damage to 1 of your opponent's Benched Pokémon for each damage counter on that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W
           attackRequirement {
@@ -854,7 +855,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       case PIKACHU_VMAX_31:
       return evolution (this, from:"Pikachu V", hp:HP310, type:L, retreatCost:2) {
         weakness F
-        move "GMax Volt Tackle", {
+        move "G=Max Volt Tackle", {
           text "120+ damage. You may discard all Energy from this Pokémon. If you do, this attack does 150 more damage."
           energyCost L, L, L
           onAttack {
@@ -880,7 +881,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       case ELECTRODE_33:
       return evolution (this, from:"Voltorb", hp:HP090, type:L, retreatCost:1) {
         weakness F
-        bwAbility "Ene-Ene Generator", {
+        bwAbility "Buzzap Generator", {
           text "Once during your turn, if this Pokémon is on your Bench, you may Knock Out this Pokémon. If you do, search your deck for up to 2 [L] Energy cards and attach them to your [L] Pokémon in any way you like. Then, shuffle your deck."
           actionA {
             checkLastTurn()
@@ -907,7 +908,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       case JOLTEON_34:
       return evolution (this, from:"Eevee", hp:HP100, type:L, retreatCost:1) {
         weakness F
-        bwAbility "Thunderclap Awakening", {
+        bwAbility "Thunderous Awakening", {
           text "If this Pokémon has a Memory Capsule card attached to it, each player's [W] Pokémon in play has no Abilities."
           onActivate {
             bg.em().run(new CheckAbilities())
@@ -949,7 +950,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 20
           }
         }
-        move "Snipe Thunder", {
+        move "Thunder Snipe", {
           text " Discard all Energy from this Pokémon. This attack does 160 damage to 1 of your opponent's Pokémon V or Pokémon-GX. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost L, L, C
           attackRequirement {
@@ -1005,13 +1006,13 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       case TYNAMO_38:
       return basic (this, hp:HP040, type:L, retreatCost:1) {
         weakness F
-        bwAbility "Floating", {
+        bwAbility "Levitate", {
           text "If this Pokémon has any Energy attached to it, it has no Retreat Cost."
           getterA GET_RETREAT_COST, BEFORE_LAST, self, {h->
             if (self.energyCards) h.object = 0
           }
         }
-        move "Mini Electricity", {
+        move "Tiny Charge", {
           text "10 damage."
           energyCost L
           onAttack {
@@ -1022,7 +1023,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       case EELEKTRIK_39:
       return evolution (this, from:"Tynamo", hp:HP090, type:L, retreatCost:2) {
         weakness F
-        move "Stun Crash", {
+        move "Shocking Smash", {
           text " Flip a coin. If heads, discard an Energy from 1 of your opponent's Pokémon."
           energyCost L
           attackRequirement {
@@ -1046,7 +1047,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       case EELEKTROSS_40:
       return evolution (this, from:"Eelektrik", hp:HP160, type:L, retreatCost:3) {
         weakness F
-        move "Stun Fang", {
+        move "Electrified Bite Mark", {
           text "60 damage. During your opponent's next turn, if they attach an Energy card from their hand to the Defending Pokémon, put 6 damage counters on that Pokémon."
           energyCost L
           onAttack {
@@ -1122,10 +1123,10 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             }
           }
         }
-        bwAbility "Shell Bind", {
+        bwAbility "Shell Survival", {
           text "This card can only be put into play with the effect of Ninjask's Cast-off Shell Ability (you can't play this card when you are setting up to play)."
         }
-        move "Squeeze Life", {
+        move "Life Squeeze", {
           text " Put damage counters on your opponent's Active Pokémon until its remaining HP is 10."
           energyCost C, C, C
           attackRequirement {
@@ -1172,7 +1173,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return evolution (this, from:"Dusclops", hp:HP150, type:P, retreatCost:2) {
         weakness D
         resistance F, MINUS30
-        bwAbility "Ghost Bleach", {
+        bwAbility "Spectral Breach", {
           text "Special Energy cards attached to each player's Pokémon have no effect and only provide [C] Energy instead."
           delayedA {
             // FIXME: Figure out the best way to deal with unsourced effects from Special Energy
@@ -1201,7 +1202,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return basic (this, hp:HP070, type:P, retreatCost:1) {
         weakness D
         resistance F, MINUS30
-        move "Vibrating Tone", {
+        move "Auspicious Tone", {
           text " Search your deck for a Pokémon and a Supporter card, reveal them, and put them into your hand. Then, shuffle your deck."
           energyCost C
           attackRequirement {
@@ -1229,7 +1230,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness L
         resistance F, MINUS30
-        move "Unarmed Wave", {
+        move "Unamplified Soundwave", {
           text " This attack does 30 damage to each of your opponent's Pokémon. If you have any cards in your hand, this attack does nothing. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost P
           attackRequirement {
@@ -1244,7 +1245,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return evolution (this, from:"Woobat", hp:HP100, type:P, retreatCost:1) {
         weakness L
         resistance F, MINUS30
-        bwAbility "Airhead", {
+        bwAbility "Unaware", {
           text "Prevent all effects of your opponent's attacks, except damage, done to this Pokémon."
           delayedA {
             before null, null, ATTACK, {
@@ -1287,8 +1288,8 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             draw 3
           }
         }
-        move "Fling Rush", {
-          text "10 damage. Before doing damage, discard any number of Pokémon Tools from all of your Pokémon. This attack does 40 more damage for each card you discarded in this way."
+        move "Flying Fury", {
+          text "10+ damage. Before doing damage, discard any number of Pokémon Tools from all of your Pokémon. This attack does 40 more damage for each card you discarded in this way."
           energyCost P
           onAttack {
             additionalDamageByDiscardingCardTypeFromPokemon 10, 40, POKEMON_TOOL
@@ -1319,7 +1320,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       case ALCREMIE_52:
       return evolution (this, from:"Milcery", hp:HP090, type:P, retreatCost:1) {
         weakness M
-        bwAbility "Sweet Share", {
+        bwAbility "Sharing Sweets", {
           text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, each player draws a card."
           onActivate { reason ->
             if (reason == PLAY_FROM_HAND && self.evolution && bg.currentTurn == self.owner && confirm("Use $thisAbility?")) {
@@ -1397,8 +1398,8 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             draw 3
           }
         }
-        move "Twister Kick", {
-          text "50 damage. If you played Bea from your hand during this turn, this attack does 80 more damage."
+        move "Tornado Kick", {
+          text "50+ damage. If you played Bea from your hand during this turn, this attack does 80 more damage."
           energyCost F, C, C
           onAttack {
             damage 50
@@ -1436,8 +1437,8 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             reduceDamageNextTurn hp(30), thisMove
           }
         }
-        move "Ground Power", {
-          text "80 damage. If you have a Stadium in play, this attack does 80 more damage."
+        move "Earthen Power", {
+          text "80+ damage. If you have a Stadium in play, this attack does 80 more damage."
           energyCost F, F, C
           onAttack {
             damage 80
@@ -1504,7 +1505,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       case GRAPPLOCT_64:
       return evolution (this, from:"Clobbopus", hp:HP130, type:F, retreatCost:2) {
         weakness P
-        move "Headlock", {
+        move "Full Nelson", {
           text "30 damage. During your opponent's next turn, the Defending Pokémon can't retreat."
           energyCost F
           onAttack {
@@ -1514,7 +1515,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           }
         }
         move "Tentacle Buster", {
-          text "50 damage. If this Pokémon used Headlock during your last turn, this attack does 120 more damage."
+          text "50+ damage. If this Pokémon used Headlock during your last turn, this attack does 120 more damage."
           energyCost F, C
           onAttack {
             damage 50
@@ -1555,7 +1556,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             reduceDamageFromDefendingNextTurn hp(50), thisMove, defending
           }
         }
-        move "PitchBlack Fangs", {
+        move "Pitch-Black Fangs", {
           text "100 damage."
           energyCost D, C, C
           onAttack {
@@ -1595,7 +1596,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 70
           }
         }
-        move "Hazard Claw", {
+        move "Hazardous Claws", {
           text "130 damage. Discard 2 Energy from this Pokémon. Your opponent's Active Pokémon is now Paralyzed and Poisoned."
           energyCost D, C, C, C
           onAttack {
@@ -1630,7 +1631,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       case SANDILE_70:
       return basic (this, hp:HP070, type:D, retreatCost:2) {
         weakness G
-        move "Devastating Dig", {
+        move "Dredge Up", {
           text " Discard the top 3 cards of your opponent's deck."
           energyCost C, C, C, C
           attackRequirement {
@@ -1651,7 +1652,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 20
           }
         }
-        move "Devastating Dig", {
+        move "Dredge Up", {
           text " Discard the top 3 cards of your opponent's deck."
           energyCost C, C, C
           attackRequirement {
@@ -1665,7 +1666,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       case KROOKODILE_72:
       return evolution (this, from:"Krokorok", hp:HP150, type:D, retreatCost:3) {
         weakness G
-        move "Devastating Dig", {
+        move "Dredge Up", {
           text " Discard the top 3 cards of your opponent's deck."
           energyCost C, C
           attackRequirement {
@@ -1710,7 +1711,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       case GARBODOR_74:
       return evolution (this, from:"Trubbish", hp:HP120, type:D, retreatCost:3) {
         weakness F
-        move "Dust Cyclone", {
+        move "Trash Cyclone", {
           text "30x damage. This attack does 30 damage for each Pokémon Tool in your discard pile. Then, shuffle those cards into your deck."
           energyCost C, C
           attackRequirement {
@@ -1815,7 +1816,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return evolution (this, from:"Ferroseed", hp:HP110, type:M, retreatCost:3) {
         weakness R
         resistance G, MINUS30
-        move "Buzzing Swing", {
+        move "Swift Swing", {
           text "30x damage. This attack does 30 damage for each [M] Energy attached to this Pokémon. Then, switch this Pokémon with 1 of your Benched Pokémon."
           energyCost M
           attackRequirement {
@@ -1850,7 +1851,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return evolution (this, from:"Aegislash V", hp:HP320, type:M, retreatCost:3) {
         weakness R
         resistance G, MINUS30
-        move "Max Slash", {
+        move "Max Hack", {
           text "160+ damage. This attack does 30 more damage for each Prize card you have taken."
           energyCost M, M, C
           onAttack {
@@ -1903,7 +1904,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       case SNORLAX_84:
       return basic (this, hp:HP130, type:C, retreatCost:3) {
         weakness F
-        bwAbility "Stuff Face", {
+        bwAbility "Gormandize", {
           text "Once during your turn, if this Pokémon is in the Active Spot, you may draw cards until you have 7 cards in your hand. If you use this Ability, your turn ends."
           actionA {
             checkLastTurn()
