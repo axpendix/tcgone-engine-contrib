@@ -1610,7 +1610,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
                   def targetCount = Math.min self.cards.energyCount(), 2
                   def finalCount = 0
                   while (self.cards.energyCount() > 0 && finalCount < targetCount) {
-                    def info = "Select Energy to return to your hand."
+                    def info = "Select Energy to discard."
                     def energy = self.cards.filterByType(ENERGY).select(info)
                     def energyCount = 1
                     if (energy.energyCount() > 1) {
