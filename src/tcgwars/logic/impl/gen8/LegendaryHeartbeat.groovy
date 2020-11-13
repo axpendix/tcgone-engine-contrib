@@ -191,14 +191,14 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
         move "Bug Hunch", {
-          text " Search your deck for up to 2 Pokémon, reveal them, and put them into your hand. Then, shuffle your deck."
+          text "Search your deck for up to 2 [G] Pokémon, reveal them, and put them into your hand. Then, shuffle your deck."
           energyCost G
           attackRequirement {
             assert my.deck : "Your deck is empty"
           }
           onAttack {
             def info = "Opponent chose the following Pokémon from their deck using $thisMove."
-            my.deck.search(max:2, cardTypeFilter(POKEMON)).showToOpponent(bg, info).moveTo my.hand
+            my.deck.search(max:2, pokemonTypeFilter(G)).showToOpponent(bg, info).moveTo my.hand
             shuffleDeck()
           }
         }
@@ -231,7 +231,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             def abilityUsed = false
             before PLAY_CARD, {
               if (ef.cardToPlay == thisCard && my.hand.getExcludedList(thisCard).empty && my.bench.freeBenchCount) {
-                def abilityName = "Sudden Appearance"
+                def abilityName = " Elusive Master"
                 abilityUsed = confirm("Use $abilityName?")
                 if(abilityUsed && !checkGlobalAbility(thisCard)) {
                   wcu "$abilityName was blocked."
@@ -251,8 +251,9 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             }
           }
         }
-        bwAbility "Sudden Appearance", {
-          text "Once during your turn (before your attack), if this Pokémon is the last card in your hand, you may play it onto your Bench. If you do, draw 3 cards."
+        bwAbility "Elusive Master", {
+          text "Once during your turn, if this Pokémon is the last card in your hand, you may play it onto your Bench." +
+            "If you do, draw 3 cards. "
         }
         move "Sharp Sting", {
           text "120 damage."
@@ -276,7 +277,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       case EXEGGUTOR_5:
       return evolution (this, from:"Exeggcute", hp:HP140, type:G, retreatCost:3) {
         weakness R
-        move "Head Split", {
+        move "Head Crack", {
           text "30 damage. Choose 1 of your opponent's Active Pokémon's attacks. During your opponent's next turn, that Pokémon can't use that attack."
           energyCost G
           onAttack {
@@ -295,7 +296,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       case YANMA_6:
       return basic (this, hp:HP080, type:G, retreatCost:1) {
         weakness R
-        move "Uturn", {
+        move "U-turn", {
           text "10 damage. You may switch this Pokémon with 1 of your Benched Pokémon."
           energyCost C
           onAttack {
@@ -314,7 +315,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       case YANMEGA_7:
       return evolution (this, from:"Yanma", hp:HP130, type:G, retreatCost:0) {
         weakness R
-        move "Uturn", {
+        move "U-turn", {
           text "50 damage. You may switch this Pokémon with 1 of your Benched Pokémon."
           energyCost C, C
           onAttack {
@@ -389,7 +390,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             heal 20, self
           }
         }
-        move "Flower Transport", {
+        move "Flower Bearing", {
           text " Flip a coin. If heads, your opponent shuffles their Active Pokémon and all attached cards and puts them on the bottom of their deck."
           energyCost G, C
           onAttack {
@@ -433,7 +434,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           }
         }
         move "Special Anchor", {
-          text "60 damage. If this Pokémon has any Special Energy attached, this attack does 60 more damage."
+          text "60+ damage. If this Pokémon has any Special Energy attached, this attack does 60 more damage."
           energyCost G, C, C
           onAttack {
             damage 60
@@ -454,8 +455,9 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             cantRetreat defending
           }
         }
-        move "Jungle Rise", {
-          text "100 damage. You may attach up to 2 Basic Energy cards from your hand to your Benched Pokémon in any way you like. If you attached Energy to a Pokémon in this way, heal all damage from that Pokémon."
+        move "Jungle Rising", {
+          text "100 damage. You may attach up to 2 Basic Energy cards from your hand to your Benched Pokémon in any" +
+            "way you like. If you attached Energy to a Pokémon in this way, heal all damage from that Pokémon."
           energyCost G, G
           onAttack {
             damage 100
@@ -484,8 +486,9 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             applyAfterDamage CONFUSED
           }
         }
-        move "Damage Spark", {
-          text "120 damage. This attack does 30 damage to each of your opponent's Benched Pokémon that has any damage counters on it. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+        move "Damaging Spark", {
+          text "120 damage. This attack also does 30 damage to each of your opponent's Benched Pokémon that has any" +
+            "damage counters on it. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost L, L, C
           onAttack {
             damage 120
@@ -570,7 +573,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             flipThenApplySC PARALYZED
           }
         }
-        move "Pursuit Shock", {
+        move "Shocking Pursuit", {
           text "20x damage. This attack does 20 damage for each damage counter on your opponent's Active Pokémon."
           energyCost L, C
           attackRequirement {
@@ -604,8 +607,8 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       case ZERAORA_21:
       return basic (this, hp:HP100, type:L, retreatCost:0) {
         weakness F
-        move "Fighting Thunder", {
-          text "30 damage. If your opponent's Active Pokémon is a Pokémon V or Pokémon-GX, this attack does 80 more damage."
+        move "Fighting Lightning", {
+          text "30+ damage. If your opponent's Active Pokémon is a Pokémon V or Pokémon-GX, this attack does 80 more damage."
           energyCost L, C
           onAttack {
             damage 30
@@ -641,7 +644,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 10
           }
         }
-        move "MiniMetronome", {
+        move "Mini-Metronome", {
           text " Flip a coin. If heads, choose 1 of your opponent's Active Pokémon's attacks and use it as this attack."
           energyCost C, C
           attackRequirement {
@@ -655,8 +658,9 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       case CLEFABLE_24:
       return evolution (this, from:"Clefairy", hp:HP100, type:P, retreatCost:1) {
         weakness M
-        bwAbility "Moon's Blessing", {
-          text "Once during your turn, you may heal 20 damage from your Active Pokémon with any Energy attached, and it recovers from a Special Condition."
+        bwAbility "Lunar Blessing", {
+          text "Once during your turn, if your Active Pokémon has any [P] Energy attached, you may heal 20 damage" +
+            "from it, and it recovers from a Special Condition."
           actionA {
             checkLastTurn()
             assert active.getEnergyCount(bg) : "Active Pokémon does not have an Energy attached"
@@ -688,7 +692,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             putDamageCountersOnOpponentsPokemon 2
           }
         }
-        move "Tail Order", {
+        move "Commanding Tail", {
           text "30 damage. You may have your opponent shuffle their hand into their deck and draw 4 cards."
           energyCost P, C
           onAttack {
@@ -717,7 +721,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       return evolution (this, from:"Shuppet", hp:HP090, type:P, retreatCost:1) {
         weakness D
         resistance F, MINUS30
-        bwAbility "Degeneration Curse", {
+        bwAbility "Curse of Devolution", {
           text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may devolve 1 of your opponent's Benched Evolution Pokémon by putting the highest Stage Evolution card on it into your opponent's hand."
           onActivate { reason ->
             if (reason == PLAY_FROM_HAND && self.evolution && bg.currentTurn == self.owner && opp.bench.any { it.evolution } && confirm("Use $thisAbility?")) {
@@ -773,8 +777,9 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       case DIANCIE_30:
       return basic (this, hp:HP090, type:P, retreatCost:1) {
         weakness M
-        bwAbility "Twinkling Veil", {
-          text "As long as this Pokémon is in the Active Spot, all of your Pokémon take 30 less damage from your opponent's attacks (after applying Weakness and Resistance)."
+        bwAbility "Sparkle Veil", {
+          text "As long as this Pokémon is in the Active Spot, your Pokémon take 30 less damage from attacks from" +
+            "your opponent's Pokémon (after applying Weakness and Resistance)."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               if (!(self.active && ef.attacker.owner != self.owner)) return
@@ -788,7 +793,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           }
         }
         move "Sensitive Ray", {
-          text "50 damage. If you played a Supporter card from your hand during this turn, this attack does 70 more damage."
+          text "50+ damage. If you played a Supporter card from your hand during this turn, this attack does 70 more damage."
           energyCost P, C, C
           onAttack {
             damage 50
@@ -806,7 +811,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       case ZACIAN_33:
       return basic (this, hp:HP110, type:P, retreatCost:2) {
         weakness M
-        move "Metal Arms", {
+        move "Metal Armament", {
           text "30 damage. Attach a basic Energy card from your discard pile to this Pokémon."
           energyCost C
           onAttack {
@@ -815,7 +820,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           }
         }
         move "Amazing Sword", {
-          text "150 damage. If your opponent has a Pokémon VMAX in play, this attack does 150 more damage."
+          text "150+ damage. If your opponent has a Pokémon VMAX in play, this attack does 150 more damage."
           energyCost G, P, M
           onAttack {
             damage 150
@@ -851,7 +856,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 30
           }
         }
-        move "Whimsy Impact", {
+        move "Fickle Impact", {
           text "180 damage. If you have exactly 2, 4, or 6 Prize cards remaining, this attack does nothing."
           energyCost F, C, C
           attackRequirement {
@@ -866,7 +871,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       case SHUCKLE_36:
       return basic (this, hp:HP070, type:F, retreatCost:1) {
         weakness G
-        move "Mountain Squeeze", {
+        move "Deck Distiller", {
           text " Flip a coin until you get tails. For each heads, discard the top card of your opponent's deck."
           energyCost F
           attackRequirement {
@@ -906,7 +911,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       case RIOLU_38:
       return basic (this, hp:HP070, type:F, retreatCost:1) {
         weakness P
-        move "AllOut Punch", {
+        move "Best Punch", {
           text "30 damage. Flip a coin. If tails, this attack does nothing."
           energyCost C
           onAttack {
@@ -924,8 +929,8 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 30
           }
         }
-        move "Core Revenger", {
-          text "80 damage. If you have more Prize cards remaining than your opponent, this attack does 80 more damage."
+        move "Core Avenger", {
+          text "80+ damage. If you have more Prize cards remaining than your opponent, this attack does 80 more damage."
           energyCost F, C, C
           onAttack {
             damage 80
@@ -991,8 +996,8 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       case COALOSSAL_VMAX_43:
       return evolution (this, from:"Coalossal V", hp:HP330, type:F, retreatCost:4) {
         weakness G
-        move "Eruption Bomb", {
-          text "40 damage. Discard the top card of your deck. If that card is an Energy card, this attack does 90 more damage. Then, attach that Energy card to this Pokémon."
+        move "Eruption Shot", {
+          text "40+ damage. Discard the top card of your deck. If that card is an Energy card, this attack does 90 more damage. Then, attach that Energy card to this Pokémon."
           energyCost F
           onAttack {
             damage 40
@@ -1004,7 +1009,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             }
           }
         }
-        move "GMax Rock", {
+        move "G-Max Boulder", {
           text "240 damage."
           energyCost F, F, F, C
           onAttack {
@@ -1015,7 +1020,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       case ZAMAZENTA_44:
       return basic (this, hp:HP110, type:F, retreatCost:2) {
         weakness P
-        move "Metal Arms", {
+        move "Metal Armament", {
           text "30 damage. Attach a basic Energy card from your discard pile to this Pokémon."
           energyCost C
           onAttack {
@@ -1044,7 +1049,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 30, self
           }
         }
-        move "Tie Blast", {
+        move "Double KO", {
           text " Both Active Pokémon are Knocked Out."
           energyCost M, M, C, C
           onAttack {
@@ -1058,7 +1063,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         weakness R
         resistance G, MINUS30
         move "Raging Hammer", {
-          text "30 damage. This attack does 10 more damage for each damage counter on this Pokémon."
+          text "30+ damage. This attack does 10 more damage for each damage counter on this Pokémon."
           energyCost M, C
           onAttack {
             damage 30
@@ -1114,8 +1119,8 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       return evolution (this, from:"Metang", hp:HP170, type:M, retreatCost:3) {
         weakness R
         resistance G, MINUS30
-        bwAbility "Magnetic Field Floating", {
-          text "All of your Pokémon have no Retreat Cost."
+        bwAbility "Levitation Field", {
+          text "Your Pokémon in play have no Retreat Cost."
           getterA GET_RETREAT_COST, { h ->
             if (h.effect.target.owner == self.owner) h.object = 0
           }
@@ -1125,7 +1130,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           energyCost M, C, C
           onAttack {
             damage 100
-            // TODO: Double check that Evolution Pokémon means realEvolution
             if (defending.realEvolution) cantAttackNextTurn defending
           }
         }
@@ -1134,7 +1138,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       return basic (this, hp:HP070, type:M, retreatCost:1) {
         weakness R
         resistance G, MINUS30
-        bwAbility "Dream Oracle", {
+        bwAbility "Dreamy Revelation", {
           text "Once during your turn, if this Pokémon is in the Active Spot, you may look at the top 2 cards of your deck and put 1 of them into your hand. Put the other card back on top of your deck."
           actionA {
             checkLastTurn()
@@ -1184,7 +1188,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       return basic (this, hp:HP130, type:M, retreatCost:2) {
         weakness R
         resistance G, MINUS30
-        move "Clock Back", {
+        move "Rewind Time", {
           text " Attach up to 2 [M] Energy cards from your discard pile to 1 of your Pokémon."
           energyCost C
           attackRequirement {
@@ -1243,8 +1247,8 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             draw 6
           }
         }
-        move "Automaton Cannon", {
-          text "10 damage. This attack does 20 more damage for each of your opponent's Benched Pokémon."
+        move "Windup Cannon", {
+          text "10+ damage. This attack does 20 more damage for each of your opponent's Benched Pokémon."
           energyCost M, C
           onAttack {
             damage 10
@@ -1304,7 +1308,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       return basic (this, hp:HP070, type:C, retreatCost:1) {
         weakness L
         resistance F, MINUS30
-        move "Minor ErrandRunning", {
+        move "Minor Errand-Running", {
           text " Search your deck for up to 2 basic Energy cards, reveal them, and put them into your hand. Then, shuffle your deck."
           energyCost C
           attackRequirement {
@@ -1330,7 +1334,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         weakness L
         resistance F, MINUS30
         move "White Wind", {
-          text "20 damage. If your opponent's Active Pokémon is an Evolution Pokémon, this attack does 70 more damage."
+          text "20+ damage. If your opponent's Active Pokémon is an Evolution Pokémon, this attack does 70 more damage."
           energyCost C
           onAttack {
             damage 20
@@ -1398,7 +1402,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       return evolution (this, from:"Pikipek", hp:HP080, type:C, retreatCost:1) {
         weakness L
         resistance F, MINUS30
-        bwAbility "Assault Trumpet", {
+        bwAbility "Charging Trumpet", {
           text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may look at the top 3 cards of your deck. Attach any number of basic Energy cards you find there to your Pokémon in any way you like. Shuffle the other cards back into your deck."
           onActivate { reason ->
             if (reason == PLAY_FROM_HAND && self.evolution && bg.currentTurn == self.owner && confirm("Use $thisAbility?")) {
@@ -1484,7 +1488,8 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       return pokemonTool (this) {
         text "The Pokémon VMAX this card is attached to gets -100 HP" +
           "and when it is Knocked Out by damage from an opponent's attack" +
-          "that player takes 1 fewer Prize card."
+          "that player takes 1 fewer Prize card. You can't attach this card" +
+          "to a Pokémon VMAX that has 100 HP or less remaining."
         def fromOppAttackEff
         def fromOppAttackFlag
         def hpEff
@@ -1562,7 +1567,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       return copy(SwordShield.MARNIE_169, this)
       case AROMA_G_ENERGY_74:
       return specialEnergy (this, [[]]) {
-        text "This card provides [G] Energy only while this card is attached to a [G] Pokémon. The [G] Pokémon this card is attached to recovers from all Special Conditions and can't be affected by any Special Conditions."
+        text "This card provides [G] Energy only while this card is attached to a Pokémon. The [G] Pokémon this card is attached to recovers from all Special Conditions and can't be affected by any Special Conditions."
         def spcEff
         onPlay {reason->
           spcEff = delayed {
@@ -1591,7 +1596,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       };
       case STONE_F_ENERGY_75:
       return specialEnergy (this, [[]]) {
-        text "This card provides [F] Energy only while this card is attached to a [F] Pokémon. The [F] Pokémon this card is attached to takes 20 less damage from your opponent's attacks (after applying Weakness and Resistance)."
+        text "This card provides [F] Energy only while this card is attached to a Pokémon. The [F] Pokémon this card is attached to takes 20 less damage from your opponent's attacks (after applying Weakness and Resistance)."
         def dmgRedEff
         onPlay {reason->
           dmgRedEff = delayed {
