@@ -1618,7 +1618,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
                       energyCount = choose(choices, choiceInfo)
                     }
                     finalCount += energyCount
-                    energy.moveTo my.hand
+                    energy.discard()
                   }
                 }
             }
