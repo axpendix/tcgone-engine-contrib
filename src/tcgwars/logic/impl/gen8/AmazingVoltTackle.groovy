@@ -888,13 +888,13 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             assert self.benched : "$self is not on your Bench"
             assert confirm("$thisAbility: Are you sure?") : "Cancelled $thisAbility"
             powerUsed()
-            bg.em().run(new Knockout(self))
             def info = "Choose up to 2 [L] Energy cards to attach to your remaining Pokémon."
             def energies = my.deck.search max:2, info, energyFilter(L)
             energies.each {
               attachEnergy my.all.findAll { it.types.contains L }.select("Pokémon to attach $it to?"), it
             }
             shuffleDeck()
+            bg.em().run(new Knockout(self))
           }
         }
         move "Electric Ball", {
