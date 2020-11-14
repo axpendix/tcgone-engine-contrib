@@ -1145,7 +1145,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             assert self.active : "$self is not your active Pokémon"
             assert my.deck : "Your deck is empty"
             powerUsed()
-            my.deck.subList(0, 2).select("Card to add to hand?").moveTo my.hand
+            my.deck.subList(0, 2).select("Card to add to hand?").moveTo hidden:true, my.hand
           }
         }
         move "Amazing Star", {
@@ -1359,7 +1359,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           onAttack {
             damage 120
             if (confirm("Search your deck for up to 2 cards to put in your hand?")) {
-              deck.search(min:1, max:2, { true }).moveTo my.hand
+              deck.search(min:1, max:2, { true }).moveTo hidden:true, my.hand
               shuffleDeck()
             }
           }
