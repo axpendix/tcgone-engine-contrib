@@ -1715,10 +1715,10 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           text "30x damage. This attack does 30 damage for each Pokémon Tool in your discard pile. Then, shuffle those cards into your deck."
           energyCost C, C
           attackRequirement {
-            assert my.discard.any { it.cardTypes.is ITEM }
+            assert my.discard.any { it.cardTypes.is POKEMON_TOOL }
           }
           onAttack {
-            def itemCards = my.discard.findAll { it.cardTypes.is ITEM }
+            def itemCards = my.discard.findAll { it.cardTypes.is POKEMON_TOOL }
             damage 30 * itemCards.size()
             itemCards.moveTo my.deck
             shuffleDeck()
