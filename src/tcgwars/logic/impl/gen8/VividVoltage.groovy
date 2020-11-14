@@ -310,13 +310,13 @@ public enum VividVoltage implements LogicCardInfo {
       case PINECO_8:
       return copy (LegendaryHeartbeat.PINECO_8, this);
       case CELEBI_9:
-      return copy (LegendaryHeartbeat.PINECO_8, this);
+      return copy (LegendaryHeartbeat.CELEBI_9, this);
       case SEEDOT_10:
-      return copy (LegendaryHeartbeat.PINECO_8, this);
+      return copy (AmazingVoltTackle.SEEDOT_1, this);
       case NUZLEAF_11:
-      return copy (LegendaryHeartbeat.PINECO_8, this);
+      return copy (AmazingVoltTackle.NUZLEAF_2, this);
       case SHIFTRY_12:
-      return copy (LegendaryHeartbeat.PINECO_8, this);
+      return copy (AmazingVoltTackle.SHIFTRY_3, this);
       case NINCADA_13:
       return copy (AmazingVoltTackle.NINCADA_4, this);
       case NINJASK_14:
@@ -334,7 +334,7 @@ public enum VividVoltage implements LogicCardInfo {
       case ORBEETLE_V_20:
       return copy (AmazingVoltTackle.ORBEETLE_V_8, this);
       case ORBEETLE_VMAX_21:
-      return copy (AmazingVoltTackle.ORBEETLE_V_101, this);
+      return copy (AmazingVoltTackle.ORBEETLE_VMAX_9, this);
       case ZARUDE_V_22:
       return copy (LegendaryHeartbeat.ZARUDE_V_13, this);
       case CHARMANDER_23:
@@ -428,7 +428,7 @@ public enum VividVoltage implements LogicCardInfo {
       case SHUPPET_67:
       return copy (LegendaryHeartbeat.SHUPPET_26, this);
       case BANETTE_68:
-      return copy (LegendaryHeartbeat.SHUPPET_26, this);
+      return copy (LegendaryHeartbeat.BANETTE_27, this);
       case DUSKULL_69:
       return copy (AmazingVoltTackle.DUSKULL_43, this);
       case DUSCLOPS_70:
