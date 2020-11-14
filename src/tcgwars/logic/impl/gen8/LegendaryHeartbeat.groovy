@@ -1556,7 +1556,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           def count = 0
           flip 2, { count++ }
           if (count == 0) return
-          my.deck.search(min:count, max:count, { true }).moveTo my.hand
+          my.deck.search(min:count, max:count, { true }).moveTo hidden:true, my.hand
           shuffleDeck()
         }
         playRequirement{
