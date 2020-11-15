@@ -464,7 +464,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             afterDamage {
               def skipped = false
               2.times {
-                if (skipped) return
+                if (skipped || my.bench.empty || !my.hand.any { it.cardTypes.is(ENERGY) }) return
                 def energyAttachment = attachEnergyFrom may: true, basic: true, my.hand, my.bench
                 if (!energyAttachment.empty && (energyAttachment.get(0) as CardList).notEmpty) {
                   healAll energyAttachment.get(1) as PokemonCardSet
@@ -1145,7 +1145,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             assert self.active : "$self is not your active Pokémon"
             assert my.deck : "Your deck is empty"
             powerUsed()
-            my.deck.subList(0, 2).select("Card to add to hand?").moveTo my.hand
+            my.deck.subList(0, 2).select("Card to add to hand?").moveTo hidden:true, my.hand
           }
         }
         move "Amazing Star", {
@@ -1359,7 +1359,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           onAttack {
             damage 120
             if (confirm("Search your deck for up to 2 cards to put in your hand?")) {
-              deck.search(min:1, max:2, { true }).moveTo my.hand
+              deck.search(min:1, max:2, { true }).moveTo hidden:true, my.hand
               shuffleDeck()
             }
           }
@@ -1556,7 +1556,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           def count = 0
           flip 2, { count++ }
           if (count == 0) return
-          my.deck.search(min:count, max:count, { true }).moveTo my.hand
+          my.deck.search(min:count, max:count, { true }).moveTo hidden:true, my.hand
           shuffleDeck()
         }
         playRequirement{

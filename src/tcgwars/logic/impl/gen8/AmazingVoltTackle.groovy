@@ -888,13 +888,13 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             assert self.benched : "$self is not on your Bench"
             assert confirm("$thisAbility: Are you sure?") : "Cancelled $thisAbility"
             powerUsed()
-            bg.em().run(new Knockout(self))
             def info = "Choose up to 2 [L] Energy cards to attach to your remaining Pokémon."
             def energies = my.deck.search max:2, info, energyFilter(L)
             energies.each {
               attachEnergy my.all.findAll { it.types.contains L }.select("Pokémon to attach $it to?"), it
             }
             shuffleDeck()
+            bg.em().run(new Knockout(self))
           }
         }
         move "Electric Ball", {
@@ -1715,10 +1715,10 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           text "30x damage. This attack does 30 damage for each Pokémon Tool in your discard pile. Then, shuffle those cards into your deck."
           energyCost C, C
           attackRequirement {
-            assert my.discard.any { it.cardTypes.is ITEM }
+            assert my.discard.any { it.cardTypes.is POKEMON_TOOL }
           }
           onAttack {
-            def itemCards = my.discard.findAll { it.cardTypes.is ITEM }
+            def itemCards = my.discard.findAll { it.cardTypes.is POKEMON_TOOL }
             damage 30 * itemCards.size()
             itemCards.moveTo my.deck
             shuffleDeck()

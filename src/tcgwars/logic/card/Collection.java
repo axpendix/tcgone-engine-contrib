@@ -23,7 +23,6 @@ public enum Collection {
   GYM_CHALLENGE(122, "G2", "gen1.GymChallenge"),
 
   WIZARDS_BLACK_STAR_PROMOS(110, "WBSP", "gen1.WizardsBlackStarPromos"),
-  WIZARDS_BLACK_STAR_PROMOS_NG(111, "WBSP", "gen1.WizardsBlackStarPromosNG"),
   VENDING_MACHINE(131, "VM", "gen1.VendingMachine"),
   SOUTHERN_ISLANDS(132, "SI", "gen2.SouthernIslands"),
   LEGENDARY_COLLECTION(133, "LC", "gen1.LegendaryCollection"),
@@ -177,6 +176,7 @@ public enum Collection {
   // DEV/TESTING ONLY
   LEGENDARY_HEARTBEAT(1010, "JS3A", "gen8.LegendaryHeartbeat"),
   AMAZING_VOLT_TACKLE(1011, "JS4", "gen8.AmazingVoltTackle"),
+  WIZARDS_BLACK_STAR_PROMOS_NG(111, "WBSP", "gen1.WizardsBlackStarPromosNG"),
 
   ;
 
