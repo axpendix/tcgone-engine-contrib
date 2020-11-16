@@ -1594,7 +1594,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           else return [[] as Set]
         }
         onRemoveFromPlay {
-          spcEff.unregsiter()
+          spcEff.unregister()
         }
       };
       case STONE_F_ENERGY_75:
