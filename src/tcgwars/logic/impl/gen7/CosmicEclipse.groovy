@@ -4914,7 +4914,8 @@ public enum CosmicEclipse implements LogicCardInfo {
             shuffleDeck()
           }
           playRequirement{
-            assert my.deck
+            assert my.deck : "Deck is empty"
+            assert my.bench.notFull : "Bench is full"
           }
         };
       case RED_BLUE_202:
