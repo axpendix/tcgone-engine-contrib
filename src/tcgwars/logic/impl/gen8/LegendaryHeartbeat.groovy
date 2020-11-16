@@ -464,9 +464,10 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             afterDamage {
               def skipped = false
               2.times {
-                if (skipped || my.bench.empty || !my.hand.any { it.cardTypes.is(ENERGY) }) return
+                if (skipped) return
                 def energyAttachment = attachEnergyFrom may: true, basic: true, my.hand, my.bench
-                if (!energyAttachment.empty && (energyAttachment.get(0) as CardList).notEmpty) {
+                if (energyAttachment && !energyAttachment.empty
+                  && energyAttachment.get(0) instanceof CardList && (energyAttachment.get(0) as CardList).notEmpty) {
                   healAll energyAttachment.get(1) as PokemonCardSet
                 }
                 else skipped = true
