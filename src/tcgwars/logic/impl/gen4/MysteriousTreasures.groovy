@@ -726,7 +726,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             actionA {
               checkLastTurn()
               checkNoSPC()
-              assert my.bench : "No benched Pokemon"
+              assert my.bench : "No benched Pokémon"
               assert my.discard.filterByEnergyType(R) : "You have no [R] Energy cards in your discard pile"
               powerUsed()
 

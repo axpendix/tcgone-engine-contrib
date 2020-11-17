@@ -483,7 +483,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
           text "40 damage. This attack can't be used unless Sabrina's Abra and the Defending Pokémon have the same number of Energy cards attached to them."
           energyCost P, C
           attackRequirement {
-            assert opp.cards.filterByType(ENERGY).size() == self.cards.filterByType(ENERGY).size() : "Abra and the defending Pokemon have different number of Energies"
+            assert opp.cards.filterByType(ENERGY).size() == self.cards.filterByType(ENERGY).size() : "Abra and the defending Pokémon have different number of Energies"
           }
           onAttack {
             damage 40
@@ -567,7 +567,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
 
             flip 1, {
               if (opp.bench) {
-                def target = opp.bench.select("Which Benched Pokemon to deal damage to?")
+                def target = opp.bench.select("Which Benched Pokémon to deal damage to?")
                 damage 30, target
               }
             }, {

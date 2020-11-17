@@ -258,7 +258,7 @@ public enum FossilNG implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert my.bench.find{it == self} : "Dragonite is not on the Bench"
-              if (confirm("switch Dragonite with your active pokemon")){
+              if (confirm("switch Dragonite with your active Pokémon.")){
                 powerUsed()
                 sw my.active, self
               }
@@ -901,7 +901,7 @@ public enum FossilNG implements LogicCardInfo {
               assert !self.specialConditions
               assert self.damage != self.fullHP - hp(10) : "Slowbro can't be Knocked Out by Strange Behavior!"
               def tar = my.all.findAll{it != self && it.numberOfDamageCounters}
-              assert tar : "There is no Pokemon with damage counter outside Slowbro"
+              assert tar : "There is no Pokémon with damage counter outside Slowbro"
               def pcs = tar.select()
 
               self.damage+=hp(10)

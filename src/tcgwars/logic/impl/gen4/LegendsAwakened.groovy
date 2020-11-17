@@ -3054,7 +3054,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              def tar = opp.all.select("Choose a Pokemon to put damage counters on")
+              def tar = opp.all.select("Choose a Pokémon to put damage counters on")
               int count = 0
               opp.all.each{count += it.cards.energyCount(C)}
               directDamage 10*count, tar
@@ -3168,7 +3168,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               checkNoSPC()
               checkLastTurn()
               assert bg.em().retrieveObject("Trade_Off") != bg.turnCount : "You cannot use more than one Trade Off per turn"
-              assert my.deck : "Your deck is empty"
+              assert my.deck : "Your deck is empty!"
               bg.em().storeObject("Trade_Off",bg.turnCount)
               powerUsed()
               def sel = my.deck.subList(0,2).select("Choose 1 card to put into your hand")

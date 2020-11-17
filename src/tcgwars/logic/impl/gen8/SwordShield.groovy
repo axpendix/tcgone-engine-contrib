@@ -561,7 +561,7 @@ public enum SwordShield implements LogicCardInfo {
           text "Once during your turn, you may search your deck for up to 2 [G] Energy cards and attach them to 1 of your Pokémon. Then, shuffle your deck."
           actionA {
             checkLastTurn()
-            assert my.deck : "Your deck is empty."
+            assert my.deck : "Your deck is empty!."
             powerUsed()
             def list = my.deck.search (max: 2, basicEnergyFilter(G))
             def pcs = my.all.select("Attach to?")
@@ -1025,7 +1025,7 @@ public enum SwordShield implements LogicCardInfo {
             opp.deck.subList(0, self.cards.energyCount(R)).discard()
           }
           attackRequirement {
-            assert opp.deck : "Your opponent's deck is empty"
+            assert opp.deck : "Your opponent's deck is empty!"
           }
         }
         move "Searing Flame", {
@@ -2151,7 +2151,7 @@ public enum SwordShield implements LogicCardInfo {
             opp.deck.subList(0, 2).discard()
           }
           attackRequirement {
-            assert opp.deck : "Your opponent's deck is empty"
+            assert opp.deck : "Your opponent's deck is empty!"
           }
         }
         move "Land Crush", {
@@ -2791,7 +2791,7 @@ public enum SwordShield implements LogicCardInfo {
           text "Search your deck for a Pokémon, reveal it, and put it into your hand. Then, shuffle your deck."
           energyCost C
           attackRequirement {
-            assert my.deck : "Your deck is empty."
+            assert my.deck : "Your deck is empty!."
           }
           onAttack {
             my.deck.search(max: 1, cardTypeFilter(POKEMON)).moveTo(my.hand)
@@ -3339,7 +3339,7 @@ public enum SwordShield implements LogicCardInfo {
           text "Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
           energyCost C
           attackRequirement {
-            assert my.deck : "Your deck is empty."
+            assert my.deck : "Your deck is empty!."
           }
           onAttack {
             my.deck.search(min:1, max:2,"Choose 2 cards to put in your hand.",{true}).moveTo(hidden: true, my.hand)

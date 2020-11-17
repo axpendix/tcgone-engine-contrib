@@ -194,7 +194,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           text "Search your deck for up to 2 [G] Pokémon, reveal them, and put them into your hand. Then, shuffle your deck."
           energyCost G
           attackRequirement {
-            assert my.deck : "Your deck is empty"
+            assert my.deck : "Your deck is empty!"
           }
           onAttack {
             def info = "Opponent chose the following Pokémon from their deck using $thisMove."
@@ -518,7 +518,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           text " Draw a card."
           energyCost C
           attackRequirement {
-            assert my.deck : "Your deck is empty"
+            assert my.deck : "Your deck is empty!"
           }
           onAttack {
             draw 1
@@ -1143,7 +1143,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           actionA {
             checkLastTurn()
             assert self.active : "$self is not your active Pokémon"
-            assert my.deck : "Your deck is empty"
+            assert my.deck : "Your deck is empty!"
             powerUsed()
             my.deck.subList(0, 2).select("Card to add to hand?").moveTo hidden:true, my.hand
           }
@@ -1152,7 +1152,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           text " Search your deck for up to 7 Basic Energy cards and attach them to your Pokémon in any way you like. Then, shuffle your deck."
           energyCost P, F, M
           attackRequirement {
-            assert my.deck : "Your deck is empty"
+            assert my.deck : "Your deck is empty!"
           }
           onAttack {
             def energies = my.deck.search max:7, cardTypeFilter(BASIC_ENERGY)
@@ -1312,7 +1312,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           text " Search your deck for up to 2 basic Energy cards, reveal them, and put them into your hand. Then, shuffle your deck."
           energyCost C
           attackRequirement {
-            assert my.deck : "Your deck is empty"
+            assert my.deck : "Your deck is empty!"
           }
           onAttack {
             deck.search(max:2, cardTypeFilter(BASIC_ENERGY))
@@ -1532,7 +1532,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           draw 2
         }
         playRequirement{
-          assert my.deck : "Your deck is empty"
+          assert my.deck : "Your deck is empty!"
         }
       };
       case ALLISTER_71:
@@ -1544,7 +1544,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           my.hand.select(min:1, max:3, "Card(s) to discard?").discard()
         }
         playRequirement{
-          assert my.deck : "Your deck is empty"
+          assert my.deck : "Your deck is empty!"
         }
       };
       case OPAL_72:
@@ -1560,7 +1560,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           shuffleDeck()
         }
         playRequirement{
-          assert my.deck : "Your deck is empty"
+          assert my.deck : "Your deck is empty!"
         }
       };
       case MARNIE_73:

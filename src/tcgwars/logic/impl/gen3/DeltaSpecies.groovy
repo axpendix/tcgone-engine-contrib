@@ -371,13 +371,13 @@ public enum DeltaSpecies implements LogicCardInfo {
           actionA {
             checkLastTurn()
             checkNoSPC()
-            assert my.bench : "No benched Pokemon"
-            assert my.all.findAll { it.cards.filterByType(ENERGY) } : "No Energy Cards attached to your Pokemon"
+            assert my.bench : "No benched Pokémon"
+            assert my.all.findAll { it.cards.filterByType(ENERGY) } : "No Energy Cards attached to your Pokémon"
             powerUsed()
 
-            def source = my.all.findAll { it.cards.filterByType(ENERGY) }.select("Choose a Pokemon to move an Energy from")
+            def source = my.all.findAll { it.cards.filterByType(ENERGY) }.select("Choose a Pokémon to move an Energy from")
             def energyCard = source.cards.filterByType(ENERGY).select("Choose the energy to move").first()
-            def target = my.all.findAll{it != source}.select("Select a Pokemon to move the Energy to")
+            def target = my.all.findAll{it != source}.select("Select a Pokémon to move the Energy to")
             targeted (target, SRC_ABILITY) {
               energySwitch(source, target, energyCard)
             }
@@ -429,7 +429,7 @@ public enum DeltaSpecies implements LogicCardInfo {
               if (moved.stream().anyMatch(self.cards.&contains)) return
 
               if (opp.bench) {
-                damage 20, opp.bench.select("Deal 20 damage to which Benched Pokemon?")
+                damage 20, opp.bench.select("Deal 20 damage to which Benched Pokémon?")
               }
             }
           }
@@ -836,7 +836,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             assert my.hand.filterByType(BASIC_ENERGY) : "No Basic Energy in hand"
           }
           onAttack {
-            def chosenEnergy = my.hand.filterByType(BASIC_ENERGY).select(count: 1, "Select a Basic Energy card to search for a Pokemon of that Energy type.")
+            def chosenEnergy = my.hand.filterByType(BASIC_ENERGY).select(count: 1, "Select a Basic Energy card to search for a Pokémon of that Energy type.")
             chosenEnergy.showToOpponent("Your opponent has chosen this basic Energy card. They'll now search their deck for a Pokémon of that Energy type.")
             def cardType = chosenEnergy.basicType
             def sel = my.deck.search(max: 1, "search for a [${cardType}] Basic Pokémon or Evolution card", {
@@ -883,7 +883,7 @@ public enum DeltaSpecies implements LogicCardInfo {
                       prevent()
                     } else {
                       prevent()
-                      wcu "You have no energy attached to your Pokemon"
+                      wcu "You have no energy attached to your Pokémon"
                     }
                   } else {
                     prevent()
@@ -948,7 +948,7 @@ public enum DeltaSpecies implements LogicCardInfo {
                       prevent()
                     } else {
                       prevent()
-                      wcu "You have no energy attached to your Pokemon"
+                      wcu "You have no energy attached to your Pokémon"
                     }
                   } else {
                     prevent()
@@ -990,14 +990,14 @@ public enum DeltaSpecies implements LogicCardInfo {
             //TODO: Prevent Baby Evolution from happening.
             before EVOLVE_STANDARD, {
               if (bg.currentTurn == self.owner.opposite && ef.pokemonToBeEvolved.isSPC(ASLEEP)) {
-                wcu "Binding Aura prevents you from evolving an Asleep Pokemon"
+                wcu "Binding Aura prevents you from evolving an Asleep Pokémon"
                 prevent()
               }
             }
             before ATTACH_ENERGY, {
               def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
               if (ef.reason == PLAY_FROM_HAND && bg.currentTurn == self.owner.opposite && pcs.isSPC(ASLEEP)) {
-                wcu "Binding Aura prevents you from attaching energies to an Asleep Pokemon"
+                wcu "Binding Aura prevents you from attaching energies to an Asleep Pokémon"
                 prevent()
               }
             }
@@ -2047,7 +2047,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         weakness R
         resistance G, MINUS30
         pokeBody "Conductive Body", {
-          text "As long as Beldum is your active Pokemon, you pay [C] less to retreat Beldum for each Beldum on your Bench."
+          text "As long as Beldum is your active Pokémon, you pay [C] less to retreat Beldum for each Beldum on your Bench."
           getterA GET_RETREAT_COST, self, {h ->
             if (self.active) {
               my.bench.findAll { it.name == "Beldum" }.each {
@@ -2733,7 +2733,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         }
         playRequirement{
           assert my.hand.getExcludedList(thisCard) : "One other card in hand is required to play this card."
-          assert my.discard.filterByType(BASIC_ENERGY) || my.discard.filterByType(POKEMON) : "No Basic Energy cards or Pokemon in discard pile."
+          assert my.discard.filterByType(BASIC_ENERGY) || my.discard.filterByType(POKEMON) : "No Basic Energy cards or Pokémon in discard pile."
         }
       };
       case HOLON_LASS_92:
@@ -2766,7 +2766,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           def toDiscard = my.hand.getExcludedList(thisCard).select(count:1, "Discard a card from your hand in order to play ${thisCard}.")
           toDiscard.discard()
 
-          deck.search(max: 3, "Search your deck for up to 3 Basic Pokemon with 100 HP or less", {
+          deck.search(max: 3, "Search your deck for up to 3 Basic Pokémon with 100 HP or less", {
             it.cardTypes.pokemon && it.cardTypes.is(BASIC) && it.asPokemonCard().hp.value <= 100
           }).showToOpponent("Opponent used Holon Mentor").moveTo(my.hand)
 
@@ -2805,7 +2805,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 
           Battleground bg_test = Battleground.getInstance()
 
-          my.deck.search(max: 1, "Select a [M] or a Pokemon card with δ in its card.", {
+          my.deck.search(max: 1, "Select a [M] or a Pokémon card with δ in its card.", {
             (it.cardTypes.is(ENERGY) && it.asEnergyCard().containsTypePlain(M)) ||
               (it.cardTypes.is(POKEMON) && it.getCardTypes(bg_test).is(DELTA))
           }).showToOpponent("Opponent's used Holon Researcher, and will put this card into their hand.").moveTo(my.hand)
@@ -2827,7 +2827,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           actions=action("Stadium: Holon Ruins") {
             assert lastTurn != bg().turnCount : "Already used Holon Ruins"
             assert my.deck : "Deck is empty."
-            assert my.all.any{it.topPokemonCard.cardTypes.is(DELTA)} : "No Delta Pokemon in play."
+            assert my.all.any{it.topPokemonCard.cardTypes.is(DELTA)} : "No Delta Pokémon in play."
             bc "Used Holon Ruins effect"
             lastTurn = bg().turnCount
 

@@ -272,7 +272,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
                 if(it.to == self && it.from.topPokemonCard.cardTypes.is(DELTA) && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect) {
-                  bc "Delta Protection reduces damage from δ Pokemon by 40"
+                  bc "Delta Protection reduces damage from δ Pokémon by 40"
                   it.dmg -= hp(40)
                 }
               }
@@ -633,10 +633,10 @@ public enum CrystalGuardians implements LogicCardInfo {
           actionA {
             checkNoSPC()
             checkLastTurn()
-            assert self.active : "Cacturne is not an Active Pokemon"
-            assert opp.all.any{ it.numberOfDamageCounters } : "Opponent has no damaged Pokemon."
+            assert self.active : "Cacturne is not an Active Pokémon"
+            assert opp.all.any{ it.numberOfDamageCounters } : "Opponent has no damaged Pokémon."
             powerUsed()
-            directDamage 10, opp.all.findAll{ it.numberOfDamageCounters }.select("Which Pokemon to put 1 damage counter on?")
+            directDamage 10, opp.all.findAll{ it.numberOfDamageCounters }.select("Which Pokémon to put 1 damage counter on?")
           }
         }
         move "Triple Needle", {
@@ -720,7 +720,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             assert my.deck : "Deck is empty"
             bg.em().storeObject("Delta_Sign",bg.turnCount)
             powerUsed()
-            deck.search("Search your deck for a δ Pokemon", {it.cardTypes.pokemon && it.cardTypes.is(DELTA) }).showToOpponent("Opponent used Delta Sign").moveTo(my.hand)
+            deck.search("Search your deck for a δ Pokémon", {it.cardTypes.pokemon && it.cardTypes.is(DELTA) }).showToOpponent("Opponent used Delta Sign").moveTo(my.hand)
             shuffleDeck()
           }
         }
@@ -894,9 +894,9 @@ public enum CrystalGuardians implements LogicCardInfo {
           actionA {
             checkLastTurn()
             assert self.benched : "Pelipper is not on your Bench"
-            assert my.active.topPokemonCard.cardTypes.is(DELTA) : "Active is not a Delta Pokemon"
+            assert my.active.topPokemonCard.cardTypes.is(DELTA) : "Active is not a Delta Pokémon"
             powerUsed()
-            sw my.active, my.bench.select("Select a new active Pokemon."), SRC_ABILITY
+            sw my.active, my.bench.select("Select a new active Pokémon."), SRC_ABILITY
           }
         }
         move "Supersonic", {
@@ -2189,7 +2189,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           text "Discard 2 Energy attached to Kyogre ex. Choose 1 of your opponent's Pokémon. This attack does 70 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W, W, C
           onAttack {
-            damage 70, opp.all.select("Deal 70 damage to which Pokemon?")
+            damage 70, opp.all.select("Deal 70 damage to which Pokémon?")
             afterDamage{
               discardSelfEnergy C,C
             }
@@ -2350,7 +2350,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           energyCost C, C, C
           def flag
           attackRequirement {
-            assert (flag || my.hand.filterByType(POKEMON)) : "No Pokemon in hand" //TODO: Ignore BREAKs and LEGENDs.
+            assert (flag || my.hand.filterByType(POKEMON)) : "No Pokémon in hand" //TODO: Ignore BREAKs and LEGENDs.
           }
           onAttack {
             flag = true

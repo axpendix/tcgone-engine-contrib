@@ -208,7 +208,7 @@ public enum Unleashed implements LogicCardInfo {
               while (max-- > 0) {
                 def tar = opp.all.findAll{ it.evolution }
                 if(!tar) break
-                def pcs = tar.select("Choose which Pokemon to devolve", false)
+                def pcs = tar.select("Choose which Pokémon to devolve", false)
                 if(!pcs) break
                 def top=pcs.topPokemonCard
                 devolve(pcs, top, opp.hand)
@@ -348,7 +348,7 @@ public enum Unleashed implements LogicCardInfo {
             actionA {
               checkLastTurn()
               checkNoSPC()
-              assert my.bench.findAll{it.types.contains(W)} : "No benched Water Pokemon"
+              assert my.bench.findAll{it.types.contains(W)} : "No benched Water Pokémon"
               powerUsed()
               sw my.active, my.bench.findAll{it.types.contains(W)}.select()
             }
@@ -1143,7 +1143,7 @@ public enum Unleashed implements LogicCardInfo {
             onAttack {
               damage 10
               if (opp.bench) {
-                damage 10, opp.bench.select("Which Benched Pokemon to deal damage to?")
+                damage 10, opp.bench.select("Which Benched Pokémon to deal damage to?")
               }
             }
           }
@@ -1683,7 +1683,7 @@ public enum Unleashed implements LogicCardInfo {
           onPlay {
             flip 1, {
               if (my.discard.filterByType(POKEMON)) {
-                my.discard.filterByType(POKEMON).select("Select a Pokemon").showToOpponent("Selected Pokemon").moveTo(addToTop:true, my.deck)
+                my.discard.filterByType(POKEMON).select("Select a Pokémon").showToOpponent("Selected Pokémon").moveTo(addToTop:true, my.deck)
               }
             }, {
               if (my.discard.filterByType(TRAINER)) {
@@ -1692,7 +1692,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
           playRequirement{
-            assert my.discard.filterByType(POKEMON,TRAINER) : "No Pokemon or Trainer in your discard"
+            assert my.discard.filterByType(POKEMON,TRAINER) : "No Pokémon or Trainer in your discard"
           }
         };
       case INTERVIEWER_S_QUESTIONS_77:
@@ -1713,7 +1713,7 @@ public enum Unleashed implements LogicCardInfo {
           text "Flip a coin. If heads, choose 1 of your Pokémon, and remove all Special Conditions and 6 damage counters from that Pokémon (all if there are less than 6)."
           onPlay {
             flip 1, {
-              my.all.findAll {it.numberOfDamageCounters || it.specialConditions}.select("Choose Pokemon to be healed").each{
+              my.all.findAll {it.numberOfDamageCounters || it.specialConditions}.select("Choose Pokémon to be healed").each{
                 heal 60, it
                 clearSpecialCondition(it, Source.TRAINER_CARD)
               }

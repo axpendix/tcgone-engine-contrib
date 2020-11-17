@@ -1478,7 +1478,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
             onAttack {
               if (opp.active.cards.filterByType(ENERGY) && opp.bench) {
-                def energy = opp.active.findAll{it.cards.filterByType(ENERGY)}.select("Select energy to move to benched Pokemon").first()
+                def energy = opp.active.findAll{it.cards.filterByType(ENERGY)}.select("Select energy to move to benched Pokémon").first()
                 def tar = opp.bench.select("Select the Pokémon to move energy to")
                 energySwitch(opp.active, tar, energy)
               }
@@ -2213,9 +2213,9 @@ public enum RisingRivals implements LogicCardInfo {
         return basicTrainer (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nMove as many Energy cards attached to 1 of your Pokémon as you like to another of your Pokémon."
           onPlay {
-            def src = my.all.findAll{it.cards.filterByType(ENERGY)}.select("Select Pokemon to move energy from").first()
+            def src = my.all.findAll{it.cards.filterByType(ENERGY)}.select("Select Pokémon to move energy from").first()
             def energyList = src.cards.filterByType(ENERGY).select(min:1, "Choose energy cards to move")
-            tar = my.all.findAll{it != src}.select("Choose Pokemon to move energy cards to").first()
+            tar = my.all.findAll{it != src}.select("Choose Pokémon to move energy cards to").first()
             energyList.each {
               energySwitch(src, tar, it)
             }
@@ -2419,7 +2419,7 @@ public enum RisingRivals implements LogicCardInfo {
             onAttack {
               if(reason==PLAY_FROM_HAND && opp.bench && confirm("Use Bright Look?")) {
                 powerUsed()
-                sw opp.active, opp.bench.select("Choose your opponent's new active Pokemon"), SRC_ABILITY
+                sw opp.active, opp.bench.select("Choose your opponent's new active Pokémon"), SRC_ABILITY
             }
           }
         }
@@ -2429,7 +2429,7 @@ public enum RisingRivals implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 60
-              damage 30, my.all.choose("Choose Pokemon to do 30 damage to")
+              damage 30, my.all.choose("Choose Pokémon to do 30 damage to")
             }
           }
         };

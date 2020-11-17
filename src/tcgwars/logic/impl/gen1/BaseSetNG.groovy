@@ -326,7 +326,7 @@ public enum BaseSetNG implements LogicCardInfo {
             actionA {
               checkNoSPC()
               assert my.hand.filterByBasicEnergyType(W) : "No [W] in hand"
-              assert my.all.find{it.types.contains(W)} : "No [W] pokemon"
+              assert my.all.find{it.types.contains(W)} : "No [W] Pokémon."
 
               powerUsed()
               def card = my.hand.filterByBasicEnergyType(W).first()
@@ -1770,7 +1770,7 @@ public enum BaseSetNG implements LogicCardInfo {
         return basicTrainer (this) {
           text "Choose 1 of your own Pokémon in play and a Stage of Evolution. Discard all Evolution cards of that Stage or higher attached to that Pokémon. That Pokémon is no longer Asleep, Confused, Paralyzed, Poisoned, or anything else that might be the result of an attack (just as if you had evolved it)."
           onPlay {
-            def pcs = my.all.findAll{it.evolution}.select("Pokemon to devolve")
+            def pcs = my.all.findAll{it.evolution}.select("Pokémon to devolve")
             def pkmn = []
             pkmn.addAll(pcs.pokemonCards)
             pkmn.remove(pcs.topPokemonCard)
@@ -1852,7 +1852,7 @@ public enum BaseSetNG implements LogicCardInfo {
         return basicTrainer (this) {
           text "Trade 1 of the Basic Pokémon or Evolution cards in your hand for 1 of the Basic Pokémon or Evolution cards from your deck. Show both cards to your opponent. Shuffle your deck afterward."
           onPlay {
-            my.hand.select("Choose a Pokemon", cardTypeFilter(POKEMON)).select().moveTo(my.deck)
+            my.hand.select("Choose a Pokémon", cardTypeFilter(POKEMON)).select().moveTo(my.deck)
             my.deck.search (max: 1, cardTypeFilter(POKEMON)).moveTo(hand)
             shuffleDeck()
           }
@@ -2037,7 +2037,7 @@ public enum BaseSetNG implements LogicCardInfo {
           onPlay {
             def tar = my.all.findAll {it.cards.energyCount(C) && it.numberOfDamageCounters}
             if(tar) {
-              def pcs = tar.select("Heal which Pokemon?")
+              def pcs = tar.select("Heal which Pokémon?")
               targeted (pcs, TRAINER_CARD) {
                 pcs.cards.filterByType(ENERGY).select("Discard which Energy?").discard()
                 heal 40, pcs

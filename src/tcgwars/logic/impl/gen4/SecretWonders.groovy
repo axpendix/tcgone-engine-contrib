@@ -2757,7 +2757,7 @@ public enum SecretWonders implements LogicCardInfo {
             shuffleDeck()
           }
           playRequirement{
-            assert my.deck : "Your deck is empty"
+            assert my.deck : "Your deck is empty!"
           }
         };
       case TEAM_GALACTIC_S_MARS_126:

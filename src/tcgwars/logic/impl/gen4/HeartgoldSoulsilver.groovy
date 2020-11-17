@@ -657,7 +657,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
               damage 20
               afterDamage{
                 if(my.bench) {
-                  def pcs = my.bench.select("Select the new active pokemon")
+                  def pcs = my.bench.select("Select the new active Pokémon.")
                   sw my.active, pcs
                 }
               }
@@ -719,7 +719,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
               damage 20, self
               afterDamage{
                 if(my.bench) {
-                  def pcs = my.bench.select("Select the new active pokemon")
+                  def pcs = my.bench.select("Select the new active Pokémon.")
                   sw my.active, pcs
                 }
               }
@@ -863,13 +863,13 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             energyCost ()
             onAttack {
               if(my.bench.notFull) {
-                deck.search (max:my.bench.freeBenchCount,"Please search for Basic Pokemon to put on your bench.",cardTypeFilter(BASIC)).each {
+                deck.search (max:my.bench.freeBenchCount,"Please search for Basic Pokémon to put on your bench.",cardTypeFilter(BASIC)).each {
                   benchPCS(it)
                 }
                 shuffleDeck()
               }
               if(opp.bench.notFull) {
-                opp.deck.oppSelect(min:0,max:opp.bench.getFreeBenchCount(),"Pichu used Playground: Each player may search his or her deck for as many Basic Pokémon as he or she likes, put them onto his or her Bench. Please search for Basic Pokemon to put on your bench.",cardTypeFilter(BASIC)).each{
+                opp.deck.oppSelect(min:0,max:opp.bench.getFreeBenchCount(),"Pichu used Playground: Each player may search his or her deck for as many Basic Pokémon as he or she likes, put them onto his or her Bench. Please search for Basic Pokémon to put on your bench.",cardTypeFilter(BASIC)).each{
                   benchPCS(it, OTHER)
                 }
                 shuffleDeck(null, TargetPlayer.OPPONENT)
@@ -1684,7 +1684,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
               damage 10
               afterDamage{
                 if(my.bench) {
-                  def pcs = my.bench.select("Select the new active pokemon")
+                  def pcs = my.bench.select("Select the new active Pokémon.")
                   sw my.active, pcs
                 }
               }
@@ -2142,7 +2142,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
         return supporter (this) {
           text "Search your deck for up to 3 Basic Pokémon, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
           onPlay {
-            my.deck.search(max : 3,"Select up to 3 basic pokemon", {it.cardTypes.is(BASIC)}).moveTo(my.hand)
+            my.deck.search(max : 3,"Select up to 3 basic Pokémon.", {it.cardTypes.is(BASIC)}).moveTo(my.hand)
             shuffleDeck()
           }
           playRequirement{

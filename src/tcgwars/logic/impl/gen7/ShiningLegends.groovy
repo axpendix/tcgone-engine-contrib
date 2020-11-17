@@ -436,7 +436,7 @@ public enum ShiningLegends implements LogicCardInfo {
               checkLastTurn()
               assert opp.bench : "No opponent bench"
               powerUsed()
-              sw(opp.active, opp.bench.oppSelect("New Active Pokemon"))
+              sw(opp.active, opp.bench.oppSelect("New Active Pokémon"))
             }
           }
           move "Heat Blast", {
@@ -672,7 +672,7 @@ public enum ShiningLegends implements LogicCardInfo {
             actionA {
               checkLastTurn()
               def tar = my.all.findAll {it.numberOfDamageCounters && it.cards().energyCount(W)}
-              assert tar : "No suitable pokemon"
+              assert tar : "No suitable Pokémon."
               powerUsed()
               heal 20, tar.select("Heal 20 damage"), SRC_ABILITY
             }

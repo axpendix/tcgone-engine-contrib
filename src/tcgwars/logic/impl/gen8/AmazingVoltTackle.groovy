@@ -2100,7 +2100,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Wyndon Stadium") draw 2
         }
         playRequirement{
-          assert my.deck : "Your deck is empty"
+          assert my.deck : "Your deck is empty!"
         }
       };
       case NESSA_96:

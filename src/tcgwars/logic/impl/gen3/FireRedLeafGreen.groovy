@@ -576,7 +576,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               assert !self.specialConditions
               assert self.damage != self.fullHP - hp(10) : "Slowbro can't be Knocked Out by Strange Behavior!"
               def tar = my.all.findAll{it != self && it.numberOfDamageCounters}
-              assert tar : "There is no Pokemon with damage counter outside Slowbro"
+              assert tar : "There is no Pokémon with damage counter outside Slowbro"
               def pcs = tar.select()
 
               self.damage+=hp(10)
@@ -2248,7 +2248,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                 if (!self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.bench.notEmpty && self.owner.pbg.active.cards.filterByType(BASIC_ENERGY)) {
                   bc "EXP.ALL activates"
                   if (oppConfirm("EXP.ALL: Move an Energy from ${self.owner.pbg.active} to $self ?")) {
-                    def energy = self.owner.pbg.active.cards.filterByType(BASIC_ENERGY).oppSelect("Select an Energy from the Active Pokemon to move to the holder of EXP.ALL").first()
+                    def energy = self.owner.pbg.active.cards.filterByType(BASIC_ENERGY).oppSelect("Select an Energy from the Active Pokémon to move to the holder of EXP.ALL").first()
                     energySwitch(self.owner.pbg.active, self, energy)
                     discard thisCard
                   }
@@ -2363,7 +2363,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
           playRequirement{
-            assert opp.bench : "Opponent has no benched Pokemon"
+            assert opp.bench : "Opponent has no benched Pokémon"
           }
         };
       case PROF__OAK_S_RESEARCH_98:

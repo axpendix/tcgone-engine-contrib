@@ -91,7 +91,7 @@ public enum Collection {
   POP_SERIES_8(288, "POP Series 8", "POP8", "gen4.PopSeries8"),
   POP_SERIES_9(289, "POP Series 9", "POP9", "gen4.PopSeries9"),
 
-  POKEMON_RUMBLE(290, "Pokemon Rumble", "RUMBLE", "gen4.PokemonRumble"),
+  POKEMON_RUMBLE(290, "Pokémon Rumble", "RUMBLE", "gen4.PokemonRumble"),
 
   //BLACK & WHITE
   BLACK_WHITE_PROMOS(310, "Black & White Promos", "BWP", "gen5.BlackWhitePromos"),

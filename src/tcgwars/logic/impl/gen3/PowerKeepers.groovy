@@ -215,7 +215,7 @@ public enum PowerKeepers implements LogicCardInfo {
           actionA {
             checkLastTurn()
             checkNoSPC()
-            assert my.deck : "Your deck is empty"
+            assert my.deck : "Your deck is empty!"
             powerUsed()
             def cardsNum = Math.min(5, my.deck.size())
             def list=rearrange(my.deck.subList(0, cardsNum), "Rearrange the top ${cardsNum} cards in your deck.")
@@ -282,11 +282,11 @@ public enum PowerKeepers implements LogicCardInfo {
           }
           onAttack {
             //TODO: This could be made into a static, other cards do similar attacks with other types.
-            def selected = self.cards.filterByEnergyType(F).select(min:1, max:5, "Select up to 5 [F] Energy cards to discard; for each card discarded, this attack will do 20 damage to 1 opponent's Pokemon of your choosing (you can pick the same Pokémon more than once.)")
+            def selected = self.cards.filterByEnergyType(F).select(min:1, max:5, "Select up to 5 [F] Energy cards to discard; for each card discarded, this attack will do 20 damage to 1 opponent's Pokémon of your choosing (you can pick the same Pokémon more than once.)")
             def count = 0
             def selNum = selected.size()
             while (count++ < selNum){
-              noWrDamage ( 20, opp.all.select("Deal 20 damage to which Pokemon? ${count-1}/${selNum} Pokémon selected.") )
+              noWrDamage ( 20, opp.all.select("Deal 20 damage to which Pokémon? ${count-1}/${selNum} Pokémon selected.") )
             }
             afterDamage {
               selected.discard()
@@ -333,7 +333,7 @@ public enum PowerKeepers implements LogicCardInfo {
           actionA {
             checkLastTurn()
             checkNoSPC()
-            assert my.bench : "No benched Pokemon"
+            assert my.bench : "No benched Pokémon"
             assert my.discard.filterByEnergyType(R) : "You have no [R] Energy cards in your discard pile"
             powerUsed()
 
@@ -436,8 +436,8 @@ public enum PowerKeepers implements LogicCardInfo {
             assert my.deck : "Deck is empty"
             powerUsed()
 
-            my.deck.search(max: 1, "Search for a [P] Energy card to attach to one of your Pokemon.", {Card card -> card.asEnergyCard().containsTypePlain(P)}).each {
-              def tar = my.all.select("Attach $it to? That Pokemon will receive 2 damage counters.")
+            my.deck.search(max: 1, "Search for a [P] Energy card to attach to one of your Pokémon.", {Card card -> card.asEnergyCard().containsTypePlain(P)}).each {
+              def tar = my.all.select("Attach $it to? That Pokémon will receive 2 damage counters.")
               attachEnergy(tar, it)
               directDamage 20, tar, SRC_ABILITY
             }
@@ -766,7 +766,7 @@ public enum PowerKeepers implements LogicCardInfo {
           text "If your opponent has any Evolved Pokémon in play, remove the highest Stage Evolution card from each of them and put those cards back into his or her hand."
           energyCost C
           attackRequirement {
-            assert opp.all.any{ it.evolution } : "Opponent does not have any Evolved Pokemon in play."
+            assert opp.all.any{ it.evolution } : "Opponent does not have any Evolved Pokémon in play."
           }
           onAttack {
             opp.all.findAll { it.evolution }.each {
@@ -803,7 +803,7 @@ public enum PowerKeepers implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            def selected = deck.search (max: 1, "Search for a [L] Pokemon (excluding Pokemon-ex) to put into your hand.", {
+            def selected = deck.search (max: 1, "Search for a [L] Pokémon (excluding Pokémon-ex) to put into your hand.", {
               (it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(L) && !it.asPokemonCard().cardTypes.is(EX))
             }).moveTo(my.hand)
             shuffleDeck()
@@ -1904,7 +1904,7 @@ public enum PowerKeepers implements LogicCardInfo {
             before APPLY_SPECIAL_CONDITION, {
               def pcs = ef.getResolvedTarget(bg, e)
               if ( pcs.types.contains(D) && [ASLEEP, CONFUSED, PARALYZED].contains(ef.type) ) {
-                bc "Sidney's Stadium - [D] Pokemon can't be Asleep, Confused or Paralyzed."
+                bc "Sidney's Stadium - [D] Pokémon can't be Asleep, Confused or Paralyzed."
                 prevent()
               }
             }
@@ -1922,7 +1922,7 @@ public enum PowerKeepers implements LogicCardInfo {
           draw choose(1..opp.all.size(),"How many cards would you like to draw?")
         }
         playRequirement {
-          assert my.deck : "Your deck is empty"
+          assert my.deck : "Your deck is empty!"
           assert my.hand.size() < 7 : "You have 7 or more cards in your hand (including this card)"
         }
       };

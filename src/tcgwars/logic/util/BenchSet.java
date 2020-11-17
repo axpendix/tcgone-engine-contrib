@@ -137,7 +137,7 @@ public class BenchSet extends PcsList {
   @Override
   public boolean add(PokemonCardSet e) {
     if (isFull()) {
-      throw new IllegalStateException("Bench is full");
+      throw new IllegalStateException("Bench is full.");
     }
     set(getFirstFreeIndex(), e);
     return true;

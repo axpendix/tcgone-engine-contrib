@@ -2336,7 +2336,7 @@ public enum Stormfront implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               powerUsed()
-              def pcs = my.all.select("Choose one of your Pokemon to knock out")
+              def pcs = my.all.select("Choose one of your Pokémon to knock out")
               new Knockout(pcs).run(bg)
               attachEnergyFrom(basic:true,my.discard, my.all)
               attachEnergyFrom(basic:true,my.discard, my.all)
