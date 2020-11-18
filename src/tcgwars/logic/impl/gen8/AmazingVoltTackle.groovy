@@ -266,6 +266,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
               ef.cardToPlay = newImpl
             }
             after PLAY_TRAINER, {
+              if (!playedFromOppHand) return
               playedFromOppHand = false
               bg.em().run(new ChangeImplementation(oldImpl, newImpl))
               newImpl = null
