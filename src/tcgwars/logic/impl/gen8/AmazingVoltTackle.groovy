@@ -450,7 +450,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             powerUsed()
             def viewed = my.deck.subList 0, 3
             def selected = viewed.select()
-            selected.moveTo my.hand
+            selected.moveTo hidden:true, my.hand
             viewed.getExcludedList(selected).discard()
           }
         }
@@ -2043,7 +2043,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         text "The Pokémon this card is attached to can use any attack from its previous Evolutions. (You still need the necessary Energy to use each attack.)"
         def moveListGetter
         onPlay {
-          moveListGetter = getter GET_MOVE_LIST, {holder->
+          moveListGetter = getter GET_MOVE_LIST, AFTER_FIRST, {holder->
             if(holder.effect.target.owner==self.owner && holder.effect.target.evolution){
               for(card in holder.effect.target.cards.filterByType(POKEMON)){
                 if(card!=holder.effect.target.topPokemonCard){

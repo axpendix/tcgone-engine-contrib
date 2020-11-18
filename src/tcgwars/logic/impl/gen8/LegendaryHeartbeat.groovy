@@ -464,9 +464,10 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             afterDamage {
               def skipped = false
               2.times {
-                if (skipped || my.bench.empty || !my.hand.any { it.cardTypes.is(ENERGY) }) return
+                if (skipped) return
                 def energyAttachment = attachEnergyFrom may: true, basic: true, my.hand, my.bench
-                if (!energyAttachment.empty && (energyAttachment.get(0) as CardList).notEmpty) {
+                if (energyAttachment && !energyAttachment.empty
+                  && energyAttachment.get(0) instanceof CardList && (energyAttachment.get(0) as CardList).notEmpty) {
                   healAll energyAttachment.get(1) as PokemonCardSet
                 }
                 else skipped = true
@@ -726,7 +727,9 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           onActivate { reason ->
             if (reason == PLAY_FROM_HAND && self.evolution && bg.currentTurn == self.owner && opp.bench.any { it.evolution } && confirm("Use $thisAbility?")) {
               def pcs = opp.bench.findAll { it.evolution }.select("Pokémon to devolve?")
-              devolve pcs, pcs.topPokemonCard as Card, opp.hand
+              targeted pcs, SRC_ABILITY, {
+                devolve pcs, pcs.topPokemonCard as Card, opp.hand
+              }
             }
           }
         }
@@ -1591,7 +1594,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           else return [[] as Set]
         }
         onRemoveFromPlay {
-          spcEff.unregsiter()
+          spcEff.unregister()
         }
       };
       case STONE_F_ENERGY_75:

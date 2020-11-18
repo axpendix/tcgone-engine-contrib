@@ -2369,6 +2369,7 @@ public enum BurningShadows implements LogicCardInfo {
               damage 50
               delayed {
                 before PLAY_TRAINER, {
+                  if (checkBodyguard()) return
                   if (ef.cardToPlay.cardTypes.is(ITEM) && bg.currentTurn == self.owner.opposite) {
                     wcu "Distort prevents playing this card"
                     prevent()
