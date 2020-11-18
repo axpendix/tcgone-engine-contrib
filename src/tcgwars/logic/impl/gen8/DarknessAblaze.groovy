@@ -536,7 +536,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Search your deck for a [G] Energy card and attach it to 1 of your Pokémon. Then, shuffle your deck."
           energyCost C
           attackRequirement {
-            assert my.deck : "Your deck is empty"
+            assert my.deck : "Your deck is empty!"
           }
           onAttack {
             attachEnergyFrom type:G, my.deck, my.all
@@ -999,7 +999,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Once during your turn, you may switch 1 of your opponent’s face-down Prize cards with the top card of their deck. (The cards stay face down.)"
           actionA {
             checkLastTurn()
-            assert opp.deck : "Your opponent's deck is empty"
+            assert opp.deck : "Your opponent's deck is empty!"
             assert opp.prizeCardSet.faceDownCards : "Your opponent has no face down Prize cards"
             powerUsed()
 
@@ -1104,7 +1104,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Search your deck for up to 2 Rare Fossil cards and put them onto your Bench. Then, shuffle your deck."
           energyCost C
           attackRequirement {
-            assert my.deck : "Your deck is empty"
+            assert my.deck : "Your deck is empty!"
           }
           onAttack {
             def info = "Select up to 2 Rare Fossil cards to put on your bench."
@@ -1534,7 +1534,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Draw 2 cards."
           energyCost C
           attackRequirement {
-            assert my.deck : "Your deck is empty"
+            assert my.deck : "Your deck is empty!"
           }
           onAttack {
             draw 2
@@ -1996,7 +1996,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "You must discard a Pokémon that has the Mad Party attack from your hand in order to use this Ability. Once during your turn, you may draw 2 cards."
           actionA {
             assert my.hand.any{ it.cardTypes.is(POKEMON) && it.moves.any{it.name=="Mad Party"} } : "You have no Pokémon with Mad Party in your hand"
-            assert my.deck : "Your deck is empty"
+            assert my.deck : "Your deck is empty!"
             checkLastTurn()
             powerUsed()
             my.hand.findAll{ it.cardTypes.is(POKEMON) && it.moves.any{it.name=="Mad Party"} }.select("Choose a Pokémon with Mad Party to discard").discard()
@@ -2343,7 +2343,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Discard the top card of your opponent’s deck."
           energyCost D
           attackRequirement {
-            assert opp.deck : "Your opponent's deck is empty"
+            assert opp.deck : "Your opponent's deck is empty!"
           }
           onAttack {
             if (opp.deck) {
@@ -2623,7 +2623,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
           energyCost D
           attackRequirement {
-            assert my.deck : "Your deck is empty"
+            assert my.deck : "Your deck is empty!"
           }
           onAttack {
             if (my.deck) {
@@ -2809,31 +2809,31 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
             before PLAY_BASIC_POKEMON, {
               if (!isPokemonPlayable(ef)) {
-                wcu "Cannot play non-Darkness Pokemon"
+                wcu "Cannot play non-Darkness Pokémon"
                 prevent()
               }
             }
             before PLAY_EVOLUTION, {
               if (!isPokemonPlayable(ef)) {
-                wcu "Cannot play non-Darkness Pokemon"
+                wcu "Cannot play non-Darkness Pokémon"
                 prevent()
               }
             }
             before EVOLVE_STANDARD, {
               if (bg.em().retrieveObject("Infinity_Zone_" + self.hashCode()) && ef.evolutionCard.player == self.owner && !ef.evolutionCard.types.contains(D)) {
-                wcu "Cannot play non-Darkness Pokemon"
+                wcu "Cannot play non-Darkness Pokémon"
                 prevent()
               }
             }
             before EVOLVE, {
               if (bg.em().retrieveObject("Infinity_Zone_" + self.hashCode()) && ef.evolutionCard.player == self.owner  && !ef.evolutionCard.types.contains(D)) {
-                wcu "Cannot play non-Darkness Pokemon"
+                wcu "Cannot play non-Darkness Pokémon"
                 prevent()
               }
             }
             before PUT_ON_BENCH, {
               if (!isPokemonPlayable(ef)) {
-                wcu "Cannot play non-Darkness Pokemon"
+                wcu "Cannot play non-Darkness Pokémon"
                 prevent()
               }
             }
@@ -3957,9 +3957,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           shuffleDeck()
         }
         playRequirement{
-          assert my.deck : "Your deck is empty."
+          assert my.deck : "Your deck is empty!."
           assert bg.turnCount > 2 : "Cannot use this card during your first turn."
-          assert my.all.any{bg().gm().hasEvolution(it.name)} : "No Pokemon with evolutions in play"
+          assert my.all.any{bg().gm().hasEvolution(it.name)} : "No Pokémon with evolutions in play"
           assert my.all.any{it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount && bg().gm().hasEvolution(it.name)} : "Cannot use this on Pokémon put into play this turn"
         }
       };

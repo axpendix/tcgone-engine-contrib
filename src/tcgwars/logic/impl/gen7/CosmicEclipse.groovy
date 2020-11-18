@@ -4065,7 +4065,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost F, L
             onAttack {
               damage 90
-              if (self.cards.filterByType(POKEMON_TOOL) && confirm("Discard a Pokémon Tool card from this Pokemon to do 90 more damage?")) {
+              if (self.cards.filterByType(POKEMON_TOOL) && confirm("Discard a Pokémon Tool card from this Pokémon to do 90 more damage?")) {
                 self.cards.filterByType(POKEMON_TOOL).select().discard()
                 damage 90
               }

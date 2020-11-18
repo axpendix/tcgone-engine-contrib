@@ -306,8 +306,8 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
           actionA {
             checkNoSPC()
             checkLastTurn()
-            assert my.deck : "You have no cards in your deck"
-            assert bg.em().retrieveObject("Quick_Search") != bg.turnCount : "You can't use more than one Quick Search Pokémon Power each turn"
+            assert my.deck : "Your deck is empty!"
+            assert bg.em().retrieveObject("Quick_Search") != bg.turnCount : "You can't use more than one Quick Search Pokémon Power each turn."
             bg.em().storeObject("Quick_Search", bg.turnCount)
             my.deck.select(count:1).moveTo(hidden:true,my.hand)
             shuffleDeck()
@@ -419,7 +419,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
               if(ef.attacker.owner != self.owner) {
                 bg.dm().each{
                   if(it.to == self && it.notNoEffect && it.dmg.value >= 30) {
-                    bc "Invisible Wall prevents damage"
+                    bc "Invisible Wall prevents damage."
                     it.dmg = hp(0)
                   }
                 }
@@ -453,7 +453,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
           }
         }
         move "Guillotine", {
-          text "50 damage. "
+          text "50 damage."
           energyCost G, G, C, C
           attackRequirement {}
           onAttack {
@@ -508,7 +508,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
                 }
               }
             }
-            assert typeList : "There is no pokemon in play with a type different than [C]"
+            assert typeList : "There is no pokemon in play with a type different than [C]!"
             powerUsed()
             def newType = choose(typeList,"Select the new type of Venomoth")
             getter GET_POKEMON_TYPE, self, {h->
@@ -539,7 +539,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
           energyCost G
           attackRequirement {}
           onAttack {
-            sw opp.active, opp.bench.select("Choose new active pokemon"), ATTACK
+            sw opp.active, opp.bench.select("Choose new active Pokémon."), ATTACK
           }
         }
         move "Acid", {
@@ -616,7 +616,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-            sw self, my.bench.select("Choose new active pokemon"), ATTACK
+            sw self, my.bench.select("Choose new active Pokémon."), ATTACK
           }
         }
         move "Big Eggsplosion", {
@@ -719,11 +719,11 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
           text "Search your deck for a [F] Basic Pokémon card and put it onto your Bench. Shuffle your deck afterward. (You can't use this attack if your Bench is full.)"
           energyCost F
           attackRequirement {
-            assert my.deck : "Your deck is empty"
-            assert my.bench.notFull : "Your bench is full"
+            assert my.deck : "Your deck is empty!"
+            assert my.bench.notFull : "Your bench is full."
           }
           onAttack {
-            my.deck.search("Choose Basic [f] Pokémon",{(it.cardTypes.is(BASIC) && it.asPokemonCard().types.contains(F))}).each{
+            my.deck.search("Choose Basic [f] Pokémon.",{(it.cardTypes.is(BASIC) && it.asPokemonCard().types.contains(F))}).each{
               benchPCS(it)
             }
             shuffleDeck()
@@ -920,8 +920,8 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
           text "Search your deck for a Basic Pokémon named Bellsprout and put it onto your Bench. Shuffle your deck afterward. (You can't use this attack if your Bench is full.)"
           energyCost G
           attackRequirement {
-            assert my.bench.notFull : "Your bench is full"
-            assert my.deck : "Your deck is empty"
+            assert my.bench.notFull : "Your bench is full."
+            assert my.deck : "Your deck is empty!"
           }
           onAttack {
             my.deck.search("Choose Basic Pokémon named Bellsprout",{(it.cardTypes.is(BASIC) && it.name.contains("Bellsprout"))}).each{
@@ -1068,8 +1068,8 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
           text "Search your deck for a Basic Pokémon named Nidoran♂ or Nidoran♀ and put it onto your Bench. Shuffle your deck afterward. (You can't use this attack if your Bench is full.)"
           energyCost G
           attackRequirement {
-            assert my.bench.notFull : "Your bench is full"
-            assert my.deck : "Your deck is empty"
+            assert my.bench.notFull : "Your bench is full."
+            assert my.deck : "Your deck is empty!"
           }
           onAttack {
             my.deck.search("Choose Basic Pokémon named Nidoran♂ or Nidoran♀",{ it.cardTypes.is(BASIC) && ["Nidoran♂", "Nidoran♀"].contains(it.name) }).each{
@@ -1275,7 +1275,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
           shuffleDeck()
         }
         playRequirement{
-          assert my.deck : "Your deck is empty"
+          assert my.deck : "Your deck is empty!"
         }
       };
       case POTION_122:

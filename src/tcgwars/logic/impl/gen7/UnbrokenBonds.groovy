@@ -1141,7 +1141,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               while (1) {
                 def tar = my.all.findAll {it.cards.filterByEnergyType(W).findAll {!toBeMoved.contains(it)}.notEmpty()}
                 if (!tar) break
-                def pcs = tar.select("Pokemon that has [W] energy to be shuffled to deck. Cancel to stop", false)
+                def pcs = tar.select("Pokémon that has [W] energy to be shuffled to deck. Cancel to stop", false)
                 if (!pcs) break
                 def dd = pcs.cards.filterByEnergyType(W).findAll {!toBeMoved.contains(it)}.select("[W] Energy to shuffle into your deck")
                 toBeMoved.addAll(dd)
@@ -1957,7 +1957,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
                 if(kef.pokemonToBeKnockedOut.owner != self.owner && kef.pokemonToBeKnockedOut.active && kef.pokemonToBeKnockedOut.owner.pbg.bench.notEmpty){
                   powerUsed()
                   flip "Hypnotic Pendulum", {
-                    kef.nextActive = kef.pokemonToBeKnockedOut.owner.pbg.bench.select("Hypnotic Pendulum: select new active pokemon", self.owner)
+                    kef.nextActive = kef.pokemonToBeKnockedOut.owner.pbg.bench.select("Hypnotic Pendulum: select new active Pokémon.", self.owner)
                   }
                 }
               }
@@ -2713,7 +2713,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             def cl1 = {my.discard.findAll{it.cardTypes.isIn(POKEMON_GX, POKEMON_EX) && it.asPokemonCard().types.contains(D)}}
             attackRequirement {
               gxCheck()
-              assert cl1() : "No [D] Pokemon-GX or Pokemon-EX in your discard pile"
+              assert cl1() : "No [D] Pokémon-GX or Pokémon-EX in your discard pile"
               assert my.bench.notFull : "Bench full"
             }
             onAttack {
@@ -4069,7 +4069,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
         return itemCard (this) {
           text "Devolve 1 of your evolved Pokémon by shuffling any number of Evolution cards on it into your deck. (That Pokémon can't evolve this turn.)"
           onPlay {
-            def pcs = my.all.findAll{it.evolution}.select("Pokemon to devolve")
+            def pcs = my.all.findAll{it.evolution}.select("Pokémon to devolve")
             def top = pcs.topPokemonCard
             devolve(pcs, top, my.deck)
             while(pcs.evolution && confirm("$top was devolved. Devolve the next evolution?")){

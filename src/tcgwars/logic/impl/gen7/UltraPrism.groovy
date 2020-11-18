@@ -490,7 +490,7 @@ public enum UltraPrism implements LogicCardInfo {
             text "If this Pokémon is your Active Pokémon, once during your turn (before your attack), you may heal 50 damage from 1 of your Pokémon that has any Energy attached to it."
             actionA {
               checkLastTurn() // check whether it has already been used this turn
-              assert self.active : "Leafeon GX is not your active pokemon"
+              assert self.active : "Leafeon GX is not your active Pokémon."
               def tar = my.all.findAll{it.numberOfDamageCounters && it.cards.energyCount(C)}
               assert tar
 
@@ -514,7 +514,7 @@ public enum UltraPrism implements LogicCardInfo {
             energyCost G
             attackRequirement {
               gxCheck()
-              assert my.bench.notEmpty : "This is your only pokemon"
+              assert my.bench.notEmpty : "This is your only Pokémon."
               assert my.deck.notEmpty
             }
             onAttack {
@@ -2291,7 +2291,7 @@ public enum UltraPrism implements LogicCardInfo {
               checkLastTurn()
               assert my.deck
               powerUsed()
-              my.deck.search(count: 1, "Search for a fairy pokemon", {it.cardTypes.pokemon && it.types.contains(Y)}).moveTo(my.hand)
+              my.deck.search(count: 1, "Search for a fairy Pokémon.", {it.cardTypes.pokemon && it.types.contains(Y)}).moveTo(my.hand)
               shuffleDeck()
             }
           }
@@ -2939,7 +2939,7 @@ public enum UltraPrism implements LogicCardInfo {
           }
           playRequirement{
             assert my.active.types.contains(W) || my.active.types.contains(M) : "Your Active Pokémon needs to be [W] or [M]. (The card text was officially changed)"
-            assert opp.bench.size() > 2 : "Opponent needs to have more than 2 benched Pokemon"
+            assert opp.bench.size() > 2 : "Opponent needs to have more than 2 benched Pokémon"
           }
         };
       case ELECTRIC_MEMORY_121:

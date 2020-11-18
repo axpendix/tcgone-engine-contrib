@@ -292,7 +292,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
         bwAbility "Adaptive Evolution", {
-          text "This Pokemon can evolve during your first turn or the turn you play it."
+          text "This Pokémon can evolve during your first turn or the turn you play it."
           delayedA {
             before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
               if (bg.currentTurn == self.owner){
@@ -314,7 +314,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Caterpie", hp:HP080, type:G, retreatCost:3) {
         weakness R
         bwAbility "Adaptive Evolution", {
-          text "This Pokemon can evolve during your first turn or the turn you play it."
+          text "This Pokémon can evolve during your first turn or the turn you play it."
           delayedA {
             before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
               if (bg.currentTurn == self.owner){
@@ -336,7 +336,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Metapod", hp:HP140, type:G, retreatCost:1) {
         weakness R
         move "Panic Poison", {
-          text "30 damage. Your opponent’s Active Pokemon is now Burned, Confused, and Poisoned."
+          text "30 damage. Your opponent’s Active Pokémon is now Burned, Confused, and Poisoned."
           energyCost G
           onAttack {
             damage 30
@@ -357,7 +357,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP080, type:G, retreatCost:1) {
         weakness R
         move "Swords Dance", {
-          text "During your next turn, this Pokemon’s Blinding Scythe attack does 70 more damage (before applying Weakness and Resistance)."
+          text "During your next turn, this Pokémon’s Blinding Scythe attack does 70 more damage (before applying Weakness and Resistance)."
           energyCost C
           onAttack {
             increasedBaseDamageNextTurn("Blinding Scythe", hp(70))
@@ -389,7 +389,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Bind", {
-          text "50 damage. Flip a coin. If heads, your opponent’s Active Pokemon is now Paralyzed."
+          text "50 damage. Flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
           energyCost G, C, C
           onAttack {
             damage 50
@@ -401,7 +401,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP130, type:G, retreatCost:2) {
         weakness R
         move "Push Down", {
-          text "30 damage. Your opponent switches their Active Pokemon with 1 of their Benched Pokemon."
+          text "30 damage. Your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
           energyCost C, C
           onAttack {
             damage 30
@@ -424,7 +424,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
         move "Mini Drain", {
-          text "10 damage. Heal 10 damage from this Pokemon."
+          text "10 damage. Heal 10 damage from this Pokémon."
           energyCost C
           onAttack {
             damage 10
@@ -475,7 +475,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Mega Drain", {
-          text "120 damage. Heal 30 damage from this Pokemon."
+          text "120 damage. Heal 30 damage from this Pokémon."
           energyCost G, C, C
           onAttack {
             damage 120
@@ -558,7 +558,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Snover", hp:HP140, type:G, retreatCost:3) {
         weakness R
         move "Soothing Scent", {
-          text "80 damage. Your opponent’s Active Pokemon is now Asleep."
+          text "80 damage. Your opponent’s Active Pokémon is now Asleep."
           energyCost G, C, C
           onAttack {
             damage 80
@@ -630,12 +630,12 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP220, type:G, retreatCost:3) {
         weakness R
         move "Forest Feast", {
-          text "Search your deck for up to 2 Basic [G] Pokemon and put them onto your Bench. Then, shuffle your deck."
+          text "Search your deck for up to 2 Basic [G] Pokémon and put them onto your Bench. Then, shuffle your deck."
           energyCost G
           callForFamily([basic:true, type:G], 2, delegate)
         }
         move "Wood Hammer", {
-          text "220 damage. This Pokemon also does 30 damage to itself."
+          text "220 damage. This Pokémon also does 30 damage to itself."
           energyCost G, G, G, C
           onAttack {
             damage 220
@@ -654,7 +654,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Max Beating", {
-          text "130+ damage. You may discard up to 3 [G] Energy from this Pokemon. If you do, this attack does 50 more damage for each Energy you discarded in this way."
+          text "130+ damage. You may discard up to 3 [G] Energy from this Pokémon. If you do, this attack does 50 more damage for each Energy you discarded in this way."
           energyCost G, G, G, C
           onAttack {
             def grassEnergies = self.cards.filterByEnergyType(G).select(min: 0, max: 3, "Discard up to 3 [G] Energy.")
@@ -678,7 +678,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Float Up", {
-          text "50 damage. You may shuffle this Pokemon and all cards attached to it into your deck."
+          text "50 damage. You may shuffle this Pokémon and all cards attached to it into your deck."
           energyCost C, C
           onAttack {
             damage 50
@@ -719,7 +719,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Applin", hp:HP080, type:G, retreatCost:1) {
         weakness R
         bwAbility "Apple Drop", {
-          text "Once during your turn, you may put 2 damage counters on 1 of your opponent’s Pokemon. If you placed any damage counters in this way, shuffle this Pokemon and all attached cards into your deck."
+          text "Once during your turn, you may put 2 damage counters on 1 of your opponent’s Pokémon. If you placed any damage counters in this way, shuffle this Pokémon and all attached cards into your deck."
           actionA {
             if(confirm("Use Apple Drop?")){
               checkLastTurn()
@@ -736,7 +736,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Acid Spray", {
-          text "60 damage. Flip a coin. If heads, discard an Energy from your opponent’s Active Pokemon."
+          text "60 damage. Flip a coin. If heads, discard an Energy from your opponent’s Active Pokémon."
           energyCost C, C
           onAttack {
             damage 60
@@ -776,7 +776,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP060, type:R, retreatCost:1) {
         weakness W
         move "Confuse Ray", {
-          text "Your opponent’s Active Pokemon is now Confused."
+          text "Your opponent’s Active Pokémon is now Confused."
           energyCost R
           onAttack {
             apply CONFUSED
@@ -794,7 +794,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Vulpix", hp:HP120, type:R, retreatCost:1) {
         weakness W
         move "Hex", {
-          text "30+ damage. If your opponent's Active Pokemon is affected by a Special Condition, this attack does 90 more damage."
+          text "30+ damage. If your opponent's Active Pokémon is affected by a Special Condition, this attack does 90 more damage."
           energyCost R
           onAttack {
             damage 30
@@ -804,7 +804,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Flickering Flames", {
-          text "90 damage. Your opponent’s Active Pokemon is now Asleep."
+          text "90 damage. Your opponent’s Active Pokémon is now Asleep."
           energyCost R, C, C
           onAttack {
             damage 90
@@ -816,7 +816,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP200, type:R, retreatCost:2) {
         weakness W
         move "Nine-Tailed Shapeshifter", {
-          text "Choose 1 of your opponent’s Active Pokemon’s attacks and use it as this attack."
+          text "Choose 1 of your opponent’s Active Pokémon’s attacks and use it as this attack."
           energyCost R, C, C
           attackRequirement {
             assert opp.active.topPokemonCard.moves : "No moves to use."
@@ -836,7 +836,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Flamethrower", {
-          text "180 damage. Discard an Energy from this Pokemon."
+          text "180 damage. Discard an Energy from this Pokémon."
           energyCost R, C, C, C
           onAttack {
             damage 180
@@ -871,7 +871,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Growlithe", hp:HP130, type:R, retreatCost:2) {
         weakness W
         bwAbility "Warming Up", {
-          text "If this Pokemon has Burning Scarf attached to it, it get +100 HP."
+          text "If this Pokémon has Burning Scarf attached to it, it get +100 HP."
           getterA (GET_FULL_HP, self) {h->
             if (self.cards.findAll { it.name == "Burning Scarf" }) {
               h.object += hp(100)
@@ -909,7 +909,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Magmar", hp:HP140, type:R, retreatCost:3) {
         weakness W
         move "Burst Punch", {
-          text "30 damage. Your opponent’s Active Pokemon is now Burned."
+          text "30 damage. Your opponent’s Active Pokémon is now Burned."
           energyCost R, C
           onAttack {
             damage 30
@@ -936,7 +936,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP060, type:R, retreatCost:1) {
         weakness W
         move "Scorch", {
-          text "Your opponent’s Active Pokemon is now Burned."
+          text "Your opponent’s Active Pokémon is now Burned."
           energyCost R
           onAttack {
             apply BURNED
@@ -961,7 +961,7 @@ public enum RebelClash implements LogicCardInfo {
           text "If you draw this card from your deck at the beginning of your turn and there is room on your Bench, instead of putting it into your hand, you may play it directly onto your Bench."
         }
         move "Reignite", {
-          text "20 damage. Attach a [R] Energy card from your discard pile to one of your Pokemon."
+          text "20 damage. Attach a [R] Energy card from your discard pile to one of your Pokémon."
           energyCost R
           onAttack {
             damage 20
@@ -975,7 +975,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Lampent", hp:HP140, type:R, retreatCost:2) {
         weakness W
         bwAbility "Protective Glow", {
-          text "Each of your Pokemon that has any Energy attached to it has no Weakness."
+          text "Each of your Pokémon that has any Energy attached to it has no Weakness."
           getterA (GET_WEAKNESSES) { h->
             if (h.effect.target.owner == self.owner && h.effect.target.cards.energyCount(C)) {
               def list = h.object as List<Weakness>
@@ -984,7 +984,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Mirage Flare", {
-          text "110 damage. Your opponent’s Active Pokemon is now Confused."
+          text "110 damage. Your opponent’s Active Pokémon is now Confused."
           energyCost R, C
           onAttack {
             damage 110
@@ -996,7 +996,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP120, type:R, retreatCost:2) {
         weakness W
         move "Lick", {
-          text "20 damage. Flip a coin. If heads, your opponent’s Active Pokemon is now Paralyzed."
+          text "20 damage. Flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
           energyCost C
           onAttack {
             damage 20
@@ -1004,7 +1004,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Flamethrower", {
-          text "120 damage. Discard an Energy from this Pokemon."
+          text "120 damage. Discard an Energy from this Pokémon."
           energyCost R, R, C
           onAttack {
             damage 120
@@ -1016,7 +1016,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP210, type:R, retreatCost:2) {
         weakness W
         bwAbility "Field Runner", {
-          text "If there is a Stadium card in play, this Pokemon has no Retreat Cost."
+          text "If there is a Stadium card in play, this Pokémon has no Retreat Cost."
           getterA (GET_RETREAT_COST, BEFORE_LAST, self) { h->
             if (bg.stadiumInfoStruct) {
               h.object = 0
@@ -1047,7 +1047,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Counter", {
-          text "30+ damage. This attack does additional damage equal to the amount of damage done to this Pokemon by attacks from your opponent’s Pokemon during your opponent’s last turn."
+          text "30+ damage. This attack does additional damage equal to the amount of damage done to this Pokémon by attacks from your opponent’s Pokémon during your opponent’s last turn."
           energyCost R, C
           onAttack {
             damage 30
@@ -1057,7 +1057,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Max Pyro Ball", {
-          text "170 damage. Your opponent’s Active Pokemon is now Burned."
+          text "170 damage. Your opponent’s Active Pokémon is now Burned."
           energyCost R, R, C
           onAttack {
             damage 170
@@ -1069,7 +1069,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP080, type:W, retreatCost:1) {
         weakness M
         move "Icy Wind", {
-          text "10 damage. Your opponent’s Active Pokemon is now Asleep."
+          text "10 damage. Your opponent’s Active Pokémon is now Asleep."
           energyCost C
           onAttack {
             damage 10
@@ -1088,7 +1088,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Galarian Mr. Mime", hp:HP110, type:W, retreatCost:1) {
         weakness M
         bwAbility "Screen Cleaner", {
-          text "As long as this Pokemon is in play, prevent effects of opponent’s attacks done to all of your Pokemon with Energy attached to them. (This does not remove existing effects.)"
+          text "As long as this Pokémon is in play, prevent effects of opponent’s attacks done to all of your Pokémon with Energy attached to them. (This does not remove existing effects.)"
           delayedA {
             before null, null, Source.ATTACK, {
               def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
@@ -1111,7 +1111,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP030, type:W, retreatCost:1) {
         weakness L
         move "Leap Out", {
-          text "Switch This Pokemon with 1 of your Benched Pokemon."
+          text "Switch This Pokémon with 1 of your Benched Pokémon."
           energyCost C
           attackRequirement {
             assertMyBench()
@@ -1173,7 +1173,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Power Cyclone", {
-          text "110 damage. Move an Energy from this Pokemon to 1 of your Benched Pokemon."
+          text "110 damage. Move an Energy from this Pokémon to 1 of your Benched Pokémon."
           energyCost W, C, C
           onAttack {
             damage 110
@@ -1188,14 +1188,14 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP210, type:W, retreatCost:2) {
         weakness L
         move "Aqua Impact", {
-          text "10+ damage. This attack does 50 more damage for each [C] in your opponent’s Active Pokemon’s Retreat Cost."
+          text "10+ damage. This attack does 50 more damage for each [C] in your opponent’s Active Pokémon’s Retreat Cost."
           energyCost W, C, C
           onAttack {
             damage 10+50*defending.retreatCost
           }
         }
         move "Hypno Splash", {
-          text "150 damage. Your opponent’s Active Pokemon is now Asleep."
+          text "150 damage. Your opponent’s Active Pokémon is now Asleep."
           energyCost W, C, C, C
           onAttack {
             damage 150
@@ -1207,7 +1207,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP060, type:W, retreatCost:1) {
         weakness L
         move "Spiral Attack", {
-          text "Your opponent’s Active Pokemon is now Confused."
+          text "Your opponent’s Active Pokémon is now Confused."
           energyCost C
           onAttack {
             apply CONFUSED
@@ -1218,7 +1218,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Tympole", hp:HP090, type:W, retreatCost:2) {
         weakness L
         move "Twirling Sign", {
-          text "30 damage. Your opponent’s Active Pokemon is now Confused."
+          text "30 damage. Your opponent’s Active Pokémon is now Confused."
           energyCost C, C
           onAttack {
             damage 30
@@ -1230,7 +1230,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Palpitoad", hp:HP170, type:W, retreatCost:3) {
         weakness L
         move "Split Spiral Punch", {
-          text "30 damage. Your opponent’s Active Pokemon is now Confused."
+          text "30 damage. Your opponent’s Active Pokémon is now Confused."
           energyCost W
           onAttack {
             damage 30
@@ -1238,7 +1238,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Resonance", {
-          text "120 damage. If your opponent’s Active Pokemon is Confused, this attack does 120 more damage."
+          text "120 damage. If your opponent’s Active Pokémon is Confused, this attack does 120 more damage."
           energyCost W, C, C, C
           onAttack {
             damage 120
@@ -1250,7 +1250,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP080, type:W, retreatCost:2) {
         weakness M
         move "Ice Punch", {
-          text "30 damage. Flip a coin. If heads, your opponent’s Active Pokemon is now Paralyzed."
+          text "30 damage. Flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
           energyCost W, C
           onAttack {
             damage 30
@@ -1262,7 +1262,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Galarian Darumaka", hp:HP140, type:W, retreatCost:3) {
         weakness M
         move "Blizzard", {
-          text "80 damage. This attack does 10 damage to each of your opponent’s Benched Pokemon. (Don’t apply Weakness and Resistance for Benched Pokemon.)"
+          text "80 damage. This attack does 10 damage to each of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W, C, C
           onAttack {
             damage 80
@@ -1272,7 +1272,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Crushing Headbutt", {
-          text "170 damage. This Pokemon can’t use Crushed Ice Head during your next turn."
+          text "170 damage. This Pokémon can’t use Crushed Ice Head during your next turn."
           energyCost W, W, C, C
           onAttack {
             damage 170
@@ -1284,7 +1284,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP200, type:W, retreatCost:2) {
         weakness L
         move "Snipe Shot", {
-          text "This attack does 40 damage to 1 of your opponent’s Pokemon. (Don’t apply Weakness or Resistance for Benched Pokemon.)"
+          text "This attack does 40 damage to 1 of your opponent’s Pokémon. (Don’t apply Weakness or Resistance for Benched Pokémon.)"
           energyCost W
           onAttack {
             damage 40, opp.all.select()
@@ -1318,7 +1318,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Max Bullet", {
-          text "160 damage. This attack does 60 damage to 1 of your opponent’s Benched Pokemon. (Don’t apply Weakness and Resistance for Benched Pokemon.)"
+          text "160 damage. This attack does 60 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W, W, C
           onAttack {
             damage 160
@@ -1333,7 +1333,7 @@ public enum RebelClash implements LogicCardInfo {
         weakness L
         resistance F, MINUS30
         move "Dive", {
-          text "20 damage. Flip a coin. If heads, prevent all effects of attacks, including damage, done to this Pokemon during your opponent’s next turn."
+          text "20 damage. Flip a coin. If heads, prevent all effects of attacks, including damage, done to this Pokémon during your opponent’s next turn."
           energyCost W
           onAttack {
             damage 20
@@ -1341,7 +1341,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Hydro Pump", {
-          text "50+ damage. This attack does 20 more damage for each [W] Energy attached to this Pokemon."
+          text "50+ damage. This attack does 20 more damage for each [W] Energy attached to this Pokémon."
           energyCost C, C, C
           onAttack {
             damage 50+20*self.cards.energyCount(W)
@@ -1385,7 +1385,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP120, type:W, retreatCost:2) {
         weakness M
         bwAbility "Ice Face", {
-          text "If this Pokemon’s HP is at max, any damage done to it by opponent’s attacks is reduced by 60."
+          text "If this Pokémon’s HP is at max, any damage done to it by opponent’s attacks is reduced by 60."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               if (ef.attacker.owner != self.owner) {
@@ -1400,7 +1400,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Blizzard", {
-          text "70 damage. This attack does 10 damage to each of your opponent’s Benched Pokemon. (Don’t apply Weakness and Resistance for Benched Pokemon.)"
+          text "70 damage. This attack does 10 damage to each of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W, C, C
           onAttack {
             damage 70
@@ -1414,7 +1414,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP210, type:W, retreatCost:2) {
         weakness M
         bwAbility "Cold Absorption", {
-          text "Whenever you attach a [W] Energy card from your hand to this Pokemon during your turn, heal 30 damage from it."
+          text "Whenever you attach a [W] Energy card from your hand to this Pokémon during your turn, heal 30 damage from it."
           delayedA {
             before ATTACH_ENERGY, {
               if (ef.reason == PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(W) && bg.currentTurn == self.owner && ef.resolvedTarget == self) {
@@ -1425,7 +1425,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Blizzard", {
-          text "120 damage. This attack also does 10 damage to each of your opponent's Benched Pokemon. (Don't apply Weakness and Resistance for Benched Pokemon.)"
+          text "120 damage. This attack also does 10 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W, W, C
           onAttack {
             damage 120
@@ -1453,7 +1453,7 @@ public enum RebelClash implements LogicCardInfo {
           text "Search your deck for up to 3 Energy cards, reveal them, and put them in your hand. Then, shuffle your deck."
           energyCost C
           attackRequirement {
-            assert my.deck : "Your deck is empty."
+            assert my.deck : "Your deck is empty!."
           }
           onAttack {
             deck.search(min: 0, max: 3, cardTypeFilter(ENERGY)).moveTo(hand)
@@ -1490,7 +1490,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Electabuzz", hp:HP140, type:L, retreatCost:3) {
         weakness F
         move "Thunder Shock", {
-          text "50 damage. Flip a coin. If heads, your opponent’s Active Pokemon is now Paralyzed."
+          text "50 damage. Flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
           energyCost L, C
           onAttack {
             damage 50
@@ -1498,7 +1498,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Electrified Bolt", {
-          text "90 damage. If this Pokemon has a Special Energy card attached to it, this attack does 90 more damage."
+          text "90 damage. If this Pokémon has a Special Energy card attached to it, this attack does 90 more damage."
           energyCost L, L, C
           onAttack {
             damage 90
@@ -1549,7 +1549,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Luxio", hp:HP160, type:L, retreatCost:1) {
         weakness F
         move "Raid", {
-          text "60 damage. If this Pokemon evolved from Luxio during your turn, this attack does 100 more damage."
+          text "60 damage. If this Pokémon evolved from Luxio during your turn, this attack does 100 more damage."
           energyCost L
           onAttack {
             damage 60
@@ -1571,7 +1571,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP070, type:L, retreatCost:1) {
         weakness F
         move "Thunder Jolt", {
-          text "30 damage. This Pokemon does 10 damage to itself."
+          text "30 damage. This Pokémon does 10 damage to itself."
           energyCost L
           onAttack {
             damage 30
@@ -1583,7 +1583,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Helioptile", hp:HP110, type:L, retreatCost:1) {
         weakness F
         move "Eerie Impulse", {
-          text "Flip a coin. If heads, discard an Energy from 1 of your opponent’s Pokemon."
+          text "Flip a coin. If heads, discard an Energy from 1 of your opponent’s Pokémon."
           energyCost L
           attackRequirement {
             assertOppAll(info: "with Energy attached to them", {it.cards.energyCount(C)})
@@ -1597,7 +1597,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Thunder", {
-          text "120 damage. This Pokemon does 30 damage to itself."
+          text "120 damage. This Pokémon does 30 damage to itself."
           energyCost L, C
           onAttack {
             damage 120
@@ -1609,10 +1609,10 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Grubbin", hp:HP090, type:L, retreatCost:2) {
         weakness F
         move "Charge", {
-          text "Search your deck for up to 2 [L] Energy cards and attach them to this Pokemon. Then, shuffle your deck."
+          text "Search your deck for up to 2 [L] Energy cards and attach them to this Pokémon. Then, shuffle your deck."
           energyCost C
           attackRequirement {
-            assert my.deck : "Your deck is empty."
+            assert my.deck : "Your deck is empty!."
           }
           onAttack {
             attachEnergyFrom(basic: true, max: 2, type: L, my.deck, self)
@@ -1631,7 +1631,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Charjabug", hp:HP150, type:L, retreatCost:2) {
         weakness F
         move "Powerful Storm", {
-          text "60+ damage. This attack does 20 more damage times the amount of Energy attached to all of your Pokemon."
+          text "60+ damage. This attack does 20 more damage times the amount of Energy attached to all of your Pokémon."
           energyCost L, C, C
           onAttack {
             damage 60
@@ -1639,7 +1639,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Thunder Jolt Beam", {
-          text "170 damage. This Pokemon does 30 damage to itself."
+          text "170 damage. This Pokémon does 30 damage to itself."
           energyCost L, C, C, C
           onAttack {
             damage 170
@@ -1651,7 +1651,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP200, type:L, retreatCost:2) {
         weakness F
         move "Electrify", {
-          text "Search your deck for up to 2 [L] Energy and attach them to your Benched Pokemon in any way you like. Then, shuffle your deck."
+          text "Search your deck for up to 2 [L] Energy and attach them to your Benched Pokémon in any way you like. Then, shuffle your deck."
           energyCost L
           attackRequirement {
             assertMyBench()
@@ -1663,7 +1663,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Bolt Storm", {
-          text "10+ damage. This attack does 30 more damage for each [L] Energy attached to your Pokemon in play."
+          text "10+ damage. This attack does 30 more damage for each [L] Energy attached to your Pokémon in play."
           energyCost L, C
           onAttack {
             damage 10
@@ -1675,7 +1675,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP070, type:L, retreatCost:2) {
         weakness F
         move "Tight Jaw", {
-          text "10 damage. Flip a coin. If heads, your opponent’s Active Pokemon is now Paralyzed."
+          text "10 damage. Flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
           energyCost L
           onAttack {
             damage 10
@@ -1687,7 +1687,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Toxel", hp:HP130, type:L, retreatCost:2) {
         weakness F
         move "Poison Shout", {
-          text "This attack does 20 damage to each of your opponent’s Pokemon. Your opponent’s Active Pokemon is now Poisoned. (Don’t apply Weakness and Resistance for Benched Pokemon.)"
+          text "This attack does 20 damage to each of your opponent’s Pokémon. Your opponent’s Active Pokémon is now Poisoned. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
           energyCost L
           onAttack {
             opp.all.each {
@@ -1708,7 +1708,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP210, type:L, retreatCost:2) {
         weakness F
         move "Poison Jab", {
-          text "20 damage. Your opponent’s Active Pokemon is now Poisoned."
+          text "20 damage. Your opponent’s Active Pokémon is now Poisoned."
           energyCost L
           onAttack {
             damage 20
@@ -1716,7 +1716,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Electric Riot", {
-          text "90+ damage. This attack does 90 more damage if your opponent’s Active Pokemon is Poisoned."
+          text "90+ damage. This attack does 90 more damage if your opponent’s Active Pokémon is Poisoned."
           energyCost L, L, C
           onAttack {
             damage 90
@@ -1728,7 +1728,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Toxtricity V", hp:HP320, type:L, retreatCost:2) {
         weakness F
         move "G-Max Riot", {
-          text "160+ damage. This attack does 80 more damage if your opponent’s Active Pokemon is Poisoned."
+          text "160+ damage. This attack does 80 more damage if your opponent’s Active Pokémon is Poisoned."
           energyCost L, L, C
           onAttack {
             damage 160
@@ -1740,7 +1740,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP170, type:L, retreatCost:2) {
         weakness F
         bwAbility "Counterattack Kerzap", {
-          text "If this Pokemon is your Active Pokemon and is damaged by an opponent’s attack, flip 3 coins. For each heads, put 3 damage counters on the Attacking Pokemon."
+          text "If this Pokémon is your Active Pokémon and is damaged by an opponent’s attack, flip 3 coins. For each heads, put 3 damage counters on the Attacking Pokémon."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               if (ef.attacker.owner != self.owner) {
@@ -1768,7 +1768,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP080, type:L, retreatCost:1) {
         weakness F
         move "Torment", {
-          text "20 damage. Choose 1 of your opponent’s Active Pokemon’s attacks. The Defending Pokemon can’t use that attack during your opponent’s next turn."
+          text "20 damage. Choose 1 of your opponent’s Active Pokémon’s attacks. The Defending Pokémon can’t use that attack during your opponent’s next turn."
           energyCost C
           onAttack {
             damage 20
@@ -1778,7 +1778,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Spark", {
-          text "50 damage. This attack does 20 damage to 1 of your opponent’s Benched Pokemon. (Don’t apply Weakness and Resistance for Benched Pokemon.)"
+          text "50 damage. This attack does 20 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
           energyCost L, C
           onAttack {
             damage 50
@@ -1792,7 +1792,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness M
         move "Shining Fingers", {
-          text "Your opponent’s Active Pokemon is now Asleep."
+          text "Your opponent’s Active Pokémon is now Asleep."
           energyCost C
           onAttack {
             apply ASLEEP
@@ -1845,7 +1845,7 @@ public enum RebelClash implements LogicCardInfo {
         weakness D
         resistance F, MINUS30
         move "Energy Warp", {
-          text "Move an Energy from 1 of your opponent’s Benched Pokemon to their Active Pokemon."
+          text "Move an Energy from 1 of your opponent’s Benched Pokémon to their Active Pokémon."
           energyCost C
           attackRequirement {
             assertOppBench(info: "with Energy attached to them", {it.cards.filterByType(ENERGY)})
@@ -1860,7 +1860,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Psychic", {
-          text "10+ damage. This attack does 30 more damage for each Energy attached to the opponent’s Active Pokemon."
+          text "10+ damage. This attack does 30 more damage for each Energy attached to the opponent’s Active Pokémon."
           energyCost P
           onAttack {
             damage 10+30*opp.active.cards.filterByType(ENERGY).size()
@@ -1872,7 +1872,7 @@ public enum RebelClash implements LogicCardInfo {
         weakness D
         resistance F, MINUS30
         move "Cursed Drop", {
-          text "Put 3 damage counters on your opponent’s Pokemon in any way you like."
+          text "Put 3 damage counters on your opponent’s Pokémon in any way you like."
           energyCost P
           onAttack {
             putDamageCountersOnOpponentsPokemon(3)
@@ -1884,7 +1884,7 @@ public enum RebelClash implements LogicCardInfo {
         weakness D
         resistance F, MINUS30
         bwAbility "Perish Body", {
-          text "If this Pokemon is your Active Pokemon and is Knocked Out by damage from an opponent’s attack, flip a coin. If heads, the Attacking Pokemon is Knocked Out."
+          text "If this Pokémon is your Active Pokémon and is Knocked Out by damage from an opponent’s attack, flip a coin. If heads, the Attacking Pokémon is Knocked Out."
           delayedA (priority: LAST) {
             before (KNOCKOUT, self) {
               if ((ef as Knockout).byDamageFromAttack && self.active && bg.currentTurn==self.owner.opposite && self.owner.opposite.pbg.active != null && self.owner.opposite.pbg.active.inPlay) {
@@ -1898,7 +1898,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Corner", {
-          text "60 damage. The Defending Pokemon can’t retreat during your opponent’s next turn."
+          text "60 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
           energyCost P, C
           onAttack {
             damage 60
@@ -1911,7 +1911,7 @@ public enum RebelClash implements LogicCardInfo {
         weakness L
         resistance F, MINUS30
         bwAbility "Counterattack", {
-          text "If this Pokemon is your Active Pokemon and is damaged by an opponent’s attack, place 3 damage counters on the attacking Pokemon."
+          text "If this Pokémon is your Active Pokémon and is damaged by an opponent’s attack, place 3 damage counters on the attacking Pokémon."
           delayedA (priority: LAST) {
             before APPLY_ATTACK_DAMAGES, {
               if (bg.currentTurn == self.owner.opposite && bg.dm().find({ it.to==self && it.dmg.value }) && self.active) {
@@ -1922,7 +1922,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Psychic Assault", {
-          text "Does 30 damage plus 10 damage for each damage counter on the opponent’s Active Pokemon."
+          text "Does 30 damage plus 10 damage for each damage counter on the opponent’s Active Pokémon."
           energyCost P, C
           onAttack {
             damage 30+10*opp.active.numberOfDamageCounters
@@ -1934,7 +1934,7 @@ public enum RebelClash implements LogicCardInfo {
         weakness D
         resistance F, MINUS30
         move "Sneaky Placement", {
-          text "Put a damage counter on 1 of your opponent’s Pokemon."
+          text "Put a damage counter on 1 of your opponent’s Pokémon."
           energyCost P
           onAttack {
             directDamage 10, opp.all.select()
@@ -1946,7 +1946,7 @@ public enum RebelClash implements LogicCardInfo {
         weakness D
         resistance F, MINUS30
         move "Sand Sink", {
-          text "Discard a card from the top of your opponent’s deck. If this Pokemon has Cursed Shovel attached to it, discard 2 more cards."
+          text "Discard a card from the top of your opponent’s deck. If this Pokémon has Cursed Shovel attached to it, discard 2 more cards."
           energyCost C, C
           attackRequirement {
             assert opp.deck : "Opponent's deck is empty."
@@ -1959,7 +1959,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Super Absorption", {
-          text "90 damage. Heal 30 damage from this Pokemon."
+          text "90 damage. Heal 30 damage from this Pokémon."
           energyCost P, C, C
           onAttack {
             damage 90
@@ -1972,10 +1972,10 @@ public enum RebelClash implements LogicCardInfo {
         weakness D
         resistance F, MINUS30
         move "Find a Friend", {
-          text "Search your deck for a Pokemon, reveal it, and put it into your hand. Then, shuffle your deck."
+          text "Search your deck for a Pokémon, reveal it, and put it into your hand. Then, shuffle your deck."
           energyCost C
           attackRequirement {
-            assert my.deck : "Your deck is empty."
+            assert my.deck : "Your deck is empty!."
           }
           onAttack {
             my.deck.search(max: 1, cardTypeFilter(POKEMON)).moveTo(my.hand)
@@ -1995,7 +1995,7 @@ public enum RebelClash implements LogicCardInfo {
         weakness D
         resistance F, MINUS30
         move "Calm Mind", {
-          text "Heal 30 damage from this Pokemon."
+          text "Heal 30 damage from this Pokémon."
           energyCost C
           onAttack {
             heal 30, self
@@ -2041,7 +2041,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Dripping Grudge", {
-          text "Put damage counters on your opponent’s Active Pokemon equal to the number of Pokemon in your discard pile."
+          text "Put damage counters on your opponent’s Active Pokémon equal to the number of Pokémon in your discard pile."
           energyCost P
           attackRequirement {
             assert my.discard.filterByType(POKEMON) : "There are no Pokémon in your discard pile."
@@ -2055,7 +2055,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness M
         move "Aromatherapy", {
-          text "Heal 10 damage from each of your Pokemon."
+          text "Heal 10 damage from each of your Pokémon."
           energyCost C
           onAttack {
             my.all.each {
@@ -2075,7 +2075,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Milcery", hp:HP110, type:P, retreatCost:1) {
         weakness M
         move "Decorate", {
-          text "Attach any number of Basic Energy from your hand to your Pokemon in any way you like."
+          text "Attach any number of Basic Energy from your hand to your Pokémon in any way you like."
           energyCost C
           attackRequirement {
             assert my.hand.filterByType(BASIC_ENERGY) : "There is no basic Energy in your hand."
@@ -2090,7 +2090,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Draining Kiss", {
-          text "50 damage. Heal 30 damage from this Pokemon."
+          text "50 damage. Heal 30 damage from this Pokémon."
           energyCost P, C
           onAttack {
             damage 50
@@ -2103,7 +2103,7 @@ public enum RebelClash implements LogicCardInfo {
         weakness D
         resistance F, MINUS30
         move "Replenish Time", {
-          text "Heal 30 damage from to each of your Pokemon."
+          text "Heal 30 damage from to each of your Pokémon."
           energyCost C
           onAttack {
             my.all.each {
@@ -2112,7 +2112,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Psybeam", {
-          text "30 damage. Your opponent’s Active Pokemon is now Confused."
+          text "30 damage. Your opponent’s Active Pokémon is now Confused."
           energyCost P, C
           onAttack {
             damage 30
@@ -2141,7 +2141,7 @@ public enum RebelClash implements LogicCardInfo {
           text "Search your deck for a Dreepy and put it on your Bench. Then, shuffle your deck."
           energyCost C
           attackRequirement {
-            assert my.deck : "Your deck is empty."
+            assert my.deck : "Your deck is empty!."
           }
           onAttack {
             deck.search (count: 1, {it.name == "Dreepy"}).each {
@@ -2163,7 +2163,7 @@ public enum RebelClash implements LogicCardInfo {
         weakness D
         resistance F, MINUS30
         bwAbility "Infiltrator", {
-          text "If this Pokemon would be damaged by an attack, flip a coin. If heads, prevent all damage done to this Pokemon."
+          text "If this Pokémon would be damaged by an attack, flip a coin. If heads, prevent all damage done to this Pokémon."
           delayedA (priority: BEFORE_LAST) {
             before APPLY_ATTACK_DAMAGES, {
               def entry=bg.dm().find({it.to==self && it.dmg.value && it.notNoEffect})
@@ -2176,7 +2176,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Phantom Force", {
-          text "120 damage. Put 3 damage counters on your opponent’s Benched Pokemon in any way you like."
+          text "120 damage. Put 3 damage counters on your opponent’s Benched Pokémon in any way you like."
           energyCost P, P
           onAttack {
             damage 120
@@ -2198,7 +2198,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Jet Assault", {
-          text "60+ damage. If this Pokemon was on your Bench and became your Active Pokemon during this turn, this attack does 80 more damage."
+          text "60+ damage. If this Pokémon was on your Bench and became your Active Pokémon during this turn, this attack does 80 more damage."
           energyCost P, P
           onAttack {
             damage 60
@@ -2213,14 +2213,14 @@ public enum RebelClash implements LogicCardInfo {
         weakness D
         resistance F, MINUS30
         move "Shred", {
-          text "60 damage. This attack’s damage isn’t affected by effects on your opponents Active Pokemon."
+          text "60 damage. This attack’s damage isn’t affected by effects on your opponents Active Pokémon."
           energyCost P
           onAttack {
             shredDamage 60
           }
         }
         move "Max Phantom", {
-          text "130 damage. Put 5 damage counters on your opponent’s Benched Pokemon in any way you like."
+          text "130 damage. Put 5 damage counters on your opponent’s Benched Pokémon in any way you like."
           energyCost P, P
           onAttack {
             damage 130
@@ -2260,12 +2260,12 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Meteor Assault", {
-          text "180 damage. This Pokemon can’t use Meteor Assault again as long as it is the Active Pokemon."
+          text "180 damage. This Pokémon can’t use Meteor Assault again as long as it is the Active Pokémon."
           energyCost F, C, C
           onAttack {
             damage 180
             afterDamage {
-              bc "Meteor Assault cannot be used until this Pokemon leaves the Active Spot"
+              bc "Meteor Assault cannot be used until this Pokémon leaves the Active Spot"
               delayed (priority: BEFORE_LAST) {
                 before CHECK_ATTACK_REQUIREMENTS, {
                   if (ef.attacker == self && ef.move.name == "Meteor Assault") {
@@ -2304,7 +2304,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP070, type:F, retreatCost:1) {
         weakness P
         move "Yoga Shock", {
-          text "10 damage. Flip a coin. If heads, your opponent’s Active Pokemon is now Paralyzed."
+          text "10 damage. Flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
           energyCost C
           onAttack {
             damage 10
@@ -2323,7 +2323,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Psychic", {
-          text "60+ damage. This attack does 20 more damage for each Energy attached to your opponent’s Active Pokemon."
+          text "60+ damage. This attack does 20 more damage for each Energy attached to your opponent’s Active Pokémon."
           energyCost C, C, C
           onAttack {
             damage 60+20*opp.active.cards.filterByType(ENERGY).size()
@@ -2345,7 +2345,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Barboach", hp:HP140, type:F, retreatCost:3) {
         weakness G
         bwAbility "Submerge", {
-          text "As long as this Pokemon is on your Bench, it takes no damage from attacks."
+          text "As long as this Pokémon is on your Bench, it takes no damage from attacks."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each{
@@ -2358,7 +2358,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Earthquake", {
-          text "140 damage. This attack does 20 damage to each of your Benched Pokemon. (Don’t apply Weakness and Resistance for Benched Pokemon.)"
+          text "140 damage. This attack does 20 damage to each of your Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
           energyCost F, F
           onAttack {
             damage 140
@@ -2372,7 +2372,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP070, type:F, retreatCost:2) {
         weakness G
         move "Reckless Charge", {
-          text "50 damage. This Pokemon does 30 damage to itself."
+          text "50 damage. This Pokémon does 30 damage to itself."
           energyCost C, C
           onAttack {
             damage 50
@@ -2384,7 +2384,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Galarian Yamask", hp:HP100, type:F, retreatCost:2) {
         weakness G
         move "Spreading Spite", {
-          text "For each damage counter on this Galarian Runerigus, put 2 damage counters on your opponent's Pokemon in any way you like."
+          text "For each damage counter on this Galarian Runerigus, put 2 damage counters on your opponent's Pokémon in any way you like."
           energyCost C, C
           attackRequirement{
             assert self.numberOfDamageCounters : "$self has no damage counters on itself."
@@ -2396,7 +2396,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Mad Hammer", {
-          text "120 damage. This Pokemon does 30 damage to itself."
+          text "120 damage. This Pokémon does 30 damage to itself."
           energyCost F, C, C
           onAttack {
             damage 120
@@ -2470,7 +2470,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Carkoal", hp:HP160, type:F, retreatCost:4) {
         weakness G
         bwAbility "Tar Generator", {
-          text "Once during your turn, you may search your discard pile for up to 1 [R] Energy and 1 [F] Energy and attach them to your Pokemon in any way you like."
+          text "Once during your turn, you may search your discard pile for up to 1 [R] Energy and 1 [F] Energy and attach them to your Pokémon in any way you like."
           actionA {
             checkLastTurn()
             assert (my.discard.filterByEnergyType(R) || my.discard.filterByEnergyType(F)) : "No [R] or [F] Energy cards in your discard pile."
@@ -2501,7 +2501,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP220, type:F, retreatCost:3) {
         weakness G
         move "Sand Eater", {
-          text "30 damage. Attach a [F] Energy from your discard pile to this Pokemon."
+          text "30 damage. Attach a [F] Energy from your discard pile to this Pokémon."
           energyCost F
           onAttack {
             damage 30
@@ -2511,7 +2511,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Sand Breath", {
-          text "220 damage. Discard 2 Energy from this Pokemon."
+          text "220 damage. Discard 2 Energy from this Pokémon."
           energyCost F, F, C
           onAttack {
             damage 220
@@ -2523,12 +2523,12 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP090, type:F, retreatCost:1) {
         weakness P
         move "Call for Family", {
-          text "Search your deck for up to 2 Basic Pokemon and put them on your Bench. Then, shuffle your deck."
+          text "Search your deck for up to 2 Basic Pokémon and put them on your Bench. Then, shuffle your deck."
           energyCost C
           callForFamily(basic:true, 2, delegate)
         }
         move "Team Attack", {
-          text "This attack does 30 damage for each Pokemon on your Bench with 'Falinks' in it's name."
+          text "This attack does 30 damage for each Pokémon on your Bench with 'Falinks' in it's name."
           energyCost C, C
           onAttack {
             damage 30*my.bench.findAll { it.name.contains "Falinks" }.size()
@@ -2539,7 +2539,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP160, type:F, retreatCost:2) {
         weakness P
         bwAbility "Iron Defense Formation", {
-          text "As long as this Pokemon is in play, damage done to any of your Pokemon with Falinks in its name by your opponent’s atacks is reduced by 20."
+          text "As long as this Pokémon is in play, damage done to any of your Pokémon with Falinks in its name by your opponent’s atacks is reduced by 20."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
@@ -2552,7 +2552,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Giga Impact", {
-          text "210 damage. This Pokemon can’t attack during your next turn."
+          text "210 damage. This Pokémon can’t attack during your next turn."
           energyCost F, F, C
           onAttack {
             damage 210
@@ -2571,7 +2571,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Power Press", {
-          text "120+ damage. If you have 1 more Energy attached to this Pokemon (but not used to pay for this attack), this attack does 60 more damage."
+          text "120+ damage. If you have 1 more Energy attached to this Pokémon (but not used to pay for this attack), this attack does 60 more damage."
           energyCost F, C, C, C
           onAttack {
             damage 120
@@ -2596,7 +2596,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Koffing", hp:HP130, type:D, retreatCost:3) {
         weakness F
         bwAbility "Neutralizing Gas", {
-          text "As long as this Pokemon is in the Active Spot, your opponent's Pokemon in play have no Abilities, except for Neutralizing Gas."
+          text "As long as this Pokémon is in the Active Spot, your opponent's Pokémon in play have no Abilities, except for Neutralizing Gas."
           getterA IS_ABILITY_BLOCKED, { Holder h ->
             if (self.active && h.effect.ability.name != "Neutralizing Gas" && h.effect.ability instanceof BwAbility && h.effect.target.owner != self.owner) {
               targeted(h.effect.target, SRC_ABILITY) {
@@ -2612,7 +2612,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Severe Poison", {
-          text "Your opponent's Active Pokemon is now Poisoned. Put 4 damage counters instead of 1 on that Pokemon during Pokemon Checkup."
+          text "Your opponent's Active Pokémon is now Poisoned. Put 4 damage counters instead of 1 on that Pokémon during Pokémon Checkup."
           energyCost D
           onAttack {
             apply POISONED
@@ -2624,7 +2624,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP070, type:D, retreatCost:2) {
         weakness F
         move "Poison Gas", {
-          text "10 damage. Your opponent’s Active Pokemon is now Poisoned."
+          text "10 damage. Your opponent’s Active Pokémon is now Poisoned."
           energyCost C, C
           onAttack {
             damage 10
@@ -2643,7 +2643,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Poison Ring", {
-          text "80 damage. Your opponent’s Active Pokemon is now Poisoned. The Defending Pokemon can’t retreat during your opponent’s next turn."
+          text "80 damage. Your opponent’s Active Pokémon is now Poisoned. The Defending Pokémon can’t retreat during your opponent’s next turn."
           energyCost D, C, C
           onAttack {
             damage 80
@@ -2664,7 +2664,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Dripping Grudge", {
-          text "Put damage counters on your opponent’s Active Pokemon equal to the number of Pokemon in your discard pile."
+          text "Put damage counters on your opponent’s Active Pokémon equal to the number of Pokémon in your discard pile."
           energyCost D, C
           attackRequirement {
             assert my.discard.filterByType(POKEMON) : "There are no Pokémon in your discard pile."
@@ -2678,7 +2678,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP060, type:D, retreatCost:1) {
         weakness F
         move "Venoshock", {
-          text "20+ damage. If your opponent’s Active Pokemon is Poisoned, this attack does 50 more damage."
+          text "20+ damage. If your opponent’s Active Pokémon is Poisoned, this attack does 50 more damage."
           energyCost C, C
           onAttack {
             damage 20
@@ -2690,7 +2690,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Trubbish", hp:HP120, type:D, retreatCost:2) {
         weakness F
         bwAbility "Poisonous Puddle", {
-          text "Once during your turn, if there is a Stadium in play, you may leave your opponents Active Pokemon Poisoned."
+          text "Once during your turn, if there is a Stadium in play, you may leave your opponents Active Pokémon Poisoned."
           actionA {
             assert bg.stadiumInfoStruct : "There is no Stadium in play."
             checkLastTurn()
@@ -2712,7 +2712,7 @@ public enum RebelClash implements LogicCardInfo {
         weakness L
         resistance F, MINUS30
         move "Pluck", {
-          text "10 damage. Before doing damage, discard all Pokemon Tools attached to your opponent’s Active Pokemon."
+          text "10 damage. Before doing damage, discard all Pokémon Tools attached to your opponent’s Active Pokémon."
           energyCost C
           onAttack {
             targeted(defending) {
@@ -2734,7 +2734,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Blindside", {
-          text "This attack does 100 damage to 1 of your opponent’s Pokemon that already has damage counters on it. (Don’t apply Weakness and Resistance for Benched Pokemon.)"
+          text "This attack does 100 damage to 1 of your opponent’s Pokémon that already has damage counters on it. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
           energyCost D, D
           attackRequirement {
             assertOppAll(info: "with damage on them", {it.numberOfDamageCounters})
@@ -2748,7 +2748,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP210, type:D, retreatCost:2) {
         weakness G
         move "Drag Off", {
-          text "Choose 1 of your opponent’s Benched Pokemon and switch it with their Active Pokemon. This attack does 30 damage to the new Active Pokemon."
+          text "Choose 1 of your opponent’s Benched Pokémon and switch it with their Active Pokémon. This attack does 30 damage to the new Active Pokémon."
           energyCost D, C
           attackRequirement {
             assertOppBench()
@@ -2759,7 +2759,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Brain Shake", {
-          text "130 damage. Your opponent’s Active Pokemon is now Confused."
+          text "130 damage. Your opponent’s Active Pokémon is now Confused."
           energyCost D, D, C
           onAttack {
             damage 130
@@ -2813,7 +2813,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "False Surrender", {
-          text "60 damage. This damage isn’t affected by any effects on your opponent’s Active Pokemon."
+          text "60 damage. This damage isn’t affected by any effects on your opponent’s Active Pokémon."
           energyCost D, C, C
           onAttack {
             swiftDamage(60, defending)
@@ -2824,7 +2824,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Morgrem", hp:HP170, type:D, retreatCost:3) {
         weakness G
         bwAbility "Dark Oath", {
-          text "As long as this Pokemon is your Active Pokemon, your opponent’s Active Pokemon pays [C] more to use its attacks."
+          text "As long as this Pokémon is your Active Pokémon, your opponent’s Active Pokémon pays [C] more to use its attacks."
           getterA GET_MOVE_LIST, { h ->
             if (self.active && h.effect.target.active && h.effect.target.owner == self.owner.opposite) {
               def list = []
@@ -2838,7 +2838,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Energy Press", {
-          text "100+ damage. This attack does 30 more damage for each Energy attached to your opponent’s Active Pokemon."
+          text "100+ damage. This attack does 30 more damage for each Energy attached to your opponent’s Active Pokémon."
           energyCost D, C, C
           onAttack {
             damage 100+30*opp.active.cards.energyCount(C)
@@ -2854,7 +2854,7 @@ public enum RebelClash implements LogicCardInfo {
           actionA {
             checkLastTurn()
             powerUsed()
-            assert my.deck : "Your deck is empty."
+            assert my.deck : "Your deck is empty!."
             assert my.hand.size() >= 2 : "You need 2 or more cards in your hand."
 
             my.hand.select(count: 2, "Choose 2 cards to discard.").discard()
@@ -2896,7 +2896,7 @@ public enum RebelClash implements LogicCardInfo {
         weakness R
         resistance G, MINUS30
         move "Raid", {
-          text "30+ damage. If this Pokemon evolved from Scyther during your turn, this attack does 90 more damage."
+          text "30+ damage. If this Pokémon evolved from Scyther during your turn, this attack does 90 more damage."
           energyCost M
           onAttack {
             damage 30
@@ -2907,7 +2907,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Guard Claw", {
-          text "90 damage. During your opponent’s next turn, any damage done to this Pokemon by attacks is reduced by 30."
+          text "90 damage. During your opponent’s next turn, any damage done to this Pokémon by attacks is reduced by 30."
           energyCost M, C, C
           onAttack {
             damage 90
@@ -2946,7 +2946,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Gyro Ball", {
-          text "70 damage. Switch this Pokemon with 1 of your Benched Pokemon. If you do, your opponent switches their Active Pokemon with 1 of their Benched Pokemon."
+          text "70 damage. Switch this Pokémon with 1 of your Benched Pokémon. If you do, your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
           energyCost M, C, C
           onAttack {
             def pcs = opp.active
@@ -2968,7 +2968,7 @@ public enum RebelClash implements LogicCardInfo {
         weakness R
         resistance G, MINUS30
         move "Gravitational Drop", {
-          text "10+ damage. This attack does 30 more damage for each [C] in your opponent’s Active Pokemon’s Retreat Cost."
+          text "10+ damage. This attack does 30 more damage for each [C] in your opponent’s Active Pokémon’s Retreat Cost."
           energyCost M
           onAttack {
             damage 10+30*defending.retreatCost
@@ -2987,7 +2987,7 @@ public enum RebelClash implements LogicCardInfo {
         weakness R
         resistance G, MINUS30
         move "Gathering Food", {
-          text "For each Energy attached to this Pokemon, search your deck for a Trainer card, reveal it, and put it into your hand. Then, shuffle your deck."
+          text "For each Energy attached to this Pokémon, search your deck for a Trainer card, reveal it, and put it into your hand. Then, shuffle your deck."
           energyCost C
           onAttack {
             def energyCount = self.cards.energyCount(C)
@@ -3039,7 +3039,7 @@ public enum RebelClash implements LogicCardInfo {
         weakness R
         resistance G, MINUS30
         bwAbility "Big Shield", {
-          text "As long as this Pokemon is in play, any damage done to your Pokemon by opponent’s attacks is reduced by 30. You can’t use more than 1 Big Shield Ability."
+          text "As long as this Pokémon is in play, any damage done to your Pokémon by opponent’s attacks is reduced by 30. You can’t use more than 1 Big Shield Ability."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               if(bg.em().retrieveObject("Big_Shield") != bg.turnCount) {
@@ -3067,7 +3067,7 @@ public enum RebelClash implements LogicCardInfo {
         weakness R
         resistance G, MINUS30
         move "Adamantine Press", {
-          text "90 damage. During your opponent’s next turn, this Pokemon takes 30 less damage from attacks."
+          text "90 damage. During your opponent’s next turn, this Pokémon takes 30 less damage from attacks."
           energyCost M, M, C
           onAttack {
             damage 90
@@ -3087,7 +3087,7 @@ public enum RebelClash implements LogicCardInfo {
         weakness R
         resistance G, MINUS30
         move "Dangerous Nose", {
-          text "100+ damage. If your opponent’s Active Pokemon is a Basic Pokemon, this attack does 100 more damage."
+          text "100+ damage. If your opponent’s Active Pokémon is a Basic Pokémon, this attack does 100 more damage."
           energyCost M, M, C
           onAttack {
             damage 100
@@ -3109,7 +3109,7 @@ public enum RebelClash implements LogicCardInfo {
         weakness R
         resistance G, MINUS30
         move "Metal Sharpener", {
-          text "30 damage. Attach a [M] Energy from your discard pile to 1 of your Pokemon."
+          text "30 damage. Attach a [M] Energy from your discard pile to 1 of your Pokémon."
           energyCost C
           onAttack {
             damage 30
@@ -3131,7 +3131,7 @@ public enum RebelClash implements LogicCardInfo {
         weakness R
         resistance G, MINUS30
         move "Energy Stream", {
-          text "30 damage. Attach a [M] Energy from your discard pile to this Pokemon."
+          text "30 damage. Attach a [M] Energy from your discard pile to this Pokémon."
           energyCost M, C
           onAttack {
             damage 30
@@ -3141,7 +3141,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Smashing Edge", {
-          text "120 damage. Flip a coin. If tails, discard 2 Energy from this Pokemon"
+          text "120 damage. Flip a coin. If tails, discard 2 Energy from this Pokémon"
           energyCost M, M, C
           onAttack {
             damage 120
@@ -3156,7 +3156,7 @@ public enum RebelClash implements LogicCardInfo {
         weakness R
         resistance G, MINUS30
         move "Guard Press", {
-          text "30 Damage. During your opponent's next turn, this Pokemon takes 20 less damage from attacks (after applying Weakness and Resistance)."
+          text "30 Damage. During your opponent's next turn, this Pokémon takes 20 less damage from attacks (after applying Weakness and Resistance)."
           energyCost M, C
           onAttack {
             damage 30
@@ -3164,7 +3164,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Power Rush", {
-          text "120 damage. Flip a coin. If tails, during your next turn, this Pokemon can't attack."
+          text "120 damage. Flip a coin. If tails, during your next turn, this Pokémon can't attack."
           energyCost M, M, C
           onAttack {
             damage 120
@@ -3185,7 +3185,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Collapse", {
-          text "120 damage. This Pokemon is now Asleep."
+          text "120 damage. This Pokémon is now Asleep."
           energyCost C, C, C
           onAttack {
             damage 120
@@ -3198,7 +3198,7 @@ public enum RebelClash implements LogicCardInfo {
         weakness L
         resistance F, MINUS30
         bwAbility "Lucky Match", {
-          text "When you play this Pokemon from your hand onto your Bench during your turn you may flip a coin. If heads put a Supporter card from your discard pile into your hand."
+          text "When you play this Pokémon from your hand onto your Bench during your turn you may flip a coin. If heads put a Supporter card from your discard pile into your hand."
           onActivate { r->
             if (r==PLAY_FROM_HAND && my.discard.filterByType(SUPPORTER) && confirm("Use Lucky Match?")) {
               powerUsed()
@@ -3221,10 +3221,10 @@ public enum RebelClash implements LogicCardInfo {
         weakness L
         resistance F, MINUS30
         move "Chirp", {
-          text "Search your deck for up to 2 Pokemon with a [F] Resistance, reveal them, and put them into your hand. Then, shuffle your deck."
+          text "Search your deck for up to 2 Pokémon with a [F] Resistance, reveal them, and put them into your hand. Then, shuffle your deck."
           energyCost C
           attackRequirement {
-            assert my.deck : "Your deck is empty."
+            assert my.deck : "Your deck is empty!."
           }
           onAttack {
             my.deck.search (max: 2, {
@@ -3265,7 +3265,7 @@ public enum RebelClash implements LogicCardInfo {
         weakness L
         resistance F, MINUS30
         move "Daunt", {
-          text "50 damage. The attacks of the Defending Pokemon do 50 less damage during your opponent’s next turn."
+          text "50 damage. The attacks of the Defending Pokémon do 50 less damage during your opponent’s next turn."
           energyCost C, C
           onAttack {
             damage 50
@@ -3273,7 +3273,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Air Slash", {
-          text "150 damage. Discard an Energy from this Pokemon."
+          text "150 damage. Discard an Energy from this Pokémon."
           energyCost C, C, C
           onAttack {
             damage 150
@@ -3309,7 +3309,7 @@ public enum RebelClash implements LogicCardInfo {
           text "Discard up to 6 cards from the top of your deck. This attack does 30 damage for each card discarded in this way."
           energyCost C, C, C
           attackRequirement {
-            assert my.deck : "Your deck is empty."
+            assert my.deck : "Your deck is empty!."
           }
           onAttack {
             def n = 0
@@ -3385,7 +3385,7 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         move "Big Throw", {
-          text "Flip a coin. If heads, discard your opponent’s Active Pokemon and all cards attached to it."
+          text "Flip a coin. If heads, discard your opponent’s Active Pokémon and all cards attached to it."
           energyCost C, C, C, C
           onAttack {
             flip {
@@ -3419,10 +3419,10 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Skwovet", hp:HP120, type:C, retreatCost:1) {
         weakness F
         bwAbility "Greedy Tail", {
-          text "Once during your turn, you may search your deck for a Pokemon Tool card, reveal it, and put it into your hand. Then, shuffle your deck."
+          text "Once during your turn, you may search your deck for a Pokémon Tool card, reveal it, and put it into your hand. Then, shuffle your deck."
           actionA {
             checkLastTurn()
-            assert my.deck : "Your deck is empty."
+            assert my.deck : "Your deck is empty!."
             powerUsed()
             my.deck.search(count:1, "Choose a Pokémon Tool card.", cardTypeFilter(POKEMON_TOOL)).moveTo(my.hand)
             shuffleDeck()
@@ -3440,7 +3440,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP210, type:C, retreatCost:2) {
         weakness F
         bwAbility "Soft Wool", {
-          text "Damage done to this Pokemon by attacks is reduced by 30."
+          text "Damage done to this Pokémon by attacks is reduced by 30."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
@@ -3462,7 +3462,7 @@ public enum RebelClash implements LogicCardInfo {
       };
       case BOSS_S_ORDERS_154:
       return supporter (this) {
-        text "Choose 1 of your opponent’s Benched Pokemon and switch it with their Active Pokemon. You may play only 1 Supporter card during your turn (before your attack)."
+        text "Choose 1 of your opponent’s Benched Pokémon and switch it with their Active Pokémon. You may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
           switchYourOpponentsBenchedWithActive(TRAINER_CARD)
         }
@@ -3472,7 +3472,7 @@ public enum RebelClash implements LogicCardInfo {
       };
       case BURNING_SCARF_155:
       return pokemonTool (this) {
-        text "Attach a Pokemon Tool to 1 of your Pokemon that doesn’t already have a Pokemon Tool attached to it. If the [R] Pokemon this card is attached to is your Active Pokemon and is damaged by an opponent’s attack, the Attacking Pokemon is now Burned. You may play as many Item cards as you like during your turn (before your attack)."
+        text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If the [R] Pokémon this card is attached to is your Active Pokémon and is damaged by an opponent’s attack, the Attacking Pokémon is now Burned. You may play as many Item cards as you like during your turn (before your attack)."
         def eff
         onPlay {reason->
           eff = delayed(priority: LAST) {
@@ -3498,12 +3498,12 @@ public enum RebelClash implements LogicCardInfo {
           shuffleDeck()
         }
         playRequirement{
-          assert my.deck : "Your deck is empty."
+          assert my.deck : "Your deck is empty!."
         }
       };
       case CURSED_SHOVEL_157:
       return pokemonTool (this) {
-        text "Attach a Pokemon Tool to 1 of your Pokemon that doesn’t already have a Pokemon Tool attached to it. If the Pokemon this Tool is attached to is Knocked Out by damage from an opponent’s attack, discard the top 2 cards of your opponent’s deck. You may play as many Item cards as you like during your turn (before your attack)."
+        text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If the Pokémon this Tool is attached to is Knocked Out by damage from an opponent’s attack, discard the top 2 cards of your opponent’s deck. You may play as many Item cards as you like during your turn (before your attack)."
         def eff
         onPlay {reason->
           eff = delayed (priority: BEFORE_LAST) {
@@ -3541,14 +3541,14 @@ public enum RebelClash implements LogicCardInfo {
           }
         }
         playRequirement {
-          assert my.deck : "Your deck is empty."
+          assert my.deck : "Your deck is empty!."
         }
       };
       case FULL_HEAL_159:
       return copy(HeartgoldSoulsilver.FULL_HEAL_93, this);
       case GALAR_MINE_160:
       return stadium (this) {
-        text "The Retreat Cost of each Active Pokemon (both yours and your opponent’s) is [C][C] more. This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
+        text "The Retreat Cost of each Active Pokémon (both yours and your opponent’s) is [C][C] more. This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
         def eff
         onPlay {
           eff = getter (GET_RETREAT_COST) { Holder h->
@@ -3633,12 +3633,12 @@ public enum RebelClash implements LogicCardInfo {
           shuffleDeck()
         }
         playRequirement {
-          assert my.deck : "Your deck is empty."
+          assert my.deck : "Your deck is empty!."
         }
       };
       case SONIA_167:
       return supporter (this) {
-        text "Search your deck for up to 2 Basic Pokemon or up to 2 Basic Energy, reveal them, and put them into your hand. Then, shuffle your deck. You may play only 1 Supporter card during your turn (before your attack)."
+        text "Search your deck for up to 2 Basic Pokémon or up to 2 Basic Energy, reveal them, and put them into your hand. Then, shuffle your deck. You may play only 1 Supporter card during your turn (before your attack)."
         onPlay {
           def choice = choose([0,1],["Search deck for up to 2 Basic Pokémon","Search deck for up to 2 Basic Energy"],"What do you want to do?")
           if (choice == 0) {
@@ -3649,12 +3649,12 @@ public enum RebelClash implements LogicCardInfo {
           shuffleDeck()
         }
         playRequirement {
-          assert my.deck : "Your deck is empty."
+          assert my.deck : "Your deck is empty!."
         }
       };
       case TOOL_SCRAPPER_168:
       return itemCard (this) {
-        text "Discard up to 2 Pokemon Tools from either player’s Pokemon. You may play as many Item cards during your turn as you like (before your attack)."
+        text "Discard up to 2 Pokémon Tools from either player’s Pokémon. You may play as many Item cards during your turn as you like (before your attack)."
         onPlay {
           def i = 2
           while (true) {
@@ -3683,7 +3683,7 @@ public enum RebelClash implements LogicCardInfo {
                 break
               }
               if (tar) {
-                def sel = tar.select("Select a Pokémon to discard a Pokemon Tool from (cancel to stop).", false)
+                def sel = tar.select("Select a Pokémon to discard a Pokémon Tool from (cancel to stop).", false)
                 if (sel) {
                   def list = sel.cards.filterByType(POKEMON_TOOL).select("Discard a Pokémon Tool from $sel.")
                   targeted (sel, TRAINER_CARD) {
@@ -3721,12 +3721,12 @@ public enum RebelClash implements LogicCardInfo {
       };
       case TURRFIELD_170:
       return stadium (this) {
-        text "Once during each player’s turn, that player may search their deck for a [G] Evolution Pokemon, reveal it, and put it into their hand. Then, that player shuffles their deck. This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
+        text "Once during each player’s turn, that player may search their deck for a [G] Evolution Pokémon, reveal it, and put it into their hand. Then, that player shuffles their deck. This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
         def lastTurn=0
         def actions=[]
         onPlay {
           actions=action("Stadium: Turffield Stadium") {
-            assert my.deck : "Your deck is empty."
+            assert my.deck : "Your deck is empty!."
             assert lastTurn != bg().turnCount : "Already used this turn."
             bc "Used Turffield Stadium effect."
             lastTurn = bg().turnCount
@@ -3742,7 +3742,7 @@ public enum RebelClash implements LogicCardInfo {
       };
       case CAPTURE_ENERGY_171:
       return specialEnergy (this, [[]]) {
-        text "This card provides [C] Energy only while attached to a Pokemon. When attaching this card from your hand to 1 of your Pokemon, search your deck for a Basic Pokemon and put it on your Bench. Then, shuffle your deck."
+        text "This card provides [C] Energy only while attached to a Pokémon. When attaching this card from your hand to 1 of your Pokémon, search your deck for a Basic Pokémon and put it on your Bench. Then, shuffle your deck."
         onPlay {reason->
           if (reason == PLAY_FROM_HAND && my.deck && my.bench.notFull) {
             my.deck.search (count: 1, { it.cardTypes.is(BASIC) }).each {
@@ -3758,7 +3758,7 @@ public enum RebelClash implements LogicCardInfo {
       };
       case HORROR_PSYCHIC_ENERGY_172:
       return specialEnergy (this, [[]]) {
-        text "This card provides 1 [P] Energy while it’s attached to a Pokemon. When the [P] Pokemon this card is attached to is your Active Pokemon and is damaged by an opponents attack, put 2 damage counters on the Attacking Pokemon."
+        text "This card provides 1 [P] Energy while it’s attached to a Pokémon. When the [P] Pokémon this card is attached to is your Active Pokémon and is damaged by an opponents attack, put 2 damage counters on the Attacking Pokémon."
         def eff
         onPlay { reason->
           eff = delayed(priority: BEFORE_LAST) {
@@ -3790,7 +3790,7 @@ public enum RebelClash implements LogicCardInfo {
       };
       case SPEED_LIGHTNING_ENERGY_173:
       return specialEnergy (this, [[]]) {
-        text "This card provides 1 [L] Energy while it’s attached to a Pokemon. When you attach this card from your hand to an [L] Pokemon, draw 2 cards"
+        text "This card provides 1 [L] Energy while it’s attached to a Pokémon. When you attach this card from your hand to an [L] Pokémon, draw 2 cards"
         onPlay {reason->
           if (reason == PLAY_FROM_HAND && self.types.contains(L)) {
             draw 2

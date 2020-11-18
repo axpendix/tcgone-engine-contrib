@@ -3070,16 +3070,16 @@ public enum GuardiansRising implements LogicCardInfo {
           onPlay {
             def i = 2
             while(i-- > 0){
-              if (bg.stadiumInfoStruct && confirm("Would you like to discard stadium in play (${bg.stadiumInfoStruct.stadiumCard})? If not, you can select a Pokemon Tool in play")) {
+              if (bg.stadiumInfoStruct && confirm("Would you like to discard stadium in play (${bg.stadiumInfoStruct.stadiumCard})? If not, you can select a Pokémon Tool in play")) {
                 if (stadiumCanBeAffectedByItemAndSupporter())
                   discard bg.stadiumInfoStruct.stadiumCard
                 continue
               }
               def tar = all.findAll {it.cards.hasType(POKEMON_TOOL)}
               if(tar) {
-                def sel = tar.select("Select Pokemon to discard a Pokemon Tool from (cancel to stop)", i == 1)
+                def sel = tar.select("Select Pokémon to discard a Pokémon Tool from (cancel to stop)", i == 1)
                 if(sel){
-                  def list = sel.cards.filterByType(POKEMON_TOOL).select("Discard a Pokemon Tool from $sel")
+                  def list = sel.cards.filterByType(POKEMON_TOOL).select("Discard a Pokémon Tool from $sel")
                   targeted (sel, TRAINER_CARD) {
                     list.discard()
                   }

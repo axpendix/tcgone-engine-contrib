@@ -184,7 +184,7 @@ public enum ChampionsPath implements LogicCardInfo {
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
         move "Call for Family", {
-          text "Search your deck for a Basic Pokemon and put it on your Bench. Then, shuffle your deck."
+          text "Search your deck for a Basic Pokémon and put it on your Bench. Then, shuffle your deck."
           energyCost C
           callForFamily basic:true, 1, delegate
         }
@@ -204,7 +204,7 @@ public enum ChampionsPath implements LogicCardInfo {
       return evolution (this, from:"Kakuna", hp:HP140, type:G, retreatCost:1) {
         weakness R
         move "Poison Jab", {
-          text "80 damage. Your opponent’s Active Pokemon is now Poisoned."
+          text "80 damage. Your opponent’s Active Pokémon is now Poisoned."
           energyCost G
           onAttack {
             damage 80
@@ -242,7 +242,7 @@ public enum ChampionsPath implements LogicCardInfo {
           text "Draw a card."
           energyCost C
           attackRequirement {
-            assert my.deck : "Your deck is empty"
+            assert my.deck : "Your deck is empty!"
           }
           onAttack {
             draw 1
@@ -673,7 +673,7 @@ public enum ChampionsPath implements LogicCardInfo {
           text "Draw a card."
           energyCost C
           attackRequirement {
-            assert my.deck : "Your deck is empty"
+            assert my.deck : "Your deck is empty!"
           }
           onAttack {
             draw 1
@@ -932,7 +932,7 @@ public enum ChampionsPath implements LogicCardInfo {
           text "Draw a card."
           energyCost C
           attackRequirement {
-            assert my.deck : "Your deck is empty"
+            assert my.deck : "Your deck is empty!"
           }
           onAttack {
             draw 1
@@ -1052,14 +1052,14 @@ public enum ChampionsPath implements LogicCardInfo {
           my.deck.add(0, card)
         }
         playRequirement{
-          assert my.deck.notEmpty : "Your deck is empty"
+          assert my.deck.notEmpty : "Your deck is empty!"
         }
       };
       case SONIA_65:
       return copy (RebelClash.SONIA_167, this);
       case STRANGE_CANNED_FOOD_66:
       return itemCard (this) {
-        text "Heal 80 damage from 1 of your Pokemon with a [P] Energy attached to it. Then, discard a [P] Energy from that Pokemon."
+        text "Heal 80 damage from 1 of your Pokémon with a [P] Energy attached to it. Then, discard a [P] Energy from that Pokémon."
         onPlay {
           def pcs = my.all.findAll{it.cards.energyCount(P) && it.numberOfDamageCounters}.select("Choose which Pokémon to heal 80 damage from")
           def prevented = heal 80, pcs

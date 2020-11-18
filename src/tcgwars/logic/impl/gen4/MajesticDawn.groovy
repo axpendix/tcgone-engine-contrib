@@ -2024,10 +2024,10 @@ public enum MajesticDawn implements LogicCardInfo {
             actions = action("Call Energy", [TargetPlayer.SELF]) {
               assert self.active : "Not active"
               assert my.bench.notFull : "Bench full"
-              assert my.deck : "Your deck is empty"
+              assert my.deck : "Your deck is empty!"
               bc "Used Call Energy effect"
               int count = bench.freeBenchCount>=2?2:1
-              my.deck.search (max: count,"Search your deck for up to 2 Basic Pokemon and put them onto your Bench", cardTypeFilter(BASIC)).each {
+              my.deck.search (max: count,"Search your deck for up to 2 Basic Pokémon and put them onto your Bench", cardTypeFilter(BASIC)).each {
                 benchPCS(it)
               }
               shuffleDeck()

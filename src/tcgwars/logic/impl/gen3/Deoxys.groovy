@@ -940,7 +940,7 @@ public enum Deoxys implements LogicCardInfo {
             actionA {
               checkLastTurn()
               checkNoSPC()
-              assert opp.bench : "There is no benched Pokemon"
+              assert opp.bench : "There is no benched Pokémon"
               powerUsed()
 
               sw opp.active, opp.bench.oppSelect(), SRC_ABILITY
@@ -1000,7 +1000,7 @@ public enum Deoxys implements LogicCardInfo {
             energyCost G
             onAttack {
               flip {
-                apply choose([POISONED,ASLEEP,CONFUSED,BURNED,PARALYZED],"Choose 1 Special Condition to apply to the defending pokemon")
+                apply choose([POISONED,ASLEEP,CONFUSED,BURNED,PARALYZED],"Choose 1 Special Condition to apply to the defending Pokémon.")
               }
             }
           }
@@ -2307,7 +2307,7 @@ public enum Deoxys implements LogicCardInfo {
             energyCost G
             onAttack {
               flip {
-                apply choose([POISONED,ASLEEP,CONFUSED,BURNED,PARALYZED],"Choose 1 Special Condition to apply to the defending pokemon")
+                apply choose([POISONED,ASLEEP,CONFUSED,BURNED,PARALYZED],"Choose 1 Special Condition to apply to the defending Pokémon.")
               }
             }
           }

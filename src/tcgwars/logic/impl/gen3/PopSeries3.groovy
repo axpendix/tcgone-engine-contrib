@@ -338,7 +338,7 @@ public enum PopSeries3 implements LogicCardInfo {
       };
       case HIGH_PRESSURE_SYSTEM_10:
       return stadium (this) {
-        text "Each player pays [C] less to retreat his or her [R] and [W] Pokemon)"
+        text "Each player pays [C] less to retreat his or her [R] and [W] Pokémon)"
         def eff
         onPlay {
           eff = getter (GET_RETREAT_COST) { Holder h->
@@ -353,7 +353,7 @@ public enum PopSeries3 implements LogicCardInfo {
       };
       case LOW_PRESSURE_SYSTEM_11:
       return stadium (this) {
-        text "Each [G] and [L] Pokemon in play (both yours and your opponent's) gets +10 HP."
+        text "Each [G] and [L] Pokémon in play (both yours and your opponent's) gets +10 HP."
         def eff
         onPlay {
           eff = getter (GET_FULL_HP) { Holder h->

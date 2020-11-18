@@ -288,7 +288,7 @@ public enum BurningShadows implements LogicCardInfo {
             text "Heal all damage from all of your Pokémon. Shuffle this Pokémon and all cards attached to it into your deck."
             energyCost G
             attackRequirement {
-              assert my.bench.notEmpty : "This is your only pokemon"
+              assert my.bench.notEmpty : "This is your only Pokémon."
             }
             onAttack {
               my.all.each {heal(it.damage.value, it)}
@@ -1555,7 +1555,7 @@ public enum BurningShadows implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {
               gxCheck()
-              assert opp.all.findAll {it.pokemonGX || it.pokemonEX} : "No opponent Pokemon-GX or Pokemon-EX in play"
+              assert opp.all.findAll {it.pokemonGX || it.pokemonEX} : "No opponent Pokémon-GX or Pokémon-EX in play"
             }
             onAttack {
               gxPerform()

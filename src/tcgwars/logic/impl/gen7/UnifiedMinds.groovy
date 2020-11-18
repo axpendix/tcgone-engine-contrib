@@ -1210,7 +1210,7 @@ public enum UnifiedMinds implements LogicCardInfo {
         return evolution (this, from:"Tirtouga", hp:HP160, type:W, retreatCost:3) {
           weakness G
           bwAbility "Ancient Custom", {
-            text "Pokemon Tool cards attached to your opponent's Pokemon have no effect"
+            text "Pokémon Tool cards attached to your opponent's Pokémon have no effect"
             def eff
             onActivate {
               eff = delayed {
@@ -3139,7 +3139,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "Discard a Pokémon Tool card from 1 of your opponent's Pokémon."
             energyCost C
             attackRequirement {
-              assertOppAll(overrideText: true, info: "There are no Pokémon Tool cards attached to your opponent's Pokemon.", {it.cards.filterByType(POKEMON_TOOL)})
+              assertOppAll(overrideText: true, info: "There are no Pokémon Tool cards attached to your opponent's Pokémon.", {it.cards.filterByType(POKEMON_TOOL)})
             }
             onAttack {
               def target = opp.all.findAll{ it.cards.filterByType(POKEMON_TOOL) }.select("Choose the Pokémon to discard a Pokémon Tool from.")
@@ -4559,7 +4559,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           def lastTurn=0
           def actions=[]
           onPlay {
-            actions=action("Stadium: Pokemon Research Lab") {
+            actions=action("Stadium: Pokémon Research Lab") {
               assert my.deck : "Your deck is empty."
               assert my.bench.notFull : "You have no space in your bench"
               assert lastTurn != bg().turnCount : "You've already used Pokémon Research Lab this turn."

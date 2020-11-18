@@ -493,7 +493,7 @@ public class CardList extends ArrayList<Card> {
   }
 
   public void shuffle() {
-    if (autosort) throw new IllegalStateException("Autosort is active");
+    if (autosort) throw new IllegalStateException("Autosort is active.");
     Collections.shuffle(this, Battleground.getInstance().rng);
   }
 

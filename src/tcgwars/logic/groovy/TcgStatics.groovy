@@ -324,7 +324,7 @@ class TcgStatics {
   static oppChoose (List choices, String info="", defaultChoice=null){
     oppChoose(choices, null, info, defaultChoice)
   }
-  static multiSelect (List pcsList, int count, String info="Select Pokemon"){
+  static multiSelect (List pcsList, int count, String info="Select Pokémon"){
     LUtils.selectMultiPokemon(bg().ownClient(), pcsList, info, count)
   }
   static multiDamage (List pcsList, int count, int dmg, String info="Select to deal damage"){
@@ -479,7 +479,7 @@ class TcgStatics {
         bg.game.endGame(opp.owner, WinCondition.NOPOKEMON)
         return
       }
-      sw ( null, my.bench.select("New active pokemon"))
+      sw ( null, my.bench.select("New active Pokémon."))
       //my.bench.remove(pcs)
     }
     else if (my.bench.contains(pcs)){
@@ -495,7 +495,7 @@ class TcgStatics {
         bg.game.endGame(my.owner, WinCondition.NOPOKEMON)
         return
       }
-      sw ( null, opp.bench.oppSelect("New active pokemon"))
+      sw ( null, opp.bench.oppSelect("New active Pokémon."))
       //opp.bench.remove(pcs)
     }
     else if (opp.bench.contains(pcs)){
@@ -1040,7 +1040,7 @@ class TcgStatics {
     Source src = params.source ? params.source : ATTACK
     def doit = {
       if(bench.notEmpty && my.active){
-        def pcs = bench.select("Switch your active pokemon", !may)
+        def pcs = bench.select("Switch your active Pokémon.", !may)
         if(pcs){
           sw my.active, pcs, src
         }
