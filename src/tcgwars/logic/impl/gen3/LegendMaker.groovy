@@ -891,8 +891,9 @@ public enum LegendMaker implements LogicCardInfo {
             before KNOCKOUT, self, {
               def energyName = "React Energy"
               if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && self.owner.pbg.bench && self.cards.any{it.name == energyName} && confirm("Move any number of $energyName cards from Magneton to your other Pokémon?", self.owner)) {
-                def max = self.cards.findAll{it.name == "React Energy"}.size()
+                def max = self.cards.findAll{it.name == energyName}.size()
                 def sel = self.cards.select(min: 0, max: max, "Choose any $energyName to move", { it.name == energyName }, self.owner)
+                if (sel) powerUsed()
                 while (sel) {
                   def tar = self.owner.pbg.all.findAll { it != self }.select "Select Pokémon to move $energyName to", false, self.owner
                   if (!tar) return
