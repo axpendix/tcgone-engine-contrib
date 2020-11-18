@@ -889,19 +889,15 @@ public enum LegendMaker implements LogicCardInfo {
           text "If Magneton would be Knocked Out by damage from an opponent's attack, you may move any number of React Energy cards from Magneton to your Pokémon in any way you like."
           delayedA {
             before KNOCKOUT, self, {
-              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && self.owner.pbg.bench && self.cards.any{it.name == "React Energy"} && confirm("Move any number of React Energy cards from Magneton to your other Pokémon?", self.owner)) {
-                def list = self.cards.findAll{it.name == "React Energy"}
-                def sel = list.select("Card to move", self.owner)
-                while(list) {
-                  def card = sel.first()
-                  def tar = self.owner.pbg.all.findAll{it != self}.select("Select Pokémon to move React Energy to", self.owner)
-                  energySwitch(self, tar, card)
-                  list.remove(card)
-                  if (list){
-                    sel = list.select(min: 0, "Card to move (Cancel to stop)", self.owner)
-                    if (!sel)
-                      list.clear()
-                  }
+              def energyName = "React Energy"
+              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && self.owner.pbg.bench && self.cards.any{it.name == energyName} && confirm("Move any number of $energyName cards from Magneton to your other Pokémon?", self.owner)) {
+                def max = self.cards.findAll{it.name == "React Energy"}.size()
+                def sel = self.cards.select(min: 0, max: max, "Choose any $energyName to move", { it.name == energyName }, self.owner)
+                while (sel) {
+                  def tar = self.owner.pbg.all.findAll { it != self }.select "Select Pokémon to move $energyName to", false, self.owner
+                  if (!tar) return
+                  energySwitch self, tar, sel.first()
+                  sel.remove sel.first()
                 }
               }
             }
