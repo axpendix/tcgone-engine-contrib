@@ -450,7 +450,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             powerUsed()
             def viewed = my.deck.subList 0, 3
             def selected = viewed.select()
-            selected.moveTo my.hand
+            selected.moveTo hidden:true, my.hand
             viewed.getExcludedList(selected).discard()
           }
         }
