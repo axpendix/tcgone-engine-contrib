@@ -254,9 +254,9 @@ public enum AmazingVoltTackle implements LogicCardInfo {
               if (self.owner.opposite.pbg.hand.contains(ef.cardToPlay)) playedFromOppHand = true
             }
             before PLAY_TRAINER, {
-              if (!ef.supporter) return
+              if (!ef.supporter || !playedFromOppHand) return
               oldImpl = ef.cardToPlay
-              newImpl = supporter(new CustomCardInfo(ef.cardToPlay.customInfo).setCardTypes(TRAINER, SUPPORTER), "Test") {
+              newImpl = supporter(new CustomCardInfo(ef.cardToPlay.customInfo).setCardTypes(TRAINER, SUPPORTER)) {
                 onPlay { draw 3 }
                 playRequirement { assert my.deck : "Deck is empty" }
               }
@@ -266,6 +266,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
               ef.cardToPlay = newImpl
             }
             after PLAY_TRAINER, {
+              if (!playedFromOppHand) return
               playedFromOppHand = false
               bg.em().run(new ChangeImplementation(oldImpl, newImpl))
               newImpl = null
