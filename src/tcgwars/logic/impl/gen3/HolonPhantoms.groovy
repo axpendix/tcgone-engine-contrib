@@ -458,11 +458,11 @@ public enum HolonPhantoms implements LogicCardInfo {
           actionA {
             checkLastTurn()
             assert my.hand.filterByType(BASIC_ENERGY) || my.hand.any{it.name.contains("δ Rainbow Energy")}: "No Basic Energy or δ Rainbow Energy in Hand"
-            assert my.all.any{ it.topPokemonCard.cardTypes.is(DELTA) } : "No Delta Pokemon in play"
+            assert my.all.any{ it.topPokemonCard.cardTypes.is(DELTA) } : "No Delta Pokémon in play"
             //TODO: Handle Cursed Glare, shouldn't be allowed to attach in that case.
             powerUsed()
             def energy = my.hand.findAll({it.cardTypes.is(BASIC_ENERGY) || it.name == "δ Rainbow Energy"}).select("Select an energy to attach to one of your δ Pokemon").first()
-            def tar = my.all.findAll{ it.topPokemonCard.cardTypes.is(DELTA) }.select("Select a δ Pokemon to attach the Energy to.")
+            def tar = my.all.findAll{ it.topPokemonCard.cardTypes.is(DELTA) }.select("Select a δ Pokémon to attach the Energy to.")
             attachEnergy(tar, energy)
           }
         }
@@ -1533,7 +1533,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           text "Your opponent chooses 1 of his or her Pokémon. Put 4 damage counters on that Pokémon."
           energyCost M, C
           onAttack {
-            directDamage 40, opp.all.oppSelect("Put 4 damage counters on which Pokemon?")
+            directDamage 40, opp.all.oppSelect("Put 4 damage counters on which Pokémon?")
           }
         }
       };
@@ -2242,7 +2242,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           },{
             def eligible = my.hand.findAll { ["Omanyte", "Kabuto", "Aerodactyl", "Aerodactyl ex", "Lileep", "Anorith"].contains(it.name) }
             if(eligible){
-              eligible.select("Select which Pokemon to bench").each {
+              eligible.select("Select which Pokémon to bench").each {
                 benchPCS(it)
               }
             }
@@ -2257,15 +2257,15 @@ public enum HolonPhantoms implements LogicCardInfo {
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
           "Each player's Pokémon that has δ on its card can use attacks on this card instead of its own." +
-          "[C] Delta Call - Search your deck for a Pokemon that has δ on its card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
+          "[C] Delta Call - Search your deck for a Pokémon that has δ on its card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
         def eff
         onPlay {
           def moveBody = {
-            text "Search your deck for a Pokemon that has δ on its card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
+            text "Search your deck for a Pokémon that has δ on its card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
             energyCost C
             attackRequirement { assert my.deck : "Deck is empty" }
             onAttack {
-              deck.search("Search your deck for a δ Pokemon", {
+              deck.search("Search your deck for a δ Pokémon", {
               it.cardTypes.pokemon && it.cardTypes.is(DELTA)
             }).moveTo(my.hand)
               shuffleDeck()
@@ -2350,8 +2350,8 @@ public enum HolonPhantoms implements LogicCardInfo {
           text "Once during your turn (before your attack), if Mew ex is on your Bench, you may look at your opponent's hand."
           actionA {
             checkLastTurn()
-            assert self.benched : "This Pokemon is not benched"
-            assert opp.hand : "Opponent's hand is empty"
+            assert self.benched : "This Pokémon is not benched"
+            assert opp.hand : "Opponent's hand is empty!"
             powerUsed()
             opp.hand.shuffledCopy().showToMe("Your opponent's hand")
           }
