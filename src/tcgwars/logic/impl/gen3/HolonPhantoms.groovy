@@ -229,7 +229,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 50
 
             def fossilInHand = my.hand.any{ ["Claw Fossil", "Mysterious Fossil", "Root Fossil", "Holon Fossil"].contains(it.name) }
-            if (opp.bench && fossilInHand && confirm("Discard a Fossil from hand to do 30 damage to a Benched Pokemon?")) {
+            if (opp.bench && fossilInHand && confirm("Discard a Fossil from hand to do 30 damage to a Benched Pokémon?")) {
               my.hand.findAll{ ["Claw Fossil", "Mysterious Fossil", "Root Fossil", "Holon Fossil"].contains(it.name) }.select().discard()
               damage 30, opp.bench.select()
             }
@@ -279,7 +279,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           actionA {
             assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
             checkLastTurn()
-            assert my.deck : "Deck is empty"
+            assert my.deck : "Deck is empty!"
             bg.em().storeObject("Form_Change",bg.turnCount)
             powerUsed()
 
@@ -461,7 +461,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             assert my.all.any{ it.topPokemonCard.cardTypes.is(DELTA) } : "No Delta Pokémon in play"
             //TODO: Handle Cursed Glare, shouldn't be allowed to attach in that case.
             powerUsed()
-            def energy = my.hand.findAll({it.cardTypes.is(BASIC_ENERGY) || it.name == "δ Rainbow Energy"}).select("Select an energy to attach to one of your δ Pokemon").first()
+            def energy = my.hand.findAll({it.cardTypes.is(BASIC_ENERGY) || it.name == "δ Rainbow Energy"}).select("Select an energy to attach to one of your δ Pokémon").first()
             def tar = my.all.findAll{ it.topPokemonCard.cardTypes.is(DELTA) }.select("Select a δ Pokémon to attach the Energy to.")
             attachEnergy(tar, energy)
           }
@@ -2242,14 +2242,14 @@ public enum HolonPhantoms implements LogicCardInfo {
           },{
             def eligible = my.hand.findAll { ["Omanyte", "Kabuto", "Aerodactyl", "Aerodactyl ex", "Lileep", "Anorith"].contains(it.name) }
             if(eligible){
-              eligible.select("Select which Pokémon to bench").each {
+              eligible.select("Select which Pokémon to bench.").each {
                 benchPCS(it)
               }
             }
           }
         }
         playRequirement{
-          assert my.bench.notFull : "Your bench is full"
+          assert my.bench.notFull : "Your bench is full."
           assert my.deck || my.hand.getExcludedList(thisCard) : "You cannot play this card if its your only card in hand, and you have no more cards in deck"
         }
       };
@@ -2331,7 +2331,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             checkNoSPC()
             assert opp.bench.size() >= 4 : "Opponent needs to have 4 or more Benched Pokémon"
             powerUsed()
-            def tar = opp.bench.select("Choose a pokemon to return to your opponent's hand.")
+            def tar = opp.bench.select("Choose a Pokémon to return to your opponent's hand.")
             scoopUpPokemon([:], tar, delegate, SRC_ABILITY)
           }
         }
@@ -2370,7 +2370,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 50
 
             afterDamage {
-              if (defending.evolution && !defending.slatedToKO && confirm("Discard 2 Energy to devolve Defending?")) {
+              if (defending.evolution && !defending.slatedToKO && confirm("Discard 2 Energy to devolve the Defending Pokémon?")) {
                 discardSelfEnergy(C, C)
                 def top=defending.topPokemonCard
                 devolve(defending, top, opp.deck)
@@ -2389,9 +2389,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           actionA {
             checkLastTurn()
             checkNoSPC()
-            assert opp.bench : "Opponent has no Benched"
+            assert opp.bench : "Opponent has no Benched Pokémon"
             powerUsed()
-            sw(opp.active, opp.bench.oppSelect("New Active Pokemon"))
+            sw(opp.active, opp.bench.oppSelect("New Active Pokémon"))
           }
         }
         move "Sharp Fang", {
