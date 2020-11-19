@@ -461,7 +461,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             assert my.all.any{ it.topPokemonCard.cardTypes.is(DELTA) } : "No Delta Pokémon in play"
             //TODO: Handle Cursed Glare, shouldn't be allowed to attach in that case.
             powerUsed()
-            def energy = my.hand.findAll({it.cardTypes.is(BASIC_ENERGY) || it.name == "δ Rainbow Energy"}).select("Select an energy to attach to one of your δ Pokémon").first()
+            def energy = my.hand.findAll({it.cardTypes.is(BASIC_ENERGY) || it.name == "δ Rainbow Energy"}).select("Select an energy to attach to one of your δ Pokémon.").first()
             def tar = my.all.findAll{ it.topPokemonCard.cardTypes.is(DELTA) }.select("Select a δ Pokémon to attach the Energy to.")
             attachEnergy(tar, energy)
           }
@@ -2263,9 +2263,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           def moveBody = {
             text "Search your deck for a Pokémon that has δ on its card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
             energyCost C
-            attackRequirement { assert my.deck : "Deck is empty" }
+            attackRequirement { assert my.deck : "Deck is empty!" }
             onAttack {
-              deck.search("Search your deck for a δ Pokémon", {
+              deck.search("Search your deck for a δ Pokémon.", {
               it.cardTypes.pokemon && it.cardTypes.is(DELTA)
             }).moveTo(my.hand)
               shuffleDeck()
@@ -2389,7 +2389,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           actionA {
             checkLastTurn()
             checkNoSPC()
-            assert opp.bench : "Opponent has no Benched Pokémon"
+            assert opp.bench : "Opponent has no Benched Pokémon."
             powerUsed()
             sw(opp.active, opp.bench.oppSelect("New Active Pokémon"))
           }
