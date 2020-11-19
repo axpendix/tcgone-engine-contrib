@@ -1012,7 +1012,7 @@ class TcgStatics {
 
                     def pcs = validPokemon.select("Attach to?")
 
-                    // Return an energy back to the hand
+                    // Select an energy before attachment so that thisCard doesn't show up as an option
                     def returningEnergy = pcs.cards.filterByType(ENERGY).select(count: 1)
 
                     bg.em().run(new ChangeImplementation(energyCard, thisCard))
