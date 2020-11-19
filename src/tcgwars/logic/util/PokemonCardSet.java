@@ -22,6 +22,7 @@ import java.io.Serializable;
 import java.util.*;
 
 import static tcgwars.logic.card.CardType.EVOLUTION;
+import static tcgwars.logic.card.CardType.LVL_X;
 
 /**
  * Models an in-game pokemon
@@ -279,12 +280,13 @@ public class PokemonCardSet implements PokemonStack, Serializable {
 
   public String getName() {
     try {
-      lastName = getTopPokemonCard().getName().replace(" Lv.X", "");
+      lastName = getTopPokemonCard().getName();
       return lastName;
     } catch (Exception e) {
       return lastName;
     }
   }
+
 
   public boolean isActive() {
     return TcgStatics.bg().getPBG(owner).getActive() == this;
@@ -438,6 +440,9 @@ public class PokemonCardSet implements PokemonStack, Serializable {
 
   @Override
   public String toString() {
+    if (getTopPokemonCard().getCardTypes().contains(LVL_X)) {
+      return getName() + " Lv.X";
+    }
     return getName();
 //		return "\n\tPokemonCardSet [set=" + cards() + ", damage=" + damage + "]" ;
   }
