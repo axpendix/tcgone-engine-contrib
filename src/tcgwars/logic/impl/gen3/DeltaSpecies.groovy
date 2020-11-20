@@ -853,58 +853,7 @@ public enum DeltaSpecies implements LogicCardInfo {
       case HOLON_S_ELECTRODE_21:
       return evolution (this, from:"Holon's Voltorb", hp:HP070, type:L, retreatCost:0) {
         weakness F
-        globalAbility {Card thisCard->
-          delayed {
-            before PLAY_CARD, {
-              def validPokemon = thisCard.player.pbg.all.findAll {it.cards.energyCount()}
-              if(ef.cardToPlay == thisCard){
-                if(choose([1,2], ["Pokémon", "Energy"], "Play this card as a Pokémon or as an energy?") == 2){
-                  if(bg.em().retrieveObject("Holon_Pokemon_Energy") != bg.turnCount){
-                    if(validPokemon){
-                      def pcs = validPokemon.select("Attach to?")
-                      bg.em().storeObject("Holon_Pokemon_Energy", bg.turnCount)
-
-                      // Return an energy back to the hand
-                      pcs.cards.filterByType(ENERGY).select(count:1).moveTo(thisCard.player.pbg.hand)
-
-                      def pkmnCard = thisCard
-                      def energyCard
-                      energyCard = specialEnergy(new CustomCardInfo(HOLON_S_ELECTRODE_21).setCardTypes(ENERGY, SPECIAL_ENERGY), [[R, D, F, G, W, Y, L, M, P],[R, D, F, G, W, Y, L, M, P]]) {
-                        typeImagesOverride = [RAINBOW,RAINBOW]
-                        onPlay {}
-                        onRemoveFromPlay {
-                          bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
-                        }
-                      }
-                      energyCard.player = thisCard.player
-                      bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
-                      bc "$energyCard is now a Special Energy Card"
-                      attachEnergy(pcs, energyCard, PLAY_FROM_HAND)
-                      prevent()
-                    } else {
-                      prevent()
-                      wcu "You have no energy attached to your Pokémon"
-                    }
-                  } else {
-                    prevent()
-                    wcu "You have already played an Energy"
-                  }
-                }
-              } //If the user chooses Pokémon, play the card normally
-            }
-            before PLAY_ENERGY, {
-              if(bg.em().retrieveObject("Holon_Pokemon_Energy") == bg.turnCount){
-                wcu "Cannot play any more energy this turn."
-                prevent()
-              }
-            }
-            after ATTACH_ENERGY, {
-              if(ef.reason==PLAY_FROM_HAND){
-                bg.em().storeObject("Holon_Pokemon_Energy", bg.turnCount)
-              }
-            }
-          }
-        }
+        holon_pokemon_energy(delegate, 2)
         move "Dazzle Blast", {
           text "30 damage. The Defending Pokémon is now Confused."
           energyCost L, C
@@ -918,58 +867,7 @@ public enum DeltaSpecies implements LogicCardInfo {
       return evolution (this, from:"Holon's Magnemite", hp:HP070, type:M, retreatCost:1) {
         weakness R
         resistance G, MINUS30
-        globalAbility {Card thisCard->
-          delayed {
-            before PLAY_CARD, {
-              def validPokemon = thisCard.player.pbg.all.findAll {it.cards.energyCount()}
-              if(ef.cardToPlay == thisCard){
-                if(choose([1,2], ["Pokémon", "Energy"], "Play this card as a Pokémon or as an energy?") == 2){
-                  if(bg.em().retrieveObject("Holon_Pokemon_Energy") != bg.turnCount){
-                    if(validPokemon){
-                      def pcs = validPokemon.select("Attach to?")
-                      bg.em().storeObject("Holon_Pokemon_Energy", bg.turnCount)
-
-                      // Return an energy back to the hand
-                      pcs.cards.filterByType(ENERGY).select(count:1).moveTo(thisCard.player.pbg.hand)
-
-                      def pkmnCard = thisCard
-                      def energyCard
-                      energyCard = specialEnergy(new CustomCardInfo(HOLON_S_MAGNETON_22).setCardTypes(ENERGY, SPECIAL_ENERGY), [[R, D, F, G, W, Y, L, M, P],[R, D, F, G, W, Y, L, M, P]]) {
-                        typeImagesOverride = [RAINBOW,RAINBOW]
-                        onPlay {}
-                        onRemoveFromPlay {
-                          bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
-                        }
-                      }
-                      energyCard.player = thisCard.player
-                      bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
-                      bc "$energyCard is now a Special Energy Card"
-                      attachEnergy(pcs, energyCard)
-                      prevent()
-                    } else {
-                      prevent()
-                      wcu "You have no energy attached to your Pokémon"
-                    }
-                  } else {
-                    prevent()
-                    wcu "You have already played an Energy"
-                  }
-                }
-              } //If the user chooses Pokémon, play the card normally
-            }
-            before PLAY_ENERGY, {
-              if(bg.em().retrieveObject("Holon_Pokemon_Energy") == bg.turnCount){
-                wcu "Cannot play any more energy this turn."
-                prevent()
-              }
-            }
-            after ATTACH_ENERGY, {
-              if(ef.reason==PLAY_FROM_HAND){
-                bg.em().storeObject("Holon_Pokemon_Energy", bg.turnCount)
-              }
-            }
-          }
-        }
+        holon_pokemon_energy(delegate, 2)
         move "Extra Ball", {
           text "30+ damage. If the Defending Pokémon is Pokémon-ex, this attack does 30 damage plus 20 more damage."
           energyCost M, C
@@ -2313,47 +2211,7 @@ public enum DeltaSpecies implements LogicCardInfo {
       return basic (this, hp:HP040, type:M, retreatCost:1) {
         weakness R
         resistance G, MINUS30
-        globalAbility {Card thisCard->
-          delayed {
-            before PLAY_CARD, {
-              if(ef.cardToPlay == thisCard){
-                if(choose([1,2], ["Pokémon", "Energy"], "Play this card as a Pokémon or as an energy?") == 2){
-                  if(bg.em().retrieveObject("Holon_Pokemon_Energy") != bg.turnCount){
-                    def pcs = thisCard.player.pbg.all.select("Attach to?")
-                    bg.em().storeObject("Holon_Pokemon_Energy", bg.turnCount)
-                    def pkmnCard = thisCard
-                    def energyCard
-                    energyCard = specialEnergy(new CustomCardInfo(HOLON_S_MAGNEMITE_70).setCardTypes(ENERGY, SPECIAL_ENERGY), [[C]]) {
-                      onPlay {}
-                      onRemoveFromPlay {
-                        bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
-                      }
-                    }
-                    energyCard.player = thisCard.player
-                    bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
-                    bc "$energyCard is now a Special Energy Card"
-                    attachEnergy(pcs, energyCard)
-                    prevent()
-                  } else {
-                    prevent()
-                    wcu "You have already played an energy"
-                  }
-                }
-              } //If the user chooses Pokémon, play the card normally
-            }
-            before PLAY_ENERGY, {
-              if(bg.em().retrieveObject("Holon_Pokemon_Energy") == bg.turnCount){
-                wcu "Cannot play any more energy this turn."
-                prevent()
-              }
-            }
-            after ATTACH_ENERGY, {
-              if(ef.reason==PLAY_FROM_HAND){
-                bg.em().storeObject("Holon_Pokemon_Energy", bg.turnCount)
-              }
-            }
-          }
-        }
+        holon_pokemon_energy(delegate, 1, true)
         move "Linear Attack", {
           text "Choose 1 of your opponent's Pokémon. This attack does 10 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost M
@@ -2365,47 +2223,7 @@ public enum DeltaSpecies implements LogicCardInfo {
       case HOLON_S_VOLTORB_71:
       return basic (this, hp:HP040, type:L, retreatCost:1) {
         weakness F
-        globalAbility {Card thisCard->
-          delayed {
-            before PLAY_CARD, {
-              if(ef.cardToPlay == thisCard){
-                if(choose([1,2], ["Pokémon", "Energy"], "Play this card as a Pokémon or as an energy?") == 2){
-                  if(bg.em().retrieveObject("Holon_Pokemon_Energy") != bg.turnCount){
-                    def pcs = thisCard.player.pbg.all.select("Attach to?")
-                    bg.em().storeObject("Holon_Pokemon_Energy", bg.turnCount)
-                    def pkmnCard = thisCard
-                    def energyCard
-                    energyCard = specialEnergy(new CustomCardInfo(HOLON_S_VOLTORB_71).setCardTypes(ENERGY, SPECIAL_ENERGY), [[C]]) {
-                      onPlay {}
-                      onRemoveFromPlay {
-                        bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
-                      }
-                    }
-                    energyCard.player = thisCard.player
-                    bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
-                    bc "$energyCard is now a Special Energy Card"
-                    attachEnergy(pcs, energyCard)
-                    prevent()
-                  } else {
-                    prevent()
-                    wcu "You have already played an energy"
-                  }
-                }
-              } //If the user chooses Pokémon, play the card normally
-            }
-            before PLAY_ENERGY, {
-              if(bg.em().retrieveObject("Holon_Pokemon_Energy") == bg.turnCount){
-                wcu "Cannot play any more energy this turn."
-                prevent()
-              }
-            }
-            after ATTACH_ENERGY, {
-              if(ef.reason==PLAY_FROM_HAND){
-                bg.em().storeObject("Holon_Pokemon_Energy", bg.turnCount)
-              }
-            }
-          }
-        }
+        holon_pokemon_energy(delegate, 1, true)
         move "Thundershock", {
           text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost L

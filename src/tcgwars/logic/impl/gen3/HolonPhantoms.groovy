@@ -1,5 +1,8 @@
-package tcgwars.logic.impl.gen3;
+package tcgwars.logic.impl.gen3
 
+import tcgwars.logic.effect.gm.AttachEnergy
+import tcgwars.logic.effect.gm.PlayEnergy
+import tcgwars.logic.effect.gm.PlayTrainer;
 import tcgwars.logic.impl.gen1.FossilNG;
 import tcgwars.logic.impl.gen3.TeamRocketReturns;
 import tcgwars.logic.impl.gen3.LegendMaker;
@@ -276,7 +279,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           actionA {
             assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
             checkLastTurn()
-            assert my.deck : "Deck is empty"
+            assert my.deck : "Deck is empty!"
             bg.em().storeObject("Form_Change",bg.turnCount)
             powerUsed()
 
@@ -458,7 +461,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             assert my.all.any{ it.topPokemonCard.cardTypes.is(DELTA) } : "No Delta Pokémon in play"
             //TODO: Handle Cursed Glare, shouldn't be allowed to attach in that case.
             powerUsed()
-            def energy = my.hand.findAll({it.cardTypes.is(BASIC_ENERGY) || it.name == "δ Rainbow Energy"}).select("Select an energy to attach to one of your δ Pokémon").first()
+            def energy = my.hand.findAll({it.cardTypes.is(BASIC_ENERGY) || it.name == "δ Rainbow Energy"}).select("Select an energy to attach to one of your δ Pokémon.").first()
             def tar = my.all.findAll{ it.topPokemonCard.cardTypes.is(DELTA) }.select("Select a δ Pokémon to attach the Energy to.")
             attachEnergy(tar, energy)
           }
@@ -1437,58 +1440,7 @@ public enum HolonPhantoms implements LogicCardInfo {
       case HOLON_S_CASTFORM_44:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
-        globalAbility {Card thisCard->
-          delayed {
-            before PLAY_CARD, {
-              def validPokemon = thisCard.player.pbg.all.findAll {it.cards.energyCount()}
-              if(ef.cardToPlay == thisCard){
-                if(choose([1,2], ["Pokémon", "Energy"], "Play this card as a Pokémon or as an energy?") == 2){
-                  if(bg.em().retrieveObject("Holon_Pokemon_Energy") != bg.turnCount){
-                    if(validPokemon){
-                      def pcs = validPokemon.select("Attach to?")
-                      bg.em().storeObject("Holon_Pokemon_Energy", bg.turnCount)
-
-                      // Return an energy back to the hand
-                      pcs.cards.filterByType(ENERGY).select(count:1).moveTo(thisCard.player.pbg.hand)
-
-                      def pkmnCard = thisCard
-                      def energyCard
-                      energyCard = specialEnergy(new CustomCardInfo(HOLON_S_CASTFORM_44).setCardTypes(ENERGY, SPECIAL_ENERGY), [[R, D, F, G, W, Y, L, M, P],[R, D, F, G, W, Y, L, M, P]]) {
-                        typeImagesOverride = [RAINBOW,RAINBOW]
-                        onPlay {}
-                        onRemoveFromPlay {
-                          bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
-                        }
-                      }
-                      energyCard.player = thisCard.player
-                      bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
-                      bc "$energyCard is now a Special Energy Card"
-                      attachEnergy(pcs, energyCard)
-                      prevent()
-                    } else {
-                      prevent()
-                      wcu "You have no energy attached to your Pokémon"
-                    }
-                  } else {
-                    prevent()
-                    wcu "You have already played an Energy"
-                  }
-                }
-              } //If the user chooses Pokémon, play the card normally
-            }
-            before PLAY_ENERGY, {
-              if(bg.em().retrieveObject("Holon_Pokemon_Energy") == bg.turnCount){
-                wcu "Cannot play any more energy this turn."
-                prevent()
-              }
-            }
-            after ATTACH_ENERGY, {
-              if(ef.reason==PLAY_FROM_HAND){
-                bg.em().storeObject("Holon_Pokemon_Energy", bg.turnCount)
-              }
-            }
-          }
-        }
+        holon_pokemon_energy(delegate, 2)
         move "Delta Draw", {
           text "Count the number of Pokémon you have in play that has δ on its card. Draw up to that many cards."
           energyCost C
@@ -2311,7 +2263,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           def moveBody = {
             text "Search your deck for a Pokémon that has δ on its card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
             energyCost C
-            attackRequirement { assert my.deck : "Deck is empty!" }
+            attackRequirement { assert my.deck : "Deck is empty" }
             onAttack {
               deck.search("Search your deck for a δ Pokémon.", {
               it.cardTypes.pokemon && it.cardTypes.is(DELTA)

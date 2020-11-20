@@ -18,6 +18,7 @@ import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
 import static tcgwars.logic.groovy.TcgBuilders.delayed
 import static tcgwars.logic.groovy.TcgBuilders.getter
+import static tcgwars.logic.groovy.TcgBuilders.specialEnergy
 import static tcgwars.logic.groovy.TcgStatics.*
 import tcgwars.logic.*
 import tcgwars.logic.card.*
@@ -44,7 +45,7 @@ class TcgStatics {
 //		}
   }
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY;
 
   static Weakness weak (Type t, String f=Weakness.X2){
     new Weakness(t,f)
@@ -979,6 +980,55 @@ class TcgStatics {
         bc "$self: θ Max"
         healAll(self, SRC_ANCIENT_TRAIT)
       }
+    }
+  }
+
+  static holon_pokemon_energy(Object delegate, Integer energyCount, Boolean colorless=false) {
+    delegate.globalAbility { Card thisCard->
+      delayed {
+          before PLAY_CARD, {
+            //If the user chooses Pokémon, play the card normally
+            if (ef.cardToPlay == thisCard && choose([1,2], ["Pokémon", "Energy"], "Play this card as a Pokémon or as an energy?") == 2) {
+              def energyEquivalent = []
+              def typeImages = []
+              def energyImage = (colorless) ? COLORLESS : RAINBOW
+              def energyTypes = (colorless) ? [C] : [R, D, F, G, W, L, M, P, Y]
+
+              energyCount.times {
+                energyEquivalent.add(energyTypes)
+                typeImages.add(energyImage)
+              }
+
+              def energyCard
+              energyCard = specialEnergy(new CustomCardInfo(thisCard.staticInfo).setCardTypes(ENERGY, SPECIAL_ENERGY), energyEquivalent) {
+                typeImagesOverride = typeImages
+                onPlay {}
+                onRemoveFromPlay {
+                  bg.em().run(new ChangeImplementation(thisCard, energyCard))
+                }
+                allowAttach { to ->
+                  to.cards.energyCount()
+                }
+              }
+              energyCard.player = thisCard.player
+
+              bg.em().run(new ChangeImplementation(energyCard, thisCard))
+              def playEnergy = new PlayEnergy(energyCard)
+              bg.em().run(playEnergy)
+              def cannotPlayEnergy = !playEnergy.attached
+              if (cannotPlayEnergy) {
+                bg.em().run(new ChangeImplementation(thisCard, energyCard))
+              } else {
+                // Select an energy before attachment so that thisCard doesn't show up as an option
+                def returningEnergy = playEnergy.attached.cards.getExcludedList(energyCard).select cardTypeFilter(ENERGY)
+                returningEnergy.moveTo(thisCard.player.pbg.hand)
+
+                bc "$energyCard is now a Special Energy Card"
+              }
+              prevent()
+            }
+          }
+        }
     }
   }
 
