@@ -2263,7 +2263,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           def moveBody = {
             text "Search your deck for a Pokémon that has δ on its card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
             energyCost C
-            attackRequirement { assert my.deck : "Deck is empty!" }
+            attackRequirement { assert my.deck : "Deck is empty" }
             onAttack {
               deck.search("Search your deck for a δ Pokémon.", {
               it.cardTypes.pokemon && it.cardTypes.is(DELTA)
