@@ -983,79 +983,49 @@ class TcgStatics {
     }
   }
 
-  static holon_pokemon_energy(Object delegate, Integer rainbowEnergyCount) {
+  static holon_pokemon_energy(Object delegate, Integer energyCount, Boolean colorless=false) {
     delegate.globalAbility { Card thisCard->
       delayed {
           before PLAY_CARD, {
-            def validPokemon = thisCard.player.pbg.all.findAll {it.cards.energyCount()}
-            def holonAlreadyPlayed = bg.em().retrieveObject("Holon_Pokemon_Energy") == bg.turnCount
-            if (ef.cardToPlay == thisCard) {
-              if (choose([1,2], ["Pokémon", "Energy"], "Play this card as a Pokémon or as an energy?") == 2) {
-                if (!holonAlreadyPlayed) {
-                  if (validPokemon) {
-                    def energyCard
-                    def energyEquivalent = []
-                    def typeImages = []
-                    rainbowEnergyCount.times {
-                      energyEquivalent.add([R, D, F, G, W, L, M, P, Y])
-                      typeImages.add(RAINBOW)
-                    }
+            //If the user chooses Pokémon, play the card normally
+            if (ef.cardToPlay == thisCard && choose([1,2], ["Pokémon", "Energy"], "Play this card as a Pokémon or as an energy?") == 2) {
+              def energyEquivalent = []
+              def typeImages = []
+              def energyImage = (colorless) ? COLORLESS : RAINBOW
+              def energyTypes = (colorless) ? [C] : [R, D, F, G, W, L, M, P, Y]
 
-                    energyCard = specialEnergy(new CustomCardInfo(thisCard.staticInfo).setCardTypes(ENERGY, SPECIAL_ENERGY), energyEquivalent) {
-                      typeImagesOverride = typeImages
-                      onPlay {}
-                      onRemoveFromPlay {
-                        bg.em().run(new ChangeImplementation(thisCard, energyCard))
-                      }
-                    }
-                    energyCard.player = thisCard.player
-
-                    def pcs = validPokemon.select("Attach to?")
-
-                    // Select an energy before attachment so that thisCard doesn't show up as an option
-                    def returningEnergy = pcs.cards.select cardTypeFilter(ENERGY)
-
-                    bg.em().run(new ChangeImplementation(energyCard, thisCard))
-                    def playEnergy = new PlayEnergy(energyCard)
-                    bg.em().run(playEnergy)
-                    def cannotPlayEnergy = !playEnergy.attached
-                    if (cannotPlayEnergy) {
-                      bg.em().run(new ChangeImplementation(thisCard, energyCard))
-                    } else {
-                      returningEnergy.moveTo(thisCard.player.pbg.hand)
-
-                      bg.em().storeObject("Holon_Pokemon_Energy", bg.turnCount)
-                      bc "$energyCard is now a Special Energy Card"
-                    }
-                  } else {
-                    wcu "You have no energy attached to your Pokémon"
-                  }
-                } else {
-                  wcu "You have already played an Energy"
-                }
-                prevent()
+              energyCount.times {
+                energyEquivalent.add(energyTypes)
+                typeImages.add(energyImage)
               }
-            } //If the user chooses Pokémon, play the card normally
-          }
-          before PLAY_ENERGY, {
-            def isFromAbility = bg.em().currentEffectStack.find{it instanceof TcgBuilders.AbilityBuilder}
-            def isEnergyAlreadyPlayed = bg.em().currentEffectStack.find{it instanceof CantPlayEnergy}
-            def holon_played = bg.em().retrieveObject("Holon_Pokemon_Energy")
-            if (holon_played == bg.turnCount) {
-              wcu "Cannot play any more energy this turn."
-              prevent()
-            }
 
-            // allow attachments that aren't from ability
-            // disallow this action if already attached for the turn
-            else if (!isFromAbility && isEnergyAlreadyPlayed && ef.card.name == thisCard.name) {
-              wcu "Cannot play any more energy this turn."
+              def energyCard
+              energyCard = specialEnergy(new CustomCardInfo(thisCard.staticInfo).setCardTypes(ENERGY, SPECIAL_ENERGY), energyEquivalent) {
+                typeImagesOverride = typeImages
+                onPlay {}
+                onRemoveFromPlay {
+                  bg.em().run(new ChangeImplementation(thisCard, energyCard))
+                }
+                allowAttach { to ->
+                  to.cards.energyCount()
+                }
+              }
+              energyCard.player = thisCard.player
+
+              bg.em().run(new ChangeImplementation(energyCard, thisCard))
+              def playEnergy = new PlayEnergy(energyCard)
+              bg.em().run(playEnergy)
+              def cannotPlayEnergy = !playEnergy.attached
+              if (cannotPlayEnergy) {
+                bg.em().run(new ChangeImplementation(thisCard, energyCard))
+              } else {
+                // Select an energy before attachment so that thisCard doesn't show up as an option
+                def returningEnergy = playEnergy.attached.cards.getExcludedList(energyCard).select cardTypeFilter(ENERGY)
+                returningEnergy.moveTo(thisCard.player.pbg.hand)
+
+                bc "$energyCard is now a Special Energy Card"
+              }
               prevent()
-            }
-          }
-          after ATTACH_ENERGY, {
-            if (ef.card.name == thisCard.name) {
-              bg.em().storeObject("Holon_Pokemon_Energy", bg.turnCount)
             }
           }
         }
