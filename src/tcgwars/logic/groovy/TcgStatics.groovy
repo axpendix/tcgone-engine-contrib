@@ -1016,7 +1016,9 @@ class TcgStatics {
                     def returningEnergy = pcs.cards.filterByType(ENERGY).select(count: 1)
 
                     bg.em().run(new ChangeImplementation(energyCard, thisCard))
-                    def cannotPlayEnergy = bg.em().run(new PlayEnergy(energyCard, pcs))
+                    def playEnergy = new PlayEnergy(energyCard)
+                    bg.em().run(playEnergy)
+                    def cannotPlayEnergy = !playEnergy.attached
                     if (cannotPlayEnergy) {
                       bg.em().run(new ChangeImplementation(thisCard, energyCard))
                     } else {
