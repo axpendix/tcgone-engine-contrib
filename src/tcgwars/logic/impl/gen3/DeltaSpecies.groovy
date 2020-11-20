@@ -2211,7 +2211,7 @@ public enum DeltaSpecies implements LogicCardInfo {
       return basic (this, hp:HP040, type:M, retreatCost:1) {
         weakness R
         resistance G, MINUS30
-        holon_pokemon_energy(delegate, 1)
+        holon_pokemon_energy(delegate, 1, true)
         move "Linear Attack", {
           text "Choose 1 of your opponent's Pokémon. This attack does 10 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost M
@@ -2223,7 +2223,7 @@ public enum DeltaSpecies implements LogicCardInfo {
       case HOLON_S_VOLTORB_71:
       return basic (this, hp:HP040, type:L, retreatCost:1) {
         weakness F
-        holon_pokemon_energy(delegate, 1)
+        holon_pokemon_energy(delegate, 1, true)
         move "Thundershock", {
           text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost L
