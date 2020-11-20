@@ -1013,7 +1013,7 @@ class TcgStatics {
                     def pcs = validPokemon.select("Attach to?")
 
                     // Select an energy before attachment so that thisCard doesn't show up as an option
-                    def returningEnergy = pcs.cards.filterByType(ENERGY).select(count: 1)
+                    def returningEnergy = pcs.cards.select cardTypeFilter(ENERGY)
 
                     bg.em().run(new ChangeImplementation(energyCard, thisCard))
                     def playEnergy = new PlayEnergy(energyCard)
