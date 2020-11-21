@@ -3413,17 +3413,14 @@ public enum UnseenForces implements LogicCardInfo {
             assert opp.hand : "Your opponent has no cards in their hand"
           }
           onAttack {
-            def basics = opp.hand.shuffledCopy().showToMe("Opponent's hand.").filterByType(BASIC)
-            if (basics) {
-              def tar = basics.select("Choose a pokemon to bench")
-              if (tar) {
-                def card = tar.first()
-                def benched = benchPCS(card, OTHER)
-                if (benched) {
-                  sw2 (benched)
-                }
-              }
-            }
+            def count = opp.hand.shuffledCopy().filterByType(BASIC) ? 1 : 0
+            def info = count ? "Choose a Pokémon to bench." : "No basics found in Opponent's hand."
+            def tar = opp.hand.shuffledCopy().select min: count, max: count, info, cardTypeFilter(BASIC)
+            if (!tar)
+              return
+            def benched = benchPCS(tar.first(), OTHER)
+            if (benched)
+              sw2 benched
           }
         }
       };
