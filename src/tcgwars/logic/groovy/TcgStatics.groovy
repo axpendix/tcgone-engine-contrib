@@ -1007,7 +1007,11 @@ class TcgStatics {
                   bg.em().run(new ChangeImplementation(thisCard, energyCard))
                 }
                 allowAttach { to ->
-                  to.cards.energyCount()
+                  if (energyCount > 1 && !colorless) {
+                    to.cards.energyCount()
+                  } else {
+                    to
+                  }
                 }
               }
               energyCard.player = thisCard.player
@@ -1019,9 +1023,11 @@ class TcgStatics {
               if (cannotPlayEnergy) {
                 bg.em().run(new ChangeImplementation(thisCard, energyCard))
               } else {
-                // Select an energy before attachment so that thisCard doesn't show up as an option
-                def returningEnergy = playEnergy.attached.cards.getExcludedList(energyCard).select cardTypeFilter(ENERGY)
-                returningEnergy.moveTo(thisCard.player.pbg.hand)
+                if (energyCount > 1 && !colorless) {
+                  // Select an energy before attachment so that thisCard doesn't show up as an option
+                  def returningEnergy = playEnergy.attached.cards.getExcludedList(energyCard).select cardTypeFilter(ENERGY)
+                  returningEnergy.moveTo(thisCard.player.pbg.hand)
+                }
 
                 bc "$energyCard is now a Special Energy Card"
               }
