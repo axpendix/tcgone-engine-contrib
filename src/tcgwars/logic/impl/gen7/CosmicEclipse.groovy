@@ -3596,10 +3596,10 @@ public enum CosmicEclipse implements LogicCardInfo {
                   bg.em().run(new PlayCard(doll))
                   def pcs = self.owner.pbg.all.find{it.name=="Lillie's Poké Doll" && !tmp.contains(it)}
                   sw(self, pcs)
+                  scoopUpPokemon(self, delegate)
                   eff.unregister()
                   self.owner.pbg.triggerBenchSizeCheck()
                 }
-                scoopUpPokemon(self, delegate)
               }
             }
           }
