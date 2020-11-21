@@ -1455,24 +1455,28 @@ public enum TeamRocketReturns implements LogicCardInfo {
         return basic (this, hp:HP070, type:DARKNESS, retreatCost:1) {
           weakness PSYCHIC
           move "Dark Aid", {
-            text "Search your discard pile for Pokémon Tool cards and Rocket’s Secret Machine cards. You may show either 1 Pokémon Tool card or Rocket’s Secret Machine card to your opponent and put it into your hand, or show a combination of 3 Pokémon Tool cards or Rocket’s Secret Machine cards to your opponent and shuffle them into your deck."
+            text "Search your discard pile for Pokémon Tool cards and Rocket’s Secret Machine cards. You may" +
+              "show either 1 Pokémon Tool card or Rocket’s Secret Machine card to your opponent and put it into your" +
+              "hand, or show a combination of 3 Pokémon Tool cards or Rocket’s Secret Machine cards to your opponent" +
+              "and shuffle them into your deck."
             energyCost C
             attackRequirement {
-              assert my.discard.filterByType(POKEMON_TOOL)
+              assert my.discard.filterByType(POKEMON_TOOL) || my.discard.filterByType(ROCKETS_SECRET_MACHINE): "No" +
+                "Pokémon Tool cards or Rocket's Secret Machine cards in your discard"
             }
             onAttack {
-              if(my.discard.filterByType(POKEMON_TOOL).size() < 3){
-                my.discard.filterByType(POKEMON_TOOL).select(count : 1,"Select 1 Pokémon Tool card or Rocket’s Secret Machine").showToOpponent("Selected card.").moveTo(my.hand)
-              }
-              else{
-                def choice = choose([0,1],["Select 1 card : put it in your hand","Select 3 cards : shuffle them in your deck"],"What do you want to do?")
-                if(choice){
-                  my.discard.filterByType(POKEMON_TOOL).select(count : 3,"Select a combination of 3 Pokémon Tool card and Rocket’s Secret Machine").showToOpponent("Selected cards.").moveTo(my.deck)
-                  shuffleDeck()
-                }
-                else{
-                  my.discard.filterByType(POKEMON_TOOL).select(count : 1,"Select 1 Pokémon Tool card or Rocket’s Secret Machine").showToOpponent("Selected card.").moveTo(my.hand)
-                }
+              def targets = my.discard.findAll { it.cardTypes.is(POKEMON_TOOL) || it.cardTypes.is(ROCKETS_SECRET_MACHINE) }
+              def choice = 1
+              if (targets.size() >= 3)
+                choice = choose([1, 3], ["Select 1 card: put it in your hand", "Select 3 cards: shuffle them in your deck"], "What do you want to do?")
+              def info = choice == 1 ? "Select 1 Pokémon Tool or Rocket’s Secret Machine card" : "Select a combination of 3 Pokémon Tool and Rocket’s Secret Machine cards"
+              def tar = my.discard.select count: choice, info, { targets.contains(it) }
+              tar.showToOpponent("Opponent's selected cards.")
+              if (choice == 3) {
+                tar.moveTo my.deck
+                shuffleDeck()
+              } else {
+                tar.moveTo my.hand
               }
             }
           }
