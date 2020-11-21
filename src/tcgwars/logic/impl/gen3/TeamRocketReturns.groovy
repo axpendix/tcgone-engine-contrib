@@ -1466,17 +1466,15 @@ public enum TeamRocketReturns implements LogicCardInfo {
             }
             onAttack {
               def targets = my.discard.findAll { it.cardTypes.is(POKEMON_TOOL) || it.cardTypes.is(ROCKETS_SECRET_MACHINE) }
-              def choice = 1
-              if (targets.size() >= 3)
-                choice = choose([1, 3], ["Select 1 card: put it in your hand", "Select 3 cards: shuffle them in your deck"], "What do you want to do?")
+              def choice = choose([1, 3], ["Select 1 card: put it in your hand", "Select 3 cards: shuffle them in your deck"], "What do you want to do?")
               def info = choice == 1 ? "Select 1 Pokémon Tool or Rocket’s Secret Machine card" : "Select a combination of 3 Pokémon Tool and Rocket’s Secret Machine cards"
-              def tar = my.discard.select count: choice, info, { targets.contains(it) }
+              def tar = my.discard.select count: Math.min(choice as Integer, targets.size()), info, { targets.contains(it) }
               tar.showToOpponent("Opponent's selected cards.")
-              if (choice == 3) {
+              if (choice == 1) {
+                tar.moveTo my.hand
+              } else {
                 tar.moveTo my.deck
                 shuffleDeck()
-              } else {
-                tar.moveTo my.hand
               }
             }
           }
