@@ -177,6 +177,7 @@ public enum Collection {
   LEGENDARY_HEARTBEAT(1010, "JS3A", "gen8.LegendaryHeartbeat"),
   AMAZING_VOLT_TACKLE(1011, "JS4", "gen8.AmazingVoltTackle"),
   WIZARDS_BLACK_STAR_PROMOS_NG(111, "WBSP", "gen1.WizardsBlackStarPromosNG"),
+  SHINY_STAR_V(1012, "JS5", "gen8.ShinyStarV"),
 
   ;
 
