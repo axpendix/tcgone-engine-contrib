@@ -1,5 +1,6 @@
-package tcgwars.logic.impl.gen3;
+package tcgwars.logic.impl.gen3
 
+import tcgwars.logic.effect.ability.custom.Safeguard;
 import tcgwars.logic.impl.gen1.FossilNG;
 import tcgwars.logic.impl.gen2.Expedition;
 import tcgwars.logic.impl.gen2.Aquapolis;
@@ -722,26 +723,11 @@ public enum PowerKeepers implements LogicCardInfo {
       case NINETALES_19:
       return evolution (this, from:"Vulpix", hp:HP070, type:R, retreatCost:1) {
         weakness W
+
+        // TODO: Replace with a static for Pokémon-ex and/or change static safeguard so it's configurable.
+        thisCard.addAbility new Safeguard("Prevent all effects of attacks, including damage, done to Ninetales by your opponents Pokémon-ex.")
         pokeBody "Safeguard", {
           text "Prevent all effects of attacks, including damage, done to Ninetales by your opponent's Pokémon-ex."
-          delayedA {
-            before null, self, Source.ATTACK, {
-              if (self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
-                bc "Safeguard prevents effect"
-                prevent()
-              }
-            }
-            before APPLY_ATTACK_DAMAGES, {
-              if (ef.attacker.owner != self.owner && ef.attacker.EX) {
-                bg.dm().each {
-                  if(it.to == self && it.notNoEffect && it.dmg.value) {
-                    it.dmg = hp(0)
-                    bc "Safeguard prevents damage"
-                  }
-                }
-              }
-            }
-          }
         }
         move "Quick Attack", {
           text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 20 more damage."
@@ -873,26 +859,11 @@ public enum PowerKeepers implements LogicCardInfo {
       case WOBBUFFET_24:
       return basic (this, hp:HP080, type:P, retreatCost:2) {
         weakness P
+
+        // TODO: Replace with a static for Pokémon-ex and/or change static safeguard so it's configurable.
+        thisCard.addAbility new Safeguard("Prevent all effects of attacks, including damage, done to Wobbuffet by your opponents Pokémon-ex.")
         pokeBody "Safeguard", {
           text "Prevent all effects of attacks, including damage, done to Wobbuffet by your opponent's Pokémon-ex."
-          delayedA {
-            before null, self, Source.ATTACK, {
-              if (self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
-                bc "Safeguard prevents effect"
-                prevent()
-              }
-            }
-            before APPLY_ATTACK_DAMAGES, {
-              if (ef.attacker.EX) {
-                bg.dm().each {
-                  if(it.to == self && it.dmg.value && it.notNoEffect) {
-                    it.dmg = hp(0)
-                    bc "Safeguard prevents damage"
-                  }
-                }
-              }
-            }
-          }
         }
         move "Flip Over", {
           text "50 damage. Wobbuffet does 10 damage to itself, and don't apply Weakness and Resistance to this damage."

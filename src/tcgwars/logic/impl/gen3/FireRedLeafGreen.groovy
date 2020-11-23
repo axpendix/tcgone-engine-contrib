@@ -1,5 +1,6 @@
-package tcgwars.logic.impl.gen3;
+package tcgwars.logic.impl.gen3
 
+import tcgwars.logic.effect.ability.custom.Safeguard;
 import tcgwars.logic.impl.gen2.Expedition;
 
 import tcgwars.logic.effect.gm.Attack
@@ -259,9 +260,11 @@ public enum FireRedLeafGreen implements LogicCardInfo {
       case DEWGONG_3:
         return evolution (this, from:"Seel", hp:HP080, type:WATER, retreatCost:2) {
           weakness METAL
+
+          // TODO: Replace with a static for Pokémon-ex and/or change static safeguard so it's configurable.
+          thisCard.addAbility new Safeguard("Prevent all effects of attacks, including damage, done to Dewgong by your opponents Pokémon-ex.")
           pokeBody "Safeguard", {
             text "Prevent all effects of attacks, including damage, done to Dewgong by your opponent’s Pokémon-ex."
-            safeguard(self,delegate)
           }
           move "Cold Breath", {
             text "10 damage. The Defending Pokémon is now Asleep."

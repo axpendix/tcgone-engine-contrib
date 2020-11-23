@@ -1,5 +1,6 @@
-package tcgwars.logic.impl.gen3;
+package tcgwars.logic.impl.gen3
 
+import tcgwars.logic.effect.ability.custom.Safeguard;
 import tcgwars.logic.impl.gen1.FossilNG;
 import tcgwars.logic.impl.gen6.Xy;
 import tcgwars.logic.impl.gen7.CelestialStorm;
@@ -2615,24 +2616,11 @@ public enum LegendMaker implements LogicCardInfo {
       return evolution (this, from:"Cascoon", hp:HP140, type:G, retreatCost:1) {
         weakness R
         weakness P
+
+        // TODO: Replace with a static for Pokémon-ex and/or change static safeguard so it's configurable.
+        thisCard.addAbility new Safeguard("Prevent all effects of attacks, including damage, done to Dustox by your opponents Pokémon-ex.")
         pokeBody "Safeguard", {
           text "Prevent all effects of attacks, including damage, done to Dustox ex by your opponent's Pokémon-ex."
-          delayedA {
-            before null, self, Source.ATTACK, {
-              if (self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
-                bc "Safeguard prevents effect"
-                prevent()
-              }
-            }
-            before APPLY_ATTACK_DAMAGES, {
-              bg.dm().each {
-                if(it.to == self && it.from.EX && it.notNoEffect && it.dmg.value ) {
-                  it.dmg = hp(0)
-                  bc "Safeguard prevents damage"
-                }
-              }
-            }
-          }
         }
         move "Silver Wind", {
           text "40 damage. During your next turn, if an attack does damage to the Defending Pokémon (after applying Weakness and Resistance), that attack does 30 more damage."

@@ -1,4 +1,6 @@
-package tcgwars.logic.impl.gen3;
+package tcgwars.logic.impl.gen3
+
+import tcgwars.logic.effect.ability.custom.Safeguard;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -191,25 +193,11 @@ public enum Deoxys implements LogicCardInfo {
         return evolution (this, from:"Swablu", hp:HP070, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
           resistance FIGHTING, MINUS30
+
+          // TODO: Replace with a static for Pokémon-ex and/or change static safeguard so it's configurable.
+          thisCard.addAbility new Safeguard("Prevent all effects of attacks, including damage, done to Altaria by your opponents Pokémon-ex.")
           pokeBody "Safeguard", {
             text "Prevent all effects of attacks, including damage, done to Altaria by your opponent’s Pokémon-ex."
-            //TODO: Change static safeguard so it's configurable.
-            delayedA {
-              before null, self, Source.ATTACK, {
-                if (self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
-                  bc "Safeguard prevents effect"
-                  prevent()
-                }
-              }
-              before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if(it.to == self && it.notNoEffect && it.from.EX ) {
-                    it.dmg = hp(0)
-                    bc "Safeguard prevents damage"
-                  }
-                }
-              }
-            }
           }
           move "Double Wing Attack", {
             text "Does 20 Damage to each Defending Pokémon."

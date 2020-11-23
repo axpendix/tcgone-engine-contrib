@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen3
 
+import tcgwars.logic.effect.ability.custom.Safeguard
 import tcgwars.logic.impl.gen3.Deoxys;
 import tcgwars.logic.impl.gen3.Emerald;
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
@@ -203,24 +204,11 @@ public enum CrystalGuardians implements LogicCardInfo {
       return evolution (this, from:"Shuppet", hp:HP070, type:P, retreatCost:1) {
         weakness D
         resistance F, MINUS30
+
+        // TODO: Replace with a static for Pokémon-ex and/or change static safeguard so it's configurable.
+        thisCard.addAbility new Safeguard("Prevent all effects of attacks, including damage, done to Banette by your opponents Pokémon-ex.")
         pokeBody "Safeguard", {
           text "Prevent all effects of attacks, including damage, done to Banette by your opponent's Pokémon-ex."
-          delayedA {
-            before null, self, Source.ATTACK, {
-              if (self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
-                bc "Safeguard prevents effect"
-                prevent()
-              }
-            }
-            before APPLY_ATTACK_DAMAGES, {
-              bg.dm().each {
-                if(it.to == self && it.notNoEffect && it.from.EX ) {
-                  it.dmg = hp(0)
-                  bc "Safeguard prevents damage"
-                }
-              }
-            }
-          }
         }
         move "Night Murmurs", {
           text "30 damage. If the Defending Pokémon is a Basic Pokémon, that Pokémon is now Confused."
