@@ -1179,9 +1179,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           delayedA {
             // FIXME: Figure out the best way to deal with unsourced effects from Special Energy
             //  also applicable to LIGHT_DRAGONITE NeoDestiny Miraculous Wind
-            bc "$thisAbility is not fully implemented yet and my not work as intended."
             before null, null, SRC_SPENERGY, {
-              bc "$thisAbility"
               prevent()
             }
           }
