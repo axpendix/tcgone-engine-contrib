@@ -2167,8 +2167,10 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           eff = delayed {
             before null, self, ATTACK, {
               if (self.types.contains(W) && ef.effectType != DAMAGE && bg.currentTurn == self.owner.opposite) {
-                bc "$thisCard prevents effect"
-                prevent()
+                targeted self, SRC_SPENERGY, {
+                  bc "$thisCard prevents effect"
+                  prevent()
+                }
               }
             }
           }
@@ -2188,7 +2190,11 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         def eff
         onPlay {reason->
           eff = getter GET_WEAKNESSES, self, { holder ->
-            if(self.types.contains(M)) holder.object.clear()
+            if (self.types.contains(M)) {
+              targeted self, SRC_SPENERGY, {
+                holder.object.clear()
+              }
+            }
           }
         }
         onRemoveFromPlay {

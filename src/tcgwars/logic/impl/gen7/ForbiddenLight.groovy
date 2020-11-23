@@ -2831,8 +2831,10 @@ public enum ForbiddenLight implements LogicCardInfo {
               after PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each{
                   if(it.from == self && it.to.active && it.to.owner != self.owner && self.topPokemonCard.cardTypes.is(ULTRA_BEAST) && it.dmg.value) {
-                    bc "Beast Energy +30"
-                    it.dmg += hp(30)
+                    targeted self, SRC_SPENERGY, {
+                      bc "Beast Energy +30"
+                      it.dmg += hp(30)
+                    }
                   }
                 }
               }
@@ -2840,8 +2842,6 @@ public enum ForbiddenLight implements LogicCardInfo {
           }
           onRemoveFromPlay {
             eff.unregister()
-          }
-          onMove {to->
           }
           getEnergyTypesOverride{
             if(self != null && self.topPokemonCard.cardTypes.is(ULTRA_BEAST)) {
@@ -2857,8 +2857,6 @@ public enum ForbiddenLight implements LogicCardInfo {
           text "This card provides [C] Energy.\nWhile this card is attached to a Pokémon, it provides [F], [D], and [Y] Energy but provides only 1 Energy at a time."
           // TODO: Request appropriate typeImageOverride be added
           onPlay {reason->
-          }
-          onRemoveFromPlay {
           }
           getEnergyTypesOverride {
             self != null ? [[F,D,Y] as Set] : [[C] as Set]

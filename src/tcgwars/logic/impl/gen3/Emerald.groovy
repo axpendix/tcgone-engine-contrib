@@ -1824,10 +1824,13 @@ public enum Emerald implements LogicCardInfo {
           onPlay {reason->
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
-                if (self.types.contains(D) || self.topPokemonCard.name.contains("Dark ")){
-                  bg.dm().each(){
-                    if(it.from == self && it.to.active && it.to.owner != self.owner && it.dmg.value) {
-                      it.dmg += hp(10)
+                if (self.types.contains(D) || self.topPokemonCard.name.contains("Dark ")) {
+                  bg.dm().each() {
+                    if (it.from == self && it.to.active && it.to.owner != self.owner && it.dmg.value) {
+                      targeted self, Source.SRC_SPENERGY, {
+                        bc "Darkness Energy +10"
+                        it.dmg += hp(10)
+                      }
                     }
                   }
                 }
@@ -1845,22 +1848,29 @@ public enum Emerald implements LogicCardInfo {
           //TODO: Check non-groovy prints, see if they properly reduce damage before W/R (pre-errata they did so after W/R)
           def eff
           def check = {
-            if(!it.evolution || it.EX){discard thisCard}
+            if (!it.evolution || it.EX) {
+              targeted null, Source.SRC_SPENERGY, {
+                discard thisCard
+              }
+            }
           }
           typeImagesOverride = [RAINBOW, RAINBOW]
-          onPlay {reason->
+          onPlay { reason ->
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
-                if(ef.attacker == self) bg.dm().each {
-                  if(it.to.owner != self.owner && it.dmg.value) {
-                    bc "Double Rainbow Energy -10"
-                    it.dmg -= hp(10)
+                if (ef.attacker == self) bg.dm().each {
+                  if (it.to.owner != self.owner && it.dmg.value) {
+                    targeted self, Source.SRC_SPENERGY, {
+                      bc "Double Rainbow Energy -10"
+                      it.dmg -= hp(10)
+                    }
                   }
                 }
               }
-              after EVOLVE, self, {check(self)}
-              after DEVOLVE, self, {check(self)}
-              after ATTACH_ENERGY, self, {check(self)}
+              after EVOLVE, self, { check(self) }
+              after DEVOLVE, self, { check(self) }
+              after ATTACH_ENERGY, self, { check(self) }
+              after CHECK_ABILITIES, { check(self) }
             }
           }
           onRemoveFromPlay {

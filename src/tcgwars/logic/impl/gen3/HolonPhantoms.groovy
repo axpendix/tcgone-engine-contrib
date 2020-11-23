@@ -2307,8 +2307,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         text "δ Rainbow Energy provides [C] Energy. While attached to a Pokémon that has δ on its card, δ Rainbow Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.)"
         onPlay {reason->
         }
-        onRemoveFromPlay {
-        }
         getEnergyTypesOverride {
           if (!self || !self.topPokemonCard)
             return [[C] as Set]

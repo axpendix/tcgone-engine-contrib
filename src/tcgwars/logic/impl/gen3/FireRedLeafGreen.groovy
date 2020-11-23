@@ -2454,10 +2454,6 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           text "Attach Multi Energy to 1 of your Pokémon. While in play, Multi Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.) Multi Energy provides [C] Energy when attached to a Pokémon that already has Special Energy cards attached to it."
           onPlay {reason->
           }
-          onRemoveFromPlay {
-          }
-          onMove {to->
-          }
           getEnergyTypesOverride{
             if(self == null || self.cards.filterByType(SPECIAL_ENERGY).size() > 1) {
               return [[C] as Set]

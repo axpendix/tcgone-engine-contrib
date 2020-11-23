@@ -1,4 +1,6 @@
-package tcgwars.logic.impl.gen4;
+package tcgwars.logic.impl.gen4
+
+import tcgwars.logic.impl.gen7.CelestialStorm;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -2689,17 +2691,7 @@ public enum Platinum implements LogicCardInfo {
           }
         };
       case RAINBOW_ENERGY_121:
-        return specialEnergy (this, [[C]]) {
-          text "Attach Rainbow Energy to 1 of your Pokémon. While in play, Rainbow Energy counts as every type of basic Energy but provides only 1 Energy at a time. (doesn’t count as a energy card when not in play.) When you attach this card from your hand to 1 of your Pokémon, it does 10 damage to that Pokémon.(don’t apply Weakness and Resistance.)"
-          onPlay {reason->
-          }
-          onRemoveFromPlay {
-          }
-          onMove {to->
-          }
-          allowAttach {to->
-          }
-        };
+        return copy (CelestialStorm.RAINBOW_ENERGY_151, this)
       case DIALGA_G_LV_X_122:
         return levelUp (this, from:"Dialga G", hp:HP120, type:METAL, retreatCost:2) {
           weakness R

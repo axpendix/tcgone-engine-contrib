@@ -4132,7 +4132,9 @@ public enum DarknessAblaze implements LogicCardInfo {
         def getterRegister = {
           eff1 = getter (GET_FULL_HP, self) {h->
             if (self.types.contains(R)) {
-              h.object += hp(20)
+              targeted self, SRC_SPENERGY, {
+                h.object += hp(20)
+              }
             }
           }
         }
@@ -4161,7 +4163,9 @@ public enum DarknessAblaze implements LogicCardInfo {
         onPlay { reason->
           eff = getter (GET_RETREAT_COST, BEFORE_LAST, self) {h->
             if (self.types.contains(D)) {
-              h.object = 0
+              targeted self, SRC_SPENERGY, {
+                h.object = 0
+              }
             }
           }
         }
@@ -4182,8 +4186,10 @@ public enum DarknessAblaze implements LogicCardInfo {
             after PROCESS_ATTACK_EFFECTS, {
               bg.dm().each{
                 if(it.from == self && it.to.active && it.to.owner != self.owner && self.types.contains(C) && it.dmg.value) {
-                  bc "Powerful [C] Energy +20"
-                  it.dmg += hp(20)
+                  targeted self, SRC_SPENERGY, {
+                    bc "Powerful [C] Energy +20"
+                    it.dmg += hp(20)
+                  }
                 }
               }
             }

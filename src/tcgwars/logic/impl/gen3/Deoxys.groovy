@@ -2500,22 +2500,34 @@ public enum Deoxys implements LogicCardInfo {
         return specialEnergy (this, [[C],[C],[C]]) {
           text "Boost Energy can be attached only to an Evolved Pokémon. Discard Boost Energy at the end of the turn it was attached. Boost Energy provides [C][C][C] Energy. The Pokémon Boost Energy is attached to can’t retreat. If the Pokémon Boost Energy is attached to isn’t an Evolved Pokémon, discard Boost Energy."
           def eff
+          def turnCount
           def check = {
-            if(!it.evolution){discard thisCard}
+            if (!it.evolution) {
+              targeted null, SRC_SPENERGY, {
+                discard thisCard
+              }
+            }
           }
-          onPlay {reason->
+          onPlay { reason ->
+            turnCount = bg.turnCount
             eff = delayed {
               before RETREAT, self, {
-                wcu "$self can't retreat due to having Boost Energy attached."
-                prevent()
+                targeted self, SRC_SPENERGY, {
+                  wcu "$self can't retreat due to having Boost Energy attached."
+                  prevent()
+                }
               }
               before BETWEEN_TURNS, {
-                discard thisCard
-                unregister()
+                if (turnCount == bg.turnCount) {
+                  targeted null, SRC_SPENERGY, {
+                    discard thisCard
+                  }
+                }
               }
-              after EVOLVE, self, {check(self)}
-              after DEVOLVE, self, {check(self)}
-              after ATTACH_ENERGY, self, {check(self)}
+              after EVOLVE, self, { check(self) }
+              after DEVOLVE, self, { check(self) }
+              after ATTACH_ENERGY, self, { check(self) }
+              after CHECK_ABILITIES, { check(self) }
             }
           }
           onRemoveFromPlay {
@@ -2531,10 +2543,10 @@ public enum Deoxys implements LogicCardInfo {
       case HEAL_ENERGY_94:
         return specialEnergy (this, [[C]]) {
           text "Heal Energy provides [C] Energy. When you attach this card from your hand to 1 of your Pokémon, remove 1 damage counter and all Special Conditions from that Pokémon. If heal Energy is attached to Pokémon-ex, Heal Energy has no effect other than providing Energy."
-          onPlay {reason->
-            if(!self.EX && reason == PLAY_FROM_HAND){
-              heal (10, self, SRC_SPENERGY)
-              clearSpecialCondition(self)
+          onPlay { reason ->
+            if (!self.EX && reason == PLAY_FROM_HAND) {
+              heal(10, self, SRC_SPENERGY)
+              clearSpecialCondition(self, SRC_SPENERGY)
             }
           }
           onRemoveFromPlay {
@@ -2545,13 +2557,18 @@ public enum Deoxys implements LogicCardInfo {
           text "Scramble Energy can be attached only to an Evolved Pokémon (excluding Pokémon-ex). Scramble Energy provides [C] Energy. While in play, if you have more prizes left than your opponent, Scramble Energy provides every type of Energy but provides only 3 in any combination at a time. If the Pokémon Scramble Energy is attached to isn’t an Evolved Pokémon (or evolves into Pokémon-ex), discard Scramble Energy."
           def eff
           def check = {
-            if(!it.evolution || it.EX){discard thisCard}
+            if (!it.evolution || it.EX) {
+              targeted null, SRC_SPENERGY, {
+                discard thisCard
+              }
+            }
           }
           onPlay {reason->
             eff = delayed {
-              after EVOLVE, self, {check(self)}
-              after DEVOLVE, self, {check(self)}
-              after ATTACH_ENERGY, self, {check(self)}
+              after EVOLVE, self, { check(self) }
+              after DEVOLVE, self, { check(self) }
+              after ATTACH_ENERGY, self, { check(self) }
+              after CHECK_ABILITIES, { check(self) }
             }
           }
           onRemoveFromPlay {

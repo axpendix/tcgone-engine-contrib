@@ -1,5 +1,6 @@
-package tcgwars.logic.impl.gen4;
+package tcgwars.logic.impl.gen4
 
+import tcgwars.logic.impl.gen1.BaseSet;
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen3.TeamRocketReturns;
 import tcgwars.logic.impl.gen5.BlackWhite;
@@ -2179,10 +2180,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
       case SWITCH_102:
         return copy (FireRedLeafGreen.SWITCH_102, this)
       case DOUBLE_COLORLESS_ENERGY_103:
-        return specialEnergy (this, [[C],[C]]) {
-          text "Double Colorless Energy Provides 2 Colorless Energy."
-          onPlay {}
-        };
+        return copy (BaseSet.DOUBLE_COLORLESS_ENERGY, this)
       case RAINBOW_ENERGY_104:
         return copy (CelestialStorm.RAINBOW_ENERGY_151, this)
       case AMPHAROS_105:

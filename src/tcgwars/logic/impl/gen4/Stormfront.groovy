@@ -1,4 +1,7 @@
-package tcgwars.logic.impl.gen4;
+package tcgwars.logic.impl.gen4
+
+import tcgwars.logic.impl.gen2.Aquapolis
+import tcgwars.logic.impl.gen3.UnseenForces;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -2245,29 +2248,9 @@ public enum Stormfront implements LogicCardInfo {
           }
         };
       case CYCLONE_ENERGY_94:
-        return specialEnergy (this, [[C]]) {
-          text "Cyclone Energy provides [C] Energy. When you attach this card from your hand to your Active Pokémon, switch 1 of the Defending Pokémon with 1 of your opponent’s Benched Pokémon. Your opponent chooses the Benched Pokémon to switch."
-          onPlay {reason->
-          }
-          onRemoveFromPlay {
-          }
-          onMove {to->
-          }
-          allowAttach {to->
-          }
-        };
+        return copy (UnseenForces.CYCLONE_ENERGY_99, this)
       case WARP_ENERGY_95:
-        return specialEnergy (this, [[C]]) {
-          text "Warp Energy provides [C] Energy. When you attach this card from your hand to your Active Pokémon, switch that Pokémon with 1 of your Benched Pokémon."
-          onPlay {reason->
-          }
-          onRemoveFromPlay {
-          }
-          onMove {to->
-          }
-          allowAttach {to->
-          }
-        };
+        return copy (Aquapolis.WARP_ENERGY_147, this)
       case DUSKNOIR_LV_X_96:
         return levelUp (this, from:"Dusknoir", hp:HP140, type:PSYCHIC, retreatCost:3) {
           weakness D
