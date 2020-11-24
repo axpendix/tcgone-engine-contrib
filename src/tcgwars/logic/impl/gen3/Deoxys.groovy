@@ -1535,7 +1535,7 @@ public enum Deoxys implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if(it.to == self && self.cards.energyCount(P)) {
+                  if(it.to == self && self.cards.energyCount(P) && it.notNoEffect) {
                     bc "Core Guard -10"
                     it.dmg -= hp(10)
                   }
