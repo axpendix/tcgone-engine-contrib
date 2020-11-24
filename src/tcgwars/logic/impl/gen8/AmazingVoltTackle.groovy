@@ -251,6 +251,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             def oldImpl = null
             def newImpl = null
             before PLAY_CARD, {
+              playedFromOppHand = false
               if (self.owner.opposite.pbg.hand.contains(ef.cardToPlay)) playedFromOppHand = true
             }
             before PLAY_TRAINER, {
