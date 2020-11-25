@@ -2436,10 +2436,6 @@ public enum CrimsonInvasion implements LogicCardInfo {
           text "This card provides [C] Energy.\nIf you have more Prize cards remaining than your opponent, and if this card is attached to a Pokémon that isn't a Pokémon-GX or Pokémon-EX, this card provides every type of Energy but provides only 2 Energy at a time"
           onPlay {reason->
           }
-          onRemoveFromPlay {
-          }
-          onMove {to->
-          }
           getEnergyTypesOverride{
             if(self && !self.pokemonGX && !self.pokemonEX && self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size()) {
               return [[R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set]

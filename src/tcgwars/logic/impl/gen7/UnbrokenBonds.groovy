@@ -4491,17 +4491,28 @@ public enum UnbrokenBonds implements LogicCardInfo {
             "This card provides [C][C][C] Energy only while it is attached to an Evolution Pokémon." +
             "If this card is attached to anything other than an Evolution Pokémon, discard this card."
           def eff
+          def turnCount
           def check = {
-            if (!it.realEvolution) discard thisCard
-          }
-          onPlay {reason->
-            eff = delayed (priority: BEFORE_LAST) {
-              before BETWEEN_TURNS, {
+            if (!it.realEvolution) {
+              targeted null, SRC_SPENERGY, {
                 discard thisCard
               }
-              after EVOLVE, self, {check(self)}
-              after DEVOLVE, self, {check(self)}
-              after ATTACH_ENERGY, self, {check(self)}
+            }
+          }
+          onPlay {reason->
+            turnCount = bg.turnCount
+            eff = delayed (priority: BEFORE_LAST) {
+              before BETWEEN_TURNS, {
+                if (bg.turnCount == turnCount) {
+                  targeted null, SRC_SPENERGY, {
+                    discard thisCard
+                  }
+                }
+              }
+              after EVOLVE, self, { check(self) }
+              after DEVOLVE, self, { check(self) }
+              after ATTACH_ENERGY, self, { check(self) }
+              after CHECK_ABILITIES, { check(self) } // Miraculous Wind (LIGHT_DRAGONITE_14) and Spectral Breach (DUSKNOIR_45)
             }
             check(self)
           }

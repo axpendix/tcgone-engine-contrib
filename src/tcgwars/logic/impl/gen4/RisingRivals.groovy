@@ -1,5 +1,6 @@
-package tcgwars.logic.impl.gen4;
+package tcgwars.logic.impl.gen4
 
+import tcgwars.logic.impl.gen3.RubySapphire;
 import tcgwars.logic.impl.gen4.MysteriousTreasures
 import tcgwars.logic.impl.gen7.CelestialStorm;
 
@@ -2269,17 +2270,7 @@ public enum RisingRivals implements LogicCardInfo {
       case DARKNESS_ENERGY_99:
         return copy (MysteriousTreasures.DARKNESS_ENERGY_119, this);
       case METAL_ENERGY_100:
-        return specialEnergy (this, [[C]]) {
-          text "Damage done by attacks to the Pokémon that Metal Energy is attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the Pokémon that Metal Energy is attached to isn’t [M]. Metal Energy provides [M] Energy. (Doesn’t count as a basic Energy card.)"
-          onPlay {reason->
-          }
-          onRemoveFromPlay {
-          }
-          onMove {to->
-          }
-          allowAttach {to->
-          }
-        };
+        return copy (RubySapphire.METAL_ENERGY_94, this)
       case SP_ENERGY_101:
         return specialEnergy (this, [[C]]) {
           text "SP Energy provides [C] Energy. While attached to a Pokémon SP, SP Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.)"

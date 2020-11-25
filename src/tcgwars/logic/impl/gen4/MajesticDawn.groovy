@@ -1,6 +1,9 @@
 package tcgwars.logic.impl.gen4
 
-import tcgwars.logic.impl.gen3.FireRedLeafGreen;
+import tcgwars.logic.Action
+import tcgwars.logic.effect.Source
+import tcgwars.logic.impl.gen3.FireRedLeafGreen
+import tcgwars.logic.impl.gen3.RubySapphire;
 import tcgwars.logic.impl.gen4.MysteriousTreasures;
 import tcgwars.logic.impl.gen5.PlasmaStorm;
 
@@ -2026,22 +2029,25 @@ public enum MajesticDawn implements LogicCardInfo {
               assert my.bench.notFull : "Bench full"
               assert my.deck : "Your deck is empty!"
               bc "Used Call Energy effect"
-              int count = bench.freeBenchCount>=2?2:1
-              my.deck.search (max: count,"Search your deck for up to 2 Basic Pokémon and put them onto your Bench", cardTypeFilter(BASIC)).each {
-                benchPCS(it)
+              targeted null, Source.SRC_SPENERGY, {
+                int count = bench.freeBenchCount >= 2 ? 2 : 1
+                my.deck.search(max: count, "Search your deck for up to 2 Basic Pokémon and put them onto your Bench", cardTypeFilter(BASIC)).each {
+                  benchPCS(it)
+                }
+                shuffleDeck()
+                bg.gm().betweenTurns()
               }
-              shuffleDeck()
-              bg.gm().betweenTurns()
             }
           }
           onRemoveFromPlay {
-            actions.each { bg().gm().unregisterAction(it) }
+            actions.each { bg().gm().unregisterAction(it as Action) }
           }
         };
       case DARKNESS_ENERGY_93:
         return copy (MysteriousTreasures.DARKNESS_ENERGY_119, this);
       case HEALTH_ENERGY_94:
         return specialEnergy (this, [[C]]) {
+          // TODO: Is this just Potion Energy?
           text "Health Energy provides [C] Energy. When you attach this card from your hand to 1 of your Pokémon, remove 1 damage counter from that Pokémon."
           onPlay {reason->
           }
@@ -2053,18 +2059,9 @@ public enum MajesticDawn implements LogicCardInfo {
           }
         };
       case METAL_ENERGY_95:
-        return specialEnergy (this, [[C]]) {
-          text "Damage done by attacks to the Pokémon that Metal Energy is attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the Pokémon that Metal Energy is attached to isn’t [M]. Metal Energy provides [M] Energy. (Doesn’t count as a basic Energy card.)"
-          onPlay {reason->
-          }
-          onRemoveFromPlay {
-          }
-          onMove {to->
-          }
-          allowAttach {to->
-          }
-        };
+        return copy (RubySapphire.METAL_ENERGY_94, this)
       case RECOVER_ENERGY_96:
+        // TODO: Is this just Full Heal Energy?
         return specialEnergy (this, [[C]]) {
           text "Recover Energy provides [C] Energy. When you attach this card from your hand to 1 of your Pokémon, remove all Special Conditions from that Pokémon."
           onPlay {reason->

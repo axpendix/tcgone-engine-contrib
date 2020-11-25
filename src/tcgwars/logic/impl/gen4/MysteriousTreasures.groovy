@@ -3434,7 +3434,10 @@ public enum MysteriousTreasures implements LogicCardInfo {
                   bg.dm().each(){
                     //Self damage appears to be increased as well, similar to PlusPower
                     if(it.to.active && it.dmg.value) {
-                      it.dmg += hp(10)
+                      targeted self, SRC_SPENERGY, {
+                        bc "Darkness Energy +10"
+                        it.dmg += hp(10)
+                      }
                     }
                   }
                 }

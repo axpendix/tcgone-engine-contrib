@@ -3173,8 +3173,6 @@ public enum UltraPrism implements LogicCardInfo {
             "While this card is attached to a Stage 2 Pokémon, it provides every type of Energy but provides only 1 Energy at a time. If you have 3 or more Stage 2 Pokémon in play, it provides every type of Energy but provides 4 Energy at a time."
           onPlay {reason->
           }
-          onRemoveFromPlay {
-          }
           getEnergyTypesOverride {
             if(!self || !self.topPokemonCard)
               return [[C] as Set]
@@ -3198,8 +3196,6 @@ public enum UltraPrism implements LogicCardInfo {
           // TODO: Request appropriate typeImageOverride be added
           onPlay {reason->
           }
-          onRemoveFromPlay {
-          }
           getEnergyTypesOverride {
             self != null ? [[G,R,W] as Set] : [[C] as Set]
           }
@@ -3209,8 +3205,6 @@ public enum UltraPrism implements LogicCardInfo {
           text "This card provides [C] Energy.\n While this card is attached to a Pokémon, it provides [L], [P], and [M] Energy but provides only 1 Energy at a time."
           // TODO: Request appropriate typeImageOverride be added
           onPlay {reason->
-          }
-          onRemoveFromPlay {
           }
           getEnergyTypesOverride {
             self != null ? [[L,P,M] as Set] : [[C] as Set]

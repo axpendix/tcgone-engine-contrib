@@ -4471,9 +4471,11 @@ public enum LostThunder implements LogicCardInfo {
           def eff
           onPlay {reason->
             eff = getter (GET_MOVE_LIST,self) {holder->
-              for(card in holder.effect.target.cards.filterByType(POKEMON)){
-                if(card!=holder.effect.target.topPokemonCard){
-                  holder.object.addAll(card.moves)
+              targeted self, SRC_SPENERGY, {
+                for (card in holder.effect.target.cards.filterByType(POKEMON)) {
+                  if (card != holder.effect.target.topPokemonCard) {
+                    holder.object.addAll(card.moves)
+                  }
                 }
               }
             }

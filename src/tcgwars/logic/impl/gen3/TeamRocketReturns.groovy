@@ -2464,8 +2464,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           // TODO: Request appropriate typeImageOverride be added
           onPlay {reason->
           }
-          onRemoveFromPlay {
-          }
           getEnergyTypesOverride {
             if (self) return [[D, M] as Set]
             else return [[] as Set]
@@ -2475,25 +2473,38 @@ public enum TeamRocketReturns implements LogicCardInfo {
         return specialEnergy (this, [[]]) {
           text "R Energy can be attached only to a Pokémon that have Dark or Rocket’s in its name. While in play, R Energy provides 2 [D] Energy. (Doesn’t count as a basic Energy card.) If the Pokémon R Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). When your turn ends, discard R Energy."
           def eff
+          def turnCount
           def check = {
-            if(!(it.name.contains("Dark ") || it.name.contains("Rocket's "))){discard thisCard}
+            if (!(it.name.contains("Dark ") || it.name.contains("Rocket's "))) {
+              targeted null, SRC_SPENERGY, {
+                discard thisCard
+              }
+            }
           }
-          onPlay {reason->
+          onPlay { reason ->
+            turnCount = bg.turnCount
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each {
-                  if(it.from == self && it.to.active && it.notNoEffect && it.dmg.value){
-                    bc "R Energy +10"
-                    it.dmg += hp(10)
+                  if (it.from == self && it.to.active && it.notNoEffect && it.dmg.value) {
+                    targeted self, SRC_SPENERGY, {
+                      bc "R Energy +10"
+                      it.dmg += hp(10)
+                    }
                   }
                 }
               }
               before BETWEEN_TURNS, {
-                discard thisCard
+                if (bg.turnCount == turnCount) {
+                  targeted null, SRC_SPENERGY, {
+                    discard thisCard
+                  }
+                }
               }
-              after EVOLVE, self, {check(self)}
-              after DEVOLVE, self, {check(self)}
-              after ATTACH_ENERGY, self, {check(self)}
+              after EVOLVE, self, { check(self) }
+              after DEVOLVE, self, { check(self) }
+              after ATTACH_ENERGY, self, { check(self) }
+              after CHECK_ABILITIES, { check(self) }
             }
           }
           onRemoveFromPlay {
