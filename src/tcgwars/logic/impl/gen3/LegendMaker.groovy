@@ -2619,9 +2619,6 @@ public enum LegendMaker implements LogicCardInfo {
 
         // TODO: Replace with a static for Pokémon-ex and/or change static safeguard so it's configurable.
         thisCard.addAbility new Safeguard("Prevent all effects of attacks, including damage, done to Dustox by your opponents Pokémon-ex.")
-        pokeBody "Safeguard", {
-          text "Prevent all effects of attacks, including damage, done to Dustox ex by your opponent's Pokémon-ex."
-        }
         move "Silver Wind", {
           text "40 damage. During your next turn, if an attack does damage to the Defending Pokémon (after applying Weakness and Resistance), that attack does 30 more damage."
           energyCost G, C

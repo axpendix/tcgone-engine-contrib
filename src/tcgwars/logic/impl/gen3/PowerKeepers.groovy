@@ -726,9 +726,6 @@ public enum PowerKeepers implements LogicCardInfo {
 
         // TODO: Replace with a static for Pokémon-ex and/or change static safeguard so it's configurable.
         thisCard.addAbility new Safeguard("Prevent all effects of attacks, including damage, done to Ninetales by your opponents Pokémon-ex.")
-        pokeBody "Safeguard", {
-          text "Prevent all effects of attacks, including damage, done to Ninetales by your opponent's Pokémon-ex."
-        }
         move "Quick Attack", {
           text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 20 more damage."
           energyCost C, C
@@ -862,9 +859,6 @@ public enum PowerKeepers implements LogicCardInfo {
 
         // TODO: Replace with a static for Pokémon-ex and/or change static safeguard so it's configurable.
         thisCard.addAbility new Safeguard("Prevent all effects of attacks, including damage, done to Wobbuffet by your opponents Pokémon-ex.")
-        pokeBody "Safeguard", {
-          text "Prevent all effects of attacks, including damage, done to Wobbuffet by your opponent's Pokémon-ex."
-        }
         move "Flip Over", {
           text "50 damage. Wobbuffet does 10 damage to itself, and don't apply Weakness and Resistance to this damage."
           energyCost P, C, C

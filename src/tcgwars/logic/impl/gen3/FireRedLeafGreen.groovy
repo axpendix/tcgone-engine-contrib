@@ -263,9 +263,6 @@ public enum FireRedLeafGreen implements LogicCardInfo {
 
           // TODO: Replace with a static for Pokémon-ex and/or change static safeguard so it's configurable.
           thisCard.addAbility new Safeguard("Prevent all effects of attacks, including damage, done to Dewgong by your opponents Pokémon-ex.")
-          pokeBody "Safeguard", {
-            text "Prevent all effects of attacks, including damage, done to Dewgong by your opponent’s Pokémon-ex."
-          }
           move "Cold Breath", {
             text "10 damage. The Defending Pokémon is now Asleep."
             energyCost W

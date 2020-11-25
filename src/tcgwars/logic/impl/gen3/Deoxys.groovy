@@ -196,9 +196,6 @@ public enum Deoxys implements LogicCardInfo {
 
           // TODO: Replace with a static for Pokémon-ex and/or change static safeguard so it's configurable.
           thisCard.addAbility new Safeguard("Prevent all effects of attacks, including damage, done to Altaria by your opponents Pokémon-ex.")
-          pokeBody "Safeguard", {
-            text "Prevent all effects of attacks, including damage, done to Altaria by your opponent’s Pokémon-ex."
-          }
           move "Double Wing Attack", {
             text "Does 20 Damage to each Defending Pokémon."
             energyCost L

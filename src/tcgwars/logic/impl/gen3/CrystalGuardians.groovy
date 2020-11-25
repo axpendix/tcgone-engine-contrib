@@ -207,9 +207,6 @@ public enum CrystalGuardians implements LogicCardInfo {
 
         // TODO: Replace with a static for Pokémon-ex and/or change static safeguard so it's configurable.
         thisCard.addAbility new Safeguard("Prevent all effects of attacks, including damage, done to Banette by your opponents Pokémon-ex.")
-        pokeBody "Safeguard", {
-          text "Prevent all effects of attacks, including damage, done to Banette by your opponent's Pokémon-ex."
-        }
         move "Night Murmurs", {
           text "30 damage. If the Defending Pokémon is a Basic Pokémon, that Pokémon is now Confused."
           energyCost P, C
