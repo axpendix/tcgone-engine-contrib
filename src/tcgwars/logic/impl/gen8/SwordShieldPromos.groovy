@@ -790,9 +790,56 @@ public enum SwordShieldPromos implements LogicCardInfo {
         }
       }
       case SPECIAL_DELIVERY_PIKACHU_SWSH74:
-      return null;
+      return basic (this, hp:HP060, type:L, retreatCost:1) {
+        weakness F
+        move "Happy Delivery", {
+          text "Search your deck for an Item card, reveal it, and put it into your hand. Then, shuffle your deck."
+          energyCost C
+          attackRequirement {
+            assert my.deck : "Deck is empty"
+          }
+          onAttack {
+            def card = my.deck.search { it.cardTypes.is(ITEM) }
+            if (!card) return
+            card.showToOpponent("Item card pulled from opponent's deck and put in their hand.")
+            card.moveTo my.hand
+            shuffleDeck()
+          }
+        }
+        move "Electro Ball", {
+          text "Damage 30."
+          energyCost L, C
+          onAttack {
+            damage 30
+          }
+        }
+      }
       case SPECIAL_DELIVERY_CHARIZARD_SWSH75:
-      return null;
+      return evolution (this, from: "Charmeleon", hp:HP160, type:R, retreatCost:3) {
+        weakness W
+        move "Happy Delivery", {
+          text "Search your deck for an Item card, reveal it, and put it into your hand. Then, shuffle your deck."
+          energyCost C
+          attackRequirement {
+            assert my.deck : "Deck is empty"
+          }
+          onAttack {
+            def cards = my.deck.search max:2, { it.cardTypes.is(ITEM) }
+            if (!cards) return
+            cards.showToOpponent("Item card pulled from opponent's deck and put in their hand.")
+            cards.moveTo my.hand
+            shuffleDeck()
+          }
+        }
+        move "Flamethrower", {
+          text "Damage 160."
+          energyCost R, R, C
+          onAttack {
+            damage 160
+            discardSelfEnergy C
+          }
+        }
+      }
       case ZACIAN_V_SWSH76:
       return copy (SwordShield.ZACIAN_V_138, this)
       case ZAMAZENTA_V_SWSH77:
