@@ -90,6 +90,11 @@ public enum SwordShieldPromos implements LogicCardInfo {
   SCORBUNNY_SWSH71 ("Scorbunny", "SWSH071", Rarity.PROMO, [POKEMON, BASIC, _FIRE_]),
   VAPOREON_SWSH72 ("Vaporeon", "SWSH072", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
   SOBBLE_SWSH73 ("Sobble", "SWSH073", Rarity.PROMO, [POKEMON, BASIC, _WATER_]),
+  SPECIAL_DELIVERY_PIKACHU_SWSH74 ("Special Delivery Pikachu", "SWSH074", Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
+  SPECIAL_DELIVERY_CHARIZARD_SWSH75 ("Special Delivery Charizard", "SWSH075", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _FIRE_]),
+  ZACIAN_V_SWSH76 ("Zacian V", "SWSH076", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _METAL_]),
+  ZAMAZENTA_V_SWSH77 ("Zamazenta V", "SWSH077", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _METAL_]),
+  ORBEETLE_V_SWSH78 ("Orbeetle V", "SWSH078", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _GRASS_]),
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -784,6 +789,16 @@ public enum SwordShieldPromos implements LogicCardInfo {
           }
         }
       }
+      case SPECIAL_DELIVERY_PIKACHU_SWSH74:
+      return null;
+      case SPECIAL_DELIVERY_CHARIZARD_SWSH75:
+      return null;
+      case ZACIAN_V_SWSH76:
+      return copy (SwordShield.ZACIAN_V_138, this)
+      case ZAMAZENTA_V_SWSH77:
+      return copy (SwordShield.ZAMAZENTA_V_139, this)
+      case ORBEETLE_V_SWSH78:
+      return copy (AmazingVoltTackle.ORBEETLE_V_8, this)
       default:
       return null;
     }
