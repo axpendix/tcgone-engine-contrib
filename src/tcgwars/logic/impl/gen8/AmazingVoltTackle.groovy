@@ -251,10 +251,11 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             def oldImpl = null
             def newImpl = null
             before PLAY_CARD, {
+              playedFromOppHand = false
               if (self.owner.opposite.pbg.hand.contains(ef.cardToPlay)) playedFromOppHand = true
             }
             before PLAY_TRAINER, {
-              if (!ef.supporter || !playedFromOppHand) return
+              if (!ef.supporter || !playedFromOppHand || !self.active) return
               oldImpl = ef.cardToPlay
               newImpl = supporter(new CustomCardInfo(ef.cardToPlay.customInfo).setCardTypes(TRAINER, SUPPORTER)) {
                 onPlay { draw 3 }
@@ -1114,9 +1115,8 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return basic (this, hp:HP030, type:P, retreatCost:1) {
         globalAbility {
           delayed {
-            def abilityUsed = false
             before PLAY_CARD, {
-              if (ef.cardToPlay == thisCard) {
+              if (ef.cardToPlay == thisCard && checkGlobalAbility(thisCard)) {
                 def abilityName = "Shell Bind"
                 wcu("$abilityName prevents playing $thisCard")
                 prevent()
