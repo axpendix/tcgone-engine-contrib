@@ -1116,7 +1116,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           delayed {
             def abilityUsed = false
             before PLAY_CARD, {
-              if (ef.cardToPlay == thisCard) {
+              if (ef.cardToPlay == thisCard && checkGlobalAbility(thisCard)) {
                 def abilityName = "Shell Bind"
                 wcu("$abilityName prevents playing $thisCard")
                 prevent()
