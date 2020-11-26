@@ -1093,28 +1093,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost R, R, C
             onAttack {
               damage 160
-              afterDamage {
-                // TODO: Make a static method to do this
-                if (self.cards.energyCount(R))
-                  if (self.cards.energyCount(R) <= 2) {
-                    self.cards.filterByEnergyType(R).moveTo my.hand
-                  } else {
-                    def targetCount = Math.min self.cards.energyCount(R), 2
-                    def finalCount = 0
-                    while (self.cards.energyCount(R) > 0 && finalCount < targetCount) {
-                      def info = "Select [R] Energy to return to your hand."
-                      def energy = self.cards.filterByType(ENERGY).select(info, energyFilter(R))
-                      def energyCount = 1
-                      if (energy.energyCount(R) > 1) {
-                        def choices = 1..energy.energyCount(R)
-                        def choiceInfo = "How many Energy do you want this card to count as?"
-                        energyCount = choose(choices, choiceInfo)
-                      }
-                      finalCount += energyCount
-                      energy.moveTo my.hand
-                    }
-                  }
-              }
+              moveSelfEnergyAfterDamage my.hand, R, R
             }
           }
           move "Massive Heat Wave GX", {

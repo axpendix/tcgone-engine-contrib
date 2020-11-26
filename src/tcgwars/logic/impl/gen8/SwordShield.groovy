@@ -753,9 +753,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost R, R, R, C
           onAttack {
             damage 120
-            afterDamage{
-              2.times{ discardDefendingEnergy() }
-            }
+            discardDefendingEnergyAfterDamage C, C
           }
         }
       };
@@ -829,7 +827,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost R, C
           onAttack {
             damage 120
-            discardSelfEnergy(C, C)
+            discardSelfEnergyAfterDamage(C, C)
           }
         }
       };
@@ -848,7 +846,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost R, R, R, C
           onAttack {
             damage 150
-            discardSelfEnergy(C, C)
+            discardSelfEnergyAfterDamage(C, C)
           }
         }
       };
@@ -860,7 +858,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost R
           onAttack {
             damage 30
-            discardSelfEnergy(C)
+            discardSelfEnergyAfterDamage(C)
           }
         }
       };
@@ -940,7 +938,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost R, R, C
           onAttack {
             damage 190
-            discardSelfEnergy(C, C)
+            discardSelfEnergyAfterDamage(C, C)
           }
         }
       };
@@ -982,7 +980,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost R, R, C
           onAttack {
             damage 160
-            flip 1, {}, { discardSelfEnergy(C, C) }
+            flip 1, {}, { discardSelfEnergyAfterDamage(C, C) }
           }
         }
       };
@@ -1156,7 +1154,10 @@ public enum SwordShield implements LogicCardInfo {
           text "Flip 3 coins. For each heads, discard an Energy from your opponent’s Active Pokémon."
           energyCost W
           onAttack {
-            flip 3, { discardDefendingEnergy() }
+            def count = 0
+            flip 3, { count++ }
+            def types = (1..count).collect {C} as Type[]
+            discardDefendingEnergyAfterDamage types
           }
         }
         move "Pierce", {
@@ -1205,28 +1206,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost W, W, W, C
           onAttack {
             damage 210
-            afterDamage {
-              // TODO: Make a static method to do this
-              if (self.cards.energyCount(W))
-                if (self.cards.energyCount(W) <= 2) {
-                  self.cards.filterByEnergyType(W).moveTo my.hand
-                } else {
-                  def targetCount = Math.min self.cards.energyCount(W), 2
-                  def finalCount = 0
-                  while (self.cards.energyCount(W) > 0 && finalCount < targetCount) {
-                    def info = "Select [W] Energy to return to your hand."
-                    def energy = self.cards.filterByType(ENERGY).select(info, energyFilter(W))
-                    def energyCount = 1
-                    if (energy.energyCount(W) > 1) {
-                      def choices = 1..energy.energyCount(W)
-                      def choiceInfo = "How many Energy do you want this card to count as?"
-                      energyCount = choose(choices, choiceInfo)
-                    }
-                    finalCount += energyCount
-                    energy.moveTo my.hand
-                  }
-                }
-            }
+            moveSelfEnergyAfterDamage my.hand, W, W
           }
         }
       };
@@ -1775,8 +1755,8 @@ public enum SwordShield implements LogicCardInfo {
           onAttack {
             damage 150
 
+            discardSelfEnergyAfterDamage C
             afterDamage {
-              discardSelfEnergy C
               if (my.bench) {
                 sw self, my.bench.select()
               }
@@ -2803,7 +2783,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost M, C
           onAttack {
             damage 40
-            discardDefendingEnergy()
+            discardDefendingEnergyAfterDamage()
           }
         }
       };
@@ -2935,7 +2915,7 @@ public enum SwordShield implements LogicCardInfo {
           onAttack {
             damage 130
             if (confirm("Discard 2 Energies to take 100 less damage next turn?")) {
-              discardSelfEnergy(C, C)
+              discardSelfEnergyAfterDamage(C, C)
 
               afterDamage {
                 delayed {
