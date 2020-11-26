@@ -186,6 +186,59 @@ class TcgStatics {
     ef.run(bg())
     ef.getList()
   }
+  /**
+   * Select energy cards attached to a {@link PokemonCardSet} using the
+   * {@link EnergySelectUIRequestBuilder Energy Select UI}
+   * @param pcs {@link PokemonCardSet} with the Energy cards to choose
+   * @param types {@link Type}s of energy to be selected. Default: C
+   * @return {@link CardList} of the selected cards, can be empty CardList
+   */
+  static CardList selectEnergy(PokemonCardSet pcs, Type...types=C) {
+    def ef = new SelectEnergy(pcs.cards, types)
+    ef.playerType = pcs.owner
+    bg.em().activateEffect(ef)
+    return ef.selectedCards ?: []
+  }
+  /**
+   * Selects Energy of specified Type from the attacking {@link PokemonCardSet} before damage, then discards it after
+   * damage. Should only be used for {@link Move}s
+   * @param types {@link Type}s of energy to be discarded. Default: C
+   */
+  static discardSelfEnergyAfterDamage(Type...types=C) {
+    def pcs = Target.YOUR_ACTIVE.getSingleTarget(bg)
+    def cards = selectEnergy(pcs, types)
+    afterDamage {
+      def de = new DiscardEnergy(cards)
+      de.source = ATTACK
+      bg.em().activateEffect(de)
+    }
+  }
+  /**
+   * Selects Energy of specified Type from the attacking {@link PokemonCardSet} before damage, then moves it to a new
+   * location after damage. Should only be used for {@link Move}s
+   * @param types {@link Type}s of energy to be moved. Default: C
+   */
+  static moveSelfEnergyAfterDamage(CardList newLocation, Type...types=C) {
+    def pcs = Target.YOUR_ACTIVE.getSingleTarget(bg)
+    def cards = selectEnergy(pcs, types)
+    afterDamage {
+      cards.moveTo newLocation
+    }
+  }
+  /**
+   * Selects Energy of specified Type from the opponent's active {@link PokemonCardSet} before damage, then discards it
+   * after damage. Should only be used for {@link Move}s
+   * @param types (optional) {@link Type}s of energy to be discarded. Default: C
+   */
+  static discardDefendingEnergyAfterDamage(Type...types=C) {
+    def pcs = Target.OPP_ACTIVE.getSingleTarget(bg)
+    def cards = selectEnergy(pcs, types)
+    afterDamage {
+      def de = new DiscardEnergy(cards)
+      de.source = ATTACK
+      bg.em().activateEffect(de)
+    }
+  }
   static CardList hand(){
     bg().ownHand()
   }
