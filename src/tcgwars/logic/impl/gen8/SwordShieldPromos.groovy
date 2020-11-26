@@ -90,6 +90,11 @@ public enum SwordShieldPromos implements LogicCardInfo {
   SCORBUNNY_SWSH71 ("Scorbunny", "SWSH071", Rarity.PROMO, [POKEMON, BASIC, _FIRE_]),
   VAPOREON_SWSH72 ("Vaporeon", "SWSH072", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
   SOBBLE_SWSH73 ("Sobble", "SWSH073", Rarity.PROMO, [POKEMON, BASIC, _WATER_]),
+  SPECIAL_DELIVERY_PIKACHU_SWSH74 ("Special Delivery Pikachu", "SWSH074", Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
+  SPECIAL_DELIVERY_CHARIZARD_SWSH75 ("Special Delivery Charizard", "SWSH075", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _FIRE_]),
+  ZACIAN_V_SWSH76 ("Zacian V", "SWSH076", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _METAL_]),
+  ZAMAZENTA_V_SWSH77 ("Zamazenta V", "SWSH077", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _METAL_]),
+  ORBEETLE_V_SWSH78 ("Orbeetle V", "SWSH078", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _GRASS_]),
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -784,6 +789,63 @@ public enum SwordShieldPromos implements LogicCardInfo {
           }
         }
       }
+      case SPECIAL_DELIVERY_PIKACHU_SWSH74:
+      return basic (this, hp:HP060, type:L, retreatCost:1) {
+        weakness F
+        move "Happy Delivery", {
+          text "Search your deck for an Item card, reveal it, and put it into your hand. Then, shuffle your deck."
+          energyCost C
+          attackRequirement {
+            assert my.deck : "Deck is empty"
+          }
+          onAttack {
+            def card = my.deck.search { it.cardTypes.is(ITEM) }
+            if (!card) return
+            card.showToOpponent("Item card pulled from opponent's deck and put in their hand.")
+            card.moveTo my.hand
+            shuffleDeck()
+          }
+        }
+        move "Electro Ball", {
+          text "Damage 30."
+          energyCost L, C
+          onAttack {
+            damage 30
+          }
+        }
+      }
+      case SPECIAL_DELIVERY_CHARIZARD_SWSH75:
+      return evolution (this, from: "Charmeleon", hp:HP160, type:R, retreatCost:3) {
+        weakness W
+        move "Happy Delivery", {
+          text "Search your deck for an Item card, reveal it, and put it into your hand. Then, shuffle your deck."
+          energyCost C
+          attackRequirement {
+            assert my.deck : "Deck is empty"
+          }
+          onAttack {
+            def cards = my.deck.search max:2, { it.cardTypes.is(ITEM) }
+            if (!cards) return
+            cards.showToOpponent("Item card pulled from opponent's deck and put in their hand.")
+            cards.moveTo my.hand
+            shuffleDeck()
+          }
+        }
+        move "Flamethrower", {
+          text "Damage 160."
+          energyCost R, R, C
+          onAttack {
+            damage 160
+            discardSelfEnergy C
+          }
+        }
+      }
+      case ZACIAN_V_SWSH76:
+      return copy (SwordShield.ZACIAN_V_138, this)
+      case ZAMAZENTA_V_SWSH77:
+      return copy (SwordShield.ZAMAZENTA_V_139, this)
+      case ORBEETLE_V_SWSH78:
+      return copy (AmazingVoltTackle.ORBEETLE_V_8, this)
       default:
       return null;
     }
