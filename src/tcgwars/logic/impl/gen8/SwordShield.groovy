@@ -3343,6 +3343,7 @@ public enum SwordShield implements LogicCardInfo {
           }
           onAttack {
             my.deck.search(min:1, max:2,"Choose 2 cards to put in your hand.",{true}).moveTo(hidden: true, my.hand)
+            shuffleDeck()
           }
         }
         move "Spit Shot", {
