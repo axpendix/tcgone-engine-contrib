@@ -263,7 +263,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               assert self.active : "Dark Crobat is not your active"
               checkLastTurn()
               powerUsed()
-              apply POISONED, self.owner.opposite.pbg.active
+              apply POISONED, self.owner.opposite.pbg.active, SRC_ABILITY
             }
           }
           move "Dark Drain", {
