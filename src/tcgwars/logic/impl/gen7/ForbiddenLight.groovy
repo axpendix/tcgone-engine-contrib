@@ -2826,12 +2826,12 @@ public enum ForbiddenLight implements LogicCardInfo {
         return specialEnergy (this, [[C]]) {
           text "♢ (Prism Star) Rule: You can’t have more than 1 ♢ card with the same name in your deck. If a ♢ card would go to the discard pile, put it in the Lost Zone instead.\nThis card provides [C] Energy.\nWhile this card is attached to an Ultra Beast, it provides every type of Energy but provides only 1 Energy at a time. The attacks of the Ultra Beast this card is attached to do 30 more damage to your opponent’s Active Pokémon (before applying Weakness and Resistance)."
           def eff
-          onPlay {reason->
+          onPlay { reason ->
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each{
-                  if(it.from == self && it.to.active && it.to.owner != self.owner && self.topPokemonCard.cardTypes.is(ULTRA_BEAST) && it.dmg.value) {
-                    targeted self, SRC_SPENERGY, {
+                bg.dm().each {
+                  targeted self, SRC_SPENERGY, {
+                    if (it.from == self && it.to.active && it.to.owner != self.owner && self.topPokemonCard.cardTypes.is(ULTRA_BEAST) && it.dmg.value) {
                       bc "Beast Energy +30"
                       it.dmg += hp(30)
                     }

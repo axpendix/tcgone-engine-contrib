@@ -1607,12 +1607,14 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           dmgRedEff = delayed {
             before APPLY_ATTACK_DAMAGES, {
               if (!(ef.attacker.owner != self.owner && self.types.contains(F))) return
-              bg.dm().each {if(it.to == self && it.dmg.value && it.notNoEffect) {
-                targeted self, SRC_SPENERGY, {
-                  bc "$thisCard.name -20"
-                  it.dmg -= hp(20)
+              targeted self, SRC_SPENERGY, {
+                bg.dm().each {
+                  if (it.to == self && it.dmg.value && it.notNoEffect) {
+                    bc "$thisCard.name -20"
+                    it.dmg -= hp(20)
+                  }
                 }
-              }}
+              }
             }
           }
         }
