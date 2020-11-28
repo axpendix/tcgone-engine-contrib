@@ -2487,9 +2487,9 @@ public enum TeamRocketReturns implements LogicCardInfo {
             turnCount = bg.turnCount
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each {
-                  if (it.from == self && it.to.active && it.notNoEffect && it.dmg.value) {
-                    targeted self, SRC_SPENERGY, {
+                targeted self, SRC_SPENERGY, {
+                  bg.dm().each {
+                    if (it.from == self && it.to.active && it.notNoEffect && it.dmg.value) {
                       bc "R Energy +10"
                       it.dmg += hp(10)
                     }

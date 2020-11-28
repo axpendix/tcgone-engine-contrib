@@ -3430,11 +3430,11 @@ public enum MysteriousTreasures implements LogicCardInfo {
           onPlay {reason->
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
-                if (ef.attacker == self && self.types.contains(D)){
-                  bg.dm().each(){
-                    //Self damage appears to be increased as well, similar to PlusPower
-                    if(it.to.active && it.dmg.value) {
-                      targeted self, SRC_SPENERGY, {
+                if (ef.attacker == self && self.types.contains(D)) {
+                  targeted self, SRC_SPENERGY, {
+                    bg.dm().each() {
+                      //Self damage appears to be increased as well, similar to PlusPower
+                      if (it.to.active && it.dmg.value) {
                         bc "Darkness Energy +10"
                         it.dmg += hp(10)
                       }

@@ -2780,9 +2780,9 @@ public enum DeltaSpecies implements LogicCardInfo {
           eff2 = delayed {
             before APPLY_ATTACK_DAMAGES, {
               if (self != null && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(L)) {
-                bg.dm().each {
-                  if (it.to == self && it.from.owner != self.owner && it.from.EX && it.dmg.value && it.notNoEffect) {
-                    targeted self, SRC_SPENERGY, {
+                targeted self, SRC_SPENERGY, {
+                  bg.dm().each {
+                    if (it.to == self && it.from.owner != self.owner && it.from.EX && it.dmg.value && it.notNoEffect) {
                       it.dmg -= hp(10)
                       bc "Holon Energy GL -10"
                     }
