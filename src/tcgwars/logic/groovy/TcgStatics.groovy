@@ -625,6 +625,8 @@ class TcgStatics {
   static whirlwind(){
     new Whirlwind(bg.oppActive()).run(bg())
   }
+
+  }
   static extraEnergyDamage (int max=2, HP perExtra, Type type, Move thisMove){
     new ExtraEnergyDamage(max, perExtra, thisMove.energyCost.toArray() as Type[], type).run(bg())
   }
@@ -1543,6 +1545,9 @@ class TcgStatics {
     /* afterDamage{
       //The switch above should happen here. But that currently causes KOs to trigger mid switch (Known bug: Submerge-like abilities will block damage that should be done prior to the switch). TODO move it here once KOs are prevented during an attack.
     } */
+  }
+  static whirlwind3(Source src = Source.ATTACK) {
+    return !(bg().em().run(new Switch(bg.oppActive(),opp.bench.oppSelect("Choose your new Active Pokémon."),src)))
   }
 
   static putDamageCountersOnOpponentsPokemon(int counters, def selectArea = opp.all, def src = Source.ATTACK){
