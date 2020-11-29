@@ -412,7 +412,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           energyCost C, C, C
           onAttack {
             damage 120
-            discardSelfEnergy C
+            discardSelfEnergyAfterDamage C
           }
         }
       };
@@ -448,7 +448,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           energyCost C, C, C
           onAttack {
             damage 60
-            flip{ afterDamage{ discardDefendingEnergy() } }
+            flip{ discardDefendingEnergyAfterDamage() }
           }
         }
         move "Metal Blade", {
@@ -457,7 +457,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           onAttack {
             damage 190
             afterDamage{
-              discardSelfEnergy(C,C,C)
+              discardSelfEnergyAfterDamage(C,C,C)
             }
           }
         }
@@ -535,10 +535,8 @@ public enum SwordShieldPromos implements LogicCardInfo {
           onAttack {
             damage 120
             if (self.cards.energyCount(C)) {
-              afterDamage {
-                discardSelfEnergy C
-              }
-              discardDefendingEnergy()
+              discardSelfEnergyAfterDamage C
+              discardDefendingEnergyAfterDamage()
             }
           }
         }

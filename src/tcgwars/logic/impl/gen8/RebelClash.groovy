@@ -740,10 +740,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 60
-
-            afterDamage {
-              flip { discardDefendingEnergy() }
-            }
+            flip { discardDefendingEnergyAfterDamage() }
           }
         }
       };
@@ -840,7 +837,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost R, C, C, C
           onAttack {
             damage 180
-            discardSelfEnergy(C)
+            discardSelfEnergyAfterDamage(C)
           }
         }
       };
@@ -1008,7 +1005,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost R, R, C
           onAttack {
             damage 120
-            discardSelfEnergy(C)
+            discardSelfEnergyAfterDamage(C)
           }
         }
       };
@@ -2515,7 +2512,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost F, F, C
           onAttack {
             damage 220
-            discardSelfEnergy(C, C)
+            discardSelfEnergyAfterDamage(C, C)
           }
         }
       };
@@ -3146,7 +3143,7 @@ public enum RebelClash implements LogicCardInfo {
           onAttack {
             damage 120
             flip 1, {}, {
-              discardSelfEnergy(C, C)
+              discardSelfEnergyAfterDamage(C, C)
             }
           }
         }
@@ -3277,7 +3274,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost C, C, C
           onAttack {
             damage 150
-            discardSelfEnergy(C)
+            discardSelfEnergyAfterDamage(C)
           }
         }
       };

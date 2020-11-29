@@ -535,7 +535,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           energyCost R, R, C, C
           onAttack {
             damage 180
-            discardSelfEnergy C, C
+            discardSelfEnergyAfterDamage C, C
           }
         }
       };
@@ -559,7 +559,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           energyCost R, R, C
           onAttack {
             damage 160
-            discardSelfEnergy C
+            discardSelfEnergyAfterDamage C
           }
         }
       };
@@ -1600,28 +1600,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           energyCost D, C, C, C
           onAttack {
             damage 130
-            afterDamage {
-              // TODO: Make a static method to do this
-              if (self.cards.energyCount())
-                if (self.cards.energyCount() <= 2) {
-                  self.cards.filterByType(ENERGY).moveTo my.hand
-                } else {
-                  def targetCount = Math.min self.cards.energyCount(), 2
-                  def finalCount = 0
-                  while (self.cards.energyCount() > 0 && finalCount < targetCount) {
-                    def info = "Select Energy to discard."
-                    def energy = self.cards.filterByType(ENERGY).select(info)
-                    def energyCount = 1
-                    if (energy.energyCount() > 1) {
-                      def choices = 1..energy.energyCount()
-                      def choiceInfo = "How many Energy do you want this card to count as?"
-                      energyCount = choose(choices, choiceInfo)
-                    }
-                    finalCount += energyCount
-                    energy.discard()
-                  }
-                }
-            }
+            discardSelfEnergyAfterDamage C, C
             applyAfterDamage PARALYZED
             applyAfterDamage POISONED
           }
@@ -1787,7 +1766,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           energyCost M, C
           onAttack {
             damage 30
-            discardDefendingEnergy()
+            discardDefendingEnergyAfterDamage()
           }
         }
         move "Slashing Claw", {
@@ -1876,9 +1855,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           energyCost M, M, C
           onAttack {
             damage 120
-            afterDamage {
-              discardSelfEnergy C
-            }
+            discardSelfEnergyAfterDamage C
           }
         }
       };

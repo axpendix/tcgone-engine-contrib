@@ -1206,7 +1206,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           energyCost M, M, C
           onAttack {
             damage 130
-            discardSelfEnergy C, C
+            discardSelfEnergyAfterDamage C, C
           }
         }
       };
@@ -1385,7 +1385,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           energyCost C, C, C
           onAttack {
             damage 120
-            discardSelfEnergy C
+            discardSelfEnergyAfterDamage C
           }
         }
       };
@@ -1429,11 +1429,11 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         weakness L
         resistance F, MINUS30
         move "Energy Cutoff", {
-          text "60 damage. Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon."
+          text "60 damage. Discard an Energy from your opponent's Active Pokémon."
           energyCost C, C
           onAttack {
             damage 60
-            discardDefendingEnergy()
+            discardDefendingEnergyAfterDamage()
           }
         }
         move "Loop Cannon", {
@@ -1441,28 +1441,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           energyCost C, C, C
           onAttack {
             damage 160
-            afterDamage {
-              // TODO: Make a static method to do this
-              if (self.cards.energyCount())
-                if (self.cards.energyCount() <= 2) {
-                  self.cards.filterByType(ENERGY).moveTo my.hand
-                } else {
-                  def targetCount = Math.min self.cards.energyCount(), 2
-                  def finalCount = 0
-                  while (self.cards.energyCount() > 0 && finalCount < targetCount) {
-                    def info = "Select Energy to return to your hand."
-                    def energy = self.cards.filterByType(ENERGY).select(info)
-                    def energyCount = 1
-                    if (energy.energyCount() > 1) {
-                      def choices = 1..energy.energyCount()
-                      def choiceInfo = "How many Energy do you want this card to count as?"
-                      energyCount = choose(choices, choiceInfo)
-                    }
-                    finalCount += energyCount
-                    energy.moveTo my.hand
-                  }
-                }
-            }
+            moveSelfEnergyAfterDamage my.hand, C, C
           }
         }
       };

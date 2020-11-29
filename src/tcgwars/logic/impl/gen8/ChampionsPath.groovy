@@ -660,9 +660,7 @@ public enum ChampionsPath implements LogicCardInfo {
           energyCost F, F, C, C
           onAttack {
             damage 130
-            afterDamage {
-              discardSelfEnergy F
-            }
+            discardSelfEnergyAfterDamage F
           }
         }
       };

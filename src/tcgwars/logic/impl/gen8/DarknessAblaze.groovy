@@ -655,9 +655,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 220
-            afterDamage {
-              discardSelfEnergy C, C
-            }
+            discardSelfEnergyAfterDamage C, C
           }
         }
       };
@@ -678,9 +676,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 300
-            afterDamage {
-              discardSelfEnergy C, C
-            }
+            discardSelfEnergyAfterDamage C, C
           }
         }
       };
@@ -938,10 +934,8 @@ public enum DarknessAblaze implements LogicCardInfo {
           onAttack {
             damage 20
             if (self.cards.energyCount(C) && confirm("Discard an Energy from $self.name to discard an energy from $defending.name?")) {
-              afterDamage {
-                discardSelfEnergy C
-                discardDefendingEnergy()
-              }
+              discardSelfEnergyAfterDamage C
+              discardDefendingEnergyAfterDamage()
             }
           }
         }
@@ -1024,7 +1018,6 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Wave Splash", {
           text "20 damage."
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1032,31 +1025,9 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Aurora Loop", {
           text "130 damage. Put 2 [W] Energy attached to this Pokémon into your hand."
           energyCost W, W, C
-          attackRequirement {}
           onAttack {
             damage 130
-            afterDamage {
-              // TODO: Make a static method to do this
-              if (self.cards.energyCount(W))
-                if (self.cards.energyCount(W) <= 2) {
-                  self.cards.filterByEnergyType(W).moveTo my.hand
-                } else {
-                  def targetCount = Math.min self.cards.energyCount(W), 2
-                  def finalCount = 0
-                  while (self.cards.energyCount(W) > 0 && finalCount < targetCount) {
-                    def info = "Select [W] Energy to return to your hand."
-                    def energy = self.cards.filterByType(ENERGY).select(info, energyFilter(W))
-                    def energyCount = 1
-                    if (energy.energyCount(W) > 1) {
-                      def choices = 1..energy.energyCount(W)
-                      def choiceInfo = "How many Energy do you want this card to count as?"
-                      energyCount = choose(choices, choiceInfo)
-                    }
-                    finalCount += energyCount
-                    energy.moveTo my.hand
-                  }
-                }
-            }
+            moveSelfEnergyAfterDamage my.hand, W, W
           }
         }
       };
@@ -1521,9 +1492,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 190
-            afterDamage {
-              discardSelfEnergy C, C
-            }
+            discardSelfEnergyAfterDamage C, C
           }
         }
       };
@@ -2259,9 +2228,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 80
-            afterDamage {
-              discardDefendingEnergy()
-            }
+            discardDefendingEnergyAfterDamage()
           }
         }
         move "Heavy Rock Artillery", {
@@ -2658,28 +2625,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 200
-            afterDamage {
-              // TODO: Make a static method to do this
-              if (self.cards.energyCount(D))
-                if (self.cards.energyCount(D) <= 2) {
-                  self.cards.filterByEnergyType(D).moveTo my.hand
-                } else {
-                  def targetCount = Math.min self.cards.energyCount(D), 2
-                  def finalCount = 0
-                  while (self.cards.energyCount(D) > 0 && finalCount < targetCount) {
-                    def info = "Select [D] Energy to return to your hand."
-                    def energy = self.cards.filterByType(ENERGY).select(info, energyFilter(D))
-                    def energyCount = 1
-                    if (energy.energyCount(D) > 1) {
-                      def choices = 1..energy.energyCount(D)
-                      def choiceInfo = "How many Energy do you want this card to count as?"
-                      energyCount = choose(choices, choiceInfo)
-                    }
-                    finalCount += energyCount
-                    energy.moveTo my.hand
-                  }
-                }
-            }
+            moveSelfEnergyAfterDamage my.hand, D, D
           }
         }
       };
