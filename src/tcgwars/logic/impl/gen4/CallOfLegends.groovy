@@ -331,51 +331,20 @@ public enum CallOfLegends implements LogicCardInfo {
 
         };
       case MAGMORTAR_16:
-        return evolution (this, from:"Magmar", hp:HP110, type:FIRE, retreatCost:2) {
-          weakness W
-          move "Hard Crush", {
-            text "Discard the top 3 cards from your deck. This attack does 50 damage times the number of Energy cards you discarded."
-            energyCost R, C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Mantle Bazooka", {
-            text "100 damage. Energy attached to Magmortar."
-            energyCost R, R, C, C, R
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(Unleashed.MAGMORTAR_2, this);
       case NINETALES_17:
-        return evolution (this, from:"Vulpix", hp:HP090, type:FIRE, retreatCost:1) {
-          weakness W
-          pokePower "Roast Reveal", {
-            text "Once during your turn , you may discard a Energy from your hand. If you do, draw 3 cards. This power can’t be used if Ninetales is affected by a Special Condition."
-            actionA {
-            }
-          }
-          move "Will-o’-the-wisp", {
-            text "60 damage. "
-            energyCost R, R, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(HeartgoldSoulsilver.NINETALES_7, this);
       case PACHIRISU_18:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F
           resistance M, MINUS20
           pokePower "Self-Generation", {
-            text "Once during your turn, when you put Pachirisu from your hand onto your Bench, you may attach up to 2 Energy cards from your hand to Pachirisu."
-            actionA {
+            text "Once during your turn, when you put Pachirisu from your hand onto your Bench, you may attach up to 2 [L] Energy cards from your hand to Pachirisu."
+            onActivate {reason ->
+              if(reason == PLAY_FROM_HAND && my.hand.filterByEnergyType(L) && confirm("Use Self-Generation?")){
+                powerUsed()
+                attachEnergyFrom(type: L, my.hand, self)
+              }
             }
           }
           move "Shocking Bolt", {
@@ -383,7 +352,10 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost L, L
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              afterDamage{
+                self.cards.filterByType(ENERGY).moveTo(my.lostZone)
+              }
             }
           }
 
@@ -396,7 +368,11 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost W, W, W, W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              afterDamage{
+                switchYourActive()
+                whirlwind()
+              }
             }
           }
 
@@ -406,187 +382,43 @@ public enum CallOfLegends implements LogicCardInfo {
           weakness C
           resistance F, MINUS20
           move "Inferno Spear", {
-            text "100 damage. Energy attached to Rayquaza."
-            energyCost R, R, L, L, R, L
+            text "100 damage. Discard a [R] and a [L] energy attached to Rayquaza."
+            energyCost R, R, L, L
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 100
+              discardSelfEnergy(R,L)
             }
           }
 
         };
       case SMEARGLE_21:
-        return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
-          weakness F
-          pokePower "Portrait", {
-            text "Once during your turn , if Smeargle is your Active Pokémon, you may look at your opponent’s hand. If you do, choose a Supporter card you find there and use the effect of that card as the effect of this power. This power can’t be used if Smeargle is affected by a Special Condition."
-            actionA {
-            }
-          }
-          move "Tail Rap", {
-            text "20× damage. Flip 2 coins. This attack does 20 damage times the number of heads."
-            energyCost C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(Undaunted.SMEARGLE_8, this);
       case UMBREON_22:
-        return evolution (this, from:"Eevee", hp:HP090, type:DARKNESS, retreatCost:1) {
-          weakness F
-          resistance P, MINUS20
-          move "Moonlight Fang", {
-            text "30 damage. During your opponent’s next turn, prevent all effects, including damage, done to Umbreon by attacks from your opponent’s Pokémon than has any Poké-Powers or Poké-Bodies."
-            energyCost D
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Quick Blow", {
-            text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 30 more damage."
-            energyCost D, C
-            attackRequirement {}
-            onAttack {
-              damage 30
-              flip { damage 30 }
-            }
-          }
-
-        };
+        return copy(Undaunted.UMBREON_10, this);
       case AMPHAROS_23:
-        return evolution (this, from:"Flaaffy", hp:HP120, type:LIGHTNING, retreatCost:1) {
-          weakness F
-          resistance M, MINUS20
-          move "Acceleration Bolt", {
-            text "30 damage. Search your deck for up to 2 basic Energy cards and attach them to 1 of your Pokémon. Shuffle your deck afterward."
-            energyCost L
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Thunder", {
-            text "80 damage. Flip a coin. If tails, Ampharos does 20 damage to itself."
-            energyCost L, C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(HeartgoldSoulsilver.AMPHAROS_14, this);
       case CLEFFA_24:
-        return basic (this, hp:HP030, type:COLORLESS, retreatCost:0) {
-          pokeBody "Sweet Sleeping Face", {
-            text "As long as Cleffa is Asleep, prevent all damage done to Cleffa by attacks."
-            delayedA {
-            }
-          }
-          move "Eeeeeeek", {
-            text "Shuffle your hand into your deck, then draw 6 cards. Cleffa is now Asleep."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(HeartgoldSoulsilver.CLEFFA_17, this);
       case FERALIGATR_25:
-        return evolution (this, from:"Croconaw", hp:HP130, type:WATER, retreatCost:2) {
-          weakness G
-          move "Spinning Tail", {
-            text "This attack does 20 damage to each of your opponent’s Pokémon."
-            energyCost W, C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Surf", {
-            text "80 damage. "
-            energyCost W, W, C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(HeartgoldSoulsilver.FERALIGATR_20, this);
       case GRANBULL_26:
-        return evolution (this, from:"Snubbull", hp:HP090, type:COLORLESS, retreatCost:3) {
-          weakness F
-          move "Timid Tackle", {
-            text "50 damage. Granbull does 20 damage to itself. Switch Granbull with 1 of your Benched Pokémon."
-            energyCost C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Chomp", {
-            text "40+ damage. Does 40 damage plus 10 more damage for each damage counter on Granbull."
-            energyCost C, C, C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(HeartgoldSoulsilver.GRANBULL_22, this);
       case MEGANIUM_27:
-        return evolution (this, from:"Bayleef", hp:HP130, type:GRASS, retreatCost:2) {
-          weakness R
-          resistance W, MINUS20
-          move "Sleep Powder", {
-            text "30 damage. The Defending Pokémon is now Asleep."
-            energyCost G
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Giant Bloom", {
-            text "60 damage. Remove 2 damage counters from Meganium."
-            energyCost G, C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(HeartgoldSoulsilver.MEGANIUM_26, this);
       case MISMAGIUS_28:
-        return evolution (this, from:"Misdreavus", hp:HP080, type:PSYCHIC, retreatCost:1) {
-          weakness D
-          resistance C, MINUS20
-          move "Sleeping Spell", {
-            text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Asleep."
-            energyCost P
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Poltergeist", {
-            text "30× damage. Look at your opponent’s hand. This attack does 30 damage times the number of Trainer, Supporter, and Stadium cards in your opponent’s hand."
-            energyCost P, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(Undaunted.MISMAGIUS_19, this);
       case MR__MIME_29:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
           weakness P
           pokePower "Trick Reveal", {
             text "Once during your turn , you may have both you and your opponent reveal your hands. This power can’t be used if Mr. Mime is affected by a Special Condition."
             actionA {
+              checkNoSPC()
+              checkLastTurn()
+              powerUsed()
+              opp.hand.shuffledCopy().showToMe("Opponent’s hand")
+              my.hand.shuffledCopy().showToOpponent("Opponent's hand")
             }
           }
           move "Juggling", {
@@ -594,34 +426,15 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost P, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 4, {
+                damage 10
+              }
             }
           }
 
         };
       case PIDGEOT_30:
-        return evolution (this, from:"Pidgeotto", hp:HP120, type:COLORLESS, retreatCost:0) {
-          weakness L
-          resistance F, MINUS20
-          move "Headwind", {
-            text "20 damage. more."
-            energyCost C, C, C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Quick Attack", {
-            text "40+ damage. Flip a coin. If heads, this attack does 40 damage plus 30 more damage."
-            energyCost C, C, C
-            attackRequirement {}
-            onAttack {
-              damage 40
-              flip { damage 30 }
-            }
-          }
-
-        };
+        return copy(Triumphant.PIDGEOT_29, this);
       case SKARMORY_31:
         return basic (this, hp:HP080, type:METAL, retreatCost:1) {
           weakness R
