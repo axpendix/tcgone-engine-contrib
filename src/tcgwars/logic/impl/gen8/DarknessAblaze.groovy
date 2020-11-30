@@ -3405,7 +3405,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-        move "Sharp Eyes", {
+        move "Keen Eyes", {
           text "Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
           energyCost C, C
           attackRequirement {
