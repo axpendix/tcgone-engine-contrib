@@ -177,16 +177,18 @@ public enum CallOfLegends implements LogicCardInfo {
   public Card getImplementation() {
     switch (this) {
       case CLEFABLE_1:
-        return copy(HeartgoldSoulsilver.CLEFABLE_3, this)
+        return copy(HeartgoldSoulsilver.CLEFABLE_3, this);
       case DEOXYS_2:
         return basic (this, hp:HP080, type:PSYCHIC, retreatCost:1) {
           weakness P
           move "Cell Storm", {
-            text "60 damage. Energy attached to Deoxys and remove 6 damage counters from Deoxys."
-            energyCost P, P, P, P
+            text "60 damage. Discard 2 [P] energy attached to Deoxys and remove 6 damage counters from Deoxys."
+            energyCost P, P, P
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              discardSelfEnergy(P,P)
+              heal 60, self
             }
           }
 
@@ -200,55 +202,17 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost M, M, M, M
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 70
+              my.hand.moveTo(hidden:true, my.deck)
+              shuffleDeck()
             }
           }
 
         };
       case ESPEON_4:
-        return evolution (this, from:"Eevee", hp:HP090, type:PSYCHIC, retreatCost:1) {
-          weakness P
-          move "Solar Suggestion", {
-            text "Move up to 4 damage counters from any of your Pokémon to any of your opponent’s Pokémon in any way you like."
-            energyCost P
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Psybeam", {
-            text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
-            energyCost P, C
-            attackRequirement {}
-            onAttack {
-              damage 30
-              flip { apply CONFUSED }
-            }
-          }
-
-        };
+        return copy(Undaunted.ESPEON_2, this);
       case FORRETRESS_5:
-        return evolution (this, from:"Pineco", hp:HP090, type:METAL, retreatCost:3) {
-          weakness R
-          resistance P, MINUS20
-          move "Mirror Shot", {
-            text "30 damage. If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, this attack does nothing."
-            energyCost M, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Everyone Explode Now", {
-            text "Does 30 damage times the number of Pineco and Forretress you have in play. This attack does 30 damage to each of your Pineco and Forretress in play."
-            energyCost M, C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(Undaunted.FORRETRESS_3, this);
       case GROUDON_6:
         return basic (this, hp:HP100, type:FIGHTING, retreatCost:4) {
           weakness G
@@ -257,54 +221,20 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost F, F, F, F
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 80
+              flip 1, {
+                opp.deck.subList(0,4).discard()
+              }, {
+                my.deck.subList(0,10).discard()
+              }
             }
           }
 
         };
       case GYARADOS_7:
-        return evolution (this, from:"Magikarp", hp:HP130, type:WATER, retreatCost:0) {
-          weakness L
-          resistance F, MINUS20
-          move "Hydro Splash", {
-            text "50 damage. "
-            energyCost W, C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Hyper Beam", {
-            text "80 damage. Discard an Energy card attached to the Defending Pokémon."
-            energyCost W, W, C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(HeartgoldSoulsilver.GYARADOS_4, this);
       case HITMONTOP_8:
-        return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
-          weakness P
-          move "Triple Kick", {
-            text "20× damage. Flip 3 coins. This attack does 20 damage times the number of heads."
-            energyCost F
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Close Combat", {
-            text "60 damage. ."
-            energyCost F, C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(HeartgoldSoulsilver.HITMONTOP_5, this);
       case HO_OH_9:
         return basic (this, hp:HP100, type:FIRE, retreatCost:3) {
           weakness W
@@ -314,59 +244,26 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost R, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
             }
           }
           move "Scorching Wing", {
-            text "100 damage. Energy attached to Ho-Oh."
-            energyCost R, R, R, C, C, R
+            text "100 damage. Flip a coin. If tails, discard all [R] energy attached to Ho-Oh."
+            energyCost R, R, R, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 100
+              flip 1, {}, {
+                discardAllSelfEnergy(R)
+              }
             }
           }
 
         };
       case HOUNDOOM_10:
-        return evolution (this, from:"Houndour", hp:HP090, type:DARKNESS, retreatCost:1) {
-          weakness F
-          resistance P, MINUS20
-          move "Fire Counterattack", {
-            text "20+ damage. Pokémon in play, this attack does 20 damage plus 60 more damage."
-            energyCost D, F
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Dark Roar", {
-            text "50 damage. Your opponent discards a card from his or her hand."
-            energyCost D, D
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(Undaunted.HOUNDOOM_5, this);
       case JIRACHI_11:
-        return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
-          weakness P
-          pokePower "Stardust Song", {
-            text "Once during your turn, when you put Jirachi from your hand onto your Bench, you may flip 3 coins. For each heads, search your discard pile for a Energy card and attach it to Jirachi."
-            actionA {
-            }
-          }
-          move "Time Hollow", {
-            text "Choose a number of your opponent’s Stage 1 or Stage 2 Evolved Pokémon up to the amount of Energy attached to Jirachi. Remove the highest Stage Evolution card from each of those Pokémon and put those cards back into your opponent’s hand."
-            energyCost P
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(Unleashed.JIRACHI_1, this);
       case KYOGRE_12:
         return basic (this, hp:HP100, type:WATER, retreatCost:4) {
           weakness L
@@ -375,33 +272,20 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost W, W, W, W
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 1, {
+                opp.all.each{
+                  damage 40, it
+                },
+                my.all.each{
+                  damage 40, it
+                }
+              }
             }
           }
 
         };
       case LEAFEON_13:
-        return evolution (this, from:"Eevee", hp:HP090, type:GRASS, retreatCost:1) {
-          weakness R
-          resistance W, MINUS20
-          move "Miasma Wind", {
-            text "50× damage. Does 50 damage times the number of Special Conditions affecting the Defending Pokémon."
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Sooting Scent", {
-            text "30 damage. The Defending Pokémon is now Asleep."
-            energyCost G
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(Undaunted.LEAFEON_17, this);
       case LUCARIO_14:
         return evolution (this, from:"Riolu", hp:HP090, type:FIGHTING, retreatCost:1) {
           weakness P
@@ -410,7 +294,7 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30+my.lostZone.filterByType(POKEMON).size()
             }
           }
           move "Sky Uppercut", {
@@ -433,7 +317,7 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost W, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30, opp.bench.select()
             }
           }
           move "Hydro Splash", {
@@ -441,7 +325,7 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost W, W, W, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 80
             }
           }
 
