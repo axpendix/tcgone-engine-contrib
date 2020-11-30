@@ -2829,8 +2829,8 @@ public enum ForbiddenLight implements LogicCardInfo {
           onPlay { reason ->
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each {
-                  targeted self, SRC_SPENERGY, {
+                targeted self, SRC_SPENERGY, {
+                  bg.dm().each {
                     if (it.from == self && it.to.active && it.to.owner != self.owner && self.topPokemonCard.cardTypes.is(ULTRA_BEAST) && it.dmg.value) {
                       bc "Beast Energy +30"
                       it.dmg += hp(30)
