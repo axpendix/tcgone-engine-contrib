@@ -205,12 +205,13 @@ public enum Unleashed implements LogicCardInfo {
             energyCost P
             onAttack {
               int max = self.cards.energyCount(C)
+              def tar = opp.all.findAll{ it.evolution }
               while (max-- > 0) {
-                def tar = opp.all.findAll{ it.evolution }
                 if(!tar) break
                 def pcs = tar.select("Choose which Pokémon to devolve", false)
                 if(!pcs) break
                 def top=pcs.topPokemonCard
+                tar.remove(pcs)
                 devolve(pcs, top, opp.hand)
               }
             }
