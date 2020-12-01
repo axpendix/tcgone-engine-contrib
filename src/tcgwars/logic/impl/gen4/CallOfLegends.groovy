@@ -228,7 +228,7 @@ public enum CallOfLegends implements LogicCardInfo {
               flip 1, {
                 opp.deck.subList(0,4).discard()
               }, {
-                my.deck.subList(0,10).discard()
+                my.deck.subList(0,4).discard()
               }
             }
           }
@@ -822,45 +822,46 @@ public enum CallOfLegends implements LogicCardInfo {
           }
         };
       case LOST_WORLD_81:
-        return basicTrainer (this) {
+        return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nOnce during each player’s turn, if this player’s opponent has 6 or more Pokémon in the Lost Zone, the player may choose to win the game."
+          def lastTurn=0
+          def actions=[]
           onPlay {
+            actions=action("Stadium: Lost World") {
+              assert lastTurn != bg().turnCount : "You've already used Lost World this turn."
+              bc "Used Lost World."
+              lastTurn = bg().turnCount
+              bg.getGame().endGame(self.owner, WinCondition.OTHER);
+            }
           }
-          playRequirement{
+          onRemoveFromPlay{
+            actions.each { bg().gm().unregisterAction(it) }
           }
         };
       case PROFESSOR_ELM_S_TRAINING_METHOD_82:
-        return basicTrainer (this) {
-          text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck for an Evolution card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy(HeartgoldSoulsilver.PROFESSOR_ELM_S_TRAINING_METHOD_100, this);
       case PROFESSOR_OAK_S_NEW_THEORY_83:
-        return basicTrainer (this) {
-          text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nShuffle your hand into your deck. Then, draw 6 cards."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy(HeartgoldSoulsilver.PROFESSOR_OAK_S_NEW_THEORY_101, this);
       case RESEARCH_RECORD_84:
         return basicTrainer (this) {
           text "Look at the top 4 cards of your deck and put as many of them as you like back on top of your deck in any order. Then, put the remaining cards on the bottom of your deck in any order."
           onPlay {
+            def tar = my.deck.subList(0,5)
+            def sel = tar.select(min:0, max:tar.size(), "Choose any number of cards to put on top of your deck(unselected cards will be put on the bottom of your deck)")
+            if(sel){
+              tar.remove(sel)
+              deck.setSublist(0,rearrange(sel,"Arrange the top of your deck"))
+            }
+            if(tar){
+              rearrange(tar,"Arrange the bottom of your deck").moveTo(my.deck)
+            }
           }
           playRequirement{
+            assert my.deck
           }
         };
       case SAGE_S_TRAINING_85:
-        return basicTrainer (this) {
-          text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nLook at the top 5 cards of your deck. Choose any 2 cards you find there and put them into your hand. Discard the other cards."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy(Undaunted.SAGE_S_TRAINING_77, this);
       case DARKNESS_ENERGY_86:
         return copy (MysteriousTreasures.DARKNESS_ENERGY_119, this);
       case METAL_ENERGY_87:
@@ -882,40 +883,18 @@ public enum CallOfLegends implements LogicCardInfo {
       case METAL_ENERGY_95:
         return basicEnergy (this, METAL);
       case DEOXYS_SL1:
-        return copy (DEOXYS_2, this)
-        /*basic (this, hp:HP080, type:PSYCHIC, retreatCost:1) {
-					weakness P
-					move "Cell Storm", {
-						text "60 damage. Energy attached to Deoxys and remove 6 damage counters from Deoxys."
-						energyCost P, P, P, P
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-
-				}*/;
+        return copy (DEOXYS_2, this);
       case DIALGA_SL2:
-        return copy (DIALGA_3, this)
-        /*basic (this, hp:HP100, type:METAL, retreatCost:3) {
-					weakness R
-					resistance P, MINUS20
-					move "Time Rewind", {
-						text "70 damage. Shuffle your hand into your deck."
-						energyCost M, M, M, M
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-
-				}*/;
+        return copy (DIALGA_3, this);
       case ENTEI_SL3:
         return basic (this, hp:HP090, type:FIRE, retreatCost:2) {
           weakness W
           pokeBody "Extreme Speed", {
-            text "Entei’s Retreat Cost is Energy less for each Energy attached to Entei."
-            delayedA {
+            text "Entei’s Retreat Cost is [C] Energy less for each [R] Energy attached to Entei."
+            getterA (GET_RETREAT_COST) { h->
+              if (h.effect.target == self) {
+                h.object -= self.cards.energyCount(R)
+              }
             }
           }
           move "Wild Blaze", {
@@ -923,106 +902,32 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost R, R, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 70
+              my.deck.subList(0,3).discard()
             }
           }
 
         };
       case GROUDON_SL4:
-        return copy (GROUDON_6, this)
-        /*basic (this, hp:HP100, type:FIGHTING, retreatCost:4) {
-					weakness G
-					move "Volcano Stomp", {
-						text "80 damage. Flip a coin. If heads, discard the top 4 cards of your opponent’s deck. If tails, discard the top 4 cards of your deck."
-						energyCost F, F, F, F
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-
-				}*/;
+        return copy (GROUDON_6, this);
       case HO_OH_SL5:
-        return copy (HO_OH_9, this)
-        /*basic (this, hp:HP100, type:FIRE, retreatCost:3) {
-					weakness W
-					resistance F, MINUS20
-					move "Combustion", {
-						text "50 damage. "
-						energyCost R, C, C
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-					move "Scorching Wing", {
-						text "100 damage. Energy attached to Ho-Oh."
-						energyCost R, R, R, C, C, R
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-
-				}*/;
+        return copy (HO_OH_9, this);
       case KYOGRE_SL6:
-        return copy (KYOGRE_12, this)
-        /*basic (this, hp:HP100, type:WATER, retreatCost:4) {
-					weakness L
-					move "Destructive Tsunami", {
-						text "Flip a coin. If heads, this attack does 40 damage to each of your opponent’s Pokémon. If tails, this attack does 40 damage to each of your Pokémon."
-						energyCost W, W, W, W
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-
-				}*/;
+        return copy (KYOGRE_12, this);
       case LUGIA_SL7:
-        return copy (LUGIA_15, this)
-        /*basic (this, hp:HP100, type:WATER, retreatCost:3) {
-					weakness L
-					resistance F, MINUS20
-					move "Linear Attack", {
-						text "Choose 1 of your opponent’s Pokémon. This attack does 30 damage to that Pokémon."
-						energyCost W, C, C
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-					move "Hydro Splash", {
-						text "80 damage. "
-						energyCost W, W, W, C, C
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-
-				}*/;
+        return copy (LUGIA_15, this);
       case PALKIA_SL8:
-        return copy (PALKIA_19, this)
-        /*basic (this, hp:HP100, type:WATER, retreatCost:3) {
-					weakness L
-					move "Wormhole", {
-						text "60 damage. Switch Palkia with 1 of your Benched Pokémon. Then, your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
-						energyCost W, W, W, W
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-
-				}*/;
+        return copy (PALKIA_19, this);
       case RAIKOU_SL9:
         return basic (this, hp:HP090, type:LIGHTNING, retreatCost:2) {
           weakness F
           resistance M, MINUS20
           pokeBody "Extreme Speed", {
-            text "Raikou’s Retreat Cost is less for each Energy attached to Raikou."
-            delayedA {
+            text "Raikou’s Retreat Cost is [C] less for each [L] Energy attached to Raikou."
+            getterA (GET_RETREAT_COST) { h->
+              if (h.effect.target == self) {
+                h.object -= self.cards.energyCount(L)
+              }
             }
           }
           move "Raging Thunder", {
@@ -1030,32 +935,23 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost L, L, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 70
+              noWrDamage(40,my.all.select())
             }
           }
 
         };
       case RAYQUAZA_SL10:
-        return copy (RAYQUAZA_20, this)
-        /*basic (this, hp:HP100, type:COLORLESS, retreatCost:2) {
-					weakness C
-					resistance F, MINUS20
-					move "Inferno Spear", {
-						text "100 damage. Energy attached to Rayquaza."
-						energyCost R, R, L, L, R, L
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-
-				}*/;
+        return copy (RAYQUAZA_20, this);
       case SUICUNE_SL11:
         return basic (this, hp:HP090, type:WATER, retreatCost:2) {
           weakness L
           pokeBody "Extreme Speed", {
-            text "Suicune’s Retreat Cost is less for each Energy attached to Suicune."
-            delayedA {
+            text "Suicune’s Retreat Cost is [C] less for each [W] Energy attached to Suicune."
+            getterA (GET_RETREAT_COST) { h->
+              if (h.effect.target == self) {
+                h.object -= self.cards.energyCount(W)
+              }
             }
           }
           move "Tsunami", {
@@ -1063,7 +959,9 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost W, W, C
             attackRequirement {}
             onAttack {
-              damage 0
+              opp.all.each{
+                damage 20, it
+              }
             }
           }
 
