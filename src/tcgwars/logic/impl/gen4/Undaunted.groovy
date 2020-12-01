@@ -418,7 +418,38 @@ public enum Undaunted implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              // TODO
+              delayed {
+                before null, self, Source.ATTACK, {
+                  def hasPokePower = false
+                  def hasPokeBody = false
+                  for (Ability ability : opp.active.getAbilities().keySet()) {//this feels excessive. 
+                    if (ability instanceof PokeBody) hasPokeBody = true;
+                    if (ability instanceof PokePower) hasPokePower = true;
+                  }
+                  if ((hasPokePower || hasPokeBody) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                    bc "Moonlight Fang prevents effect"
+                    prevent()
+                  }
+                }
+                before APPLY_ATTACK_DAMAGES, {
+                  def hasPokePower = false
+                  def hasPokeBody = false
+                  for (Ability ability : opp.active.getAbilities().keySet()) {//this feels excessive. 
+                    if (ability instanceof PokePower) hasPokePower = true;
+                    if (ability instanceof PokeBody) hasPokeBody = true;
+                  }
+                  bg.dm().each {
+                    if(it.to == self && it.notNoEffect && (hasPokePower || hasPokeBody)){
+                      it.dmg = hp(0)
+                      bc "Moonlight Fang prevents damage"
+                    }
+                  }
+                }
+                after FALL_BACK, pcs, {unregister()}
+                after EVOLVE, pcs, {unregister()}
+                after DEVOLVE, pcs, {unregister()}
+                unregisterAfter 2
+              }
             }
           }
           move "Quick Blow", {
@@ -438,7 +469,10 @@ public enum Undaunted implements LogicCardInfo {
           resistance F, MINUS20
           pokeBody "Retreat Aid", {
             text "As long as Dodrio is on your Bench, your Active Pokémon’s Retreat Cost is [C][C] less."
-            delayedA {
+            getterA (GET_RETREAT_COST) { h->
+              if (!self.active && h.effect.target.owner == self.owner && h.effect.target.active) {
+                h.object -= 2
+              }
             }
           }
           move "Incessant Peck", {
@@ -446,7 +480,8 @@ public enum Undaunted implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flipUntilTails { damage 20 }
             }
           }
 
@@ -460,7 +495,8 @@ public enum Undaunted implements LogicCardInfo {
             energyCost P, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              damage 20, self
             }
           }
           move "Take Away", {
@@ -468,7 +504,12 @@ public enum Undaunted implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              self.cards.moveTo(my.deck)
+              removePCS(self)
+              shuffleDeck()
+              opp.active.cards.moveTo(opp.deck)
+              removePCS(opp.active)
+              shuffleDeck(null, TargetPlayer.OPPONENT)
             }
           }
 
@@ -482,7 +523,9 @@ public enum Undaunted implements LogicCardInfo {
             energyCost M
             attackRequirement {}
             onAttack {
-              damage 0
+              opp.all.each{
+                damage 10, it
+              }
             }
           }
           move "Gyro Ball", {
@@ -490,7 +533,14 @@ public enum Undaunted implements LogicCardInfo {
             energyCost M, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              afterDamage{
+                if(my.bench && confirm("Switch $self with 1 of your Benched Pokémon")){
+                  if(sw2(my.bench.select("Select the new active"))){
+                    whirlwind()
+                  }
+                }
+              }
             }
           }
 
@@ -503,7 +553,7 @@ public enum Undaunted implements LogicCardInfo {
             energyCost F, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
             }
           }
           move "Backward Belt Throw", {
@@ -511,7 +561,10 @@ public enum Undaunted implements LogicCardInfo {
             energyCost F, F, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 80
+              if(confirm("Deal 20 damage to $self in order to deal 20 more damage?")){
+                damage 20
+              }
             }
           }
 
@@ -534,7 +587,7 @@ public enum Undaunted implements LogicCardInfo {
             energyCost D, D
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50, opp.all.findAll{it.numberOfDamageCounters}.select("Choose 1 of your opponent’s Pokémon that has any damage counters on it.")
             }
           }
 
