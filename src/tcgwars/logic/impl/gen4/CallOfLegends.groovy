@@ -1,6 +1,8 @@
 package tcgwars.logic.impl.gen4
 
 import tcgwars.logic.impl.gen3.RubySapphire
+import tcgwars.logic.impl.gen3.TeamRocketReturns;
+import tcgwars.logic.impl.gen3.DeltaSpecies;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -14,6 +16,7 @@ import tcgwars.logic.util.*;
 
 /**
  * @author axpendix@hotmail.com
+ * @author ufodynasty12@gmail.com
  */
 public enum CallOfLegends implements LogicCardInfo {
 
@@ -655,39 +658,9 @@ public enum CallOfLegends implements LogicCardInfo {
       case KOFFING_60:
         return copy(HeartgoldSoulsilver.KOFFING_70, this);
       case MAGIKARP_61:
-        return basic (this, hp:HP030, type:WATER, retreatCost:1) {
-          weakness L
-          move "Splash", {
-            text "10 damage. "
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(HeartgoldSoulsilver.MAGIKARP_72, this);
       case MAGMAR_62:
-        return basic (this, hp:HP070, type:FIRE, retreatCost:1) {
-          weakness W
-          move "Live Coal", {
-            text "10 damage. "
-            energyCost R
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Magma Punch", {
-            text "20 damage. "
-            energyCost R, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(Unleashed.MAGMAR_52, this);
       case MAREEP_63:
         return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
           weakness F
@@ -697,62 +670,28 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost L
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
 
         };
       case MAWILE_64:
-        return basic (this, hp:HP060, type:METAL, retreatCost:1) {
-          weakness R
-          resistance P, MINUS20
-          move "Selfish Draw", {
-            text "Look at the top card of your deck. You may put it into your hand. If not, discard it and draw a card."
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Destructive Jaw", {
-            text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed and discard an Energy card attached to the Defending Pokémon."
-            energyCost M, C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(Undaunted.MAWILE_56, this);
       case MISDREAVUS_65:
-        return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
-          weakness D
-          resistance C, MINUS20
-          move "Mumble", {
-            text "10 damage. "
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Dual Draw", {
-            text "Each player draws 3 cards."
-            energyCost P
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(Undaunted.MISDREAVUS_57, this);
       case PHANPY_66:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:2) {
           weakness W
           resistance L, MINUS20
           pokeBody "Ultra-Thick Skin", {
             text "As long as Phanpy has Energy attached to it, any damage done to Phanpy by attacks is reduced by 10 ."
-            delayedA {
+            delayed {
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each {if(it.to==self && it.from.owner==self.owner.opposite && it.notZero && it.notNoEffect){
+                  bc "Ultra-Thick Skin"
+                  it.dmg-=hp(10)
+                }}
+              }
             }
           }
           move "Rock Smash", {
@@ -767,48 +706,9 @@ public enum CallOfLegends implements LogicCardInfo {
 
         };
       case PIDGEY_67:
-        return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
-          weakness L
-          resistance F, MINUS20
-          move "Messenger", {
-            text "Search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle Pidgey and all cards attached to it back into your deck."
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Glide", {
-            text "10 damage. "
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(Triumphant.PIDGEY_71, this);
       case PINECO_68:
-        return basic (this, hp:HP060, type:GRASS, retreatCost:2) {
-          weakness R
-          move "Focus Energy", {
-            text "During your next turn, Pineco’s Surprise Attack attack’s base damage is 80."
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Surprise Attack", {
-            text "40 damage. Flip a coin. If tails, this attack does nothing."
-            energyCost G, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(Undaunted.PINECO_63, this);
       case RELICANTH_69:
         return basic (this, hp:HP080, type:WATER, retreatCost:2) {
           weakness G
@@ -817,63 +717,36 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              my.hand.select("Choose a card to put in the Lost Zone").first().moveTo(my.lostZone)
+              draw 3
             }
           }
           move "Granite Head", {
-            text "30 damage. ."
+            text "30 damage. During your opponent's next turn, any damage done to Relicanth by an opponent's attack is reduced by 30."
             energyCost W, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              reduceDamageNextTurn(hp(30), thisMove)
             }
           }
 
         };
       case SLOWPOKE_70:
-        return basic (this, hp:HP060, type:WATER, retreatCost:2) {
-          weakness L
-          move "Whismy Tackle", {
-            text "20 damage. Flip a coin. If tails, this attack does nothing."
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(HeartgoldSoulsilver.SLOWPOKE_81, this);
       case SNUBBULL_71:
-        return basic (this, hp:HP050, type:COLORLESS, retreatCost:2) {
-          weakness F
-          move "Roar", {
-            text "Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Sharp Fang", {
-            text "20 damage. "
-            energyCost C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(HeartgoldSoulsilver.SNUBBULL_82, this);
       case TANGELA_72:
         return basic (this, hp:HP070, type:GRASS, retreatCost:2) {
           weakness R
           resistance W, MINUS20
           move "Nutritional Support", {
-            text "Energy card and attach it to 1 of your Pokémon. Shuffle your deck afterward."
-            energyCost G, G
+            text "Search your deck for a [G] Energy card and attach it to 1 of your Pokémon. Shuffle your deck afterward."
+            energyCost G
             attackRequirement {}
             onAttack {
-              damage 0
+              attachEnergyFrom(type: G, my.deck, my.all)
+              shuffleDeck()
             }
           }
           move "Poisonpowder", {
@@ -881,7 +754,8 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost G, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              apply POISONED
             }
           }
 
@@ -894,7 +768,18 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip {
+                delayed {
+                  before PLAY_TRAINER, {
+                    if (bg.currentTurn == self.owner.opposite) {
+                      wcu "Fake Tears prevents you from playing Trainer cards."
+                      prevent()
+                    }
+                  }
+                  unregisterAfter 2
+                }
+                reduceDamageNextTurn(hp(30), thisMove)
+              }
             }
           }
 
@@ -903,68 +788,37 @@ public enum CallOfLegends implements LogicCardInfo {
         return basic (this, hp:HP060, type:WATER, retreatCost:2) {
           weakness L
           move "Aqua Tail", {
-            text "30+ damage. Energy attached to Totodile. This attack does 30 damage plus 20 more damage for each heads."
-            energyCost W, C, C, W
+            text "30+ damage. Flip a coin for each [W] Energy attached to Totodile. This attack does 30 damage plus 20 more damage for each heads."
+            energyCost W, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip self.cards.energyCount(G), {
+                damage 20
+              } 
             }
           }
 
         };
       case VULPIX_75:
-        return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
-          weakness W
-          move "Singe", {
-            text "Flip a coin. If heads, the Defending Pokémon is now Burned."
-            energyCost R
-            attackRequirement {}
-            onAttack {
-              flip { apply BURNED }
-            }
-          }
-          move "Ember", {
-            text "30 damage. Energy attached to Vulpix."
-            energyCost R, C, R
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(HeartgoldSoulsilver.VULPIX_87, this);
       case CHEERLEADER_S_CHEER_76:
       return copy(Unleashed.CHEERLEADER_S_CHEER_71, this);
       case COPYCAT_77:
-        return basicTrainer (this) {
-          text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nShuffle your hand into your deck. Then, draw a number of cards equal to the number of cards in your opponent’s hand."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy(TeamRocketReturns.COPYCAT_83, this);
       case DUAL_BALL_78:
-        return basicTrainer (this) {
-          text "Flip 2 coins. For each heads, search your deck for a Basic Pokémon, show it to your opponent, and put it into your hand. If you do, shuffle your deck afterward."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy(DeltaSpecies.DUAL_BALL_89, this);
       case INTERVIEWER_S_QUESTIONS_79:
-        return basicTrainer (this) {
-          text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nLook at the top 8 cards of your deck. Choose as many Energy cards as you like, show them to your opponent, and put them into your hand. Shuffle the other cards back into your deck."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy(Unleashed.INTERVIEWER_S_QUESTIONS_77, this)
       case LOST_REMOVER_80:
         return basicTrainer (this) {
           text "Put 1 Special Energy card attached to 1 of your opponent’s Pokémon in the Lost Zone."
           onPlay {
+            def pcs = opp.all.findAll{it.cards.filterByType(SPECIAL_ENERGY)}.select("Remove special energy from which Pokémon?")
+            pcs.cards.filterByTYpe(SPECIAL_ENERGY).select("Put which special energy in the Lost Zone?").first().moveTo(opp.lostZone)
           }
           playRequirement{
+            assert opp.all.find{it.cards.filterByType(SPECIAL_ENERGY)}
           }
         };
       case LOST_WORLD_81:
