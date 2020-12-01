@@ -534,27 +534,20 @@ public enum CallOfLegends implements LogicCardInfo {
       case JOLTEON_45:
         return copy(Undaunted.JOLTEON_28, this);
       case MAGBY_46:
-        return basic (this, hp:HP030, type:FIRE, retreatCost:0) {
-          pokeBody "Sweet Sleeping Face", {
-            text "As long as Magby is Asleep, prevent all damage done to Magby by attacks."
-            delayedA {
-            }
-          }
-          move "Play with Fire", {
-            text "The Defending Pokémon is now Burned. Magby is now Asleep."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(Triumphant.MAGBY_41, this);
       case MIME_JR__47:
         return basic (this, hp:HP030, type:PSYCHIC, retreatCost:0) {
           pokeBody "Sweet Sleeping Face", {
             text "As long as Mime Jr. is Asleep, prevent all damage done to Mime Jr. by attacks."
             delayedA {
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each {
+                  if(self.isSPC(ASLEEP) && it.to == self && it.dmg.value && it.notNoEffect) {
+                    bc "Sweet Sleeping Face: Damage was prevented"
+                    it.dmg = hp(0)
+                  }
+                }
+              }
             }
           }
           move "Sleepy Lost", {
@@ -562,54 +555,15 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost ()
             attackRequirement {}
             onAttack {
-              damage 0
+              opp.deck.first().moveTo(opp.lostZone)
             }
           }
 
         };
       case PIDGEOTTO_48:
-        return evolution (this, from:"Pidgey", hp:HP080, type:COLORLESS, retreatCost:1) {
-          weakness L
-          resistance F, MINUS20
-          move "Gust", {
-            text "20 damage. "
-            energyCost C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Twister", {
-            text "30 damage. Flip 2 coins. If both of them are tails, this attack does nothing. For each heads, discard an Energy attached to the Defending Pokémon."
-            energyCost C, C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(Triumphant.PIDGEOTTO_47, this);
       case QUILAVA_49:
-        return evolution (this, from:"Cyndaquil", hp:HP080, type:FIRE, retreatCost:1) {
-          weakness W
-          move "Flare", {
-            text "30 damage. "
-            energyCost R, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Flamethrower", {
-            text "60 damage. Discard an Energy attached to Quilava."
-            energyCost R, C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(HeartgoldSoulsilver.QUILAVA_49, this);
       case RIOLU_50:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness P
@@ -618,7 +572,8 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost F
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              cantAttackNextTurn self
             }
           }
 
@@ -631,7 +586,7 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              apply POISONED, self
             }
           }
           move "Poison Effect", {
@@ -639,32 +594,17 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost P, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              if(self.isSPC(POISONED)){
+                damage 60
+                afterDamage {clearSpecialCondition(self, ATTACK, [POISONED])}
+              }
             }
           }
 
         };
       case VAPOREON_52:
-        return evolution (this, from:"Eevee", hp:HP090, type:WATER, retreatCost:2) {
-          weakness L
-          move "Spiral Drain", {
-            text "20 damage. Remove 2 damage counters from Vaporeon."
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Dual Splash", {
-            text "Choose 2 of your opponent’s Pokémon. This attack does 30 damage to each of them."
-            energyCost W, W, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(Undaunted.VAPOREON_41, this);
       case CHIKORITA_53:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness R
@@ -674,7 +614,7 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              heal 10
             }
           }
           move "Reckless Charge", {
@@ -682,146 +622,38 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              damage 10, self
             }
           }
 
         };
       case CLEFAIRY_54:
-        return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
-          weakness F
-          move "Minimize", {
-            text "."
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Slap", {
-            text "10 damage. "
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(HeartgoldSoulsilver.CLEFAIRY_60, this);
       case CYNDAQUIL_55:
         return basic (this, hp:HP040, type:FIRE, retreatCost:1) {
           weakness W
           move "Fireworks", {
-            text "20 damage. Energy attached to Cyndaquil."
-            energyCost R, R
+            text "20 damage. Flip a coin. If tails discard a [R] Energy attached to Cyndaquil."
+            energyCost R
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip 1, {} , {discardSelfEnergyAfterDamage(R)}
             }
           }
 
         };
       case EEVEE_56:
-        return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
-          weakness F
-          move "Tackle", {
-            text "10 damage. "
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Bite", {
-            text "20 damage. "
-            energyCost C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(Undaunted.EEVEE_47, this);
       case HITMONCHAN_57:
-        return basic (this, hp:HP070, type:FIGHTING, retreatCost:1) {
-          weakness P
-          move "Detect", {
-            text "Flip a coin. If heads, prevent all effects of attacks, including damage, done to Hitmonchan during your opponent’s next turn."
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Sky Uppercut", {
-            text "30 damage. This attack’s damage isn’t affected by Resistance."
-            energyCost F, C
-            attackRequirement {}
-            onAttack {
-              damage 30
-              dontApplyResistance()
-            }
-          }
-
-        };
+        return copy(Undaunted.HITMONCHAN_51, this);
       case HITMONLEE_58:
-        return basic (this, hp:HP080, type:FIGHTING, retreatCost:2) {
-          weakness P
-          move "Kick", {
-            text "20 damage. "
-            energyCost F
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "High Jump Kick", {
-            text "60 damage. "
-            energyCost F, F, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(Undaunted.HITMONLEE_52, this);
       case HOUNDOUR_59:
-        return basic (this, hp:HP050, type:DARKNESS, retreatCost:1) {
-          weakness F
-          resistance P, MINUS20
-          move "Jump On", {
-            text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
-            energyCost D
-            attackRequirement {}
-            onAttack {
-              damage 10
-              flip { damage 10 }
-            }
-          }
-
-        };
+        return copy(Undaunted.HOUNDOUR_54, this);
       case KOFFING_60:
-        return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
-          weakness P
-          move "Smokescreen", {
-            text "10 damage. If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 10
-              sandAttack(thisMove)
-            }
-          }
-          move "Suffocating Gas", {
-            text "20 damage. "
-            energyCost C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(HeartgoldSoulsilver.KOFFING_70, this);
       case MAGIKARP_61:
         return basic (this, hp:HP030, type:WATER, retreatCost:1) {
           weakness L
