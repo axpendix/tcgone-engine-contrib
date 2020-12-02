@@ -1068,9 +1068,11 @@ public enum Undaunted implements LogicCardInfo {
           move "Pull Out", {
             text "Search your discard pile for any 1 card, show it to your opponent, and put it on top of your deck."
             energyCost D
-            attackRequirement {}
+            attackRequirement {
+              assert my.discard
+            }
             onAttack {
-              damage 0
+              my.discard.select("Put a card from your discard pile on top of your deck").showToOpponent("Pull out -- This Card will be put on top of your opponent's deck.").moveTo(addToTop: true, my.deck)
             }
           }
           move "Dark Hand", {
@@ -1078,7 +1080,10 @@ public enum Undaunted implements LogicCardInfo {
             energyCost D, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              if(my.hand.size()>opp.hand.size()){
+                damage 30
+              }
             }
           }
 
@@ -1091,7 +1096,19 @@ public enum Undaunted implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              afterDamage{
+                delayed (priority: BEFORE_LAST) {
+                  before APPLY_ATTACK_DAMAGES, {
+                    def entry=bg.dm().find({it.to==self && it.dmg.value && it.notNoEffect})
+                    if (entry) {
+                      flip "Infiltrator", self.owner, {
+                        entry.dmg=hp(0)
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
 
