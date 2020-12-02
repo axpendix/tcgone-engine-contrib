@@ -6,6 +6,7 @@ import tcgwars.logic.PlayerType
 import tcgwars.logic.client.PokemonSelectUIRequestBuilder
 
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * @author axpendix@hotmail.com
@@ -82,7 +83,7 @@ public class PcsList extends ArrayList<PokemonCardSet> implements PokemonStack {
 
   @Override
   Stream<PokemonCardSet> stream() {
-    return super.stream().filter{it != null}
+    return StreamSupport.stream(this.spliterator(), false).filter{it != null}
   }
 
 }
