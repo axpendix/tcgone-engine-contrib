@@ -3,7 +3,9 @@ package tcgwars.logic.util
 import tcgwars.logic.groovy.TcgStatics
 import tcgwars.logic.Battleground;
 import tcgwars.logic.PlayerType
-import tcgwars.logic.client.PokemonSelectUIRequestBuilder;
+import tcgwars.logic.client.PokemonSelectUIRequestBuilder
+
+import java.util.stream.Stream;
 
 /**
  * @author axpendix@hotmail.com
@@ -76,6 +78,11 @@ public class PcsList extends ArrayList<PokemonCardSet> implements PokemonStack {
     int total = 0
     each { total += closure.call(it) }
     return total
+  }
+
+  @Override
+  Stream<PokemonCardSet> stream() {
+    return super.stream().filter{it != null}
   }
 
 }
