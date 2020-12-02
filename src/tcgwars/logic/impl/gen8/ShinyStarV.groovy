@@ -107,13 +107,15 @@ public enum ShinyStarV implements LogicCardInfo {
         weakness R
         bwAbility "Familiar Land", {
           text "If you have any Stadium card in play, this Pokémon has no Retreat Cost."
-          actionA {
+          getterA GET_RETREAT_COST, BEFORE_LAST, self, { h->
+            if (bg.getStadiumInfoStruct().stadiumCard.player == self.owner) {
+              h.object = 0;
+            }
           }
         }
         move "Branch Poke", {
           text "20 damage."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -125,9 +127,9 @@ public enum ShinyStarV implements LogicCardInfo {
         move "Amazing Blaze", {
           text "270 damage. This Pokémon does 60 damage to itself."
           energyCost R, L, D
-          attackRequirement {}
           onAttack {
             damage 270
+            damage 60, self
           }
         }
       };
@@ -137,9 +139,8 @@ public enum ShinyStarV implements LogicCardInfo {
         move "Amazing Surge", {
           text "This attack does 80 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W, L, M, C
-          attackRequirement {}
           onAttack {
-
+            opp.all.each { damage 80, it }
           }
         }
       };
@@ -149,10 +150,7 @@ public enum ShinyStarV implements LogicCardInfo {
         move "Call for Family", {
           text "Search your deck for a Basic Pokémon and put it onto your Bench. Then, shuffle your deck."
           energyCost W
-          attackRequirement {}
-          onAttack {
-
-          }
+          callForFamily basic:true, 1, delegate
         }
       };
       case ROTOM_5:
@@ -160,15 +158,21 @@ public enum ShinyStarV implements LogicCardInfo {
         weakness F
         bwAbility "Roto Choice", {
           text "When you play this Pokémon from your hand onto your Bench during your turn, you may search your deck for up to 2 Item cards that have the word 'Rotom' in their name, reveal them, and put them into your hand. Then, shuffle your deck."
-          actionA {
+          onActivate { reason ->
+            if (reason == PLAY_FROM_HAND && confirm("Use $thisAbility?")) {
+              def selection = deck.search max:2, { it.cardTypes.is(ITEM) && it.name.contains("Rotom") }
+              selection.showToOpponent "$thisAbility used"
+              selection.moveTo my.hand
+              shuffleDeck()
+            }
           }
         }
         move "Thunder Shock", {
           text "30 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 30
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -178,9 +182,14 @@ public enum ShinyStarV implements LogicCardInfo {
         move "Ascension", {
           text "Search your deck for a card that evolves from this Pokémon and put it onto this Pokémon to evolve it. Then, shuffle your deck."
           energyCost D
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Deck is empty"
+            // If copied, check that evolution exists
+            assert bg.gm().hasEvolution(self.name) : "This Pokémon does not evolve"
+          }
           onAttack {
-
+            def evolution = deck.search { it.cardTypes.is(EVOLUTION) && (it as EvolutionPokemonCard).predecessor == self.name }
+            evolve self, evolution.first(), OTHER
           }
         }
       };
@@ -190,15 +199,15 @@ public enum ShinyStarV implements LogicCardInfo {
         move "Stealth Poison", {
           text "70 damage. Your opponent's Active Pokémon is now Poisoned. Switch this Pokémon with 1 of your Benched Pokémon."
           energyCost D, C
-          attackRequirement {}
           onAttack {
             damage 70
+            applyAfterDamage POISONED
+            switchYourActive()
           }
         }
         move "Max Cutter", {
           text "180 damage."
           energyCost D, D, C
-          attackRequirement {}
           onAttack {
             damage 180
           }
@@ -211,9 +220,10 @@ public enum ShinyStarV implements LogicCardInfo {
         move "Amazing Death", {
           text "Your opponent's Active Pokémon is Knocked Out."
           energyCost R, P, D, C, C
-          attackRequirement {}
           onAttack {
-
+            afterDamage {
+              new Knockout(defending).run(bg)
+            }
           }
         }
       };
@@ -223,14 +233,24 @@ public enum ShinyStarV implements LogicCardInfo {
         bwAbility "V TransformationV", {
           text "Once during your turn, you may switch this Pokémon with a Basic Pokémon V in your discard pile. Any attached cards, damage counters, Special Conditions, turns in play, and any other effects remain on the new Pokémon."
           actionA {
+            assert my.discard.any { it.cardTypes.isAll(BASIC, POKEMON_V) } : "No Basic Pokémon V in your discard pile"
+            checkLastTurn()
+            powerUsed()
+            def card = my.discard.select "Choose a Basic Pokémon V to switch with $self", { it.cardTypes.isAll(BASIC, POKEMON_V) }
+            discard self.topPokemonCard
+            card.moveTo suppressLog:true, self.cards
+            bc "Switched with $card"
+            bg.em().run new CheckAbilities(OTHER, new PcsList(self))
           }
         }
         move "Stick On", {
           text "Attach a basic Energy card from your discard pile to this Pokémon."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.discard.basicEnergyCardCount() : "No basic Energy card in discard pile"
+          }
           onAttack {
-
+            attachEnergyFrom basic:true, my.discard, self
           }
         }
       };
@@ -240,9 +260,8 @@ public enum ShinyStarV implements LogicCardInfo {
         move "Max Transform", {
           text "Choose 1 of your opponent's Active Pokémon's attacks and use it as this attack."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
-
+            metronome defending, delegate
           }
         }
       };
@@ -250,37 +269,70 @@ public enum ShinyStarV implements LogicCardInfo {
       return itemCard (this) {
         text "Heal 50 damage from both Active Pokémon."
         onPlay {
+          heal 50, my.active
+          heal 50, opp.active
         }
         playRequirement{
+          assert my.active.numberOfDamageCounters || opp.active.numberOfDamageCounters : "Neither Active Pokémon is damaged"
         }
       };
       case RUSTED_SWORD_12:
       return pokemonTool (this) {
         text "The attacks of the Zacian V this card is attached to do 30 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
+        def eff
         onPlay {reason->
+          eff = delayed {
+            before PROCESS_ATTACK_EFFECTS, {
+              if (self.name != "Zacian V") return
+              bg.dm().each {
+                def conditions = it.from == self && it.to == opp.active
+                if (!conditions) return
+                bc "$thisCard +30"
+                it.dmg += hp 30
+              }
+            }
+          }
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          eff.unregister()
         }
       };
       case RUSTED_SHIELD_13:
       return pokemonTool (this) {
         text "The Zamazenta V this card is attached to gets +70 HP."
+        def eff
         onPlay {reason->
+          eff = getter GET_FULL_HP, self, { holder->
+            if (self.name == "Zamazenta V")
+              holder.object += hp 70
+          }
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          eff.unregister()
         }
       };
       case BALL_GUY_14:
       return supporter (this) {
-        text "Search your deck for up to 3 different Item cards that have the word 'Ball' in their name" +
+        text "Search your deck for up to 3 different Item cards that have the word 'Ball' in their name " +
           "reveal them and put them into your hand. Then shuffle your deck."
         onPlay {
+          def selection = deck.search max:3, "$cardText", {
+            it.cardTypes.is(ITEM) && it.name.contains("Ball")}, {
+            def selectionTest = []
+            def passed = true
+            it.each {
+              passed = !selectionTest.contains(it.name)
+              if (!passed) return false
+              selectionTest.add(it.name)
+            }
+            return passed
+          }
+          selection.showToOpponent "$name used"
+          selection.moveTo my.hand
+          shuffleDeck()
         }
         playRequirement{
+          assert my.deck : "Deck is empty"
         }
       };
       default:
