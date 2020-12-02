@@ -2514,10 +2514,7 @@ public enum TeamUp implements LogicCardInfo {
               assert self.active : "$self is not your active Pokémon"
               assert my.deck : "There is no more card in your deck"
               powerUsed()
-              my.deck.subList(0,5).showToMe("The top 5 cards of your deck")
-              if(my.deck.subList(0,5).filterByType(TRAINER)){
-                my.deck.subList(0,5).filterByType(TRAINER).select(min:0,"Choose the card to put in your hand").moveTo(my.hand)
-              }
+              my.deck.subList(0,5).select(min:0,"Choose the card to put in your hand",cardTypeFilter(TRAINER)).moveTo(my.hand)
               shuffleDeck()
               apply ASLEEP, self
             }
