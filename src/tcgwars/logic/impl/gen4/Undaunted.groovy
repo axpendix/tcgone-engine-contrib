@@ -601,15 +601,16 @@ public enum Undaunted implements LogicCardInfo {
             energyCost D, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              cantRetreat defending
             }
           }
           move "Vengeance", {
-            text "Pokémon in your discard pile."
-            energyCost D, C, C, D
+            text "10+ damage. Deals 10 more damage for each [D] Pokémon in your discard pile."
+            energyCost D, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10+10*my.discard.filterByType(POKEMON).findAll{it.types.contains(D)}
             }
           }
 
@@ -623,7 +624,7 @@ public enum Undaunted implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50*defending.specialConditions.size()
             }
           }
           move "Soothing Scent", {
@@ -646,7 +647,7 @@ public enum Undaunted implements LogicCardInfo {
             energyCost M, M, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 70
             }
           }
           move "Quad Smash", {
@@ -654,7 +655,9 @@ public enum Undaunted implements LogicCardInfo {
             energyCost M, M, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 4, {
+                damage 50
+              }
             }
           }
 
