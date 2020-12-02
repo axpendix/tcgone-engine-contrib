@@ -846,7 +846,7 @@ public enum CallOfLegends implements LogicCardInfo {
             if(sel) {
               tar.remove(sel)
               def rearranged = rearrange(sel,"Arrange the top of your deck")
-              deck.setSublist(0,rearranged)
+              deck.setSubList(0,rearranged)
             }
             if(tar) {
               def rearranged = rearrange(tar,"Arrange the bottom of your deck")
