@@ -95,16 +95,16 @@ public enum CallOfLegends implements LogicCardInfo {
   TEDDIURSA_73 ("Teddiursa", "73", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
   TOTODILE_74 ("Totodile", "74", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
   VULPIX_75 ("Vulpix", "75", Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
-  CHEERLEADER_S_CHEER_76 ("Cheerleader's Cheer", "76", Rarity.UNCOMMON, [TRAINER]),
-  COPYCAT_77 ("Copycat", "77", Rarity.UNCOMMON, [TRAINER]),
-  DUAL_BALL_78 ("Dual Ball", "78", Rarity.UNCOMMON, [TRAINER]),
-  INTERVIEWER_S_QUESTIONS_79 ("Interviewer's Questions", "79", Rarity.UNCOMMON, [TRAINER]),
-  LOST_REMOVER_80 ("Lost Remover", "80", Rarity.UNCOMMON, [TRAINER]),
-  LOST_WORLD_81 ("Lost World", "81", Rarity.UNCOMMON, [TRAINER]),
-  PROFESSOR_ELM_S_TRAINING_METHOD_82 ("Professor Elm's Training Method", "82", Rarity.UNCOMMON, [TRAINER]),
-  PROFESSOR_OAK_S_NEW_THEORY_83 ("Professor Oak's New Theory", "83", Rarity.UNCOMMON, [TRAINER]),
-  RESEARCH_RECORD_84 ("Research Record", "84", Rarity.UNCOMMON, [TRAINER]),
-  SAGE_S_TRAINING_85 ("Sage's Training", "85", Rarity.UNCOMMON, [TRAINER]),
+  CHEERLEADER_S_CHEER_76 ("Cheerleader's Cheer", "76", Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
+  COPYCAT_77 ("Copycat", "77", Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
+  DUAL_BALL_78 ("Dual Ball", "78", Rarity.UNCOMMON, [TRAINER,ITEM]),
+  INTERVIEWER_S_QUESTIONS_79 ("Interviewer's Questions", "79", Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
+  LOST_REMOVER_80 ("Lost Remover", "80", Rarity.UNCOMMON, [TRAINER,ITEM]),
+  LOST_WORLD_81 ("Lost World", "81", Rarity.UNCOMMON, [TRAINER,STADIUM]),
+  PROFESSOR_ELM_S_TRAINING_METHOD_82 ("Professor Elm's Training Method", "82", Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
+  PROFESSOR_OAK_S_NEW_THEORY_83 ("Professor Oak's New Theory", "83", Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
+  RESEARCH_RECORD_84 ("Research Record", "84", Rarity.UNCOMMON, [TRAINER,ITEM]),
+  SAGE_S_TRAINING_85 ("Sage's Training", "85", Rarity.UNCOMMON, [TRAINER,SUPPORTER]),
   DARKNESS_ENERGY_86 ("Darkness Energy", "86", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   METAL_ENERGY_87 ("Metal Energy", "87", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   GRASS_ENERGY_88 ("Grass Energy", "88", Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
@@ -204,11 +204,12 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost M, M, M, M
             onAttack {
               damage 70
-              my.hand.moveTo(hidden:true, my.deck)
-              shuffleDeck()
+              afterDamage{
+                my.hand.moveTo(hidden:true, my.deck)
+                shuffleDeck()
+              }
             }
           }
-
         };
       case ESPEON_4:
         return copy(Undaunted.ESPEON_2, this);
@@ -222,10 +223,12 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost F, F, F, F
             onAttack {
               damage 80
-              flip 1, {
-                opp.deck.subList(0,4).discard()
-              }, {
-                my.deck.subList(0,4).discard()
+              afterDamage{
+                flip 1, {
+                  opp.deck.subList(0,4).discard()
+                }, {
+                  my.deck.subList(0,4).discard()
+                }
               }
             }
           }
@@ -274,7 +277,8 @@ public enum CallOfLegends implements LogicCardInfo {
               flip 1, {
                 opp.all.each{
                   damage 40, it
-                },
+                }
+              },{
                 my.all.each{
                   damage 40, it
                 }
@@ -292,7 +296,7 @@ public enum CallOfLegends implements LogicCardInfo {
             text "30+ damage. Does 30 damage plus 20 more damage for each of your Pokémon in the Lost Zone."
             energyCost C, C
             onAttack {
-              damage 30+my.lostZone.filterByType(POKEMON).size()
+              damage 30+20*my.lostZone.filterByType(POKEMON).size()
             }
           }
           move "Sky Uppercut", {
@@ -469,7 +473,7 @@ public enum CallOfLegends implements LogicCardInfo {
             onAttack {
               damage 30
               flip 1, {
-                apply PARALYZED
+                applyAfterDamage PARALYZED
               }, {
                 defending.cards.filterByType(ENERGY).select("Choose an energy to put into the Lost Zone").moveTo(opp.lostZone)
               }
@@ -500,7 +504,9 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost C, C, C
             onAttack {
               damage 30
-              opp.hand.shuffledCopy().select(hidden: true, "Choose 1 card to put in the Lost Zone.").moveTo(opp.lostZone)
+              afterDamage{
+                opp.hand.shuffledCopy().select(hidden: true, "Choose 1 card to put in the Lost Zone.").moveTo(opp.lostZone)
+              }
             }
           }
 
@@ -512,7 +518,7 @@ public enum CallOfLegends implements LogicCardInfo {
       case DONPHAN_42:
         return copy(HeartgoldSoulsilver.DONPHAN_40, this);
       case FLAAFFY_43:
-        return copy(HeartgoldSoulsilver.FLAFFY_42, this);
+        return copy(HeartgoldSoulsilver.FLAAFFY_42, this);
       case FLAREON_44:
         return copy(Undaunted.FLAREON_26, this);
       case JOLTEON_45:
@@ -527,7 +533,7 @@ public enum CallOfLegends implements LogicCardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
                   if(self.isSPC(ASLEEP) && it.to == self && it.dmg.value && it.notNoEffect) {
-                    bc "Sweet Sleeping Face: Damage was prevented"
+                    bc "$thisAbility prevents damage"
                     it.dmg = hp(0)
                   }
                 }
@@ -578,7 +584,9 @@ public enum CallOfLegends implements LogicCardInfo {
               damage 20
               if(self.isSPC(POISONED)){
                 damage 60
-                afterDamage {clearSpecialCondition(self, ATTACK, [POISONED])}
+                afterDamage {
+                  clearSpecialCondition(self, ATTACK, [POISONED])
+                }
               }
             }
           }
@@ -593,7 +601,9 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Nap", {
             text "Remove 1 damage counter from Chikorita."
             energyCost C
-            attackRequirement {sef.numberOfDamageCounters}
+            attackRequirement {
+              assert self.numberOfDamageCounters : "$self is healthy"
+            }
             onAttack {
               heal 10, self
             }
@@ -663,7 +673,7 @@ public enum CallOfLegends implements LogicCardInfo {
             delayed {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {if(it.to==self && it.from.owner==self.owner.opposite && it.notZero && it.notNoEffect){
-                  bc "Ultra-Thick Skin"
+                  bc "$thisAbility -10"
                   it.dmg-=hp(10)
                 }}
               }
@@ -746,7 +756,7 @@ public enum CallOfLegends implements LogicCardInfo {
               flip {
                 delayed {
                   before PLAY_TRAINER, {
-                    if (bg.currentTurn == self.owner.opposite) {
+                    if (bg.currentTurn == self.owner.opposite && ef.cardToPlay.cardTypes.is(ITEM) && ef.reason == PLAY_FROM_HAND) {
                       wcu "Fake Tears prevents you from playing Trainer cards."
                       prevent()
                     }
@@ -803,9 +813,10 @@ public enum CallOfLegends implements LogicCardInfo {
           onPlay {
             actions=action("Stadium: Lost World") {
               assert lastTurn != bg().turnCount : "You've already used Lost World this turn."
+              assert opp.lostZone.filterByType(POKEMON).size<6 : "Your opponent has fewer than 6 Pokémon in the Lost Zone"
               bc "Used Lost World."
               lastTurn = bg().turnCount
-              bg.getGame().endGame(self.owner, WinCondition.OTHER);
+              bg.getGame().endGame(bg.currentTurn, WinCondition.OTHER);
             }
           }
           onRemoveFromPlay{
