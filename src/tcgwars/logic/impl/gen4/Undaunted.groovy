@@ -633,7 +633,7 @@ public enum Undaunted implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              apply ASLEEP
+              applyAfterDamage ASLEEP
             }
           }
 
@@ -672,15 +672,19 @@ public enum Undaunted implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              flip { apply ASLEEP }
+              flip {
+                applyAfterDamage ASLEEP
+              }
             }
           }
           move "Poltergeist", {
             text "Look at your opponent’s hand. This attack does 30 damage times the number of Trainer, Supporter, and Stadium cards in your opponent’s hand.]"
             energyCost P, C
-            attackRequirement {}
+            attackRequirement {
+              assert opp.hand : "Your opponent's hand is empty"
+            }
             onAttack {
-              damage 0
+              damage 30 * opp.hand.shuffledCopy().showToMe("Your opponent's hadn").filterByType(TRAINER).size()
             }
           }
 
@@ -692,14 +696,26 @@ public enum Undaunted implements LogicCardInfo {
           pokePower "Mischievous Trick", {
             text "Once during your turn , you may switch 1 of your face-down Prize cards with the top card of your deck. This power can’t be used if Rotom is affected by a Special Condition."
             actionA {
+              assert my.deck : "Your deck is empty"
+              assert my.prizeCardSet.faceDownCards : "You have no face down prizes"
+              checkNoSPC()
+              checkLastTurn()
+              powerUsed()
+              def tar = my.prizeCardSet.faceDownCards.select(hidden: true, "Prize to replace with the top card of your deck").first()
+              def ind = my.prizeCardSet.indexOf(tar)
+              my.prizeCardSet.set(ind, my.deck.remove(0))
+              my.deck.add(0,tar)
             }
           }
           move "Plasma Arrow", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage for each Energy attached to that Pokémon. This attack’s damage isn’t affected by Weakness or Resistance."
             energyCost L
-            attackRequirement {}
+            attackRequirement {
+              assert opp.all.find{it.cards.energyCount(C)} : "None of your opponent's Pokémon have any energy attached"
+            }
             onAttack {
-              damage 0
+              def tar = opp.all.findAll{it.cards.energyCount(C)}.select()
+              noWrDamage 20 * tar.cards.energyCount(C), tar
             }
           }
 
@@ -709,19 +725,20 @@ public enum Undaunted implements LogicCardInfo {
           weakness R
           resistance P, MINUS20
           move "Steel Coat", {
-            text "Energy card and attach it to 1 of your Pokémon. Shuffle your deck afterward."
-            energyCost M, M
-            attackRequirement {}
+            text "Search your deck for a [M] Energy card and attach it to 1 of your Pokémon. Shuffle your deck afterward."
+            energyCost M
+            attackRequirement {
+              assert my.deck : "Your deck is empty"
+            }
             onAttack {
-              damage 0
+              attachEnergyFrom(type: M, my.deck, my.all)
             }
           }
           move "Razor Wing", {
             text "40 damage. "
             energyCost M, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
             }
           }
 
@@ -733,27 +750,35 @@ public enum Undaunted implements LogicCardInfo {
           move "Fresh-Picked Fruit", {
             text "Remove 6 damage counters from 1 of your Benched Pokémon."
             energyCost G
-            attackRequirement {}
+            attackRequirement {
+              assert my.bench.find{it.numberOfDamageCounters} : "Your bench is healthy"
+            }
             onAttack {
-              damage 0
+              heal 60, my.bench.findAll{it.numberOfDamageCounters}.select("Choose 1 of your Benched Pokémon to remove 6 damage counters from")
             }
           }
           move "Cutting Wind", {
             text "40 damage. "
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
             }
           }
-
         };
       case VESPIQUEN_23:
         return evolution (this, from:"Combee", hp:HP100, type:GRASS, retreatCost:3) {
           weakness R
           pokeBody "Defense Sign", {
-            text "Prevent all damage done to your Benched Pokémon by attacks."
+            text "Prevent all damage done to your [G] Benched Pokémon by attacks."
             delayedA {
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each {
+                  if(it.from.owner != self.owner && it.to.owner==self.owner && it.to.benched && it.to.types.contains(G) && it.dmg.value && it.notNoEffect){
+                    bc "$thisAbility prevents damage"
+                    it.dmg=hp(0)
+                  }
+                }
+              }
             }
           }
           move "Mach Wind", {
@@ -761,7 +786,18 @@ public enum Undaunted implements LogicCardInfo {
             energyCost G, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              delayed {
+				        def eff
+				        register {
+					        eff = getter GET_RETREAT_COST, LAST, self, { h ->
+                    h.object = 0
+                  }
+                }
+                unregister {
+                  eff.unregister()
+                }
+                unregisterAfter 3
+              }
             }
           }
 
@@ -772,6 +808,12 @@ public enum Undaunted implements LogicCardInfo {
           pokeBody "Allergy Flower", {
             text "Each player can’t play any Trainer cards from his or her hand."
             delayedA {
+              before PLAY_TRAINER, {
+                if(ef.cardToPlay.cardTypes.is(ITEM) && ef.reason == PLAY_FROM_HAND){
+                  wcu "$thisAbility prevents playing trainer cards"
+                  prevent()
+                }
+              }
             }
           }
           move "Dazzling Pollen", {
@@ -779,7 +821,12 @@ public enum Undaunted implements LogicCardInfo {
             energyCost G, G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              flip 1, {
+                damage 20
+              }, {
+                applyAfterDamage CONFUSED
+              }
             }
           }
 
@@ -790,7 +837,10 @@ public enum Undaunted implements LogicCardInfo {
           resistance P, MINUS20
           pokePower "Claw Snag", {
             text "Once during your turn, when you play Weavile from your hand to evolve 1 of your Pokémon, you may look at your opponent’s hand. Choose a card from your opponent’s hand and discard it."
-            actionA {
+            onActivate { reason ->
+              if(reason == PLAY_FROM_HAND && opp.hand && confirm("Use $thisAbility?")){
+                opp.hand.shuffledCopy().select("Choose a card to discard").discard()
+              }
             }
           }
           move "Feint Attack", {
@@ -811,7 +861,7 @@ public enum Undaunted implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
             }
           }
           move "Flamethrower", {
@@ -819,7 +869,8 @@ public enum Undaunted implements LogicCardInfo {
             energyCost R, R, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 90
+              discardSelfEnergyAfterDamage C
             }
           }
 
@@ -832,7 +883,12 @@ public enum Undaunted implements LogicCardInfo {
             energyCost G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip {
+                def list=[ASLEEP,CONFUSED,PARALYZED,POISONED,BURNED]
+                SpecialConditionType spc=choose(list, list.collect({it.toString()})) as SpecialConditionType
+                applyAfterDamage spc
+              }
             }
           }
 
@@ -855,7 +911,7 @@ public enum Undaunted implements LogicCardInfo {
             energyCost L, L, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 70
             }
           }
 
@@ -865,11 +921,13 @@ public enum Undaunted implements LogicCardInfo {
           weakness R
           resistance P, MINUS20
           move "Scrap Attack", {
-            text "20 damage. Energy card and attach it to Lairon."
-            energyCost M, M
-            attackRequirement {}
+            text "20 damage. Flip a coin. If heads, search your discard pile for a [M] Energy card and attach it to Lairon."
+            energyCost M
             onAttack {
-              damage 0
+              damage 20
+              afterDamage{
+                attachEnergyFrom(type:M,my.discard,self)
+              }
             }
           }
           move "Tackle", {
@@ -877,7 +935,7 @@ public enum Undaunted implements LogicCardInfo {
             energyCost M, M, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
             }
           }
 
@@ -891,7 +949,7 @@ public enum Undaunted implements LogicCardInfo {
             energyCost M, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
             }
           }
           move "Double Smash", {
@@ -899,7 +957,9 @@ public enum Undaunted implements LogicCardInfo {
             energyCost M, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 2, {
+                damage 50
+              }
             }
           }
 
@@ -912,7 +972,10 @@ public enum Undaunted implements LogicCardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              if(sw2(opp.bench.select("Choose the new Active Pokémon"))) {
+                apply CONFUSED
+                apply POISONED
+              }
             }
           }
           move "Pester", {
@@ -920,7 +983,10 @@ public enum Undaunted implements LogicCardInfo {
             energyCost P, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              if(defending.specialConditions) {
+                damage 30
+              }
             }
           }
 
@@ -933,7 +999,10 @@ public enum Undaunted implements LogicCardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip {
+                damage 20
+              }
             }
           }
           move "Guillotine", {
@@ -941,7 +1010,7 @@ public enum Undaunted implements LogicCardInfo {
             energyCost G, G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
             }
           }
 
@@ -955,7 +1024,7 @@ public enum Undaunted implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
             }
           }
           move "Spark", {
@@ -963,7 +1032,10 @@ public enum Undaunted implements LogicCardInfo {
             energyCost L, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              if(opp.bench){
+                damage 20, opp.bench.select("Choose 1 of your opponent’s Benched Pokémon to deal 20 damage to.")
+              }
             }
           }
 
@@ -976,7 +1048,7 @@ public enum Undaunted implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10 * defending.numberOfDamageCounters
             }
           }
           move "Gnaw Up", {
