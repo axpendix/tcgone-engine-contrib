@@ -480,7 +480,7 @@ public enum CallOfLegends implements LogicCardInfo {
                 flip 1, {
                   apply PARALYZED
                 }, {
-                  defending.cards.filterByType(ENERGY).select("Choose an energy to put into the Lost Zone").moveTo(opp.lostZone)
+                  defending.cards.select("Choose an energy to put into the Lost Zone",cardTypeFilter(ENERGY)).moveTo(opp.lostZone)
                 }
               }
             }
@@ -708,7 +708,7 @@ public enum CallOfLegends implements LogicCardInfo {
             text "Choose a card from your hand and put it in the Lost Zone. Then, draw 3 cards."
             energyCost C
             attackRequirement {
-              assert my.deck|my.hand : "You have no cards in your hand or deck!"
+              assert my.deck||my.hand : "You have no cards in your hand or deck!"
             }
             onAttack {
               if(my.hand) {
@@ -809,7 +809,7 @@ public enum CallOfLegends implements LogicCardInfo {
           text "Put 1 Special Energy card attached to 1 of your opponent’s Pokémon in the Lost Zone."
           onPlay {
             def pcs = opp.all.findAll{it.cards.filterByType(SPECIAL_ENERGY)}.select("Remove special energy from which Pokémon?")
-            pcs.cards.filterByTYpe(SPECIAL_ENERGY).select("Put which special energy in the Lost Zone?").first().moveTo(opp.lostZone)
+            pcs.cards.select("Put which special energy in the Lost Zone?",cardTypeFilter(SPECIAL_ENERGY)).moveTo(opp.lostZone)
           }
           playRequirement{
             assert opp.all.find{it.cards.filterByType(SPECIAL_ENERGY)}
@@ -823,7 +823,7 @@ public enum CallOfLegends implements LogicCardInfo {
           onPlay {
             actions=action("Stadium: Lost World") {
               assert lastTurn != bg().turnCount : "You've already used Lost World this turn."
-              assert opp.lostZone.filterByType(POKEMON).size<6 : "Your opponent has fewer than 6 Pokémon in the Lost Zone"
+              assert opp.lostZone.filterByType(POKEMON).size() < 6 : "Your opponent has fewer than 6 Pokémon in the Lost Zone"
               bc "Used Lost World."
               lastTurn = bg().turnCount
               bg.getGame().endGame(bg.currentTurn, WinCondition.OTHER);
