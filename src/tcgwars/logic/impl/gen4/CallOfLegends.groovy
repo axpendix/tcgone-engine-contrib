@@ -187,7 +187,6 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Cell Storm", {
             text "60 damage. Discard 2 [P] energy attached to Deoxys and remove 6 damage counters from Deoxys."
             energyCost P, P, P
-            attackRequirement {}
             onAttack {
               damage 60
               discardSelfEnergyAfterDamage P,P
@@ -203,7 +202,6 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Time Rewind", {
             text "70 damage. Shuffle your hand into your deck."
             energyCost M, M, M, M
-            attackRequirement {}
             onAttack {
               damage 70
               my.hand.moveTo(hidden:true, my.deck)
@@ -222,7 +220,6 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Volcano Stomp", {
             text "80 damage. Flip a coin. If heads, discard the top 4 cards of your opponent’s deck. If tails, discard the top 4 cards of your deck."
             energyCost F, F, F, F
-            attackRequirement {}
             onAttack {
               damage 80
               flip 1, {
@@ -245,7 +242,6 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Combustion", {
             text "50 damage. "
             energyCost R, C, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -253,7 +249,6 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Scorching Wing", {
             text "100 damage. Flip a coin. If tails, discard all [R] energy attached to Ho-Oh."
             energyCost R, R, R, C, C
-            attackRequirement {}
             onAttack {
               damage 100
               afterDamage{
@@ -275,7 +270,6 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Destructive Tsunami", {
             text "Flip a coin. If heads, this attack does 40 damage to each of your opponent’s Pokémon. If tails, this attack does 40 damage to each of your Pokémon."
             energyCost W, W, W, W
-            attackRequirement {}
             onAttack {
               flip 1, {
                 opp.all.each{
@@ -297,7 +291,6 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Dimension Sphere", {
             text "30+ damage. Does 30 damage plus 20 more damage for each of your Pokémon in the Lost Zone."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30+my.lostZone.filterByType(POKEMON).size()
             }
@@ -305,7 +298,6 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Sky Uppercut", {
             text "70 damage. This attack’s damage isn’t affected by Resistance."
             energyCost F, F, C
-            attackRequirement {}
             onAttack {
               damage 70
               dontApplyResistance()
@@ -320,7 +312,6 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Linear Attack", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 30 damage to that Pokémon."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 30, opp.bench.select()
             }
@@ -328,7 +319,6 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Hydro Splash", {
             text "80 damage. "
             energyCost W, W, W, C, C
-            attackRequirement {}
             onAttack {
               damage 80
             }
@@ -355,7 +345,6 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Shocking Bolt", {
             text "50 damage. Put all Energy cards attached to Pachirisu in the Lost Zone."
             energyCost L, L
-            attackRequirement {}
             onAttack {
               damage 50
               afterDamage{
@@ -371,7 +360,6 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Wormhole", {
             text "60 damage. Switch Palkia with 1 of your Benched Pokémon. Then, your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
             energyCost W, W, W, W
-            attackRequirement {}
             onAttack {
               damage 60
               afterDamage{
@@ -389,7 +377,6 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Inferno Spear", {
             text "100 damage. Discard a [R] and a [L] energy attached to Rayquaza."
             energyCost R, R, L, L
-            attackRequirement {}
             onAttack {
               damage 100
               discardSelfEnergyAfterDamage R,L
@@ -429,7 +416,6 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Juggling", {
             text "10× damage. Flip 4 coins. This attack does 10 damage times the number of heads."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               flip 4, {
                 damage 10
@@ -450,7 +436,7 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Layabout", {
             text "Remove all damage counters from Snorlax. Snorlax can’t use Layabout during your next turn."
             energyCost C, C, C
-            attackRequirement {}
+            attackRequirement {self.numberOfDamageCounters}
             onAttack {
               healAll self
               cantUseAttack(thisMove, self)
@@ -459,7 +445,6 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Clomp Clomp Clobber", {
             text "80 damage. Put 1 Energy card attached to Snorlax in the Lost Zone."
             energyCost C, C, C, C
-            attackRequirement {}
             onAttack {
               damage 80
               moveSelfEnergyAfterDamage my.lostZone
@@ -474,7 +459,6 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Grind", {
             text "20× damage. Does 20 damage times the amount of Energy attached to Tangrowth."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 20*self.cards.energyCount(C)
             }
@@ -482,7 +466,6 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Plow Over", {
             text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed. If tails, put 1 Energy card attached to the Defending Pokémon in the Lost Zone."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               damage 30
               flip 1, {
@@ -508,7 +491,6 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Swords Dance", {
             text "During you next turn, Zangoose’s Lost Claw attack’s base damage is 80."
             energyCost C
-            attackRequirement {}
             onAttack {
               increasedBaseDamageNextTurn("Lost Claw", hp(50))
             }
@@ -516,7 +498,6 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Lost Claw", {
             text "30 damage. Choose 1 card from your opponent’s hand without looking and put it in the Lost Zone."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 30
               opp.hand.shuffledCopy().select(hidden: true, "Choose 1 card to put in the Lost Zone.").moveTo(opp.lostZone)
@@ -556,9 +537,9 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Sleepy Lost", {
             text "Put the top card of your opponent’s deck in the Lost Zone. Mime Jr. is now Asleep."
             energyCost ()
-            attackRequirement {}
             onAttack {
               opp.deck.first().moveTo(opp.lostZone)
+              apply ASLEEP, self
             }
           }
 
@@ -573,7 +554,6 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Tumble Over", {
             text "20 damage. Riolu can’t attack during your next turn."
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 20
               cantAttackNextTurn self
@@ -587,7 +567,6 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Poison Buildup", {
             text "Seviper is now Poisoned."
             energyCost C
-            attackRequirement {}
             onAttack {
               apply POISONED, self
             }
@@ -595,7 +574,6 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Poison Effect", {
             text "20+ damage. If Seviper is Poisoned, this attack does 20 damage plus 60 more damage and remove the Special Condition Poisoned from Seviper."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               damage 20
               if(self.isSPC(POISONED)){
@@ -615,15 +593,14 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Nap", {
             text "Remove 1 damage counter from Chikorita."
             energyCost C
-            attackRequirement {}
+            attackRequirement {sef.numberOfDamageCounters}
             onAttack {
-              heal 10
+              heal 10, self
             }
           }
           move "Reckless Charge", {
             text "30 damage. Chikorita does 10 damage to itself."
             energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 30
               damage 10, self
@@ -639,7 +616,6 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Fireworks", {
             text "20 damage. Flip a coin. If tails discard a [R] Energy attached to Cyndaquil."
             energyCost R
-            attackRequirement {}
             onAttack {
               damage 20
               flip 1, {} , {discardSelfEnergyAfterDamage(R)}
@@ -668,7 +644,6 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Static Shock", {
             text "10 damage. "
             energyCost L
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -697,7 +672,6 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Rock Smash", {
             text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 10 more damage."
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 20
               flip { damage 10 }
@@ -715,7 +689,9 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Prehistoric Wisdom", {
             text "Choose a card from your hand and put it in the Lost Zone. Then, draw 3 cards."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck|my.hand : "You have no cards in your hand or deck!"
+            }
             onAttack {
               my.hand.select("Choose a card to put in the Lost Zone").first().moveTo(my.lostZone)
               draw 3
@@ -724,7 +700,6 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Granite Head", {
             text "30 damage. During your opponent's next turn, any damage done to Relicanth by an opponent's attack is reduced by 30."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 30
               reduceDamageNextTurn(hp(30), thisMove)
@@ -743,7 +718,9 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Nutritional Support", {
             text "Search your deck for a [G] Energy card and attach it to 1 of your Pokémon. Shuffle your deck afterward."
             energyCost G
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Your deck is empty!"
+            }
             onAttack {
               attachEnergyFrom(type: G, my.deck, my.all)
               shuffleDeck()
@@ -752,7 +729,6 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Poisonpowder", {
             text "30 damage. The Defending Pokémon is now Poisoned."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               damage 30
               apply POISONED
@@ -766,7 +742,6 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Fake Tears", {
             text "Flip a coin. If heads, your opponent can’t play any Trainer cards from his or her hand during your opponent’s next turn, and any damage done to Teddiursa by attack is reduced by 30 (after applying weakness and resistance)."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip {
                 delayed {
@@ -790,10 +765,9 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Aqua Tail", {
             text "30+ damage. Flip a coin for each [W] Energy attached to Totodile. This attack does 30 damage plus 20 more damage for each heads."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
               damage 30
-              flip self.cards.energyCount(G), {
+              flip self.cards.energyCount(W), {
                 damage 20
               } 
             }
@@ -900,7 +874,6 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Wild Blaze", {
             text "70 damage. Discard the top 3 cards of your deck."
             energyCost R, R, C
-            attackRequirement {}
             onAttack {
               damage 70
               my.deck.subList(0,3).discard()
@@ -933,7 +906,6 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Raging Thunder", {
             text "70 damage. Does 20 damage to 1 of your Pokémon and don’t apply Weakness and Resistance to this damage."
             energyCost L, L, C
-            attackRequirement {}
             onAttack {
               damage 70
               noWrDamage(40,my.all.select())
@@ -957,7 +929,6 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Tsunami", {
             text "This attack does 20 damage to each of your opponent’s Pokémon."
             energyCost W, W, C
-            attackRequirement {}
             onAttack {
               opp.all.each{
                 damage 20, it
