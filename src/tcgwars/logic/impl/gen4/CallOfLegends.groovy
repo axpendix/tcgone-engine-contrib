@@ -1,6 +1,6 @@
 package tcgwars.logic.impl.gen4
 
-import tcgwars.logic.impl.gen3.RubySapphire
+import tcgwars.logic.impl.gen3.RubySapphire;
 import tcgwars.logic.impl.gen3.TeamRocketReturns;
 import tcgwars.logic.impl.gen3.DeltaSpecies;
 
@@ -8,11 +8,15 @@ import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
 import static tcgwars.logic.groovy.TcgBuilders.*;
-import static tcgwars.logic.groovy.TcgStatics.*
-import static tcgwars.logic.card.Resistance.ResistanceType.*
+import static tcgwars.logic.groovy.TcgStatics.*;
+import static tcgwars.logic.card.Resistance.ResistanceType.*;
+import static tcgwars.logic.effect.EffectType.*;
+import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.special.SpecialConditionType.*;
 
-import tcgwars.logic.card.*
+import tcgwars.logic.card.*;
 import tcgwars.logic.util.*;
+import tcgwars.logic.WinCondition;
 
 /**
  * @author axpendix@hotmail.com
@@ -296,7 +300,7 @@ public enum CallOfLegends implements LogicCardInfo {
             text "30+ damage. Does 30 damage plus 20 more damage for each of your Pokémon in the Lost Zone."
             energyCost C, C
             onAttack {
-              damage 30+20*my.lostZone.filterByType(POKEMON).size()
+              damage 30 + 20 * my.lostZone.filterByType(POKEMON).size()
             }
           }
           move "Sky Uppercut", {
@@ -340,7 +344,7 @@ public enum CallOfLegends implements LogicCardInfo {
           pokePower "Self-Generation", {
             text "Once during your turn, when you put Pachirisu from your hand onto your Bench, you may attach up to 2 [L] Energy cards from your hand to Pachirisu."
             onActivate {reason ->
-              if(reason == PLAY_FROM_HAND && my.hand.filterByEnergyType(L) && confirm("Use Self-Generation?")){
+              if(reason == PLAY_FROM_HAND && my.hand.filterByEnergyType(L) && confirm("Use Self-Generation?")) {
                 powerUsed()
                 attachEnergyFrom(type: L, my.hand, self)
               }
@@ -464,7 +468,7 @@ public enum CallOfLegends implements LogicCardInfo {
             text "20× damage. Does 20 damage times the amount of Energy attached to Tangrowth."
             energyCost C
             onAttack {
-              damage 20*self.cards.energyCount(C)
+              damage 20 * self.cards.energyCount(C)
             }
           }
           move "Plow Over", {
@@ -472,10 +476,12 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost G, C, C
             onAttack {
               damage 30
-              flip 1, {
-                applyAfterDamage PARALYZED
-              }, {
-                defending.cards.filterByType(ENERGY).select("Choose an energy to put into the Lost Zone").moveTo(opp.lostZone)
+              afterDamage{
+                flip 1, {
+                  apply PARALYZED
+                }, {
+                  defending.cards.filterByType(ENERGY).select("Choose an energy to put into the Lost Zone").moveTo(opp.lostZone)
+                }
               }
             }
           }
@@ -582,7 +588,7 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost P, C
             onAttack {
               damage 20
-              if(self.isSPC(POISONED)){
+              if(self.isSPC(POISONED)) {
                 damage 60
                 afterDamage {
                   clearSpecialCondition(self, ATTACK, [POISONED])
@@ -672,7 +678,7 @@ public enum CallOfLegends implements LogicCardInfo {
             text "As long as Phanpy has Energy attached to it, any damage done to Phanpy by attacks is reduced by 10 ."
             delayed {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {if(it.to==self && it.from.owner==self.owner.opposite && it.notZero && it.notNoEffect){
+                bg.dm().each {if(it.to==self && it.from.owner==self.owner.opposite && it.notZero && it.notNoEffect) {
                   bc "$thisAbility -10"
                   it.dmg-=hp(10)
                 }}
@@ -684,7 +690,9 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost F, C
             onAttack {
               damage 20
-              flip { damage 10 }
+              flip {
+                damage 10
+              }
             }
           }
 
@@ -703,7 +711,9 @@ public enum CallOfLegends implements LogicCardInfo {
               assert my.deck|my.hand : "You have no cards in your hand or deck!"
             }
             onAttack {
-              my.hand.select("Choose a card to put in the Lost Zone").first().moveTo(my.lostZone)
+              if(my.hand) {
+                my.hand.select("Choose a card to put in the Lost Zone").first().moveTo(my.lostZone)
+              }
               draw 3
             }
           }
@@ -833,12 +843,14 @@ public enum CallOfLegends implements LogicCardInfo {
           onPlay {
             def tar = my.deck.subList(0,5)
             def sel = tar.select(min:0, max:tar.size(), "Choose any number of cards to put on top of your deck(unselected cards will be put on the bottom of your deck)")
-            if(sel){
+            if(sel) {
               tar.remove(sel)
-              deck.setSublist(0,rearrange(sel,"Arrange the top of your deck"))
+              def rearranged = rearrange(sel,"Arrange the top of your deck")
+              deck.setSublist(0,rearranged)
             }
-            if(tar){
-              rearrange(tar,"Arrange the bottom of your deck").moveTo(my.deck)
+            if(tar) {
+              def rearranged = rearrange(tar,"Arrange the bottom of your deck")
+              rearranged.moveTo(my.deck)
             }
           }
           playRequirement{
@@ -887,7 +899,9 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost R, R, C
             onAttack {
               damage 70
-              my.deck.subList(0,3).discard()
+              afterDamage{
+                my.deck.subList(0,3).discard()
+              }
             }
           }
 
@@ -919,7 +933,7 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost L, L, C
             onAttack {
               damage 70
-              noWrDamage(40,my.all.select())
+              noWrDamage(20,my.all.select())
             }
           }
 
