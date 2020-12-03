@@ -19,6 +19,7 @@ import tcgwars.logic.util.*;
 
 /**
  * @author axpendix@hotmail.com
+ * @author ufodynsaty12@gmail.com
  */
 public enum Undaunted implements LogicCardInfo {
 
