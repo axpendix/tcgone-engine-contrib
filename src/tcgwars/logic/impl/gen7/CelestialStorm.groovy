@@ -1205,7 +1205,7 @@ public enum CelestialStorm implements LogicCardInfo {
             text "This attack does 30 damage to 2 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost W,C
             onAttack {
-              multiSelect(opp.all, 2).each{
+              multiSelect(opp.all, 2, text).each{
                 targeted(it){
                   damage 30, it
                 }
@@ -1301,7 +1301,7 @@ public enum CelestialStorm implements LogicCardInfo {
             onAttack {
               damage 10
               if(opp.bench){
-                multiSelect(opp.bench, 2).each{
+                multiSelect(opp.bench, 2, text).each{
                   targeted(it){
                     damage 10, it
                   }

@@ -1310,7 +1310,7 @@ public enum LegendMaker implements LogicCardInfo {
           onAttack {
             damage 20
             if (opp.bench) {
-              multiSelect(opp.bench, 2).each{
+              multiSelect(opp.bench, 2, text).each{
                 damage 10, it
               }
             }

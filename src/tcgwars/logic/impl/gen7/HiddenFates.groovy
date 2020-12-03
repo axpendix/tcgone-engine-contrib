@@ -739,7 +739,7 @@ public enum HiddenFates implements LogicCardInfo {
           onAttack {
             damage 60
             if(opp.bench){
-              multiSelect(opp.bench, 3).each{
+              multiSelect(opp.bench, 3, text).each{
                 targeted(it){ damage 20, it }
               }
             }
@@ -942,7 +942,7 @@ public enum HiddenFates implements LogicCardInfo {
           onAttack {
             gxPerform()
             if (self.cards.energySufficient(thisMove.energyCost + [R,W,L])) {
-              multiSelect(opp.all, 3).each{
+              multiSelect(opp.all, 3, text).each{
                 damage 110, it
               }
             }

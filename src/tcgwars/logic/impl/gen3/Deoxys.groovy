@@ -289,7 +289,7 @@ public enum Deoxys implements LogicCardInfo {
             text "Choose 2 of your opponent’s Pokémon. This attack does 30 damage to each of them. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost R, C, C
             onAttack {
-              multiSelect(opp.all, 2).each{ damage 30, it }
+              multiSelect(opp.all, 2, text).each{ damage 30, it }
             }
           }
 
@@ -904,7 +904,7 @@ public enum Deoxys implements LogicCardInfo {
             text "Choose 3 of your opponent’s Pokémon. This attack does 10 damage to each of those Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost W
             onAttack {
-              multiSelect(opp.all, 3).each{ damage 10, it }
+              multiSelect(opp.all, 3, text).each{ damage 10, it }
             }
           }
           move "Rend", {

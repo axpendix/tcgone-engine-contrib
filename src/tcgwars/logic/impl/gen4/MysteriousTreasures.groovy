@@ -1707,7 +1707,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              multiSelect(opp.all.findAll{it.evolution}, 3).each{
+              multiSelect(opp.all.findAll{it.evolution}, 3, text).each{
                 targeted(it){
                   damage 30, it
                 }
@@ -1828,7 +1828,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             onAttack {
               damage 40
               if (opp.bench) {
-                multiSelect(opp.bench, 2).each {
+                multiSelect(opp.bench, 2, text).each {
                   targeted(it) {
                     damage 10, it
                   }
@@ -2637,7 +2637,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               assert opp.bench
             }
             onAttack {
-              multiSelect(opp.bench, 2).each{
+              multiSelect(opp.bench, 2, text).each{
                 targeted(it){
                   damage 10, it
                 }

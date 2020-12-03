@@ -1327,7 +1327,7 @@ public enum UnseenForces implements LogicCardInfo {
             assert opp.bench: "Opponent does not have any Benched Pokémon"
           }
           onAttack {
-            multiSelect(opp.bench, 2).each {
+            multiSelect(opp.bench, 2, text).each {
               targeted(it){ damage 10, it }
             }
           }
