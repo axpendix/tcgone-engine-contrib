@@ -1864,67 +1864,133 @@ public enum Undaunted implements LogicCardInfo {
 
         };
       case BURNED_TOWER_71:
-        return basicTrainer (this) {
+        return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nOnce during each player’s turn, that player may flip a coin. If heads, the player searches his or her discard pile for a basic Energy card, shows it to his or her opponent, and put it into his or her hand."
+          def lastTurn=0
+          def actions=[]
           onPlay {
+            actions=action("Stadium: Burned Tower") {
+              assert my.discard.find(cardTypeFilter(BASIC_ENERGY)) : "No Basic Energies in your discard pile."
+              assert lastTurn != bg().turnCount : "Already used this turn."
+              bc "Used Training Court effect."
+              lastTurn = bg().turnCount
+              my.discard.findAll(cardTypeFilter(BASIC_ENERGY)).select("Which Basic Energy to move to your hand?").moveTo(my.hand)
+            }
           }
-          playRequirement{
+          onRemoveFromPlay {
+            actions.each { bg().gm().unregisterAction(it) }
           }
         };
       case DEFENDER_72:
         return basicTrainer (this) {
           text "Attach Defender to 1 of your Pokémon. Discard this card at the end of your opponent’s next turn. Any damage done to the Pokémon Defender is attached to by an opponent’s attack is reduced by 20 (after applying Weakness and Resistance)."
+          def eff
+          def turns = 1
           onPlay {
-          }
-          playRequirement{
+            def pcs = my.active
+            if (my.bench) {
+              pcs = my.all.select("Which Pokémon will you attach $thisCard to?")
+            }
+            pcs.cards.add(thisCard)
+            my.hand.remove(thisCard)
+
+            eff = delayed {
+              after PROCESS_ATTACK_EFFECTS, {
+                bg.dm().each {
+                  if (it.to == pcs && it.dmg.value) {
+                    bc "Defender -20"
+                    it.dmg -= hp(20)
+                  }
+                }
+              }
+              before BETWEEN_TURNS, {
+                if(turns-- == 0){
+                  discard thisCard
+                }
+              }
+              after REMOVE_FROM_PLAY, pcs, null, {
+                if(ef.removedCards.contains(thisCard)) {
+                  eff.unregister()
+                }
+              }
+            }
           }
         };
       case ENERGY_EXCHANGER_73:
         return basicTrainer (this) {
           text "Choose an Energy card from you hand, show it to your opponent, and put it on top of your deck. Search your deck for an Energy card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
           onPlay {
+            my.hand.filterByType(ENERGY).select().moveTo(my.deck)
+            my.deck.search(max: 1, "Select a basic Energy card.", cardTypeFilter(ENERGY)).showToOpponent("Your opponent played Energy Exchanger").moveTo(my.hand)
+            shuffleDeck()
           }
           playRequirement{
+            assert my.hand.filterByType(ENERGY) : "You have no energy cards in your hand"
           }
         };
       case FLOWER_SHOP_LADY_74:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your discard pile for 3 Pokémon and 3 basic Energy cards. Show them to your opponent and shuffle them into your deck."
           onPlay {
+            if(my.discard.filterByType(POKEMON)) {
+              my.discard.select(count:3,"Select 3 Pokémon cards to shuffle into your deck",cardTypeFilter(POKEMON)).moveTo(my.deck)
+            }
+            if(my.discard.filterByType(BASIC_ENERGY)) {
+              my.discard.select(count:3,"Select 3 basic Energy cards to shuffle into your deck",cardTypeFilter(BASIC_ENERGY)).moveTo(my.deck)
+            }
+            shuffleDeck()
           }
           playRequirement{
+            my.discard.filterByType(POKEMON) || my.discard.filterByType(BASIC_ENERGY) : "Your discard pile has no Pokémon or basic Energy cards"
           }
         };
       case LEGEND_BOX_75:
         return basicTrainer (this) {
           text "Reveal the top 10 cards of your deck. If you reveal both halves of a Pokémon LEGEND, put those cards onto your Bench and attach all revealed Energy cards to that Pokémon LEGEND. Shuffle the other cards back into your deck. (You can play only 1 Pokémon LEGEND in this way.)"
-          onPlay {
+          onPlay {// TODO
           }
           playRequirement{
+            assert my.deck : "Your deck is empty"
           }
         };
       case RUINS_OF_ALPH_76:
-        return basicTrainer (this) {
+        return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nEach Pokémon in play has no Resistance."
+          def eff
           onPlay {
+            eff = getter (GET_RESISTANCES) {h->
+                h.object.clear()
+              }
+            }
           }
-          playRequirement{
+          onRemoveFromPlay{
+            eff.unregister()
           }
         };
       case SAGE_S_TRAINING_77:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nLook at the top 5 cards of your deck. Choose any 2 cards you find there and put them into your hand. Discard the other cards."
           onPlay {
+            def top = my.deck.subList(0,5)
+            count = Math.min(2,top.size())
+            def sel = top.select(count:count,"Choose $count cards to put into your hand")
+            top.getExcludedList(sel).discard()
           }
           playRequirement{
+            assert my.deck : "Your deck is empty"
           }
         };
       case TEAM_ROCKET_S_TRICKERY_78:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDraw 2 cards. Then, your opponent discards a card from his or her hand."
           onPlay {
+            draw 2
+            if(opp.hand) {
+              opp.hand.oppSelect("Team Rocket's Trickery - Choose a card to discard").discard()
+            }
           }
           playRequirement{
+            assert my.deck || opp.hand : "Your deck is empty and your opponent has no cards in hand"
           }
         };
       case DARKNESS_ENERGY_79:
@@ -1936,7 +2002,12 @@ public enum Undaunted implements LogicCardInfo {
           weakness P
           pokeBody "Evolution Memories", {
             text "Espeon can use the attacks of all Pokémon you have in play that evolve from Eevee as its own."
-            delayedA {
+            getterA (GET_MOVE_LIST, self) {holder->
+              my.all.each {
+                if(it!=self && it.topPokemonCard.predecessor == "Eevee") {
+                  holder.object.addAll(it.topPokemonCard.moves)
+                }
+              }
             }
           }
           move "Solar Ray", {
@@ -1944,7 +2015,10 @@ public enum Undaunted implements LogicCardInfo {
             energyCost P, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              my.all.each{
+                heal 10, it
+              }
             }
           }
 
@@ -1956,6 +2030,12 @@ public enum Undaunted implements LogicCardInfo {
           pokePower "Fire Breath", {
             text "Once during your turn , you may flip a coin. If heads, the Defending Pokémon is now Burned. This power can’t be used if Houndoom is affected by a Special Condition."
             actionA {
+              checkNoSPC()
+              checkLastTurn()
+              powerUsed()
+              flip{
+                apply BURNED
+              }
             }
           }
           move "Dark Clamp", {
@@ -1963,7 +2043,8 @@ public enum Undaunted implements LogicCardInfo {
             energyCost D, D, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 70
+              cantRetreat defending
             }
           }
 
@@ -1973,16 +2054,24 @@ public enum Undaunted implements LogicCardInfo {
           weakness F
           resistance M, MINUS20
           pokePower "Voltage Increase", {
-            text "As often as you like during your turn , you may move a Energy attached to 1 of your Pokémon to Raichu. This power can’t be used if Raichu is affected by a Special Condition."
+            text "As often as you like during your turn , you may move a [L] Energy attached to 1 of your Pokémon to Raichu. This power can’t be used if Raichu is affected by a Special Condition."
             actionA {
+              checkNoSPC()
+              assert my.all.findAll {it.cards.filterByT(L) && it!=self} : "No energy to move."
+              def pl=(my.all.findAll {it.cards.filterByEnergyType(L) && it!=self})
+              def src=pl.select("Source for [L] Energy.")
+              def card=src.cards.filterByEnergyType(R).select("Select a [L] Energy to move.").first()
+              energySwitch(src, self, card)
             }
           }
           move "Mega Thunderbolt", {
             text "120 damage. Discard all Energy attached to Raichu."
-            energyCost L, L, C
-            attackRequirement {}
+            energyCost L, L, C}
             onAttack {
-              damage 0
+              damage 120
+              afterDamage{
+                discardAllSelfEnergy()
+              }
             }
           }
 
@@ -1994,14 +2083,22 @@ public enum Undaunted implements LogicCardInfo {
           pokeBody "Red Armor", {
             text "Prevent all damage done to Scizor by attacks from your opponent’s Pokémon that have any Special Energy cards attached to them."
             delayedA {
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each{
+                  if(it.to == self && it.from.cards.filterByType(SPECIAL_ENERGY) && it.from.owner == self.owner.opposite){
+                    bc "Red Armor prevents damage"
+                    it.dmg = hp(0)
+                  }
+                }
+              }
             }
           }
           move "Metal Scissors", {
-            text "Energy attacked to Scizor."
-            energyCost M, C, M
+            text "30+ damage. Does 30 damage plus 20 more damage for each [M] Energy attacked to Scizor."
+            energyCost M, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30 + 20 * self.cards.energyCount(M)
             }
           }
 
@@ -2012,6 +2109,13 @@ public enum Undaunted implements LogicCardInfo {
           pokePower "Opponent’s Choice", {
             text "Once during your turn , you may reveal the top 2 cards of your deck and your opponent chooses 1 of them. Put that card into your hand and the other card on the bottom of your deck. This power can’t be used if Slowking is affected by a Special Condition."
             actionA {
+              checkNoSPC()
+              checkLastTurn()
+              assert my.deck : "Your deck is empty"
+              powerUsed()
+              def cards = my.deck.subList(0,2)
+              def sel = cards.showToMe("Top 2 cards of your deck").oppSelect("Choose a card to for your opponent to draw. (Put the other card on the bottom of your opponent's deck)").moveTo(my.hand)
+              cards.getExcludedList(sel).moveTo(my.deck)
             }
           }
           move "Super Psy Bolt", {
@@ -2019,7 +2123,7 @@ public enum Undaunted implements LogicCardInfo {
             energyCost P, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
             }
           }
 
@@ -2045,7 +2149,7 @@ public enum Undaunted implements LogicCardInfo {
             energyCost D, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50 + 10 * my.all.findAll{it.topPokemonCard.predecessor == "Eevee"}.size()
             }
           }
 
@@ -2054,7 +2158,7 @@ public enum Undaunted implements LogicCardInfo {
         return basic (this, hp:HP150, type:[WATER, F], retreatCost:3) {
           weakness G
           weakness L
-          move "", {
+          move "", {// TODO
             text "Put this card from your hand onto your Bench only with the other half of Kyogre & Groudon LEGEND."
             energyCost ()
             attackRequirement {}
@@ -2065,20 +2169,32 @@ public enum Undaunted implements LogicCardInfo {
           move "Mega Tidal Wave", {
             text "Discard the top 5 cards from your opponent’s deck. This attack does 30 damage times the number of Energy cards you discarded to each of your opponent’s Benched Pokémon."
             energyCost W, W, C, C
-            attackRequirement {}
+            attackRequirement {
+              assert opp.deck : "Your opponent's deck is empty"
+            }
             onAttack {
-              damage 0
+              def top = opp.deck.subList(0,5)
+              opp.bench.each{
+                damage 30 * top.filterByType(ENERGY).size(), it
+              }
+              afterDamage{
+                top.discard()
+              }
             }
           }
           move "Massive Eruption", {
             text "Discard the top 5 cards from your deck. This attack does 100 damage times the number of Energy cards you discarded."
             energyCost F, F, C, C
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Your deck is empty"
+            }
             onAttack {
-              damage 0
+              def top = my.deck.sublist(0,5)
+              damage 100 * top.filterByType(ENERGY).size()
+              top.discard()
             }
           }
-          move "", {
+          move "", {// TODO
             text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
             energyCost ()
             attackRequirement {}
@@ -2133,10 +2249,15 @@ public enum Undaunted implements LogicCardInfo {
           weakness C
           pokeBody "Space Virus", {
             text "If your opponent’s Pokémon is Knocked Out by damage from an attack of Rayquaza & Deoxys LEGEND, take 1 more Prize card."
-            delayedA {
+            getterA GET_GIVEN_PRIZES, BEFORE_LAST, {Holder holder ->
+              def pcs = holder.effect.target
+              if (self.active && pcs.owner != self.owner && pcs.KOBYDMG == bg.turnCount && holder.object > 0) {
+                bc "Space Virus gives the player an additional prize."
+                holder.object += 1
+              }
             }
           }
-          move "", {
+          move "", {// TODO
             text "Put this card from your hand onto your Bench only with the other half of Rayquaza & Deoxys LEGEND."
             energyCost ()
             attackRequirement {}
@@ -2145,11 +2266,14 @@ public enum Undaunted implements LogicCardInfo {
             }
           }
           move "Ozone Buster", {
-            text "150 damage. Energy attached to Rayquaza & Deoxys LEGEND."
-            energyCost R, R, L, C, R
+            text "150 damage. Discard all [R] Energy attached to Rayquaza & Deoxys LEGEND."
+            energyCost R, R, L, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 150
+              afterDamage{
+                discardAllSelfEnergy(R)
+              }
             }
           }
           move "", {
@@ -2202,8 +2326,10 @@ public enum Undaunted implements LogicCardInfo {
         return basicTrainer (this) {
           text "RETURN ANY STADIUM CARD IN PLAY TO ITS PLAYERS HAND!"
           onPlay {
+            new CardList(bg.stadiumInfoStruct.stadiumCard).moveTo(bg.stadiumInfoStruct.stadiumCard.player.pbg.hand)
           }
           playRequirement{
+            assert bg.stadiumInfoStruct : "There is no stadium card in play"
           }
         };
       default:
