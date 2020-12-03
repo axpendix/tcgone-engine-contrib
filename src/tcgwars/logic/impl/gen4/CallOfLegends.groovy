@@ -321,7 +321,7 @@ public enum CallOfLegends implements LogicCardInfo {
             text "Choose 1 of your opponent’s Pokémon. This attack does 30 damage to that Pokémon."
             energyCost W, C, C
             onAttack {
-              damage 30, opp.bench.select()
+              damage 30, opp.all.select()
             }
           }
           move "Hydro Splash", {
@@ -346,7 +346,7 @@ public enum CallOfLegends implements LogicCardInfo {
             onActivate {reason ->
               if(reason == PLAY_FROM_HAND && my.hand.filterByEnergyType(L) && confirm("Use Self-Generation?")) {
                 powerUsed()
-                attachEnergyFrom(type: L, my.hand, self)
+                attachEnergyFrom(max:2, type: L, my.hand, self)
               }
             }
           }
@@ -444,7 +444,8 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Layabout", {
             text "Remove all damage counters from Snorlax. Snorlax can’t use Layabout during your next turn."
             energyCost C, C, C
-            attackRequirement {self.numberOfDamageCounters}
+            attackRequirement {
+              assert self.numberOfDamageCounters : "$self is healthy"}
             onAttack {
               healAll self
               cantUseAttack(thisMove, self)
@@ -550,7 +551,7 @@ public enum CallOfLegends implements LogicCardInfo {
             text "Put the top card of your opponent’s deck in the Lost Zone. Mime Jr. is now Asleep."
             energyCost ()
             onAttack {
-              opp.deck.first().moveTo(opp.lostZone)
+              opp.deck.subList(0,1).moveTo(opp.lostZone)
               apply ASLEEP, self
             }
           }
@@ -678,7 +679,7 @@ public enum CallOfLegends implements LogicCardInfo {
             text "As long as Phanpy has Energy attached to it, any damage done to Phanpy by attacks is reduced by 10 ."
             delayed {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {if(it.to==self && it.from.owner==self.owner.opposite && it.notZero && it.notNoEffect) {
+                bg.dm().each {if(it.to==self && it.notZero && it.notNoEffect) {
                   bc "$thisAbility -10"
                   it.dmg-=hp(10)
                 }}
@@ -712,7 +713,7 @@ public enum CallOfLegends implements LogicCardInfo {
             }
             onAttack {
               if(my.hand) {
-                my.hand.select("Choose a card to put in the Lost Zone").first().moveTo(my.lostZone)
+                my.hand.select("Choose a card to put in the Lost Zone").moveTo(my.lostZone)
               }
               draw 3
             }
@@ -823,7 +824,7 @@ public enum CallOfLegends implements LogicCardInfo {
           onPlay {
             actions=action("Stadium: Lost World") {
               assert lastTurn != bg().turnCount : "You've already used Lost World this turn."
-              assert opp.lostZone.filterByType(POKEMON).size() < 6 : "Your opponent has fewer than 6 Pokémon in the Lost Zone"
+              assert opp.lostZone.filterByType(POKEMON).size() >= 6 : "Your opponent has fewer than 6 Pokémon in the Lost Zone"
               bc "Used Lost World."
               lastTurn = bg().turnCount
               bg.getGame().endGame(bg.currentTurn, WinCondition.OTHER);
