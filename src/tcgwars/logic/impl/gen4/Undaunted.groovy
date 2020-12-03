@@ -1102,7 +1102,7 @@ public enum Undaunted implements LogicCardInfo {
                   before APPLY_ATTACK_DAMAGES, {
                     def entry=bg.dm().find({it.to==self && it.dmg.value && it.notNoEffect})
                     if (entry) {
-                      flip "Infiltrator", self.owner, {
+                      flip "Afterimage Strike", self.owner, {
                         entry.dmg=hp(0)
                       }
                     }
@@ -1122,7 +1122,11 @@ public enum Undaunted implements LogicCardInfo {
             energyCost D
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 1, {
+                apply POISONED
+              }, {
+                apply PARALYZED
+              }
             }
           }
           move "Fury Swipes", {
@@ -1130,7 +1134,9 @@ public enum Undaunted implements LogicCardInfo {
             energyCost D, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 3, {
+                damage 30
+              }
             }
           }
 
@@ -1141,9 +1147,12 @@ public enum Undaunted implements LogicCardInfo {
           move "Full-Belly Refresh", {
             text "Remove all Special Conditions and 3 damage counters from Slowbro."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert self.specialConditions || self.numberOfDamageCounters : "$self is healthy"
+            }
             onAttack {
-              damage 0
+              clearSpecialCondition self, ATTACK
+              heal 30, self
             }
           }
           move "Startling Trip", {
@@ -1151,7 +1160,14 @@ public enum Undaunted implements LogicCardInfo {
             energyCost P, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              afterDamage {
+                flip 1, {
+                  apply CONFUSED
+                }, {
+                  apply CONFUSED, self
+                }
+              }
             }
           }
 
@@ -1163,9 +1179,11 @@ public enum Undaunted implements LogicCardInfo {
           move "Chase Up", {
             text "Search your deck for any 1 card and put it into your hand. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Your deck is empty"
+            }
             onAttack {
-              damage 0
+              my.deck.select().moveTo(hidden: true, my.hand)
             }
           }
           move "Fly", {
@@ -1173,7 +1191,10 @@ public enum Undaunted implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip {
+                damage 30
+                preventAllEffectsNextTurn()
+              }
             }
           }
 
