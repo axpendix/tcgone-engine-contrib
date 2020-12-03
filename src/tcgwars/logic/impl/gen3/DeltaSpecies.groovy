@@ -522,7 +522,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost F, M
           onAttack {
             def maximum = Math.min(self.cards.energyCount(C), opp.all.size())
-            multiSelect(opp.all, maximum).each {
+            multiSelect(opp.all, 1, maximum, text).each {
               damage 20, it
             }
           }
