@@ -183,7 +183,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Dance ’til Dawn", {
             text "Flip 3 coins. This attack does 30 damage times the number of heads. Bellossom is now Asleep."
             energyCost G, C
-            attackRequirement {}
             onAttack {
               flip 3, {damage 30}
               afterDamage{ apply ASLEEP, self }
@@ -197,7 +196,9 @@ public enum Undaunted implements LogicCardInfo {
           move "Solar Suggestion", {
             text "Move up to 4 damage counters from any of your Pokémon to any of your opponent’s Pokémon in any way you like."
             energyCost P
-            attackRequirement {}
+            attackRequirement {
+              assert my.all.find{it.numberOfDamageCounters} : "You have no damage counters to move"
+            }
             onAttack {
               def numMoved = 0
               while(1) {
@@ -215,7 +216,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Psybeam", {
             text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               damage 30
               afterDamage{ flipThenApplySC CONFUSED }
@@ -230,7 +230,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Mirror Shot", {
             text "30 damage. If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
             energyCost M, C
-            attackRequirement {}
             onAttack {
               damage 30
               sandAttack(thisMove)
@@ -239,7 +238,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Everyone Explode Now", {
             text "Does 30 damage times the number of Pineco and Forretress you have in play. This attack does 30 damage to each of your Pineco and Forretress in play."
             energyCost M, C, C
-            attackRequirement {}
             onAttack {
               damage 30*my.all.findAll{it.name=='Pineco' || it.name=='Forretress'}.size()
               my.all.findAll{it.name=='Pineco' || it.name=='Forretress'}.each{
@@ -256,7 +254,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Ninja Fang", {
             text "30 damage. If, before Gliscor does damage, the Defending Pokémon has no damage counters on it and is then damaged by this attack (after applying Weakness and Resistance), the Defending Pokémon is now Paralyzed."
             energyCost F
-            attackRequirement {}
             onAttack {
               def startingDamage = defending.numberOfDamageCounters
               damage 30
@@ -268,7 +265,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Poison Jab", {
             text "50 damage. The Defending Pokémon is now Poisoned."
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               applyAfterDamage POISONED
@@ -283,7 +279,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Fire Counterattack", {
             text "20 damage. If your opponent has any [F] Pokémon in play, this attack does 20 damage plus 60 more damage."
             energyCost D
-            attackRequirement {}
             onAttack {
               damage 20
               if(opp.all.findAll{it.types.contains(F)}.size()) damage 60
@@ -292,11 +287,12 @@ public enum Undaunted implements LogicCardInfo {
           move "Dark Roar", {
             text "50 damage. Your opponent discards a card from his or her hand."
             energyCost D, D
-            attackRequirement {}
             onAttack {
               damage 50
               afterDamage {
-                opp.hand.oppSelect(count:1, "Which cards to discard?").discard()
+                if(opp.hand){
+                  opp.hand.oppSelect(count:1, "Which cards to discard?").discard()
+                }
               }
             }
           }
@@ -308,7 +304,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Searing Flame", {
             text "20 damage. The Defending Pokémon is now Burned."
             energyCost R, C
-            attackRequirement {}
             onAttack {
               damage 20
               applyAfterDamage BURNED
@@ -317,7 +312,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Lava Flow", {
             text "60 damage. You may discard any number of [R] Energy cards attached to Magcargo. If you do , this attack does 60 damage plus 20 more damage for each [R] Energy card you discarded."
             energyCost R, R, C
-            attackRequirement {}
             onAttack {
               damage 60
               def fireToDiscard = self.cards.filterByEnergyType(R).select(min:0, max:self.cards.filterByEnergyType(R).size())
@@ -334,7 +328,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Cut", {
             text "50 damage. "
             energyCost M, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -342,7 +335,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Metal Claw", {
             text "80 damage. "
             energyCost M, M, C
-            attackRequirement {}
             onAttack {
               damage 80
             }
@@ -374,7 +366,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Tail Rap", {
             text "Flip 2 coins. This attack does 20 damage times the number of heads."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               flip 2, {damage 20}
             }
@@ -388,7 +379,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Blessed Wings", {
             text "Remove all damage counters from each of your Pokémon. Shuffle Togekiss and all cards attached to it back into your deck."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               my.all.findAll{ it.numberOfDamageCounters }.each {
                 heal it.numberOfDamageCounters, it
@@ -401,9 +391,10 @@ public enum Undaunted implements LogicCardInfo {
           move "Air Cutter", {
             text "80 damage. Flip a coin. If tails, this attack does nothing."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
-              flip 1, {damage 80}
+              flip {
+                damage 80
+              }
             }
           }
 
@@ -415,7 +406,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Moonlight Fang", {
             text "30 damage. During your opponent’s next turn, prevent all effects, including damage, done to Umbreon by attacks from your opponent’s Pokémon that has any Poké-Powers or Poké-Bodies."
             energyCost D
-            attackRequirement {}
             onAttack {
               damage 30
               delayed {
@@ -455,10 +445,11 @@ public enum Undaunted implements LogicCardInfo {
           move "Quick Blow", {
             text "30 damage. Flip a coin. If heads, this attack does 30 damage plus 30 damage."
             energyCost D, C
-            attackRequirement {}
             onAttack {
               damage 30
-              flip 1, {damage 30}
+              flip {
+                damage 30
+              }
             }
           }
 
@@ -478,10 +469,11 @@ public enum Undaunted implements LogicCardInfo {
           move "Incessant Peck", {
             text "20 damage. Flip a coin until you get tails. This attack does 20 damage plus 20 more damage for each heads."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
-              flipUntilTails { damage 20 }
+              flipUntilTails{
+                damage 20
+              }
             }
           }
 
@@ -493,7 +485,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Balloon Tackle", {
             text "60 damage. Drifblim does 20 damage to itself."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               damage 60
               damage 20, self
@@ -502,7 +493,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Take Away", {
             text "Shuffle Drifblim and all cards attached to it back into your deck. Then, your opponent shuffles the Defending Pokémon and all cards attached to it into his or her deck. (You choose your new Active Pokémon first.)"
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               self.cards.moveTo(my.deck)
               removePCS(self)
@@ -521,7 +511,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Spike Spread", {
             text "This attack does 10 damage to each of your opponent’s Pokémon."
             energyCost M
-            attackRequirement {}
             onAttack {
               opp.all.each{
                 damage 10, it
@@ -531,7 +520,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Gyro Ball", {
             text "30 damage. You may switch Forretress with 1 of your Benched Pokémon. If you do, your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
             energyCost M, C
-            attackRequirement {}
             onAttack {
               damage 30
               afterDamage{
@@ -551,7 +539,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Hammer In", {
             text "60 damage. "
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               damage 60
             }
@@ -559,7 +546,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Backward Belt Throw", {
             text "80 damage. You may do 80 damage plus 20 more damage. If you do, Hariyama does 20 damage to itself."
             energyCost F, F, C, C
-            attackRequirement {}
             onAttack {
               damage 80
               if(confirm("Deal 20 damage to $self in order to deal 20 more damage?")){
@@ -576,16 +562,19 @@ public enum Undaunted implements LogicCardInfo {
           move "Whirlwind", {
             text "20 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
-              whirlwind()
+              afterDamage{
+                whirlwind()
+              }
             }
           }
           move "Blindside", {
             text "Choose 1 of your opponent’s Pokémon that has any damage counters on it. This attack does 50 damage to that Pokémon."
             energyCost D, D
-            attackRequirement {}
+            attackRequirement {
+              assert opp.all.find{it.numberOfDamageCounters} : "None of your opponent's Pokémon have any damage counters"
+            }
             onAttack {
               damage 50, opp.all.findAll{it.numberOfDamageCounters}.select("Choose 1 of your opponent’s Pokémon that has any damage counters on it.")
             }
@@ -599,7 +588,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Shadow Bind", {
             text "30 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
             energyCost D, C
-            attackRequirement {}
             onAttack {
               damage 30
               cantRetreat defending
@@ -608,9 +596,8 @@ public enum Undaunted implements LogicCardInfo {
           move "Vengeance", {
             text "10+ damage. Deals 10 more damage for each [D] Pokémon in your discard pile."
             energyCost D, C, C
-            attackRequirement {}
             onAttack {
-              damage 10+10*my.discard.filterByType(POKEMON).findAll{it.types.contains(D)}
+              damage 10 + 10 * my.discard.filterByType(POKEMON).findAll{it.types.contains(D)}
             }
           }
 
@@ -622,15 +609,16 @@ public enum Undaunted implements LogicCardInfo {
           move "Miasma Wind", {
             text "Does 50 damage damage times the number of Special Conditions affecting the Defending Pokémon."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert defending.specialConditions : "The defending Pokémon is not affected by a Special Condition"
+            }
             onAttack {
-              damage 50*defending.specialConditions.size()
+              damage 50 * defending.specialConditions.size()
             }
           }
           move "Soothing Scent", {
             text "30 damage. The Defending Pokémon is now Asleep."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 30
               applyAfterDamage ASLEEP
@@ -645,7 +633,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Strength", {
             text "70 damage. "
             energyCost M, M, C
-            attackRequirement {}
             onAttack {
               damage 70
             }
@@ -653,7 +640,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Quad Smash", {
             text "Flip 4 coins. This attack does 50 damage times the number of heads."
             energyCost M, M, C, C
-            attackRequirement {}
             onAttack {
               flip 4, {
                 damage 50
@@ -669,7 +655,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Sleeping Spell", {
             text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Asleep."
             energyCost P
-            attackRequirement {}
             onAttack {
               damage 30
               flip {
@@ -684,7 +669,7 @@ public enum Undaunted implements LogicCardInfo {
               assert opp.hand : "Your opponent's hand is empty"
             }
             onAttack {
-              damage 30 * opp.hand.shuffledCopy().showToMe("Your opponent's hadn").filterByType(TRAINER).size()
+              damage 30 * opp.hand.shuffledCopy().showToMe("Your opponent's hand").filterByType(TRAINER).size()
             }
           }
 
@@ -824,7 +809,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Dazzling Pollen", {
             text "50 damage. Flip a coin. If heads, this attack does 50 damage plus 20 more damage. If tails, the Defending Pokémon is now Confused."
             energyCost G, G, C
-            attackRequirement {}
             onAttack {
               damage 50
               flip 1, {
@@ -851,7 +835,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Feint Attack", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 30 damage to that Pokémon. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
             energyCost D, C
-            attackRequirement {}
             onAttack {
               swiftDamage(30, opp.all.select())
             }
@@ -864,7 +847,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Flame Tail", {
             text "30 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -872,7 +854,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Flamethrower", {
             text "90 damage. Discard an Energy attached to Flareon."
             energyCost R, R, C
-            attackRequirement {}
             onAttack {
               damage 90
               discardSelfEnergyAfterDamage C
@@ -886,7 +867,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Miracle Powder", {
             text "30 damage. Flip a coin. If heads, choose 1 Special Condition. The Defending Pokémon is now affected by that Special Condition."
             energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 30
               flip {
@@ -905,16 +885,16 @@ public enum Undaunted implements LogicCardInfo {
           move "Agility", {
             text "20 damage. Flip a coin. If heads, prevent all effects of attacks, including damage, done to Jolteon during your opponent’s next turn."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 20
-              flip { preventAllEffectsNextTurn() }
+              flip {
+                preventAllEffectsNextTurn()
+              }
             }
           }
           move "Mach Bolt", {
             text "70 damage. "
             energyCost L, L, C
-            attackRequirement {}
             onAttack {
               damage 70
             }
@@ -938,7 +918,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Tackle", {
             text "60 damage. "
             energyCost M, M, C
-            attackRequirement {}
             onAttack {
               damage 60
             }
@@ -952,7 +931,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Hammer In", {
             text "30 damage. "
             energyCost M, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -960,7 +938,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Double Smash", {
             text "Flip 2 coins. This attack does 50 damage times the number of heads."
             energyCost M, C, C
-            attackRequirement {}
             onAttack {
               flip 2, {
                 damage 50
@@ -975,7 +952,9 @@ public enum Undaunted implements LogicCardInfo {
           move "Sludge Drag", {
             text "Switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon. The new Defending Pokémon is now Confused and Poisoned."
             energyCost P
-            attackRequirement {}
+            attackRequirement {
+              assert opp.bench : "Your opponent has no Benched Pokémon"
+            }
             onAttack {
               if(sw2(opp.bench.select("Choose the new Active Pokémon"))) {
                 apply CONFUSED
@@ -986,7 +965,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Pester", {
             text "50 damage. If the Defending Pokémon is affected by a Special Condition, this attack does 50 damage plus 30 more damage."
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               if(defending.specialConditions) {
@@ -1002,7 +980,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Charging Horn", {
             text "10 damage. Flip a coin. If heads, this attack does 10 damage plus 20 more damage."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 10
               flip {
@@ -1013,7 +990,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Guillotine", {
             text "60 damage. "
             energyCost G, G, C
-            attackRequirement {}
             onAttack {
               damage 60
             }
@@ -1027,7 +1003,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Pain-full Punch", {
             text "30 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -1035,7 +1010,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Spark", {
             text "40 damage. Does 20 damage to 1 of your opponent’s Benched Pokémon."
             energyCost L, C
-            attackRequirement {}
             onAttack {
               damage 40
               if(opp.bench){
@@ -1051,7 +1025,9 @@ public enum Undaunted implements LogicCardInfo {
           move "Razor-Sharp Incisors", {
             text "Does 10 damage times the number of damage counters on the Defending Pokémon."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert defending.numberOfDamageCounters : "The defending Pokémon is healthy"
+            }
             onAttack {
               damage 10 * defending.numberOfDamageCounters
             }
@@ -1059,7 +1035,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Gnaw Up", {
             text "30 damage. Discard a Special Energy card attached to the Defending Pokémon."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 30
               discardDefendingSpecialEnergy(delegate)
@@ -1083,7 +1058,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Dark Hand", {
             text "20 damage. If you have more cards in your hand than your opponent, this attack does 20 damage plus 30 more damage."
             energyCost D, C
-            attackRequirement {}
             onAttack {
               damage 20
               if(my.hand.size()>opp.hand.size()){
@@ -1099,7 +1073,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Afterimage Strike", {
             text "20 damage. During your opponent’s next turn, if Scyther would be damaged by an attack, flip a coin. If heads, prevent that attack’s damage done to Scyther."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
               afterDamage{
@@ -1125,7 +1098,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Stun Gas", {
             text "Flip a coin. If heads, the Defending Pokémon is now Poisoned. If tails, the Defending Pokémon is now Paralyzed."
             energyCost D
-            attackRequirement {}
             onAttack {
               flip 1, {
                 apply POISONED
@@ -1137,7 +1109,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Fury Swipes", {
             text "Flip 3 coins. This attack does 30 damage times the number of heads."
             energyCost D, C
-            attackRequirement {}
             onAttack {
               flip 3, {
                 damage 30
@@ -1163,7 +1134,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Startling Trip", {
             text "50 damage. Flip a coin. If heads, the Defending Pokémon is now Confused. If tails, Slowbro is now Confused."
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               afterDamage {
@@ -1194,7 +1164,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Fly", {
             text "30 damage. Flip a coin. If tails, this attack does nothing. If heads, prevent all effects of attacks, including damage done to Togetic during your opponent’s next turn."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               flip {
                 damage 30
@@ -1239,7 +1208,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Dual Splash", {
             text "Choose 2 of your opponent’s Pokémon. This attack does 30 damage to each of them."
             energyCost W, W, C
-            attackRequirement {}
             onAttack {
               multiDamage(opp.all,2,30)
             }
@@ -1262,7 +1230,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Headbutt", {
             text "20 damage. "
             energyCost M, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1276,7 +1243,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Lunge Out", {
             text "10 damage. "
             energyCost M
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1284,7 +1250,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Single Smash", {
             text "50 damage. Flip a coin. If tails, this attack does nothing."
             energyCost M, M, C
-            attackRequirement {}
             onAttack {
               flip {
                 damage 50
@@ -1299,10 +1264,9 @@ public enum Undaunted implements LogicCardInfo {
           move "Enraged Assault", {
             text "20 damage. If Vespiquen is on your Bench, and has any damage counters on it, this attack does 20 damage plus 60 more damage, and the Defending Pokémon is now Poisoned."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 20
-              if(my.bench.find{it.name==Vespiquen && it.numberOfDamageCounters}) {
+              if(my.bench.find{it.name=="Vespiquen" && it.numberOfDamageCounters}) {
                 damage 60
                 applyAfterDamage POISONED
               }
@@ -1317,7 +1281,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Peck", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1325,7 +1288,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Double Headstrike", {
             text "50 damage. Flip 2 coins. If either of them is tails, this attack does nothing."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               flip 2,{},{},[2:{damage 50}]
             }
@@ -1339,7 +1301,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Minimize", {
             text "During your opponent's next turn, any damage done to Drifloon by attacks is reduced by 20."
             energyCost C
-            attackRequirement {}
             onAttack {
               reduceDamageNextTurn(hp(20),thisMove)
             }
@@ -1365,7 +1326,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Tackle", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1373,7 +1333,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Bite", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1391,7 +1350,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Tickle", {
             text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 10
               flip { 
@@ -1431,7 +1389,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Sludge Toss", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1444,7 +1401,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Detect", {
             text "Flip a coin. If heads, prevent all effects of attack, including damage, done to Hitmonchan during your opponent’s next turn."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip {
                 preventAllEffectsNextTurn()
@@ -1454,7 +1410,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Sky Uppercut", {
             text "30 damage. This attack’s damage isn’t affected by Resistance."
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 30
               dontApplyResistance()
@@ -1468,7 +1423,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Kick", {
             text "20 damage. "
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1476,7 +1430,6 @@ public enum Undaunted implements LogicCardInfo {
           move "High Jump Kick", {
             text "60 damage. "
             energyCost F, F, C
-            attackRequirement {}
             onAttack {
               damage 60
             }
@@ -1490,7 +1443,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Sharp Fang", {
             text "30 damage. "
             energyCost D, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -1504,7 +1456,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Jump On", {
             text "10 damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
             energyCost D
-            attackRequirement {}
             onAttack {
               damage 10
               flip {
@@ -1520,7 +1471,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Slap Down", {
             text "Flip 2 coins. This attack does 20 damage plus 10 more damage for each heads."
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 20
               flip 2, {
@@ -1531,7 +1481,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Slap Push", {
             text "40 damage. "
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -1560,7 +1509,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Destructive Jaw", {
             text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed and discard an Energy card attached to the Defending Pokémon."
             energyCost M, C, C
-            attackRequirement {}
             onAttack {
               damage 30
               afterDamage{
@@ -1580,7 +1528,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Mumble", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1623,7 +1570,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Glide", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1631,7 +1577,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Dark Cutter", {
             text "30 damage. "
             energyCost D, C, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -1644,7 +1589,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Ram", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1685,7 +1629,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Rollout", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1698,7 +1641,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Focus Energy", {
             text "During your next turn, Pineco’s Surprise Attack attack’s base damage is 80."
             energyCost C
-            attackRequirement {}
             onAttack {
               increasedBaseDamageNextTurn("Surprise Attack",hp(40))
             }
@@ -1706,7 +1648,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Surprise Attack", {
             text "40 damage. Flip a coin. If tails, this attack does nothing."
             energyCost G, C
-            attackRequirement {}
             onAttack {
               flip{
                 damage 40
@@ -1721,7 +1662,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Gnaw", {
             text "20 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1734,7 +1674,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Cut", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1742,7 +1681,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Slashing Strike", {
             text "50 damage. During your next turn, Scyther can’t use Slashing Strike."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               cantUseAttack(thisMove,self)
@@ -1799,7 +1737,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Combustion", {
             text "40 damage. "
             energyCost R, R, C
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -1851,13 +1788,12 @@ public enum Undaunted implements LogicCardInfo {
           move "Plead", {
             text "Ask your opponent if you may draw 2 cards. If yes, draw 2 cards. If no, this attack does 20 damage to the Defending Pokémon."
             energyCost C
-            attackRequirement {}
             onAttack {
               def choice = oppChoose([0,1],["Your opponent draws 2 cards","Plead deals 20 damage"],"Plead",0)
               if(choice) {
-                draw 2
-              } else {
                 damage 20
+              } else {
+                draw 2
               }
             }
           }
@@ -2013,7 +1949,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Solar Ray", {
             text "30 damage. Remove 1 damage counter from each of your Pokémon."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               damage 30
               my.all.each{
@@ -2041,7 +1976,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Dark Clamp", {
             text "70 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
             energyCost D, D, C
-            attackRequirement {}
             onAttack {
               damage 70
               cantRetreat defending
@@ -2096,7 +2030,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Metal Scissors", {
             text "30+ damage. Does 30 damage plus 20 more damage for each [M] Energy attacked to Scizor."
             energyCost M, C
-            attackRequirement {}
             onAttack {
               damage 30 + 20 * self.cards.energyCount(M)
             }
@@ -2121,7 +2054,6 @@ public enum Undaunted implements LogicCardInfo {
           move "Super Psy Bolt", {
             text "60 damage. "
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
               damage 60
             }
@@ -2147,25 +2079,17 @@ public enum Undaunted implements LogicCardInfo {
           move "Evoblast", {
             text "Does 50 damage plus 10 more damage for each of your Pokémon in play that evolves from Eevee."
             energyCost D, C, C
-            attackRequirement {}
             onAttack {
               damage 50 + 10 * my.all.findAll{it.topPokemonCard.predecessor == "Eevee"}.size()
             }
           }
 
         };
-      case KYOGRE_AND_GROUDON_LEGEND_87:
+      case KYOGRE_AND_GROUDON_LEGEND_87: // TODO
         return basic (this, hp:HP150, type:[WATER, F], retreatCost:3) {
           weakness G
           weakness L
-          move "", {// TODO
-            text "Put this card from your hand onto your Bench only with the other half of Kyogre & Groudon LEGEND."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
+          //text "Put this card from your hand onto your Bench only with the other half of Kyogre & Groudon LEGEND."
           move "Mega Tidal Wave", {
             text "Discard the top 5 cards from your opponent’s deck. This attack does 30 damage times the number of Energy cards you discarded to each of your opponent’s Benched Pokémon."
             energyCost W, W, C, C
@@ -2194,14 +2118,7 @@ public enum Undaunted implements LogicCardInfo {
               top.discard()
             }
           }
-          move "", {// TODO
-            text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
+          //text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
 
         };
       case KYOGRE_AND_GROUDON_LEGEND_88:
@@ -2257,18 +2174,11 @@ public enum Undaunted implements LogicCardInfo {
               }
             }
           }
-          move "", {// TODO
-            text "Put this card from your hand onto your Bench only with the other half of Rayquaza & Deoxys LEGEND."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
+          // TODO
+          //text "Put this card from your hand onto your Bench only with the other half of Rayquaza & Deoxys LEGEND."
           move "Ozone Buster", {
             text "150 damage. Discard all [R] Energy attached to Rayquaza & Deoxys LEGEND."
             energyCost R, R, L, C
-            attackRequirement {}
             onAttack {
               damage 150
               afterDamage{
@@ -2276,14 +2186,7 @@ public enum Undaunted implements LogicCardInfo {
               }
             }
           }
-          move "", {
-            text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
+          //text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
 
         };
       case RAYQUAZA_AND_DEOXYS_LEGEND_90:
