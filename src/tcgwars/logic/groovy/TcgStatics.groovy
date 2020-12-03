@@ -378,8 +378,13 @@ class TcgStatics {
   static oppChoose (List choices, String info="", defaultChoice=null){
     oppChoose(choices, null, info, defaultChoice)
   }
-  static multiSelect (List pcsList, int count, String info="Select Pokémon"){
-    LUtils.selectMultiPokemon(bg().ownClient(), pcsList, info, count)
+  static multiSelect (List pcsList, Integer count, String info="Select Pokémon") {
+    // Optional parameters in the middle of a param list confuse the parser. In order to have min before max in the
+    // following definition we'll add this overload to handle "count" variations that also provide custom text
+    multiSelect(pcsList, count, count, info)
+  }
+  static multiSelect (List pcsList, Integer min, Integer max, String info="Select Pokémon"){
+    LUtils.selectMultiPokemon(bg().ownClient(), pcsList, info, min, max)
   }
   static multiDamage (List pcsList, int count, int dmg, String info="Select to deal damage"){
     def a=LUtils.selectMultiPokemon(bg().ownClient(), pcsList, info, count)
