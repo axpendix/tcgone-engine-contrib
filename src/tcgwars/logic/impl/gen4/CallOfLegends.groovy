@@ -468,6 +468,9 @@ public enum CallOfLegends implements LogicCardInfo {
           move "Grind", {
             text "20× damage. Does 20 damage times the amount of Energy attached to Tangrowth."
             energyCost C
+            attackRequirement {
+              assert self.cards.energyCount(C) : "You have no energy attached to Tangrowth"
+            }
             onAttack {
               damage 20 * self.cards.energyCount(C)
             }
