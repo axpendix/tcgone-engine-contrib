@@ -1853,7 +1853,12 @@ public enum Undaunted implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              def choice = oppChoose([0,1],["Your opponent draws 2 cards","Plead deals 20 damage"],"Plead",0)
+              if(choice) {
+                draw 2
+              } else {
+                damage 20
+              }
             }
           }
 
