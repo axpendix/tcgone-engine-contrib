@@ -535,6 +535,8 @@ public enum Triumphant implements LogicCardInfo {
               assert opp.all.find{it.cards.filterByType(ENERGY)} : "Your opponent's pokemon have no energy attached"
             }
             onAttack {
+              def tar = opp.all.findAll{it.cards.filterByTYpe(ENERGY)}.select("Select a Pokémon to remove an energy from")
+              tar.cards.select("Select an energy to move to put in the Lost Zone",cardTypeFilter(ENERGY)).moveTo(opp.lostZone)
             }
           }
           move "Breakdown", {
@@ -542,7 +544,7 @@ public enum Triumphant implements LogicCardInfo {
             energyCost P, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              directDamage 10 * opp.hand.size(), defending
             }
           }
 
@@ -554,17 +556,31 @@ public enum Triumphant implements LogicCardInfo {
           move "Legend Ceremony", {
             text "Search your deck for both halves of a Pokémon LEGEND, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Your deck is empty"
+            }
             onAttack {
-              damage 0
+              my.deck.select(min:0, max:2, "Select both halves of a Pokémon LEGEND.", cardTypeFilter(LEGEND), self.owner, { CardList list ->
+                if(list.size() & 2 != 0){
+                  return false
+                }
+                for (card in list) {
+                  if (!(list.find{card.getName().equals(it.getName()) && !card.getNumber().equals(it.getNumber())})) {
+                    return false
+                  }
+                }
+                return true
+              }.moveTo(my.hand)
             }
           }
           move "Reflect Energy", {
             text "30 damage. Move an Energy card attached to Bronzong to 1 of your Benched Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              afterDamage {
+                moveEnergy(self, my.bench)
+              }
             }
           }
 
@@ -576,9 +592,11 @@ public enum Triumphant implements LogicCardInfo {
           move "Saliva Lure", {
             text "Switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert opp.bench : "Your opponent has no Benched Pokémon"
+            }
             onAttack {
-              damage 0
+              sw2(opp.bench.select("New Active Pokémon"))
             }
           }
           move "Stick and Absorb", {
@@ -586,7 +604,9 @@ public enum Triumphant implements LogicCardInfo {
             energyCost G, G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              heal 30, self
+              cantRetreat defending
             }
           }
 
