@@ -1247,6 +1247,9 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           move "Tunneling", {
             text "Choose up to 2 of your opponent’s Benched Pokémon. This attack does 10 damage to each of them. (Don’t apply Weakness and Resistance for Benched Pokémon.) Onix can’t attack during your next turn."
             energyCost F, C
+            attackRequirement {
+              assertOppBench()
+            }
             onAttack {
               if (opp.bench) {
                 multiSelect(opp.bench, 1, 2, text).each{
