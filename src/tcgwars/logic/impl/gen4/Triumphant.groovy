@@ -186,17 +186,19 @@ public enum Triumphant implements LogicCardInfo {
           move "Second Strike", {
             text "40 damage. If the Defending Pokémon already has any damage counters on it, this attack does 40 damage plus 40 more damage."
             energyCost M, M, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              if(defending.numberOfDamageCounters) {
+                damage 40
+              }
             }
           }
           move "Guard Claw", {
-            text "60 damage. ."
+            text "60 damage. During your opponent's next turn, any damage done to Aggron by attacks is reduced by 20."
             energyCost M, M, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              reduceDamageNextTurn(hp(20),thisMove)
             }
           }
 
@@ -210,7 +212,8 @@ public enum Triumphant implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              applyAfterDamage ASLEEP
             }
           }
           move "Stadium Power", {
@@ -218,7 +221,10 @@ public enum Triumphant implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              if(bg.stadiumInfoStruct){
+                damage 30
+              }
             }
           }
 
@@ -229,18 +235,39 @@ public enum Triumphant implements LogicCardInfo {
           move "Future Sight", {
             text "Look at the top 5 cards of either player’s deck and put them back on top of that player’s deck in any order."
             energyCost P
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck||opp.deck : "Both player's decks are empty"
+            }
             onAttack {
-              damage 0
+              if(!my.deck){
+                def list=rearrange(opp.deck.subList(0,5), "Arrange top 5 cards of your opponent's deck")
+                deck.setSubList(0, list)
+              }
+              else if(!opp.deck){
+                def list=rearrange(my.deck.subList(0,5), "Arrange top 5 cards of your deck")
+                deck.setSubList(0, list)
+              }
+              else{
+                def choice = choose([0,1],["Your deck", "Your opponent's deck"], "Look at the top 5 cards of which player's deck?")
+                if (choice) {
+                  def list=rearrange(opp.deck.subList(0,5), "Arrange top 5 cards of your opponent's deck")
+                  deck.setSubList(0, list)
+                }
+                else {
+                  def list=rearrange(my.deck.subList(0,5), "Arrange top 5 cards of your deck")
+                  deck.setSubList(0, list)
+                }
+              }
             }
           }
           move "Leaf Bind", {
             text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 30
-              flip { apply PARALYZED }
+              flip {
+                applyAfterDamage PARALYZED
+              }
             }
           }
 
@@ -252,17 +279,19 @@ public enum Triumphant implements LogicCardInfo {
           move "Toxic Fang", {
             text "40 damage. Flip a coin. If heads, the Defending Pokémon is now Poisoned. Put 2 damage counters instead of 1 on that Pokémon between turns."
             energyCost D, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              flip{
+                applyAfterDamage POISONED
+                extraPoison 1
+              }
             }
           }
           move "Land Crush", {
             text "80 damage. "
             energyCost D, D, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 80
             }
           }
 
@@ -273,17 +302,19 @@ public enum Triumphant implements LogicCardInfo {
           move "Icy Wind", {
             text "40 damage. The Defending Pokémon is now Asleep."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              applyAfterDamage ASLEEP
             }
           }
           move "Snowstorm", {
             text "70 damage. Does 20 damage to each of your opponent’s Benched Pokémon that has any damage counters on it."
             energyCost W, W, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 70
+              opp.bench.findAll{it.numberOfDamageCounters}.each{
+                damage 20, it
+              }
             }
           }
 
@@ -294,7 +325,8 @@ public enum Triumphant implements LogicCardInfo {
           resistance L, MINUS20
           pokeBody "Pheromone Stamina", {
             text "Nidoking gets +20 HP for each Nidoqueen you have in play."
-            delayedA {
+            getterA (GET_FULL_HP, self) {h->
+              h.object += hp(20 * my.all.findAll{it.name == "Nidoqueen"}.size())
             }
           }
           move "Venomous Horn", {
@@ -302,7 +334,8 @@ public enum Triumphant implements LogicCardInfo {
             energyCost F, F, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 80
+              applyAfterDamage POISONED
             }
           }
 
@@ -313,14 +346,26 @@ public enum Triumphant implements LogicCardInfo {
           pokePower "Dimensional Transfer", {
             text "Once during your turn , you may flip a coin. If heads, search your discard pile for a Trainer card, show it to your opponent, and put it on top of your deck. This power can’t be used if Porygon-Z is affected by a Special Condition."
             actionA {
+              checkNoSPC()
+              checkLastTurn()
+              assert my.discard.filterByType(ITEM) : "You have no trainers in your discard pile"
+              powerUsed()
+              flip{
+                my.discard.select("Choose a Trainer card to put on top of your deck", cardTypeFilter(ITEM)).moveTo(addToTop:true, my.deck)
+              }
             }
           }
           move "Suspicious Beam ?", {
             text "80 damage. If Porygon-Z has no Rainbow Energy attached to it, Porygon-Z does 20 damage to itself and Porygon-Z is now Confused."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 80
+              if(!self.cards.find{it.name == "Rainbow Energy"}){
+                damge 20, self
+                afterDamage{
+                  apply CONFUSED, self
+                }
+              }
             }
           }
 
@@ -331,14 +376,24 @@ public enum Triumphant implements LogicCardInfo {
           pokeBody "Fiery Spirit", {
             text "Rapidash can’t be confused."
             delayedA {
+              before APPLY_SPECIAL_CONDITION, self, {
+                if (ef.type == CONFUSED) {
+                  bc "Insomnia prevents $self from being confused."
+                  prevent()
+                }
+              }
+            }
+            onActivate {
+              clearSpecialCondition(self, SRC_ABILITY, [CONFUSED])
             }
           }
           move "Ring of Fire", {
             text "50 damage. The Defending Pokémon is now Burned and can’t retreat during your opponent’s next turn."
             energyCost R, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              applyAfterDamage BURNED
+              cantRetreat defending
             }
           }
 
@@ -348,15 +403,21 @@ public enum Triumphant implements LogicCardInfo {
           weakness G
           pokeBody "Heal Block", {
             text "If you have Lunatone in play, damage counters can’t be removed from any Pokémon . (Damage counters can still be moved.)"
-            delayedA {
+            delayedA {// TODO find a way to differentiate between moving damage counters and healing them
+              before REMOVE_DAMAGE_COUNTER, {
+                if(my.all.findAll {it.name=="Lunatone"}) {
+                  bc "Heal Block prevents healing"
+                  prevent()
+                }
+              }
             }
           }
           move "Sun Flash", {
             text "20 damage. If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
             energyCost F
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              sandAttack(thisMove)
             }
           }
 
@@ -366,15 +427,22 @@ public enum Triumphant implements LogicCardInfo {
           resistance C, MINUS20
           pokePower "Spooky Whirlpool", {
             text "Once during your turn, when you put Spiritomb from you hand onto your Bench, you may use this power. Your opponent shuffles his or her hand into his or her deck and draws 6 cards."
-            actionA {
+            onActivate {r->
+              if(r==PLAY_FROM_HAND && (opp.hand||opp.deck) && confirm("Use Spooky Whirlpool")){
+                opp.hand.moveTo(opp.deck)
+                shuffleDeck(null, TargetPlayer.OPPONENT)
+                draw 6, TargetPlayer.OPPONENT
+              }
             }
           }
           move "Color Tag", {
-            text "type. Put 1 damage counter on each Pokémon your opponent has in play of the type you chose."
-            energyCost P, G, R, W, L, P, F, D, M, C
-            attackRequirement {}
+            text "Choose 1 type from [G],[R],[W],[L],[P],[F],[D],[M],[C]. Put 1 damage counter on each Pokémon your opponent has in play of the type you chose."
+            energyCost P
             onAttack {
-              damage 0
+              def type = choose([G, R, W, L, P, F, D, M, C],["Grass","Fire","Water","Lightning","Psychic","Fighting","Darkness","Metal","Colorless"],"Choose a type")
+              opp.all.findAll{it.types.contains(type)}.each{
+                directDamage 10,it
+              }
             }
           }
 
@@ -385,15 +453,24 @@ public enum Triumphant implements LogicCardInfo {
           pokePower "Poison Moth Wind", {
             text "Once during your turn , you may flip a coin. If heads, your opponent’s Active Pokémon is now Poisoned. If tails, your Active Pokémon is now Poisoned. This power can’t be used if Venomoth is affected by a Special Condition."
             actionA {
+              checkNoSPC()
+              checkLastTurn()
+              powerUsed()
+              flip 1, {
+                apply POISONED, opp.active, SRC_ABILITY
+              }, {
+                apply POISONED, my.active, SRC_ABILITY
+              }
             }
           }
           move "Stun Spore", {
             text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 30
-              flip { apply PARALYZED }
+              flip {
+                applyAfterDamage PARALYZED
+              }
             }
           }
 
@@ -402,16 +479,21 @@ public enum Triumphant implements LogicCardInfo {
         return evolution (this, from:"Weepinbell", hp:HP110, type:GRASS, retreatCost:2) {
           weakness R
           pokeBody "Tangling Tendrils", {
-            text "As long as Victreebel is your Active Pokémon, your opponent’s Active Pokémon’s Retreat Cost is more."
-            delayedA {
+            text "As long as Victreebel is your Active Pokémon, your opponent’s Active Pokémon’s Retreat Cost is [C][C] more."
+            getterA (GET_RETREAT_COST) { h->
+              if(h.effect.target == self.owner.opposite.active && self.active) {
+                h.object += 2
+              }
             }
           }
           move "Acidic Drain", {
             text "30 damage. The Defending Pokémon is now Burned and Poisoned. Remove 3 damage counters from Victreebel."
             energyCost G, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              applyAfterDamage BURNED
+              applyAfterDamage POISONED
+              heal 30, self
             }
           }
 
@@ -422,17 +504,22 @@ public enum Triumphant implements LogicCardInfo {
           move "Astonish", {
             text "20 damage. Choose 2 cards from your opponent’s hand without looking. Look at the cards you chose, then have your opponent shuffle those cards into his or her deck."
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              astonish(2)
             }
           }
           move "Tail Spank", {
             text "60 damage. Discard 2 cards from your hand. (If you can’t discard 2 cards from your hand, this attack does nothing.)"
             energyCost C, C
-            attackRequirement {}
+            attackRequirement {
+              assert my.hand.size() >= 2 : "You have don't have 2 cards to discard"
+            }
             onAttack {
-              damage 0
+              damage 60
+              afterDamage {
+                my.hand.select(count:2,"Choose 2 cards to discard").discard()
+              }
             }
           }
 
@@ -444,9 +531,10 @@ public enum Triumphant implements LogicCardInfo {
           move "Lost Crush", {
             text "Flip a coin. If heads, choose 1 Energy card attached to 1 of your opponent’s Pokémon and put it in the Lost Zone."
             energyCost P
-            attackRequirement {}
+            attackRequirement {
+              assert opp.all.find{it.cards.filterByType(ENERGY)} : "Your opponent's pokemon have no energy attached"
+            }
             onAttack {
-              damage 0
             }
           }
           move "Breakdown", {
