@@ -93,14 +93,14 @@ public enum Undaunted implements LogicCardInfo {
   SNEASEL_68 ("Sneasel", "68", Rarity.COMMON, [BASIC, POKEMON, _DARKNESS_]),
   STUNKY_69 ("Stunky", "69", Rarity.COMMON, [BASIC, POKEMON, _DARKNESS_]),
   TOGEPI_70 ("Togepi", "70", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  BURNED_TOWER_71 ("Burned Tower", "71", Rarity.UNCOMMON, [TRAINER]),
-  DEFENDER_72 ("Defender", "72", Rarity.UNCOMMON, [TRAINER]),
-  ENERGY_EXCHANGER_73 ("Energy Exchanger", "73", Rarity.UNCOMMON, [TRAINER]),
-  FLOWER_SHOP_LADY_74 ("Flower Shop Lady", "74", Rarity.UNCOMMON, [TRAINER]),
-  LEGEND_BOX_75 ("Legend Box", "75", Rarity.UNCOMMON, [TRAINER]),
-  RUINS_OF_ALPH_76 ("Ruins of Alph", "76", Rarity.UNCOMMON, [TRAINER]),
-  SAGE_S_TRAINING_77 ("Sage's Training", "77", Rarity.UNCOMMON, [TRAINER]),
-  TEAM_ROCKET_S_TRICKERY_78 ("Team Rocket's Trickery", "78", Rarity.UNCOMMON, [TRAINER]),
+  BURNED_TOWER_71 ("Burned Tower", "71", Rarity.UNCOMMON, [TRAINER, STADIUM]),
+  DEFENDER_72 ("Defender", "72", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  ENERGY_EXCHANGER_73 ("Energy Exchanger", "73", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  FLOWER_SHOP_LADY_74 ("Flower Shop Lady", "74", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  LEGEND_BOX_75 ("Legend Box", "75", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  RUINS_OF_ALPH_76 ("Ruins of Alph", "76", Rarity.UNCOMMON, [TRAINER, STADIUM]),
+  SAGE_S_TRAINING_77 ("Sage's Training", "77", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  TEAM_ROCKET_S_TRICKERY_78 ("Team Rocket's Trickery", "78", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   DARKNESS_ENERGY_79 ("Darkness Energy", "79", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   METAL_ENERGY_80 ("Metal Energy", "80", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   ESPEON_81 ("Espeon", "81", Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
@@ -113,7 +113,7 @@ public enum Undaunted implements LogicCardInfo {
   KYOGRE_AND_GROUDON_LEGEND_88 ("Kyogre & Groudon LEGEND", "88", Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
   RAYQUAZA_AND_DEOXYS_LEGEND_89 ("Rayquaza & Deoxys LEGEND", "89", Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_, LEGEND]),
   RAYQUAZA_AND_DEOXYS_LEGEND_90 ("Rayquaza & Deoxys LEGEND", "90", Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_, LEGEND]),
-  ALPH_LITHOGRAPH_THREE ("Alph Lithograph", "THREE", Rarity.HOLORARE, [TRAINER]);
+  ALPH_LITHOGRAPH_THREE ("Alph Lithograph", "THREE", Rarity.HOLORARE, [TRAINER, ITEM]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
