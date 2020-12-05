@@ -1909,6 +1909,7 @@ public enum Undaunted implements LogicCardInfo {
                 attachEnergy(legendPokemon, it)
               }
             }
+            shuffleDeck()
           }
           playRequirement{
             assert my.deck : "Your deck is empty"
