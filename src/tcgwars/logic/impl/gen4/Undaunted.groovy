@@ -1884,7 +1884,31 @@ public enum Undaunted implements LogicCardInfo {
       case LEGEND_BOX_75:
         return basicTrainer (this) {
           text "Reveal the top 10 cards of your deck. If you reveal both halves of a Pokémon LEGEND, put those cards onto your Bench and attach all revealed Energy cards to that Pokémon LEGEND. Shuffle the other cards back into your deck. (You can play only 1 Pokémon LEGEND in this way.)"
-          onPlay {// TODO
+          onPlay {
+            def top = my.deck.subList(0,10).showToOpponent("Top 10 cards of your opponent's deck")
+            def hasMatch = top.find { Card card->
+              top.getExcludedList(card).find{card.getName().equals(it.getName()) && !card.getNumber().equals(it.getNumber())}
+            }
+            if(!(hasMatch && my.bench.notFull)) {
+              top.shoToMe("Top 10 cards of your deck")
+            } else {
+              def legendPair = top.select(count:2 , "Select both halves of a Pokémon LEGEND.", cardTypeFilter(LEGEND), self.owner, { CardList list ->
+                for (card in list) {
+                  if (!(list.find{card.getName().equals(it.getName()) && !card.getNumber().equals(it.getNumber())})) {
+                    return false
+                  }
+                }
+                return true
+              }
+              def topLegendCard = legendPair.get(0).getNumber() < legendPair.get(1).getNumber() ? legendPair.get(0) : legendPair.get(1)
+              def bottomLegendCard = legendPair.get(0).getNumber() < legendPair.get().getNumber() ? legendPair.get(1) : legendPair.get(0)
+              def legendPokemon = benchPCS(topLegendCard)
+              legendPokemon.cards.add(bottomLegendCard)
+              my.deck.remove(bottomLegendCard)
+              top.getExcludedList(legendPair).filterByType(ENERGY).each{
+                attachEnergy(legendPokemon, it)
+              }
+            }
           }
           playRequirement{
             assert my.deck : "Your deck is empty"
@@ -2086,11 +2110,10 @@ public enum Undaunted implements LogicCardInfo {
           }
 
         };
-      case KYOGRE_AND_GROUDON_LEGEND_87: // TODO
+      case KYOGRE_AND_GROUDON_LEGEND_87:
         return basic (this, hp:HP150, type:[WATER, F], retreatCost:3) {
           weakness G
           weakness L
-          //text "Put this card from your hand onto your Bench only with the other half of Kyogre & Groudon LEGEND."
           move "Mega Tidal Wave", {
             text "Discard the top 5 cards from your opponent’s deck. This attack does 30 damage times the number of Energy cards you discarded to each of your opponent’s Benched Pokémon."
             energyCost W, W, C, C
@@ -2119,48 +2142,10 @@ public enum Undaunted implements LogicCardInfo {
               top.discard()
             }
           }
-          //text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
 
         };
       case KYOGRE_AND_GROUDON_LEGEND_88:
-        return copy (KYOGRE_AND_GROUDON_LEGEND_87, this)
-        /*basic (this, hp:HP150, type:[WATER, F], retreatCost:3) {
-					weakness G
-					weakness L
-					move "", {
-						text "Put this card from your hand onto your Bench only with the other half of Kyogre & Groudon LEGEND."
-						energyCost ()
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-					move "Mega Tidal Wave", {
-						text "Discard the top 5 cards from your opponent’s deck. This attack does 30 damage times the number of Energy cards you discarded to each of your opponent’s Benched Pokémon."
-						energyCost W, W, C, C
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-					move "Massive Eruption", {
-						text "Discard the top 5 cards from your deck. This attack does 100 damage times the number of Energy cards you discarded."
-						energyCost F, F, C, C
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-					move "", {
-						text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
-						energyCost ()
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-
-				}*/;
+        return copy (KYOGRE_AND_GROUDON_LEGEND_87, this);
       case RAYQUAZA_AND_DEOXYS_LEGEND_89:
         return basic (this, hp:HP140, type:[PSYCHIC, C], retreatCost:3) {
           weakness P
@@ -2175,8 +2160,6 @@ public enum Undaunted implements LogicCardInfo {
               }
             }
           }
-          // TODO
-          //text "Put this card from your hand onto your Bench only with the other half of Rayquaza & Deoxys LEGEND."
           move "Ozone Buster", {
             text "150 damage. Discard all [R] Energy attached to Rayquaza & Deoxys LEGEND."
             energyCost R, R, L, C
@@ -2187,45 +2170,10 @@ public enum Undaunted implements LogicCardInfo {
               }
             }
           }
-          //text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
 
         };
       case RAYQUAZA_AND_DEOXYS_LEGEND_90:
-        return copy (RAYQUAZA_AND_DEOXYS_LEGEND_89, this)
-        /*basic (this, hp:HP140, type:[PSYCHIC, C], retreatCost:3) {
-					weakness P
-					weakness C
-					pokeBody "Space Virus", {
-						text "If your opponent’s Pokémon is Knocked Out by damage from an attack of Rayquaza & Deoxys LEGEND, take 1 more Prize card."
-						delayedA {
-						}
-					}
-					move "", {
-						text "Put this card from your hand onto your Bench only with the other half of Rayquaza & Deoxys LEGEND."
-						energyCost ()
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-					move "Ozone Buster", {
-						text "150 damage. Energy attached to Rayquaza & Deoxys LEGEND."
-						energyCost R, R, L, C, R
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-					move "", {
-						text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
-						energyCost ()
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-
-				}*/;
+        return copy (RAYQUAZA_AND_DEOXYS_LEGEND_89, this);
       case ALPH_LITHOGRAPH_THREE:
         return basicTrainer (this) {
           text "RETURN ANY STADIUM CARD IN PLAY TO ITS PLAYERS HAND!"
