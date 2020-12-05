@@ -1887,21 +1887,16 @@ public enum Undaunted implements LogicCardInfo {
           onPlay {
             def top = my.deck.subList(0,10).showToOpponent("Top 10 cards of your opponent's deck")
             def hasMatch = top.find { Card card->
-              top.getExcludedList(card).find{card.getName().equals(it.getName()) && !card.getNumber().equals(it.getNumber())}
+              card.cardTypes.is(LEGEND) && top.getExcludedList(card).find{it.cardTypes.is(LEGEND) && card.getName().equals(it.getName()) && !card.getNumber().equals(it.getNumber())}
             }
-            if(!(hasMatch && my.bench.notFull)) {
+            if(!hasMatch) {
               top.shoToMe("Top 10 cards of your deck")
             } else {
-              def legendPair = top.select(count:2 , "Select both halves of a Pokémon LEGEND.", cardTypeFilter(LEGEND), self.owner, { CardList list ->
-                for (card in list) {
-                  if (!(list.find{card.getName().equals(it.getName()) && !card.getNumber().equals(it.getNumber())})) {
-                    return false
-                  }
-                }
-                return true
+              def legendPair = top.select(count:2 , "Select both halves of a Pokémon LEGEND.", cardTypeFilter(LEGEND), thisCard.player, { CardList list ->
+                list[0].name == list[1].name && list[0].number != list[1].number
               }
               def topLegendCard = legendPair.get(0).getNumber() < legendPair.get(1).getNumber() ? legendPair.get(0) : legendPair.get(1)
-              def bottomLegendCard = legendPair.get(0).getNumber() < legendPair.get().getNumber() ? legendPair.get(1) : legendPair.get(0)
+              def bottomLegendCard = legendPair.find { it != topLegendCard }
               def legendPokemon = benchPCS(topLegendCard)
               legendPokemon.cards.add(bottomLegendCard)
               my.deck.remove(bottomLegendCard)
@@ -1913,6 +1908,7 @@ public enum Undaunted implements LogicCardInfo {
           }
           playRequirement{
             assert my.deck : "Your deck is empty"
+            assert my.bench.notFull : "Your bench is full"
           }
         };
       case RUINS_OF_ALPH_76:
