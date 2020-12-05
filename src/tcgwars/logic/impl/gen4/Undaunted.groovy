@@ -4,6 +4,9 @@ import tcgwars.logic.impl.gen3.RubySapphire;
 import tcgwars.logic.impl.gen4.MysteriousTreasures;
 
 import tcgwars.logic.effect.gm.PlayTrainer
+import tcgwars.logic.effect.ability.Ability
+import tcgwars.logic.effect.ability.PokeBody
+import tcgwars.logic.effect.ability.PokePower
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -11,8 +14,11 @@ import static tcgwars.logic.card.CardType.*;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.Source.*
+import static tcgwars.logic.effect.EffectType.*;
+import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
+
 
 import tcgwars.logic.card.*
 import tcgwars.logic.util.*;
@@ -1894,7 +1900,7 @@ public enum Undaunted implements LogicCardInfo {
             } else {
               def legendPair = top.select(count:2 , "Select both halves of a Pokémon LEGEND.", cardTypeFilter(LEGEND), thisCard.player, { CardList list ->
                 list[0].name == list[1].name && list[0].number != list[1].number
-              }
+              })
               def topLegendCard = legendPair.get(0).getNumber() < legendPair.get(1).getNumber() ? legendPair.get(0) : legendPair.get(1)
               def bottomLegendCard = legendPair.find { it != topLegendCard }
               def legendPokemon = benchPCS(topLegendCard)
@@ -1917,8 +1923,7 @@ public enum Undaunted implements LogicCardInfo {
           def eff
           onPlay {
             eff = getter (GET_RESISTANCES) {h->
-                h.object.clear()
-              }
+              h.object.clear()
             }
           }
           onRemoveFromPlay{
@@ -2013,8 +2018,8 @@ public enum Undaunted implements LogicCardInfo {
             text "As often as you like during your turn , you may move a [L] Energy attached to 1 of your Pokémon to Raichu. This power can’t be used if Raichu is affected by a Special Condition."
             actionA {
               checkNoSPC()
-              assert my.all.findAll {it.cards.filterByT(L) && it!=self} : "No energy to move."
-              def pl=(my.all.findAll {it.cards.filterByEnergyType(L) && it!=self})
+              assert my.all.find {it.cards.filterByEnergyType(L) && it!=self} : "No energy to move."
+              def pl=my.all.findAll {it.cards.filterByEnergyType(L) && it!=self}
               def src=pl.select("Source for [L] Energy.")
               def card=src.cards.filterByEnergyType(R).select("Select a [L] Energy to move.").first()
               energySwitch(src, self, card)
