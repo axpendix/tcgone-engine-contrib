@@ -1923,7 +1923,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           onActivate {
             eff1 = delayed{
               before CHECK_ATTACK_REQUIREMENTS, {
-                if(self.active && ef.attacker.notEvolution) {
+                if(self.active && ef.attacker.notEvolution && ef.attacker.owner==self.owner.opposite) {
                   wcu "Intimidating Armor prevents attack"
                   prevent()
                 }
