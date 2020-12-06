@@ -1872,7 +1872,6 @@ public enum Triumphant implements LogicCardInfo {
           move "Pheromone Poison", {
             text "10 damage. If Nidoran♀ is on your Bench, the Defending Pokémon is now Poisoned."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               if(my.bench.find{it.name == "Nidoran♀"}) {
@@ -1883,7 +1882,6 @@ public enum Triumphant implements LogicCardInfo {
           move "Horn Attack", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -2299,7 +2297,6 @@ public enum Triumphant implements LogicCardInfo {
           move "Time Circle", {
             text "30 damage. During your opponent’s next turn, prevent all damage done to Celebe by attacks from your opponent’s Stage 1 or Stage 2 Pokémon."
             energyCost G, P, C
-            attackRequirement {}
             onAttack {
               damage 30
               preventAllDamageFromCustomPokemonNextTurn(thisMove, self, {it.stage1 || it.stage2})
@@ -2404,7 +2401,6 @@ public enum Triumphant implements LogicCardInfo {
           move "Crushing Punch", {
             text "60 damage. Discard a Special Energy card attached to the Defending Pokémon."
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               damage 60
               discardDefendingSpecialEnergy(delegate)
@@ -2564,7 +2560,6 @@ public enum Triumphant implements LogicCardInfo {
           move "Lost Crisis", {
             text "100 damage. Choose 2 Energy attached to Darkrai & Cresselia LEGEND and put them in the Lost Zone. If any of your opponent’s Pokémon would be Knocked Out by damage from this attack, put that Pokémon and all cards attached to it in the Lost Zone instead of discarding it."
             energyCost D, D, C, C
-            attackRequirement {}
             onAttack {
               damage 100
               moveSelfEnergyAfterDamage my.lostZone C,C
