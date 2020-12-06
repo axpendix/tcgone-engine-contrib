@@ -532,7 +532,7 @@ public enum Triumphant implements LogicCardInfo {
               assert opp.all.find{it.cards.filterByType(ENERGY)} : "Your opponent's pokemon have no energy attached"
             }
             onAttack {
-              def tar = opp.all.findAll{it.cards.filterByTYpe(ENERGY)}.select("Select a Pokémon to remove an energy from")
+              def tar = opp.all.findAll{it.cards.filterByType(ENERGY)}.select("Select a Pokémon to remove an energy from")
               tar.cards.select("Select an energy to move to put in the Lost Zone",cardTypeFilter(ENERGY)).moveTo(opp.lostZone)
             }
           }
@@ -1505,7 +1505,7 @@ public enum Triumphant implements LogicCardInfo {
               damage 10
               flip {
                 afterDamage {
-                  opp.hand.select("Choose a card to discard").discard()
+                  opp.hand.shuffledCopy().select("Choose a card to discard").discard()
                 }
               }
             }
@@ -2158,31 +2158,50 @@ public enum Triumphant implements LogicCardInfo {
 
         };
       case BLACK_BELT_85:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nYou may use this card only if you have more Prize cards left than your opponent. During this turn, each of your Active Pokémon’s attacks does 40 more damage to your opponent’s Active Pokémon (before applying Weakness and Resistance)."
           onPlay {
-          }
-          playRequirement{
+            delayed {
+              after PROCESS_ATTACK_EFFECTS, {
+                bg.dm().each {
+                  if (it.to.owner == thisCard.player.opposite && it.to.active) {
+                    bc "$thisCard +40"
+                    it.dmg += hp(40)
+                  }
+                }
+              }
+              unregisterAfter 1
+            }
           }
         };
       case INDIGO_PLATEAU_86:
-        return basicTrainer (this) {
+        return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nEach Pokémon LEGEND in play (both yours and your opponent’s) gets +30 HP."
+          def eff
           onPlay {
+            eff = getter GET_FULL_HP, {h->
+              if(h.effect.target.cardTypes.is(LEGEND)) {
+                h.object += hp(30)
+              }
+            }
           }
-          playRequirement{
+          onRemoveFromPlay{
+            eff.unregister()
           }
         };
       case JUNK_ARM_87:
         return basicTrainer (this) {
           text "Discard 2 cards from you hand. Search your discard pile for a Trainer card, show it to your opponent, and put it into your hand. You can’t choose Junk Arm with the effect of this card."
           onPlay {
+            my.hand.select(count:2,"Discard 2 cards").discard()
+            my.discard.select("Choose a Trainer card to return to your hand", {it.cardTypes.is(ITEM) && it.name != "Junk Arm"}).moveTo(my.hand)
           }
           playRequirement{
+            assert my.hand.getExcludedList(thisCard).size() >= 2 : "You don't have 2 other cards to discard"
           }
         };
       case SEEKER_88:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nEach player returns 1 of his or her Benched Pokémon and all cards attached to it to his or her hand. (You return your Pokémon first.)"
           onPlay {
             def pcs
@@ -2200,11 +2219,15 @@ public enum Triumphant implements LogicCardInfo {
           }
         };
       case TWINS_89:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nYou may use this card only if you have more Prize cards left than your opponent. Search your deck for any 2 cards and put them into your hand. Shuffle your deck afterward."
           onPlay {
+            my.deck.search(count:2,"Select 2 cards",{true}).moveTo(hidden:true,my.hand)
+            shuffleDeck()
           }
           playRequirement{
+            assert my.deck : "Your deck is empty"
+            assert my.prizeCardSet.size() > opp.prizeCardSet.size() : "You don't have more prize cards remaining than your opponent"
           }
         };
       case RESCUE_ENERGY_90:
@@ -2241,15 +2264,20 @@ public enum Triumphant implements LogicCardInfo {
           resistance P, MINUS20
           pokeBody "Eye of Disaster", {
             text "As long as Absol is your Active Pokémon, whenever your opponent puts a Basic Pokémon from his or her hand onto his or her Bench, put 2 damage counters on that Pokémon."
-            delayedA {
+            delayedA {// TODO
             }
           }
           move "Vicious Claw", {
             text "70 damage. Choose 1 Pokémon from your hand and put it in the Lost Zone. (If you can’t put a Pokémon in the Lost Zone, this attack does nothing.)"
             energyCost D, C
-            attackRequirement {}
+            attackRequirement {
+              assert my.hand.filterByType(POKEMON)
+            }
             onAttack {
-              damage 0
+              damage 70
+              afterDamage{
+                my.hand.select("Choose a Pokémon to put in the Lost Zone",cardTypeFilter(POKEMON)).moveTo(my.lostZone)
+              }
             }
           }
 
@@ -2260,6 +2288,12 @@ public enum Triumphant implements LogicCardInfo {
           pokePower "Forest Breath", {
             text "Once during your turn , if Celebi is your Active Pokémon, you may attach a Grass Energy card from your hand to 1 of your Pokémon. This power can’t be used if Celebi is affected by a Special Condition."
             actionA {
+              checkNoSPC()
+              checkLastTurn()
+              assert self.active : "$self is not your active Pokémon"
+              assert my.hand.filterByEnergyType(G) : "You have no Grass Energy in your hand"
+              powerUsed()
+              attachEnergyFrom(type:G,my.hand,my.all)
             }
           }
           move "Time Circle", {
@@ -2267,7 +2301,8 @@ public enum Triumphant implements LogicCardInfo {
             energyCost G, P, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              preventAllDamageFromCustomPokemonNextTurn(thisMove, self, {it.stage1 || it.stage2})
             }
           }
 
@@ -2279,14 +2314,25 @@ public enum Triumphant implements LogicCardInfo {
           pokePower "Energymite", {
             text "Once during your turn , you may use this power. If you do, Electrode is Knocked Out. Look at the top 7 cards of your deck. Choose as many Energy cards as you like and attach them to your Pokémon in any way you like. Discard the other cards. This power can’t be used if Electrode is affected by a Special Condition."
             actionA {
+              checkNoSPC()
+              checkLastTurn()
+              powerUsed()
+              new Knockout(self).run(bg)
+              def top = my.deck.subList(0,7)
+              def maximum = top.filterByType(ENERGY).size()
+              def energy = top.select(min:0,max:maximum,"Choose any number of Energy cards to attach to your Pokémon",cardTypeFilter(ENERGY))
+              energy.each {
+                attachEnergy(my.all.select("Attach $it.name to?"), it)
+              }
+              top.getExcludedList(energy).discard()
             }
           }
           move "Gigashock", {
             text "30 damage. Does 10 damage to 2 of your opponent’s Benched Pokémon."
             energyCost L, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              multiDamage opp.bench, 2, 10
             }
           }
 
@@ -2297,23 +2343,46 @@ public enum Triumphant implements LogicCardInfo {
           resistance C, MINUS20
           pokeBody "Catastrophe", {
             text "As long as Gengar is your Active Pokémon, if any of your opponent’s Pokémon would be Knocked Out, put that Pokémon in the Lost Zone instead of discarding."
-            delayedA {
+            delayedA {//Implementation from Tyranitar GX (LOT 121)
+              def flag = null
+              before KNOCKOUT, {
+                if(self.active && ef.pokemonToBeKnockedOut.owner == self.owner.opposite ){
+                  flag = ef.pokemonToBeKnockedOut.cards.copy()
+                }
+              }
+              after KNOCKOUT, {
+                if(flag){
+                  bc "Catastrophe activates"
+                  def changedCardsList = bg.em().retrieveObject("impl_changed_cards")
+                  flag.each{ card ->
+                    def toMove = card
+                    def changedCard = changedCardsList.findAll{it[0] == card}
+                    if (changedCard) {
+                      bc "Card was changed: $changedCard"
+                      toMove = (changedCard.first())[1]
+                    }
+                    new CardList(toMove).moveTo(self.owner.opposite.pbg.lostZone)
+                  }
+                  flag = null
+                }
+              }
             }
           }
           move "Hurl into Darkness", {
-            text "Look at your opponent’s hand and choose a number of Pokémon you find there up to the number of Psychic Energy attached to Gengar. PUt the Pokémon you chose in the Lost Zone."
+            text "Look at your opponent’s hand and choose a number of Pokémon you find there up to the number of Psychic Energy attached to Gengar. Put the Pokémon you chose in the Lost Zone."
             energyCost P
-            attackRequirement {}
+            attackRequirement {
+              assert opp.hand : "Your opponent's hand is empty"
+            }
             onAttack {
-              damage 0
+              opp.hand.shuffledCopy().select(min:0,max:self.cards.energyCount(P),"Choose a number of Pokémon to put into your opponent's lost zone").moveto(opp.lostZone)
             }
           }
           move "Cursed Drop", {
             text "Put 4 damage counters on your opponent’s Pokémon in any way you like."
             energyCost P, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              putDamageCountersOnOpponentsPokemon(counters)
             }
           }
 
@@ -2322,8 +2391,14 @@ public enum Triumphant implements LogicCardInfo {
         return evolution (this, from:"Machoke", hp:HP150, type:FIGHTING, retreatCost:3) {
           weakness P
           pokePower "Fighting Tag", {
-            text "Once during your turn , if Machamp is on your Bench, you may move all Energy attached to your Active Pokémon to Machamp. If you do, switch Machamp with your Active Pokémon."
+            text "Once during your turn , if Machamp is on your Bench, you may move all [F] Energy attached to your Active Pokémon to Machamp. If you do, switch Machamp with your Active Pokémon."
             actionA {
+              checkLastTurn()
+              assert self.benched : "$self is not on your Bench"
+              assert my.active.cards.filterByEnergyType(F) : "No [F] Energy to move"
+              powerUsed()
+              my.active.cards.filterByEnergyType(F).each{energySwitch(my.active,self,it)}
+              sw2 self, null, SRC_ABILITY
             }
           }
           move "Crushing Punch", {
@@ -2338,9 +2413,8 @@ public enum Triumphant implements LogicCardInfo {
           move "Champ Buster", {
             text "Does 100 damage plus 10 more damage for each of your Benched Pokémon that has any damage counters on it."
             energyCost F, F, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 100 + 10 * my.bench.findAll{it.numberOfDamageCounters}.size()
             }
           }
 
@@ -2352,14 +2426,33 @@ public enum Triumphant implements LogicCardInfo {
           pokePower "Magnetic Draw", {
             text "Once during your turn , you may draw cards until you have 6 cards in your hand. This power can’t be used if Magnezone is affected by a Special Condition."
             actionA {
+              checkLastTurn()
+              checkNoSPC()
+              assert my.hand.size() < 6 : "You must have fewer than 6 cards in your hand to use $thisAbility"
+              powerUsed()
+              draw 6 - my.hand.size()
             }
           }
           move "Lost Burn", {
             text "Put as many Energy cards attached to your Pokémon as you like in the Lost Zone. This attack does 50 damage times the number of Energy cards put in the Lost Zone in this way."
             energyCost L, C
-            attackRequirement {}
+            attackRequirement {
+              assert my.all.find{it.energyCards} : "You have no energy attached to your Pokémon"
+            }
             onAttack {
-              damage 0
+              def count=0
+              def toBeMoved=new CardList()
+              while (1) {
+                def tar = my.all.findAll {it.cards.filterByType(ENERGY).findAll {!toBeMoved.contains(it)}.notEmpty()}
+                if (!tar) break
+                def pcs = tar.select("Pokémon that has Energy card to put in the Lost Zone. Cancel to stop", false)
+                if (!pcs) break
+                def dd = pcs.cards.findAll {!toBeMoved.contains(it)}.select("Energy to put in the Lost Zone", cardTypeFilter(ENERGY))
+                toBeMoved.addAll(dd)
+                count++
+              }
+              damage 50 * count
+              afterDamage {toBeMoved.moveTo(my.lostZone)}
             }
           }
 
@@ -2369,15 +2462,33 @@ public enum Triumphant implements LogicCardInfo {
           weakness P
           pokeBody "Lost Link", {
             text "Mew can use the attacks of all Pokémon in the Lost Zone ."
-            delayedA {
+            getterA (GET_MOVE_LIST, self) {holder->
+              def cardList = []
+              def moveList = []
+              self.owner.pbg.lostZone.filterByType(POKEMON).each {
+                if(!cardList.contains("${it}")){
+                  cardList.add("${it}")
+                  moveList.addAll(it.moves)
+                }
+              }
+              self.owner.opposite.pbg.lostZone.filterByType(POKEMON).each {
+                if(!cardList.contains("${it}")){
+                  cardList.add("${it}")
+                  moveList.addAll(it.moves)
+                }
+              }
+              holder.object.addAll(moveList)
             }
           }
           move "See Off", {
             text "Search your deck for 1 Pokémon and put it in the Lost Zone. Shuffle your deck afterward."
             energyCost P
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Your deck is empty"
+            }
             onAttack {
-              damage 0
+              my.deck.search("Search your deck for 1 Pokémon",cardTypeFilter(POKEMON)).moveTo(my.lostZone)
+              shuffleDeck()
             }
           }
 
@@ -2388,23 +2499,30 @@ public enum Triumphant implements LogicCardInfo {
           resistance F, MINUS20
           pokeBody "Insight", {
             text "If you have the same number of cards in your hand as your opponent, the attack cost of each of Yanmega’s attacks is 0."
-            delayedA {
+            getterA GET_MOVE_LIST, BEFORE_LAST, self, {h->
+              def list=[]
+              for(move in h.object){
+                def copy=move.shallowCopy()
+                if(my.hand.size() == opp.hand.size()){
+                  copy.energyCost.retainAll()
+                }
+                list.add(copy)
+              }
+              h.object=list
             }
           }
           move "Linear Attack", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 40 damage to that Pokémon."
             energyCost G, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 40, opp.all.select("Choose 1 of your opponent's Pokémon")
             }
           }
           move "Sonicboom", {
             text "70 damage. This attack’s damage isn’t affected by Weakness or Resistance."
             energyCost G, G, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              noWrDamage 70, defending
             }
           }
 
@@ -2413,20 +2531,34 @@ public enum Triumphant implements LogicCardInfo {
         return basic (this, hp:HP150, type:[PSYCHIC, D], retreatCost:2) {
           weakness P
           weakness F
-          move "", {
-            text "Put this card from your hand onto your Bench only with the other half of Darkrai & Cresselia LEGEND."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
           move "Moon’s Invite", {
             text "Move as many damage counters on your opponent’s Pokémon as you like to any of your opponent’s other Pokémon in any way you like."
             energyCost P
-            attackRequirement {}
+            attackRequirement {
+              assert opp.all.find{it.numberOfDamageCounters} : "Your opponent's Pokémon have no damage counters to move"
+              assert opp.bench : "Your opponent' only has 1 Pokémon in play"
+            }
             onAttack {
-              damage 0
+              eff = delayed {
+                before KNOCKOUT, {
+                  prevent()
+                }
+              }
+              while(1){
+                def pl=(opp.all.findAll {it.numberOfDamageCounters})
+                if(!pl) break;
+                def src =pl.select("Source for damage counter (cancel to stop)", false)
+                if(!src) break;
+                def tar = opp.all
+                tar.remove(src)
+                tar = tar.select("Target for damage counter (cancel to stop)", false)
+                if(!tar) break;
+
+                src.damage-=hp(10)
+                directDamage 10, tar
+              }
+              eff.unregister()
+              checkFaint()
             }
           }
           move "Lost Crisis", {
@@ -2434,141 +2566,68 @@ public enum Triumphant implements LogicCardInfo {
             energyCost D, D, C, C
             attackRequirement {}
             onAttack {
-              damage 0
-            }
-          }
-          move "", {
-            text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
+              damage 100
+              moveSelfEnergyAfterDamage my.lostZone C,C
+              delayed {
+                def knockedOut = null
+                before KNOCKOUT, {
+                  if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner && self.active && ef.pokemonToBeKnockedOut.owner != self.owner ) {
+                    knockedOut = ef.pokemonToBeKnockedOut.cards.copy()
+                  }
+                }
+                after KNOCKOUT, {
+                  if (knockedOut) {
+                    bc "Lost Crisis sends Knocked Out Pokémon to the Lost Zone."
+                    knockedOut.moveTo(self.owner.opposite.pbg.lostZone)
+                    knockedOut = null
+                  }
+                }
+                unregisterAfter 1
+              }
             }
           }
 
         };
       case DARKRAI_AND_CRESSELIA_LEGEND_100:
-        return copy (DARKRAI_AND_CRESSELIA_LEGEND_99, this)
-        /*basic (this, hp:HP150, type:[PSYCHIC, D], retreatCost:2) {
-					weakness P
-					weakness F
-					move "", {
-						text "Put this card from your hand onto your Bench only with the other half of Darkrai & Cresselia LEGEND."
-						energyCost ()
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-					move "Moon’s Invite", {
-						text "Move as many damage counters on your opponent’s Pokémon as you like to any of your opponent’s other Pokémon in any way you like."
-						energyCost P
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-					move "Lost Crisis", {
-						text "100 damage. Choose 2 Energy attached to Darkrai & Cresselia LEGEND and put them in the Lost Zone. If any of your opponent’s Pokémon would be Knocked Out by damage from this attack, put that Pokémon and all cards attached to it in the Lost Zone instead of discarding it."
-						energyCost D, D, C, C
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-					move "", {
-						text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
-						energyCost ()
-						attackRequirement {}
-						onAttack {
-							damage 0
-						}
-					}
-
-				}*/;
+        return copy (DARKRAI_AND_CRESSELIA_LEGEND_99, this);
       case PALKIA_AND_DIALGA_LEGEND_101:
         return basic (this, hp:HP160, type:[WATER, M], retreatCost:3) {
           weakness R
           weakness L
-          move "", {
-            text "Put this card from your hand onto your Bench only with the other half of Palkia & Dialga LEGEND."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
           move "Sudden Delete", {
             text "Choose 1 of your opponent’s Benched Pokémon. Put that Pokémon and all cards attached to it back to your opponent’s hand."
             energyCost W, C, C
-            attackRequirement {}
+            attackRequirement {
+              assert opp.bench : "Your opponent has no Benched Pokémon"
+            }
             onAttack {
               def pcs = opp.bench.select("Which Pokémon to return to Opponent's hand?")
               scoopUpPokemon(pcs, delegate)
             }
           }
           move "Time Control", {
-            text "Energy attached to Palkia & Dialga LEGEND. Add the top 2 cards of your opponent’s deck to his or her Prize cards."
-            energyCost M, M, C, M
-            attackRequirement {}
-            onAttack {
-              damage 0
+            text "Discard all [M] Energy attached to Palkia & Dialga LEGEND. Add the top 2 cards of your opponent’s deck to his or her Prize cards."
+            energyCost M, M, C
+            attackRequirement {
+              assert opp.deck : "Your opponent's bench is emtpy"
             }
-          }
-          move "", {
-            text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
-            energyCost ()
-            attackRequirement {}
             onAttack {
-              damage 0
+              discardAllSelfEnergy(M)
+              2.times{ if (opp.deck) opp.prizeCardSet.add(opp.deck.remove(0)) }
             }
           }
 
         };
       case PALKIA_AND_DIALGA_LEGEND_102:
-        return basic (this, hp:HP160, type:[WATER, M], retreatCost:3) {
-          weakness R
-          weakness L
-          move "", {
-            text "Put this card from your hand onto your Bench only with the other half of Palkia & Dialga LEGEND."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Sudden Delete", {
-            text "Choose 1 of your opponent’s Benched Pokémon. Put that Pokémon and all cards attached to it back to your opponent’s hand."
-            energyCost W, C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Time Control", {
-            text "Discard all Metal Energy attached to Palkia & Dialga LEGEND. Add the top 2 cards of your opponent’s deck to his or her Prize cards."
-            energyCost M, M, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "", {
-            text "When this Pokémon has been Knocked Out, your opponent takes 2 Prize cards."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (PALKIA_AND_DIALGA_LEGEND_101, this);
       case ALPH_LITHOGRAPH_FOUR:
         return basicTrainer (this) {
           text "LOOK AT ALL OF YOUR FACE DOWN PRIZE CARDS!"
           onPlay {
+            my.prizeCardSet.faceDownCards.showToMe("Your face down Prize cards")
           }
           playRequirement{
+            assert : my.prizeCardSet.faceDownCards : "You have no face down Prize cards"
           }
         };
       default:
