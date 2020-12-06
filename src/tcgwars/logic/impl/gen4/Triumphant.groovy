@@ -210,7 +210,6 @@ public enum Triumphant implements LogicCardInfo {
           move "Midnight Eyes", {
             text "20 damage. The Defending Pokémon is now Asleep."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 20
               applyAfterDamage ASLEEP
@@ -219,7 +218,6 @@ public enum Triumphant implements LogicCardInfo {
           move "Stadium Power", {
             text "40 damage. If there is any Stadium card in play, this attack does 40 damage plus 30 more damage."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 40
               if(bg.stadiumInfoStruct){
@@ -332,7 +330,6 @@ public enum Triumphant implements LogicCardInfo {
           move "Venomous Horn", {
             text "80 damage. The Defending Pokémon is now Poisoned."
             energyCost F, F, C, C
-            attackRequirement {}
             onAttack {
               damage 80
               applyAfterDamage POISONED
@@ -542,7 +539,9 @@ public enum Triumphant implements LogicCardInfo {
           move "Breakdown", {
             text "Count the number of cards in your opponent’s hand. Put that many damage counters on the Defending Pokémon."
             energyCost P, C, C
-            attackRequirement {}
+            attackRequirement {
+              assert opp.hand : "Your opponent has no cards in thier hand"
+            }
             onAttack {
               directDamage 10 * opp.hand.size(), defending
             }
@@ -571,6 +570,7 @@ public enum Triumphant implements LogicCardInfo {
                 }
                 return true
               }.moveTo(my.hand)
+              shuffleDeck()
             }
           }
           move "Reflect Energy", {
@@ -602,7 +602,6 @@ public enum Triumphant implements LogicCardInfo {
           move "Stick and Absorb", {
             text "30 damage. Remove 3 damage counters from Carnivine. The Defending Pokémon can’t retreat during your opponent’s next turn."
             energyCost G, G, C
-            attackRequirement {}
             onAttack {
               damage 30
               heal 30, self
@@ -705,7 +704,9 @@ public enum Triumphant implements LogicCardInfo {
           move "Thunder Shot", {
             text "This attack does 50 damage to each of your opponent’s Pokémon that has any Energy cards attached to it."
             energyCost L, L, L
-            attackRequirement {}
+            attackRequirement {
+              assert opp.all.find{it.cards.energyCount(C)} : "None of your opponent's Pokémon have any Energy cards attached"
+            }
             onAttack {
               opp.all.findAll{it.cards.energyCount(C)}.each{
                 damage 50, it
@@ -756,7 +757,6 @@ public enum Triumphant implements LogicCardInfo {
           move "Powerful Splash", {
             text "Does 30 damage plus 10 more damage for each Water Energy attached to all your Pokémon."
             energyCost W, C
-            attackRequirement {}
             onAttack {
               damage 30
               my.all.findAll{it.cards.energyCount(W)}.each{
@@ -839,7 +839,6 @@ public enum Triumphant implements LogicCardInfo {
           move "Selfdestruct", {
             text "60 damage. Lunatone does 60 damage to itself."
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 60
               damage 60, self
@@ -853,7 +852,6 @@ public enum Triumphant implements LogicCardInfo {
           move "Vital Throw", {
             text "40 damage. You may do 40 damage plus 20 more damage. If you do, Machamp does 20 damage to itself."
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 40
               if(confirm("Do 20 more damage? ($self does 20 damage to itself)")) {
@@ -865,7 +863,6 @@ public enum Triumphant implements LogicCardInfo {
           move "Hundred Furious Punches", {
             text "Does 60 damage plus 10 more damage for each Fighting Energy attached to Machamp."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 60 + 10 * self.cards.energyCount(F)
             }
@@ -962,7 +959,6 @@ public enum Triumphant implements LogicCardInfo {
           move "Rage", {
             text "Does 50 damage plus 10 more damage for each damage counter on Sharpedo."
             energyCost D, C, C
-            attackRequirement {}
             onAttack {
               damage 50 + 10 * self.numberOfDamageCounters
             }
@@ -1008,6 +1004,7 @@ public enum Triumphant implements LogicCardInfo {
             }
             onAttack {
               my.deck.search(max:2,"Search your deck for up to 2 Pokémon.",cardTypeFilter(POKEMON)).moveTo(my.hand)
+              shuffleDeck()
             }
           }
           move "Slam", {
@@ -1187,7 +1184,6 @@ public enum Triumphant implements LogicCardInfo {
           move "Strength", {
             text "60 damage. "
             energyCost F, F, C
-            attackRequirement {}
             onAttack {
               damage 60
             }
@@ -1357,7 +1353,6 @@ public enum Triumphant implements LogicCardInfo {
           move "Twister", {
             text "30 damage. Flip 2 coins. If both of them are tails, this attack does nothing. For each heads, discard an Energy attached to the Defending Pokémon."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               flip 2, {}, {}, [2:{
                 damage 30
@@ -1411,6 +1406,7 @@ public enum Triumphant implements LogicCardInfo {
             onActivate {r->
               if(r==PLAY_FROM_HAND && my.deck && confirm("Use mapping?")) {
                 my.deck.search(cardTypeFilter(STADIUM)).moveTo(my.hand)
+                shuffleDeck()
               }
             }
           }
@@ -1442,7 +1438,6 @@ public enum Triumphant implements LogicCardInfo {
           move "Hyper Beam", {
             text "50 damage. Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               flip {
@@ -1479,15 +1474,16 @@ public enum Triumphant implements LogicCardInfo {
             text "Choose 2 of your opponent’s Pokémon. This attack does 20 damage to each of them."
             energyCost W, C, C
             onAttack {
-              damage 0
+              multiSelect(opp.all, 2).each {
+                damage 20, it
+              }
             }
           }
           move "Surf", {
             text "50 damage. "
             energyCost W, C, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
             }
           }
 
@@ -1498,7 +1494,6 @@ public enum Triumphant implements LogicCardInfo {
           move "Poisonpowder", {
             text "The Defending Pokémon is now Poisoned."
             energyCost C
-            attackRequirement {}
             onAttack {
               apply POISONED
             }
@@ -1506,9 +1501,13 @@ public enum Triumphant implements LogicCardInfo {
           move "Corrode Target", {
             text "10 damage. Flip a coin. If heads, look at your opponent’s hand, choose 1 card, and discard it."
             energyCost G, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip {
+                afterDamage {
+                  opp.hand.select("Choose a card to discard").discard()
+                }
+              }
             }
           }
 
@@ -1517,12 +1516,24 @@ public enum Triumphant implements LogicCardInfo {
         return evolution (this, from:"Yanma", hp:HP090, type:GRASS, retreatCost:1) {
           weakness L
           resistance F, MINUS20
-          move "Shoot Through U-turn", {
-            text "20 damage. Switch Yanmega with 1 of your Benched Pokémon."
-            energyCost G, G, C, C
-            attackRequirement {}
+          move "Shoot Through", {
+            text "20 damage. Does 10 damage to 1 of your opponent's Benched Pokémon."
+            energyCost G
             onAttack {
-              damage 0
+              damage 20
+              if(opp.bench){
+                damage 10, opp.bench.select("Shoot Through does 10 damage to 1 of your opponent's Benched Pokémon")
+              }
+            }
+          }
+          move "U-turn", {
+            text "20 damage. Switch Yanmega with 1 of your Benched Pokémon."
+            energyCost G, C, C
+            onAttack {
+              damage 50
+              afterDamage {
+                switchYourActive()
+              }
             }
           }
 
@@ -1533,17 +1544,18 @@ public enum Triumphant implements LogicCardInfo {
           move "Imitate", {
             text "Draw cards until you have the same number of cards in your hand as your opponent."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.hand.size() < opp.hand.size() : "You don't have fewer card in your hand than your opponent"
+            }
             onAttack {
-              damage 0
+              draw opp.hand.size() - my.hand.size()
             }
           }
           move "Tail Punch", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
 
@@ -1555,17 +1567,19 @@ public enum Triumphant implements LogicCardInfo {
           move "Mountain Eater", {
             text "Discard the top card of your deck. Then, remove 2 damage counters from Aron."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck||self.numberOfDamageCounters : "Your deck is empty and $self is healthy"
+            }
             onAttack {
-              damage 0
+              discard my.deck.first()
+              heal 20, self
             }
           }
           move "Confront", {
             text "30 damage. "
             energyCost M, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
             }
           }
 
@@ -1576,17 +1590,16 @@ public enum Triumphant implements LogicCardInfo {
           move "Inviting Scent", {
             text "Switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              whirlwind()
             }
           }
           move "Careless Tackle", {
             text "20 damage. Bellsprout does 10 damage to itself."
             energyCost G
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              damage 10, self
             }
           }
 
@@ -1598,17 +1611,17 @@ public enum Triumphant implements LogicCardInfo {
           move "Iron Defense", {
             text "Flip a coin. If heads, prevent all effects of attacks, including damage, done to Bronzor during your opponent’s next turn."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip {
+                preventAllEffectsNextTurn()
+              }
             }
           }
           move "Tackle", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -1619,17 +1632,15 @@ public enum Triumphant implements LogicCardInfo {
           move "Focus Energy", {
             text "During your next turn, Carvanha’s Bite attack’s base damage is 40."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              increasedBaseDamageNextTurn("Bite",hp(30))
             }
           }
           move "Bite", {
             text "10 damage. "
             energyCost D
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
 
@@ -1641,14 +1652,24 @@ public enum Triumphant implements LogicCardInfo {
           pokeBody "Lonely Bone", {
             text "Any damage done to Cubone by your opponent’s attacks is reduced by 20 for each Marowak in your discard pile ."
             delayedA {
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each{
+                  if(my.discard.find{it.name == "Marowak"} && it.to == self && it.from.onwer == self.owner.opposite && it.notNoEffect && it.dmg.value) {
+                    def reduction = 20 * my.discard.findAll{it.name == "Marowak"}
+                    bc "$thisAbility -$reduction"
+                    it.dmg -= hp(reduction)
+                  }
+                }
+              }
             }
           }
           move "Bone Rush", {
             text "Flip a coin until you get tails. This attack does 20 damage times the number of heads."
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              flipUntilTails {
+                damage 20
+              }
             }
           }
 
@@ -1660,17 +1681,20 @@ public enum Triumphant implements LogicCardInfo {
           move "Sand Veil", {
             text "Flip a coin. If heads, prevent all effects of attacks, including damage, done to Diglett during your opponent’s next turn."
             energyCost ()
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip {
+                preventAllEffectsNextTurn()
+              }
             }
           }
           move "Mini Earthquake", {
             text "40 damage. Does 10 damage to each of your Benched Pokémon."
             energyCost F, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              my.bench.each{
+                damage 10, it
+              }
             }
           }
 
@@ -1681,17 +1705,16 @@ public enum Triumphant implements LogicCardInfo {
           move "Gentle Wrap", {
             text "10 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              cantRetreat defending
             }
           }
           move "Ram", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -1703,9 +1726,8 @@ public enum Triumphant implements LogicCardInfo {
           move "Sneaky Placement", {
             text "Put 1 damage counter on 1 of your opponent’s Pokémon."
             energyCost P
-            attackRequirement {}
             onAttack {
-              damage 0
+              directDamage 10, opp.all.select("Put 1 damage counter on 1 of your opponent’s Pokémon.")
             }
           }
 
@@ -1716,17 +1738,23 @@ public enum Triumphant implements LogicCardInfo {
           move "Sweet Scent", {
             text "Remove 3 damage counters from 1 of your Pokémon."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.all.find{it.numberOfDamageCounters} : "All of your Pokémon are healthy"
+            }
             onAttack {
-              damage 0
+              heal 30, my.all.findAll{it.numberOfDamageCounters}.select("Remove 3 damage counters from 1 of your Pokémon")
             }
           }
           move "Vulcan Beat", {
             text "Flip a coin for each Volbeat you have in play. This attack does 30 damage times the number of heads."
             energyCost G
-            attackRequirement {}
+            attackRequirement {
+              assert my.all.find{it.name == "Volbeat"} : "You have no Volbeat in play"
+            }
             onAttack {
-              damage 0
+              flip my.all.findAll{it.name == "Volbeat"}.size(), {
+                damage 30
+              }
             }
           }
 
@@ -1737,9 +1765,8 @@ public enum Triumphant implements LogicCardInfo {
           move "Beat", {
             text "30 damage. "
             energyCost G, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
             }
           }
 
@@ -1750,17 +1777,18 @@ public enum Triumphant implements LogicCardInfo {
           move "Beat", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Tongue Whip", {
             text "Choose 1 of your opponent’s Benched Pokémon. This attack does 30 damage to that Pokémon."
             energyCost C, C, C
-            attackRequirement {}
+            attackRequirement {
+              assert opp.bench : "Your opponent has no benched Pokémon"
+            }
             onAttack {
-              damage 0
+              damage 30, opp.bench.select("Choose 1 of your opponent's Benched Pokémon to deal 30 damage to")
             }
           }
 
@@ -1771,17 +1799,18 @@ public enum Triumphant implements LogicCardInfo {
           move "Steady Punch", {
             text "10 damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
             energyCost F
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip {
+                damage 10
+              }
             }
           }
           move "Mach Cross", {
             text "50 damage. "
             energyCost F, F, F
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
             }
           }
 
@@ -1793,18 +1822,21 @@ public enum Triumphant implements LogicCardInfo {
           move "Magnetic Switch", {
             text "Switch Magnemite with 1 of your Benched Pokémon."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.bench : "You have no benched Pokémon"
+            }
             onAttack {
-              damage 0
+              switchYourActive()
             }
           }
           move "Thundershock", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost L, C
-            attackRequirement {}
             onAttack {
               damage 20
-              flip { apply PARALYZED }
+              flip {
+                apply PARALYZED
+              }
             }
           }
 
@@ -1815,17 +1847,21 @@ public enum Triumphant implements LogicCardInfo {
           move "Friend Search", {
             text "Look at the top 5 cards of your deck, choose 1 Pokémon you find there, show it to your opponent, and put it into your hand. Shuffle the other cards back into your deck."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Your deck is empty"
+            }
             onAttack {
-              damage 0
+              my.deck.subList(0,5).select("Choose 1 Pokémon to put into your hand",cardTypeFilter(POKEMON)).moveTo(my.hand)
+              shuffleDeck()
             }
           }
           move "Double Kick", {
             text "Flip 2 coins. This attack does 20 damage times the number of heads."
             energyCost P, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip 2, {
+                damage 20
+              }
             }
           }
 
