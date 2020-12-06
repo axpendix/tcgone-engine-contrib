@@ -1166,6 +1166,7 @@ public enum Undaunted implements LogicCardInfo {
             }
             onAttack {
               my.deck.select().moveTo(hidden: true, my.hand)
+              shuffleDeck()
             }
           }
           move "Fly", {
