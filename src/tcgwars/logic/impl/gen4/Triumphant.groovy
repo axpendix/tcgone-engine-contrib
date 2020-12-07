@@ -20,6 +20,7 @@ import tcgwars.logic.util.*;
 
 /**
  * @author axpendix@hotmail.com
+ * @author ufodynasty12@gmail.com
  */
 public enum Triumphant implements LogicCardInfo {
 
@@ -107,11 +108,11 @@ public enum Triumphant implements LogicCardInfo {
   VOLBEAT_82 ("Volbeat", "82", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
   VOLTORB_83 ("Voltorb", "83", Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
   YANMA_84 ("Yanma", "84", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  BLACK_BELT_85 ("Black Belt", "85", Rarity.UNCOMMON, [TRAINER]),
-  INDIGO_PLATEAU_86 ("Indigo Plateau", "86", Rarity.UNCOMMON, [TRAINER]),
-  JUNK_ARM_87 ("Junk Arm", "87", Rarity.UNCOMMON, [TRAINER]),
-  SEEKER_88 ("Seeker", "88", Rarity.UNCOMMON, [TRAINER]),
-  TWINS_89 ("Twins", "89", Rarity.UNCOMMON, [TRAINER]),
+  BLACK_BELT_85 ("Black Belt", "85", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  INDIGO_PLATEAU_86 ("Indigo Plateau", "86", Rarity.UNCOMMON, [TRAINER, STADIUM]),
+  JUNK_ARM_87 ("Junk Arm", "87", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  SEEKER_88 ("Seeker", "88", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  TWINS_89 ("Twins", "89", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   RESCUE_ENERGY_90 ("Rescue Energy", "90", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   ABSOL_91 ("Absol", "91", Rarity.ULTRARARE, [BASIC, POKEMON, _DARKNESS_]),
   CELEBI_92 ("Celebi", "92", Rarity.ULTRARARE, [BASIC, POKEMON, _GRASS_]),
@@ -125,7 +126,7 @@ public enum Triumphant implements LogicCardInfo {
   DARKRAI_AND_CRESSELIA_LEGEND_100 ("Darkrai & Cresselia LEGEND", "100", Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_, LEGEND]),
   PALKIA_AND_DIALGA_LEGEND_101 ("Palkia & Dialga LEGEND", "101", Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
   PALKIA_AND_DIALGA_LEGEND_102 ("Palkia & Dialga LEGEND", "102", Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
-  ALPH_LITHOGRAPH_FOUR ("Alph Lithograph", "FOUR", Rarity.HOLORARE, [TRAINER]);
+  ALPH_LITHOGRAPH_FOUR ("Alph Lithograph", "FOUR", Rarity.HOLORARE, [TRAINER, ITEM]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
