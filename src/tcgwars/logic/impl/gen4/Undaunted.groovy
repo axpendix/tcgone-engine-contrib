@@ -2020,6 +2020,7 @@ public enum Undaunted implements LogicCardInfo {
             actionA {
               checkNoSPC()
               assert my.all.find {it.cards.filterByEnergyType(L) && it!=self} : "No energy to move."
+              powerUsed()
               def pl=my.all.findAll {it.cards.filterByEnergyType(L) && it!=self}
               def src=pl.select("Source for [L] Energy.")
               def card=src.cards.filterByEnergyType(R).select("Select a [L] Energy to move.").first()
