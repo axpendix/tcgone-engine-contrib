@@ -199,6 +199,12 @@ class TcgStatics {
     bg.em().activateEffect(ef)
     return ef.selectedCards ?: []
   }
+  static CardList selectOpponentEnergy(PokemonCardSet pcs, Type...types=C) {
+    def ef = new SelectEnergy(pcs.cards, types)
+    ef.playerType = pcs.owner.opposite
+    bg.em().activateEffect(ef)
+    return ef.selectedCards ?: []
+  }
   /**
    * Selects Energy of specified Type from the attacking {@link PokemonCardSet} before damage, then discards it after
    * damage. Should only be used for {@link Move}s
@@ -232,7 +238,7 @@ class TcgStatics {
    */
   static discardDefendingEnergyAfterDamage(Type...types=C) {
     def pcs = Target.OPP_ACTIVE.getSingleTarget(bg)
-    def cards = selectEnergy(pcs, types)
+    def cards = selectOpponentEnergy(pcs, types)
     afterDamage {
       def de = new DiscardEnergy(cards)
       de.source = ATTACK
