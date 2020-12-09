@@ -1596,17 +1596,18 @@ public enum Arceus implements LogicCardInfo {
           move "Smash Kick", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Super Singe", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Burned."
             energyCost R, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip {
+                applyAfterDamage BURNED
+              }
             }
           }
 
@@ -1614,20 +1615,31 @@ public enum Arceus implements LogicCardInfo {
       case BEEDRILL_G_53:
         return basic (this, hp:HP080, type:GRASS, retreatCost:1) {
           weakness R
+          def raidTurn = -1
+          customAbility {
+            onActivate {r->
+              if(r == PLAY_FROM_HAND) {
+                raidTurn = bg.turnCount
+              }
+            }
+          }
           move "Raid", {
-            text "10 damage. from your hand during this turn, this attack’s base damage is 40 instead of 10."
+            text "10 damage. If you playd Beedrill G from your hand during this turn, this attack’s base damage is 40 instead of 10."
             energyCost G
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              if(raidTurn == bg.turnCount){
+                damage 30
+              }
             }
           }
           move "Fury Attack", {
             text "30× damage. Flip 3 coins. This attack does 30 damage times the number of heads."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip 3, {
+                damage 30
+              }
             }
           }
 
@@ -1639,17 +1651,18 @@ public enum Arceus implements LogicCardInfo {
           move "Hypnosis", {
             text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Asleep."
             energyCost M
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip {
+                applyAfterDamage ASLEEP
+              }
             }
           }
           move "Spinning Attack", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -1660,9 +1673,11 @@ public enum Arceus implements LogicCardInfo {
           move "Bunny Hop", {
             text "Choose 1 of your opponent’s Pokémon that doesn’t have any damage counters on it. This attack does 20 damage to that Pokémon."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert opp.all.find{!it.numberOfDamageCounters} : "All of you opponent's Pokémon have damage counters on them"
+            }
             onAttack {
-              damage 0
+              damage 20, opp.all.findAll{!it.numberOfDamageCounters}.select("Choose 1 of your opponent's Pokémon that doesn't have any damage counters on it")
             }
           }
 
@@ -1673,14 +1688,19 @@ public enum Arceus implements LogicCardInfo {
           pokeBody "Cloak Evolution", {
             text "Burmy Trash Cloak can evolve during the turn you play it."
             delayedA {
+              before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+                if (bg.currentTurn == self.owner){
+                  powerUsed()
+                  prevent()
+                }
+              }
             }
           }
           move "Tackle", {
             text "20 damage. "
             energyCost G, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -1691,14 +1711,19 @@ public enum Arceus implements LogicCardInfo {
           pokeBody "Cloak Evolution", {
             text "Burmy Sandy Cloak can evolve during the turn you play it."
             delayedA {
+              before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+                if (bg.currentTurn == self.owner){
+                  powerUsed()
+                  prevent()
+                }
+              }
             }
           }
           move "Tackle", {
             text "20 damage. "
             energyCost F, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -1709,14 +1734,19 @@ public enum Arceus implements LogicCardInfo {
           pokeBody "Cloak Evolution", {
             text "Burmy Trash Cloak can evolve during the turn you play it."
             delayedA {
+              before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+                if (bg.currentTurn == self.owner){
+                  powerUsed()
+                  prevent()
+                }
+              }
             }
           }
           move "Tackle", {
             text "20 damage. "
             energyCost M, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -1725,19 +1755,21 @@ public enum Arceus implements LogicCardInfo {
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
           weakness W, PLUS10
           move "Call for Friends", {
-            text "Basic Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
-            energyCost C, R
-            attackRequirement {}
+            text "Search your deck for a [R] Basic Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
+            energyCost C
+            attackRequirement {
+              assert my.deck : "Your deck is emtpy"
+            }
             onAttack {
-              damage 0
+              my.deck.search("Search your deck for a Basic [R] Pokémon",{it.cardTypes.is(BASIC) && it.asPokemonCard().types.contains(R)}).moveTo(my.hand)
+              shuffleDeck()
             }
           }
           move "Steady Firebreathing", {
             text "20 damage. "
             energyCost R, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -1749,17 +1781,15 @@ public enum Arceus implements LogicCardInfo {
           move "Ram", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Solarbeam", {
             text "20 damage. "
             energyCost G, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -1770,17 +1800,15 @@ public enum Arceus implements LogicCardInfo {
           move "Astonish", {
             text "Choose 1 card from your opponent’s hand without looking. Look at that card you chose, then have your opponent shuffle that card into his or her deck."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              astonish()
             }
           }
           move "Punch", {
             text "30 damage. "
             energyCost F, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
             }
           }
 
@@ -1792,17 +1820,18 @@ public enum Arceus implements LogicCardInfo {
           move "Zap Kick", {
             text "10 damage. "
             energyCost L
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Thunder Jolt", {
             text "30 damage. Flip a coin. If tails, Electrike does 10 damage to itself."
             energyCost L, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip 1, {}, {
+                damage 10, self
+              }
             }
           }
 
@@ -1814,9 +1843,8 @@ public enum Arceus implements LogicCardInfo {
           move "Bite", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
 
@@ -1828,17 +1856,15 @@ public enum Arceus implements LogicCardInfo {
           move "Gnaw", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Suffocating Gas", {
             text "20 damage. "
             energyCost P, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -1850,9 +1876,10 @@ public enum Arceus implements LogicCardInfo {
           move "Stone Barrage", {
             text "10× damage. Flip a coin until you get tails. This attack does 10 damage times the number of heads."
             energyCost F
-            attackRequirement {}
             onAttack {
-              damage 0
+              flipUntilTails {
+                damage 10
+              }
             }
           }
 
@@ -1863,7 +1890,9 @@ public enum Arceus implements LogicCardInfo {
           move "Collect", {
             text "Draw a card."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Your deck is emtpy"
+            }
             onAttack {
               draw 1
             }
@@ -1871,9 +1900,8 @@ public enum Arceus implements LogicCardInfo {
           move "Drool", {
             text "20 damage. "
             energyCost P, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
