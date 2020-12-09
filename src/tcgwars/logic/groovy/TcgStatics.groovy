@@ -193,9 +193,9 @@ class TcgStatics {
    * @param types {@link Type}s of energy to be selected. Default: C
    * @return {@link CardList} of the selected cards, can be empty CardList
    */
-  static CardList selectEnergy(PokemonCardSet pcs, Type...types=C, PlayerType playerType = pcs.owner) {
+  static CardList selectEnergy(PokemonCardSet pcs, Type...types=C) {
     def ef = new SelectEnergy(pcs.cards, types)
-    ef.playerType = playerType
+    ef.playerType = bg.currentTurn
     bg.em().activateEffect(ef)
     return ef.selectedCards ?: []
   }
