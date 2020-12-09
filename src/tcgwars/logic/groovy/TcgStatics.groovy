@@ -232,7 +232,7 @@ class TcgStatics {
    */
   static discardDefendingEnergyAfterDamage(Type...types=C) {
     def pcs = Target.OPP_ACTIVE.getSingleTarget(bg)
-    def cards = selectEnergy(pcs, types, pcs.owner.opposite)
+    def cards = selectEnergy(pcs, types)
     afterDamage {
       def de = new DiscardEnergy(cards)
       de.source = ATTACK
