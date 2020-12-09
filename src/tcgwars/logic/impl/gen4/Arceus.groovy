@@ -1,5 +1,7 @@
 package tcgwars.logic.impl.gen4;
 
+import tcgwars.logic.impl.gen8.SwordShield;
+
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
@@ -32,6 +34,7 @@ import tcgwars.logic.util.*;
 
 /**
  * @author axpendix@hotmail.com
+ * @author ufodynasty12@gmail.com
  */
 public enum Arceus implements LogicCardInfo {
 
@@ -116,18 +119,18 @@ public enum Arceus implements LogicCardInfo {
   TREECKO_79 ("Treecko", "79", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
   WINGULL_80 ("Wingull", "80", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
   WINGULL_81 ("Wingull", "81", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-  BEGINNING_DOOR_82 ("Beginning Door", "82", Rarity.UNCOMMON, [TRAINER]),
-  BENCH_SHIELD_83 ("Bench Shield", "83", Rarity.UNCOMMON, [TRAINER]),
-  BUFFER_PIECE_84 ("Buffer Piece", "84", Rarity.UNCOMMON, [TRAINER]),
-  DEPARTMENT_STORE_GIRL_85 ("Department Store Girl", "85", Rarity.UNCOMMON, [TRAINER]),
-  ENERGY_RESTORE_86 ("Energy Restore", "86", Rarity.UNCOMMON, [TRAINER]),
-  EXPERT_BELT_87 ("Expert Belt", "87", Rarity.UNCOMMON, [TRAINER]),
-  LUCKY_EGG_88 ("Lucky Egg", "88", Rarity.UNCOMMON, [TRAINER]),
-  OLD_AMBER_89 ("Old Amber", "89", Rarity.COMMON, [TRAINER]),
-  PROFESSOR_OAK_S_VISIT_90 ("Professor Oak's Visit", "90", Rarity.UNCOMMON, [TRAINER]),
-  ULTIMATE_ZONE_91 ("Ultimate Zone", "91", Rarity.UNCOMMON, [TRAINER]),
-  DOME_FOSSIL_92 ("Dome Fossil", "92", Rarity.COMMON, [TRAINER]),
-  HELIX_FOSSIL_93 ("Helix Fossil", "93", Rarity.COMMON, [TRAINER]),
+  BEGINNING_DOOR_82 ("Beginning Door", "82", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  BENCH_SHIELD_83 ("Bench Shield", "83", Rarity.UNCOMMON, [TRAINER, POKEMON_TOOL]),
+  BUFFER_PIECE_84 ("Buffer Piece", "84", Rarity.UNCOMMON, [TRAINER, POKEMON_TOOL]),
+  DEPARTMENT_STORE_GIRL_85 ("Department Store Girl", "85", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  ENERGY_RESTORE_86 ("Energy Restore", "86", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  EXPERT_BELT_87 ("Expert Belt", "87", Rarity.UNCOMMON, [TRAINER, ITEM, POKEMON_TOOL]),
+  LUCKY_EGG_88 ("Lucky Egg", "88", Rarity.UNCOMMON, [TRAINER, ITEM, POKEMON_TOOL]),
+  OLD_AMBER_89 ("Old Amber", "89", Rarity.COMMON, [TRAINER, ITEM]),
+  PROFESSOR_OAK_S_VISIT_90 ("Professor Oak's Visit", "90", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  ULTIMATE_ZONE_91 ("Ultimate Zone", "91", Rarity.UNCOMMON, [TRAINER, STADIUM]),
+  DOME_FOSSIL_92 ("Dome Fossil", "92", Rarity.COMMON, [TRAINER, ITEM]),
+  HELIX_FOSSIL_93 ("Helix Fossil", "93", Rarity.COMMON, [TRAINER, ITEM]),
   ARCEUS_LV_X_94 ("Arceus Lv.X", "94", Rarity.HOLORARE, [LVL_X, POKEMON, _COLORLESS_]),
   ARCEUS_LV_X_95 ("Arceus Lv.X", "95", Rarity.HOLORARE, [LVL_X, POKEMON, _COLORLESS_]),
   ARCEUS_LV_X_96 ("Arceus Lv.X", "96", Rarity.HOLORARE, [LVL_X, POKEMON, _COLORLESS_]),
@@ -2235,96 +2238,347 @@ public enum Arceus implements LogicCardInfo {
         return basicTrainer (this) {
           text "Search your deck for Arceus, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
           onPlay {
+            my.deck.search("Search your deck for Arceus",{it.name == "Arceus"}).showToOpponent("Arceus").moveTo(my.hand) //Using showToOpponent since there are 9 Arceuses in this set.
           }
           playRequirement{
+            assert my.deck : "Your deck is emtpy"
           }
         };
       case BENCH_SHIELD_83:
-        return basicTrainer (this) {
+        return pokemonTool (this) {
           text "Attach Bench Shield to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nAs long as the Pokémon this card is attached to is on your Bench, prevent all damage done to that Pokémon by attacks (both yours and your opponent’s)."
+          def eff
           onPlay {
+            eff = delayed {
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each{
+                  if(!self.active && it.to == self){
+                    bc "Bench Shield prevents all damage"
+                    it.dmg=hp(0)
+                  }
+                }
+              }
+            }
           }
-          playRequirement{
+          onRemoveFromPlay {
+            eff.unregister()
           }
         };
       case BUFFER_PIECE_84:
-        return basicTrainer (this) {
+        return pokemonTool (this) {
           text "Attach Buffer Piece to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nAny damage done to the Pokémon this card is attached to by an opponent’s attack is reduced by 20 (after applying Weakness and Resistance). At the end of your opponent’s turn after you played Buffer Piece, discard Buffer Piece."
+          def eff1, eff2
           onPlay {
+            eff1 = delayed {
+              before APPLY_ATTACK_DAMAGES,{
+                if(ef.attacker.owner != self.owner && bg.currentTurn!=self.owner){
+                  bg.dm().each{
+                    if(it.to==self && it.notZero && it.notNoEffect){
+                      bc "Buffer Piece -20"
+                      it.dmg -= hp(20)
+                    }
+                  }
+                }
+              }
+            }
+            eff2 = delayed {
+              before BETWEEN_TURNS, {
+                if(bg.currentTurn != self.owner){
+                  discard thisCard
+                }
+              }
+            }
           }
-          playRequirement{
+          onRemoveFromPlay {
+            eff1.unregister()
+            eff2.unregister()
           }
         };
       case DEPARTMENT_STORE_GIRL_85:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck for up to 3 Pokémon Tool cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
           onPlay {
+            my.deck.search(max:3,"Search your deck for up to 3 Pokémon Tool cards",cardTypeFilter(POKEMON_TOOL)).moveTo(my.hand)
           }
           playRequirement{
+            assert my.deck : "Your deck is empty"
           }
         };
       case ENERGY_RESTORE_86:
         return basicTrainer (this) {
           text "Flip 3 coins. For each heads, put a basic Energy card from your discard pile into your hand. If you don’t have that many basic Energy cards in your discard pile, put all of them into your hand."
           onPlay {
+            def cnt = 0
+            flip 3, {
+              cnt ++
+            }
+            def infor = "select $cnt basic Energy card" + cnt>1?"s":""
+            my.discard.select(count:cnt, info, cardTypeFilter(BASIC_ENERGY))
           }
           playRequirement{
+            assert my.discard.filterByType(BASIC_ENERGY) : "You have no basic Energy cards in your discard"
           }
         };
       case EXPERT_BELT_87:
-        return basicTrainer (this) {
+        return pokemonTool (this) {
           text "Attach Expert Belt to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nThe Pokémon this card is attached to gets +20 HP and that Pokémon’s attacks do 20 more damage to your opponent’s Active Pokémon (before applying Weakness and Resistance). When the Pokémon this card is attached to is Knocked Out, your opponent takes 1 more Prize card."
           onPlay {
+            eff1 = getter (GET_FULL_HP, self) {h->
+              h.object += hp(20)
+            }
+            eff2 = delayed {
+              after PROCESS_ATTACK_EFFECTS, {
+                if(ef.attacker==self) bg.dm().each {
+                  if(it.from==self && it.to.active && it.to.owner!=self.owner && it.dmg.value){
+                    it.dmg += hp(20)
+                    bc "Expect Belt +20"
+                  }
+                }
+              }
+            }
+            effPrize = getter GET_GIVEN_PRIZES, self, {holder->
+              bc "Expert Belt increases prizes taken by one."
+              holder.object += 1
+            }
           }
-          playRequirement{
+          onRemoveFromPlay {
+            eff1.unregister()
+            eff2.unregister()
+            effPrize.unregister()
           }
         };
       case LUCKY_EGG_88:
-        return basicTrainer (this) {
-          text "Attach Lucky Egg to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nWhen the Pokémon this card is attached to is Knocked Out by damage from an opponent’s attack, draw cards until you have 7 cards into your hands."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy(SwordShield.LUCKY_EGG_167, this);
       case OLD_AMBER_89:
         return basicTrainer (this) {
           text "Play Old Amber as if it were a [C] Basic Pokémon. (Old Amber counts as a Trainer card as well, but if Old Amber is Knocked Out, this counts as a Knocked Out Pokémon.) Old Amber can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Old Amber from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Hard Amber As long as Old Amber is on your Bench, prevent all damage done to Old Amber by attacks (both yours and your opponent’s)."
           onPlay {
+            Card pokemonCard, trainerCard = thisCard
+            pokemonCard = basic (new CustomCardInfo(OLD_AMBER_89).setCardTypes(BASIC, POKEMON), hp:HP050, type:COLORLESS, retreatCost:0) {
+              pokeBody "Hard Amber", {
+                delayedA {
+                  before APPLY_ATTACK_DAMAGES, {
+                    bg.dm().each{
+                      if(!self.active && it.to == self){
+                        bc "$thisAbility prevents all damage"
+                        it.dmg=hp(0)
+                      }
+                    }
+                  }
+                }
+              }
+              customAbility {
+                def eff, acl
+                delayedA {
+                  before RETREAT, self, {
+                    if(self.topPokemonCard == thisCard){
+                      wcu "Cannot retreat"
+                      prevent()
+                    }
+                  }
+                  before APPLY_SPECIAL_CONDITION, self, {
+                    bc "$self is unaffected by Special Conditions"
+                    prevent()
+                  }
+                }
+                onActivate{
+                  if (!eff) {
+                    eff = delayed {
+                      after REMOVE_FROM_PLAY, {
+                        if(ef.removedCards.contains(pokemonCard)) {
+                          bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
+                          unregister()
+                          eff = null
+                        }
+                      }
+                    }
+                  }
+                  acl = action("Discard $self", [TargetPlayer.SELF]) {
+                    delayed {
+                      before TAKE_PRIZE, {
+                        if (ef.pcs==self) {
+                          prevent()
+                        }
+                      }
+                    }
+                    new Knockout(self).run(bg)
+                  }
+                }
+                onDeactivate {
+                  acl.each{bg.gm().unregisterAction(it)}
+                }
+              }
+            }
+            pokemonCard.player = trainerCard.player
+            bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
+            benchPCS(pokemonCard)
           }
           playRequirement{
+            assert bench.notFull
           }
         };
       case PROFESSOR_OAK_S_VISIT_90:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDraw 3 cards. Then, choose a card from your hand and put it on the bottom of your deck."
           onPlay {
+            draw 3
+            my.hand.select("Choose a card from your hand").moveTo(hidden:true, my.deck)
           }
           playRequirement{
+            assert my.deck : "Your deck is empty"
           }
         };
       case ULTIMATE_ZONE_91:
-        return basicTrainer (this) {
+        return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nDuring each player’s turn, the player may move an Energy card attached to 1 of his or her Benched Pokémon to his or her Active Arceus as often as he or she likes."
+          def lastTurn=0
+          def actions=[]
           onPlay {
+            actions=action("Stadium: Ultimate Zone") {
+              assert my.active.name == "Arceus" : "Arceus is not active"
+              assert my.bench.find{it.cards.filterByType(ENERGY)}: "No energy to move"
+              bc "Used Ultimate Zone"
+              def src = my.bench.findAll{it.cards.filterByType(ENERGY)}.select("Move energy from which Pokémon")
+              def card = src.select("Move which energy",cardTypeFilter(ENERGY)).first()
+              energySwitch(src, my.active, card)
+            }
           }
-          playRequirement{
+          onRemoveFromPlay{
+            actions.each { bg().gm().unregisterAction(it) }
           }
         };
       case DOME_FOSSIL_92:
         return basicTrainer (this) {
           text "Play Dome Fossil as if it were a [C] Basic Pokémon. (Dome Fossil counts as a Trainer card as well, but if Dome Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Dome Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Dome Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Rock Reaction When you attach a [F] Energy card from your hand to Dome Fossil (excluding effects of attacks or Poké-Powers), search your deck for a card that evolves from Dome Fossil and put it onto Dome Fossil (this counts as evolving Dome Fossil). Shuffle your deck afterward."
           onPlay {
+            Card pokemonCard, trainerCard = thisCard
+            pokemonCard = basic (new CustomCardInfo(DOME_FOSSIL_92).setCardTypes(BASIC, POKEMON), hp:HP050, type:COLORLESS, retreatCost:0) {
+              pokeBody "Rock Reaction", {
+                after ATTACH_ENERGY, self, {
+                  if(ef.reason==PLAY_FROM_HAND && card.asEnergyCard().containsType(F) && self.owner.pbg.deck && confirm("Use Rock Reaction?")){
+                    def sel=my.deck.search("Search your deck for a card that evolved from $self",{it.cardTypes.is(EVOLUTION) && it.predecessor==self.name})
+                    if(sel){
+                      evolve(self, sel.first(), OTHER)
+                    }
+                    shuffleDeck()
+                  }
+                }
+              }
+              customAbility {
+                def eff, acl
+                delayedA {
+                  before RETREAT, self, {
+                    if(self.topPokemonCard == thisCard){
+                      wcu "Cannot retreat"
+                      prevent()
+                    }
+                  }
+                  before APPLY_SPECIAL_CONDITION, self, {
+                    bc "$self is unaffected by Special Conditions"
+                    prevent()
+                  }
+                }
+                onActivate{
+                  if (!eff) {
+                    eff = delayed {
+                      after REMOVE_FROM_PLAY, {
+                        if(ef.removedCards.contains(pokemonCard)) {
+                          bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
+                          unregister()
+                          eff = null
+                        }
+                      }
+                    }
+                  }
+                  acl = action("Discard $self", [TargetPlayer.SELF]) {
+                    delayed {
+                      before TAKE_PRIZE, {
+                        if (ef.pcs==self) {
+                          prevent()
+                        }
+                      }
+                    }
+                    new Knockout(self).run(bg)
+                  }
+                }
+                onDeactivate {
+                  acl.each{bg.gm().unregisterAction(it)}
+                }
+              }
+            }
+            pokemonCard.player = trainerCard.player
+            bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
+            benchPCS(pokemonCard)
           }
           playRequirement{
+            assert bench.notFull
           }
         };
       case HELIX_FOSSIL_93:
         return basicTrainer (this) {
           text "Play Helix Fossil as if it were a [C] Basic Pokémon. (Helix Fossil counts as a Trainer card as well, but if Helix Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Helix Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Helix Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Aqua Reaction When you attach a [W] Energy card from your hand to Helix Fossil (excluding effects of attacks or Poké-Powers), search your deck for a card that evolves from Helix Fossil and put it onto Helix Fossil (this counts as evolving Helix Fossil). Shuffle your deck afterwards."
           onPlay {
+            Card pokemonCard, trainerCard = thisCard
+            pokemonCard = basic (new CustomCardInfo(HELIX_FOSSIL_93).setCardTypes(BASIC, POKEMON), hp:HP050, type:COLORLESS, retreatCost:0) {
+              pokeBody "Aqua Reaction", {
+                after ATTACH_ENERGY, self, {
+                  if(ef.reason==PLAY_FROM_HAND && card.asEnergyCard().containsType(W) && self.owner.pbg.deck && confirm("Use Rock Reaction?")){
+                    def sel=my.deck.search("Search your deck for a card that evolved from $self",{it.cardTypes.is(EVOLUTION) && it.predecessor==self.name})
+                    if(sel){
+                      evolve(self, sel.first(), OTHER)
+                    }
+                    shuffleDeck()
+                  }
+                }
+              }
+              customAbility {
+                def eff, acl
+                delayedA {
+                  before RETREAT, self, {
+                    if(self.topPokemonCard == thisCard){
+                      wcu "Cannot retreat"
+                      prevent()
+                    }
+                  }
+                  before APPLY_SPECIAL_CONDITION, self, {
+                    bc "$self is unaffected by Special Conditions"
+                    prevent()
+                  }
+                }
+                onActivate{
+                  if (!eff) {
+                    eff = delayed {
+                      after REMOVE_FROM_PLAY, {
+                        if(ef.removedCards.contains(pokemonCard)) {
+                          bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
+                          unregister()
+                          eff = null
+                        }
+                      }
+                    }
+                  }
+                  acl = action("Discard $self", [TargetPlayer.SELF]) {
+                    delayed {
+                      before TAKE_PRIZE, {
+                        if (ef.pcs==self) {
+                          prevent()
+                        }
+                      }
+                    }
+                    new Knockout(self).run(bg)
+                  }
+                }
+                onDeactivate {
+                  acl.each{bg.gm().unregisterAction(it)}
+                }
+              }
+            }
+            pokemonCard.player = trainerCard.player
+            bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
+            benchPCS(pokemonCard)
           }
           playRequirement{
+            assert bench.notFull
           }
         };
       case ARCEUS_LV_X_94:
