@@ -193,15 +193,9 @@ class TcgStatics {
    * @param types {@link Type}s of energy to be selected. Default: C
    * @return {@link CardList} of the selected cards, can be empty CardList
    */
-  static CardList selectEnergy(PokemonCardSet pcs, Type...types=C) {
+  static CardList selectEnergy(PokemonCardSet pcs, Type...types=C, PlayerType playerType = pcs.owner) {
     def ef = new SelectEnergy(pcs.cards, types)
-    ef.playerType = pcs.owner
-    bg.em().activateEffect(ef)
-    return ef.selectedCards ?: []
-  }
-  static CardList selectOpponentEnergy(PokemonCardSet pcs, Type...types=C) {
-    def ef = new SelectEnergy(pcs.cards, types)
-    ef.playerType = pcs.owner.opposite
+    ef.playerType = playerType
     bg.em().activateEffect(ef)
     return ef.selectedCards ?: []
   }
@@ -238,7 +232,7 @@ class TcgStatics {
    */
   static discardDefendingEnergyAfterDamage(Type...types=C) {
     def pcs = Target.OPP_ACTIVE.getSingleTarget(bg)
-    def cards = selectOpponentEnergy(pcs, types)
+    def cards = selectEnergy(pcs, types, pcs.owner.opposite)
     afterDamage {
       def de = new DiscardEnergy(cards)
       de.source = ATTACK
