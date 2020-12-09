@@ -221,7 +221,6 @@ public enum Arceus implements LogicCardInfo {
           move "Fire Wing", {
             text "30 damage. "
             energyCost R
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -229,10 +228,9 @@ public enum Arceus implements LogicCardInfo {
           move "Burning Tail", {
             text "80 damage. Discard a Fire Energy attached to Charizard."
             energyCost R, R, C, R
-            attackRequirement {}
             onAttack {
               damage 80
-              discardSelfEnergy(R)
+              discardSelfEnergyAfterDamage R
             }
           }
 
@@ -263,17 +261,22 @@ public enum Arceus implements LogicCardInfo {
           move "Fire Fang", {
             text "20 damage. The Defending Pokémon is now Burned."
             energyCost R, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              applyAfterDamage BURNED
             }
           }
           move "Magma Mantle", {
-            text "Energy card you discarded."
-            energyCost R, R, C, C, R, M
-            attackRequirement {}
+            text "Discard the top 3 cards of your deck. This attack does 60 damage plus 20 more damage for each [R] or [M] Energy card you discarded."
+            energyCost R, R, C, C
             onAttack {
-              damage 0
+              damage 60
+              def top = my.deck.subList(0,3)
+              top.each {
+                if(it.asEnergyCard().containsType(R)||it.asEnergyCard().containsType(M)) {
+                  damage 20
+                }
+              }
             }
           }
 
@@ -284,15 +287,18 @@ public enum Arceus implements LogicCardInfo {
           move "Primal Scythe", {
             text "20+ damage. You may discard Helix Fossil, Dome Fossil, or Old Amber from your hand. If you do, this attack does 20 damage plus 50 more damage."
             energyCost F
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              if(my.hand.find{it.name.isIn("Helix Fossil","Dome Fossil","Old Amber")} && confirm("Discard a fossil to deal 50 more damage?")) {
+                def card = my.hand.select("Discard Helix Fossil, Dome Fossil, or Old Amber",{it.name.isIn("Helix Fossil","Dome Fossil","Old Amber")})
+                damage 50
+                card.discard()
+              }
             }
           }
           move "Rock Slide", {
             text "60 damage. Does 10 damage to 2 of your opponent’s Benched Pokémon."
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               damage 60
               if (opp.bench) {
@@ -389,7 +395,6 @@ public enum Arceus implements LogicCardInfo {
           move "Tumbling Attack", {
             text "50+ damage. Flip a coin. If heads, this attack does 50 damage plus 20 more damage."
             energyCost M, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               flip {
@@ -550,17 +555,16 @@ public enum Arceus implements LogicCardInfo {
               checkNoSPC()
               assert my.deck : "Your deck is empty"
               powerUsed()
-              my.deck.search("Unearth",{it.name.isIn("Helis Fossil","Dome Fossil","Old Amber")}).moveTo(my.hand)
+              my.deck.search("Unearth",{it.name.isIn("Helix Fossil","Dome Fossil","Old Amber")}).moveTo(my.hand)
             }
           }
           move "Hyper Beam", {
             text "30 damage. Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
               flip {
-                discardDefendingEnergy()
+                discardDefendingEnergyAfterDamage()
               }
             }
           }
@@ -624,8 +628,6 @@ public enum Arceus implements LogicCardInfo {
           }
           move "Worry Seed", {
             text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
-            energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 30
               flip { 
@@ -691,7 +693,6 @@ public enum Arceus implements LogicCardInfo {
           move "Wreck", {
             text "20+ damage. If there is any Stadium card in play, this attack does 20 damage plus 50 more damage. Discard that Stadium card."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
               if (bg.stadiumInfoStruct) {
@@ -734,11 +735,11 @@ public enum Arceus implements LogicCardInfo {
             text "30× damage. Discard as many [F] Energy cards as you like from your hand. This attack does 30 damage times the number of [F] Energy cards you discarded."
             energyCost F, C, C
             attackRequirement {
-              assert my.hand.filterByBasicEnergyType(F)
+              assert my.hand.filterByEnergyType(F)
             }
             onAttack {
-              def max = my.hand.filterByBasicEnergyType(F).size()
-              def cardsToDiscard = my.hand.select(min:0,max:max,"Discard as many [F] Energy cards as you like from your hand",basicEnergyFilter(F))
+              def max = my.hand.filterByEnergyType(F).size()
+              def cardsToDiscard = my.hand.select(min:0,max:max,"Discard as many [F] Energy cards as you like from your hand",energyFilter(F))
               damage 30 * cardsToDiscard.size()
               afterDamage {
                 cardsToDiscard.discard()
@@ -919,7 +920,6 @@ public enum Arceus implements LogicCardInfo {
           move "Ambush", {
             text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 40 more damage."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 20
               flip {
@@ -1300,7 +1300,6 @@ public enum Arceus implements LogicCardInfo {
           move "Cut", {
             text "50 damage. "
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -2083,7 +2082,6 @@ public enum Arceus implements LogicCardInfo {
           move "Swagger", {
             text "20 damage. Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
               flip {
@@ -2799,7 +2797,6 @@ public enum Arceus implements LogicCardInfo {
           move "Payback", {
             text "10+ damage. If your opponent has only 1 Prize card left, this attack does 10 damage plus 30 more damage."
             energyCost L
-            attackRequirement {}
             onAttack {
               damage 10
               if (opp.prizeCardSet.size() == 1) {
