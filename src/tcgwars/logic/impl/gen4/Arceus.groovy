@@ -1912,17 +1912,19 @@ public enum Arceus implements LogicCardInfo {
           move "Fast Evolution", {
             text "Search your deck for up to 2 Evolution cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Your deck is emtpty"
+            }
             onAttack {
-              damage 0
+              my.deck.search(max:2,"Search your deck for up to 2 Evolution cards",cardTypeFilter(EVOLUTION)).moveto(my.hand)
+              shuffleDeck()
             }
           }
           move "Speed Attack", {
             text "30 damage. "
             energyCost F, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
             }
           }
 
