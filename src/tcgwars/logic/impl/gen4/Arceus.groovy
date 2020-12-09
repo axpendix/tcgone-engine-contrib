@@ -1935,17 +1935,15 @@ public enum Arceus implements LogicCardInfo {
           move "Sand Attack", {
             text "If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              sandAttack()
             }
           }
           move "Magnum Punch", {
             text "30 damage. "
             energyCost F, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
             }
           }
 
@@ -1956,17 +1954,32 @@ public enum Arceus implements LogicCardInfo {
           move "Harden", {
             text "During your opponent’s next turn, if Nosepass would be damaged by an attack, prevent that attack’s damage done to Nosepass if that damage is 30 or less."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              delayed{
+                before APPLY_ATTACK_DAMAGES, {
+                  bg.dm().each {
+                    if(it.to == self && it.dmg.value <= 30 && it.notNoEffect) {
+                      bc "Harden prevent those damage"
+                      it.dmg = hp(0)
+                    }
+                  }
+                }
+                unregisterAfter 2
+                after EVOLVE,self, {unregister()}
+                after DEVOLVE,self, {unregister()}
+                after FALL_BACK,self, {unregister()}
+              }
+            }
             }
           }
           move "Knock Away", {
             text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 10 more damage."
             energyCost F, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip {
+                damage 10
+              }
             }
           }
 
@@ -1977,17 +1990,21 @@ public enum Arceus implements LogicCardInfo {
           move "Collect", {
             text "Draw 3 cards."
             energyCost W
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck
+            }
             onAttack {
-              damage 0
+              draw 3
             }
           }
           move "Tickle", {
             text "20 damage. Flip a coin. If heads, the Defendign Pokémon is now Paralyzed."
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip {
+                applyAfterDamage PARALYZED
+              }
             }
           }
 
@@ -1999,17 +2016,16 @@ public enum Arceus implements LogicCardInfo {
           move "Pika Ball", {
             text "10 damage. "
             energyCost L
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Mega Shot", {
             text "Energy attached to Pikachu and then choose 1 of your opponent’s Pokémon. This attack does 40 damage to that Pokémon."
-            energyCost L, C, C, L
-            attackRequirement {}
+            energyCost L, C, C
             onAttack {
-              damage 0
+              discardAllSelfEnergy L
+              damage 40, opp.all.select()
             }
           }
 
@@ -2020,17 +2036,18 @@ public enum Arceus implements LogicCardInfo {
           move "Tackle", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Stomp", {
             text "10 damage. Flip a coin. If heads, this attack does 10 damage plus 20 more damage."
             energyCost R, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip {
+                damage 20
+              }
             }
           }
 
@@ -2041,9 +2058,10 @@ public enum Arceus implements LogicCardInfo {
           move "Lunge", {
             text "30 damage. Flip a coin. If tails, this attack does nothing."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip {
+                damage 30
+              }
             }
           }
 
@@ -2055,9 +2073,8 @@ public enum Arceus implements LogicCardInfo {
           move "Gnaw", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Swagger", {
@@ -2066,7 +2083,9 @@ public enum Arceus implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              flip { discardDefendingEnergy() }
+              flip {
+                discardDefendingEnergyAfterDamage()
+              }
             }
           }
 
@@ -2077,17 +2096,19 @@ public enum Arceus implements LogicCardInfo {
           move "Ice Breath", {
             text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip {
+                apply PARALYZED
+              }
             }
           }
           move "Double Headbutt", {
             text "20× damage. Flip 2 coins. This attack does 20 damage times the number of heads."
             energyCost W, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip 2, {
+                damage 20
+              }
             }
           }
 
@@ -2099,17 +2120,17 @@ public enum Arceus implements LogicCardInfo {
           move "Absorb", {
             text "10 damage. Remove 1 damage counter from Tangela."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              heal 10, self
             }
           }
           move "Sleep Powder", {
             text "20 damage. The Defending Pokémon is now Asleep."
             energyCost G, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              applyAfterDamage ASLEEP
             }
           }
 
@@ -2121,7 +2142,9 @@ public enum Arceus implements LogicCardInfo {
           move "Collect", {
             text "Draw a card."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck
+            }
             onAttack {
               draw 1
             }
@@ -2129,9 +2152,11 @@ public enum Arceus implements LogicCardInfo {
           move "Stun Spore", {
             text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip {
+                applyAfterDamage PARALYZED
+              }
             }
           }
 
@@ -2143,9 +2168,11 @@ public enum Arceus implements LogicCardInfo {
           move "Tail Crush", {
             text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 10 more damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip {
+                damage 10
+              }
             }
           }
 
@@ -2157,17 +2184,15 @@ public enum Arceus implements LogicCardInfo {
           move "Pound", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Slash", {
             text "20 damage. "
             energyCost G, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -2179,17 +2204,16 @@ public enum Arceus implements LogicCardInfo {
           move "Glide", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Slashing Strike", {
             text "30 damage. During your next turn, Wingull can’t use Slashing Strike."
             energyCost W, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              cantUseAttack(thisMove,self)
             }
           }
 
@@ -2201,9 +2225,8 @@ public enum Arceus implements LogicCardInfo {
           move "Rain Splash", {
             text "20 damage. "
             energyCost W
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
