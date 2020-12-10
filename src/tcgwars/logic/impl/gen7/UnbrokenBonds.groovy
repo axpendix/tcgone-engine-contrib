@@ -3152,10 +3152,19 @@ public enum UnbrokenBonds implements LogicCardInfo {
             onAttack {
               damage 80
               delayed (priority: LAST) {
+                def attackDidDamage = false
                 before APPLY_ATTACK_DAMAGES, {
-                  if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                    bc "Extra-Tight activates"
+                  bg().dm().each {
+                    if (it.to == self && it.dmg.value && bg.currentTurn==self.owner.opposite) {
+                      attackDidDamage = true
+                    }
+                  }
+                }
+                after APPLY_ATTACK_DAMAGES, {
+                  if(attackDidDamage && self.cards.contains(thisCard) && ef.attacker) {
+                    bc "Extra-Tight Press activates."
                     directDamage(80, ef.attacker as PokemonCardSet)
+                    attackDidDamage = false
                   }
                 }
                 unregisterAfter 2

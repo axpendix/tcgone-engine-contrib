@@ -3084,10 +3084,19 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 10
 
               delayed (priority: LAST) {
+                def attackDidDamage = false
                 before APPLY_ATTACK_DAMAGES, {
-                  if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})) {
+                  bg().dm().each {
+                    if (it.to == self && it.dmg.value && bg.currentTurn==self.owner.opposite) {
+                      attackDidDamage = true
+                    }
+                  }
+                }
+                after APPLY_ATTACK_DAMAGES, {
+                  if(attackDidDamage && self.cards.contains(thisCard) && ef.attacker) {
                     bc "Mirror Gem activates."
                     directDamage(80, ef.attacker as PokemonCardSet)
+                    attackDidDamage = false
                   }
                 }
                 unregisterAfter 2
@@ -4397,10 +4406,19 @@ public enum UnifiedMinds implements LogicCardInfo {
           def eff
           onPlay {reason->
             eff=delayed (priority: LAST){
-              before APPLY_ATTACK_DAMAGES,{
-                if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value >= 180}) && self.active){
+              def attackDidDamage = false
+              before APPLY_ATTACK_DAMAGES, {
+                bg().dm().each {
+                  if (it.to == self  && it.dmg.value && bg.currentTurn==self.owner.opposite) {
+                    attackDidDamage = true
+                  }
+                }
+              }
+              after APPLY_ATTACK_DAMAGES, {
+                if(attackDidDamage && self.cards.contains(thisCard) && ef.attacker) {
                   bc "Giant Bomb explodes."
-                  directDamage(100, ef.attacker, TRAINER_CARD)
+                  directDamage(100, ef.attacker as PokemonCardSet, TRAINER_CARD)
+                  attackDidDamage = false
                 }
               }
               unregister {discard thisCard}

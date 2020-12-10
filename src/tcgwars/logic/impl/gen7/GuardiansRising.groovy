@@ -625,10 +625,19 @@ public enum GuardiansRising implements LogicCardInfo {
             onAttack {
               damage 20
               delayed (priority: LAST) {
+                def attackDidDamage = false
                 before APPLY_ATTACK_DAMAGES, {
-                  if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                    bc "Counter Head activates"
+                  bg().dm().each {
+                    if (it.to == self && it.dmg.value && bg.currentTurn==self.owner.opposite) {
+                      attackDidDamage = true
+                    }
+                  }
+                }
+                after APPLY_ATTACK_DAMAGES, {
+                  if(attackDidDamage && self.cards.contains(thisCard) && ef.attacker) {
+                    bc "Shell Trap activates."
                     directDamage(80, ef.attacker as PokemonCardSet)
+                    attackDidDamage = false
                   }
                 }
                 unregisterAfter 2
