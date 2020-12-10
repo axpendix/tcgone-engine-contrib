@@ -203,16 +203,14 @@ public enum Unleashed implements LogicCardInfo {
           move "Time Hollow", {
             text "Choose a number of your opponent’s Stage 1 or Stage 2 Evolved Pokémon up to the amount of Energy attached to Jirachi. Remove the highest Stage Evolution card from each of those Pokémon and put those cards back into your opponent’s hand."
             energyCost P
+            attackRequirement {
+              assert opp.all.find{it.evolution} : "Your opponent has no Evolved Pokémon in play"
+            }
             onAttack {
               int max = self.cards.energyCount(C)
               def tar = opp.all.findAll{ it.evolution }
-              while (max-- > 0) {
-                if(!tar) break
-                def pcs = tar.select("Choose which Pokémon to devolve", false)
-                if(!pcs) break
-                def top=pcs.topPokemonCard
-                tar.remove(pcs)
-                devolve(pcs, top, opp.hand)
+              multiSelect (tar, 0, max).each {
+                devolve(it, it.topPokemonCard, opp.hand)
               }
             }
           }
