@@ -3049,12 +3049,21 @@ public enum DarknessAblaze implements LogicCardInfo {
           onAttack {
             damage 60
             delayed (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                  bc "Trap Bite activates"
-                  directDamage(120, ef.attacker as PokemonCardSet)
+              def attackDidDamage = false
+                before APPLY_ATTACK_DAMAGES, {
+                  bg().dm().each {
+                    if (it.to == self && it.dmg.value && bg.currentTurn==self.owner.opposite) {
+                      attackDidDamage = true
+                    }
+                  }
                 }
-              }
+                after APPLY_ATTACK_DAMAGES, {
+                  if(attackDidDamage && self.cards.contains(thisCard) && ef.attacker) {
+                    bc "Trap Bite activates."
+                    directDamage(120, ef.attacker as PokemonCardSet)
+                    attackDidDamage = false
+                  }
+                }
               unregisterAfter 2
               after FALL_BACK, self, {unregister()}
               after EVOLVE, self, {unregister()}
