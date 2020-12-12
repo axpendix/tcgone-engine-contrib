@@ -2065,10 +2065,19 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               delayed (priority: LAST) {
+                def attackDidDamage = false
                 before APPLY_ATTACK_DAMAGES, {
-                  if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                    bc "Spike Armor activates"
+                  bg().dm().each {
+                    if (it.to == self && it.dmg.value && bg.currentTurn==self.owner.opposite) {
+                      attackDidDamage = true
+                    }
+                  }
+                }
+                after APPLY_ATTACK_DAMAGES, {
+                  if(attackDidDamage && self.cards.contains(thisCard) && ef.attacker) {
+                    bc "Spike Armor activates."
                     directDamage(40, ef.attacker as PokemonCardSet)
+                    attackDidDamage = false
                   }
                 }
                 unregisterAfter 2
