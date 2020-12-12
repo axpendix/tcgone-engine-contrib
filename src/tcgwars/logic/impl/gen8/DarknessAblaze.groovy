@@ -2139,7 +2139,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-        move "Desert Geizer", {
+        move "Desert Geyzer", {
           text "130 damage. If your opponent has a Stadium in play, discard it. If you discarded a Stadium in this way, during your opponent’s next turn, prevent all damage from and effects of attacks done to this Pokémon."
           energyCost F, C, C
           attackRequirement {}
