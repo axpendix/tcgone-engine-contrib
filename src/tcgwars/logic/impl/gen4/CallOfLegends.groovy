@@ -557,7 +557,9 @@ public enum CallOfLegends implements LogicCardInfo {
             text "Put the top card of your opponent’s deck in the Lost Zone. Mime Jr. is now Asleep."
             energyCost ()
             onAttack {
-              opp.deck.subList(0,1).moveTo(opp.lostZone)
+              if (opp.deck) {
+                opp.deck.subList(0,1).moveTo(opp.lostZone)
+              }
               apply ASLEEP, self
             }
           }
