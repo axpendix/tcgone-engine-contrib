@@ -687,7 +687,7 @@ public enum CallOfLegends implements LogicCardInfo {
             text "As long as Phanpy has Energy attached to it, any damage done to Phanpy by attacks is reduced by 10 ."
             delayed {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {if(it.to==self && it.notZero && it.notNoEffect) {
+                bg.dm().each {if(it.to==self && self.cards.energyCount(C) && it.notZero && it.notNoEffect) {
                   bc "$thisAbility -10"
                   it.dmg-=hp(10)
                 }}
