@@ -506,10 +506,10 @@ public enum CallOfLegends implements LogicCardInfo {
         return basic (this, hp:HP080, type:COLORLESS, retreatCost:2) {
           weakness F
           move "Swords Dance", {
-            text "During you next turn, Zangoose’s Lost Claw attack’s base damage is 80."
+            text "During you next turn, Zangoose’s Lost Claw attack’s base damage is 60."
             energyCost C
             onAttack {
-              increasedBaseDamageNextTurn("Lost Claw", hp(50))
+              increasedBaseDamageNextTurn("Lost Claw", hp(30))
             }
           }
           move "Lost Claw", {
