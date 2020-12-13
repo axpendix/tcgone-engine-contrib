@@ -483,9 +483,11 @@ public enum CallOfLegends implements LogicCardInfo {
               damage 30
               afterDamage{
                 flip 1, {
-                  apply PARALYZED
+                  applyAfterDamage PARALYZED
                 }, {
-                  defending.cards.select("Choose an energy to put into the Lost Zone",cardTypeFilter(ENERGY)).moveTo(opp.lostZone)
+                  if(defending.cards.filterByType(ENERGY)) {
+                    defending.cards.select("Choose an energy to put into the Lost Zone",cardTypeFilter(ENERGY)).moveTo(opp.lostZone)
+                  }  
                 }
               }
             }
