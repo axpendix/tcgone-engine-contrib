@@ -849,7 +849,7 @@ public enum CallOfLegends implements LogicCardInfo {
             def tar = my.deck.subList(0,4)
             def sel = tar.select(min:0, max:tar.size(), "Choose any number of cards to put on top of your deck(unselected cards will be put on the bottom of your deck)")
             if(sel) {
-              tar.remove(sel)
+              tar.removeAll(sel)
               def rearranged = rearrange(sel,"Arrange the top of your deck")
               deck.setSubList(0,rearranged)
             }
