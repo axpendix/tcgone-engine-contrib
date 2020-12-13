@@ -817,7 +817,7 @@ public enum CallOfLegends implements LogicCardInfo {
             pcs.cards.select("Put which special energy in the Lost Zone?",cardTypeFilter(SPECIAL_ENERGY)).moveTo(opp.lostZone)
           }
           playRequirement{
-            assert opp.all.find{it.cards.filterByType(SPECIAL_ENERGY)}
+            assert opp.all.find{it.cards.filterByType(SPECIAL_ENERGY)} : "Your opponent's Pokemon have no special energy attached"
           }
         };
       case LOST_WORLD_81:
