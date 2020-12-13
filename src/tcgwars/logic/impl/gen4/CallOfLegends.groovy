@@ -846,7 +846,7 @@ public enum CallOfLegends implements LogicCardInfo {
         return basicTrainer (this) {
           text "Look at the top 4 cards of your deck and put as many of them as you like back on top of your deck in any order. Then, put the remaining cards on the bottom of your deck in any order."
           onPlay {
-            def tar = my.deck.subList(0,5)
+            def tar = my.deck.subList(0,4)
             def sel = tar.select(min:0, max:tar.size(), "Choose any number of cards to put on top of your deck(unselected cards will be put on the bottom of your deck)")
             if(sel) {
               tar.remove(sel)
