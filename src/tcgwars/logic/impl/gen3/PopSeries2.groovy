@@ -408,12 +408,34 @@ public enum PopSeries2 implements LogicCardInfo {
       case CELEBI_EX_17:
       return basic (this, hp:HP080, type:P, retreatCost:1) {
         weakness P
+        //
+        // [EX Rules Supporters Workaround] TODO: Edit this once no longer needed
+        //
+        def thisTurnSupporter
+        def myDiscard
+        globalAbility{
+          delayed {
+            after PLAY_TRAINER, {
+              if(ef.cardToPlay.cardTypes.is(SUPPORTER)){
+                thisTurnSupporter = ef.cardToPlay
+              }
+            }
+            after BETWEEN_TURNS, {
+              thisTurnSupporter = null
+            }
+          }
+        }
         pokePower "Time Reversal", {
           text "Once during your turn, when you put Celebi ex from your hand onto your Bench, you may search your discard pile for a card, show it to your opponent, and put it on top of your deck."
           onActivate {r->
-            if (r==PLAY_FROM_HAND && my.discard && confirm('Use Time Reversal?')) {
+            if(thisTurnSupporter){
+              myDiscard = my.discard.getExcludedList(thisTurnSupporter)
+            } else {
+              myDiscard = my.discard
+            }
+            if (r==PLAY_FROM_HAND && myDiscard && confirm('Use Time Reversal?')) {
               powerUsed()
-              my.discard.select("Select a card to put on top of your deck.").showToOpponent("Time Reversal put this card on top of your opponent's deck.").moveTo(addToTop:true, my.deck)
+              myDiscard.select("Select a card to put on top of your deck.").showToOpponent("Time Reversal put this card on top of your opponent's deck.").moveTo(addToTop:true, my.deck)
             }
           }
         }

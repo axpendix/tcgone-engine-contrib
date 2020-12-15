@@ -1385,6 +1385,23 @@ public enum FireRedLeafGreen implements LogicCardInfo {
       case RATICATE_48:
         return evolution (this, from:"Rattata", hp:HP070, type:COLORLESS, retreatCost:0) {
           weakness FIGHTING
+          //
+          // [EX Rules Supporters Workaround] TODO: Edit this once no longer needed
+          //
+          def thisTurnSupporter
+          def myDiscard
+          globalAbility{
+            delayed {
+              after PLAY_TRAINER, {
+                if(ef.cardToPlay.cardTypes.is(SUPPORTER)){
+                  thisTurnSupporter = ef.cardToPlay
+                }
+              }
+              after BETWEEN_TURNS, {
+                thisTurnSupporter = null
+              }
+            }
+          }
           pokeBody "Thick Skin", {
             text "Raticate can’t be affected by any Special Conditions."
             delayedA {
@@ -1397,14 +1414,24 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           move "Pickup", {
             text "Search your discard pile for a Basic Pokémon (or Evolution card), a Trainer card, and an Energy card. Show them to your opponent and put them into your hand."
             energyCost C
-            onAttack {
-              if(my.discard){
-                def selectedCard = new CardList();
-                if(my.discard.filterByType(POKEMON)) selectedCard.add(my.discard.filterByType(POKEMON).select(count : 1, "Search your discard pile for a Basic Pokémon (or Evolution card)").first())
-                if(my.discard.filterByType(TRAINER)) selectedCard.add(my.discard.filterByType(TRAINER).select(count : 1, "Search your discard pile for a Trainer card").first())
-                if(my.discard.filterByType(ENERGY)) selectedCard.add(my.discard.filterByType(ENERGY).select(count : 1, "Search your discard pile for an Energy card)").first())
-                selectedCard.showToOpponent("Your opponent selected those cards").moveTo(my.hand)
+            attackRequirement {
+              if(thisTurnSupporter){
+                myDiscard = my.discard.getExcludedList(thisTurnSupporter)
+              } else {
+                myDiscard = my.discard
               }
+              assert myDiscard.find{it.cardTypes.is(POKEMON) || it.cardTypes.is(TRAINER) || it.cardTypes.is(ENERGY)} : "Your discard contains no Pokémon, Trainer, or Energy cards (Supporters you play remain in play until your turn ends)"
+            }
+            onAttack {
+              def cnt = 0
+              if(myDiscard.filterByType(POKEMON)) cnt++ //selectedCard.add(my.discard.filterByType(POKEMON).select(count : 1, "Search your discard pile for a Basic Pokémon (or Evolution card)").first())
+              if(myDiscard.filterByType(TRAINER)) cnt++ //selectedCard.add(my.discard.filterByType(TRAINER).select(count : 1, "Search your discard pile for a Trainer card").first())
+              if(myDiscard.filterByType(ENERGY)) cnt++ //selectedCard.add(my.discard.filterByType(ENERGY).select(count : 1, "Search your discard pile for an Energy card)").first())
+              
+              myDiscard.select(count: cnt, "Select a Basic Pokémon (or Evolution card), a Trainer card, and an Energy card. (Supporters you play remain in play until your turn ends)", {it.cardTypes.is(POKEMON) || it.cardTypes.is(trAINER) || it.cardTypes.is(ENERGY)}, { CardList list ->
+                list.filterByType(POKEMON).size() <= 1 && list.filgerByType(TRAINER).size() <=1 && list.filterByType(ENERGY).size() <= 1
+              }).showToOpponent("Your opponent selected these cards").moveTo(my.hand)
+
             }
           }
           move "Quick Attack", {
@@ -2412,14 +2439,14 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           }
           onPlay {
             if(thisTurnSupporter){
-              my.discard.getExcludedList(thisTurnSupporter).filterByType(SUPPORTER).select("Select one Supporter card").showToOpponent("Selected supporter (Supporters you play remain in play untill your turn ends)").moveTo(my.hand)
+              my.discard.getExcludedList(thisTurnSupporter).filterByType(SUPPORTER).select("Select one Supporter card").showToOpponent("Selected supporter (Supporters you play remain in play until your turn ends)").moveTo(my.hand)
             } else {
               my.discard.filterByType(SUPPORTER).select("Select one Supporter card").showToOpponent("Selected supporter").moveTo(my.hand)
             }
           }
           playRequirement{
             if(thisTurnSupporter){
-              assert my.discard.getExcludedList(thisTurnSupporter).filterByType(SUPPORTER) : "You have no Supporters in your discard (Supporters you play remain in play untill your turn ends)"
+              assert my.discard.getExcludedList(thisTurnSupporter).filterByType(SUPPORTER) : "You have no Supporters in your discard (Supporters you play remain in play until your turn ends)"
             } else {
               assert my.discard.filterByType(SUPPORTER) : "You have no Supporters in your discard"
             }

@@ -2675,11 +2675,28 @@ public enum DeltaSpecies implements LogicCardInfo {
       case HOLON_TRANSCEIVER_98:
       return itemCard (this) {
         text "Search your deck for a Supporter card that has Holon in its name, show it to your opponent, and put it into your hand. Shuffle your deck afterward. Or, search your discard pile for a Supporter card that has Holon in its name, show it to your opponent, and put it into your hand."
+        //
+        // [EX Rules Supporters Workaround] TODO: Edit this once no longer needed
+        //
+        def thisTurnSupporter
+        def myDiscard
+        globalAbility{
+          delayed {
+            after PLAY_TRAINER, {
+              if(ef.cardToPlay.cardTypes.is(SUPPORTER)){
+                thisTurnSupporter = ef.cardToPlay
+              }
+            }
+            after BETWEEN_TURNS, {
+              thisTurnSupporter = null
+            }
+          }
+        }
         onPlay {
           // Choice 1 = Search deck
           // Choice 2 = Search discard
           def choice = 2
-          if (!my.discard.any{it.cardTypes.is(SUPPORTER) && it.name.contains("Holon")}) {
+          if (!myDiscard.any{it.cardTypes.is(SUPPORTER) && it.name.contains("Holon")}) {
             choice = 1
           }
           else if (my.deck) {
@@ -2696,16 +2713,21 @@ public enum DeltaSpecies implements LogicCardInfo {
             shuffleDeck()
           }
           else {
-            my.discard.findAll{
+            myDiscard.findAll{
               it.cardTypes.is(SUPPORTER) &&
               it.name.contains("Holon")
             }.select("Which card to move to hand?").showToOpponent("Opponent moved this Holon Supporter to their hand.").moveTo(my.hand)
           }
         }
         playRequirement {
-          assert my.discard.any{
+          if(thisTurnSupporter){
+            myDiscard = my.discard.getExcludedList(thisTurnSupporter)
+          } else {
+            myDiscard = my.discard
+          }
+          assert myDiscard.any{
             it.cardTypes.is(SUPPORTER) && it.name.contains("Holon")
-          } || my.deck.notEmpty : "Deck is empty and your discard pile does not have any Holon Supporters"
+          } || my.deck.notEmpty : "Deck is empty and your discard pile does not have any Holon Supporters (Supporters you play remain in play until your turn ends)"
         }
       };
       case MASTER_BALL_99:

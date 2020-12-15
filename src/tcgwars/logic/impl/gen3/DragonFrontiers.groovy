@@ -1793,6 +1793,23 @@ public enum DragonFrontiers implements LogicCardInfo {
       case OLD_ROD_78:
       return itemCard (this) {
         text "Flip 2 coins. If both are heads, search your discard pile for a Basic Pokémon or Evolution card, show it to your opponent, and put it into your hand. If both are tails, search your discard pile for a Trainer card, show it to your opponent, and put it into your hand."
+        //
+        // [EX Rules Supporters Workaround] TODO: Edit this once no longer needed
+        //
+        def thisTurnSupporter
+        def myDiscard
+        globalAbility{
+          delayed {
+            after PLAY_TRAINER, {
+              if(ef.cardToPlay.cardTypes.is(SUPPORTER)){
+                thisTurnSupporter = ef.cardToPlay
+              }
+            }
+            after BETWEEN_TURNS, {
+              thisTurnSupporter = null
+            }
+          }
+        }
         onPlay {
           def allHeads = true
           def allTails = true
@@ -1803,21 +1820,26 @@ public enum DragonFrontiers implements LogicCardInfo {
           }
 
           if (allHeads) {
-            if (my.discard.filterByType(POKEMON)) {
-              my.discard.filterByType(POKEMON).select(count: 1, "Search your discard pile for a Pokémon card.").showToOpponent("Your opponent played Old Rod.").moveTo(my.hand)
+            if (myDiscard.filterByType(POKEMON)) {
+              myDiscard.filterByType(POKEMON).select(count: 1, "Search your discard pile for a Pokémon card.").showToOpponent("Your opponent played Old Rod.").moveTo(my.hand)
             } else {
               bc "There are no Pokémon cards in ${my.owner.getPlayerUsername(bg)}'s discard pile."
             }
           } else if (allTails){
-            if (my.discard.filterByType(TRAINER)) {
-              my.discard.filterByType(TRAINER).select(count: 1, "Search your discard pile for a Trainer card.").showToOpponent("Your opponent played Old Rod.").moveTo(my.hand)
+            if (myDiscard.filterByType(TRAINER)) {
+              myDiscard.filterByType(TRAINER).select(count: 1, "Search your discard pile for a Trainer card.").showToOpponent("Your opponent played Old Rod.").moveTo(my.hand)
             } else {
-              bc "There are no Trainer cards in ${my.owner.getPlayerUsername(bg)}'s discard pile."
+              bc "There are no Trainer cards in ${my.owner.getPlayerUsername(bg)}'s discard pile. (Supporters you play remain in play until your turn ends)"
             }
           }
         }
         playRequirement{
-          assert my.discard.hasType(POKEMON) || my.discard.hasType(TRAINER) : "You don't have any Pokémon or Trainer cards in your discard pile"
+          if(thisTurnSupporter){
+            myDiscard = my.discard.getExcludedList(thisTurnSupporter)
+          } else {
+            myDiscard = my.discard
+          }
+          assert myDiscard.hasType(POKEMON) || myDiscard.hasType(TRAINER) : "You don't have any Pokémon or Trainer cards in your discard pile (Supporters you play remain in play until your turn ends)"
         }
       };
       case PROFESSOR_ELM_S_TRAINING_METHOD_79:

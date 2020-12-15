@@ -1329,14 +1329,36 @@ public enum Deoxys implements LogicCardInfo {
       case MINUN_41:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
+          //
+          // [EX Rules Supporters Workaround] TODO: Edit this once no longer needed
+          //
+          def thisTurnSupporter
+          def myDiscard
+          globalAbility{
+            delayed {
+              after PLAY_TRAINER, {
+                if(ef.cardToPlay.cardTypes.is(SUPPORTER)){
+                  thisTurnSupporter = ef.cardToPlay
+                }
+              }
+              after BETWEEN_TURNS, {
+                thisTurnSupporter = null
+              }
+            }
+          }
           move "Sniff Out", {
             text "Put any 1 card from your discard pile into your hand."
             energyCost C
             attackRequirement {
-              assert my.discard : "There are no cards in your discard pile"
+              if(thisTurnSupporter){
+                myDiscard = my.discard.getExcludedList(thisTurnSupporter)
+              } else {
+                myDiscard = my.discard
+              }
+              assert myDiscard : "You have no cards in your discard (Supporters you play remain in play until your turn ends)"
             }
             onAttack {
-              my.discard.select("Select 1 card to put into your hand.").showToOpponent("Opponent used Sniff Out").moveTo(my.hand)
+              myDiscard.select("Select 1 card to put into your hand.").showToOpponent("Opponent used Sniff Out").moveTo(my.hand)
             }
           }
           move "Negative Spark", {

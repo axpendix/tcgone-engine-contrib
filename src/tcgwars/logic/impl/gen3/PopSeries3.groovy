@@ -298,12 +298,36 @@ public enum PopSeries3 implements LogicCardInfo {
       case DONPHAN_8:
       return evolution (this, from:"Phanpy", hp:HP080, type:F, retreatCost:1) {
         weakness G
+        //
+        // [EX Rules Supporters Workaround] TODO: Edit this once no longer needed
+        //
+        def thisTurnSupporter
+        def myDiscard
+        globalAbility{
+          delayed {
+            after PLAY_TRAINER, {
+              if(ef.cardToPlay.cardTypes.is(SUPPORTER)){
+                thisTurnSupporter = ef.cardToPlay
+              }
+            }
+            after BETWEEN_TURNS, {
+              thisTurnSupporter = null
+            }
+          }
+        }
         move "Sniff Out", {
           text "Put any 1 card from your discard pile into your hand."
           energyCost C
-          attackRequirement { assert my.discard : "Discard pile is empty"}
+          attackRequirement {
+            if(thisTurnSupporter){
+              myDiscard = my.discard.getExcludedList(thisTurnSupporter)
+            } else {
+              myDiscard = my.discard
+            }
+            assert myDiscard : "You have no cards in your discard (Supporters you play remain in play until your turn ends)"
+          }
           onAttack {
-            my.discard.select("Select a card from your discard pile to move to your hand.").moveTo(my.hand)
+            myDiscard.select("Select a card from your discard pile to move to your hand.").moveTo(my.hand)
           }
         }
         move "Fury Attack", {

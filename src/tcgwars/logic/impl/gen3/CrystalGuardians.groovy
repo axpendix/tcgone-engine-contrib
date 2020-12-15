@@ -1410,12 +1410,36 @@ public enum CrystalGuardians implements LogicCardInfo {
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
         resistance M, MINUS30
+        //
+        // [EX Rules Supporters Workaround] TODO: Edit this once no longer needed
+        //
+        def thisTurnSupporter
+        def myDiscard
+        globalAbility{
+          delayed {
+            after PLAY_TRAINER, {
+              if(ef.cardToPlay.cardTypes.is(SUPPORTER)){
+                thisTurnSupporter = ef.cardToPlay
+              }
+            }
+            after BETWEEN_TURNS, {
+              thisTurnSupporter = null
+            }
+          }
+        }
         move "Sniff Out", {
           text "Put any 1 card from your discard pile into your hand."
           energyCost C
-          attackRequirement { assert my.discard : "Discard is empty"}
+          attackRequirement { 
+            if(thisTurnSupporter){
+              myDiscard = my.discard.getExcludedList(thisTurnSupporter)
+            } else {
+              myDiscard = my.discard
+            }
+            assert myDiscard : "You have no cards in your discard (Supporters you play remain in play until your turn ends)"
+          }
           onAttack {
-            if (my.discard) my.discard.select().moveTo(my.hand)
+            myDiscard.select().moveTo(my.hand)
           }
         }
         move "Quick Blow", {
@@ -2322,12 +2346,36 @@ public enum CrystalGuardians implements LogicCardInfo {
       case ALAKAZAM_STAR_99:
       return basic (this, hp:HP080, type:P, retreatCost:1) {
         weakness P
+        //
+        // [EX Rules Supporters Workaround] TODO: Edit this once no longer needed
+        //
+        def thisTurnSupporter
+        def myDiscard
+        globalAbility{
+          delayed {
+            after PLAY_TRAINER, {
+              if(ef.cardToPlay.cardTypes.is(SUPPORTER)){
+                thisTurnSupporter = ef.cardToPlay
+              }
+            }
+            after BETWEEN_TURNS, {
+              thisTurnSupporter = null
+            }
+          }
+        }
         move "Psychic Select", {
           text "Put any 1 card from your discard pile into your hand."
           energyCost P
-          attackRequirement { assert my.discard : "Discard is empty"}
+          attackRequirement {
+            if(thisTurnSupporter){
+              myDiscard = my.discard.getExcludedList(thisTurnSupporter)
+            } else {
+              myDiscard = my.discard
+            }
+            assert myDiscard : "You have no cards in your discard (Supporters you play remain in play until your turn ends)"
+          }
           onAttack {
-            my.discard.select("Choose the card to put in your hand").moveTo(my.hand)
+            myDiscard.select("Choose the card to put in your hand").moveTo(my.hand)
           }
         }
         move "Skill Copy", {
