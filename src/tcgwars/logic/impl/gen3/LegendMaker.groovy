@@ -2564,22 +2564,6 @@ public enum LegendMaker implements LogicCardInfo {
       return evolution (this, from:"Shuppet", hp:HP090, type:P, retreatCost:1) {
         weakness D
         resistance F, MINUS30
-        //
-        // [EX Rules Supporters Workaround] TODO: Edit this once no longer needed
-        //
-        def thisTurnSupporter
-        globalAbility{
-          delayed {
-            after PLAY_TRAINER, {
-              if(ef.cardToPlay.cardTypes.is(SUPPORTER)){
-                thisTurnSupporter = ef.cardToPlay
-              }
-            }
-            after BETWEEN_TURNS, {
-              thisTurnSupporter = null
-            }
-          }
-        }
         pokePower "Shady Move", {
           text "Once during your turn (before your attack), if Banette ex is your Active Pokémon, you may move 1 damage counter from either player's Pokémon to another Pokémon (yours or your opponent's). This power can't be used if Banette ex is affected by a Special Condition."
           actionA {
@@ -2602,13 +2586,7 @@ public enum LegendMaker implements LogicCardInfo {
           text "30+ damage. Does 30 damage plus 10 more damage for each Supporter card in your discard pile. You can't add more than 60 damage in this way."
           energyCost P, C
           onAttack {
-            def bonusDamage
-            if(thisTurnSupporter){
-              bonusDamage = Math.min(my.discard.getExcludedList(thisTurnSupporter).filterByType(SUPPORTER).size()*10, 60)
-            } else {
-              bonusDamage = Math.min(my.discard.filterByType(SUPPORTER).size()*10, 60)
-            }
-            damage 30+bonusDamage
+            damage 30 + Math.min(my.discard.filterByType(SUPPORTER).size()*10, 60)
           }
         }
       };
