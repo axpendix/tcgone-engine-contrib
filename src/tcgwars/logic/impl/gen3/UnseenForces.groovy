@@ -4132,35 +4132,13 @@ public enum UnseenForces implements LogicCardInfo {
         move "Hidden Power", {
           text "20 damage. Flip a coin. If heads, search your discard pile for a card, show it to your opponent, and put it on top of your deck."
           energyCost P, C
-          //
-          // [EX Rules Supporters Workaround] TODO: Edit this once no longer needed
-          //
-          def thisTurnSupporter
-          def myDiscard
-          globalAbility{
-            delayed {
-              after PLAY_TRAINER, {
-                if(ef.cardToPlay.cardTypes.is(SUPPORTER)){
-                  thisTurnSupporter = ef.cardToPlay
-                }
-              }
-              after BETWEEN_TURNS, {
-                thisTurnSupporter = null
-              }
-            }
-          }
           attackRequirement {
-            if(thisTurnSupporter){
-              myDiscard = my.discard.getExcludedList(thisTurnSupporter)
-            } else {
-              myDiscard = my.discard
-            }
-            assert myDiscard : "You have no cards in your discard (Supporters you play remain in play until your turn ends)"
+            assert my.discard.notEmpty
           }
           onAttack {
             damage 20
             flip {
-              myDiscard.select("Move a card from Discard to top of deck").moveTo(addToTop: true, my.deck)
+              my.discard.select("Move a card from Discard to top of deck").moveTo(addToTop: true, my.deck)
             }
           }
         }
