@@ -2074,7 +2074,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                   }
                 }
                 after APPLY_ATTACK_DAMAGES, {
-                  if(attackDidDamage && self.cards.contains(thisCard) && ef.attacker) {
+                  if(attackDidDamage && ef.attacker) {
                     bc "Spike Armor activates."
                     directDamage(40, ef.attacker as PokemonCardSet)
                     attackDidDamage = false
