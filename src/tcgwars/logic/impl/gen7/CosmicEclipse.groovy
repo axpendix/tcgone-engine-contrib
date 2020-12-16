@@ -2461,7 +2461,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Choose 2 of your opponent's Pokémon and put 2 damage counters on each of them."
             energyCost P
             onAttack {
-              multiSelect(opp.all, 2).each {
+              multiSelect(opp.all, 2, text).each {
                 targeted(it) { directDamage 20, it }
               }
             }

@@ -1354,7 +1354,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             energyCost C, C, C
             onAttack {
               discardSelfEnergy C,C
-              multiSelect(opp.all,2).each{ damage 60, it }
+              multiSelect(opp.all, 2, text).each { damage 60, it }
             }
           }
 

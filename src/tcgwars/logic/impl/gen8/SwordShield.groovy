@@ -2158,7 +2158,7 @@ public enum SwordShield implements LogicCardInfo {
           onAttack {
             damage 100
             if (opp.bench) {
-              multiSelect(opp.bench, 2).each {
+              multiSelect(opp.bench, 2, text).each {
                 targeted(it) {
                   damage 10, it
                 }

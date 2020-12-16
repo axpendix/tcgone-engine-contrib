@@ -981,7 +981,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           onAttack {
             damage 20
             if (opp.bench) {
-              multiSelect(opp.bench, 2).each {
+              multiSelect(opp.bench, 2, text).each {
                 damage 10, it
               }
             }
@@ -1062,7 +1062,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           onAttack {
             damage 40
             if (opp.bench) {
-              multiSelect(opp.bench, 2).each {
+              multiSelect(opp.bench, 2, text).each {
                 damage 10, it
               }
             }
@@ -1359,7 +1359,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           text "Choose 2 of your opponent's Pokémon. This attack does 30 damage to each of them. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost F, C, C
           onAttack {
-            multiSelect(opp.all, 2).each {
+            multiSelect(opp.all, 2, text).each {
               damage 30, it
             }
           }

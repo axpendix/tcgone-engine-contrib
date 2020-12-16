@@ -718,7 +718,7 @@ public enum DragonMajesty implements LogicCardInfo {
             onAttack{
               damage 40
               if(opp.bench){
-                multiSelect(opp.bench, 2).each{
+                multiSelect(opp.bench, 2, text).each{
                   targeted(it){
                     damage 40, it
                   }

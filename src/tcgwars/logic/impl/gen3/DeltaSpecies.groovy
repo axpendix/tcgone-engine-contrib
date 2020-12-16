@@ -522,7 +522,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost F, M
           onAttack {
             def maximum = Math.min(self.cards.energyCount(C), opp.all.size())
-            multiSelect(opp.all, maximum).each {
+            multiSelect(opp.all, 1, maximum, text).each {
               damage 20, it
             }
           }
@@ -1567,7 +1567,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "Choose 2 of your opponent's Pokémon. This attack does 10 damage to each of them. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C, C
           onAttack {
-            multiSelect(opp.all, 2).each {
+            multiSelect(opp.all, 2, text).each {
               targeted(it) {
                 damage 10, it
               }

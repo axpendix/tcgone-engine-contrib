@@ -2589,7 +2589,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
             onAttack {
               gxPerform()
-              def pcs = multiSelect(opp.all, 2)
+              def pcs = multiSelect(opp.all, 2, text)
               pcs.each {
                 noWrDamage 50, it
               }

@@ -159,7 +159,7 @@ public enum PopSeries8 implements LogicCardInfo {
             onAttack {
               damage 20
               if (opp.bench) {
-                multiSelect(opp.bench, 2).each {
+                multiSelect(opp.bench, 2, text).each {
                   targeted(it) {
                     damage 10, it
                   }

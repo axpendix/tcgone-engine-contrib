@@ -2577,7 +2577,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               if (opp.bench) {
-                multiSelect(opp.bench, 2).each{
+                multiSelect(opp.bench, 1, 2, text).each{
                   targeted(it){
                     damage 10, it
                   }

@@ -286,7 +286,7 @@ public enum Unleashed implements LogicCardInfo {
             energyCost P, P, P
             onAttack {
               if(opp.bench){
-                multiSelect(opp.bench, 2).each{
+                multiSelect(opp.bench, 2, text).each{
                   targeted(it){
                     damage 40, it
                   }
@@ -1610,7 +1610,7 @@ public enum Unleashed implements LogicCardInfo {
             energyCost P
             onAttack {
               if(opp.bench){
-                multiSelect(opp.bench, 2).each{
+                multiSelect(opp.bench, 2, text).each{
                   targeted(it){ damage 10, it }
                 }
               }
