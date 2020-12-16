@@ -1319,9 +1319,7 @@ public enum CelestialStorm implements LogicCardInfo {
             delayedA{
               before KNOCKOUT, {
                 if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && ef.pokemonToBeKnockedOut!=self  && ef.pokemonToBeKnockedOut.cards.energyCount(C)){
-                  if(confirm("Move an energy from ${ef.pokemonToBeKnockedOut} to $self ?")){
-                    moveEnergy(basic:true,ef.pokemonToBeKnockedOut,self)
-                  }
+                  moveEnergy(basic: true, playerType: self.owner, may: true, info: "Energy Grounding : Move an energy from ${ef.pokemonToBeKnockedOut} to $self", ef.pokemonToBeKnockedOut,self,SRC_ABILITY)
                 }
               }
             }
