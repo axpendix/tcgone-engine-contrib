@@ -634,7 +634,7 @@ public enum GuardiansRising implements LogicCardInfo {
                   }
                 }
                 after APPLY_ATTACK_DAMAGES, {
-                  if(attackDidDamage && ef.attacker) {
+                  if(attackDidDamage && ef.attacker.inPlay) {
                     bc "Shell Trap activates."
                     directDamage(80, ef.attacker as PokemonCardSet)
                     attackDidDamage = false

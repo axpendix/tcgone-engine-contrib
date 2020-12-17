@@ -3093,7 +3093,7 @@ public enum UnifiedMinds implements LogicCardInfo {
                   }
                 }
                 after APPLY_ATTACK_DAMAGES, {
-                  if(attackDidDamage && ef.attacker) {
+                  if(attackDidDamage && ef.attacker.inPlay) {
                     bc "Mirror Gem activates."
                     directDamage(80, ef.attacker as PokemonCardSet)
                     attackDidDamage = false
@@ -4415,7 +4415,7 @@ public enum UnifiedMinds implements LogicCardInfo {
                 }
               }
               after APPLY_ATTACK_DAMAGES, {
-                if(attackDidDamage && self.cards.contains(thisCard) && ef.attacker) {
+                if(attackDidDamage && self.cards.contains(thisCard) && ef.attacker.inPlay) {
                   bc "Giant Bomb explodes."
                   directDamage(100, ef.attacker as PokemonCardSet, TRAINER_CARD)
                   attackDidDamage = false

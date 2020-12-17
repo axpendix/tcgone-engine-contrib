@@ -3058,7 +3058,7 @@ public enum DarknessAblaze implements LogicCardInfo {
                   }
                 }
                 after APPLY_ATTACK_DAMAGES, {
-                  if(attackDidDamage && ef.attacker) {
+                  if(attackDidDamage && ef.attacker.inPlay) {
                     bc "Trap Bite activates."
                     directDamage(120, ef.attacker as PokemonCardSet)
                     attackDidDamage = false

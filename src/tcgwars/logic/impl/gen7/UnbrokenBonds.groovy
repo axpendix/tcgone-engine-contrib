@@ -3161,7 +3161,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
                   }
                 }
                 after APPLY_ATTACK_DAMAGES, {
-                  if(attackDidDamage && ef.attacker) {
+                  if(attackDidDamage && ef.attacker.inPlay) {
                     bc "Extra-Tight Press activates."
                     directDamage(80, ef.attacker as PokemonCardSet)
                     attackDidDamage = false
