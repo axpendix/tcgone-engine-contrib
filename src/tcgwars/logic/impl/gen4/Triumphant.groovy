@@ -561,7 +561,7 @@ public enum Triumphant implements LogicCardInfo {
             }
             onAttack {
               my.deck.select(min:0, max:2, "Select both halves of a Pokémon LEGEND.", cardTypeFilter(LEGEND), self.owner, { CardList list ->
-                if(list.size() & 2 != 0){
+                if(list.size() % 2 != 0){
                   return false
                 }
                 for (card in list) {
@@ -570,7 +570,7 @@ public enum Triumphant implements LogicCardInfo {
                   }
                 }
                 return true
-              }.moveTo(my.hand)
+              }).moveTo(my.hand)
               shuffleDeck()
             }
           }
@@ -755,6 +755,7 @@ public enum Triumphant implements LogicCardInfo {
                 }
               }
             }
+          }
           move "Powerful Splash", {
             text "Does 30 damage plus 10 more damage for each Water Energy attached to all your Pokémon."
             energyCost W, C

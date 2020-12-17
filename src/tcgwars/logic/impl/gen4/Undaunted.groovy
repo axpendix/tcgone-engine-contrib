@@ -1885,7 +1885,7 @@ public enum Undaunted implements LogicCardInfo {
             shuffleDeck()
           }
           playRequirement{
-            my.discard.filterByType(POKEMON) || my.discard.filterByType(BASIC_ENERGY) : "Your discard pile has no Pokémon or basic Energy cards"
+            assert my.discard.filterByType(POKEMON) || my.discard.filterByType(BASIC_ENERGY) : "Your discard pile has no Pokémon or basic Energy cards"
           }
         };
       case LEGEND_BOX_75:
