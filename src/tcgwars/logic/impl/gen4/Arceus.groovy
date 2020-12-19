@@ -969,7 +969,7 @@ public enum Arceus implements LogicCardInfo {
               }
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if(it.to == self && it.notNoEffect && it.){
+                  if(it.to == self && it.notNoEffect && it.from.topPokemonCard.cardTypes.is(POKEMON_SP)){
                     it.dmg = hp(0)
                     bc "$thisAbility prevents damage"
                   }
@@ -1971,7 +1971,6 @@ public enum Arceus implements LogicCardInfo {
                 after DEVOLVE,self, {unregister()}
                 after FALL_BACK,self, {unregister()}
               }
-            }
             }
           }
           move "Knock Away", {
