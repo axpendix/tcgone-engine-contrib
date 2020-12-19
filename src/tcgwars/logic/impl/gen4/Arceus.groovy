@@ -2,6 +2,8 @@ package tcgwars.logic.impl.gen4;
 
 import tcgwars.logic.impl.gen8.SwordShield;
 
+import tcgwars.logic.effect.gm.PlayTrainer;
+
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
@@ -630,7 +632,7 @@ public enum Arceus implements LogicCardInfo {
             text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
             onAttack {
               damage 30
-              flip { 
+              flip {
                 applyAfterDamage CONFUSED
               }
             }
@@ -1038,7 +1040,7 @@ public enum Arceus implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 20
-              if(self.cards.filgerByType(POKEMON_TOOL)) {
+              if(self.cards.filterByType(POKEMON_TOOL)) {
                 damage 40
               }
             }
@@ -2635,7 +2637,8 @@ public enum Arceus implements LogicCardInfo {
             text "100 damage. Discard a [L] Energy and a [P] Energy attached to Arceus."
             energyCost L, P, C
             onAttack {
-              damage discardSelfEnergyAfterDamage L, P
+              damage 100
+              discardSelfEnergyAfterDamage L, P
             }
           }
         };

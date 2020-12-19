@@ -17,6 +17,7 @@ import static tcgwars.logic.card.Resistance.ResistanceType.*
 
 import tcgwars.logic.card.*
 import tcgwars.logic.util.*;
+import tcgwars.logic.effect.ability.*;
 
 /**
  * @author axpendix@hotmail.com
@@ -813,7 +814,7 @@ public enum Triumphant implements LogicCardInfo {
             energyCost G, C
             onAttack {
               damage 30
-              flip { 
+              flip {
                 applyAfterDamage CONFUSED
               }
             }
@@ -1059,15 +1060,14 @@ public enum Triumphant implements LogicCardInfo {
             energyCost L, L, C
             onAttack {
               damage 40
-              if(confirm"Discard all [L] Energy attached to $self in order to deal 60 additional damage?"){
+              if (confirm("Discard all [L] Energy attached to $self in order to deal 60 additional damage?")) {
                 damage 60
-                afterDamage{
+                afterDamage {
                   discardAllSelfEnergy(L)
                 }
               }
             }
           }
-
         };
       case HAUNTER_35:
         return evolution (this, from:"Gastly", hp:HP070, type:PSYCHIC, retreatCost:0) {
@@ -1356,21 +1356,23 @@ public enum Triumphant implements LogicCardInfo {
             text "30 damage. Flip 2 coins. If both of them are tails, this attack does nothing. For each heads, discard an Energy attached to the Defending Pokémon."
             energyCost C, C, C
             onAttack {
-              flip 2, {}, {}, [2:{
-                damage 30
-                afterDamage {
-                  discardDefendingEnergy()
-                  discardDefendingEnergy()
-                }, 1:{
+              flip 2, {}, {}, [1:{damage 100}, 2:{damage 100}]
+              flip 2, {}, {}, [
+                2: {
+                  damage 30
+                  afterDamage {
+                    discardDefendingEnergy()
+                    discardDefendingEnergy()
+                  }
+                },
+                1: {
                   damage 30
                   afterDamage {
                     discardDefendingEnergy()
                   }
-                }
-              }]
+                }]
             }
           }
-
         };
       case PILOSWINE_48:
         return evolution (this, from:"Swinub", hp:HP100, type:WATER, retreatCost:3) {
@@ -2569,7 +2571,7 @@ public enum Triumphant implements LogicCardInfo {
             energyCost D, D, C, C
             onAttack {
               damage 100
-              moveSelfEnergyAfterDamage my.lostZone C,C
+              moveSelfEnergyAfterDamage my.lostZone, C, C
               delayed {
                 def knockedOut = null
                 before KNOCKOUT, {
@@ -2629,7 +2631,7 @@ public enum Triumphant implements LogicCardInfo {
             my.prizeCardSet.faceDownCards.showToMe("Your face down Prize cards")
           }
           playRequirement{
-            assert : my.prizeCardSet.faceDownCards : "You have no face down Prize cards"
+            assert my.prizeCardSet.faceDownCards : "You have no face down Prize cards"
           }
         };
       default:
