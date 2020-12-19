@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen4
 
+import tcgwars.logic.effect.special.SpecialConditionType
 import tcgwars.logic.impl.gen3.RubySapphire;
 import tcgwars.logic.impl.gen4.MysteriousTreasures;
 
@@ -419,7 +420,7 @@ public enum Undaunted implements LogicCardInfo {
                 before null, self, Source.ATTACK, {
                   def hasPokePower = false
                   def hasPokeBody = false
-                  for (Ability ability : opp.active.getAbilities().keySet()) {//this feels excessive. 
+                  for (Ability ability : opp.active.getAbilities().keySet()) {//this feels excessive.
                     if (ability instanceof PokeBody) hasPokeBody = true;
                     if (ability instanceof PokePower) hasPokePower = true;
                   }
@@ -431,7 +432,7 @@ public enum Undaunted implements LogicCardInfo {
                 before APPLY_ATTACK_DAMAGES, {
                   def hasPokePower = false
                   def hasPokeBody = false
-                  for (Ability ability : opp.active.getAbilities().keySet()) {//this feels excessive. 
+                  for (Ability ability : opp.active.getAbilities().keySet()) {//this feels excessive.
                     if (ability instanceof PokePower) hasPokePower = true;
                     if (ability instanceof PokeBody) hasPokeBody = true;
                   }
@@ -878,7 +879,7 @@ public enum Undaunted implements LogicCardInfo {
               damage 30
               flip {
                 def list=[ASLEEP,CONFUSED,PARALYZED,POISONED,BURNED]
-                SpecialConditionType spc=choose(list, list.collect({it.toString()})) as SpecialConditionType
+                SpecialConditionType spc = choose(list, list.collect({it.toString()})) as SpecialConditionType
                 applyAfterDamage spc
               }
             }
@@ -1360,7 +1361,7 @@ public enum Undaunted implements LogicCardInfo {
             energyCost C, C
             onAttack {
               damage 10
-              flip { 
+              flip {
                 applyAfterDamage PARALYZED
               }
             }
@@ -2029,15 +2030,14 @@ public enum Undaunted implements LogicCardInfo {
           }
           move "Mega Thunderbolt", {
             text "120 damage. Discard all Energy attached to Raichu."
-            energyCost L, L, C}
+            energyCost L, L, C
             onAttack {
               damage 120
-              afterDamage{
+              afterDamage {
                 discardAllSelfEnergy()
               }
             }
           }
-
         };
       case SCIZOR_84:
         return evolution (this, from:"Scyther", hp:HP100, type:METAL, retreatCost:2) {
