@@ -9,6 +9,7 @@ import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*;
+import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*;
 import static tcgwars.logic.effect.EffectType.*;
 import static tcgwars.logic.effect.Source.*;
@@ -484,7 +485,9 @@ public enum CallOfLegends implements LogicCardInfo {
                 flip 1, {
                   apply PARALYZED
                 }, {
-                  defending.cards.select("Choose an energy to put into the Lost Zone",cardTypeFilter(ENERGY)).moveTo(opp.lostZone)
+                  if(defending.cards.filterByType(ENERGY)) {
+                    defending.cards.select("Choose an energy to put into the Lost Zone",cardTypeFilter(ENERGY)).moveTo(opp.lostZone)
+                  }  
                 }
               }
             }
@@ -503,10 +506,10 @@ public enum CallOfLegends implements LogicCardInfo {
         return basic (this, hp:HP080, type:COLORLESS, retreatCost:2) {
           weakness F
           move "Swords Dance", {
-            text "During you next turn, Zangoose’s Lost Claw attack’s base damage is 80."
+            text "During you next turn, Zangoose’s Lost Claw attack’s base damage is 60."
             energyCost C
             onAttack {
-              increasedBaseDamageNextTurn("Lost Claw", hp(50))
+              increasedBaseDamageNextTurn("Lost Claw", hp(30))
             }
           }
           move "Lost Claw", {
@@ -554,7 +557,9 @@ public enum CallOfLegends implements LogicCardInfo {
             text "Put the top card of your opponent’s deck in the Lost Zone. Mime Jr. is now Asleep."
             energyCost ()
             onAttack {
-              opp.deck.subList(0,1).moveTo(opp.lostZone)
+              if (opp.deck) {
+                opp.deck.subList(0,1).moveTo(opp.lostZone)
+              }
               apply ASLEEP, self
             }
           }
@@ -682,7 +687,7 @@ public enum CallOfLegends implements LogicCardInfo {
             text "As long as Phanpy has Energy attached to it, any damage done to Phanpy by attacks is reduced by 10 ."
             delayed {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {if(it.to==self && it.notZero && it.notNoEffect) {
+                bg.dm().each {if(it.to==self && self.cards.energyCount(C) && it.notZero && it.notNoEffect) {
                   bc "$thisAbility -10"
                   it.dmg-=hp(10)
                 }}
@@ -816,7 +821,7 @@ public enum CallOfLegends implements LogicCardInfo {
             pcs.cards.select("Put which special energy in the Lost Zone?",cardTypeFilter(SPECIAL_ENERGY)).moveTo(opp.lostZone)
           }
           playRequirement{
-            assert opp.all.find{it.cards.filterByType(SPECIAL_ENERGY)}
+            assert opp.all.find{it.cards.filterByType(SPECIAL_ENERGY)} : "Your opponent's Pokemon have no special energy attached"
           }
         };
       case LOST_WORLD_81:
@@ -845,10 +850,10 @@ public enum CallOfLegends implements LogicCardInfo {
         return basicTrainer (this) {
           text "Look at the top 4 cards of your deck and put as many of them as you like back on top of your deck in any order. Then, put the remaining cards on the bottom of your deck in any order."
           onPlay {
-            def tar = my.deck.subList(0,5)
+            def tar = my.deck.subList(0,4)
             def sel = tar.select(min:0, max:tar.size(), "Choose any number of cards to put on top of your deck(unselected cards will be put on the bottom of your deck)")
             if(sel) {
-              tar.remove(sel)
+              tar.removeAll(sel)
               def rearranged = rearrange(sel,"Arrange the top of your deck")
               deck.setSubList(0,rearranged)
             }
