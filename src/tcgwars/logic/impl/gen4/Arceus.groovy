@@ -2594,7 +2594,7 @@ public enum Arceus implements LogicCardInfo {
             getterA (GET_MOVE_LIST, self) {holder->
               def omniscientMoves = []
               self.owner.pbg.bench.findAll {it.name == "Arceus"}.each {
-                if(self.active e&& !cardList.contains("${it.topPokemonCard}")){
+                if(self.active && !cardList.contains("${it.topPokemonCard}")){
                   cardList.add("${it.topPokemonCard}")
                   omniscientMoves.addAll(it.topPokemonCard.moves)
                 }
