@@ -2594,7 +2594,7 @@ public enum Arceus implements LogicCardInfo {
             getterA (GET_MOVE_LIST, self) {holder->
               def omniscientMoves = []
               self.owner.pbg.bench.findAll {it.name == "Arceus"}.each {
-                if(self.arvive && !cardList.contains("${it.topPokemonCard}")){
+                if(self.active e&& !cardList.contains("${it.topPokemonCard}")){
                   cardList.add("${it.topPokemonCard}")
                   omniscientMoves.addAll(it.topPokemonCard.moves)
                 }
@@ -2818,7 +2818,7 @@ public enum Arceus implements LogicCardInfo {
             energyCost D, C
             onAttack {
               damage 20
-              if(my.prizeCardSet.size() > opp.prizeCard.size()) {
+              if(my.prizeCardSet.size() > opp.prizeCardSet.size()) {
                 damage 60
               }
             }
