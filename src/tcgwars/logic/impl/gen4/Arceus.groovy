@@ -242,7 +242,10 @@ public enum Arceus implements LogicCardInfo {
           weakness M, PLUS20
           pokePower "Snow Gift", {
             text "Once during your turn, when you play Froslass from your hand to evolve 1 of your Pokémon, you may search your deck for any 1 card and put it into your hand. Shuffle your deck afterward."
-            actionA {
+            onActivate {r->
+              if (r==PLAY_FROM_HAND && my.deck && confirm("Use Snow Gift")) {
+                my.deck.search(min:1,"Search your deck for a card",{true}).moveTo(hidden:true,my.hand)
+              }
             }
           }
           move "Ground Frost", {
@@ -2586,7 +2589,7 @@ public enum Arceus implements LogicCardInfo {
             text "Arceus LV.X‘s type is the same type as its previous Level."
             getterA GET_POKEMON_TYPE, self, { h->
               h.object.clear()
-              h.object.add(self.getTopNonLevelUpPokemonCard().types)
+              h.object.addAll(self.getTopNonLevelUpPokemonCard().types)
             }
           }
           pokeBody "Omniscient", {
@@ -2611,7 +2614,7 @@ public enum Arceus implements LogicCardInfo {
             text "Arceus LV.X‘s type is the same type as its previous Level."
             getterA GET_POKEMON_TYPE, self, { h->
               h.object.clear()
-              h.object.add(self.getTopNonLevelUpPokemonCard().types)
+              h.object.addAll(self.getTopNonLevelUpPokemonCard().types)
             }
           }
           move "Meteor Blast", {
@@ -2632,7 +2635,7 @@ public enum Arceus implements LogicCardInfo {
             text "Arceus LV.X‘s type is the same type as its previous Level."
             getterA GET_POKEMON_TYPE, self, { h->
               h.object.clear()
-              h.object.add(self.getTopNonLevelUpPokemonCard().types)
+              h.object.addAll(self.getTopNonLevelUpPokemonCard().types)
             }
           }
           move "Psychic Bolt", {
@@ -2655,9 +2658,18 @@ public enum Arceus implements LogicCardInfo {
               checkLastTurn()
               assert opp.all.find{it.cardTypes.is(LV_X)} : "Your opponent has no Pokémon LV.X in play"
               powerUsed()
-              def tar = opp.all.findAll{it.cardTypes.is(LV_X)}.select("Choose a Pokémon LV.X")
-              def top = tar.topPokemonCard
-              // TODO
+              def pcs = opp.all.findAll{it.cardTypes.is(LV_X)}.select("Choose a Pokémon LV.X")
+              def card = tar.topPokemonCard
+              def blocked = bg().em().run(new MoveCard(card, opp.deck));
+              if (!blocked) {
+                if (all.contains(pcs)) { //not dead yet.
+                  bc "$card Leveled Down"
+                  bg().em().run(new RemoveFromPlay(pcs, new CardList(card)));
+                  bg().em().run(new CantEvolve(pcs, bg().getTurnCount()));
+                  bg().em().run(new Devolve(pcs));
+                }
+                shuffleDeck()
+              }
             }
           }
           move "Compound Pain", {
