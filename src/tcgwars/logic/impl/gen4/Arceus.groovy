@@ -242,7 +242,10 @@ public enum Arceus implements LogicCardInfo {
           weakness M, PLUS20
           pokePower "Snow Gift", {
             text "Once during your turn, when you play Froslass from your hand to evolve 1 of your Pokémon, you may search your deck for any 1 card and put it into your hand. Shuffle your deck afterward."
-            actionA {
+            onActivate {r->
+              if (r==PLAY_FROM_HAND && my.deck && confirm("Use Snow Gift")) {
+                my.deck.search(min:1,"Search your deck for a card",{true}).moveTo(hidden:true,my.hand)
+              }
             }
           }
           move "Ground Frost", {
@@ -275,7 +278,7 @@ public enum Arceus implements LogicCardInfo {
               damage 60
               def top = my.deck.subList(0,3)
               top.each {
-                if(it.asEnergyCard().containsType(R)||it.asEnergyCard().containsType(M)) {
+                if(it.cardTypes.is(ENERGY) && it.asEnergyCard().containsType(R)||it.asEnergyCard().containsType(M)) {
                   damage 20
                 }
               }
@@ -291,8 +294,8 @@ public enum Arceus implements LogicCardInfo {
             energyCost F
             onAttack {
               damage 20
-              if(my.hand.find{it.name.isIn("Helix Fossil","Dome Fossil","Old Amber")} && confirm("Discard a fossil to deal 50 more damage?")) {
-                def card = my.hand.select("Discard Helix Fossil, Dome Fossil, or Old Amber",{it.name.isIn("Helix Fossil","Dome Fossil","Old Amber")})
+              if(my.hand.find{ ["Helix Fossil", "Dome Fossil", "Old Amber"].contains(it.name) } && confirm("Discard a fossil to deal 50 more damage?")) {
+                def card = my.hand.select("Discard Helix Fossil, Dome Fossil, or Old Amber",{ ["Helix Fossil", "Dome Fossil", "Old Amber"].contains(it.name) })
                 damage 50
                 card.discard()
               }
@@ -395,12 +398,12 @@ public enum Arceus implements LogicCardInfo {
             }
           }
           move "Tumbling Attack", {
-            text "50+ damage. Flip a coin. If heads, this attack does 50 damage plus 20 more damage."
+            text "50+ damage. Flip a coin. If heads, this attack does 50 damage plus 30 more damage."
             energyCost M, C, C
             onAttack {
               damage 50
               flip {
-                damage 20
+                damage 30
               }
             }
           }
@@ -417,7 +420,7 @@ public enum Arceus implements LogicCardInfo {
               checkLastTurn()
               assert my.deck : "Your deck is empty"
               powerUsed()
-              def top = my.deck.subList(0,1).showToMe("Top card of your deck").showToOpponent("Top card of your opponent's deck").first()
+              def top = my.deck.subList(0,1).first()
               if(top.cardTypes.is(BASIC_ENERGY)) {
                 attachEnergy my.all.select("Attach $top to?"), top
               } else {
@@ -450,6 +453,9 @@ public enum Arceus implements LogicCardInfo {
           move "Damage Roller", {
             text "Put damage counters on the Defending Pokémon until the Defending Pokémon has the same remaining HP as Swalot. (If the Defending Pokémon has the same or less remaining HP as Swalot, this attack does nothing.)"
             energyCost P
+            attackRequirement {
+              assert defending.remainingHP.value - self.remainingHP.value > 0 : "$self doesn't have more remaining hp than the defending $defending"
+            }
             onAttack {
               directDamage defending.remainingHP.value - self.remainingHP.value, defending
             }
@@ -557,7 +563,7 @@ public enum Arceus implements LogicCardInfo {
               checkNoSPC()
               assert my.deck : "Your deck is empty"
               powerUsed()
-              my.deck.search("Unearth",{it.name.isIn("Helix Fossil","Dome Fossil","Old Amber")}).moveTo(my.hand)
+              my.deck.search("Unearth",{ ["Helix Fossil", "Dome Fossil", "Old Amber"].contains(it.name) }).moveTo(my.hand)
             }
           }
           move "Hyper Beam", {
@@ -848,7 +854,7 @@ public enum Arceus implements LogicCardInfo {
             text "30+ damage. Does 30 damage plus 10 more damage for each Helix Fossil, Dome Fossil, and Old Amber in your discard pile."
             energyCost W, C
             onAttack {
-              damage 30 + 10 * my.discard.find{it.name.isIn("Helis Fossil","Dome Fossil","Old Amber")}.size()
+              damage 30 + 10 * my.discard.find{ ["Helix Fossil", "Dome Fossil", "Old Amber"].contains(it.name) }.size()
             }
           }
 
@@ -2586,7 +2592,7 @@ public enum Arceus implements LogicCardInfo {
             text "Arceus LV.X‘s type is the same type as its previous Level."
             getterA GET_POKEMON_TYPE, self, { h->
               h.object.clear()
-              h.object.add(self.getTopNonLevelUpPokemonCard().types)
+              h.object.addAll(self.getTopNonLevelUpPokemonCard().types)
             }
           }
           pokeBody "Omniscient", {
@@ -2611,7 +2617,7 @@ public enum Arceus implements LogicCardInfo {
             text "Arceus LV.X‘s type is the same type as its previous Level."
             getterA GET_POKEMON_TYPE, self, { h->
               h.object.clear()
-              h.object.add(self.getTopNonLevelUpPokemonCard().types)
+              h.object.addAll(self.getTopNonLevelUpPokemonCard().types)
             }
           }
           move "Meteor Blast", {
@@ -2632,7 +2638,7 @@ public enum Arceus implements LogicCardInfo {
             text "Arceus LV.X‘s type is the same type as its previous Level."
             getterA GET_POKEMON_TYPE, self, { h->
               h.object.clear()
-              h.object.add(self.getTopNonLevelUpPokemonCard().types)
+              h.object.addAll(self.getTopNonLevelUpPokemonCard().types)
             }
           }
           move "Psychic Bolt", {
@@ -2655,9 +2661,18 @@ public enum Arceus implements LogicCardInfo {
               checkLastTurn()
               assert opp.all.find{it.cardTypes.is(LV_X)} : "Your opponent has no Pokémon LV.X in play"
               powerUsed()
-              def tar = opp.all.findAll{it.cardTypes.is(LV_X)}.select("Choose a Pokémon LV.X")
-              def top = tar.topPokemonCard
-              // TODO
+              def pcs = opp.all.findAll{it.cardTypes.is(LV_X)}.select("Choose a Pokémon LV.X")
+              def card = tar.topPokemonCard
+              def blocked = bg().em().run(new MoveCard(card, opp.deck));
+              if (!blocked) {
+                if (all.contains(pcs)) { //not dead yet.
+                  bc "$card Leveled Down"
+                  bg().em().run(new RemoveFromPlay(pcs, new CardList(card)));
+                  bg().em().run(new CantEvolve(pcs, bg().getTurnCount()));
+                  bg().em().run(new Devolve(pcs));
+                }
+                shuffleDeck()
+              }
             }
           }
           move "Compound Pain", {
