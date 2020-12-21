@@ -278,7 +278,7 @@ public enum Arceus implements LogicCardInfo {
               damage 60
               def top = my.deck.subList(0,3)
               top.each {
-                if(it.asEnergyCard().containsType(R)||it.asEnergyCard().containsType(M)) {
+                if(it.cardTypes.is(ENERGY) && it.asEnergyCard().containsType(R)||it.asEnergyCard().containsType(M)) {
                   damage 20
                 }
               }
@@ -294,8 +294,8 @@ public enum Arceus implements LogicCardInfo {
             energyCost F
             onAttack {
               damage 20
-              if(my.hand.find{it.name.isIn("Helix Fossil","Dome Fossil","Old Amber")} && confirm("Discard a fossil to deal 50 more damage?")) {
-                def card = my.hand.select("Discard Helix Fossil, Dome Fossil, or Old Amber",{it.name.isIn("Helix Fossil","Dome Fossil","Old Amber")})
+              if(my.hand.find{ ["Helix Fossil", "Dome Fossil", "Old Amber"].contains(it.name) } && confirm("Discard a fossil to deal 50 more damage?")) {
+                def card = my.hand.select("Discard Helix Fossil, Dome Fossil, or Old Amber",{ ["Helix Fossil", "Dome Fossil", "Old Amber"].contains(it.name) })
                 damage 50
                 card.discard()
               }
@@ -398,12 +398,12 @@ public enum Arceus implements LogicCardInfo {
             }
           }
           move "Tumbling Attack", {
-            text "50+ damage. Flip a coin. If heads, this attack does 50 damage plus 20 more damage."
+            text "50+ damage. Flip a coin. If heads, this attack does 50 damage plus 30 more damage."
             energyCost M, C, C
             onAttack {
               damage 50
               flip {
-                damage 20
+                damage 30
               }
             }
           }
@@ -420,7 +420,7 @@ public enum Arceus implements LogicCardInfo {
               checkLastTurn()
               assert my.deck : "Your deck is empty"
               powerUsed()
-              def top = my.deck.subList(0,1).showToMe("Top card of your deck").showToOpponent("Top card of your opponent's deck").first()
+              def top = my.deck.subList(0,1).first()
               if(top.cardTypes.is(BASIC_ENERGY)) {
                 attachEnergy my.all.select("Attach $top to?"), top
               } else {
@@ -453,6 +453,9 @@ public enum Arceus implements LogicCardInfo {
           move "Damage Roller", {
             text "Put damage counters on the Defending Pokémon until the Defending Pokémon has the same remaining HP as Swalot. (If the Defending Pokémon has the same or less remaining HP as Swalot, this attack does nothing.)"
             energyCost P
+            attackRequirement {
+              assert defending.remainingHP.value - self.remainingHP.value > 0 : "$self doesn't have more remaining hp than the defending $defending"
+            }
             onAttack {
               directDamage defending.remainingHP.value - self.remainingHP.value, defending
             }
@@ -560,7 +563,7 @@ public enum Arceus implements LogicCardInfo {
               checkNoSPC()
               assert my.deck : "Your deck is empty"
               powerUsed()
-              my.deck.search("Unearth",{it.name.isIn("Helix Fossil","Dome Fossil","Old Amber")}).moveTo(my.hand)
+              my.deck.search("Unearth",{ ["Helix Fossil", "Dome Fossil", "Old Amber"].contains(it.name) }).moveTo(my.hand)
             }
           }
           move "Hyper Beam", {
@@ -851,7 +854,7 @@ public enum Arceus implements LogicCardInfo {
             text "30+ damage. Does 30 damage plus 10 more damage for each Helix Fossil, Dome Fossil, and Old Amber in your discard pile."
             energyCost W, C
             onAttack {
-              damage 30 + 10 * my.discard.find{it.name.isIn("Helis Fossil","Dome Fossil","Old Amber")}.size()
+              damage 30 + 10 * my.discard.find{ ["Helix Fossil", "Dome Fossil", "Old Amber"].contains(it.name) }.size()
             }
           }
 
