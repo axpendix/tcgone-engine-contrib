@@ -277,8 +277,8 @@ public enum Arceus implements LogicCardInfo {
             onAttack {
               damage 60
               def top = my.deck.subList(0,3)
-              top.each {
-                if(it.cardTypes.is(ENERGY) && it.asEnergyCard().containsType(R)||it.asEnergyCard().containsType(M)) {
+              top.filterByType(ENERGY).each {
+                if(it.asEnergyCard().containsType(R)||it.asEnergyCard().containsType(M)) {
                   damage 20
                 }
               }
