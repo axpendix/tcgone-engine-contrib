@@ -467,7 +467,7 @@ public enum Arceus implements LogicCardInfo {
               damage 50
               if(confirm("Do 30 damage to one of your Pokémon in order to do 30 more damage?")) {
                 damage 30
-                damage 30, my.all.select("Choose one of your Pokémon")
+                noWrDamage 30, my.all.select("Choose one of your Pokémon")
               }
             }
           }
@@ -2459,13 +2459,15 @@ public enum Arceus implements LogicCardInfo {
             Card pokemonCard, trainerCard = thisCard
             pokemonCard = basic (new CustomCardInfo(DOME_FOSSIL_92).setCardTypes(BASIC, POKEMON), hp:HP050, type:COLORLESS, retreatCost:0) {
               pokeBody "Rock Reaction", {
-                after ATTACH_ENERGY, self, {
-                  if(ef.reason==PLAY_FROM_HAND && card.asEnergyCard().containsType(F) && self.owner.pbg.deck && confirm("Use Rock Reaction?")){
-                    def sel=my.deck.search("Search your deck for a card that evolved from $self",{it.cardTypes.is(EVOLUTION) && it.predecessor==self.name})
-                    if(sel){
-                      evolve(self, sel.first(), OTHER)
+                delayedA{
+                  after ATTACH_ENERGY, self, {
+                    if(ef.reason==PLAY_FROM_HAND && card.asEnergyCard().containsType(F) && self.owner.pbg.deck && confirm("Use Rock Reaction?")){
+                      def sel=my.deck.search("Search your deck for a card that evolved from $self",{it.cardTypes.is(EVOLUTION) && it.predecessor==self.name})
+                      if(sel){
+                        evolve(self, sel.first(), OTHER)
+                      }
+                      shuffleDeck()
                     }
-                    shuffleDeck()
                   }
                 }
               }
@@ -2526,13 +2528,15 @@ public enum Arceus implements LogicCardInfo {
             Card pokemonCard, trainerCard = thisCard
             pokemonCard = basic (new CustomCardInfo(HELIX_FOSSIL_93).setCardTypes(BASIC, POKEMON), hp:HP050, type:COLORLESS, retreatCost:0) {
               pokeBody "Aqua Reaction", {
-                after ATTACH_ENERGY, self, {
-                  if(ef.reason==PLAY_FROM_HAND && card.asEnergyCard().containsType(W) && self.owner.pbg.deck && confirm("Use Rock Reaction?")){
-                    def sel=my.deck.search("Search your deck for a card that evolved from $self",{it.cardTypes.is(EVOLUTION) && it.predecessor==self.name})
-                    if(sel){
-                      evolve(self, sel.first(), OTHER)
+                delayedA{
+                  after ATTACH_ENERGY, self, {
+                    if(ef.reason==PLAY_FROM_HAND && card.asEnergyCard().containsType(W) && self.owner.pbg.deck && confirm("Use Rock Reaction?")){
+                      def sel=my.deck.search("Search your deck for a card that evolved from $self",{it.cardTypes.is(EVOLUTION) && it.predecessor==self.name})
+                      if(sel){
+                        evolve(self, sel.first(), OTHER)
+                      }
+                      shuffleDeck()
                     }
-                    shuffleDeck()
                   }
                 }
               }
