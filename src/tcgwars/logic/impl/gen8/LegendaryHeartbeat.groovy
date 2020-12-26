@@ -1523,7 +1523,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           "discard up to 3 cards from your hand. (You must discard at least 1 card.)"
         onPlay {
           draw 3
-          my.hand.select(min:1, max:3, "Card(s) to discard?").discard()
+          my.hand.getExcludedList(thisCard).select(min:1, max:3, "Card(s) to discard?").discard()
         }
         playRequirement{
           assert my.deck : "Your deck is empty!"
