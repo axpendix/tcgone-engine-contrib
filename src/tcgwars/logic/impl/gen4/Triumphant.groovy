@@ -428,6 +428,7 @@ public enum Triumphant implements LogicCardInfo {
             text "Once during your turn, when you put Spiritomb from you hand onto your Bench, you may use this power. Your opponent shuffles his or her hand into his or her deck and draws 6 cards."
             onActivate {r->
               if(r==PLAY_FROM_HAND && (opp.hand||opp.deck) && confirm("Use Spooky Whirlpool")){
+                powerUsed()
                 opp.hand.moveTo(opp.deck)
                 shuffleDeck(null, TargetPlayer.OPPONENT)
                 draw 6, TargetPlayer.OPPONENT
@@ -1408,7 +1409,8 @@ public enum Triumphant implements LogicCardInfo {
           pokePower "Mapping", {
             text "Once during your turn, when you play Porygon2 from you hand to evolve 1 of your Pokémon, you may search your deck for a Stadium card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
             onActivate {r->
-              if(r==PLAY_FROM_HAND && my.deck && confirm("Use mapping?")) {
+              if(r==PLAY_FROM_HAND && my.deck && confirm("Use Mapping?")) {
+                powerUsed()
                 my.deck.search(cardTypeFilter(STADIUM)).moveTo(my.hand)
                 shuffleDeck()
               }
@@ -1458,6 +1460,7 @@ public enum Triumphant implements LogicCardInfo {
             text "Once during your turn, when you put Unown from your hand onto your Bench, remove all Special Conditions from your Active Pokémon."
             onActivate {r->
               if(r==PLAY_FROM_HAND && my.active.specialConditions && confirm("Use CURE?")) {
+                powerUsed()
                 clearSpecialCondition my.active, SRC_ABILITY
               }
             }

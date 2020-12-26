@@ -244,6 +244,7 @@ public enum Arceus implements LogicCardInfo {
             text "Once during your turn, when you play Froslass from your hand to evolve 1 of your Pokémon, you may search your deck for any 1 card and put it into your hand. Shuffle your deck afterward."
             onActivate {r->
               if (r==PLAY_FROM_HAND && my.deck && confirm("Use Snow Gift")) {
+                powerUsed()
                 my.deck.search(min:1,"Search your deck for a card",{true}).moveTo(hidden:true,my.hand)
               }
             }
@@ -920,6 +921,7 @@ public enum Arceus implements LogicCardInfo {
             text "Once during your turn, when you put Porygon-Z from your hand onto your Bench, you may search your discard pile for up to 2 Pokémon Tool cards, show them to your opponent, and shuffle them into your deck."
             onActivate {r->
               if(r==PLAY_FROM_HAND && self.evolution && bg.currentTurn == self.owner && my.discard.filterByType(POKEMON_TOOL) && confirm("Use $thisAbility?")) {
+                powerUsed()
                 my.discard.select(max:2,"Select up to 2 Pokémon Tool cards").showToOpponent("Selected cards").moveTo(my.deck)
                 shuffleDeck()
               }
@@ -2697,9 +2699,10 @@ public enum Arceus implements LogicCardInfo {
           weakness C
           resistance F, MINUS20
           pokePower "Double Fall", {
-            text "Once during your turn , when you put Salamence LV. from your hand onto your Active Salamence, you may use this power. For each of your opponent’s Pokémon that is Knocked Out by damage from Salamence’s attacks this turn, take 1 more Prize card."
+            text "Once during your turn , when you put Salamence LV. X from your hand onto your Active Salamence, you may use this power. For each of your opponent’s Pokémon that is Knocked Out by damage from Salamence’s attacks this turn, take 1 more Prize card."
             onActivate{r->
-              if(r==PLAY_FROM_HAND){
+              if(r==PLAY_FROM_HAND && confirm("Use Double Fall?")){
+                powerUsed()
                 delayed {
                   before ATTACK_MAIN, {
                     flag = ef.attacker==self
