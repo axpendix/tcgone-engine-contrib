@@ -836,6 +836,7 @@ public enum Undaunted implements LogicCardInfo {
             text "Once during your turn, when you play Weavile from your hand to evolve 1 of your Pokémon, you may look at your opponent’s hand. Choose a card from your opponent’s hand and discard it."
             onActivate { reason ->
               if(reason == PLAY_FROM_HAND && opp.hand && confirm("Use $thisAbility?")){
+                powerUsed()
                 opp.hand.shuffledCopy().select("Choose a card to discard").discard()
               }
             }
@@ -1189,6 +1190,7 @@ public enum Undaunted implements LogicCardInfo {
             text "Once during your turn, when you put Unown from your hand onto your Bench, you may search your deck for a [D] Energy card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
             onActivate { reason ->
               if(reason == PLAY_FROM_HAND && my.deck && confirm("Use $thisAbility?")){
+                powerUsed()
                 my.deck.search("Search your deck for a [D] or Dark Metal Energy",{it.cardTypes.energy && it.containsTypePlain(D)}).showToOpponent("Selected card").moveTo(my.hand)
                 shuffleDeck()
               }
