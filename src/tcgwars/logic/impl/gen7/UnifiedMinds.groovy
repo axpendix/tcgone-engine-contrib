@@ -2536,6 +2536,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "If 1 of your opponent's Pokémon used a GX attack during their last turn, your opponent shuffles their Active Pokémon and all cards attached to it into their deck."
             energyCost C
             attackRequirement {
+              assert opp.lastTurnMove : "Your opponent did not attack last turn"
               assert opp.lastTurnMove.contains("GX") : "Your opponent did not use a GX attack last turn."
             }
             onAttack {
