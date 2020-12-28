@@ -346,8 +346,7 @@ public enum SecretWonders implements LogicCardInfo {
                 if(flag && opp.deck){
                     opp.deck.subList(0,3).discard()
                   }
-                  flag = false
-                }
+                flag = false
               }
             }
           }
