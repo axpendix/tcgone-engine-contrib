@@ -37,6 +37,7 @@ import tcgwars.logic.util.*;
 
 /**
  * @author axpendix@hotmail.com
+ * @author ufodynasty12@gmail.com
  */
 public enum SecretWonders implements LogicCardInfo {
 
@@ -344,9 +345,9 @@ public enum SecretWonders implements LogicCardInfo {
               }
               after KNOCKOUT, {
                 if(flag && opp.deck){
-                    opp.deck.subList(0,3).discard()
-                  }
-                flag = false
+                  opp.deck.subList(0,3).discard()
+                  flag = false
+                }
               }
             }
           }
@@ -412,7 +413,7 @@ public enum SecretWonders implements LogicCardInfo {
               assert defending.remainingHP.value > 50 : "The Defending Pokémon has 50 or fewer remaining HP"
             }
             onAttack {
-              def flag = !DirectDamage(defending.remainingHP.value - 50, defending).setSource(Source.ATTACK).run(bg())
+              def flag = !bg.em().run(new DirectDamage(defending.remainingHP.value - 50, defending).setSource(Source.ATTACK))
               bc "$flag"
               if(flag) {
                 whirlwind()
@@ -486,14 +487,21 @@ public enum SecretWonders implements LogicCardInfo {
           pokePower "Osmotic Pressure", {
             text "Once during your turn , if you have Gastrodon West Sea in play, you may move up to 3 damage counters from Gastodon East Sea to 1 of your Gastrodon West Sea."
             actionA {
+              checkLastTurn()
+              assert my.all.find{it.name=="Gastrodon West Sea"} : "You have no Gastrodon West Sea in play"
+              assert self.numberOfDamageCounters : "$self is healthy"
+              powerUsed()
+              def count = choose(1..min(self.numberOfDamageCounters,3),"Move how many damage counters?",min(self.numberOfDamageCounters,3))
             }
           }
           move "Dwindling Wave", {
             text "80- damage. Does 80 damage minus 10 damage for each damage counter on Gastrodon East Sea."
             energyCost W, C, C
-            attackRequirement {}
+            attackRequirement {
+              assert self.numberOfDamageCounters < 8 : "$self will deal no damage"
+            }
             onAttack {
-              damage 0
+              damage 80 - 10 * self.numberOfDamageCounters
             }
           }
 
@@ -505,17 +513,24 @@ public enum SecretWonders implements LogicCardInfo {
           move "Raging Flood", {
             text "20+ damage. Does 20 damage plus 10 more damage for each damage counter on Gastrodon West Sea. Then, remove 2 damage counters from Gastrodon West Sea."
             energyCost F, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20 + 10 * self.numberOfDamageCounters
+              afterDamage {
+                heal 20, self
+              }
             }
           }
           move "Wild Waves", {
-            text "80 damage. ."
+            text "80 damage. Put 1 damage counter on each Benched Pokémon."
             energyCost F, C, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 80
+              my.bench.each{
+                directDamage(10, it)
+              }
+              opp.bench.each{
+                directDamage(10, it)
+              }
             }
           }
 
