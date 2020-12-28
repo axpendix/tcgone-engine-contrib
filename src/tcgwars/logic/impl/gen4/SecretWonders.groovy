@@ -344,9 +344,9 @@ public enum SecretWonders implements LogicCardInfo {
               }
               after KNOCKOUT, {
                 if(flag && opp.deck){
-                    opp.deck.subList(0,3).discard()
-                  }
-                flag = false
+                  opp.deck.subList(0,3).discard()
+                  flag = false
+                }
               }
             }
           }
@@ -412,7 +412,7 @@ public enum SecretWonders implements LogicCardInfo {
               assert defending.remainingHP.value > 50 : "The Defending Pokémon has 50 or fewer remaining HP"
             }
             onAttack {
-              def flag = !DirectDamage(defending.remainingHP.value - 50, defending).setSource(Source.ATTACK).run(bg())
+              def flag = !bg.em().run(new DirectDamage(defending.remainingHP.value - 50, defending).setSource(Source.ATTACK))
               bc "$flag"
               if(flag) {
                 whirlwind()
