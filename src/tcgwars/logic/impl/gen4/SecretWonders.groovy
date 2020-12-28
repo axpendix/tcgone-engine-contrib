@@ -232,14 +232,24 @@ public enum SecretWonders implements LogicCardInfo {
           pokeBody "Jamming", {
             text "After your opponent plays a Supporter card from his or her hand, put 1 damage counter on each of your opponent’s Pokémon. You can’t you more than 1 Jamming Poké-Body each turn."
             delayedA {
+              after PLAY_TRAINER, {
+                if(ef.cardToPlay.cardTypes.is(SUPPORTER) && bg.em().retrieveObject("Jamming")!=bg.turnCount){
+                  bg.em().storeObject("Jamming",bg.turnCount)
+                  directDamage(10, it, SRC_ABILITY)
+                }
+              }
             }
           }
           move "Cluster Bolt", {
-            text "70 damage. Energy attached to Ampharos. If you do, this attack does 20 damage to each of your opponent’s Benched Pokémon that has any Energy cards attached to it."
-            energyCost L, C, C, L
-            attackRequirement {}
+            text "70 damage. You may discard all [L] Energy attached to Ampharos. If you do, this attack does 20 damage to each of your opponent’s Benched Pokémon that has any Energy cards attached to it."
+            energyCost L, C, C
             onAttack {
-              damage 0
+              damage 70
+              if(confirm("Discard all [L] Energy attached to $self")) {
+                opp.bench.findAll{it.cards.energyCount(C)}.each{
+                  damage 20, it
+                }
+              }
             }
           }
 
@@ -248,16 +258,29 @@ public enum SecretWonders implements LogicCardInfo {
         return evolution (this, from:"Wartortle", hp:HP120, type:WATER, retreatCost:2) {
           weakness L, PLUS30
           pokePower "Waterlog", {
-            text "Once during your turn , you may attach as many basic Energy cards from your hand to any of your Pokémon in any way you like. If you do, you turn ends. This power can’t be used if Blastoise is affected by a Special Condition."
+            text "Once during your turn, you may attach as many basic [W] Energy cards from your hand to any of your Pokémon in any way you like. If you do, you turn ends. This power can’t be used if Blastoise is affected by a Special Condition."
             actionA {
+              checkLastTurn()
+              checkNoSPC()
+              assert my.hand.filterByBasicEnergyType(W) : "There are no basic Energys in your hand."
+              powerUsed()
+              while(true){
+                if(!my.hand.filterByBasicEnergyType(W)) break
+                def tar = my.all.select("Attach energy to which Pokémon? (Cancel to stop)", false)
+                if(!tar) break
+                def energy = my.hand.select(min:0,max:my.hand.filterByBasicEnergyType(W).size(),"Attach any number of basic [W] Energys to $tar",basicEnergyFilter(W))
+                energy.each{
+                  attachEnergy(tar,it)
+                }
+                bg.gm().betweenTurns()
+              }
             }
           }
           move "Hydro Pump", {
-            text "50+ damage. Energy attached to Blastoise but not used to pay for this attack’s Energy cost. You can’t add more than 40 damage in this way."
-            energyCost W, W, C, W
-            attackRequirement {}
+            text "50+ damage. Does 50 damage plus 20 more damage for each [W] Energy attached to Blastoise but not used to pay for this attack’s Energy cost. You can’t add more than 40 damage in this way."
+            energyCost W, W, C
             onAttack {
-              damage 0
+              extraEnergyDamage(2,hp(20),W,thisMove)
             }
           }
 
@@ -269,14 +292,40 @@ public enum SecretWonders implements LogicCardInfo {
           pokeBody "Fury Blaze", {
             text "If your opponent has 3 or less Prize cards left, each of Charizard’s attacks does 50 more damage to the Active Pokémon ."
             delayedA {
+              after PROCESS_ATTACK_EFFECTS, {
+                if(ef.attacker==self) bg.dm().each {
+                  if(it.from==self && it.to.active && it.to.owner!=self.owner && it.dmg.value && opp.prizeCardSet.size()<=3) {
+                    it.dmg += hp(50)
+                    bc "$thisAbility +50"
+                  }
+                }
+              }
             }
           }
           move "Blast Burn", {
             text "120 damage. Flip a coin. If heads, discard 2 Energy cards attached to Charizard. If tails, discard 4 Energy cards attached to Charizard. (If you can’t, this attack does nothing.)"
             energyCost R, R, R, C
-            attackRequirement {}
+            attackRequirement {
+              assert self.cards.filterByType(ENERGY) >= 2 : "You have fewer than 2 Energy cards attached to $self"
+            }
             onAttack {
-              damage 0
+              flip 1, {
+                if(self.cards.filterByType(ENERGY)>=2){
+                  damage 120
+                  afterDamage {
+                    self.cards.select(count:2,"Discard 2 Energy cards attached to $self",cardTypeFilter(ENERGY))
+                  }
+                }
+              }, {
+                if(self.cards.filterByType(ENERGY)>=4){
+                  damage 120
+                  afterDamage {
+                    self.cards.select(count:4,"Discard 4 Energy cards attached to $self",cardTypeFilter(ENERGY))
+                  }
+                } else {
+                  bc "Blast Burn failed"
+                }
+              }
             }
           }
 
@@ -287,14 +336,32 @@ public enum SecretWonders implements LogicCardInfo {
           pokeBody "Burning Coat", {
             text "Whenever 1 of your opponent’s Pokémon is Knocked Out by damage from Entei’s attacks, discard the top 3 cards from your opponent’s deck."
             delayedA {
+              def flag = false
+              before KNOCKOUT, {
+                if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner && self.active && ef.pokemonToBeKnockedOut.owner == self.owner.opposite ){
+                  flag = true
+                }
+              }
+              after KNOCKOUT, {
+                if(flag && opp.deck){
+                    opp.deck.subList(0,3).discard()
+                  }
+                  flag = false
+                }
+              }
             }
           }
           move "Blaze Roar", {
-            text "60 damage. Energy attached to Entei."
-            energyCost R, R, R, R
-            attackRequirement {}
+            text "60 damage. Does 20 damage to 1 of your opponent's Benched Pokémon. Filp a coin. If tails, discard 2 [R] Energy attached to Entei."
+            energyCost R, R, R
             onAttack {
-              damage 0
+              damage 60
+              if(opp.bench) {
+                damage 20, opp.bench.select("Does 20 damage to 1 of your opponent's Benched Pokémon.")
+              }
+              flip 1, {}, {
+                discardSelfEnergyAfterDamage R, R
+              }
             }
           }
 
@@ -303,17 +370,35 @@ public enum SecretWonders implements LogicCardInfo {
         return evolution (this, from:"Vibrava", hp:HP120, type:FIGHTING, retreatCost:1) {
           weakness W, PLUS30
           resistance L, MINUS20
+          def flag
+          customAbility {
+            after ATTACH_ENERGY, self, {
+              if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(F)) {
+                flag = bg.turnCount
+              }
+            }
+          }
           pokeBody "Irritating Buzz", {
-            text "As long as Flygon is your Active Pokémon, put 1 damage counter on each of your opponent’s Active Pokémon between turn, excluding Pokémon."
+            text "As long as Flygon is your Active Pokémon, put 1 damage counter on each of your opponent’s Active Pokémon between turn, excluding [F] Pokémon."
             delayedA {
+              before BEGIN_TURN, {
+                if (self.active) {
+                  bc "Irritating Buzz Activates"
+                  if(!opp.active.types.contains(F)) {
+                    directDamage(10, opp.active, SRC_ABILITY)
+                  }
+                }
+              }
             }
           }
           move "Sand Sonic", {
-            text "60+ damage. Energy card from you hand to Flygon during this turn, this attack does 60 damage plus 20 more damage."
-            energyCost F, C, C, F
-            attackRequirement {}
+            text "60+ damage. If you attach a [F] Energy card from you hand to Flygon during this turn, this attack does 60 damage plus 20 more damage."
+            energyCost F, C, C
             onAttack {
-              damage 0
+              damage 60
+              if(bg.turnCount == flag) {
+                damage 20
+              }
             }
           }
 
@@ -322,19 +407,30 @@ public enum SecretWonders implements LogicCardInfo {
         return evolution (this, from:"Kirlia", hp:HP130, type:FIGHTING, retreatCost:2) {
           weakness P
           move "Sonic Blade", {
-            text "Put damage counters on the Defending Pokémon until it is 50 HP away from being Knocked Out. If you do, your opponent switch the Defending Pokémon with 1 of this or her Benched Pokémon."
+            text "Put damage counters on the Defending Pokémon until it is 50 HP away from being Knocked Out. If you do, your opponent switchs the Defending Pokémon with 1 of this or her Benched Pokémon."
             energyCost F, C
-            attackRequirement {}
+            attackRequirement {
+              assert defending.remainingHP.value > 50 : "The Defending Pokémon has 50 or fewer remaining HP"
+            }
             onAttack {
-              damage 0
+              def flag = !DirectDamage(defending.remainingHP.value - 50, defending).setSource(Source.ATTACK).run(bg())
+              bc "$flag"
+              if(flag) {
+                whirlwind()
+              }
             }
           }
           move "Psychic Cut", {
             text "60+ damage. You may choose as many of your face-down Prize cards as you like and put them face up. If you do, this attack does 60 damage plus 20 more damage for each Prize card you chose. (These remain face up for the rest of the game.)"
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              if(my.prizeCardSet.faceDownCards) {
+                my.prizeCardSet.faceDownCards.select(hidden:true, min:0, max:my.prizeCardSet.faceDownCards.size(), "Reveal any number of prize cards").each {
+                  my.prizeCardSet.setVisible(it, true)
+                  damage 20
+                }
+              }
             }
           }
 
