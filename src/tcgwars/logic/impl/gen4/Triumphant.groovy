@@ -1357,7 +1357,6 @@ public enum Triumphant implements LogicCardInfo {
             text "30 damage. Flip 2 coins. If both of them are tails, this attack does nothing. For each heads, discard an Energy attached to the Defending Pokémon."
             energyCost C, C, C
             onAttack {
-              flip 2, {}, {}, [1:{damage 100}, 2:{damage 100}]
               flip 2, {}, {}, [
                 2: {
                   damage 30
