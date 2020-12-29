@@ -718,7 +718,7 @@ public enum SecretWonders implements LogicCardInfo {
             text "Once during your turn , when you attach a [L] Energy card from your hand to Raikou, you may put 1 damage counter on 1 of your opponent’s Benched Pokémon."
             delayedA {
               after ATTACH_ENERGY, self, {
-                if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(L) && opp.bench && keyStore("Thunder Rumble",self) != bg.turnCount && confirm("Use Thunder Rumble?")) {
+                if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(L) && opp.bench && keyStore("Thunder Rumble",self,null) != bg.turnCount && confirm("Use Thunder Rumble?")) {
                   keyStore("Thunder Rumble",self,bg.turnCount)
                   powerUsed()
                   directDamage 10, opp.bench.select("put 1 damage counter on 1 of your opponent's Benched Pokémon"), SRC_ABILITY
