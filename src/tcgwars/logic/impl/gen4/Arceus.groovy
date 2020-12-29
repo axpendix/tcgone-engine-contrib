@@ -2665,9 +2665,9 @@ public enum Arceus implements LogicCardInfo {
             actionA {
               checkNoSPC()
               checkLastTurn()
-              assert opp.all.find{it.topPokemonCard.cardTypes.is(LV_X)} : "Your opponent has no Pokémon LV.X in play"
+              assert opp.all.find{it.topPokemonCard.cardTypes.is(LVL_X)} : "Your opponent has no Pokémon LV.X in play"
               powerUsed()
-              def pcs = opp.all.findAll{it.topPokemonCard.cardTypes.is(LV_X)}.select("Choose a Pokémon LV.X")
+              def pcs = opp.all.findAll{it.topPokemonCard.cardTypes.is(LVL_X)}.select("Choose a Pokémon LV.X")
               def card = tar.topPokemonCard
               def blocked = bg().em().run(new MoveCard(card, opp.deck));
               if (!blocked) {
@@ -2989,7 +2989,7 @@ public enum Arceus implements LogicCardInfo {
             energyCost M, C, C
             onAttack {
               damage 40
-              preventAllEffectsFromCustomPokemonNextTurn(thisMove, self, {it.topPokemonCard.cardTypes.is(LV_X)})
+              preventAllEffectsFromCustomPokemonNextTurn(thisMove, self, {it.topPokemonCard.cardTypes.is(LVL_X)})
             }
           }
 
