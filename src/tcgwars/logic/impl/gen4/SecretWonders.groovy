@@ -413,7 +413,7 @@ public enum SecretWonders implements LogicCardInfo {
               assert defending.remainingHP.value > 50 : "The Defending Pokémon has 50 or fewer remaining HP"
             }
             onAttack {
-              def flag = !bg.em().run(new DirectDamage(defending.remainingHP.value - 50, defending).setSource(Source.ATTACK))
+              def flag = !bg.em().run(new DirectDamage(hp(defending.remainingHP.value - 50), defending).setSource(Source.ATTACK))
               bc "$flag"
               if(flag) {
                 whirlwind()
@@ -541,15 +541,21 @@ public enum SecretWonders implements LogicCardInfo {
           resistance F, MINUS20
           pokePower "Phoenix Turn", {
             text "Once during your opponent’s turn, if Ho-Oh would be Knocked Out by damage from an attack, you may flip a coin. If heads, Ho-Oh isn’t discarded. Instead, remove all damage counter, Special Conditions, and other effects from Ho-Oh. Then, discard all cards attached to Ho-Oh (except for Energy cards). This counts as Ho-Oh being Knocked Out and your opponent takes a Prize card."
-            actionA {
+            delayedA {
+              //TODO
             }
           }
           move "Rainbow Wing", {
             text "20× damage. This attack does 20 damage time the number of different types of basic Energy cards attached to Ho-Oh."
             energyCost C, C, C, C
-            attackRequirement {}
+            attackRequirement {
+              assert self.cards.filterByType(BASIC_ENERGY) : "There are no Basic Energys attached to $self"
+            }
             onAttack {
-              damage 0
+              for(Type t1:Type.values()){
+                if(self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(t1))
+                  damage 20
+              }
             }
           }
 
@@ -560,15 +566,28 @@ public enum SecretWonders implements LogicCardInfo {
           resistance F, MINUS20
           pokeBody "Cotton Spore", {
             text "Whenever Jumpluff would be damaged by your opponent’s attack, flip a coin. If heads, prevent all damage done to Jumpluff by that attack."
-            delayedA {
+            delayedA (priority: BEFORE_LAST) {
+              before APPLY_ATTACK_DAMAGES, {
+                def entry=bg.dm().find({it.to==self && it.dmg.value && it.notNoEffect})
+                if (entry) {
+                  flip "$thisAbility", self.owner, {
+                    entry.dmg=hp(0)
+                  }
+                }
+              }
             }
           }
           move "Cottonweed Punch", {
             text "Flip 2 coins. Choose 1 of your opponent’s Pokémon. For each heads, this attack does 30 damage to that Pokémon."
             energyCost G, G
-            attackRequirement {}
             onAttack {
-              damage 0
+              def heads = 0
+              flip 2, {
+                heads++
+              }
+              if(heads>0) {
+                damage 30 * heads, opp.all.select("Choose 1 of your opponent's Pokémon")
+              }
             }
           }
 
@@ -579,17 +598,21 @@ public enum SecretWonders implements LogicCardInfo {
           move "Tongue Reel", {
             text "Choose 1 of your opponent’s Pokémon. If you choose a Benched Pokémon, switch the Defending Pokémon with that Pokémon. This attack does 20 damage to the Pokémon you chose. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              def tar = opp.all.select("Choose 1 of your opponent's Pokémon")
+              if(tar.benched) {
+                sw2(tar) // The way I read this, even if the benched Pokémon is not successfully pulled into the active, 20 damage is still done to the selected Pokémon, then the defending Pokémon might be paralyzed.
+              }
+              damage 20, tar
+              applyAfterDamage PARALYZED
             }
           }
           move "Boundless Power", {
             text "80 damage. During your next turn, Lickilicky can’t attack."
             energyCost C, C, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 80
+              cantAttackNextTurn self
             }
           }
 

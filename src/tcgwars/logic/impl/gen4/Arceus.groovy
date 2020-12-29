@@ -2668,14 +2668,14 @@ public enum Arceus implements LogicCardInfo {
               assert opp.all.find{it.topPokemonCard.cardTypes.is(LVL_X)} : "Your opponent has no Pokémon LV.X in play"
               powerUsed()
               def pcs = opp.all.findAll{it.topPokemonCard.cardTypes.is(LVL_X)}.select("Choose a Pokémon LV.X")
-              def card = tar.topPokemonCard
-              def blocked = bg().em().run(new MoveCard(card, opp.deck));
+              def card = pcs.topPokemonCard
+              def blocked = bg.em().run(new MoveCard(card, opp.deck));
               if (!blocked) {
-                if (all.contains(pcs)) { //not dead yet.
+                if (all.contains(pcs)) {
                   bc "$card Leveled Down"
-                  bg().em().run(new RemoveFromPlay(pcs, new CardList(card)));
-                  bg().em().run(new CantEvolve(pcs, bg().getTurnCount()));
-                  bg().em().run(new Devolve(pcs));
+                  bg.em().run(new RemoveFromPlay(pcs, new CardList(card)));
+                  bg.em().run(new CantEvolve(pcs, bg().getTurnCount()));
+                  bg.em().run(new Devolve(pcs));
                 }
                 shuffleDeck()
               }
