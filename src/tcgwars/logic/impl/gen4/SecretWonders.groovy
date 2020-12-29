@@ -413,9 +413,7 @@ public enum SecretWonders implements LogicCardInfo {
               assert defending.remainingHP.value > 50 : "The Defending Pokémon has 50 or fewer remaining HP"
             }
             onAttack {
-              def flag = !bg.em().run(new DirectDamage(hp(defending.remainingHP.value - 50), defending).setSource(Source.ATTACK))
-              bc "$flag"
-              if(flag) {
+              if(!bg.em().run(new DirectDamage(hp(defending.remainingHP.value - 50), defending).setSource(Source.ATTACK))) {
                 whirlwind()
               }
             }
@@ -622,15 +620,27 @@ public enum SecretWonders implements LogicCardInfo {
           weakness L, PLUS30
           pokeBody "Rain Dish", {
             text "At any time between turns, remove 1 damage counter from Ludicolo."
-            delayedA {
-            }
+            delayedA{
+                before BEGIN_TURN, {
+                  if (self.numberOfDamageCounters) {
+                    bc "$thisAbility activates"
+                    heal 10, self
+                  }
+                }
+              }
           }
           move "Nature Power", {
             text "60+ damage. If you have a Stadium Card in play, this attack does 60 damage plus 20 more damage. If your opponent has a Stadium card in play, the Defending Pokémon is now Confused."
             energyCost W, W, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              if(bg.stadiumInfoStruct) {
+                if(bg.stadiumInfoStruct.stadiumCard.player == self.owner) {
+                  damage 20
+                } else {
+                  applyAfterDamage CONFUSED
+                }
+              }
             }
           }
 
@@ -642,17 +652,23 @@ public enum SecretWonders implements LogicCardInfo {
           move "Silver Wing", {
             text "20 damage. Flip a coin. If heads, choose an Energy card attached to the Defending Pokémon and return it to your opponent’s hand."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip {
+                afterDamage {
+                  defending.cards.select("Choose an Energy card to return to your opponent's hand",cardTypeFilter(ENERGY)).moveTo(opp.hand)
+                }
+              }
             }
           }
           move "Psychic Destruction", {
             text "120 damage. If the Defending Pokémon has any Energy cards attached to it, this attack’s base damage is 40 instead of 120."
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              if(!defending.cards.energyCount(C)) {
+                damage 80
+              }
             }
           }
 
@@ -663,17 +679,33 @@ public enum SecretWonders implements LogicCardInfo {
           move "Psychic Balance", {
             text "If you have less cards in your hand than your opponent, draw cards until you have the same number of cards as your opponent. (If you have more or the same number of cards in your hand as your opponent, this attack does nothing.)"
             energyCost ()
-            attackRequirement {}
+            attackRequirement {
+              assert my.hand.size() - opp.hand.size() > 0
+            }
             onAttack {
-              damage 0
+              draw my.hand.size() - opp.hand.size()
             }
           }
           move "Re-creation", {
             text "Choose an attack on 1 of your opponent’s Pokémon in his or her discard pile. Re-creation copies that attack except for its Energy cost. (You must still do anything else required for that attack.) Mew performs that attack."
             energyCost P, C, C
-            attackRequirement {}
+            attackRequirement {
+              assert opp.discard.filterByType(POKEMON) : "Your opponent has no Pokémon in their discard pile"
+            }
             onAttack {
-              damage 0
+              def tmp = opp.discard.select(min:0, "Choose one of your opponent's Pokémon in their discard")
+              if(tmp){
+                def card = tmp.first()
+                bc "$card was chosen"
+                def moves = card.asPokemonCard().moves
+                if(moves){
+                  def move = choose(moves, "Choose attack")
+                  bc "$move was chosen"
+                  def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
+                  attack (move as Move)
+                  bef.unregisterItself(bg().em())
+                }
+              }
             }
           }
 
@@ -683,16 +715,32 @@ public enum SecretWonders implements LogicCardInfo {
           weakness F, PLUS20
           resistance M, MINUS20
           pokePower "Thunder Rumble", {
-            text "Once during your turn , when you attach a Energy card from your hand to Raikou, you may put 1 damage counter on 1 of your opponent’s Benched Pokémon."
-            actionA {
+            text "Once during your turn , when you attach a [L] Energy card from your hand to Raikou, you may put 1 damage counter on 1 of your opponent’s Benched Pokémon."
+            delayedA {
+              after ATTACH_ENERGY, self, {
+                if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(L) && opp.bench && keyStore("Thunder Rumble",self) != bg.turnCount && confirm("Use Thunder Rumble?")) {
+                  keyStore("Thunder Rumble",self,bg.turnCount)
+                  powerUsed()
+                  directDamage 10, opp.bench.select("put 1 damage counter on 1 of your opponent's Benched Pokémon"), SRC_ABILITY
+                }
+              }
             }
           }
           move "Thunder Climb", {
-            text "50+ damage. Energy cards to 1 of your Pokémon."
-            energyCost L, L, L, L, L
-            attackRequirement {}
+            text "50+ damage. Discard 3 cards from the top of your deck. This attack does 50 damage plus 10 more damage for each [L] Energy card you discarded. Then, attach those [L] Energy cards to 1 of your Pokémon."
+            energyCost L, L, L
             onAttack {
-              damage 0
+              damage 50
+              if(my.deck) {
+                def energy = my.deck.subList(0,3).discard().filterByBasicEnergyType(L)
+                if(energy) {
+                  damage 10 * energy.size()
+                  def tar = my.all.select("Attach those [L] Energy cards to one of your Pokémon")
+                  energy.each {
+                    attachEnergy tar, it
+                  }
+                }
+              }
             }
           }
 
