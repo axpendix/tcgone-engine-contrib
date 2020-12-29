@@ -2236,7 +2236,7 @@ public enum Triumphant implements LogicCardInfo {
         };
       case RESCUE_ENERGY_90:
         return specialEnergy (this, [[C]]) {
-          text "Rescue Energy provides 1 [C] Energy. IF the Pokémon this card is attached to is Knocked Out by damage from an attack, put that Pokémon back into your hand. (Discard all cards attached to that Pokémon.)"
+          text "Rescue Energy provides 1 [C] Energy. If the Pokémon this card is attached to is Knocked Out by damage from an attack, put that Pokémon back into your hand. (Discard all cards attached to that Pokémon.)"
           def eff
           onPlay {reason->
             eff = delayed priority:EffectPriority.BEFORE_LAST, {
