@@ -2397,35 +2397,11 @@ public enum FireRedLeafGreen implements LogicCardInfo {
       case VS_SEEKER_100:
         return basicTrainer (this) {
           text "Search your discard pile for a Supporter card, show it to your opponent, and put it into your hand."
-          //
-          // [EX Rules Supporters Workaround] TODO: Edit this once no longer needed
-          //
-          def thisTurnSupporter
-          globalAbility{
-            delayed {
-              after PLAY_TRAINER, {
-                if(ef.cardToPlay.cardTypes.is(SUPPORTER)){
-                  thisTurnSupporter = ef.cardToPlay
-                }
-              }
-              after BETWEEN_TURNS, {
-                thisTurnSupporter = null
-              }
-            }
-          }
           onPlay {
-            if(thisTurnSupporter){
-              my.discard.getExcludedList(thisTurnSupporter).filterByType(SUPPORTER).select("Select one Supporter card").showToOpponent("Selected supporter (Supporters you play remain in play untill your turn ends)").moveTo(my.hand)
-            } else {
-              my.discard.filterByType(SUPPORTER).select("Select one Supporter card").showToOpponent("Selected supporter").moveTo(my.hand)
-            }
+            my.discard.filterByType(SUPPORTER).select("Select one Supporter card").showToOpponent("Selected supporter").moveTo(my.hand)
           }
           playRequirement{
-            if(thisTurnSupporter){
-              assert my.discard.getExcludedList(thisTurnSupporter).filterByType(SUPPORTER) : "You have no Supporters in your discard (Supporters you play remain in play untill your turn ends)"
-            } else {
-              assert my.discard.filterByType(SUPPORTER) : "You have no Supporters in your discard"
-            }
+            assert my.discard.filterByType(SUPPORTER) : "You have no Supporters in your discard"
           }
         };
       case POTION_101:
