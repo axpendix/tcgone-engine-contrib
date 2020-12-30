@@ -513,9 +513,7 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost F, C
             onAttack {
               damage 20 + 10 * self.numberOfDamageCounters
-              afterDamage {
-                heal 20, self
-              }
+              heal 20, self
             }
           }
           move "Wild Waves", {
@@ -751,17 +749,21 @@ public enum SecretWonders implements LogicCardInfo {
           move "Sleep Poison", {
             text "20 damage. The Defending Pokémon is now Asleep and Poisoned."
             energyCost G
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              applyAfterDamage ASLEEP
+              applyAfterDamage POISONED
             }
           }
           move "Magical Leaf", {
             text "40+ damage. Flip a coin. If heads, this attack does 40 damage plus 30 more damage and remove 3 damage counters from Roserade."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              flip {
+                damage 30
+                heal 30, self
+              }
             }
           }
 
@@ -773,17 +775,23 @@ public enum SecretWonders implements LogicCardInfo {
           move "Direct Hit", {
             text "50 damage. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              swiftDamage 50, defending
             }
           }
           move "Dragon Finish", {
-            text "(If you can’t discard cards, this attack does nothing.)"
-            energyCost R, R, W, R, W, R, W
-            attackRequirement {}
+            text "Discard 2 basic [R] Energy cards or 2 basic [W] Energy cards attached to Salamence. If you discarded 2 basic [R] Energy cards, this attack does 100 damage to the Defending Pokémon. If you discarded 2 basic [W] Energy cards, this attack does 100 damage to 1 of your opponent's Benched Pokémon.(If you can’t discard cards, this attack does nothing.)"
+            energyCost R, R, W, W
+            attackRequirement {
+              assert self.cards.filterByBasicEnergyType(R).size() >=2 || self.cards.filterByBasicEnergyType(W).size() >=2 : "$self doesn't have enough Basic [R] or [W] Energy cards to discard"
+            }
             onAttack {
-              damage 0
+              def energys = self.cards.select(count:2,"Select 2 basic [R] or [W] Energy cards to discard", {it.cardTypes.is(BASIC_ENERGY) && (it.asEnergyCard().containsType(R) || it.asEnergyCard().containsType(W))}, self.owner, {it[0].basicType == it[1].basicType})
+              if(energys.first().asEnergyCard().containsType(R)) {
+                damage 100
+              }else if(energys.asEnergyCard().containsType(W) && opp.bench) {
+                damage 100, opp.bench.select("$thisMove does 100 damage to 1 of your opponent's Benched Pokémon")
+              }
             }
           }
 
