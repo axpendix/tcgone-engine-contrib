@@ -881,7 +881,7 @@ public enum SecretWonders implements LogicCardInfo {
               if (r==PLAY_FROM_HAND && self.benched && confirm("Use Flame Dash?")) {
                 powerUsed()
                 def active = self.owner.active
-                if(self, null, Source.SRC_ABILITY) {
+                if(sw2 (self, null, Source.SRC_ABILITY)) {
                   active.cards.select(min:0, max:active.cards.filterByType(ENERGY).size(), "Move any number of Energy cards attached to $active to $self",cardTypeFilter(ENERGY))
                 }
               }
