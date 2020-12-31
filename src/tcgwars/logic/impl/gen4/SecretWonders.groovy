@@ -489,7 +489,7 @@ public enum SecretWonders implements LogicCardInfo {
               assert my.all.find{it.name=="Gastrodon West Sea"} : "You have no Gastrodon West Sea in play"
               assert self.numberOfDamageCounters : "$self is healthy"
               powerUsed()
-              def count = choose(1..min(self.numberOfDamageCounters,3),"Move how many damage counters?",min(self.numberOfDamageCounters,3))
+              def count = choose(1..Math.min(self.numberOfDamageCounters,3),"Move how many damage counters?",Math.min(self.numberOfDamageCounters,3))
             }
           }
           move "Dwindling Wave", {
@@ -786,10 +786,10 @@ public enum SecretWonders implements LogicCardInfo {
               assert self.cards.filterByBasicEnergyType(R).size() >=2 || self.cards.filterByBasicEnergyType(W).size() >=2 : "$self doesn't have enough Basic [R] or [W] Energy cards to discard"
             }
             onAttack {
-              def energys = self.cards.select(count:2,"Select 2 basic [R] or [W] Energy cards to discard", {it.cardTypes.is(BASIC_ENERGY) && (it.asEnergyCard().containsType(R) || it.asEnergyCard().containsType(W))}, self.owner, {it[0].basicType == it[1].basicType})
+              def energys = self.cards.select(count:2,"Select 2 basic [R] or [W] Energy cards to discard", {it.cardTypes.is(BASIC_ENERGY) && (it.asEnergyCard().containsType(R) || it.asEnergyCard().containsType(W))}, self.owner, {it[0].basicType == it[1].basicType}).discard()
               if(energys.first().asEnergyCard().containsType(R)) {
                 damage 100
-              }else if(energys.asEnergyCard().containsType(W) && opp.bench) {
+              }else if(energys.first().asEnergyCard().containsType(W) && opp.bench) {
                 damage 100, opp.bench.select("$thisMove does 100 damage to 1 of your opponent's Benched Pokémon")
               }
             }
@@ -800,16 +800,20 @@ public enum SecretWonders implements LogicCardInfo {
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
           weakness L, PLUS20
           pokePower "Aqua Recover", {
-            text "Once during your turn, when you put Suicune from your hand onto your Bench, you may search you discard pile for up to 3 Pokémon, show them to your opponent, and put them into your hand."
-            actionA {
+            text "Once during your turn, when you put Suicune from your hand onto your Bench, you may search you discard pile for up to 3 [W] Pokémon, show them to your opponent, and put them into your hand."
+            onActivate {
+              if (r==PLAY_FROM_HAND && my.discard.find{it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(W)} && confirm('Use AquaRecovery?')) {
+                powerUsed()
+                my.discard.select(max:3,"Search you discard pile for up to 3 [W] Pokémon",it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(W)).moveTo(my.hand)
+              }
             }
           }
           move "Cure Stream", {
-            text "60 damage. ."
+            text "60 damage. During your opponent's next turn, any damage done by attacks from the Defending Pokémon is reduced by 20."
             energyCost W, W, W
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              reduceDamageFromDefendingNextTurn(hp(20), thisMove, defending)
             }
           }
 
@@ -820,14 +824,22 @@ public enum SecretWonders implements LogicCardInfo {
           pokePower "Miracle Aroma", {
             text "Once during your turn , you may flip a coin. If heads, choose either Asleep, Burned, or Poisoned. The Defending Pokémon is now affected by that Special Condition. This power can’t be used if Venusaur is affected by a Special Condition."
             actionA {
+              checkLastTurn()
+              checkNoSPC()
+              powerUsed()
+              flip {
+                apply(choose([ASLEEP,BURNED,CONFUSED,POISONED], ["Asleep", "Burned", "Poisoned"], "Apply to Your opponent's Active Pokémon") as SpecialConditionType, opp.active, Source.SRC_ABILITY)
+              }
             }
           }
           move "Giant Bloom", {
             text "60 damage. Flip a coin. If heads, remove 4 damage counters from Venusaur."
             energyCost G, G, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              flip {
+                heal 40, self
+              }
             }
           }
 
