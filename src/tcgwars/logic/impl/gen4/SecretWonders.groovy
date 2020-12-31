@@ -263,7 +263,7 @@ public enum SecretWonders implements LogicCardInfo {
             actionA {
               checkLastTurn()
               checkNoSPC()
-              assert my.hand.filterByBasicEnergyType(W) : "There are no basic Energys in your hand."
+              assert my.hand.filterByBasicEnergyType(W) : "There are no basic [W] Energys in your hand."
               powerUsed()
               while(true){
                 if(!my.hand.filterByBasicEnergyType(W)) break
@@ -849,19 +849,25 @@ public enum SecretWonders implements LogicCardInfo {
           weakness F, PLUS20
           resistance P, MINUS20
           move "Baleful Wind", {
-            text "Choose a card from you opponent’s hand without looking and discard it. If you discarded a Trainer, Support, or Stadium card, choose 1 more card from your opponent’s hand without looking and discard it."
+            text "Choose a card from your opponent’s hand without looking and discard it. If you discarded a Trainer, Support, or Stadium card, choose 1 more card from your opponent’s hand without looking and discard it."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert opp.hand : "Your opponent's hand is empty"
+            }
             onAttack {
-              damage 0
+              if(opp.hand.shuffledCopy.select(hidden: true, "Choose a card from your opponent's hand without looking").discard().first().cardTypes.is(TRAINER)) {
+                opp.hand.shuffledCopy.select(hidden: true, "Choose a card from your opponent's hand without looking").discard()
+              }
             }
           }
           move "Raid", {
             text "10 damage. If you played Absol from your hand during this turn, this attack’s base damage is 40 instead of 10."
             energyCost D
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              if(self.turnCount == bg.turnCount) {
+                damage 30
+              }
             }
           }
 
@@ -870,16 +876,23 @@ public enum SecretWonders implements LogicCardInfo {
         return evolution (this, from:"Growlithe", hp:HP100, type:FIRE, retreatCost:2) {
           weakness W, PLUS30
           pokePower "Flame Dash", {
-            text "Once during your turn, when you play Arcanine from you hand to evolve 1 of your Benched Pokémon, you may switch Arcanine with 1 of your Active Pokémon. If you do, you may move any number of Energy cards attached to that Pokémon to Arcanine."
-            actionA {
+            text "Once during your turn, when you play Arcanine from your hand to evolve 1 of your Benched Pokémon, you may switch Arcanine with 1 of your Active Pokémon. If you do, you may move any number of Energy cards attached to that Pokémon to Arcanine."
+            onActivate {r->
+              if (r==PLAY_FROM_HAND && self.benched && confirm("Use Flame Dash?")) {
+                powerUsed()
+                def active = self.owner.active
+                if(self, null, Source.SRC_ABILITY) {
+                  active.cards.select(min:0, max:active.cards.filterByType(ENERGY).size(), "Move any number of Energy cards attached to $active to $self",cardTypeFilter(ENERGY))
+                }
+              }
             }
           }
           move "Inferno Onrush", {
             text "120 damage. Arcanine does 40 damage to itself."
             energyCost R, R, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 120
+              damage 40, self
             }
           }
 
@@ -891,17 +904,20 @@ public enum SecretWonders implements LogicCardInfo {
           move "Ghost Head", {
             text "Put as many damage counters as you like on Banette. (You can’t put more than Banette’s remaining HP.) Put that many damage counters on the Defending Pokémon."
             energyCost ()
-            attackRequirement {}
             onAttack {
-              damage 0
+              def count = choose(1..self.remainingHP.value / 10, "Put as many damage counters as you like on Banette")
+              directDamage 10 * count, self
+              directDamage 10 * count, opp.active
             }
           }
           move "Spiteful Pain", {
             text "40+ damage. If Banette is in your discard pile, this attack does 40 damage plus 40 more damage, then search your discard pile for Banette, show it to your opponent, and shuffle it into your deck."
             energyCost P, P
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              if(my.discard.find{it.name == "Banette"}) {
+                my.discard.select("Shuffle Banette into your deck", {it.name == "Banette"})
+              }
             }
           }
 
@@ -913,17 +929,32 @@ public enum SecretWonders implements LogicCardInfo {
           move "Dig Trap", {
             text "Flip a coin. If tails, this attack does nothing. If heads, prevent all effects of an attack, including damage, done to Dugtrio during your opponent’s next turn. If Dugtrio is your Active Pokémon at the end of your opponent’s next turn, put 6 damage counters on 1 of your opponent’s Bench Pokémon."
             energyCost F, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip {
+                preventAllEffectsNextTurn()
+                delayed {
+                  before BETWEEN_TURNS, {
+                    if (bg.currentTurn == self.owner.opposite && opp.bench) {
+                      bc "Dig Trap activates"
+                      directDamage 60, opp.bench.select("put 6 damage counters on 1 of your opponent’s Bench Pokémon")
+                    }
+                  }
+                  after FALL_BACK, self, {unregister()}
+                  after EVOLVE, self, {unregister()}
+                  after DEVOLVE, self, {unregister()}
+                  unregisterAfter 2
+                }
+              }
             }
           }
           move "Pit Trap", {
             text "50+ damage. Your opponent flips a coin. If tails, this attack does 50 damage plus 50 more damage."
             energyCost F, F, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              flip 1, {}, {
+                damage 50
+              }
             }
           }
 
@@ -935,6 +966,7 @@ public enum SecretWonders implements LogicCardInfo {
           pokePower "Motor Drive", {
             text "Once during your turn , you may search your discard pile for a Energy card and attach it to Elective. This power can’t be used if Elective is affected by a Special Condition."
             actionA {
+
             }
           }
           move "Discharge", {
@@ -953,15 +985,42 @@ public enum SecretWonders implements LogicCardInfo {
           resistance M, MINUS20
           pokePower "Energy Shift", {
             text "Once during your turn, if Electrode would be Knocked Out by damage from an attack, you may use this power. Electrode isn’t discarded. Instead, attach it as an Energy card to 1 of your Pokémon. While attached, this card is a Special Energy card and provides every type of Energy but provides on 1 Energy at a time."
-            actionA {
+            delayedA priority:EffectPriority.BEFORE_LAST, {
+              before KNOCKOUT, self, {
+                if((ef as Knockout).byDamageFromAttack && my.all.find{it != self} && confirm("Use Energy Shift?")){
+                  powerUsed()
+                  def pcs=self
+                  delayed(inline: true){
+                    after KNOCKOUT, pcs, {
+                      def pkmnCard = pcs.topPokemonCard
+                      def tar = my.all.findAll{it != pcs}.select("Choose a pokemon to attach $pcs to")
+                      def energyCard
+                      energyCard = specialEnergy(new CustomCardInfo(ELECTRODE_26).setCardTypes(ENERGY, SPECIAL_ENERGY), [[R, D, F, G, W, Y, L, M, P]]) {
+                        typeImagesOverride = [RAINBOW]
+                        onRemoveFromPlay {
+                          bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
+                        }
+                      }
+                      energyCard.player = thisCard.player
+                      bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
+                      attachEnergy(tar, energyCard)
+                      bc "$energyCard is now a Special Energy Card attached to $tar"
+                      owner.delegate.unregister()
+                    }
+                  }
+                }
+              }
             }
           }
           move "Ion Blast", {
             text "40+ damage. You may do 40 damage plus 60 more damage. If you do, Electrode does 100 damage to itself."
             energyCost L, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              if(confirm("Deal 60 additional damage?")) {
+                damage 60
+                damage 100, self
+              }
             }
           }
 

@@ -1627,20 +1627,12 @@ public enum Arceus implements LogicCardInfo {
       case BEEDRILL_G_53:
         return basic (this, hp:HP080, type:GRASS, retreatCost:1) {
           weakness R
-          def raidTurn = -1
-          customAbility {
-            onActivate {r->
-              if(r == PLAY_FROM_HAND) {
-                raidTurn = bg.turnCount
-              }
-            }
-          }
           move "Raid", {
             text "10 damage. If you playd Beedrill G from your hand during this turn, this attack’s base damage is 40 instead of 10."
             energyCost G
             onAttack {
               damage 10
-              if(raidTurn == bg.turnCount){
+              if(self.lastEvolved == bg.turnCount){
                 damage 30
               }
             }
