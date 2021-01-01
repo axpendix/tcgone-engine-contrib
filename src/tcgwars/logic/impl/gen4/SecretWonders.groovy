@@ -1003,6 +1003,7 @@ public enum SecretWonders implements LogicCardInfo {
                       }
                       energyCard.player = thisCard.player
                       bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
+                      bc "$tar, $energyCard" // what is null?
                       attachEnergy(tar, energyCard)
                       bc "$energyCard is now a Special Energy Card attached to $tar"
                       owner.delegate.unregister()
