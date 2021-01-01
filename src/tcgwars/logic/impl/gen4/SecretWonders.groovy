@@ -990,23 +990,22 @@ public enum SecretWonders implements LogicCardInfo {
                 if((ef as Knockout).byDamageFromAttack && self.owner.pbg.all.find{it != self} && confirm("Use Energy Shift?")){
                   powerUsed()
                   def pcs=self
-                  def pkmnCard = self.topPokemonCard
                   delayed(inline: true){
                     after KNOCKOUT, pcs, {
-                      def tar = self.owner.pbg.all.findAll{it != pcs}.select("Choose a pokemon to attach $pcs to",pcs.owner)
+                      def type = choose([R, W, G, L, F, P, M, D, Y],["Fire","Water","Grass","Lightning","Fighting","Psychic","Metal","Darkness","Fairy"],"What type of energy?")
+                      def pkmnCard = pcs.topPokemonCard
+                      def pcs = pcs.owner.pbg.all.findAll{it != self}.select("Choose a pokemon to attach $self to",pcs.owner)
                       def energyCard
-                      energyCard = specialEnergy(new CustomCardInfo(ELECTRODE_26).setCardTypes(ENERGY, SPECIAL_ENERGY), [[R, D, F, G, W, Y, L, M, P]]) {
-                        typeImagesOverride = [RAINBOW]
+                      energyCard = specialEnergy(new CustomCardInfo(ELECTRODE_21).setCardTypes(ENERGY, SPECIAL_ENERGY), [[type],[type]]) {
+                        onPlay {}
                         onRemoveFromPlay {
                           bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
                         }
                       }
                       energyCard.player = thisCard.player
                       bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
-                      bc "$tar, $energyCard" // what is null?
-                      attachEnergy(tar, energyCard)
-                      bc "$energyCard is now a Special Energy Card attached to $tar"
-                      owner.delegate.unregister()
+                      attachEnergy(pcs, energyCard)
+                      bc "$energyCard is now a Special Energy Card that provides 2 [$type] energy attached to $pcs"
                     }
                   }
                 }
