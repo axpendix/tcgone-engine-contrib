@@ -990,10 +990,10 @@ public enum SecretWonders implements LogicCardInfo {
                 if((ef as Knockout).byDamageFromAttack && self.owner.pbg.all.find{it != self} && confirm("Use Energy Shift?")){
                   powerUsed()
                   def pcs=self
-                  def pkmnCard = pcs.topPokemonCard
+                  def pkmnCard = self.topPokemonCard
                   delayed(inline: true){
                     after KNOCKOUT, pcs, {
-                      def tar = my.all.findAll{it != pcs}.select("Choose a pokemon to attach $pcs to",pcs.owner)
+                      def tar = self.owner.pbg.all.findAll{it != pcs}.select("Choose a pokemon to attach $pcs to",pcs.owner)
                       def energyCard
                       energyCard = specialEnergy(new CustomCardInfo(ELECTRODE_26).setCardTypes(ENERGY, SPECIAL_ENERGY), [[R, D, F, G, W, Y, L, M, P]]) {
                         typeImagesOverride = [RAINBOW]
