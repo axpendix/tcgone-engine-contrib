@@ -994,7 +994,7 @@ public enum SecretWonders implements LogicCardInfo {
                     after KNOCKOUT, pcs, {
                       def type = choose([R, W, G, L, F, P, M, D, Y],["Fire","Water","Grass","Lightning","Fighting","Psychic","Metal","Darkness","Fairy"],"What type of energy?")
                       def pkmnCard = pcs.topPokemonCard
-                      def pcs = pcs.owner.pbg.all.findAll{it != self}.select("Choose a pokemon to attach $self to",pcs.owner)
+                      def tar = pcs.owner.pbg.all.findAll{it != self}.select("Choose a pokemon to attach $self to",pcs.owner)
                       def energyCard
                       energyCard = specialEnergy(new CustomCardInfo(ELECTRODE_21).setCardTypes(ENERGY, SPECIAL_ENERGY), [[type],[type]]) {
                         onPlay {}
@@ -1004,8 +1004,8 @@ public enum SecretWonders implements LogicCardInfo {
                       }
                       energyCard.player = thisCard.player
                       bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
-                      attachEnergy(pcs, energyCard)
-                      bc "$energyCard is now a Special Energy Card that provides 2 [$type] energy attached to $pcs"
+                      attachEnergy(tar, energyCard)
+                      bc "$energyCard is now a Special Energy Card that provides 2 [$type] energy attached to $tar"
                     }
                   }
                 }
