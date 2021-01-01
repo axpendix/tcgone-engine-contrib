@@ -987,13 +987,13 @@ public enum SecretWonders implements LogicCardInfo {
             text "Once during your turn, if Electrode would be Knocked Out by damage from an attack, you may use this power. Electrode isn’t discarded. Instead, attach it as an Energy card to 1 of your Pokémon. While attached, this card is a Special Energy card and provides every type of Energy but provides on 1 Energy at a time."
             delayedA priority:EffectPriority.BEFORE_LAST, {
               before KNOCKOUT, self, {
-                if((ef as Knockout).byDamageFromAttack && my.all.find{it != self} && confirm("Use Energy Shift?")){
+                if((ef as Knockout).byDamageFromAttack && self.owner.pbg.all.find{it != self} && confirm("Use Energy Shift?")){
                   powerUsed()
                   def pcs=self
+                  def pkmnCard = pcs.topPokemonCard
                   delayed(inline: true){
                     after KNOCKOUT, pcs, {
-                      def pkmnCard = pcs.topPokemonCard
-                      def tar = my.all.findAll{it != pcs}.select("Choose a pokemon to attach $pcs to")
+                      def tar = my.all.findAll{it != pcs}.select("Choose a pokemon to attach $pcs to",pcs.owner)
                       def energyCard
                       energyCard = specialEnergy(new CustomCardInfo(ELECTRODE_26).setCardTypes(ENERGY, SPECIAL_ENERGY), [[R, D, F, G, W, Y, L, M, P]]) {
                         typeImagesOverride = [RAINBOW]
