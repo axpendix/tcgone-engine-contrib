@@ -1161,7 +1161,7 @@ public enum SecretWonders implements LogicCardInfo {
               assert self.numberOfDamageCounters : "$self is healthy"
             }
             onAttack {
-              def max = Math.min(self.numberOfDamageCounters,self.cards.find{it.name == "Smoochem"}?4:2
+              def max = Math.min(self.numberOfDamageCounters,self.cards.find{it.name == "Smoochem"}?4:2)
               def count = choose(1..max),"Move how many damage counters?",max)
               self.damage -= hp(10 * count)
               directDamage 10 * count, defending
