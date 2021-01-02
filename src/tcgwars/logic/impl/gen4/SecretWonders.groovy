@@ -490,6 +490,8 @@ public enum SecretWonders implements LogicCardInfo {
               assert self.numberOfDamageCounters : "$self is healthy"
               powerUsed()
               def count = choose(1..Math.min(self.numberOfDamageCounters,3),"Move how many damage counters?",Math.min(self.numberOfDamageCounters,3))
+              self.damage -= hp(10 * count)
+              directDamage 10 * count, my.all.findAll{it.name=="Gastrodon West Sea"}.select("Move damage counters to"), SRC_ABILITY
             }
           }
           move "Dwindling Wave", {
@@ -882,7 +884,9 @@ public enum SecretWonders implements LogicCardInfo {
                 powerUsed()
                 def active = self.owner.active
                 if(sw2 (self, null, Source.SRC_ABILITY)) {
-                  active.cards.select(min:0, max:active.cards.filterByType(ENERGY).size(), "Move any number of Energy cards attached to $active to $self",cardTypeFilter(ENERGY))
+                  active.cards.select(min:0, max:active.cards.filterByType(ENERGY).size(), "Move any number of Energy cards attached to $active to $self",cardTypeFilter(ENERGY)).each{
+                    energySwitch(active,self,it)
+                  }
                 }
               }
             }
@@ -907,7 +911,7 @@ public enum SecretWonders implements LogicCardInfo {
             onAttack {
               def count = choose(1..self.remainingHP.value / 10, "Put as many damage counters as you like on Banette")
               directDamage 10 * count, self
-              directDamage 10 * count, opp.active
+              directDamage 10 * count, defending
             }
           }
           move "Spiteful Pain", {
@@ -1031,17 +1035,25 @@ public enum SecretWonders implements LogicCardInfo {
           move "Keen Eye", {
             text "Search your deck for up to 2 cards and put them into your hand. Shuffle your deck afterward."
             energyCost ()
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Your deck is empty"
+            }
             onAttack {
-              damage 0
+              my.deck.search(min:1,max:2,"Select up to 2 cards",{true}).moveTo(hidden:true,my.hand)
             }
           }
           move "Baton Pass", {
             text "40 damage. You may switch Furret with 1 of your Benched Pokémon. If you do, move as many Energy cards attached to Furret as you like to the new Active Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              if(my.bench && confirm("Switch Furret wieh 1 of your Benched Pokémon?")) {
+                if(sw2(my.bench.select("New Active Pokémon"))) {
+                  self.cards.select(min:0,max:self.cards.filterByType(ENERGY).size(),"Move any number of Energy cards to ${my.active}",cardTypeFilter(ENERGY)).each{
+                    energySwitch(self,my.active,it)
+                  }
+                }
+              }
             }
           }
 
@@ -1054,7 +1066,26 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              afterDamage {
+                if(!defending.topPokemonCard.moves.isEmpty()){
+                  def move=choose(defending.topPokemonCard.moves, defending.topPokemonCard.moves.collect({it.name}), "Encore") as Move
+                  def pcs = defending
+                  bc "$pcs can only use ${move.name} next turn."
+                  delayed{
+                    before ATTACK_MAIN, {
+                      if (ef.move != move) {
+                        wcu "$pcs can only use ${move.name}"
+                        prevent()
+                      }
+                    }
+                    unregisterAfter 2
+                    after FALL_BACK, pcs, {unregister()}
+                    after EVOLVE, pcs, {unregister()}
+                    after DEVOLVE, pcs, {unregister()}
+                  }
+                }
+              }
             }
           }
           move "Break Beam", {
@@ -1062,7 +1093,13 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost W, P
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              if(confirm("Deal 20 more damage?")) {
+                damage 20
+                afterDamage {
+                  apply CONFUSED, self
+                }
+              }
             }
           }
 
@@ -1074,17 +1111,20 @@ public enum SecretWonders implements LogicCardInfo {
           move "Double Throw", {
             text "Choose 2 of your opponent’s Pokémon. This attack does 30 damage to each of them."
             energyCost F, F, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              multiselect(opp.all, 2, "Choose 2 of your opponent's Pokémon").each {
+                damage 30, it
+              }
             }
           }
           move "Megaton Rock", {
-            text "80 damage. ."
+            text "80 damage.You may do 40 damage instead of 80 to the Defending Pokémon. If you do, during your opponent's next turn, any damage done to Golem by attacks is reduced by 40."
             energyCost F, F, F, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              if(confirm("Do 40 damage instead of 80?")) {
+                reduceDamageNextTurn(hp(40), thisMove)
+              }
             }
           }
 
@@ -1092,20 +1132,39 @@ public enum SecretWonders implements LogicCardInfo {
       case JYNX_30:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:2) {
           weakness P, PLUS20
+          def turnCount = -1
+          def lastDamage = null
+          customAbility {
+            delayed (priority: LAST) {
+              before APPLY_ATTACK_DAMAGES, {
+                if(bg().currentTurn==self.owner.opposite) {
+                  turnCount=bg.turnCount
+                  lastDamage=bg().dm().find({it.to==self && it.dmg.value>=0})?.dmg
+                }
+              }
+            }
+          }
           move "Icy Kiss", {
             text "30 damage. If Jynx was damaged by an attack during your opponent’s last turn, the Defending Pokémon is now Paralyzed."
             energyCost W, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              if(turnCount + 1 == bg.turnCount && lastDamage > 0) {
+                applyAfterDamage PARALYZED
+              }
             }
           }
           move "Lovely Kiss", {
-            text "Move 2 damage counter from Jynx to the Defending Pokémon. If Smoochum is anywhere under Jynx, move 4 damage counters instead."
+            text "Move 2 damage counters from Jynx to the Defending Pokémon. If Smoochum is anywhere under Jynx, move 4 damage counters instead."
             energyCost P, C
-            attackRequirement {}
+            attackRequirement {
+              assert self.numberOfDamageCounters : "$self is healthy"
+            }
             onAttack {
-              damage 0
+              def max = Math.min(self.numberOfDamageCounters,self.cards.find{it.name == "Smoochem"}?4:2
+              def count = choose(1..max),"Move how many damage counters?",max)
+              self.damage -= hp(10 * count)
+              directDamage 10 * count, defending
             }
           }
 
