@@ -2649,7 +2649,7 @@ public enum LostThunder implements LogicCardInfo {
           customAbility {
             delayed (priority: LAST) {
               before APPLY_ATTACK_DAMAGES, {
-                if(bg().currentTurn==self.owner.opposite) {
+                if(bg().currentTurn==self.owner.opposite && self.active) {
                   turnCount=bg.turnCount
                   lastDamage=bg().dm().find({it.to==self && it.dmg.value>=0})?.dmg
                 }
