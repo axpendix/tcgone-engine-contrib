@@ -882,7 +882,9 @@ public enum SecretWonders implements LogicCardInfo {
                 powerUsed()
                 def active = self.owner.active
                 if(sw2 (self, null, Source.SRC_ABILITY)) {
-                  active.cards.select(min:0, max:active.cards.filterByType(ENERGY).size(), "Move any number of Energy cards attached to $active to $self",cardTypeFilter(ENERGY))
+                  active.cards.select(min:0, max:active.cards.filterByType(ENERGY).size(), "Move any number of Energy cards attached to $active to $self",cardTypeFilter(ENERGY)).each{
+                    energySwitch(active,self,it)
+                  }
                 }
               }
             }
@@ -1031,17 +1033,25 @@ public enum SecretWonders implements LogicCardInfo {
           move "Keen Eye", {
             text "Search your deck for up to 2 cards and put them into your hand. Shuffle your deck afterward."
             energyCost ()
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Your deck is empty"
+            }
             onAttack {
-              damage 0
+              my.deck.search(min:1,max:2,"Select up to 2 cards",{true}).moveTo(hidden:true,my.hand)
             }
           }
           move "Baton Pass", {
             text "40 damage. You may switch Furret with 1 of your Benched Pokémon. If you do, move as many Energy cards attached to Furret as you like to the new Active Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              if(my.bench && confirm("Switch Furret wieh 1 of your Benched Pokémon?")) {
+                if(sw2(my.bench.select("New Active Pokémon"))) {
+                  self.cards.select(min:0,max:self.cards.filterByType(ENERGY).size(),"Move any number of Energy cards to ${my.active}",cardTypeFilter(ENERGY)).each{
+                    energySwitch(self,my.active,it)
+                  }
+                }
+              }
             }
           }
 
@@ -1054,7 +1064,26 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              afterDamage {
+                if(!defending.topPokemonCard.moves.isEmpty()){
+                  def move=choose(defending.topPokemonCard.moves, defending.topPokemonCard.moves.collect({it.name}), "Encore") as Move
+                  def pcs = defending
+                  bc "$pcs can only use ${move.name} next turn."
+                  delayed{
+                    before ATTACK_MAIN, {
+                      if (ef.move != move) {
+                        wcu "$pcs can only use ${move.name}"
+                        prevent()
+                      }
+                    }
+                    unregisterAfter 2
+                    after FALL_BACK, pcs, {unregister()}
+                    after EVOLVE, pcs, {unregister()}
+                    after DEVOLVE, pcs, {unregister()}
+                  }
+                }
+              }
             }
           }
           move "Break Beam", {
@@ -1062,7 +1091,13 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost W, P
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              if(confirm("Deal 20 more damage?")) {
+                damage 20
+                afterDamage {
+                  apply CONFUSED, self
+                }
+              }
             }
           }
 
