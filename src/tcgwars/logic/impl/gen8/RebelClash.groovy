@@ -510,7 +510,7 @@ public enum RebelClash implements LogicCardInfo {
                 delayed {
                   before ATTACH_ENERGY, pcs, {
                     if(ef.reason == PLAY_FROM_HAND) {
-                      wcu "Bubble Net: Can't attach energy to ${pcs}"
+                      wcu "Threatening Pattern: Can't attach energy to ${pcs}"
                       prevent()
                     }
                   }
