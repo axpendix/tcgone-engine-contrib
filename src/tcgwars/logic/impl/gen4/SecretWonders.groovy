@@ -1124,6 +1124,8 @@ public enum SecretWonders implements LogicCardInfo {
               damage 40
               if(confirm("Do 40 damage instead of 80?")) {
                 reduceDamageNextTurn(hp(40), thisMove)
+              } else {
+                damage 40
               }
             }
           }
@@ -1149,7 +1151,7 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost W, C
             onAttack {
               damage 30
-              if(turnCount + 1 == bg.turnCount && lastDamage > 0) {
+              if(turnCount + 1 == bg.turnCount && lastDamage > hp(0)) {
                 applyAfterDamage PARALYZED
               }
             }
@@ -1161,7 +1163,7 @@ public enum SecretWonders implements LogicCardInfo {
               assert self.numberOfDamageCounters : "$self is healthy"
             }
             onAttack {
-              def max = Math.min(self.numberOfDamageCounters,self.cards.find{it.name == "Smoochem"}?4:2)
+              def max = Math.min(self.numberOfDamageCounters,self.cards.find{it.name == "Smoochum"}?4:2)
               def count = choose(1..max,"Move how many damage counters?",max)
               self.damage -= hp(10 * count)
               directDamage 10 * count, defending
