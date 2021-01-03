@@ -1124,6 +1124,8 @@ public enum SecretWonders implements LogicCardInfo {
               damage 40
               if(confirm("Do 40 damage instead of 80?")) {
                 reduceDamageNextTurn(hp(40), thisMove)
+              } else {
+                damage 40
               }
             }
           }
@@ -1149,7 +1151,7 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost W, C
             onAttack {
               damage 30
-              if(turnCount + 1 == bg.turnCount && lastDamage > 0) {
+              if(turnCount + 1 == bg.turnCount && lastDamage > hp(0)) {
                 applyAfterDamage PARALYZED
               }
             }
@@ -1161,7 +1163,7 @@ public enum SecretWonders implements LogicCardInfo {
               assert self.numberOfDamageCounters : "$self is healthy"
             }
             onAttack {
-              def max = Math.min(self.numberOfDamageCounters,self.cards.find{it.name == "Smoochem"}?4:2)
+              def max = Math.min(self.numberOfDamageCounters,self.cards.find{it.name == "Smoochum"}?4:2)
               def count = choose(1..max,"Move how many damage counters?",max)
               self.damage -= hp(10 * count)
               directDamage 10 * count, defending
@@ -1173,24 +1175,36 @@ public enum SecretWonders implements LogicCardInfo {
         return evolution (this, from:"Magmar", hp:HP110, type:FIRE, retreatCost:3) {
           weakness W, PLUS30
           pokeBody "Flame Body", {
-            text "When you attach a Energy card from your hand to Magmortar, remove 2 damage counters from Magmortar."
+            text "When you attach a [R] Energy card from your hand to Magmortar, remove 2 damage counters from Magmortar."
             delayedA {
+            after ATTACH_ENERGY, self, {
+              if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(R)) {
+                bc "Flame Body removes 2 damage counters from $self"
+                heal 20, self
+              }
             }
           }
+          }
           move "Flame Blast", {
-            text "20× damage. Energy attached to Magmortar."
-            energyCost R, R
-            attackRequirement {}
+            text "20× damage. Does 20 damage times the number of [R] Energy attached to Magmortar."
+            energyCost R
+            attackRequirement {
+              assert self.cards.energyCount(R) : "There is no [R] Energy attached to $self"
+            }
             onAttack {
-              damage 0
+              damage 20 * self.cards.energyCount(R)
             }
           }
           move "Fireball Bazooka", {
             text "40 damage. Does 20 damage to 2 of your opponent’s Benched Pokémon."
             energyCost R, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              if(opp.bench) {
+                multiselect(opp.all, 2, "Does 20 damage to 2 of your opponent's Benched Pokémon").each {
+                  damage 20, it
+                }
+              }
             }
           }
 
@@ -1199,17 +1213,35 @@ public enum SecretWonders implements LogicCardInfo {
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
           resistance M, MINUS20
+          globalAbility {Card thisCard->
+            delayed {
+              before KNOCKOUT, {
+                if(ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite){
+                  bg.em().storeObject("Minus Charge", bg.turnCount)
+                }
+              }
+            }
+          }
           pokePower "Minus Charge", {
             text "Once during your turn , if any Pokémon were Knocked Out during your opponent’s last turn, you may draw 2 cards. You can’t use more than 1 Minus Charge Poké-Power each turn. This power can’t be used if Minun is affected by a Special Condition."
             actionA {
+              checkLastTurn()
+              checkNoSPC()
+              assert bg.em().retrieveObject("Dance_of_Tribute") != bg.turnCount : "You can't use more than 1 Dance of Tribute Ability each turn."
+              assert bg.em().retrieveObject("Dance_of_Tribute") == bg.turnCount-1 : "None of your Pokémon were Knocked Out during your opponent's last turn."
+              powerUsed()
+              bg.em().storeObject("Minus Charge", bg.turnCount)
+              draw 2
             }
           }
           move "Tag Play —", {
             text "20 damage. If you have Plusle on your Bench, you may move an Energy card attached to Minum to 1 of your Benched Pokémon."
             energyCost L
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              if(my.bench.find{it.name == "Plusle"} && confirm("Move an energy attached to $self to 1 of your Benched Pokémon?")) {
+                moveEnergy(self,my.bench)
+              }
             }
           }
 
@@ -1219,19 +1251,20 @@ public enum SecretWonders implements LogicCardInfo {
           weakness R, PLUS20
           resistance F, MINUS20
           move "Silver Wind", {
-            text ", that attack does 40 more damage."
+            text "During your next turn, if an attack does damage to the Defending Pokémon, that attack does 40 more damage."
             energyCost ()
-            attackRequirement {}
             onAttack {
-              damage 0
+              increasedDamageDoneToDefending(self, defending, 40, thisMove.name)
             }
           }
           move "Raging Scales", {
             text "30+ damage. If Mothim has any damage counters on it, this attack does 30 damage plus 40 more damage."
             energyCost G, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              if(self.numberOfDamageCounters) {
+                damage 40
+              }
             }
           }
 
@@ -1242,17 +1275,22 @@ public enum SecretWonders implements LogicCardInfo {
           move "Poison Rub", {
             text "20 damage. The Defending Pokémon is now Poisoned. Before doing damage, you may switch 1 of the Defending Pokémon with 1 of your opponent’s Benched Pokémon. The new Defending Pokémon is now Poisoned."
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              if(opp.bench && confirm("Switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon?")) {
+                sw2 opp.bench.select("New Defending Pokémon")
+              }
+              damage 20
+              applyAfterDamage POISONED
             }
           }
           move "Pride Attack", {
             text "60+ damage. Flip a coin for each Nidoqueen on your Bench. This attack does 60 damage plus 30 more damage for each heads."
             energyCost P, P, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              flip my.bench.findAll{it.name == "Nidoqueen"}.size(), {
+                damage 30
+              }
             }
           }
 
