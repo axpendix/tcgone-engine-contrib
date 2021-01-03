@@ -1040,6 +1040,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
             onAttack {
               my.deck.search(min:1,max:2,"Select up to 2 cards",{true}).moveTo(hidden:true,my.hand)
+              shuffleDeck()
             }
           }
           move "Baton Pass", {
@@ -1135,7 +1136,7 @@ public enum SecretWonders implements LogicCardInfo {
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:2) {
           weakness P, PLUS20
           def turnCount = -1
-          def lastDamage = null
+          HP lastDamage = null
           customAbility {
             delayed (priority: LAST) {
               before APPLY_ATTACK_DAMAGES, {
@@ -1227,10 +1228,10 @@ public enum SecretWonders implements LogicCardInfo {
             actionA {
               checkLastTurn()
               checkNoSPC()
-              assert bg.em().retrieveObject("Dance_of_Tribute") != bg.turnCount : "You can't use more than 1 Dance of Tribute Ability each turn."
-              assert bg.em().retrieveObject("Dance_of_Tribute") == bg.turnCount-1 : "None of your Pokémon were Knocked Out during your opponent's last turn."
-              powerUsed()
+              assert bg.em().retrieveObject("Minus Charge") != bg.turnCount : "You can't use more than 1 Minus Charge Ability each turn."
+              assert bg.em().retrieveObject("Minus Charge") == bg.turnCount-1 : "None of your Pokémon were Knocked Out during your opponent's last turn."
               bg.em().storeObject("Minus Charge", bg.turnCount)
+              powerUsed()
               draw 2
             }
           }
@@ -1299,18 +1300,31 @@ public enum SecretWonders implements LogicCardInfo {
         return evolution (this, from:"Pidgeotto", hp:HP120, type:COLORLESS, retreatCost:0) {
           weakness L, PLUS30
           resistance F, MINUS20
+          def turnCount = -1
+          HP lastDamage = null
+          customAbility {
+            delayed (priority: LAST) {
+              before APPLY_ATTACK_DAMAGES, {
+                if(bg().currentTurn==self.owner.opposite) {
+                  turnCount=bg.turnCount
+                  lastDamage=bg().dm().find({it.to==self && it.dmg.value>=0})?.dmg
+                }
+              }
+            }
+          }
           move "Mirror Move", {
             text "If Pidgeot was damaged by an attack during your opponent’s last turn, this attack does the same amount of damage done to Pidgeot to the Defending Pokémon."
             energyCost C, C
-            attackRequirement {}
+            attackRequirement {
+              assert bg.turnCount = turnCount + 1 : "$self was not damaged by an attack last turn"
+            }
             onAttack {
-              damage 0
+              damage lastDamage.value
             }
           }
           move "Whirlwind", {
             text "50 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 50
               whirlwind()
@@ -1322,17 +1336,33 @@ public enum SecretWonders implements LogicCardInfo {
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
           resistance M, MINUS20
+          globalAbility {Card thisCard->
+            delayed {
+              before KNOCKOUT, {
+                if(ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite){
+                  bg.em().storeObject("Plus Charge", bg.turnCount)
+                }
+              }
+            }
+          }
           pokePower "Plus Charge", {
             text "Once during your turn , if any of your Pokémon were Knocked Out during your opponent’s last turn, you may search your discard pile for up to 2 basic Energy cards, show them to your opponent, and put them into your hand. You can’t use more then 1 Plus Charge Poké-Power each turn. This power can’t be used if Plusle is affected by a Special Condition."
             actionA {
+              checkLastTurn()
+              checkNoSPC()
+              assert my.discard.filterByType(BASIC_ENERGY) : "You have no basic Energy in your discard pile"
+              assert bg.em().retrieveObject("Plus Charge") != bg.turnCount : "You can't use more than 1 Plus Charge Ability each turn."
+              assert bg.em().retrieveObject("Plus Charge") == bg.turnCount-1 : "None of your Pokémon were Knocked Out during your opponent's last turn."
+              bg.em().storeObject("Plus Charge", bg.turnCount)
+              powerUsed()
+              my.discard.select(max:2,"Search your discard pile for up to 2 basic Energy cards",cardTypeFilter(BASIC_ENERGY)).moveTo(my.hand)
             }
           }
           move "Tag Play +", {
             text "20 damage. If you have Minun on your Bench, you may do 20 damage to any 1 Benched Pokémon instead."
             energyCost L
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20, my.bench.find{it.name = "Minun"}?defending:opp.all.select("Tag Play +")
             }
           }
 
@@ -1343,15 +1373,19 @@ public enum SecretWonders implements LogicCardInfo {
           resistance P, MINUS20
           pokeBody "Rough Skin", {
             text "If Sharpedo is your Active Pokémon and is damaged by an opponent’s attack , put 2 damage counter on the Attacking Pokémon."
-            delayedA {
-            }
+            delayedA{
+                before APPLY_ATTACK_DAMAGES, {
+                  if (bg.currentTurn == self.owner.opposite && bg.dm().find({ it.to==self && it.dmg.value }) && self.active) {
+                    directDamage(20, ef.attacker, Source.SRC_ABILITY)
+                  }
+                }
+              }
           }
           move "Strike Wound", {
             text "60+ damage. If the Defending Pokémon has 2 or more damage counters on it, this attack does 60 damage plus 20 more damage. This attack damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects of that Pokémon."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              swiftDamage (60 + defending.numberOfDamageCounters > 2 ? 20 : 0, defending)
             }
           }
 
@@ -1363,14 +1397,32 @@ public enum SecretWonders implements LogicCardInfo {
           pokePower "Grass Whistle", {
             text "Once during your turn , you may remove 1 damage counter from each of your Pokémon. You can’t use more than 1 Grass Whistle Poké-Power each turn. This power can’t be used if Sunflora is affected by a Special Condition."
             actionA {
+              checkLastTurn()
+              checkNoSPC()
+              assert my.all.find{it.numberOfDamageCounters} : "Your Pokémon are healthy"
+              assert bg.em().retrieveObject("Grass Whistle") != bg.turnCount : "You cannot use Grass Whistle more than once per turn!"
+              bg.em().storeObject("Grass Whistle", bg.turnCount)
+              powerUsed()
+              my.all.each{
+                heal 10, it
+              }
             }
           }
           move "Petal Dance", {
             text "30× damage. Flip 3 coins. This attack does 30 damage times the number of heads. If you get 2 or more heads, Sunflora is now Confused."
             energyCost G, G
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip 3, {
+                damage 30
+              }, {}, [2:{
+                afterDamage {
+                  apply CONFUSED, self
+                }
+              },3:{
+                afterDamage {
+                  apply CONFUSED, self
+                }
+              }]
             }
           }
 
@@ -1381,12 +1433,19 @@ public enum SecretWonders implements LogicCardInfo {
           pokePower "Set", {
             text "Once during your turn , if you have Unown S, Unown E, and Unown T on your Bench, you may flip a coin. If heads, search your discard pile for an Energy card, show it to your opponent, and put it on top of your deck."
             actionA {
+              checkLastTurn()
+              assert my.bench.find{it.name = "Unown S"} : "Unown S is not on your Bench"
+              assert my.bench.find{it.name = "Unown E"} : "Unown E is not on your Bench"
+              assert my.bench.find{it.name = "Unown T"} : "Unown T is not on your Bench"
+              powerUsed()
+              flip {
+                my.discard.select("Search your discard pile for an Energy card", cardTypeFilter(ENERGY)).moveTo(addToTop: true, my.deck)
+              }
             }
           }
           move "Hidden Power", {
             text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               flip { apply CONFUSED }
@@ -1398,24 +1457,50 @@ public enum SecretWonders implements LogicCardInfo {
         return evolution (this, from:"Sneasel", hp:HP080, type:WATER, retreatCost:0) {
           weakness M, PLUS20
           pokePower "Dark Engage", {
-            text "Once during your turn , you may use this power. Each of your Active Pokémon’s type is until the end of your turn. If that Pokémon is no longer your Active Pokémon, this effect ends."
+            text "Once during your turn , you may use this power. Each of your Active Pokémon’s type is [D] until the end of your turn. If that Pokémon is no longer your Active Pokémon, this effect ends."
             actionA {
+              checkLastTurn()
+              powerUsed()
+              def pcs = my.active
+              delayed{
+                def eff
+                register {
+                  eff = getter GET_POKEMON_TYPE, pcs, { h->
+                    h.object.clear()
+                    h.object.add(D)
+                  }
+                }
+                unregister {
+                  eff.unregister()
+                }
+                unregisterAfter 1
+                after FALL_BACK, pcs, {unregister()}
+                after EVOLVE, pcs, {unregister()}
+                after DEVOLVE, pcs, {unregister()}
+              }
             }
           }
           move "Shadow Charge", {
-            text "Energy cards and attach them to any of your Pokémon is any way you like. Shuffle your deck afterward."
-            energyCost D
-            attackRequirement {}
+            text "Search your deck for up to 2 [D] Energy cards and attach them to any of your Pokémon is any way you like. Shuffle your deck afterward."
+            energyCost ()
+            attackRequirement {
+              assert my.deck : "Your deck is empty"
+            }
             onAttack {
-              damage 0
+              attachEnergyFrom(type: D, max: 1, my.deck, my.all.select())
+              attachEnergyFrom(type: D, max: 1, my.deck, my.all.select())
+              shuffleDeck()
             }
           }
           move "Chip Off", {
             text "40 damage. If you opponent has 6 or more cards in his or her hand, discard a number of cards without looking until your opponent has 5 cards left in his or her hand."
             energyCost D, D
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              if(opp.hand.size() > 5) {
+                def count = opp.hand.size() - 5
+                opp.hand.shuffledCopy().select(hidden: true, count: count, "Choose ${count==1?'a':count} random ${count==1?'card':'cards'} from your opponent's hand to discard").discard()
+              }
             }
           }
 
@@ -1424,16 +1509,21 @@ public enum SecretWonders implements LogicCardInfo {
         return evolution (this, from:"Burmy Plant Cloak", hp:HP080, type:GRASS, retreatCost:1) {
           weakness R, PLUS20
           pokeBody "Plant Cloak", {
-            text "If Wormadam Plant Cload has 2 or more Energy attached to it, Wormadam Plant Cloak gets +40 HP."
-            delayedA {
+            text "If Wormadam Plant Cload has 2 or more [G] Energy attached to it, Wormadam Plant Cloak gets +40 HP."
+            getterA GET_FULL_HP, self{h->
+              if(self.cards.energyCount(G) >=2) {
+                h.object += hp(40)
+              }
             }
           }
           move "Leaf Hurricane", {
             text "60 damage. If the Defending Pokémon has fewer remaining HP than Wormadam Plant Cloak, the Defending Pokémon is now Confused."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              if(defending.remainingHP.value < self.remainingHP.value) {
+                applyAfterDamage CONFUSED
+              }
             }
           }
 
@@ -1445,14 +1535,19 @@ public enum SecretWonders implements LogicCardInfo {
           pokeBody "Sandy Cloak", {
             text "Prevent all effects of attacks, excluding damage, done to Wormadam Sandy Cloak."
             delayedA {
+              before null, self, Source.ATTACK, {
+                if(bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages)){
+                  bc "Sandy Cloak prevents effect"
+                  prevent()
+                }
+              }
             }
           }
           move "Push Over", {
-            text "40+ damage. Energy attached to Wormadam Sandy Cloak."
-            energyCost F, C, C, F
-            attackRequirement {}
+            text "40+ damage. Does 40 damage plus 10 more damage for each [F] Energy attached to Wormadam Sandy Cloak."
+            energyCost F, C, C
             onAttack {
-              damage 0
+              damage 40 + 10 * self.cards.energyCount(F)
             }
           }
 
@@ -1464,14 +1559,22 @@ public enum SecretWonders implements LogicCardInfo {
           pokeBody "Trash Cloak", {
             text "If Wormadam Trash Cloak has a Pokémon Tool Card attached to it, any damage done to Wormadam Trash Cloak by attacks is reduced by 20 ."
             delayedA {
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each {
+                  if (it.to == self && self.cards.filterByType(POKEMON_TOOL) && it.dmg.value && it.notNoEffect) {
+                    bc "$thisAbility -20"
+                    it.dmg -= hp(20)
+                  }
+                }
+              }
             }
           }
           move "Iron Tackle", {
             text "70 damage. Wormadam Trash Cloak does 20 damage to itself."
             energyCost M, M, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 70
+              damage 20, self
             }
           }
 
@@ -1483,14 +1586,21 @@ public enum SecretWonders implements LogicCardInfo {
           pokePower "Psychic Shift", {
             text "Once during your turn, if Xatu is on you Bench, you may choose 1 Special Condition from 1 of your Active Pokémon and remove that Special Condition. Then, 1 of the Defending Pokémon is now affected by that Special Condition that you chose."
             actionA {
+              checkLastTurn()
+              assert self.benched : "$self is not on your Bench"
+              assert my.active.specialConditions : "$my.active is not affected by any Special Conditions"
+              powerUsed()
+              SpecialConditionType spc = choose(my.active.specialConditions.asList(), "Which special condition you want to remove")
+              clearSpecialCondition(my.active, TRAINER_CARD, Arrays.asList(spc))
+              apply spc
             }
           }
           move "Energy Singe", {
             text "Choose 1 of you opponent’s Pokémon. This attack does 20 damage plus 10 more damage for each Energy attached to that Pokémon."
             energyCost P, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              def tar = opp.all.select("Choose 1 of yoru opponent's Pokémon")
+              damage 20 + 10 * tar.cards.energyCount(C), tar
             }
           }
 
