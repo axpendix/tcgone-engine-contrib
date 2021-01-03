@@ -437,7 +437,7 @@ public enum PowerKeepers implements LogicCardInfo {
             assert my.deck : "Deck is empty"
             powerUsed()
 
-            my.deck.search(max: 1, "Search for a [P] Energy card to attach to one of your Pokémon.", {Card card -> card.asEnergyCard().containsTypePlain(P)}).each {
+            my.deck.search("Search for a [P] Energy card to attach to one of your Pokémon.", energyFilter(P)).each {
               def tar = my.all.select("Attach $it to? That Pokémon will receive 2 damage counters.")
               attachEnergy(tar, it)
               directDamage 20, tar, SRC_ABILITY
