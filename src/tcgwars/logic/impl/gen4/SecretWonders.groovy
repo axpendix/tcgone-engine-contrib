@@ -1434,7 +1434,7 @@ public enum SecretWonders implements LogicCardInfo {
             text "Once during your turn , if you have Unown S, Unown E, and Unown T on your Bench, you may flip a coin. If heads, search your discard pile for an Energy card, show it to your opponent, and put it on top of your deck."
             actionA {
               checkLastTurn()
-              assert my.bench.find{it.name = "Unown S"} : "Unown S is not on your Bench"
+              assert self.benched : "$self is not on your bench"
               assert my.bench.find{it.name = "Unown E"} : "Unown E is not on your Bench"
               assert my.bench.find{it.name = "Unown T"} : "Unown T is not on your Bench"
               powerUsed()
@@ -2222,7 +2222,7 @@ public enum SecretWonders implements LogicCardInfo {
             text "Once during your turn , if you have Unown N, Unown O, and Unown D on your Bench, you may ask your opponent to take a Prize card. If he or she does, you take a Prize card. If he or she doesn’t, draw a card."
             actionA {
               checkLastTurn()
-              assert my.bench.find{it.name = "Unown N"} : "Unown N is not on your Bench"
+              assert self.benched : "$self is not on your bench"
               assert my.bench.find{it.name = "Unown O"} : "Unown O is not on your Bench"
               assert my.bench.find{it.name = "Unown D"} : "Unown D is not on your Bench"
               powerUsed()
@@ -2254,7 +2254,7 @@ public enum SecretWonders implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert my.hand.size() == 1 : "You don't have exactly 1 card in your hand"
-              assert my.bench.find{it.name = "Unown O"} : "Unown O is not on your Bench"
+              assert self.benched : "$self is not on your bench"
               assert my.bench.find{it.name = "Unown N"} : "Unown N is not on your Bench"
               assert my.bench.find{it.name = "Unown E"} : "Unown E is not on your Bench"
               powerUsed()
@@ -2281,7 +2281,7 @@ public enum SecretWonders implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert opp.deck : "Your opponent's deck is empty"
-              assert my.bench.find{it.name = "Unown X"} : "Unown X is not on your Bench"
+              assert self.benched : "$self is not on your bench"
               powerUsed()
               opp.deck.subList(0,1).showToMe("Top card of your opponent's deck")
             }
