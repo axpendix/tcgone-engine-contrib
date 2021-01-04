@@ -2543,7 +2543,7 @@ public enum Triumphant implements LogicCardInfo {
             energyCost P
             attackRequirement {
               assert opp.all.find{it.numberOfDamageCounters} : "Your opponent's Pokémon have no damage counters to move"
-              assert opp.bench : "Your opponent' only has 1 Pokémon in play"
+              assert opp.bench : "Your opponent only has 1 Pokémon in play"
             }
             onAttack {
               eff = delayed {
