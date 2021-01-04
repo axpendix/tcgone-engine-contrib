@@ -2146,7 +2146,7 @@ public enum SecretWonders implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
             }
             onAttack {
-              my.deck.search(count:3,"Search your deck for up to 3 basic Energy cards"cardTypeFilter(BASIC_ENERGY)).moveTo(my.hand)
+              my.deck.search(count:3,"Search your deck for up to 3 basic Energy cards",cardTypeFilter(BASIC_ENERGY)).moveTo(my.hand)
             }
           }
           move "Trace", {
