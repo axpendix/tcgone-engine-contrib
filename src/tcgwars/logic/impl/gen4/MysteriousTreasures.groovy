@@ -1424,8 +1424,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 def cardName = it
                 assert my.benched.any{it.name == cardName} : "$cardName is not on your bench"
               }
-              powerUsed()
               bg.em().storeObject("DP_Unown_ITEM", bg.turnCount)
+              powerUsed()
               my.deck.search(max:1, "Choose a Trainer-Item card.", cardTypeFilter(ITEM)).showToOpponent("Opponent's chosen Trainer-Item card.").moveTo(my.hand)
               shuffleDeck()
             }

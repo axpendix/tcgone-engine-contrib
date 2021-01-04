@@ -3677,8 +3677,8 @@ public enum UnbrokenBonds implements LogicCardInfo {
               assert my.deck : "Empty deck"
               checkLastTurn()
               assert bg.em().retrieveObject("Cat Walk") != bg.turnCount : "Already used one Cat Walk ability this turn"
-              powerUsed()
               bg.em().storeObject("Cat Walk", bg.turnCount)
+              powerUsed()
               deck.select(min:1,max:2,"Put to hand").moveTo(hidden:true,hand)
               shuffleDeck()
             }

@@ -228,8 +228,8 @@ public enum TeamRocketReturns implements LogicCardInfo {
                 if (flag) {
                   PokemonCardSet pcs = ef.pokemonToBeEvolved
                   if(pcs.owner != self.owner && bg.em().retrieveObject("Darkest Impulse") != (pcs.id+bg.turnCount)){
-                    powerUsed()
                     bg.em().storeObject("Darkest Impulse", pcs.id+bg.turnCount)
+                    powerUsed()
                     directDamage(20, pcs, SRC_ABILITY)
                   }
                 }

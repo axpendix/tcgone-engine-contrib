@@ -227,8 +227,8 @@ public enum LegendsAwakened implements LogicCardInfo {
               checkLastTurn()
               assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You cannot use Form Change more than once per turn!"
               assert my.deck : "There is no card in your deck"
-              powerUsed()
               bg.em().storeObject("Form_Change",bg.turnCount)
+              powerUsed()
               def deoxys = self.topPokemonCard
               if (my.deck.findAll{it.name == "Deoxys"}) {
                 my.deck.search{it.name == "Deoxys"}.moveTo(self.cards)
@@ -723,8 +723,8 @@ public enum LegendsAwakened implements LogicCardInfo {
               checkLastTurn()
               assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You cannot use Form Change more than once per turn!"
               assert my.deck : "There is no card in your deck"
-              powerUsed()
               bg.em().storeObject("Form_Change",bg.turnCount)
+              powerUsed()
               def deoxys = self.topPokemonCard
               if (my.deck.findAll{it.name == "Deoxys"}) {
                 my.deck.search{it.name == "Deoxys"}.moveTo(self.cards)
@@ -754,8 +754,8 @@ public enum LegendsAwakened implements LogicCardInfo {
               checkLastTurn()
               assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You cannot use Form Change more than once per turn!"
               assert my.deck : "There is no card in your deck"
-              powerUsed()
               bg.em().storeObject("Form_Change",bg.turnCount)
+              powerUsed()
               def deoxys = self.topPokemonCard
               if (my.deck.findAll{it.name == "Deoxys"}) {
                 my.deck.search{it.name == "Deoxys"}.moveTo(self.cards)
@@ -785,8 +785,8 @@ public enum LegendsAwakened implements LogicCardInfo {
               checkLastTurn()
               assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You cannot use Form Change more than once per turn!"
               assert my.deck : "There is no card in your deck"
-              powerUsed()
               bg.em().storeObject("Form_Change",bg.turnCount)
+              powerUsed()
               def deoxys = self.topPokemonCard
               if (my.deck.findAll{it.name == "Deoxys"}) {
                 my.deck.search{it.name == "Deoxys"}.moveTo(self.cards)

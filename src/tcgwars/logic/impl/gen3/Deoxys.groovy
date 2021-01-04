@@ -768,8 +768,8 @@ public enum Deoxys implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               assert bg.em().retrieveObject("Happy_Dance") != bg.turnCount : "You cannot use Happy Dance more than once per turn!"
-              powerUsed()
               bg.em().storeObject("Happy_Dance",bg.turnCount)
+              powerUsed()
               my.all.each{
                 heal 10, it
               }
