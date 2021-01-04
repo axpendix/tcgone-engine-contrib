@@ -1925,7 +1925,7 @@ public enum SecretWonders implements LogicCardInfo {
                 delayed {
                   before APPLY_ATTACK_DAMAGES, {
                     bg.dm().each {if(it.to==pcs && it.from==self && it.dmg.value>0 && it.notNoEffect){
-                      bc "$$thisMove increases damage"
+                      bc "$thisMove increases damage"
                       it.dmg+=hp(20)
                     }}
                   }
