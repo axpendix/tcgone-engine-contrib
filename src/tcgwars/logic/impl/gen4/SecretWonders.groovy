@@ -1316,7 +1316,7 @@ public enum SecretWonders implements LogicCardInfo {
             text "If Pidgeot was damaged by an attack during your opponent’s last turn, this attack does the same amount of damage done to Pidgeot to the Defending Pokémon."
             energyCost C, C
             attackRequirement {
-              assert bg.turnCount = turnCount + 1 : "$self was not damaged by an attack last turn"
+              assert bg.turnCount == turnCount + 1 : "$self was not damaged by an attack last turn"
             }
             onAttack {
               damage lastDamage.value
