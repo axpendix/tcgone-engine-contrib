@@ -389,7 +389,7 @@ public enum Undaunted implements LogicCardInfo {
             energyCost C, C
             onAttack {
               my.all.findAll{ it.numberOfDamageCounters }.each {
-                heal it.numberOfDamageCounters, it
+                healAll it
               }
               self.cards.moveTo(my.deck)
               removePCS(self)
