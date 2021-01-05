@@ -1,6 +1,7 @@
 package tcgwars.logic.impl.gen4;
 
 import tcgwars.logic.impl.gen4.MysteriousTreasures;
+import tcgwars.logic.impl.gen4.DiamondPearl;
 
 import tcgwars.logic.effect.gm.PlayTrainer
 
@@ -624,7 +625,7 @@ public enum SecretWonders implements LogicCardInfo {
                 before BEGIN_TURN, {
                   if (self.numberOfDamageCounters) {
                     bc "$thisAbility activates"
-                    heal 10, self
+                    heal 10, self, SRC_ABILITY
                   }
                 }
               }
@@ -1181,7 +1182,7 @@ public enum SecretWonders implements LogicCardInfo {
             after ATTACH_ENERGY, self, {
               if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(R)) {
                 bc "Flame Body removes 2 damage counters from $self"
-                heal 20, self
+                heal 20, self, SRC_ABILITY
               }
             }
           }
@@ -1404,7 +1405,7 @@ public enum SecretWonders implements LogicCardInfo {
               bg.em().storeObject("Grass Whistle", bg.turnCount)
               powerUsed()
               my.all.each{
-                heal 10, it
+                heal 10, it, SRC_ABILITY
               }
             }
           }
@@ -2003,7 +2004,7 @@ public enum SecretWonders implements LogicCardInfo {
               assert self.active : "$self is not active"
               assert opp.active.cards.energyCount(C) : "$opp.active has no Energy attached to it"
               powerUsed()
-              heal 30, self
+              heal 30, self, SRC_ABILITY
             }
           }
           move "Muddy Water", {
@@ -2168,14 +2169,10 @@ public enum SecretWonders implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Jynx from your hand onto Smoochum (this counts as evolving Smoochum) and remove all damage counters from Smoochum."
             actionA {
-              assert my.hand.findAll{it.name.contains("Jynx")} : "There is no pokémon in your hand to evolve ${self}."
+              checkCanBabyEvolve("Jynx", self)
               checkLastTurn()
               powerUsed()
-              def tar = my.hand.findAll { it.name.contains("Jynx") }.select()
-              if (tar) {
-                evolve(self, tar.first(), OTHER)
-                heal self.numberOfDamageCounters*10, self
-              }
+              babyEvolution("Jynx", self)
             }
           }
           move "Psykiss", {
@@ -2203,7 +2200,7 @@ public enum SecretWonders implements LogicCardInfo {
               checkLastTurn()
               assert opp.active.numberOfDamageCounters : "$opp.active is healthy"
               powerUsed()
-              heal 20, opp.active
+              heal 20, opp.active, SRC_ABILITY
             }
           }
           move "Hidden Power", {
@@ -2412,17 +2409,15 @@ public enum SecretWonders implements LogicCardInfo {
           move "Bite", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Rage", {
             text "10+ damage. Does 10 damage plus 10 more damage for each damage counter on Bagon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10 + 10 * self.numberOfDamageCounters
             }
           }
 
@@ -2433,17 +2428,17 @@ public enum SecretWonders implements LogicCardInfo {
           move "Shake Vine", {
             text "The Defending Pokémon is now Asleep."
             energyCost ()
-            attackRequirement {}
             onAttack {
-              damage 0
+              applyAfterDamage ASLEEP
             }
           }
           move "Bullet Seed", {
             text "10× damage. Flip 4 coins. This attack does 10 damage times the number of heads."
             energyCost G, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip 4, {
+                damage 10
+              }
             }
           }
 
@@ -2452,16 +2447,23 @@ public enum SecretWonders implements LogicCardInfo {
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
           pokePower "Wear Cloak", {
-            text "Once during your turn , if Burmy Plant Cloak is your Active Pokémon, you may search your discard for a basic Energy card and attach it to Burmy Plant Cloak."
+            text "Once during your turn , if Burmy Plant Cloak is your Active Pokémon, you may search your discard pile for a basic [G] Energy card and attach it to Burmy Plant Cloak."
             actionA {
+              checkLastTurn()
+              assert my.discard.filterByBasicEnergyType(G) : "There are no basic [G] Energy cards in your discard"
+              assert self.active : "$self is not active"
+              powerUsed()
+              attachEnergyFrom(basic: true, type: G, my.discard, self)
             }
           }
           move "Plant Cloak Tackle", {
-            text "10+ damage. Energy attached to it, this attack does 10 damage plus 10 more damage."
-            energyCost C, G
-            attackRequirement {}
+            text "10+ damage. If Burmy Plant Cloak has any [G] Energy attached to it, this attack does 10 damage plus 10 more damage."
+            energyCost C
             onAttack {
-              damage 0
+              damage 10
+              if(self.cards.energyCount(G)) {
+                damage 10
+              }
             }
           }
 
@@ -2470,16 +2472,23 @@ public enum SecretWonders implements LogicCardInfo {
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
           pokePower "Wear Cloak", {
-            text "Once during your turn , if Burmy Sandy Cloak is your Active Pokémon, you may search your discard for a basic Energy card and attach it to Burmy Sandy Cloak."
+            text "Once during your turn , if Burmy Sandy Cloak is your Active Pokémon, you may search your discard pile for a basic [F] Energy card and attach it to Burmy Sandy Cloak."
             actionA {
+              checkLastTurn()
+              assert my.discard.filterByBasicEnergyType(F) : "There are no basic [F] Energy cards in your discard"
+              assert self.active : "$self is not active"
+              powerUsed()
+              attachEnergyFrom(basic: true, type: F, my.discard, self)
             }
           }
           move "Sandy Cloak Tackle", {
-            text "10+ damage. Energy attached to it, this attack does 10 damage plus 10 more damage."
-            energyCost C, F
-            attackRequirement {}
+            text "10+ damage. If Burmy Sandy Cloak has any basic [F] Energy attached to it, this attack does 10 damage plus 10 more damage."
+            energyCost C
             onAttack {
-              damage 0
+              damage 10
+              if(self.cards.energyCount(F)) {
+                damage 10
+              }
             }
           }
 
@@ -2488,16 +2497,23 @@ public enum SecretWonders implements LogicCardInfo {
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
           pokePower "Wear Cloak", {
-            text "Once during your turn , if Burmy Trash Cloak is your Active Pokémon, you may search your discard for a basic Energy card and attach it to Burmy Trash Cloak."
+            text "Once during your turn , if Burmy Trash Cloak is your Active Pokémon, you may search your discard for a basic [M] Energy card and attach it to Burmy Trash Cloak."
             actionA {
+              checkLastTurn()
+              assert my.discard.filterByBasicEnergyType(M) : "There are no basic [M] Energy cards in your discard"
+              assert self.active : "$self is not active"
+              powerUsed()
+              attachEnergyFrom(basic: true, type: M, my.discard, self)
             }
           }
           move "Trash Cloak Tackle", {
-            text "10+ damage. Energy attached to it, this attack does 10 damage plus 10 more damage."
-            energyCost C, M
-            attackRequirement {}
+            text "10+ damage. If Burmy Trash Cloak has any basic [M] Energy attached to it, this attack does 10 damage plus 10 more damage."
+            energyCost C
             onAttack {
-              damage 0
+              damage 10
+              if(self.cards.energyCount(M)) {
+                damage 10
+              }
             }
           }
 
@@ -2509,17 +2525,19 @@ public enum SecretWonders implements LogicCardInfo {
           move "Slash", {
             text "10 damage. "
             energyCost W
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Bite Away", {
             text "20 damage. Flip a coin. If heads, choose a card from your opponent’s hand without looking and discard it."
             energyCost D, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip {
+                opp.hand.shuffledCopy.select(hidden: true, "Choose a card from your opponent's hand without looking").discard()
+              }
+
             }
           }
 
@@ -2530,17 +2548,18 @@ public enum SecretWonders implements LogicCardInfo {
           move "Gnaw", {
             text "10 damage. "
             energyCost ()
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Lava Burn", {
             text "20 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon."
             energyCost R, R
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              if(opp.bench) {
+                damage 10, opp.bench.select("Does 10 damage to 1 of your opponent's Benched Pokémon")
+              }
             }
           }
 
@@ -2548,20 +2567,24 @@ public enum SecretWonders implements LogicCardInfo {
       case CLEFAIRY_83:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS10
-          move "", {
-            text "Clefairy damage. "
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
+          customAbility {
+            //Moon Stone: Clefairy can evolve the turn you play it
+            //TODO This is a rule box.
+            delayedA {
+              before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+                if (bg.currentTurn == self.owner){
+                  prevent()
+                }
+              }
             }
           }
           move "Double Slap", {
             text "10× damage. Flip 2 coins. This attack does 10 damage times the number of heads."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip 2, {
+                damage 10
+              }
             }
           }
 
@@ -2572,17 +2595,32 @@ public enum SecretWonders implements LogicCardInfo {
           move "Rally", {
             text "Search your deck for up to 3 different types of Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Deck is empty"
+              assert my.bench.notFull : "Bench is full"
+            }
             onAttack {
-              damage 0
+              def maxSpace = Math.min(my.bench.freeBenchCount, 3)
+              my.deck.select(min:0, max:maxSpace, "Select up to $maxSpace Basic Pokémon of different types.", cardTypeFilter(BASIC), thisCard.player, { CardList list ->
+                TypeSet typeSet = new TypeSet()
+                for (card in list) {
+                  if (typeSet.containsAny(card.asPokemonCard().types)) {
+                    return false
+                  }
+                  typeSet.addAll(card.asPokemonCard().types)
+                }
+                return true
+              }).each {
+                benchPCS(it)
+              }
+              shuffleDeck()
             }
           }
           move "Hook", {
             text "30 damage. "
             energyCost W, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
             }
           }
 
@@ -2602,9 +2640,8 @@ public enum SecretWonders implements LogicCardInfo {
           move "Mud Spatter", {
             text "30 damage. "
             energyCost F, F
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
             }
           }
 
@@ -2613,20 +2650,24 @@ public enum SecretWonders implements LogicCardInfo {
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness D, PLUS10
           resistance C, MINUS20
-          move "", {
-            text "Duskull damage. "
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
+          customAbility {
+            //Reaper Cloth: Clefairy can evolve the turn you play it
+            //TODO This is a rule box.
+            delayedA {
+              before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+                if (bg.currentTurn == self.owner){
+                  prevent()
+                }
+              }
             }
           }
           move "Astonish", {
             text "Flip a coin. If heads, choose 1 card from your opponent’s hand without looking. Look at that card you chose, then have your opponent shuffle that card into his or her deck."
             energyCost P
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip {
+                astonisn()
+              }
             }
           }
 
@@ -2641,15 +2682,19 @@ public enum SecretWonders implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              flip { apply PARALYZED }
+              flip {
+                apply PARALYZED
+              }
             }
           }
           move "Thunder", {
-            text "60 damage. Flip a coin. If heads, Electabuzz does 30 damage to itself."
+            text "60 damage. Flip a coin. If tails, Electabuzz does 30 damage to itself."
             energyCost L, L, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              flip 1, {}, {
+                damage 30, self
+              }
             }
           }
 
@@ -2660,17 +2705,15 @@ public enum SecretWonders implements LogicCardInfo {
           move "Mud Bomb", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Gunky", {
             text "If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips coin. If tails, that attack does nothing."
             energyCost P
-            attackRequirement {}
             onAttack {
-              damage 0
+              sandAttack(thisMove)
             }
           }
 
@@ -2681,17 +2724,15 @@ public enum SecretWonders implements LogicCardInfo {
           move "Roar", {
             text "Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              whirlwind()
             }
           }
           move "Dig Claws", {
             text "20 damage. "
             energyCost R, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -2702,15 +2743,18 @@ public enum SecretWonders implements LogicCardInfo {
           resistance F, MINUS20
           pokeBody "Cottonweed", {
             text "If Hoppip has any Energy attached to it, the Retreat Cost for Hoppip is 0."
-            delayedA {
+            getterA (GET_RETREAT_COST, self) {h->
+              if(self.cards.energyCOunt(C)) {
+                h.object = 0
+              }
             }
           }
           move "Hover Heal", {
             text "10 damage. Remove all Special Conditions from Hoppip."
             energyCost G
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              clearSpecialCondition self
             }
           }
 
@@ -2721,18 +2765,21 @@ public enum SecretWonders implements LogicCardInfo {
           move "Lick", {
             text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
-              flip { apply PARALYZED }
+              flip {
+                apply PARALYZED
+              }
             }
           }
           move "Stomp", {
             text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 30 more damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip {
+                damage 30
+              }
             }
           }
 
@@ -2743,17 +2790,18 @@ public enum SecretWonders implements LogicCardInfo {
           move "Water Sport", {
             text "10+ damage. If Lotad has less Energy attached to it than the Defending Pokémon, this attack does 10 damage plus 20 more damage."
             energyCost W
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              if(self.cards.energyCount(C) < defending.cards.energyCount(C)) {
+                damage 20
+              }
             }
           }
           move "Ram", {
             text "20 damage. "
             energyCost W, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -2764,17 +2812,16 @@ public enum SecretWonders implements LogicCardInfo {
           move "Fire Punch", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Smog", {
             text "20 damage. The Defending Pokémon is now Poisoned."
             energyCost R, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              applyAfterDamage POISONED
             }
           }
 
@@ -2786,18 +2833,18 @@ public enum SecretWonders implements LogicCardInfo {
           move "Thundershock", {
             text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost L
-            attackRequirement {}
             onAttack {
               damage 10
-              flip { apply PARALYZED }
+              flip {
+                apply PARALYZED
+              }
             }
           }
           move "Static Shock", {
             text "20 damage. "
             energyCost L, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -2806,8 +2853,7 @@ public enum SecretWonders implements LogicCardInfo {
         return basic (this, hp:HP050, type:DARKNESS, retreatCost:1) {
           weakness L, PLUS10
           resistance F, MINUS20
-          bwAbility "Dark Stone" , {
-            text "Murkrow can evolve during the turn you play it."
+          customAbility{
             delayedA {
               before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
                 if(bg.currentTurn == self.owner){
@@ -2819,7 +2865,6 @@ public enum SecretWonders implements LogicCardInfo {
           move "Feint Attack", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
             energyCost D, C
-            attackRequirement {}
             onAttack {
               swiftDamage(20, opp.all.select())
             }
@@ -2832,17 +2877,18 @@ public enum SecretWonders implements LogicCardInfo {
           move "Bothering Wave", {
             text "20 damage. Flip a coin. If tails, this attack does nothing. If heads, discard an energy card attached to the Defending Pokémon."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip {
+                damage 20
+                discardDefendingEnergy()
+              }
             }
           }
           move "Future Sight", {
             text "Look at the top 5 cards of either player’s deck and put them back on top of that player’s deck in any order."
             energyCost P
-            attackRequirement {}
             onAttack {
-              damage 0
+              foresight(5, delegate)
             }
           }
 
@@ -2853,7 +2899,9 @@ public enum SecretWonders implements LogicCardInfo {
           move "Collect", {
             text "Draw a card."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Your deck is empty"
+            }
             onAttack {
               draw 1
             }
@@ -2861,9 +2909,8 @@ public enum SecretWonders implements LogicCardInfo {
           move "Poison Skin", {
             text "Flip 2 coins. If either of them is heads, the Defending Pokémon is now Poisoned."
             energyCost P
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip 2, {}, {}, [2:{apply POISONED}, 1:{apply POISONED}]
             }
           }
 
@@ -2873,9 +2920,11 @@ public enum SecretWonders implements LogicCardInfo {
           weakness W
           resistance L, MINUS20
           move "Flail", {
-            text "10× damage. Does 10 damage times the number of damage counter on Phanpy."
+            text "10× damage. Does 10 damage times the number of damage counters on Phanpy."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert self.numberOfDamageCounters : "$self is healthy"
+            }
             onAttack {
               damage 10*self.numberOfDamageCounters
             }
@@ -2883,9 +2932,9 @@ public enum SecretWonders implements LogicCardInfo {
           move "Take Down", {
             text "30 damage. Phanpy does 10 damage to itself."
             energyCost F, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              damage 10, self
             }
           }
 
@@ -2895,19 +2944,17 @@ public enum SecretWonders implements LogicCardInfo {
           weakness L, PLUS10
           resistance F, MINUS20
           move "Growl", {
-            text "."
+            text "During your opponent's next turn, any damage done by attacks from the Defending Pokémon is reduced by 20."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              reduceDamageFromDefendingNextTurn(hp(50), thisMove, defending)
             }
           }
           move "Peck", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -2918,17 +2965,27 @@ public enum SecretWonders implements LogicCardInfo {
           move "Delusion", {
             text "If Psyduck is Confused, draw 2 cards."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert self.isSPC(CONFUSED) : "$self is not confused"
+            }
             onAttack {
-              damage 0
+              if(self.isSPC(CONFUSED)) {
+                draw 2
+              }
             }
           }
           move "Migraine", {
             text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Confused. If tails, Psyduck is now Confused."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip 1, {
+                applyAfterDamage CONFUSED
+              }, {
+                afterDamage {
+                  apply CONFUSED, self
+                }
+              }
             }
           }
 
@@ -2937,17 +2994,28 @@ public enum SecretWonders implements LogicCardInfo {
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
           weakness L, PLUS20
           pokePower "Balloon Sting", {
-            text "Once during your opponent’s, if Qwilfish is your Active Pokémon and is damage by an attack (even if Qwilfish is Knocked Out), you may flip a coin. If heads, the Attacking Pokémon is now Poisoned. Put 2 damage counter instead of 1 on that Pokémon between turns."
-            actionA {
+            text "Once during your opponent’s turn, if Qwilfish is your Active Pokémon and is damage by an attack (even if Qwilfish is Knocked Out), you may flip a coin. If heads, the Attacking Pokémon is now Poisoned. Put 2 damage counter instead of 1 on that Pokémon between turns."
+            delayedA (priority: LAST) {
+              before APPLY_ATTACK_DAMAGES, {
+                if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value}) && confirm ("Use Balloon Sting?")){
+                  powerUsed()
+                  bc "Balloon Sting activates"
+                  flip {
+                    apply POISONED, (ef.attacker as PokemonCardSet), SRC_ABILITY
+                    extraPoison 1
+                  }
+                }
+              }
             }
           }
           move "Nerve Shot", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost W, W
-            attackRequirement {}
             onAttack {
               damage 20
-              flip { apply PARALYZED }
+              flip {
+                apply PARALYZED
+              }
             }
           }
 
@@ -2958,17 +3026,17 @@ public enum SecretWonders implements LogicCardInfo {
           move "Smack", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Confuse Ray", {
             text "Flip a coin. If heads, the Defending Pokémon is now Confused."
             energyCost P
-            attackRequirement {}
             onAttack {
-              flip { apply CONFUSED }
+              flip {
+                apply CONFUSED
+              }
             }
           }
 
@@ -2979,17 +3047,17 @@ public enum SecretWonders implements LogicCardInfo {
           move "Tail Whip", {
             text "Flip a coin. If heads, the Defending Pokémon can’t attack during your opponent’s next turn."
             energyCost C
-            attackRequirement {}
             onAttack {
-              flip { cantAttackNextTurn defending }
+              flip {
+                cantAttackNextTurn defending
+              }
             }
           }
           move "Bite", {
             text "20 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -3000,17 +3068,20 @@ public enum SecretWonders implements LogicCardInfo {
           move "Grope", {
             text "Look at the top 2 cards of your deck, choose 1 of them, and put it into your hand. Put the other card on the bottom of your deck."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Your deck is empty"
+            }
             onAttack {
-              damage 0
+              def list = my.deck.sublist(0,2)
+              def choice = list.select("Choose a card to put into your hand").moveTo(my.hand)
+              list.getExcludedList(choice).moveTo(my.deck)
             }
           }
           move "Scratch", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
 
@@ -3021,17 +3092,18 @@ public enum SecretWonders implements LogicCardInfo {
           move "Shell Rest", {
             text "Remove 2 damage counters from Shellder."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert self.numberOfDamageCounters : "$self is healthy"
+            }
             onAttack {
-              damage 0
+              heal 20, self
             }
           }
           move "Tongue Slap", {
             text "20 damage. "
             energyCost W, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -3042,17 +3114,13 @@ public enum SecretWonders implements LogicCardInfo {
           move "Shell Hunting", {
             text "Search your deck for up to 2 in any combination of Shellos West Sea and Shellos East Sea and put them on your Bench. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
+            callForFamily(name:"Shellos", 2, delegate)
           }
           move "Sprinkle Water", {
             text "10 damage. "
             energyCost W
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
 
@@ -3063,17 +3131,18 @@ public enum SecretWonders implements LogicCardInfo {
           move "Mud Spatter", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Recover", {
-            text "Energy attached to Shellos West Sea and remove all damage counter from Shellos West Sea."
-            energyCost W, W
-            attackRequirement {}
+            text "Discard a [W] Energy attached to Shellos West Sea and remove all damage counter from Shellos West Sea."
+            energyCost W
+            attackRequirement {
+              assert self.numberOfDamageCounters
+            }
             onAttack {
-              damage 0
+              healAll self
             }
           }
 
@@ -3085,18 +3154,18 @@ public enum SecretWonders implements LogicCardInfo {
           move "Headbutt", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Toxic Spore", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Poisoned."
             energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 20
-              flip { apply POISONED }
+              flip {
+                apply POISONED
+              }
             }
           }
 
@@ -3107,14 +3176,48 @@ public enum SecretWonders implements LogicCardInfo {
           pokeBody "Pot Shell", {
             text "Prevent all effects of attacks, including damage, done to Shuckle by your opponent’s Pokémon that has any Special Energy cards attached to it."
             delayedA {
+              before null, self, Source.ATTACK, {
+                if (self.owner.opposite.pbg.active.topPokemonCard.cards.filterByType(SPECIAL_ENERGY) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                  bc "$thisAbility prevents effect"
+                  prevent()
+                }
+              }
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each {
+                  if(it.to == self && it.notNoEffect && it.from.topPokemonCard.cards.filterByType(SPECIAL_ENERGY)){
+                    it.dmg = hp(0)
+                    bc "$thisAbility prevents damage"
+                  }
+                }
+              }
+              after ENERGY_SWITCH, {
+                def efs = (ef as EnergySwitch)
+                if(efs.from.topPokemonCard.cards.filterByType(SPECIAL_ENERGY) && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
+                  discard efs.card
+                }
+              }
             }
           }
           move "Ferment Poison", {
             text "10 damage. The Defending Pokémon is now Poisoned. As long as the Defending Pokémon remains Poisoned by this attack, it can’t use any Poké-Body."
             energyCost G, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              afterDamage {
+                apply POISONED
+                def pcs = defending
+                delayed {
+                  before SPC_POISONED, pcs, {
+                    unregister()
+                    new CheckAbilities().run(bg)
+                  }
+                  eff2 = getter IS_ABILITY_BLOCKED, { Holder h->
+                    if (self.active && h.effect.target.notEvolution && h.effect.target.owner == self.owner.opposite && h.effect.ability instanceof PokeBody) {
+                      h.object=true
+                    }
+                  }
+                }
+              }
             }
           }
 
@@ -3126,17 +3229,15 @@ public enum SecretWonders implements LogicCardInfo {
           move "Gossip", {
             text "Put 1 damage counter on 1 of your opponent’s Pokémon."
             energyCost P
-            attackRequirement {}
             onAttack {
-              damage 0
+              directDamage 10, opp.all.select("Put 1 damage counter on 1 of your opponent's Pokémon")
             }
           }
           move "Hang Down", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -3147,17 +3248,22 @@ public enum SecretWonders implements LogicCardInfo {
           move "Dish Out", {
             text "Draw a card from the top and the bottom of your deck."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck
+            }
             onAttack {
-              damage 0
+              my.deck.subList(my.deck.size() - 1, my.deck.size()).moveTo(my.hand)
+              draw 1
             }
           }
           move "Synchro Punch", {
             text "10+ damage. If any basic Energy card attached to Spinda is the same type as any Energy attached to the Defending Pokémon, this attack does 10 damage plus 30 more damage."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              if(self.cards.filterByType(BASIC_ENERGY).find{card->defending.cards.filterByType(BASIC_ENERGY).find{it.basicType == card.basicType}}) {
+                damage 30
+              }
             }
           }
 
@@ -3168,17 +3274,20 @@ public enum SecretWonders implements LogicCardInfo {
           move "Bubble", {
             text "Flip a coin. If heads the Defending Pokémon is now Paralyzed."
             energyCost ()
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip {
+                apply PARALYZED
+              }
             }
           }
           move "Aqua Tail", {
-            text "20+ damage. Energy attached to Squirtle. This attack does 20 damage plus 10 more damage for each heads."
-            energyCost W, C, W
-            attackRequirement {}
+            text "20+ damage. Flip a coin for each [W] Energy attached to Squirtle. This attack does 20 damage plus 10 more damage for each heads."
+            energyCost W, C
             onAttack {
-              damage 0
+              damage 20
+              flip self.cards.energyCount(W), {
+                damage 10
+              }
             }
           }
 
@@ -3189,17 +3298,21 @@ public enum SecretWonders implements LogicCardInfo {
           move "Lead", {
             text "Search your deck for a Supporter card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
             energyCost ()
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Your deck is empty"
+            }
             onAttack {
-              damage 0
+              my.deck.search("Choose a Supporter card", cardTypeFilter(SUPPORTER)).moveTo(my.hand)
             }
           }
           move "Frighten Horn", {
             text "20 damage. If the Defending Pokémon isn’t an Evolved Pokémon, that Pokémon is now Confused."
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              if(!defending.evolution) {
+                applyAfterDamage CONFUSED
+              }
             }
           }
 
@@ -3211,17 +3324,23 @@ public enum SecretWonders implements LogicCardInfo {
           move "Sun Soak", {
             text "Flip a coin. If heads, remove all damage counter from Sunkern, search your deck for an Evolution card that evolves from Sunkern, and put it onto Sunkern. (This counts as evolving Sunkern.) Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip {
+                healAll self
+                if(my.deck) {
+                  def sel = deck.search ("Select a Pokémon that evolves from $self.", {it.cardTypes.is(EVOLUTION) && self.name == it.predecessor}).first()
+                  if (sel) {
+                    evolve(self, sel, OTHER)
+                  }
+                }
+              }
             }
           }
           move "Seed Bomb", {
             text "20 damage. "
             energyCost G
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -3233,17 +3352,16 @@ public enum SecretWonders implements LogicCardInfo {
           move "Inviting Trap", {
             text "Switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              sw opp.active, opp.bench.select()
             }
           }
           move "Sand Tomb", {
             text "10 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
             energyCost F
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              cantRetreat defending
             }
           }
 
@@ -3254,18 +3372,20 @@ public enum SecretWonders implements LogicCardInfo {
           move "Stun Spore", {
             text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost C
-            attackRequirement {}
             onAttack {
-              flip { apply PARALYZED }
+              flip {
+                apply PARALYZED
+              }
             }
           }
           move "Signal Beam", {
             text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
             energyCost G
-            attackRequirement {}
             onAttack {
               damage 10
-              flip { apply CONFUSED }
+              flip {
+                apply CONFUSED
+              }
             }
           }
 
@@ -3277,17 +3397,16 @@ public enum SecretWonders implements LogicCardInfo {
           move "Speed Ball", {
             text "20 damage. "
             energyCost L
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
           move "Big Explosion", {
             text "50 damage. Voltorb does 50 damage to itself."
             energyCost L, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              damage 50, self
             }
           }
 
@@ -3299,17 +3418,15 @@ public enum SecretWonders implements LogicCardInfo {
           move "Yawn", {
             text "The Defending Pokémon is now Asleep."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              apply ASLEEP
             }
           }
           move "Splatter", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 10 damage to that Pokémon. This attack’s damage isn’t affected by Weakness or Resistance."
             energyCost W
-            attackRequirement {}
             onAttack {
-              damage 0
+              noWrDamage 10, opp.all.select()
             }
           }
 
@@ -3319,7 +3436,7 @@ public enum SecretWonders implements LogicCardInfo {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nChoose a card from your hand and put it on top of your deck. Search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward. (If this is the only card in your hand, you can’t play this card.)"
           onPlay {
             my.hand.getExcludedList(thisCard).select("Choose the card to put back in your deck").showToOpponent("Chosen card").moveTo(addToTop: true, my.deck)
-            my.deck.search(count:1,"Choose the Pokémon to put back in your deck",cardTypeFilter(POKEMON)).showToOpponent("Chosen card").moveTo(my.hand)
+            my.deck.search(count:1,"Choose the Pokémon to put into your hand",cardTypeFilter(POKEMON)).moveTo(my.hand)
             shuffleDeck()
           }
           playRequirement{
@@ -3332,7 +3449,7 @@ public enum SecretWonders implements LogicCardInfo {
           onPlay {
             def tar = my.discard.findAll{it.cardTypes.is(BASIC_ENERGY) || it.cardTypes.is(POKEMON)}
             def maxSel = Math.min(3,tar.size())
-            tar.select(count:maxSel,"Choose $maxSel cards to put back in your deck").moveTo(my.deck)
+            my.discard.select(count:maxSel,"Choose $maxSel cards to put back in your deck",{it.cardTypes.is(BASIC_ENERGY) || it.cardTypes.is(POKEMON)}).moveTo(my.deck)
             shuffleDeck()
           }
           playRequirement{
@@ -3341,35 +3458,43 @@ public enum SecretWonders implements LogicCardInfo {
 
         };
       case PLUSPOWER_121:
-        return basicTrainer (this) {
-          text "Attach Plus Power to 1 of your Pokémon. Discard this card at the end of your turn.\nIf the Pokémon PlusPower is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance)."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy (DiamondPearl.PLUSPOWER_109, this);
       case PROFESSOR_OAK_S_VISIT_122:
         return basicTrainer (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDraw 3 cards. Then, choose a card from your hand and put it on the bottom of your deck."
           onPlay {
+            draw 3
+            my.hand.getExcludedList(thisCard).select("Put a card on the bottom of your deck").moveTo(hidden:true, my.deck)
           }
           playRequirement{
+            assert my.deck || my.hand.getExcludedList(thisCard) : "Both your deck and your hand are empty"
           }
         };
       case PROFESSOR_ROWAN_123:
         return basicTrainer (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nChoose 1 card in your hand and shuffle the rest of your cards into your deck. Then, draw 4 cards. (If this is the only card in your hand, you can’t play this card.)"
           onPlay {
+            CardList noshfl = []
+            noshfl.add(thisCard)
+            noshfl.add(my.hand.getExcludedList(thisCard).select("Choose 1 card in your hand").first())
+            my.hand.getExcludedLIst(noshfl).moveTo(hidden:true, my.deck)
+            shuffleDeck()
+            draw 4
           }
           playRequirement{
+            assert my.hand.getExcludedList(thisCard) : "You have no other cards in your hand"
           }
         };
       case RIVAL_124:
         return basicTrainer (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nReveal the top 5 cards of your deck. Your opponent chooses 3 of those cards. Put those cards into your hand and put other 2 cards on top of your deck. Shuffle your deck afterward."
           onPlay {
+            def top = my.deck.subList(0,5)
+            def cards = top.showToMe("Top 5 cards of your deck").oppSelect("Choose 3 cards for your opponent to draw").moveTo(my.hand)
+            shuffleDeck()
           }
           playRequirement{
+            assert my.deck : "Your deck is empty"
           }
         };
       case ROSEANNE_S_RESEARCH_125:
@@ -3387,8 +3512,11 @@ public enum SecretWonders implements LogicCardInfo {
         return basicTrainer (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDraw 2 cards. Then, choose a card from your opponent’s hand without looking and put it on the bottom of his or her deck."
           onPlay {
+            draw 2
+            opp.hand.shuffledCopy.select(hidden: true, "Choose a card from your opponent's hand without looking").moveTo(hidden: true, opp.deck)
           }
           playRequirement{
+            assert my.deck || opp.hand : "Your deck and your opponent's hand are both empty"
           }
         };
       case POTION_127:
@@ -3408,19 +3536,17 @@ public enum SecretWonders implements LogicCardInfo {
               checkNoSPC()
               checkLastTurn()
               assert my.bench : "Your bench is empty"
-
+              powerUsed()
               if (self.active) {
                 sw self, my.bench.select()
               } else {
                 sw my.active, self
               }
-              powerUsed()
             }
           }
           move "Bring Down", {
             text "Choose 1 Pokémon (your or your opponent’s) with the fewest remaining HP (excluding Gardevoir) and that Pokémon is now Knocked Out."
             energyCost P, P
-            attackRequirement {}
             onAttack {
               def list = all.findAll{it!=self}.sort(false) {p1,p2 -> p1.remainingHP.value <=> p2.remainingHP.value}
               def tar = new PcsList()
@@ -3439,7 +3565,6 @@ public enum SecretWonders implements LogicCardInfo {
           move "Feint Attack", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 40 damage to that Pokémon. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               swiftDamage(40, opp.all.select())
             }
@@ -3447,9 +3572,14 @@ public enum SecretWonders implements LogicCardInfo {
           move "Darkness Wing", {
             text "60 damage. If the Defending Pokémon would be Knocked Out by damage from this attack, you may search your discard pile for any 1 card, show it to your opponent, and put it into your hand."
             energyCost D, D, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              delayed {
+                after KNOCKOUT, {
+                  my.discard.select("Search your discard pile for a card").moveTo(my.hand)
+                }
+                unregisterAfter 1
+              }
+              damage 60
             }
           }
         };

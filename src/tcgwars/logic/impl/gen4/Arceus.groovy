@@ -637,6 +637,7 @@ public enum Arceus implements LogicCardInfo {
           }
           move "Worry Seed", {
             text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
+            energyCost G, C
             onAttack {
               damage 30
               flip {
