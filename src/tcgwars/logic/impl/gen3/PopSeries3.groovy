@@ -108,7 +108,7 @@ public enum PopSeries3 implements LogicCardInfo {
   public Card getImplementation() {
     switch (this) {
       case BLASTOISE_1:
-      return evolution (this, from:"Unown", hp:HP120, type:W, retreatCost:2) {
+      return evolution (this, from:"Wartortle", hp:HP120, type:W, retreatCost:2) {
         weakness L
         move "Smash Turn", {
           text "30 damage. After your attack, you may switch Blastoise with 1 of your Benched Pokémon."
