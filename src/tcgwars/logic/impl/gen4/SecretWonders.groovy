@@ -162,7 +162,7 @@ public enum SecretWonders implements LogicCardInfo {
   WOOPER_118 ("Wooper", "118", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
   BEBE_S_SEARCH_119 ("Bebe's Search", "119", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   NIGHT_MAINTENANCE_120 ("Night Maintenance", "120", Rarity.UNCOMMON, [TRAINER, ITEM]),
-  PLUSPOWER_121 ("PlusPower", "121", Rarity.UNCOMMON, [TRAINER, ITME]),
+  PLUSPOWER_121 ("PlusPower", "121", Rarity.UNCOMMON, [TRAINER, ITEM]),
   PROFESSOR_OAK_S_VISIT_122 ("Professor Oak's Visit", "122", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   PROFESSOR_ROWAN_123 ("Professor Rowan", "123", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   RIVAL_124 ("Rival", "124", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
