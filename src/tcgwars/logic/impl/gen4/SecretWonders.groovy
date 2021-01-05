@@ -160,16 +160,16 @@ public enum SecretWonders implements LogicCardInfo {
   VENONAT_116 ("Venonat", "116", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
   VOLTORB_117 ("Voltorb", "117", Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
   WOOPER_118 ("Wooper", "118", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
-  BEBE_S_SEARCH_119 ("Bebe's Search", "119", Rarity.UNCOMMON, [TRAINER]),
-  NIGHT_MAINTENANCE_120 ("Night Maintenance", "120", Rarity.UNCOMMON, [TRAINER]),
-  PLUSPOWER_121 ("PlusPower", "121", Rarity.UNCOMMON, [TRAINER]),
-  PROFESSOR_OAK_S_VISIT_122 ("Professor Oak's Visit", "122", Rarity.UNCOMMON, [TRAINER]),
-  PROFESSOR_ROWAN_123 ("Professor Rowan", "123", Rarity.UNCOMMON, [TRAINER]),
-  RIVAL_124 ("Rival", "124", Rarity.UNCOMMON, [TRAINER]),
-  ROSEANNE_S_RESEARCH_125 ("Roseanne's Research", "125", Rarity.UNCOMMON, [TRAINER]),
-  TEAM_GALACTIC_S_MARS_126 ("Team Galactic's Mars", "126", Rarity.UNCOMMON, [TRAINER]),
-  POTION_127 ("Potion", "127", Rarity.COMMON, [TRAINER]),
-  SWITCH_128 ("Switch", "128", Rarity.COMMON, [TRAINER]),
+  BEBE_S_SEARCH_119 ("Bebe's Search", "119", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  NIGHT_MAINTENANCE_120 ("Night Maintenance", "120", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  PLUSPOWER_121 ("PlusPower", "121", Rarity.UNCOMMON, [TRAINER, ITME]),
+  PROFESSOR_OAK_S_VISIT_122 ("Professor Oak's Visit", "122", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  PROFESSOR_ROWAN_123 ("Professor Rowan", "123", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  RIVAL_124 ("Rival", "124", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  ROSEANNE_S_RESEARCH_125 ("Roseanne's Research", "125", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  TEAM_GALACTIC_S_MARS_126 ("Team Galactic's Mars", "126", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  POTION_127 ("Potion", "127", Rarity.COMMON, [TRAINER, ITEM]),
+  SWITCH_128 ("Switch", "128", Rarity.COMMON, [TRAINER, ITEM]),
   DARKNESS_ENERGY_129 ("Darkness Energy", "129", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   METAL_ENERGY_130 ("Metal Energy", "130", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   GARDEVOIR_LV_X_131 ("Gardevoir Lv.X", "131", Rarity.HOLORARE, [LVL_X, POKEMON, _PSYCHIC_]),
@@ -3432,7 +3432,7 @@ public enum SecretWonders implements LogicCardInfo {
 
         };
       case BEBE_S_SEARCH_119:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nChoose a card from your hand and put it on top of your deck. Search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward. (If this is the only card in your hand, you can’t play this card.)"
           onPlay {
             my.hand.getExcludedList(thisCard).select("Choose the card to put back in your deck").showToOpponent("Chosen card").moveTo(addToTop: true, my.deck)
@@ -3471,7 +3471,7 @@ public enum SecretWonders implements LogicCardInfo {
           }
         };
       case PROFESSOR_ROWAN_123:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nChoose 1 card in your hand and shuffle the rest of your cards into your deck. Then, draw 4 cards. (If this is the only card in your hand, you can’t play this card.)"
           onPlay {
             CardList noshfl = []
@@ -3486,7 +3486,7 @@ public enum SecretWonders implements LogicCardInfo {
           }
         };
       case RIVAL_124:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nReveal the top 5 cards of your deck. Your opponent chooses 3 of those cards. Put those cards into your hand and put other 2 cards on top of your deck. Shuffle your deck afterward."
           onPlay {
             def top = my.deck.subList(0,5)
@@ -3498,7 +3498,7 @@ public enum SecretWonders implements LogicCardInfo {
           }
         };
       case ROSEANNE_S_RESEARCH_125:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck for up to 2 in any combination of Basic Pokémon and basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
           onPlay {
             my.deck.search(max: 2,"Search your deck for up to 2 in any combination of Basic Pokémon and basic Energy cards",{it.cardTypes.is(BASIC_ENERGY) || it.cardTypes.is(BASIC)}).moveTo(hand)
@@ -3509,7 +3509,7 @@ public enum SecretWonders implements LogicCardInfo {
           }
         };
       case TEAM_GALACTIC_S_MARS_126:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDraw 2 cards. Then, choose a card from your opponent’s hand without looking and put it on the bottom of his or her deck."
           onPlay {
             draw 2
