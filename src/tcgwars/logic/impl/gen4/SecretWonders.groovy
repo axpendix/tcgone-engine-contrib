@@ -3185,7 +3185,7 @@ public enum SecretWonders implements LogicCardInfo {
               }
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if(it.to == self && it.notNoEffect && it.from.topPokemonCard.cards.filterByType(SPECIAL_ENERGY)){
+                  if(it.to == self && it.notNoEffect && it.from.cards.filterByType(SPECIAL_ENERGY)){
                     it.dmg = hp(0)
                     bc "$thisAbility prevents damage"
                   }
