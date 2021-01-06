@@ -1165,7 +1165,7 @@ public enum SecretWonders implements LogicCardInfo {
               assert self.numberOfDamageCounters : "$self is healthy"
             }
             onAttack {
-              def max = Math.min(self.numberOfDamageCounters,self.cards.find{it.name == "Smoochum"}?4:2)
+              def max = Math.min(self.numberOfDamageCounters,self.getPokemonCards().find{it.name == "Smoochum"}?4:2)
               def count = choose(1..max,"Move how many damage counters?",max)
               self.damage -= hp(10 * count)
               directDamage 10 * count, defending
@@ -1922,7 +1922,8 @@ public enum SecretWonders implements LogicCardInfo {
             text "20 damage. During your next turn, each of Nidorino's attacks does 20 more damage to the Defending Pokémon."
             energyCost C, C
             onAttack {
-              targeted(defending){
+              def pcs = defending
+              targeted(pcs){
                 delayed {
                   before APPLY_ATTACK_DAMAGES, {
                     bg.dm().each {if(it.to==pcs && it.from==self && it.dmg.value>0 && it.notNoEffect){
@@ -1931,9 +1932,9 @@ public enum SecretWonders implements LogicCardInfo {
                     }}
                   }
                   unregisterAfter 3
-                  after FALL_BACK, defending, {unregister()}
-                  after EVOLVE, defending, {unregister()}
-                  after DEVOLVE, defending, {unregister()}
+                  after FALL_BACK, pcs, {unregister()}
+                  after EVOLVE, pcs, {unregister()}
+                  after DEVOLVE, pcs, {unregister()}
                 }
               }
             }
@@ -3477,7 +3478,7 @@ public enum SecretWonders implements LogicCardInfo {
             CardList noshfl = []
             noshfl.add(thisCard)
             noshfl.add(my.hand.getExcludedList(thisCard).select("Choose 1 card in your hand").first())
-            my.hand.getExcludedLIst(noshfl).moveTo(hidden:true, my.deck)
+            my.hand.getExcludedList(noshfl).moveTo(hidden:true, my.deck)
             shuffleDeck()
             draw 4
           }
@@ -3574,7 +3575,8 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost D, D, C
             onAttack {
               delayed {
-                after KNOCKOUT, {
+                def pcs = defending
+                after KNOCKOUT, pcs {
                   my.discard.select("Search your discard pile for a card").moveTo(my.hand)
                 }
                 unregisterAfter 1
