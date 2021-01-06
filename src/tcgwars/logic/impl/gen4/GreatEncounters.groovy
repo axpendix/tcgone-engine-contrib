@@ -8,7 +8,13 @@ import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
 
-import tcgwars.logic.card.*
+import tcgwars.logic.*;
+import tcgwars.logic.card.*;
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.effect.*;
+import tcgwars.logic.effect.ability.*;
+import tcgwars.logic.effect.advanced.*;
+import tcgwars.logic.effect.basic.*
 import tcgwars.logic.util.*;
 
 /**
