@@ -1287,7 +1287,7 @@ public enum GreatEncounters implements LogicCardInfo {
               assert opp.bench : "Your opponent has no Benched Pokémon"
             }
             onAttack {
-              if(sw2 opp.all.select("New Active Pokémon") {
+              if(sw2 opp.all.select("New Active Pokémon")) {
                 damage 10
               }
             }
