@@ -203,7 +203,6 @@ public enum GreatEncounters implements LogicCardInfo {
               discardSelfEnergyAfterDamage R, R
             }
           }
-
         };
       case CRESSELIA_2:
         return basic (this, hp:HP080, type:PSYCHIC, retreatCost:1) {
@@ -229,7 +228,6 @@ public enum GreatEncounters implements LogicCardInfo {
               }
             }
           }
-
         };
       case DARKRAI_3:
         return basic (this, hp:HP070, type:DARKNESS, retreatCost:1) {
@@ -255,7 +253,6 @@ public enum GreatEncounters implements LogicCardInfo {
               }
             }
           }
-
         };
       case DARKRAI_4:
         return basic (this, hp:HP080, type:DARKNESS, retreatCost:1) {
@@ -283,7 +280,6 @@ public enum GreatEncounters implements LogicCardInfo {
               }
             }
           }
-
         };
       case PACHIRISU_5:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
@@ -311,7 +307,6 @@ public enum GreatEncounters implements LogicCardInfo {
               }
             }
           }
-
         };
       case PORYGON_Z_6:
         return evolution (this, from:"Porygon 2", hp:HP110, type:COLORLESS, retreatCost:2) {
@@ -350,7 +345,6 @@ public enum GreatEncounters implements LogicCardInfo {
               }
             }
           }
-
         };
       case ROTOM_7:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
@@ -375,7 +369,6 @@ public enum GreatEncounters implements LogicCardInfo {
               }
             }
           }
-
         };
       case SCEPTILE_8:
         return evolution (this, from:"Grovyle", hp:HP100, type:GRASS, retreatCost:3) {
@@ -401,7 +394,6 @@ public enum GreatEncounters implements LogicCardInfo {
               }
             }
           }
-
         };
       case SWAMPERT_9:
         return evolution (this, from:"Marshtomp", hp:HP130, type:WATER, retreatCost:2) {
@@ -427,7 +419,6 @@ public enum GreatEncounters implements LogicCardInfo {
               }
             }
           }
-
         };
       case TANGROWTH_10:
         return evolution (this, from:"Tangela", hp:HP110, type:GRASS, retreatCost:2) {
@@ -452,7 +443,6 @@ public enum GreatEncounters implements LogicCardInfo {
               cantRetreat defending
             }
           }
-
         };
       case TOGEKISS_11:
         return evolution (this, from:"Togetic", hp:HP120, type:COLORLESS, retreatCost:1) {
@@ -482,7 +472,6 @@ public enum GreatEncounters implements LogicCardInfo {
               }
             }
           }
-
         };
       case ALTARIA_12:
         return evolution (this, from:"Swablu", hp:HP080, type:COLORLESS, retreatCost:1) {
@@ -505,7 +494,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 60
             }
           }
-
         };
       case BEEDRILL_13:
         return evolution (this, from:"Kakuna", hp:HP110, type:GRASS, retreatCost:0) {
@@ -529,7 +517,6 @@ public enum GreatEncounters implements LogicCardInfo {
               }
             }
           }
-
         };
       case BUTTERFREE_14:
         return evolution (this, from:"Metapod", hp:HP120, type:GRASS, retreatCost:0) {
@@ -565,7 +552,6 @@ public enum GreatEncounters implements LogicCardInfo {
               }
             }
           }
-
         };
       case CLAYDOL_15:
         return evolution (this, from:"Baltoy", hp:HP080, type:FIGHTING, retreatCost:2) {
@@ -590,7 +576,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 40
             }
           }
-
         };
       case DIALGA_16:
         return basic (this, hp:HP090, type:METAL, retreatCost:2) {
@@ -619,7 +604,6 @@ public enum GreatEncounters implements LogicCardInfo {
               }
             }
           }
-
         };
       case EXPLOUD_17:
         return evolution (this, from:"Loudred", hp:HP130, type:COLORLESS, retreatCost:3) {
@@ -670,7 +654,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 70
             }
           }
-
         };
       case HOUNDOOM_18:
         return evolution (this, from:"Houndour", hp:HP090, type:DARKNESS, retreatCost:1) {
@@ -702,7 +685,6 @@ public enum GreatEncounters implements LogicCardInfo {
               }
             }
           }
-
         };
       case HYPNO_19:
         return evolution (this, from:"Drowzee", hp:HP080, type:PSYCHIC, retreatCost:2) {
@@ -727,7 +709,6 @@ public enum GreatEncounters implements LogicCardInfo {
               applyAfterDamage ASLEEP
             }
           }
-
         };
       case KINGLER_20:
         return evolution (this, from:"Krabby", hp:HP090, type:WATER, retreatCost:3) {
@@ -753,7 +734,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 80
             }
           }
-
         };
       case LAPRAS_21:
         return basic (this, hp:HP080, type:WATER, retreatCost:1) {
@@ -777,7 +757,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 20
             }
           }
-
         };
       case LATIAS_22:
         return basic (this, hp:HP080, type:COLORLESS, retreatCost:1) {
@@ -802,7 +781,6 @@ public enum GreatEncounters implements LogicCardInfo {
               discardSelfEnergyAfterDamage R, W
             }
           }
-
         };
       case LATIOS_23:
         return basic (this, hp:HP090, type:COLORLESS, retreatCost:2) {
@@ -828,7 +806,6 @@ public enum GreatEncounters implements LogicCardInfo {
               discardSelfEnergyAfterDamage C, C, C
             }
           }
-
         };
       case MAWILE_24:
         return basic (this, hp:HP070, type:METAL, retreatCost:1) {
@@ -882,7 +859,6 @@ public enum GreatEncounters implements LogicCardInfo {
               increasedDamageDoneToDefending(self, defending, 20, thisMove.name)
             }
           }
-
         };
       case MILOTIC_25:
         return evolution (this, from:"Feebas", hp:HP090, type:WATER, retreatCost:2) {
@@ -932,7 +908,6 @@ public enum GreatEncounters implements LogicCardInfo {
                 }]
             }
           }
-
         };
       case PALKIA_26:
         return basic (this, hp:HP090, type:WATER, retreatCost:2) {
@@ -969,7 +944,6 @@ public enum GreatEncounters implements LogicCardInfo {
               }
             }
           }
-
         };
       case PRIMEAPE_27:
         return evolution (this, from:"Mankey", hp:HP090, type:FIGHTING, retreatCost:1) {
@@ -1000,7 +974,6 @@ public enum GreatEncounters implements LogicCardInfo {
               }
             }
           }
-
         };
       case SLOWKING_28:
         return evolution (this, from:"Slowpoke", hp:HP080, type:PSYCHIC, retreatCost:2) {
@@ -1035,7 +1008,6 @@ public enum GreatEncounters implements LogicCardInfo {
               increasedBaseDamageNextTurn("Psych Up", hp(30))
             }
           }
-
         };
       case UNOWN_H_29:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
@@ -1065,7 +1037,6 @@ public enum GreatEncounters implements LogicCardInfo {
               }
             }
           }
-
         };
       case WAILORD_30:
         return evolution (this, from:"Wailmer", hp:HP200, type:WATER, retreatCost:4) {
@@ -1093,7 +1064,6 @@ public enum GreatEncounters implements LogicCardInfo {
               }
             }
           }
-
         };
       case WEEZING_31:
         return evolution (this, from:"Koffing", hp:HP080, type:PSYCHIC, retreatCost:2) {
@@ -1115,7 +1085,6 @@ public enum GreatEncounters implements LogicCardInfo {
               }
             }
           }
-
         };
       case WIGGLYTUFF_32:
         return evolution (this, from:"Jigglypuff", hp:HP090, type:COLORLESS, retreatCost:1) {
@@ -1140,7 +1109,6 @@ public enum GreatEncounters implements LogicCardInfo {
               }
             }
           }
-
         };
       case ARBOK_33:
         return evolution (this, from:"Ekans", hp:HP080, type:PSYCHIC, retreatCost:2) {
@@ -1167,7 +1135,6 @@ public enum GreatEncounters implements LogicCardInfo {
               }
             }
           }
-
         };
       case CACTURNE_34:
         return evolution (this, from:"Cacnea", hp:HP080, type:DARKNESS, retreatCost:1) {
@@ -1192,7 +1159,6 @@ public enum GreatEncounters implements LogicCardInfo {
               }
             }
           }
-
         };
       case COMBUSKEN_35:
         return evolution (this, from:"Torchic", hp:HP080, type:FIRE, retreatCost:1) {
@@ -1232,7 +1198,6 @@ public enum GreatEncounters implements LogicCardInfo {
               }
             }
           }
-
         };
       case DELIBIRD_36:
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
@@ -1256,7 +1221,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 20
             }
           }
-
         };
       case FLOATZEL_37:
         return evolution (this, from:"Buizel", hp:HP080, type:WATER, retreatCost:1) {
@@ -1283,7 +1247,6 @@ public enum GreatEncounters implements LogicCardInfo {
               }
             }
           }
-
         };
       case GOREBYSS_38:
         return evolution (this, from:"Clamperl", hp:HP080, type:WATER, retreatCost:0) {
@@ -1310,7 +1273,6 @@ public enum GreatEncounters implements LogicCardInfo {
               }
             }
           }
-
         };
       case GRANBULL_39:
         return evolution (this, from:"Snubbull", hp:HP090, type:COLORLESS, retreatCost:2) {
@@ -1330,7 +1292,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 40 + 10 * self.numberOfDamageCounters
             }
           }
-
         };
       case GROVYLE_40:
         return evolution (this, from:"Treecko", hp:HP080, type:GRASS, retreatCost:1) {
@@ -1355,7 +1316,6 @@ public enum GreatEncounters implements LogicCardInfo {
               applyAfterDamage POISONED
             }
           }
-
         };
       case HARIYAMA_41:
         return evolution (this, from:"Makuhita", hp:HP100, type:FIGHTING, retreatCost:3) {
@@ -1380,7 +1340,6 @@ public enum GreatEncounters implements LogicCardInfo {
               }
             }
           }
-
         };
       case HUNTAIL_42:
         return evolution (this, from:"Clamperl", hp:HP090, type:WATER, retreatCost:1) {
@@ -1407,7 +1366,6 @@ public enum GreatEncounters implements LogicCardInfo {
               }
             }
           }
-
         };
       case LINOONE_43:
         return evolution (this, from:"Zigzagoon", hp:HP080, type:COLORLESS, retreatCost:0) {
@@ -1446,7 +1404,6 @@ public enum GreatEncounters implements LogicCardInfo {
               }
             }
           }
-
         };
       case LOUDRED_44:
         return evolution (this, from:"Whismur", hp:HP080, type:COLORLESS, retreatCost:2) {
@@ -1467,7 +1424,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case MAGCARGO_45:
         return evolution (this, from:"Slugma", hp:HP090, type:FIRE, retreatCost:3) {
@@ -1485,7 +1441,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case MARSHTOMP_46:
         return evolution (this, from:"Mudkip", hp:HP090, type:WATER, retreatCost:2) {
@@ -1506,7 +1461,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case METAPOD_47:
         return evolution (this, from:"Caterpie", hp:HP070, type:GRASS, retreatCost:2) {
@@ -1524,7 +1478,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case PELIPPER_48:
         return evolution (this, from:"Wingull", hp:HP080, type:WATER, retreatCost:1) {
@@ -1546,7 +1499,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case PORYGON2_49:
         return evolution (this, from:"Porygon", hp:HP070, type:COLORLESS, retreatCost:2) {
@@ -1564,7 +1516,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case PURUGLY_50:
         return evolution (this, from:"Glameow", hp:HP090, type:COLORLESS, retreatCost:2) {
@@ -1585,7 +1536,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case RELICANTH_51:
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
@@ -1606,7 +1556,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case SEVIPER_52:
         return basic (this, hp:HP080, type:PSYCHIC, retreatCost:2) {
@@ -1627,7 +1576,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case SKARMORY_53:
         return basic (this, hp:HP070, type:METAL, retreatCost:1) {
@@ -1649,7 +1597,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case SLOWBRO_54:
         return evolution (this, from:"Slowpoke", hp:HP080, type:WATER, retreatCost:2) {
@@ -1670,7 +1617,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case TOGETIC_55:
         return evolution (this, from:"Togepi", hp:HP070, type:COLORLESS, retreatCost:1) {
@@ -1692,7 +1638,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case UNOWN_F_56:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
@@ -1710,7 +1655,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case UNOWN_G_57:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
@@ -1728,7 +1672,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case WAILMER_58:
         return basic (this, hp:HP090, type:WATER, retreatCost:3) {
@@ -1749,7 +1692,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case ZANGOOSE_59:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
@@ -1770,7 +1712,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case BALTOY_60:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
@@ -1790,7 +1731,6 @@ public enum GreatEncounters implements LogicCardInfo {
               switchYourActive()
             }
           }
-
         };
       case BUIZEL_61:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
@@ -1811,7 +1751,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case CACNEA_62:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -1833,7 +1772,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case CATERPIE_63:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
@@ -1851,7 +1789,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case CLAMPERL_64:
         return basic (this, hp:HP040, type:WATER, retreatCost:1) {
@@ -1872,7 +1809,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case DROWZEE_65:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
@@ -1893,7 +1829,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case EKANS_66:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:2) {
@@ -1915,7 +1850,6 @@ public enum GreatEncounters implements LogicCardInfo {
               flip { apply POISONED }
             }
           }
-
         };
       case FEEBAS_67:
         return basic (this, hp:HP030, type:WATER, retreatCost:1) {
@@ -1936,7 +1870,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case GLAMEOW_68:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
@@ -1957,7 +1890,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case HOUNDOUR_69:
         return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
@@ -1978,7 +1910,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case IGGLYBUFF_70:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
@@ -2004,7 +1935,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case ILLUMISE_71:
         return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
@@ -2022,7 +1952,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case JIGGLYPUFF_72:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
@@ -2043,7 +1972,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case KAKUNA_73:
         return evolution (this, from:"Weedle", hp:HP080, type:GRASS, retreatCost:2) {
@@ -2064,7 +1992,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case KOFFING_74:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:2) {
@@ -2085,7 +2012,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case KRABBY_75:
         return basic (this, hp:HP060, type:WATER, retreatCost:2) {
@@ -2106,7 +2032,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case LUNATONE_76:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
@@ -2124,7 +2049,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case LUVDISC_77:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
@@ -2145,7 +2069,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case MAKUHITA_78:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:2) {
@@ -2166,7 +2089,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case MANKEY_79:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
@@ -2187,7 +2109,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case MUDKIP_80:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
@@ -2208,7 +2129,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case PORYGON_81:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
@@ -2229,7 +2149,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case SLOWPOKE_82:
         return basic (this, hp:HP060, type:WATER, retreatCost:2) {
@@ -2250,7 +2169,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case SLUGMA_83:
         return basic (this, hp:HP060, type:FIRE, retreatCost:2) {
@@ -2271,7 +2189,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case SNUBBULL_84:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
@@ -2292,7 +2209,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case SOLROCK_85:
         return basic (this, hp:HP070, type:FIGHTING, retreatCost:1) {
@@ -2310,7 +2226,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case SWABLU_86:
         return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
@@ -2332,7 +2247,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case TANGELA_87:
         return basic (this, hp:HP070, type:GRASS, retreatCost:2) {
@@ -2353,7 +2267,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case TOGEPI_88:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
@@ -2374,7 +2287,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case TORCHIC_89:
         return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
@@ -2395,7 +2307,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case TREECKO_90:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -2417,7 +2328,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case UNOWN_L_91:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
@@ -2435,7 +2345,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case VOLBEAT_92:
         return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
@@ -2454,7 +2363,6 @@ public enum GreatEncounters implements LogicCardInfo {
               flip { apply CONFUSED }
             }
           }
-
         };
       case WEEDLE_93:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -2472,7 +2380,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case WHISMUR_94:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
@@ -2493,7 +2400,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case WINGULL_95:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
@@ -2515,7 +2421,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case ZIGZAGOON_96:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
@@ -2536,7 +2441,6 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case AMULET_COIN_97:
         return basicTrainer (this) {
