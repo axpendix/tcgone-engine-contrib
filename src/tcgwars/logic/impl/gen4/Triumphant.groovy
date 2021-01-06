@@ -532,7 +532,7 @@ public enum Triumphant implements LogicCardInfo {
             text "Flip a coin. If heads, choose 1 Energy card attached to 1 of your opponent’s Pokémon and put it in the Lost Zone."
             energyCost P
             attackRequirement {
-              assert opp.all.find{it.cards.filterByType(ENERGY)} : "Your opponent's pokemon have no energy attached"
+              assert opp.all.find{it.cards.filterByType(ENERGY)} : "Your opponent's Pokémon have no energy attached"
             }
             onAttack {
               def tar = opp.all.findAll{it.cards.filterByType(ENERGY)}.select("Select a Pokémon to remove an energy from")
@@ -988,7 +988,7 @@ public enum Triumphant implements LogicCardInfo {
             text "50 damage. Before doing damage, count the remaining HP of the Defending Pokémon and Wailord. If the Defending Pokémon has fewer remaining HP than Wailord, this attack does 50 damage plus 50 more damage."
             energyCost W, W, W, C
             onAttack {
-              def moreDamage = self.remaininHP > defending.remainingHP
+              def moreDamage = self.remainingHP > defending.remainingHP
               damage 50
               if(moreDamage){
                 damage 50
