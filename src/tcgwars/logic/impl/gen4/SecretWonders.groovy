@@ -3178,7 +3178,7 @@ public enum SecretWonders implements LogicCardInfo {
             text "Prevent all effects of attacks, including damage, done to Shuckle by your opponent’s Pokémon that has any Special Energy cards attached to it."
             delayedA {
               before null, self, Source.ATTACK, {
-                if (self.owner.opposite.pbg.active.topPokemonCard.cards.filterByType(SPECIAL_ENERGY) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                if (self.owner.opposite.pbg.active.cards.filterByType(SPECIAL_ENERGY) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
                   bc "$thisAbility prevents effect"
                   prevent()
                 }
@@ -3193,7 +3193,7 @@ public enum SecretWonders implements LogicCardInfo {
               }
               after ENERGY_SWITCH, {
                 def efs = (ef as EnergySwitch)
-                if(efs.from.topPokemonCard.cards.filterByType(SPECIAL_ENERGY) && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
+                if(efs.from.cards.filterByType(SPECIAL_ENERGY) && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
                   discard efs.card
                 }
               }
