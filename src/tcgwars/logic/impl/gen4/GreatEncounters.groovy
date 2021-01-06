@@ -457,7 +457,7 @@ public enum GreatEncounters implements LogicCardInfo {
                 powerUsed()
                 def top = my.deck.subList(0,10)
                 top.select(min:0, max:top.filterByType(BASIC_ENERGY).size(), "Choose as many basic Energy cards as you like", cardTypeFilter(BASIC_ENERGY)).each {
-                  (my.all.select("Attach $it to"), it)
+                  attachEnergy(my.all.select("Attach $it to"), it)
                 }
               }
             }
