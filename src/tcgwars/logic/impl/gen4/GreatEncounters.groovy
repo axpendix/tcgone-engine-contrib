@@ -7,6 +7,7 @@ import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
+import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
 
@@ -1104,7 +1105,9 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost C, C
             onAttack {
               damage 40
-              if (self.getPokemonCards().find{it.name.contains("Igglybuff")} {
+              if (self.getPokemonCards().find {
+                it.name.contains("Igglybuff")
+              }) {
                 damage 20
               }
             }
@@ -1118,7 +1121,7 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost P
             onAttack {
               damage 10
-              if(defending.isSPC(POISONED)) {
+              if (defending.isSPC(POISONED)) {
                 damage 40
               } else {
                 applyAfterDamage POISONED
@@ -2574,5 +2577,4 @@ public enum GreatEncounters implements LogicCardInfo {
         return null;
     }
   }
-
 }
