@@ -488,7 +488,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Cotton Cloud", {
-            text "60 damage. "
+            text "60 damage."
             energyCost C, C, C
             onAttack {
               damage 60
@@ -570,7 +570,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Spinning Attack", {
-            text "40 damage. "
+            text "40 damage."
             energyCost F, C
             onAttack {
               damage 40
@@ -648,7 +648,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Hyper Voice", {
-            text "70 damage. "
+            text "70 damage."
             energyCost C, C, C, C
             onAttack {
               damage 70
@@ -714,7 +714,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return evolution (this, from:"Krabby", hp:HP090, type:WATER, retreatCost:3) {
           weakness L, PLUS20
           move "Crabhammer", {
-            text "30 damage. "
+            text "30 damage."
             energyCost C, C
             onAttack {
               damage 30
@@ -751,7 +751,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Wave Splash", {
-            text "20 damage. "
+            text "20 damage."
             energyCost W, C
             onAttack {
               damage 20
@@ -1215,7 +1215,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Ice Ball", {
-            text "20 damage. "
+            text "20 damage."
             energyCost W
             onAttack {
               damage 20
@@ -1446,7 +1446,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return evolution (this, from:"Mudkip", hp:HP090, type:WATER, retreatCost:2) {
           weakness G, PLUS20
           move "Pound", {
-            text "20 damage. "
+            text "20 damage."
             energyCost C, C
             attackRequirement {}
             onAttack {
@@ -1471,7 +1471,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Ram", {
-            text "30 damage. "
+            text "30 damage."
             energyCost G, C
             attackRequirement {}
             onAttack {
@@ -1509,7 +1509,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Speed Attack", {
-            text "30 damage. "
+            text "30 damage."
             energyCost C, C
             attackRequirement {}
             onAttack {
@@ -1610,7 +1610,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Zen Headbutt", {
-            text "60 damage. "
+            text "60 damage."
             energyCost P, C, C
             attackRequirement {}
             onAttack {
@@ -1623,7 +1623,7 @@ public enum GreatEncounters implements LogicCardInfo {
           weakness L, PLUS20
           resistance F, MINUS20
           move "Speed Dive", {
-            text "20 damage. "
+            text "20 damage."
             energyCost C, C
             attackRequirement {}
             onAttack {
@@ -1685,7 +1685,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Ram", {
-            text "30 damage. "
+            text "30 damage."
             energyCost C, C, C
             attackRequirement {}
             onAttack {
@@ -1697,7 +1697,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS20
           move "Slash", {
-            text "20 damage. "
+            text "20 damage."
             energyCost C
             attackRequirement {}
             onAttack {
@@ -1736,7 +1736,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness L, PLUS10
           move "Headbutt", {
-            text "10 damage. "
+            text "10 damage."
             energyCost ()
             attackRequirement {}
             onAttack {
@@ -1744,7 +1744,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Surf", {
-            text "30 damage. "
+            text "30 damage."
             energyCost W, W
             attackRequirement {}
             onAttack {
@@ -1782,7 +1782,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Tackle", {
-            text "20 damage. "
+            text "20 damage."
             energyCost G
             attackRequirement {}
             onAttack {
@@ -1802,7 +1802,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Sparkling Pearl", {
-            text "20 damage. "
+            text "20 damage."
             energyCost W, C
             attackRequirement {}
             onAttack {
@@ -1822,7 +1822,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Headbutt", {
-            text "20 damage. "
+            text "20 damage."
             energyCost P, C
             attackRequirement {}
             onAttack {
@@ -1855,7 +1855,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return basic (this, hp:HP030, type:WATER, retreatCost:1) {
           weakness L, PLUS10
           move "Splash", {
-            text "10 damage. "
+            text "10 damage."
             energyCost C
             attackRequirement {}
             onAttack {
@@ -1883,7 +1883,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Slash", {
-            text "20 damage. "
+            text "20 damage."
             energyCost C, C
             attackRequirement {}
             onAttack {
@@ -1903,7 +1903,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Smash Kick", {
-            text "20 damage. "
+            text "20 damage."
             energyCost C, C
             attackRequirement {}
             onAttack {
@@ -1997,7 +1997,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:2) {
           weakness P, PLUS10
           move "Tackle", {
-            text "10 damage. "
+            text "10 damage."
             energyCost C
             attackRequirement {}
             onAttack {
@@ -2017,7 +2017,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return basic (this, hp:HP060, type:WATER, retreatCost:2) {
           weakness L, PLUS10
           move "Irongrip", {
-            text "10 damage. "
+            text "10 damage."
             energyCost C
             attackRequirement {}
             onAttack {
@@ -2025,7 +2025,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Guillotine", {
-            text "30 damage. "
+            text "30 damage."
             energyCost W, C
             attackRequirement {}
             onAttack {
@@ -2074,7 +2074,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:2) {
           weakness P, PLUS10
           move "Punch", {
-            text "10 damage. "
+            text "10 damage."
             energyCost C
             attackRequirement {}
             onAttack {
@@ -2094,7 +2094,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness P, PLUS10
           move "Light Punch", {
-            text "10 damage. "
+            text "10 damage."
             energyCost F
             attackRequirement {}
             onAttack {
@@ -2114,7 +2114,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness G, PLUS10
           move "Mud Spatter", {
-            text "10 damage. "
+            text "10 damage."
             energyCost C
             attackRequirement {}
             onAttack {
@@ -2142,7 +2142,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Sharpen", {
-            text "20 damage. "
+            text "20 damage."
             energyCost C, C
             attackRequirement {}
             onAttack {
@@ -2174,7 +2174,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return basic (this, hp:HP060, type:FIRE, retreatCost:2) {
           weakness W, PLUS10
           move "Steady Firebreathing", {
-            text "10 damage. "
+            text "10 damage."
             energyCost R
             attackRequirement {}
             onAttack {
@@ -2202,7 +2202,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Bite", {
-            text "30 damage. "
+            text "30 damage."
             energyCost C, C, C
             attackRequirement {}
             onAttack {
@@ -2292,7 +2292,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
           weakness W, PLUS10
           move "Peck", {
-            text "10 damage. "
+            text "10 damage."
             energyCost ()
             attackRequirement {}
             onAttack {
@@ -2385,7 +2385,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS10
           move "Mumble", {
-            text "10 damage. "
+            text "10 damage."
             energyCost ()
             attackRequirement {}
             onAttack {
@@ -2406,7 +2406,7 @@ public enum GreatEncounters implements LogicCardInfo {
           weakness L, PLUS10
           resistance F, MINUS20
           move "Water Drip", {
-            text "10 damage. "
+            text "10 damage."
             energyCost W
             attackRequirement {}
             onAttack {
@@ -2414,7 +2414,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Wing Attack", {
-            text "20 damage. "
+            text "20 damage."
             energyCost C, C
             attackRequirement {}
             onAttack {
