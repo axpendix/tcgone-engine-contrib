@@ -4,7 +4,14 @@ import tcgwars.logic.effect.gm.PlayTrainer;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.effect.EffectPriority.BEFORE_LAST
+import static tcgwars.logic.effect.EffectType.ASLEEP_SPC
+import static tcgwars.logic.effect.EffectType.BEGIN_TURN
+import static tcgwars.logic.effect.EffectType.GET_GIVEN_PRIZES
+import static tcgwars.logic.effect.EffectType.GET_MOVE_LIST
+import static tcgwars.logic.effect.EffectType.GET_RESISTANCES
+import static tcgwars.logic.effect.EffectType.KNOCKOUT;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
@@ -122,9 +129,9 @@ public enum GreatEncounters implements LogicCardInfo {
   WHISMUR_94 ("Whismur", "94", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
   WINGULL_95 ("Wingull", "95", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
   ZIGZAGOON_96 ("Zigzagoon", "96", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  AMULET_COIN_97 ("Amulet Coin", "97", Rarity.UNCOMMON, [TRAINER]),
+  AMULET_COIN_97 ("Amulet Coin", "97", Rarity.UNCOMMON, [TRAINER, POKEMON_TOOL]),
   FELICITY_S_DRAWING_98 ("Felicity's Drawing", "98", Rarity.UNCOMMON, [TRAINER]),
-  LEFTOVERS_99 ("Leftovers", "99", Rarity.UNCOMMON, [TRAINER]),
+  LEFTOVERS_99 ("Leftovers", "99", Rarity.UNCOMMON, [TRAINER, POKEMON_TOOL]),
   MOONLIGHT_STADIUM_100 ("Moonlight Stadium", "100", Rarity.UNCOMMON, [TRAINER, STADIUM]),
   PREMIER_BALL_101 ("Premier Ball", "101", Rarity.UNCOMMON, [TRAINER]),
   RARE_CANDY_102 ("Rare Candy", "102", Rarity.UNCOMMON, [TRAINER]),
@@ -197,7 +204,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Flame Kick", {
-            text "Discard 2 [R] Energy attached to Blaziken. This attack does 80 damage to 1 of your opponent’s Pokémon."
+            text "Discard 2 [R] Energy attached to Blaziken. This attack does 80 damage to 1 of your opponent's Pokémon."
             energyCost R, R, C
             onAttack {
               damage 80, opp.all.select()
@@ -245,7 +252,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Darkness Pursuit", {
-            text "50 damage. If the Defending Pokémon is Cresselia, this attack’s base damage is 100."
+            text "50 damage. If the Defending Pokémon is Cresselia, this attack's base damage is 100."
             energyCost D, D, D
             onAttack {
               damage 50
@@ -292,7 +299,7 @@ public enum GreatEncounters implements LogicCardInfo {
             callForFamily(basic:true, 3, delegate)
           }
           move "Smash Short", {
-            text "10+ damage. If the Defending Pokémon has a Pokémon Tool card attached to it, this attack does 10 damage plus 20 more damage. Discard that Pokémon Tool card, look at your opponent’s hand, and discard any Pokémon Tool cards of the same name you find there."
+            text "10+ damage. If the Defending Pokémon has a Pokémon Tool card attached to it, this attack does 10 damage plus 20 more damage. Discard that Pokémon Tool card, look at your opponent's hand, and discard any Pokémon Tool cards of the same name you find there."
             energyCost C
             onAttack {
               damage 10
@@ -313,7 +320,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return evolution (this, from:"Porygon 2", hp:HP110, type:COLORLESS, retreatCost:2) {
           weakness F, PLUS30
           pokePower "Conversion", {
-            text "Once during your turn , you may discard a basic Energy card from your hand. Porygon-Z is the same type as that Energy Card until the end of your turn. This power can’t be used if Porygon-Z is affected by a Special Condition."
+            text "Once during your turn , you may discard a basic Energy card from your hand. Porygon-Z is the same type as that Energy Card until the end of your turn. This power can't be used if Porygon-Z is affected by a Special Condition."
             actionA {
               checkLastTurn()
               checkNoSPC()
@@ -352,7 +359,7 @@ public enum GreatEncounters implements LogicCardInfo {
           weakness D, PLUS20
           resistance C, MINUS20
           move "Astonish", {
-            text "20 damage. Choose 1 card from you opponent’s hand without looking. Look at that card you chose, then have your opponent shuffle that card into his or her deck."
+            text "20 damage. Choose 1 card from you opponent's hand without looking. Look at that card you chose, then have your opponent shuffle that card into his or her deck."
             energyCost C, C
             onAttack {
               damage 20
@@ -376,7 +383,7 @@ public enum GreatEncounters implements LogicCardInfo {
           weakness R, PLUS30
           resistance W, MINUS20
           pokeBody "Wild Growth", {
-            text "Each basic [G] Energy card attached to your Pokémon provides [G][G] Energy instead. You can’t use more than 1 Wild Growth Poké-Body each turn."
+            text "Each basic [G] Energy card attached to your Pokémon provides [G][G] Energy instead. You can't use more than 1 Wild Growth Poké-Body each turn."
             getterA GET_ENERGY_TYPES, { holder->
               if(holder.effect.target.owner == self.owner
                 && holder.effect.card.containsTypePlain(G)
@@ -400,7 +407,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return evolution (this, from:"Marshtomp", hp:HP130, type:WATER, retreatCost:2) {
           weakness G, PLUS30
           pokePower "Wash Out", {
-            text "As often as you like during your turn , you may move a [W] or [F] Energy attached to 1 of your Benched Pokémon to your Active Pokémon. This power can’t be used if Swampert is affected by a Special Condition."
+            text "As often as you like during your turn , you may move a [W] or [F] Energy attached to 1 of your Benched Pokémon to your Active Pokémon. This power can't be used if Swampert is affected by a Special Condition."
             actionA {
               checkNoSPC()
               assert my.bench.find{it.cards.energyCount(W) || it.cards.energyCount(F)} : "There are no [W] or [F] Energys attached to your benched Pokémon"
@@ -411,7 +418,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Hammer Arm", {
-            text "80 damage. Discard the top card from your opponent’s deck."
+            text "80 damage. Discard the top card from your opponent's deck."
             energyCost W, W, C, C
             onAttack {
               damage 80
@@ -426,7 +433,7 @@ public enum GreatEncounters implements LogicCardInfo {
           weakness R, PLUS30
           resistance W, MINUS20
           move "Power Whip", {
-            text "Choose 1 of your opponent’s Pokémon. This attack does 10 damage for each basic Energy card attached to Tangrowth to that Pokémon."
+            text "Choose 1 of your opponent's Pokémon. This attack does 10 damage for each basic Energy card attached to Tangrowth to that Pokémon."
             energyCost G
             attackRequirement {
               assert self.cards.filterByType(BASIC_ENERGY) : "$self has no basic Energy cards attached to it"
@@ -436,7 +443,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Stick and Absorb", {
-            text "60 damage. Remove 3 damage counters from Tangrowth. The Defending Pokémon can’t retreat during your opponent’s next turn."
+            text "60 damage. Remove 3 damage counters from Tangrowth. The Defending Pokémon can't retreat during your opponent's next turn."
             energyCost G, G, C, C
             onAttack {
               damage 60
@@ -558,7 +565,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return evolution (this, from:"Baltoy", hp:HP080, type:FIGHTING, retreatCost:2) {
           weakness G, PLUS20
           pokePower "Cosmic Power", {
-            text "Once during your turn , you may choose up to 2 cards from your hand and put them on the bottom of your deck in any order. If you do, draw cards until you have 6 cards in you hand. This power can’t be used if Claydol is affected by a Special Condition."
+            text "Once during your turn , you may choose up to 2 cards from your hand and put them on the bottom of your deck in any order. If you do, draw cards until you have 6 cards in you hand. This power can't be used if Claydol is affected by a Special Condition."
             actionA {
               checkLastTurn()
               checkNoSPC()
@@ -593,7 +600,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Flash Cannon", {
-            text "40 damage. You may return all Energy cards attached to Dialga to your hand. If you do, remove the highest Stage Evolution card from the Defending Pokémon and shuffle that card into your opponent’s deck."
+            text "40 damage. You may return all Energy cards attached to Dialga to your hand. If you do, remove the highest Stage Evolution card from the Defending Pokémon and shuffle that card into your opponent's deck."
             energyCost M, M, C
             onAttack {
               damage 40
@@ -610,7 +617,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return evolution (this, from:"Loudred", hp:HP130, type:COLORLESS, retreatCost:3) {
           weakness F, PLUS30
           move "Ambient Noise", {
-            text "Flip 2 coins. If the first coin is heads, this attack does 50 damage to the Defending Pokémon. If the first coin is tails, this attack does 20 damage to each of your opponent's Benched Pokémon. If the second coin is heads, the Defending Pokémon is now Confused. If the second coin is tails, your opponent can’t play any Trainer, Supporter, or Stadium cards from his or her hand during your opponent’s next turn."
+            text "Flip 2 coins. If the first coin is heads, this attack does 50 damage to the Defending Pokémon. If the first coin is tails, this attack does 20 damage to each of your opponent's Benched Pokémon. If the second coin is heads, the Defending Pokémon is now Confused. If the second coin is tails, your opponent can't play any Trainer, Supporter, or Stadium cards from his or her hand during your opponent's next turn."
             energyCost C, C
             onAttack {
               def coin = 1
@@ -661,7 +668,7 @@ public enum GreatEncounters implements LogicCardInfo {
           weakness W, PLUS20
           resistance P, MINUS20
           move "Dark Fang", {
-            text "20 damage. Choose 1 card from you opponent’s hand without looking and discard it."
+            text "20 damage. Choose 1 card from you opponent's hand without looking and discard it."
             energyCost D
             onAttack {
               damage 20
@@ -813,7 +820,7 @@ public enum GreatEncounters implements LogicCardInfo {
           weakness R, PLUS10
           resistance P, MINUS20
           move "Pick Out", {
-            text "Choose 1 face-down Prize card (yours or your opponent’s and put it face up. If that card is a Support card, use the effect of that card as the effect of this attack. (That card remains face up for the rest of the game.)"
+            text "Choose 1 face-down Prize card (yours or your opponent's and put it face up. If that card is a Support card, use the effect of that card as the effect of this attack. (That card remains face up for the rest of the game.)"
             energyCost ()
             attackRequirement {
               assert my.prizeCardSet.faceDownCards || opp.prizeCardSet.faceDownCards : "There are no face down prizes"
@@ -865,7 +872,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return evolution (this, from:"Feebas", hp:HP090, type:WATER, retreatCost:2) {
           weakness L, PLUS20
           pokeBody "Marvel Scale", {
-            text "Prevent all effects of attacks, including damage, done to Milotic by your opponent’s Pokémon LV. X."
+            text "Prevent all effects of attacks, including damage, done to Milotic by your opponent's Pokémon LV. X."
             delayedA {
               before null, self, Source.ATTACK, {
                 if (self.owner.opposite.pbg.active.topPokemonCard.cardTypes.is(LVL_X) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
@@ -930,7 +937,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Transback", {
-            text "40 damage. You may flip a coin. If heads, discard all energy attached to Palkia and put the Defending Pokémon and all cards attached to it on top of your opponent’s deck. Your opponent shuffles his or her deck aftward."
+            text "40 damage. You may flip a coin. If heads, discard all energy attached to Palkia and put the Defending Pokémon and all cards attached to it on top of your opponent's deck. Your opponent shuffles his or her deck aftward."
             energyCost W, W, C
             onAttack {
               damage 40
@@ -950,7 +957,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return evolution (this, from:"Mankey", hp:HP090, type:FIGHTING, retreatCost:1) {
           weakness P, PLUS20
           pokeBody "Anger Point", {
-            text "If Primeape has any damage counters on it, Primeape’s attacks do 40 more damage to the Active Pokémon ."
+            text "If Primeape has any damage counters on it, Primeape's attacks do 40 more damage to the Active Pokémon ."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each{
@@ -963,7 +970,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Whump", {
-            text "50 damage. Primeape is now Confused. Flip a coin. If heads, the Defending Pokémon can’t attack during your opponent’s next turn."
+            text "50 damage. Primeape is now Confused. Flip a coin. If heads, the Defending Pokémon can't attack during your opponent's next turn."
             energyCost F, C, C
             onAttack {
               damage 50
@@ -989,7 +996,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           pokePower "Trump Card", {
-            text "Once during your turn , if any of your Pokémon were Knocked Out during your opponent’s last turn, search your deck for any 1 card and put it into your hand. Shuffle your deck afterward. This power can’t be used if Slowking is affected by a Special Condition."
+            text "Once during your turn , if any of your Pokémon were Knocked Out during your opponent's last turn, search your deck for any 1 card and put it into your hand. Shuffle your deck afterward. This power can't be used if Slowking is affected by a Special Condition."
             actionA {
               checkLastTurn()
               checkNoSPC()
@@ -1002,7 +1009,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Psych Up", {
-            text "30 damage. During your next turn, Slowking’s Psych Up attack’s base damage is 60."
+            text "30 damage. During your next turn, Slowking's Psych Up attack's base damage is 60."
             energyCost P, C
             onAttack {
               damage 30
@@ -1026,7 +1033,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Hidden Power", {
-            text "30 damage. Discard a card from your hand. (If you can’t discard a card from you hand, this attack does nothing.)"
+            text "30 damage. Discard a card from your hand. (If you can't discard a card from you hand, this attack does nothing.)"
             energyCost P
             attackRequirement {
               assert my.hand : "You can't discard a card"
@@ -1091,7 +1098,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return evolution (this, from:"Jigglypuff", hp:HP090, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS20
           pokePower "Good Night Melody", {
-            text "Once during your turn , you may use this power. Each Active Pokémon (both your and your opponent’s is now Asleep. This power can’t be use if Wigglytuff is affected by a Special Condition."
+            text "Once during your turn , you may use this power. Each Active Pokémon (both your and your opponent's is now Asleep. This power can't be use if Wigglytuff is affected by a Special Condition."
             actionA {
               checkLastTurn()
               checkNoSPC()
@@ -1229,7 +1236,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return evolution (this, from:"Buizel", hp:HP080, type:WATER, retreatCost:1) {
           weakness L, PLUS20
           move "Agility", {
-            text "20 damage. Flip a coin. If heads, prevent all effects of an attack, including damage, done to Floatzel during your opponent’s next turn."
+            text "20 damage. Flip a coin. If heads, prevent all effects of an attack, including damage, done to Floatzel during your opponent's next turn."
             energyCost C, C
             onAttack {
               damage 20
@@ -1239,7 +1246,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Aqua Jet", {
-            text "60 damage. Flip a coin. If heads, this attack does 10 damage to 1 of your opponent’s Benched Pokémon."
+            text "60 damage. Flip a coin. If heads, this attack does 10 damage to 1 of your opponent's Benched Pokémon."
             energyCost W, W, C
             onAttack {
               damage 60
@@ -1255,7 +1262,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return evolution (this, from:"Clamperl", hp:HP080, type:WATER, retreatCost:0) {
           weakness L, PLUS20
           move "Sweet Temptation", {
-            text "Switch 1 of your opponent’s Benched Pokémon with 1 of the Defending Pokémon. This attack does 10 damage to the new Defending Pokémon."
+            text "Switch 1 of your opponent's Benched Pokémon with 1 of the Defending Pokémon. This attack does 10 damage to the new Defending Pokémon."
             energyCost ()
             attackRequirement {
               assert opp.bench : "Your opponent has no Benched Pokémon"
@@ -1334,7 +1341,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Spirited Throw", {
-            text "50 damage. If Hariyama has fewer remaining HP than the Defending Pokémon, this attack’s base damage is 80."
+            text "50 damage. If Hariyama has fewer remaining HP than the Defending Pokémon, this attack's base damage is 80."
             energyCost F, F, C
             onAttack {
               damage 50
@@ -1348,7 +1355,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return evolution (this, from:"Clamperl", hp:HP090, type:WATER, retreatCost:1) {
           weakness L, PLUS20
           move "Scary Face", {
-            text "Flip a coin. If heads, the Defending Pokémon can’t attack or retreat during your opponent’s next turn."
+            text "Flip a coin. If heads, the Defending Pokémon can't attack or retreat during your opponent's next turn."
             energyCost ()
             onAttack {
               flip {
@@ -1374,7 +1381,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return evolution (this, from:"Zigzagoon", hp:HP080, type:COLORLESS, retreatCost:0) {
           weakness F, PLUS20
           move "Switcheroo", {
-            text "Move a Pokémon Tool card attached to 1 of your opponent’s Pokémon to another of your opponent’s Pokémon (excluding Pokémon that already has a Pokémon Tool attached to it). (If an effect of this attack is prevented, this attack does nothing.)"
+            text "Move a Pokémon Tool card attached to 1 of your opponent's Pokémon to another of your opponent's Pokémon (excluding Pokémon that already has a Pokémon Tool attached to it). (If an effect of this attack is prevented, this attack does nothing.)"
             energyCost ()
             attackRequirement {
               assert opp.all.find{it.cards.filterByType(POKEMON_TOOL)} : "Your opponent has no Pokémon Tools attached"
@@ -1398,7 +1405,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Overrun", {
-            text "30 damage. Does 30 damage to 1 of your opponent’s Benched Pokémon."
+            text "30 damage. Does 30 damage to 1 of your opponent's Benched Pokémon."
             energyCost C, C, C
             onAttack {
               damage 30
@@ -1412,7 +1419,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return evolution (this, from:"Whismur", hp:HP080, type:COLORLESS, retreatCost:2) {
           weakness F, PLUS20
           move "Bass Control", {
-            text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon."
+            text "Choose 1 of your opponent's Pokémon. This attack does 20 damage to that Pokémon."
             energyCost C, C
             attackRequirement {}
             onAttack {
@@ -1432,7 +1439,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return evolution (this, from:"Slugma", hp:HP090, type:FIRE, retreatCost:3) {
           weakness W, PLUS20
           pokeBody "Magma Armor", {
-            text "Magcargo can’t be Asleep or Paralyzed."
+            text "Magcargo can't be Asleep or Paralyzed."
             delayedA {
             }
           }
@@ -1457,7 +1464,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Muddy Bomb", {
-            text "Choose 1 of your opponent’s Pokémon. This attack does 30 damage to that Pokémon and 10 damage to each of your opponent’s other Pokémon."
+            text "Choose 1 of your opponent's Pokémon. This attack does 30 damage to that Pokémon and 10 damage to each of your opponent's other Pokémon."
             energyCost F, C, C
             attackRequirement {}
             onAttack {
@@ -1469,7 +1476,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return evolution (this, from:"Caterpie", hp:HP070, type:GRASS, retreatCost:2) {
           weakness R, PLUS20
           pokePower "Emerge", {
-            text "Once during your turn , if Metapod is your Active Pokémon, you may flip a coin. If heads, search your deck for a card that evolves from Metapod and put it onto Metapod. (This counts as evolving Metapod.) Shuffle your deck afterward. This power can’t be used if Metapod is affected by a Special Condition."
+            text "Once during your turn , if Metapod is your Active Pokémon, you may flip a coin. If heads, search your deck for a card that evolves from Metapod and put it onto Metapod. (This counts as evolving Metapod.) Shuffle your deck afterward. This power can't be used if Metapod is affected by a Special Condition."
             actionA {
             }
           }
@@ -1507,7 +1514,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return evolution (this, from:"Porygon", hp:HP070, type:COLORLESS, retreatCost:2) {
           weakness F, PLUS20
           pokePower "Download", {
-            text "Once during your turn , you may discard a Supporter card from your hand and use the effect of that card as the effect of this power. This power can’t be used if Porygon2 is affected by a Special Condition."
+            text "Once during your turn , you may discard a Supporter card from your hand and use the effect of that card as the effect of this power. This power can't be used if Porygon2 is affected by a Special Condition."
             actionA {
             }
           }
@@ -1564,7 +1571,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return basic (this, hp:HP080, type:PSYCHIC, retreatCost:2) {
           weakness P, PLUS20
           move "Tail Blade", {
-            text "20 damage. Flip a coin. If heads, your opponent can’t play any Trainer cards from his or her hand during your opponent’s next turn."
+            text "20 damage. Flip a coin. If heads, your opponent can't play any Trainer cards from his or her hand during your opponent's next turn."
             energyCost P
             attackRequirement {}
             onAttack {
@@ -1605,7 +1612,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return evolution (this, from:"Slowpoke", hp:HP080, type:WATER, retreatCost:2) {
           weakness L, PLUS20
           move "Amnesia", {
-            text "20 damage. Choose 1 of the Defending Pokémon’s attacks. That Pokémon can’t use that attack during your opponent’s next turn."
+            text "20 damage. Choose 1 of the Defending Pokémon's attacks. That Pokémon can't use that attack during your opponent's next turn."
             energyCost C, C
             attackRequirement {}
             onAttack {
@@ -1651,7 +1658,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Hidden Power", {
-            text "10 damage. You may flip a coin. If tails, this attack does nothing. If heads, this attack’s base damage is 30."
+            text "10 damage. You may flip a coin. If tails, this attack does nothing. If heads, this attack's base damage is 30."
             energyCost P
             attackRequirement {}
             onAttack {
@@ -1668,7 +1675,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Hidden Power", {
-            text "50 damage. If Unown G has any damage counters on it, this attack’s base damage is 10."
+            text "50 damage. If Unown G has any damage counters on it, this attack's base damage is 10."
             energyCost P, C
             attackRequirement {}
             onAttack {
@@ -1680,7 +1687,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return basic (this, hp:HP090, type:WATER, retreatCost:3) {
           weakness L, PLUS20
           move "Tsunami", {
-            text "10 damage. Flip a coin. If heads, this attack does 10 damage to each of your opponent’s Bench Pokémon."
+            text "10 damage. Flip a coin. If heads, this attack does 10 damage to each of your opponent's Bench Pokémon."
             energyCost W, C
             attackRequirement {}
             onAttack {
@@ -1743,7 +1750,7 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost ()
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Surf", {
@@ -1751,7 +1758,7 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost W, W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
             }
           }
         };
@@ -1760,7 +1767,7 @@ public enum GreatEncounters implements LogicCardInfo {
           weakness R, PLUS10
           resistance W, MINUS20
           move "Sand Attack", {
-            text "If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
+            text "If the Defending Pokémon tries to attack during your opponent's next turn, your opponent flips a coin. If tails, that attack does nothing."
             energyCost C
             attackRequirement {}
             onAttack {
@@ -1780,7 +1787,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
           pokePower "Pupate", {
-            text "Once during your turn , if Caterpie is your Active Pokémon, you may flip a coin, if heads search your deck for a card that evolves from Caterpie and put it onto Caterpie. (This counts as evolving Caterpie.) Shuffle your deck afterward. This power can’t be used if Caterpie is affected by a Special Condition."
+            text "Once during your turn , if Caterpie is your Active Pokémon, you may flip a coin, if heads search your deck for a card that evolves from Caterpie and put it onto Caterpie. (This counts as evolving Caterpie.) Shuffle your deck afterward. This power can't be used if Caterpie is affected by a Special Condition."
             actionA {
             }
           }
@@ -1878,7 +1885,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS10
           move "Captivate", {
-            text "Switch 1 of your opponent’s Benched Pokémon with 1 of the Defending Pokémon."
+            text "Switch 1 of your opponent's Benched Pokémon with 1 of the Defending Pokémon."
             energyCost C
             attackRequirement {}
             onAttack {
@@ -1931,7 +1938,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Inquire", {
-            text "Draw a card. If you didn’t play any Supporter card from your hand during this turn, draw 2 more cards."
+            text "Draw a card. If you didn't play any Supporter card from your hand during this turn, draw 2 more cards."
             energyCost ()
             attackRequirement {}
             onAttack {
@@ -1943,7 +1950,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
           weakness R, PLUS20
           pokePower "Scent Conduct", {
-            text "Once during your turn , you may flip a coin. If heads, search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward. This power can’t be used if Illumise is affected by a Special Condition."
+            text "Once during your turn , you may flip a coin. If heads, search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward. This power can't be used if Illumise is affected by a Special Condition."
             actionA {
             }
           }
@@ -2008,7 +2015,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Smogscreen", {
-            text "10 damage. The Defending Pokémon is now Poisoned. If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
+            text "10 damage. The Defending Pokémon is now Poisoned. If the Defending Pokémon tries to attack during your opponent's next turn, your opponent flips a coin. If tails, that attack does nothing."
             energyCost P, C
             attackRequirement {}
             onAttack {
@@ -2040,7 +2047,7 @@ public enum GreatEncounters implements LogicCardInfo {
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
           weakness P, PLUS20
           pokePower "Gravity Change", {
-            text "Once during your turn , you may discard a card from your hand. Then, if you have Solrock in play, draw a card. This power can’t be used if Lunatone is affected by a Special Condition."
+            text "Once during your turn , you may discard a card from your hand. Then, if you have Solrock in play, draw a card. This power can't be used if Lunatone is affected by a Special Condition."
             actionA {
             }
           }
@@ -2081,7 +2088,7 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Arm Thrust", {
@@ -2089,7 +2096,10 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost F, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip {
+                damage 40
+                discardDefendingEnergy()
+              }
             }
           }
         };
@@ -2101,7 +2111,7 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost F
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Rage", {
@@ -2109,7 +2119,7 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10+10*self.numberOfDamageCounters
             }
           }
         };
@@ -2121,7 +2131,7 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Endeavor", {
@@ -2129,7 +2139,8 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip 2, { damage 20 }
             }
           }
         };
@@ -2139,9 +2150,12 @@ public enum GreatEncounters implements LogicCardInfo {
           move "Calculate", {
             text "Look at the top 3 cards of your deck and put them back on top of your deck in any order."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck: "Deck is empty"
+            }
             onAttack {
-              damage 0
+              def list = rearrange(deck.subList(0, 3), "Rearrange the top 3 cards in your deck")
+              deck.setSubList(0, list)
             }
           }
           move "Sharpen", {
@@ -2149,7 +2163,7 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
         };
@@ -2161,15 +2175,17 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              clearSpecialCondition(self)
+              apply ASLEEP, self
             }
           }
           move "Tumble Over", {
-            text "20 damage. Slowpoke can’t attack during your next turn."
+            text "20 damage. Slowpoke can't attack during your next turn."
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              cantAttackNextTurn(self)
             }
           }
         };
@@ -2181,7 +2197,7 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost R
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Body Slam", {
@@ -2189,7 +2205,10 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip {
+                afterDamage { apply PARALYZED }
+              }
             }
           }
         };
@@ -2201,7 +2220,7 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              whirlwind()
             }
           }
           move "Bite", {
@@ -2209,7 +2228,7 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
             }
           }
         };
@@ -2217,8 +2236,12 @@ public enum GreatEncounters implements LogicCardInfo {
         return basic (this, hp:HP070, type:FIGHTING, retreatCost:1) {
           weakness G, PLUS20
           pokeBody "Sunlight", {
-            text "If you have Lunatone in play, damage done to your opponent’s Pokémon by your or Pokémon isn’t affected by resistance."
-            delayedA {
+            text "If you have Lunatone in play, damage done to your opponent's Pokémon by your [P] or [F] Pokémon isn't affected by resistance."
+            getterA (GET_RESISTANCES) { h->
+              def isAttackerValidType = my.active.types.is(P) || my.active.types.is(F)
+              if (h.effect.target.owner == self.owner.opposite && my.all.find({ it.name == "Lunatone" } && isAttackerValidType)) {
+                h.object.clear()
+              }
             }
           }
           move "Sol Charge", {
@@ -2226,7 +2249,10 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost F
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              afterDamage {
+                attachEnergyFrom(basic: true, my.discard, my.bench)
+              }
             }
           }
         };
@@ -2235,19 +2261,20 @@ public enum GreatEncounters implements LogicCardInfo {
           weakness L, PLUS10
           resistance F, MINUS20
           move "Super Speed", {
-            text "Flip a coin. If heads, prevent all effects of an attack, including damage, done to Swablu during your opponent’s next turn."
+            text "Flip a coin. If heads, prevent all effects of an attack, including damage, done to Swablu during your opponent's next turn."
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { preventAllEffectsNextTurn() }
             }
           }
           move "Shoot Through", {
-            text "10 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon."
+            text "10 damage. Does 10 damage to 1 of your opponent's Benched Pokémon."
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              damage 10, opp.bench.select("Do 10 damage to which Benched Pokémon")
             }
           }
         };
@@ -2255,19 +2282,22 @@ public enum GreatEncounters implements LogicCardInfo {
         return basic (this, hp:HP070, type:GRASS, retreatCost:2) {
           weakness R, PLUS10
           move "Vine Invite", {
-            text "Switch 1 of your opponent’s Benched Pokémon with 1 of the Defending Pokémon."
+            text "Switch 1 of your opponent's Benched Pokémon with 1 of the Defending Pokémon."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert opp.bench : "Opponent has no Benched Pokémon"
+            }
             onAttack {
-              damage 0
+              def target = opp.bench.select("Select the new Active Pokémon")
+              sw2(target)
             }
           }
           move "Grass Knot", {
-            text "20+ damage. Energy in the Defending Pokémon’s Retreat Cost (after applying effects to the the Retreat Cost)."
+            text "20+ damage. Plus 10 damage for each [C] Energy in the Defending Pokémon's Retreat Cost (after applying effects to the the Retreat Cost)."
             energyCost G, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20 + 10 * defending.retreatCost
             }
           }
         };
@@ -2279,15 +2309,21 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              apply ASLEEP
             }
           }
           move "Find a Friend", {
-            text "Flip a coin. If heads, search your deck for a Pokémon, show it to your opponent, and put it into you hand. Shuffle your deck afterward."
+            text "Flip a coin. If heads, search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert deck.notEmpty : "Deck is empty"
+            }
             onAttack {
-              damage 0
+              flip {
+                def card = my.deck.search(count: 1, "Search your deck for a Pokémon", cardTypeFilter(POKEMON))
+                card.showToOpponent("Selected Pokémon").moveTo(my.hand)
+                shuffleDeck()
+              }
             }
           }
         };
@@ -2299,7 +2335,7 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost ()
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Singe", {
@@ -2307,7 +2343,7 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost R
             attackRequirement {}
             onAttack {
-              damage 0
+              apply BURNED
             }
           }
         };
@@ -2316,11 +2352,12 @@ public enum GreatEncounters implements LogicCardInfo {
           weakness R, PLUS10
           resistance W, MINUS20
           move "Energy Ball", {
-            text "10+ damage. Does 10 damage plus 10 more damage for each Energy attached to Treecko but not used to pay for this attack’s Energy cost. You can’t add more than 20 damage in this way."
+            text "10+ damage. Does 10 damage plus 10 more damage for each Energy attached to Treecko but not used to pay for this attack's Energy cost. You can't add more than 20 damage in this way."
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              extraEnergyDamage(2, hp(10), C, thisMove)
             }
           }
           move "Absorb", {
@@ -2328,7 +2365,8 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              heal 10, self
             }
           }
         };
@@ -2336,16 +2374,24 @@ public enum GreatEncounters implements LogicCardInfo {
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P
           pokeBody "LINK", {
-            text "Unown L can use any attack from any Unown in play ."
-            delayedA {
+            text "Unown L can use any attack from any Unown in play."
+            getterA (GET_MOVE_LIST, self) { holder->
+              def cardList = []
+              self.owner.pbg.bench.findAll { it.name.contains("Unown") }.each {
+                if (!cardList.contains("${it.topPokemonCard}") && it.topPokemonCard.name != "Unown L") {
+                  cardList.add("${it.topPokemonCard}")
+                  holder.object.addAll(it.topPokemonCard.moves)
+                }
+              }
+              holder.object.unique()
             }
           }
           move "Hidden Power", {
-            text "Search either player’s discard pile for up to any 2 cards, show them to your opponent, and put them on top of that player’s deck in any order you like."
+            text "Search either player's discard pile for up to any 2 cards, show them to your opponent, and put them on top of that player's deck in any order you like."
             energyCost P, C
             attackRequirement {}
             onAttack {
-              damage 0
+              // TODO
             }
           }
         };
@@ -2353,8 +2399,16 @@ public enum GreatEncounters implements LogicCardInfo {
         return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
           weakness R, PLUS20
           pokePower "Light Conduct", {
-            text "Once during your turn (before your attack,) if you have Illumise in play, you may search your discard pile for a Support card, show it to your opponent, and put it on top of your deck. This power can’t be used if Volbeat is affected by a Special Condition."
+            text "Once during your turn (before your attack,) if you have Illumise in play, you may search your discard pile for a Support card, show it to your opponent, and put it on top of your deck. This power can't be used if Volbeat is affected by a Special Condition."
             actionA {
+              assert my.all.find { it.name == "Illumise" } : "Illumise is not in play"
+              assert my.discard.filterByType(SUPPORTER) : "No Supporter card in your discard pile"
+              checkLastTurn()
+              powerUsed()
+              def card = my.discard.filterByType(SUPPORTER).select("Which card should be place on top of your deck?").first()
+              my.discard.remove(card)
+              my.deck.add(0, card)
+              bc "$card was put on top of the deck"
             }
           }
           move "Firefly Light", {
@@ -2380,7 +2434,7 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { apply PARALYZED }
             }
           }
         };
@@ -2392,15 +2446,17 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost ()
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Uproar", {
-            text "Flip a coin. If heads, this attack does 10 damage to each of your opponent’s Pokémon."
+            text "Flip a coin. If heads, this attack does 10 damage to each of your opponent's Pokémon."
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip {
+                opp.all.each { damage 10, it }
+              }
             }
           }
         };
@@ -2413,7 +2469,7 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Wing Attack", {
@@ -2421,7 +2477,7 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
         };
@@ -2431,9 +2487,14 @@ public enum GreatEncounters implements LogicCardInfo {
           move "Pull Out", {
             text "Search your discard pile for any 1 card, show it to your opponent, and put it on top of your deck."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.discard : "Your discard pile is empty"
+            }
             onAttack {
-              damage 0
+              def card = my.discard.select().first()
+              my.discard.remove(card)
+              my.deck.add(0, card)
+              bc "$card was put on top of the deck"
             }
           }
           move "Double Stab", {
@@ -2441,16 +2502,26 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 2, { damage 10 }
             }
           }
         };
       case AMULET_COIN_97:
-        return basicTrainer (this) {
-          text "Attach Amulet Coin to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nIf the Pokémon Amulet Coin is attached to is your Active Pokémon at the end of your turn, draw a card."
-          onPlay {
+        return pokemonTool (this) {
+          text "Attach Amulet Coin to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nIf the Pokémon Amulet Coin is attached to is your Active Pokémon at the end of your turn, draw a card."
+          def eff
+          onPlay { reason->
+            eff = delayed (priority: BEFORE_LAST) {
+              before (KNOCKOUT, self) {
+                if (self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
+                  bc "Amulet Coin activates"
+                  draw 1, TargetPlayer.OPPONENT // Targets the player being attacked (holding the lucky egg)
+                }
+              }
+            }
           }
-          playRequirement{
+          onRemoveFromPlay {
+            eff.unregister()
           }
         };
       case FELICITY_S_DRAWING_98:
@@ -2471,16 +2542,26 @@ public enum GreatEncounters implements LogicCardInfo {
           }
         };
       case LEFTOVERS_99:
-        return basicTrainer (this) {
-          text "Attach Leftovers to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nIf the Pokémon Leftovers is attached to is your Active Pokémon at the end of your turn, remove 1 damage counter from the Pokémon."
-          onPlay {
+        return pokemonTool (this) {
+          text "Attach Leftovers to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nIf the Pokémon Leftovers is attached to is your Active Pokémon at the end of your turn, remove 1 damage counter from the Pokémon."
+          def eff
+          onPlay { reason->
+            eff = delayed() {
+              before BEGIN_TURN, {
+                if (self.numberOfDamageCounters >= 1) {
+                  bc "Leftovers activates"
+                  heal 10, self
+                }
+              }
+            }
           }
-          playRequirement{
+          onRemoveFromPlay {
+            eff.unregister()
           }
         };
       case MOONLIGHT_STADIUM_100:
         return stadium (this) {
-          text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nThe Retreat Cost for each [P] and [D] Pokémon (both yours and your opponent’s) is 0."
+          text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card.\nThe Retreat Cost for each [P] and [D] Pokémon (both yours and your opponent's) is 0."
           def eff
           onPlay {
             eff = getter (GET_RETREAT_COST) {
@@ -2497,8 +2578,27 @@ public enum GreatEncounters implements LogicCardInfo {
         return basicTrainer (this) {
           text "Search your deck or your discard pile for a Pokémon LV.X, show it to your opponent, and put it into your hand. If you search your deck, shuffle your deck afterward."
           onPlay {
+            def choice = 1
+            def chosenCard
+
+            if (my.deck && my.discard.any {it.cardTypes.is(LVL_X) }) {
+              choice = choose([1,2], ['Search your deck', 'Search your discard pile'], "Choose where to search for a Pokémon LV.X card to be put it into your hand")
+            }
+
+            if (choice == 1 && my.deck) {
+              def validTargets = my.deck.findAll {it.cardTypes.is(LVL_X)}
+              chosenCard = my.deck.search(count: 1, "Choose where to search for a Pokémon LV.X card to be put it into your hand", { validTargets.contains(it) })
+            } else /*if (choice == 2 || !my.deck)*/ {
+              chosenCard = my.discard.findAll { it.cardTypes.is(LVL_X) }.select()
+            }
+
+            if (chosenCard)
+              chosenCard.showToOpponent("$thisCard : Chosen card").moveTo(my.hand)
+
+            shuffleDeck()
           }
           playRequirement{
+            assert my.discard || my.deck : "Your deck or discard needs to be not empty"
           }
         };
       case RARE_CANDY_102:
@@ -2507,8 +2607,19 @@ public enum GreatEncounters implements LogicCardInfo {
         return levelUp (this, from:"Cresselia", hp:HP100, type:PSYCHIC, retreatCost:1) {
           weakness P
           pokePower "Full Moon Dance", {
-            text "Once during your turn , you may move 1 damage counter from either player’s Pokémon to another Pokémon . This power can’t be used if Cresselia is affected by a Special Condition."
+            text "Once during your turn , you may move 1 damage counter from either player's Pokémon to another Pokémon. This power can't be used if Cresselia is affected by a Special Condition."
             actionA {
+              assert all.find({ it.numberOfDamageCounters > 0 }) : "None of either player's Pokémon have damage counters."
+              checkLastTurn()
+              powerUsed()
+              def source = all.findAll { it.numberOfDamageCounters > 0 }.select("Select a source for a damage counter.")
+              def target = all
+              all.remove(source)
+              target = target.select("Select a Pokémon to move the damage counter to.")
+              source.damage -= hp(10)
+              target.damage += hp(10)
+              bc "Full Moon Dance moved a damage counter from $source to $target."
+              checkFaint()
             }
           }
           move "Moon Skip", {
@@ -2516,7 +2627,26 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost P, P, C
             attackRequirement {}
             onAttack {
-              damage 0
+              def pcs = defending
+              delayed {
+                def eff2
+                register {
+                  eff2 = getter GET_GIVEN_PRIZES, BEFORE_LAST, pcs, {Holder holder ->
+                    if (holder.object > 0 && pcs.KOBYDMG == bg.turnCount) {
+                      bc "Moon Skip gives the player an additional prize."
+                      holder.object += 1
+                    }
+                  }
+                }
+                unregister {
+                  eff2.unregister()
+                }
+                after KNOCKOUT, pcs, {
+                  unregister()
+                }
+                unregisterAfter 1
+              }
+              damage 40
             }
           }
         };
@@ -2525,8 +2655,9 @@ public enum GreatEncounters implements LogicCardInfo {
           weakness F
           resistance P, MINUS20
           pokeBody "Dark Shadow", {
-            text "Each basic Energy card attached to your Pokémon now has the effect “If the Pokémon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon .” You can’t use more than 1 Dark Shadow Poké-Body each turn."
+            text "Each basic Energy card attached to your Pokémon now has the effect “If the Pokémon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon.” You can't use more than 1 Dark Shadow Poké-Body each turn."
             delayedA {
+              // TODO
             }
           }
           move "Endless Darkness", {
@@ -2534,7 +2665,21 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost D, D, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              apply ASLEEP
+              delayed {
+                before ASLEEP_SPC, null, null, BEGIN_TURN, {
+                  flip "Asleep (Endless Darkness)", 2, {}, {}, [2:{
+                    ef.unregisterItself(bg.em());
+                  }, 1:{
+                    bc "$ef.target is still asleep."
+                  }, 0:{
+                    bc "$ef.target is still asleep."
+                  }]
+                  prevent()
+                }
+                unregisterAfter 2
+              }
             }
           }
         };
@@ -2543,16 +2688,18 @@ public enum GreatEncounters implements LogicCardInfo {
           weakness R
           resistance P, MINUS20
           pokePower "Time Skip", {
-            text "Once during your turn , you may have your opponent flip 2 coins. If both of them are heads, your turn ends. If both of them are tails, after your opponent draws a card at the beginning of his or her next turn, his or her turn ends. This power can’t be used if Dialga is affected by a Special Condition."
+            text "Once during your turn , you may have your opponent flip 2 coins. If both of them are heads, your turn ends. If both of them are tails, after your opponent draws a card at the beginning of his or her next turn, his or her turn ends. This power can't be used if Dialga is affected by a Special Condition."
             actionA {
+              // TODO
             }
           }
           move "Metal Flash", {
-            text "80 damage. During your next turn, Dialga can’t use Metal Flash."
+            text "80 damage. During your next turn, Dialga can't use Metal Flash."
             energyCost M, M, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 80
+              cantUseAttack(thisMove, self)
             }
           }
         };
@@ -2560,16 +2707,27 @@ public enum GreatEncounters implements LogicCardInfo {
         return levelUp (this, from:"Palkia", hp:HP120, type:WATER, retreatCost:3) {
           weakness L
           pokePower "Restructure", {
-            text "Once during your turn , you may have your opponent switch 1 of your Active Pokémon with 1 of your Bench Pokémon. Then, you switch 1 of the Defending Pokémon with 1 of your opponent’s Benched Pokémon. This power can’t be used if Palkia is affected by a Special Condition."
+            text "Once during your turn , you may have your opponent switch 1 of your Active Pokémon with 1 of your Bench Pokémon. Then, you switch 1 of the Defending Pokémon with 1 of your opponent's Benched Pokémon. This power can't be used if Palkia is affected by a Special Condition."
             actionA {
+              // TODO
             }
           }
           move "Hydro Reflect", {
-            text "60 damage. You may move all Energy cards attached to Palkia to your Benched Pokémon in any way you like (Ignore this effect if you don’t have any Benched Pokémon.)"
+            text "60 damage. You may move all Energy cards attached to Palkia to your Benched Pokémon in any way you like (Ignore this effect if you don't have any Benched Pokémon.)"
             energyCost W, W, W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              afterDamage {
+                while(true) {
+                  if (!my.bench || !self.cards.filterByType(ENERGY)) break
+                  def energy = self.cards.filterByType(ENERGY).select("Select an Energy to move to a Benched Pokémon", false)
+                  if (!energy) break
+                  def target = my.bench.select("Move $energy to? (cancel to stop)", false)
+                  if (!target) break
+                  energySwitch(self, target, energy)
+                }
+              }
             }
           }
         };

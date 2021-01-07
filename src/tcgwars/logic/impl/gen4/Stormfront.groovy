@@ -2,6 +2,7 @@ package tcgwars.logic.impl.gen4
 
 import tcgwars.logic.impl.gen2.Aquapolis
 import tcgwars.logic.impl.gen3.UnseenForces;
+import tcgwars.logic.impl.gen4.GreatEncounters;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -2224,13 +2225,7 @@ public enum Stormfront implements LogicCardInfo {
           }
         };
       case PREMIER_BALL_91:
-        return basicTrainer (this) {
-          text "Search your deck or your discard pile for a Pokémon LV.X, show it to your opponent, and put it into your hand. If you search your deck, shuffle your deck afterward."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy (GreatEncounters.PREMIER_BALL_101, this);
       case POTION_92:
         return basicTrainer (this) {
           text "Remove 2 damage counters from 1 of your Pokémon (remove 1 damage counter if that Pokémon has only 1)."
