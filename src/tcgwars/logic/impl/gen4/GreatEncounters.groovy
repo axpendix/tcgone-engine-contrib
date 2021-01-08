@@ -1,5 +1,6 @@
-package tcgwars.logic.impl.gen4;
+package tcgwars.logic.impl.gen4
 
+import tcgwars.logic.card.trainer.PokemonToolCard;
 import tcgwars.logic.effect.gm.PlayTrainer;
 
 import static tcgwars.logic.card.HP.*;
@@ -12,6 +13,7 @@ import static tcgwars.logic.effect.EffectType.GET_GIVEN_PRIZES
 import static tcgwars.logic.effect.EffectType.GET_MOVE_LIST
 import static tcgwars.logic.effect.EffectType.GET_RESISTANCES
 import static tcgwars.logic.effect.EffectType.KNOCKOUT
+import static tcgwars.logic.effect.Source.SRC_ABILITY
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.OTHER;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
@@ -1532,8 +1534,12 @@ public enum GreatEncounters implements LogicCardInfo {
               assert my.hand.filterByEnergyType(W) : "No [W] Energy cards in your hand"
             }
             onAttack {
-//              attachEnergyFrom(max:2, type:F, my.hand, my.all)
-              // TODO
+              def energies = my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(W).select(max: 2, "Select 2 basic [W] Energy cards to attach to $self")
+              my.hand.removeAll(energies)
+              energies.each {
+                attachEnergy(self, it)
+              }
+              heal energies.size() * 10, self
             }
           }
           move "Jet Return", {
@@ -1747,7 +1753,14 @@ public enum GreatEncounters implements LogicCardInfo {
           pokePower "FAKE", {
             text "Once during your turn , if Unown F is on your Bench, you may use this power. Put a coin next to your Active Pokémon without showing your opponent and cover it with you hand. Your opponent guesses if the coin is heads or tails. If he or she is wrong, draw a card."
             actionA {
-              // TODO
+              checkLastTurn()
+              assert self.benched : "$self is not on the Bench"
+              powerUsed()
+
+              def playerPick = choose([0, 1], ["Heads", "Tails"], "You're putting a coin next to your active Pokémon without showing your opponent. Pick which side they must guess:")
+              def oppPick = oppChoose([0, 1], ["Heads", "Tails"], "Your opponent put a coin next to their active Pokémon without showing you. You must guess if it's Heads or Tails. If you guess incorrectly, the opponent will draw a card.")
+
+              if (playerPick != oppPick) draw 1
             }
           }
           move "Hidden Power", {
@@ -1767,7 +1780,37 @@ public enum GreatEncounters implements LogicCardInfo {
           pokePower "GUARD", {
             text "Once during your turn , if Unown G is on your Bench, you may discard all cards attached to Unown G and attach Unown G to 1 of your Pokémon as a Pokémon Tool card. As long as Unown G is attached to a Pokémon, prevent all effects of attacks, excluding damage, done to that Pokémon."
             actionA {
-              // TODO
+              checkLastTurn()
+              assert self.benched : "$self is not on the Bench"
+              assert my.all.findAll {it != self && it.cards.filterByType(POKEMON_TOOL).empty} : "No available Pokémon to attach $self to"
+              powerUsed()
+
+              def top = self.topPokemonCard
+              self.cards.getExcludedList(top).discard()
+              removePCS(self)
+
+              def toolCard = pokemonTool(new CustomCardInfo(top.staticInfo).setCardTypes(TRAINER, POKEMON_TOOL)) {
+                def eff
+                onPlay {
+                  eff = delayed {
+                    before null, self, Source.ATTACK, {
+                      if (bg.currentTurn == self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages)) {
+                        bc "GUARD prevents effect"
+                        prevent()
+                      }
+                    }
+                    unregisterAfter 2, {
+                      discard toolCard
+                    }
+                  }
+                }
+                onRemoveFromPlay {
+                  eff.unregister()
+                  bg.em().run(new ChangeImplementation(top, toolCard))
+                }
+              }
+              toolCard.player = top.player
+              attachPokemonTool(toolCard, my.all.select("Attach to?"))
             }
           }
           move "Hidden Power", {
@@ -2068,7 +2111,9 @@ public enum GreatEncounters implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               draw 1
-              // TODO
+              if (bg.em().retrieveObject("last_supporter_play_turn") != bg.turnCount) {
+                draw 2
+              }
             }
           }
         };
@@ -2078,7 +2123,17 @@ public enum GreatEncounters implements LogicCardInfo {
           pokePower "Scent Conduct", {
             text "Once during your turn , you may flip a coin. If heads, search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward. This power can't be used if Illumise is affected by a Special Condition."
             actionA {
-              // TODO
+              checkLastTurn()
+              assert my.deck : "Deck is empty"
+              assert bench.notFull : "Bench is full"
+              checkNoSPCForClassic()
+              powerUsed()
+              flip {
+                my.deck.search { it.cardTypes.is(BASIC) }.each {
+                  benchPCS(it)
+                }
+                shuffleDeck()
+              }
             }
           }
           move "Firefly Scent", {
@@ -2185,7 +2240,15 @@ public enum GreatEncounters implements LogicCardInfo {
           pokePower "Gravity Change", {
             text "Once during your turn , you may discard a card from your hand. Then, if you have Solrock in play, draw a card. This power can't be used if Lunatone is affected by a Special Condition."
             actionA {
-              // TODO
+              checkLastTurn()
+              assert my.hand : "Hand is empty"
+              checkNoSPC()
+              powerUsed()
+
+              my.hand.select("Discard which card?").discard()
+              if (my.all.find { it.name == "Solrock" }) {
+                draw 1
+              }
             }
           }
           move "Knock Over", {
@@ -2539,9 +2602,32 @@ public enum GreatEncounters implements LogicCardInfo {
           move "Hidden Power", {
             text "Search either player's discard pile for up to any 2 cards, show them to your opponent, and put them on top of that player's deck in any order you like."
             energyCost P, C
-            attackRequirement {}
+            attackRequirement {
+              assert my.discard || opp.discard : "Both discard piles are empty"
+            }
             onAttack {
-              // TODO
+              def choice = 0
+              if (my.discard && opp.discard) {
+                choice = choose([0, 1], ["Search your discard pile", "Search your opponent's discard pile"])
+              } else if (opp.discard) {
+                choice = 1
+              }
+
+              def sourceDiscard = my.discard
+              def destDeck = my.deck
+              if (choice == 1) {
+                sourceDiscard = opp.discard
+                destDeck = opp.deck
+              }
+
+              if (choice == 0) {
+                def cards = sourceDiscard.select(min:1, max: 2, "Select 2 cards to put on top of the deck")
+                cards.showToOpponent().moveTo(destDeck)
+                if (cards.size() > 1) {
+                  def rearrangedCards = rearrange(my.deck.subList(0, 2))
+                  destDeck.setSubList(0, rearrangedCards)
+                }
+              }
             }
           }
         };
@@ -2805,9 +2891,21 @@ public enum GreatEncounters implements LogicCardInfo {
           weakness F
           resistance P, MINUS20
           pokeBody "Dark Shadow", {
-            text "Each basic Energy card attached to your Pokémon now has the effect “If the Pokémon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon.” You can't use more than 1 Dark Shadow Poké-Body each turn."
+            text "Each basic Darkness Energy card attached to your Darkness Pokémon now has the effect \"If the Pokémon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance).\" You can't use more than 1 Dark Shadow Poké-Body each turn."
             delayedA {
-              // TODO
+              after PROCESS_ATTACK_EFFECTS, {
+                if (ef.attacker.owner == self.owner && ef.attacker.cards.filterByType(BASIC_ENERGY) && bg.em().retrieveObject("Dark_Shadow") != bg.turnCount) {
+                  bg.dm().each {
+                    if (it.to.active && it.to != self.owner && it.notNoEffect && it.dmg.value) {
+
+                      def bonusDamage = it.from.cards.filterByType(BASIC_ENERGY).size() * 10
+                      bc "Dark Shadow +$bonusDamage"
+                      it.dmg += hp(bonusDamage)
+                    }
+                  }
+                  bg.em().storeObject("Dark_Shadow", bg.turnCount)
+                }
+              }
             }
           }
           move "Endless Darkness", {
@@ -2838,9 +2936,27 @@ public enum GreatEncounters implements LogicCardInfo {
           weakness R
           resistance P, MINUS20
           pokePower "Time Skip", {
-            text "Once during your turn , you may have your opponent flip 2 coins. If both of them are heads, your turn ends. If both of them are tails, after your opponent draws a card at the beginning of his or her next turn, his or her turn ends. This power can't be used if Dialga is affected by a Special Condition."
+            text "Once during your turn (before your attack), you may have your opponent flip 2 coins. If both of them are heads, your turn ends. If both of them are tails, after your opponent draws a card at the beginning of his or her next turn, his or her turn ends. This power can't be used if Dialga is affected by a Special Condition."
+            def eff
             actionA {
-              // TODO
+              checkLastTurn()
+              checkNoSPC()
+              powerUsed()
+
+              flip 2, {}, {}, [
+                2: { bg().gm().betweenTurns() },
+                0: {
+                  eff = delayed {
+                    after DRAW_CARD, {
+                      if (bg.currentTurn != self.owner) {
+                        bc "Time Skip Activates"
+                        bg().gm().betweenTurns()
+                      }
+                    }
+                    unregisterAfter 2
+                  }
+                }
+              ]
             }
           }
           move "Metal Flash", {
@@ -2857,9 +2973,18 @@ public enum GreatEncounters implements LogicCardInfo {
         return levelUp (this, from:"Palkia", hp:HP120, type:WATER, retreatCost:3) {
           weakness L
           pokePower "Restructure", {
-            text "Once during your turn , you may have your opponent switch 1 of your Active Pokémon with 1 of your Bench Pokémon. Then, you switch 1 of the Defending Pokémon with 1 of your opponent's Benched Pokémon. This power can't be used if Palkia is affected by a Special Condition."
+            text "Once during your turn (before your attack), you may have your opponent switch 1 of your Active Pokémon with 1 of your Benched Pokémon. Then, you switch 1 of the Defending Pokémon with 1 of your opponent's Benched Pokémon. This power can't be used if Palkia is affected by a Special Condition."
             actionA {
-              // TODO
+              checkLastTurn()
+              checkNoSPC()
+              powerUsed()
+              assert my.bench && opp.bench : "Both players must have a Benched Pokémon"
+
+              targeted (opp.active, Source.SRC_ABILITY) {
+                sw opp.active, opp.bench.select("Select the new Active Pokémon"), Source.TRAINER_CARD
+              }
+
+              sw my.active, my.bench.oppSelect("Select new Active Pokémon"), Source.SRC_ABILITY
             }
           }
           move "Hydro Reflect", {
