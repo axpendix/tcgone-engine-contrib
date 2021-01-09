@@ -563,7 +563,7 @@ public enum MajesticDawn implements LogicCardInfo {
               assert my.discard.filterByType(BASIC_ENERGY)
             }
             onAttack {
-              def cards = my.discard.select("Search your discard pile for up to 2 basic Energy",cardTypeFilter(BASIC_ENERGY)
+              def cards = my.discard.select("Search your discard pile for up to 2 basic Energy",cardTypeFilter(BASIC_ENERGY))
               def tar = my.all.select("Attach to...")
               cards.each{
                 attachEnergy(tar, it)
