@@ -775,7 +775,7 @@ public enum CallOfLegends implements LogicCardInfo {
               flip {
                 delayed {
                   before PLAY_TRAINER, {
-                    if (bg.currentTurn == self.owner.opposite && ef.cardToPlay.cardTypes.is(ITEM) && ef.reason == PLAY_FROM_HAND) {
+                    if (bg.currentTurn == self.owner.opposite && ef.cardToPlay.cardTypes.is(ITEM)) {
                       wcu "Fake Tears prevents you from playing Trainer cards."
                       prevent()
                     }

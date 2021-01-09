@@ -605,7 +605,7 @@ public enum Undaunted implements LogicCardInfo {
             text "10+ damage. Deals 10 more damage for each [D] Pokémon in your discard pile."
             energyCost D, C, C
             onAttack {
-              damage 10 + 10 * my.discard.filterByType(POKEMON).findAll{it.types.contains(D)}
+              damage 10 + 10 * my.discard.filterByType(POKEMON).findAll{it.types.contains(D)}.size()
             }
           }
 
@@ -793,7 +793,7 @@ public enum Undaunted implements LogicCardInfo {
                   unregisterAfter 3
                   after FALL_BACK, self, {unregister()}
                   after EVOLVE, self, {unregister()}
-                  after DEVOLVE, slef, {unregister()}
+                  after DEVOLVE, self, {unregister()}
                 }
               }
             }
@@ -807,7 +807,7 @@ public enum Undaunted implements LogicCardInfo {
             text "Each player can’t play any Trainer cards from his or her hand."
             delayedA {
               before PLAY_TRAINER, {
-                if(ef.cardToPlay.cardTypes.is(ITEM) && ef.reason == PLAY_FROM_HAND){
+                if(ef.cardToPlay.cardTypes.is(ITEM)){
                   wcu "$thisAbility prevents playing trainer cards"
                   prevent()
                 }
