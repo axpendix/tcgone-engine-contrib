@@ -1375,7 +1375,7 @@ public enum MajesticDawn implements LogicCardInfo {
               assert my.bench.find{it.name.contains("Wormadam")}
             }
             onAttack {
-              def worms[]
+              def worms = []
               def count = 0
               my.bench.each {
                 if(it.name.contains("Wormadam") && !worms.contains(it.name)) {
