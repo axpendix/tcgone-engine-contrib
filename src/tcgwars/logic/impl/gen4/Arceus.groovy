@@ -1416,7 +1416,7 @@ public enum Arceus implements LogicCardInfo {
               assert self.cards.energyCount(L) : "You have no [L] Energy attached to $self"
             }
             onAttack {
-              flip self.cards.energyCount(L), {
+              flip self.cards.filterByEnergyType(L).size(), {
                 damage 40
               }
               afterDamage {

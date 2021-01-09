@@ -445,9 +445,9 @@ public enum Undaunted implements LogicCardInfo {
                     }
                   }
                 }
-                after FALL_BACK, pcs, {unregister()}
-                after EVOLVE, pcs, {unregister()}
-                after DEVOLVE, pcs, {unregister()}
+                after FALL_BACK, self, {unregister()}
+                after EVOLVE, self, {unregister()}
+                after DEVOLVE, self, {unregister()}
                 unregisterAfter 2
               }
             }
@@ -1194,7 +1194,7 @@ public enum Undaunted implements LogicCardInfo {
             onActivate { reason ->
               if(reason == PLAY_FROM_HAND && my.deck && confirm("Use $thisAbility?")){
                 powerUsed()
-                my.deck.search("Search your deck for a [D] or Dark Metal Energy",{it.cardTypes.energy && it.containsTypePlain(D)}).showToOpponent("Selected card").moveTo(my.hand)
+                my.deck.search("Search your deck for a [D]",{it.cardTypes.energy && it.containsTypePlain(D)}).showToOpponent("Selected card").moveTo(my.hand)
                 shuffleDeck()
               }
             }
