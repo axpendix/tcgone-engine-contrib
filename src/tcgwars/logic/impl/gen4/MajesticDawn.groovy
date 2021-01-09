@@ -589,10 +589,11 @@ public enum MajesticDawn implements LogicCardInfo {
           pokePower "Sheet Lightning", {
             text "Once during your turn, when you put Zapdos from your hand onto your Bench, you may flip a coin. If heads, put 1 damage counter on each of your opponent’s Pokémon."
             onActivate {r->
-            if (r==PLAY_FROM_HAND && confirm("Use Sheet Lightning?")) {
-              powerUsed()
-              opp.all.each {
-                directDamage 10, it, SRC_ABILITY
+              if (r==PLAY_FROM_HAND && confirm("Use Sheet Lightning?")) {
+                powerUsed()
+                opp.all.each {
+                  directDamage 10, it, SRC_ABILITY
+                }
               }
             }
           }
