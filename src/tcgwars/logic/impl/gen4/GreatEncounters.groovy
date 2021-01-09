@@ -1395,7 +1395,7 @@ public enum GreatEncounters implements LogicCardInfo {
             onAttack {
               def src = opp.all.findAll{it.cards.filterByType(POKEMON_TOOL)}.select("Pokémon that has a Tool to move")
               def tool = src.cards.filterByType(POKEMON_TOOL).select("Pokémon Tool to move").first()
-              def tar = opp.all.findAll{!it.cards.filterByType(POKEMON_TOOL)}.select("Move $tool to which Pokémon")
+              def tar = opp.all.findAll{it.cards.filterByType(POKEMON_TOOL).empty}.select("Move $tool to which Pokémon")
               targeted(src) {
                 def moved = false
                 targeted(tar) {

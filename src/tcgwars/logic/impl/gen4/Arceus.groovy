@@ -283,6 +283,7 @@ public enum Arceus implements LogicCardInfo {
                   damage 20
                 }
               }
+              top.discard()
             }
           }
 
@@ -665,10 +666,13 @@ public enum Arceus implements LogicCardInfo {
             }
           }
           move "Shadow Skip", {
-            text "60 damage. You may switch Gengar with 1 of your Benched Pokémon."
+            text "60 damage. Does 10 damage to 1 of your opponent's Benched Pokémon. You may switch Gengar with 1 of your Benched Pokémon."
             energyCost P, P, C
             onAttack {
               damage 60
+              if(opp.bench) {
+                damage 10, opp.bench.select()
+              }
               afterDamage {
                 switchYourActive(may: true)
               }
@@ -719,11 +723,9 @@ public enum Arceus implements LogicCardInfo {
             energyCost W, W, C
             onAttack {
               damage 50
-              if(opp.bench) {
-                flip {
-                  opp.bench.each{
-                    damage 10, it
-                  }
+              flip {
+                opp.bench.each{
+                  damage 10, it
                 }
               }
             }
@@ -856,7 +858,7 @@ public enum Arceus implements LogicCardInfo {
             text "30+ damage. Does 30 damage plus 10 more damage for each Helix Fossil, Dome Fossil, and Old Amber in your discard pile."
             energyCost W, C
             onAttack {
-              damage 30 + 10 * my.discard.find{ ["Helix Fossil", "Dome Fossil", "Old Amber"].contains(it.name) }.size()
+              damage 30 + 10 * my.discard.findAll{ ["Helix Fossil", "Dome Fossil", "Old Amber"].contains(it.name) }.size()
             }
           }
 
@@ -921,7 +923,7 @@ public enum Arceus implements LogicCardInfo {
           pokePower "Dowsing Code", {
             text "Once during your turn, when you put Porygon-Z from your hand onto your Bench, you may search your discard pile for up to 2 Pokémon Tool cards, show them to your opponent, and shuffle them into your deck."
             onActivate {r->
-              if(r==PLAY_FROM_HAND && self.evolution && bg.currentTurn == self.owner && my.discard.filterByType(POKEMON_TOOL) && confirm("Use $thisAbility?")) {
+              if(r==PLAY_FROM_HAND && bg.currentTurn == self.owner && my.discard.filterByType(POKEMON_TOOL) && confirm("Use $thisAbility?")) {
                 powerUsed()
                 my.discard.select(max:2,"Select up to 2 Pokémon Tool cards").showToOpponent("Selected cards").moveTo(my.deck)
                 shuffleDeck()
@@ -1141,6 +1143,7 @@ public enum Arceus implements LogicCardInfo {
               def names = my.all.collect{it.name}
               def sel = deck.search ("Select a Pokémon that evolves from 1 of your Pokémon.", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)}).first()
               if(sel) {
+                def pcs = my.all.findAll{it.name == sel.predecessor}.select("Put $sel onto...")
                 evolve(pcs, sel, OTHER)
                 directDamage 10, self
               }
@@ -1413,7 +1416,12 @@ public enum Arceus implements LogicCardInfo {
               assert self.cards.energyCount(L) : "You have no [L] Energy attached to $self"
             }
             onAttack {
-              damage 40 * discardAllSelfEnergy(L).size()
+              flip self.cards.energyCount(L), {
+                damage 40
+              }
+              afterDamage {
+                discardAllSelfEnergy(L)
+              }
             }
           }
 
@@ -1921,7 +1929,7 @@ public enum Arceus implements LogicCardInfo {
               assert my.deck : "Your deck is emtpty"
             }
             onAttack {
-              my.deck.search(max:2,"Search your deck for up to 2 Evolution cards",cardTypeFilter(EVOLUTION)).moveto(my.hand)
+              my.deck.search(max:2,"Search your deck for up to 2 Evolution cards",cardTypeFilter(EVOLUTION)).moveTo(my.hand)
               shuffleDeck()
             }
           }
@@ -1941,7 +1949,7 @@ public enum Arceus implements LogicCardInfo {
             text "If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
             energyCost C
             onAttack {
-              sandAttack()
+              sandAttack(thisMove)
             }
           }
           move "Magnum Punch", {
@@ -2350,73 +2358,7 @@ public enum Arceus implements LogicCardInfo {
       case LUCKY_EGG_88:
         return copy(SwordShield.LUCKY_EGG_167, this);
       case OLD_AMBER_89:
-        return basicTrainer (this) {
-          text "Play Old Amber as if it were a [C] Basic Pokémon. (Old Amber counts as a Trainer card as well, but if Old Amber is Knocked Out, this counts as a Knocked Out Pokémon.) Old Amber can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Old Amber from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Hard Amber As long as Old Amber is on your Bench, prevent all damage done to Old Amber by attacks (both yours and your opponent’s)."
-          onPlay {
-            Card pokemonCard, trainerCard = thisCard
-            pokemonCard = basic (new CustomCardInfo(OLD_AMBER_89).setCardTypes(BASIC, POKEMON), hp:HP050, type:COLORLESS, retreatCost:0) {
-              pokeBody "Hard Amber", {
-                delayedA {
-                  before APPLY_ATTACK_DAMAGES, {
-                    bg.dm().each{
-                      if(!self.active && it.to == self){
-                        bc "$thisAbility prevents all damage"
-                        it.dmg=hp(0)
-                      }
-                    }
-                  }
-                }
-              }
-              customAbility {
-                def eff, acl
-                delayedA {
-                  before RETREAT, self, {
-                    if(self.topPokemonCard == thisCard){
-                      wcu "Cannot retreat"
-                      prevent()
-                    }
-                  }
-                  before APPLY_SPECIAL_CONDITION, self, {
-                    bc "$self is unaffected by Special Conditions"
-                    prevent()
-                  }
-                }
-                onActivate{
-                  if (!eff) {
-                    eff = delayed {
-                      after REMOVE_FROM_PLAY, {
-                        if(ef.removedCards.contains(pokemonCard)) {
-                          bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
-                          unregister()
-                          eff = null
-                        }
-                      }
-                    }
-                  }
-                  acl = action("Discard $self", [TargetPlayer.SELF]) {
-                    delayed {
-                      before TAKE_PRIZE, {
-                        if (ef.pcs==self) {
-                          prevent()
-                        }
-                      }
-                    }
-                    new Knockout(self).run(bg)
-                  }
-                }
-                onDeactivate {
-                  acl.each{bg.gm().unregisterAction(it)}
-                }
-              }
-            }
-            pokemonCard.player = trainerCard.player
-            bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
-            benchPCS(pokemonCard)
-          }
-          playRequirement{
-            assert bench.notFull
-          }
-        };
+        return copy(MajesticDawn.OLD_AMBER_84, this);
       case PROFESSOR_OAK_S_VISIT_90:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDraw 3 cards. Then, choose a card from your hand and put it on the bottom of your deck."
@@ -2448,143 +2390,9 @@ public enum Arceus implements LogicCardInfo {
           }
         };
       case DOME_FOSSIL_92:
-        return basicTrainer (this) {
-          text "Play Dome Fossil as if it were a [C] Basic Pokémon. (Dome Fossil counts as a Trainer card as well, but if Dome Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Dome Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Dome Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Rock Reaction When you attach a [F] Energy card from your hand to Dome Fossil (excluding effects of attacks or Poké-Powers), search your deck for a card that evolves from Dome Fossil and put it onto Dome Fossil (this counts as evolving Dome Fossil). Shuffle your deck afterward."
-          onPlay {
-            Card pokemonCard, trainerCard = thisCard
-            pokemonCard = basic (new CustomCardInfo(DOME_FOSSIL_92).setCardTypes(BASIC, POKEMON), hp:HP050, type:COLORLESS, retreatCost:0) {
-              pokeBody "Rock Reaction", {
-                delayedA{
-                  after ATTACH_ENERGY, self, {
-                    if(ef.reason==PLAY_FROM_HAND && card.asEnergyCard().containsType(F) && self.owner.pbg.deck && confirm("Use Rock Reaction?")){
-                      def sel=my.deck.search("Search your deck for a card that evolved from $self",{it.cardTypes.is(EVOLUTION) && it.predecessor==self.name})
-                      if(sel){
-                        evolve(self, sel.first(), OTHER)
-                      }
-                      shuffleDeck()
-                    }
-                  }
-                }
-              }
-              customAbility {
-                def eff, acl
-                delayedA {
-                  before RETREAT, self, {
-                    if(self.topPokemonCard == thisCard){
-                      wcu "Cannot retreat"
-                      prevent()
-                    }
-                  }
-                  before APPLY_SPECIAL_CONDITION, self, {
-                    bc "$self is unaffected by Special Conditions"
-                    prevent()
-                  }
-                }
-                onActivate{
-                  if (!eff) {
-                    eff = delayed {
-                      after REMOVE_FROM_PLAY, {
-                        if(ef.removedCards.contains(pokemonCard)) {
-                          bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
-                          unregister()
-                          eff = null
-                        }
-                      }
-                    }
-                  }
-                  acl = action("Discard $self", [TargetPlayer.SELF]) {
-                    delayed {
-                      before TAKE_PRIZE, {
-                        if (ef.pcs==self) {
-                          prevent()
-                        }
-                      }
-                    }
-                    new Knockout(self).run(bg)
-                  }
-                }
-                onDeactivate {
-                  acl.each{bg.gm().unregisterAction(it)}
-                }
-              }
-            }
-            pokemonCard.player = trainerCard.player
-            bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
-            benchPCS(pokemonCard)
-          }
-          playRequirement{
-            assert bench.notFull
-          }
-        };
+        return copy(MajesticDawn.DOME_FOSSIL_89, this);
       case HELIX_FOSSIL_93:
-        return basicTrainer (this) {
-          text "Play Helix Fossil as if it were a [C] Basic Pokémon. (Helix Fossil counts as a Trainer card as well, but if Helix Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Helix Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Helix Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Aqua Reaction When you attach a [W] Energy card from your hand to Helix Fossil (excluding effects of attacks or Poké-Powers), search your deck for a card that evolves from Helix Fossil and put it onto Helix Fossil (this counts as evolving Helix Fossil). Shuffle your deck afterwards."
-          onPlay {
-            Card pokemonCard, trainerCard = thisCard
-            pokemonCard = basic (new CustomCardInfo(HELIX_FOSSIL_93).setCardTypes(BASIC, POKEMON), hp:HP050, type:COLORLESS, retreatCost:0) {
-              pokeBody "Aqua Reaction", {
-                delayedA{
-                  after ATTACH_ENERGY, self, {
-                    if(ef.reason==PLAY_FROM_HAND && card.asEnergyCard().containsType(W) && self.owner.pbg.deck && confirm("Use Rock Reaction?")){
-                      def sel=my.deck.search("Search your deck for a card that evolved from $self",{it.cardTypes.is(EVOLUTION) && it.predecessor==self.name})
-                      if(sel){
-                        evolve(self, sel.first(), OTHER)
-                      }
-                      shuffleDeck()
-                    }
-                  }
-                }
-              }
-              customAbility {
-                def eff, acl
-                delayedA {
-                  before RETREAT, self, {
-                    if(self.topPokemonCard == thisCard){
-                      wcu "Cannot retreat"
-                      prevent()
-                    }
-                  }
-                  before APPLY_SPECIAL_CONDITION, self, {
-                    bc "$self is unaffected by Special Conditions"
-                    prevent()
-                  }
-                }
-                onActivate{
-                  if (!eff) {
-                    eff = delayed {
-                      after REMOVE_FROM_PLAY, {
-                        if(ef.removedCards.contains(pokemonCard)) {
-                          bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
-                          unregister()
-                          eff = null
-                        }
-                      }
-                    }
-                  }
-                  acl = action("Discard $self", [TargetPlayer.SELF]) {
-                    delayed {
-                      before TAKE_PRIZE, {
-                        if (ef.pcs==self) {
-                          prevent()
-                        }
-                      }
-                    }
-                    new Knockout(self).run(bg)
-                  }
-                }
-                onDeactivate {
-                  acl.each{bg.gm().unregisterAction(it)}
-                }
-              }
-            }
-            pokemonCard.player = trainerCard.player
-            bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
-            benchPCS(pokemonCard)
-          }
-          playRequirement{
-            assert bench.notFull
-          }
-        };
+        return copy(MajesticDawn.HELIX_FOSSIL_91, this);
       case ARCEUS_LV_X_94:
         return levelUp (this, from:"Arceus", hp:HP120, type:COLORLESS, retreatCost:1) {
           pokeBody "Multitype", {

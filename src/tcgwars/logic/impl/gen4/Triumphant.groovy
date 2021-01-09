@@ -2226,7 +2226,8 @@ public enum Triumphant implements LogicCardInfo {
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nYou may use this card only if you have more Prize cards left than your opponent. Search your deck for any 2 cards and put them into your hand. Shuffle your deck afterward."
           onPlay {
-            my.deck.search(count:2,"Select 2 cards",{true}).moveTo(hidden:true,my.hand)
+            def min = Math.min(2, my.deck.size())
+            my.deck.search(min:min, max:2,"Select 2 cards",{true}).moveTo(hidden:true,my.hand)
             shuffleDeck()
           }
           playRequirement{
