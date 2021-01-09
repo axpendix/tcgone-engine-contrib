@@ -919,6 +919,15 @@ class TcgStatics {
     bc("$card is attached to $pcs")
     bg.gm().woosh();
   }
+  static boolean canAttachPokemonTool (PokemonCardSet pcs) {
+    int tool_limit = 1;
+    if (bg.em().retrieveObject("SIGILYPH_41_Toolbox" + pcs.hashCode()) != null) {
+        tool_limit = 4;
+    } else if (bg.em().retrieveObject("OMEGA_DOUBLE_" + pcs.hashCode()) != null) {
+        tool_limit = 2;
+    }
+    return pcs.cards.filterByType(POKEMON_TOOL).size() < tool_limit
+  }
   static boolean checkGlobalAbility (Card thisCard) {
     return !bg.em().get(new IsGlobalAbilityBlocked(thisCard));
   }
