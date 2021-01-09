@@ -2,10 +2,11 @@ package tcgwars.logic.impl.gen4
 
 import tcgwars.logic.Action
 import tcgwars.logic.effect.Source
+import tcgwars.logic.impl.gen2.Expedition;
 import tcgwars.logic.impl.gen3.FireRedLeafGreen
 import tcgwars.logic.impl.gen3.RubySapphire;
-import tcgwars.logic.impl.gen4.MysteriousTreasures;
 import tcgwars.logic.impl.gen5.PlasmaStorm;
+import tcgwars.logic.impl.gen5.BlackWhite;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -23,6 +24,7 @@ import tcgwars.logic.util.*;
 
 /**
  * @author axpendix@hotmail.com
+ * @author ufodynasty12@gmail.com
  */
 public enum MajesticDawn implements LogicCardInfo {
 
@@ -208,10 +210,7 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Future Sight", {
             text "Look at the top 5 cards of either player’s deck and put them back on top of that player’s deck in any order."
             energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0 //todo
-            }
+            foresight(5, delegate)
           }
           move "Healing Light", {
             text "40 damage. Remove 1 damage counter from each of your Pokémon."
@@ -270,19 +269,19 @@ public enum MajesticDawn implements LogicCardInfo {
           resistance P, MINUS20
           customAbility {
           //Adamant Orb: If an Active Pokémon has Weakness to [M] type, Dialga’s attacks do 20 more damage to that Pokémon (before applying Weakness and Resistance).
-          delayedA {
-            after PROCESS_ATTACK_EFFECTS, {
-              bg.dm().each {
-                if (it.from.owner==self.owner && it.from == self && self.active && it.to.active && it.to.owner!=self.owner && it.dmg.value) {
-                  if (it.to.getWeaknesses().findAll{it.type == M}) {
-                    bc "Adamant Orb +20"
-                    it.dmg += hp(20)
+            delayedA {
+              after PROCESS_ATTACK_EFFECTS, {
+                bg.dm().each {
+                  if (it.from.owner==self.owner && it.from == self && self.active && it.to.active && it.to.owner!=self.owner && it.dmg.value) {
+                    if (it.to.getWeaknesses().findAll{it.type == M}) {
+                      bc "Adamant Orb +20"
+                      it.dmg += hp(20)
+                    }
                   }
                 }
               }
             }
           }
-        }
           move "Time Shift", {
             text "Draw cards until you have 6 cards in your hand."
             energyCost M
@@ -342,9 +341,13 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Chop Up", {
             text "70 damage. Does 10 damage to each of your opponent’s Benched Pokémon that has any damage counters on it."
             energyCost F, F, C
-            attackRequirement {}
             onAttack {
-              damage 0 //todo
+              damage 70
+              opp.bench.each{
+                if(it.numberOfDamageCounters) {
+                  damage 10, it
+                }
+              }
             }
           }
 
@@ -376,15 +379,15 @@ public enum MajesticDawn implements LogicCardInfo {
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
           weakness L, PLUS20
           pokeBody "Aqua Skin", {
-            text "When you attach a Energy card from your hand to Manaphy, remove 2 damage counters from Manaphy."
+            text "When you attach a [W] Energy card from your hand to Manaphy, remove 2 damage counters from Manaphy."
             delayedA {
-              after ATTACH_ENERGY, self, {
-                if (ef.reason==PLAY_FROM_HAND){
-                  powerUsed()
-                  heal 20, self
-                }
+            after ATTACH_ENERGY, self, {
+              if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(W)) {
+                bc "$thisAbility removes 2 damage counters from $self"
+                heal 20, self
               }
             }
+          }
           }
           move "Chase Up", {
             text "Flip a coin. If heads, search your deck for any 1 card and put it into your hand. Shuffle your deck afterward."
@@ -398,11 +401,15 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
           move "Fountain", {
-            text "30 damage. Energy cards from your hand to your Benched Pokémon in any way you like."
-            energyCost W, W, W
-            attackRequirement {}
+            text "30 damage. You may attach up to 2 basic [W] Energy cards from your hand to your Benched Pokémon in any way you like."
+            energyCost W, W
             onAttack {
-              damage 0
+              damage 30
+              if(my.hand.filterByBasicEnergyType(W) && my.bench) {
+                my.hand.select(min:0, max:2, "Choose up to 2 basic [W] Energy cards to attach to your Benched Pokémon",basicEnergyFilter(W)).each {
+                  attachEnergy(my.bench.select("Attach $it to"), it)
+                }
+              }
             }
           }
 
@@ -413,25 +420,31 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Energy Absorption", {
             text "Search your discard pile for up to 2 Energy cards and attach them to Mewtwo."
             energyCost ()
-            attackRequirement {}
+            attackRequirement {
+              assert my.discard.filterByType(ENERGY) : "You have no Energy cards in your discard"
+            }
             onAttack {
-              damage 0
+              my.discard.select(max:2, "Search your discard pile for up to 2 Energy cards", cardTypeFilter(ENERGY)).each {
+                attachEnergy(self, it)
+              }
             }
           }
           move "Recover", {
-            text "Energy attached to Mewtwo and remove 6 damage counters from Mewtwo."
-            energyCost P, P
-            attackRequirement {}
+            text "Discard a [P] Energy attached to Mewtwo and remove 6 damage counters from Mewtwo."
+            energyCost P
+            attackRequirement {
+              assert self.numberOfDamageCounters || self.cards.energyCount(P) : "$self has no damage counters or [P] Energy"
+            }
             onAttack {
-              damage 0
+              heal 60, slelf
+              discardSelfEnergyAfterDamage P
             }
           }
           move "Psyburn", {
             text "60 damage. "
             energyCost P, P, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
             }
           }
 
@@ -441,16 +454,27 @@ public enum MajesticDawn implements LogicCardInfo {
           weakness W
           resistance F, MINUS20
           pokePower "Flame Charge", {
-            text "Once during your turn, when you put Moltres from your hand onto your Bench, you may flip a coin. If heads, search your discard pile for up to 3 Energy cards and attach them to Moltres."
-            actionA {
+            text "Once during your turn, when you put Moltres from your hand onto your Bench, you may flip a coin. If heads, search your discard pile for up to 3 [R] Energy cards and attach them to Moltres."
+            onActivate {r->
+              if (r==PLAY_FROM_HAND && my.discard.filterByEnergyType(R) && confirm("Use Flame Charge?")) {
+                powerUsed()
+                flip {
+                  def maxCards = Math.min(3,my.filterByEnergyType(R))
+                  my.discard.select(max:maxCards,"Search your discard pile for up to 3 [R] Energy cards",energyFilter(R)).each {
+                    attachEnergy(self, it)
+                  }
+                }
+              }
             }
           }
           move "Scorching Wing", {
-            text "100 damage. Energy attached to Moltres."
-            energyCost R, R, C, R
-            attackRequirement {}
+            text "100 damage. Discard all [R] Energy attached to Moltres."
+            energyCost R, R, C
             onAttack {
-              damage 0
+              damage 100
+              afterDamage {
+                discardallSelfEnergy(R)
+              }
             }
           }
 
@@ -458,28 +482,42 @@ public enum MajesticDawn implements LogicCardInfo {
       case PALKIA_11:
         return basic (this, hp:HP100, type:WATER, retreatCost:3) {
           weakness L, PLUS20
-          move "", {
-            text "If damage. "
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
+          customAbility {
+          //Lustrous Orb: If an Active Pokémon has Weakness to [W] type, Dialga’s attacks do 20 more damage to that Pokémon (before applying Weakness and Resistance).
+            delayedA {
+              after PROCESS_ATTACK_EFFECTS, {
+                bg.dm().each {
+                  if (it.from.owner==self.owner && it.from == self && self.active && it.to.active && it.to.owner!=self.owner && it.dmg.value) {
+                    if (it.to.getWeaknesses().find{it.type == W}) {
+                      bc "Adamant Orb +20"
+                      it.dmg += hp(20)
+                    }
+                  }
+                }
+              }
             }
           }
           move "Zone Shift", {
             text "Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
             energyCost W
-            attackRequirement {}
+            attackRequirement {
+              assert opp.bench
+            }
             onAttack {
-              damage 0
+              whirlwind()
             }
           }
           move "Pearl Blast", {
             text "60 damage. You may return an Energy card attached to Palkia to your hand. If you do, choose an Energy card attached to the Defending Pokémon and return it to your opponent’s hand."
             energyCost W, W, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              if(self.cards.filterByType(ENERGY) && defending.cards.filterByType(ENERGY) && confirm("Return an Energy attached to $self to your hand?")) {
+                self.cards.select("Return an energy card attached to $self to your hand", cardTypeFilter(ENERGY)).moveTo(my.hand)
+                targeted (defending) {
+                  defending.cards.select("Return an energy card attached to $self to your hand", cardTypeFilter(ENERGY)).moveTo(opp.hand)
+                }
+              }
             }
           }
 
@@ -490,17 +528,25 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Evolution Wish", {
             text "Search your deck for a card that evolves from 1 of your Pokémon and put it onto that Pokémon. (This counts as evolving that Pokémon.) Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Your deck is emtpy"
+            }
             onAttack {
-              damage 0
+              def names = my.all.collect{it.name}
+              def sel = deck.search ("Select a Pokémon that evolves from 1 of your Pokémon.", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)}).first()
+              if(sel) {
+                evolve(pcs, sel, OTHER)
+                directDamage 10, self
+              }
+              shuffleDeck()
             }
           }
           move "Water Pulse", {
             text "30 damage. The Defending Pokémon is now Asleep."
             energyCost W, W
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              applyAfterDamage ASLEEP
             }
           }
 
@@ -512,17 +558,25 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Dual Trans", {
             text "Search your discard pile for up to 2 basic Energy cards and attach them to 1 of your Pokémon."
             energyCost ()
-            attackRequirement {}
+            attackRequirement {
+              assert my.discard.filterByType(BASIC_ENERGY)
+            }
             onAttack {
-              damage 0
+              def cards = my.discard.select("Search your discard pile for up to 2 basic Energy",cardTypeFilter(BASIC_ENERGY)
+              def tar = my.all.select("Attach to...")
+              cards.each{
+                attachEnergy(tar, it)
+              }
             }
           }
           move "Reflect Energy", {
             text "30 damage. Move an Energy card attached to Rotom to 1 of your Benched Pokémon."
             energyCost L, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              if(my.bench && self.cards.energyCount(C)) {
+                moveEnergy(self,my.bench)
+              }
             }
           }
 
@@ -533,15 +587,20 @@ public enum MajesticDawn implements LogicCardInfo {
           resistance F, MINUS20
           pokePower "Sheet Lightning", {
             text "Once during your turn, when you put Zapdos from your hand onto your Bench, you may flip a coin. If heads, put 1 damage counter on each of your opponent’s Pokémon."
-            actionA {
+            onActivate {r->
+            if (r==PLAY_FROM_HAND && confirm("Use Sheet Lightning?")) {
+              powerUsed()
+              opp.all.each {
+                directDamage 10, it, SRC_ABILITY
+              }
             }
           }
           move "Raging Thunder", {
             text "80 damage. Does 40 damage to 1 of your Pokémon, and don’t apply Weakness and Resistance to this damage."
             energyCost L, L, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 80
+              noWrDamage 40, self
             }
           }
 
@@ -552,16 +611,42 @@ public enum MajesticDawn implements LogicCardInfo {
           resistance F, MINUS20
           pokeBody "Primal Claw", {
             text "After your opponent’s Pokémon uses a Poké-Power, put 2 damage counters on that Pokémon."
-            delayedA {
+              delayedA {
+                def pcs = null
+                def pcsTPC = null
+                before USE_ABILITY, {
+                  if ((ef.getResolvedTarget(bg, e) as PokemonCardSet).owner == self.owner.opposite && ef.ability instanceof PokePower){
+                    pcs = ef.getResolvedTarget(bg, e)
+                    pcsTPC = pcs.topPokemonCard
+                  }
+                }
+                after POKEPOWER, {
+                  if (pcs && pcs.cards && pcsTPC == pcs.topPokemonCard) {
+                    bc "$thisAbility activates"
+                    directDamage(20, pcs, Source.SRC_ABILITY)
+                    pcs = null
+                    pcsTPC = null
+                  }
+                }
+                after ACTIVATE_ABILITY, {
+                  if (pcs && pcs.cards && pcsTPC == pcs.topPokemonCard) {
+                    bc "$thisAbility activates"
+                    directDamage(20, pcs, Source.SRC_ABILITY)
+                    pcs = null
+                    pcsTPC = null
+                  }
+                }
+              }
             }
           }
           move "Supersonic", {
             text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
-              flip { apply CONFUSED }
+              flip {
+                apply CONFUSED
+              }
             }
           }
 
@@ -573,22 +658,46 @@ public enum MajesticDawn implements LogicCardInfo {
           pokeBody "Cursed Alloy", {
             text "As long as Bronzong is your Active Pokémon, put 1 damage counter on each of your opponent’s Pokémon that has any Poké-Powers between turns."
             delayedA {
+              before BEGIN_TURN, {
+                if (self.active) {
+                  def once = true
+                  def hasPokePower = false
+
+                  self.owner.opposite.pbg.all.each {
+                    for (Ability ability : it.getAbilities().keySet()) {
+                      if (ability instanceof PokePower) hasPokePower = true;
+                    }
+                    if (once) {
+                      bc "Cursed Alloy"
+                      once = false
+                    }
+                    if (hasPokePower) {
+                      directDamage(10, it, SRC_ABILITY)
+                      hasPokePower = false
+                    }
+                  }
+                }
+              }
             }
           }
           move "Pain Amplifier", {
             text "Put 1 damage counter on each of your opponent’s Pokémon that already has damage counters on it"
             energyCost ()
-            attackRequirement {}
+            attackRequirement {
+              assert opp.all.find{it.numberOfDamageCounters}
+            }
             onAttack {
-              damage 0
+              opp.all.findAll{it.numberOfDamageCounters}.each {
+                directDamage 10, it
+              }
             }
           }
           move "Coating", {
-            text "60 damage. ."
+            text "60 damage. During your opponent's next turn, any damage done to Bronzong by attacks is reduced by 20."
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              reduceDamageNextTurn(hp(20), thisMove)
             }
           }
 
@@ -599,17 +708,22 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Dual Splash", {
             text "Choose 2 of your opponent’s Pokémon. This attack does 30 damage to each of them."
             energyCost W, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              multiSelect(opp.all, 2, "Choose 2 of your opponent's Pokémon").each {
+                damage 30, it
+              }
             }
           }
           move "Surf Together", {
             text "50+ damage. Does 50 damage plus 10 more damage for each of your Benched Pokémon. Flip a coin. If tails, this attack does 10 damage to each of your Benched Pokémon."
             energyCost W, W, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 50 + 10 * my.bench.size()
+              flip 1, {}, {
+                my.bench.each {
+                  damage 10, it
+                }
+              }
             }
           }
 
@@ -619,15 +733,48 @@ public enum MajesticDawn implements LogicCardInfo {
           weakness P, PLUS20
           pokeBody "Sunlight Veil", {
             text "Each of your Pokémon that evolves from Eevee gets +20 HP. You can’t use more than 1 Sunlight Veil Poké-Body each turn."
-            delayedA {
+            
+            def target = []
+            def source = []
+            bg.em().storeObject("Sunlight_Veil_target", target)
+            bg.em().storeObject("Sunlight_Veil_source", source)
+            def eff
+            onActivate {
+              eff = getter (GET_FULL_HP) {h->
+                def pcs = h.effect.target
+                if (pcs.owner == self.owner && pcs.topPokemonCard.predecessor == "Eevee"){
+                  target = bg.em().retrieveObject("Sunlight_Veil_target")
+                  source = bg.em().retrieveObject("Sunlight_Veil_source")
+                  if(!target.contains(pcs)){
+                    h.object += hp(20)
+                    target.add(pcs)
+                    bg.em().storeObject("Sunlight_Veil_target", target)
+                    source.add(self)
+                    bg.em().storeObject("Sunlight_Veil_source", source)
+                  } else if(source.get(target.indexOf(pcs)) == self){
+                    h.object += hp(20)
+                  }
+                }
+              }
+            }
+            onDeactivate {
+              eff.unregister()
+              target = []
+              source = []
+              bg.em().storeObject("Sunlight_Veil_target", target)
+              bg.em().storeObject("Sunlight_Veil_source", source)
             }
           }
           move "Morning Sun", {
             text "60 damage. You may move an Energy card attached to Espeon to 1 of your Benched Pokémon."
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              if(my.bench && self.cards.energyCount(C) && confirm("Move an Energy card attached to $self to 1 of your Benched Pokémon?")) {
+                afterDamage {
+                  moveEnergy(self, my.bench)
+                }
+              }
             }
           }
 
@@ -638,17 +785,20 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Fire Fang", {
             text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Burned."
             energyCost R
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip {
+                applyAfterDamage BURNED
+              }
             }
           }
           move "Kindle", {
             text "70 damage. Discard an Energy card attached to Flareon and then discard an Energy card attached to the Defending Pokémon."
             energyCost R, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 70
+              discardSelfEnergyAfterDamage C
+              discardDefendingEnergyAfterDamage C
             }
           }
 
@@ -659,17 +809,21 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Ice Shot", {
             text "30 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon."
             energyCost W, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              if(opp.bench) {
+                damage 10, opp.bench.select()
+              }
             }
           }
           move "Icy Wind", {
             text "60 damage. Flip a coin. If heads, the Defending Pokémon is now Asleep."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              flip {
+                applyAfterDamage ASLEEP
+              }
             }
           }
 
@@ -678,19 +832,21 @@ public enum MajesticDawn implements LogicCardInfo {
         return evolution (this, from:"Hippopotas", hp:HP100, type:FIGHTING, retreatCost:3) {
           weakness W, PLUS20
           move "Vacuum Sand", {
-            text "20 damage. Energy card and attach it to Hippowdon."
+            text "20 damage. Search your discard for a [F] Energy card and attach it to Hippowdon."
             energyCost F
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              attachEnergyFrom(type: F, my.discard, self)
             }
           }
           move "Sand Impact", {
-            text "50+ damage. Energy attached to Hippowdon. This attack does 50 damage plus 20 more damage for each heads."
+            text "50+ damage. Flip a coin for each [F] Energy attached to Hippowdon. This attack does 50 damage plus 20 more damage for each heads."
             energyCost F, C, C, F
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              flip self.cards.energyCount(F), {
+                damage 20
+              }
             }
           }
 
@@ -701,17 +857,24 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Mach Punch", {
             text "30 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              if(opp.bench) {
+                damage 10, opp.bench.select()
+              }
             }
           }
           move "Mega Bravo", {
-            text "40× damage. Energy you discarded."
-            energyCost R, R, R
-            attackRequirement {}
+            text "40× damage. Discard all [R] Energy attached to Infernape. This attack does 40 damage times the ammount of [R] Energy you discarded."
+            energyCost R
+            attackRequirement {
+              assert self.cards.energyCount(R) : "$self has no [R] Energy attached"
+            }
             onAttack {
-              damage 0
+              damage 40 * self.cards.energyCount(R)
+              afterDamage {
+                discardAllSelfEnergy R
+              }
             }
           }
 
@@ -723,18 +886,22 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Thunder Fang", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost L
-            attackRequirement {}
             onAttack {
               damage 20
-              flip { apply PARALYZED }
+              flip {
+                applyAfterDamage PARALYZED
+              }
             }
           }
           move "Lightning Strike", {
             text "50 damage. You may discard 2 Energy attached to Jolteon. If you do, this attack’s base damage is 90 instead of 50."
             energyCost L, L, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              if(confirm("Discard 2 Energy attached to $self")) {
+                damage 40
+                discardSelfEnergyAfterDamage C, C
+              }
             }
           }
 
@@ -746,18 +913,19 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Sprial Drain", {
             text "40 damage. Remove 1 damage counter from Leafeon."
             energyCost G, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              heal 10, self
             }
           }
           move "Leaf Blade", {
             text "50+ damage. Flip a coin. If heads, this attack does 50 damage plus 20 more damage."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
               damage 50
-              flip { damage 20 }
+              flip {
+                damage 20
+              }
             }
           }
 
@@ -769,17 +937,18 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Pound", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "(+) Spark", {
             text "20 damage. If Plusle is on your Bench, this attack does 20 damage to 1 of your opponent’s Benched Pokémon."
             energyCost L, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              if(my.bench.find{it.name == "Plusle"} && opp.bench) {
+                damage 20, opp.bench.select()
+              }
             }
           }
 
@@ -790,14 +959,26 @@ public enum MajesticDawn implements LogicCardInfo {
           pokePower "Primal Swirl", {
             text "Once during your turn, when you play Omastar from your hand to evolve 1 of your Pokémon, you may remove the highest Stage Evolution card from each of your opponent’s Benched Evolved Pokémon and put those cards back into his or her hand. You can’t use more than 1 Primal Swirl Poké-Power each turn."
             actionA {
+              onActivate {r ->
+                if(r == PLAY_FROM_HAND && bg.em().retrieveObject("Primal_Swirl") != bg.turnCount && opp.all.find{it.evolution} && confirm("Use $thisAbility?")){
+                  bg.em().storeObject("Primal_Swirl",bg.turnCount)
+                  powerUsed()
+                  opp.all.findAll{it.evolutoin}.each {
+                    def top = it.topPokemonCard
+                    devolve(it, top, opp.hand)
+                  }
+                }
+              }
             }
           }
           move "Send Back", {
             text "40 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
             energyCost W, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              afterDamage {
+                whirlwind()
+              }
             }
           }
 
@@ -806,20 +987,20 @@ public enum MajesticDawn implements LogicCardInfo {
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
           weakness L, PLUS10
           move "Charm", {
-            text "."
+            text "During your opponent's next turn, any damage done by attacks from the Defending Pokémon is reduced by 20."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              reduceDamageFromDefendingNextTurn(hp(20), thisMove, defending)
             }
           }
           move "Whirlpool", {
             text "30 damage. Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
             energyCost W, W
-            attackRequirement {}
             onAttack {
               damage 30
-              flip { discardDefendingEnergy() }
+              flip {
+                discardDefendingEnergy()
+              }
             }
           }
 
@@ -836,9 +1017,11 @@ public enum MajesticDawn implements LogicCardInfo {
           move "(-) Boost", {
             text "20 damage. If Minun is on your Bench, this attack does 20 damage plus 20 more damage."
             energyCost L, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              if(my.bench.find{it.name == "Minun"}) {
+                damage 20
+              }
             }
           }
 
@@ -850,18 +1033,21 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Special Blow", {
             text "30+ damage. If the Defending Pokémon has any Special Energy cards attached to it, this attack does 30 damage plus 50 more damage."
             energyCost M
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              if(defending.cards.filterByType(SPECIAL_ENERGY)) {
+                damage 50
+              }
             }
           }
           move "X-Scissor", {
             text "50+ damage. Flip a coin. If heads, this attack does 50 damage plus 40 more damage."
             energyCost M, C, C
-            attackRequirement {}
             onAttack {
               damage 50
-              flip { damage 40 }
+              flip {
+                damage 40
+              }
             }
           }
 
@@ -872,17 +1058,19 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Earthquake", {
             text "60 damage. Does 10 damage to each of your Benched Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              my.bench.each {
+                damage 10, it
+              }
             }
           }
           move "Frenzy Plant", {
             text "100 damage. Torterra can’t use Frenzy Plant during your next turn."
             energyCost G, G, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 100
+              cantUseAttack(thisMove, self)
             }
           }
 
@@ -893,17 +1081,19 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Paralyze Poison", {
             text "20 damage. The Defending Pokémon is now Poisoned. Flip a coin. If heads, the Defending Pokémon is now Paralyzed and Poisoned."
             energyCost P
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip {
+                applyAfterDamage PARALYZED
+              }
+              applyAfterDamage POISONED
             }
           }
           move "Slash", {
             text "60 damage. "
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
             }
           }
 
@@ -914,15 +1104,26 @@ public enum MajesticDawn implements LogicCardInfo {
           resistance P, MINUS20
           pokeBody "Moonlight Veil", {
             text "Each of your Pokémon that evolves from Eevee has no Weakness, and that Pokémon’s Retreat Cost is 0."
-            delayedA {
+            getterA (GET_WEAKNESSES) { h->
+              def pcs = h.effect.target
+              if(pcs.owner = self.owner pcs.realEvolution && pcs.topPokemonCard.predecessor == "Eevee") {
+                def list = h.object as List<Weakness>
+                list.clear()
+              }
+            }
+            getterA GET_RETREAT_COST ,{ h->//Not sure if 2 getterAs work in the same pokebody, If it doesn't, Ill use onActivate
+              def pcs = h.effect.target
+              if (pcs.owner = self.owner pcs.realEvolution && pcs.topPokemonCard.predecessor == "Eevee") {
+                h.object = 0
+              }
             }
           }
           move "Confuse Ray", {
             text "50 damage. The Defending Pokémon is now Confused."
             energyCost D, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              applyAfterDamage CONFUSED
             }
           }
 
@@ -933,14 +1134,24 @@ public enum MajesticDawn implements LogicCardInfo {
           pokePower "PUT", {
             text "Once during your turn , if Unown P is on your Bench, you may put 1 damage counter on 1 of your Pokémon (excluding any Unown)."
             actionA {
+              checkLastTurn()
+              assert self.benched : "$self is not you your Bench"
+              assert my.all.find{!it.name.contains("Unown")} : "All of your Pokémon are Unown"
+              powerUsed()
+              directDamage 10, my.all.findAll{!it.name.contains("Unown")}.select("Put 1 damage counter on 1 of your Pokémon"), SRC_ABILITY
             }
           }
           move "Hidden Power", {
             text "20+ damage. Each player discards the top card of his or her deck. This attack does 20 damage plus 20 more damage for each Unown discarded in this way."
             energyCost P
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              if(my.deck && my.deck.subList(0,1).discard().find{it.cardTypes.is(POKEMON) && it.name.contains("Unown")}) {
+                damage 20
+              }
+              if(opp.deck && opp.deck.subList(0,1).discard().find{it.cardTypes.is(POKEMON) && it.name.contains("Unown")}) {
+                damage 20
+              }
             }
           }
 
@@ -951,17 +1162,26 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Cleanse Away", {
             text "30 damage. Remove 2 damage counters from each of your Benched Pokémon."
             energyCost W
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              my.bench.each{
+                heal 20, it
+              }
             }
           }
           move "Hyper Whirlpool", {
             text "60 damage. Flip a coin until you get tails. For each heads, discard an Energy card attached to the Defending Pokémon."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              def heads = 0
+              flipUntilTails {
+                heads ++
+              }
+              def types = (1..heads).collect {C} as Type[]
+              if(heads > 0) {
+                discardDefendingEnergyAfterDamage types
+              }
             }
           }
 
@@ -972,17 +1192,18 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Astonish", {
             text "20 damage. Choose 1 card from your opponent’s hand without looking. Look at that card you chose, then have your opponent shuffle that card into his or her deck."
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              afterDamage {
+                astonish()
+              }
             }
           }
           move "Hang High", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 40 damage to that Pokémon."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 40, opp.all.select()
             }
           }
 
@@ -994,17 +1215,17 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Fury Attack", {
             text "20× damage. Flip 3 coins. This attack does 20 damage times the number of heads."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip 3, {
+                damage 20
+              }
             }
           }
           move "Drill Peck", {
             text "60 damage. "
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
             }
           }
 
@@ -1014,11 +1235,11 @@ public enum MajesticDawn implements LogicCardInfo {
           weakness R, PLUS20
           resistance W, MINUS20
           move "Planting", {
-            text "20 damage. Energy card from your hand to 1 of your Pokémon."
-            energyCost C, G
-            attackRequirement {}
+            text "20 damage. Attach a [G] Energy card from your hand to 1 of your Pokémon."
+            energyCost C
             onAttack {
-              damage 0
+              damage 20
+              attachEnergyFrom(type:G, my.hand, my.all)
             }
           }
           move "Body Slam", {
@@ -1027,7 +1248,9 @@ public enum MajesticDawn implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
-              flip { apply PARALYZED }
+              flip {
+                applyAfterDamage PARALYZED
+              }
             }
           }
 
@@ -1038,17 +1261,17 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Bite", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
           move "Comet Punch", {
             text "20× damage. Flip 4 coins. This attack does 20 damage times the number of heads."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip 4, {
+                damage 20
+              }
             }
           }
 
@@ -1059,7 +1282,9 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Lap Up", {
             text "Draw a card."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Your deck is empty"
+            }
             onAttack {
               draw 1
             }
@@ -1067,9 +1292,10 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Slam", {
             text "20× damage. Flip 2 coins. This attack does 20 damage times the number of heads."
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip 2, {
+                damage 20
+              }
             }
           }
 
@@ -1084,15 +1310,20 @@ public enum MajesticDawn implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              flip { apply PARALYZED }
+              flip {
+                applyAfterDamage PARALYZED
+              }
             }
           }
           move "Volt Crush", {
             text "40+ damage. Flip a coin. If heads, discard an Energy attached to Manectric and this attack does 40 damage plus 30 more damage."
             energyCost L, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              flip {
+                damage 30
+                discardSelfEnergyAfterDamage C
+              }
             }
           }
 
@@ -1103,18 +1334,19 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Fire Fang", {
             text "30 damage. The Defending Pokémon is now Burned."
             energyCost R
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              applyAfterDamage BURNED
             }
           }
           move "Mid-air Strike", {
             text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 30 more damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 30
-              flip { damage 30 }
+              flip {
+                damage 30
+              }
             }
           }
 
@@ -1123,25 +1355,50 @@ public enum MajesticDawn implements LogicCardInfo {
         return evolution (this, from:"Burmy", hp:HP080, type:GRASS, retreatCost:0) {
           weakness R, PLUS20
           resistance F, MINUS30
-          pokeBody "Disturbance Scales:", {
+          pokeBody "Disturbance Scales", {
             text "Any damage done by attacks from your Pokémon to the Defending Pokémon isn’t affected by Resistance."
             delayedA {
+              before APPLY_RESISTANCE, {
+                bg.dm().each {
+                  if (it.from.owner == self.owner && it.to.owner == self.owner.opposite && it.to.active) {
+                    prevent()
+                  }
+                }
+              }
             }
           }
           move "Get Help", {
             text "30× damage. Does 30 damage times the number of different types of Wormadam on your Bench."
             energyCost G
-            attackRequirement {}
+            attackRequirement {
+              assert my.bench.find{it.name.contains("Wormadam")}
+            }
             onAttack {
-              damage 0
+              def worms[]
+              def count = 0
+              my.bench.each {
+                if(it.name.contains("Wormadam") && !worms.contains(it.name)) {
+                  worms.add(it.name)
+                  count ++
+                }
+              }
+              dmage 30 * count
             }
           }
           move "Quick Touch", {
             text "40 damage. You may switch Mothim with 1 of your Benched Pokémon. If you do, move as many Energy cards attached to Mothim as you like to the new Active Pokémon."
             energyCost G, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              afterDamage {
+                if(my.bench && confirm("Switch $self with 1 of your Benched Pokémon?")) {
+                  if(sw2(my.bench.select("New Active Pokémon"))) {
+                    self.cards.select(min:0,max:self.cards.filterByType(ENERGY).size(),"Move any number of Energy cards to ${my.active}",cardTypeFilter(ENERGY)).each{
+                      energySwitch(self,my.active,it)
+                    }
+                  }
+                }
+              }
             }
           }
 
@@ -1151,20 +1408,23 @@ public enum MajesticDawn implements LogicCardInfo {
           weakness F, PLUS20
           resistance M, MINUS20
           move "Trans Tail", {
-            text "Energy card, show it to your opponent, and put it into your hand."
-            energyCost L
-            attackRequirement {}
+            text "Search your discard for a [L] Energy card, show it to your opponent, and put it into your hand."
+            energyCost ()
+            attackRequirement {
+              assert my.discard.filterByEnergyType(L) : "You have no [L] Energy in your discard"
+            }
             onAttack {
-              damage 0
+              my.discard.select("Choose a [L] Energy to put into your hand",filterByEnergyType(L)).moveTo(my.hand)
             }
           }
           move "Thundershock", {
             text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost L, C
-            attackRequirement {}
             onAttack {
               damage 30
-              flip { apply PARALYZED }
+              flip {
+                apply PARALYZED
+              }
             }
           }
 
@@ -1175,17 +1435,20 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Ice Blade", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 30 damage to that Pokémon."
             energyCost W, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30, opp.all.select("Choose 1 of your opponent's Pokémon")
             }
           }
           move "Wash Over", {
             text "50 damage. Does 10 damage to 2 of your opponent’s Benched Pokémon."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              if(opp.bench) {
+                multiSelect(opp.all, 2, "Does 10 damage to 2 of your opponent's Benched Pokémon").each {
+                  damage 10, it
+                }
+              }
             }
           }
 
@@ -1197,17 +1460,23 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Agilty", {
             text "20 damage. Flip a coin. If heads, prevent all effects of an attack, including damage, done to Raichu during your opponent’s next turn."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              afterDamage {
+                flip {
+                  preventAllEffectsNext()
+                }
+              }
             }
           }
           move "Thunderbolt", {
             text "100 damage. Discard all Energy cards attached to Raichu."
             energyCost L, L, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 100
+              afterDamage {
+                discardAllSelfEnergy()
+              }
             }
           }
 
@@ -1219,9 +1488,8 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Slash", {
             text "10 damage. "
             energyCost G
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Fury Cutter", {
@@ -1242,18 +1510,18 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Quick Attack", {
             text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 30 more damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
-              flip { damage 30 }
+              flip {
+                damage 30
+              }
             }
           }
           move "Drill Peck", {
             text "50 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
             }
           }
 
@@ -1264,17 +1532,16 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Flail", {
             text "10× damage. Does 10 damage times the number of damage counters on Sudowoodo."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 10*self.numberOfDamageCounters
+              damage 10 * self.numberOfDamageCounters
             }
           }
           move "Wood Hammer", {
             text "50 damage. Sudowoodo does 30 damage to itself."
             energyCost F, F
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              damage 30, self
             }
           }
 
@@ -1283,16 +1550,37 @@ public enum MajesticDawn implements LogicCardInfo {
         return basic (this, hp:HP030, type:PSYCHIC, retreatCost:0) {
           weakness P, PLUS10
           pokePower "QUICK", {
-            text "Once during your turn , if Unown Q is on your Bench, you may discard all cards attached to Unown Q and attach Unown Q to 1 of your Pokémon as a Pokémon Tool card. As long as Unown Q is attached to a Pokémon, you pay less to retreat that Pokémon."
+            text "Once during your turn , if Unown Q is on your Bench, you may discard all cards attached to Unown Q and attach Unown Q to 1 of your Pokémon as a Pokémon Tool card. As long as Unown Q is attached to a Pokémon, you pay C less to retreat that Pokémon."
             actionA {
+              checkLastTurn()
+              assert self.benched : "$self is not on your bench"
+              assert my.all.find {it!=self && canAttachPokemonTool(it)} : "No place to attach"
+              powerUsed()
+              self.cards.getExcludedList(self.cards.topPokemonCard).discard()
+              removePCS(self)
+              def trcard
+              trcard = pokemonTool(new CustomCardInfo(top.staticInfo).setCardTypes(TRAINER, ITEM, POKEMON_TOOL)) {
+                def eff
+                onPlay {
+                  eff = getter GET_RETREAT_COST, self, {h ->
+                    h.object -= 1
+                  }
+                }
+                onRemoveFromPlay {
+                  eff.unregister()
+                  bg.em().run(new ChangeImplementation(top, trcard))
+                }
+              }
+              trcard.player = top.player
+              def pcs = my.all.findAll {it!=self && canAttachPokemonTool(it)}.select("Attach to?")
+              attachPokemonTool(trcard,pcs)
             }
           }
           move "Hidden Power", {
             text "20 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -1303,7 +1591,9 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Collect", {
             text "Draw a card."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Your deck is empty"
+            }
             onAttack {
               draw 1
             }
@@ -1311,7 +1601,9 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Hand Trick", {
             text "20 damage. Return Aipom and all cards attached to it to your hand. (If you don’t have any Benched Pokémon, this attack does nothing.)"
             energyCost C, C
-            attackRequirement {}
+            attackRequirement {
+              assert my.bench : "Your bench is empty"
+            }
             onAttack {
               if (my.bench.notEmpty) {
                 damage 20
@@ -1327,17 +1619,17 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Scratch", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Last Resort", {
             text "30 damage. Flip a coin. If tails, this attack does nothing."
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip {
+                damage 30
+              }
             }
           }
 
@@ -1349,9 +1641,8 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Hypnosis", {
             text "The Defending Pokémon is now Asleep."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              apply ASLEEP
             }
           }
           move "Confuse Ray", {
@@ -1360,7 +1651,9 @@ public enum MajesticDawn implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              flip { apply CONFUSED }
+              flip {
+                applyAfterDamage CONFUSED
+              }
             }
           }
 
@@ -1371,17 +1664,21 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Drawup Power", {
             text "Search your deck for an Energy card, show it to your opponent, and put it into your hand. Shuffle your deck afterwards."
             energyCost ()
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Your deck is empty"
+            }
             onAttack {
-              damage 0
+              my.deck.search("Search your deck for an Energy card",cardTypeFilter(ENERGY)).moveTo(my.hand)
             }
           }
           move "Extend Ears", {
             text "10 damage. Remove 1 damage counter from each of your Benched Pokémon."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              my.bench.each {
+                heal 10, it
+              }
             }
           }
 
@@ -1392,17 +1689,17 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Iron Defense", {
             text "Flip a coin. If heads, prevent all effects of an attack, including damage, done to Burmy Sandy Cloak during your opponent’s next turn."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip {
+                preventAllEffectsNextTurn()
+              }
             }
           }
           move "Tackle", {
             text "30 damage. "
             energyCost F, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
             }
           }
 
@@ -1414,17 +1711,21 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Mimic", {
             text "Shuffle your hand into your deck. Then, draw a number of cards equal to the number of cards in your opponent’s hand."
             energyCost ()
-            attackRequirement {}
+            attackRequirement {
+              assert my.hand || opp.hand : "Both your hand and your opponent's hand are empty"
+            }
             onAttack {
-              damage 0
+              my.hand.moveTo(hidden:true, my.deck)
+              shuffleDeck()
+              draw opp.hand.size()
             }
           }
           move "Chatter", {
             text "20 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              cantRetreat defending
             }
           }
 
@@ -1435,17 +1736,17 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Flare", {
             text "20 damage. "
             energyCost F
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
           move "Lunge", {
             text "40 damage. Flip a coin. If tails, this attack does nothing."
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip {
+                damage 40
+              }
             }
           }
 
@@ -1453,20 +1754,25 @@ public enum MajesticDawn implements LogicCardInfo {
       case CHIMCHAR_57:
         return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
           weakness W, PLUS10
-          move "", {
-            text "If damage. "
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
+          //Cheri Berry : If Chimchar is Paralyzed, remove the Special Condition Paralyzed from Chimchar at the end of each player's turn.
+          customAbility {
+            delayedA {
+              before BETWEEN_TURNS, {
+                if(self.isSPC(PARALYZED)){
+                  bc "Cheri Berry removes paralysis"
+                  //TODO: find or make a better source. Ancient trait seems like a possible contender.
+                  clearSpecialCondition(my.active, SRC_ABILITY, PARALYZED)
+                }
+              }
             }
           }
           move "Fury Swipes 10× damage", {
             text "Flip 3 coins. This attack does 10 damage times the number of heads."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip 3, {
+                damage 10
+              }
             }
           }
 
@@ -1490,9 +1796,12 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Uproar", {
             text "Flip a coin. If heads, this attack does 10 damage to each of your opponent’s Pokémon."
             energyCost P
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip {
+                opp.all.each {
+                  damage 10, it
+                }
+              }
             }
           }
 
@@ -1504,17 +1813,18 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Honey Scent", {
             text "Remove 2 damage counters from 1 of your Pokémon."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.all.find{it.numberOfDamageCounters} : "Your pokemon are healthy"
+            }
             onAttack {
-              damage 0
+              heal 20, my.all.findAll{it.numberOfDamageCounters}.select("Remove 2 damage counters from 1 of your Pokémon")
             }
           }
           move "Flitter", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon. This attack’s damage isn’t affected by Weakness or Resistance."
             energyCost G, G
-            attackRequirement {}
             onAttack {
-              damage 0
+              noWrDamage 20, opp.all.select()
             }
           }
 
@@ -1525,17 +1835,17 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Light Punch", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Poison Sting", {
             text "Flip a coin. If heads, the Defending Pokémon is now Poisoned."
             energyCost P
-            attackRequirement {}
             onAttack {
-              flip { apply POISONED }
+              flip {
+                apply POISONED
+              }
             }
           }
 
@@ -1547,17 +1857,21 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Delivery", {
             text "Flip a coin. If heads, put any 1 card from your discard pile into your hand."
             energyCost ()
-            attackRequirement {}
+            attackRequirement {
+              assert my.discard : "Your discard pile is empty"
+            }
             onAttack {
-              damage 0
+              flip {
+                my.discard.select("Put a card from your discard pile into your hand").moveTo(my.hand)
+              }
             }
           }
           move "Reaction", {
             text "20 damage. Switch Drifloon with 1 of your Benched Pokémon."
             energyCost P
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              switchYourActive()
             }
           }
 
@@ -1574,9 +1888,10 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Lunge", {
             text "20 damage. Flip a coin. If tails, this attack does nothing."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip {
+                damage 20
+              }
             }
           }
 
@@ -1588,17 +1903,15 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Gnaw", {
             text "10 damage. "
             energyCost ()
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Sand Attack", {
             text "If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              sandAttack(thisMove)
             }
           }
 
@@ -1610,17 +1923,15 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Random Spark", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 10 damage to that Pokémon."
             energyCost L
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10, opp.all.select()
             }
           }
           move "Tackle", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -1636,9 +1947,11 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Rip Claw", {
             text "10 damage. Flip a coin. If heads, discard an Energy attached to the Defending Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip {
+                discardDefendingEnergyAfterDamage C
+              }
             }
           }
 
@@ -1649,10 +1962,11 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Grainy Sand", {
             text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 10
-              flip { damage 10 }
+              flip {
+                damage 10
+              }
             }
           }
           move "Double-edge", {
@@ -1672,14 +1986,26 @@ public enum MajesticDawn implements LogicCardInfo {
           pokePower "Ancient Guidance", {
             text "Once during your turn , you may flip a coin. If heads, search your deck for Helix Fossil, Dome Fossil, or Old Amber and put it onto your Bench. Shuffle your deck afterward. This power can’t be used if Kabuto is affected by a Special Condition."
             actionA {
+              checkLastTurn()
+              checkNoSPC()
+              assert my.deck : "Your deck is empty"
+              assert my.bench.notFull : "Your bench is full"
+              powerUsed()
+              flip {
+                my.deck.search("Search your deck for Helix Fossil, Dome Fossil, or Old Amber", {["Helix Fossil", "Dome Fossil", "Old Amber"].contains(it.name)}).each {fossil ->
+                  my.deck.remove(fossil)
+                  bg.em().run(new PlayTrainer(fossil))
+                }
+                shuffleDeck()
+              }
+
             }
           }
           move "Shell Attack", {
             text "20 damage. "
             energyCost F
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -1703,10 +2029,11 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Lick", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
-              flip { apply PARALYZED }
+              flip {
+                apply PARALYZED
+              }
             }
           }
 
@@ -1717,14 +2044,24 @@ public enum MajesticDawn implements LogicCardInfo {
           pokePower "Call Up", {
             text "Once during your turn , you may flip a coin. If heads, search your discard pile for Helix Fossil, Dome Fossil, or Old Amber and put it onto your Bench. This power can’t be used if Omanyte is affected by a Special Condition."
             actionA {
+              checkLastTurn()
+              checkNoSPC()
+              assert my.discard.find{["Helix Fossil", "Dome Fossil", "Old Amber"].contains(it.name)} : "There are no Helix Fossils, Dome Fossils, or Old Ambers in your discard"
+              assert my.bench.notFull : "Your bench is full"
+              powerUsed()
+              flip {
+                my.discard.select("Search your deck for Helix Fossil, Dome Fossil, or Old Amber", {["Helix Fossil", "Dome Fossil", "Old Amber"].contains(it.name)}).each {fossil ->
+                  my.deck.remove(fossil)
+                  bg.em().run(new PlayTrainer(fossil))
+                }
+              }
             }
           }
           move "Wash Over", {
             text "20 damage. "
             energyCost W, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -1736,18 +2073,19 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Quick Attack", {
             text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
-              flip { damage 10 }
+              flip {
+                damage 10
+              }
             }
           }
           move "Volt Tackle", {
             text "50 damage. Pikachu does 10 damage to itself."
             energyCost L, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              damage 10, self
             }
           }
 
@@ -1758,18 +2096,18 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Water Splash", {
             text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
             energyCost W
-            attackRequirement {}
             onAttack {
               damage 10
-              flip { damage 10 }
+              flip {
+                damage 10
+              }
             }
           }
           move "Headbutt", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -1777,20 +2115,23 @@ public enum MajesticDawn implements LogicCardInfo {
       case PIPLUP_72:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness L, PLUS10
-          move "", {
-            text "If damage. "
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
+          //Pecha Berry : If Piplup is Poisoned, remove the Special Condition Poisoned from Piplup at the end of each player's turn.
+          customAbility {
+            delayedA {
+              before BETWEEN_TURNS, {
+                if(self.isSPC(POISONED)){
+                  bc "Pecha Berry removes poisoned"
+                  //TODO: find or make a better source. Ancient trait seems like a possible contender.
+                  clearSpecialCondition(my.active, SRC_ABILITY, POISONED)
+                }
+              }
             }
           }
           move "Splatter", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 10 damage to that Pokémon. This attack’s damage isn’t affected by Weakness or Resistance."
             energyCost W
-            attackRequirement {}
             onAttack {
-              damage 0
+              noWrDamage 10, opp.all.select()
             }
           }
 
@@ -1801,17 +2142,18 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Surf", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Muddy Water", {
             text "20 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon."
             energyCost W, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              if(opp.bench) {
+                damage 10, opp.bench.select()
+              }
             }
           }
 
@@ -1823,17 +2165,17 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Wing Attack", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Claw", {
             text "30 damage. Flip a coin. If tails, this attack does nothing."
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip {
+                damage 30
+              }
             }
           }
 
@@ -1845,7 +2187,6 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Whirlwind", {
             text "10 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
               whirlwind()
@@ -1854,9 +2195,8 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Flap", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -1868,17 +2208,17 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Poison Gas", {
             text "Flip a coin. If heads, the Defending Pokémon is now Poisoned."
             energyCost D
-            attackRequirement {}
             onAttack {
-              flip { apply POISONED }
+              flip {
+                apply POISONED
+              }
             }
           }
           move "Slash", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -1890,17 +2230,15 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Rollout", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Razor Leaf", {
             text "30 damage. "
             energyCost G, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
             }
           }
 
@@ -1909,114 +2247,280 @@ public enum MajesticDawn implements LogicCardInfo {
         return basic (this, hp:HP060, type:GRASS, retreatCost:2) {
           weakness R, PLUS10
           resistance W, MINUS20
-          move "", {
-            text "If damage. "
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
+          //Persim Berry : If Turtwig is Confused, remove the Special Condition Confused from Turtwig at the end of each player's turn.
+          customAbility {
+            delayedA {
+              before BETWEEN_TURNS, {
+                if(self.isSPC(CONFUSED)){
+                  bc "Pecha Berry removes confused"
+                  //TODO: find or make a better source. Ancient trait seems like a possible contender.
+                  clearSpecialCondition(my.active, SRC_ABILITY, CONFUSED)
+                }
+              }
             }
           }
           move "Bite", {
             text "30 damage. "
             energyCost G, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
             }
           }
 
         };
       case DAWN_STADIUM_79:
-        return basicTrainer (this) {
-          text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nWhenever any player attaches an Energy card from his or her hand to [G] Pokémon or [W] Pokémon, remove 1 damage counter and all Special Conditions from that Pokémon."
+        return stadium (this) {
+          text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.
+          \nWhenever any player attaches an Energy card from his or her hand to [G] Pokémon or [W] Pokémon, remove 1 damage counter and all Special Conditions from that Pokémon."
+          def eff
           onPlay {
+            eff = delayed {
+              after ATTACH_ENERGY, self, {
+                def pcs = ef.resolvedTarget
+                if (ef.reason==PLAY_FROM_HAND && (pcs.types.contains(G) || pcs.types.contains(W)) {
+                  bc "Dawn Stadium removes 1 damage counter and all Special Conditions from $pcs"
+                  heal 10, pcs
+                  if (pcs.specialConditions) {
+                    clearSpecialCondition(pcs, TRAINER_CARD)
+                  }
+                }
+              }
+            }
           }
-          playRequirement{
+          onRemoveFromPlay{
+            eff.unregister()
           }
         };
       case DUSK_BALL_80:
-        return basicTrainer (this) {
-          text "Look at the 7 cards from the bottom of your deck. Choose 1 Pokémon you find there, show it to your opponent, and put it into your hand. Put the remaining cards back on top of your deck. Shuffle your deck afterward."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy (MysteriousTreasures.DUSK_BALL_110, this);
       case ENERGY_RESTORE_81:
-        return basicTrainer (this) {
-          text "Flip 3 coins. For each heads, put a Basic Energy card from your discard pile into your hand. If you don’t have that many basic Energy cards in your discard pile, put all of them into your hand."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy (Expedition.ENERGY_RESTORE_141, this);
       case FOSSIL_EXCAVATOR_82:
-        return basicTrainer (this) {
-          text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck or discard pile for a Trainer card that has Fossil in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil. Show it to your opponent and put it into your hand. If you searched your deck, shuffle your deck afterward."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy (MysteriousTreasures.FOSSIL_EXCAVATOR_111, this);
       case MOM_S_KINDNESS_83:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDraw 2 cards."
           onPlay {
+            draw 2
           }
           playRequirement{
+            assert my.deck : "Your deck is empty"
           }
         };
       case OLD_AMBER_84:
         return basicTrainer (this) {
           text "Play Old Amber as if it were a [C] Basic Pokémon. (Old Amber counts as a Trainer card as well, but if Old Amber is Knocked Out, this counts as a Knocked Out Pokémon.) Old Amber can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Old Amber from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Hard Amber As long as Old Amber is on your Bench, prevent all damage done to Old Amber by attacks (both yours and your opponent’s)."
           onPlay {
+            Card pokemonCard, trainerCard = thisCard
+            pokemonCard = basic (new CustomCardInfo(OLD_AMBER_84).setCardTypes(BASIC, POKEMON), hp:HP050, type:COLORLESS, retreatCost:0) {
+              pokeBody "Hard Amber", {
+                delayedA {
+                  before APPLY_ATTACK_DAMAGES, {
+                    bg.dm().each{
+                      if(!self.active && it.to == self){
+                        bc "$thisAbility prevents all damage"
+                        it.dmg=hp(0)
+                      }
+                    }
+                  }
+                }
+              }
+              customAbility {
+                def eff, acl
+                delayedA {
+                  before RETREAT, self, {
+                    if(self.topPokemonCard == thisCard){
+                      wcu "Cannot retreat"
+                      prevent()
+                    }
+                  }
+                  before APPLY_SPECIAL_CONDITION, self, {
+                    bc "$self is unaffected by Special Conditions"
+                    prevent()
+                  }
+                }
+                onActivate{
+                  if (!eff) {
+                    eff = delayed {
+                      after REMOVE_FROM_PLAY, {
+                        if(ef.removedCards.contains(pokemonCard)) {
+                          bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
+                          unregister()
+                          eff = null
+                        }
+                      }
+                    }
+                  }
+                  acl = action("Discard $self", [TargetPlayer.SELF]) {
+                    delayed {
+                      before TAKE_PRIZE, {
+                        if (ef.pcs==self) {
+                          prevent()
+                        }
+                      }
+                    }
+                    new Knockout(self).run(bg)
+                  }
+                }
+                onDeactivate {
+                  acl.each{bg.gm().unregisterAction(it)}
+                }
+              }
+            }
+            pokemonCard.player = trainerCard.player
+            bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
+            benchPCS(pokemonCard)
           }
           playRequirement{
+            assert bench.notFull
           }
         };
       case POKE_BALL_85:
-        return basicTrainer (this) {
-          text "Flip a coin. If heads, search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy(FireRedLeafGreen.POKE_BALL_95, this);
       case QUICK_BALL_86:
-        return basicTrainer (this) {
-          text "Reveal cards from your deck until you reveal a Pokémon. Show that Pokémon to your opponent and put it into your hand. Shuffle the other revealed cards back into your deck. (If you don’t reveal a Pokémon, shuffle all the revealed cards back into your deck.)"
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy (MysteriousTreasures.QUICK_BALL_114, this);
       case SUPER_SCOOP_UP_87:
         return copy(FireRedLeafGreen.SUPER_SCOOP_UP_99, this);
       case WARP_POINT_88:
-        return copy(PlasmaStorm.ESCAPE_ROPE_120, this)
+        return copy(PlasmaStorm.ESCAPE_ROPE_120, this);
       case DOME_FOSSIL_89:
         return basicTrainer (this) {
           text "Play Dome Fossil as if it were a [C] Basic Pokémon. (Dome Fossil counts as a Trainer card as well, but if Dome Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Dome Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Dome Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Rock Reaction When you attach a [F] Energy card from your hand to Dome Fossil (excluding effects of attacks or Poké-Powers), search your deck for a card that evolves from Dome Fossil and put it onto Dome Fossil (this counts as evolving Dome Fossil). Shuffle your deck afterward."
           onPlay {
+            Card pokemonCard, trainerCard = thisCard
+            pokemonCard = basic (new CustomCardInfo(DOME_FOSSIL_89).setCardTypes(BASIC, POKEMON), hp:HP050, type:COLORLESS, retreatCost:0) {
+              pokeBody "Rock Reaction", {
+                delayedA{
+                  after ATTACH_ENERGY, self, {
+                    if(ef.reason==PLAY_FROM_HAND && card.asEnergyCard().containsType(F) && self.owner.pbg.deck && confirm("Use Rock Reaction?")){
+                      def sel=my.deck.search("Search your deck for a card that evolved from $self",{it.cardTypes.is(EVOLUTION) && it.predecessor==self.name})
+                      if(sel){
+                        evolve(self, sel.first(), OTHER)
+                      }
+                      shuffleDeck()
+                    }
+                  }
+                }
+              }
+              customAbility {
+                def eff, acl
+                delayedA {
+                  before RETREAT, self, {
+                    if(self.topPokemonCard == thisCard){
+                      wcu "Cannot retreat"
+                      prevent()
+                    }
+                  }
+                  before APPLY_SPECIAL_CONDITION, self, {
+                    bc "$self is unaffected by Special Conditions"
+                    prevent()
+                  }
+                }
+                onActivate{
+                  if (!eff) {
+                    eff = delayed {
+                      after REMOVE_FROM_PLAY, {
+                        if(ef.removedCards.contains(pokemonCard)) {
+                          bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
+                          unregister()
+                          eff = null
+                        }
+                      }
+                    }
+                  }
+                  acl = action("Discard $self", [TargetPlayer.SELF]) {
+                    delayed {
+                      before TAKE_PRIZE, {
+                        if (ef.pcs==self) {
+                          prevent()
+                        }
+                      }
+                    }
+                    new Knockout(self).run(bg)
+                  }
+                }
+                onDeactivate {
+                  acl.each{bg.gm().unregisterAction(it)}
+                }
+              }
+            }
+            pokemonCard.player = trainerCard.player
+            bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
+            benchPCS(pokemonCard)
           }
           playRequirement{
+            assert bench.notFull
           }
         };
       case ENERGY_SEARCH_90:
-        return basicTrainer (this) {
-          text "Search your deck for a basic Energy card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy(BlackWhite.ENERGY_SEARCH_93, this);
       case HELIX_FOSSIL_91:
         return basicTrainer (this) {
-          text "Play Helix Fossil as if it were a [C] Basic Pokémon. (Helix Fossil counts as a Trainer card as well, but if Helix Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Helix Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Helix Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Aqua Reaction When you attach a [W] Energy card from your hand to Helix Fossil (excluding effects of attacks or Poké-Powers), search your deck for a card that evolves from Helix Fossil and put it onto Helix Fossil (this counts as evolving Helix Fossil). Shuffle your deck afterward."
+          text "Play Helix Fossil as if it were a [C] Basic Pokémon. (Helix Fossil counts as a Trainer card as well, but if Helix Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Helix Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Helix Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Aqua Reaction When you attach a [W] Energy card from your hand to Helix Fossil (excluding effects of attacks or Poké-Powers), search your deck for a card that evolves from Helix Fossil and put it onto Helix Fossil (this counts as evolving Helix Fossil). Shuffle your deck afterwards."
           onPlay {
+            Card pokemonCard, trainerCard = thisCard
+            pokemonCard = basic (new CustomCardInfo(HELIX_FOSSIL_91).setCardTypes(BASIC, POKEMON), hp:HP050, type:COLORLESS, retreatCost:0) {
+              pokeBody "Aqua Reaction", {
+                delayedA{
+                  after ATTACH_ENERGY, self, {
+                    if(ef.reason==PLAY_FROM_HAND && card.asEnergyCard().containsType(W) && self.owner.pbg.deck && confirm("Use Rock Reaction?")){
+                      def sel=my.deck.search("Search your deck for a card that evolved from $self",{it.cardTypes.is(EVOLUTION) && it.predecessor==self.name})
+                      if(sel){
+                        evolve(self, sel.first(), OTHER)
+                      }
+                      shuffleDeck()
+                    }
+                  }
+                }
+              }
+              customAbility {
+                def eff, acl
+                delayedA {
+                  before RETREAT, self, {
+                    if(self.topPokemonCard == thisCard){
+                      wcu "Cannot retreat"
+                      prevent()
+                    }
+                  }
+                  before APPLY_SPECIAL_CONDITION, self, {
+                    bc "$self is unaffected by Special Conditions"
+                    prevent()
+                  }
+                }
+                onActivate{
+                  if (!eff) {
+                    eff = delayed {
+                      after REMOVE_FROM_PLAY, {
+                        if(ef.removedCards.contains(pokemonCard)) {
+                          bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
+                          unregister()
+                          eff = null
+                        }
+                      }
+                    }
+                  }
+                  acl = action("Discard $self", [TargetPlayer.SELF]) {
+                    delayed {
+                      before TAKE_PRIZE, {
+                        if (ef.pcs==self) {
+                          prevent()
+                        }
+                      }
+                    }
+                    new Knockout(self).run(bg)
+                  }
+                }
+                onDeactivate {
+                  acl.each{bg.gm().unregisterAction(it)}
+                }
+              }
+            }
+            pokemonCard.player = trainerCard.player
+            bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
+            benchPCS(pokemonCard)
           }
           playRequirement{
+            assert bench.notFull
           }
         };
       case CALL_ENERGY_92:
@@ -2047,15 +2551,11 @@ public enum MajesticDawn implements LogicCardInfo {
         return copy (MysteriousTreasures.DARKNESS_ENERGY_119, this);
       case HEALTH_ENERGY_94:
         return specialEnergy (this, [[C]]) {
-          // TODO: Is this just Potion Energy?
           text "Health Energy provides [C] Energy. When you attach this card from your hand to 1 of your Pokémon, remove 1 damage counter from that Pokémon."
           onPlay {reason->
-          }
-          onRemoveFromPlay {
-          }
-          onMove {to->
-          }
-          allowAttach {to->
+            if (reason == PLAY_FROM_HAND) {
+              heal 10, self, SRC_SPENERGY
+            }
           }
         };
       case METAL_ENERGY_95:
@@ -2065,28 +2565,40 @@ public enum MajesticDawn implements LogicCardInfo {
         return specialEnergy (this, [[C]]) {
           text "Recover Energy provides [C] Energy. When you attach this card from your hand to 1 of your Pokémon, remove all Special Conditions from that Pokémon."
           onPlay {reason->
-          }
-          onRemoveFromPlay {
-          }
-          onMove {to->
-          }
-          allowAttach {to->
+            if (reason == PLAY_FROM_HAND) {
+              clearSpecialCondition(my.active, SRC_SPENERGY)
+            }
           }
         };
       case GARCHOMP_LV_X_97:
         return levelUp (this, from:"Garchomp", hp:HP140, type:COLORLESS, retreatCost:0) {
           weakness C
           pokePower "Dragon Pulse", {
-            text "Once during your turn , when you put Garchomp LV. from your hand onto your Active Garchomp, you may flip 3 coins. For each heads, put 1 damage counter on each of your opponent’s Benched Pokémon."
-            actionA {
+            text "Once during your turn , when you put Garchomp LV.X from your hand onto your Active Garchomp, you may flip 3 coins. For each heads, put 1 damage counter on each of your opponent’s Benched Pokémon."
+            onActivate {r->
+              if (r==PLAY_FROM_HAND && opp.bench && confirm('Use Dragon Pulse?')) {
+                flip 3, {
+                  opp.bench.each {
+                    directDamage 10, it, SRC_ABILITY
+                  }
+                }
+              }
             }
           }
           move "Restore", {
-            text ") and put it onto your Bench as a Basic Pokémon. Then, you may search your discard pile for up to 3 basic Energy cards and attach them to that Pokémon."
+            text "Search your discard pile for a Pokémon (excluding Pokémon LV.X) and put it onto your Bench as a Basic Pokémon. Then, you may search your discard pile for up to 3 basic Energy cards and attach them to that Pokémon."
             energyCost ()
-            attackRequirement {}
+            attackRequirement {
+              assert my.discard.filterByType(POKEMON) : "You have no Pokémon in your discard pile"
+              assert my.bench.notFull : "Your bench is full"
+            }
             onAttack {
-              damage 0
+              def pcs = benchPCS(my.discard.select("Choose a Pokémon to put on your bench", cardTypeFilter(POKEMON)).first())
+              if(my.discard.filterByType(BASIC_ENERGY)) {
+                my.discard.select(min:0, max:3, "Attach up to 3 basic Energy cards to $pcs",cardTypeFilter(BASIC_ENERGY)).each {
+                  attachEnergy(pcs, it)
+                }
+              }
             }
           }
         };
@@ -2095,15 +2607,36 @@ public enum MajesticDawn implements LogicCardInfo {
           weakness M, PLUS30
           pokeBody "Chilly Breath", {
             text "As long as Glaceon is your Active Pokémon, your opponent’s Pokémon can’t use any Poké-Powers."
-            delayedA {
+            def eff
+            onActivate {
+              eff1 = getter IS_ABILITY_BLOCKED, { Holder h->
+                if (self.active && h.effect.target.owner == self.owner.opposite && (h.effect.ability instanceof PokePower) {
+                  h.object=true
+                }
+              }
+              eff2 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
+                if (self.active && h.effect.target.owner == self.owner.opposite) {
+                  h.object=true
+                }
+              }
+              new CheckAbilities().run(bg)
+            }
+            onDeactivate {
+              eff1.unregister()
+              eff2.unregister()
+              new CheckAbilities().run(bg)
             }
           }
           move "Avalache", {
             text "70 damage. Flip a coin. If heads, this attack does 20 damage to each of your opponent’s Benched Pokémon."
             energyCost W, W, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 70
+              flip {
+                opp.bench.each {
+                  damage 20, it
+                }
+              }
             }
           }
         };
@@ -2114,14 +2647,23 @@ public enum MajesticDawn implements LogicCardInfo {
           pokePower "Energy Forcing", {
             text "Once during your turn , you may attach an Energy card from your hand to 1 of your Pokémon. This power can’t be used if Leafeon is affected by a Special Condition."
             actionA {
+              checkLastTurn()
+              checkNoSPC()
+              assert my.hand.filterByType(ENERGY) : "You have no Energy cards in your hand"
+              powerUsed()
+              def energy = my.hand.filterByType(ENERGY).select("Energy to attach").first()
+              def pcs = my.all.select("Attach $energy to...")
+              attachEnergy(pcs, energy)
             }
           }
           move "Verdant Force", {
             text "30+ damage. Does 30 damage plus 10 more damage for each Energy attached to all of your Pokémon."
             energyCost G, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              my.all.each {
+                damage 10 * self.cards.energyCount(C)
+              }
             }
           }
         };
@@ -2130,12 +2672,26 @@ public enum MajesticDawn implements LogicCardInfo {
           weakness F
           pokePower "Mode Crash", {
             text "Once during your turn , when you put Porygon-Z LV. from your hand onto your Active Porygon-Z, you may discard all of your opponent’s Special Energy cards in play."
-            actionA {
+            onActivate {r->
+              if (r==PLAY_FROM_HAND && opp.all.find{it.cards.filterByType(SPECIAL_ENERGY)} && confirm("Use Mode Crash?")) {
+                powerUsed()
+                opp.all.each {
+                  it.cards.filterByType(SPECIAL_ENERGY).discard()
+                }
+              }
             }
           }
           pokePower "Decode", {
             text "Once during your turn , you may search your deck for any 2 cards and shuffle your deck afterward. Then, put those cards on top of your deck in any order. This power can’t be used if Porygon-Z is affected by a Special Condition."
             actionA {
+              checkLastTurn()
+              checkNoSPC()
+              assert my.deck : "Your deck is empty"
+              powerUsed()
+              def min = Math.min(2, my.deck.size())
+              def cards = my.deck.search(min:min, max:2, "Search your deck for any 2 cards")
+              shuffleDeck()
+              cards.moveTo(addToTop:true,suppressLog: true, my.deck)
             }
           }
         };
