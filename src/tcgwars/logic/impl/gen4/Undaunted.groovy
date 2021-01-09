@@ -2,7 +2,6 @@ package tcgwars.logic.impl.gen4
 
 import tcgwars.logic.effect.special.SpecialConditionType
 import tcgwars.logic.impl.gen3.RubySapphire;
-import tcgwars.logic.impl.gen4.MysteriousTreasures;
 
 import tcgwars.logic.effect.gm.PlayTrainer
 import tcgwars.logic.effect.ability.Ability
@@ -14,14 +13,17 @@ import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
+import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
 import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectType.*;
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-
+import tcgwars.logic.*;
 import tcgwars.logic.card.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.basic.*
 import tcgwars.logic.util.*;
 
 /**
@@ -420,7 +422,7 @@ public enum Undaunted implements LogicCardInfo {
                 before null, self, Source.ATTACK, {
                   def hasPokePower = false
                   def hasPokeBody = false
-                  for (Ability ability : opp.active.getAbilities().keySet()) {//this feels excessive.
+                  for (Ability ability : opp.active.getAbilities().keySet()) {
                     if (ability instanceof PokeBody) hasPokeBody = true;
                     if (ability instanceof PokePower) hasPokePower = true;
                   }
@@ -432,7 +434,7 @@ public enum Undaunted implements LogicCardInfo {
                 before APPLY_ATTACK_DAMAGES, {
                   def hasPokePower = false
                   def hasPokeBody = false
-                  for (Ability ability : opp.active.getAbilities().keySet()) {//this feels excessive.
+                  for (Ability ability : opp.active.getAbilities().keySet()) {
                     if (ability instanceof PokePower) hasPokePower = true;
                     if (ability instanceof PokeBody) hasPokeBody = true;
                   }
@@ -558,6 +560,7 @@ public enum Undaunted implements LogicCardInfo {
               damage 80
               if(confirm("Deal 20 damage to $self in order to deal 20 more damage?")){
                 damage 20
+                damage 20, self
               }
             }
           }

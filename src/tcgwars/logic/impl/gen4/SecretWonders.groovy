@@ -1049,7 +1049,7 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost C, C
             onAttack {
               damage 40
-              if(my.bench && confirm("Switch Furret wieh 1 of your Benched Pokémon?")) {
+              if(my.bench && confirm("Switch Furret with 1 of your Benched Pokémon?")) {
                 if(sw2(my.bench.select("New Active Pokémon"))) {
                   self.cards.select(min:0,max:self.cards.filterByType(ENERGY).size(),"Move any number of Energy cards to ${my.active}",cardTypeFilter(ENERGY)).each{
                     energySwitch(self,my.active,it)
@@ -1114,7 +1114,7 @@ public enum SecretWonders implements LogicCardInfo {
             text "Choose 2 of your opponent’s Pokémon. This attack does 30 damage to each of them."
             energyCost F, F, C
             onAttack {
-              multiselect(opp.all, 2, "Choose 2 of your opponent's Pokémon").each {
+              multiSelect(opp.all, 2, "Choose 2 of your opponent's Pokémon").each {
                 damage 30, it
               }
             }
@@ -1203,7 +1203,7 @@ public enum SecretWonders implements LogicCardInfo {
             onAttack {
               damage 40
               if(opp.bench) {
-                multiselect(opp.all, 2, "Does 20 damage to 2 of your opponent's Benched Pokémon").each {
+                multiSelect(opp.all, 2, "Does 20 damage to 2 of your opponent's Benched Pokémon").each {
                   damage 20, it
                 }
               }
