@@ -1194,7 +1194,7 @@ public enum Undaunted implements LogicCardInfo {
             onActivate { reason ->
               if(reason == PLAY_FROM_HAND && my.deck && confirm("Use $thisAbility?")){
                 powerUsed()
-                my.deck.search("Search your deck for a [D] or Dark Metal Energy",{it.cardTypes.energy && it.containsTypePlain(D)}).showToOpponent("Selected card").moveTo(my.hand)
+                my.deck.search("Search your deck for a [D]",{it.cardTypes.energy && it.containsTypePlain(D)}).showToOpponent("Selected card").moveTo(my.hand)
                 shuffleDeck()
               }
             }
