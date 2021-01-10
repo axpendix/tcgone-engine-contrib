@@ -3209,15 +3209,26 @@ public enum SecretWonders implements LogicCardInfo {
                 apply POISONED
                 def pcs = defending
                 delayed {
-                  before SPC_POISONED, pcs, {
+                  def eff
+                  register {
+                    eff = getter IS_ABILITY_BLOCKED, { Holder h->
+                      if (h.effect.target == pcs && h.effect.ability instanceof PokeBody) {
+                        h.object=true
+                      }
+                    }
+                    new CheckAbilities().run(bg)
+                  }
+                  unregister {
+                    eff.unregister()
+                  }
+                  before POISONED_SPC, pcs, {
                     unregister()
                     new CheckAbilities().run(bg)
                   }
-                  eff2 = getter IS_ABILITY_BLOCKED, { Holder h->
-                    if (self.active && h.effect.target.notEvolution && h.effect.target.owner == self.owner.opposite && h.effect.ability instanceof PokeBody) {
-                      h.object=true
-                    }
-                  }
+                  unregisterAfter 3
+                  after FALL_BACK, self, {unregister()}
+                  after EVOLVE, self, {unregister()}
+                  after DEVOLVE, self, {unregister()}
                 }
               }
             }
