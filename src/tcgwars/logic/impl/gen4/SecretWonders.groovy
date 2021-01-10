@@ -3208,23 +3208,25 @@ public enum SecretWonders implements LogicCardInfo {
               afterDamage {
                 apply POISONED
                 def pcs = defending
-                delayed {
-                  def eff
-                  register {
-                    eff = getter IS_ABILITY_BLOCKED, { Holder h->
-                      if (h.effect.target == pcs && h.effect.target.isSPC(POISONED) && h.effect.ability instanceof PokeBody) {
-                        h.object=true
+                if(pcs.isSPC(POISONED)) {// Is !bg.em().run(new ApplySpecialCondition(POISONED, pcs, SOURCE.ATTACK)) better here
+                  delayed {
+                    def eff
+                    register {
+                      eff = getter IS_ABILITY_BLOCKED, { Holder h->
+                        if (h.effect.target == pcs && h.effect.target.isSPC(POISONED) && h.effect.ability instanceof PokeBody) {
+                          h.object=true
+                        }
                       }
+                      new CheckAbilities().run(bg)
                     }
-                    new CheckAbilities().run(bg)
-                  }
-                  unregister {
-                    eff.unregister()
-                    new CheckAbilities().run(bg)
-                  }
-                  after CLEAR_SPECIAL_CONDITION, defending, {
-                    if(ef.types.contains(POISONED)){
-                      unregister()
+                    unregister {
+                      eff.unregister()
+                      new CheckAbilities().run(bg)
+                    }
+                    after CLEAR_SPECIAL_CONDITION, defending, {
+                      if(ef.types.contains(POISONED)){
+                        unregister()
+                      }
                     }
                   }
                 }
