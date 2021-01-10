@@ -3212,7 +3212,7 @@ public enum SecretWonders implements LogicCardInfo {
                   def eff
                   register {
                     eff = getter IS_ABILITY_BLOCKED, { Holder h->
-                      if (h.effect.target == pcs && h.effect.ability instanceof PokeBody) {
+                      if (h.effect.target == pcs && h.effect.target.isSPC(POISONED) && h.effect.ability instanceof PokeBody) {
                         h.object=true
                       }
                     }
@@ -3222,12 +3222,10 @@ public enum SecretWonders implements LogicCardInfo {
                     eff.unregister()
                     new CheckAbilities().run(bg)
                   }
-                  after POISONED_SPC, pcs, {
-                    bc "This is when after POISONED_SPC activates"
-                    unregister()
-                  }
-                  before POISONED_SPC, pcs, null, null, {
-                    bc "Can I null the 4th parameter to see whenever poisoned is removed?"
+                  after CLEAR_SPECIAL_CONDITION, defending, {
+                    if(ef.types.contains(POISONED)){
+                      unregister()
+                    }
                   }
                 }
               }
