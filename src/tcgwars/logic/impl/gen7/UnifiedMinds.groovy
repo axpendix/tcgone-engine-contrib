@@ -4224,7 +4224,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               before BEGIN_TURN, {
                 if (self.isSPC(ASLEEP)) {
                   bc "Drowsing activates."
-                  directDamage 60, self.owner.opposite.pbg.active
+                  directDamage 60, self.owner.opposite.pbg.active, SRC_ABILITY
                 }
               }
             }
