@@ -3220,15 +3220,12 @@ public enum SecretWonders implements LogicCardInfo {
                   }
                   unregister {
                     eff.unregister()
-                  }
-                  before POISONED_SPC, pcs, {
-                    unregister()
                     new CheckAbilities().run(bg)
                   }
-                  unregisterAfter 3
-                  after FALL_BACK, self, {unregister()}
-                  after EVOLVE, self, {unregister()}
-                  after DEVOLVE, self, {unregister()}
+                  after POISONED_SPC, pcs, {
+                    bc "This is when after POISONED_SPC activates"
+                    unregister()
+                  }
                 }
               }
             }
