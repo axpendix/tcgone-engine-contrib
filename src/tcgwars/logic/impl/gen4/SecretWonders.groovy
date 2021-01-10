@@ -3208,26 +3208,26 @@ public enum SecretWonders implements LogicCardInfo {
               afterDamage {
                 apply POISONED
                 def pcs = defending
-                delayed {
-                  def eff
-                  register {
-                    eff = getter IS_ABILITY_BLOCKED, { Holder h->
-                      if (h.effect.target == pcs && h.effect.ability instanceof PokeBody) {
-                        h.object=true
+                if(pcs.isSPC(POISONED)) {// Is !bg.em().run(new ApplySpecialCondition(POISONED, pcs, SOURCE.ATTACK)) better here
+                  delayed {
+                    def eff
+                    register {
+                      eff = getter IS_ABILITY_BLOCKED, { Holder h->
+                        if (h.effect.target == pcs && h.effect.ability instanceof PokeBody) {
+                          h.object=true
+                        }
+                      }
+                      new CheckAbilities().run(bg)
+                    }
+                    unregister {
+                      eff.unregister()
+                      new CheckAbilities().run(bg)
+                    }
+                    after CLEAR_SPECIAL_CONDITION, defending, {
+                      if(ef.types.contains(POISONED)){
+                        unregister()
                       }
                     }
-                    new CheckAbilities().run(bg)
-                  }
-                  unregister {
-                    eff.unregister()
-                    new CheckAbilities().run(bg)
-                  }
-                  after POISONED_SPC, pcs, {
-                    bc "This is when after POISONED_SPC activates"
-                    unregister()
-                  }
-                  before POISONED_SPC, pcs, null, null, {
-                    bc "Can I null the 4th parameter to see whenever poisoned is removed?"
                   }
                 }
               }
