@@ -3226,6 +3226,9 @@ public enum SecretWonders implements LogicCardInfo {
                     bc "This is when after POISONED_SPC activates"
                     unregister()
                   }
+                  before POISONED_SPC, pcs, null, null, {
+                    bc "Can I null the 4th parameter to see whenever poisoned is removed?"
+                  }
                 }
               }
             }
