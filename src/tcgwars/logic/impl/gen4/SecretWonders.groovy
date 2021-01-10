@@ -3223,10 +3223,15 @@ public enum SecretWonders implements LogicCardInfo {
                       eff.unregister()
                       new CheckAbilities().run(bg)
                     }
-                    after CLEAR_SPECIAL_CONDITION, defending, {
+                    after CLEAR_SPECIAL_CONDITION, pcs, {
                       if(ef.types.contains(POISONED)){
+                        bc "1 triggered"
                         unregister()
                       }
+                    }
+                    after FALL_BACK, pcs, {
+                      bc"2 triggered"
+                      unregister()
                     }
                   }
                 }
