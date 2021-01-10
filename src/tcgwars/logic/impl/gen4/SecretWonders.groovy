@@ -3213,7 +3213,7 @@ public enum SecretWonders implements LogicCardInfo {
                     def eff
                     register {
                       eff = getter IS_ABILITY_BLOCKED, { Holder h->
-                        if (h.effect.target == pcs && h.effect.target.isSPC(POISONED) && h.effect.ability instanceof PokeBody) {
+                        if (h.effect.target == pcs && h.effect.ability instanceof PokeBody) {
                           h.object=true
                         }
                       }
