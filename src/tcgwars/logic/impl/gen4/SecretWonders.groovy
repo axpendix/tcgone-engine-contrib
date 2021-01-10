@@ -282,6 +282,7 @@ public enum SecretWonders implements LogicCardInfo {
             text "50+ damage. Does 50 damage plus 20 more damage for each [W] Energy attached to Blastoise but not used to pay for this attack’s Energy cost. You can’t add more than 40 damage in this way."
             energyCost W, W, C
             onAttack {
+              damage 50
               extraEnergyDamage(2,hp(20),W,thisMove)
             }
           }

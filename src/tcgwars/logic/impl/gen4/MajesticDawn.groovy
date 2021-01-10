@@ -761,7 +761,7 @@ public enum MajesticDawn implements LogicCardInfo {
             onActivate {
               eff = getter (GET_FULL_HP) {h->
                 def pcs = h.effect.target
-                if (pcs.owner == self.owner && pcs.topPokemonCard.predecessor == "Eevee"){
+                if (pcs.owner == self.owner && pcs.realEvolution && pcs.topPokemonCard.predecessor == "Eevee"){
                   target = bg.em().retrieveObject("Sunlight_Veil_target")
                   source = bg.em().retrieveObject("Sunlight_Veil_source")
                   if(!target.contains(pcs)){
@@ -1125,14 +1125,14 @@ public enum MajesticDawn implements LogicCardInfo {
             text "Each of your Pokémon that evolves from Eevee has no Weakness, and that Pokémon’s Retreat Cost is 0."
             getterA (GET_WEAKNESSES) { h->
               def pcs = h.effect.target
-              if(pcs.owner == self.owner && pcs.topPokemonCard.predecessor == "Eevee") {
+              if(pcs.owner == self.owner && pcs.realEvolution && pcs.topPokemonCard.predecessor == "Eevee") {
                 def list = h.object as List<Weakness>
                 list.clear()
               }
             }
             getterA GET_RETREAT_COST ,{ h->//Not sure if 2 getterAs work in the same pokebody, If it doesn't, Ill use onActivate
               def pcs = h.effect.target
-              if (pcs.owner == self.owner && pcs.topPokemonCard.predecessor == "Eevee") {
+              if (pcs.owner == self.owner && pcs.realEvolution && pcs.topPokemonCard.predecessor == "Eevee") {
                 h.object = 0
               }
             }
