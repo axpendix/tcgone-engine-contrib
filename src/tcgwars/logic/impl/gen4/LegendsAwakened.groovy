@@ -240,19 +240,25 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokePower "Form Change", {
             text "Once during your turn (before your attack), you may search your deck for any Deoxys and switch it with Deoxys Normal Forme. (Any cards attached to Deoxys Normal Forme, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys Normal Forme on top of your deck. Shuffle your deck afterward. You can't use more than 1 Form Change Poké-Power each turn."
             actionA {
+              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
               checkLastTurn()
-              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You cannot use Form Change more than once per turn!"
-              assert my.deck : "There is no card in your deck"
-              powerUsed()
+              assert my.deck : "Deck is empty"
               bg.em().storeObject("Form_Change",bg.turnCount)
-              def deoxys = self.topPokemonCard
-              if (my.deck.findAll{it.name == "Deoxys"}) {
-                my.deck.search{it.name == "Deoxys"}.moveTo(self.cards)
-                my.deck.add(deoxys)
-                self.cards.remove(deoxys)
-                shuffleDeck()
+              powerUsed()
+
+              def oldDeoxys = self.topPokemonCard
+              def newDeoxys = my.deck.search(min:0, max: 1, {
+                it.name == "Deoxys"
+              })
+
+              if (newDeoxys) {
+                newDeoxys.moveTo(self.cards)
+                my.deck.add(oldDeoxys)
+                self.cards.remove(oldDeoxys)
                 checkFaint()
               }
+
+              shuffleDeck()
             }
           }
           move "Energy Crush", {
@@ -710,19 +716,25 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokePower "Form Change", {
             text "Once during your turn (before your attack), you may search your deck for any Deoxys and switch it with Deoxys Attack Forme. (Any cards attached to Deoxys Attack Forme, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys Attack Forme on top of your deck. Shuffle your deck afterward. You can't use more than 1 Form Change Poké-Power each turn."
             actionA {
+              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
               checkLastTurn()
-              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You cannot use Form Change more than once per turn!"
-              assert my.deck : "There is no card in your deck"
-              powerUsed()
+              assert my.deck : "Deck is empty"
               bg.em().storeObject("Form_Change",bg.turnCount)
-              def deoxys = self.topPokemonCard
-              if (my.deck.findAll{it.name == "Deoxys"}) {
-                my.deck.search{it.name == "Deoxys"}.moveTo(self.cards)
-                my.deck.add(deoxys)
-                self.cards.remove(deoxys)
-                shuffleDeck()
+              powerUsed()
+
+              def oldDeoxys = self.topPokemonCard
+              def newDeoxys = my.deck.search(min:0, max: 1, {
+                it.name == "Deoxys"
+              })
+
+              if (newDeoxys) {
+                newDeoxys.moveTo(self.cards)
+                my.deck.add(oldDeoxys)
+                self.cards.remove(oldDeoxys)
                 checkFaint()
               }
+
+              shuffleDeck()
             }
           }
           move "Psychic Boost", {
@@ -740,19 +752,25 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokePower "Form Change", {
             text "Once during your turn (before your attack), you may search your deck for any Deoxys and switch it with Deoxys Defense Forme. (Any cards attached to Deoxys Defense Forme, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys Defense Forme on top of your deck. Shuffle your deck afterward. You can't use more than 1 Form Change Poké-Power each turn."
             actionA {
+              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
               checkLastTurn()
-              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You cannot use Form Change more than once per turn!"
-              assert my.deck : "There is no card in your deck"
-              powerUsed()
+              assert my.deck : "Deck is empty"
               bg.em().storeObject("Form_Change",bg.turnCount)
-              def deoxys = self.topPokemonCard
-              if (my.deck.findAll{it.name == "Deoxys"}) {
-                my.deck.search{it.name == "Deoxys"}.moveTo(self.cards)
-                my.deck.add(deoxys)
-                self.cards.remove(deoxys)
-                shuffleDeck()
+              powerUsed()
+
+              def oldDeoxys = self.topPokemonCard
+              def newDeoxys = my.deck.search(min:0, max: 1, {
+                it.name == "Deoxys"
+              })
+
+              if (newDeoxys) {
+                newDeoxys.moveTo(self.cards)
+                my.deck.add(oldDeoxys)
+                self.cards.remove(oldDeoxys)
                 checkFaint()
               }
+
+              shuffleDeck()
             }
           }
           move "Psychic Defense", {
@@ -770,19 +788,25 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokePower "Form Change", {
             text "Once during your turn (before your attack), you may search your deck for any Deoxys and switch it with Deoxys Speed Forme. (Any cards attached to Deoxys Speed Forme, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys Speed Forme on top of your deck. Shuffle your deck afterward. You can't use more than 1 Form Change Poké-Power each turn."
             actionA {
+              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
               checkLastTurn()
-              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You cannot use Form Change more than once per turn!"
-              assert my.deck : "There is no card in your deck"
-              powerUsed()
+              assert my.deck : "Deck is empty"
               bg.em().storeObject("Form_Change",bg.turnCount)
-              def deoxys = self.topPokemonCard
-              if (my.deck.findAll{it.name == "Deoxys"}) {
-                my.deck.search{it.name == "Deoxys"}.moveTo(self.cards)
-                my.deck.add(deoxys)
-                self.cards.remove(deoxys)
-                shuffleDeck()
+              powerUsed()
+
+              def oldDeoxys = self.topPokemonCard
+              def newDeoxys = my.deck.search(min:0, max: 1, {
+                it.name == "Deoxys"
+              })
+
+              if (newDeoxys) {
+                newDeoxys.moveTo(self.cards)
+                my.deck.add(oldDeoxys)
+                self.cards.remove(oldDeoxys)
                 checkFaint()
               }
+
+              shuffleDeck()
             }
           }
           move "Speed Shot", {
