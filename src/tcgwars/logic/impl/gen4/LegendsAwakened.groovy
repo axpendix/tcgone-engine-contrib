@@ -345,7 +345,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost P, C
             attackRequirement {}
             onAttack {
-              damage 20, opp.bench.select("Choose a Benched Pokemon to deal damage to")
+              damage 20, opp.bench.select("Choose a Benched Pokémon to deal damage to")
               flip { preventAllEffectsNextTurn() }
             }
           }
@@ -507,10 +507,10 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 60
-              if (confirm("Do an additional 40 damage and 40 damage to an Opponent's Benched Pokemon by dealing 40 damage to Mamoswine?")) {
+              if (confirm("Do an additional 40 damage and 40 damage to an Opponent's Benched Pokémon by dealing 40 damage to Mamoswine?")) {
                 damage 40
                 if (opp.bench) {
-                  damage 40, opp.bench.select("Deal 40 damage to which Benched Pokemon?")
+                  damage 40, opp.bench.select("Deal 40 damage to which Benched Pokémon?")
                 }
                 damage 40, self
               }
@@ -1056,7 +1056,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               assert my.hand.filterByEnergyType(F) : "No [F] Energy cards in your hand"
             }
             onAttack {
-              def energies = my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(F).select(max: 2, "Select 2 basic [F] Energy cards to attach to 1 of your Pokemon")
+              def energies = my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(F).select(max: 2, "Select 2 basic [F] Energy cards to attach to 1 of your Pokémon")
               my.hand.removeAll(energies)
               energies.each {
                 if (my.bench) {
@@ -1170,7 +1170,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               assert my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(W) : "No [W] Energy cards in your hand"
             }
             onAttack {
-              def energies = my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(W).select(max: 2, "Select 2 basic [F] Energy cards to attach to 1 of your Pokemon")
+              def energies = my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(W).select(max: 2, "Select 2 basic [F] Energy cards to attach to 1 of your Pokémon")
               my.hand.removeAll(energies)
               energies.each {
                 if (my.bench) {
@@ -2693,12 +2693,12 @@ public enum LegendsAwakened implements LogicCardInfo {
             text "Choose 1 of your opponent's Pokémon that doesn't have any damage counters on it. This attack does 30 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost G, C
             attackRequirement {
-              assert opp.all.findAll{!it.numberOfDamageCounters} : "Opponent has no undamaged Pokemon"
+              assert opp.all.findAll{!it.numberOfDamageCounters} : "Opponent has no undamaged Pokémon"
             }
             onAttack {
               damage 30, opp.all.findAll {
                 !it.numberOfDamageCounters
-              }.select("Deal 30 damage to which Pokemon?")
+              }.select("Deal 30 damage to which Pokémon?")
             }
           }
         };
@@ -2788,7 +2788,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost F, C
             attackRequirement {}
             onAttack {
-              if (self.getPokemonCards().findAll { it.name == "Tyrogue" } && opp.bench && confirm("Deal damage to Benched Pokemon instead?")) {
+              if (self.getPokemonCards().findAll { it.name == "Tyrogue" } && opp.bench && confirm("Deal damage to Benched Pokémon instead?")) {
                 damage 30, opp.bench.select("Deal damage to?")
               } else {
                 damage 30
@@ -3605,7 +3605,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           move "Healing Look", {
             text "Remove 3 damage counters from each of your Benched Pokémon."
             attackRequirement {
-              assert my.bench.findAll { it.numberOfDamageCounters } : "Bench has no damaged Pokemon"
+              assert my.bench.findAll { it.numberOfDamageCounters } : "Bench has no damaged Pokémon"
             }
             onAttack {
               my.bench.each {
