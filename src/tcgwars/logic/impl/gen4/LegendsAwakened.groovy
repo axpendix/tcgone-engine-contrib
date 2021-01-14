@@ -524,7 +524,14 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokePower "Magnetic Reversal", {
             text "Once during your turn (before your attack), you may flip a coin. If heads, switch 1 of your opponent's Benched Pokémon with 1 of the Defending Pokémon. This power can't be used if Metagross is affected by a Special Condition."
             actionA {
-              // TODO
+              checkLastTurn()
+              checkNoSPC()
+              assert self.active : "$self is not your active Pokémon."
+              assert opp.bench : "There are no benched Pokémon to switch to"
+              powerUsed()
+              flip {
+                switchYourOpponentsBenchedWithActive(SRC_ABILITY)
+              }
             }
           }
           move "Extra Comet Punch", {
@@ -564,7 +571,14 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokeBody "Enthusiasm", {
             text "If you have Poliwag, Poliwhirl, and Poliwrath in play, each of these Pokémon's attacks does 60 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
             delayedA {
-              // TODO
+              after PROCESS_ATTACK_EFFECTS, {
+                bg.dm().each {
+                  if (it.from.name in ["Poliwag", "Poliwhirl", "Poliwrath"] && it.to.active && it.to.owner != self.owner && it.dmg.value && it.notNoEffect) {
+                    bc "Enthusiasm +60"
+                    it.dmg += hp(60)
+                  }
+                }
+              }
             }
           }
           move "Frog Hop", {
@@ -600,7 +614,10 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 60
-              // TODO
+              def maxCount = Math.min(self.cards.filterByEnergyType(M).size(), opp.bench.size())
+              multiSelect(opp.bench, maxCount, text).each {
+                damage 20, it
+              }
             }
           }
         };
@@ -611,7 +628,17 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokePower "Speed Gain", {
             text "Once during your turn (before your attack), you may flip a coin until you get tails. For each heads, search your discard pile for a basic [R] Energy card or a basic [L] Energy card and attach it to Rayquaza. This power can't be used if Rayquaza is affected by a Special Condition or if you have another Rayquaza in play."
             actionA {
-              // TODO
+              checkNoSPC()
+              checkLastTurn()
+              assert my.all.findAll { it.name == "Rayquaza" }.size() == 1 : "Can't use because more than 1 Rayquaza is in play"
+              assert my.discard.filterByType(ENERGY).any { it.asEnergyCard().containsTypePlain(R) || it.asEnergyCard().containsTypePlain(L)} : "There are no [R] or [L] Energy card in your discard pile."
+              powerUsed()
+
+              flipUntilTails {
+                attachEnergy(my.active,my.discard.filterByType(ENERGY).findAll {
+                  it.asEnergyCard().containsTypePlain(R) || it.asEnergyCard().containsTypePlain(L)
+                }.select("Attach which Energy to Rayquaza?").first())
+              }
             }
           }
           move "Sky Judgment", {
@@ -656,8 +683,15 @@ public enum LegendsAwakened implements LogicCardInfo {
           resistance C, MINUS20
           pokePower "Curse Breath", {
             text "Once during your turn, when you put Spiritomb from your hand onto your Bench, you may put 1 damage counter on all Pokémon that already have any damage counters on them (both yours and your opponent's). You can't use more than 1 Curse Breath Poké-Power each turn."
-            actionA {
-              // TODO
+            onActivate { r->
+              if (r == PLAY_FROM_HAND && self.bench && confirm("Use Curse Breath?")) {
+                powerUsed()
+                all.each {
+                  if (it.numberOfDamageCounters) {
+                    directDamage 10, it, SRC_ABILITY
+                  }
+                }
+              }
             }
           }
           move "Transfer Pain", {
@@ -787,8 +821,21 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
+              if (opp.bench && confirm("Switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon?")) {
+                sw2 opp.bench.select("New Defending Pokémon")
+              }
+
+              delayed {
+                def pcs = defending
+                before KNOCKOUT, pcs, {
+                  if (self.numberOfDamageCounters && confirm("Remove all damage counters from Cradily?")) {
+                    healAll self
+                  }
+                  unregister()
+                }
+                unregisterAfter 1
+              }
               damage 30
-              // TODO
             }
           }
           move "Acid", {
@@ -928,7 +975,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 40
               // TODO
             }
-          }
+          }i
         };
       case DEOXYS_SPEED_FORME_26:
         return basic (this, hp:HP070, type:P, retreatCost:0) {
@@ -1002,9 +1049,20 @@ public enum LegendsAwakened implements LogicCardInfo {
           resistance L, MINUS20
           move "Drought", {
             text "Choose up to 2 basic [F] Energy cards from your hand and attach them to 1 of your Pokémon."
-            attackRequirement {}
+            attackRequirement {
+              assert my.hand.filterByEnergyType(F) : "No [F] Energy cards in your hand"
+            }
             onAttack {
-              // TODO
+              def energies = my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(F).select(max: 2, "Select 2 basic [F] Energy cards to attach to 1 of your Pokemon")
+              my.hand.removeAll(energies)
+              energies.each {
+                if (my.bench) {
+                  attachEnergy(my.bench.select("Attach to which?"))
+                } else {
+                  attachEnergy(self, it)
+                }
+              }
+              heal energies.size() * 10, self
             }
           }
           move "Major Earthquake", {
@@ -1013,7 +1071,10 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 100
-              // TODO
+              discardSelfEnergyAfterDamage F, F
+              my.bench.each {
+                damage 10, it
+              }
             }
           }
         };
@@ -1023,7 +1084,15 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokePower "Smelt", {
             text "Once during your turn (before your attack), you may move a [M] Energy attached to 1 of your Pokémon to Heatran. This power can't be used if Heatran is affected by a Special Condition."
             actionA {
-              // TODO
+              checkLastTurn()
+              checkNoSPC()
+              def src = my.all.findAll { it != self && it.cards.energyCount(M) }
+              assert src: "No [M] energy"
+              powerUsed()
+
+              src = src.select("Source for basic energy")
+              def card = src.cards.filterByEnergyType(M).select("Card to move").first()
+              energySwitch(src, self, card)
             }
           }
           move "Heavy Metal", {
@@ -1032,7 +1101,9 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
-              // TODO
+              self.cards.filterByEnergyType(M).each {
+                flip { damage 20 }
+              }
             }
           }
         };
@@ -1042,9 +1113,15 @@ public enum LegendsAwakened implements LogicCardInfo {
           resistance P, MINUS20
           move "One Desire", {
             text "Search your deck for any 1 card. Shuffle your deck, then put that card on top of your deck."
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Deck is empty"
+            }
             onAttack {
-              // TODO
+              def card = deck.select("Select a card to be place on top of your deck").first()
+              shuffleDeck()
+              deck.remove(card)
+              deck.add(0, card)
+              bc "Put 1 card on top of deck"
             }
           }
           move "Doom Desire", {
@@ -1052,7 +1129,32 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost M, M
             attackRequirement {}
             onAttack {
-              // TODO
+              discardAllSelfEnergy(null)
+              targeted(defending) {
+                delayed {
+                  def activatedTurn, card
+                  register {
+                    activatedTurn = bg.turnCount
+                    card = defending.topPokemonCard
+                  }
+                  before BETWEEN_TURNS, {
+                    if (activatedTurn < bg.turnCount) {
+                      if (defending.inPlay) {
+                        bc "Doom Desire activates"
+                        new Knockout(defending).run(bg);
+                      }
+                      unregister()
+                    }
+                  }
+                  after SWITCH, defending, { unregister() }
+                  after EVOLVE, defending, { unregister() }
+                  after REMOVE_FROM_PLAY, defending, {
+                    if (ef.removedCards.contains(card)) {
+                      unregister()
+                    }
+                  }
+                }
+              }
             }
           }
         };
@@ -1061,9 +1163,20 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness L
           move "Drizzle", {
             text "Choose up to 2 basic [W] Energy cards from your hand and attach them to 1 of your Pokémon."
-            attackRequirement {}
+            attackRequirement {
+              assert my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(W) : "No [W] Energy cards in your hand"
+            }
             onAttack {
-              // TODO
+              def energies = my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(W).select(max: 2, "Select 2 basic [F] Energy cards to attach to 1 of your Pokemon")
+              my.hand.removeAll(energies)
+              energies.each {
+                if (my.bench) {
+                  attachEnergy(my.bench.select("Attach to which?"))
+                } else {
+                  attachEnergy(self, it)
+                }
+              }
+              heal energies.size() * 10, self
             }
           }
           move "High Tide", {
@@ -1072,7 +1185,10 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 60
-              // TODO
+              discardSelfEnergy(W, W)
+              opp.bench.each {
+                damage 20
+              }
             }
           }
         };
@@ -1082,7 +1198,15 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokeBody "Healing Tail", {
             text "As long as Lopunny is your Active Pokémon, remove 1 damage counter from each of your Benched Pokémon between turns."
             delayedA {
-              // TODO
+              before BEGIN_TURN, {
+                if (self.active) {
+                  self.owner.pbg.all.each {
+                    if (it.numberOfDamageCounters) {
+                      heal 10, it
+                    }
+                  }
+                }
+              }
             }
           }
           move "Collect", {
@@ -1109,8 +1233,27 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness P, '+20'
           pokePower "Psychic Bind", {
             text "Once during your turn, when you put Mesprit from your hand onto your Bench, you may use this power. Your opponent can't use any Poké-Powers on his or her Pokémon during your opponent's next turn."
-            actionA {
-              // TODO
+            onActivate {
+              checkLastTurn()
+              if (it == PLAY_FROM_HAND && my.deck && confirm("Use Psychic Bind?")) {
+                powerUsed()
+                delayed {
+                  def eff
+                  register {
+                    eff = getter (IS_ABILITY_BLOCKED) { Holder h ->
+                      if (h.effect.target.owner == self.owner.opposite && h.effect.ability instanceof PokePower) {
+                        h.object = true
+                      }
+                    }
+                    new CheckAbilities().run(bg)
+                  }
+                  unregister {
+                    eff.unregister()
+                    new CheckAbilities().run(bg)
+                  }
+                  unregisterAfter 2
+                }
+              }
             }
           }
           move "Extrasensory", {
@@ -1203,7 +1346,14 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokePower "Regi Cycle", {
             text "Once during your turn (before your attack), if you have a [F] Energy card in your discard pile, you may discard 2 cards from your hand. Then, attach a [F] Energy card from your discard pile to Regirock. This power can't be used if Regirock is affected by a Special Condition."
             actionA {
-              // TODO
+              checkNoSPC()
+              checkLastTurn()
+              assert my.discard.filterByEnergyType(F) : "There are no [F] Energy cards in your discard pile"
+              assert my.hand.size >= 2 : "Hand is less than 2 cards"
+              powerUsed()
+
+              my.hand.select(count: 2, "Select 2 cards to discard").discard()
+              attachEnergyFrom(type: F, my.discard, self)
             }
           }
           move "Stone Edge", {
@@ -3440,7 +3590,20 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokeBody "Psybarrier", {
             text "Prevent all effects of attacks, including damage, done to Mewtwo by your opponent's Pokémon that isn't an Evolved Pokémon."
             delayedA {
-              // TODO
+              before null, self, Source.ATTACK, {
+                if (self.owner.opposite.pbg.active.evolution && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                  bc "Psybarrier prevents effect"
+                  prevent()
+                }
+              }
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each {
+                  if (it.to == self && it.notNoEffect && it.from.evolution) {
+                    it.dmg = hp(0)
+                    bc "Psybarrier prevents damage"
+                  }
+                }
+              }
             }
           }
           move "Giga Burn", {
