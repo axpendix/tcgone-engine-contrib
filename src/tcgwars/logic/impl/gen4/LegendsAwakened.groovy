@@ -308,7 +308,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              discardSelfEnergyInOrderTo(P)
+              discardSelfEnergyInOrderTo(P) // TODO not created yet
               delayed {
                 before KNOCKOUT, self, {
                   if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && self.owner.opposite.pbg.active.inPlay){
@@ -343,9 +343,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           move "Shadow Force", {
             text "Choose 1 of your opponent's Benched Pokémon. This attack does 20 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.) Flip a coin. If heads, prevent all effects of an attack, including damage, done to Giratina during your opponent's next turn."
             energyCost P, C
-            attackRequirement {
-              assert opp.bench : "Opponent has no Benched Pokemon"
-            }
+            attackRequirement {}
             onAttack {
               damage 20, opp.bench.select("Choose a Benched Pokemon to deal damage to")
               flip { preventAllEffectsNextTurn() }
@@ -412,13 +410,17 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost R, R, C, C
             attackRequirement {}
             onAttack {
-              def bonusDamage = 0
-              def list = self.cards.filterByType(BASIC_ENERGY)
-              list.select(max: list.size(), "Discard as many Energy cards attached to this Pokémon as you like, deal 40 plus 20 damage for each Energy card discarded").each {
-                discardSelfEnergyCard(it)
-                bonusDamage += 20
+              damage 40
+
+              afterDamage {
+                def bonusDamage = 0
+                def list = self.cards.filterByType(BASIC_ENERGY)
+                list.select(min: 0, max: list.size(), "Discard as many Energy cards attached to this Pokémon as you like, deal 40 plus 20 damage for each Energy card discarded").each {
+                  discardSelfEnergyCard(it)
+                  bonusDamage += 20
+                }
               }
-              damage 40 + bonusDamage
+              damage bonusDamage
             }
           }
         };
@@ -465,9 +467,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           move "Plasma", {
             text "40 damage. Search your discard pile for a [L] Energy card and attach it to Luxray."
             energyCost C, C
-            attackRequirement {
-              assert my.discard.filterByEnergyType(L) : "There are no [L] Energy cards in your discard pile"
-            }
+            attackRequirement {}
             onAttack {
               damage 40
               afterDamage {
@@ -561,7 +561,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost P, C, C
             attackRequirement {}
             onAttack {
-              damage 40 + 10 * defending.cards.filterByType(ENERGY).size()
+              damage 40 + 10 * defending.cards.energyCount(C)
             }
           }
         };
@@ -600,7 +600,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               before APPLY_ATTACK_DAMAGES,{
                 def reduceBy = Math.min(2, self.cards.energyCount(M))
                 bg.dm().each {
-                  if (it.to == self && it.notNoEffect && it.dmg.value) {
+                  if (it.to == self && it.notNoEffect && it.dmg.value && it.from.owner == self.owner.opposite) {
                     bc "Steel Coating -${10 * reduceBy}"
                     it.dmg -= hp(10 * reduceBy)
                   }
@@ -647,7 +647,9 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 150
-              discardAllSelfEnergy()
+              afterDamage {
+                discardAllSelfEnergy()
+              }
             }
           }
         };
@@ -702,7 +704,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               def src = opp.all.findAll{it.numberOfDamageCounters}.select()
               def tar = opp.all.findAll{it != src}.select()
               src.damage -= hp(10)
-              tar.damage += hp(10)
+              directDamage 10, tar
             }
           }
         };
@@ -728,11 +730,14 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost G, G, C, C
             attackRequirement {}
             onAttack {
+              damage 60
+
               if (defending.numberOfDamageCounters >= 2) {
                 damage 20
+                afterDamage {
+                  switchYourActive()
+                }
               }
-              damage 60
-              switchYourActive()
             }
           }
         };
@@ -802,10 +807,8 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
-              my.all.each {
-                if (it.name == "Vilplume" || it.name == "Bellossom") {
-                  damage 20
-                }
+              my.all.findAll { it.name == "Vileplume" || it.name == "Bellossom" }.each {
+                damage 20
               }
               flip {
                 applyAfterDamage BURNED
@@ -1211,7 +1214,9 @@ public enum LegendsAwakened implements LogicCardInfo {
           }
           move "Collect", {
             text "Draw 3 cards."
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Deck is empty"
+            }
             onAttack {
               draw 3
             }
@@ -1271,10 +1276,24 @@ public enum LegendsAwakened implements LogicCardInfo {
       case POLIWRATH_35:
         return evolution (this, from:"Poliwhirl", hp:HP130, type:W, retreatCost:2) {
           weakness L, '+30'
+          def turnCount = -1
+          HP lastDamage = null
+          customAbility {
+            delayed (priority: LAST) {
+              before APPLY_ATTACK_DAMAGES, {
+                if (bg().currentTurn == self.owner.opposite) {
+                  turnCount = bg.turnCount
+                  lastDamage = bg().dm().find({ it.to == self && it.dmg.value >= 0 })?.dmg
+                }
+              }
+            }
+          }
           move "Focus Punch", {
             text "60 damage. If Poliwrath was damaged by an attack during your opponent's last turn, this attack does nothing."
             energyCost F
-            attackRequirement {}
+            attackRequirement {
+              assert turnCount + 1 != bg.turnCount || !lastDamage : "Was not damaged last turn"
+            }
             onAttack {
               if (turnCount + 1 == bg.turnCount && lastDamage == hp(0)) {
                 damage 60
@@ -1294,6 +1313,18 @@ public enum LegendsAwakened implements LogicCardInfo {
       case REGICE_36:
         return basic (this, hp:HP090, type:W, retreatCost:3) {
           weakness M
+          def turnCount =- 1
+          HP lastDamage = null
+          customAbility {
+            delayed (priority: LAST) {
+              before APPLY_ATTACK_DAMAGES, {
+                if (bg().currentTurn == self.owner.opposite) {
+                  turnCount = bg.turnCount
+                  lastDamage = bg().dm().find({ it.to == self && it.dmg.value >= 0 })?.dmg
+                }
+              }
+            }
+          }
           pokePower "Regi Move", {
             text "Once during your turn (before your attack), you may use this power. Discard 2 cards from your hand and choose 1 of your opponent's Active Pokémon that isn't an Evolved Pokémon. Then, your opponent switches that Pokémon with 1 of his or her Benched Pokémon. This power can't be used if Regice is affected by a Special Condition."
             actionA {
@@ -1522,7 +1553,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              reduceDamageFromDefendingNextTurn hp(20), thisMove, defending
+              reduceDamageNextTurn hp(20), thisMove, defending
             }
           }
           move "X-Scissor", {
@@ -1630,7 +1661,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
-              discardSelfEnergy R
+              discardSelfEnergyAfterDamage R
             }
           }
         };
@@ -1773,7 +1804,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 60
-              flip 1, {}, { discardSelfEnergy R, R }
+              flip 1, {}, { discardSelfEnergyAfterDamage R, R }
             }
           }
         };
@@ -1819,7 +1850,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost L, C, C
             attackRequirement {}
             onAttack {
-              damage 60 + 10 * defending.cards.filterByEnergyType(W)
+              damage 60 + 10 * self.cards.energyCount(W)
             }
           }
         };
@@ -1832,7 +1863,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              flip { damage 20 }
+              flip 4, { damage 20 }
             }
           }
           move "Baton Pass", {
@@ -1842,10 +1873,10 @@ public enum LegendsAwakened implements LogicCardInfo {
             onAttack {
               damage 50
               afterDamage {
-                if (self.active && bench().find({ it.types.contains(G) })) {
-                  def pcs = bench().findAll ({ it.types.contains(G) }).select()
-                  self.cards.filterByEnergyType(G).each {energySwitch(self, pcs,it)}
-                  sw(self, pcs)
+                if (my.bench) {
+                  def pcs = my.bench.select(text)
+                  self.cards.filterByEnergyType(G).each { energySwitch(self, pcs, it) }
+                  sw2(pcs)
                 }
               }
             }
@@ -1859,9 +1890,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost F
             attackRequirement {}
             onAttack {
-              flip {
-                damage 20, opp.all.select("Deal damage to?")
-              }
+              damage 20, opp.all.select("Deal damage to?")
             }
           }
           move "Spike Lariat", {
@@ -1897,8 +1926,10 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 70
-              flip 1, {}, {
-                discardAllSelfEnergy(L)
+              afterDamage {
+                flip 1, {}, {
+                  discardAllSelfEnergy(L)
+                }
               }
             }
           }
@@ -1961,7 +1992,9 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              applyAfterDamage PARALYZED
+              flip {
+                applyAfterDamage PARALYZED
+              }
             }
           }
           move "Bullet Punch", {
@@ -2003,21 +2036,28 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokePower "Cast-off Shell", {
             text "Once during your turn, when you play Ninjask from your hand to evolve 1 of your Pokémon and if your Bench isn't full, you may put Shedinja onto your Bench as a Basic Pokémon from your hand or your discard pile."
             onActivate { reason->
-              if (reason==PLAY_FROM_HAND && my.deck.notEmpty && bench.notFull && confirm("Use Cast-off Shell?")) {
+              if (reason == PLAY_FROM_HAND && my.deck.notEmpty && bench.notFull && confirm("Use Cast-off Shell?")) {
                 powerUsed()
-                deck.search { it.name=="Shedinja" }.each {
-                  benchPCS(it)
+                def discardShedinja = my.discard.findAll { it.name == "Shedinja" }
+                def handShedinja = my.hand.findAll { it.name == "Shedinja" }
+                if (discardShedinja && confirm("Search discard pile for a Shedinja to put onto the bench?")) {
+                  def selected = discardShedinja.select("Which to bench?").first()
+                  if (selected) {
+                    benchPCS(selected)
+                  }
+                } else if (handShedinja) {
+                  def selected = handShedinja.select("Which to bench?").first()
+                  if (selected) {
+                    benchPCS(selected)
+                  }
                 }
-                shuffleDeck()
               }
             }
           }
           move "Chip Off", {
             text "30 damage. If your opponent has 6 or more cards in his or her hand, discard a number of cards without looking until your opponent has 5 cards left in his or her hand."
             energyCost G
-            attackRequirement {
-              assert opp.hand.size() > 4
-            }
+            attackRequirement {}
             onAttack {
               while(opp.hand.size()>4) {
                 opp.hand.select(hidden: true, "Opponent's hand, select 1 to discard").discard()
@@ -2411,6 +2451,7 @@ public enum LegendsAwakened implements LogicCardInfo {
                   unregisterAfter 2
                   after SWITCH, defending, {unregister()}
                   after EVOLVE, defending, {unregister()}
+                  after DEVOLVE, defending, {unregister()}
                 }
               }
             }
@@ -2579,7 +2620,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           move "Call for Family", {
             text "Search your deck for up to 2 in any combination of Grass Basic Pokémon and Psychic Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
             energyCost C
-            callForFamily(basic:true, 2, delegate)
+            callForFamily([basic:true, type:[G, P]], 2, delegate)
           }
           move "Hypnosis", {
             text "10 damage. The Defending Pokémon is now Asleep."
@@ -2655,7 +2696,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               assert opp.all.findAll{!it.numberOfDamageCounters} : "Opponent has no undamaged Pokemon"
             }
             onAttack {
-              directDamage 30, opp.all.findAll {
+              damage 30, opp.all.findAll {
                 !it.numberOfDamageCounters
               }.select("Deal 30 damage to which Pokemon?")
             }
@@ -2717,7 +2758,7 @@ public enum LegendsAwakened implements LogicCardInfo {
                 before APPLY_ATTACK_DAMAGES, {
                   if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
                     bc "Counter Punch activates"
-                    directDamage(80, ef.attacker as PokemonCardSet)
+                    directDamage(40, ef.attacker as PokemonCardSet)
                   }
                 }
                 unregisterAfter 2
@@ -2733,7 +2774,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              if (self.getPokemonCards().findAll { it.name.contains("Tyrogue") }){
+              if (self.getPokemonCards().findAll { it.name == "Tyrogue" }){
                 damage 30
               }
             }
@@ -2747,7 +2788,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost F, C
             attackRequirement {}
             onAttack {
-              if (self.getPokemonCards().findAll { it.name.contains("Tyrogue") } && opp.bench && confirm("Deal damage to Benched Pokemon instead?")) {
+              if (self.getPokemonCards().findAll { it.name == "Tyrogue" } && opp.bench && confirm("Deal damage to Benched Pokemon instead?")) {
                 damage 30, opp.bench.select("Deal damage to?")
               } else {
                 damage 30
@@ -2771,7 +2812,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost F, C
             attackRequirement {}
             onAttack {
-              flip { damage 20 }
+              flip 3, { damage 20 }
             }
           }
           move "Gut Spin", {
@@ -2780,7 +2821,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 50
-              if (self.getPokemonCards().findAll { it.name.contains("Tyrogue") }){
+              if (self.getPokemonCards().findAll { it.name == "Tyrogue" }){
                 switchYourActive(may: true)
               }
             }
@@ -3161,7 +3202,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost L, C
             attackRequirement {}
             onAttack {
-              flip {
+              flip 2, {
                 damage 20
               }
             }
@@ -3543,7 +3584,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness R
           resistance P, MINUS20
           pokePower "Electric Trans", {
-            text "As often as you like during your turn (before your attack), you may move a Lightning or [M] Energy attached to 1 of your Pokémon to another of your Pokémon. This power can't be used if Magnezone is affected by a Special Condition."
+            text "As often as you like during your turn (before your attack), you may move a [L] or [M] Energy attached to 1 of your Pokémon to another of your Pokémon. This power can't be used if Magnezone is affected by a Special Condition."
             actionA {
             }
           }
@@ -3564,7 +3605,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           move "Healing Look", {
             text "Remove 3 damage counters from each of your Benched Pokémon."
             attackRequirement {
-              assert my.bench : "Your bench is empty"
+              assert my.bench.findAll { it.numberOfDamageCounters } : "Bench has no damaged Pokemon"
             }
             onAttack {
               my.bench.each {
@@ -3576,11 +3617,13 @@ public enum LegendsAwakened implements LogicCardInfo {
             text "200 damage. If you don't have Uxie LV.X and Azelf LV.X in play, this attack does nothing. Discard all Energy attached to Mesprit."
             energyCost P, P
             attackRequirement {
-              my.all.findAll { it.name == ("Uxie Lv.X") } && my.all.findAll{ it.name == ("Uxie Lv.X") }
+              my.all.findAll { it.name == ("Uxie Lv.X") } && my.all.findAll{ it.name == ("Azelf Lv.X") }
             }
             onAttack {
               damage 200
-              discardAllSelfEnergy()
+              afterDamage {
+                discardAllSelfEnergy()
+              }
             }
           }
         };
