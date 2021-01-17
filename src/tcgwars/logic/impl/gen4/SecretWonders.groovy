@@ -853,13 +853,14 @@ public enum SecretWonders implements LogicCardInfo {
           weakness F, PLUS20
           resistance P, MINUS20
           move "Baleful Wind", {
-            text "Choose a card from your opponent’s hand without looking and discard it. If you discarded a Trainer, Support, or Stadium card, choose 1 more card from your opponent’s hand without looking and discard it."
+            text "Choose a card from your opponent’s hand without looking and discard it. If you discarded a Trainer, Supporter, or Stadium card, choose 1 more card from your opponent’s hand without looking and discard it."
             energyCost C
             attackRequirement {
               assert opp.hand : "Your opponent's hand is empty"
             }
             onAttack {
-              if(opp.hand.shuffledCopy.select(hidden: true, "Choose a card from your opponent's hand without looking").discard().first().cardTypes.is(TRAINER)) {
+              def card = opp.hand.shuffledCopy.select(hidden: true, "Choose a card from your opponent's hand without looking").discard()
+              if(card.filterByType(ITEM,SUPPORTER,STADIUM) && opp.hand) {
                 opp.hand.shuffledCopy.select(hidden: true, "Choose a card from your opponent's hand without looking").discard()
               }
             }

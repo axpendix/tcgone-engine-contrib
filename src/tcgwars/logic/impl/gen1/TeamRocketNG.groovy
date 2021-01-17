@@ -322,7 +322,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             energyCost R, R
             attackRequirement {}
             onAttack {
-              def flipNum = self.cards.energyCount(R)
+              def flipNum = self.cards.filterByEnergyType(R)
               flip flipNum, {
                 damage 50
                 discardSelfEnergy R

@@ -1038,8 +1038,8 @@ public enum Arceus implements LogicCardInfo {
                 unregisterAfter 1
               }
               def oppHand = opp.hand.shuffledCopy()
-              if (oppHand.hasType(SUPPORTER)) {
-                def card = oppHand.select("Select a Supporter to copy its effect as this attack.",cardTypeFilter(SUPPORTER)).discard().first()
+              def card = oppHand.select(min:0, "Select a Supporter to copy its effect as this attack.",cardTypeFilter(SUPPORTER)).discard().first()
+              if(card) {
                 bg.deterministicCurrentThreadPlayerType=self.owner
                 bg.em().run(new PlayTrainer(card))
                 bg.clearDeterministicCurrentThreadPlayerType()
@@ -2247,6 +2247,7 @@ public enum Arceus implements LogicCardInfo {
           text "Search your deck for Arceus, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
           onPlay {
             my.deck.search("Search your deck for Arceus",{it.name == "Arceus"}).showToOpponent("Arceus").moveTo(my.hand) //Using showToOpponent since there are 9 Arceuses in this set.
+            shuffleDeck()
           }
           playRequirement{
             assert my.deck : "Your deck is emtpy"

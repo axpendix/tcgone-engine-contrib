@@ -420,26 +420,14 @@ public enum Undaunted implements LogicCardInfo {
               damage 30
               delayed {
                 before null, self, Source.ATTACK, {
-                  def hasPokePower = false
-                  def hasPokeBody = false
-                  for (Ability ability : opp.active.getAbilities().keySet()) {
-                    if (ability instanceof PokeBody) hasPokeBody = true;
-                    if (ability instanceof PokePower) hasPokePower = true;
-                  }
-                  if ((hasPokePower || hasPokeBody) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                  if ((opp.active.hasPokePower || opp.active.hasPokeBody) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
                     bc "Moonlight Fang prevents effect"
                     prevent()
                   }
                 }
                 before APPLY_ATTACK_DAMAGES, {
-                  def hasPokePower = false
-                  def hasPokeBody = false
-                  for (Ability ability : opp.active.getAbilities().keySet()) {
-                    if (ability instanceof PokePower) hasPokePower = true;
-                    if (ability instanceof PokeBody) hasPokeBody = true;
-                  }
                   bg.dm().each {
-                    if(it.to == self && it.notNoEffect && (hasPokePower || hasPokeBody)){
+                    if(it.to == self && it.notNoEffect && (it.hasPokePower || it.hasPokeBody)){
                       it.dmg = hp(0)
                       bc "Moonlight Fang prevents damage"
                     }
@@ -680,7 +668,7 @@ public enum Undaunted implements LogicCardInfo {
               assert opp.hand : "Your opponent's hand is empty"
             }
             onAttack {
-              damage 30 * opp.hand.shuffledCopy().showToMe("Your opponent's hand").filterByType(TRAINER).size()
+              damage 30 * opp.hand.shuffledCopy().showToMe("Your opponent's hand").filterByType(ITEM,SUPPORTER,STADIUM).size()
             }
           }
 
