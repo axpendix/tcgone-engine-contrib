@@ -1038,8 +1038,8 @@ public enum Arceus implements LogicCardInfo {
                 unregisterAfter 1
               }
               def oppHand = opp.hand.shuffledCopy()
-              if (oppHand.hasType(SUPPORTER)) {
-                def card = oppHand.select("Select a Supporter to copy its effect as this attack.",cardTypeFilter(SUPPORTER)).discard().first()
+              def card = oppHand.select(min:0, "Select a Supporter to copy its effect as this attack.",cardTypeFilter(SUPPORTER)).discard().first()
+              if(card) {
                 bg.deterministicCurrentThreadPlayerType=self.owner
                 bg.em().run(new PlayTrainer(card))
                 bg.clearDeterministicCurrentThreadPlayerType()
@@ -2247,6 +2247,7 @@ public enum Arceus implements LogicCardInfo {
           text "Search your deck for Arceus, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
           onPlay {
             my.deck.search("Search your deck for Arceus",{it.name == "Arceus"}).showToOpponent("Arceus").moveTo(my.hand) //Using showToOpponent since there are 9 Arceuses in this set.
+            shuffleDeck()
           }
           playRequirement{
             assert my.deck : "Your deck is emtpy"
@@ -2320,8 +2321,10 @@ public enum Arceus implements LogicCardInfo {
             flip 3, {
               cnt ++
             }
-            def infor = "select $cnt basic Energy card" + cnt>1?"s":""
-            my.discard.select(count:cnt, info, cardTypeFilter(BASIC_ENERGY))
+            def info = "select $cnt basic Energy card" + cnt>1?"s":""
+            if(cnt>0) {
+              my.discard.select(count:cnt, info, cardTypeFilter(BASIC_ENERGY))
+            }
           }
           playRequirement{
             assert my.discard.filterByType(BASIC_ENERGY) : "You have no basic Energy cards in your discard"
@@ -2330,6 +2333,7 @@ public enum Arceus implements LogicCardInfo {
       case EXPERT_BELT_87:
         return pokemonTool (this) {
           text "Attach Expert Belt to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nThe Pokémon this card is attached to gets +20 HP and that Pokémon’s attacks do 20 more damage to your opponent’s Active Pokémon (before applying Weakness and Resistance). When the Pokémon this card is attached to is Knocked Out, your opponent takes 1 more Prize card."
+          def eff1, eff2
           onPlay {
             eff1 = getter (GET_FULL_HP, self) {h->
               h.object += hp(20)
@@ -2364,7 +2368,7 @@ public enum Arceus implements LogicCardInfo {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDraw 3 cards. Then, choose a card from your hand and put it on the bottom of your deck."
           onPlay {
             draw 3
-            my.hand.select("Choose a card from your hand").moveTo(hidden:true, my.deck)
+            my.hand.getExcludedList(thisCard).select("Choose a card from your hand").moveTo(hidden:true, my.deck)
           }
           playRequirement{
             assert my.deck : "Your deck is empty"
@@ -2381,7 +2385,7 @@ public enum Arceus implements LogicCardInfo {
               assert my.bench.find{it.cards.filterByType(ENERGY)}: "No energy to move"
               bc "Used Ultimate Zone"
               def src = my.bench.findAll{it.cards.filterByType(ENERGY)}.select("Move energy from which Pokémon")
-              def card = src.select("Move which energy",cardTypeFilter(ENERGY)).first()
+              def card = src.cards.select("Move which energy",cardTypeFilter(ENERGY)).first()
               energySwitch(src, my.active, card)
             }
           }
@@ -2505,6 +2509,7 @@ public enum Arceus implements LogicCardInfo {
               if(r==PLAY_FROM_HAND && confirm("Use Double Fall?")){
                 powerUsed()
                 delayed {
+                  def flag = false
                   before ATTACK_MAIN, {
                     flag = ef.attacker==self
                   }
@@ -2573,7 +2578,7 @@ public enum Arceus implements LogicCardInfo {
             text "As long as Bagon has any Energy attached to it, Bagon has no Weakness."
             getterA GET_WEAKNESSES, self, { h ->
               if (self.cards.filterByType(ENERGY)) {
-                h.object.celar()
+                h.object.clear()
               }
             }
           }
@@ -2593,7 +2598,7 @@ public enum Arceus implements LogicCardInfo {
             text "As long as Ponyta has any Energy attached to it, Ponyta has no Weakness."
             getterA GET_WEAKNESSES, self, { h ->
               if (self.cards.filterByType(ENERGY)) {
-                h.object.celar()
+                h.object.clear()
               }
             }
           }
@@ -2617,7 +2622,7 @@ public enum Arceus implements LogicCardInfo {
             text "As long as Shinx has any Energy attached to it, Shinx has no Weakness."
             getterA GET_WEAKNESSES, self, { h ->
               if (self.cards.filterByType(ENERGY)) {
-                h.object.celar()
+                h.object.clear()
               }
             }
           }
@@ -2705,10 +2710,10 @@ public enum Arceus implements LogicCardInfo {
               def allDifferentTypes = true
               TypeSet typeSet = new TypeSet()
               my.all.findAll {it.name == "Arceus"}.each {
-                if (typeSet.containsAny(card.asPokemonCard().types)) {
+                if (typeSet.containsAny(it.topPokemonCard.types)) {
                   allDifferentTypes = false
                 }
-                typeSet.addAll(card.asPokemonCard().types)
+                typeSet.addAll(it.topPokemonCard.types)
               }
               assert allDifferentTypes : "Not all of your Arceuses are different types"
               assert my.deck : "Your deck is emtpy"
