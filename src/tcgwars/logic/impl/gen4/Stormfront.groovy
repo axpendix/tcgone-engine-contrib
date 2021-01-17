@@ -1436,30 +1436,27 @@ public enum Stormfront implements LogicCardInfo {
           pokeBody "Unaware", {
             text "Prevent all effects of attacks, excluding damage, done to Bibarel."
             delayedA {
+              before null, null, ATTACK, {
+                if (ef instanceof TargetedEffect && bg.currentTurn == self.owner.opposite && ef.effectType != DAMAGE && (ef as TargetedEffect).getResolvedTarget(bg, e) == self) {
+                  bc "$thisAbility prevents all effects done to $self."
+                  prevent()
+                }
+              }
             }
           }
           move "Amnesia", {
-            text "20 damage. "
+            text "20 damage. Choose 1 of the Defending Pokémon's attacks. That Pokémon can't use that attack during your opponent's next turn. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
+              damage 20
               amnesia delegate
-            }
-          }
-          move "", {
-            text "Choose 1 of the Defending Pokémon’s attacks. That Pokémon can’t use that attack during your opponent’s next turn."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
             }
           }
           move "Surf", {
             text "60 damage. "
             energyCost W, W
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
             }
           }
 
@@ -1470,6 +1467,26 @@ public enum Stormfront implements LogicCardInfo {
           pokeBody "Poison Enzyme", {
             text "Prevent all effects of attacks, including damage, done to Budew by your opponent’s Poisoned Pokémon."
             delayedA {
+              before null, self, Source.ATTACK, {
+                if (self.owner.opposite.pbg.active.isSPC(POISONED) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                  bc "$thisAbility prevents effect"
+                  prevent()
+                }
+              }
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each {
+                  if(it.to == self && it.notNoEffect && it.from.isSPC(POISONED)){
+                    it.dmg = hp(0)
+                    bc "$thisAbility prevents damage"
+                  }
+                }
+              }
+              after ENERGY_SWITCH, {
+                def efs = (ef as EnergySwitch)
+                if(efs.from.isSPC(POISONED) && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
+                  discard efs.card
+                }
+              }
             }
           }
           pokePower "Baby Evolution", {
@@ -1488,9 +1505,11 @@ public enum Stormfront implements LogicCardInfo {
           move "Buddy-buddy", {
             text "Search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
             energyCost ()
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Your deck is empty"
+            }
             onAttack {
-              damage 0
+              my.deck.search("Search your deck for a Pokémon",cardTypeFilter(POKEMON)).moveTo(my.hand)
             }
           }
 
@@ -1502,17 +1521,24 @@ public enum Stormfront implements LogicCardInfo {
           move "Dark One-eye", {
             text "20 damage. You may discard a card from your hand. If you do, your opponent discards a card from his or her hand."
             energyCost P
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              if(my.hand && confirm("Discard a card from your hand?")) {
+                my.hand.select("Choose a card to discard").discard()
+                if(opp.hand) {
+                  opp.hand.oppselect("Choose a card to discard").discard()
+                }
+              }
             }
           }
           move "Ambush", {
             text "40+ damage. Flip a coin. If heads, this attack does 40 damage plus 20 more damage."
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              flip {
+                damage 20
+              }
             }
           }
 
@@ -1524,18 +1550,25 @@ public enum Stormfront implements LogicCardInfo {
           move "Confuse Ray", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
             energyCost P, C
-            attackRequirement {}
             onAttack {
               damage 20
-              flip { apply CONFUSED }
+              flip {
+                applyAfterDamage CONFUSED
+              }
             }
           }
           move "Trick Room", {
             text "40+ damage. If you have a Stadium card in play, this attack does 40 damage plus 20 more damage. If your opponent has a Stadium card in play, remove 2 damage counters from Dusclops."
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              if(bg.stadiumInfoStruct) {
+                if(bg.stadiumInfoStruct.stadiumCard.player == self.owner) {
+                  damage 20
+                } else {
+                  heal 20, self
+                }
+              }
             }
           }
 
@@ -1547,20 +1580,43 @@ public enum Stormfront implements LogicCardInfo {
           pokeBody "Radiance", {
             text "If Electrode is your Active Pokémon and is damaged by an opponent’s attack (even if Electrode is Knocked Out), put 1 damage counter on each of your opponent’s Pokémon."
             delayedA {
+              before APPLY_ATTACK_DAMAGES, {
+                bg().dm().each {
+                  if (it.to == self && self.active && it.dmg.value && bg.currentTurn==self.owner.opposite) {
+                    bc "Radiance activates."
+                    self.owner.opposite.pbg.all.each {
+                      directDamage 10, it, SRC_ABILITY
+                    }
+                  }
+                }
+              }
+            }
+          }
+          def turnCount=-1
+          HP lastDamage=null
+          customAbility {
+            delayed (priority: LAST) {
+              before APPLY_ATTACK_DAMAGES, {
+                if(bg().currentTurn==self.owner.opposite) {
+                  turnCount=bg.turnCount
+                  lastDamage=bg().dm().find({it.to==self && it.dmg.value>=0})?.dmg
+                }
+              }
             }
           }
           move "Low Current", {
             text "30 damage. If Electrode was damaged by an attack during your opponent’s last turn, the Defending Pokémon is now Paralyzed."
             energyCost L
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              if(turnCount+1==bg.turnCount && lastDamage > hp(0)) {
+                applyAfterDamage PARALYZED
+              }
             }
           }
           move "Swift", {
             text "60 damage. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               swiftDamage(60, defending)
             }
@@ -1574,17 +1630,21 @@ public enum Stormfront implements LogicCardInfo {
           move "Flash", {
             text "20 damage. If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
             energyCost L
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              sandAttack(thisMove)
             }
           }
           move "Electro Diffusion", {
-            text "40+ damage. Energy attached to Electrode."
+            text "40+ damage. Does 40 damage plus 10 more damage for each [L] Energy attached to Electrode. Flip a coin. If tails, discard all [L] Energy attached to Electrode."
             energyCost C, C, L, L
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 40 + 10 * self.cards.energyCount(L)
+              flip 1, {}, {
+                afterDamage {
+                  discardAllSelfEnergy L
+                }
+              }
             }
           }
 
@@ -1619,17 +1679,18 @@ public enum Stormfront implements LogicCardInfo {
           move "Tail Shake", {
             text "20 damage. The Defending Pokémon is now Asleep."
             energyCost G
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              applyAfterDamage ASLEEP
             }
           }
           move "Slam", {
             text "60× damage. Flip 2 coins. This attack does 60 damage times the number of heads."
             energyCost G, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip 2, {
+                damage 60
+              }
             }
           }
 
@@ -1641,7 +1702,6 @@ public enum Stormfront implements LogicCardInfo {
           move "Smog", {
             text "The Defending Pokémon is now Poisoned."
             energyCost ()
-            attackRequirement {}
             onAttack {
               apply POISONED
             }
@@ -1649,9 +1709,12 @@ public enum Stormfront implements LogicCardInfo {
           move "Hoodwink", {
             text "30 damage. You may search your opponent’s discard pile for up to 3 in any combination of Trainer, Supporter or Stadium cards and put them into your opponent’s hand."
             energyCost P
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              def maxSelect = Math.min(opp.discard.filterByType(ITEM,SUPPORTER,STADIUM).size(),3)
+              if(maxSelect > 0) {
+                opp.discard.select(min:0, max:maxSelect, "Select up to 3 Trainer, Supporter, or Stadium cards to put into your opponent's hand",{it.cardTypes.is(ITEM)||it.cardTypes.is(SUPPORTER)||it.cardTypes.is(STADIUM)})
+              }
             }
           }
 
@@ -1662,17 +1725,18 @@ public enum Stormfront implements LogicCardInfo {
           move "Steady Punch", {
             text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 20 more damage."
             energyCost F
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip {
+                damage 20
+              }
             }
           }
           move "Brick Break", {
             text "30 damage. This attack’s damage isn’t affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             energyCost F, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              noResistanceOrAnyEffectDamage(30, defending)
             }
           }
 
@@ -1684,17 +1748,20 @@ public enum Stormfront implements LogicCardInfo {
           move "Magnetic Resonance", {
             text "20 damage. If you have a Stadium card in play, this attack does 20 damage to 2 of your opponent’s Benched Pokémon."
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              if(bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player == self.owner && opp.bench) {
+                multiselect(opp.bench,2, text).each {
+                  damage 20, it
+                }
+              }
             }
           }
           move "Magnetic Release", {
             text "40+ damage. Does 40 damage plus 10 more damage for each Energy attached to the Defending Pokémon."
             energyCost L, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 40 + 10 * defending.energyCount(C)
             }
           }
 
@@ -1706,10 +1773,11 @@ public enum Stormfront implements LogicCardInfo {
           move "Thunder Wave", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost L, C
-            attackRequirement {}
             onAttack {
               damage 20
-              flip { apply PARALYZED }
+              flip {
+                applyAfterDamage PARALYZED
+              }
             }
           }
           move "Removal Pulse", {
@@ -1718,7 +1786,9 @@ public enum Stormfront implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 50
-              flip { discardDefendingEnergy() }
+              flip {
+                discardDefendingEnergyAfterDamage C
+              }
             }
           }
 
@@ -1729,7 +1799,9 @@ public enum Stormfront implements LogicCardInfo {
           move "Collect", {
             text "Draw a card."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Your deck is empty"
+            }
             onAttack {
               draw 1
             }
@@ -1737,17 +1809,26 @@ public enum Stormfront implements LogicCardInfo {
           move "Energy Milk", {
             text "Flip a coin until you get tails. For each heads, remove 2 damage counters from 1 of your Pokémon."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.all.find{it.numberOfDamageCounters} : "Your Pokémon are healthy"
+            }
             onAttack {
-              damage 0
+              flipUntilTails{
+                def damagedPokemon = my.all.findAll{it.numberOfDamageCounters}
+                if(damagedPokemon) {
+                  heal 20, damagedPokemon.select("Remove 2 damage counters from 1 of your Pokémon")
+                }
+              }
             }
           }
           move "Stomp", {
             text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 20 more damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip {
+                damage 20
+              }
             }
           }
 
@@ -1770,11 +1851,13 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
           move "Electric Circuit", {
-            text "Energy cards, show them to your opponent, and put them into your hand."
+            text "Search your discard pile for up to 4 [L] Energy cards, show them to your opponent, and put them into your hand."
             energyCost L
-            attackRequirement {}
+            attackRequirement {
+              assert my.discard.filterByEnergyType(L) : "There are no [L] Energy cards in your discard"
+            }
             onAttack {
-              damage 0
+              my.discard.select(max:4, "Choose up to 4 [L] Energy cards to put into your hand",energyFilter(L)).moveTo(my.hand)
             }
           }
 
@@ -1786,17 +1869,21 @@ public enum Stormfront implements LogicCardInfo {
           move "Rouse", {
             text "20+ damage. Does 20 damage plus 10 more damage for each damage counter on Piloswine. Then, remove 4 damage counters from Piloswine."
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20 + 10 * self.numberOfDamageCounters
+              afterDamage {
+                heal 40, self
+              }
             }
           }
           move "Overrun", {
             text "60 damage. Does 20 damage to 1 of your opponent’s Benched Pokémon."
             energyCost F, C, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              if(opp.bench) {
+                damage 20, opp.bench.select()
+              }
             }
           }
 
@@ -1813,9 +1900,11 @@ public enum Stormfront implements LogicCardInfo {
           move "Rock Smash", {
             text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 20 more damage."
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip {
+                damage 20
+              }
             }
           }
 
@@ -1826,22 +1915,45 @@ public enum Stormfront implements LogicCardInfo {
           pokeBody "Overeager", {
             text "If Sableye is your Active Pokémon at the beginning of the game, you go first. (If each player’s Active Pokémon has the Overeager Poké-Body, this power does nothing.)"
             delayedA {
+              //TODO : I think this has to be engine level? 
             }
           }
           move "Impersonate", {
             text "Search your deck for a Supporter card and discard it. Shuffle your deck afterward. Then, use the effect of that card as the effect of this attack."
             energyCost ()
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Your deck is empty"
+            }
             onAttack {
-              damage 0
+              delayed {
+                def eff
+                register {
+                  eff = getter (GET_MAX_SUPPORTER_PER_TURN) {h->
+                    h.object = h.object + 1
+                  }
+                }
+                unregister {
+                  eff.unregister()
+                }
+                unregisterAfter 1
+              }
+              def card = my.deck.select("Select a Supporter to copy its effect as this attack.",cardTypeFilter(SUPPORTER)).first()
+              if(card) {
+                discard card
+                bg.deterministicCurrentThreadPlayerType=self.owner
+                bg.em().run(new PlayTrainer(card))
+                bg.clearDeterministicCurrentThreadPlayerType()
+              }
             }
           }
           move "Overconfident", {
-            text "10 damage. "
+            text "10 damage. If the Defending Pokémon has fewer remaining HP than Sableye, this attack's base damage is 40."
             energyCost D
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              if(self.remainingHP.value > defending.remainingHP.value) {
+                damage 30
+              }
             }
           }
 
@@ -1855,15 +1967,15 @@ public enum Stormfront implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              increasedBaseDamageNextTurn("Swords Dance", hp(30))
             }
           }
           move "Slashing Strike", {
             text "30 damage. During your next turn, Scyther can’t use Slashing Strike."
             energyCost G, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              cantUseAttack(thisMove, self)
             }
           }
 
@@ -1878,15 +1990,16 @@ public enum Stormfront implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              flip { apply PARALYZED }
+              flip {
+                applyAfterDamage PARALYZED
+              }
             }
           }
           move "Rollout", {
             text "50 damage. "
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
             }
           }
 
@@ -1898,17 +2011,20 @@ public enum Stormfront implements LogicCardInfo {
           move "Quick Attack", {
             text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 20 more damage."
             energyCost M
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip {
+                damage 20
+              }
             }
           }
           move "Mach Blade", {
             text "Flip a coin. If heads, this attack does 50 damage to 1 of your opponent’s Pokémon."
             energyCost M, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip {
+                damage 50, opp.all.select()
+              }
             }
           }
 
@@ -1920,17 +2036,18 @@ public enum Stormfront implements LogicCardInfo {
           move "Wing Attack", {
             text "30 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
             }
           }
           move "Shot Air", {
             text "20 damage. Does 30 damage to 1 of your opponent’s Benched Pokémon."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              if(opp.bench) {
+                damage 30, opp.bench.select()
+              }
             }
           }
 
@@ -1942,7 +2059,6 @@ public enum Stormfront implements LogicCardInfo {
           move "Scary Face", {
             text "Flip a coin. If heads, the Defending Pokémon can’t attack or retreat during your opponent’s next turn."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip {
                 cantRetreat defending
@@ -1953,9 +2069,8 @@ public enum Stormfront implements LogicCardInfo {
           move "Headbutt", {
             text "30 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
             }
           }
 
@@ -1966,17 +2081,19 @@ public enum Stormfront implements LogicCardInfo {
           move "Yawn", {
             text "The Defending Pokémon is now Asleep."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              apply ASLEEP
             }
           }
           move "Self-abandonment", {
             text "Flip a coin. If heads, this attack does 30 damage to the Defending Pokémon. If tails, Bidoof does 10 damage to itself."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip 1, {
+                damage 30
+              }, {
+                damage 10, self
+              }
             }
           }
 
@@ -1986,20 +2103,23 @@ public enum Stormfront implements LogicCardInfo {
           weakness P, PLUS10
           resistance R, MINUS20
           move "Gyro Swap", {
-            text "Energy in Bronzor’s Retreat Cost (after applying effects to the Retreat Cost)."
+            text "Put a number of damage counters on the Defending Pokémon equal to the number of [C] Energy in Bronzor's Retreat Cost ."
             energyCost P, C
-            attackRequirement {}
+            attackRequirement {
+              assert self.retreatCost > 0 : "$self's retreat cost is 0"
+            }
             onAttack {
-              damage 0
+              directDamage self.retreatCost * 10, defending
             }
           }
           move "Psyshock", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
-              flip { apply PARALYZED }
+              flip {
+                applyAfterDamage PARALYZED
+              }
             }
           }
 
@@ -2011,17 +2131,20 @@ public enum Stormfront implements LogicCardInfo {
           move "Nap", {
             text "Remove 2 damage counters from Cherubi."
             energyCost ()
-            attackRequirement {}
+            attackRequirement {
+              assert self.numberOfDamageCounters : "$self is healthy"
+            }
             onAttack {
-              damage 0
+              heal 20, self
             }
           }
           move "Bullet Seed", {
             text "10× damage. Flip 4 coins. This attack does 10 damage times the number of heads."
             energyCost G
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip 4, {
+                damage 10
+              }
             }
           }
 
@@ -2030,20 +2153,20 @@ public enum Stormfront implements LogicCardInfo {
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
           resistance F, MINUS20
-          move "", {
-            text "Once damage. "
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
+          customAbility {
+            //Honey : Once during your turn, when you put Combee from your hand onto your Bench, you may search your discard pile for a Basic Pokémon and put it onto your Bench.
+            onActivate {reason ->
+              if(reason == PLAY_FROM_HAND && self.benched && my.discard.filterByType(BASIC) && my.bench.notFull && confirm("Use Honey?")){
+                benchPCS(my.discard.select("Choose a Basic Pokémon to put onto your Bench",cardTypeFilter(BASIC)))
+              }
             }
           }
           move "Alert", {
             text "Draw a card. Then, you may switch Combee with 1 of your Benched Pokémon."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              draw 1
+              switchYourActive(may:true)
             }
           }
 
@@ -2055,17 +2178,17 @@ public enum Stormfront implements LogicCardInfo {
           move "Constrict", {
             text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost C
-            attackRequirement {}
             onAttack {
-              flip { apply PARALYZED }
+              flip {
+                apply PARALYZED
+              }
             }
           }
           move "Linear Attack", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 10 damage to that Pokémon."
             energyCost P
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10, opp.all.select()
             }
           }
 
@@ -2077,17 +2200,18 @@ public enum Stormfront implements LogicCardInfo {
           move "Silhouette", {
             text "Put 1 damage counter on the Defending Pokémon. If the Defending Pokémon already has any damage counters on it, put 2 damage counters on that Pokémon instead."
             energyCost P
-            attackRequirement {}
             onAttack {
-              damage 0
+              if(defending.numberOfDamageCounters) {
+                directDamage 10, defending
+              }
+              directDamage 10, defending
             }
           }
           move "Will-o’-the-wisp", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
 
@@ -2099,17 +2223,17 @@ public enum Stormfront implements LogicCardInfo {
           move "Tackle", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Surprise Attack", {
             text "30 damage. Flip a coin. If tails, this attack does nothing"
             energyCost P, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip {
+                damage 30
+              }
             }
           }
 
@@ -2120,17 +2244,21 @@ public enum Stormfront implements LogicCardInfo {
           move "Aqua Liner", {
             text "Choose 1 of your opponent’s Benched Pokémon. This attack does 10 damage to that Pokémon."
             energyCost ()
-            attackRequirement {}
+            attackRequirement {
+              assert opp.bench : "Your opponent has no Benched Pokémon"
+            }
             onAttack {
-              damage 0
+              damage 10, opp.bench.select()
             }
           }
           move "Mouth Pump", {
             text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
             energyCost W
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip {
+                damage 10
+              }
             }
           }
 
@@ -2142,17 +2270,24 @@ public enum Stormfront implements LogicCardInfo {
           move "Pitch-Dark", {
             text "You opponent can’t play any Trainer cards from his or her hand during your opponent’s next turn."
             energyCost ()
-            attackRequirement {}
             onAttack {
-              damage 0
+              delayed {
+                before PLAY_TRAINER, {
+                  if (ef.cardToPlay.cardTypes.is(ITEM) && bg.currentTurn == self.owner.opposite) {
+                    wcu "$thisMove prevents you from playing Trainer cards."
+                    prevent()
+                  }
+                }
+                unregisterAfter 2
+              }
             }
           }
           move "Trick Gas", {
             text "10 damage. You may switch Gastly with 1 of your Benched Pokémon."
             energyCost P
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              switchYourActive(may:true)
             }
           }
 
@@ -2164,22 +2299,18 @@ public enum Stormfront implements LogicCardInfo {
           move "Bite", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Rock Slide", {
             text "20 damage. Does 10 damage to 2 of your opponent’s Benched Pokémon."
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 20
               if (opp.bench) {
                 multiSelect(opp.bench, 2, text).each {
-                  targeted(it) {
-                    damage 10, it
-                  }
+                  damage 10, it
                 }
               }
             }
@@ -2192,17 +2323,16 @@ public enum Stormfront implements LogicCardInfo {
           move "Kick", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Knock Back", {
             text "20 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
             energyCost F, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              whirlwind()
             }
           }
 
@@ -2213,17 +2343,20 @@ public enum Stormfront implements LogicCardInfo {
           move "Sea Spray", {
             text "Flip a coin until you get tails. For each heads, draw a card."
             energyCost ()
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Your deck is empty"
+            }
             onAttack {
-              damage 0
+              flipUntilTails {
+                draw 1
+              }
             }
           }
           move "Splash", {
             text "10 damage. "
             energyCost W
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
 
@@ -2232,20 +2365,22 @@ public enum Stormfront implements LogicCardInfo {
         return basic (this, hp:HP050, type:METAL, retreatCost:1) {
           weakness R, PLUS10
           resistance P, MINUS20
-          move "", {
-            text "Magnemite’s damage. "
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
+          customAbility {
+            //Magnet : Magnemite's Retreat Cost is [C] less for each Magnemite on your Bench.
+            getterA (GET_RETREAT_COST, self) {h->
+              h.object -= self.owner.pbg.bench.findAll{it.name == "Magnemite"}.size()
             }
           }
           move "Magnetic Bomb", {
             text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 10 more damage. If tails, Magnemite does 10 damage to itself."
             energyCost L, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              flip 1, {
+                damage 10
+              }, {
+                damage 10, self
+              }
             }
           }
 
@@ -2257,17 +2392,15 @@ public enum Stormfront implements LogicCardInfo {
           move "Ram", {
             text "10 damage. "
             energyCost ()
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Random Spark", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon."
             energyCost L, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20, opp.all.select()
             }
           }
 
@@ -2279,17 +2412,19 @@ public enum Stormfront implements LogicCardInfo {
           move "Lullaby", {
             text "The Defending Pokémon is now Asleep."
             energyCost ()
-            attackRequirement {}
             onAttack {
-              damage 0
+              apply ASLEEP
             }
           }
           move "Nightmare Feast", {
             text "If the Defending Pokémon is Asleep, this attack does 50 damage and remove 5 damage counters from Misdreavus. If the Defending Pokémon is not Asleep, this attack does nothing."
             energyCost P
-            attackRequirement {}
+            attackRequirement {
+              assert defending.isSPC(ASLEEP) : "The Defending Pokémon is not Asleep"
+            }
             onAttack {
-              damage 0
+              damage 50
+              heal 50, self
             }
           }
 
@@ -2300,18 +2435,31 @@ public enum Stormfront implements LogicCardInfo {
           move "Harden", {
             text "During your opponent’s next turn, if Onix would be damaged by an attack, prevent that attack’s damage done to Onix if that damage is 40 or less."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              delayed{
+                before APPLY_ATTACK_DAMAGES, {
+                  bg.dm().each {
+                    if(it.to == self && it.dmg.value <= 40 && it.notNoEffect) {
+                      bc "Harden prevents damage"
+                      it.dmg = hp(0)
+                    }
+                  }
+                }
+                unregisterAfter 2
+                after EVOLVE,self, {unregister()}
+                after DEVOLVE,self, {unregister()}
+                after FALL_BACK,self, {unregister()}
+              }
             }
           }
           move "Bind", {
             text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               damage 30
-              flip { apply PARALYZED }
+              flip {
+                applyAfterDamage PARALYZED
+              }
             }
           }
 
@@ -2323,17 +2471,18 @@ public enum Stormfront implements LogicCardInfo {
           move "Pika Punch", {
             text "20 damage. "
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
           move "Speed Bolt", {
             text "40 damage. If Pikachu evolved from Pichu during this turn, prevent all effects of an attack, including damage, done to Pikachu during your opponent’s next turn."
             energyCost L, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              if (self.lastEvolved == bg.turnCount && self.cards.find{it.name == "Pichu"}) {
+                preventAllEffectsNextTurn()
+              }
             }
           }
 
@@ -2344,18 +2493,18 @@ public enum Stormfront implements LogicCardInfo {
           move "Smash Kick", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Agility", {
             text "20 damage. Flip a coin. If heads, prevent all effects of an attack, including damage, done to Ponyta during your opponent’s next turn."
             energyCost R, C
-            attackRequirement {}
             onAttack {
               damage 20
-              flip { preventAllEffectsNextTurn() }
+              flip {
+                preventAllEffectsNextTurn()
+              }
             }
           }
 
@@ -2366,17 +2515,23 @@ public enum Stormfront implements LogicCardInfo {
           move "Headbutt", {
             text "10 damage. "
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
           move "Petal Spikes", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Asleep and Poisoned. If Budew is anywhere under Roselia, the Defending Pokémon is now Asleep and Poisoned."
             energyCost P, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              def flag = false
+              flip {
+                flag = true
+              }
+              if(flag || self.cards.find{it.name == "Budew"}) {
+                applyAfterDamage ASLEEP
+                applyAfterDamage POISONED
+              }
             }
           }
 
@@ -2387,17 +2542,21 @@ public enum Stormfront implements LogicCardInfo {
           move "Stalk", {
             text "10 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              cantRetreat defending
             }
           }
           move "Dangerous Claw", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed. If tails, the Defending Pokémon is now Poisoned."
             energyCost G, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip 1, {
+                damage applyAfterDamage PARALYZED
+              }, {
+                applyAfterDamage POISONED
+              }
             }
           }
 
@@ -2405,20 +2564,21 @@ public enum Stormfront implements LogicCardInfo {
       case SNOVER_74:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness R, PLUS10
-          move "", {
-            text "Flip damage. "
+          move "Hide", {
+            text "Flip a coin. If heads, prevent all effects of an attack, including damage, done to Snover during your opponent's next turn."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip {
+                preventAllEffectsNextTurn()
+              }
             }
           }
           move "Powder Snow", {
             text "10 damage. The Defending Pokémon is now Asleep."
             energyCost W
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              applyAfterDamage ASLEEP
             }
           }
 
@@ -2430,17 +2590,17 @@ public enum Stormfront implements LogicCardInfo {
           move "Sand Attack", {
             text "If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              sandAttack(thisMove)
             }
           }
           move "Double Stab", {
             text "10× damage. Flip 2 coins. This attack does 10 damage times the number of heads."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip 2, {
+                damage 10
+              }
             }
           }
 
@@ -2452,17 +2612,18 @@ public enum Stormfront implements LogicCardInfo {
           move "Gnaw and Run", {
             text "10 damage. Switch Stunky with 1 of your Benched Pokémon."
             energyCost D
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              switchYourActive()
             }
           }
           move "Double Scratch", {
             text "20× damage. Flip 2 coins. This attack does 20 damage times the number of heads."
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip 2, {
+                damage 20
+              }
             }
           }
 
@@ -2474,7 +2635,6 @@ public enum Stormfront implements LogicCardInfo {
           move "Freezing Breath", {
             text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost W
-            attackRequirement {}
             onAttack {
               flip { apply PARALYZED }
             }
@@ -2482,9 +2642,11 @@ public enum Stormfront implements LogicCardInfo {
           move "Take Down", {
             text "20 damage. Flip a coin. If tails, Swinub does 10 damage to itself."
             energyCost F
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip 1, {}, {
+                damage 10, self
+              }
             }
           }
 
@@ -2494,20 +2656,30 @@ public enum Stormfront implements LogicCardInfo {
           weakness R, PLUS10
           resistance W, MINUS20
           move "Ingrain", {
-            text "Energy card and attach it to Tangela. Shuffle your deck afterward. If you do, prevent all effects of an attack, including damage, done to Tangela during your opponent’s next turn."
+            text "Flip a coin. If tails, this attack does nothing. If heads, search your deck for a [G] Energy card and attach it to Tangela. Shuffle your deck afterward. If you do, prevent all effects of an attack, including damage, done to Tangela during your opponent's next turn. "
             energyCost C, G
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Your deck is empty"
+            }
             onAttack {
-              damage 0
+              flip {
+                def card = my.deck.seach("Search your deck for a [G] Energy card",energyFilter(G)).first()
+                if(card) {
+                  if(!bg.em().run(new AttachEnergy(self, card, ActivationReason.OTHER)) {
+                    preventAllEffectsNextTurn()
+                  }
+                }
+              }
             }
           }
           move "Tickle", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost G, C
-            attackRequirement {}
             onAttack {
               damage 20
-              flip { apply PARALYZED }
+              flip {
+                applyAfterDamage PARALYZED
+              }
             }
           }
 
@@ -2519,15 +2691,17 @@ public enum Stormfront implements LogicCardInfo {
           move "Call for Friends", {
             text "Search your deck for a Basic Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Your deck is empty"
+            }
             onAttack {
-              damage 0
+              my.deck.search("Search your deck for a Basic Pokémon",{cardTypeFilter(BASIC)).moveTo(my.hand)
+              shuffleDeck()
             }
           }
           move "Poison Breath", {
             text "Flip a coin. If heads, the Defending Pokémon is now Poisoned."
             energyCost G
-            attackRequirement {}
             onAttack {
               flip { apply POISONED }
             }
@@ -2539,19 +2713,19 @@ public enum Stormfront implements LogicCardInfo {
           weakness F, PLUS10
           resistance M, MINUS20
           move "Screech", {
-            text ", that attack does 20 more damage to that Pokémon until the end of your next turn."
+            text "If an attack does damage to the Defending Pokémon (after applying Weakness and Resistance), that attack does 20 more damage to that Pokémon until the end of your next turn."
             energyCost ()
-            attackRequirement {}
             onAttack {
-              damage 0
+              increasedDamageDoneToDefending(self, defending, 20, thisMove.name)
             }
           }
           move "Double Spin", {
             text "10× damage. Flip 2 coins. This attack does 10 damage times the number of heads."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
+              flip 2, {
+                damage 10
+              }
             }
           }
 
@@ -2563,17 +2737,22 @@ public enum Stormfront implements LogicCardInfo {
           move "Outlet", {
             text "Energy card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
             energyCost C, L
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Your deck is emtpy"
+            }
             onAttack {
-              damage 0
+              my.deck.search("Search your deck for a [L] Energy card",energyFilter[L]).moveTo(my.hand)
+              shuffleDeck()
             }
           }
           move "Bouncing Ball", {
             text "20 damage. Flip a coin. If tails, Voltorb does 10 damage to itself."
             energyCost L
-            attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip 1, {}, {
+                damage 10, self
+              }
             }
           }
 
