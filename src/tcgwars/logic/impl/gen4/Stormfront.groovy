@@ -628,7 +628,7 @@ public enum Stormfront implements LogicCardInfo {
           pokePower "Sunshine Song", {
             text "Once during your turn, when you play Torterra from your hand to evolve 1 of your Pokémon, you may choose as many of your [G] Pokémon in play as you like. For each [G] Pokémon you choose, search your deck for an Evolution card that evolves from that Pokémon and evolve it. Shuffle your deck afterward."
             onActivate {r->
-              if (r==PLAY_FROM_HAND && my.all.find{it.types.contains(G) && my.deck && confirm("Use Sunshine Song?")) {
+              if (r==PLAY_FROM_HAND && my.all.find{it.types.contains(G)} && my.deck && confirm("Use Sunshine Song?")) {
                 powerUsed()
                 multiselect(my.all,0,my.all.findAll{it.types.contains(G)}.size(),"Select as many of you [G] Pokémon in play as you like.").each {pcs->
                   def evolution = deck.search ("Select a Pokémon that evolves from $pcs.", {it.cardTypes.is(EVOLUTION) && it.predecessor == pcs.name)}).first()
