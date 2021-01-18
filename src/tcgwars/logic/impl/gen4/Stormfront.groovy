@@ -631,7 +631,7 @@ public enum Stormfront implements LogicCardInfo {
               if (r==PLAY_FROM_HAND && my.all.find{it.types.contains(G)} && my.deck && confirm("Use Sunshine Song?")) {
                 powerUsed()
                 multiselect(my.all,0,my.all.findAll{it.types.contains(G)}.size(),"Select as many of you [G] Pokémon in play as you like.").each {pcs->
-                  def evolution = deck.search ("Select a Pokémon that evolves from $pcs.", {it.cardTypes.is(EVOLUTION) && it.predecessor == pcs.name)}).first()
+                  def evolution = deck.search ("Select a Pokémon that evolves from $pcs.", {it.cardTypes.is(EVOLUTION) && it.predecessor == pcs.name}).first()
                   if(evolution) {
                     evolve(pcs, evolution, OTHER)
                   }
