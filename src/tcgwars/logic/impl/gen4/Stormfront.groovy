@@ -2695,7 +2695,7 @@ public enum Stormfront implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
             }
             onAttack {
-              my.deck.search("Search your deck for a Basic Pokémon",{cardTypeFilter(BASIC)).moveTo(my.hand)
+              my.deck.search("Search your deck for a Basic Pokémon",cardTypeFilter(BASIC)).moveTo(my.hand)
               shuffleDeck()
             }
           }
