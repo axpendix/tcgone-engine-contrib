@@ -1,8 +1,14 @@
 package tcgwars.logic.impl.gen4
 
 import tcgwars.logic.impl.gen2.Aquapolis
-import tcgwars.logic.impl.gen3.UnseenForces;
+import tcgwars.logic.impl.gen3.UnseenForces
+import tcgwars.logic.impl.gen3.FireRedLeafGreen
 import tcgwars.logic.impl.gen4.GreatEncounters;
+import tcgwars.logic.impl.gen5.BlackWhite;
+
+import tcgwars.logic.effect.gm.PlayTrainer
+import tcgwars.logic.effect.gm.PlayStadium
+import tcgwars.logic.effect.special.SpecialConditionType
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -19,6 +25,7 @@ import static tcgwars.logic.card.Weakness.*
 
 import tcgwars.logic.*;
 import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
 import tcgwars.logic.effect.*;
 import tcgwars.logic.card.pokemon.*
 import tcgwars.logic.effect.basic.*
@@ -114,7 +121,7 @@ public enum Stormfront implements LogicCardInfo {
   CONDUCTIVE_QUARRY_82 ("Conductive Quarry", "82", Rarity.UNCOMMON, [TRAINER, STADIUM]),
   ENERGY_LINK_83 ("Energy Link", "83", Rarity.UNCOMMON, [TRAINER, ITEM, POKEMON_TOOL]),
   ENERGY_SWITCH_84 ("Energy Switch", "84", Rarity.UNCOMMON, [TRAINER, ITEM]),
-  GREAT_BALL_85 ("Great Ball", "85", Rarity.UNCOMMON, [TRAINER, IETM]),
+  GREAT_BALL_85 ("Great Ball", "85", Rarity.UNCOMMON, [TRAINER, ITEM]),
   LUXURY_BALL_86 ("Luxury Ball", "86", Rarity.UNCOMMON, [TRAINER, ITEM]),
   MARLEY_S_REQUEST_87 ("Marley's Request", "87", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   POKE_BLOWER_PLUS_88 ("Poké Blower +", "88", Rarity.UNCOMMON, [TRAINER, ITEM]),
