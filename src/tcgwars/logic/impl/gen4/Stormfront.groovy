@@ -223,7 +223,7 @@ public enum Stormfront implements LogicCardInfo {
           resistance C, MINUS20
           pokeBody "Shadow Command", {
             text "Once during your turn , you may draw 2 cards. If you have 7 or more cards in your hand, discard a number of cards until you have 6 cards in your hand. Then, put 2 damage counters on Dusknoir. This power can’t be used if Dusknoir is affected by a Special Condition."
-            delayedA {
+            actionA {
               checkLastTurn()
               checkNoSPC()
               assert my.deck : "Your deck is empty"
@@ -2940,27 +2940,31 @@ public enum Stormfront implements LogicCardInfo {
                 if((ef as Knockout).byDamageFromAttack && self.owner.pbg.all.find{it != self} && confirm("Use Ectoplasm?")){
                   powerUsed()
                   def pkmnCard = self.topPokemonCard
-                  def tar = self.owner.pbg.all.findAll{it != self}.select("Choose a pokemon to attach $self to",self.owner)
-                  def stadiumCard
-                  stadiumCard = stadium(new CustomCardInfo(DUSKNOIR_LV_X_96).setCardTypes(TRAINER, STADIUM)) {
-                    onPlay {
-                      delayed {
-                        before BEGIN_TURN, {
-                          thisCard.owner.opposite.pbg.all.each {
-                            directDamage 10, it, TRAINER_CARD
+                  def pcs=self
+                  delayed(inline: true){
+                    after KNOCKOUT, pcs, {
+                      def stadiumCard
+                      stadiumCard = stadium(new CustomCardInfo(DUSKNOIR_LV_X_96).setCardTypes(TRAINER, STADIUM)) {
+                        onPlay {
+                          delayed {
+                            before BEGIN_TURN, {
+                              thisCard.owner.opposite.pbg.all.each {
+                                directDamage 10, it, TRAINER_CARD
+                              }
+                            }
                           }
                         }
+                        onRemoveFromPlay {
+                          bg.em().run(new ChangeImplementation(pkmnCard, stadiumCard))
+                          moveCard(pkmnCard, thisCard.owner.pbg.hand)
+                        }
                       }
-                    }
-                    onRemoveFromPlay {
-                      bg.em().run(new ChangeImplementation(pkmnCard, stadiumCard))
-                      moveCard(pkmnCard, thisCard.owner.pbg.hand)
+                      stadiumCard.player = thisCard.player
+                      bg.em().run(new ChangeImplementation(stadiumCard, pkmnCard))
+                      bg.em().run(new PlayStadium(stadiumCard))
+                      bc "$stadiumCard is now a Stadium"
                     }
                   }
-                  stadiumCard.player = thisCard.player
-                  bg.em().run(new ChangeImplementation(stadiumCard, pkmnCard))
-                  bg.em().run(new PlayStadium(stadiumCard))
-                  bc "$stadiumCard is now a Stadium"
                 }
               }
             }
