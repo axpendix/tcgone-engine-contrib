@@ -1483,7 +1483,7 @@ public enum MajesticDawn implements LogicCardInfo {
               damage 20
               afterDamage {
                 flip {
-                  preventAllEffectsNext()
+                  preventAllEffectsNextTurn()
                 }
               }
             }
