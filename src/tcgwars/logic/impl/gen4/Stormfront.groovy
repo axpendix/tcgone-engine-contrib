@@ -40,6 +40,16 @@ import tcgwars.logic.effect.getter.*;
 import tcgwars.logic.effect.special.*;
 import tcgwars.logic.util.*;
 
+import tcgwars.logic.effect.ability.Ability.ActivationReason
+import tcgwars.logic.effect.gm.*
+import tcgwars.logic.client.*
+
+import java.util.function.Predicate
+
+import static tcgwars.logic.groovy.TcgBuilders.delayed
+import static tcgwars.logic.groovy.TcgBuilders.getter
+import static tcgwars.logic.groovy.TcgBuilders.specialEnergy
+import tcgwars.logic.card.Resistance.ResistanceType
 
 
 /**
