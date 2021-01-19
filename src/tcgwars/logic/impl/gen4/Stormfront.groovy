@@ -221,7 +221,7 @@ public enum Stormfront implements LogicCardInfo {
         return evolution (this, from:"Dusclops", hp:HP120, type:PSYCHIC, retreatCost:3) {
           weakness D, PLUS30
           resistance C, MINUS20
-          pokeBody "Shadow Command", {
+          pokePower "Shadow Command", {
             text "Once during your turn , you may draw 2 cards. If you have 7 or more cards in your hand, discard a number of cards until you have 6 cards in your hand. Then, put 2 damage counters on Dusknoir. This power can’t be used if Dusknoir is affected by a Special Condition."
             actionA {
               checkLastTurn()
@@ -2945,8 +2945,10 @@ public enum Stormfront implements LogicCardInfo {
                     after KNOCKOUT, pcs, {
                       def stadiumCard
                       stadiumCard = stadium(new CustomCardInfo(DUSKNOIR_LV_X_96).setCardTypes(TRAINER, STADIUM)) {
+                        def eff
                         onPlay {
-                          delayed {
+                          bc "OnPlay"
+                          eff = delayed {
                             before BEGIN_TURN, {
                               thisCard.owner.opposite.pbg.all.each {
                                 directDamage 10, it, TRAINER_CARD
@@ -2955,6 +2957,8 @@ public enum Stormfront implements LogicCardInfo {
                           }
                         }
                         onRemoveFromPlay {
+                          bc "OnRemoveFromPlay"
+                          eff.unregister()
                           bg.em().run(new ChangeImplementation(pkmnCard, stadiumCard))
                           moveCard(pkmnCard, thisCard.owner.pbg.hand)
                         }
@@ -2977,41 +2981,35 @@ public enum Stormfront implements LogicCardInfo {
             text "Your opponent can’t remove the Special Condition Burned by evolving or devolving his or her Burned Pokémon. (This also includes putting a Pokémon Level-Up card onto the Burned Pokémon.) Whenever your opponent flips a coin for the Special Condition Burned between turns, treat it as tails."
             delayedA {
               before BURNED_SPC, null, null, EVOLVE, {
-                bc "Full Flame prevents removing the Special Condition Burned by evolving or devolving"
+                bc "Heat Metal prevents removing the Special Condition Burned by evolving or devolving"
                 prevent()
               }
               before BURNED_SPC, null, null, DEVOLVE, {
-                bc "Full Flame prevents removing the Special Condition Burned by evolving or devolving"
+                bc "Heat Metal prevents removing the Special Condition Burned by evolving or devolving"
                 prevent()
               }
-              before ASLEEP_SPC, null, null, BEGIN_TURN, {
-                delayed(inline: true){
-                  def doit = {
-                    if (bg.currentThreadPlayerType != self.owner) {
-                      bc "Heat Metal forced the coinflip to be TAILS."
-                      bg.deterministicCoinFlipQueue.offer(false)
-                    }
-                  }
-                  before COIN_FLIP, {doit()}
-                  before COIN_FLIP_GETTER, {doit()}
+              def flag
+              before BURNED_SPC, null, null, BEGIN_TURN, {
+                flag = true
+                bc "flag : $flag"
+              }
+              after BURNED_SPC, null, null, BEGIN_TURN, {
+                flag = false
+                bc "flag : $flag"
+              }
+              def doit = {
+                if (bg.currentThreadPlayerType != self.owner && flag) {
+                  bc "Heat Metal forced the coin flip to be TAILS."
+                  bg.deterministicCoinFlipQueue.offer(false)
                 }
               }
-            }
-          }
-          customAbility {
-            delayed {
-              after DISCARD_ENERGY {
-                bc "ef.card + $ef.card"
-                bc "ef.resolvedTarget + $ef.resolvedTarget"
-              }
+              before COIN_FLIP, {doit()}
+              before COIN_FLIP_GETTER, {doit()}
             }
           }
           pokePower "Heat Wave", {
             text "Once at the end of your turn, if Heatran is on your Bench, you may use this power. If you discarded basic Energy cards attached to your [R] or [M] Active Pokémon by that Pokémon’s attack this turn, attach up to 2 of those Energy cards to that Pokémon."
             delayedA {// TODO
-              after ATTACK_MAIN {
-                bc "After ATTACK_MAIN"
-              }
             }
           }
         };
@@ -3068,23 +3066,21 @@ public enum Stormfront implements LogicCardInfo {
         return levelUp (this, from:"Raichu", hp:HP110, type:LIGHTNING, retreatCost:0) {
           weakness F
           resistance M, MINUS20
-          def flag = false
-          customAbility {// If Link Lightning Knocks out a Pokémon that blocks abilities, Raichu can then attack again
-            onActivate {r ->
-              if(r == PLAY_FROM_HAND) {
-                flag = true
-              }
-            }
-          }
           pokeBody "Link Lightning", {
             text "Once during your turn, when you put Raichu LV.X onto Raichu and use Voltage Shoot, you may use another attack of Raichu afterward. This power can’t be used if Raichu is affected by a Special Condition."
             delayedA {
               after ATTACK_MAIN, {
-                if (ef.move.name == "Voltage Shoot" && !self.specialConditions && flag) {
+                bc "Here 1"
+                if (ef.move.name == "Voltage Shoot" && !self.specialConditions) {
+                  bc "Here 2"
+                  if(self.lastEvolved == bg.turnCount) {
+                    bc "Lvl up works with self.lastEvolved"
+                  }
                   powerUsed()
                   def moveList = []
                   moveList.addAll(self.topPokemonCard.moves)
                   moveList.addAll(self.topNonLevelUpPokemonCard.moves)//TODO: This breaks with Technical Machines. I wonder if the testers will notice?
+                  bc "Here 3"
                   def bef=blockingEffect(BETWEEN_TURNS)
                   attack (move as Move)
                   bef.unregisterItself(bg().em())
