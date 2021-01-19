@@ -1962,7 +1962,7 @@ public enum Undaunted implements LogicCardInfo {
             text "Espeon can use the attacks of all Pokémon you have in play that evolve from Eevee as its own."
             getterA (GET_MOVE_LIST, self) {holder->
               my.all.each {
-                if(it!=self && it.topPokemonCard.predecessor == "Eevee") {
+                if(it!=self && it.realEvolution && it.topPokemonCard.predecessor == "Eevee") {
                   holder.object.addAll(it.topPokemonCard.moves)
                 }
               }
