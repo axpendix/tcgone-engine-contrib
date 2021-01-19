@@ -2979,32 +2979,36 @@ public enum Stormfront implements LogicCardInfo {
           weakness W
           pokeBody "Heat Metal", {
             text "Your opponent can’t remove the Special Condition Burned by evolving or devolving his or her Burned Pokémon. (This also includes putting a Pokémon Level-Up card onto the Burned Pokémon.) Whenever your opponent flips a coin for the Special Condition Burned between turns, treat it as tails."
-            delayedA {
-              before BURNED_SPC, null, null, EVOLVE, {
-                bc "Heat Metal prevents removing the Special Condition Burned by evolving or devolving"
-                prevent()
-              }
-              before BURNED_SPC, null, null, DEVOLVE, {
-                bc "Heat Metal prevents removing the Special Condition Burned by evolving or devolving"
-                prevent()
-              }
-              def flag
-              before BURNED_SPC, null, null, BEGIN_TURN, {
-                flag = true
-                bc "flag : $flag"
-              }
-              after BURNED_SPC, null, null, BEGIN_TURN, {
-                flag = false
-                bc "flag : $flag"
-              }
-              def doit = {
-                if (bg.currentThreadPlayerType != self.owner && flag) {
-                  bc "Heat Metal forced the coin flip to be TAILS."
-                  bg.deterministicCoinFlipQueue.offer(false)
+            delayed {
+              onActivate {
+                eff1 = delayed{
+                  before BURNED_SPC, null, null, EVOLVE, {
+                    bc "Heat Metal prevents removing the Special Condition Burned by evolving or devolving"
+                    prevent()
+                  }
+                  before BURNED_SPC, null, null, DEVOLVE, {
+                    bc "Heat Metal prevents removing the Special Condition Burned by evolving or devolving"
+                    prevent()
+                  }
+                  def flag
+                  before BURNED_SPC, null, null, BEGIN_TURN, {
+                    flag = true
+                    bc "flag : $flag"
+                  }
+                  after BURNED_SPC, null, null, BEGIN_TURN, {
+                    flag = false
+                    bc "flag : $flag"
+                  }
+                  def doit = {
+                    if (bg.currentThreadPlayerType != self.owner && flag) {
+                      bc "Heat Metal forced the coin flip to be TAILS."
+                      bg.deterministicCoinFlipQueue.offer(false)
+                    }
+                  }
+                  before COIN_FLIP, {doit()}
+                  before COIN_FLIP_GETTER, {doit()}
                 }
               }
-              before COIN_FLIP, {doit()}
-              before COIN_FLIP_GETTER, {doit()}
             }
           }
           pokePower "Heat Wave", {
@@ -3066,6 +3070,13 @@ public enum Stormfront implements LogicCardInfo {
         return levelUp (this, from:"Raichu", hp:HP110, type:LIGHTNING, retreatCost:0) {
           weakness F
           resistance M, MINUS20
+          customAbility {
+            delayed {
+              after ATTACK_MAIN {
+                bc"Here 0"
+              }
+            }
+          }
           pokeBody "Link Lightning", {
             text "Once during your turn, when you put Raichu LV.X onto Raichu and use Voltage Shoot, you may use another attack of Raichu afterward. This power can’t be used if Raichu is affected by a Special Condition."
             delayedA {

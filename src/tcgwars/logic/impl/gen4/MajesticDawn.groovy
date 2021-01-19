@@ -2000,7 +2000,7 @@ public enum MajesticDawn implements LogicCardInfo {
 
         };
       case KABUTO_67:
-        return evolution (this, from:"Helix Fossil", hp:HP080, type:FIGHTING, retreatCost:1) {
+        return evolution (this, from:"Dome Fossil", hp:HP080, type:FIGHTING, retreatCost:1) {
           weakness G, PLUS20
           pokePower "Ancient Guidance", {
             text "Once during your turn , you may flip a coin. If heads, search your deck for Helix Fossil, Dome Fossil, or Old Amber and put it onto your Bench. Shuffle your deck afterward. This power can’t be used if Kabuto is affected by a Special Condition."

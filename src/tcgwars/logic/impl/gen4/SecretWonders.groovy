@@ -2355,7 +2355,7 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost G, G
             onAttack {
               damage 50
-              preventallEffectsExcludingDamageNextTurn()
+              preventAllEffectsExcludingDamageNextTurn()
             }
           }
 
