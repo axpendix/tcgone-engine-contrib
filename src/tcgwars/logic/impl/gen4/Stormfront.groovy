@@ -2980,11 +2980,10 @@ public enum Stormfront implements LogicCardInfo {
           def energyList = []
           customAbility {
             delayed {
-                after DISCARD_SELF_ENERGY, self.owner.active, {
-                  src = self.owner.active
-                  energyList.add(ef.card)
-                  bc"$energyList"
-                }
+              after DISCARD_SELF_ENERGY, self.owner.active, {
+                src = self.owner.active
+                energyList.add(ef.card)
+                bc"$energyList"
               }
             }
           }
