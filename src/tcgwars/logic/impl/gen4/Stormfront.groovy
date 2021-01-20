@@ -3062,6 +3062,7 @@ public enum Stormfront implements LogicCardInfo {
           weakness F
           resistance M, MINUS20
           def flag = false
+          def flag2 = false
           customAbility {
             delayed {
               before ATTACK_MAIN, {
@@ -3082,16 +3083,9 @@ public enum Stormfront implements LogicCardInfo {
               before BETWEEN_TURNS, {
                 bc "Here 1"
                 if (flag && !self.specialConditions) {
-                  bc "Here 2"
+                  flag = false
                   powerUsed()
-                  def moveList = []
-                  moveList.addAll(self.topPokemonCard.moves)
-                  moveList.addAll(self.topNonLevelUpPokemonCard.moves)//TODO: This breaks with Technical Machines. I wonder if the testers will notice?
-                  bc "Here 3"
-                  def move = choose(moveList, "Choose attack")
-                  def bef=blockingEffect(BETWEEN_TURNS)
-                  attack (move as Move)
-                  bef.unregisterItself(bg().em())
+                  prevent()
                 }
                 flag = false
               }
