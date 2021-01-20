@@ -2985,6 +2985,7 @@ public enum Stormfront implements LogicCardInfo {
               }
               before BURNED_SPC, null, null, BEGIN_TURN, {
                 flag = true
+                bc "bg.currentThreadPlayerType : $bg.currentThreadPlayerType"
               }
               def doit = {
                 if (bg.currentThreadPlayerType != self.owner && flag) {
