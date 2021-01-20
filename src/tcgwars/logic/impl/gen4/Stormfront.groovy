@@ -2987,11 +2987,13 @@ public enum Stormfront implements LogicCardInfo {
             }
             delayedA {
               before BURNED_SPC, null, null, BEGIN_TURN, {
-                flag = true
-                bc "bg.currentThreadPlayerType : $bg.currentThreadPlayerType"
+                if(ef.target.owner == self.owner.opposite) {
+                  bc "Is this before the flip?"
+                  flag = true
+                }
               }
               def doit = {
-                if (bg.currentThreadPlayerType != self.owner && flag) {
+                if (true) {
                   bc "Heat Metal forced the coinflip to be TAILS."
                   bg.deterministicCoinFlipQueue.offer(false)
                 }
