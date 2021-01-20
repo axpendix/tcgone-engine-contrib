@@ -2945,7 +2945,6 @@ public enum Stormfront implements LogicCardInfo {
                     after KNOCKOUT, pcs, {
                       def stadiumCard
                       stadiumCard = stadium(new CustomCardInfo(DUSKNOIR_LV_X_96).setCardTypes(TRAINER, STADIUM)) {
-                        bc"Here?"
                         def eff
                         onPlay {
                           eff = delayed {
@@ -2980,7 +2979,7 @@ public enum Stormfront implements LogicCardInfo {
           CardList energyList = []
           customAbility {
             delayed {
-              before ATTACK_MAIN, {
+              before ATTACK_MAIN, {// I couldn't get DISCARD_ENERGY or DISCARD_SELF_ENERGY to keep track of which cards were discarded or where they were discarded from.
                 src = ef.attacker
                 energyList = ef.attacker.cards.filterByType(ENERGY)
               }
@@ -2995,8 +2994,8 @@ public enum Stormfront implements LogicCardInfo {
                 prevent()
               }
             }
-            delayedA {
-              before BURNED_SPC, null, null, BEGIN_TURN, {
+            delayedA {// I don't know why but the two effects need to be in seperate delayedAs? If they aren't, the first effect will trigger during between turns.
+              before BURNED_SPC, null, null, BEGIN_TURN, {//I don't think manually adding the burn effect here would work, as the burn rules were changed in SM.
                 if(ef.target.owner == self.owner.opposite) {
                   flag = true
                 }
@@ -3008,7 +3007,7 @@ public enum Stormfront implements LogicCardInfo {
                 }
                 flag = false
               }
-              before COIN_FLIP, {doit()}
+              before COIN_FLIP, {doit()}//Neither of these trigger off of the burned coinflip.
               before COIN_FLIP_GETTER, {doit()}
             }
           }
@@ -3019,7 +3018,7 @@ public enum Stormfront implements LogicCardInfo {
                 energyList.removeAll(src.cards.filterByType(ENERGY))
                 if(bg.currentTurn == self.owner && src && (src.types.contains(R) || src.types.contains(M)) && energyList.filterByType(BASIC_ENERGY) && self.benched && confirm("Use Heat Wave?")) {
                   powerUsed()
-                  energyList.select(max:2,"Attach up to 2 Basic Energy cards to $src").each {
+                  energyList.select(max:2,"Attach up to 2 Basic Energy cards to $src",cardTypeFilter(BASIC_ENERGY)).each {
                     attachEnergy(src, it)
                   }
                 }
