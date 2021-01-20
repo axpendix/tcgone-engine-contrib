@@ -2976,16 +2976,20 @@ public enum Stormfront implements LogicCardInfo {
       case HEATRAN_LV_X_97:
         return levelUp (this, from:"Heatran", hp:HP120, type:FIRE, retreatCost:4) {
           weakness W
-          def energyList = []
           def srcList = []
+          def energyList = [] // Parallel list with srcList. Each element is a list of each energy discarded from the pokemon in srcList
           customAbility {
             delayed {
               after DISCARD_ENERGY, {
                 def tar = ef.resolvedTarget
                 def card = ef.card
                 bc "tar : $tar, card : $card"
-                energyList.add(card)
-                srcList.add(tar)
+                if(!srcList.contains(tar)) {
+                  energyList.add([card])
+                  srcList.add(tar)
+                } else {
+                  energyList[srcList.indexOf(tar)].add(card)
+                }
               }
             }
           }
@@ -3018,9 +3022,22 @@ public enum Stormfront implements LogicCardInfo {
           pokePower "Heat Wave", {
             text "Once at the end of your turn, if Heatran is on your Bench, you may use this power. If you discarded basic Energy cards attached to your [R] or [M] Active Pokémon by that Pokémon’s attack this turn, attach up to 2 of those Energy cards to that Pokémon."
             delayedA {
-              before BETWEEN_TURNS {
-                if(energyList && srcList) {
-                  bc ":D"
+              before BETWEEN_TURNS, {
+                if(srcList && srcList.find{energyList[srcList.indexOf(it)].filterByType(BASIC_ENERGY)} && confirm("Use Heat Wave?")) {
+                  powerUsed()
+                  int i = 2
+                  while(i > 0) {
+                    if(srcList.find{energyList[srcList.indexOf(it)].filterByType(BASIC_ENERGY)}) {
+                      def pcs = srcList.findAll{energyList[srcList.indexOf(it)].filterByType(BASIC_ENERGY)}.select("Choose a Pokémon which had a Basic Energy discarded (Cancel to stop)",false)
+                      if(pcs) {
+                        energyList[srcList.indexOf(pcs)].select(min:0, max:i, "Attach up to $i Basic Energy cards to $pcs",cardTypeFilter(BASIC_ENERGY)).each {
+                          attachEnergy(pcs, it)
+                          energyList[srcList.indexOf(pcs)].remove(it)
+                          i--
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
