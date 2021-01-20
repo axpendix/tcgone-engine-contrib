@@ -2982,27 +2982,16 @@ public enum Stormfront implements LogicCardInfo {
             def eff
             onActivate {
               eff = delayed{
-                before BURNED_SPC, null, null, EVOLVE, {
-                  bc "Heat Metal prevents removing the Special Condition Burned by evolving or devolving"
-                  prevent()
-                }
-                before BURNED_SPC, null, null, DEVOLVE, {
-                  bc "Heat Metal prevents removing the Special Condition Burned by evolving or devolving"
-                  prevent()
-                }
                 def flag
                 before BURNED_SPC, null, null, BEGIN_TURN, {
                   flag = true
-                  bc "flag : $flag"
-                }
-                after BURNED_SPC, null, null, BEGIN_TURN, {
-                  flag = false
                   bc "flag : $flag"
                 }
                 def doit = {
                   if (bg.currentThreadPlayerType != self.owner && flag) {
                     bc "Heat Metal forced the coin flip to be TAILS."
                     bg.deterministicCoinFlipQueue.offer(false)
+                    flag = false
                   }
                 }
                 before COIN_FLIP, {doit()}
@@ -3099,11 +3088,12 @@ public enum Stormfront implements LogicCardInfo {
                   moveList.addAll(self.topPokemonCard.moves)
                   moveList.addAll(self.topNonLevelUpPokemonCard.moves)//TODO: This breaks with Technical Machines. I wonder if the testers will notice?
                   bc "Here 3"
+                  def move = choose(moveList, "Choose attack")
                   def bef=blockingEffect(BETWEEN_TURNS)
                   attack (move as Move)
                   bef.unregisterItself(bg().em())
                 }
-
+                flag = false
               }
               unregisterAfter 1
             }
@@ -3117,7 +3107,7 @@ public enum Stormfront implements LogicCardInfo {
             onAttack {
               damage 80, opp.all.select()
               afterDamage {
-                my.hand.select("Discard 2 [L] Energy cards from your hand",energyFilter(L)).discard()
+                my.hand.select(count:2,"Discard 2 [L] Energy cards from your hand",energyFilter(L)).discard()
               }
             }
           }
