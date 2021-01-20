@@ -2982,7 +2982,7 @@ public enum Stormfront implements LogicCardInfo {
             delayed {
               before ATTACK_MAIN, {
                 src = ef.attacker
-                energyList = ef.attacker.filterByType(ENERGY)
+                energyList = ef.attacker.cards.filterByType(ENERGY)
               }
               after DISCARD_SELF_ENERGY, {
                 src = self.owner.pbg.active
