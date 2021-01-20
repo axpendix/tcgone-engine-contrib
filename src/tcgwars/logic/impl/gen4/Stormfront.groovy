@@ -3082,7 +3082,7 @@ public enum Stormfront implements LogicCardInfo {
               before BETWEEN_TURNS, {
                 bc "Here 1"
                 if (flag && !self.specialConditions) {
-                  flag = false
+                  bc "Here 2"
                   powerUsed()
                   def moveList = []
                   moveList.add("Don't attack")
