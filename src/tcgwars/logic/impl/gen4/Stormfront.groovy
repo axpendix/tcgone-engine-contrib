@@ -2966,6 +2966,7 @@ public enum Stormfront implements LogicCardInfo {
                       stadiumCard.player = thisCard.player
                       bg.em().run(new ChangeImplementation(stadiumCard, pkmnCard))
                       bg.em().run(new PlayStadium(stadiumCard))
+                      stadiumCard.play(bg)// onPlay isn't triggering
                       bc "$stadiumCard is now a Stadium"
                     }
                   }
@@ -2979,28 +2980,11 @@ public enum Stormfront implements LogicCardInfo {
           weakness W
           pokeBody "Heat Metal", {
             text "Your opponent can’t remove the Special Condition Burned by evolving or devolving his or her Burned Pokémon. (This also includes putting a Pokémon Level-Up card onto the Burned Pokémon.) Whenever your opponent flips a coin for the Special Condition Burned between turns, treat it as tails."
-            def eff
-            onActivate {
-              eff = delayed{
-                def flag
-                before BURNED_SPC, null, null, BEGIN_TURN, {
-                  flag = true
-                  bc "flag : $flag"
-                }
-                def doit = {
-                  bc "bg.currentThreadPlayerType : $bg.currentThreadPlayerType + flag : $flag"
-                  if (bg.currentThreadPlayerType != self.owner && flag) {
-                    bc "Heat Metal forced the coin flip to be TAILS."
-                    bg.deterministicCoinFlipQueue.offer(false)
-                    flag = false
-                  }
-                }
-                before COIN_FLIP, {doit()}
-                before COIN_FLIP_GETTER, {doit()}
+            delayedA {
+              before BURNED_SPC, null, null, EVOLVE, {
+                bc "Heat Metal prevents removing the Special Condition Burned by evolving or devolving"
+                prevent()
               }
-            }
-            onDeactivate {
-              eff.unregister()
             }
           }
           pokePower "Heat Wave", {
