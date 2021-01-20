@@ -2976,6 +2976,19 @@ public enum Stormfront implements LogicCardInfo {
       case HEATRAN_LV_X_97:
         return levelUp (this, from:"Heatran", hp:HP120, type:FIRE, retreatCost:4) {
           weakness W
+          def energyList = []
+          def srcList = []
+          customAbility {
+            delayed {
+              after DISCARD_ENERGY, {
+                def tar = ef.resolvedTarget
+                def card = ef.card
+                bc "tar : $tar, card : $card"
+                energyList.add(card)
+                srcList.add(tar)
+              }
+            }
+          }
           pokeBody "Heat Metal", {
             text "Your opponent can’t remove the Special Condition Burned by evolving or devolving his or her Burned Pokémon. (This also includes putting a Pokémon Level-Up card onto the Burned Pokémon.) Whenever your opponent flips a coin for the Special Condition Burned between turns, treat it as tails."
             def flag
@@ -2988,12 +3001,11 @@ public enum Stormfront implements LogicCardInfo {
             delayedA {
               before BURNED_SPC, null, null, BEGIN_TURN, {
                 if(ef.target.owner == self.owner.opposite) {
-                  bc "Is this before the flip?"
                   flag = true
                 }
               }
               def doit = {
-                if (true) {
+                if (flag) {
                   bc "Heat Metal forced the coinflip to be TAILS."
                   bg.deterministicCoinFlipQueue.offer(false)
                 }
@@ -3005,7 +3017,12 @@ public enum Stormfront implements LogicCardInfo {
           }
           pokePower "Heat Wave", {
             text "Once at the end of your turn, if Heatran is on your Bench, you may use this power. If you discarded basic Energy cards attached to your [R] or [M] Active Pokémon by that Pokémon’s attack this turn, attach up to 2 of those Energy cards to that Pokémon."
-            delayedA {// TODO
+            delayedA {
+              before BETWEEN_TURNS {
+                if(energyList && srcList) {
+                  bc ":D"
+                }
+              }
             }
           }
         };
