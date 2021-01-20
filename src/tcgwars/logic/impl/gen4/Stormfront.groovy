@@ -2945,9 +2945,9 @@ public enum Stormfront implements LogicCardInfo {
                     after KNOCKOUT, pcs, {
                       def stadiumCard
                       stadiumCard = stadium(new CustomCardInfo(DUSKNOIR_LV_X_96).setCardTypes(TRAINER, STADIUM)) {
+                        bc"Here?"
                         def eff
                         onPlay {
-                          bc "OnPlay"
                           eff = delayed {
                             before BEGIN_TURN, {
                               thisCard.owner.opposite.pbg.all.each {
@@ -2957,7 +2957,6 @@ public enum Stormfront implements LogicCardInfo {
                           }
                         }
                         onRemoveFromPlay {
-                          bc "OnRemoveFromPlay"
                           eff.unregister()
                           bg.em().run(new ChangeImplementation(pkmnCard, stadiumCard))
                           moveCard(pkmnCard, thisCard.owner.pbg.hand)
@@ -2966,7 +2965,6 @@ public enum Stormfront implements LogicCardInfo {
                       stadiumCard.player = thisCard.player
                       bg.em().run(new ChangeImplementation(stadiumCard, pkmnCard))
                       bg.em().run(new PlayStadium(stadiumCard))
-                      stadiumCard.play(bg)// onPlay isn't triggering
                       bc "$stadiumCard is now a Stadium"
                     }
                   }
@@ -2985,6 +2983,18 @@ public enum Stormfront implements LogicCardInfo {
                 bc "Heat Metal prevents removing the Special Condition Burned by evolving or devolving"
                 prevent()
               }
+              before BURNED_SPC, null, null, BEGIN_TURN, {
+                flag = true
+              }
+              def doit = {
+                if (bg.currentThreadPlayerType != self.owner && flag) {
+                  bc "Hidden Power forced the coinflip to be TAILS."
+                  bg.deterministicCoinFlipQueue.offer(false)
+                }
+                flag = false
+              }
+              before COIN_FLIP, {doit()}
+              before COIN_FLIP_GETTER, {doit()}
             }
           }
           pokePower "Heat Wave", {
