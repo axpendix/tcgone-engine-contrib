@@ -2980,10 +2980,14 @@ public enum Stormfront implements LogicCardInfo {
           CardList energyList = []
           customAbility {
             delayed {
-              after DISCARD_SELF_ENERGY, self.owner.pbg.active, {
+              before ATTACK_MAIN, {
+                src = ef.attacker
+                energyList = ef.attacker.filterByType(ENERGY)
+              }
+              after DISCARD_SELF_ENERGY, {
                 src = self.owner.pbg.active
-                energyList.add(ef.card)
-                bc"? : $energyList"
+                bc"$ef.card"
+                bc"$ef.resolvedTarget"
               }
             }
           }
@@ -3017,6 +3021,7 @@ public enum Stormfront implements LogicCardInfo {
             text "Once at the end of your turn, if Heatran is on your Bench, you may use this power. If you discarded basic Energy cards attached to your [R] or [M] Active Pokémon by that Pokémon’s attack this turn, attach up to 2 of those Energy cards to that Pokémon."
             delayedA {
               before BETWEEN_TURNS, {
+                energyList.removeAll(src.cards.filterByType(ENERGY))
                 if(energyList.filterByType(BASIC_ENERGY) && self.benched && confirm("Use Heat Wave?")) {
                   powerUsed()
                   energyList.select(max:2,"Attach up to 2 Basic Energy cards to $src").each {
