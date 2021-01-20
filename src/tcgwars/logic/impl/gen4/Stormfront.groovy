@@ -2977,13 +2977,13 @@ public enum Stormfront implements LogicCardInfo {
         return levelUp (this, from:"Heatran", hp:HP120, type:FIRE, retreatCost:4) {
           weakness W
           def src
-          def energyList = []
+          CardList energyList = []
           customAbility {
             delayed {
               after DISCARD_SELF_ENERGY, self.owner.pbg.active, {
                 src = self.owner.pbg.active
                 energyList.add(ef.card)
-                bc"$energyList"
+                bc"? : $energyList"
               }
             }
           }
