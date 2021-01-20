@@ -3061,15 +3061,15 @@ public enum Stormfront implements LogicCardInfo {
         return levelUp (this, from:"Raichu", hp:HP110, type:LIGHTNING, retreatCost:0) {
           weakness F
           resistance M, MINUS20
-          def flag = false
+          def flag = false // True when a 2nd move can be used
+          def flag2 = false // True when a 2nd move is being used
           customAbility {
             delayed {
               before ATTACK_MAIN, {
-                bc "Here -1 : ef.move.name"
-                if(ef.move.name == "Voltage Shoot") {
+                bc "Here -1 : $ef.move.name"
+                if(ef.move.name == "Voltage Shoot" && !flag2) {
                   bc "Here 0"
                   if(self.lastEvolved == bg.turnCount) {
-                    bc "Lvl up works with self.lastEvolved + Here 0"
                     flag = true
                   }
                 }
@@ -3085,13 +3085,19 @@ public enum Stormfront implements LogicCardInfo {
                   bc "Here 2"
                   powerUsed()
                   def moveList = []
+                  moveList.add("Don't attack")
                   moveList.addAll(self.topPokemonCard.moves)
                   moveList.addAll(self.topNonLevelUpPokemonCard.moves)//TODO: This breaks with Technical Machines. I wonder if the testers will notice?
                   bc "Here 3"
-                  def move = choose(moveList, "Choose attack")
-                  def bef=blockingEffect(BETWEEN_TURNS)
-                  attack (move as Move)
-                  bef.unregisterItself(bg().em())
+                  def move = choose(moveList, "Choose attack", moveList[0])
+                  if(move != "Don't attack") {
+                    def bef=blockingEffect(BETWEEN_TURNS)
+                    flag = false
+                    flag2 = move.name
+                    attack (move as Move)
+                    flag2 = null
+                    bef.unregisterItself(bg().em())
+                  }
                 }
                 flag = false
               }
@@ -3102,7 +3108,7 @@ public enum Stormfront implements LogicCardInfo {
             text "Discard 2 [L] Energy cards from your hand and choose 1 of your opponent’s Pokémon. This attack does 80 to that Pokémon."
             energyCost L, L, C
             attackRequirement {
-              assert my.hand.filterByEnergyType(L).size() >= 2 : "You can't discard 2 [L] Energy cards from your hand"
+              assert (flag2 && flag2 != "Voltage Shoot") || my.hand.filterByEnergyType(L).size() >= 2 : "You can't discard 2 [L] Energy cards from your hand"
             }
             onAttack {
               damage 80, opp.all.select()
