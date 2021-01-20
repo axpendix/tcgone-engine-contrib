@@ -2988,6 +2988,7 @@ public enum Stormfront implements LogicCardInfo {
                   bc "flag : $flag"
                 }
                 def doit = {
+                  bc "bg.currentThreadPlayerType : $bg.currentThreadPlayerType + flag : $flag"
                   if (bg.currentThreadPlayerType != self.owner && flag) {
                     bc "Heat Metal forced the coin flip to be TAILS."
                     bg.deterministicCoinFlipQueue.offer(false)
@@ -3066,9 +3067,7 @@ public enum Stormfront implements LogicCardInfo {
           customAbility {
             delayed {
               before ATTACK_MAIN, {
-                bc "Here -1 : $ef.move.name"
                 if(ef.move.name == "Voltage Shoot" && !flag2) {
-                  bc "Here 0"
                   if(self.lastEvolved == bg.turnCount) {
                     flag = true
                   }
@@ -3080,15 +3079,12 @@ public enum Stormfront implements LogicCardInfo {
             text "Once during your turn, when you put Raichu LV.X onto Raichu and use Voltage Shoot, you may use another attack of Raichu afterward. This power can’t be used if Raichu is affected by a Special Condition."
             delayedA (priority: FIRST) {
               before BETWEEN_TURNS, {
-                bc "Here 1"
                 if (flag && !self.specialConditions) {
-                  bc "Here 2"
                   powerUsed()
                   def moveList = []
                   moveList.add("Don't attack")
                   moveList.addAll(self.topPokemonCard.moves)
                   moveList.addAll(self.topNonLevelUpPokemonCard.moves)//TODO: This breaks with Technical Machines. I wonder if the testers will notice?
-                  bc "Here 3"
                   def move = choose(moveList, "Choose attack", moveList[0])
                   if(move != "Don't attack") {
                     def bef=blockingEffect(BETWEEN_TURNS)
