@@ -2979,6 +2979,7 @@ public enum Stormfront implements LogicCardInfo {
           pokeBody "Heat Metal", {
             text "Your opponent can’t remove the Special Condition Burned by evolving or devolving his or her Burned Pokémon. (This also includes putting a Pokémon Level-Up card onto the Burned Pokémon.) Whenever your opponent flips a coin for the Special Condition Burned between turns, treat it as tails."
             delayedA {
+              def flag
               before BURNED_SPC, null, null, EVOLVE, {
                 bc "Heat Metal prevents removing the Special Condition Burned by evolving or devolving"
                 prevent()
