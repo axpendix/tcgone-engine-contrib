@@ -2984,11 +2984,6 @@ public enum Stormfront implements LogicCardInfo {
                 src = ef.attacker
                 energyList = ef.attacker.cards.filterByType(ENERGY)
               }
-              after DISCARD_SELF_ENERGY, {
-                src = self.owner.pbg.active
-                bc"$ef.card"
-                bc"$ef.resolvedTarget"
-              }
             }
           }
           pokeBody "Heat Metal", {
@@ -3022,12 +3017,13 @@ public enum Stormfront implements LogicCardInfo {
             delayedA {
               before BETWEEN_TURNS, {
                 energyList.removeAll(src.cards.filterByType(ENERGY))
-                if(energyList.filterByType(BASIC_ENERGY) && self.benched && confirm("Use Heat Wave?")) {
+                if(bg.currentTurn == self.owner && src && (src.types.contains(R) || src.types.contains(M)) && energyList.filterByType(BASIC_ENERGY) && self.benched && confirm("Use Heat Wave?")) {
                   powerUsed()
                   energyList.select(max:2,"Attach up to 2 Basic Energy cards to $src").each {
                     attachEnergy(src, it)
                   }
                 }
+                energyList.retainAll()
               }
             }
           }
