@@ -420,7 +420,7 @@ public enum Undaunted implements LogicCardInfo {
               damage 30
               delayed {
                 before null, self, Source.ATTACK, {
-                  if ((opp.active.hasPokePower || opp.active.hasPokeBody) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                  if ((opp.active.hasPokePower() || opp.active.hasPokeBody()) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
                     bc "Moonlight Fang prevents effect"
                     prevent()
                   }
@@ -1763,7 +1763,7 @@ public enum Undaunted implements LogicCardInfo {
             energyCost D, D
             onAttack {
               flip my.all.size(), {
-                damage 10
+                damage 20
               }
             }
           }
@@ -1871,10 +1871,12 @@ public enum Undaunted implements LogicCardInfo {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your discard pile for 3 Pokémon and 3 basic Energy cards. Show them to your opponent and shuffle them into your deck."
           onPlay {
             if(my.discard.filterByType(POKEMON)) {
-              my.discard.select(count:3,"Select 3 Pokémon cards to shuffle into your deck",cardTypeFilter(POKEMON)).moveTo(my.deck)
+              def cnt = Math.min(3,my.discard.filterByType(POKEMON))
+              my.discard.select(count:cnt,"Select 3 Pokémon cards to shuffle into your deck",cardTypeFilter(POKEMON)).moveTo(my.deck)
             }
             if(my.discard.filterByType(BASIC_ENERGY)) {
-              my.discard.select(count:3,"Select 3 basic Energy cards to shuffle into your deck",cardTypeFilter(BASIC_ENERGY)).moveTo(my.deck)
+              def cnt = Math.min(3,my.discard.filterByType(BASIC_ENERGY))
+              my.discard.select(count:cnt,"Select 3 basic Energy cards to shuffle into your deck",cardTypeFilter(BASIC_ENERGY)).moveTo(my.deck)
             }
             shuffleDeck()
           }
@@ -1891,7 +1893,7 @@ public enum Undaunted implements LogicCardInfo {
               card.cardTypes.is(LEGEND) && top.getExcludedList(card).find{it.cardTypes.is(LEGEND) && card.getName().equals(it.getName()) && !card.getNumber().equals(it.getNumber())}
             }
             if(!hasMatch) {
-              top.shoToMe("Top 10 cards of your deck")
+              top.showToMe("Top 10 cards of your deck")
             } else {
               def legendPair = top.select(count:2 , "Select both halves of a Pokémon LEGEND.", cardTypeFilter(LEGEND), thisCard.player, { CardList list ->
                 list[0].name == list[1].name && list[0].number != list[1].number
@@ -1930,8 +1932,8 @@ public enum Undaunted implements LogicCardInfo {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nLook at the top 5 cards of your deck. Choose any 2 cards you find there and put them into your hand. Discard the other cards."
           onPlay {
             def top = my.deck.subList(0,5)
-            count = Math.min(2,top.size())
-            def sel = top.select(count:count,"Choose $count cards to put into your hand")
+            def cnt = Math.min(2,top.size())
+            def sel = top.select(count:cnt,"Choose $count cards to put into your hand")
             top.getExcludedList(sel).discard()
           }
           playRequirement{
@@ -2179,6 +2181,7 @@ public enum Undaunted implements LogicCardInfo {
           }
           playRequirement{
             assert bg.stadiumInfoStruct : "There is no stadium card in play"
+            assert stadiumCanBeAffectedByItemAndSupporter() : "The stadium in play can't be affected by trainer cards"
           }
         };
       default:
