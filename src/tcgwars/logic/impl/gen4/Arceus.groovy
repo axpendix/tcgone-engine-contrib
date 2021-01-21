@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen4;
 
+import tcgwars.logic.impl.gen2.Expedition;
 import tcgwars.logic.impl.gen8.SwordShield;
 
 import tcgwars.logic.effect.gm.PlayTrainer;
@@ -2314,26 +2315,11 @@ public enum Arceus implements LogicCardInfo {
           }
         };
       case ENERGY_RESTORE_86:
-        return basicTrainer (this) {
-          text "Flip 3 coins. For each heads, put a basic Energy card from your discard pile into your hand. If you don’t have that many basic Energy cards in your discard pile, put all of them into your hand."
-          onPlay {
-            def cnt = 0
-            flip 3, {
-              cnt ++
-            }
-            def info = "select $cnt basic Energy card" + cnt>1?"s":""
-            if(cnt>0) {
-              my.discard.select(count:cnt, info, cardTypeFilter(BASIC_ENERGY))
-            }
-          }
-          playRequirement{
-            assert my.discard.filterByType(BASIC_ENERGY) : "You have no basic Energy cards in your discard"
-          }
-        };
+        return copy (Expedition.ENERGY_RESTORE_141, this);
       case EXPERT_BELT_87:
         return pokemonTool (this) {
           text "Attach Expert Belt to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nThe Pokémon this card is attached to gets +20 HP and that Pokémon’s attacks do 20 more damage to your opponent’s Active Pokémon (before applying Weakness and Resistance). When the Pokémon this card is attached to is Knocked Out, your opponent takes 1 more Prize card."
-          def eff1, eff2
+          def eff1, eff2, effPrize
           onPlay {
             eff1 = getter (GET_FULL_HP, self) {h->
               h.object += hp(20)
@@ -2364,16 +2350,7 @@ public enum Arceus implements LogicCardInfo {
       case OLD_AMBER_89:
         return copy(MajesticDawn.OLD_AMBER_84, this);
       case PROFESSOR_OAK_S_VISIT_90:
-        return supporter (this) {
-          text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDraw 3 cards. Then, choose a card from your hand and put it on the bottom of your deck."
-          onPlay {
-            draw 3
-            my.hand.getExcludedList(thisCard).select("Choose a card from your hand").moveTo(hidden:true, my.deck)
-          }
-          playRequirement{
-            assert my.deck : "Your deck is empty"
-          }
-        };
+        return copy(Arceus.PROFESSOR_OAK_S_VISIT_122, this);
       case ULTIMATE_ZONE_91:
         return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nDuring each player’s turn, the player may move an Energy card attached to 1 of his or her Benched Pokémon to his or her Active Arceus as often as he or she likes."
@@ -2506,6 +2483,7 @@ public enum Arceus implements LogicCardInfo {
           pokePower "Double Fall", {
             text "Once during your turn , when you put Salamence LV. X from your hand onto your Active Salamence, you may use this power. For each of your opponent’s Pokémon that is Knocked Out by damage from Salamence’s attacks this turn, take 1 more Prize card."
             onActivate{r->
+            bc "$r"
               if(r==PLAY_FROM_HAND && confirm("Use Double Fall?")){
                 powerUsed()
                 delayed {
@@ -2725,6 +2703,7 @@ public enum Arceus implements LogicCardInfo {
                 attachEnergy(pcs, it)
                 validTargets.remove(pcs)
               }
+              shuffleDeck()
             }
           }
           move "Sky Spear", {
