@@ -427,7 +427,7 @@ public enum Undaunted implements LogicCardInfo {
                 }
                 before APPLY_ATTACK_DAMAGES, {
                   bg.dm().each {
-                    if(it.to == self && it.notNoEffect && (it.hasPokePower || it.hasPokeBody)){
+                    if(it.to == self && it.notNoEffect && (it.from.hasPokePower() || it.from.hasPokeBody())){
                       it.dmg = hp(0)
                       bc "Moonlight Fang prevents damage"
                     }
@@ -1871,11 +1871,11 @@ public enum Undaunted implements LogicCardInfo {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your discard pile for 3 Pokémon and 3 basic Energy cards. Show them to your opponent and shuffle them into your deck."
           onPlay {
             if(my.discard.filterByType(POKEMON)) {
-              def cnt = Math.min(3,my.discard.filterByType(POKEMON))
+              def cnt = Math.min(3,my.discard.filterByType(POKEMON).size())
               my.discard.select(count:cnt,"Select 3 Pokémon cards to shuffle into your deck",cardTypeFilter(POKEMON)).moveTo(my.deck)
             }
             if(my.discard.filterByType(BASIC_ENERGY)) {
-              def cnt = Math.min(3,my.discard.filterByType(BASIC_ENERGY))
+              def cnt = Math.min(3,my.discard.filterByType(BASIC_ENERGY).size())
               my.discard.select(count:cnt,"Select 3 basic Energy cards to shuffle into your deck",cardTypeFilter(BASIC_ENERGY)).moveTo(my.deck)
             }
             shuffleDeck()
@@ -1933,7 +1933,7 @@ public enum Undaunted implements LogicCardInfo {
           onPlay {
             def top = my.deck.subList(0,5)
             def cnt = Math.min(2,top.size())
-            def sel = top.select(count:cnt,"Choose $count cards to put into your hand")
+            def sel = top.select(count:cnt,"Choose $cnt cards to put into your hand")
             top.getExcludedList(sel).discard()
           }
           playRequirement{

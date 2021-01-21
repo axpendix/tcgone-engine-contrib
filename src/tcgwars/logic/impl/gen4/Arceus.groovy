@@ -2350,7 +2350,7 @@ public enum Arceus implements LogicCardInfo {
       case OLD_AMBER_89:
         return copy(MajesticDawn.OLD_AMBER_84, this);
       case PROFESSOR_OAK_S_VISIT_90:
-        return copy(Arceus.PROFESSOR_OAK_S_VISIT_122, this);
+        return copy(SecretWonders.PROFESSOR_OAK_S_VISIT_122, this);
       case ULTIMATE_ZONE_91:
         return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nDuring each player’s turn, the player may move an Energy card attached to 1 of his or her Benched Pokémon to his or her Active Arceus as often as he or she likes."
@@ -2483,8 +2483,7 @@ public enum Arceus implements LogicCardInfo {
           pokePower "Double Fall", {
             text "Once during your turn , when you put Salamence LV. X from your hand onto your Active Salamence, you may use this power. For each of your opponent’s Pokémon that is Knocked Out by damage from Salamence’s attacks this turn, take 1 more Prize card."
             onActivate{r->
-            bc "$r"
-              if(r==PLAY_FROM_HAND && confirm("Use Double Fall?")){
+              if(r==OTHER && confirm("Use Double Fall?")){// TODO: Fix this once level up is fixed
                 powerUsed()
                 delayed {
                   def flag = false
