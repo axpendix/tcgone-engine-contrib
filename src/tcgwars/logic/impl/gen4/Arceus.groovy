@@ -1605,7 +1605,7 @@ public enum Arceus implements LogicCardInfo {
               damage 30
               afterDamage {
                 if(opp.discard) {
-                  opp.discard.select("Select a card to put on top of your opponent's deck").moveTo(addToTop:true, opp.deck)
+                  opp.discard.select("Select a card to put on top of your opponent's deck").showToOpponent("Selected cards").moveTo(addToTop:true, opp.deck)
                 }
               }
             }
@@ -1775,7 +1775,7 @@ public enum Arceus implements LogicCardInfo {
               assert my.deck : "Your deck is emtpy"
             }
             onAttack {
-              my.deck.search("Search your deck for a Basic [R] Pokémon",{it.cardTypes.is(BASIC) && it.asPokemonCard().types.contains(R)}).moveTo(my.hand)
+              my.deck.search("Search your deck for a Basic [R] Pokémon",{it.cardTypes.is(BASIC) && it.asPokemonCard().types.contains(R)}).showToOpponent("Selected cards").moveTo(my.hand)
               shuffleDeck()
             }
           }
@@ -1930,7 +1930,7 @@ public enum Arceus implements LogicCardInfo {
               assert my.deck : "Your deck is emtpty"
             }
             onAttack {
-              my.deck.search(max:2,"Search your deck for up to 2 Evolution cards",cardTypeFilter(EVOLUTION)).moveTo(my.hand)
+              my.deck.search(max:2,"Search your deck for up to 2 Evolution cards",cardTypeFilter(EVOLUTION)).showToOpponent("Selected cards").moveTo(my.hand)
               shuffleDeck()
             }
           }
@@ -2247,7 +2247,7 @@ public enum Arceus implements LogicCardInfo {
         return basicTrainer (this) {
           text "Search your deck for Arceus, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
           onPlay {
-            my.deck.search("Search your deck for Arceus",{it.name == "Arceus"}).showToOpponent("Arceus").moveTo(my.hand) //Using showToOpponent since there are 9 Arceuses in this set.
+            my.deck.search("Search your deck for Arceus",{it.name == "Arceus"}).showToOpponent("Arceus").moveTo(my.hand)
             shuffleDeck()
           }
           playRequirement{
@@ -2308,7 +2308,7 @@ public enum Arceus implements LogicCardInfo {
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck for up to 3 Pokémon Tool cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
           onPlay {
-            my.deck.search(max:3,"Search your deck for up to 3 Pokémon Tool cards",cardTypeFilter(POKEMON_TOOL)).moveTo(my.hand)
+            my.deck.search(max:3,"Search your deck for up to 3 Pokémon Tool cards",cardTypeFilter(POKEMON_TOOL)).showToOpponent("Selected cards").moveTo(my.hand)
           }
           playRequirement{
             assert my.deck : "Your deck is empty"

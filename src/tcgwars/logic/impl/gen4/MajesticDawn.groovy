@@ -491,7 +491,7 @@ public enum MajesticDawn implements LogicCardInfo {
             onAttack {
               damage 100
               afterDamage {
-                discardallSelfEnergy(R)
+                discardAllSelfEnergy(R)
               }
             }
           }

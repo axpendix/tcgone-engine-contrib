@@ -6,6 +6,7 @@ import tcgwars.logic.effect.basic.Knockout;
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.effect.EffectType.*;
 import static tcgwars.logic.effect.EffectType.ATTACH_ENERGY
 import static tcgwars.logic.effect.EffectType.DEVOLVE
 import static tcgwars.logic.effect.EffectType.EVOLVE
@@ -13,11 +14,22 @@ import static tcgwars.logic.effect.EffectType.KNOCKOUT
 import static tcgwars.logic.effect.EffectType.KNOCKOUT;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
+import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
+import static tcgwars.logic.effect.special.SpecialConditionType.*
+import static tcgwars.logic.effect.Source.*;
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
 import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.effect.*;
 import tcgwars.logic.util.*;
 import tcgwars.logic.effect.ability.*;
+import tcgwars.logic.effect.advanced.*;
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.*;
+
+
+
 
 /**
  * @author axpendix@hotmail.com
@@ -350,7 +362,7 @@ public enum Triumphant implements LogicCardInfo {
               assert my.discard.filterByType(ITEM) : "You have no trainers in your discard pile"
               powerUsed()
               flip{
-                my.discard.select("Choose a Trainer card to put on top of your deck", cardTypeFilter(ITEM)).moveTo(addToTop:true, my.deck)
+                my.discard.select("Choose a Trainer card to put on top of your deck", cardTypeFilter(ITEM)).showToOpponent("Selected Cards").moveTo(addToTop:true, my.deck)
               }
             }
           }
@@ -377,7 +389,7 @@ public enum Triumphant implements LogicCardInfo {
             delayedA {
               before APPLY_SPECIAL_CONDITION, self, {
                 if (ef.type == CONFUSED) {
-                  bc "Insomnia prevents $self from being confused."
+                  bc "Fiery Spirit prevents $self from being confused."
                   prevent()
                 }
               }
@@ -572,7 +584,7 @@ public enum Triumphant implements LogicCardInfo {
                   }
                 }
                 return true
-              }).moveTo(my.hand)
+              }).showToOpponent("Selected Cards").moveTo(my.hand)
               shuffleDeck()
             }
           }
@@ -1007,7 +1019,7 @@ public enum Triumphant implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
             }
             onAttack {
-              my.deck.search(max:2,"Search your deck for up to 2 Pokémon.",cardTypeFilter(POKEMON)).moveTo(my.hand)
+              my.deck.search(max:2,"Search your deck for up to 2 Pokémon.",cardTypeFilter(POKEMON)).showToOpponent("Selected Cards").moveTo(my.hand)
               shuffleDeck()
             }
           }
@@ -1410,7 +1422,7 @@ public enum Triumphant implements LogicCardInfo {
             onActivate {r->
               if(r==PLAY_FROM_HAND && my.deck && confirm("Use Mapping?")) {
                 powerUsed()
-                my.deck.search(cardTypeFilter(STADIUM)).moveTo(my.hand)
+                my.deck.search(cardTypeFilter(STADIUM)).showToOpponent("Selected Cards").moveTo(my.hand)
                 shuffleDeck()
               }
             }
@@ -1857,7 +1869,7 @@ public enum Triumphant implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
             }
             onAttack {
-              my.deck.subList(0,5).select("Choose 1 Pokémon to put into your hand",cardTypeFilter(POKEMON)).moveTo(my.hand)
+              my.deck.subList(0,5).select("Choose 1 Pokémon to put into your hand",cardTypeFilter(POKEMON)).showToOpponent("Selected Cards").moveTo(my.hand)
               shuffleDeck()
             }
           }
@@ -1902,7 +1914,7 @@ public enum Triumphant implements LogicCardInfo {
             text "Search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle Pidgey and all cards attached to it back into your deck."
             energyCost C
             onAttack {
-              my.deck.search("Search your deck for a Pokémon",cardTypeFilter(POKEMON)).moveTo(my.hand)
+              my.deck.search("Search your deck for a Pokémon",cardTypeFilter(POKEMON)).showToOpponent("Selected Cards").moveTo(my.hand)
               self.cards.moveTo(my.deck)
               removePCS(self)
               shuffleDeck()
@@ -2198,7 +2210,7 @@ public enum Triumphant implements LogicCardInfo {
           text "Discard 2 cards from you hand. Search your discard pile for a Trainer card, show it to your opponent, and put it into your hand. You can’t choose Junk Arm with the effect of this card."
           onPlay {
             my.hand.select(count:2,"Discard 2 cards").discard()
-            my.discard.select("Choose a Trainer card to return to your hand", {it.cardTypes.is(ITEM) && it.name != "Junk Arm"}).moveTo(my.hand)
+            my.discard.select("Choose a Trainer card to return to your hand", {it.cardTypes.is(ITEM) && it.name != "Junk Arm"}).showToOpponent("Selected Cards").moveTo(my.hand)
           }
           playRequirement{
             assert my.hand.getExcludedList(thisCard).size() >= 2 : "You don't have 2 other cards to discard"

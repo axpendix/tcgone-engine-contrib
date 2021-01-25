@@ -1182,7 +1182,7 @@ public enum Undaunted implements LogicCardInfo {
             onActivate { reason ->
               if(reason == PLAY_FROM_HAND && my.deck && confirm("Use $thisAbility?")){
                 powerUsed()
-                my.deck.search("Search your deck for a [D]",{it.cardTypes.energy && it.containsTypePlain(D)}).showToOpponent("Selected card").moveTo(my.hand)
+                my.deck.search("Search your deck for a [D]",{it.cardTypes.energy && it.containsTypePlain(D)}).showToOpponent("Selected card").showToOpponent("Selected Cards").moveTo(my.hand)
                 shuffleDeck()
               }
             }
@@ -1603,7 +1603,7 @@ public enum Undaunted implements LogicCardInfo {
             }
             onAttack {
               flip{
-                my.deck.search("Select a [G] Pokémon to put into your hand.", pokemonTypeFilter(G)).moveTo(my.hand)
+                my.deck.search("Select a [G] Pokémon to put into your hand.", pokemonTypeFilter(G)).showToOpponent("Selected Cards").moveTo(my.hand)
                 shuffleDeck()
               }
             }
@@ -1858,8 +1858,8 @@ public enum Undaunted implements LogicCardInfo {
         return basicTrainer (this) {
           text "Choose an Energy card from you hand, show it to your opponent, and put it on top of your deck. Search your deck for an Energy card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
           onPlay {
-            my.hand.filterByType(ENERGY).select().moveTo(my.deck)
-            my.deck.search(max: 1, "Select a basic Energy card.", cardTypeFilter(ENERGY)).showToOpponent("Your opponent played Energy Exchanger").moveTo(my.hand)
+            my.hand.filterByType(ENERGY).select().showToOpponent("Energy Exchanger: This card will be shuffled into your opponent's deck").moveTo(my.deck)
+            my.deck.search(max: 1, "Select a basic Energy card.", cardTypeFilter(ENERGY)).showToOpponent("Energy Exchanger: Your opponent found this card").moveTo(my.hand)
             shuffleDeck()
           }
           playRequirement{
@@ -1872,11 +1872,11 @@ public enum Undaunted implements LogicCardInfo {
           onPlay {
             if(my.discard.filterByType(POKEMON)) {
               def cnt = Math.min(3,my.discard.filterByType(POKEMON).size())
-              my.discard.select(count:cnt,"Select 3 Pokémon cards to shuffle into your deck",cardTypeFilter(POKEMON)).moveTo(my.deck)
+              my.discard.select(count:cnt,"Select 3 Pokémon cards to shuffle into your deck",cardTypeFilter(POKEMON)).showToOpponent("Selected Pokémon").moveTo(my.deck)
             }
             if(my.discard.filterByType(BASIC_ENERGY)) {
               def cnt = Math.min(3,my.discard.filterByType(BASIC_ENERGY).size())
-              my.discard.select(count:cnt,"Select 3 basic Energy cards to shuffle into your deck",cardTypeFilter(BASIC_ENERGY)).moveTo(my.deck)
+              my.discard.select(count:cnt,"Select 3 basic Energy cards to shuffle into your deck",cardTypeFilter(BASIC_ENERGY)).showToOpponent("Selected Energy cards").moveTo(my.deck)
             }
             shuffleDeck()
           }
