@@ -325,15 +325,18 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
               damage 60
               afterDamage {
                 delayed {
-                  after PROCESS_ATTACK_EFFECTS, {
+                  before APPLY_ATTACK_DAMAGES, {
                     bg.dm().each {
-                      if(it.dmg.value){
-                        bc "${thisMove.name} increases damage"
-                        it.dmg+=20
+                      if(it.to == self && it.dmg.value && it.notNoEffect){
+                        bc "${thisMove.name} +20"
+                        it.dmg+=hp(20)
                       }
                     }
                   }
                   unregisterAfter 2
+                  after FALL_BACK, self, {unregister()}
+                  after EVOLVE, self, {unregister()}
+                  after DEVOLVE, self, {unregister()}
                 }
               }
             }

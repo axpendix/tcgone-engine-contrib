@@ -308,7 +308,7 @@ public enum Stormfront implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 60
-              flip { 
+              flip {
                 discardDefendingEnergyAfterDamage C
               }
             }
@@ -324,7 +324,13 @@ public enum Stormfront implements LogicCardInfo {
               if (r==PLAY_FROM_HAND && my.deck && confirm("Use Blaze Dance?")) {
                 powerUsed()
                 flip {
-                  attachEnergyFrom(max:4, type:R, my.deck, my.all)
+                  def energys = my.deck.search(max:4,"Search your deck for up to $count basic [R] Energy cards",basicEnergyFilter(R))
+                  def count = 1
+                  energys.each {
+                    def tar = my.all.select("Attach [R] Energy ($count/${energys.size()}) to")
+                    attachEnergy(tar, it)
+                  }
+                  shuffleDeck()
                 }
               }
             }
@@ -339,8 +345,8 @@ public enum Stormfront implements LogicCardInfo {
                   before APPLY_ATTACK_DAMAGES, {
                     bg.dm().each {
                       if(it.to == self && it.dmg.value && it.notNoEffect){
-                        bc "${thisMove.name} increases damage"
-                        it.dmg+=30
+                        bc "${thisMove.name} +30"
+                        it.dmg+=hp(30)
                       }
                     }
                   }
@@ -658,7 +664,7 @@ public enum Stormfront implements LogicCardInfo {
             onActivate {r->
               if (r==PLAY_FROM_HAND && my.all.find{it.types.contains(G)} && my.deck && confirm("Use Sunshine Song?")) {
                 powerUsed()
-                multiselect(my.all,0,my.all.findAll{it.types.contains(G)}.size(),"Select as many of you [G] Pokémon in play as you like.").each {pcs->
+                multiSelect(my.all,0,my.all.findAll{it.types.contains(G)}.size(),"Select as many of you [G] Pokémon in play as you like.").each {pcs->
                   def evolution = deck.search ("Select a Pokémon that evolves from $pcs.", {it.cardTypes.is(EVOLUTION) && it.predecessor == pcs.name}).first()
                   if(evolution) {
                     evolve(pcs, evolution, OTHER)
@@ -1328,7 +1334,7 @@ public enum Stormfront implements LogicCardInfo {
             energyCost C
             onAttack {
               def maxSelect = Math.min(self.cards.energyCount(C),opp.bench.size())
-              multiselect(opp.all,1,maxSelect,"Choose a number of your opponent's Pokémon up to the amount of Energy attached to $self").each {
+              multiSelect(opp.all,1,maxSelect,"Choose a number of your opponent's Pokémon up to the amount of Energy attached to $self").each {
                 damage 20, it
               }
             }
@@ -1375,7 +1381,7 @@ public enum Stormfront implements LogicCardInfo {
             onAttack {
               damage 60
               if(opp.bench) {
-                multiselect(opp.bench, 2, "Does 20 damage to 2 of your opponent's Benched Pokémon").each {
+                multiSelect(opp.bench, 2, "Does 20 damage to 2 of your opponent's Benched Pokémon").each {
                   damage 20, it
                 }
               }
@@ -1554,7 +1560,7 @@ public enum Stormfront implements LogicCardInfo {
               if(my.hand && confirm("Discard a card from your hand?")) {
                 my.hand.select("Choose a card to discard").discard()
                 if(opp.hand) {
-                  opp.hand.oppselect("Choose a card to discard").discard()
+                  opp.hand.oppSelect("Choose a card to discard").discard()
                 }
               }
             }
@@ -1779,7 +1785,7 @@ public enum Stormfront implements LogicCardInfo {
             onAttack {
               damage 20
               if(bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player == self.owner && opp.bench) {
-                multiselect(opp.bench,2, text).each {
+                multiSelect(opp.bench,2, text).each {
                   damage 20, it
                 }
               }
@@ -3045,7 +3051,7 @@ public enum Stormfront implements LogicCardInfo {
                 bg.dm().each {
                   if(it.to == self && it.dmg.value && it.notNoEffect){
                     bc "No Guard +60"
-                    it.dmg+=60
+                    it.dmg+=hp(60)
                   }
                 }
               }

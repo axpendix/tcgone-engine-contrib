@@ -6,6 +6,7 @@ import tcgwars.logic.effect.basic.Knockout;
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.effect.EffectType.*;
 import static tcgwars.logic.effect.EffectType.ATTACH_ENERGY
 import static tcgwars.logic.effect.EffectType.DEVOLVE
 import static tcgwars.logic.effect.EffectType.EVOLVE
@@ -13,11 +14,22 @@ import static tcgwars.logic.effect.EffectType.KNOCKOUT
 import static tcgwars.logic.effect.EffectType.KNOCKOUT;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
+import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
+import static tcgwars.logic.effect.special.SpecialConditionType.*
+import static tcgwars.logic.effect.Source.*;
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
 import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.effect.*;
 import tcgwars.logic.util.*;
 import tcgwars.logic.effect.ability.*;
+import tcgwars.logic.effect.advanced.*;
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.*;
+
+
+
 
 /**
  * @author axpendix@hotmail.com
@@ -377,7 +389,7 @@ public enum Triumphant implements LogicCardInfo {
             delayedA {
               before APPLY_SPECIAL_CONDITION, self, {
                 if (ef.type == CONFUSED) {
-                  bc "Insomnia prevents $self from being confused."
+                  bc "Fiery Spirit prevents $self from being confused."
                   prevent()
                 }
               }

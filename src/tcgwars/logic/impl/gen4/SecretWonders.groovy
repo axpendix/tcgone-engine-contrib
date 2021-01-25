@@ -237,7 +237,9 @@ public enum SecretWonders implements LogicCardInfo {
               after PLAY_TRAINER, {
                 if(ef.cardToPlay.cardTypes.is(SUPPORTER) && bg.em().retrieveObject("Jamming")!=bg.turnCount){
                   bg.em().storeObject("Jamming",bg.turnCount)
-                  directDamage(10, it, SRC_ABILITY)
+                  opp.all.each {
+                    directDamage(10, it, SRC_ABILITY)
+                  }
                 }
               }
             }
@@ -1079,7 +1081,7 @@ public enum SecretWonders implements LogicCardInfo {
                   def pcs = defending
                   bc "$pcs can only use ${move.name} next turn."
                   delayed{
-                    before ATTACK_MAIN, {
+                    before CHECK_ATTACK_REQUIREMENTS, {
                       if (ef.move != move) {
                         wcu "$pcs can only use ${move.name}"
                         prevent()
@@ -1727,7 +1729,7 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 30
-              cantuseAttack thisMove, self
+              cantUseAttack thisMove, self
             }
           }
 
@@ -2749,7 +2751,7 @@ public enum SecretWonders implements LogicCardInfo {
           pokeBody "Cottonweed", {
             text "If Hoppip has any Energy attached to it, the Retreat Cost for Hoppip is 0."
             getterA (GET_RETREAT_COST, self) {h->
-              if(self.cards.energyCOunt(C)) {
+              if(self.cards.energyCount(C)) {
                 h.object = 0
               }
             }
