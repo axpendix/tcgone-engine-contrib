@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen4
 
+import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen7.CelestialStorm;
 
 import static tcgwars.logic.card.HP.*;
@@ -8,10 +9,21 @@ import static tcgwars.logic.effect.EffectType.*;
 import static tcgwars.logic.card.CardType.*;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
+import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
+import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectPriority.*
+import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
 
-import tcgwars.logic.card.*
+import tcgwars.logic.*;
+import tcgwars.logic.card.*;
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.effect.*;
+import tcgwars.logic.effect.ability.*;
+import tcgwars.logic.effect.advanced.*;
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.gm.*
 import tcgwars.logic.util.*;
 
 /**
@@ -127,7 +139,7 @@ public enum Platinum implements LogicCardInfo {
   CYRUS_S_CONSPIRACY_105 ("Cyrus's Conspiracy", "105", Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
   GALACTIC_HQ_106 ("Galactic HQ", "106", Rarity.UNCOMMON, [STADIUM, TRAINER]),
   LEVEL_MAX_107 ("Level Max", "107", Rarity.UNCOMMON, [ITEM, TRAINER]),
-  LIFE_HERB_108 ("Life Herb", "108", Rarity.UNCOMMON, [POKEMON_TOOL, ITEM, TRAINER]),
+  LIFE_HERB_108 ("Life Herb", "108", Rarity.UNCOMMON, [ITEM, TRAINER]),
   LOOKER_S_INVESTIGATION_109 ("Looker's Investigation", "109", Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
   MEMORY_BERRY_110 ("Memory Berry", "110", Rarity.UNCOMMON, [POKEMON_TOOL, ITEM, TRAINER]),
   MIASMA_VALLEY_111 ("Miasma Valley", "111", Rarity.UNCOMMON, [STADIUM, TRAINER]),
@@ -135,9 +147,9 @@ public enum Platinum implements LogicCardInfo {
   POKE_BALL_113 ("Poké Ball", "113", Rarity.UNCOMMON, [ITEM, TRAINER]),
   POKEDEX_HANDY910IS_114 ("Pokédex HANDY910is", "114", Rarity.UNCOMMON, [ITEM, TRAINER]),
   POKEMON_RESCUE_115 ("Pokémon Rescue", "115", Rarity.UNCOMMON, [ITEM, TRAINER]),
-  ENERGY_GAIN_116 ("Team Galactic's Invention G-101 Energy Gain", "116", Rarity.UNCOMMON, [ITEM, TRAINER]),
-  POWER_SPRAY_117 ("Power Spray", "117", Rarity.UNCOMMON, [ITEM, TRAINER]),
-  POKE_TURN_118 ("Poké Turn", "118", Rarity.UNCOMMON, [ITEM, TRAINER]),
+  ENERGY_GAIN_116 ("Team Galactic's Invention G-101 Energy Gain", "116", Rarity.UNCOMMON, [POKEMON_TOOL, ITEM, TRAINER]),
+  POWER_SPRAY_117 ("Team Galactic's Invention G-103 Power Spray", "117", Rarity.UNCOMMON, [ITEM, TRAINER]),
+  POKE_TURN_118 ("Team Galactic's Invention G-105 Poké Turn", "118", Rarity.UNCOMMON, [ITEM, TRAINER]),
   ARMOR_FOSSIL_119 ("Armor Fossil", "119", Rarity.COMMON, [ITEM, TRAINER]),
   SKULL_FOSSIL_120 ("Skull Fossil", "120", Rarity.COMMON, [ITEM, TRAINER]),
   RAINBOW_ENERGY_121 ("Rainbow Energy", "121", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
@@ -3348,7 +3360,7 @@ public enum Platinum implements LogicCardInfo {
           }
         };
       case ENERGY_GAIN_116:
-        return itemCard (this) {
+        return pokemonTool (this) {
           text "Attach Energy Gain to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nAttach Team Galactic’s Invention G-101 Energy Gain to 1 of your Pokémon SP that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card. When the Pokémon this card is attached to is no longer a Pokémon SP, discard this card.\nAs long as Team Galactic’s Invention G-101 Energy Gain is attached to a Pokémon, the attack cost of that Pokémon’s attacks is [C] less."
           def eff1
           onPlay {reason->
