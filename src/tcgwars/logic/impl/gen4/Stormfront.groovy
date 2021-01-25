@@ -417,7 +417,7 @@ public enum Stormfront implements LogicCardInfo {
               checkNoSPC()
               assert mydeck : "Your deck is empty"
               powerUsed()
-              my.deck.search("Search your deck for a [L] or [M] Pokémon", {it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(L) || it.asPokemonCard().types.contains(M)}).moveTo(my.hand)
+              my.deck.search("Search your deck for a [L] or [M] Pokémon", {it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(L) || it.asPokemonCard().types.contains(M)}).showToOpponent("Selected Cards").moveTo(my.hand)
             }
           }
           move "Speed Shot", {
@@ -1537,7 +1537,7 @@ public enum Stormfront implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
             }
             onAttack {
-              my.deck.search("Search your deck for a Pokémon",cardTypeFilter(POKEMON)).moveTo(my.hand)
+              my.deck.search("Search your deck for a Pokémon",cardTypeFilter(POKEMON)).showToOpponent("Selected Cards").moveTo(my.hand)
             }
           }
 
@@ -1685,7 +1685,7 @@ public enum Stormfront implements LogicCardInfo {
             text "Search your deck for a Trainer, Supporter, or Stadium card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
             energyCost C
             onAttack {
-              my.deck.search("Search your deck for a Trainer, Supporter, or Stadium card",{it.cardTypes.is(ITEM) || it.cardTypes.is(SUPPORTER) || it.cardTypes.is(STADIUM)}).moveTo(my.hand)
+              my.deck.search("Search your deck for a Trainer, Supporter, or Stadium card",{it.cardTypes.is(ITEM) || it.cardTypes.is(SUPPORTER) || it.cardTypes.is(STADIUM)}).showToOpponent("Selected Cards").moveTo(my.hand)
               shuffleDeck()
             }
           }
@@ -2723,7 +2723,7 @@ public enum Stormfront implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
             }
             onAttack {
-              my.deck.search("Search your deck for a Basic Pokémon",cardTypeFilter(BASIC)).moveTo(my.hand)
+              my.deck.search("Search your deck for a Basic Pokémon",cardTypeFilter(BASIC)).showToOpponent("Selected Cards").moveTo(my.hand)
               shuffleDeck()
             }
           }
@@ -2843,7 +2843,7 @@ public enum Stormfront implements LogicCardInfo {
         return basicTrainer (this) {
           text "Search your deck for a Pokémon (excluding Pokémon LV.X), show it to your opponent, and put it into your hand. Shuffle your deck afterward. If any Luxury Ball is in your discard pile, you can’t play this card."
           onPlay {
-            my.deck.search("Search your deck for a Pokémon (excluding Pokémon LV.X)",{it.cardTypes.is(POKEMON) && !it.cardTypes.is(LVL_X)}).moveTo(my.hand)
+            my.deck.search("Search your deck for a Pokémon (excluding Pokémon LV.X)",{it.cardTypes.is(POKEMON) && !it.cardTypes.is(LVL_X)}).showToOpponent("Selected Cards").moveTo(my.hand)
             shuffleDeck()
           }
           playRequirement{

@@ -252,7 +252,7 @@ public enum GreatEncounters implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
             }
             onAttack {
-              my.deck.search(cardTypeFilter(BASIC_ENERGY)).moveTo(my.hand)
+              my.deck.search(cardTypeFilter(ENERGY)).moveTo(my.hand)
             }
           }
           move "Darkness Pursuit", {
@@ -760,7 +760,7 @@ public enum GreatEncounters implements LogicCardInfo {
               my.deck.search(max: 3, "Select a Pokémon Tool card, a Supporter card and a basic Energy card.", {
                 it.cardTypes.is(POKEMON_TOOL) || it.cardTypes.is(SUPPORTER) || it.cardTypes.is(BASIC_ENERGY)}, { CardList list ->
                 list.filterByType(POKEMON_TOOL).size() <= 1 && list.filterByType(SUPPORTER).size() <= 1 && list.filterByType(BASIC_ENERGY).size() <= 1
-              }).moveTo(my.hand)
+              }).showToOpponent("Selected cards").moveTo(my.hand)
             }
           }
           move "Wave Splash", {
@@ -932,7 +932,7 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 10
               afterDamage {
                 if (my.deck) {
-                  my.deck.search(cardTypeFilter(STADIUM)).moveTo(hand)
+                  my.deck.search(cardTypeFilter(STADIUM)).showToOpponent("Selected cards").moveTo(hand)
                   shuffleDeck()
                 }
                 if (bg.stadiumInfoStruct) {
@@ -2622,7 +2622,7 @@ public enum GreatEncounters implements LogicCardInfo {
 
               if (choice == 0) {
                 def cards = sourceDiscard.select(min:1, max: 2, "Select 2 cards to put on top of the deck")
-                cards.showToOpponent().moveTo(destDeck)
+                cards.showToOpponent("Selected cards").moveTo(addToTop: true, destDeck)
                 if (cards.size() > 1) {
                   def rearrangedCards = rearrange(my.deck.subList(0, 2))
                   destDeck.setSubList(0, rearrangedCards)
@@ -2641,10 +2641,8 @@ public enum GreatEncounters implements LogicCardInfo {
               assert my.discard.filterByType(SUPPORTER) : "No Supporter card in your discard pile"
               checkLastTurn()
               powerUsed()
-              def card = my.discard.filterByType(SUPPORTER).select("Which card should be place on top of your deck?").first()
-              my.discard.remove(card)
-              my.deck.add(0, card)
-              bc "$card was put on top of the deck"
+              def card = my.discard.filterByType(SUPPORTER).select("Which card should be place on top of your deck?")
+              card.showToOpponent("Selected card").moveTo(addToTop: true, my.deck)
             }
           }
           move "Firefly Light", {
@@ -2727,10 +2725,8 @@ public enum GreatEncounters implements LogicCardInfo {
               assert my.discard : "Your discard pile is empty"
             }
             onAttack {
-              def card = my.discard.select().first()
-              my.discard.remove(card)
-              my.deck.add(0, card)
-              bc "$card was put on top of the deck"
+              def card = my.discard.select("Which card should be place on top of your deck?")
+              card.showToOpponent("Selected card").moveTo(addToTop: true, my.deck)
             }
           }
           move "Double Stab", {

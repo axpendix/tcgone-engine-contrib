@@ -392,7 +392,7 @@ public enum Platinum implements LogicCardInfo {
               if (r==PLAY_FROM_HAND && my.discard.find{(it.cardTypes.is(POKEMON) && !it.cardTypes.is(LVL_X)) || it.cardTypes.is(BASIC_ENERGY)} && confirm("Use Reverse Time?")) {
                 powerUsed()
                 def list = rearrange(my.discard.select(max:3, "Search your discard pile for up to 3 in any combination of Pokémon (excluding Pokémon LV.X) and basic Energy cards", {(it.cardTypes.is(POKEMON) && !it.cardTypes.is(LVL_X)) || it.cardTypes.is(BASIC_ENERGY)}))
-                list.moveTo(addToTop : true, my.deck)
+                list.showToOpponent("Selected Cards").moveTo(addToTop : true, my.deck)
               }
             }
           }
@@ -2607,7 +2607,7 @@ public enum Platinum implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
             }
             onAttack {
-              my.deck.search(max:2, "Search your deck for up to 2 Stadium or Trainer cards with Team Galactic's Invention in its name", {it.cardTypes.is(STADIUM) || (it.cardTypes.is(ITEM) && it.name.conatins("Team Galactic's Invention"))}).moveTo(my.hand)
+              my.deck.search(max:2, "Search your deck for up to 2 Stadium or Trainer cards with Team Galactic's Invention in its name", {it.cardTypes.is(STADIUM) || (it.cardTypes.is(ITEM) && it.name.conatins("Team Galactic's Invention"))}).showToOpponent("Selected Cards").moveTo(my.hand)
               shuffleDeck()
             }
           }
@@ -2746,7 +2746,7 @@ public enum Platinum implements LogicCardInfo {
             }
             onAttack {
               flip {
-                my.discard.select("Choose a Trainer to put into your hand",cardTypeFilter(ITEM)).moveTo(my.hand)
+                my.discard.select("Choose a Trainer to put into your hand",cardTypeFilter(ITEM)).showToOpponent("Selected Cards").moveTo(my.hand)
               }
             }
           }
@@ -3256,7 +3256,7 @@ public enum Platinum implements LogicCardInfo {
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck for a Supporter card, a basic Energy card, and a Trainer card that has Team Galactic’s Invention in its name, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
           onPlay {
-            my.deck.search(max:3,"Search your deck for a Supporter card, a basic Energy card, and a Trainer card with Team Galactic's Invention in its name",{it.cardTypes.is(SUPPORTER) || it.cardTypes.is(BASIC_ENERGY) || (it.cardTypes.is(ITEM) && it.name.conatins("Team Galactic's Invention"))}, {!(it.filterByType(SUPPORTER).size() > 1 || it.filterByType(BASIC_ENERGY).size() > 1 || it.filterByType(ITEM).size() > 1)}).moveTo(my.hand)
+            my.deck.search(max:3,"Search your deck for a Supporter card, a basic Energy card, and a Trainer card with Team Galactic's Invention in its name",{it.cardTypes.is(SUPPORTER) || it.cardTypes.is(BASIC_ENERGY) || (it.cardTypes.is(ITEM) && it.name.conatins("Team Galactic's Invention"))}, {!(it.filterByType(SUPPORTER).size() > 1 || it.filterByType(BASIC_ENERGY).size() > 1 || it.filterByType(ITEM).size() > 1)}).showToOpponent("Selected Cards").moveTo(my.hand)
           }
           playRequirement{
             assert my.deck : "Your deck is empty"
@@ -3353,7 +3353,7 @@ public enum Platinum implements LogicCardInfo {
         return itemCard (this) {
           text "Search your discard pile for a Pokémon, show it to your opponent, and put it into your hand."
           onPlay {
-            my.discard.select("Choose a Pokémon to put into your hand", cardTypeFilter(POKEMON)).moveTo(my.hand)
+            my.discard.select("Choose a Pokémon to put into your hand", cardTypeFilter(POKEMON)).showToOpponent("Selected Cards").moveTo(my.hand)
           }
           playRequirement{
             assert my.discard.filterByType(POKEMON) : "You have no Pokémon in your discard pile"

@@ -808,7 +808,7 @@ public enum SecretWonders implements LogicCardInfo {
             onActivate {
               if (r==PLAY_FROM_HAND && my.discard.find{it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(W)} && confirm('Use AquaRecovery?')) {
                 powerUsed()
-                my.discard.select(max:3,"Search you discard pile for up to 3 [W] Pokémon",it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(W)).moveTo(my.hand)
+                my.discard.select(max:3,"Search you discard pile for up to 3 [W] Pokémon",it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(W)).showToOpponent("Selected Cards").moveTo(my.hand)
               }
             }
           }
@@ -923,7 +923,9 @@ public enum SecretWonders implements LogicCardInfo {
             onAttack {
               damage 40
               if(my.discard.find{it.name == "Banette"}) {
-                my.discard.select("Shuffle Banette into your deck", {it.name == "Banette"})
+                damage 40
+                my.discard.select("Shuffle Banette into your deck", {it.name == "Banette"}).showToOpponent("Selected Cards").moveTo(my.deck)
+                shuffleDeck()
               }
             }
           }
@@ -2076,7 +2078,7 @@ public enum SecretWonders implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
             }
             onAttack {
-              my.deck.subList(0,5).select("Choose as many Trainer cards as you like",cardTypeFilter(ITEM)).moveTo(my.hand)
+              my.deck.subList(0,5).select("Choose as many Trainer cards as you like",cardTypeFilter(ITEM)).showToOpponent("Selected Cards").moveTo(my.hand)
               shuffleDeck()
             }
           }
@@ -2150,7 +2152,7 @@ public enum SecretWonders implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
             }
             onAttack {
-              my.deck.search(count:3,"Search your deck for up to 3 basic Energy cards",cardTypeFilter(BASIC_ENERGY)).moveTo(my.hand)
+              my.deck.search(max:3,"Search your deck for up to 3 basic Energy cards",cardTypeFilter(BASIC_ENERGY)).moveTo(my.hand)
             }
           }
           move "Trace", {
@@ -3317,7 +3319,7 @@ public enum SecretWonders implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
             }
             onAttack {
-              my.deck.search("Choose a Supporter card", cardTypeFilter(SUPPORTER)).moveTo(my.hand)
+              my.deck.search("Choose a Supporter card", cardTypeFilter(SUPPORTER)).showToOpponent("Selected Cards").moveTo(my.hand)
             }
           }
           move "Frighten Horn", {
@@ -3450,12 +3452,12 @@ public enum SecretWonders implements LogicCardInfo {
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nChoose a card from your hand and put it on top of your deck. Search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward. (If this is the only card in your hand, you can’t play this card.)"
           onPlay {
-            my.hand.getExcludedList(thisCard).select("Choose the card to put back in your deck").showToOpponent("Chosen card").moveTo(addToTop: true, my.deck)
-            my.deck.search(count:1,"Choose the Pokémon to put into your hand",cardTypeFilter(POKEMON)).moveTo(my.hand)
+            my.hand.getExcludedList(thisCard).select("Choose the card to put back in your deck").moveTo(addToTop: true, my.deck)
+            my.deck.search("Choose the Pokémon to put into your hand",cardTypeFilter(POKEMON)).showToOpponent("Selected Cards").moveTo(my.hand)
             shuffleDeck()
           }
           playRequirement{
-            assert my.hand.size() > 1 : "You need one other card in your hand to play this"
+            assert my.hand.size() > 1 : "You need one other card in your hand to play this card"
           }
         };
       case NIGHT_MAINTENANCE_120:
@@ -3464,7 +3466,7 @@ public enum SecretWonders implements LogicCardInfo {
           onPlay {
             def tar = my.discard.findAll{it.cardTypes.is(BASIC_ENERGY) || it.cardTypes.is(POKEMON)}
             def maxSel = Math.min(3,tar.size())
-            my.discard.select(count:maxSel,"Choose $maxSel cards to put back in your deck",{it.cardTypes.is(BASIC_ENERGY) || it.cardTypes.is(POKEMON)}).moveTo(my.deck)
+            my.discard.select(count:maxSel,"Choose $maxSel cards to put back in your deck",{it.cardTypes.is(BASIC_ENERGY) || it.cardTypes.is(POKEMON)}).showToOpponent("Selected Cards").moveTo(my.deck)
             shuffleDeck()
           }
           playRequirement{
@@ -3516,7 +3518,7 @@ public enum SecretWonders implements LogicCardInfo {
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck for up to 2 in any combination of Basic Pokémon and basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
           onPlay {
-            my.deck.search(max: 2,"Search your deck for up to 2 in any combination of Basic Pokémon and basic Energy cards",{it.cardTypes.is(BASIC_ENERGY) || it.cardTypes.is(BASIC)}).moveTo(hand)
+            my.deck.search(max: 2,"Search your deck for up to 2 in any combination of Basic Pokémon and basic Energy cards",{it.cardTypes.is(BASIC_ENERGY) || it.cardTypes.is(BASIC)}).showToOpponent("Selected Cards").moveTo(hand)
             shuffleDeck()
           }
           playRequirement{
@@ -3591,7 +3593,7 @@ public enum SecretWonders implements LogicCardInfo {
               delayed {
                 def pcs = defending
                 after KNOCKOUT, pcs {
-                  my.discard.select("Search your discard pile for a card").moveTo(my.hand)
+                  my.discard.select("Search your discard pile for a card").showToOpponent("Selected Cards").moveTo(my.hand)
                 }
                 unregisterAfter 1
               }
