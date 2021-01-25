@@ -1432,7 +1432,7 @@ public enum Platinum implements LogicCardInfo {
                 (1..tar.types.size()-1).each {
                   info += "${tar.types.get(it-1)}, "
                 }
-                tar += "or ${tar.types.get(tar.types.size()-1))} Pokémon"
+                tar += "or ${tar.types.get(tar.types.size()-1)} Pokémon"
               }
               my.deck.seach(info, {it.cardTypes.is(POKEMON) && it.asPokemonCard().types.any{tar.types.contains(it)}}).showToOpponent("Opponent used love call").moveTo(my.hand)
               shuffleDeck()
