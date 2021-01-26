@@ -3391,12 +3391,13 @@ public enum Platinum implements LogicCardInfo {
           text "You may play this card during your opponent’s turn when your opponent’s Pokémon uses any Poké-Power. Prevent all effects of that Poké-Power. (This counts as that Pokémon using its Poké-Power.) If you have 2 or less Pokémon SP in play, you can’t play this card."
           def once
           def flag = false
+          Ability ability
           globalAbility {
             delayed {
               once = false
               before USE_ABILITY, {
                 PokemonCardSet pcs = ef.getResolvedTarget(bg, e)
-                Ability ability = ef.ability
+                ability = ef.ability
                 if(!(bg.em().retrieveObject("Power_Spray_Once_$thisCard.player"))) {
                   bg.em().storeObject("Power_Spray_Once_$thisCard.player", true)
                   once = true
