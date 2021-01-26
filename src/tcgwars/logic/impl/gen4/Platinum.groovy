@@ -3394,6 +3394,11 @@ public enum Platinum implements LogicCardInfo {
               before USE_ABILITY, {
                 PokemonCardSet pcs = ef.getResolvedTarget(bg, e)
                 Ability ability = ef.ability
+                def once = false
+                if(!(bg.em().retrieveObject("Power_Spray_Once_$thisCard.player")) {
+                  bg.em().storeObject("Power_Spray_Once_$thisCard.player", true)
+                  once = true
+                }
                 def bluffing = true
                 def tempIgnoreList = []
                 def permIgnoreList = []
@@ -3413,17 +3418,18 @@ public enum Platinum implements LogicCardInfo {
                   bluffing = false
                 }
                 if(
-                  (!ignoreList.contains(ability.name) && (thisCard.player.pbg.hand.contains(thisCard) || bluffing)) &&
+                  (once) &&
+                  (!ignoreList.contains(ability.name) && 
+                  (thisCard.player.pbg.hand.find{it.name == "Team Galactic's Invention G-103 Power Spray"} || bluffing)) &&
                   (thisCard.player.pbg.all.findAll{it.topPokemonCard.cardTypes.is(POKEMON_SP)}.size() >= 3) &&
                   (ability instanceof PokePower) &&
                   (bg.currentThreadPlayerType != thisCard.player) &&
                   (pcs.owner != thisCard.player)
-                  // move This confirm("Play power spray to block ${pcs.name}'s ${ability.name}?", thisCard.player)//TODO: add more logic
                 ) {// Display allow for selection
                   while(1) {
                     def options = []
                     def text = []
-                    if(thisCard.player.pbg.hand.contains(thisCard)) {
+                    if(thisCard.player.pbg.hand.find{it.name == "Team Galactic's Invention G-103 Power Spray"}) {
                       options += [1]
                       text += ["Play Power Spray"]
                     }
@@ -3440,7 +3446,7 @@ public enum Platinum implements LogicCardInfo {
                     def choice = oppChoose(options, text, "Play power spray to block ${pcs.name}'s ${ability.name}?", options.get(0)) //oppChoose works since this only triggers if the active player thread is the opponent's
                     if(choice == 1) {
                       bc "Power Spray blocks ${ability.name}!"
-                      discard thisCard
+                      discard thisCard.player.pbg.hand.findAll{it.name == "Team Galactic's Invention G-103 Power Spray"}.first()
                       prevent()
                     } else if(choice == 3) {
                       tempIgnoreList.add(ability.name)
@@ -3461,6 +3467,10 @@ public enum Platinum implements LogicCardInfo {
                     }
                   }
                 }
+              }
+              after USE_ABILITY, {
+                bg.em().storeObject("Power_Spray_Once_$thisCard.player", false)
+                once = false
               }
             }
           }
