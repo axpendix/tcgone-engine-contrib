@@ -3437,7 +3437,7 @@ public enum Platinum implements LogicCardInfo {
                       options += [5,6]
                       text += ["Only ask if Power Spray is in my hand this turn", "Only ask if Power Spray is in my hand this game"]
                     }
-                    def choice = oppChoose(optoins, text, "Play power spray to block ${pcs.name}'s ${ability.name}?", options.get(0)) //oppChoose works since this only triggers if the active player thread is the opponent's
+                    def choice = oppChoose(options, text, "Play power spray to block ${pcs.name}'s ${ability.name}?", options.get(0)) //oppChoose works since this only triggers if the active player thread is the opponent's
                     if(choice == 1) {
                       bc "Power Spray blocks ${ability.name}!"
                       discard thisCard
