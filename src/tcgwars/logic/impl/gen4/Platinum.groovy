@@ -3395,7 +3395,7 @@ public enum Platinum implements LogicCardInfo {
                 PokemonCardSet pcs = ef.getResolvedTarget(bg, e)
                 Ability ability = ef.ability
                 def once = false
-                if(!(bg.em().retrieveObject("Power_Spray_Once_$thisCard.player")) {
+                if(!(bg.em().retrieveObject("Power_Spray_Once_$thisCard.player"))) {
                   bg.em().storeObject("Power_Spray_Once_$thisCard.player", true)
                   once = true
                 }
