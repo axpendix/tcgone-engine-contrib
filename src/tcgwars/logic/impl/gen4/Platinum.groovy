@@ -3454,7 +3454,6 @@ public enum Platinum implements LogicCardInfo {
                       bg.clearDeterministicCurrentThreadPlayerType()
                       if(played) {
                         bc "Power Spray blocks ${ability.name}!"
-                        discard thisCard.player.pbg.hand.findAll{it.name == "Team Galactic's Invention G-103 Power Spray"}.first()
                         prevent()
                       }
                       canPlay = false
