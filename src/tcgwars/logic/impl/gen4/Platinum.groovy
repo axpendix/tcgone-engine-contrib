@@ -3390,8 +3390,6 @@ public enum Platinum implements LogicCardInfo {
         return itemCard (this) {
           text "You may play this card during your opponent’s turn when your opponent’s Pokémon uses any Poké-Power. Prevent all effects of that Poké-Power. (This counts as that Pokémon using its Poké-Power.) If you have 2 or less Pokémon SP in play, you can’t play this card."
           def once
-          def canPlay = false
-          def played = false
           globalAbility {
             delayed {
               once = false
@@ -3448,16 +3446,16 @@ public enum Platinum implements LogicCardInfo {
                     }
                     def choice = oppChoose(options, text, "Play power spray to block ${pcs.name}'s ${ability.name}?", options.get(0)) //oppChoose works since this only triggers if the active player thread is the opponent's
                     if(choice == 1) {
-                      canPlay = true
+                      bg.em().storeObject("Power_Spray_Can_Play_$thisCard.player", true)
                       bg.deterministicCurrentThreadPlayerType=thisCard.player
                       bg.em().run(new PlayTrainer(thisCard.player.pbg.hand.findAll{it.name == "Team Galactic's Invention G-103 Power Spray"}.first()))
                       bg.clearDeterministicCurrentThreadPlayerType()
-                      if(played) {
+                      if(bg.em().retrieveObject("Power_Spray_Played_$thisCard.player")) {
                         bc "Power Spray blocks ${ability.name}!"
                         prevent()
                       }
-                      canPlay = false
-                      played = false
+                      bg.em().storeObject("Power_Spray_Can_Play_$thisCard.player", false)
+                      bg.em().storeObject("Power_Spray_Played_$thisCard.player", false)
                       break
                     } else if(choice == 3) {
                       tempIgnoreList.add(ability.name)
@@ -3486,10 +3484,10 @@ public enum Platinum implements LogicCardInfo {
             }
           }
           onPlay {
-            played = true
+            bg.em().storeObject("Power_Spray_Played_$thisCard.player", true)
           }
           playRequirement{
-            assert canPlay : "Play this card during your opponent’s turn when your opponent’s Pokémon uses any Poké-Power"
+            assert bg.em().retrieveObject("Power_Spray_Can_Play_$thisCard.player") : "Play this card during your opponent’s turn when your opponent’s Pokémon uses any Poké-Power"
           }
         };
       case POKE_TURN_118:
