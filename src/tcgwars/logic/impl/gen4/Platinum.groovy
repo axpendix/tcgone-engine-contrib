@@ -3420,45 +3420,44 @@ public enum Platinum implements LogicCardInfo {
                   (pcs.owner != thisCard.player)
                   // move This confirm("Play power spray to block ${pcs.name}'s ${ability.name}?", thisCard.player)//TODO: add more logic
                 ) {// Display allow for selection
-                    while(1) {
-                      def options = []
-                      def text = []
-                      if(thisCard.player.pbg.hand.contains(thisCard)) {
-                        options += [1]
-                        text += ["Play Power Spray"]
-                      }
-                      options += [2]
-                      text += ["Don't play Power Spray"]
-                      if(!ignoreList.contains(ability.name)) {
-                        options += [3,4]
-                        text += ["Allow ${ability.name} for the remainder of the turn", "Allow ${ability.name} for the remainder of the game"]
-                      }
-                      if(bluffing) {
-                        options += [5,6]
-                        text += ["Only ask if Power Spray is in my hand this turn", "Only ask if Power Spray is in my hand this game"]
-                      }
-                      def choice = oppChoose(optoins, text, "Play power spray to block ${pcs.name}'s ${ability.name}?", options.get(0)) //oppChoose works since this only triggers if the active player thread is the opponent's
-                      if(choice == 1) {
-                        bc "Power Spray blocks ${ability.name}!"
-                        discard thisCard
-                        prevent()
-                      } else if(choice == 3) {
-                        tempIgnoreList.add(ability.name)
-                        ignoreList.add(ability.name)
-                        bg.em().storeObject("This_Turn_Ignore_List_$thisCard.player",[bg.turnCount,tempIgnoreList])
-                      } else if(choice == 4) {
-                        permIgnoreList.add(ability.name)
-                        ignoreList.add(ability.name)
-                        bg.em().storeObject("Always_Ignore_List_$thisCard.player",permIgnoreList)
-                      } else if(choice == 5) {
-                        bluffing = false
-                        bg.em().storeObject("Dont_Bluff_This_Turn_$thisCard.player",bg.turnCount)
-                      } else if(choice == 5) {
-                        bluffing = false
-                        bg.em().storeObject("Dont_Bluff_Ever_$thisCard.player",true)
-                      } else {
-                        break
-                      }
+                  while(1) {
+                    def options = []
+                    def text = []
+                    if(thisCard.player.pbg.hand.contains(thisCard)) {
+                      options += [1]
+                      text += ["Play Power Spray"]
+                    }
+                    options += [2]
+                    text += ["Don't play Power Spray"]
+                    if(!ignoreList.contains(ability.name)) {
+                      options += [3,4]
+                      text += ["Allow ${ability.name} for the remainder of the turn", "Allow ${ability.name} for the remainder of the game"]
+                    }
+                    if(bluffing) {
+                      options += [5,6]
+                      text += ["Only ask if Power Spray is in my hand this turn", "Only ask if Power Spray is in my hand this game"]
+                    }
+                    def choice = oppChoose(optoins, text, "Play power spray to block ${pcs.name}'s ${ability.name}?", options.get(0)) //oppChoose works since this only triggers if the active player thread is the opponent's
+                    if(choice == 1) {
+                      bc "Power Spray blocks ${ability.name}!"
+                      discard thisCard
+                      prevent()
+                    } else if(choice == 3) {
+                      tempIgnoreList.add(ability.name)
+                      ignoreList.add(ability.name)
+                      bg.em().storeObject("This_Turn_Ignore_List_$thisCard.player",[bg.turnCount,tempIgnoreList])
+                    } else if(choice == 4) {
+                      permIgnoreList.add(ability.name)
+                      ignoreList.add(ability.name)
+                      bg.em().storeObject("Always_Ignore_List_$thisCard.player",permIgnoreList)
+                    } else if(choice == 5) {
+                      bluffing = false
+                      bg.em().storeObject("Dont_Bluff_This_Turn_$thisCard.player",bg.turnCount)
+                    } else if(choice == 5) {
+                      bluffing = false
+                      bg.em().storeObject("Dont_Bluff_Ever_$thisCard.player",true)
+                    } else {
+                      break
                     }
                   }
                 }
