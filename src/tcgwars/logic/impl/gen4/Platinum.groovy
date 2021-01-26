@@ -3394,17 +3394,73 @@ public enum Platinum implements LogicCardInfo {
               before USE_ABILITY, {
                 PokemonCardSet pcs = ef.getResolvedTarget(bg, e)
                 Ability ability = ef.ability
+                def bluffing = true
+                def tempIgnoreList = []
+                def permIgnoreList = []
+                def ignoreList = []
+                if(bg.em().retrieveObject("This_Turn_Ignore_List_$thisCard.player") && bg.em().retrieveObject("This_Turn_Ignore_List_$thisCard.player").get(0) == bg.turnCount) {
+                  ignoreList.addAll(bg.em().retrieveObject("This_Turn_Ignore_List_$thisCard.player").get(1))
+                  tempIgnoreList.addAll(bg.em().retrieveObject("This_Turn_Ignore_List_$thisCard.player").get(1))
+                }
+                if(bg.em().retrieveObject("Always_Ignore_List_$thisCard.player")) {
+                  ignoreList.addAll(bg.em().retrieveObject("Always_Ignore_List_$thisCard.player"))
+                  permIgnoreList.addAll(bg.em().retrieveObject("Always_Ignore_List_$thisCard.player"))
+                }
+                if(bg.em().retrieveObject("Dont_Bluff_This_Turn_$thisCard.player") == bg.turnCount) {
+                  bluffing = false
+                }
+                if(bg.em().retrieveObject("Dont_Bluff_Ever_$thisCard.player")) {
+                  bluffing = false
+                }
                 if(
-                  (thisCard.player.pbg.hand.contains(thisCard)) &&
+                  (thisCard.player.pbg.hand.contains(thisCard) || (bluffing && !ignoreList.contains(ability.name))) &&
                   (thisCard.player.pbg.all.findAll{it.topPokemonCard.cardTypes.is(POKEMON_SP)}.size() >= 3) &&
                   (ability instanceof PokePower) &&
                   (bg.currentThreadPlayerType != thisCard.player) &&
-                  (pcs.owner != thisCard.player) &&
-                  confirm("Play power spray to block ${pcs.name}'s ${ability.name}?", thisCard.player)//TODO: add more logic
-                ) {
-                  bc "Power Spray blocks ${ability.name}!"
-                  discard thisCard
-                  prevent()
+                  (pcs.owner != thisCard.player)
+                  // move This confirm("Play power spray to block ${pcs.name}'s ${ability.name}?", thisCard.player)//TODO: add more logic
+                ) {// Display allow for selection
+                    while(1) {
+                      def options = []
+                      def text = []
+                      if(thisCard.player.pbg.hand.contains(thisCard)) {
+                        options += [1]
+                        text += ["Play Power Spray"]
+                      }
+                      options += [2]
+                      text += ["Don't play Power Spray"]
+                      if(!ignoreList.contains(ability.name)) {
+                        options += [3,4]
+                        text += ["Allow ${ability.name} for the remainder of the turn", "Allow ${ability.name} for the remainder of the game"]
+                      }
+                      if(bluffing) {
+                        options += [5,6]
+                        text += ["Only ask if Power Spray is in my hand this turn", "Only ask if Power Spray is in my hand this game"]
+                      }
+                      def choice = oppChoose(optoins, text, "Play power spray to block ${pcs.name}'s ${ability.name}?", options.get(0)) //oppChoose works since this only triggers if the active player thread is the opponent's
+                      if(choice == 1) {
+                        bc "Power Spray blocks ${ability.name}!"
+                        discard thisCard
+                        prevent()
+                      } else if(choice == 3) {
+                        tempIgnoreList.add(ability.name)
+                        ignoreList.add(ability.name)
+                        bg.em().storeObject("This_Turn_Ignore_List_$thisCard.player",[bg.turnCount,tempIgnoreList])
+                      } else if(choice == 4) {
+                        permIgnoreList.add(ability.name)
+                        ignoreList.add(ability.name)
+                        bg.em().storeObject("Always_Ignore_List_$thisCard.player",permIgnoreList)
+                      } else if(choice == 5) {
+                        bluffing = false
+                        bg.em().storeObject("Dont_Bluff_This_Turn_$thisCard.player",bg.turnCount)
+                      } else if(choice == 5) {
+                        bluffing = false
+                        bg.em().storeObject("Dont_Bluff_Ever_$thisCard.player",true)
+                      } else {
+                        break
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -3416,7 +3472,6 @@ public enum Platinum implements LogicCardInfo {
       case POKE_TURN_118:
         return itemCard (this) {
           text "Return 1 of your Pokémon SP and all cards attached to it to your hand."
-          // TODO: Check for Pokémon SP in onPlay and playRequirement
           onPlay {
             def pcs = my.bench.findAll { it.topPokemonCard.cardTypes.is(POKEMON_SP) }.select("Which Pokémon SP to return to hand?")
             scoopUpPokemon(pcs, delegate)
@@ -3580,7 +3635,7 @@ public enum Platinum implements LogicCardInfo {
               onActivate {
                 eff = getter (GET_FULL_HP) {h->
                   def pcs = h.effect.target
-                  if (pcs.owner == self.owner && pcs.name != "Shaymin"){
+                  if (pcs.owner == self.owner && !pcs.name.contains("Shaymin")){
                     target = bg.em().retrieveObject("Thankfulness_target")
                     source = bg.em().retrieveObject("Thankfulness_source")
                     if(!target.contains(pcs)){
@@ -3628,7 +3683,7 @@ public enum Platinum implements LogicCardInfo {
                 }
               }
             }
-          } //
+          }
           pokeBody "Revenge Seed", {
             text "If any of your Pokémon were Knocked Out by damage from an opponent’s attack during his or her last turn, each of Shaymin’s attacks does 60 more damage to the Active Pokémon ."
             delayedA {

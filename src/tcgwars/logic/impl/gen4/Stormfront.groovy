@@ -502,7 +502,7 @@ public enum Stormfront implements LogicCardInfo {
                     options += [3]
                     text += ["Stop"]
                   }
-                  def choice = choose(options,text, "Remove a Pokémo Tool or Technical Machine from...? (${5-i}/4)",options.get(0))
+                  def choice = choose(options,text, "Remove a Pokémon Tool or Technical Machine from...? (${5-i}/4)",options.get(0))
                   if(choice == 1){
                     tar = opp.all.findAll {it.cards.filterByType(POKEMON_TOOL, TECHNICAL_MACHINE)}
                   } else if(choice == 2){
