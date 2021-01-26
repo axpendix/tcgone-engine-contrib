@@ -3396,7 +3396,7 @@ public enum Platinum implements LogicCardInfo {
                 Ability ability = ef.ability
                 if(
                   (thisCard.player.pbg.hand.contains(thisCard)) &&
-                  (thisCard.player.pbg.all.findAll(it.topPokemonCard.cardTypes.is(POKEMON_SP)).size() >= 3) &&
+                  (thisCard.player.pbg.all.findAll{it.topPokemonCard.cardTypes.is(POKEMON_SP)}.size() >= 3) &&
                   (ability instanceof PokePower) &&
                   (bg.currentThreadPlayerType != thisCard.player) &&
                   (pcs.owner != thisCard.player) &&
