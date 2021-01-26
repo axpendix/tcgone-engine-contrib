@@ -3104,7 +3104,6 @@ public enum Stormfront implements LogicCardInfo {
             delayedA (priority: FIRST) {
               before BETWEEN_TURNS, {
                 if (flag && !self.specialConditions) {
-                  powerUsed()
                   def moveList = []
                   moveList.add("Don't attack")
                   moveList.addAll(self.topPokemonCard.moves)
