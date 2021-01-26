@@ -3413,7 +3413,7 @@ public enum Platinum implements LogicCardInfo {
                   bluffing = false
                 }
                 if(
-                  (thisCard.player.pbg.hand.contains(thisCard) || (bluffing && !ignoreList.contains(ability.name))) &&
+                  (!ignoreList.contains(ability.name) && (thisCard.player.pbg.hand.contains(thisCard) || bluffing)) &&
                   (thisCard.player.pbg.all.findAll{it.topPokemonCard.cardTypes.is(POKEMON_SP)}.size() >= 3) &&
                   (ability instanceof PokePower) &&
                   (bg.currentThreadPlayerType != thisCard.player) &&
