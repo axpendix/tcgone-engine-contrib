@@ -3389,9 +3389,11 @@ public enum Platinum implements LogicCardInfo {
       case POWER_SPRAY_117:
         return itemCard (this) {
           text "You may play this card during your opponent’s turn when your opponent’s Pokémon uses any Poké-Power. Prevent all effects of that Poké-Power. (This counts as that Pokémon using its Poké-Power.) If you have 2 or less Pokémon SP in play, you can’t play this card."
+          def once
+          def flag
           globalAbility {
             delayed {
-              def once = false
+              once = false
               before USE_ABILITY, {
                 PokemonCardSet pcs = ef.getResolvedTarget(bg, e)
                 Ability ability = ef.ability
@@ -3446,9 +3448,11 @@ public enum Platinum implements LogicCardInfo {
                     }
                     def choice = oppChoose(options, text, "Play power spray to block ${pcs.name}'s ${ability.name}?", options.get(0)) //oppChoose works since this only triggers if the active player thread is the opponent's
                     if(choice == 1) {
-                      bc "Power Spray blocks ${ability.name}!"
-                      discard thisCard.player.pbg.hand.findAll{it.name == "Team Galactic's Invention G-103 Power Spray"}.first()
-                      prevent()
+                      once = false
+                      flag = true
+                      bg.deterministicCurrentThreadPlayerType=self.owner
+                      bg.em().run(new PlayTrainer(thisCard.player.pbg.hand.findAll{it.name == "Team Galactic's Invention G-103 Power Spray"}.first()))
+                      bg.clearDeterministicCurrentThreadPlayerType()
                     } else if(choice == 3) {
                       tempIgnoreList.add(ability.name)
                       ignoreList.add(ability.name)
@@ -3472,11 +3476,18 @@ public enum Platinum implements LogicCardInfo {
               after USE_ABILITY, {
                 bg.em().storeObject("Power_Spray_Once_$thisCard.player", false)
                 once = false
+                flag = false
               }
             }
           }
+          onPlay {
+            bc "Power Spray blocks ${ability.name}!"
+            discard thisCard.player.pbg.hand.findAll{it.name == "Team Galactic's Invention G-103 Power Spray"}.first()
+            flag = false
+            prevent()
+          }
           playRequirement{
-            assert false : "Play this card during your opponent’s turn when your opponent’s Pokémon uses any Poké-Power"
+            assert flag : "Play this card during your opponent’s turn when your opponent’s Pokémon uses any Poké-Power"
           }
         };
       case POKE_TURN_118:
