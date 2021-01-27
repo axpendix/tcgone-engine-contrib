@@ -309,7 +309,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              discardSelfEnergyInOrderTo(P) // TODO not created yet
+              self.cards.filterByEnergyType(P).select("Discard a [P] Energy to use this attack").discard()
               delayed {
                 before KNOCKOUT, self, {
                   if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && self.owner.opposite.pbg.active.inPlay){
@@ -430,10 +430,15 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness L, '+30'
           move "Aqua Stream", {
             text "10x damage. Search your discard pile for as many [W] Energy cards as you like, show them to your opponent, and this attack does 10 damage for each [W] Energy card you chose. Put those cards on top of your deck. Shuffle your deck afterward."
-            attackRequirement {}
+            attackRequirement {
+              assert my.discard.findAll(basicEnergyFilter(W)) : "No [W] Energy cards in your discard"
+            }
             onAttack {
-              damage 10
-              // TODO
+              def energies = my.discard.findAll(basicEnergyFilter(W)).select("Select [W] Energies")
+              damage 10 * energies.size()
+
+              energies.moveTo(my.deck)
+              shuffleDeck()
             }
           }
           move "Dragon Pump", {
@@ -780,7 +785,19 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokePower "Time Walk", {
             text "Once during your turn, when you put Azelf from your hand onto your Bench, you may look at all of your face-down Prize cards. If you do, you may choose 1 Pokémon you find there, show it to your opponent, and put it into your hand. Then, choose 1 card in your hand and put it as a Prize card face down."
             actionA {
-              // TODO
+              assert my.hand : "No cards in hand"
+              checkLastTurn()
+              powerUsed()
+
+              def newPrize = my.hand.select(hidden: true, "Card to put into Prizes").first()
+
+              def tar = my.prizeCardSet.faceDownCards.select(hidden: false, "Choose a Prize card to replace with one in your hand.").first()
+              my.hand.add(tar)
+
+              def indexOfOldPrize = my.prizeCardSet.indexOf(tar)
+              my.prizeCardSet.set(indexOfOldPrize, newPrize)
+              my.prizeCardSet.setVisible(newPrize, true)
+              my.hand.remove(newPrize)
             }
           }
           move "Lock Up", {
@@ -983,9 +1000,10 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
-              // TODO
+              preventAllEffectsExcludingDamageNextTurn()
+              reduceDamageNextTurn(hp(20), thisMove)
             }
-          }i
+          }
         };
       case DEOXYS_SPEED_FORME_26:
         return basic (this, hp:HP070, type:P, retreatCost:0) {
@@ -1989,9 +2007,30 @@ public enum LegendsAwakened implements LogicCardInfo {
             text "The Defending Pokémon is now Confused. Put 6 damage counters instead of 3 on the Confused Pokémon."
             attackRequirement {}
             onAttack {
-              apply CONFUSED
-              bg.em().storeObject("Heavy Perfume"+defending.hashCode(), 1)
-              // TODO attack static and confused static
+              // TODO create GET_CONFUSED_DAMAGE static
+
+//              def magicalStepRecipient = opp.active
+//              apply CONFUSED, magicalStepRecipient, SRC_ABILITY
+//              delayed {
+//                def eff
+//                register {
+//                  eff = getter (GET_CONFUSED_DAMAGE) {h->
+//                    if (h.effect.target == magicalStepRecipient && h.effect.target.active && h.object < hp(30)) {
+//                      bc "Magical Step increases confused damage on $magicalStepRecipient to 60."
+//                      h.object = hp(60)
+//                    }
+//                  }
+//                }
+//                unregister {
+//                  eff.unregister()
+//                }
+//
+//                after CLEAR_SPECIAL_CONDITION, magicalStepRecipient, {
+//                  if(ef.types.contains(CONFUSED)){
+//                    unregister()
+//                  }
+//                }
+              }
             }
           }
           move "Grind", {
@@ -2537,8 +2576,13 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness P, '+10'
           pokePower "JUNK", {
             text "Once during your turn, when you put Unown J from your hand onto your Bench, you may flip a coin. If heads, search your discard pile for a Trainer card, show it to your opponent, and put it into your hand."
-            actionA {
-              // TODO
+            onActivate { r->
+              if (r == PLAY_FROM_HAND && bg.currentTurn == self.owner && my.discard.filterByType(TRAINER) && confirm("Use $thisAbility?")) {
+                powerUsed()
+                flip {
+                  my.discard.select(max:1, "Select a Trainer card").moveTo(my.hand)
+                }
+              }
             }
           }
           move "Hidden Power", {
@@ -2582,9 +2626,12 @@ public enum LegendsAwakened implements LogicCardInfo {
           move "Hidden Power", {
             text "Search your deck for any 1 card and discard it. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Deck is empty"
+            }
             onAttack {
-              // TODO
+              deck.select(max: 1, "Discard").discard()
+              shuffleDeck()
             }
           }
         };
@@ -2594,7 +2641,13 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokePower "VACATION", {
             text "Once during your turn (before your attack), you may remove 2 damage counters from each of your Pokémon. If you do, your turn ends. This power can't be used if Unown V is affected by a Special Condition."
             actionA {
-              // TODO
+              checkNoSPC()
+              checkLastTurn()
+              powerUsed()
+              my.all.each {
+                heal 20, it
+              }
+              bg.gm().betweenTurns()
             }
           }
           move "Hidden Power", {
@@ -2615,7 +2668,14 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokeBody "WALL", {
             text "As long as Unown W is your Active Pokémon, any damage done to your Pokémon by an opponent's attack is reduced by 10 (after applying Weakness and Resistance)."
             delayedA {
-              // TODO
+              after PROCESS_ATTACK_EFFECTS, {
+                bg.dm().each {
+                  if (self.active && it.to.owner == self.owner && it.dmg.value && it.notNoEffect) {
+                    bc "Wall -10"
+                    it.dmg -= hp(10)
+                  }
+                }
+              }
             }
           }
           move "Hidden Power", {
@@ -2634,15 +2694,22 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokePower "YAWN", {
             text "Once during your turn (before your attack), if Unown Y is on your Bench, you may remove 1 damage counter from 1 of your Active Unown and that Unown is now Asleep."
             actionA {
-              // TODO
+              checkLastTurn()
+              assert self.benched : "Unown Y not benched"
+              powerUsed()
+              heal 10, my.active
+              apply ASLEEP, self
             }
           }
           move "Hidden Power", {
             text "Search your deck for up to 2 Trainer cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
             energyCost C, C
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Deck is empty"
+            }
             onAttack {
-              // TODO
+              deck.search(max:2, cardTypeFilter(TRAINER)).moveTo(hand)
+              shuffleDeck()
             }
           }
         };
@@ -2652,14 +2719,35 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokePower "?", {
             text "Once during your turn (before your attack), if Unown ? is on your Bench, you may choose a Pokémon in your hand and put it face down. Your opponent guesses a type of that Pokémon. Reveal that card. If your opponent guessed wrong, draw a card. Then, put that card back into your hand."
             actionA {
-              // TODO
+              assert self.benched : "Unown ? is not on your Bench"
+              assert my.hand.filterByType(POKEMON) : "No Pokémon in your hand"
+              checkLastTurn()
+              powerUsed()
+
+              def myCard = my.hand.filterByType(POKEMON).select("Select a Pokémon for your opponent to guess.")
+
+              def choices = [COLORLESS, FIRE, FIGHTING, GRASS, WATER, PSYCHIC, LIGHTNING, METAL, DARKNESS, FAIRY, DRAGON]
+              def types = ['Colorless', 'Fire', 'Fighting', 'Grass', 'Water', 'Psychic', 'Lightning', 'Metal', 'Darkness', 'Fairy', 'Dragon']
+              def opponentChoice = oppChoose(choices, types, "Guess the type of Pokémon your opponent has chosen")
+
+              myCard.showToOpponent("Your Opponent's chosen card.")
+              if (!myCard.cardTypes.contains(opponentChoice)) {
+                bc "Hidden Power - The correct type was guessed."
+                draw 1
+              } else {
+                bc "Hidden Power - The wrong type was guessed"
+              }
             }
           }
           move "Hidden Power", {
             text "Discard up to 2 cards from your hand. For each card you discarded, draw a card."
-            attackRequirement {}
+            attackRequirement {
+              def hand = my.hand.getExcludedList(thisCard).size() >= 1
+              assert (hand || my.deck) : "Not enough cards in your hand or your deck is empty."
+            }
             onAttack {
-              // TODO
+              def num = my.hand.getExcludedList(thisCard).select(min: 1, max:2, "Discard up to 2 cards and draw twice as many").discard().size()
+              draw num
             }
           }
         };
