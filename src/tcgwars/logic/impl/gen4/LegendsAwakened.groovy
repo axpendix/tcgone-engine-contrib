@@ -2030,7 +2030,7 @@ public enum LegendsAwakened implements LogicCardInfo {
 //                    unregister()
 //                  }
 //                }
-              }
+//              }
             }
           }
           move "Grind", {
@@ -2555,7 +2555,15 @@ public enum LegendsAwakened implements LogicCardInfo {
             text "Search your opponent's discard pile for up to 2 Energy cards and attach them to any of your opponent's Pokémon in any way you like. For each Energy card attached in this way, this attack does 20 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             attackRequirement {}
             onAttack {
-              // TODO
+              if (opp.discard.filterByType(ENERGY)) {
+                def energies = opp.discard.filterByType(ENERGY).select("Select up to 2 Energy Cards to attach")
+
+                energies.each {
+                  def target = opp.all.select("Attach to?")
+                  attachEnergy(target, it)
+                  damage 20, target
+                }
+              }
             }
           }
           move "Dangerous Poison", {
@@ -2603,14 +2611,28 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokePower "RETIRE", {
             text "Once during your turn, if Unown R is on your Bench, you may discard Unown R and all cards attached to it. (This doesn't count as a Knocked Out Pokémon.) Then, draw a card."
             actionA {
-              // TODO
+              assert self.benched : "$self is not on the Bench"
+              powerUsed()
+              draw 1
+              self.cards.discard()
+              removePCS(self)
             }
           }
           move "Hidden Power", {
             text "Move any number of basic Energy cards attached to your Pokémon to your other Pokémon in any way you like."
             attackRequirement {}
             onAttack {
-               // TODO
+              while(1) {
+                def pl = (my.all.findAll { it.cards.energyCount(C) })
+                if (!pl) break;
+                def src = pl.select("Source for energy (cancel to stop)", false)
+                if (!src) break;
+                def card = src.cards.select("Card to move",cardTypeFilter(ENERGY)).first()
+
+                def tar = my.all.select("Target for energy (cancel to stop)", false)
+                if (!tar) break;
+                energySwitch(src, tar, card)
+              }
             }
           }
         };
@@ -2620,7 +2642,21 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokeBody "UNSEEN", {
             text "As long as Unown U is on your Bench, prevent all effects of attacks, including damage, done by your opponent's Pokémon to any Unown on your Bench."
             delayedA {
-              // TODO
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each {
+                  if (it.to.owner==self.owner && self.benched && it.to.name == "Unown" && it.dmg.value) {
+                    bc "UNSEEN prevents damage"
+                    it.dmg=hp(0)
+                  }
+                }
+              }
+              before null, null, Source.ATTACK, {
+                def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
+                if (bg.currentTurn == self.owner.opposite && ef.effectType != DAMAGE && pcs && pcs.owner == self.owner && self.benched && pcs.topPokemonCard.name == "Unown") {
+                  bc "UNSEEN prevents effect"
+                  prevent()
+                }
+              }
             }
           }
           move "Hidden Power", {
@@ -3936,11 +3972,27 @@ public enum LegendsAwakened implements LogicCardInfo {
       case STARK_MOUNTAIN_135:
         return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card."+
-            "Once during each player's turn, that player may choose a Fire or [F] Energy attached to 1 of his or her Pokémon and move that Energy to 1 of his or her Fire or [F] Pokémon."
+            "Once during each player's turn, that player may choose a [R] or [F] Energy attached to 1 of his or her Pokémon and move that Energy to 1 of his or her [R] or [F] Pokémon."
+          def lastTurn = 0
+          def actions = []
           onPlay {
-            // TODO
+            actions = action("Stadium: Stark Mountain") {
+              assert my.all.find { it.cards.energyCount(R) || it.cards.energyCount(F) } : "There are no [R] or [F] Energy cards attached to your Pokémon"
+              assert my.all.findAll { it.types.contains(R) || it.types.contains(F) } : "No [R] or [F] Pokémon to attach to"
+              assert lastTurn != bg().turnCount : "Already used"
+              bc "Used Stark Mountain effect"
+              lastTurn = bg().turnCount
+
+              def src = my.all.findAll { it.cards.energyCount(R) || it.cards.energyCount(F) }.select("Source for the Energy")
+              def energy = src.cards.select("Energy to move", {
+                it.cardTypes.is(ENERGY) && (it.asEnergyCard().containsType(R) || it.asEnergyCard().containsType(F))
+              })
+              def tar = my.all.findAll { it.types.contains(R) || it.types.contains(F) }.select("Target for the Energy")
+              energySwitch(src, tar, energy)
+            }
           }
           onRemoveFromPlay{
+            actions.each { bg().gm().unregisterAction(it) }
           }
         };
       case TECHNICAL_MACHINE_TS_1_136:
