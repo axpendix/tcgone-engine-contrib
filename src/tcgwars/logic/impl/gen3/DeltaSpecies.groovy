@@ -1864,7 +1864,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            my.deck.search ("Search your dekc for a [M] Pokémon (excluding Pokémon-ex)"), {it.asPokemonCard().types.contains(M) && !it.asPokemonCard().cardTypes.is(EX)}).showToOpponent("Cry for Help: Selected Cards").moveTo(my.hand)
+            my.deck.search("Search your dekc for a [M] Pokémon (excluding Pokémon-ex)", {it.asPokemonCard().types.contains(M) && !it.asPokemonCard().cardTypes.is(EX)}).showToOpponent("Cry for Help: Selected Cards").moveTo(my.hand)
             shuffleDeck()
           }
         }
