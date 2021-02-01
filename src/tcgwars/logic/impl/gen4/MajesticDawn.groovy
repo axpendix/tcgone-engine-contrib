@@ -686,11 +686,11 @@ public enum MajesticDawn implements LogicCardInfo {
                     for (Ability ability : it.getAbilities().keySet()) {
                       if (ability instanceof PokePower) hasPokePower = true;
                     }
-                    if (once) {
-                      bc "Cursed Alloy"
-                      once = false
-                    }
                     if (hasPokePower) {
+                      if (once) {
+                        bc "Cursed Alloy"
+                        once = false
+                      }
                       directDamage(10, it, SRC_ABILITY)
                       hasPokePower = false
                     }
@@ -860,7 +860,7 @@ public enum MajesticDawn implements LogicCardInfo {
           }
           move "Sand Impact", {
             text "50+ damage. Flip a coin for each [F] Energy attached to Hippowdon. This attack does 50 damage plus 20 more damage for each heads."
-            energyCost F, C, C, F
+            energyCost F, C, C
             onAttack {
               damage 50
               flip self.cards.energyCount(F), {

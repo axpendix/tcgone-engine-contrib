@@ -975,17 +975,28 @@ public enum SecretWonders implements LogicCardInfo {
           weakness F, PLUS30
           resistance M, MINUS20
           pokePower "Motor Drive", {
-            text "Once during your turn , you may search your discard pile for a Energy card and attach it to Elective. This power can’t be used if Elective is affected by a Special Condition."
+            text "Once during your turn , you may search your discard pile for a [L] Energy card and attach it to Elective. This power can’t be used if Elective is affected by a Special Condition."
             actionA {
-
+              checkLastTurn()
+              checkNoSPC()
+              assert my.discard.filterByEnergyType(L) : "You have no [L] Energy cards in your discard pile"
+              powerUsed()
+              attachEnergyFrom(type: L, my.discard, self)
             }
           }
           move "Discharge", {
-            text "50× damage. Energy you discarded. This attack does 50 damage times the number of heads."
-            energyCost L, C, C, L, L
-            attackRequirement {}
+            text "50× damage. Discard all [L] Energy attached to Electivire. Flip a coin for each [L] Energy you discarded. This attack does 50 damage times the number of heads."
+            energyCost L, C, C
+            attackRequirement {
+              assert self.cards.energyCount(L) : "You ave no [L] Energy attached to Electivire"
+            }
             onAttack {
-              damage 0
+              flip self.cards.energyCount(L), {
+                damage 50
+              }
+              afterDamage {
+                discardAllSelfEnergy L
+              }
             }
           }
 
