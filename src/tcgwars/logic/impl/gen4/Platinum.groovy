@@ -2742,7 +2742,7 @@ public enum Platinum implements LogicCardInfo {
             text "Flip a coin. If heads, search your discard pile for a Trainer card, show it to your opponent, and put it into your hand."
             energyCost ()
             attackRequirement {
-              assert my.discard.filterbyType(ITEM) : "You have no Trainer cards in your discard pile"
+              assert my.discard.filterByType(ITEM) : "You have no Trainer cards in your discard pile"
             }
             onAttack {
               flip {
