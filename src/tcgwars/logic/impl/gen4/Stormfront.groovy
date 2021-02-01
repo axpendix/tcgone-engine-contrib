@@ -1671,7 +1671,7 @@ public enum Stormfront implements LogicCardInfo {
           }
           move "Electro Diffusion", {
             text "40+ damage. Does 40 damage plus 10 more damage for each [L] Energy attached to Electrode. Flip a coin. If tails, discard all [L] Energy attached to Electrode."
-            energyCost C, C, L, L
+            energyCost C, C
             onAttack {
               damage 40 + 10 * self.cards.energyCount(L)
               flip 1, {}, {
@@ -2691,7 +2691,7 @@ public enum Stormfront implements LogicCardInfo {
           resistance W, MINUS20
           move "Ingrain", {
             text "Flip a coin. If tails, this attack does nothing. If heads, search your deck for a [G] Energy card and attach it to Tangela. Shuffle your deck afterward. If you do, prevent all effects of an attack, including damage, done to Tangela during your opponent's next turn. "
-            energyCost C, G
+            energyCost C
             attackRequirement {
               assert my.deck : "Your deck is empty"
             }
@@ -2770,7 +2770,7 @@ public enum Stormfront implements LogicCardInfo {
           resistance M, MINUS20
           move "Outlet", {
             text "Energy card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
-            energyCost C, L
+            energyCost C
             attackRequirement {
               assert my.deck : "Your deck is emtpy"
             }

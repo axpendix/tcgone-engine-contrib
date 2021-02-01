@@ -618,7 +618,7 @@ public enum Platinum implements LogicCardInfo {
           }
           move "Attract Current", {
             text "40 damage. Search your deck for a [L] Energy card and attach it to 1 of your Pokémon. Shuffle your deck afterward."
-            energyCost C, C, L
+            energyCost C, C
             onAttack {
               damage 40
               attachEnergyFrom(type:L, my.deck, my.all)
@@ -2362,7 +2362,7 @@ public enum Platinum implements LogicCardInfo {
           resistance W, MINUS20
           move "Sneaky Attack", {
             text "10+ damage. If Cacnea has any [D] Energy attached to it, this attack does 10 damage plus 10 more damage."
-            energyCost C, D
+            energyCost C
             onAttack {
               damage 10
               if(self.cards.filterByEnergyType(D)) {

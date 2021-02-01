@@ -1039,7 +1039,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                 powerUsed()
                 def tar = my.deck.subList(0, 8)
                 tar.showToMe("The top 8 cards of your deck. You will be asked to pick target Pokémon for every basic Energy there.")
-                tar.filterByType(ENERGY).each {
+                tar.filterByType(BASIC_ENERGY).each {
                   def pcs = my.all.select("Attach $it to? (cancel to skip this card)", false)
                   if (pcs) {
                     attachEnergy(pcs, it)

@@ -2493,7 +2493,7 @@ public enum LegendMaker implements LogicCardInfo {
             after ATTACH_ENERGY, self, {
               if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(R)) {
                 bc "Fire Remedy removes 1 damage counter and all Special Conditions from Arcanine ex"
-                heal 10, self
+                heal 10, self, SRC_ABILITY
                 if (self.specialConditions) {
                   clearSpecialCondition(self, SRC_ABILITY)
                 }
