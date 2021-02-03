@@ -310,12 +310,16 @@ public class CardList extends ArrayList<Card> {
       min = count
       max = count
     }
+    CardList cards = this;
     boolean hidden = params.hidden ?: false
+    if (hidden) {
+      cards = this.shuffledCopy();
+    }
     if (playerType != TcgStatics.bg().currentThreadPlayerType) {
       TcgStatics.block()
     }
     def ret = TcgStatics.bg().getClient(playerType).selectCard(new CardSelectUIRequestBuilder()
-      .setMinMax(min, max).setInfo(info).setCards(this).setCustomCardFilter(filter as CardSelectUIRequestBuilder.CustomCardFilter).setCustomPassFilter(passFilter as CardSelectUIRequestBuilder.CustomPassFilter)
+      .setMinMax(min, max).setInfo(info).setCards(cards).setCustomCardFilter(filter as CardSelectUIRequestBuilder.CustomCardFilter).setCustomPassFilter(passFilter as CardSelectUIRequestBuilder.CustomPassFilter)
       .setShowAsHidden(hidden))
       .setType(CardListType.TEMPORARY)
     if (playerType != TcgStatics.bg().currentThreadPlayerType) {
