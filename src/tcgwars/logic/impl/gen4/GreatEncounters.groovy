@@ -1281,7 +1281,7 @@ public enum GreatEncounters implements LogicCardInfo {
           }
           move "Psychic Snap", {
             text "30+ damage. If Gorebyss has any [P] Energy attached to it, this attack does 30 damage plus 20 more damage and Defending Pokémon is now Confused."
-            energyCost W, C, P
+            energyCost W, C
             onAttack {
               damage 30
               if (self.cards.energyCount(P)) {
