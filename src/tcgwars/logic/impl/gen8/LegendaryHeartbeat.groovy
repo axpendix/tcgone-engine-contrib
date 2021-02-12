@@ -1056,8 +1056,10 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           text " Both Active Pokémon are Knocked Out."
           energyCost M, M, C, C
           onAttack {
-            new Knockout(defending).run(bg)
-            new Knockout(self).run(bg)
+            afterDamage {
+              new Knockout(defending).run(bg)
+              new Knockout(self).run(bg)
+            }
           }
         }
       };

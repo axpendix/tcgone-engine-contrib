@@ -1315,7 +1315,7 @@ class TcgStatics {
    * @param params  Optional settings Map
    * @param params.count  Number of energy to attach. All must be attached. Overrides max and may.
    * @param params.max  Maximum number of energy that can be chosen to attach
-   * @param params.tostrOverride  Override for the
+   * @param params.tostr Override  Override for the
    * @param params.type The type of energy to attach
    * @param params.basic  Whether the energy should be a Basic energy card
    * @param params.may  Whether the player can fail the attachment (e.g. from Hand or Deck)
