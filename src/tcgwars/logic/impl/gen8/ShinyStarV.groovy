@@ -108,7 +108,7 @@ public enum ShinyStarV implements LogicCardInfo {
         bwAbility "Familiar Land", {
           text "If you have any Stadium card in play, this Pokémon has no Retreat Cost."
           getterA GET_RETREAT_COST, BEFORE_LAST, self, { h->
-            if (bg.getStadiumInfoStruct().stadiumCard.player == self.owner) {
+            if (bg.stadiumInfoStruct?.stadiumCard?.player == self.owner) {
               h.object = 0;
             }
           }
