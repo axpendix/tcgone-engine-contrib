@@ -312,7 +312,7 @@ public class CardList extends ArrayList<Card> {
     }
     CardList cards = this;
     boolean hidden = params.hidden ?: false
-    if (hidden) {
+    if (hidden && this.persistent && this.persistentName == "Hand") {
       cards = this.shuffledCopy();
     }
     if (playerType != TcgStatics.bg().currentThreadPlayerType) {
