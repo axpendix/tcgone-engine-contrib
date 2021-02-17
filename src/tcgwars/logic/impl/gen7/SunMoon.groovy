@@ -1978,14 +1978,10 @@ public enum SunMoon implements LogicCardInfo {
           resistance PSYCHIC, MINUS20
           bwAbility "Rough Skin", {
             text "If this Pokémon is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), put 3 damage counters on the Attacking Pokémon."
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if(self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                  bc "Rough Skin activates"
-                  directDamage(30, ef.attacker)
-                }
-              }
-            }
+            ifActiveAndDamagedByAttackBody({
+              bc "Rough Skin activates"
+              directDamage(30, ef.attacker)
+            }, self, delegate)
           }
           move "Aqua Impact", {
             text "60+ damage. This attack does 20 more damage for each [C] in your opponent's Active Pokémon's Retreat Cost."
@@ -2774,23 +2770,10 @@ public enum SunMoon implements LogicCardInfo {
       case POISON_BARB_124:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nIf the Pokémon this card is attached to is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Poisoned.\nYou may play as many Item cards as you like during your turn (before your attack)."
-          def eff
-          onPlay {reason->
-            eff = delayed(priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                bg().dm().each {
-                  if (it.to == self && it.dmg.value > 0 && bg.currentTurn==self.owner.opposite
-                    && self.active) {
-                    bc "Poison Barb activates"
-                    apply POISONED, it.from, SRC_ABILITY
-                  }
-                }
-              }
-            }
-          }
-          onRemoveFromPlay {
-            eff.unregister()
-          }
+          ifActiveAndDamagedByAttackAttached({
+            bc "Poison Barb activates"
+            apply POISONED, ef.attacker, TRAINER_CARD
+          }, self, delegate, thisCard)
         }
       case POKE_BALL_125:
         return copy(BlackWhite.POKE_BALL_97, this)

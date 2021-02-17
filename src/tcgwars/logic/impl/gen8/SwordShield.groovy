@@ -2830,23 +2830,15 @@ public enum SwordShield implements LogicCardInfo {
         resistance G, MINUS30
         bwAbility "Snap Trap", {
           text "If this Pokémon is in the Active Spot and is damaged by an opponent’s attack (even if it is Knocked Out), discard an Energy from the Attacking Pokémon."
-          delayedA (priority: LAST) {
-            before APPLY_ATTACK_DAMAGES, {
+          ifActiveAndDamagedByAttackBody({
               PokemonCardSet pcs = ef.attacker
-              if (pcs.owner != self.owner) {
-                bg.dm().each{
-                  if (it.to == self && self.active && it.dmg.value) {
-                    targeted (pcs, SRC_ABILITY) {
-                      if(pcs.cards.filterByType(ENERGY)){
-                        bc "Galarian Stunfisk's Snap Trap activates."
-                        pcs.cards.filterByType(ENERGY).select("Discard",{true},self.owner).discard()
-                      }
-                    }
-                  }
+              targeted (pcs, SRC_ABILITY) {
+                if (pcs.cards.filterByType(ENERGY)){
+                  bc "Galarian Stunfisk's Snap Trap activates."
+                  pcs.cards.filterByType(ENERGY).select("Discard",{true},self.owner).discard()
                 }
               }
-            }
-          }
+          }, self, delegate)
         }
         move "Damage Rush", {
           text "30+ damage. Flip a coin until you get tails. This attack does 30 more damage for each heads."

@@ -1856,4 +1856,68 @@ class TcgStatics {
     bef.unregisterItself bg.em()
   }
 
+  /* Effects that trigger when a Pokémon is active and damaged by an opposing attack, can be called by either a Poké-Body / Ability, an attack, or a card attached to the Pokémon. */
+
+  // poke bodies and abilities
+  static ifActiveAndDamagedByAttackBody (Closure eff, PokemonCardSet self, Object delegate) {
+    delegate.delayedA (priority: BEFORE_LAST) {
+      def applyEffect = false
+      before APPLY_ATTACK_DAMAGES, {
+          applyEffect = bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({ it.to==self && it.dmg.value}))
+      }
+      after APPLY_ATTACK_DAMAGES, {
+        if (applyEffect) {
+          eff()
+          applyEffect = false
+        }
+      }
+    }
+  }
+
+  // tools and special energy
+  static ifActiveAndDamagedByAttackAttached (Closure c, PokemonCardSet self, Object delegate, Card thisCard) {
+    def eff
+    delegate.onPlay {reason->
+      eff = delayed(priority: BEFORE_LAST) {
+        def applyEffect = false
+        before APPLY_ATTACK_DAMAGES, {
+          bg().dm().each {
+            if (it.to == self && it.dmg.value && bg.currentTurn == self.owner.opposite && self.active) {
+              applyEffect = true
+            }
+          }
+        }
+        after APPLY_ATTACK_DAMAGES, {
+          if (applyEffect) {
+            if (self.cards.contains(thisCard)) c() // card didn't get discarded by an attack effect
+            applyEffect = false
+          }
+        }
+      }
+    }
+    delegate.onRemoveFromPlay {
+      eff.unregister()
+    }
+  }
+
+  // attacks that put the effect on itself for one turn
+  static ifDamagedByAttackNextTurn (Closure eff, PokemonCardSet self) {
+    delayed(priority: BEFORE_LAST) {
+      def applyEffect = false
+      before APPLY_ATTACK_DAMAGES, {
+          applyEffect = bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})
+      }
+      after APPLY_ATTACK_DAMAGES, {
+        if (applyEffect) {
+          eff()
+          applyEffect = false
+        }
+      }
+      unregisterAfter 2
+      after FALL_BACK, self, {unregister()}
+      after EVOLVE, self, {unregister()}
+      after DEVOLVE, self, {unregister()}
+    }
+  }
+
 }

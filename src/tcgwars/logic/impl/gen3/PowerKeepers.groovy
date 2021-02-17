@@ -1251,13 +1251,9 @@ public enum PowerKeepers implements LogicCardInfo {
         weakness F
         pokeBody "Strikes Back", {
           text "If Vigoroth is your Active Pokémon and is damaged by an opponent's attack (even if Vigoroth is Knocked Out), put 1 damage counter on the Attacking Pokémon."
-          delayedA {
-            before APPLY_ATTACK_DAMAGES, {
-              if (bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({ it.to==self && it.dmg.value })) {
-                directDamage(10, ef.attacker, Source.SRC_ABILITY)
-              }
-            }
-          }
+          ifActiveAndDamagedByAttackBody({
+            directDamage(10, ef.attacker, Source.SRC_ABILITY)
+          }, self, delegate)
         }
         move "Ambush", {
           text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 20 more damage."
@@ -1361,13 +1357,9 @@ public enum PowerKeepers implements LogicCardInfo {
         resistance P, MINUS30
         pokeBody "Rough Skin", {
           text "If Carvanha is your Active Pokémon and is damaged by an opponent's attack (even if Carvanha is Knocked Out), put 1 damage counter on the Attacking Pokémon."
-          delayedA {
-            before APPLY_ATTACK_DAMAGES, {
-              if (bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({ it.to==self && it.dmg.value })) {
-                directDamage(10, ef.attacker, Source.SRC_ABILITY)
-              }
-            }
-          }
+          ifActiveAndDamagedByAttackBody({
+            directDamage(10, ef.attacker, Source.SRC_ABILITY)
+          }, self, delegate)
         }
         move "Gnaw", {
           text "20 damage."

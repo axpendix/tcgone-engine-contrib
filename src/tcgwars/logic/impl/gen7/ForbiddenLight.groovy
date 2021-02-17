@@ -1358,14 +1358,10 @@ public enum ForbiddenLight implements LogicCardInfo {
           weakness PSYCHIC
           bwAbility "Poison Point", {
             text "If this Pokémon is your Active Pokémon and is damaged by an opponent’s attack (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Poisoned."
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if(self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                  bc "Poison Point"
-                  apply POISONED, (ef.attacker as PokemonCardSet), SRC_ABILITY
-                }
-              }
-            }
+            ifActiveAndDamagedByAttackBody({
+              bc "Poison Point"
+              apply POISONED, (ef.attacker as PokemonCardSet), SRC_ABILITY
+            }, self, delegate)
           }
           move "Twister", {
             text "60 damage. Flip 2 coins. For each heads, discard an Energy from your opponent’s Active Pokémon. If both of them are tails, this attack does nothing."

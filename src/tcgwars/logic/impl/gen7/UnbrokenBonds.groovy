@@ -3151,18 +3151,10 @@ public enum UnbrokenBonds implements LogicCardInfo {
             energyCost M, C, C
             onAttack {
               damage 80
-              delayed (priority: LAST) {
-                before APPLY_ATTACK_DAMAGES, {
-                  if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                    bc "Extra-Tight activates"
-                    directDamage(80, ef.attacker as PokemonCardSet)
-                  }
-                }
-                unregisterAfter 2
-                after FALL_BACK, self, {unregister()}
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
-              }
+              ifDamagedByAttackNextTurn({
+                bc "Extra-Tight activates"
+                directDamage(80, ef.attacker as PokemonCardSet)
+              }, self)
             }
           }
           move "Giga Impact", {

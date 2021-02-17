@@ -2563,16 +2563,10 @@ public enum SunMoonPromos implements LogicCardInfo {
           weakness W
           bwAbility "Cursed Body", {
             text "If this Pokémon is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Confused."
-            delayedA {
-              before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if (it.to == self && self.active && it.dmg.value && bg.currentTurn == self.owner.opposite) {
-                    bc "Cursed Body activates."
-                    apply CONFUSED, it.from, SRC_ABILITY
-                  }
-                }
-              }
-            }
+            ifActiveAndDamagedByAttackBody({
+              bc "Cursed Body activates."
+              apply CONFUSED, ef.attacker, SRC_ABILITY
+            }, self, delegate)
           }
           move "Fiery Bone", {
             text "90 damage. Your opponent's Active Pokémon is now Burned."
@@ -3185,13 +3179,9 @@ public enum SunMoonPromos implements LogicCardInfo {
         weakness M
         bwAbility "Spiky Shield", {
           text "If this Pokémon is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), put 3 damage counters on the Attacking Pokémon."
-          delayedA {
-            before APPLY_ATTACK_DAMAGES, {
-              if (bg.currentTurn == self.owner.opposite && bg.dm().find({ it.to==self && it.dmg.value }) && self.active) {
-                directDamage(30, ef.attacker, Source.SRC_ABILITY)
-              }
-            }
-          }
+          ifActiveAndDamagedByAttackBody({
+            directDamage(30, ef.attacker, Source.SRC_ABILITY)
+          }, self, delegate)
         }
         move "Frost Breath", {
           text "120 damage."

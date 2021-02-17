@@ -1096,16 +1096,10 @@ public enum Stormfront implements LogicCardInfo {
           weakness W, PLUS20
           pokeBody "Burning Mane", {
             text "If Rapidash is your Active Pokémon and is damaged by an opponent’s attack (even if Rapidash is Knocked Out), the Attacking Pokémon is now Burned."
-            delayedA {
-              before APPLY_ATTACK_DAMAGES, {
-                bg().dm().each {
-                  if (it.to == self && self.active && it.dmg.value && bg.currentTurn==self.owner.opposite) {
-                    bc "Burning Mane activates."
-                    apply BURNED, it.from, SRC_ABILITY
-                  }
-                }
-              }
-            }
+            ifActiveAndDamagedByAttackBody({
+              bc "Burning Mane activates."
+              apply BURNED, ef.attacker, SRC_ABILITY
+            }, self, delegate)
           }
           move "Rear Kick", {
             text "30 damage. "
@@ -1129,16 +1123,10 @@ public enum Stormfront implements LogicCardInfo {
           weakness R, PLUS20
           pokeBody "Hidden Poison", {
             text "If Roserade is your Active Pokémon and is damaged by an opponent’s attack (even if Roserade is Knocked Out), the Defending Pokémon is now Poisoned."
-            delayedA {
-              before APPLY_ATTACK_DAMAGES, {
-                bg().dm().each {
-                  if (it.to == self && self.active && it.dmg.value && bg.currentTurn==self.owner.opposite) {
-                    bc "Hidden Poison activates."
-                    apply POISONED, it.from, SRC_ABILITY
-                  }
-                }
-              }
-            }
+            ifActiveAndDamagedByAttackBody({
+              bc "Hidden Poison activates."
+              apply POISONED, ef.attacker, SRC_ABILITY
+            }, self, delegate)
           }
           move "Bowed Whip", {
             text "Choose 1 of your opponent's Pokémon. This attack does 30 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.) Flip a coin. If heads, discard an Energy card attached to that Pokémon."
@@ -1613,18 +1601,12 @@ public enum Stormfront implements LogicCardInfo {
           resistance M, MINUS20
           pokeBody "Radiance", {
             text "If Electrode is your Active Pokémon and is damaged by an opponent’s attack (even if Electrode is Knocked Out), put 1 damage counter on each of your opponent’s Pokémon."
-            delayedA {
-              before APPLY_ATTACK_DAMAGES, {
-                bg().dm().each {
-                  if (it.to == self && self.active && it.dmg.value && bg.currentTurn==self.owner.opposite) {
-                    bc "Radiance activates."
-                    self.owner.opposite.pbg.all.each {
-                      directDamage 10, it, SRC_ABILITY
-                    }
-                  }
-                }
+            ifActiveAndDamagedByAttackBody({
+              bc "Radiance activates."
+              self.owner.opposite.pbg.all.each {
+                directDamage 10, it, SRC_ABILITY
               }
-            }
+            }, self, delegate)
           }
           def turnCount=-1
           HP lastDamage=null
@@ -1949,7 +1931,7 @@ public enum Stormfront implements LogicCardInfo {
           pokeBody "Overeager", {
             text "If Sableye is your Active Pokémon at the beginning of the game, you go first. (If each player’s Active Pokémon has the Overeager Poké-Body, this power does nothing.)"
             delayedA {
-              //TODO : I think this has to be engine level? 
+              //TODO : I think this has to be engine level?
             }
           }
           move "Impersonate", {

@@ -3083,19 +3083,10 @@ public enum UnifiedMinds implements LogicCardInfo {
             energyCost D
             onAttack {
               damage 10
-
-              delayed (priority: LAST) {
-                before APPLY_ATTACK_DAMAGES, {
-                  if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})) {
-                    bc "Mirror Gem activates."
-                    directDamage(80, ef.attacker as PokemonCardSet)
-                  }
-                }
-                unregisterAfter 2
-                after FALL_BACK, self, {unregister()}
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
-              }
+              ifDamagedByAttackNextTurn({
+                bc "Mirror Gem activates."
+                directDamage(80, ef.attacker as PokemonCardSet)
+              }, self)
             }
           }
         };
@@ -3909,14 +3900,10 @@ public enum UnifiedMinds implements LogicCardInfo {
           weakness F
           bwAbility "Counterattack", {
             text "If this Pokémon is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), put 4 damage counters on the Attacking Pokémon."
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if (self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({ it.to == self && it.dmg.value })) {
-                  bc "Counterattack activates."
-                  directDamage(40, ef.attacker)
-                }
-              }
-            }
+            ifActiveAndDamagedByAttackBody({
+              bc "Counterattack activates."
+              directDamage(40, ef.attacker)
+            }, self, delegate)
           }
           move "Dynamic Swing", {
             text "100+ damage. You may do 100 more damage. If you do, during your opponent's next turn, this Pokémon takes 100 more damage from attacks (after applying Weakness and Resistance)."
@@ -4345,23 +4332,10 @@ public enum UnifiedMinds implements LogicCardInfo {
       case EAR_RINGING_BELL_194:
         return pokemonTool (this) {
           text "If the Pokémon this card is attached to is your Active Pokémon and is damaged by an opponent’s attack (even if that Pokémon is Knocked Out), the Attacking Pokémon is now Confused."
-          def eff
-          onPlay {reason->
-            eff = delayed(priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                bg().dm().each {
-                  if (it.to == self && it.dmg.value > 0 && bg.currentTurn==self.owner.opposite
-                    && self.active) {
-                    bc "Ear-Ringing Bell activates."
-                    apply CONFUSED, it.from, SRC_ABILITY
-                  }
-                }
-              }
-            }
-          }
-          onRemoveFromPlay {
-            eff.unregister()
-          }
+          ifActiveAndDamagedByAttackAttached({
+            bc "Ear-Ringing Bell activates."
+            apply CONFUSED, ef.attacker, TRAINER_CARD
+          }, self, delegate, thisCard)
         };
       case FLYINIUM_Z_AIR_SLASH_195:
         return pokemonTool (this) {
@@ -4398,10 +4372,19 @@ public enum UnifiedMinds implements LogicCardInfo {
           def eff
           onPlay {reason->
             eff=delayed (priority: LAST){
+              def applyEffect = false
               before APPLY_ATTACK_DAMAGES,{
                 if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value >= 180}) && self.active){
-                  bc "Giant Bomb explodes."
-                  directDamage(100, ef.attacker, TRAINER_CARD)
+                  applyEffect = true
+                }
+              }
+              after APPLY_ATTACK_DAMAGES, {
+                if (applyEffect) {
+                  if (self.cards.contains(thisCard)) {
+                    bc "Giant Bomb activates."
+                    directDamage(100, ef.attacker, TRAINER_CARD)
+                  }
+                  applyEffect = false
                 }
               }
               unregister {discard thisCard}

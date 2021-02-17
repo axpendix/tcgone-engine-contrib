@@ -905,14 +905,10 @@ public enum DarknessAblaze implements LogicCardInfo {
         resistance F, MINUS30
         bwAbility "Scorching Feathers", {
           text "If this Pokémon is in the Active Spot and is damaged by an attack from your opponent’s Pokémon (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Burned."
-          delayedA {
-            before APPLY_ATTACK_DAMAGES, {
-              if (self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})) {
-                bc "$thisAbility activates"
-                apply BURNED, ef.attacker, SRC_ABILITY
-              }
-            }
-          }
+          ifActiveAndDamagedByAttackBody({
+            bc "$thisAbility activates"
+            apply BURNED, ef.attacker, SRC_ABILITY
+          }, self, delegate)
         }
         move "Mach Flight", {
           text "120 damage. During your opponent’s next turn, the Defending Pokémon can’t retreat."
@@ -3048,18 +3044,10 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
-            delayed (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                  bc "Trap Bite activates"
-                  directDamage(120, ef.attacker as PokemonCardSet)
-                }
-              }
-              unregisterAfter 2
-              after FALL_BACK, self, {unregister()}
-              after EVOLVE, self, {unregister()}
-              after DEVOLVE, self, {unregister()}
-            }
+            ifDamagedByAttackNextTurn({
+              bc "Trap Bite activates"
+              directDamage(120, ef.attacker as PokemonCardSet)
+            }, self)
           }
         }
       };

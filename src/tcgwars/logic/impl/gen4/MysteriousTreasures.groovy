@@ -820,14 +820,10 @@ public enum MysteriousTreasures implements LogicCardInfo {
           weakness R, PLUS30
           pokeBody "Glacier Snow", {
             text "If Abomasnow is your Active Pokémon and is damaged by an opponent’s attack (even if Abomasnow is Knocked Out), the Attacking Pokémon is now Asleep."
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if (bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({it.to==self && it.dmg.value})) {
-                  bc "Glacier Snow triggers"
-                  apply ASLEEP, (ef.attacker as PokemonCardSet), SRC_ABILITY
-                }
-              }
-            }
+            ifActiveAndDamagedByAttackBody({
+              bc "Glacier Snow triggers"
+              apply ASLEEP, (ef.attacker as PokemonCardSet), SRC_ABILITY
+            }, self, delegate)
           }
           move "Heavy Blizzard", {
             text "60 damage. Flip a coin. If heads, put 1 damage counter on each of your opponent’s Benched Pokémon."
@@ -2064,18 +2060,10 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              delayed (priority: LAST) {
-                before APPLY_ATTACK_DAMAGES, {
-                  if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                    bc "Spike Armor activates"
-                    directDamage(40, ef.attacker as PokemonCardSet)
-                  }
-                }
-                unregisterAfter 2
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
-                after FALL_BACK, self, {unregister()}
-              }
+              ifDamagedByAttackNextTurn({
+                bc "Spike Armor activates"
+                directDamage(40, ef.attacker as PokemonCardSet)
+              }, self)
             }
           }
           move "Poison Spike", {

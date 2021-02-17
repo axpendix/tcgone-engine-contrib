@@ -1360,14 +1360,10 @@ public enum Arceus implements LogicCardInfo {
           resistance C, MINUS20
           pokeBody "Hidden Poison", {
             text "If Haunter is your Active Pokémon and is damaged by an opponent’s attack (even if Haunter is Knocked Out), the Attacking Pokémon is now Poisoned."
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if(self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                  bc "$thisAbility"
-                  apply POISONED, (ef.attacker as PokemonCardSet), SRC_ABILITY
-                }
-              }
-            }
+            ifActiveAndDamagedByAttackBody({
+              bc "$thisAbility"
+              apply POISONED, (ef.attacker as PokemonCardSet), SRC_ABILITY
+            }, self, delegate)
           }
           move "Tongue Spring", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon."

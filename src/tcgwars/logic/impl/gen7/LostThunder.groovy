@@ -2406,15 +2406,24 @@ public enum LostThunder implements LogicCardInfo {
           resistance FIGHTING, MINUS20
           bwAbility "Mirror Counter" , {
             text "If this Pokémon is your Active Pokémon and is damaged by an attack from your opponent's Pokémon-GX or Pokémon-EX (even if this Pokémon is Knocked Out), put damage counters on the Attacking Pokémon equal to the damage done to this Pokémon."
+
+
             delayedA (priority:LAST) {
+              def counterDmg = 0
               before APPLY_ATTACK_DAMAGES, {
                 if(self.active && ef.attacker.owner != self.owner && (ef.attacker.pokemonGX || ef.attacker.pokemonEX)) {
                   bg.dm().each{
                     if(it.to == self && it.dmg.value) {
-                      bc "Mirror Counter countered ${ef.attacker}'s attack"
-                      directDamage(it.dmg.value, ef.attacker, Source.SRC_ABILITY)
+                      counterDmg = it.dmg.value
                     }
                   }
+                }
+              }
+              after APPLY_ATTACK_DAMAGES, {
+                if (counterDmg) {
+                  bc "Mirror Counter countered ${ef.attacker}'s attack"
+                  directDamage(counterDmg, ef.attacker, Source.SRC_ABILITY)
+                  counterDmg = 0
                 }
               }
             }
@@ -3552,19 +3561,15 @@ public enum LostThunder implements LogicCardInfo {
           }
         };
       case SHIINOTIC_148:
-        return 	evolution (this, from:"Morelull", hp:HP100, type:FAIRY, retreatCost:2) {
+        return evolution (this, from:"Morelull", hp:HP100, type:FAIRY, retreatCost:2) {
           weakness METAL
           resistance DARKNESS, MINUS20
           bwAbility "Effect Spore" , {
             text "If this Pokémon is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Asleep."
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if(bg.currentTurn == self.owner.opposite &&  self.active && bg.dm().find({it.to==self && it.dmg.value})){
-                  bc "Effect Spore"
-                  apply ASLEEP, (ef.attacker as PokemonCardSet)
-                }
-              }
-            }
+            ifActiveAndDamagedByAttackBody({
+              bc "Effect Spore"
+              apply ASLEEP, (ef.attacker as PokemonCardSet)
+            }, self, delegate)
           }
           move "Dream's Touch" , {
             text "50 damage. If your opponent's Active Pokémon is Asleep, your opponent shuffles all Energy from it into their deck."
