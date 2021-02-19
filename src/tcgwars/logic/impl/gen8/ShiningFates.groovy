@@ -320,6 +320,7 @@ public enum ShiningFates implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 120
+            damage 30, self
           }
         }
       };
@@ -329,6 +330,7 @@ public enum ShiningFates implements LogicCardInfo {
         bwAbility "Woodland Stroll", {
           text "Once during your turn, if this Pokémon is in the Active Spot, you may look at the top 6 cards of your deck, reveal an Energy card you find there, and put it into your hand. Shuffle the other cards back into your deck."
           actionA {
+            // TODO
           }
         }
         move "Leaf Step", {
@@ -356,11 +358,11 @@ public enum ShiningFates implements LogicCardInfo {
       return basic (this, hp:HP110, type:G, retreatCost:1) {
         weakness R
         move "Attach Leaves", {
-          text " Attach up to 2 [G] Energy cards from your discard pile to your Benched Pokémon in any way you like."
+          text "Attach up to 2 [G] Energy cards from your discard pile to your Benched Pokémon in any way you like."
           energyCost C
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
         move "Gust", {
@@ -373,80 +375,22 @@ public enum ShiningFates implements LogicCardInfo {
         }
       };
       case ROWLET_6:
-      return basic (this, hp:HP050, type:G, retreatCost:1) {
-        weakness R
-        bwAbility "Sky Circus", {
-          text "If you played Bird Keeper from your hand during this turn, ignore all Energy in this Pokémon's attack costs."
-          actionA {
-          }
-        }
-        move "Wind Shard", {
-          text " This attack does 60 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
-          energyCost C, C, C
-          attackRequirement {}
-          onAttack {
-
-          }
-        }
-      };
+        return copy (DarknessAblaze.ROWLET_11, this);
       case DARTRIX_7:
-      return evolution (this, from:"Rowlet", hp:HP080, type:G, retreatCost:1) {
-        weakness R
-        move "Razor Leaf", {
-          text "40 damage."
-          energyCost G
-          attackRequirement {}
-          onAttack {
-            damage 40
-          }
-        }
-      };
+        return copy (DarknessAblaze.DARTRIX_12, this);
       case DECIDUEYE_8:
-      return evolution (this, from:"Dartrix", hp:HP140, type:G, retreatCost:2) {
-        weakness R
-        bwAbility "Deep Forest Camo", {
-          text "Prevent all damage done to this Pokémon by attacks from your opponent's Pokémon V and Pokémon-GX."
-          actionA {
-          }
-        }
-        move "Splitting Arrow", {
-          text "90 damage. This attack also does 20 damage to 2 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
-          energyCost G, C
-          attackRequirement {}
-          onAttack {
-            damage 90
-          }
-        }
-      };
+        return copy (DarknessAblaze.DECIDUEYE_13, this);
       case DHELMISE_V_9:
-      return basic (this, hp:HP220, type:G, retreatCost:2) {
-        weakness R
-        move "Anchor Anger", {
-          text "30+ damage. If any of your [G] Pokémon were Knocked Out by damage from an opponent's attack during their last turn, this attack does 90 more damage."
-          energyCost G
-          attackRequirement {}
-          onAttack {
-            damage 30
-          }
-        }
-        move "Giga Hammer", {
-          text "200 damage. During your next turn, this Pokémon can't use Giga Hammer."
-          energyCost G, G, C
-          attackRequirement {}
-          onAttack {
-            damage 200
-          }
-        }
-      };
+        return copy (SwordShield.DHELMISE_V_9, this);
       case DHELMISE_VMAX_10:
       return evolution (this, from:"Dhelmise V", hp:HP330, type:G, retreatCost:3) {
         weakness R
         move "Swinging Chain", {
-          text " This attack does 30 damage to 1 of your opponent's Pokémon for each [G] Energy attached to this Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+          text "This attack does 30 damage to 1 of your opponent's Pokémon for each [G] Energy attached to this Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost G
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
         move "Max Anchor", {
@@ -455,27 +399,19 @@ public enum ShiningFates implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 240
+            cantAttackNextTurn self
           }
         }
       };
       case GROOKEY_11:
-      return basic (this, hp:HP060, type:G, retreatCost:1) {
-        weakness R
-        move "Fury Swipes", {
-          text "10× damage. Flip 3 coins. This attack does 10 damage for each heads."
-          energyCost C
-          attackRequirement {}
-          onAttack {
-            damage 10
-          }
-        }
-      };
+        return copy (SwordShield.GROOKEY_10, this);
       case THWACKEY_12:
       return evolution (this, from:"Grookey", hp:HP090, type:G, retreatCost:2) {
         weakness R
         bwAbility "Lay of the Land", {
           text "If you have a Stadium in play, this Pokémon has no Retreat Cost."
           actionA {
+            // TODO
           }
         }
         move "Branch Poke", {
@@ -488,22 +424,7 @@ public enum ShiningFates implements LogicCardInfo {
         }
       };
       case RILLABOOM_13:
-      return evolution (this, from:"Thwackey", hp:HP170, type:G, retreatCost:3) {
-        weakness R
-        bwAbility "Voltage Beat", {
-          text "Once during your turn, you may search your deck for up to 2 [G] Energy cards and attach them to 1 of your Pokémon. Then, shuffle your deck."
-          actionA {
-          }
-        }
-        move "Hammer In", {
-          text "140 damage."
-          energyCost G, G, G, C
-          attackRequirement {}
-          onAttack {
-            damage 140
-          }
-        }
-      };
+        return copy (SwordShield.RILLABOOM_14, this);
       case GOSSIFLEUR_14:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -520,11 +441,11 @@ public enum ShiningFates implements LogicCardInfo {
       return evolution (this, from:"Gossifleur", hp:HP090, type:G, retreatCost:1) {
         weakness R
         move "Enriching Seeds", {
-          text " Heal all damage from 1 of your Benched Pokémon."
+          text "Heal all damage from 1 of your Benched Pokémon."
           energyCost C
           attackRequirement {}
           onAttack {
-
+            // TODO
           }
         }
         move "Surprise Attack", {
@@ -532,7 +453,7 @@ public enum ShiningFates implements LogicCardInfo {
           energyCost G
           attackRequirement {}
           onAttack {
-            damage 50
+            flip { damage 50 }
           }
         }
       };
@@ -621,7 +542,7 @@ public enum ShiningFates implements LogicCardInfo {
       return basic (this, hp:HP120, type:W, retreatCost:3) {
         weakness L
         move "Amazing Surge", {
-          text " This attack does 80 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+          text "This attack does 80 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W, L, M, C
           attackRequirement {}
           onAttack {
@@ -731,7 +652,7 @@ public enum ShiningFates implements LogicCardInfo {
       return basic (this, hp:HP090, type:W, retreatCost:1) {
         weakness L
         move "Spit-Out Shot", {
-          text " This attack does 50 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+          text "This attack does 50 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W, W
           attackRequirement {}
           onAttack {
@@ -743,7 +664,7 @@ public enum ShiningFates implements LogicCardInfo {
       return basic (this, hp:HP050, type:W, retreatCost:2) {
         weakness M
         move "Call for Family", {
-          text " Search your deck for a Basic Pokémon and put it onto your Bench. Then, shuffle your deck."
+          text "Search your deck for a Basic Pokémon and put it onto your Bench. Then, shuffle your deck."
           energyCost W
           attackRequirement {}
           onAttack {
@@ -838,7 +759,7 @@ public enum ShiningFates implements LogicCardInfo {
       return basic (this, hp:HP080, type:L, retreatCost:1) {
         weakness F
         move "Famished", {
-          text " Draw a card."
+          text "Draw a card."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -922,7 +843,7 @@ public enum ShiningFates implements LogicCardInfo {
       return basic (this, hp:HP060, type:D, retreatCost:1) {
         weakness F
         move "Ascension", {
-          text " Search your deck for a card that evolves from this Pokémon and put it onto this Pokémon to evolve it. Then, shuffle your deck."
+          text "Search your deck for a card that evolves from this Pokémon and put it onto this Pokémon to evolve it. Then, shuffle your deck."
           energyCost D
           attackRequirement {}
           onAttack {
@@ -939,7 +860,7 @@ public enum ShiningFates implements LogicCardInfo {
           }
         }
         move "Severe Poison", {
-          text " Your opponent's Active Pokémon is now Poisoned . Put 4 damage counters instead of 1 on that Pokémon during Pokémon Checkup."
+          text "Your opponent's Active Pokémon is now Poisoned . Put 4 damage counters instead of 1 on that Pokémon during Pokémon Checkup."
           energyCost D
           attackRequirement {}
           onAttack {
@@ -1009,7 +930,7 @@ public enum ShiningFates implements LogicCardInfo {
         weakness L
         resistance F, MINUS30
         move "Amazing Destruction", {
-          text " Your opponent's Active Pokémon is Knocked Out."
+          text "Your opponent's Active Pokémon is Knocked Out."
           energyCost R, P, D, C, C
           attackRequirement {}
           onAttack {
@@ -1021,7 +942,7 @@ public enum ShiningFates implements LogicCardInfo {
       return basic (this, hp:HP070, type:D, retreatCost:1) {
         weakness G
         move "Instigate", {
-          text " Your opponent shuffles their hand and puts it on the bottom of their deck. If they put any cards on the bottom of their deck in this way, they draw 3 cards."
+          text "Your opponent shuffles their hand and puts it on the bottom of their deck. If they put any cards on the bottom of their deck in this way, they draw 3 cards."
           energyCost D
           attackRequirement {}
           onAttack {
@@ -1033,7 +954,7 @@ public enum ShiningFates implements LogicCardInfo {
       return evolution (this, from:"Nickit", hp:HP100, type:D, retreatCost:1) {
         weakness G
         move "Call for Goons", {
-          text " Search your deck for up to 3 Basic Pokémon and put them onto your Bench. Then, shuffle your deck."
+          text "Search your deck for up to 3 Basic Pokémon and put them onto your Bench. Then, shuffle your deck."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1071,7 +992,7 @@ public enum ShiningFates implements LogicCardInfo {
           }
         }
         move "Stick On", {
-          text " Attach a basic Energy card from your discard pile to this Pokémon."
+          text "Attach a basic Energy card from your discard pile to this Pokémon."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1083,7 +1004,7 @@ public enum ShiningFates implements LogicCardInfo {
       return evolution (this, from:"Ditto V", hp:HP320, type:C, retreatCost:3) {
         weakness F
         move "Max Transform", {
-          text " Choose 1 of your opponent's Active Pokémon's attacks and use it as this attack."
+          text "Choose 1 of your opponent's Active Pokémon's attacks and use it as this attack."
           energyCost C, C, C
           attackRequirement {}
           onAttack {
@@ -1095,7 +1016,7 @@ public enum ShiningFates implements LogicCardInfo {
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness F
         move "Signs of Evolution", {
-          text " Search your deck for a card that evolves from Eevee , reveal it, and put it into your hand. Then, shuffle your deck."
+          text "Search your deck for a card that evolves from Eevee , reveal it, and put it into your hand. Then, shuffle your deck."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1136,7 +1057,7 @@ public enum ShiningFates implements LogicCardInfo {
         weakness L
         resistance F, MINUS30
         move "Beak Catch", {
-          text " Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
+          text "Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1144,7 +1065,7 @@ public enum ShiningFates implements LogicCardInfo {
           }
         }
         move "Spit Shot", {
-          text " Discard all Energy from this Pokémon. This attack does 160 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+          text "Discard all Energy from this Pokémon. This attack does 160 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C, C, C
           attackRequirement {}
           onAttack {
@@ -1169,7 +1090,7 @@ public enum ShiningFates implements LogicCardInfo {
       return basic (this, hp:HP100, type:C, retreatCost:1) {
         weakness F
         move "Helping Hand", {
-          text " Search your deck for a basic Energy card and attach it to 1 of your Benched Pokémon. Then, shuffle your deck."
+          text "Search your deck for a basic Energy card and attach it to 1 of your Benched Pokémon. Then, shuffle your deck."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1187,9 +1108,9 @@ public enum ShiningFates implements LogicCardInfo {
       };
       case BALL_GUY_57:
       return supporter (this) {
-        text "Search your deck for up to 3 different Item cards that have the word 'Ball' in their name" +
-          "reveal them" +
-          "and put them into your hand. Then" +
+        text "Search your deck for up to 3 different Item cards that have the word 'Ball' in their name"+
+          "reveal them"+
+          "and put them into your hand. Then"+
           "shuffle your deck."
         onPlay {
         }
@@ -1206,7 +1127,7 @@ public enum ShiningFates implements LogicCardInfo {
       };
       case GYM_TRAINER_59:
       return supporter (this) {
-        text "Draw 2 cards. If any of your Pokémon were Knocked Out during your opponent's last turn" +
+        text "Draw 2 cards. If any of your Pokémon were Knocked Out during your opponent's last turn"+
           "draw 2 more cards."
         onPlay {
         }
@@ -1253,7 +1174,7 @@ public enum ShiningFates implements LogicCardInfo {
       return basic (this, hp:HP170, type:P, retreatCost:2) {
         weakness M
         move "Sugary Sprinkles", {
-          text " Heal 30 damage from each of your Benched Pokémon."
+          text "Heal 30 damage from each of your Benched Pokémon."
           energyCost P
           attackRequirement {}
           onAttack {
@@ -1273,7 +1194,7 @@ public enum ShiningFates implements LogicCardInfo {
       return copy (BALL_GUY_57, this);
       case BIRD_KEEPER_66:
       return supporter (this) {
-        text "Switch your Active Pokémon with 1 of your Benched Pokémon. If you do" +
+        text "Switch your Active Pokémon with 1 of your Benched Pokémon. If you do"+
           "draw 3 cards."
         onPlay {
         }
@@ -1282,7 +1203,7 @@ public enum ShiningFates implements LogicCardInfo {
       };
       case CARA_LISS_67:
       return supporter (this) {
-        text "Search your deck for up to 2 Rare Fossil cards and put them onto your Bench. Then" +
+        text "Search your deck for up to 2 Rare Fossil cards and put them onto your Bench. Then"+
           "shuffle your deck."
         onPlay {
         }
@@ -1293,9 +1214,9 @@ public enum ShiningFates implements LogicCardInfo {
       return copy (GYM_TRAINER_59, this);
       case PIERS_69:
       return supporter (this) {
-        text "Search your deck for an Energy card and a Pokémon" +
-          "reveal them" +
-          "and put them into your hand. Then" +
+        text "Search your deck for an Energy card and a Pokémon"+
+          "reveal them"+
+          "and put them into your hand. Then"+
           "shuffle your deck."
         onPlay {
         }
@@ -1304,9 +1225,9 @@ public enum ShiningFates implements LogicCardInfo {
       };
       case POKE_KID_70:
       return supporter (this) {
-        text "Search your deck for a Pokémon" +
-          "reveal it" +
-          "and put it into your hand. Then" +
+        text "Search your deck for a Pokémon"+
+          "reveal it"+
+          "and put it into your hand. Then"+
           "shuffle your deck."
         onPlay {
         }
@@ -1315,7 +1236,7 @@ public enum ShiningFates implements LogicCardInfo {
       };
       case ROSE_71:
       return supporter (this) {
-        text "Attach up to 2 basic Energy cards from your discard pile to 1 of your Pokémon VMAX. If you attached any Energy cards in this way" +
+        text "Attach up to 2 basic Energy cards from your discard pile to 1 of your Pokémon VMAX. If you attached any Energy cards in this way"+
           "discard your hand."
         onPlay {
         }
@@ -1324,8 +1245,8 @@ public enum ShiningFates implements LogicCardInfo {
       };
       case SKYLA_72:
       return supporter (this) {
-        text "Search your deck for a Trainer card" +
-          "reveal it" +
+        text "Search your deck for a Trainer card"+
+          "reveal it"+
           "and put it into your hand. Shuffle your deck afterward."
         onPlay {
         }
@@ -1336,7 +1257,7 @@ public enum ShiningFates implements LogicCardInfo {
       return evolution (this, from:"Alcremie V", hp:HP310, type:P, retreatCost:3) {
         weakness M
         move "Adornment", {
-          text " For each of your Benched Pokémon, search your deck for a [P] Energy card and attach it to that Pokémon. Then, shuffle your deck."
+          text "For each of your Benched Pokémon, search your deck for a [P] Energy card and attach it to that Pokémon. Then, shuffle your deck."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1380,7 +1301,7 @@ public enum ShiningFates implements LogicCardInfo {
       return evolution (this, from:"Blipbug", hp:HP070, type:G, retreatCost:2) {
         weakness R
         move "Reflect", {
-          text " During your opponent's next turn, this Pokémon takes 40 less damage from attacks (after applying Weakness and Resistance)."
+          text "During your opponent's next turn, this Pokémon takes 40 less damage from attacks (after applying Weakness and Resistance)."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1417,7 +1338,7 @@ public enum ShiningFates implements LogicCardInfo {
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
         move "Call for Family", {
-          text " Search your deck for up to 3 Basic Pokémon and put them onto your Bench. Then, shuffle your deck."
+          text "Search your deck for up to 3 Basic Pokémon and put them onto your Bench. Then, shuffle your deck."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1437,7 +1358,7 @@ public enum ShiningFates implements LogicCardInfo {
       return evolution (this, from:"Gossifleur", hp:HP080, type:G, retreatCost:1) {
         weakness R
         move "Blessing of Fluff", {
-          text " Search your deck for up to 3 [G] Energy cards and attach them to your Benched Pokémon in any way you like. Then, shuffle your deck."
+          text "Search your deck for up to 3 [G] Energy cards and attach them to your Benched Pokémon in any way you like. Then, shuffle your deck."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1457,7 +1378,7 @@ public enum ShiningFates implements LogicCardInfo {
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
         move "Withdraw", {
-          text " Flip a coin. If heads, during your opponent's next turn, prevent all damage done to this Pokémon by attacks."
+          text "Flip a coin. If heads, during your opponent's next turn, prevent all damage done to this Pokémon by attacks."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1572,7 +1493,7 @@ public enum ShiningFates implements LogicCardInfo {
       return evolution (this, from:"Sizzlipede", hp:HP130, type:R, retreatCost:3) {
         weakness W
         move "Hundred Foot Flames", {
-          text " For each [R] Energy attached to this Pokémon, discard the top card of your opponent's deck."
+          text "For each [R] Energy attached to this Pokémon, discard the top card of your opponent's deck."
           energyCost R
           attackRequirement {}
           onAttack {
@@ -1592,7 +1513,7 @@ public enum ShiningFates implements LogicCardInfo {
       return basic (this, hp:HP080, type:W, retreatCost:1) {
         weakness M
         move "Reflect", {
-          text " During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+          text "During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
           energyCost W
           attackRequirement {}
           onAttack {
@@ -1880,7 +1801,7 @@ public enum ShiningFates implements LogicCardInfo {
       return basic (this, hp:HP070, type:L, retreatCost:1) {
         weakness F
         move "Roar", {
-          text " Your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
+          text "Your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -1940,7 +1861,7 @@ public enum ShiningFates implements LogicCardInfo {
       return evolution (this, from:"Toxel", hp:HP120, type:L, retreatCost:2) {
         weakness F
         move "Risk Taker", {
-          text " Flip a coin. If heads, discard the top 5 cards of your opponent's deck. If tails, discard the top 5 cards of your deck."
+          text "Flip a coin. If heads, discard the top 5 cards of your opponent's deck. If tails, discard the top 5 cards of your deck."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -2061,7 +1982,7 @@ public enum ShiningFates implements LogicCardInfo {
         weakness D
         resistance F, MINUS30
         move "Cursed Drop", {
-          text " Put 3 damage counters on your opponent's Pokémon in any way you like."
+          text "Put 3 damage counters on your opponent's Pokémon in any way you like."
           energyCost P
           attackRequirement {}
           onAttack {
@@ -2104,7 +2025,7 @@ public enum ShiningFates implements LogicCardInfo {
         weakness D
         resistance F, MINUS30
         move "Furtive Drop", {
-          text " Put 2 damage counters on your opponent's Active Pokémon."
+          text "Put 2 damage counters on your opponent's Active Pokémon."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -2135,7 +2056,7 @@ public enum ShiningFates implements LogicCardInfo {
         weakness D
         resistance F, MINUS30
         move "Find a Friend", {
-          text " Search your deck for a Pokémon, reveal it, and put it into your hand. Then, shuffle your deck."
+          text "Search your deck for a Pokémon, reveal it, and put it into your hand. Then, shuffle your deck."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -2156,7 +2077,7 @@ public enum ShiningFates implements LogicCardInfo {
         weakness D
         resistance F, MINUS30
         move "Calm Mind", {
-          text " Heal 30 damage from this Pokémon."
+          text "Heal 30 damage from this Pokémon."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -2182,7 +2103,7 @@ public enum ShiningFates implements LogicCardInfo {
           }
         }
         move "Dripping Grudge", {
-          text " Put 1 damage counter on your opponent's Active Pokémon for each Pokémon in your discard pile."
+          text "Put 1 damage counter on your opponent's Active Pokémon for each Pokémon in your discard pile."
           energyCost P
           attackRequirement {}
           onAttack {
@@ -2194,7 +2115,7 @@ public enum ShiningFates implements LogicCardInfo {
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness M
         move "Aromatherapy", {
-          text " Heal 10 damage from each of your Pokémon."
+          text "Heal 10 damage from each of your Pokémon."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -2214,7 +2135,7 @@ public enum ShiningFates implements LogicCardInfo {
       return evolution (this, from:"Milcery", hp:HP110, type:P, retreatCost:1) {
         weakness M
         move "Decorate", {
-          text " Attach any number of basic Energy cards from your hand to your Pokémon in any way you like."
+          text "Attach any number of basic Energy cards from your hand to your Pokémon in any way you like."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -2235,7 +2156,7 @@ public enum ShiningFates implements LogicCardInfo {
         weakness D
         resistance F, MINUS30
         move "Replenish Time", {
-          text " Heal 30 damage from each of your Pokémon."
+          text "Heal 30 damage from each of your Pokémon."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -2269,7 +2190,7 @@ public enum ShiningFates implements LogicCardInfo {
         weakness D
         resistance F, MINUS30
         move "Summon", {
-          text " Search your deck for a Dreepy and put it onto your Bench. Then, shuffle your deck."
+          text "Search your deck for a Dreepy and put it onto your Bench. Then, shuffle your deck."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -2359,7 +2280,7 @@ public enum ShiningFates implements LogicCardInfo {
       return evolution (this, from:"Galarian Yamask", hp:HP100, type:F, retreatCost:2) {
         weakness G
         move "Spreading Spite", {
-          text " For each damage counter on this Galarian Runerigus, put 2 damage counters on your opponent's Pokémon in any way you like."
+          text "For each damage counter on this Galarian Runerigus, put 2 damage counters on your opponent's Pokémon in any way you like."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -2428,7 +2349,7 @@ public enum ShiningFates implements LogicCardInfo {
       return basic (this, hp:HP080, type:F, retreatCost:2) {
         weakness G
         move "Sand Attack", {
-          text " During your opponent's next turn, if the Defending Pokémon tries to attack, your opponent flips a coin. If tails, that attack doesn't happen."
+          text "During your opponent's next turn, if the Defending Pokémon tries to attack, your opponent flips a coin. If tails, that attack doesn't happen."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -2472,7 +2393,7 @@ public enum ShiningFates implements LogicCardInfo {
       return evolution (this, from:"Clobbopus", hp:HP130, type:F, retreatCost:2) {
         weakness P
         move "Octolock", {
-          text " Until this Grapploct leaves the Active Spot, the Defending Pokémon's attacks cost [C] more, and the Defending Pokémon can't retreat. This effect can't be applied more than once."
+          text "Until this Grapploct leaves the Active Spot, the Defending Pokémon's attacks cost [C] more, and the Defending Pokémon can't retreat. This effect can't be applied more than once."
           energyCost F, F
           attackRequirement {}
           onAttack {
@@ -2492,7 +2413,7 @@ public enum ShiningFates implements LogicCardInfo {
       return basic (this, hp:HP090, type:F, retreatCost:1) {
         weakness P
         move "Call for Family", {
-          text " Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Then, shuffle your deck."
+          text "Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Then, shuffle your deck."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -2500,7 +2421,7 @@ public enum ShiningFates implements LogicCardInfo {
           }
         }
         move "Team Attack", {
-          text "30× damage. This attack does 30 damage for each of your Benched Pokémon that has " Falinks " in its name."
+          text "30× damage. This attack does 30 damage for each of your Benched Pokémon that has "Falinks "in its name."
           energyCost C, C
           attackRequirement {}
           onAttack {
@@ -2785,7 +2706,7 @@ public enum ShiningFates implements LogicCardInfo {
       return basic (this, hp:HP070, type:C, retreatCost:1) {
         weakness F
         move "Glance", {
-          text " Look at the top card of your opponent's deck."
+          text "Look at the top card of your opponent's deck."
           energyCost C
           attackRequirement {}
           onAttack {
@@ -2993,7 +2914,7 @@ public enum ShiningFates implements LogicCardInfo {
       return basic (this, hp:HP220, type:G, retreatCost:3) {
         weakness R
         move "Forest Feast", {
-          text " Search your deck for up to 2 Basic [G] Pokémon and put them onto your Bench. Then, shuffle your deck."
+          text "Search your deck for up to 2 Basic [G] Pokémon and put them onto your Bench. Then, shuffle your deck."
           energyCost G
           attackRequirement {}
           onAttack {
@@ -3085,7 +3006,7 @@ public enum ShiningFates implements LogicCardInfo {
       return basic (this, hp:HP210, type:W, retreatCost:2) {
         weakness L
         move "Body Surf", {
-          text " Attach a [W] Energy card from your hand to this Pokémon. If you do, switch it with 1 of your Benched Pokémon."
+          text "Attach a [W] Energy card from your hand to this Pokémon. If you do, switch it with 1 of your Benched Pokémon."
           energyCost C
           attackRequirement {}
           onAttack {
