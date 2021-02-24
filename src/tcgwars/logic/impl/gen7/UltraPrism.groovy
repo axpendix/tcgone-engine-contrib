@@ -490,7 +490,7 @@ public enum UltraPrism implements LogicCardInfo {
             text "If this Pokémon is your Active Pokémon, once during your turn (before your attack), you may heal 50 damage from 1 of your Pokémon that has any Energy attached to it."
             actionA {
               checkLastTurn() // check whether it has already been used this turn
-              assert self.active : "Leafeon GX is not your active pokemon"
+              assert self.active : "Leafeon GX is not your active Pokémon."
               def tar = my.all.findAll{it.numberOfDamageCounters && it.cards.energyCount(C)}
               assert tar
 
@@ -514,7 +514,7 @@ public enum UltraPrism implements LogicCardInfo {
             energyCost G
             attackRequirement {
               gxCheck()
-              assert my.bench.notEmpty : "This is your only pokemon"
+              assert my.bench.notEmpty : "This is your only Pokémon."
               assert my.deck.notEmpty
             }
             onAttack {
@@ -2291,7 +2291,7 @@ public enum UltraPrism implements LogicCardInfo {
               checkLastTurn()
               assert my.deck
               powerUsed()
-              my.deck.search(count: 1, "Search for a fairy pokemon", {it.cardTypes.pokemon && it.types.contains(Y)}).moveTo(my.hand)
+              my.deck.search(count: 1, "Search for a fairy Pokémon.", {it.cardTypes.pokemon && it.types.contains(Y)}).moveTo(my.hand)
               shuffleDeck()
             }
           }
@@ -2589,9 +2589,12 @@ public enum UltraPrism implements LogicCardInfo {
             energyCost C, C, C
             onAttack {
               damage 50
-              int c=0
-              flipUntilTails {damage 50;c++}
-              if(c==0) applyAfterDamage(PARALYZED)
+              int count = 0
+              flipUntilTails {
+                damage 50
+                count++
+              }
+              if (count == 0) applyAfterDamage(PARALYZED)
             }
           }
           move "Rolling Tackle", {
@@ -2936,7 +2939,7 @@ public enum UltraPrism implements LogicCardInfo {
           }
           playRequirement{
             assert my.active.types.contains(W) || my.active.types.contains(M) : "Your Active Pokémon needs to be [W] or [M]. (The card text was officially changed)"
-            assert opp.bench.size() > 2 : "Opponent needs to have more than 2 benched Pokemon"
+            assert opp.bench.size() > 2 : "Opponent needs to have more than 2 benched Pokémon"
           }
         };
       case ELECTRIC_MEMORY_121:
@@ -3170,8 +3173,6 @@ public enum UltraPrism implements LogicCardInfo {
             "While this card is attached to a Stage 2 Pokémon, it provides every type of Energy but provides only 1 Energy at a time. If you have 3 or more Stage 2 Pokémon in play, it provides every type of Energy but provides 4 Energy at a time."
           onPlay {reason->
           }
-          onRemoveFromPlay {
-          }
           getEnergyTypesOverride {
             if(!self || !self.topPokemonCard)
               return [[C] as Set]
@@ -3195,8 +3196,6 @@ public enum UltraPrism implements LogicCardInfo {
           // TODO: Request appropriate typeImageOverride be added
           onPlay {reason->
           }
-          onRemoveFromPlay {
-          }
           getEnergyTypesOverride {
             self != null ? [[G,R,W] as Set] : [[C] as Set]
           }
@@ -3206,8 +3205,6 @@ public enum UltraPrism implements LogicCardInfo {
           text "This card provides [C] Energy.\n While this card is attached to a Pokémon, it provides [L], [P], and [M] Energy but provides only 1 Energy at a time."
           // TODO: Request appropriate typeImageOverride be added
           onPlay {reason->
-          }
-          onRemoveFromPlay {
           }
           getEnergyTypesOverride {
             self != null ? [[L,P,M] as Set] : [[C] as Set]

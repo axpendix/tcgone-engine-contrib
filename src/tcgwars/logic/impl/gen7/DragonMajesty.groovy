@@ -718,7 +718,7 @@ public enum DragonMajesty implements LogicCardInfo {
             onAttack{
               damage 40
               if(opp.bench){
-                multiSelect(opp.bench, 2).each{
+                multiSelect(opp.bench, 2, text).each{
                   targeted(it){
                     damage 40, it
                   }
@@ -1195,7 +1195,7 @@ public enum DragonMajesty implements LogicCardInfo {
               while (1) {
                 def tar = my.all.findAll {it.cards.filterByEnergyType(R).notEmpty()}
                 if (!tar) break
-                def pcs = tar.select("Pokemon that has [R] energy to discard. Cancel to stop", false)
+                def pcs = tar.select("Pokémon that has [R] energy to discard. Cancel to stop", false)
                 if (!pcs) break
                 pcs.cards.filterByEnergyType(R).select("[R] Energy to discard").discard()
                 count++

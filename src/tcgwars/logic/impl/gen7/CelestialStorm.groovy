@@ -1205,7 +1205,7 @@ public enum CelestialStorm implements LogicCardInfo {
             text "This attack does 30 damage to 2 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost W,C
             onAttack {
-              multiSelect(opp.all, 2).each{
+              multiSelect(opp.all, 2, text).each{
                 targeted(it){
                   damage 30, it
                 }
@@ -1242,56 +1242,45 @@ public enum CelestialStorm implements LogicCardInfo {
           }
         };
       case ELECTRODE_GX_48:
-        return 	evolution (this, from:"Voltorb", hp:HP190, type:LIGHTNING, retreatCost:1) {
+        return evolution(this, from: "Voltorb", hp: HP190, type: LIGHTNING, retreatCost: 1) {
           weakness FIGHTING
           resistance METAL, MINUS20
-          bwAbility "Extra Energy Bomb" , {
+          bwAbility "Extra Energy Bomb", {
             text "Once during your turn (before your attack), you may attach 5 Energy cards from your discard pile to your Pokémon, except Pokémon-GX or Pokémon-EX, in any way you like. If you do, this Pokémon is Knocked Out."
             actionA {
               checkLastTurn()
-              assert my.discard.filterByType(ENERGY) : "No energy in your discard pile"
-              assert my.all.any{!(it.pokemonEX) && !(it.pokemonGX)} : "No Pokémon that aren't EX or GX"
+              assert my.discard.filterByType(ENERGY): "No energy in your discard pile"
+              assert my.all.any { !(it.pokemonEX) && !(it.pokemonGX) }: "No Pokémon that aren't EX or GX"
               powerUsed()
               //Must attach at least one energy
-              attachEnergyFrom(my.discard, my.all.findAll{!(it.pokemonEX) && !(it.pokemonGX)})
-              if (my.discard.filterByType(ENERGY)){
-                for (i in 1..4){
+              attachEnergyFrom(my.discard, my.all.findAll { !(it.pokemonEX) && !(it.pokemonGX) })
+              if (my.discard.filterByType(ENERGY)) {
+                for (i in 1..4) {
                   def tup = attachEnergyFrom(
-                    may : true ,my.discard, my.all.findAll{!(it.pokemonEX) && !(it.pokemonGX)}
+                    may: true, my.discard, my.all.findAll { !(it.pokemonEX) && !(it.pokemonGX) }
                   )
-                  if (tup[0] == []) break;
+                  if (tup[0] == []) break
                 }
               }
               new Knockout(self).run(bg)
             }
           }
-          move "Electro Ball" , {
+          move "Electro Ball", {
             text "50 damage."
-            energyCost L,C
+            energyCost L, C
             onAttack {
               damage 50
             }
           }
-          move "Crush and Burn GX" , {
+          move "Crush and Burn GX", {
             text "30+ damage. Discard any amount of Energy from your Pokémon. This attack does 50 more damage for each card you discarded in this way. (You can't use more than 1 GX attack in a game.)"
-            energyCost L,C
+            energyCost L, C
             attackRequirement {
               gxCheck()
             }
             onAttack {
               gxPerform()
-              damage 30
-              def bonusDmg = 0
-              while(my.all.findAll{it.cards.energyCount(C)}){
-                if(confirm("discard energy from one pokémon for 50 more damage by energy discarded?")){
-                  def tar = my.all.findAll{it.cards.energyCount(C)}.select("Choose the pokémon to discard energy")
-                  bonusDmg += 50*tar.cards.filterByType(ENERGY).select(min:1,max : tar.cards.filterByType(ENERGY).size()).discard().size()
-                }
-                else{
-                  break
-                }
-              }
-              damage bonusDmg
+              additionalDamageByDiscardingCardTypeFromPokemon 30, 50, ENERGY
             }
           }
         };
@@ -1312,7 +1301,7 @@ public enum CelestialStorm implements LogicCardInfo {
             onAttack {
               damage 10
               if(opp.bench){
-                multiSelect(opp.bench, 2).each{
+                multiSelect(opp.bench, 2, text).each{
                   targeted(it){
                     damage 10, it
                   }
@@ -2562,8 +2551,10 @@ public enum CelestialStorm implements LogicCardInfo {
             text "160 damage. If the total of both players' remaining Prize cards is exactly 6, this attack can be used for [M]."
             energyCost M
             attackRequirement {
-              def i = my.prizeCardSet.size() + opp.prizeCardSet.size()
-              if(i != 6) assert self.cards.energySufficient(M,C,C,C,C) : "Not enough energy. Total prize count was $i"
+              def totalPrizeCount = my.prizeCardSet.size() + opp.prizeCardSet.size()
+              if (totalPrizeCount != 6)  {
+                assert self.cards.energySufficient(M,C,C,C,C) : "Not enough energy. Total prize count was $totalPrizeCount"
+              }
             }
             onAttack {
               damage 160
@@ -3088,14 +3079,14 @@ public enum CelestialStorm implements LogicCardInfo {
               my.deck.add(0, card)
             }
             else{
-              def c=choose([1,2],["Your deck", "Your opponent's deck"], "Look at the top 5 cards of which player's deck?")
-              if(c==1){
+              def choice = choose([1,2],["Your deck", "Your opponent's deck"], "Look at the top 5 cards of which player's deck?")
+              if (choice == 1) {
                 def card = my.deck.subList(0,5).select("Choose a card to put on top of your deck").first()
                 my.deck.remove(card)
                 shuffleDeck()
                 my.deck.add(0, card)
               }
-              if(c==2){
+              if (choice == 2) {
                 def card = opp.deck.subList(0,5).select("Choose a card to put on top of your opponent's deck").first()
                 opp.deck.remove(card)
                 shuffleDeck(null, TargetPlayer.OPPONENT)
@@ -3291,10 +3282,9 @@ public enum CelestialStorm implements LogicCardInfo {
               a2()
             }
             else{
-              def cl=[1,2]
-              def c=choose(cl,["Shuffle your hand into your deck. Then, draw 5 cards.", "Switch your Active Pokémon with 1 of your Benched Pokémon."], "What do you want to do?")
-              if(c==1) a1()
-              if(c==2) a2()
+              def choice = choose([1,2], ["Shuffle your hand into your deck. Then, draw 5 cards.", "Switch your Active Pokémon with 1 of your Benched Pokémon."], "What do you want to do?")
+              if (choice == 1) a1()
+              if (choice == 2) a2()
             }
           }
           playRequirement{
@@ -3339,7 +3329,9 @@ public enum CelestialStorm implements LogicCardInfo {
           typeImagesOverride = [RAINBOW]
           onPlay {reason->
             if (reason == PLAY_FROM_HAND) {
-              directDamage(10, self, Source.SRC_SPENERGY)
+              targeted null, SRC_SPENERGY, {
+                directDamage(10, self, SRC_SPENERGY)
+              }
             }
           }
           getEnergyTypesOverride {

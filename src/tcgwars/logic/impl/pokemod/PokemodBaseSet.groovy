@@ -253,7 +253,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
           actionA {
             checkNoSPC()
             assert my.hand.filterByBasicEnergyType(W) : "No [W] in hand"
-            assert my.all.find{it.types.contains(W) && !it.EX} : "No [W] pokemon"
+            assert my.all.find{it.types.contains(W) && !it.EX} : "No [W] Pokémon."
 
             powerUsed()
             def card = my.hand.filterByBasicEnergyType(W).first()
@@ -684,7 +684,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
           actionA {
             checkLastTurn()
             checkNoSPC()
-            assert my.bench.notEmpty : "$self is your last pokemon"
+            assert my.bench.notEmpty : "$self is your last Pokémon."
             powerUsed()
             new Knockout(self).run(bg)
             def type = choose([R, W, G, L, F, P, M, D, Y],["Fire","Water","Grass","Lightning","Fighting","Psychic","Metal","Darkness","Fairy"],"What type of energy?")
@@ -1612,7 +1612,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return basicTrainer (this) {
         text "Choose 1 of your own Pokémon in play and a Stage of Evolution. Discard all Evolution cards of that Stage or higher attached to that Pokémon. That Pokémon is no longer Asleep, Confused, Paralyzed, Poisoned, or anything else that might be the result of an attack (just as if you had evolved it)."
         onPlay {
-          def pcs = my.all.findAll{it.evolution}.select("Pokemon to devolve")
+          def pcs = my.all.findAll{it.evolution}.select("Pokémon to devolve")
           def pkmn = []
           pkmn.addAll(pcs.pokemonCards)
           pkmn.remove(pcs.topPokemonCard)
@@ -1694,7 +1694,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return basicTrainer (this) {
         text "Trade 1 of the Basic Pokémon or Evolution cards in your hand for 1 of the Basic Pokémon or Evolution cards from your deck. Show both cards to your opponent. Shuffle your deck afterward."
         onPlay {
-          my.hand.select("Choose a Pokemon", cardTypeFilter(POKEMON)).select().moveTo(my.deck)
+          my.hand.select("Choose a Pokémon", cardTypeFilter(POKEMON)).select().moveTo(my.deck)
           my.deck.search (max: 1, cardTypeFilter(POKEMON)).moveTo(hand)
           shuffleDeck()
         }
@@ -1755,7 +1755,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
       };
       case FULL_HEAL_82:
       return basicTrainer (this) {
-        text "Remove all Special Conditions from your Active Pokemon"
+        text "Remove all Special Conditions from your Active Pokémon"
         onPlay {
           clearSpecialCondition(my.active, TRAINER_CARD)
         }
@@ -1818,7 +1818,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
           my.deck.setSubList(0, list)
         }
         playRequirement{
-          assert my.deck : "Your deck is empty"
+          assert my.deck : "Your deck is empty!"
         }
       };
       case PROFESSOR_OAK_88:
@@ -1851,7 +1851,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         onPlay {
           def tar = my.all.findAll { it.cards.energyCount(C) && it.numberOfDamageCounters && !it.EX }
           if(tar) {
-            def pcs = tar.select("Heal which Pokemon?")
+            def pcs = tar.select("Heal which Pokémon?")
             targeted (pcs, TRAINER_CARD) {
               pcs.cards.filterByType(ENERGY).select("Discard which Energy?").discard()
               heal 40, pcs
@@ -1958,7 +1958,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
           }
         }
         playRequirement{
-          assert my.deck : "Your deck is empty"
+          assert my.deck : "Your deck is empty!"
         }
       };
       case ENERGY_SWITCH_104:
@@ -1970,7 +1970,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
           src.cards.filterByType(BASIC_ENERGY).select("Select a Basic Energy card to move to the target.").each{energySwitch(src,tar,it)}
         }
         playRequirement{
-          assert my.all.findAll{it.cards.filterByType(BASIC_ENERGY)} : "You have no basic Energy attached to your pokemon"
+          assert my.all.findAll{it.cards.filterByType(BASIC_ENERGY)} : "You have no basic Energy attached to your Pokémon."
           assert my.all.size() >= 2 : "You only have one Pokémon in play."
         }
       };
@@ -2015,8 +2015,8 @@ public enum PokemodBaseSet implements LogicCardInfo {
         }
         playRequirement{
           assert !bg.em().retrieveObject("G_SPEC_"+thisCard.player) : "You have already used your G-SPEC card"
-          assert my.all.findAll{it.cards.filterByType(ENERGY)} : "You have no energy attached to your pokemon"
-          assert opp.all.findAll{it.cards.filterByType(ENERGY)} : "Your opponent has no energy attached to their pokemon"
+          assert my.all.findAll{it.cards.filterByType(ENERGY)} : "You have no energy attached to your Pokémon."
+          assert opp.all.findAll{it.cards.filterByType(ENERGY)} : "Your opponent has no energy attached to their Pokémon."
         }
       };
       case DOWSING_MACHINE_108:
@@ -2147,7 +2147,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
           text "As often as you like during your turn (before your attack), move a [G] Energy card attached to 1 of your Pokémon to another of your Pokémon. This power can't be used if Venusaur ex is affected by a Special Condition."
           actionA {
             checkNoSPC()
-            assert my.all.findAll{it.cards.filterByEnergyType(G)} : "You have no [G] Energy attached to your pokemon"
+            assert my.all.findAll{it.cards.filterByEnergyType(G)} : "You have no [G] Energy attached to your Pokémon."
             assert my.all.size() >= 2 : "You only have one Pokémon in play."
             powerUsed()
             def src = my.all.findAll{it.cards.filterByEnergyType(G)}.select("Move Energy from which pokemon?")

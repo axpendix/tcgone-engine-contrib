@@ -836,10 +836,10 @@ public enum GuardiansRising implements LogicCardInfo {
             text "Flip a coin until you get tails. For each heads, you may search your deck for a card and put it into your hand. Then, shuffle your deck."
             energyCost C
             onAttack {
-              int c=0
-              flipUntilTails {c++}
-              if(c && my.deck){
-                my.deck.select(min: 0, max: c).moveTo(hidden:true, my.hand)
+              int count = 0
+              flipUntilTails { count++ }
+              if (count && my.deck) {
+                my.deck.select(min: 0, max: count).moveTo(hidden:true, my.hand)
                 shuffleDeck()
               }
             }
@@ -1047,7 +1047,7 @@ public enum GuardiansRising implements LogicCardInfo {
             text "Once during your turn (before your attack), you may switch this Pokémon with a Wishiwashi-GX in your hand. Any attached cards, damage counters, Special Conditions, turns in play, and any other effects remain on the new Pokémon."
             actionA {
               assert my.hand.find{it.name=='Wishiwashi-GX'}
-              assert !bg.em().retrieveObject("ScoopUpBlock_Count$self.owner.opposite") || !self.numberOfDamageCounters : "Scoop-Up Block prevents $thisAbility.name's effect."
+              assert !bg.em().retrieveObject("ScoopUpBlock_Count$self.owner.opposite") || !self.numberOfDamageCounters : "Scoop-Up Block prevents $thisAbility's effect."
               checkLastTurn()
               powerUsed()
               def card = my.hand.findAll{it.name=='Wishiwashi-GX'}.select().first()
@@ -2377,7 +2377,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
             onAttack {
               gxPerform()
-              multiSelect(opp.bench, 2).each{
+              multiSelect(opp.bench, 2, text).each{
                 scoopUpPokemon(it, delegate)
               }
             }
@@ -3070,16 +3070,16 @@ public enum GuardiansRising implements LogicCardInfo {
           onPlay {
             def i = 2
             while(i-- > 0){
-              if (bg.stadiumInfoStruct && confirm("Would you like to discard stadium in play (${bg.stadiumInfoStruct.stadiumCard})? If not, you can select a Pokemon Tool in play")) {
+              if (bg.stadiumInfoStruct && confirm("Would you like to discard stadium in play (${bg.stadiumInfoStruct.stadiumCard})? If not, you can select a Pokémon Tool in play")) {
                 if (stadiumCanBeAffectedByItemAndSupporter())
                   discard bg.stadiumInfoStruct.stadiumCard
                 continue
               }
               def tar = all.findAll {it.cards.hasType(POKEMON_TOOL)}
               if(tar) {
-                def sel = tar.select("Select Pokemon to discard a Pokemon Tool from (cancel to stop)", i == 1)
+                def sel = tar.select("Select Pokémon to discard a Pokémon Tool from (cancel to stop)", i == 1)
                 if(sel){
-                  def list = sel.cards.filterByType(POKEMON_TOOL).select("Discard a Pokemon Tool from $sel")
+                  def list = sel.cards.filterByType(POKEMON_TOOL).select("Discard a Pokémon Tool from $sel")
                   targeted (sel, TRAINER_CARD) {
                     list.discard()
                   }
@@ -3136,9 +3136,8 @@ public enum GuardiansRising implements LogicCardInfo {
             "Shuffle 3 Pokémon from your discard pile into your deck.\n" +
             "You may play as many Item cards as you like during your turn (before your attack)."
           onPlay {
-            def cl=[1,2]
-            def c=choose(cl,['Put a Pokémon from your discard pile into your hand', 'Shuffle 3 Pokémon from your discard pile into your deck'], "Choose 1")
-            if(c==1){
+            def choice = choose([1,2],['Put a Pokémon from your discard pile into your hand', 'Shuffle 3 Pokémon from your discard pile into your deck'], "Choose 1")
+            if (choice == 1) {
               my.discard.filterByType(POKEMON).select("Put to hand").moveTo(my.hand)
             } else {
               my.discard.filterByType(POKEMON).select(count: 3, "Shuffle 3 to deck").moveTo(my.deck)

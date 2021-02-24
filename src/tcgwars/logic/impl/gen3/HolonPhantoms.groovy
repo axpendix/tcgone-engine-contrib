@@ -1,5 +1,8 @@
-package tcgwars.logic.impl.gen3;
+package tcgwars.logic.impl.gen3
 
+import tcgwars.logic.effect.gm.AttachEnergy
+import tcgwars.logic.effect.gm.PlayEnergy
+import tcgwars.logic.effect.gm.PlayTrainer;
 import tcgwars.logic.impl.gen1.FossilNG;
 import tcgwars.logic.impl.gen3.TeamRocketReturns;
 import tcgwars.logic.impl.gen3.LegendMaker;
@@ -226,7 +229,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 50
 
             def fossilInHand = my.hand.any{ ["Claw Fossil", "Mysterious Fossil", "Root Fossil", "Holon Fossil"].contains(it.name) }
-            if (opp.bench && fossilInHand && confirm("Discard a Fossil from hand to do 30 damage to a Benched Pokemon?")) {
+            if (opp.bench && fossilInHand && confirm("Discard a Fossil from hand to do 30 damage to a Benched Pokémon?")) {
               my.hand.findAll{ ["Claw Fossil", "Mysterious Fossil", "Root Fossil", "Holon Fossil"].contains(it.name) }.select().discard()
               damage 30, opp.bench.select()
             }
@@ -276,7 +279,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           actionA {
             assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
             checkLastTurn()
-            assert my.deck : "Deck is empty"
+            assert my.deck : "Deck is empty!"
             bg.em().storeObject("Form_Change",bg.turnCount)
             powerUsed()
 
@@ -300,23 +303,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost D, C, C
           onAttack {
             damage 60
-            afterDamage {
-              // TODO: Make a static method to do this
-              def targetCount = Math.min self.cards.energyCount(C), 2
-              def finalCount = 0
-              while (self.cards.energyCount(C) > 0 && finalCount < targetCount) {
-                def info = "Select Energy to return to your hand."
-                def energy = self.cards.filterByType(ENERGY).select(info)
-                def energyCount = 1
-                if (energy.energyCount(C) > 1) {
-                  def choices = 1..energy.energyCount(C)
-                  def choiceInfo = "How many Energy do you want this card to count as?"
-                  energyCount = choose(choices, choiceInfo)
-                }
-                finalCount += energyCount
-                energy.moveTo my.hand
-              }
-            }
+            moveSelfEnergyAfterDamage my.hand, C, C
           }
         }
       };
@@ -454,12 +441,13 @@ public enum HolonPhantoms implements LogicCardInfo {
           text "Once during your turn (before your attack), you may attach a basic Energy card or a δ Rainbow Energy card from your hand to 1 of your Pokémon that has δ on its card. This power can't be used if Flygon is affected by a Special Condition."
           actionA {
             checkLastTurn()
+            checkNoSPC()
             assert my.hand.filterByType(BASIC_ENERGY) || my.hand.any{it.name.contains("δ Rainbow Energy")}: "No Basic Energy or δ Rainbow Energy in Hand"
-            assert my.all.any{ it.topPokemonCard.cardTypes.is(DELTA) } : "No Delta Pokemon in play"
+            assert my.all.any{ it.topPokemonCard.cardTypes.is(DELTA) } : "No Delta Pokémon in play"
             //TODO: Handle Cursed Glare, shouldn't be allowed to attach in that case.
             powerUsed()
-            def energy = my.hand.findAll({it.cardTypes.is(BASIC_ENERGY) || it.name == "δ Rainbow Energy"}).select("Select an energy to attach to one of your δ Pokemon").first()
-            def tar = my.all.findAll{ it.topPokemonCard.cardTypes.is(DELTA) }.select("Select a δ Pokemon to attach the Energy to.")
+            def energy = my.hand.findAll({it.cardTypes.is(BASIC_ENERGY) || it.name == "δ Rainbow Energy"}).select("Select an energy to attach to one of your δ Pokémon.").first()
+            def tar = my.all.findAll{ it.topPokemonCard.cardTypes.is(DELTA) }.select("Select a δ Pokémon to attach the Energy to.")
             attachEnergy(tar, energy)
           }
         }
@@ -994,7 +982,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           onAttack {
             damage 20
             if (opp.bench) {
-              multiSelect(opp.bench, 2).each {
+              multiSelect(opp.bench, 2, text).each {
                 damage 10, it
               }
             }
@@ -1075,7 +1063,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           onAttack {
             damage 40
             if (opp.bench) {
-              multiSelect(opp.bench, 2).each {
+              multiSelect(opp.bench, 2, text).each {
                 damage 10, it
               }
             }
@@ -1372,7 +1360,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           text "Choose 2 of your opponent's Pokémon. This attack does 30 damage to each of them. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost F, C, C
           onAttack {
-            multiSelect(opp.all, 2).each {
+            multiSelect(opp.all, 2, text).each {
               damage 30, it
             }
           }
@@ -1437,58 +1425,7 @@ public enum HolonPhantoms implements LogicCardInfo {
       case HOLON_S_CASTFORM_44:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
-        globalAbility {Card thisCard->
-          delayed {
-            before PLAY_CARD, {
-              def validPokemon = thisCard.player.pbg.all.findAll {it.cards.energyCount()}
-              if(ef.cardToPlay == thisCard){
-                if(choose([1,2], ["Pokémon", "Energy"], "Play this card as a Pokémon or as an energy?") == 2){
-                  if(bg.em().retrieveObject("Holon_Pokemon_Energy") != bg.turnCount){
-                    if(validPokemon){
-                      def pcs = validPokemon.select("Attach to?")
-                      bg.em().storeObject("Holon_Pokemon_Energy", bg.turnCount)
-
-                      // Return an energy back to the hand
-                      pcs.cards.filterByType(ENERGY).select(count:1).moveTo(thisCard.player.pbg.hand)
-
-                      def pkmnCard = thisCard
-                      def energyCard
-                      energyCard = specialEnergy(new CustomCardInfo(HOLON_S_CASTFORM_44).setCardTypes(ENERGY, SPECIAL_ENERGY), [[R, D, F, G, W, Y, L, M, P],[R, D, F, G, W, Y, L, M, P]]) {
-                        typeImagesOverride = [RAINBOW,RAINBOW]
-                        onPlay {}
-                        onRemoveFromPlay {
-                          bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
-                        }
-                      }
-                      energyCard.player = thisCard.player
-                      bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
-                      bc "$energyCard is now a Special Energy Card"
-                      attachEnergy(pcs, energyCard)
-                      prevent()
-                    } else {
-                      prevent()
-                      wcu "You have no energy attached to your Pokemon"
-                    }
-                  } else {
-                    prevent()
-                    wcu "You have already played an Energy"
-                  }
-                }
-              } //If the user chooses Pokémon, play the card normally
-            }
-            before PLAY_ENERGY, {
-              if(bg.em().retrieveObject("Holon_Pokemon_Energy") == bg.turnCount){
-                wcu "Cannot play any more energy this turn."
-                prevent()
-              }
-            }
-            after ATTACH_ENERGY, {
-              if(ef.reason==PLAY_FROM_HAND){
-                bg.em().storeObject("Holon_Pokemon_Energy", bg.turnCount)
-              }
-            }
-          }
-        }
+        holon_pokemon_energy(delegate, 2)
         move "Delta Draw", {
           text "Count the number of Pokémon you have in play that has δ on its card. Draw up to that many cards."
           energyCost C
@@ -1581,7 +1518,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           text "Your opponent chooses 1 of his or her Pokémon. Put 4 damage counters on that Pokémon."
           energyCost M, C
           onAttack {
-            directDamage 40, opp.all.oppSelect("Put 4 damage counters on which Pokemon?")
+            directDamage 40, opp.all.oppSelect("Put 4 damage counters on which Pokémon?")
           }
         }
       };
@@ -2290,14 +2227,14 @@ public enum HolonPhantoms implements LogicCardInfo {
           },{
             def eligible = my.hand.findAll { ["Omanyte", "Kabuto", "Aerodactyl", "Aerodactyl ex", "Lileep", "Anorith"].contains(it.name) }
             if(eligible){
-              eligible.select("Select which Pokemon to bench").each {
+              eligible.select("Select which Pokémon to bench.").each {
                 benchPCS(it)
               }
             }
           }
         }
         playRequirement{
-          assert my.bench.notFull : "Your bench is full"
+          assert my.bench.notFull : "Your bench is full."
           assert my.deck || my.hand.getExcludedList(thisCard) : "You cannot play this card if its your only card in hand, and you have no more cards in deck"
         }
       };
@@ -2305,15 +2242,15 @@ public enum HolonPhantoms implements LogicCardInfo {
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
           "Each player's Pokémon that has δ on its card can use attacks on this card instead of its own." +
-          "[C] Delta Call - Search your deck for a Pokemon that has δ on its card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
+          "[C] Delta Call - Search your deck for a Pokémon that has δ on its card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
         def eff
         onPlay {
           def moveBody = {
-            text "Search your deck for a Pokemon that has δ on its card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
+            text "Search your deck for a Pokémon that has δ on its card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
             energyCost C
             attackRequirement { assert my.deck : "Deck is empty" }
             onAttack {
-              deck.search("Search your deck for a δ Pokemon", {
+              deck.search("Search your deck for a δ Pokémon.", {
               it.cardTypes.pokemon && it.cardTypes.is(DELTA)
             }).moveTo(my.hand)
               shuffleDeck()
@@ -2355,8 +2292,6 @@ public enum HolonPhantoms implements LogicCardInfo {
         text "δ Rainbow Energy provides [C] Energy. While attached to a Pokémon that has δ on its card, δ Rainbow Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.)"
         onPlay {reason->
         }
-        onRemoveFromPlay {
-        }
         getEnergyTypesOverride {
           if (!self || !self.topPokemonCard)
             return [[C] as Set]
@@ -2379,7 +2314,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             checkNoSPC()
             assert opp.bench.size() >= 4 : "Opponent needs to have 4 or more Benched Pokémon"
             powerUsed()
-            def tar = opp.bench.select("Choose a pokemon to return to your opponent's hand.")
+            def tar = opp.bench.select("Choose a Pokémon to return to your opponent's hand.")
             scoopUpPokemon([:], tar, delegate, SRC_ABILITY)
           }
         }
@@ -2398,8 +2333,8 @@ public enum HolonPhantoms implements LogicCardInfo {
           text "Once during your turn (before your attack), if Mew ex is on your Bench, you may look at your opponent's hand."
           actionA {
             checkLastTurn()
-            assert self.benched : "This Pokemon is not benched"
-            assert opp.hand : "Opponent's hand is empty"
+            assert self.benched : "This Pokémon is not benched"
+            assert opp.hand : "Opponent's hand is empty!"
             powerUsed()
             opp.hand.shuffledCopy().showToMe("Your opponent's hand")
           }
@@ -2418,7 +2353,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 50
 
             afterDamage {
-              if (defending.evolution && !defending.slatedToKO && confirm("Discard 2 Energy to devolve Defending?")) {
+              if (defending.evolution && !defending.slatedToKO && confirm("Discard 2 Energy to devolve the Defending Pokémon?")) {
                 discardSelfEnergy(C, C)
                 def top=defending.topPokemonCard
                 devolve(defending, top, opp.deck)
@@ -2437,9 +2372,9 @@ public enum HolonPhantoms implements LogicCardInfo {
           actionA {
             checkLastTurn()
             checkNoSPC()
-            assert opp.bench : "Opponent has no Benched"
+            assert opp.bench : "Opponent has no Benched Pokémon."
             powerUsed()
-            sw(opp.active, opp.bench.oppSelect("New Active Pokemon"))
+            sw(opp.active, opp.bench.oppSelect("New Active Pokémon"))
           }
         }
         move "Sharp Fang", {
@@ -2469,11 +2404,11 @@ public enum HolonPhantoms implements LogicCardInfo {
           onAttack {
             damage 20
             afterDamage {
-              def n = 0
-              flipUntilTails { n++ }
-              n = Math.min(n, my.discard.filterByType(BASIC_ENERGY).size())
+              def count = 0
+              flipUntilTails { count++ }
+              count = Math.min(count, my.discard.filterByType(BASIC_ENERGY).size())
 
-              if (n) attachEnergyFrom(count: n, my.discard, self)
+              if (count) attachEnergyFrom(count: count, my.discard, self)
             }
           }
         }

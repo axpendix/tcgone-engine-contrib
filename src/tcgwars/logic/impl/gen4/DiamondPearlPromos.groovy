@@ -1,6 +1,7 @@
 package tcgwars.logic.impl.gen4
 
-import tcgwars.logic.impl.gen3.NintendoBlackStarPromos;
+import tcgwars.logic.impl.gen3.NintendoBlackStarPromos
+import tcgwars.logic.impl.gen8.RebelClash;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -59,13 +60,13 @@ public enum DiamondPearlPromos implements LogicCardInfo {
   GIRATINA_LV_X_DP38 ("Giratina Lv.X", "DP38", Rarity.PROMO, [LVL_X, POKEMON, _PSYCHIC_]),
   SHAYMIN_LV_X_DP39 ("Shaymin Lv.X", "DP39", Rarity.PROMO, [LVL_X, POKEMON, _GRASS_]),
   REGIGIGAS_DP40 ("Regigigas", "DP40", Rarity.PROMO, [BASIC, POKEMON, _COLORLESS_]),
-  TOXICROAK_G_DP41 ("Toxicroak G", "DP41", Rarity.PROMO, [BASIC, POKEMON, _FIGHTING_]),
-  CARNIVINE_G_DP42 ("Carnivine G", "DP42", Rarity.PROMO, [BASIC, POKEMON, _GRASS_]),
-  PROBOPASS_G_DP43 ("Probopass G", "DP43", Rarity.PROMO, [BASIC, POKEMON, _FIGHTING_]),
+  TOXICROAK_G_DP41 ("Toxicroak G", "DP41", Rarity.PROMO, [BASIC, POKEMON, POKEMON_SP, _FIGHTING_]),
+  CARNIVINE_G_DP42 ("Carnivine G", "DP42", Rarity.PROMO, [BASIC, POKEMON, POKEMON_SP, _GRASS_]),
+  PROBOPASS_G_DP43 ("Probopass G", "DP43", Rarity.PROMO, [BASIC, POKEMON, POKEMON_SP, _FIGHTING_]),
   MAGNEZONE_DP44 ("Magnezone", "DP44", Rarity.PROMO, [STAGE2, EVOLUTION, POKEMON, _LIGHTNING_]),
-  CHARIZARD_G_LV_X_DP45 ("Charizard G Lv.X", "DP45", Rarity.PROMO, [LVL_X, POKEMON, _FIRE_]),
-  GARCHOMP_C_LV_X_DP46 ("Garchomp C Lv.X", "DP46", Rarity.PROMO, [LVL_X, POKEMON, _COLORLESS_]),
-  RAYQUAZA_C_LV_X_DP47 ("Rayquaza C Lv.X", "DP47", Rarity.PROMO, [LVL_X, POKEMON, _COLORLESS_]),
+  CHARIZARD_G_LV_X_DP45 ("Charizard G Lv.X", "DP45", Rarity.PROMO, [LVL_X, POKEMON, POKEMON_SP, _FIRE_]),
+  GARCHOMP_C_LV_X_DP46 ("Garchomp C Lv.X", "DP46", Rarity.PROMO, [LVL_X, POKEMON, POKEMON_SP, _COLORLESS_]),
+  RAYQUAZA_C_LV_X_DP47 ("Rayquaza C Lv.X", "DP47", Rarity.PROMO, [LVL_X, POKEMON, POKEMON_SP, _COLORLESS_]),
   TROPICAL_WIND_DP48 ("Tropical Wind", "DP48", Rarity.PROMO, [TRAINER]),
   DIALGA_DP49 ("Dialga", "DP49", Rarity.PROMO, [BASIC, POKEMON, _METAL_]),
   ARCEUS_DP50 ("Arceus", "DP50", Rarity.PROMO, [BASIC, POKEMON, _COLORLESS_]),
@@ -234,58 +235,11 @@ public enum DiamondPearlPromos implements LogicCardInfo {
 
         };
       case DIALGA_LV_X_DP17:
-        return levelUp (this, from:"Dialga", hp:HP110, type:METAL, retreatCost:2) {
-          weakness R
-          resistance P, MINUS20
-          pokePower "Time Skip", {
-            text "Once during your turn , you may have your opponent flip 2 coins. If both of them are heads, your turn ends. If both of them are tails, after your opponent draws a card at the beginning of his or her next turn, his or her turn ends. This power can�t be used if Dialga is affected by a Special Condition."
-            actionA {
-            }
-          }
-          move "Metal Flash", {
-            text "80 damage. During your next turn, Dialga can�t use Metal Flash."
-            energyCost M, M, C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-        };
+        return copy(GreatEncounters.DIALGA_LV_X_105, this);
       case PALKIA_LV_X_DP18:
-        return levelUp (this, from:"Palkia", hp:HP120, type:WATER, retreatCost:3) {
-          weakness L
-          pokePower "Restructure", {
-            text "Once during your turn , you may have your opponent switch 1 of your Active Pok�mon with 1 of your Bench Pok�mon. Then, you switch 1 of the Defending Pok�mon with 1 of your opponent�s Benched Pok�mon. This power can�t be used if Palkia is affected by a Special Condition."
-            actionA {
-            }
-          }
-          move "Hydro Reflect", {
-            text "60 damage. You may move all Energy cards attached to Palkia to your Benched Pok�mon in any way you like (Ignore this effect if you don�t have any Benched Pok�mon.)"
-            energyCost W, W, W
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-        };
+        return copy(GreatEncounters.PALKIA_LV_X_106, this);
       case DARKRAI_LV_X_DP19:
-        return levelUp (this, from:"Darkrai", hp:HP100, type:DARKNESS, retreatCost:1) {
-          weakness F
-          resistance P, MINUS20
-          pokeBody "Dark Shadow", {
-            text "Each basic Energy card attached to your Pok�mon now has the effect �If the Pok�mon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active Pok�mon .� You can�t use more than 1 Dark Shadow Pok�-Body each turn."
-            delayedA {
-            }
-          }
-          move "Endless Darkness", {
-            text "40 damage. The Defending Pok�mon is now Asleep. Flip 2 coins instead of 1 between turns. If either of this is tails, the Defending Pok�mon is still Asleep. If both of them are tails, the Defending Pok�mon is Knocked Out."
-            energyCost D, D, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-        };
+        return copy(GreatEncounters.DARKRAI_LV_X_104, this);
       case MAGMORTAR_DP20:
         return evolution (this, from:"Magmar", hp:HP100, type:FIRE, retreatCost:3) {
           weakness W, PLUS30
@@ -542,23 +496,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
 
         };
       case DIALGA_LV_X_DP37:
-        return levelUp (this, from:"Dialga", hp:HP110, type:METAL, retreatCost:2) {
-          weakness R
-          resistance P, MINUS20
-          pokePower "Time Skip", {
-            text "Once during your turn , you may have your opponent flip 2 coins. If both of them are heads, your turn ends. If both of them are tails, after your opponent draws a card at the beginning of his or her next turn, his of her turn ends. This power can�t be used if Dialga is affected by a Special Condition."
-            actionA {
-            }
-          }
-          move "Metal Flash", {
-            text "80 damage. During your next turn, Dialga can�t use Metal Flash."
-            energyCost M, M, C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-        };
+        return copy(GreatEncounters.DIALGA_LV_X_105, this);
       case GIRATINA_LV_X_DP38:
         return levelUp (this, from:"Giratina", hp:HP130, type:PSYCHIC, retreatCost:3) {
           weakness D
@@ -599,7 +537,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
         return basic (this, hp:HP100, type:COLORLESS, retreatCost:4) {
           weakness F
           move "Drag Off", {
-            text "30 damage. Before doing damage, you may choose 1 of your opponent's Benched Pokemon and switch it with the Defending Pokemon."
+            text "30 damage. Before doing damage, you may choose 1 of your opponent's Benched Pokémon and switch it with the Defending Pokémon."
             energyCost C, C, C
             attackRequirement {}
             onAttack {

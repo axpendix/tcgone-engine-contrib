@@ -203,15 +203,14 @@ public enum Unleashed implements LogicCardInfo {
           move "Time Hollow", {
             text "Choose a number of your opponent’s Stage 1 or Stage 2 Evolved Pokémon up to the amount of Energy attached to Jirachi. Remove the highest Stage Evolution card from each of those Pokémon and put those cards back into your opponent’s hand."
             energyCost P
+            attackRequirement {
+              assert opp.all.find{it.evolution} : "Your opponent has no Evolved Pokémon in play"
+            }
             onAttack {
               int max = self.cards.energyCount(C)
-              while (max-- > 0) {
-                def tar = opp.all.findAll{ it.evolution }
-                if(!tar) break
-                def pcs = tar.select("Choose which Pokemon to devolve", false)
-                if(!pcs) break
-                def top=pcs.topPokemonCard
-                devolve(pcs, top, opp.hand)
+              def tar = opp.all.findAll{ it.evolution }
+              multiSelect (tar, 0, max).each {
+                devolve(it, it.topPokemonCard, opp.hand)
               }
             }
           }
@@ -286,7 +285,7 @@ public enum Unleashed implements LogicCardInfo {
             energyCost P, P, P
             onAttack {
               if(opp.bench){
-                multiSelect(opp.bench, 2).each{
+                multiSelect(opp.bench, 2, text).each{
                   targeted(it){
                     damage 40, it
                   }
@@ -348,7 +347,7 @@ public enum Unleashed implements LogicCardInfo {
             actionA {
               checkLastTurn()
               checkNoSPC()
-              assert my.bench.findAll{it.types.contains(W)} : "No benched Water Pokemon"
+              assert my.bench.findAll{it.types.contains(W)} : "No benched Water Pokémon"
               powerUsed()
               sw my.active, my.bench.findAll{it.types.contains(W)}.select()
             }
@@ -1143,7 +1142,7 @@ public enum Unleashed implements LogicCardInfo {
             onAttack {
               damage 10
               if (opp.bench) {
-                damage 10, opp.bench.select("Which Benched Pokemon to deal damage to?")
+                damage 10, opp.bench.select("Which Benched Pokémon to deal damage to?")
               }
             }
           }
@@ -1610,7 +1609,7 @@ public enum Unleashed implements LogicCardInfo {
             energyCost P
             onAttack {
               if(opp.bench){
-                multiSelect(opp.bench, 2).each{
+                multiSelect(opp.bench, 2, text).each{
                   targeted(it){ damage 10, it }
                 }
               }
@@ -1683,7 +1682,7 @@ public enum Unleashed implements LogicCardInfo {
           onPlay {
             flip 1, {
               if (my.discard.filterByType(POKEMON)) {
-                my.discard.filterByType(POKEMON).select("Select a Pokemon").showToOpponent("Selected Pokemon").moveTo(addToTop:true, my.deck)
+                my.discard.filterByType(POKEMON).select("Select a Pokémon").showToOpponent("Selected Pokémon").moveTo(addToTop:true, my.deck)
               }
             }, {
               if (my.discard.filterByType(TRAINER)) {
@@ -1692,7 +1691,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
           playRequirement{
-            assert my.discard.filterByType(POKEMON,TRAINER) : "No Pokemon or Trainer in your discard"
+            assert my.discard.filterByType(POKEMON,TRAINER) : "No Pokémon or Trainer in your discard"
           }
         };
       case INTERVIEWER_S_QUESTIONS_77:
@@ -1713,7 +1712,7 @@ public enum Unleashed implements LogicCardInfo {
           text "Flip a coin. If heads, choose 1 of your Pokémon, and remove all Special Conditions and 6 damage counters from that Pokémon (all if there are less than 6)."
           onPlay {
             flip 1, {
-              my.all.findAll {it.numberOfDamageCounters || it.specialConditions}.select("Choose Pokemon to be healed").each{
+              my.all.findAll {it.numberOfDamageCounters || it.specialConditions}.select("Choose Pokémon to be healed").each{
                 heal 60, it
                 clearSpecialCondition(it, Source.TRAINER_CARD)
               }

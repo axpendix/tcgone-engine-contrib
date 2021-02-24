@@ -1,5 +1,6 @@
-package tcgwars.logic.impl.gen4;
+package tcgwars.logic.impl.gen4
 
+import tcgwars.logic.impl.gen3.RubySapphire;
 import tcgwars.logic.impl.gen4.MysteriousTreasures
 import tcgwars.logic.impl.gen7.CelestialStorm;
 
@@ -20,70 +21,70 @@ import tcgwars.logic.util.*;
 public enum RisingRivals implements LogicCardInfo {
 
   ARCANINE_1 ("Arcanine", "1", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
-  BASTIODON_GL_2 ("Bastiodon GL", "2", Rarity.HOLORARE, [BASIC, POKEMON, _METAL_]),
-  DARKRAI_G_3 ("Darkrai G", "3", Rarity.HOLORARE, [BASIC, POKEMON, _DARKNESS_]),
-  FLOATZEL_GL_4 ("Floatzel GL", "4", Rarity.HOLORARE, [BASIC, POKEMON, _WATER_]),
+  BASTIODON_GL_2 ("Bastiodon GL", "2", Rarity.HOLORARE, [BASIC, POKEMON, POKEMON_SP, _METAL_]),
+  DARKRAI_G_3 ("Darkrai G", "3", Rarity.HOLORARE, [BASIC, POKEMON, POKEMON_SP, _DARKNESS_]),
+  FLOATZEL_GL_4 ("Floatzel GL", "4", Rarity.HOLORARE, [BASIC, POKEMON, POKEMON_SP, _WATER_]),
   FLYGON_5 ("Flygon", "5", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
-  FROSLASS_GL_6 ("Froslass GL", "6", Rarity.HOLORARE, [BASIC, POKEMON, _WATER_]),
+  FROSLASS_GL_6 ("Froslass GL", "6", Rarity.HOLORARE, [BASIC, POKEMON, POKEMON_SP, _WATER_]),
   JIRACHI_7 ("Jirachi", "7", Rarity.HOLORARE, [BASIC, POKEMON, _METAL_]),
-  LUCARIO_GL_8 ("Lucario GL", "8", Rarity.HOLORARE, [BASIC, POKEMON, _FIGHTING_]),
-  LUXRAY_GL_9 ("Luxray GL", "9", Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
-  MISMAGIUS_GL_10 ("Mismagius GL", "10", Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_]),
-  RAMPARDOS_GL_11 ("Rampardos GL", "11", Rarity.HOLORARE, [BASIC, POKEMON, _FIGHTING_]),
-  ROSERADE_GL_12 ("Roserade GL", "12", Rarity.HOLORARE, [BASIC, POKEMON, _GRASS_]),
+  LUCARIO_GL_8 ("Lucario GL", "8", Rarity.HOLORARE, [BASIC, POKEMON, POKEMON_SP, _FIGHTING_]),
+  LUXRAY_GL_9 ("Luxray GL", "9", Rarity.HOLORARE, [BASIC, POKEMON, POKEMON_SP, _LIGHTNING_]),
+  MISMAGIUS_GL_10 ("Mismagius GL", "10", Rarity.HOLORARE, [BASIC, POKEMON, POKEMON_SP, _PSYCHIC_]),
+  RAMPARDOS_GL_11 ("Rampardos GL", "11", Rarity.HOLORARE, [BASIC, POKEMON, POKEMON_SP, _FIGHTING_]),
+  ROSERADE_GL_12 ("Roserade GL", "12", Rarity.HOLORARE, [BASIC, POKEMON, POKEMON_SP, _GRASS_]),
   SHIFTRY_13 ("Shiftry", "13", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _DARKNESS_]),
   AGGRON_14 ("Aggron", "14", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _METAL_]),
   BEEDRILL_15 ("Beedrill", "15", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
-  BRONZONG_E4_16 ("Bronzong E4", "16", Rarity.RARE, [BASIC, POKEMON, _PSYCHIC_]),
-  DRAPION_E4_17 ("Drapion E4", "17", Rarity.RARE, [BASIC, POKEMON, _DARKNESS_]),
-  ESPEON_E4_18 ("Espeon E4", "18", Rarity.RARE, [BASIC, POKEMON, _PSYCHIC_]),
+  BRONZONG_E4_16 ("Bronzong E4", "16", Rarity.RARE, [BASIC, POKEMON, POKEMON_SP, _PSYCHIC_]),
+  DRAPION_E4_17 ("Drapion E4", "17", Rarity.RARE, [BASIC, POKEMON, POKEMON_SP, _DARKNESS_]),
+  ESPEON_E4_18 ("Espeon E4", "18", Rarity.RARE, [BASIC, POKEMON, POKEMON_SP, _PSYCHIC_]),
   FLAREON_19 ("Flareon", "19", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
-  GALLADE_E4_20 ("Gallade E4", "20", Rarity.RARE, [BASIC, POKEMON, _PSYCHIC_]),
+  GALLADE_E4_20 ("Gallade E4", "20", Rarity.RARE, [BASIC, POKEMON, POKEMON_SP, _PSYCHIC_]),
   GASTRODON_EAST_SEA_21 ("Gastrodon East Sea", "21", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
   GASTRODON_WEST_SEA_22 ("Gastrodon West Sea", "22", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-  GOLEM_E4_23 ("Golem E4", "23", Rarity.RARE, [BASIC, POKEMON, _FIGHTING_]),
-  HERACROSS_E4_24 ("Heracross E4", "24", Rarity.RARE, [BASIC, POKEMON, _GRASS_]),
+  GOLEM_E4_23 ("Golem E4", "23", Rarity.RARE, [BASIC, POKEMON, POKEMON_SP, _FIGHTING_]),
+  HERACROSS_E4_24 ("Heracross E4", "24", Rarity.RARE, [BASIC, POKEMON, POKEMON_SP, _GRASS_]),
   HIPPOWDON_25 ("Hippowdon", "25", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
   JOLTEON_26 ("Jolteon", "26", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-  MAMOSWINE_GL_27 ("Mamoswine GL", "27", Rarity.RARE, [BASIC, POKEMON, _WATER_]),
-  MR__MIME_E4_28 ("Mr. Mime E4", "28", Rarity.RARE, [BASIC, POKEMON, _PSYCHIC_]),
+  MAMOSWINE_GL_27 ("Mamoswine GL", "27", Rarity.RARE, [BASIC, POKEMON, POKEMON_SP, _WATER_]),
+  MR__MIME_E4_28 ("Mr. Mime E4", "28", Rarity.RARE, [BASIC, POKEMON, POKEMON_SP, _PSYCHIC_]),
   NIDOKING_29 ("Nidoking", "29", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
   NIDOQUEEN_30 ("Nidoqueen", "30", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
-  RAICHU_GL_31 ("Raichu GL", "31", Rarity.RARE, [BASIC, POKEMON, _LIGHTNING_]),
-  RHYPERIOR_E4_32 ("Rhyperior E4", "32", Rarity.RARE, [BASIC, POKEMON, _FIGHTING_]),
+  RAICHU_GL_31 ("Raichu GL", "31", Rarity.RARE, [BASIC, POKEMON, POKEMON_SP, _LIGHTNING_]),
+  RHYPERIOR_E4_32 ("Rhyperior E4", "32", Rarity.RARE, [BASIC, POKEMON, POKEMON_SP, _FIGHTING_]),
   SNORLAX_33 ("Snorlax", "33", Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
   VAPOREON_34 ("Vaporeon", "34", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  VESPIQUEN_E4_35 ("Vespiquen E4", "35", Rarity.RARE, [BASIC, POKEMON, _GRASS_]),
+  VESPIQUEN_E4_35 ("Vespiquen E4", "35", Rarity.RARE, [BASIC, POKEMON, POKEMON_SP, _GRASS_]),
   WALREIN_36 ("Walrein", "36", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
-  YANMEGA_E4_37 ("Yanmega E4", "37", Rarity.RARE, [BASIC, POKEMON, _GRASS_]),
-  ALAKAZAM_E4_38 ("Alakazam E4", "38", Rarity.UNCOMMON, [BASIC, POKEMON, _PSYCHIC_]),
-  ELECTRODE_G_39 ("Electrode G", "39", Rarity.UNCOMMON, [BASIC, POKEMON, _LIGHTNING_]),
-  GENGAR_GL_40 ("Gengar GL", "40", Rarity.UNCOMMON, [BASIC, POKEMON, _PSYCHIC_]),
+  YANMEGA_E4_37 ("Yanmega E4", "37", Rarity.RARE, [BASIC, POKEMON, POKEMON_SP, _GRASS_]),
+  ALAKAZAM_E4_38 ("Alakazam E4", "38", Rarity.UNCOMMON, [BASIC, POKEMON, POKEMON_SP, _PSYCHIC_]),
+  ELECTRODE_G_39 ("Electrode G", "39", Rarity.UNCOMMON, [BASIC, POKEMON, POKEMON_SP, _LIGHTNING_]),
+  GENGAR_GL_40 ("Gengar GL", "40", Rarity.UNCOMMON, [BASIC, POKEMON, POKEMON_SP, _PSYCHIC_]),
   GLACEON_41 ("Glaceon", "41", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  HIPPOWDON_E4_42 ("Hippowdon E4", "42", Rarity.UNCOMMON, [BASIC, POKEMON, _FIGHTING_]),
-  INFERNAPE_E4_43 ("Infernape E4", "43", Rarity.UNCOMMON, [BASIC, POKEMON, _FIRE_]),
+  HIPPOWDON_E4_42 ("Hippowdon E4", "42", Rarity.UNCOMMON, [BASIC, POKEMON, POKEMON_SP, _FIGHTING_]),
+  INFERNAPE_E4_43 ("Infernape E4", "43", Rarity.UNCOMMON, [BASIC, POKEMON, POKEMON_SP, _FIRE_]),
   LAIRON_44 ("Lairon", "44", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _METAL_]),
   LEAFEON_45 ("Leafeon", "45", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  MACHAMP_GL_46 ("Machamp GL", "46", Rarity.UNCOMMON, [BASIC, POKEMON, _FIGHTING_]),
-  RAPIDASH_E4_47 ("Rapidash E4", "47", Rarity.UNCOMMON, [BASIC, POKEMON, _FIRE_]),
-  SCIZOR_E4_48 ("Scizor E4", "48", Rarity.UNCOMMON, [BASIC, POKEMON, _GRASS_]),
+  MACHAMP_GL_46 ("Machamp GL", "46", Rarity.UNCOMMON, [BASIC, POKEMON, POKEMON_SP, _FIGHTING_]),
+  RAPIDASH_E4_47 ("Rapidash E4", "47", Rarity.UNCOMMON, [BASIC, POKEMON, POKEMON_SP, _FIRE_]),
+  SCIZOR_E4_48 ("Scizor E4", "48", Rarity.UNCOMMON, [BASIC, POKEMON, POKEMON_SP, _GRASS_]),
   SHARPEDO_49 ("Sharpedo", "49", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
   STARMIE_50 ("Starmie", "50", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
-  STEELIX_GL_51 ("Steelix GL", "51", Rarity.UNCOMMON, [BASIC, POKEMON, _METAL_]),
+  STEELIX_GL_51 ("Steelix GL", "51", Rarity.UNCOMMON, [BASIC, POKEMON, POKEMON_SP, _METAL_]),
   TROPIUS_52 ("Tropius", "52", Rarity.UNCOMMON, [BASIC, POKEMON, _GRASS_]),
   VIBRAVA_53 ("Vibrava", "53", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-  WHISCASH_E4_54 ("Whiscash E4", "54", Rarity.UNCOMMON, [BASIC, POKEMON, _FIGHTING_]),
-  AERODACTYL_GL_55 ("Aerodactyl GL", "55", Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-  AMBIPOM_G_56 ("Ambipom G", "56", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
+  WHISCASH_E4_54 ("Whiscash E4", "54", Rarity.UNCOMMON, [BASIC, POKEMON, POKEMON_SP, _FIGHTING_]),
+  AERODACTYL_GL_55 ("Aerodactyl GL", "55", Rarity.COMMON, [BASIC, POKEMON, POKEMON_SP, _FIGHTING_]),
+  AMBIPOM_G_56 ("Ambipom G", "56", Rarity.COMMON, [BASIC, POKEMON, POKEMON_SP, _COLORLESS_]),
   ARON_57 ("Aron", "57", Rarity.COMMON, [BASIC, POKEMON, _METAL_]),
   CARVANHA_58 ("Carvanha", "58", Rarity.COMMON, [BASIC, POKEMON, _DARKNESS_]),
   EEVEE_59 ("Eevee", "59", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  FLAREON_E4_60 ("Flareon E4", "60", Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
-  FORRETRESS_G_61 ("Forretress G", "61", Rarity.COMMON, [BASIC, POKEMON, _METAL_]),
-  GLISCOR_E4_62 ("Gliscor E4", "62", Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
+  FLAREON_E4_60 ("Flareon E4", "60", Rarity.COMMON, [BASIC, POKEMON, POKEMON_SP, _FIRE_]),
+  FORRETRESS_G_61 ("Forretress G", "61", Rarity.COMMON, [BASIC, POKEMON, POKEMON_SP, _METAL_]),
+  GLISCOR_E4_62 ("Gliscor E4", "62", Rarity.COMMON, [BASIC, POKEMON, POKEMON_SP, _FIGHTING_]),
   GROWLITHE_63 ("Growlithe", "63", Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
   HIPPOPOTAS_64 ("Hippopotas", "64", Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-  HOUNDOOM_E4_65 ("Houndoom E4", "65", Rarity.COMMON, [BASIC, POKEMON, _DARKNESS_]),
+  HOUNDOOM_E4_65 ("Houndoom E4", "65", Rarity.COMMON, [BASIC, POKEMON, POKEMON_SP, _DARKNESS_]),
   KAKUNA_66 ("Kakuna", "66", Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
   KECLEON_67 ("Kecleon", "67", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
   KOFFING_68 ("Koffing", "68", Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
@@ -94,7 +95,7 @@ public enum RisingRivals implements LogicCardInfo {
   NIDORINA_73 ("Nidorina", "73", Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
   NIDORINO_74 ("Nidorino", "74", Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
   NUZLEAF_75 ("Nuzleaf", "75", Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  QUAGSIRE_GL_76 ("Quagsire GL", "76", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
+  QUAGSIRE_GL_76 ("Quagsire GL", "76", Rarity.COMMON, [BASIC, POKEMON, POKEMON_SP, _WATER_]),
   SEALEO_77 ("Sealeo", "77", Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
   SEEDOT_78 ("Seedot", "78", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
   SHELLOS_EAST_SEA_79 ("Shellos East Sea", "79", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
@@ -103,7 +104,7 @@ public enum RisingRivals implements LogicCardInfo {
   SPHEAL_82 ("Spheal", "82", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
   STARYU_83 ("Staryu", "83", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
   TRAPINCH_84 ("Trapinch", "84", Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
-  TURTWIG_GL_85 ("Turtwig GL", "85", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
+  TURTWIG_GL_85 ("Turtwig GL", "85", Rarity.COMMON, [BASIC, POKEMON, POKEMON_SP, _GRASS_]),
   WEEDLE_86 ("Weedle", "86", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
   WEEZING_87 ("Weezing", "87", Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
   AARON_S_COLLECTION_88 ("Aaron's Collection", "88", Rarity.UNCOMMON, [TRAINER]),
@@ -121,14 +122,14 @@ public enum RisingRivals implements LogicCardInfo {
   METAL_ENERGY_100 ("Metal Energy", "100", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   SP_ENERGY_101 ("SP Energy", "101", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   UPPER_ENERGY_102 ("Upper Energy", "102", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
-  ALAKAZAM_E4_LV_X_103 ("Alakazam E4 Lv.X", "103", Rarity.HOLORARE, [LVL_X, POKEMON, _PSYCHIC_]),
-  FLOATZEL_GL_LV_X_104 ("Floatzel GL Lv.X", "104", Rarity.HOLORARE, [LVL_X, POKEMON, _WATER_]),
+  ALAKAZAM_E4_LV_X_103 ("Alakazam E4 Lv.X", "103", Rarity.HOLORARE, [LVL_X, POKEMON, POKEMON_SP, _PSYCHIC_]),
+  FLOATZEL_GL_LV_X_104 ("Floatzel GL Lv.X", "104", Rarity.HOLORARE, [LVL_X, POKEMON, POKEMON_SP, _WATER_]),
   FLYGON_LV_X_105 ("Flygon Lv.X", "105", Rarity.HOLORARE, [LVL_X, POKEMON, _COLORLESS_]),
-  GALLADE_E4_LV_X_106 ("Gallade E4 Lv.X", "106", Rarity.HOLORARE, [LVL_X, POKEMON, _PSYCHIC_]),
+  GALLADE_E4_LV_X_106 ("Gallade E4 Lv.X", "106", Rarity.HOLORARE, [LVL_X, POKEMON, POKEMON_SP, _PSYCHIC_]),
   HIPPOWDON_LV_X_107 ("Hippowdon Lv.X", "107", Rarity.HOLORARE, [LVL_X, POKEMON, _FIGHTING_]),
-  INFERNAPE_E4_LV_X_108 ("Infernape E4 Lv.X", "108", Rarity.HOLORARE, [LVL_X, POKEMON, _FIRE_]),
-  LUXRAY_GL_LV_X_109 ("Luxray GL Lv.X", "109", Rarity.HOLORARE, [LVL_X, POKEMON, _LIGHTNING_]),
-  MISMAGIUS_GL_LV_X_110 ("Mismagius GL Lv.X", "110", Rarity.HOLORARE, [LVL_X, POKEMON, _PSYCHIC_]),
+  INFERNAPE_E4_LV_X_108 ("Infernape E4 Lv.X", "108", Rarity.HOLORARE, [LVL_X, POKEMON, POKEMON_SP, _FIRE_]),
+  LUXRAY_GL_LV_X_109 ("Luxray GL Lv.X", "109", Rarity.HOLORARE, [LVL_X, POKEMON, POKEMON_SP, _LIGHTNING_]),
+  MISMAGIUS_GL_LV_X_110 ("Mismagius GL Lv.X", "110", Rarity.HOLORARE, [LVL_X, POKEMON, POKEMON_SP, _PSYCHIC_]),
   SNORLAX_LV_X_111 ("Snorlax Lv.X", "111", Rarity.HOLORARE, [LVL_X, POKEMON, _COLORLESS_]),
   PIKACHU_112 ("Pikachu", "112", Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
   FLYING_PIKACHU_113 ("Flying Pikachu", "113", Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
@@ -1478,7 +1479,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
             onAttack {
               if (opp.active.cards.filterByType(ENERGY) && opp.bench) {
-                def energy = opp.active.findAll{it.cards.filterByType(ENERGY)}.select("Select energy to move to benched Pokemon").first()
+                def energy = opp.active.findAll{it.cards.filterByType(ENERGY)}.select("Select energy to move to benched Pokémon").first()
                 def tar = opp.bench.select("Select the Pokémon to move energy to")
                 energySwitch(opp.active, tar, energy)
               }
@@ -2213,9 +2214,9 @@ public enum RisingRivals implements LogicCardInfo {
         return basicTrainer (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nMove as many Energy cards attached to 1 of your Pokémon as you like to another of your Pokémon."
           onPlay {
-            def src = my.all.findAll{it.cards.filterByType(ENERGY)}.select("Select Pokemon to move energy from").first()
+            def src = my.all.findAll{it.cards.filterByType(ENERGY)}.select("Select Pokémon to move energy from").first()
             def energyList = src.cards.filterByType(ENERGY).select(min:1, "Choose energy cards to move")
-            tar = my.all.findAll{it != src}.select("Choose Pokemon to move energy cards to").first()
+            tar = my.all.findAll{it != src}.select("Choose Pokémon to move energy cards to").first()
             energyList.each {
               energySwitch(src, tar, it)
             }
@@ -2269,17 +2270,7 @@ public enum RisingRivals implements LogicCardInfo {
       case DARKNESS_ENERGY_99:
         return copy (MysteriousTreasures.DARKNESS_ENERGY_119, this);
       case METAL_ENERGY_100:
-        return specialEnergy (this, [[C]]) {
-          text "Damage done by attacks to the Pokémon that Metal Energy is attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the Pokémon that Metal Energy is attached to isn’t [M]. Metal Energy provides [M] Energy. (Doesn’t count as a basic Energy card.)"
-          onPlay {reason->
-          }
-          onRemoveFromPlay {
-          }
-          onMove {to->
-          }
-          allowAttach {to->
-          }
-        };
+        return copy (RubySapphire.METAL_ENERGY_94, this)
       case SP_ENERGY_101:
         return specialEnergy (this, [[C]]) {
           text "SP Energy provides [C] Energy. While attached to a Pokémon SP, SP Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.)"
@@ -2412,14 +2403,14 @@ public enum RisingRivals implements LogicCardInfo {
         return levelUp (this, from:"Luxray GL", hp:HP110, type:LIGHTNING, retreatCost:0) {
           weakness F
           resistance M, MINUS20
-          move "", {
-            text ", you may switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon."
+          move "Bright Look", {
+            text "Once during your turn (before your attack), when you put Luxray GL LV.X from your hand onto your Active Luxray GL, you may switch the Defending Pokémon with 1 of your opponent's Benched Pokémon"
             energyCost ()
             attackRequirement {}
             onAttack {
               if(reason==PLAY_FROM_HAND && opp.bench && confirm("Use Bright Look?")) {
                 powerUsed()
-                sw opp.active, opp.bench.select("Choose your opponent's new active Pokemon"), SRC_ABILITY
+                sw opp.active, opp.bench.select("Choose your opponent's new active Pokémon"), SRC_ABILITY
             }
           }
         }
@@ -2429,7 +2420,7 @@ public enum RisingRivals implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 60
-              damage 30, my.all.choose("Choose Pokemon to do 30 damage to")
+              damage 30, my.all.choose("Choose Pokémon to do 30 damage to")
             }
           }
         };

@@ -310,12 +310,16 @@ public class CardList extends ArrayList<Card> {
       min = count
       max = count
     }
+    CardList cards = this;
     boolean hidden = params.hidden ?: false
+    if (hidden && this.persistent && this.persistentName == "Hand") {
+      cards = this.shuffledCopy();
+    }
     if (playerType != TcgStatics.bg().currentThreadPlayerType) {
       TcgStatics.block()
     }
     def ret = TcgStatics.bg().getClient(playerType).selectCard(new CardSelectUIRequestBuilder()
-      .setMinMax(min, max).setInfo(info).setCards(this).setCustomCardFilter(filter as CardSelectUIRequestBuilder.CustomCardFilter).setCustomPassFilter(passFilter as CardSelectUIRequestBuilder.CustomPassFilter)
+      .setMinMax(min, max).setInfo(info).setCards(cards).setCustomCardFilter(filter as CardSelectUIRequestBuilder.CustomCardFilter).setCustomPassFilter(passFilter as CardSelectUIRequestBuilder.CustomPassFilter)
       .setShowAsHidden(hidden))
       .setType(CardListType.TEMPORARY)
     if (playerType != TcgStatics.bg().currentThreadPlayerType) {
@@ -472,6 +476,12 @@ public class CardList extends ArrayList<Card> {
       filterByEnergyType(type).size();
   }
 
+  public int basicEnergyCardCount(Type type = Type.COLORLESS) {
+    return type == Type.COLORLESS ?
+      filterByType(CardType.BASIC_ENERGY).size() :
+      filterByEnergyType(type).size();
+  }
+
   public boolean energySufficient(Type... types) {
     return Battleground.getInstance().em().activateGetter(new EnergySufficientGetter(getAsEnergyCards(), types))
   }
@@ -487,7 +497,7 @@ public class CardList extends ArrayList<Card> {
   }
 
   public void shuffle() {
-    if (autosort) throw new IllegalStateException("Autosort is active");
+    if (autosort) throw new IllegalStateException("Autosort is active.");
     Collections.shuffle(this, Battleground.getInstance().rng);
   }
 

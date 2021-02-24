@@ -1094,7 +1094,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             text "Search your deck for an Item card, reveal it, and put it into your hand. Then, shuffle your deck.\n"
             energyCost C
             attackRequirement{
-              assert my.deck : "There are no more cards in your deck"
+              assert my.deck : "There are no more cards in your deck."
             }
             onAttack{
               my.deck.search(count:1,"Choose an Item card",cardTypeFilter(ITEM)).showToOpponent("The chosen Item card.").moveTo(my.hand)
@@ -2589,7 +2589,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
             onAttack {
               gxPerform()
-              def pcs = multiSelect(opp.all, 2)
+              def pcs = multiSelect(opp.all, 2, text)
               pcs.each {
                 noWrDamage 50, it
               }
@@ -2651,7 +2651,7 @@ public enum SunMoonPromos implements LogicCardInfo {
           weakness FIGHTING
           resistance METAL, MINUS20
           move "Coffee Break", {
-            text "Heal 30 damage from this pokemon"
+            text "Heal 30 damage from this Pokémon."
             energyCost C
             onAttack {
               heal 30, self
@@ -2927,7 +2927,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
           move "Abnormal Overheating", {
-            text "160 damage. This Pokemon is now burned"
+            text "160 damage. This Pokémon is now burned"
             energyCost C, C, C
             onAttack {
               damage 160
@@ -3036,7 +3036,7 @@ public enum SunMoonPromos implements LogicCardInfo {
           text "Search your deck for up to 3 Pokémon-GX with different names, reveal them, and put them into your hand. Then, shuffle your deck."
           energyCost C
           attackRequirement {
-            assert my.deck : "Your deck is empty"
+            assert my.deck : "Your deck is empty!"
           }
           onAttack {
             def info = "Search your deck for up to 3 Pokémon-GX with different names."

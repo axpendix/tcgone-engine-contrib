@@ -233,7 +233,7 @@ public enum PopSeries2 implements LogicCardInfo {
           onAttack {
             damage 20
             if (opp.bench) {
-              multiSelect(opp.bench, 2).each {
+              multiSelect(opp.bench, 2, text).each {
                 targeted(it) {
                   damage 20, it
                 }
@@ -272,7 +272,7 @@ public enum PopSeries2 implements LogicCardInfo {
       // Commented for now, TechnicalMachineGroovyImpl needs to be made first.
         return copy(Expedition.MULTI_TECHNICAL_MACHINE_01_144, this);
       /*return basicTrainer (this) {
-        text "Attach this card to 1 of your Pokemon in play. This Pokemon may use this card's attack instead of its own. At the end of your turn, discard Multi Technical Machine 01"
+        text "Attach this card to 1 of your Pokémon in play. This Pokémon may use this card's attack instead of its own. At the end of your turn, discard Multi Technical Machine 01"
         def eff1, eff2
         onPlay {reason->
           def pcs = my.active

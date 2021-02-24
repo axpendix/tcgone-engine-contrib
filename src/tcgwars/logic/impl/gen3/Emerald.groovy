@@ -301,7 +301,7 @@ public enum Emerald implements LogicCardInfo {
             actionA {
               checkNoSPC()
               checkLastTurn()
-              assert bg.em().retrieveObject("Heal_Dance") != bg.turnCount : "You cannot use $thisAbility.name more than once per turn!"
+              assert bg.em().retrieveObject("Heal_Dance") != bg.turnCount : "You cannot use $thisAbility more than once per turn!"
               assert my.all.find{it.numberOfDamageCounters} : "There are no pokémon to heal on your side of the field"
               bg.em().storeObject("Heal_Dance",bg.turnCount)
               powerUsed()
@@ -1824,10 +1824,13 @@ public enum Emerald implements LogicCardInfo {
           onPlay {reason->
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
-                if (self.types.contains(D) || self.topPokemonCard.name.contains("Dark ")){
-                  bg.dm().each(){
-                    if(it.from == self && it.to.active && it.to.owner != self.owner && it.dmg.value) {
-                      it.dmg += hp(10)
+                if (self.types.contains(D) || self.topPokemonCard.name.contains("Dark ")) {
+                  targeted self, Source.SRC_SPENERGY, {
+                    bg.dm().each() {
+                      if (it.from == self && it.to.active && it.to.owner != self.owner && it.dmg.value) {
+                        bc "Darkness Energy +10"
+                        it.dmg += hp(10)
+                      }
                     }
                   }
                 }
@@ -1845,22 +1848,29 @@ public enum Emerald implements LogicCardInfo {
           //TODO: Check non-groovy prints, see if they properly reduce damage before W/R (pre-errata they did so after W/R)
           def eff
           def check = {
-            if(!it.evolution || it.EX){discard thisCard}
+            if (!it.evolution || it.EX) {
+              targeted null, Source.SRC_SPENERGY, {
+                discard thisCard
+              }
+            }
           }
           typeImagesOverride = [RAINBOW, RAINBOW]
-          onPlay {reason->
+          onPlay { reason ->
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
-                if(ef.attacker == self) bg.dm().each {
-                  if(it.to.owner != self.owner && it.dmg.value) {
-                    bc "Double Rainbow Energy -10"
-                    it.dmg -= hp(10)
+                targeted self, Source.SRC_SPENERGY, {
+                  if (ef.attacker == self) bg.dm().each {
+                    if (it.to.owner != self.owner && it.dmg.value) {
+                      bc "Double Rainbow Energy -10"
+                      it.dmg -= hp(10)
+                    }
                   }
                 }
               }
-              after EVOLVE, self, {check(self)}
-              after DEVOLVE, self, {check(self)}
-              after ATTACH_ENERGY, self, {check(self)}
+              after EVOLVE, self, { check(self) }
+              after DEVOLVE, self, { check(self) }
+              after ATTACH_ENERGY, self, { check(self) }
+              after CHECK_ABILITIES, { check(self) }
             }
           }
           onRemoveFromPlay {

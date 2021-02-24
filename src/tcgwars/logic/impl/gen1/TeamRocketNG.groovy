@@ -322,7 +322,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             energyCost R, R
             attackRequirement {}
             onAttack {
-              def flipNum = self.cards.energyCount(R)
+              def flipNum = self.cards.filterByEnergyType(R)
               flip flipNum, {
                 damage 50
                 discardSelfEnergy R
@@ -341,7 +341,7 @@ public enum TeamRocketNG implements LogicCardInfo {
                 if(my.bench.notFull){
                   def cnt = Math.min(my.bench.getFreeBenchCount(),2)
                   bc "$cnt"
-                  my.deck.search (max: cnt,"Search for 2 basic pokemon",{it.cardTypes.is(BASIC)}).each {
+                  my.deck.search (max: cnt,"Search for 2 basic Pokémon.",{it.cardTypes.is(BASIC)}).each {
                     benchPCS(it)
                   }
                   shuffleDeck()
@@ -1629,13 +1629,13 @@ public enum TeamRocketNG implements LogicCardInfo {
               if(oppConfirm("accepts the challenge (if decline your opponent draws 2 cards, otherwise you both put as many basic pokemon on your bench fro your deck)")){
                 if(my.bench.notFull) {
                   def myCnt = my.bench.getFreeBenchCount()
-                  my.deck.search(max:myCnt,"search for at most $myCnt Basic Pokemon",cardTypeFilter(BASIC)).each{
+                  my.deck.search(max:myCnt,"search for at most $myCnt Basic Pokémon",cardTypeFilter(BASIC)).each{
                     benchPCS(it)
                   }
                 }
                 if(opp.bench.notFull) {
                   def oppCnt = opp.bench.getFreeBenchCount()
-                  opp.deck.search(max:oppCnt,"search for at most $oppCnt Basic Pokemon",cardTypeFilter(BASIC)).each{
+                  opp.deck.search(max:oppCnt,"search for at most $oppCnt Basic Pokémon",cardTypeFilter(BASIC)).each{
                     benchPCS(it,OTHER)
                   }
                 }

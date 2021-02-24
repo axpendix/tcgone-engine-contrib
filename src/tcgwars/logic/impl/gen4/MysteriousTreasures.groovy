@@ -726,7 +726,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             actionA {
               checkLastTurn()
               checkNoSPC()
-              assert my.bench : "No benched Pokemon"
+              assert my.bench : "No benched Pokémon"
               assert my.discard.filterByEnergyType(R) : "You have no [R] Energy cards in your discard pile"
               powerUsed()
 
@@ -1161,7 +1161,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             delayedA {
               before null, self, Source.ATTACK, {
                 if (self.getPokemonCards().any{it.name.contains("Mime Jr.")} && ((self.owner.opposite.pbg.active as PokemonCardSet).cards.energyCount(C) <= 2) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
-                  bc "$thisAbility.name prevents effect"
+                  bc "$thisAbility prevents effect"
                   prevent()
                 }
               }
@@ -1170,7 +1170,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                   bg.dm().each {
                     if (it.to == self && it.notNoEffect) {
                       it.dmg = hp(0)
-                      bc "$thisAbility.name prevents damage"
+                      bc "$thisAbility prevents damage"
                     }
                   }
                 }
@@ -1234,8 +1234,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               powerUsed()
-              def chosenPCS = opp.all.select("Choose which Pokémon should have its types copied by Ninetales' $thisAbility.name?")
-              bc "$thisAbility.name - $chosenPCS was chosen"
+              def chosenPCS = opp.all.select("Choose which Pokémon should have its types copied by $self through $thisAbility?")
+              bc "$thisAbility - $chosenPCS was chosen"
               bc "$self is now the following types: ${chosenPCS.types}"
               delayed {
                 def eff
@@ -1316,12 +1316,12 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 delayed{
                   before CHECK_ATTACK_REQUIREMENTS, {
                     if (ef.attacker == self) {
-                      wcu "$thisAbility.name prevents $self from attacking."
+                      wcu "$thisAbility prevents $self from attacking."
                       prevent()
                     }
                   }
                   before RETREAT, self, {
-                    wcu "$thisAbility.name prevents $self from attacking."
+                    wcu "$thisAbility prevents $self from attacking."
                     prevent()
                   }
                   after FALL_BACK, self, {unregister()}
@@ -1382,13 +1382,13 @@ public enum MysteriousTreasures implements LogicCardInfo {
             delayedA {
               before POISONED_SPC, null, null, EVOLVE, {
                 if ((ef as Poisoned).getTarget().owner != self.owner) {
-                  bc "$thisAbility.name prevents removing the Special Condition Poisoned by evolving"
+                  bc "$thisAbility prevents removing the Special Condition Poisoned by evolving"
                   prevent()
                 }
               }
               before POISONED_SPC, null, null, DEVOLVE, {
                 if ((ef as Poisoned).getTarget().owner != self.owner) {
-                  bc "$thisAbility.name prevents removing the Special Condition Poisoned by devolving"
+                  bc "$thisAbility prevents removing the Special Condition Poisoned by devolving"
                   prevent()
                 }
               }
@@ -1707,7 +1707,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              multiSelect(opp.all.findAll{it.evolution}, 3).each{
+              multiSelect(opp.all.findAll{it.evolution}, 3, text).each{
                 targeted(it){
                   damage 30, it
                 }
@@ -1828,7 +1828,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             onAttack {
               damage 40
               if (opp.bench) {
-                multiSelect(opp.bench, 2).each {
+                multiSelect(opp.bench, 2, text).each {
                   targeted(it) {
                     damage 10, it
                   }
@@ -2165,7 +2165,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               self.cards.getExcludedList(top).discard()
               removePCS(self)
               def trcard
-              trcard = pokemonTool(new CustomCardInfo(top.realInfo).setCardTypes(TRAINER, ITEM, POKEMON_TOOL)) {
+              trcard = pokemonTool(new CustomCardInfo(top.staticInfo).setCardTypes(TRAINER, ITEM, POKEMON_TOOL)) {
                 def eff
                 onPlay {
                   eff = getter (GET_FULL_HP, self) {h->
@@ -2637,7 +2637,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               assert opp.bench
             }
             onAttack {
-              multiSelect(opp.bench, 2).each{
+              multiSelect(opp.bench, 2, text).each{
                 targeted(it){
                   damage 10, it
                 }
@@ -3430,11 +3430,14 @@ public enum MysteriousTreasures implements LogicCardInfo {
           onPlay {reason->
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
-                if (ef.attacker == self && self.types.contains(D)){
-                  bg.dm().each(){
-                    //Self damage appears to be increased as well, similar to PlusPower
-                    if(it.to.active && it.dmg.value) {
-                      it.dmg += hp(10)
+                if (ef.attacker == self && self.types.contains(D)) {
+                  targeted self, SRC_SPENERGY, {
+                    bg.dm().each() {
+                      //Self damage appears to be increased as well, similar to PlusPower
+                      if (it.to.active && it.dmg.value) {
+                        bc "Darkness Energy +10"
+                        it.dmg += hp(10)
+                      }
                     }
                   }
                 }
@@ -3448,7 +3451,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
       case METAL_ENERGY_120:
         return copy (RubySapphire.METAL_ENERGY_94, this);
       case ELECTIVIRE_LV_X_121:
-        return evolution (this, from:"Electivire", hp:HP120, type:LIGHTNING, retreatCost:3) {
+        return levelUp (this, from:"Electivire", hp:HP120, type:LIGHTNING, retreatCost:3) {
           weakness F
           resistance M, MINUS20
           pokeBody "Shocking Tail", {
@@ -3481,7 +3484,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
 
         };
       case LUCARIO_LV_X_122:
-        return evolution (this, from:"Lucario", hp:HP110, type:FIGHTING, retreatCost:1) {
+        return levelUp (this, from:"Lucario", hp:HP110, type:FIGHTING, retreatCost:1) {
           weakness P
           pokePower "Stance", {
             text "Once during your turn (before your attack), when you put Lucario LV.X from your hand onto your Active Lucario, you may use this power. Prevent all effects of an attack, including damage, done to Lucario during your opponent’s next turn. (If Lucario is no longer your Active Pokémon, this effect ends.)"
@@ -3544,7 +3547,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
 
         };
       case MAGMORTAR_LV_X_123:
-        return evolution (this, from:"Magmortar", hp:HP130, type:FIRE, retreatCost:3) {
+        return levelUp (this, from:"Magmortar", hp:HP130, type:FIRE, retreatCost:3) {
           weakness W
           pokePower "Torrid Wave", {
             text "Once during your turn (before your attack), if Magmortar is your Active Pokémon, you may choose 1 of the Defending Pokémon. That Pokémon is now Burned. Put 3 damage counters instead of 2 on that Pokémon between turns. This power can’t be used if Magmortar is affected by a Special Condition."

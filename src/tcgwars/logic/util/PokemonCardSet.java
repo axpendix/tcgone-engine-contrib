@@ -13,6 +13,7 @@ import tcgwars.logic.card.energy.EnergyCard;
 import tcgwars.logic.card.pokemon.PokemonCard;
 import tcgwars.logic.effect.ability.*;
 import tcgwars.logic.effect.ability.Ability.*;
+import tcgwars.logic.effect.advanced.ExtraEnergyCalculator;
 import tcgwars.logic.effect.getter.*;
 import tcgwars.logic.effect.special.SpecialConditionType;
 import tcgwars.logic.groovy.TcgStatics;
@@ -21,6 +22,7 @@ import java.io.Serializable;
 import java.util.*;
 
 import static tcgwars.logic.card.CardType.EVOLUTION;
+import static tcgwars.logic.card.CardType.LVL_X;
 
 /**
  * Models an in-game pokemon
@@ -278,12 +280,13 @@ public class PokemonCardSet implements PokemonStack, Serializable {
 
   public String getName() {
     try {
-      lastName = getTopPokemonCard().getName().replace(" Lv.X", "");
+      lastName = getTopPokemonCard().getName();
       return lastName;
     } catch (Exception e) {
       return lastName;
     }
   }
+
 
   public boolean isActive() {
     return TcgStatics.bg().getPBG(owner).getActive() == this;
@@ -362,7 +365,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
   }
 
   public Integer getEnergyCount(Battleground bg) {
-    return bg.em().activateGetter(new GetEnergyCount(this));
+    return bg.em().activateGetter(new ExtraEnergyCalculator(this, Type.COLORLESS));
   }
 
   public boolean noSPC() {
@@ -437,6 +440,9 @@ public class PokemonCardSet implements PokemonStack, Serializable {
 
   @Override
   public String toString() {
+    if (getTopPokemonCard().getCardTypes().contains(LVL_X)) {
+      return getName() + " Lv.X";
+    }
     return getName();
 //		return "\n\tPokemonCardSet [set=" + cards() + ", damage=" + damage + "]" ;
   }

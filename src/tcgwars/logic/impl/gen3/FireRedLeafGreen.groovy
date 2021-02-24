@@ -1,5 +1,6 @@
-package tcgwars.logic.impl.gen3;
+package tcgwars.logic.impl.gen3
 
+import tcgwars.logic.effect.ability.custom.Safeguard;
 import tcgwars.logic.impl.gen2.Expedition;
 
 import tcgwars.logic.effect.gm.Attack
@@ -259,10 +260,9 @@ public enum FireRedLeafGreen implements LogicCardInfo {
       case DEWGONG_3:
         return evolution (this, from:"Seel", hp:HP080, type:WATER, retreatCost:2) {
           weakness METAL
-          pokeBody "Safeguard", {
-            text "Prevent all effects of attacks, including damage, done to Dewgong by your opponent’s Pokémon-ex."
-            safeguard(self,delegate)
-          }
+
+          // TODO: Replace with a static for Pokémon-ex and/or change static safeguard so it's configurable.
+          thisCard.addAbility new Safeguard("Prevent all effects of attacks, including damage, done to Dewgong by your opponents Pokémon-ex.")
           move "Cold Breath", {
             text "10 damage. The Defending Pokémon is now Asleep."
             energyCost W
@@ -576,7 +576,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               assert !self.specialConditions
               assert self.damage != self.fullHP - hp(10) : "Slowbro can't be Knocked Out by Strange Behavior!"
               def tar = my.all.findAll{it != self && it.numberOfDamageCounters}
-              assert tar : "There is no Pokemon with damage counter outside Slowbro"
+              assert tar : "There is no Pokémon with damage counter outside Slowbro"
               def pcs = tar.select()
 
               self.damage+=hp(10)
@@ -869,10 +869,10 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             delayedA {
               before BEGIN_TURN, {
                 if(my.active.isSPC(ASLEEP)){
-                  my.active.damage += hp(20)
+                  directDamage 20, self, SRC_ABILITY
                 }
                 if(opp.active.isSPC(ASLEEP)){
-                  opp.active.damage += hp(20)
+                  directDamage 20, opp.active, SRC_ABILITY
                 }
               }
             }
@@ -1247,9 +1247,12 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           move "Tunneling", {
             text "Choose up to 2 of your opponent’s Benched Pokémon. This attack does 10 damage to each of them. (Don’t apply Weakness and Resistance for Benched Pokémon.) Onix can’t attack during your next turn."
             energyCost F, C
+            attackRequirement {
+              assertOppBench()
+            }
             onAttack {
               if (opp.bench) {
-                multiSelect(opp.bench, 2).each{
+                multiSelect(opp.bench, 1, 2, text).each{
                   targeted(it){
                     damage 10, it
                   }
@@ -2248,7 +2251,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                 if (!self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.bench.notEmpty && self.owner.pbg.active.cards.filterByType(BASIC_ENERGY)) {
                   bc "EXP.ALL activates"
                   if (oppConfirm("EXP.ALL: Move an Energy from ${self.owner.pbg.active} to $self ?")) {
-                    def energy = self.owner.pbg.active.cards.filterByType(BASIC_ENERGY).oppSelect("Select an Energy from the Active Pokemon to move to the holder of EXP.ALL").first()
+                    def energy = self.owner.pbg.active.cards.filterByType(BASIC_ENERGY).oppSelect("Select an Energy from the Active Pokémon to move to the holder of EXP.ALL").first()
                     energySwitch(self.owner.pbg.active, self, energy)
                     discard thisCard
                   }
@@ -2363,7 +2366,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
           playRequirement{
-            assert opp.bench : "Opponent has no benched Pokemon"
+            assert opp.bench : "Opponent has no benched Pokémon"
           }
         };
       case PROF__OAK_S_RESEARCH_98:
@@ -2394,35 +2397,11 @@ public enum FireRedLeafGreen implements LogicCardInfo {
       case VS_SEEKER_100:
         return basicTrainer (this) {
           text "Search your discard pile for a Supporter card, show it to your opponent, and put it into your hand."
-          //
-          // [EX Rules Supporters Workaround] TODO: Edit this once no longer needed
-          //
-          def thisTurnSupporter
-          globalAbility{
-            delayed {
-              after PLAY_TRAINER, {
-                if(ef.cardToPlay.cardTypes.is(SUPPORTER)){
-                  thisTurnSupporter = ef.cardToPlay
-                }
-              }
-              after BETWEEN_TURNS, {
-                thisTurnSupporter = null
-              }
-            }
-          }
           onPlay {
-            if(thisTurnSupporter){
-              my.discard.getExcludedList(thisTurnSupporter).filterByType(SUPPORTER).select("Select one Supporter card").showToOpponent("Selected supporter (Supporters you play remain in play untill your turn ends)").moveTo(my.hand)
-            } else {
-              my.discard.filterByType(SUPPORTER).select("Select one Supporter card").showToOpponent("Selected supporter").moveTo(my.hand)
-            }
+            my.discard.filterByType(SUPPORTER).select("Select one Supporter card").showToOpponent("Selected supporter").moveTo(my.hand)
           }
           playRequirement{
-            if(thisTurnSupporter){
-              assert my.discard.getExcludedList(thisTurnSupporter).filterByType(SUPPORTER) : "You have no Supporters in your discard (Supporters you play remain in play untill your turn ends)"
-            } else {
-              assert my.discard.filterByType(SUPPORTER) : "You have no Supporters in your discard"
-            }
+            assert my.discard.filterByType(SUPPORTER) : "You have no Supporters in your discard"
           }
         };
       case POTION_101:
@@ -2453,10 +2432,6 @@ public enum FireRedLeafGreen implements LogicCardInfo {
         return specialEnergy (this, [[C]]) {
           text "Attach Multi Energy to 1 of your Pokémon. While in play, Multi Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.) Multi Energy provides [C] Energy when attached to a Pokémon that already has Special Energy cards attached to it."
           onPlay {reason->
-          }
-          onRemoveFromPlay {
-          }
-          onMove {to->
           }
           getEnergyTypesOverride{
             if(self == null || self.cards.filterByType(SPECIAL_ENERGY).size() > 1) {
@@ -2492,7 +2467,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                 flipUntilTails {
                   toDiscard++
                 }
-                while (defending.cards.energyCount() || toDiscard > 0) {
+                while (defending.cards.energyCount() && toDiscard > 0) {
                   discardDefendingEnergy()
                   toDiscard--
                 }
@@ -2577,22 +2552,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             //Errata'd, original text said "each Energy you discarded"
             energyCost L, C
             onAttack {
-              def toBeDiscarded = new CardList()
-              while(true) {
-                def pl = my.all.findAll{
-                  it.cards.filterByType(ENERGY).any{enCard -> !toBeDiscarded.contains(enCard)}
-                }
-                if(!pl) break;
-
-                def info = "Energy cards already marked for discard: ${toBeDiscarded.size()}\nCurrent base damage: 30 + ${20 * toBeDiscarded.size()}\nDiscard an Energy card from which Pokémon? (cancel to stop)"
-                def src = pl.select(info, false)
-                if(!src) break;
-
-                def selection = src.cards.filterByType(ENERGY).findAll{enCard -> !toBeDiscarded.contains(enCard)}.select("Card to discard")
-                toBeDiscarded.addAll(selection)
-              }
-              damage 30+20*toBeDiscarded.size()
-              afterDamage { toBeDiscarded.discard() }
+              additionalDamageByDiscardingCardTypeFromPokemon 30, 20, ENERGY
             }
           }
 

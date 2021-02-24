@@ -447,7 +447,7 @@ public enum LostThunder implements LogicCardInfo {
             text "Once during your turn (before your attack), you may use this Ability. Choose 1 of your Basic Pokémon in play. If you have a Stage 2 card in your hand that evolves from that Pokémon, put that card onto the Basic Pokémon to evolve it. You can use this Ability during your first turn or on a Pokémon that was put into play this turn."
             actionA{
               checkLastTurn()
-              assert my.all.findAll {it.basic} : "You have no basic pokemon"
+              assert my.all.findAll {it.basic} : "You have no basic Pokémon."
               assert my.hand.filterByType(STAGE2) : "You have no Stage 2 in hand"
               def tar = my.all.findAll {it.basic}.select("Choose the pokemon to be evolved")
               def possibleEvolutions = my.hand.filterByType(STAGE2).findAll{
@@ -1403,7 +1403,7 @@ public enum LostThunder implements LogicCardInfo {
               while (1) {
                 def tar = my.all.findAll {it.cards.filterByEnergyType(R).findAll {!toBeMoved.contains(it)}.notEmpty()}
                 if (!tar) break
-                def pcs = tar.select("Pokemon that has [R] energy to put in the Lost Zone. Cancel to stop", false)
+                def pcs = tar.select("Pokémon that has [R] energy to put in the Lost Zone. Cancel to stop", false)
                 if (!pcs) break
                 def dd = pcs.cards.filterByEnergyType(R).findAll {!toBeMoved.contains(it)}.select("[R] Energy to put in the Lost Zone")
                 toBeMoved.addAll(dd)
@@ -2192,7 +2192,7 @@ public enum LostThunder implements LogicCardInfo {
               my.bench.each {
                 count = count + it.numberOfDamageCounters
               }
-              assert count >= 66 : "You need ${66 - count} more damage counters on your Benched Pokemon."
+              assert count >= 66 : "You need ${66 - count} more damage counters on your Benched Pokémon."
               assert self.active : "Counters OK but $self must be active"
               powerUsed()
               bg.getGame().endGame(self.owner, WinCondition.OTHER);
@@ -2314,14 +2314,14 @@ public enum LostThunder implements LogicCardInfo {
             text "Once during your turn (before your attack), you may discard all cards attached to this Pokémon and attach it to 1 of your Pokémon as a Pokémon Tool card. When the Pokémon this card is attached to is Knocked Out, your opponent takes 1 fewer Prize card."
             actionA {
               checkLastTurn()
-              assert my.bench.notEmpty : "$self is your last pokemon"
+              assert my.bench.notEmpty : "$self is your last Pokémon."
               assert my.all.findAll {it!=self && it.cards.filterByType(POKEMON_TOOL).empty} : "No place to attach"
               powerUsed()
               def top = self.topPokemonCard
               self.cards.getExcludedList(top).discard()
               removePCS(self)
               def trcard
-              trcard = pokemonTool(new CustomCardInfo(top.realInfo).setCardTypes(TRAINER, ITEM, POKEMON_TOOL)) {
+              trcard = pokemonTool(new CustomCardInfo(top.staticInfo).setCardTypes(TRAINER, ITEM, POKEMON_TOOL)) {
                 def eff
                 onPlay {
                   eff = getter GET_GIVEN_PRIZES, self, {holder->
@@ -2382,7 +2382,7 @@ public enum LostThunder implements LogicCardInfo {
               bc "$thisCard used Distortion Door"
               def pcs = benchPCS(thisCard)
               if (pcs && thisCard.player.opposite.pbg.bench) {
-                multiSelect(thisCard.player.opposite.pbg.bench,2).each{
+                multiSelect(thisCard.player.opposite.pbg.bench, 2, text).each {
                   directDamage 10, it, SRC_ABILITY
                 }
               }
@@ -2649,7 +2649,7 @@ public enum LostThunder implements LogicCardInfo {
           customAbility {
             delayed (priority: LAST) {
               before APPLY_ATTACK_DAMAGES, {
-                if(bg().currentTurn==self.owner.opposite) {
+                if(bg().currentTurn==self.owner.opposite && self.active) {
                   turnCount=bg.turnCount
                   lastDamage=bg().dm().find({it.to==self && it.dmg.value>=0})?.dmg
                 }
@@ -3277,7 +3277,7 @@ public enum LostThunder implements LogicCardInfo {
             text "Look at the top 8 cards of your deck and attach any number of Energy cards you find there to your Pokémon in any way you like. Shuffle the other cards back into your deck.\n"
             energyCost Y
             attackRequirement{
-              assert my.deck : "There are no more cards in your deck"
+              assert my.deck : "There are no more cards in your deck."
             }
             onAttack{
               my.deck.subList(0,8).showToMe("Top 8 cards of your deck")
@@ -3307,7 +3307,7 @@ public enum LostThunder implements LogicCardInfo {
             text "20× damage. Discard up to 2 Trainer cards from your hand. This attack does 20 damage for each card you discarded in this way."
             energyCost Y
             attackRequirement{
-              assert my.hand.filterByType(TRAINER) : "No trainer in hand"
+              assert my.hand.filterByType(TRAINER) : "There are no Trainer cards in your hand."
             }
             onAttack{
               damage 20*my.hand.filterByType(TRAINER).select(max:2,"discard up to 2 Trainer cards for 20 damage").discard().size()
@@ -3384,7 +3384,7 @@ public enum LostThunder implements LogicCardInfo {
             text "Search your deck for up to 3 cards and put them into your hand. Then, shuffle your deck.\n"
             energyCost Y
             attackRequirement {
-              assert my.deck : "There are no more cards in your deck"
+              assert my.deck : "There are no more cards in your deck."
             }
             onAttack {
               my.deck.select(max: 3).moveTo(hidden: true, my.hand)
@@ -3427,7 +3427,7 @@ public enum LostThunder implements LogicCardInfo {
               delayed{
                 before null, self, Source.ATTACK, {
                   if (self.owner.opposite.pbg.active.hasModernAbility() && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
-                    bc "Wonder Ray prevents effect"
+                    bc "Wonder Ray prevents effect."
                     prevent()
                   }
                 }
@@ -3435,7 +3435,7 @@ public enum LostThunder implements LogicCardInfo {
                   bg.dm().each {
                     if(it.to == self && it.notNoEffect && it.from.hasModernAbility()){
                       it.dmg = hp(0)
-                      bc "Wonder Ray prevents damage"
+                      bc "Wonder Ray prevents damage."
                     }
                   }
                 }
@@ -3490,7 +3490,7 @@ public enum LostThunder implements LogicCardInfo {
             text "Heal 30 damage from 1 of your Pokémon."
             energyCost C
             attackRequirement {
-              assert my.all.findAll{it.numberOfDamageCounters} : "There are no damaged pokemon to heal"
+              assert my.all.findAll{it.numberOfDamageCounters} : "There are no damaged Pokémon to heal"
             }
             onAttack{
               heal 30, my.all.findAll{it.numberOfDamageCounters}.select("Heal")
@@ -3599,7 +3599,7 @@ public enum LostThunder implements LogicCardInfo {
             energyCost Y
             attackRequirement{
               gxCheck()
-              assert opp.bench : "Your opponent does not have benched Pokémon"
+              assert opp.bench : "Your opponent does not have any benched Pokémon."
             }
             onAttack{
               gxPerform()
@@ -4045,7 +4045,7 @@ public enum LostThunder implements LogicCardInfo {
         };
       case CUSTOM_CATCHER_171:
         return itemCard (this) {
-          text "You may play 2 Custom Catcher cards at once.If you played 1 card, draw cards from your deck until you have 3 cards in your hand.If you played 2 cards, switch 1 of your opponent's Benched Pokémon with their Active Pokémon. (This effect works one time for 2 cards.)\nYou may play as many Item cards as you like during your turn (before your attack)."
+          text "You may play 2 Custom Catcher cards at once. If you played 1 card, draw cards from your deck until you have 3 cards in your hand.If you played 2 cards, switch 1 of your opponent's Benched Pokémon with their Active Pokémon. (This effect works one time for 2 cards.)\nYou may play as many Item cards as you like during your turn (before your attack)."
           onPlay {
             int toDraw = Math.max(0, 3 - my.hand.getExcludedList(thisCard).size())
             if(opp.bench && my.hand.findAll({it.name=="Custom Catcher"}).size()>=2) {
@@ -4307,7 +4307,7 @@ public enum LostThunder implements LogicCardInfo {
             shuffleDeck()
           }
           playRequirement{
-            assert my.deck : "There are no more cards in your deck"
+            assert my.deck : "There are no more cards in your deck."
           }
         };
       case MIXED_HERBS_184:
@@ -4341,7 +4341,7 @@ public enum LostThunder implements LogicCardInfo {
           onPlay {
             def tar = my.all.findAll{(it.numberOfDamageCounters !=0)}
             if(tar){
-              def pcs = tar.select("Select the pokémon to be healed")
+              def pcs = tar.select("Select the Pokémon to be healed")
 
               flip 2,{
                 heal 30, pcs
@@ -4370,7 +4370,7 @@ public enum LostThunder implements LogicCardInfo {
             my.deck.search("Choose Basic [G] Pokémon or a [G] Energy card",{(it.cardTypes.is(BASIC) && it.asPokemonCard().types.contains(G)) || (it.cardTypes.is(BASIC_ENERGY) && it.asEnergyCard().containsTypePlain(G) )}).moveTo(my.hand)
           }
           playRequirement{
-            assert my.deck : "There are no more cards in your deck"
+            assert my.deck : "There are no more cards in your deck."
           }
         };
       case PROFESSOR_ELM_S_LECTURE_188:
@@ -4380,7 +4380,7 @@ public enum LostThunder implements LogicCardInfo {
             my.deck.search(max : 3, "Choose up to 3 Pokémon with 60 HP or less",{it.cardTypes.is(POKEMON) && it.asPokemonCard().hp.value <= 60}).showToOpponent("Chosen Pokémon cards.").moveTo(my.hand)
           }
           playRequirement{
-            assert my.deck : "There are no more cards in your deck"
+            assert my.deck : "There are no more cards in your deck."
           }
         };
       case SIGHTSEER_189:
@@ -4449,7 +4449,7 @@ public enum LostThunder implements LogicCardInfo {
           }
           playRequirement{
             assert bg.turnCount == 2 : "This card is now useless"
-            assert opp.all.findAll {it.cards.energyCount(C)} : "There are no energy cards attached to your opponent's pokémon"
+            assert opp.all.findAll {it.cards.energyCount(C)} : "There are no energy cards attached to your opponent's Pokémon."
           }
         };
       case WHITNEY_193:
@@ -4471,9 +4471,11 @@ public enum LostThunder implements LogicCardInfo {
           def eff
           onPlay {reason->
             eff = getter (GET_MOVE_LIST,self) {holder->
-              for(card in holder.effect.target.cards.filterByType(POKEMON)){
-                if(card!=holder.effect.target.topPokemonCard){
-                  holder.object.addAll(card.moves)
+              targeted self, SRC_SPENERGY, {
+                for (card in holder.effect.target.cards.filterByType(POKEMON)) {
+                  if (card != holder.effect.target.topPokemonCard) {
+                    holder.object.addAll(card.moves)
+                  }
                 }
               }
             }

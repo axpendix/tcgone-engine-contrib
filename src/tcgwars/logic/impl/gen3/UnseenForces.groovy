@@ -314,7 +314,7 @@ public enum UnseenForces implements LogicCardInfo {
           text "Search your deck for up to 2 [G] Pokémon, show them to your opponent, and put them into your hand. Shuffle your deck afterward. If you put any [G] Pokémon into your hand, you may switch Bellossom with 1 of your Benched Pokémon."
           energyCost G
           attackRequirement {
-            assert my.deck : "There are no more cards in your deck"
+            assert my.deck : "There are no more cards in your deck."
           }
           onAttack {
             def cards = deck.search(min:0, max: 2, pokemonTypeFilter(G))
@@ -550,7 +550,7 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             damage 50
 
-            if (confirm("Would you like to add damage counters to increase the damage dealt to the defending Pokemon?"))
+            if (confirm("Would you like to add damage counters to increase the damage dealt to the defending Pokémon?"))
               {
                 def num = choose([1,2,3,4,5])
                 damage 10 * num
@@ -634,7 +634,7 @@ public enum UnseenForces implements LogicCardInfo {
           actionA {
             checkNoSPC()
             def tar = my.all.findAll { it.cards.filterByType(POKEMON_TOOL) }
-            assert tar: "None of your Pokemon have a Pokémon Tool card attached to them"
+            assert tar: "None of your Pokémon have a Pokémon Tool card attached to them"
             powerUsed()
             def pcs = tar.select()
             def tools = pcs.cards.filterByType(POKEMON_TOOL)
@@ -699,9 +699,9 @@ public enum UnseenForces implements LogicCardInfo {
           actionA {
             checkNoSPC()
             checkLastTurn()
-            assert my.deck : "There are no more cards in your deck"
+            assert my.deck : "There are no more cards in your deck."
             powerUsed()
-            my.deck.search("Select one Pokemon Tool Card", {it.cardTypes.is(POKEMON_TOOL)} ).moveTo(my.hand)
+            my.deck.search("Select one Pokémon Tool Card", {it.cardTypes.is(POKEMON_TOOL)} ).moveTo(my.hand)
             shuffleDeck()
           }
         }
@@ -994,7 +994,7 @@ public enum UnseenForces implements LogicCardInfo {
           text "10x damage. Does 10 damage times the number of your opponent's Benched Pokémon."
           energyCost F, C
           attackRequirement{
-            assert opp.bench : "Your opponent has no Benched Pokémon"
+            assert opp.bench : "Your opponent has no Benched Pokémon."
           }
           onAttack {
             damage 10 * opp.bench.size()
@@ -1030,7 +1030,7 @@ public enum UnseenForces implements LogicCardInfo {
           text "Choose 1 of your opponent's Benched Pokémon. This attack does 10 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost F
           attackRequirement{
-            assert opp.bench : "Your opponent has no Benched Pokémon"
+            assert opp.bench : "Your opponent has no Benched Pokémon."
           }
           onAttack {
             damage 10, opp.bench.select("Deal 10 damage to which Pokémon?")
@@ -1150,7 +1150,7 @@ public enum UnseenForces implements LogicCardInfo {
           text "Switch 1 of your opponent's Benched Pokémon with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch. The new Defending Pokémon is now Asleep."
           energyCost C
           attackRequirement{
-            assert opp.bench : "Your opponent has no Benched Pokémon"
+            assert opp.bench : "Your opponent has no Benched Pokémon."
           }
           onAttack {
             def target = opp.bench.select("Select the new Active Pokémon.")
@@ -1183,7 +1183,7 @@ public enum UnseenForces implements LogicCardInfo {
           text "Put 1 damage counter on 1 of your opponent's Pokémon."
           energyCost C
           onAttack {
-            directDamage 10, opp.all.select("Select a Pokemon to put a damage counter on")
+            directDamage 10, opp.all.select("Select a Pokémon to put a damage counter on")
           }
         }
       };
@@ -1207,10 +1207,8 @@ public enum UnseenForces implements LogicCardInfo {
             damage 20
             afterDamage {
               if (opp.hand) {
-                def list = opp.hand.shuffledCopy().showToMe("Opponent's hand").filterByType(TRAINER)
-                if(list){
-                  list.select("Select a Trainer card to discard").discard()
-                }
+                def selected = opp.hand.shuffledCopy().select(min: 0, max: 1, "Select a Trainer card to discard", {it.cardTypes.is(TRAINER)})
+                if (selected) { selected.discard() }
               }
             }
           }
@@ -1247,7 +1245,7 @@ public enum UnseenForces implements LogicCardInfo {
           actionA {
             checkLastTurn()
             assert bg.em().retrieveObject("Snappy_Move") != bg.turnCount : "You can't use more than 1 Snappy Move Poké-Power each turn."
-            assert self.benched : "This Pokemon is not on your Bench"
+            assert self.benched : "This Pokémon is not on your Bench"
             assert my.deck : "You do not have any cards left in your deck"
             bg.em().storeObject("Snappy_Move", bg.turnCount)
             powerUsed()
@@ -1316,7 +1314,7 @@ public enum UnseenForces implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            my.deck.search (max: 1, "Search for a [W] or [F] Pokemon (excluding Pokemon-ex) to put into your hand.", {
+            my.deck.search (max: 1, "Search for a [W] or [F] Pokémon (excluding Pokémon-ex) to put into your hand.", {
               (it.cardTypes.is(POKEMON) && !it.asPokemonCard().cardTypes.is(EX) && (it.asPokemonCard().types.contains(W) || it.asPokemonCard().types.contains(F)))
             }).moveTo(my.hand)
             shuffleDeck()
@@ -1326,10 +1324,10 @@ public enum UnseenForces implements LogicCardInfo {
           text "Choose 2 of your opponent's Benched Pokémon. This attack does 10 damage to each of them. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W
           attackRequirement {
-            assert opp.bench: "Opponent does not have any Benched Pokemon"
+            assert opp.bench: "Opponent does not have any Benched Pokémon"
           }
           onAttack {
-            multiSelect(opp.bench, 2).each {
+            multiSelect(opp.bench, 2, text).each {
               targeted(it){ damage 10, it }
             }
           }
@@ -1460,7 +1458,7 @@ public enum UnseenForces implements LogicCardInfo {
           text "Flip 2 coins. For each heads, remove 2 damage counters from 1 of your Pokémon."
           energyCost C
           attackRequirement {
-            assert my.all.findAll { it.numberOfDamageCounters }: "No damaged Pokemon"
+            assert my.all.findAll { it.numberOfDamageCounters }: "No damaged Pokémon"
           }
           onAttack {
             flip 2, {
@@ -1615,7 +1613,7 @@ public enum UnseenForces implements LogicCardInfo {
             def validTargets = my.all.findAll{
               it.cards.filterByType(BASIC_ENERGY) && !it.EX
             }
-            assert validTargets : "Your Non-ex Pokemon do not have Basic Energy cards."
+            assert validTargets : "Your Non-ex Pokémon do not have Basic Energy cards."
             assert my.discard.filterByType(BASIC_ENERGY) : "No Basic Energies in you discard pile."
 
             powerUsed()
@@ -2446,10 +2444,12 @@ public enum UnseenForces implements LogicCardInfo {
       case CYCLONE_ENERGY_99:
       return specialEnergy (this, [[C]]) {
         text "Cyclone Energy provides [C] Energy. When you attach this card from your hand to your Active Pokémon, switch 1 of the Defending Pokémon with 1 of your opponent's Benched Pokémon. Your opponent chooses the Benched Pokémon to switch."
-        onPlay { reason->
+        onPlay { reason ->
           if (reason == PLAY_FROM_HAND && self.active) {
             if (opp.bench) {
-              sw(opp.active, opp.bench.oppSelect("Cyclone Energy was played, which Pokemon to switch with the Active?"), SRC_SPENERGY)
+              targeted null, SRC_SPENERGY, { // Don't force player choose a Pokémon when it will have no effect
+                sw(opp.active, opp.bench.oppSelect("Cyclone Energy was played, which Pokémon to switch with the Active?"), SRC_SPENERGY)
+              }
             }
           }
         }
@@ -2651,12 +2651,12 @@ public enum UnseenForces implements LogicCardInfo {
                 if (enTypes.size() == 1){
                   potentialEnergy.add([enTypes.first(), enCard, "${enCard}",0])
                 } else {
-                  def i = 1
+                  def count = 1
                   def total = enTypes.size()
                   //TODO: Cover multiple of the same energy, add some identifier for e.g. 2 Holon's Castform
                   for (enTypeSet in enTypes) {
-                    potentialEnergy.add([enTypeSet, enCard, "${enCard} - Energy #${i}/${total}",i])
-                    i++
+                    potentialEnergy.add([enTypeSet, enCard, "${enCard} - Energy #${count}/${total}", count])
+                    count++
                   }
                 }
               }
@@ -3105,10 +3105,10 @@ public enum UnseenForces implements LogicCardInfo {
           text "Once during your turn, if Rocket's Persian ex is on your Bench, you may search your deck for a Pokémon with Dark or Rocket's in its name. Show it to your opponent and put it into your hand. Shuffle your deck afterward."
           actionA {
             checkLastTurn()
-            assert my.deck : "There are no more cards in your deck"
-            assert self.benched : "This Pokemon is not benched"
+            assert my.deck : "There are no more cards in your deck."
+            assert self.benched : "This Pokémon is not benched"
             powerUsed()
-            def card = my.deck.search("Select a Pokemon with Dark or Rocket's in its name to put into your hand", {
+            def card = my.deck.search("Select a Pokémon with Dark or Rocket's in its name to put into your hand", {
               it.cardTypes.is(POKEMON) &&
               (it.name.contains("Rocket's ") || it.name.contains("Dark "))
             })
@@ -3205,7 +3205,7 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             def myCard = my.hand.select("Select a card for your opponent to guess.")
 
-            def opponentChoice = oppChoose([1,2,3], ['Pokemon', 'Trainer', 'Energy'], "Guess the type of card your opponent has chosen")
+            def opponentChoice = oppChoose([1,2,3], ['Pokémon', 'Trainer', 'Energy'], "Guess the type of card your opponent has chosen")
 
             myCard.showToOpponent("Your Opponent's chosen card.")
             if (
@@ -3413,17 +3413,14 @@ public enum UnseenForces implements LogicCardInfo {
             assert opp.hand : "Your opponent has no cards in their hand"
           }
           onAttack {
-            def basics = opp.hand.shuffledCopy().showToMe("Opponent's hand.").filterByType(BASIC)
-            if (basics) {
-              def tar = basics.select("Choose a pokemon to bench")
-              if (tar) {
-                def card = tar.first()
-                def benched = benchPCS(card, OTHER)
-                if (benched) {
-                  sw2 (benched)
-                }
-              }
-            }
+            def count = opp.hand.shuffledCopy().filterByType(BASIC) ? 1 : 0
+            def info = count ? "Choose a Pokémon to bench." : "No basics found in Opponent's hand."
+            def tar = opp.hand.shuffledCopy().select min: count, max: count, info, cardTypeFilter(BASIC)
+            if (!tar)
+              return
+            def benched = benchPCS(tar.first(), OTHER)
+            if (benched)
+              sw2 benched
           }
         }
       };
@@ -3538,7 +3535,7 @@ public enum UnseenForces implements LogicCardInfo {
           text "Search your deck for up to 2 Pokémon Tool cards and attach them to any of your Pokémon (excluding Pokémon that already have a Pokémon Tool attached to them). Shuffle your deck afterward."
           energyCost C
           attackRequirement {
-            assert my.all.findAll({!(it.cards.filterByType(POKEMON_TOOL))}) : "Your Pokemon already have tools attached to them."
+            assert my.all.findAll({!(it.cards.filterByType(POKEMON_TOOL))}) : "Your Pokémon already have tools attached to them."
             assert my.deck : "Deck is empty."
           }
           onAttack {
@@ -3585,7 +3582,7 @@ public enum UnseenForces implements LogicCardInfo {
           text "Switch 1 of your opponent's Benched Pokémon with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch. The new Defending Pokémon is now Burned and Confused."
           energyCost P, C
           attackRequirement{
-            assert opp.bench : "Your opponent has no Benched Pokémon"
+            assert opp.bench : "Your opponent has no Benched Pokémon."
           }
           onAttack {
             def target = opp.bench.select("Select the new Active Pokémon.")
@@ -4287,9 +4284,9 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C
           onAttack {
             flip 1, {
-              directDamage 20, opp.all.select("Put 2 damage counters on which Pokemon?")
+              directDamage 20, opp.all.select("Put 2 damage counters on which Pokémon?")
             }, {
-              directDamage 20, my.all.select("Put 2 damage counters on which Pokemon?")
+              directDamage 20, my.all.select("Put 2 damage counters on which Pokémon?")
             }
           }
         }

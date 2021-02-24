@@ -520,7 +520,7 @@ public enum HiddenFates implements LogicCardInfo {
           delayedA {
             after ATTACH_ENERGY, {
               if (self.active && ef.resolvedTarget.owner != self.owner && ef.reason == PLAY_FROM_HAND) {
-                bc "$thisAbility.name - $ef.resolvedTarget.name receives 2 damage counters."
+                bc "$thisAbility - $ef.resolvedTarget.name receives 2 damage counters."
                 directDamage 20, ef.resolvedTarget, SRC_ABILITY
               }
             }
@@ -545,7 +545,7 @@ public enum HiddenFates implements LogicCardInfo {
           text "Flip 4 coins. For each heads, search your deck for a [L] Energy card and attach it to 1 of your Pokémon-GX or Pokémon-EX. Then, shuffle your deck."
           energyCost C, C
           attackRequirement {
-            assert deck : "Your deck is empty"
+            assert deck : "Your deck is empty!"
           }
           onAttack {
             if(my.all.findAll {it.pokemonGX || it.pokemonEX}) {
@@ -739,7 +739,7 @@ public enum HiddenFates implements LogicCardInfo {
           onAttack {
             damage 60
             if(opp.bench){
-              multiSelect(opp.bench, 3).each{
+              multiSelect(opp.bench, 3, text).each{
                 targeted(it){ damage 20, it }
               }
             }
@@ -942,7 +942,7 @@ public enum HiddenFates implements LogicCardInfo {
           onAttack {
             gxPerform()
             if (self.cards.energySufficient(thisMove.energyCost + [R,W,L])) {
-              multiSelect(opp.all, 3).each{
+              multiSelect(opp.all, 3, text).each{
                 damage 110, it
               }
             }

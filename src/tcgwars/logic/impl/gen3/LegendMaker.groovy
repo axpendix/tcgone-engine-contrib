@@ -1,5 +1,6 @@
-package tcgwars.logic.impl.gen3;
+package tcgwars.logic.impl.gen3
 
+import tcgwars.logic.effect.ability.custom.Safeguard;
 import tcgwars.logic.impl.gen1.FossilNG;
 import tcgwars.logic.impl.gen6.Xy;
 import tcgwars.logic.impl.gen7.CelestialStorm;
@@ -264,21 +265,21 @@ public enum LegendMaker implements LogicCardInfo {
           text "Count the number of React Energy cards attached to Cradily and choose up to that number of your opponent's Evolved Pokémon. Remove the highest Stage Evolution card from each of those Pokémon, then have your opponent shuffle those cards into his or her deck."
           energyCost C, C
           attackRequirement {
-            assert self.cards.any{it.name == "React Energy"} : "No React Energies attached to this Pokemon"
-            assert opp.all.any{ it.evolution } : "Your opponent has no evolved pokemon"
+            assert self.cards.any{it.name == "React Energy"} : "No React Energies attached to this Pokémon"
+            assert opp.all.any{ it.evolution } : "Your opponent has no evolved Pokémon."
           }
           onAttack {
             def evolvedPoke = opp.all.findAll{it.evolution}
-            def max = Math.min(self.cards.findAll{it.name == "React Energy"}.size(), evolvedPoke.size())
+            def maxTargets = Math.min(self.cards.findAll{it.name == "React Energy"}.size(), evolvedPoke.size())
             def toBeDevolved = new PcsList()
-            def i = max
-            while (evolvedPoke && i > 0) {
-              def info = "Select one of your opponent's devolved Pokémon to mark it for devolution, or press Cancel to stop. You have ${i} out of ${max} potential devolutions remaining."
-              def sel = evolvedPoke.select(info, (i == max), self.owner) // Mandatory to devolve at least one, if attacking.
+            def remainingTargets = maxTargets
+            while (evolvedPoke && remainingTargets > 0) {
+              def info = "Select one of your opponent's devolved Pokémon to mark it for devolution, or press Cancel to stop. You have ${remainingTargets} out of ${maxTargets} potential devolutions remaining."
+              def sel = evolvedPoke.select(info, (remainingTargets == maxTargets), self.owner) // Mandatory to devolve at least one, if attacking.
               if (!sel) break; //TODO: Allow to unmark a Pokémon. Ideal way would be a search-like pop-up.
               toBeDevolved.add(sel)
               evolvedPoke.remove(sel)
-              i--
+              remainingTargets--
             }
             toBeDevolved.each{
               def top = it.topPokemonCard
@@ -570,9 +571,9 @@ public enum LegendMaker implements LogicCardInfo {
           text "Once during your turn, when you play Shiftry from your hand to evolve 1 of your Pokémon, you may choose 1 of your Evolved Pokémon in play (excluding any Shiftry). Return that Pokémon and all cards attached to it to your hand."
           onActivate { r->
             if (r==PLAY_FROM_HAND) {
-              if (my.all.any{ it.evolution && it.name != "Shiftry" } && confirm("Evolutionary Fan - Return 1 of your evolved Pokemon, and all cards attached to it, back to your hand?")){
+              if (my.all.any{ it.evolution && it.name != "Shiftry" } && confirm("Evolutionary Fan - Return 1 of your evolved Pokémon, and all cards attached to it, back to your hand?")){
                 powerUsed()
-                def pcs = my.all.findAll{ it.evolution && it.name != "Shiftry" }.select("Which Pokemon, and all cards attached to it, will you bring back to your hand?")
+                def pcs = my.all.findAll{ it.evolution && it.name != "Shiftry" }.select("Which Pokémon, and all cards attached to it, will you bring back to your hand?")
                 scoopUpPokemon([:], pcs, delegate, POKEPOWER)
               }
             }
@@ -607,11 +608,11 @@ public enum LegendMaker implements LogicCardInfo {
           actionA {
             checkLastTurn()
             checkNoSPC()
-            assert opp.bench.any{ it.evolution && it.stage2 } : "Opponent's bench does not have any evolved Stage 2 Pokemon."
+            assert opp.bench.any{ it.evolution && it.stage2 } : "Opponent's bench does not have any evolved Stage 2 Pokémon."
 
             powerUsed()
 
-            def pcs = opp.bench.findAll { it.evolution && it.stage2 }.select("Select a Stage 2 Pokemon to become the new Active.")
+            def pcs = opp.bench.findAll { it.evolution && it.stage2 }.select("Select a Stage 2 Pokémon to become the new Active.")
             sw2 (pcs, null, SRC_ABILITY)
           }
         }
@@ -889,19 +890,16 @@ public enum LegendMaker implements LogicCardInfo {
           text "If Magneton would be Knocked Out by damage from an opponent's attack, you may move any number of React Energy cards from Magneton to your Pokémon in any way you like."
           delayedA {
             before KNOCKOUT, self, {
-              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && self.owner.pbg.bench && self.cards.any{it.name == "React Energy"} && confirm("Move any number of React Energy cards from Magneton to your other Pokemon?", self.owner)) {
-                def list = self.cards.findAll{it.name == "React Energy"}
-                def sel = list.select("Card to move", self.owner)
-                while(list) {
-                  def card = sel.first()
-                  def tar = self.owner.pbg.all.findAll{it != self}.select("Select Pokemon to move React Energy to", self.owner)
-                  energySwitch(self, tar, card)
-                  list.remove(card)
-                  if (list){
-                    sel = list.select(min: 0, "Card to move (Cancel to stop)", self.owner)
-                    if (!sel)
-                      list.clear()
-                  }
+              def energyName = "React Energy"
+              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && self.owner.pbg.bench && self.cards.any{it.name == energyName} && confirm("Move any number of $energyName cards from Magneton to your other Pokémon?", self.owner)) {
+                def max = self.cards.findAll{it.name == energyName}.size()
+                def sel = self.cards.select(min: 0, max: max, "Choose any $energyName to move", { it.name == energyName }, self.owner)
+                if (sel) powerUsed()
+                while (sel) {
+                  def tar = self.owner.pbg.all.findAll { it != self }.select "Select Pokémon to move $energyName to", false, self.owner
+                  if (!tar) return
+                  energySwitch self, tar, sel.first()
+                  sel.remove sel.first()
                 }
               }
             }
@@ -989,7 +987,7 @@ public enum LegendMaker implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            def selected = my.deck.search(max: 1, "Search for a [G] Pokemon (excluding Pokemon-ex) to put into your hand.", {
+            def selected = my.deck.search(max: 1, "Search for a [G] Pokémon (excluding Pokémon-ex) to put into your hand.", {
               (it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(G) && !it.asPokemonCard().cardTypes.is(EX))
             }).showToOpponent("Pinsir used Cry For Help.").moveTo(my.hand)
             shuffleDeck()
@@ -1097,7 +1095,7 @@ public enum LegendMaker implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            def selected = deck.search (max: 1, "Search for a [R] Pokemon (excluding Pokemon-ex) to put into your hand.", {
+            def selected = deck.search (max: 1, "Search for a [R] Pokémon (excluding Pokémon-ex) to put into your hand.", {
               (it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(R) && !it.asPokemonCard().cardTypes.is(EX))
             }).showToOpponent("Torkoal used Cry For Help.").moveTo(my.hand)
             shuffleDeck()
@@ -1161,7 +1159,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C
           attackRequirement {
             assert my.deck : "You have no cards in your deck"
-            assert my.bench.notFull : "Your bench is full"
+            assert my.bench.notFull : "Your bench is full."
           }
           onAttack {
             def maxSpace = Math.min(my.bench.freeBenchCount, 2)
@@ -1192,7 +1190,7 @@ public enum LegendMaker implements LogicCardInfo {
           actionA {
             checkLastTurn()
             checkNoSPC()
-            assert self.active : "$self is not your Active Pokemon"
+            assert self.active : "$self is not your Active Pokémon"
             assert my.deck : "Deck is empty"
             powerUsed()
 
@@ -1312,7 +1310,7 @@ public enum LegendMaker implements LogicCardInfo {
           onAttack {
             damage 20
             if (opp.bench) {
-              multiSelect(opp.bench, 2).each{
+              multiSelect(opp.bench, 2, text).each{
                 damage 10, it
               }
             }
@@ -1327,7 +1325,7 @@ public enum LegendMaker implements LogicCardInfo {
           text "If your opponent has any Evolved Pokémon in play, choose 1 of them and flip a coin. If heads, remove the highest Stage Evolution card on that Pokémon and have your opponent shuffled it into his or her deck."
           energyCost C, C
           attackRequirement {
-            assert opp.bench.any{ it.evolution } : "Opponent has no evolved Pokemon"
+            assert opp.bench.any{ it.evolution } : "Opponent has no evolved Pokémon"
           }
           onAttack {
             def list = opp.all.findAll { it.evolution }
@@ -2056,7 +2054,7 @@ public enum LegendMaker implements LogicCardInfo {
         move "Pebble Throw", {
           text "Choose 1 of your opponent's Benched Pokémon. This attack does 10 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost C
-          attackRequirement { assert opp.bench : "Opponent has no benched Pokemon"}
+          attackRequirement { assert opp.bench : "Opponent has no benched Pokémon"}
           onAttack {
             damage 10, opp.bench.select()
           }
@@ -2277,7 +2275,7 @@ public enum LegendMaker implements LogicCardInfo {
             assert elegible : "You have no Omanyte, Kabuto, Aerodactyl, Aerodactyl ex, Lileep or Anorith in your hand"
             bc "Used Strange Cave effect"
             lastTurn = bg().turnCount
-            elegible.select("Select which Pokemon to bench").each {
+            elegible.select("Select which Pokémon to bench").each {
               benchPCS(it)
             }
           }
@@ -2358,7 +2356,7 @@ public enum LegendMaker implements LogicCardInfo {
       };
       case MYSTERIOUS_FOSSIL_79:
       return itemCard (this) {
-        text "Play Mysterious Fossil as if it were a Basic Pokemon. While in play, Mysterious Fossil counts as a [C] Pokemon (as well as a Trainer card). Mysterious Fossil has no attacks of its own, can't retreat, and can't be affected by any Special Conditions. If Mysterious Fossil is Knocked out, it doesn't count as a Knocked Out Pokemon. (Discard it anyway.) At any time during your turn before your attack, you may discard Mysterious Fossil from play."
+        text "Play Mysterious Fossil as if it were a Basic Pokémon. While in play, Mysterious Fossil counts as a [C] Pokémon (as well as a Trainer card). Mysterious Fossil has no attacks of its own, can't retreat, and can't be affected by any Special Conditions. If Mysterious Fossil is Knocked out, it doesn't count as a Knocked Out Pokémon. (Discard it anyway.) At any time during your turn before your attack, you may discard Mysterious Fossil from play."
         onPlay {
           Card pokemonCard, trainerCard = thisCard
           pokemonCard = basic (new CustomCardInfo(MYSTERIOUS_FOSSIL_79).setCardTypes(BASIC, POKEMON), hp:HP050, type:COLORLESS, retreatCost:0) {
@@ -2495,7 +2493,7 @@ public enum LegendMaker implements LogicCardInfo {
             after ATTACH_ENERGY, self, {
               if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(R)) {
                 bc "Fire Remedy removes 1 damage counter and all Special Conditions from Arcanine ex"
-                heal 10, self
+                heal 10, self, SRC_ABILITY
                 if (self.specialConditions) {
                   clearSpecialCondition(self, SRC_ABILITY)
                 }
@@ -2551,7 +2549,7 @@ public enum LegendMaker implements LogicCardInfo {
           }
         }
         move "Vortex Chop", {
-          text "70 damage. If the Defending Pokemon has any Resistance, this attack's base damage is 100 instead of 70."
+          text "70 damage. If the Defending Pokémon has any Resistance, this attack's base damage is 100 instead of 70."
           energyCost F, C, C
           onAttack {
             if (defending.resistances) {
@@ -2566,28 +2564,12 @@ public enum LegendMaker implements LogicCardInfo {
       return evolution (this, from:"Shuppet", hp:HP090, type:P, retreatCost:1) {
         weakness D
         resistance F, MINUS30
-        //
-        // [EX Rules Supporters Workaround] TODO: Edit this once no longer needed
-        //
-        def thisTurnSupporter
-        globalAbility{
-          delayed {
-            after PLAY_TRAINER, {
-              if(ef.cardToPlay.cardTypes.is(SUPPORTER)){
-                thisTurnSupporter = ef.cardToPlay
-              }
-            }
-            after BETWEEN_TURNS, {
-              thisTurnSupporter = null
-            }
-          }
-        }
         pokePower "Shady Move", {
           text "Once during your turn (before your attack), if Banette ex is your Active Pokémon, you may move 1 damage counter from either player's Pokémon to another Pokémon (yours or your opponent's). This power can't be used if Banette ex is affected by a Special Condition."
           actionA {
             checkNoSPC()
             checkLastTurn()
-            assert self.active : "This Pokemon is not the Active Pokemon"
+            assert self.active : "This Pokémon is not the Active Pokémon"
             assert all.any{it.numberOfDamageCounters} : "No Damage Counters in any Pokémon"
             powerUsed()
             def source = all.findAll{it.numberOfDamageCounters}.select("Source for damage counter")
@@ -2604,13 +2586,7 @@ public enum LegendMaker implements LogicCardInfo {
           text "30+ damage. Does 30 damage plus 10 more damage for each Supporter card in your discard pile. You can't add more than 60 damage in this way."
           energyCost P, C
           onAttack {
-            def bonusDamage
-            if(thisTurnSupporter){
-              bonusDamage = Math.min(my.discard.getExcludedList(thisTurnSupporter).filterByType(SUPPORTER).size()*10, 60)
-            } else {
-              bonusDamage = Math.min(my.discard.filterByType(SUPPORTER).size()*10, 60)
-            }
-            damage 30+bonusDamage
+            damage 30 + Math.min(my.discard.filterByType(SUPPORTER).size()*10, 60)
           }
         }
       };
@@ -2618,25 +2594,9 @@ public enum LegendMaker implements LogicCardInfo {
       return evolution (this, from:"Cascoon", hp:HP140, type:G, retreatCost:1) {
         weakness R
         weakness P
-        pokeBody "Safeguard", {
-          text "Prevent all effects of attacks, including damage, done to Dustox ex by your opponent's Pokémon-ex."
-          delayedA {
-            before null, self, Source.ATTACK, {
-              if (self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
-                bc "Safeguard prevents effect"
-                prevent()
-              }
-            }
-            before APPLY_ATTACK_DAMAGES, {
-              bg.dm().each {
-                if(it.to == self && it.from.EX && it.notNoEffect && it.dmg.value ) {
-                  it.dmg = hp(0)
-                  bc "Safeguard prevents damage"
-                }
-              }
-            }
-          }
-        }
+
+        // TODO: Replace with a static for Pokémon-ex and/or change static safeguard so it's configurable.
+        thisCard.addAbility new Safeguard("Prevent all effects of attacks, including damage, done to Dustox by your opponents Pokémon-ex.")
         move "Silver Wind", {
           text "40 damage. During your next turn, if an attack does damage to the Defending Pokémon (after applying Weakness and Resistance), that attack does 30 more damage."
           energyCost G, C
@@ -2742,7 +2702,7 @@ public enum LegendMaker implements LogicCardInfo {
           }
         }
         move "Ice Throw", {
-          text "80 damage. If the Defending Pokemon is a [F] Pokemon, this attack's base damage is 120 instead of 80"
+          text "80 damage. If the Defending Pokémon is a [F] Pokémon, this attack's base damage is 120 instead of 80"
           energyCost W, W, C, C
           onAttack {
             if (defending.types.contains(F)) {

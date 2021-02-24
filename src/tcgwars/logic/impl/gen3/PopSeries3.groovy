@@ -108,7 +108,7 @@ public enum PopSeries3 implements LogicCardInfo {
   public Card getImplementation() {
     switch (this) {
       case BLASTOISE_1:
-      return evolution (this, from:"Unown", hp:HP120, type:W, retreatCost:2) {
+      return evolution (this, from:"Wartortle", hp:HP120, type:W, retreatCost:2) {
         weakness L
         move "Smash Turn", {
           text "30 damage. After your attack, you may switch Blastoise with 1 of your Benched Pokémon."
@@ -338,7 +338,7 @@ public enum PopSeries3 implements LogicCardInfo {
       };
       case HIGH_PRESSURE_SYSTEM_10:
       return stadium (this) {
-        text "Each player pays [C] less to retreat his or her [R] and [W] Pokemon)"
+        text "Each player pays [C] less to retreat his or her [R] and [W] Pokémon)"
         def eff
         onPlay {
           eff = getter (GET_RETREAT_COST) { Holder h->
@@ -353,7 +353,7 @@ public enum PopSeries3 implements LogicCardInfo {
       };
       case LOW_PRESSURE_SYSTEM_11:
       return stadium (this) {
-        text "Each [G] and [L] Pokemon in play (both yours and your opponent's) gets +10 HP."
+        text "Each [G] and [L] Pokémon in play (both yours and your opponent's) gets +10 HP."
         def eff
         onPlay {
           eff = getter (GET_FULL_HP) { Holder h->

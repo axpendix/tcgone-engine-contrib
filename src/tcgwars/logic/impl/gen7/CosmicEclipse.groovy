@@ -173,6 +173,7 @@ public enum CosmicEclipse implements LogicCardInfo {
   PROBOPASS_141 ("Probopass", "141", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
   SOLGALEO_142 ("Solgaleo", "142", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _METAL_]),
   TOGEPI_CLEFFA_IGGLYBUFF_GX_143 ("Togepi & Cleffa & Igglybuff-GX", "143", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _FAIRY_]),
+  TOGEPI_CLEFFA_IGGLYBUFF_GX_143A ("Togepi & Cleffa & Igglybuff-GX", "143a", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _FAIRY_]),
   CLEFAIRY_144 ("Clefairy", "144", Rarity.UNCOMMON, [POKEMON, BASIC, _FAIRY_]),
   ALOLAN_NINETALES_145 ("Alolan Ninetales", "145", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FAIRY_]),
   AZURILL_146 ("Azurill", "146", Rarity.COMMON, [POKEMON, BASIC, _FAIRY_]),
@@ -1038,7 +1039,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                 powerUsed()
                 def tar = my.deck.subList(0, 8)
                 tar.showToMe("The top 8 cards of your deck. You will be asked to pick target Pokémon for every basic Energy there.")
-                tar.filterByType(ENERGY).each {
+                tar.filterByType(BASIC_ENERGY).each {
                   def pcs = my.all.select("Attach $it to? (cancel to skip this card)", false)
                   if (pcs) {
                     attachEnergy(pcs, it)
@@ -1092,28 +1093,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost R, R, C
             onAttack {
               damage 160
-              afterDamage {
-                // TODO: Make a static method to do this
-                if (self.cards.energyCount(R))
-                  if (self.cards.energyCount(R) <= 2) {
-                    self.cards.filterByEnergyType(R).moveTo my.hand
-                  } else {
-                    def targetCount = Math.min self.cards.energyCount(R), 2
-                    def finalCount = 0
-                    while (self.cards.energyCount(R) > 0 && finalCount < targetCount) {
-                      def info = "Select [R] Energy to return to your hand."
-                      def energy = self.cards.filterByType(ENERGY).select(info, energyFilter(R))
-                      def energyCount = 1
-                      if (energy.energyCount(R) > 1) {
-                        def choices = 1..energy.energyCount(R)
-                        def choiceInfo = "How many Energy do you want this card to count as?"
-                        energyCount = choose(choices, choiceInfo)
-                      }
-                      finalCount += energyCount
-                      energy.moveTo my.hand
-                    }
-                  }
-              }
+              moveSelfEnergyAfterDamage my.hand, R, R
             }
           }
           move "Massive Heat Wave GX", {
@@ -1594,10 +1574,11 @@ public enum CosmicEclipse implements LogicCardInfo {
               assert self.benched
               assertOppBench()
               powerUsed()
-              sw(opp.active, opp.bench.oppSelect("Choose a new Active Pokémon."))
-              self.cards.getExcludedList(self.topPokemonCard).discard()
-              self.cards.moveTo(my.deck)
-              removePCS(self)
+              if(sw2(opp.active, opp.bench.oppSelect("Choose a new Active Pokémon"), SRC_ABILITY)){
+                self.cards.getExcludedList(self.topPokemonCard).discard()
+                self.cards.moveTo(my.deck)
+                removePCS(self)
+              }
             }
           }
           move "Rain Splash", {
@@ -2480,7 +2461,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Choose 2 of your opponent's Pokémon and put 2 damage counters on each of them."
             energyCost P
             onAttack {
-              multiSelect(opp.all, 2).each {
+              multiSelect(opp.all, 2, text).each {
                 targeted(it) { directDamage 20, it }
               }
             }
@@ -3527,6 +3508,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             }
           }
         };
+      case TOGEPI_CLEFFA_IGGLYBUFF_GX_143A:
       case TOGEPI_CLEFFA_IGGLYBUFF_GX_143:
         return basic (this, hp:HP240, type:Y, retreatCost:2) {
           weakness M
@@ -3594,10 +3576,10 @@ public enum CosmicEclipse implements LogicCardInfo {
                   bg.em().run(new PlayCard(doll))
                   def pcs = self.owner.pbg.all.find{it.name=="Lillie's Poké Doll" && !tmp.contains(it)}
                   sw(self, pcs)
+                  scoopUpPokemon(self, delegate)
                   eff.unregister()
                   self.owner.pbg.triggerBenchSizeCheck()
                 }
-                scoopUpPokemon(self, delegate)
               }
             }
           }
@@ -4063,7 +4045,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost F, L
             onAttack {
               damage 90
-              if (self.cards.filterByType(POKEMON_TOOL) && confirm("Discard a Pokémon Tool card from this Pokemon to do 90 more damage?")) {
+              if (self.cards.filterByType(POKEMON_TOOL) && confirm("Discard a Pokémon Tool card from this Pokémon to do 90 more damage?")) {
                 self.cards.filterByType(POKEMON_TOOL).select().discard()
                 damage 90
               }
@@ -4912,7 +4894,8 @@ public enum CosmicEclipse implements LogicCardInfo {
             shuffleDeck()
           }
           playRequirement{
-            assert my.deck
+            assert my.deck : "Deck is empty"
+            assert my.bench.notFull : "Bench is full"
           }
         };
       case RED_BLUE_202:
@@ -5058,7 +5041,9 @@ public enum CosmicEclipse implements LogicCardInfo {
             "When you attach this card from your hand to a Pokémon, draw a card."
           onPlay {reason->
             if(reason == PLAY_FROM_HAND) {
-              draw 1
+              targeted null, SRC_SPENERGY, {
+                draw 1
+              }
             }
           }
         };

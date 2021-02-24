@@ -1591,6 +1591,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
           }
 
         };
+      case GUZZLORD_GX_63A:
       case GUZZLORD_GX_63:
         return basic (this, hp:HP210, type:DARKNESS, retreatCost:4) {
           weakness FIGHTING
@@ -1644,8 +1645,6 @@ public enum CrimsonInvasion implements LogicCardInfo {
           }
 
         };
-      case GUZZLORD_GX_63A:
-        return copy (GUZZLORD_GX_63, this);
       case MAWILE_64:
         return basic (this, hp:HP080, type:METAL, retreatCost:1) {
           weakness FIRE
@@ -2436,10 +2435,6 @@ public enum CrimsonInvasion implements LogicCardInfo {
         return specialEnergy (this, [[C]]) {
           text "This card provides [C] Energy.\nIf you have more Prize cards remaining than your opponent, and if this card is attached to a Pokémon that isn't a Pokémon-GX or Pokémon-EX, this card provides every type of Energy but provides only 2 Energy at a time"
           onPlay {reason->
-          }
-          onRemoveFromPlay {
-          }
-          onMove {to->
           }
           getEnergyTypesOverride{
             if(self && !self.pokemonGX && !self.pokemonEX && self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size()) {
