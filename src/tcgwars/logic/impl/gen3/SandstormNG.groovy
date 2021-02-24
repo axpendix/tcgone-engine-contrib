@@ -1833,13 +1833,7 @@ public enum SandstormNG implements LogicCardInfo {
         }
       };
       case MYSTERIOUS_FOSSIL_91:
-      return itemCard (this) {
-        text "Play Mysterious Fossil as if it were a Basic Pokémon. While in play, Mysterious Fossil counts as a [C] Pokémon (instead of a Trainer card). Mysterious Fossil has no attacks of its own can't retreat and can't be affected by any Special Conditions. If Mysterious Fossil is Knocked Out it doesn't count as a Knocked Out Pokémon. (Discard it anyway.) At any time during your turn before your attack you may discard Mysterious Fossil from play."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy(LegendMaker.MYSTERIOUS_FOSSIL_79, this);
       case ROOT_FOSSIL_92:
       return itemCard (this) {
         text "Play Root Fossil as if it were a Basic Pokémon. While in play, Root Fossil counts as a [C] Pokémon (instead of a Trainer card). Root Fossil has no attacks of its own can't retreat and can't be affected by any Special Conditions. If Root Fossil is Knocked Out it doesn't count as a Knocked Out Pokémon. (Discard it anyway.) At any time during your turn before your attack you may discard Root Fossil from play." +
