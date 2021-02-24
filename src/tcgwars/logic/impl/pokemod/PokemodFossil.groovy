@@ -1004,7 +1004,15 @@ Once during your turn (before your attack), you may move 1 damage counter from 1
       case POKEMON_BREEDER_FIELDS_65:
        break
       case RELIC_HUNTER_66:
-       break
+        return supporter (this) {
+          text "Search your discard pile for up to 2 Stadium cards, show them to your opponent, and shuffle them into your deck."
+          onPlay {
+            my.discard.filterByType(STADIUM).select(count :2,"Search your discard pile for up to 2 stadiums").moveTo(hand)
+          }
+          playRequirement{
+            assert my.discard.filterByType(STADIUM)
+          }
+        };
       case LOST_EXPEDITION_67:
        break
       case UNDERGROUND_EXPEDITION_68:
