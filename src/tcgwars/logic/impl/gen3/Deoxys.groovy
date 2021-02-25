@@ -613,7 +613,7 @@ public enum Deoxys implements LogicCardInfo {
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each{
-                  if(it.to == self && it.notNoEffect && it.dmg.value && it.from.EX) {
+                  if(it.to == self && it.notNoEffect && it.dmg.value && it.from.EX && self.active) {
                     bc "Lazy Aura -30"
                     it.dmg -= hp(30)
                   }
