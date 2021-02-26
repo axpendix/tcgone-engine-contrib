@@ -2321,25 +2321,7 @@ public enum Deoxys implements LogicCardInfo {
 
         };
       case BALLOON_BERRY_84:
-        return pokemonTool (this) {
-          text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nAs long as Balloon Berry is attached to a Pokémon, that Pokémon’s Retreat Cost is 0. When this Pokémon retreats, discard Balloon Berry."
-          def eff1
-          def eff2
-          onPlay {reason->
-            eff1=getter (GET_RETREAT_COST, BEFORE_LAST,self) {h->
-              h.object = 0
-            }
-            eff2 = delayed{
-              after RETREAT, self, {
-                discard thisCard
-              }
-            }
-          }
-          onRemoveFromPlay {
-            eff1.unregister()
-            eff2.unregister()
-          }
-        };
+        return copy(Dragon.BALLOON_BERRY_82, BALLOON_BERRY_84);
       case CRYSTAL_SHARD_85:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nAs long as this card is attached to a Pokémon, that Pokémon’s type is [C]. If that Pokémon attacks, discard this card at the end of the turn."
