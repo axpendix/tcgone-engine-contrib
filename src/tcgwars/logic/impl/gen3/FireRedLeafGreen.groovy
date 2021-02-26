@@ -2453,7 +2453,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             powerUsed()
             def card = my.hand.filterByBasicEnergyType(W).first()
             def tar = my.all.select("To?")
-            attachEnergy(tar, card)
+            attachEnergy(tar, card, PLAY_FROM_HAND)
             directDamage 10, tar, SRC_ABILITY
           }
           }
