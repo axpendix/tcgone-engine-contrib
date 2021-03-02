@@ -2019,7 +2019,7 @@ public enum Undaunted implements LogicCardInfo {
               powerUsed()
               def pl=my.all.findAll {it.cards.filterByEnergyType(L) && it!=self}
               def src=pl.select("Source for [L] Energy.")
-              def card=src.cards.filterByEnergyType(R).select("Select a [L] Energy to move.").first()
+              def card=src.cards.filterByEnergyType(L).select("Select a [L] Energy to move.").first()
               energySwitch(src, self, card)
             }
           }
@@ -2104,7 +2104,7 @@ public enum Undaunted implements LogicCardInfo {
             text "Does 50 damage plus 10 more damage for each of your Pokémon in play that evolves from Eevee."
             energyCost D, C, C
             onAttack {
-              damage 50 + 10 * my.all.findAll{it.topPokemonCard.predecessor == "Eevee"}.size()
+              damage 50 + 10 * my.all.findAll{it.realEvolution && it.topPokemonCard.predecessor == "Eevee"}.size()
             }
           }
 
