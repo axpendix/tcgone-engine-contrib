@@ -1274,7 +1274,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
             onAttack {
               my.deck.search(max : 2, "Search your deck for up to 2 basic Energy cards", cardTypeFilter(BASIC_ENERGY)).each{
-                def pcs = my.all.findAll{!(it.pokemonEX)}.select("Attach $it to one of thos Pokémon")
+                def pcs = my.all.findAll{!(it.EX)}.select("Attach $it to one of thos Pokémon")
                 attachEnergy(pcs, it)
               }
             }

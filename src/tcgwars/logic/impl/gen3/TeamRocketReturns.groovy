@@ -1554,16 +1554,18 @@ public enum TeamRocketReturns implements LogicCardInfo {
             text "Flip a coin. If heads, choose 1 of the Defending Pokémon’s attacks. Mini-Metronome copies that attack except for its Energy cost. (You must still do anything else required for that attack.) (No matter what type that Pokémon is, Togepi’s type is still [C].) Togepi performs that attack."
             energyCost C, C
             onAttack {
-              def moveList = []
-              def labelList = []
+              flip {
+                def moveList = []
+                def labelList = []
 
-              moveList.addAll(defending.topPokemonCard.moves);
-              labelList.addAll(defending.topPokemonCard.moves.collect{it.name})
+                moveList.addAll(defending.topPokemonCard.moves);
+                labelList.addAll(defending.topPokemonCard.moves.collect{it.name})
 
-              def move=choose(moveList, labelList, "Which move do you want to use")
-              def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
-              attack (move as Move)
-              bef.unregisterItself(bg().em())
+                def move=choose(moveList, labelList, "Which move do you want to use")
+                def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
+                attack (move as Move)
+                bef.unregisterItself(bg().em())
+              }
             }
           }
 
