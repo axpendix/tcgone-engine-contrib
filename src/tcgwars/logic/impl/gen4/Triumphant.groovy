@@ -6,6 +6,7 @@ import tcgwars.logic.effect.basic.Knockout;
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.EffectType.*;
 import static tcgwars.logic.effect.EffectType.ATTACH_ENERGY
 import static tcgwars.logic.effect.EffectType.DEVOLVE
@@ -352,7 +353,7 @@ public enum Triumphant implements LogicCardInfo {
 
         };
       case PORYGON_Z_7:
-        return evolution (this, from:"Porygon 2", hp:HP110, type:COLORLESS, retreatCost:2) {
+        return evolution (this, from:"Porygon2", hp:HP110, type:COLORLESS, retreatCost:2) {
           weakness F
           pokePower "Dimensional Transfer", {
             text "Once during your turn , you may flip a coin. If heads, search your discard pile for a Trainer card, show it to your opponent, and put it on top of your deck. This power can’t be used if Porygon-Z is affected by a Special Condition."
@@ -366,7 +367,7 @@ public enum Triumphant implements LogicCardInfo {
               }
             }
           }
-          move "Suspicious Beam ?", {
+          move "Suspicious Beam β", {
             text "80 damage. If Porygon-Z has no Rainbow Energy attached to it, Porygon-Z does 20 damage to itself and Porygon-Z is now Confused."
             energyCost C, C, C
             onAttack {
@@ -1673,7 +1674,7 @@ public enum Triumphant implements LogicCardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
                   if(self.owner.pbg.discard.find{it.name == "Marowak"} && it.to == self && it.from.owner == self.owner.opposite && it.notNoEffect && it.dmg.value) {
-                    def reduction = 20 * self.owner.pbg.discard.findAll{it.name == "Marowak"}
+                    def reduction = 20 * self.owner.pbg.discard.findAll{it.name == "Marowak"}.size()
                     bc "$thisAbility -$reduction"
                     it.dmg -= hp(reduction)
                   }

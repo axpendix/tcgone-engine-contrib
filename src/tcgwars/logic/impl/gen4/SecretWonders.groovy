@@ -1938,6 +1938,7 @@ public enum SecretWonders implements LogicCardInfo {
             text "20 damage. During your next turn, each of Nidorino's attacks does 20 more damage to the Defending Pokémon."
             energyCost C, C
             onAttack {
+              damage 20
               def pcs = defending
               targeted(pcs){
                 delayed {
@@ -2342,7 +2343,7 @@ public enum SecretWonders implements LogicCardInfo {
                 count += choice
               }
               if(count > 0) {
-                directDamage 10 * count, defending 
+                directDamage 10 * count, defending
               }
             }
           }

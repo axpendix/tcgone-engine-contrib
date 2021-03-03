@@ -2015,7 +2015,7 @@ public enum Undaunted implements LogicCardInfo {
             text "As often as you like during your turn , you may move a [L] Energy attached to 1 of your Pokémon to Raichu. This power can’t be used if Raichu is affected by a Special Condition."
             actionA {
               checkNoSPC()
-              assert my.all.find {it.cards.filterByEnergyType(L) && it!=self} : "No energy to move."
+              assert my.all.find {it.cards.filterByEnergyType(L) && it!=self} : "No energy to move"
               powerUsed()
               def pl=my.all.findAll {it.cards.filterByEnergyType(L) && it!=self}
               def src=pl.select("Source for [L] Energy.")

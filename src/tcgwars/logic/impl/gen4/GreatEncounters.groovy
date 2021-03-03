@@ -321,7 +321,7 @@ public enum GreatEncounters implements LogicCardInfo {
           }
         };
       case PORYGON_Z_6:
-        return evolution (this, from:"Porygon 2", hp:HP110, type:COLORLESS, retreatCost:2) {
+        return evolution (this, from:"Porygon2", hp:HP110, type:COLORLESS, retreatCost:2) {
           weakness F, PLUS30
           pokePower "Conversion", {
             text "Once during your turn , you may discard a basic Energy card from your hand. Porygon-Z is the same type as that Energy Card until the end of your turn. This power can't be used if Porygon-Z is affected by a Special Condition."
