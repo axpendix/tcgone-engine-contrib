@@ -1569,11 +1569,11 @@ public enum Platinum implements LogicCardInfo {
             text "40+ damage. Does 40 damage plus 10 more damage for each [G] Energy attached to all of your Pokémon."
             energyCost G, C, C
             onAttack {
-              damage 40
               def count = 0
               my.all.each {
                 count += it.cards.energyCount(G)
               }
+              damage 40 + 10 * count
             }
           }
           move "Soothing Scent", {
@@ -2102,7 +2102,9 @@ public enum Platinum implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
             }
             onAttack {
-              damage 50 * my.deck.subList(0,5).showToMe("Top 5 cards of your deck").showToOpponent("Top 5 cards of your opponent's deck").filterByType(ENERGY).size()
+              flip my.deck.subList(0,5).showToMe("Top 5 cards of your deck").showToOpponent("Top 5 cards of your opponent's deck").filterByType(ENERGY).size(), {
+                damage 50
+              }
               shuffleDeck()
             }
           }
@@ -2490,10 +2492,10 @@ public enum Platinum implements LogicCardInfo {
             text "Choose 1 of your opponent’s Benched Pokémon. This attack does 10 damage to that Pokémon. This attack’s damage isn’t affected by Weakness or Resistance."
             energyCost F
             attackRequirement {
-              assert oppp.bench : "Your opponent has no Benched Pokémon"
+              assert opp.bench : "Your opponent has no Benched Pokémon"
             }
             onAttack {
-              damage 10, oopp.bench.select()
+              damage 10, opp.bench.select()
             }
           }
           move "Trip Over", {
@@ -3632,7 +3634,7 @@ public enum Platinum implements LogicCardInfo {
             actionA {
               checkLastTurn()
               checkNoSPC()
-              assert my.bench.size >=4 || opp.bench.size() >= 4 : "Neither player has 4 or more Benched Pokémon"
+              assert my.bench.size() >=4 || opp.bench.size() >= 4 : "Neither player has 4 or more Benched Pokémon"
               powerUsed()
               def list = LUtils.selectMultiPokemon(bg.oppClient(), opp.bench, "Opponent used Lost Cyclone. Select 3 pokemon to KEEP on your bench.", 3)
               opp.bench.findAll{!list.contains(it)}.each{
@@ -3865,7 +3867,7 @@ public enum Platinum implements LogicCardInfo {
             text "Remove 4 damage counters from Swablu. Swablu can't retreat during your next turn."
             energyCost ()
             onAttack {
-              heal 4, self
+              heal 40, self
               cantRetreat(self)
             }
           }
