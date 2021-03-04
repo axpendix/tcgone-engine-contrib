@@ -1041,7 +1041,7 @@ public enum ShiningFates implements LogicCardInfo {
       case INDEEDEE_V_SV114:
         return copy (INDEEDEE_V_39, this);
       case FALINKS_V_SV115:
-        return copy (RebelClash.FALINKS_110, this);
+        return copy (RebelClash.FALINKS_V_110, this);
       case GRIMMSNARL_V_SV116:
         return copy (DarknessAblaze.GRIMMSNARL_V_114, this);
       case GRIMMSNARL_VMAX_SV117:
