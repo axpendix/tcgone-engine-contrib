@@ -288,7 +288,7 @@ public enum ShinyStarV implements LogicCardInfo {
                 def conditions = it.from == self && it.to == opp.active
                 if (!conditions) return
                 bc "$thisCard +30"
-                it.dmg += hp 30
+                it.dmg += hp(30)
               }
             }
           }
@@ -304,7 +304,7 @@ public enum ShinyStarV implements LogicCardInfo {
         onPlay {reason->
           eff = getter GET_FULL_HP, self, { holder->
             if (self.name == "Zamazenta V")
-              holder.object += hp 70
+              holder.object += hp(70)
           }
         }
         onRemoveFromPlay {
