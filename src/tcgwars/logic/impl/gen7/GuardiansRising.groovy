@@ -1298,17 +1298,19 @@ public enum GuardiansRising implements LogicCardInfo {
           bwAbility "Aero Trail", {
             text "When you play this Pokémon from your hand onto your Bench during your turn, you may move any number of [L] Energy from your other Pokémon to this Pokémon. If you do, switch this Pokémon with your Active Pokémon."
             onActivate {reason ->
-              if(reason == PLAY_FROM_HAND && self.benched && confirm("Use Aero Trail?")){
+              if(reason == PLAY_FROM_HAND && self.benched && my.all.any { it.cards.energyCount(L) } && confirm("Use Aero Trail?")){
                 powerUsed()
+                def card = null
                 while(1){
                   def pl=(my.all.findAll {it.cards.filterByEnergyType(L) && it!=self})
                   if(!pl) break;
                   def src=pl.select("Source for energy (cancel to stop)", false)
                   if(!src) break;
-                  def card=src.cards.filterByEnergyType(L).select("Card to move").first()
+                  card=src.cards.filterByEnergyType(L).select("Card to move").first()
                   energySwitch(src, self, card)
                 }
-                sw my.active, self
+                if (card != null)
+                  sw my.active, self
               }
             }
           }
