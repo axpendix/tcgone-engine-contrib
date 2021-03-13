@@ -1869,9 +1869,8 @@ public enum AquapolisNG implements LogicCardInfo {
         move "Feint Attack", {
           text "20 damage. Choose 1 of your opponent's Pokémon. This attack does 20 damage to that Pokémon. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
           energyCost D, C
-          attackRequirement {}
           onAttack {
-            damage 20
+            swiftDamage 20, opp.all.select("Choose 1 of your opponent's Pokémon. This attack does 20 damage to that Pokémon.")
           }
         }
       };
