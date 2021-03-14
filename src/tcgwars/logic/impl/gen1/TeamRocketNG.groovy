@@ -1107,28 +1107,30 @@ public enum TeamRocketNG implements LogicCardInfo {
               assert opp.active.weaknesses : "$opp.active does not have a Weakness"
             }
             onAttack {
-              def newWeakness = choose([R,F,G,W,P,L,M,D,Y,N],"Select the new Weakness for $defending") as Type
-              bc "${defending}'s Weakness is now ${newWeakness}"
-              def eff
-              delayed {
-                eff = getter GET_WEAKNESSES, defending, { h ->
-                  def list = [] as List<Weakness>
-                  def feature = (h.object.get(0) as Weakness).feature
-                  list.add(new Weakness(newWeakness, feature))
-                  h.object = list
-                }
+              targeted defending, {
+                def newWeakness = choose([R, F, G, W, P, L, M, D, Y, N], "Select the new Weakness for $defending") as Type
+                bc "${defending}'s Weakness is now ${newWeakness}"
+                def eff
+                delayed {
+                  eff = getter GET_WEAKNESSES, defending, { h ->
+                    def list = [] as List<Weakness>
+                    def feature = (h.object.get(0) as Weakness).feature
+                    list.add(new Weakness(newWeakness, feature))
+                    h.object = list
+                  }
 
-                after FALL_BACK, defending, {
-                  eff.unregister()
-                  unregister()
-                }
-                after EVOLVE, defending, {
-                  eff.unregister()
-                  unregister()
-                }
-                after DEVOLVE, defending, {
-                  eff.unregister()
-                  unregister()
+                  after FALL_BACK, defending, {
+                    eff.unregister()
+                    unregister()
+                  }
+                  after EVOLVE, defending, {
+                    eff.unregister()
+                    unregister()
+                  }
+                  after DEVOLVE, defending, {
+                    eff.unregister()
+                    unregister()
+                  }
                 }
               }
             }
