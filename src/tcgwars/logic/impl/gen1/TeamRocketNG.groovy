@@ -717,12 +717,11 @@ public enum TeamRocketNG implements LogicCardInfo {
 
         };
       case DARK_ELECTRODE:
-        return evolution (this, from:"Voltorb", hp:HP060, type:LIGHTNING, retreatCost:1) {
+        return evolution(this, from: "Voltorb", hp: HP060, type: LIGHTNING, retreatCost: 1) {
           weakness FIGHTING
           move "Rolling Tackle", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -730,20 +729,22 @@ public enum TeamRocketNG implements LogicCardInfo {
           move "Energy Bomb", {
             text "30 damage. Take all Energy cards attached to Dark Electrode and attach them to your Benched Pokémon (in any way you choose). If you have no Benched Pokémon, discard all Energy cards attached to Dark Electrode."
             energyCost L, L
-            attackRequirement {}
             onAttack {
               damage 30
-              if(my.bench){
-                while(self.cards.energyCount(C)){
-                  moveEnergy(self,my.bench)
+              if (my.bench) {
+                self.energyCards.each { thisEnergy ->
+                  def pcs = my.bench.select "Select target for energy: $it"
+                  afterDamage {
+                    energySwitch self, pcs, thisEnergy
+                  }
                 }
-              }
-              else{
-                discardAllSelfEnergy null
+              } else {
+                afterDamage {
+                  discardAllSelfEnergy null
+                }
               }
             }
           }
-
         };
       case DARK_FLAREON:
         return evolution (this, from:"Eevee", hp:HP050, type:FIRE, retreatCost:1) {
