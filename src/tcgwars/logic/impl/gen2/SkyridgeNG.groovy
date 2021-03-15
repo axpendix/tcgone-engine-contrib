@@ -1250,14 +1250,18 @@ public enum SkyridgeNG implements LogicCardInfo {
         pokeBody "Prismatic Body", {
           text "Each basic Energy card attached to Ditto provides every type of Energy but provides only 1 Energy at a time."
           delayedA {
+            getterA GET_ENERGY_TYPES, self, { holder->
+              if ((holder.effect as GetEnergyTypes).card instanceof BasicEnergyCard) {
+                holder.object = [valuesPokemon() as Set]
+              }
+            }
           }
         }
         move "Copy", {
           text "Choose 1 of the Defending Pokémon's attacks. Copy copies that attack. This attack does nothing if Ditto doesn't have the Energy necessary to use that attack. (You must still do anything else required in order to use that attack.)"
           energyCost C
-          attackRequirement {}
           onAttack {
-
+            metronome keepEnergyRequirement: true, defending, delegate
           }
         }
       };
