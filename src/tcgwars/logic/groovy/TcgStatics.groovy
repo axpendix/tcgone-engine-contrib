@@ -1834,6 +1834,8 @@ class TcgStatics {
 
   /**
    * Copies an attack from another PokemonCardSet
+   * @param params Optional settings map
+   * @param params.keepEnergyRequirement CardType to select
    * @param target A PokemonCardSet or PcsList to choose a move from
    * @param delegate onAttack delegate
    */
@@ -1854,7 +1856,7 @@ class TcgStatics {
     if (choice instanceof String) return
     Move move = (choice as Move).shallowCopy()
     bc "$delegate.self copied $move.name"
-    move.energyCost = delegate.thisMove.energyCost
+    if (!params.keepEnergyRequirement) move.energyCost = delegate.thisMove.energyCost
     // TODO: Why can't we just skip BetweenTurns if it is a sub attack?
     def bef = blockingEffect(BETWEEN_TURNS)
     attack(move)
