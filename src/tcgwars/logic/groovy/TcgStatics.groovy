@@ -1848,9 +1848,9 @@ class TcgStatics {
       moveList.addAll newMoves
       labelList.addAll newMoves.collect {"$pcs.name - $it.name" }
     }
-    moveList.add("Skip")
-    labelList.add("End Turn (Skip)")
-    def choice = (choose(moveList, labelList, "Choose an attack to use as this attack."))
+    moveList.add "Skip"
+    labelList.add "End Turn (Skip)"
+    def choice = choose moveList, labelList, "Choose an attack to use as this attack."
     if (choice instanceof String) return
     Move move = choice as Move
     bc "$delegate.self copied $move.name"
