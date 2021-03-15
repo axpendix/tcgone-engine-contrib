@@ -698,9 +698,8 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
         move "Mini-Metronome", {
           text "Flip a coin. If heads, choose 1 of the Defending Pokémon's attacks. Mini-Metronome copies that attack except for its Energy cost. (You must still do anything else in order to use that attack.) (No matter what type the Defending Pokémon is, Togepi's type is still .) Togepi performs that attack."
           energyCost C, C
-          attackRequirement {}
           onAttack {
-            // TODO
+            flip { metronome defending, delegate }
           }
         }
       };
