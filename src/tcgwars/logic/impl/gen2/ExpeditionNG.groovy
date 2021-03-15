@@ -28,7 +28,7 @@ import tcgwars.logic.effect.blocking.*;
 import tcgwars.logic.effect.event.*;
 import tcgwars.logic.effect.getter.*;
 import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import tcgwars.logic.util.*
 
 /**
  * @author lithogenn@gmail.com
@@ -267,9 +267,11 @@ public enum ExpeditionNG implements LogicCardInfo {
         move "Syncroblast", {
           text "If Alakazam and the Defending Pokémon don't have the same number of Energy cards on them, this attack's base damage is 20 instead of 80."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
-
+            if (self.energyCards.size() != defending.energyCards.size())
+              damage 20
+            else
+              damage 80
           }
         }
       };
