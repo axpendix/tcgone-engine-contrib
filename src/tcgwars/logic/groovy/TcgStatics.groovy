@@ -1852,7 +1852,7 @@ class TcgStatics {
     labelList.add "End Turn (Skip)"
     def choice = choose moveList, labelList, "Choose an attack to use as this attack."
     if (choice instanceof String) return
-    Move move = choice as Move
+    Move move = (choice as Move).shallowCopy()
     bc "$delegate.self copied $move.name"
     move.energyCost = delegate.thisMove.energyCost
     // TODO: Why can't we just skip BetweenTurns if it is a sub attack?
