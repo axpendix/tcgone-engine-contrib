@@ -689,10 +689,8 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
         move "Snivel", {
           text "If the Defending Pokémon attacks Togepi during your opponent's next turn, any damage done to Togepi is reduced by 20 (before applying Weakness and Resistance). (Benching either Pokémon ends this effect.)"
           energyCost C
-          attackRequirement {}
           onAttack {
-            reduceDamageNextTurn(hp(20), thisMove)
-            // TODO: (Benching either Pokémon ends this effect.)??
+            reduceDamageNextTurn hp(20), thisMove, true, true
           }
         }
         move "Mini-Metronome", {
