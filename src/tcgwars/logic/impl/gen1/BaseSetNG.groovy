@@ -419,7 +419,6 @@ public enum BaseSetNG implements LogicCardInfo {
           move "Sing", {
             text "Flip a coin. If heads, the Defending Pokémon is now Asleep."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip{applyAfterDamage(ASLEEP)}
             }
@@ -427,18 +426,8 @@ public enum BaseSetNG implements LogicCardInfo {
           move "Metronome", {
             text "Choose 1 of the Defending Pokémon’s attacks. Metronome copies that attack except of its Energy costs and anything else required in order to use that attach, such as discarding Energy cards. (No matter what type the Defending Pokémon is, Clefairy’s type is still Colorless)."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
-              def moveList = []
-              def labelList = []
-
-              moveList.addAll(defending.topPokemonCard.moves);
-              labelList.addAll(defending.topPokemonCard.moves.collect{it.name})
-
-              def move=choose(moveList, labelList)
-              def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
-              attack (move as Move)
-              bef.unregisterItself(bg().em())
+              metronome defending, delegate
             }
           }
         };
