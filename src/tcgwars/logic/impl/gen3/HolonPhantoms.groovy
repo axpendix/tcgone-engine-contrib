@@ -844,11 +844,14 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 40
             afterDamage{
               delayed {
-                getter (GET_WEAKNESSES) { h->
+                def eff = getter (GET_WEAKNESSES) { h->
                   if (h.effect.target == self) {
                     def list = h.object as List<Weakness>
                     list.clear()
                   }
+                }
+                unregister {
+                  eff.unregister()
                 }
                 after FALL_BACK, self, {unregister()}
                 after EVOLVE, self, {unregister()}

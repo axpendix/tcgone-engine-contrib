@@ -1446,11 +1446,8 @@ public enum BurningShadows implements LogicCardInfo {
                   register {
                     eff = getter (GET_WEAKNESSES, pcs) {h->
                       def list = h.object as List<Weakness>
-                      if(list) {
-                        list.get(0).type = PSYCHIC
-                      } else {
-                        list.add(new Weakness(PSYCHIC))
-                      }
+                      list.clear()
+                      list.add new Weakness(P)
                     }
                   }
                   unregister {
