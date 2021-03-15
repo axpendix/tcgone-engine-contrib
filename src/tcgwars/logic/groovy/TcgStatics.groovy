@@ -1844,15 +1844,20 @@ class TcgStatics {
     def moveList = []
     def labelList = []
     target.each {pcs ->
-      moveList.addAll pcs.topPokemonCard.moves
-      labelList.addAll pcs.topPokemonCard.moves.collect {"$pcs.name - $it.name" }
+      def newMoves = bg.em().activateGetter(new GetMoveList(pcs))
+      moveList.addAll newMoves
+      labelList.addAll newMoves.collect {"$pcs.name - $it.name" }
     }
-    Move move = (choose(moveList, labelList, "Choose an attack to use as this attack.") as Move).shallowCopy()
+    moveList.add("Skip")
+    labelList.add("End Turn (Skip)")
+    def choice = (choose(moveList, labelList, "Choose an attack to use as this attack."))
+    if (choice instanceof String) return
+    Move move = choice as Move
+    bc "$delegate.self copied $move.name"
     move.energyCost = delegate.thisMove.energyCost
     // TODO: Why can't we just skip BetweenTurns if it is a sub attack?
     def bef = blockingEffect(BETWEEN_TURNS)
     attack(move)
-    bc "$delegate.self copied $move.name"
     bef.unregisterItself bg.em()
   }
 
