@@ -258,10 +258,10 @@ public enum ExpeditionNG implements LogicCardInfo {
         weakness P
         pokePower "Psymimic", {
           text "Once during your turn, instead of Alakazam's normal attack, you may choose 1 of your opponent's Pokémon's attack. Alakazam copies that attack including its Energy costs and anything else required in order to use that attack, such as discarding Energy cards. (No matter what type that Pokémon is, Alakazam's type is still Psychic.) This power can't be used if Alakazam is affected by a Special Condition."
-          actionA {
-            assert self.specialConditions.empty : "$self is affected by a Special Condition"
-            assert self.active : "$self is not the Active Pokémon"
-            metronome unblockEndTurn: true, keepEnergyRequirement: true, opp.all, delegate
+          getterA (GET_MOVE_LIST, self) {holder->
+            opp.all.each {
+              holder.object.addAll(bg.em().activateGetter(new GetMoveList(it)))
+            }
           }
         }
         move "Syncroblast", {
