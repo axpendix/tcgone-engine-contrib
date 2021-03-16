@@ -1833,7 +1833,7 @@ class TcgStatics {
   }
 
   /**
-   * Copies an attack from another PokemonCardSet
+   * Copies an attack from another PokemonCardSet as a Subattack
    * @param params Optional settings map
    * @param params.keepEnergyRequirement Should the move retain the original energy cost
    * @param params.unblockEndTurn Should blocking between turns be disabled (set to true for Abilities. Do not set to true for Attacks)
@@ -1864,6 +1864,28 @@ class TcgStatics {
       bef = blockingEffect(BETWEEN_TURNS)
     attack(move)
     bef?.unregisterItself bg.em()
+  }
+
+  /**
+   * Copies an attack from another PokemonCardSet as an Ability Attack
+   * @param delegate onAttack delegate
+   * @param target A Closure with a call to return the current targets (ex: { all() } or { bench() }
+   */
+  static metronomeA(Object delegate, Closure target) {
+    delegate.getterA GET_MOVE_LIST, delegate.self, {holder->
+      def moves = [] as Set
+      moves.addAll holder.object
+      target.call().each {
+        if (it == holder.effect.target) return
+        if (it instanceof Card) {
+          moves.addAll it.moves
+        }
+        if (it instanceof PokemonCardSet) {
+          moves.addAll bg.em().activateGetter(new GetMoveList(it))
+        }
+      }
+      holder.object = moves as List
+    }
   }
 
 }
