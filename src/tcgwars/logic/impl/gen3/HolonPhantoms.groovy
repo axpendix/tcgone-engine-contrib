@@ -829,13 +829,9 @@ public enum HolonPhantoms implements LogicCardInfo {
         resistance W, MINUS30
         pokeBody "Fellowship", {
           text "Bellossom can use the attacks of all Oddish, Gloom, Vileplume, Vileplume ex, or other Bellossom you have in play as its own. (You still need the necessary Energy to use each attack.)"
-          getterA (GET_MOVE_LIST, self) {holder->
-            my.all.findAll{ ["Oddish", "Gloom", "Vileplume", "Vileplume ex", "Bellossom"].contains(it.topPokemonCard.name) }.each {
-              if(it!=self) {
-                holder.object.addAll(it.topPokemonCard.moves)
-              }
-            }
-          }
+          metronomeA delegate, { my.all.findAll {
+            ["Oddish", "Gloom", "Vileplume", "Vileplume ex", "Bellossom"].contains(it.topPokemonCard.name)
+          } }
         }
         move "Aqua Flower", {
           text "40 damage. During your opponent's next turn, Bellossom has no Weakness."

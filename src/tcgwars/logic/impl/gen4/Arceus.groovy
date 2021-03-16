@@ -2385,17 +2385,7 @@ public enum Arceus implements LogicCardInfo {
           }
           pokeBody "Omniscient", {
             text "Arceus can use the attacks of all Arceus you have in play as its own."
-            getterA (GET_MOVE_LIST, self) {holder->
-              def omniscientMoves = []
-              def cardList = []
-              self.owner.pbg.bench.findAll {it.name == "Arceus"}.each {
-                if(self.active && !cardList.contains("${it.topPokemonCard}")){
-                  cardList.add("${it.topPokemonCard}")
-                  omniscientMoves.addAll(it.topPokemonCard.moves)
-                }
-              }
-              holder.object.addAll(omniscientMoves)
-            }
+            metronomeA delegate, { self.owner.pbg.bench.findAll { it.name == "Arceus" } }
           }
           // text "You may have as many of this card in your deck as you like."
         };

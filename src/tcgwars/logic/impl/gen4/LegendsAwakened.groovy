@@ -1049,9 +1049,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             getterA (GET_FULL_HP, self) { Holder h->
               if (self.active) h.object = hp(self.owner.opposite.pbg.active.getFullHP())
             }
-            getterA(GET_MOVE_LIST, self) { holder ->
-              holder.object.addAll(self.owner.opposite.pbg.active.topPokemonCard.moves)
-            }
+            metronomeA delegate, { self.owner.opposite.pbg.active }
           }
         };
       case FORRETRESS_28:

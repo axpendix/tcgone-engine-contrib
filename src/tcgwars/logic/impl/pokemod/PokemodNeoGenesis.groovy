@@ -2086,8 +2086,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
         weakness P
         pokeBody "Versatile", {
           text "Mew ex can use the attacks of all Pokémon in play as its own. (You still need the necessary Energy to use each attack.)."
-          delayedA {
-          }
+          metronomeA delegate, { all }
         }
         move "Power Move", {
           text "Search your deck for an Energy card and attach it to Mew ex. Shuffle your deck afterward. Then, you may switch Mew ex with 1 of your Benched Pokémon."
