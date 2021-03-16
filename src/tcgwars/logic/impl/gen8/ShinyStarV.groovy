@@ -217,7 +217,7 @@ public enum ShinyStarV implements LogicCardInfo {
       return basic (this, hp:HP110, type:D, retreatCost:2) {
         weakness L
         resistance F, MINUS30
-        move "Amazing Death", {
+        move "Amazing Destruction", {
           text "Your opponent's Active Pokémon is Knocked Out."
           energyCost R, P, D, C, C
           onAttack {
