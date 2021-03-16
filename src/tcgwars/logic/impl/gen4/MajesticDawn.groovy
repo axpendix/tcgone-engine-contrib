@@ -454,7 +454,7 @@ public enum MajesticDawn implements LogicCardInfo {
               assert self.numberOfDamageCounters || self.cards.energyCount(P) : "$self has no damage counters or [P] Energy"
             }
             onAttack {
-              heal 60, slelf
+              heal 60, self
               discardSelfEnergyAfterDamage P
             }
           }
@@ -620,7 +620,7 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost L, L, C
             onAttack {
               damage 80
-              noWrDamage 40, self
+              noWrDamage 40, my.all.select()
             }
           }
 
@@ -752,7 +752,7 @@ public enum MajesticDawn implements LogicCardInfo {
           weakness P, PLUS20
           pokeBody "Sunlight Veil", {
             text "Each of your Pokémon that evolves from Eevee gets +20 HP. You can’t use more than 1 Sunlight Veil Poké-Body each turn."
-            
+
             def target = []
             def source = []
             bg.em().storeObject("Sunlight_Veil_target", target)
@@ -977,15 +977,14 @@ public enum MajesticDawn implements LogicCardInfo {
           weakness G, PLUS30
           pokePower "Primal Swirl", {
             text "Once during your turn, when you play Omastar from your hand to evolve 1 of your Pokémon, you may remove the highest Stage Evolution card from each of your opponent’s Benched Evolved Pokémon and put those cards back into his or her hand. You can’t use more than 1 Primal Swirl Poké-Power each turn."
-            actionA {
-              onActivate {r ->
-                if(r == PLAY_FROM_HAND && bg.em().retrieveObject("Primal_Swirl") != bg.turnCount && opp.all.find{it.evolution} && confirm("Use $thisAbility?")){
-                  bg.em().storeObject("Primal_Swirl",bg.turnCount)
-                  powerUsed()
-                  opp.all.findAll{it.evolutoin}.each {
-                    def top = it.topPokemonCard
-                    devolve(it, top, opp.hand)
-                  }
+            onActivate {r ->
+              bc "$r"
+              if(r == PLAY_FROM_HAND && bg.em().retrieveObject("Primal_Swirl") != bg.turnCount && opp.all.find{it.evolution} && confirm("Use $thisAbility?")){
+                bg.em().storeObject("Primal_Swirl",bg.turnCount)
+                powerUsed()
+                opp.all.findAll{it.evolutoin}.each {
+                  def top = it.topPokemonCard
+                  devolve(it, top, opp.hand)
                 }
               }
             }
@@ -1130,7 +1129,7 @@ public enum MajesticDawn implements LogicCardInfo {
                 list.clear()
               }
             }
-            getterA GET_RETREAT_COST ,{ h->//Not sure if 2 getterAs work in the same pokebody, If it doesn't, Ill use onActivate
+            getterA GET_RETREAT_COST ,{ h->
               def pcs = h.effect.target
               if (pcs.owner == self.owner && pcs.realEvolution && pcs.topPokemonCard.predecessor == "Eevee") {
                 h.object = 0
@@ -1575,7 +1574,7 @@ public enum MajesticDawn implements LogicCardInfo {
               assert self.benched : "$self is not on your bench"
               assert my.all.find {it!=self && canAttachPokemonTool(it)} : "No place to attach"
               powerUsed()
-              self.cards.getExcludedList(self.cards.topPokemonCard).discard()
+              self.cards.getExcludedList(self.topPokemonCard).discard()
               removePCS(self)
               def trcard
               trcard = pokemonTool(new CustomCardInfo(top.staticInfo).setCardTypes(TRAINER, ITEM, POKEMON_TOOL)) {
@@ -2293,9 +2292,9 @@ public enum MajesticDawn implements LogicCardInfo {
           def eff
           onPlay {
             eff = delayed {
-              after ATTACH_ENERGY, self, {
+              after ATTACH_ENERGY, {
                 def pcs = ef.resolvedTarget
-                if (ef.reason==PLAY_FROM_HAND && (pcs.types.contains(G) || pcs.types.contains(W)) {
+                if (ef.reason==PLAY_FROM_HAND && (pcs.types.contains(G) || pcs.types.contains(W))) {
                   bc "Dawn Stadium removes 1 damage counter and all Special Conditions from $pcs"
                   heal 10, pcs
                   if (pcs.specialConditions) {
@@ -2594,6 +2593,7 @@ public enum MajesticDawn implements LogicCardInfo {
           pokePower "Dragon Pulse", {
             text "Once during your turn , when you put Garchomp LV.X from your hand onto your Active Garchomp, you may flip 3 coins. For each heads, put 1 damage counter on each of your opponent’s Benched Pokémon."
             onActivate {r->
+              bc "$r"
               if (r==PLAY_FROM_HAND && opp.bench && confirm('Use Dragon Pulse?')) {
                 flip 3, {
                   opp.bench.each {
@@ -2625,10 +2625,10 @@ public enum MajesticDawn implements LogicCardInfo {
           weakness M, PLUS30
           pokeBody "Chilly Breath", {
             text "As long as Glaceon is your Active Pokémon, your opponent’s Pokémon can’t use any Poké-Powers."
-            def eff
+            def eff1, eff2
             onActivate {
               eff1 = getter IS_ABILITY_BLOCKED, { Holder h->
-                if (self.active && h.effect.target.owner == self.owner.opposite && (h.effect.ability instanceof PokePower) {
+                if (self.active && h.effect.target.owner == self.owner.opposite && (h.effect.ability instanceof PokePower)) {
                   h.object=true
                 }
               }
@@ -2686,7 +2686,7 @@ public enum MajesticDawn implements LogicCardInfo {
           }
         };
       case PORYGON_Z_LV_X_100:
-        return levelUp (this, from:"Porygon Z", hp:HP130, type:COLORLESS, retreatCost:2) {
+        return levelUp (this, from:"Porygon-Z", hp:HP130, type:COLORLESS, retreatCost:2) {
           weakness F
           pokePower "Mode Crash", {
             text "Once during your turn , when you put Porygon-Z LV. from your hand onto your Active Porygon-Z, you may discard all of your opponent’s Special Energy cards in play."
