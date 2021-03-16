@@ -1,12 +1,39 @@
 package tcgwars.logic.impl.pokemod
 
+import tcgwars.logic.impl.gen1.WizardsBlackStarPromos
 
-import tcgwars.logic.card.*
-import tcgwars.logic.util.*
+import tcgwars.logic.effect.gm.PlayCard
+import tcgwars.logic.effect.gm.PlayTrainer;
 
-import static tcgwars.logic.card.CardType.*
-import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.HP.*;
+import static tcgwars.logic.card.Type.*;
+import static tcgwars.logic.card.CardType.*;
+import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.groovy.TcgStatics.*
+import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
+import static tcgwars.logic.effect.EffectType.*;
+import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectPriority.*
+import static tcgwars.logic.effect.special.SpecialConditionType.*
+import static tcgwars.logic.card.Resistance.ResistanceType.*
 
+import java.util.*;
+import org.apache.commons.lang.WordUtils;
+import tcgwars.entity.*;
+import tcgwars.logic.*;
+import tcgwars.logic.card.*;
+import tcgwars.logic.card.energy.*;
+import tcgwars.logic.card.pokemon.*;
+import tcgwars.logic.card.trainer.*;
+import tcgwars.logic.effect.*;
+import tcgwars.logic.effect.ability.*;
+import tcgwars.logic.effect.advanced.*;
+import tcgwars.logic.effect.basic.*;
+import tcgwars.logic.effect.blocking.*;
+import tcgwars.logic.effect.event.*;
+import tcgwars.logic.effect.getter.*;
+import tcgwars.logic.effect.special.*;
+import tcgwars.logic.util.*;
 /**
  * @author axpendix@hotmail.com
  */
@@ -66,7 +93,7 @@ public enum PokemodWizardsBlackStarPromos implements LogicCardInfo {
   HO_OH_52 ("Ho-oh", "52", Rarity.PROMO, BASIC, POKEMON, _FIRE_),
   SUICUNE_53 ("Suicune", "53", Rarity.PROMO, BASIC, POKEMON, _WATER_);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
   protected CardTypeSet cardTypes;
   protected String name;
@@ -101,8 +128,8 @@ public enum PokemodWizardsBlackStarPromos implements LogicCardInfo {
   }
 
   @Override
-  public Collection getCollection() {
-    return Collection.POKEMOD_PROMOS;
+  public tcgwars.logic.card.Collection getCollection() {
+    return tcgwars.logic.card.Collection.POKEMOD_PROMOS;
   }
 
   @Override
@@ -116,8 +143,185 @@ public enum PokemodWizardsBlackStarPromos implements LogicCardInfo {
   }
 
   @Override
-  public Card getImplementation() {
+   public Card getImplementation() {
+      switch (this) {
+      case PIKACHU_1:
+       return copy (WizardsBlackStarPromos.PIKACHU_1, this);
+      case ELECTABUZZ_2:
+       break
+      case MEWTWO_3:
+       return copy (WizardsBlackStarPromos.MEWTWO_3, this);
+      case PIKACHU_4:
+       return copy (WizardsBlackStarPromos.PIKACHU_4, this);
+      case DRAGONITE_5:
+       return copy (WizardsBlackStarPromos.DRAGONITE_5, this);
+      case ARCANINE_6:
+       return copy (WizardsBlackStarPromos.ARCANINE_6, this);
+      case JIGGLYPUFF_7:
+       return copy (WizardsBlackStarPromos.JIGGLYPUFF_7, this);
+      case MEW_8:
+       break
+      case MEW_9:
+       break
+      case MEOWTH_10:
+       return copy (WizardsBlackStarPromos.MEOWTH_10, this);
+      case EEVEE_11:
+       return basic (this, hp:HP030, type:C, retreatCost:0) {
+        weakness F
+        resistance P, MINUS30
+        pokemonBody "Chain Reaction", {
+          text "This power can only be used when a Pokémon evolves. Search your deck for a card that evolves from Eevee and attach it to Eevee. This counts as evolving Eevee. Shuffle your deck afterward. This power can't be used if Eevee is Asleep, Confused, or Paralyzed."
+          actionA {
+            // TODO
+          }
+        }
+        move "Bite", {
+          text "20 damage. "
+          energyCost C
+          attackRequirement {}
+          onAttack {
+            damage 20
+          }
+        }
+      };
+      case MEWTWO_12:
+       return copy (WizardsBlackStarPromos.MEWTWO_12, this);
+      case VENUSAUR_13:
+       return copy (WizardsBlackStarPromos.VENUSAUR_13, this);
+      case MEWTWO_14:
+       return copy (WizardsBlackStarPromos.MEWTWO_14, this);
+      case COOL_PORYGON_15:
+       return copy (WizardsBlackStarPromos.COOL_PORYGON_15, this);
+      case COMPUTER_ERROR_16:
+       return copy (WizardsBlackStarPromos.COMPUTER_ERROR_16, this);
+      case DARK_PERSIAN_17:
+       return copy (WizardsBlackStarPromos.DARK_PERSIAN_17, this);
+      case TEAM_ROCKET_S_MEOWTH_18:
+       return copy (WizardsBlackStarPromos.TEAM_ROCKET_S_MEOWTH_18, this);
+      case SABRINA_S_ABRA_19:
+       return copy (WizardsBlackStarPromos.SABRINA_S_ABRA_19, this);
+      case PSYDUCK_20:
+       return copy (PokemodFossil.PSYDUCK_53, this);
+      case MOLTRES_21:
+       return copy (WizardsBlackStarPromos.MOLTRES_21, this);
+      case ARTICUNO_22:
+       return copy (WizardsBlackStarPromos.ARTICUNO_22, this);
+      case ZAPDOS_23:
+       return copy (WizardsBlackStarPromos.ZAPDOS_23, this);
+      case BIRTHDAY_PIKACHU_24:
+       return copy (WizardsBlackStarPromos.BIRTHDAY_PIKACHU_24, this);
+      case FLYING_PIKACHU_25:
+       return copy (WizardsBlackStarPromos.FLYING_PIKACHU_25, this);
+      case PIKACHU_26:
+       return copy (WizardsBlackStarPromos.PIKACHU_26, this);
+      case PIKACHU_27:
+       return copy (WizardsBlackStarPromos.PIKACHU_27, this);
+      case SURFING_PIKACHU_28:
+       return copy (WizardsBlackStarPromos.SURFING_PIKACHU_28, this);
+      case MARILL_29:
+       return copy (WizardsBlackStarPromos.MARILL_29, this);
+      case TOGEPI_30:
+       return copy (WizardsBlackStarPromos.TOGEPI_30, this);
+      case CLEFFA_31:
+       return copy (WizardsBlackStarPromos.CLEFFA_31, this);
+      case SMEARGLE_32:
+       return copy (WizardsBlackStarPromos.SMEARGLE_32, this);
+      case SCIZOR_33:
+       return copy (WizardsBlackStarPromos.SCIZOR_33, this);
+      case ENTEI_34:
+       break
+      case PICHU_35:
+       return copy (WizardsBlackStarPromos.PICHU_35, this);
+      case IGGLYBUFF_36:
+       return copy (WizardsBlackStarPromos.IGGLYBUFF_36, this);
+      case HITMONTOP_37:
+       return copy (WizardsBlackStarPromos.HITMONTOP_37, this);
+      case UNOWN_J_38:
+       return copy (WizardsBlackStarPromos.UNOWN_J_38, this);
+      case MISDREAVUS_39:
+       return basic (this, hp:HP050, type:P, retreatCost:1) {
+         weakness DARKNESS
+        resistance FIGHTING, MINUS30
+        move "Pain Split", {
+          text "Put 1 damage counter on the Defending Pokémon for each damage counter on Misdreavus."
+          energyCost P
+          attackRequirement {}
+          onAttack {
+            directDamage 10*self.numberOfDamageCounters
+          }
+        }
+        move "Confuse Ray", {
+          text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
+          energyCost P, P
+          attackRequirement {}
+          onAttack {
+            damage 10
+            flip { apply CONFUSED }
+          }
+        }
+      };
+      case POKEMON_CENTER_40:
+       return copy (WizardsBlackStarPromos.POKEMON_CENTER_40, this);
+      case LUCKY_STADIUM_41:
+       return copy (WizardsBlackStarPromos.LUCKY_STADIUM_41, this);
+      case POKEMON_TOWER_42:
+       return copy (WizardsBlackStarPromos.POKEMON_TOWER_42, this);
+      case MACHAMP_43:
+       return copy (WizardsBlackStarPromos.MACHAMP_43, this);
+      case MAGMAR_44:
+       return copy (WizardsBlackStarPromos.MAGMAR_44, this);
+      case SCYTHER_45:
+       return copy (WizardsBlackStarPromos.SCYTHER_45, this);
+      case ELECTABUZZ_46:
+       return copy (WizardsBlackStarPromos.ELECTABUZZ_46, this);
+      case MEW_47:
+       return basic (this, hp:HP040, type:P, retreatCost:1) {
+        weakness P
+        pokemonBody "Neutral Shield", {
+          text "Prevent all effects of attacks, including damage, done to Mew by Evolved Pokémon. You can’t use this power if Mew is Asleep, Confused, or Paralyzed"
+          delayedA {
+            before null, self, Source.ATTACK, {
+              if (bg.currentTurn.pbg.active.evolution && ef.effectType != DAMAGE && self.checkSpecialConditionsForClassic()) {
+                bc "Neutral Shield prevents effect"
+                prevent()
+              }
+            }
+            before APPLY_ATTACK_DAMAGES, {
+              if (ef.attacker.evolution && self.checkSpecialConditionsForClassic()) {
+                bg.dm().each {
+                  if(it.to == self && it.dmg.value && it.notNoEffect) {
+                    it.dmg = hp(0)
+                    bc "Neutral Shield prevents damage"
+                  }
+                }
+              }
+            }
+          }
+        }
+        move "Psyshock", {
+          text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
+          energyCost P
+          attackRequirement {}
+          onAttack {
+            damage 10
+            flip { apply CONFUSED }
+          }
+        }
+      };
+      case ARTICUNO_48:
+       break
+      case SNORLAX_49:
+       break
+      case CELEBI_50:
+       return copy (WizardsBlackStarPromos.CELEBI_50, this);
+      case RAPIDASH_51:
+       return copy (WizardsBlackStarPromos.RAPIDASH_51, this);
+      case HO_OH_52:
+       return copy (WizardsBlackStarPromos.HO_OH_52, this);
+      case SUICUNE_53:
+       return copy (WizardsBlackStarPromos.SUICUNE_53, this);
+      default:
     return null;
+    }
   }
-
 }
