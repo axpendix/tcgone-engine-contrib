@@ -1,10 +1,36 @@
 package tcgwars.logic.impl.pokemod
 
+import tcgwars.logic.effect.gm.PlayCard
+import tcgwars.logic.effect.gm.PlayTrainer;
 
+import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.card.CardType.*;
+import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.groovy.TcgStatics.*
+import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
+import static tcgwars.logic.effect.EffectType.*;
+import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectPriority.*
+import static tcgwars.logic.effect.special.SpecialConditionType.*
+import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import tcgwars.logic.card.*
+import java.util.*;
+import org.apache.commons.lang.WordUtils;
+import tcgwars.entity.*;
+import tcgwars.logic.*;
+import tcgwars.logic.card.*;
+import tcgwars.logic.card.energy.*;
+import tcgwars.logic.card.pokemon.*;
+import tcgwars.logic.card.trainer.*;
+import tcgwars.logic.effect.*;
+import tcgwars.logic.effect.ability.*;
+import tcgwars.logic.effect.advanced.*;
+import tcgwars.logic.effect.basic.*;
+import tcgwars.logic.effect.blocking.*;
+import tcgwars.logic.effect.event.*;
+import tcgwars.logic.effect.getter.*;
+import tcgwars.logic.effect.special.*;
 import tcgwars.logic.util.*;
 
 /**
@@ -178,7 +204,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
           weakness FIRE
           pokemonBody "Hay Fever", {
             text "No Trainer cards can be played. This power stops working while Dark Vileplume is Asleep, Confused, or Paralyzed."
-            delayedA { {it.cardTypes.is(TRAINER) && !it.cardTypes.is(SUPPORTER)}
+            delayedA { /*{it.cardTypes.is(TRAINER) && !it.cardTypes.is(SUPPORTER)}*/
               before PLAY_TRAINER, {
                 if(!self.specialConditions){
                   wcu "Hay Fever prevents playing this card"
@@ -286,7 +312,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
           weakness FIGHTING
           move "Rolling Tackle", {
             text "20 damage."
-            energyCost L 
+            energyCost L
             attackRequirement {}
             onAttack {
               damage 20
@@ -807,21 +833,21 @@ public enum PokemodTeamRocket implements LogicCardInfo {
         break
       case DARK_RAICHU_83:
         break
-      case SCRAMBLE_ENERGY_85
+      case SCRAMBLE_ENERGY_85:
         break
-      case ROCKETS_ENERGY_RF_86
+      case ROCKETS_ENERGY_RF_86:
         break
-      case ROCKETS_ENERGY_GL_87
+      case ROCKETS_ENERGY_GL_87:
         break
-      case ROCKETS_ENERGY_WP_88
+      case ROCKETS_ENERGY_WP_88:
         break
-      case ROCKET_BALL_89
+      case ROCKET_BALL_89:
         return basicTrainer (this) {
           text "Flip 2 coins. For each heads, search your deck for a Pokémon with Dark in its name. Show it to your opponent, and put it into your hand. Shuffle your deck afterward."
          def searchCnt = 0
             flip 2, { searchCnt++ }
             if (searchCnt) {
-              my.deck.search(max: searchCnt "Select a Pokémon with Dark in its name",{it.cardTypes.is(POKEMON) && it.name.contains("Dark ")}).showToOpponent("Selected card.").moveTo(my.hand)
+              my.deck.search(max: searchCnt, "Select a Pokémon with Dark in its name",{it.cardTypes.is(POKEMON) && it.name.contains("Dark ")}).showToOpponent("Selected card.").moveTo(my.hand)
             shuffleDeck()
           }
           playRequirement{
@@ -829,7 +855,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
           }
         };
         //make so coinflip
-      case POKEMON_RETRIVER_90
+      case POKEMON_RETRIVER_90:
         return basicTrainer (this) {
           text "Flip 2 coins. If you get a heads, search your discard pile for Basic Pokémon and Evolution cards. You may either show up to 2 Basic Pokémon and/or Evolution cards to your opponent and put them into your hand, or show a combination of up to 4 Basic Pokémon and/or Evolution cards to your opponent and shuffle them into your deck."
           onPlay {
@@ -846,43 +872,43 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             assert my.discard.filterByType(BASIC, EVOLUTION)
           }
         };
-      case POW_HAND_EXTENTION_91
+      case POW_HAND_EXTENTION_91:
         break
-      case SURPRISE_TIME_MACHINE_92
+      case SURPRISE_TIME_MACHINE_92:
         break
-      case SWOOP_TELEPORTER_93
+      case SWOOP_TELEPORTER_93:
         break
-      case ROCKETS_DUNGEON_94
+      case ROCKETS_DUNGEON_94:
         break
-      case ROCKETS_HIDEOUT_95
+      case ROCKETS_HIDEOUT_95:
         break
-      case ROCKETS_ACE_IN_THE_HOLE_96
+      case ROCKETS_ACE_IN_THE_HOLE_96:
         break
-      case SUPER_ENERGY_CHARGE_97
+      case SUPER_ENERGY_CHARGE_97:
         break
-      case IMPOSTER_OAKS_MADNESS_98
+      case IMPOSTER_OAKS_MADNESS_98:
         break
-      case CELEBI_99
+      case CELEBI_99:
         break
-      case MIRACLE_ENERGY_100
+      case MIRACLE_ENERGY_100:
         break
-      case DARK_CHARIZARD_101
+      case DARK_CHARIZARD_101:
         break
-      case DARK_DRAGONITE_102
+      case DARK_DRAGONITE_102:
         break
-      case ROCKETS_ARTICUNO_EX_103
+      case ROCKETS_ARTICUNO_EX_103:
         break
-      case ROCKETS_MOLTRES_EX_104
+      case ROCKETS_MOLTRES_EX_104:
         break
-      case ROCKETS_ZAPDOS_EX_105
+      case ROCKETS_ZAPDOS_EX_105:
         break
-      case ROCKETS_MEWTWO_EX_106
+      case ROCKETS_MEWTWO_EX_106:
         break
-      case ROCKETS_HITMONCHAN_EX_107
+      case ROCKETS_HITMONCHAN_EX_107:
         break
-      case ROCKETS_SCYTHER_EX_108
+      case ROCKETS_SCYTHER_EX_108:
         break
-      case ROCKETS_SNORLAX_EX_109
+      case ROCKETS_SNORLAX_EX_109:
         break
       default:
         return null;

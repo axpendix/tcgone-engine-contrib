@@ -113,10 +113,10 @@ public enum PokemodFossil implements LogicCardInfo {
   DOUBLE_COLORLESS_ENERGY_72 ("Double Colorless", "72", Rarity.RARE, [ENERGY, SPECIAL_ENERGY]),
   LOST_ENERGY_73 ("Lost Energy", "73", Rarity.RARE, [ENERGY, SPECIAL_ENERGY]),
   SEEKER_74 ("Seeker", "74", Rarity.SECRET, [TRAINER, SUPPORTER, G_SPEC] ),
-  LOST_MEDALLION_75 ("Lost Medallion", "75", Rarity.SECRET [TRAINER, POKEMON_TOOL, G_SPEC]),
-  CASTAWAY_76 ("Castaway", "76", Rarity.SECRET [TRAINER, SUPPORTER, G_SPEC]),
-  DITTO_77 ("Ditto", "77", Rarity.SECRET [BASIC, POKEMON, G_SPEC, _COLORLESS_])
-  
+  LOST_MEDALLION_75 ("Lost Medallion", "75", Rarity.SECRET, [TRAINER, POKEMON_TOOL, G_SPEC]),
+  CASTAWAY_76 ("Castaway", "76", Rarity.SECRET, [TRAINER, SUPPORTER, G_SPEC]),
+  DITTO_77 ("Ditto", "77", Rarity.SECRET, [BASIC, POKEMON, G_SPEC, _COLORLESS_]),
+
   PSYDUCK_78 ("Psyduck", "78", Rarity.RARE, [BASIC, POKEMON, _WATER_]),
   DRAGONITE_79 ("Dragonite", "79", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
   GENGAR_80 ("Gengar", "80", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
@@ -197,17 +197,17 @@ public enum PokemodFossil implements LogicCardInfo {
               }
             }
             }
-          }
-          move "Wing Attack", {
-            text "30 damage."
-            energyCost C, C, C
-            attackRequirement {}
-            onAttack {
-              damage 30
-            }
-          }
-
-        }; 
+//          }
+//          move "Wing Attack", {
+//            text "30 damage."
+//            energyCost C, C, C
+//            attackRequirement {}
+//            onAttack {
+//              damage 30
+//            }
+//          }
+//
+//        };
       case ARTICUNO_2:
         return basic (this, hp:HP070, type:WATER, retreatCost:2) {
           weakness METAL
@@ -245,8 +245,7 @@ public enum PokemodFossil implements LogicCardInfo {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           pokePower "Curse", {
-            text "
-Once during your turn (before your attack), you may move 1 damage counter from 1 of your opponent's Pokémon to another (even if it would Knock Out the other Pokémon). This power can't be used if Gengar is affected by a Special Condition."
+            text "Once during your turn (before your attack), you may move 1 damage counter from 1 of your opponent's Pokémon to another (even if it would Knock Out the other Pokémon). This power can't be used if Gengar is affected by a Special Condition."
             actionA {
               checkLastTurn()
               assert opp.bench : "There is only one Pokémon"
@@ -387,12 +386,12 @@ Once during your turn (before your attack), you may move 1 damage counter from 1
         return basic (this, hp:HP080, type:WATER, retreatCost:2) {
           weakness LIGHTNING
           move "Water Gun", {
-            text "10+ damage. Does 10 damage plus 10 more damage for each [W] E."
+            text "10+ damage. Does 10 damage plus 10 more damage for each [W] Energy attached to Lapras but not used to pay for this attack’s Energy cost. You can’t add more than 20 damage in this way."
             energyCost W
             attackRequirement {}
             onAttack {
               damage 10
-              extraEnergyDamage(2,hp(10),W,thisMove)nergy attached to Lapras but not used to pay for this attack’s Energy cost. You can’t add more than 20 damage in this way
+              extraEnergyDamage(2,hp(10),W,thisMove)
 
             }
           }

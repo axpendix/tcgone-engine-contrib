@@ -1016,9 +1016,9 @@ public enum PokemodJungle implements LogicCardInfo {
         };
       case POKE_BALL_64:
         return copy (Jungle.POKE_BALL_64, this);
-      case ENERGY_RESTORE_65
+      case ENERGY_RESTORE_65:
        return copy(RubySapphire.ENERGY_RESTORE_81, this);
-      case LEVEL_BALL_66
+      case LEVEL_BALL_66:
        return basicTrainer(this) {
           text "Search your deck for a Pokémon with 50 HP or less, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
           onPlay{
@@ -1028,13 +1028,13 @@ public enum PokemodJungle implements LogicCardInfo {
             assert my.deck : "There are no more cards in your deck"
           }
         };
-      case SAMURAI_67
+      case SAMURAI_67:
        return copy(SunMoon.HAU_120, this);
-      case HEALING_FIELDS_69
+      case HEALING_FIELDS_69:
        break
-      case POKEMON_POOL_PARTY_70
+      case POKEMON_POOL_PARTY_70:
        return copy(BlackWhitePromos.TROPICAL_BEACH_BW28, this);
-      case MASTER_BALL_71
+      case MASTER_BALL_71:
        return basicTrainer (this) {
           text "Search your deck for up to 3 Basic Pokémon. Show them to your opponent, and put them into your hand. Shuffle your deck afterward"
           onPlay{
@@ -1044,28 +1044,28 @@ public enum PokemodJungle implements LogicCardInfo {
             assert my.deck : "There are no more cards in your deck"
           }
         };
-      case SCOOP_UP_CYCLONE_72
+      case SCOOP_UP_CYCLONE_72:
        return basicTrainer (this) {
           text "Put 1 of your Pokémon in play and all cards attached to it into your hand."
           onPlay {
               def pcs = my.all.select()
               scoopUpPokemon(pcs, delegate)
-            
+
           }
           playRequirement{
             confirmScoopLastPokemon()
           }
         };
-      case SCRAMBLE_SWITCH_73
+      case SCRAMBLE_SWITCH_73:
        return copy(PlasmaStorm.SCRAMBLE_SWITCH_129, this);
-      case KANGASKHAN_74
+      case KANGASKHAN_74:
        return copy (Jungle.KANGASKHAN_5, this);
-      case HUNGRY_SNORLAX_75
+      case HUNGRY_SNORLAX_75:
        break
-      case SCYTHER_76
+      case SCYTHER_76:
        return copy (Jungle.SCYTHER_10, this);
-      case WIGGLYTUFF_EX_77
-       return evolution (this, from "Jigglypuff", hp:100, type:COLORLESS, retreatCost:2) {
+      case WIGGLYTUFF_EX_77:
+       return evolution (this, from: "Jigglypuff", hp:100, type:COLORLESS, retreatCost:2) {
          weakness FIGHTING
          resistance PSYCHIC, MINUS30
          move "Sleepy Song", {
@@ -1087,8 +1087,8 @@ public enum PokemodJungle implements LogicCardInfo {
           }
 
         };
-      case VILEPLUME_EX_78
-       return evolution (this, from "Gloom", hp:120, type:GRASS, retreatCost:2) {
+      case VILEPLUME_EX_78:
+       return evolution (this, from: "Gloom", hp:120, type:GRASS, retreatCost:2) {
          weakness PSYCHIC, FIRE
          pokeBody "Block Dust", {
            text "As long as Vileplume ex is your Active Pokémon, your opponent can't play any Trainer cards (except for Supporter cards) from his or her hand."
@@ -1106,7 +1106,7 @@ public enum PokemodJungle implements LogicCardInfo {
            energyCost G, G, G
            onAttack {
              damage 30
-             flip 1,{applyAfterDamage POISONED, 
+             flip 1,{applyAfterDamage POISONED,
              applyAfterDamage ASLEEP
              },{
              applyAfterDamage PARALYZED
@@ -1114,7 +1114,7 @@ public enum PokemodJungle implements LogicCardInfo {
            }
           }
        };
-      case CLEFABLE_EX_79
+      case CLEFABLE_EX_79:
        return evolution (this, from:"Clefairy", hp:HP100, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
           resistance PSYCHIC, MINUS30
@@ -1144,7 +1144,7 @@ public enum PokemodJungle implements LogicCardInfo {
           }
 
         };
-      case FLAREON_EX_80
+      case FLAREON_EX_80:
        return evolution (this, from:"Eevee", hp:HP100, type:R, retreatCost:1) {
         weakness W
         pokePower "Evolutionary Flame", {
@@ -1173,7 +1173,7 @@ public enum PokemodJungle implements LogicCardInfo {
           }
         }
       };
-      case VAPOREON_EX_81
+      case VAPOREON_EX_81:
        return evolution (this, from:"Eevee", hp:HP100, type:W, retreatCost:1) {
         weakness L
         pokePower "Evolutionary Swirl", {
@@ -1202,7 +1202,7 @@ public enum PokemodJungle implements LogicCardInfo {
           }
         }
       };
-      case JOLTEON_EX_82
+      case JOLTEON_EX_82:
        return evolution (this, from:"Eevee", hp:HP100, type:L, retreatCost:1) {
         weakness F
         resistance M, MINUS30
