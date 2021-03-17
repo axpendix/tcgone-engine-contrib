@@ -1847,7 +1847,12 @@ class TcgStatics {
     def moveList = []
     def labelList = []
     target.each {pcs ->
-      def newMoves = bg.em().activateGetter(new GetMoveList(pcs))
+      if (pcs == delegate.self) return
+      def newMoves = []
+      newMoves.addAll pcs.topPokemonCard.moves
+      newMoves.addAll pcs.topNonBreakPokemonCard.moves
+      newMoves.addAll pcs.topNonLevelUpPokemonCard.moves
+      newMoves.removeAll newMoves.findAll { it.name == delegate.thisMove.name }
       moveList.addAll newMoves
       labelList.addAll newMoves.collect {"$pcs.name - $it.name" }
     }
@@ -1881,7 +1886,9 @@ class TcgStatics {
           moves.addAll it.moves
         }
         if (it instanceof PokemonCardSet) {
-          moves.addAll bg.em().activateGetter(new GetMoveList(it))
+          moves.addAll it.topPokemonCard.moves
+          moves.addAll it.topNonBreakPokemonCard.moves
+          moves.addAll it.topNonLevelUpPokemonCard.moves
         }
       }
       holder.object = moves as List
