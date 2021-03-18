@@ -528,13 +528,9 @@ public enum DragonMajesty implements LogicCardInfo {
           weakness LIGHTNING
           bwAbility "Commotion" , {
             text "If this Pokémon is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), put 2 damage counters on each of your Benched Pokémon."
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if(self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                  bc "Commotion activates"
-                  self.owner.pbg.bench.each {directDamage(20, it)}
-                }
-              }
+            ifActiveAndDamagedByAttackBody(delegate) {
+              bc "Commotion activates"
+              self.owner.pbg.bench.each {directDamage(20, it)}
             }
           }
           move "Wild Tail" , {
@@ -1072,13 +1068,9 @@ public enum DragonMajesty implements LogicCardInfo {
           weakness FAIRY
           bwAbility "Rough Skin" , {
             text "If this Pokémon is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), put 3 damage counters on the Attacking Pokémon."
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if(self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                  bc "Rough Skin activates"
-                  directDamage(30, ef.attacker, SRC_ABILITY)
-                }
-              }
+            ifActiveAndDamagedByAttackBody(delegate) {
+              bc "Rough Skin activates"
+              directDamage(30, ef.attacker, SRC_ABILITY)
             }
           }
           move "Dragon Claw" , {
@@ -1358,19 +1350,11 @@ public enum DragonMajesty implements LogicCardInfo {
       case DRAGON_TALON_59:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nIf the [N] Pokémon this card is attached to is your Active Pokémon and is damaged by an opponent's attack (even if that Pokémon is Knocked Out), put 3 damage counters on the Attacking Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack).\n"
-          def eff
-          onPlay {reason->
-            eff = delayed (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value}) && self.active && self.types.contains(N)){
-                  bc "Dragon Talon activates"
-                  directDamage(30, ef.attacker, TRAINER_CARD)
-                }
-              }
+          ifActiveAndDamagedByAttackAttached(delegate) {
+            if (self.types.contains(N)) {
+              bc "Dragon Talon activates"
+              directDamage(30, ef.attacker, TRAINER_CARD)
             }
-          }
-          onRemoveFromPlay {
-            eff.unregister()
           }
         };
       case FIERY_FLINT_60:

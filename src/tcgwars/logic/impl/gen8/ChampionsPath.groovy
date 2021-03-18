@@ -473,13 +473,9 @@ public enum ChampionsPath implements LogicCardInfo {
         resistance F, MINUS30
         bwAbility "Hazard Sensor", {
           text "If this Pokémon is in the Active Spot and is damaged by an attack from your opponent's Pokémon (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Confused."
-          delayedA {
-            before APPLY_ATTACK_DAMAGES, {
-              if (self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})) {
-                bc "$thisAbility activates"
-                apply CONFUSED, ef.attacker, SRC_ABILITY
-              }
-            }
+          ifActiveAndDamagedByAttackBody(delegate) {
+            bc "$thisAbility activates"
+            apply CONFUSED, ef.attacker, SRC_ABILITY
           }
         }
         move "Life Sucker", {

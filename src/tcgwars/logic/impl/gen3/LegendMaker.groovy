@@ -2112,13 +2112,9 @@ public enum LegendMaker implements LogicCardInfo {
         weakness R
         pokeBody "Poison Payback", {
           text "If Wurmple is your Active Pokémon and is damaged by an opponent's attack (even if Wurmple is Knocked Out), the Attacking Pokémon is now Poisoned."
-          delayedA (priority: LAST) {
-            before APPLY_ATTACK_DAMAGES, {
-              if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                bc "Poison Payback"
-                apply POISONED, (ef.attacker as PokemonCardSet), SRC_ABILITY
-              }
-            }
+          ifActiveAndDamagedByAttackBody(delegate) {
+            bc "Poison Payback"
+            apply POISONED, (ef.attacker as PokemonCardSet), SRC_ABILITY
           }
         }
         move "String Pull", {
@@ -2292,12 +2288,8 @@ public enum LegendMaker implements LogicCardInfo {
           Card pokemonCard, trainerCard = thisCard
           pokemonCard = basic (new CustomCardInfo(CLAW_FOSSIL_78).setCardTypes(BASIC, POKEMON), hp:HP040, type:COLORLESS, retreatCost:0) {
             pokeBody "Jagged Stone", {
-              delayedA{
-                before APPLY_ATTACK_DAMAGES, {
-                  if (bg.currentTurn == self.owner.opposite && bg.dm().find({ it.to==self && it.dmg.value }) && self.active) {
-                    directDamage(10, ef.attacker, Source.SRC_ABILITY)
-                  }
-                }
+              ifActiveAndDamagedByAttackBody(delegate) {
+                directDamage(10, ef.attacker, Source.SRC_ABILITY)
               }
             }
             customAbility {

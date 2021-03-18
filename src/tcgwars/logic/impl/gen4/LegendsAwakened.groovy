@@ -906,15 +906,10 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness F, '+20'
           pokeBody "Attracting Body", {
             text "If Delcatty is your Active Pokémon and is damaged by an opponent's attack (even if Delcatty is Knocked Out), flip a coin. If heads, the Attacking Pokémon is now Confused."
-            delayedA(priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                bg().dm().each {
-                  if (it.to == self && it.dmg.value > 0 && bg.currentTurn==self.owner.opposite
-                    && self.active) {
-                    bc "Attracting Body activates"
-                    apply CONFUSED, it.from, SRC_ABILITY
-                  }
-                }
+            ifActiveAndDamagedByAttackBody(delegate) {
+              bc "Attracting Body activates"
+              flip {
+                apply CONFUSED, ef.attacker, SRC_ABILITY
               }
             }
           }
@@ -3168,17 +3163,9 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost F
             attackRequirement {}
             onAttack {
-              delayed (priority: LAST) {
-                before APPLY_ATTACK_DAMAGES, {
-                  if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                    bc "Counter Punch activates"
-                    directDamage(40, ef.attacker as PokemonCardSet)
-                  }
-                }
-                unregisterAfter 2
-                after FALL_BACK, self, {unregister()}
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
+              ifDamagedByAttackNextTurn(delegate) {
+                bc "Counter Punch activates"
+                directDamage(40, ef.attacker as PokemonCardSet)
               }
             }
           }

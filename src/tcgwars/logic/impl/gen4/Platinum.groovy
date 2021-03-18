@@ -410,7 +410,7 @@ public enum Platinum implements LogicCardInfo {
         };
       case DIALGA_6:
         return basic (this, hp:HP100, type:METAL, retreatCost:2) {
-          weakness R
+          weakness R, PLUS20
           resistance P, MINUS20
           pokeBody "Time Aura", {
             text "As long as Dialga is your Active Pokémon, your opponent can’t play any Pokémon from his or her hand to evolve his or her Active Pokémon."
@@ -851,7 +851,7 @@ public enum Platinum implements LogicCardInfo {
                 unregisterAfter 3
                 after FALL_BACK, pcs, {
                   pokeFlag = false
-                  unregister() 
+                  unregister()
                 }
                 after EVOLVE, pcs, {
                   pokeFlag = false
@@ -3421,7 +3421,7 @@ public enum Platinum implements LogicCardInfo {
                 }
                 if(
                   (once) &&
-                  (!ignoreList.contains(ability.name) && 
+                  (!ignoreList.contains(ability.name) &&
                   (thisCard.player.pbg.hand.find{it.name == "Team Galactic's Invention G-103 Power Spray"} || bluffing)) &&
                   (thisCard.player.pbg.all.findAll{it.topPokemonCard.cardTypes.is(POKEMON_SP)}.size() >= 3) &&
                   (ability instanceof PokePower) &&

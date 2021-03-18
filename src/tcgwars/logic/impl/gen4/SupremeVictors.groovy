@@ -12,6 +12,7 @@ import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
+import tcgwars.logic.effect.basic.Knockout;
 
 import tcgwars.logic.card.*
 import tcgwars.logic.util.*;
@@ -234,17 +235,32 @@ public enum SupremeVictors implements LogicCardInfo {
           move "Feint Attack", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
             energyCost D
-            attackRequirement {}
             onAttack {
               swiftDamage(20, opp.all.select())
             }
           }
           move "Doom News", {
-            text "to your hand. The Defending Pokémon is Knocked Out at the end of your opponent’s next turn."
+            text "Return all Energy cards attached to this Pokémon to your hand. The Defending Pokémon is Knocked Out at the end of your opponent’s next turn."
             energyCost D, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              self.cards.filterByType(ENERGY).each { it.moveTo(my.hand) }
+
+              def pcs = defending
+              targeted(pcs) {
+                bc "At the end of ${self.owner.opposite}'s next turn, the Defending ${defending} will be Knocked Out. (This effect can be removed by benching/evolving ${defending}.)"
+                delayed {
+                  before BETWEEN_TURNS, {
+                    if (bg.currentTurn == self.owner.opposite && all.contains(pcs)) {
+                      bc "Doom News' effect occurs."
+                      new Knockout(pcs).run(bg)
+                    }
+                  }
+                  unregisterAfter 2
+                  after FALL_BACK, pcs, {unregister()}
+                  after EVOLVE, pcs, {unregister()}
+                  after DEVOLVE, pcs, {unregister()}
+                }
+              }
             }
           }
 

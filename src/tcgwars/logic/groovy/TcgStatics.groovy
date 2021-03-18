@@ -1856,4 +1856,85 @@ class TcgStatics {
     bef.unregisterItself bg.em()
   }
 
+  /* Effects that trigger when a Pokémon is active and damaged by an opposing attack, can be called by either a Poké-Body / Ability, an attack, or a card attached to the Pokémon. */
+
+  // poke bodies and abilities
+  static ifActiveAndDamagedByAttackBody (Object delegate1, Closure eff) {
+    def c1 = {
+      delayedA(priority: BEFORE_LAST) {
+        def applyEffect = false
+        before APPLY_ATTACK_DAMAGES, {
+          applyEffect = bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({ it.to == self && it.dmg.value })
+        }
+        after APPLY_ATTACK_DAMAGES, {
+          if (applyEffect) {
+            eff.call()
+            applyEffect = false
+          }
+        }
+      }
+    }
+    c1.resolveStrategy=Closure.DELEGATE_FIRST
+    c1.delegate=delegate1
+    c1.call()
+  }
+
+  // tools and special energy
+  static ifActiveAndDamagedByAttackAttached (Object delegate1, Closure c2) {
+    def c1 = {
+      def eff
+      onPlay {reason->
+        eff = delayed(priority: BEFORE_LAST, inline: true) {
+          def applyEffect = false
+          before APPLY_ATTACK_DAMAGES, {
+            bg().dm().each {
+              if (it.to == self && it.dmg.value && bg.currentTurn == self.owner.opposite && self.active) {
+                applyEffect = true
+              }
+            }
+          }
+          after APPLY_ATTACK_DAMAGES, {
+            if (applyEffect && self.cards.contains(thisCard)) {
+              c2.delegate=delegate
+              c2.call() // card didn't get discarded by an attack effect
+              applyEffect = false
+            }
+          }
+        }
+      }
+      onRemoveFromPlay {
+        eff.unregister()
+      }
+    }
+    c1.resolveStrategy=Closure.DELEGATE_FIRST
+    c1.delegate=delegate1
+    c1.call()
+  }
+
+  // attacks that put the effect on itself for one turn
+  static ifDamagedByAttackNextTurn (Object delegate1, Closure eff) {
+    def c1 = {
+      delayed(priority: BEFORE_LAST, inline: true) {
+        def applyEffect = false
+        before APPLY_ATTACK_DAMAGES, {
+          applyEffect = bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})
+        }
+        after APPLY_ATTACK_DAMAGES, {
+          if (applyEffect) {
+            eff.delegate=delegate
+            eff.call()
+            applyEffect = false
+          }
+        }
+        unregisterAfter 2
+        after FALL_BACK, self, {unregister()}
+        after EVOLVE, self, {unregister()}
+        after DEVOLVE, self, {unregister()}
+      }
+    }
+    c1.resolveStrategy=Closure.DELEGATE_FIRST
+    c1.delegate=delegate1
+    c1.call()
+  }
+
 }

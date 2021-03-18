@@ -1049,12 +1049,10 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokeBody "Stages of Evolution", {
           text "As long as Hitmontop is an Evolved Pokémon, is your Active Pokémon, and is damaged by an opponent's attack (even if Hitmontop is Knocked Out), put 2 damage counters on the Attacking Pokémon."
-          delayedA (priority: LAST) {
-            before APPLY_ATTACK_DAMAGES, {
-              if(bg.currentTurn == self.owner.opposite && self.evolution && self.active && bg.dm().find({it.to==self && it.dmg.value})){
-                bc "Stages of Evolution Activates"
-                directDamage 20, (ef.attacker as PokemonCardSet)
-              }
+          ifActiveAndDamagedByAttackBody(delegate) {
+            if (self.evolution) {
+              bc "Stages of Evolution Activates"
+              directDamage 20, (ef.attacker as PokemonCardSet)
             }
           }
         }
@@ -2625,15 +2623,11 @@ public enum UnseenForces implements LogicCardInfo {
         resistance F, MINUS30
         pokeBody "Silver Sparkle", {
           text "If Lugia ex is your Active Pokémon and is damaged by an opponent's attack (even if Lugia ex is Knocked Out), flip a coin. If heads, choose an Energy card attached to the Attacking Pokémon and return it to your opponent's hand."
-          delayedA (priority: LAST) {
-            before APPLY_ATTACK_DAMAGES, {
-              if (bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({ it.to==self && it.dmg.value})) {
-                if (ef.attacker.cards.filterByType(ENERGY)) {
-                  bc "Silver Sparkle Activates"
-                  flip {
-                    ef.attacker.cards.filterByType(ENERGY).select("Select an Energy to move to the Opponent's hand", {true}, self.owner).moveTo(ef.attacker.owner.pbg.hand)
-                  }
-                }
+          ifActiveAndDamagedByAttackBody(delegate) {
+            if (ef.attacker.cards.filterByType(ENERGY)) {
+              bc "Silver Sparkle Activates"
+              flip {
+                ef.attacker.cards.filterByType(ENERGY).select("Select an Energy to move to the Opponent's hand", {true}, self.owner).moveTo(ef.attacker.owner.pbg.hand)
               }
             }
           }

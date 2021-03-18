@@ -1738,18 +1738,10 @@ public enum RebelClash implements LogicCardInfo {
         weakness F
         bwAbility "Counterattack Kerzap", {
           text "If this Pokémon is your Active Pokémon and is damaged by an opponent’s attack, flip 3 coins. For each heads, put 3 damage counters on the Attacking Pokémon."
-          delayedA {
-            before APPLY_ATTACK_DAMAGES, {
-              if (ef.attacker.owner != self.owner) {
-                bg.dm().each {
-                  if (it.to == self && self.active && it.notNoEffect && it.dmg.value) {
-                    bc "Counterattack Kerzap activates."
-                    flip 3, {
-                      directDamage 30, ef.attacker
-                    }
-                  }
-                }
-              }
+          ifActiveAndDamagedByAttackBody(delegate) {
+            bc "Counterattack Kerzap activates."
+            flip 3, {
+              directDamage 30, ef.attacker
             }
           }
         }
@@ -1909,13 +1901,9 @@ public enum RebelClash implements LogicCardInfo {
         resistance F, MINUS30
         bwAbility "Counterattack", {
           text "If this Pokémon is your Active Pokémon and is damaged by an opponent’s attack, place 3 damage counters on the attacking Pokémon."
-          delayedA (priority: LAST) {
-            before APPLY_ATTACK_DAMAGES, {
-              if (bg.currentTurn == self.owner.opposite && bg.dm().find({ it.to==self && it.dmg.value }) && self.active) {
-                bc "Counterattack activates"
-                directDamage(30, ef.attacker, Source.SRC_ABILITY)
-              }
-            }
+          ifActiveAndDamagedByAttackBody(delegate) {
+            bc "Counterattack activates"
+            directDamage(30, ef.attacker, Source.SRC_ABILITY)
           }
         }
         move "Psychic Assault", {
@@ -3470,21 +3458,11 @@ public enum RebelClash implements LogicCardInfo {
       case BURNING_SCARF_155:
       return pokemonTool (this) {
         text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If the [R] Pokémon this card is attached to is your Active Pokémon and is damaged by an opponent’s attack, the Attacking Pokémon is now Burned. You may play as many Item cards as you like during your turn (before your attack)."
-        def eff
-        onPlay {reason->
-          eff = delayed(priority: LAST) {
-            before APPLY_ATTACK_DAMAGES, {
-              bg().dm().each {
-                if (it.to == self && self.active && self.types.contains(R) && it.dmg.value && bg.currentTurn==self.owner.opposite) {
-                  bc "Burning Scarf activates."
-                  apply BURNED, it.from, Source.TRAINER_CARD
-                }
-              }
-            }
+        ifActiveAndDamagedByAttackAttached(delegate) {
+          if (self.types.contains(R)) {
+            bc "Burning Scarf activates"
+            apply BURNED, ef.attacker, TRAINER_CARD
           }
-        }
-        onRemoveFromPlay {
-          eff.unregister()
         }
       };
       case CAPACIOUS_BUCKET_156:

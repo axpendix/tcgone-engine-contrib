@@ -1104,17 +1104,9 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           weakness FIRE
           pokeBody "Poison Payback", {
             text "If Kakuna is your Active Pokémon and is damaged by an opponent’s attack (even if Kakuna is Knocked Out), the Attacking Pokémon is now Poisoned."
-            delayedA {
-              before APPLY_ATTACK_DAMAGES, {
-                if(ef.attacker.owner != self.owner) {
-                  bg.dm().each{
-                    if(it.to == self && self.active && it.notNoEffect && it.dmg.value) {
-                      bc "Kakuna's Poison Payback poison your Pokémon!"
-                      apply POISONED,ef.attacker
-                    }
-                  }
-                }
-              }
+            ifActiveAndDamagedByAttackBody(delegate) {
+              bc "Kakuna's Poison Payback poison your Pokémon!"
+              apply POISONED, ef.attacker
             }
           }
           move "Headbutt", {

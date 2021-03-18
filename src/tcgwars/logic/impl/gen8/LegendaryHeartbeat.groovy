@@ -1218,13 +1218,9 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         resistance G, MINUS30
         bwAbility "Counterattack", {
           text "If this Pokémon is in the Active Spot and is damaged by an opponent's attack (even if it is Knocked Out), put 3 damage counters on the Attacking Pokémon."
-          delayedA (priority: LAST) {
-            before APPLY_ATTACK_DAMAGES, {
-              if (!(self.active && ef.attacker.owner != self.owner)) return
-              if(!bg.dm().find({it.to==self && it.dmg.value})) return
-              bc "$thisAbility activates"
-              directDamage 30, ef.attacker
-            }
+          ifActiveAndDamagedByAttackBody(delegate) {
+            bc "$thisAbility activates"
+            directDamage 30, ef.attacker
           }
         }
         move "Grip and Squeeze", {

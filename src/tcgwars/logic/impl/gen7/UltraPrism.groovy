@@ -664,14 +664,9 @@ public enum UltraPrism implements LogicCardInfo {
           weakness WATER
           bwAbility "Incandescent Body", {
             text "If this Pokémon is your Active Pokémon and is damaged by an opponent’s attack (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Burned."
-            damage 20
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if(self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                  bc "Incandescent Body burns attacker"
-                  bg.dm().each{apply BURNED, it.from}
-                }
-              }
+            ifActiveAndDamagedByAttackBody(delegate) {
+              bc "Incandescent Body burns attacker"
+              apply BURNED, ef.attacker, SRC_ABILITY
             }
           }
           move "Fire Blaster", {
@@ -856,17 +851,9 @@ public enum UltraPrism implements LogicCardInfo {
             text "30 damage. During your opponent’s next turn, if this Pokémon is damaged by an attack (even if this Pokémon is Knocked Out), put 6 damage counters on the Attacking Pokémon."
             onAttack {
               damage 30
-              delayed (priority: LAST) {
-                before APPLY_ATTACK_DAMAGES, {
-                  if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                    bc "Spike Armor activates"
-                    directDamage(60, ef.attacker as PokemonCardSet)
-                  }
-                }
-                unregisterAfter 2
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
-                after FALL_BACK, self, {unregister()}
+              ifDamagedByAttackNextTurn(delegate) {
+                bc "Spike Armor activates"
+                directDamage(60, ef.attacker as PokemonCardSet)
               }
             }
           }
