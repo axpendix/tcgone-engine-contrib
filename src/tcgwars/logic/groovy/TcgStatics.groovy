@@ -1849,9 +1849,7 @@ class TcgStatics {
     target.each {pcs ->
       if (pcs == delegate.self) return
       def newMoves = []
-      newMoves.addAll pcs.topPokemonCard.moves
-      newMoves.addAll pcs.topNonBreakPokemonCard.moves
-      newMoves.addAll pcs.topNonLevelUpPokemonCard.moves
+      newMoves.addAll bg.em().activateGetter(new GetMoveList(it))
       newMoves.removeAll newMoves.findAll { it.name == delegate.thisMove.name }
       moveList.addAll newMoves
       labelList.addAll newMoves.collect {"$pcs.name - $it.name" }
@@ -1878,6 +1876,7 @@ class TcgStatics {
    */
   static metronomeA(Object delegate, Closure target) {
     delegate.getterA GET_MOVE_LIST, delegate.self, {holder->
+      if (!holder.effect.target.active) return
       def moves = [] as Set
       moves.addAll holder.object
       target.call().each {
@@ -1886,9 +1885,7 @@ class TcgStatics {
           moves.addAll it.moves
         }
         if (it instanceof PokemonCardSet) {
-          moves.addAll it.topPokemonCard.moves
-          moves.addAll it.topNonBreakPokemonCard.moves
-          moves.addAll it.topNonLevelUpPokemonCard.moves
+          moves.addAll bg.em().activateGetter(new GetMoveList(it))
         }
       }
       holder.object = moves as List
