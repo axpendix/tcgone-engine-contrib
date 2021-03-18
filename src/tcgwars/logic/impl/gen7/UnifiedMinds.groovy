@@ -3083,10 +3083,10 @@ public enum UnifiedMinds implements LogicCardInfo {
             energyCost D
             onAttack {
               damage 10
-              ifDamagedByAttackNextTurn({
+              ifDamagedByAttackNextTurn(delegate) {
                 bc "Mirror Gem activates."
                 directDamage(80, ef.attacker as PokemonCardSet)
-              }, self)
+              }
             }
           }
         };

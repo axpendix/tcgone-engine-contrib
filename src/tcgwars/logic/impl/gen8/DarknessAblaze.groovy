@@ -3044,10 +3044,10 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
-            ifDamagedByAttackNextTurn({
+            ifDamagedByAttackNextTurn(delegate) {
               bc "Trap Bite activates"
               directDamage(120, ef.attacker as PokemonCardSet)
-            }, self)
+            }
           }
         }
       };

@@ -851,10 +851,10 @@ public enum UltraPrism implements LogicCardInfo {
             text "30 damage. During your opponent’s next turn, if this Pokémon is damaged by an attack (even if this Pokémon is Knocked Out), put 6 damage counters on the Attacking Pokémon."
             onAttack {
               damage 30
-              ifDamagedByAttackNextTurn({
+              ifDamagedByAttackNextTurn(delegate) {
                 bc "Spike Armor activates"
                 directDamage(60, ef.attacker as PokemonCardSet)
-              }, self)
+              }
             }
           }
           move "Frost Breath", {

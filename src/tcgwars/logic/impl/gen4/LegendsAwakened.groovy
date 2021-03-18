@@ -3163,10 +3163,10 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost F
             attackRequirement {}
             onAttack {
-              ifDamagedByAttackNextTurn({
+              ifDamagedByAttackNextTurn(delegate) {
                 bc "Counter Punch activates"
                 directDamage(40, ef.attacker as PokemonCardSet)
-              }, self)
+              }
             }
           }
           move "Gut Strike", {

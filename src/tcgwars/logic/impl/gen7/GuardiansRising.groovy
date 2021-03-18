@@ -624,10 +624,10 @@ public enum GuardiansRising implements LogicCardInfo {
             energyCost C, C
             onAttack {
               damage 20
-              ifDamagedByAttackNextTurn({
+              ifDamagedByAttackNextTurn(delegate) {
                 bc "Shell Trap activates"
                 directDamage(80, ef.attacker as PokemonCardSet)
-              }, self)
+              }
             }
           }
           move "Bright Flame", {

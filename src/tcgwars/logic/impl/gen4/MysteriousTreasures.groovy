@@ -2060,10 +2060,10 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              ifDamagedByAttackNextTurn({
+              ifDamagedByAttackNextTurn(delegate) {
                 bc "Spike Armor activates"
                 directDamage(40, ef.attacker as PokemonCardSet)
-              }, self)
+              }
             }
           }
           move "Poison Spike", {
