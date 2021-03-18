@@ -2706,10 +2706,10 @@ public enum CelestialStorm implements LogicCardInfo {
           }
           move "Dragon Break" , {
             text "30× damage. This attack does 30 damage times the amount of basic [G] and basic [L] Energy attached to your Pokémon."
-            energyCost G,L,C
+            energyCost G, L, C
             onAttack {
-              my.all.each{
-                damage 30*(it.cards.filterByType(BASIC_ENERGY).filterByEnergyType(G).size() + it.cards.filterByType(BASIC_ENERGY).filterByEnergyType(L).size())
+              my.all.each {
+                damage 30 * (it.cards.filterByType(BASIC_ENERGY).energyCount(G) + it.cards.filterByType(BASIC_ENERGY).energyCount(L))
               }
             }
           }

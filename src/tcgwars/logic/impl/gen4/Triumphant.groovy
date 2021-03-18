@@ -372,7 +372,7 @@ public enum Triumphant implements LogicCardInfo {
             onAttack {
               damage 80
               if(!self.cards.find{it.name == "Rainbow Energy"}){
-                damge 20, self
+                damage 20, self
                 afterDamage{
                   apply CONFUSED, self
                 }
@@ -416,7 +416,7 @@ public enum Triumphant implements LogicCardInfo {
             text "If you have Lunatone in play, damage counters can’t be removed from any Pokémon . (Damage counters can still be moved.)"
             delayedA {// TODO find a way to differentiate between moving damage counters and healing them
               before REMOVE_DAMAGE_COUNTER, {
-                if(my.all.findAll {it.name == "Lunatone"}) {
+                if(self.owner.pbg.all.findAll {it.name == "Lunatone"}) {
                   bc "Heal Block prevents healing"
                   prevent()
                 }
@@ -1672,8 +1672,8 @@ public enum Triumphant implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if(my.discard.find{it.name == "Marowak"} && it.to == self && it.from.onwer == self.owner.opposite && it.notNoEffect && it.dmg.value) {
-                    def reduction = 20 * my.discard.findAll{it.name == "Marowak"}
+                  if(self.owner.pbg.discard.find{it.name == "Marowak"} && it.to == self && it.from.owner == self.owner.opposite && it.notNoEffect && it.dmg.value) {
+                    def reduction = 20 * self.owner.pbg.discard.findAll{it.name == "Marowak"}
                     bc "$thisAbility -$reduction"
                     it.dmg -= hp(reduction)
                   }

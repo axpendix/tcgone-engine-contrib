@@ -1866,6 +1866,14 @@ public enum PowerKeepers implements LogicCardInfo {
               }
             }
           }
+          if (my.active.types.contains(D) && my.active.specialConditions) {
+            my.active.specialConditions.removeAll([ASLEEP, CONFUSED, PARALYZED])
+            bc "${my.owner.getPlayerUsername(bg)}'s $my.active was cured of status effects due to $thisCard"
+          }
+          if (opp.active.types.contains(D) && opp.active.specialConditions) {
+            opp.active.specialConditions.removeAll([ASLEEP, CONFUSED, PARALYZED])
+            bc "${opp.owner.getPlayerUsername(bg)}'s $opp.active was cured of status effects due to $thisCard"
+          }
         }
         onRemoveFromPlay {
           eff.unregister()

@@ -1,7 +1,6 @@
 package tcgwars.logic.impl.gen4;
 
-import tcgwars.logic.impl.gen4.MysteriousTreasures;
-import tcgwars.logic.impl.gen4.DiamondPearl;
+import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 
 import tcgwars.logic.effect.gm.PlayTrainer
 
@@ -861,9 +860,9 @@ public enum SecretWonders implements LogicCardInfo {
               assert opp.hand : "Your opponent's hand is empty"
             }
             onAttack {
-              def card = opp.hand.shuffledCopy.select(hidden: true, "Choose a card from your opponent's hand without looking").discard()
+              def card = opp.hand.shuffledCopy().select(hidden: true, "Choose a card from your opponent's hand without looking").discard()
               if(card.filterByType(ITEM,SUPPORTER,STADIUM) && opp.hand) {
-                opp.hand.shuffledCopy.select(hidden: true, "Choose a card from your opponent's hand without looking").discard()
+                opp.hand.shuffledCopy().select(hidden: true, "Choose a card from your opponent's hand without looking").discard()
               }
             }
           }
@@ -2545,7 +2544,7 @@ public enum SecretWonders implements LogicCardInfo {
             onAttack {
               damage 20
               flip {
-                opp.hand.shuffledCopy.select(hidden: true, "Choose a card from your opponent's hand without looking").discard()
+                opp.hand.shuffledCopy().select(hidden: true, "Choose a card from your opponent's hand without looking").discard()
               }
 
             }
@@ -2676,7 +2675,7 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost P
             onAttack {
               flip {
-                astonisn()
+                astonish()
               }
             }
           }
@@ -3533,7 +3532,7 @@ public enum SecretWonders implements LogicCardInfo {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDraw 2 cards. Then, choose a card from your opponent’s hand without looking and put it on the bottom of his or her deck."
           onPlay {
             draw 2
-            opp.hand.shuffledCopy.select(hidden: true, "Choose a card from your opponent's hand without looking").moveTo(hidden: true, opp.deck)
+            opp.hand.shuffledCopy().select(hidden: true, "Choose a card from your opponent's hand without looking").moveTo(hidden: true, opp.deck)
           }
           playRequirement{
             assert my.deck || opp.hand : "Your deck and your opponent's hand are both empty"

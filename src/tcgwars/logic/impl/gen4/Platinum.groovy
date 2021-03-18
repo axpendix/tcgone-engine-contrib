@@ -1270,10 +1270,9 @@ public enum Platinum implements LogicCardInfo {
             text "Flip a coin for each of your opponent’s Pokémon. If that coin flip is heads, this attack does 30 damage to that Pokémon."
             energyCost W, C, C
             onAttack {
-              opp.all.each {
-                bc"$it"
+              opp.all.each {tar ->
                 flip {
-                  damage 30, it
+                  damage 30, tar
                 }
               }
             }
@@ -1435,18 +1434,20 @@ public enum Platinum implements LogicCardInfo {
             onAttack {
               def tar = opp.all.select()
               def info
+              TypeSet ts = new TypeSet()
+              ts.addAll(tar.types)
               if(tar.types.size() == 1) {
-                info = "Search your deck for a ${tar.types.get(0)} Pokémon"
+                info = "Search your deck for a ${tar.types[0]} Pokémon"
               } else if(tar.types.size() == 2) {
-                info = "Search your deck for a ${tar.types.get(0)}, or ${tar.types.get(1)} Pokémon"
+                info = "Search your deck for a ${tar.types[0]}, or ${tar.types[1]} Pokémon"
               } else {
                 info = "Search your deck for a "
                 (1..tar.types.size()-1).each {
-                  info += "${tar.types.get(it-1)}, "
+                  info += "${tar.types[it-1]}, "
                 }
-                tar += "or ${tar.types.get(tar.types.size()-1)} Pokémon"
+                info += "or ${tar.types[tar.types.size()-1]} Pokémon"
               }
-              my.deck.seach(info, {it.cardTypes.is(POKEMON) && it.asPokemonCard().types.any{tar.types.contains(it)}}).showToOpponent("Opponent used love call").moveTo(my.hand)
+              my.deck.search(info, {it.cardTypes.is(POKEMON) && it.asPokemonCard().types.containsAny(ts)}).showToOpponent("Opponent used love call").moveTo(my.hand)
               shuffleDeck()
             }
           }

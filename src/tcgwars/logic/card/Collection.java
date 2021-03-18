@@ -153,6 +153,7 @@ public enum Collection {
   DARKNESS_ABLAZE(432, "DAA", "gen8.DarknessAblaze"),
   CHAMPIONS_PATH(433, "CPA", "gen8.ChampionsPath"),
   VIVID_VOLTAGE(434, "VIV", "gen8.VividVoltage"),
+  SHINING_FATES(435, "SHF", "gen8.ShiningFates"),
 
   //POKEMOD
   POKEMOD_BASE_SET(910, "MODBS", "pokemod.PokemodBaseSet"),
