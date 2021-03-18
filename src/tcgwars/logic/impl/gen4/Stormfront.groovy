@@ -1096,10 +1096,10 @@ public enum Stormfront implements LogicCardInfo {
           weakness W, PLUS20
           pokeBody "Burning Mane", {
             text "If Rapidash is your Active Pokémon and is damaged by an opponent’s attack (even if Rapidash is Knocked Out), the Attacking Pokémon is now Burned."
-            ifActiveAndDamagedByAttackBody({
+            ifActiveAndDamagedByAttackBody(delegate) {
               bc "Burning Mane activates."
               apply BURNED, ef.attacker, SRC_ABILITY
-            }, self, delegate)
+            }
           }
           move "Rear Kick", {
             text "30 damage. "
@@ -1123,10 +1123,10 @@ public enum Stormfront implements LogicCardInfo {
           weakness R, PLUS20
           pokeBody "Hidden Poison", {
             text "If Roserade is your Active Pokémon and is damaged by an opponent’s attack (even if Roserade is Knocked Out), the Defending Pokémon is now Poisoned."
-            ifActiveAndDamagedByAttackBody({
+            ifActiveAndDamagedByAttackBody(delegate) {
               bc "Hidden Poison activates."
               apply POISONED, ef.attacker, SRC_ABILITY
-            }, self, delegate)
+            }
           }
           move "Bowed Whip", {
             text "Choose 1 of your opponent's Pokémon. This attack does 30 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.) Flip a coin. If heads, discard an Energy card attached to that Pokémon."
@@ -1601,12 +1601,12 @@ public enum Stormfront implements LogicCardInfo {
           resistance M, MINUS20
           pokeBody "Radiance", {
             text "If Electrode is your Active Pokémon and is damaged by an opponent’s attack (even if Electrode is Knocked Out), put 1 damage counter on each of your opponent’s Pokémon."
-            ifActiveAndDamagedByAttackBody({
+            ifActiveAndDamagedByAttackBody(delegate) {
               bc "Radiance activates."
               self.owner.opposite.pbg.all.each {
                 directDamage 10, it, SRC_ABILITY
               }
-            }, self, delegate)
+            }
           }
           def turnCount=-1
           HP lastDamage=null

@@ -528,10 +528,10 @@ public enum DragonMajesty implements LogicCardInfo {
           weakness LIGHTNING
           bwAbility "Commotion" , {
             text "If this Pokémon is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), put 2 damage counters on each of your Benched Pokémon."
-            ifActiveAndDamagedByAttackBody({
+            ifActiveAndDamagedByAttackBody(delegate) {
               bc "Commotion activates"
               self.owner.pbg.bench.each {directDamage(20, it)}
-            }, self, delegate)
+            }
           }
           move "Wild Tail" , {
             text "160 damage. You may discard any Stadium card in play."
@@ -1068,10 +1068,10 @@ public enum DragonMajesty implements LogicCardInfo {
           weakness FAIRY
           bwAbility "Rough Skin" , {
             text "If this Pokémon is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), put 3 damage counters on the Attacking Pokémon."
-            ifActiveAndDamagedByAttackBody({
+            ifActiveAndDamagedByAttackBody(delegate) {
               bc "Rough Skin activates"
               directDamage(30, ef.attacker, SRC_ABILITY)
-            }, self, delegate)
+            }
           }
           move "Dragon Claw" , {
             text "100 damage."

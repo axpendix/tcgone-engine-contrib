@@ -557,10 +557,10 @@ public enum CrystalGuardians implements LogicCardInfo {
         weakness F
         pokeBody "Fluffy Fur", {
           text "If Wigglytuff is your Active Pokémon and is damaged by an opponent's attack (even if Wigglytuff is Knocked Out), the Attacking Pokémon is now Asleep."
-          ifActiveAndDamagedByAttackBody({
+          ifActiveAndDamagedByAttackBody(delegate) {
             bc "Fluffy Fur"
             apply ASLEEP, (ef.attacker as PokemonCardSet)
-          }, self, delegate)
+          }
         }
         move "Collect", {
           text "Draw 3 cards."

@@ -625,10 +625,10 @@ public enum CelestialStorm implements LogicCardInfo {
           weakness FIRE
           bwAbility "Poison Payback" , {
             text "If this Pokémon is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Poisoned."
-            ifActiveAndDamagedByAttackBody({
+            ifActiveAndDamagedByAttackBody(delegate) {
               bc "Poison Payback"
               apply POISONED, (ef.attacker as PokemonCardSet), SRC_ABILITY
-            }, self, delegate)
+            }
           }
           move "Light Punch" , {
             text "10 damage."
@@ -643,10 +643,10 @@ public enum CelestialStorm implements LogicCardInfo {
           weakness FIRE
           bwAbility "Poison Payback" , {
             text "If this Pokémon is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Poisoned."
-            ifActiveAndDamagedByAttackBody({
+            ifActiveAndDamagedByAttackBody(delegate) {
               bc "Poison Payback"
               apply POISONED, (ef.attacker as PokemonCardSet), SRC_ABILITY
-            }, self, delegate)
+            }
           }
           move "Feint Attack" , {
             text "This attack does 50 damage to 1 of your opponent's Pokémon. This damage isn't affected by Weakness, Resistance, or any other effects on that Pokémon."

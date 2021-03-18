@@ -664,10 +664,10 @@ public enum UltraPrism implements LogicCardInfo {
           weakness WATER
           bwAbility "Incandescent Body", {
             text "If this Pokémon is your Active Pokémon and is damaged by an opponent’s attack (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Burned."
-            ifActiveAndDamagedByAttackBody({
+            ifActiveAndDamagedByAttackBody(delegate) {
               bc "Incandescent Body burns attacker"
               apply BURNED, ef.attacker, SRC_ABILITY
-            }, self, delegate)
+            }
           }
           move "Fire Blaster", {
             text "80+ damage. You may discard 2 Energy from this Pokémon. If you do, this attack does 80 more damage."

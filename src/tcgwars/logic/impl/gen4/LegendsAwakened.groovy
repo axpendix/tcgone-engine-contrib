@@ -906,12 +906,12 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness F, '+20'
           pokeBody "Attracting Body", {
             text "If Delcatty is your Active Pokémon and is damaged by an opponent's attack (even if Delcatty is Knocked Out), flip a coin. If heads, the Attacking Pokémon is now Confused."
-            ifActiveAndDamagedByAttackBody({
+            ifActiveAndDamagedByAttackBody(delegate) {
               bc "Attracting Body activates"
               flip {
                 apply CONFUSED, ef.attacker, SRC_ABILITY
               }
-            }, self, delegate)
+            }
           }
           move "Energy Assist", {
             text "30 damage. Search your discard pile for a basic Energy card and attach it to 1 of your Benched Pokémon."

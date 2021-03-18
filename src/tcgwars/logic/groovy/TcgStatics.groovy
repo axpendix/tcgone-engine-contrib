@@ -1859,19 +1859,24 @@ class TcgStatics {
   /* Effects that trigger when a Pokémon is active and damaged by an opposing attack, can be called by either a Poké-Body / Ability, an attack, or a card attached to the Pokémon. */
 
   // poke bodies and abilities
-  static ifActiveAndDamagedByAttackBody (Closure eff, PokemonCardSet self, Object delegate) {
-    delegate.delayedA (priority: BEFORE_LAST) {
-      def applyEffect = false
-      before APPLY_ATTACK_DAMAGES, {
-          applyEffect = bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({ it.to==self && it.dmg.value})
-      }
-      after APPLY_ATTACK_DAMAGES, {
-        if (applyEffect) {
-          eff()
-          applyEffect = false
+  static ifActiveAndDamagedByAttackBody (Object delegate1, Closure eff) {
+    def c1 = {
+      delayedA(priority: BEFORE_LAST) {
+        def applyEffect = false
+        before APPLY_ATTACK_DAMAGES, {
+          applyEffect = bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({ it.to == self && it.dmg.value })
+        }
+        after APPLY_ATTACK_DAMAGES, {
+          if (applyEffect) {
+            eff.call()
+            applyEffect = false
+          }
         }
       }
     }
+    c1.resolveStrategy=Closure.DELEGATE_FIRST
+    c1.delegate=delegate1
+    c1.call()
   }
 
   // tools and special energy

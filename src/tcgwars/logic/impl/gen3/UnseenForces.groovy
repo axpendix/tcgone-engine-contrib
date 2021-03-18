@@ -1049,12 +1049,12 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokeBody "Stages of Evolution", {
           text "As long as Hitmontop is an Evolved Pokémon, is your Active Pokémon, and is damaged by an opponent's attack (even if Hitmontop is Knocked Out), put 2 damage counters on the Attacking Pokémon."
-          ifActiveAndDamagedByAttackBody({
+          ifActiveAndDamagedByAttackBody(delegate) {
             if (self.evolution) {
               bc "Stages of Evolution Activates"
               directDamage 20, (ef.attacker as PokemonCardSet)
             }
-          }, self, delegate)
+          }
         }
         move "Upward Kick", {
           text "20+ damage. If the Defending Pokémon already has at least 2 damage counters on it, this attack does 20 damage plus 30 more damage."
@@ -2623,14 +2623,14 @@ public enum UnseenForces implements LogicCardInfo {
         resistance F, MINUS30
         pokeBody "Silver Sparkle", {
           text "If Lugia ex is your Active Pokémon and is damaged by an opponent's attack (even if Lugia ex is Knocked Out), flip a coin. If heads, choose an Energy card attached to the Attacking Pokémon and return it to your opponent's hand."
-          ifActiveAndDamagedByAttackBody({
+          ifActiveAndDamagedByAttackBody(delegate) {
             if (ef.attacker.cards.filterByType(ENERGY)) {
               bc "Silver Sparkle Activates"
               flip {
                 ef.attacker.cards.filterByType(ENERGY).select("Select an Energy to move to the Opponent's hand", {true}, self.owner).moveTo(ef.attacker.owner.pbg.hand)
               }
             }
-          }, self, delegate)
+          }
         }
         move "Elemental Blast", {
           text "200 damage. Discard a [R] Energy, [W] Energy, and [L] Energy attached to Lugia ex."

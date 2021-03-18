@@ -1390,9 +1390,9 @@ public enum SecretWonders implements LogicCardInfo {
           resistance P, MINUS20
           pokeBody "Rough Skin", {
             text "If Sharpedo is your Active Pokémon and is damaged by an opponent’s attack, put 2 damage counter on the Attacking Pokémon."
-            ifActiveAndDamagedByAttackBody({
+            ifActiveAndDamagedByAttackBody(delegate) {
               directDamage(20, ef.attacker, Source.SRC_ABILITY)
-            }, self, delegate)
+            }
           }
           move "Strike Wound", {
             text "60+ damage. If the Defending Pokémon has 2 or more damage counters on it, this attack does 60 damage plus 20 more damage. This attack damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects of that Pokémon."
@@ -2350,11 +2350,11 @@ public enum SecretWonders implements LogicCardInfo {
           resistance F, MINUS20
           pokeBody "Dangerous Scales", {
             text "If Venomoth is your Active Pokémon and is damaged by an opponent’s attack (even is Venomoth is Knocked Out), the Attacking Pokémon is now Asleep and Poisoned."
-            ifActiveAndDamagedByAttackBody({
+            ifActiveAndDamagedByAttackBody(delegate) {
               bc "Dangerous Scales"
               apply ASLEEP, (ef.attacker as PokemonCardSet)
               apply POISONED, (ef.attacker as PokemonCardSet)
-            }, self, delegate)
+            }
           }
           move "Disturbance Dive", {
             text "50 damage. Prevent all effects of an attack, excluding damage, done to Venomoth during your opponent’s next turn."
@@ -3004,7 +3004,7 @@ public enum SecretWonders implements LogicCardInfo {
           weakness L, PLUS20
           pokePower "Balloon Sting", {
             text "Once during your opponent’s turn, if Qwilfish is your Active Pokémon and is damaged by an attack (even if Qwilfish is Knocked Out), you may flip a coin. If heads, the Attacking Pokémon is now Poisoned. Put 2 damage counter instead of 1 on that Pokémon between turns."
-            ifActiveAndDamagedByAttackBody({
+            ifActiveAndDamagedByAttackBody(delegate) {
               if (confirm("Use Balloon Sting?")) {
                 powerUsed()
                 bc "Balloon Sting activates"
@@ -3013,7 +3013,7 @@ public enum SecretWonders implements LogicCardInfo {
                   extraPoison 1
                 }
               }
-            }, self, delegate)
+            }
           }
           move "Nerve Shot", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."

@@ -3900,10 +3900,10 @@ public enum UnifiedMinds implements LogicCardInfo {
           weakness F
           bwAbility "Counterattack", {
             text "If this Pokémon is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), put 4 damage counters on the Attacking Pokémon."
-            ifActiveAndDamagedByAttackBody({
+            ifActiveAndDamagedByAttackBody(delegate) {
               bc "Counterattack activates."
               directDamage(40, ef.attacker)
-            }, self, delegate)
+            }
           }
           move "Dynamic Swing", {
             text "100+ damage. You may do 100 more damage. If you do, during your opponent's next turn, this Pokémon takes 100 more damage from attacks (after applying Weakness and Resistance)."

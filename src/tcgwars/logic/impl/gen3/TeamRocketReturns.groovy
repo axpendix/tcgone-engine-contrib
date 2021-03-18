@@ -725,10 +725,10 @@ public enum TeamRocketReturns implements LogicCardInfo {
           weakness GRASS
           pokeBody "Poison Payback", {
             text "If Dark Sandslash is your Active Pokémon and is damaged by an opponent’s attack (even if Dark Sandslash is Knocked Out), the Attacking Pokémon is now Poisoned."
-            ifActiveAndDamagedByAttackBody({
+            ifActiveAndDamagedByAttackBody(delegate) {
               bc "Poison Payback"
               apply POISONED, (ef.attacker as PokemonCardSet)
-            }, self, delegate)
+            }
           }
           move "Swift", {
             text "50 damage. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
@@ -959,12 +959,12 @@ public enum TeamRocketReturns implements LogicCardInfo {
           weakness LIGHTNING
           pokeBody "Spiny", {
             text "If Qwilfish is your Active Pokémon and is damaged by an opponent’s attack (even if Qwilfish is Knocked Out), flip a coin until you get tails. For each heads, put 1 damage counter on the Attacking Pokémon."
-            ifActiveAndDamagedByAttackBody({
+            ifActiveAndDamagedByAttackBody(delegate) {
               bc "Spiny"
               def counterDmg = 0
               flipUntilTails {counterDmg += 10}
               directDamage(counterDmg, ef.attacker, Source.SRC_ABILITY)
-            }, self, delegate)
+            }
           }
           move "Stun Poison", {
             text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed and Poisoned."
@@ -2577,10 +2577,10 @@ public enum TeamRocketReturns implements LogicCardInfo {
           weakness PSYCHIC
           pokeBody "Strikes Back", {
             text "If Rocket’s Hitmonchan ex is your Active Pokémon and is damaged by an opponent’s attack (even if Rocket’s Hitmonchan ex is Knocked Out), put 2 damage counters on the Attacking Pokémon."
-            ifActiveAndDamagedByAttackBody({
+            ifActiveAndDamagedByAttackBody(delegate) {
               bc "$self Strikes Back!"
               directDamage 20, (ef.attacker as PokemonCardSet)
-            }, self, delegate)
+            }
           }
           move "Mach Punch", {
             text "10 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"

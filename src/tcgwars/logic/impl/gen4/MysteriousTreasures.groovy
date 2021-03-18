@@ -820,10 +820,10 @@ public enum MysteriousTreasures implements LogicCardInfo {
           weakness R, PLUS30
           pokeBody "Glacier Snow", {
             text "If Abomasnow is your Active Pokémon and is damaged by an opponent’s attack (even if Abomasnow is Knocked Out), the Attacking Pokémon is now Asleep."
-            ifActiveAndDamagedByAttackBody({
+            ifActiveAndDamagedByAttackBody(delegate) {
               bc "Glacier Snow triggers"
               apply ASLEEP, (ef.attacker as PokemonCardSet), SRC_ABILITY
-            }, self, delegate)
+            }
           }
           move "Heavy Blizzard", {
             text "60 damage. Flip a coin. If heads, put 1 damage counter on each of your opponent’s Benched Pokémon."

@@ -1738,12 +1738,12 @@ public enum RebelClash implements LogicCardInfo {
         weakness F
         bwAbility "Counterattack Kerzap", {
           text "If this Pokémon is your Active Pokémon and is damaged by an opponent’s attack, flip 3 coins. For each heads, put 3 damage counters on the Attacking Pokémon."
-          ifActiveAndDamagedByAttackBody({
+          ifActiveAndDamagedByAttackBody(delegate) {
             bc "Counterattack Kerzap activates."
             flip 3, {
               directDamage 30, ef.attacker
             }
-          }, self, delegate)
+          }
         }
         move "Sparking Strike", {
           text "120 damage."
@@ -1901,10 +1901,10 @@ public enum RebelClash implements LogicCardInfo {
         resistance F, MINUS30
         bwAbility "Counterattack", {
           text "If this Pokémon is your Active Pokémon and is damaged by an opponent’s attack, place 3 damage counters on the attacking Pokémon."
-          ifActiveAndDamagedByAttackBody({
+          ifActiveAndDamagedByAttackBody(delegate) {
             bc "Counterattack activates"
             directDamage(30, ef.attacker, Source.SRC_ABILITY)
-          }, self, delegate)
+          }
         }
         move "Psychic Assault", {
           text "Does 30 damage plus 10 damage for each damage counter on the opponent’s Active Pokémon."

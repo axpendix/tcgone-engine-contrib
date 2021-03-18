@@ -905,10 +905,10 @@ public enum DarknessAblaze implements LogicCardInfo {
         resistance F, MINUS30
         bwAbility "Scorching Feathers", {
           text "If this Pokémon is in the Active Spot and is damaged by an attack from your opponent’s Pokémon (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Burned."
-          ifActiveAndDamagedByAttackBody({
+          ifActiveAndDamagedByAttackBody(delegate) {
             bc "$thisAbility activates"
             apply BURNED, ef.attacker, SRC_ABILITY
-          }, self, delegate)
+          }
         }
         move "Mach Flight", {
           text "120 damage. During your opponent’s next turn, the Defending Pokémon can’t retreat."

@@ -1978,10 +1978,10 @@ public enum SunMoon implements LogicCardInfo {
           resistance PSYCHIC, MINUS20
           bwAbility "Rough Skin", {
             text "If this Pokémon is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), put 3 damage counters on the Attacking Pokémon."
-            ifActiveAndDamagedByAttackBody({
+            ifActiveAndDamagedByAttackBody(delegate) {
               bc "Rough Skin activates"
               directDamage(30, ef.attacker)
-            }, self, delegate)
+            }
           }
           move "Aqua Impact", {
             text "60+ damage. This attack does 20 more damage for each [C] in your opponent's Active Pokémon's Retreat Cost."

@@ -3566,10 +3566,10 @@ public enum LostThunder implements LogicCardInfo {
           resistance DARKNESS, MINUS20
           bwAbility "Effect Spore" , {
             text "If this Pokémon is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Asleep."
-            ifActiveAndDamagedByAttackBody({
+            ifActiveAndDamagedByAttackBody(delegate) {
               bc "Effect Spore"
               apply ASLEEP, (ef.attacker as PokemonCardSet)
-            }, self, delegate)
+            }
           }
           move "Dream's Touch" , {
             text "50 damage. If your opponent's Active Pokémon is Asleep, your opponent shuffles all Energy from it into their deck."
