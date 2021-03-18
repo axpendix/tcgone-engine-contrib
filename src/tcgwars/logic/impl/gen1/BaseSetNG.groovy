@@ -234,7 +234,7 @@ public enum BaseSetNG implements LogicCardInfo {
     return overgrowth;
   }
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
   protected CardTypeSet cardTypes;
   protected String name;
@@ -1156,37 +1156,33 @@ public enum BaseSetNG implements LogicCardInfo {
             text "If the Defending Pokémon has a Weakness, you may change it to a type of your choice other than Colorless."
             energyCost C
             attackRequirement {
-              assert opp.active.weakness : "Defending Pokémon does not have a Weakness."
+              assert opp.active.weaknesses : "$opp.active does not have a Weakness"
             }
             onAttack {
-              targeted (defending) {
+              targeted defending, {
+                def newWeakness = choose([R, F, G, W, P, L, M, D, Y, N], "Select the new Weakness for $defending") as Type
+                bc "${defending}'s Weakness is now ${newWeakness}"
+                def eff
                 delayed {
-                  def eff
-                  register {
-                    eff = getter GET_WEAKNESS, {h->
-                      def list = h.object as List<Weakness>
-                      if(list) {
-                        // TODO this is wrong, select the type OUTSIDE of the GETTER clause
-                        def newWeakness = choose(Type.valuesPokemon(),"Select the new weakness")
-                        list.get(0).type = newWeakness
-                      }
-                    }
+                  eff = getter GET_WEAKNESSES, defending, { h ->
+                    def list = [] as List<Weakness>
+                    def feature = (h.object.get(0) as Weakness).feature
+                    list.add(new Weakness(newWeakness, feature))
+                    h.object = list
+                  }
 
-//									eff = getter (GET_WEAKNESSES, defending) {h->
-//										def list = h.object as List<Weakness>
-//										if(list) {
-//											list.get(0).type = PSYCHIC
-//										} else {
-//											list.add(new Weakness(PSYCHIC))
-//										}
-//									}
-                  }
-                  unregister {
+                  after FALL_BACK, defending, {
                     eff.unregister()
+                    unregister()
                   }
-                  after FALL_BACK, defending, {unregister()}
-                  after EVOLVE, defending, {unregister()}
-                  after DEVOLVE, defending, {unregister()}
+                  after EVOLVE, defending, {
+                    eff.unregister()
+                    unregister()
+                  }
+                  after DEVOLVE, defending, {
+                    eff.unregister()
+                    unregister()
+                  }
                 }
               }
             }
@@ -1194,9 +1190,31 @@ public enum BaseSetNG implements LogicCardInfo {
           move "Conversion 2", {
             text "Change Porygon’s Resistance to a type of your choice other than Colorless."
             energyCost C, C
-            attackRequirement {}
             onAttack {
-              //TODO: How do you make a getter for this pokemon's type, and same problem as above
+              def newResistance = choose([R,F,G,W,P,L,M,D,Y,N],"Select the new Resistance for $self") as Type
+              bc "$self's Resistance is now ${newResistance}"
+              def eff
+              delayed {
+                eff = getter GET_RESISTANCES, self, { h ->
+                  def list = [] as List<Resistance>
+                  def resistanceType = (h.object.get(0) as Resistance).resistanceType
+                  list.add(new Resistance(newResistance, resistanceType))
+                  h.object = list
+                }
+
+                after FALL_BACK, self, {
+                  eff.unregister()
+                  unregister()
+                }
+                after EVOLVE, self, {
+                  eff.unregister()
+                  unregister()
+                }
+                after DEVOLVE, self, {
+                  eff.unregister()
+                  unregister()
+                }
+              }
             }
           }
         };

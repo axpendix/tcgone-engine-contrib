@@ -1105,29 +1105,32 @@ public enum TeamRocketNG implements LogicCardInfo {
             text "If the Defending Pokémon has a Weakness, you may change it to a type of your choice other than Colorless."
             energyCost C
             attackRequirement {
+              assert opp.active.weaknesses : "$opp.active does not have a Weakness"
             }
             onAttack {
-              targeted (defending) {
+              targeted defending, {
+                def newWeakness = choose([R, F, G, W, P, L, M, D, Y, N], "Select the new Weakness for $defending") as Type
+                bc "${defending}'s Weakness is now ${newWeakness}"
+                def eff
                 delayed {
-                  if(opp.active.weaknesses)
-                  {
-                    def newWeakness = choose([R,F,G,W,P,L,M,D,Y,N],"Select the new weakness")
-                    bc "${defending}'s Weakness is now ${newWeakness}"
-                    def eff
-                    register {
-                      eff = getter (GET_WEAKNESSES, defending) {h->
-                        def list = h.object as List<Weakness>
-                        if(list) {
-                          list.get(0).type = newWeakness
-                        }
-                      }
-                    }
-                    unregister {
-                      eff.unregister()
-                    }
-                    after FALL_BACK, defending, {unregister()}
-                    after EVOLVE, defending, {unregister()}
-                    after DEVOLVE, defending, {unregister()}
+                  eff = getter GET_WEAKNESSES, defending, { h ->
+                    def list = [] as List<Weakness>
+                    def feature = (h.object.get(0) as Weakness).feature
+                    list.add(new Weakness(newWeakness, feature))
+                    h.object = list
+                  }
+
+                  after FALL_BACK, defending, {
+                    eff.unregister()
+                    unregister()
+                  }
+                  after EVOLVE, defending, {
+                    eff.unregister()
+                    unregister()
+                  }
+                  after DEVOLVE, defending, {
+                    eff.unregister()
+                    unregister()
                   }
                 }
               }
