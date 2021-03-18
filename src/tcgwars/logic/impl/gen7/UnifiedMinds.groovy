@@ -4332,10 +4332,10 @@ public enum UnifiedMinds implements LogicCardInfo {
       case EAR_RINGING_BELL_194:
         return pokemonTool (this) {
           text "If the Pokémon this card is attached to is your Active Pokémon and is damaged by an opponent’s attack (even if that Pokémon is Knocked Out), the Attacking Pokémon is now Confused."
-          ifActiveAndDamagedByAttackAttached({
+          ifActiveAndDamagedByAttackAttached(delegate) {
             bc "Ear-Ringing Bell activates."
             apply CONFUSED, ef.attacker, TRAINER_CARD
-          }, delegate, thisCard)
+          }
         };
       case FLYINIUM_Z_AIR_SLASH_195:
         return pokemonTool (this) {

@@ -1350,12 +1350,12 @@ public enum DragonMajesty implements LogicCardInfo {
       case DRAGON_TALON_59:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nIf the [N] Pokémon this card is attached to is your Active Pokémon and is damaged by an opponent's attack (even if that Pokémon is Knocked Out), put 3 damage counters on the Attacking Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack).\n"
-          ifActiveAndDamagedByAttackAttached({
+          ifActiveAndDamagedByAttackAttached(delegate) {
             if (self.types.contains(N)) {
               bc "Dragon Talon activates"
               directDamage(30, ef.attacker, TRAINER_CARD)
             }
-          }, delegate, thisCard)
+          }
         };
       case FIERY_FLINT_60:
         return itemCard (this) {

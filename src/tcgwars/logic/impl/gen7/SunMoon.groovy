@@ -2770,10 +2770,10 @@ public enum SunMoon implements LogicCardInfo {
       case POISON_BARB_124:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nIf the Pokémon this card is attached to is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Poisoned.\nYou may play as many Item cards as you like during your turn (before your attack)."
-          ifActiveAndDamagedByAttackAttached({
+          ifActiveAndDamagedByAttackAttached(delegate) {
             bc "Poison Barb activates"
             apply POISONED, ef.attacker, TRAINER_CARD
-          }, delegate, thisCard)
+          }
         }
       case POKE_BALL_125:
         return copy(BlackWhite.POKE_BALL_97, this)

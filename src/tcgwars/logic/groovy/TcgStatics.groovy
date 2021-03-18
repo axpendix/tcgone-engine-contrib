@@ -1875,29 +1875,35 @@ class TcgStatics {
   }
 
   // tools and special energy
-  static ifActiveAndDamagedByAttackAttached (Closure c, Object delegate, Card thisCard) {
-    def eff
-    delegate.onPlay {reason->
-      eff = delayed(priority: BEFORE_LAST) {
-        def applyEffect = false
-        before APPLY_ATTACK_DAMAGES, {
-          bg().dm().each {
-            if (it.to == self && it.dmg.value && bg.currentTurn == self.owner.opposite && self.active) {
-              applyEffect = true
+  static ifActiveAndDamagedByAttackAttached (Object delegate1, Closure c2) {
+    def c1 = {
+      def eff
+      onPlay {reason->
+        eff = delayed(priority: BEFORE_LAST, inline: true) {
+          def applyEffect = false
+          before APPLY_ATTACK_DAMAGES, {
+            bg().dm().each {
+              if (it.to == self && it.dmg.value && bg.currentTurn == self.owner.opposite && self.active) {
+                applyEffect = true
+              }
+            }
+          }
+          after APPLY_ATTACK_DAMAGES, {
+            if (applyEffect && self.cards.contains(thisCard)) {
+              c2.delegate=delegate
+              c2.call() // card didn't get discarded by an attack effect
+              applyEffect = false
             }
           }
         }
-        after APPLY_ATTACK_DAMAGES, {
-          if (applyEffect) {
-            if (self.cards.contains(thisCard)) c() // card didn't get discarded by an attack effect
-            applyEffect = false
-          }
-        }
+      }
+      onRemoveFromPlay {
+        eff.unregister()
       }
     }
-    delegate.onRemoveFromPlay {
-      eff.unregister()
-    }
+    c1.resolveStrategy=Closure.DELEGATE_FIRST
+    c1.delegate=delegate1
+    c1.call()
   }
 
   // attacks that put the effect on itself for one turn
