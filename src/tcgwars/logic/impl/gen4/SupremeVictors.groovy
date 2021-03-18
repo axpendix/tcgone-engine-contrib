@@ -12,6 +12,7 @@ import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
+import tcgwars.logic.effect.basic.Knockout;
 
 import tcgwars.logic.card.*
 import tcgwars.logic.util.*;

@@ -1355,7 +1355,7 @@ public enum DragonMajesty implements LogicCardInfo {
               bc "Dragon Talon activates"
               directDamage(30, ef.attacker, TRAINER_CARD)
             }
-          }, self, delegate, thisCard)
+          }, delegate, thisCard)
         };
       case FIERY_FLINT_60:
         return itemCard (this) {

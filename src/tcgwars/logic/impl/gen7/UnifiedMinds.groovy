@@ -4335,7 +4335,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           ifActiveAndDamagedByAttackAttached({
             bc "Ear-Ringing Bell activates."
             apply CONFUSED, ef.attacker, TRAINER_CARD
-          }, self, delegate, thisCard)
+          }, delegate, thisCard)
         };
       case FLYINIUM_Z_AIR_SLASH_195:
         return pokemonTool (this) {

@@ -2773,7 +2773,7 @@ public enum SunMoon implements LogicCardInfo {
           ifActiveAndDamagedByAttackAttached({
             bc "Poison Barb activates"
             apply POISONED, ef.attacker, TRAINER_CARD
-          }, self, delegate, thisCard)
+          }, delegate, thisCard)
         }
       case POKE_BALL_125:
         return copy(BlackWhite.POKE_BALL_97, this)

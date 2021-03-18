@@ -1863,7 +1863,7 @@ class TcgStatics {
     delegate.delayedA (priority: BEFORE_LAST) {
       def applyEffect = false
       before APPLY_ATTACK_DAMAGES, {
-          applyEffect = bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({ it.to==self && it.dmg.value}))
+          applyEffect = bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({ it.to==self && it.dmg.value})
       }
       after APPLY_ATTACK_DAMAGES, {
         if (applyEffect) {
@@ -1875,7 +1875,7 @@ class TcgStatics {
   }
 
   // tools and special energy
-  static ifActiveAndDamagedByAttackAttached (Closure c, PokemonCardSet self, Object delegate, Card thisCard) {
+  static ifActiveAndDamagedByAttackAttached (Closure c, Object delegate, Card thisCard) {
     def eff
     delegate.onPlay {reason->
       eff = delayed(priority: BEFORE_LAST) {

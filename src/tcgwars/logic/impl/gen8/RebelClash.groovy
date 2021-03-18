@@ -3463,7 +3463,7 @@ public enum RebelClash implements LogicCardInfo {
             bc "Burning Scarf activates"
             apply BURNED, ef.attacker, TRAINER_CARD
           }
-        }, self, delegate, thisCard)
+        }, delegate, thisCard)
       };
       case CAPACIOUS_BUCKET_156:
       return itemCard (this) {
