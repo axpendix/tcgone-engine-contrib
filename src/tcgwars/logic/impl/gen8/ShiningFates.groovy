@@ -782,6 +782,7 @@ public enum ShiningFates implements LogicCardInfo {
           }
         }
         playRequirement{
+          assert my.deck : "Deck is empty"
         }
       };
       case PROFESSOR_S_RESEARCH_60:
