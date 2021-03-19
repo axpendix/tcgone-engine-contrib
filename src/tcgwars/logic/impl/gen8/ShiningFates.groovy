@@ -770,14 +770,14 @@ public enum ShiningFates implements LogicCardInfo {
           delayed {
             before KNOCKOUT, {
               if (ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite) {
-                keyStore("Gym_Trainer_KO", thisCard, bg.turnCount)
+                keyStore("Gym_Trainer_KO$thisCard.player", thisCard, bg.turnCount)
               }
             }
           }
         }
         onPlay {
           draw 2
-          if (keyStore("Gym_Trainer_KO", thisCard, null) == bg.turnCount - 1) {
+          if (keyStore("Gym_Trainer_KO$thisCard.player", thisCard, null) == bg.turnCount - 1) {
             draw 2
           }
         }
