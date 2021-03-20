@@ -262,14 +262,4 @@ public enum Collection {
     throw new IllegalArgumentException("Collection " + shortName + " not found");
   }
 
-  public static Set<Collection> getLiveExpansions() {
-    Set<Collection> expansions = new TreeSet<>();
-    for (GameType gameType : GameType.values()) {
-      for (GameFormat gameFormat : gameType.getAvailableFormats()) {
-        expansions.addAll(gameFormat.getIncludedCollections());
-      }
-    }
-    return expansions;
-  }
-
 }
