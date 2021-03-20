@@ -705,7 +705,7 @@ public enum ShiningFates implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
-            afterDamage { discardDefendingEnergy() }
+            discardDefendingEnergyAfterDamage()
            }
         }
         move "Stumbling Press", {

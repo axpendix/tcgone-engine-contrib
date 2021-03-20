@@ -282,7 +282,7 @@ public enum ShinyStarV implements LogicCardInfo {
         def eff
         onPlay {reason->
           eff = delayed {
-            before PROCESS_ATTACK_EFFECTS, {
+            after PROCESS_ATTACK_EFFECTS, {
               if (self.name != "Zacian V") return
               bg.dm().each {
                 def conditions = it.from == self && it.to == opp.active
