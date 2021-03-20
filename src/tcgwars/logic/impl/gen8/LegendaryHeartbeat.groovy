@@ -648,9 +648,6 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         move "Mini-Metronome", {
           text " Flip a coin. If heads, choose 1 of your opponent's Active Pokémon's attacks and use it as this attack."
           energyCost C, C
-          attackRequirement {
-            assert defending.getTopPokemonCard().getMoves() : "Defending Pokémon has no moves to copy"
-          }
           onAttack {
             flip { metronome defending, delegate }
           }

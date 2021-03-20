@@ -788,6 +788,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
 
         };
       case ARCEUS_LV_X_DP53:
+        // TODO: Is Reprint
         return levelUp (this, from:"Arceus", hp:HP120, type:COLORLESS, retreatCost:1) {
           pokeBody "Multitype", {
             text "Arceus LV.�s type is the same type as its previous Level."

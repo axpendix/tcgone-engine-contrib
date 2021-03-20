@@ -28,7 +28,7 @@ import tcgwars.logic.effect.blocking.*;
 import tcgwars.logic.effect.event.*;
 import tcgwars.logic.effect.getter.*;
 import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import tcgwars.logic.util.*
 
 /**
  * @author lithogenn@gmail.com
@@ -258,15 +258,16 @@ public enum ExpeditionNG implements LogicCardInfo {
         weakness P
         pokePower "Psymimic", {
           text "Once during your turn, instead of Alakazam's normal attack, you may choose 1 of your opponent's Pokémon's attack. Alakazam copies that attack including its Energy costs and anything else required in order to use that attack, such as discarding Energy cards. (No matter what type that Pokémon is, Alakazam's type is still Psychic.) This power can't be used if Alakazam is affected by a Special Condition."
-          actionA {
-          }
+          metronomeA delegate, { opp.all }
         }
         move "Syncroblast", {
           text "If Alakazam and the Defending Pokémon don't have the same number of Energy cards on them, this attack's base damage is 20 instead of 80."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
-
+            if (self.energyCards.size() != defending.energyCards.size())
+              damage 20
+            else
+              damage 80
           }
         }
       };

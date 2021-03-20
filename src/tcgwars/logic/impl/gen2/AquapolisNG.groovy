@@ -925,17 +925,18 @@ public enum AquapolisNG implements LogicCardInfo {
         move "Copy", {
           text "Choose 1 of the Defending Pokémon's attacks. Copy copies that attack. This attack does nothing if Sudowoodo doesn't have the Energy necessary to use that attack. (You must still do anything else required in order to use that attack.)"
           energyCost C
-          attackRequirement {}
           onAttack {
-
+            metronome keepEnergyRequirement: true, defending, delegate
           }
         }
         move "Energy Draw", {
           text "Search your deck for a basic Energy card and attach it to Sudowoodo. Shuffle your deck afterward."
           energyCost F
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Deck is empty"
+          }
           onAttack {
-
+            attachEnergyFrom(basic:true, my.deck, self)
           }
         }
       };

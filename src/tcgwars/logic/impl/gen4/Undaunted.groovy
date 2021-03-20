@@ -1962,13 +1962,9 @@ public enum Undaunted implements LogicCardInfo {
           weakness P
           pokeBody "Evolution Memories", {
             text "Espeon can use the attacks of all Pokémon you have in play that evolve from Eevee as its own."
-            getterA (GET_MOVE_LIST, self) {holder->
-              my.all.each {
-                if(it!=self && it.realEvolution && it.topPokemonCard.predecessor == "Eevee") {
-                  holder.object.addAll(it.topPokemonCard.moves)
-                }
-              }
-            }
+            metronomeA delegate, { my.all.findAll {
+              it.realEvolution && it.topPokemonCard.predecessor == "Eevee"
+            } }
           }
           move "Solar Ray", {
             text "30 damage. Remove 1 damage counter from each of your Pokémon."

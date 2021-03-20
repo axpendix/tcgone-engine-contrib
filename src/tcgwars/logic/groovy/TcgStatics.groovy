@@ -490,8 +490,8 @@ class TcgStatics {
   static healAll(PokemonCardSet target, Source source=Source.ATTACK){
     bg().em().run(new RemoveDamageCounter(target,source,target.damage))
   }
-  static reduceDamageNextTurn (HP reduce, Move thisMove){
-    new ReduceDamageNextTurn(reduce, thisMove.name).run(bg())
+  static reduceDamageNextTurn (HP reduce, Move thisMove, boolean either=false, boolean beforeWR=false){
+    new ReduceDamageNextTurn(reduce, thisMove.name).setEither(either).setBeforeWR(beforeWR).run(bg())
   }
   static reduceDamageFromDefendingNextTurn (HP reduce, Move thisMove, PokemonCardSet defending){
     afterDamage { targeted (defending) {
@@ -1833,7 +1833,10 @@ class TcgStatics {
   }
 
   /**
-   * Copies an attack from another PokemonCardSet
+   * Copies an attack from another PokemonCardSet as a Subattack
+   * @param params Optional settings map
+   * @param params.keepEnergyRequirement Should the move retain the original energy cost
+   * @param params.unblockEndTurn Should blocking between turns be disabled (set to true for Abilities. Do not set to true for Attacks)
    * @param target A PokemonCardSet or PcsList to choose a move from
    * @param delegate onAttack delegate
    */
@@ -1844,16 +1847,49 @@ class TcgStatics {
     def moveList = []
     def labelList = []
     target.each {pcs ->
-      moveList.addAll pcs.topPokemonCard.moves
-      labelList.addAll pcs.topPokemonCard.moves.collect {"$pcs.name - $it.name" }
+      if (pcs == delegate.self) return
+      def newMoves = []
+      newMoves.addAll bg.em().activateGetter(new GetMoveList(it))
+      newMoves.removeAll newMoves.findAll { it.name == delegate.thisMove.name }
+      moveList.addAll newMoves
+      labelList.addAll newMoves.collect {"$pcs.name - $it.name" }
     }
-    Move move = (choose(moveList, labelList, "Choose an attack to use as this attack.") as Move).shallowCopy()
-    move.energyCost = delegate.thisMove.energyCost
-    // TODO: Why can't we just skip BetweenTurns if it is a sub attack?
-    def bef = blockingEffect(BETWEEN_TURNS)
-    attack(move)
+    moveList.add "Skip"
+    labelList.add "End Turn (Skip)"
+    def choice = choose moveList, labelList, "Choose an attack to use as this attack."
+    if (choice instanceof String) return
+    Move move = (choice as Move).shallowCopy()
     bc "$delegate.self copied $move.name"
-    bef.unregisterItself bg.em()
+    if (!params.keepEnergyRequirement) move.energyCost = delegate.thisMove.energyCost
+    // TODO: Why can't we just skip BetweenTurns if it is a sub attack?
+    def bef = null
+    if (!params.unblockEndTurn)
+      bef = blockingEffect(BETWEEN_TURNS)
+    attack(move)
+    bef?.unregisterItself bg.em()
+  }
+
+  /**
+   * Copies an attack from another PokemonCardSet as an Ability Attack
+   * @param delegate onAttack delegate
+   * @param target A Closure with a call to return the current targets (ex: { all() } or { bench() }
+   */
+  static metronomeA(Object delegate, Closure target) {
+    delegate.getterA GET_MOVE_LIST, delegate.self, {holder->
+      if (!holder.effect.target.active) return
+      def moves = [] as Set
+      moves.addAll holder.object
+      target.call().each {
+        if (it == holder.effect.target) return
+        if (it instanceof Card) {
+          moves.addAll it.moves
+        }
+        if (it instanceof PokemonCardSet) {
+          moves.addAll bg.em().activateGetter(new GetMoveList(it))
+        }
+      }
+      holder.object = moves as List
+    }
   }
 
   /* Effects that trigger when a Pokémon is active and damaged by an opposing attack, can be called by either a Poké-Body / Ability, an attack, or a card attached to the Pokémon. */

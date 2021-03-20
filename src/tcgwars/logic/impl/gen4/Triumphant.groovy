@@ -2481,23 +2481,12 @@ public enum Triumphant implements LogicCardInfo {
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:0) {
           weakness P
           pokeBody "Lost Link", {
-            text "Mew can use the attacks of all Pokémon in the Lost Zone ."
-            getterA (GET_MOVE_LIST, self) {holder->
-              def cardList = []
-              def moveList = []
-              self.owner.pbg.lostZone.filterByType(POKEMON).each {
-                if(!cardList.contains("${it}")){
-                  cardList.add("${it}")
-                  moveList.addAll(it.moves)
-                }
-              }
-              self.owner.opposite.pbg.lostZone.filterByType(POKEMON).each {
-                if(!cardList.contains("${it}")){
-                  cardList.add("${it}")
-                  moveList.addAll(it.moves)
-                }
-              }
-              holder.object.addAll(moveList)
+            text "Mew can use the attacks of all of the Pokémon in the Lost Zone (both yours and your opponent's). (You still need the necessary Energy to use each attack.)"
+            metronomeA delegate, {
+              self.owner.pbg.lostZone.filterByType(POKEMON)
+            }
+            metronomeA delegate, {
+              self.owner.opposite.pbg.lostZone.filterByType(POKEMON)
             }
           }
           move "See Off", {
