@@ -1879,14 +1879,21 @@ class TcgStatics {
       if (!holder.effect.target.active) return
       def moves = [] as Set
       moves.addAll holder.object
-      target.call().each {
+      def resp = target.call()
+      def fun = {
+        if (!it) return
         if (it == holder.effect.target) return
-        if (it instanceof Card) {
+        if (it instanceof PokemonCard) {
           moves.addAll it.moves
         }
         if (it instanceof PokemonCardSet) {
           moves.addAll bg.em().activateGetter(new GetMoveList(it))
         }
+      }
+      if (resp instanceof Iterable) {
+        resp.each(fun)
+      } else {
+        fun(resp)
       }
       holder.object = moves as List
     }
