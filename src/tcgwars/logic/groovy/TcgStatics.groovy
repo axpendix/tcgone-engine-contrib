@@ -1897,13 +1897,14 @@ class TcgStatics {
   // poke bodies and abilities
   static ifActiveAndDamagedByAttackBody (Object delegate1, Closure eff) {
     def c1 = {
-      delayedA(priority: BEFORE_LAST) {
+      delayedA(priority: BEFORE_LAST, inline: true) {
         def applyEffect = false
         before APPLY_ATTACK_DAMAGES, {
           applyEffect = bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({ it.to == self && it.dmg.value })
         }
         after APPLY_ATTACK_DAMAGES, {
           if (applyEffect) {
+            eff.delegate=delegate
             eff.call()
             applyEffect = false
           }
