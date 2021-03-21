@@ -1849,7 +1849,7 @@ class TcgStatics {
     target.each {pcs ->
       if (pcs == delegate.self) return
       def newMoves = []
-      newMoves.addAll bg.em().activateGetter(new GetMoveList(it))
+      newMoves.addAll bg.em().activateGetter(new GetMoveList(pcs))
       newMoves.removeAll newMoves.findAll { it.name == delegate.thisMove.name }
       moveList.addAll newMoves
       labelList.addAll newMoves.collect {"$pcs.name - $it.name" }
