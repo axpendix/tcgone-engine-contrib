@@ -2973,10 +2973,8 @@ public enum SwordShield implements LogicCardInfo {
             if (my.deck && confirm("Use Intrepid Sword?")) {
               def maxSize = Math.min(my.deck.size(),3)
               def topCards = my.deck.subList(0, maxSize).showToMe("Top 3 cards of your deck.")
-              def metalEnergies = topCards.filterByBasicEnergyType(M)
-
-              if (metalEnergies) {
-                def selectedEnergies = metalEnergies.select(min:0, max:metalEnergies.size(), "Attach any [M] Energy to $self?")
+              if (topCards.filterByBasicEnergyType(M)) {
+                def selectedEnergies = metalEnergies.select(min:0, max:metalEnergies.size(), "Attach any [M] Energy to $self?", basicEnergyFilter(M))
                 selectedEnergies.each {
                   attachEnergy(self, it)
                 }
@@ -2984,9 +2982,6 @@ public enum SwordShield implements LogicCardInfo {
                 if (nonSelectedSize) {
                   my.deck.subList(0, nonSelectedSize).getExcludedList(selectedEnergies).moveTo(hidden: true, my.hand)
                 }
-              } else {
-                my.deck.subList(0,3).moveTo(hidden: true, my.hand)
-              }
               bg.gm().betweenTurns()
             }
           }
