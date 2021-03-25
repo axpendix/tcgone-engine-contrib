@@ -2335,6 +2335,9 @@ public enum LostThunder implements LogicCardInfo {
                   eff.unregister()
                   bg.em().run(new ChangeImplementation(top, trcard))
                 }
+                onDisable {
+                  eff.unregister()
+                }
               }
               trcard.player = top.player
               def pcs = my.all.findAll {it!=self && it.cards.filterByType(POKEMON_TOOL).empty}.select("Attach to?")

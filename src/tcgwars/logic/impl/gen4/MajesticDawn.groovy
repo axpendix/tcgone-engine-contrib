@@ -1596,6 +1596,9 @@ public enum MajesticDawn implements LogicCardInfo {
                   eff.unregister()
                   bg.em().run(new ChangeImplementation(top, trcard))
                 }
+                onDisable {
+                  eff.unregister()
+                }
               }
               trcard.player = top.player
               def pcs = my.all.findAll {it!=self && canAttachPokemonTool(it)}.select("Attach to?")

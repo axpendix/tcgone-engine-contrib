@@ -1846,6 +1846,9 @@ public enum GreatEncounters implements LogicCardInfo {
                   eff.unregister()
                   bg.em().run(new ChangeImplementation(top, toolCard))
                 }
+                onDisable {
+                  eff.unregister()
+                }
               }
               bg.em().run(new ChangeImplementation(toolCard, top))
               toolCard.player = top.player
