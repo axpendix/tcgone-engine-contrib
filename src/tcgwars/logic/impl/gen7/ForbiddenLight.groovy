@@ -2699,12 +2699,11 @@ public enum ForbiddenLight implements LogicCardInfo {
               def disable={card,pcs->
                 def dset = bg.em().retrieveObject("Tool Concealment dset") as Set
                 if(!dset.contains(card)){
-                  card.removeFromPlay(bg, pcs)
+                  card.disable(bg, pcs)
                   dset.add(card)
                 }
               }
-              after PLAY_POKEMON_TOOL, {disable(ef.cardToPlay,ef.target)}
-              after PLAY_POKEMON_TOOL_FLARE, {disable(ef.cardToPlay,ef.target)}
+              after ATTACH_POKEMON_TOOL, {disable(ef.card,ef.target)}
             }
 
             def count = (bg.em().retrieveObject("Tool Concealment count") ?: 0) + 1
@@ -2714,7 +2713,7 @@ public enum ForbiddenLight implements LogicCardInfo {
                 def pcs = it
                 it.cards.filterByType(POKEMON_TOOL).each {
                   if(!dset.contains(it)){
-                    it.removeFromPlay(bg, pcs)
+                    it.disable(bg, pcs)
                     dset.add(it)
                   }
                 }
