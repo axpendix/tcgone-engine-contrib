@@ -2340,7 +2340,7 @@ public enum LostThunder implements LogicCardInfo {
                 }
               }
               trcard.player = top.player
-              def pcs = my.all.findAll {it!=self && it.cards.filterByType(POKEMON_TOOL).empty}.select("Attach to?")
+              def pcs = my.all.findAll {it!=self && canAttachPokemonTool(it)}.select("Attach to?")
               attachPokemonTool(trcard,pcs)
             }
           }
