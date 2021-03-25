@@ -1,5 +1,6 @@
-package tcgwars.logic.impl.gen7;
+package tcgwars.logic.impl.gen7
 
+import tcgwars.logic.effect.gm.PlayEvolution;
 import tcgwars.logic.impl.gen2.Aquapolis
 
 import static tcgwars.logic.card.HP.*;
@@ -1124,16 +1125,28 @@ public enum CrimsonInvasion implements LogicCardInfo {
             onAttack {
               damage 10
               delayed {
-                before PLAY_BASIC_POKEMON, {
-                  if(ef.cardToPlay.abilities) {
-                    wcu "Bell of Silence: Can't play Pokémon that has an Ability"
-                    prevent()
+                def warnAndPrevent = {
+                  wcu "$self's $thisMove prevents playing Pokémon from your hand if they have an ability"
+                  prevent()
+                }
+                before EVOLVE, {
+                  if ((ef as Evolve).evolutionCard.player.pbg.hand.contains(ef.evolutionCard) && ef.evolutionCard.abilities) {
+                    warnAndPrevent()
+                  }
+                }
+                before EVOLVE_STANDARD, {
+                  if ((ef as EvolveStandard).evolutionCard.player.pbg.hand.contains(ef.evolutionCard) && ef.evolutionCard.abilities) {
+                    warnAndPrevent()
                   }
                 }
                 before PLAY_EVOLUTION, {
+                  if ((ef as PlayEvolution).cardToPlay.player.pbg.hand.contains(ef.cardToPlay) && ef.evolutionCard.abilities) {
+                    warnAndPrevent()
+                  }
+                }
+                before PLAY_BASIC_POKEMON, {
                   if(ef.cardToPlay.abilities) {
-                    wcu "Bell of Silence: Can't play Pokémon that has an Ability"
-                    prevent()
+                    warnAndPrevent()
                   }
                 }
                 unregisterAfter 2
