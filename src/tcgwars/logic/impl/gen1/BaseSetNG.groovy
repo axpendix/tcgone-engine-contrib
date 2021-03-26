@@ -891,15 +891,14 @@ public enum BaseSetNG implements LogicCardInfo {
           move "Leek Slap", {
             text "30 damage. Flip a coin. If tails, this attack does nothing. Either way, you can’t use this attack again as long as Farfetch’d stays in play (even putting Farfetch’d on the Bench won’t let you use it again)."
             energyCost C
-            attackRequirement {}
             onAttack {
               flip{damage 30}
               afterDamage {
-                bc "Leek Slap cannot be used again"
-                delayed (priority: BEFORE_LAST) {
-                  before CHECK_ATTACK_REQUIREMENTS, {
-                    if (ef.attacker.owner == self.owner && ef.move.name == "Leek Slap") {
-                      wcu "Leek Slap has already been used this game"
+                bc "$thisMove cannot be used again"
+                delayed {
+                  before CHECK_ATTACK_REQUIREMENTS, self, {
+                    if(ef.move.name == thisMove.name){
+                      wcu "$thisMove already used"
                       prevent()
                     }
                   }
@@ -910,7 +909,6 @@ public enum BaseSetNG implements LogicCardInfo {
           move "Pot Smash", {
             text "30 damage."
             energyCost C, C, C
-            attackRequirement {}
             onAttack {
               damage 30
             }
