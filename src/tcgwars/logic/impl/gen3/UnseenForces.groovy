@@ -3529,14 +3529,14 @@ public enum UnseenForces implements LogicCardInfo {
           text "Search your deck for up to 2 Pokémon Tool cards and attach them to any of your Pokémon (excluding Pokémon that already have a Pokémon Tool attached to them). Shuffle your deck afterward."
           energyCost C
           attackRequirement {
-            assert my.all.findAll({!(it.cards.filterByType(POKEMON_TOOL))}) : "Your Pokémon already have tools attached to them."
+            assert my.all.findAll({canAttachPokemonTool(it)}) : "Your Pokémon already have tools attached to them."
             assert my.deck : "Deck is empty."
           }
           onAttack {
             def tar = my.all.findAll({!(it.cards.filterByType(POKEMON_TOOL))})
             if(tar){
               my.deck.search(max : Math.min(2,tar.size()),"Search for up to 2 Pokémon tool",cardTypeFilter(POKEMON_TOOL)).each{
-                def pcs = my.all.findAll({!(it.cards.filterByType(POKEMON_TOOL))}).select()
+                def pcs = my.all.findAll({canAttachPokemonTool(it)}).select()
                 my.deck.remove(it)
                 attachPokemonTool(it,pcs)
               }

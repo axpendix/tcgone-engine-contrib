@@ -2148,7 +2148,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert self.benched : "$self is not on the Bench" //No need to check for other Poké, if it's benched there's at least the active.
-              assert my.all.findAll {it != self && it.cards.filterByType(POKEMON_TOOL).empty} : "No place to attach $self as a tool"
+              assert my.all.findAll {it != self && canAttachPokemonTool(it)} : "No place to attach $self as a tool"
               powerUsed()
               def top = self.topPokemonCard
               self.cards.getExcludedList(top).discard()

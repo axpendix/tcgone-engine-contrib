@@ -2315,7 +2315,7 @@ public enum LostThunder implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert my.bench.notEmpty : "$self is your last Pokémon."
-              assert my.all.findAll {it!=self && it.cards.filterByType(POKEMON_TOOL).empty} : "No place to attach"
+              assert my.all.findAll {it!=self && canAttachPokemonTool(it)} : "No place to attach"
               powerUsed()
               def top = self.topPokemonCard
               self.cards.getExcludedList(top).discard()
