@@ -754,15 +754,17 @@ public enum ExpeditionNG implements LogicCardInfo {
         resistance P, MINUS30
         pokeBody "Dark Aura", {
           text "All Energy attached to Tyranitar is Dark instead of its usual type."
-          delayedA {
+          getterA GET_ENERGY_TYPES, self, { holder ->
+            int count = holder.object.size()
+            holder.object = (1..count).collect { [D] as Set }
           }
         }
         move "Stamp", {
           text "50+ damage. Flip a coin. If heads, this attack does 50 damage plus 10 more damage and does 10 damage to each of your opponent's Benched Pokémon, if any. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost D, D, D, D
-          attackRequirement {}
           onAttack {
             damage 50
+            flip { opp.all.each { damage 10, it } }
           }
         }
       };
