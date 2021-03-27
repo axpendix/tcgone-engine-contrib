@@ -2152,7 +2152,6 @@ public enum MysteriousTreasures implements LogicCardInfo {
               powerUsed()
               def top = self.topPokemonCard
               self.cards.getExcludedList(top).discard()
-              removePCS(self)
               def trcard
               trcard = pokemonTool(new CustomCardInfo(top.staticInfo).setCardTypes(TRAINER, ITEM, POKEMON_TOOL)) {
                 def eff
@@ -2171,7 +2170,10 @@ public enum MysteriousTreasures implements LogicCardInfo {
               }
               trcard.player = top.player
               def pcs = my.all.findAll {it!=self && canAttachPokemonTool(it)}.select("Attach to?")
-              attachPokemonTool(trcard,pcs)
+              removeFromPlay(self, [top] as CardList)
+              bg.em().run(new ChangeImplementation(trcard, top))
+              attachPokemonTool(trcard, pcs)
+              removePCS(self)
             }
           }
           move "Hidden Power", {

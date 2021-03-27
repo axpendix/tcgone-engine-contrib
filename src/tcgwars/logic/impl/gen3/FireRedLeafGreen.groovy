@@ -815,7 +815,6 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               if(tar){
                 my.deck.search(max : Math.min(2,tar.size()),"Search for up to 2 Pokémon tool",cardTypeFilter(POKEMON_TOOL)).each{
                   def pcs = my.all.findAll({canAttachPokemonTool(it)}).select()
-                  my.deck.remove(it)
                   attachPokemonTool(it,pcs)
                 }
               }

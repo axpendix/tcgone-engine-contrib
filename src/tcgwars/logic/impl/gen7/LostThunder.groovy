@@ -1513,7 +1513,6 @@ public enum LostThunder implements LogicCardInfo {
               if(tar){
                 tar.each {pcs->
                   my.deck.search("Select a Pokémon Tool to attach to $pcs",cardTypeFilter(POKEMON_TOOL)).each{
-                    deck.remove(it)
                     attachPokemonTool(it, pcs)
                   }
                 }
@@ -2319,7 +2318,6 @@ public enum LostThunder implements LogicCardInfo {
               powerUsed()
               def top = self.topPokemonCard
               self.cards.getExcludedList(top).discard()
-              removePCS(self)
               def trcard
               trcard = pokemonTool(new CustomCardInfo(top.staticInfo).setCardTypes(TRAINER, ITEM, POKEMON_TOOL)) {
                 def eff
@@ -2341,7 +2339,10 @@ public enum LostThunder implements LogicCardInfo {
               }
               trcard.player = top.player
               def pcs = my.all.findAll {it!=self && canAttachPokemonTool(it)}.select("Attach to?")
-              attachPokemonTool(trcard,pcs)
+              removeFromPlay(self, [top] as CardList)
+              bg.em().run(new ChangeImplementation(trcard, top))
+              attachPokemonTool(trcard, pcs)
+              removePCS(self)
             }
           }
           move "Haunt" , {
