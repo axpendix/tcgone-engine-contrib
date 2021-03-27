@@ -902,6 +902,7 @@ public enum BaseSetNG implements LogicCardInfo {
                       prevent()
                     }
                   }
+                  after REMOVE_FROM_PLAY, self, {if(ef.removedCards.contains(thisCard)) unregister()}
                 }
               }
             }
