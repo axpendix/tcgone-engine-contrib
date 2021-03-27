@@ -3224,27 +3224,30 @@ public enum SecretWonders implements LogicCardInfo {
               afterDamage {
                 apply POISONED
                 def pcs = defending
-                if(pcs.isSPC(POISONED)) {// Is !bg.em().run(new ApplySpecialCondition(POISONED, pcs, SOURCE.ATTACK)) better here
-                  delayed {
-                    def eff
-                    register {
-                      eff = getter IS_ABILITY_BLOCKED, { Holder h->
-                        if (h.effect.target == pcs && h.effect.ability instanceof PokeBody) {
-                          h.object=true
+                targeted(pcs) {
+                  if (pcs.isSPC(POISONED)) {// Is !bg.em().run(new ApplySpecialCondition(POISONED, pcs, SOURCE.ATTACK)) better here
+                    delayed {
+                      def eff
+                      register {
+                        eff = getter IS_ABILITY_BLOCKED, { Holder h ->
+                          if (h.effect.target == pcs && h.effect.ability instanceof PokeBody) {
+                            h.object = true
+                          }
+                        }
+                        new CheckAbilities().run(bg)
+                      }
+                      unregister {
+                        eff.unregister()
+                        new CheckAbilities().run(bg)
+                      }
+                      after CLEAR_SPECIAL_CONDITION, pcs, {
+                        if (ef.types.contains(POISONED)) {
+                          unregister()
                         }
                       }
-                      new CheckAbilities().run(bg)
+                      after FALL_BACK, pcs, { unregister() }
+                      after KNOCKOUT, pcs, { unregister() }
                     }
-                    unregister {
-                      eff.unregister()
-                      new CheckAbilities().run(bg)
-                    }
-                    after CLEAR_SPECIAL_CONDITION, pcs, {
-                      if(ef.types.contains(POISONED)){
-                        unregister()
-                      }
-                    }
-                    after FALL_BACK, pcs, {unregister()}
                   }
                 }
               }
@@ -3605,8 +3608,8 @@ public enum SecretWonders implements LogicCardInfo {
             onAttack {
               delayed {
                 def pcs = defending
-                after KNOCKOUT, pcs {
-                  my.discard.select("Search your discard pile for a card").showToOpponent("Selected Cards").moveTo(my.hand)
+                after KNOCKOUT, pcs, {
+                  my.discard.select(min:0,"Search your discard pile for a card").showToOpponent("Darkness Wing:Selected Cards").moveTo(my.hand)
                 }
                 unregisterAfter 1
               }

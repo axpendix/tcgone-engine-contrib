@@ -1,36 +1,37 @@
 package tcgwars.logic.impl.gen4
 
-import tcgwars.logic.card.trainer.PokemonToolCard;
-import tcgwars.logic.effect.gm.PlayTrainer;
+import tcgwars.logic.DamageManager
+import tcgwars.logic.effect.ability.CheckAbilities
+import tcgwars.logic.impl.gen3.Sandstorm
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
+import tcgwars.logic.Battleground
+import tcgwars.logic.TargetPlayer
+import tcgwars.logic.card.*
+import tcgwars.logic.effect.Source
+import tcgwars.logic.effect.ability.Ability
+import tcgwars.logic.effect.ability.PokeBody
+import tcgwars.logic.effect.advanced.EnergySwitch
+import tcgwars.logic.effect.basic.ApplyDamages
+import tcgwars.logic.effect.basic.ChangeImplementation
+import tcgwars.logic.effect.basic.Knockout
+import tcgwars.logic.effect.gm.PlayTrainer
+import tcgwars.logic.util.CardList
+import tcgwars.logic.util.CardTypeSet
+import tcgwars.logic.util.Holder
+
 import static tcgwars.logic.card.CardType.*
-import static tcgwars.logic.effect.EffectPriority.BEFORE_LAST
-import static tcgwars.logic.effect.EffectType.ASLEEP_SPC
-import static tcgwars.logic.effect.EffectType.BEGIN_TURN
-import static tcgwars.logic.effect.EffectType.GET_GIVEN_PRIZES
-import static tcgwars.logic.effect.EffectType.GET_MOVE_LIST
-import static tcgwars.logic.effect.EffectType.GET_RESISTANCES
-import static tcgwars.logic.effect.EffectType.KNOCKOUT
-import static tcgwars.logic.effect.Source.SRC_ABILITY
-import static tcgwars.logic.effect.ability.Ability.ActivationReason.OTHER;
-import static tcgwars.logic.groovy.TcgBuilders.*;
-import static tcgwars.logic.groovy.TcgStatics.*
-import static tcgwars.logic.effect.special.SpecialConditionType.*
-import static tcgwars.logic.card.Resistance.ResistanceType.*
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Resistance.ResistanceType.MINUS20
+import static tcgwars.logic.card.Type.*
 import static tcgwars.logic.card.Weakness.*
-import static tcgwars.logic.effect.EffectType.*;
-
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*
-import tcgwars.logic.util.*;
-
+import static tcgwars.logic.effect.EffectPriority.BEFORE_LAST
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.SRC_ABILITY
+import static tcgwars.logic.effect.ability.Ability.ActivationReason.OTHER
+import static tcgwars.logic.effect.ability.Ability.ActivationReason.PLAY_FROM_HAND
+import static tcgwars.logic.effect.special.SpecialConditionType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
+import static tcgwars.logic.groovy.TcgStatics.*
 /**
  * @author axpendix@hotmail.com
  * @author ufodynasty12@gmail.com
@@ -133,12 +134,12 @@ public enum GreatEncounters implements LogicCardInfo {
   WHISMUR_94 ("Whismur", "94", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
   WINGULL_95 ("Wingull", "95", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
   ZIGZAGOON_96 ("Zigzagoon", "96", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
-  AMULET_COIN_97 ("Amulet Coin", "97", Rarity.UNCOMMON, [TRAINER, POKEMON_TOOL]),
-  FELICITY_S_DRAWING_98 ("Felicity's Drawing", "98", Rarity.UNCOMMON, [TRAINER]),
-  LEFTOVERS_99 ("Leftovers", "99", Rarity.UNCOMMON, [TRAINER, POKEMON_TOOL]),
+  AMULET_COIN_97 ("Amulet Coin", "97", Rarity.UNCOMMON, [TRAINER, ITEM, POKEMON_TOOL]),
+  FELICITY_S_DRAWING_98 ("Felicity's Drawing", "98", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  LEFTOVERS_99 ("Leftovers", "99", Rarity.UNCOMMON, [TRAINER, ITEM, POKEMON_TOOL]),
   MOONLIGHT_STADIUM_100 ("Moonlight Stadium", "100", Rarity.UNCOMMON, [TRAINER, STADIUM]),
-  PREMIER_BALL_101 ("Premier Ball", "101", Rarity.UNCOMMON, [TRAINER]),
-  RARE_CANDY_102 ("Rare Candy", "102", Rarity.UNCOMMON, [TRAINER]),
+  PREMIER_BALL_101 ("Premier Ball", "101", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  RARE_CANDY_102 ("Rare Candy", "102", Rarity.UNCOMMON, [TRAINER, ITEM]),
   CRESSELIA_LV_X_103 ("Cresselia Lv.X", "103", Rarity.ULTRARARE, [LVL_X, POKEMON, _PSYCHIC_]),
   DARKRAI_LV_X_104 ("Darkrai Lv.X", "104", Rarity.ULTRARARE, [LVL_X, POKEMON, _DARKNESS_]),
   DIALGA_LV_X_105 ("Dialga Lv.X", "105", Rarity.HOLORARE, [LVL_X, POKEMON, _METAL_]),
@@ -309,12 +310,13 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 10
               def tools = defending.cards.filterByType(POKEMON_TOOL)
               if(tools) {
-                damage 20
+                damage 30
+                def tool
                 targeted(defending) {
-                  def tool = tools.select("Discard a Pokémon Tool attached to $defending").discard()
-                  if(opp.hand) {
-                    opp.hand.showtoMe("Opponent's hand").findAll{it.name == tool.name}.discard()
-                  }
+                  tool = tools.select("Discard a Pokémon Tool attached to $defending").discard().first()
+                }
+                if(opp.hand) {
+                  opp.hand.showToMe("Opponent's hand").findAll{it.name == tool.name}.discard()
                 }
               }
             }
@@ -336,15 +338,16 @@ public enum GreatEncounters implements LogicCardInfo {
                 register {
                   eff = getter GET_POKEMON_TYPE, self, { h->
                     h.object.clear()
-                    h.object.add(energy.basicType)
+                    h.object.addAll(energy.basicType)
                   }
                 }
                 unregister {
                   eff.unregister()
                 }
                 unregisterAfter 1
+                after FALL_BACK, self, {unregister()}
                 after EVOLVE, self, {unregister()}
-                after DEVOLVE, pcs, {unregister()}
+                after DEVOLVE, self, {unregister()}
               }
             }
           }
@@ -417,7 +420,7 @@ public enum GreatEncounters implements LogicCardInfo {
               assert my.bench.find{it.cards.energyCount(W) || it.cards.energyCount(F)} : "There are no [W] or [F] Energys attached to your benched Pokémon"
               powerUsed()
               def src = my.bench.findAll{it.cards.energyCount(W) || it.cards.energyCount(F)}.select("Source for the Energy")
-              def energy = source.cards.select("Energy to move",{it.cardTypes.is(ENERGY) && (it.asEnergyCard().containsType(R) || it.asEnergyCard().containsType(W))})
+              def energy = src.cards.select("Energy to move",{it.cardTypes.is(ENERGY) && (it.asEnergyCard().containsType(F) || it.asEnergyCard().containsType(W))}).first()
               energySwitch(src, my.active, energy)
             }
           }
@@ -463,12 +466,14 @@ public enum GreatEncounters implements LogicCardInfo {
           pokePower "Serene Grace", {
             text "Once during your turn, when you play Togekiss from your hand to evolve 1 of your Pokémon, you may look at the top 10 cards of your deck, choose as many basic Energy cards as you like, and attach them to your Pokémon in any way you like. Put the other cards back on your deck. Shuffle your deck afterward."
             onActivate {r->
-              if(r==PLAY_FROM_HAND && my.deck && confirm('Serene Grace?')){
+
+              if(r==PLAY_FROM_HAND && my.deck && confirm('Use Serene Grace?')){
                 powerUsed()
                 def top = my.deck.subList(0,10)
                 top.select(min:0, max:top.filterByType(BASIC_ENERGY).size(), "Choose as many basic Energy cards as you like", cardTypeFilter(BASIC_ENERGY)).each {
                   attachEnergy(my.all.select("Attach $it to"), it)
                 }
+                shuffleDeck()
               }
             }
           }
@@ -500,10 +505,26 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Cotton Cloud", {
-            text "60 damage."
+            text "60 damage. During your opponent's nest turn, any damage done to Altaria by attacks from your opponent's Evolved Pokémon is reduced by 30"
             energyCost C, C, C
             onAttack {
               damage 60
+              afterDamage {
+                delayed {
+                  before APPLY_ATTACK_DAMAGES, {
+                    bg.dm().each {
+                      if(it.from.evolution && it.from.owner == self.owner.opposite && it.notNoEffect && it.dmg.value){
+                        bc "${thisMove.name} -30"
+                        it.dmg-=30
+                      }
+                    }
+                  }
+                  unregisterAfter 2
+                  after FALL_BACK, self, {unregister()}
+                  after EVOLVE, self, {unregister()}
+                  after DEVOLVE, self, {unregister()}
+                }
+              }
             }
           }
         };
@@ -539,9 +560,10 @@ public enum GreatEncounters implements LogicCardInfo {
             onAttack {
               damage 30
               delayed {
-                after APPLY_ATTACK_DAMAGES, {
+                before APPLY_ATTACK_DAMAGES, {
                   if (ef.attacker == self && my.all.find{ it.numberOfDamageCounters }) {
                     bg.dm().each {
+                      bc "$it.dmg.value"
                       if (it.to == defending && it.dmg.value) {
                         heal it.dmg.value, my.all.findAll { it.numberOfDamageCounters }.select("Heal which Pokémon")
                       }
@@ -686,14 +708,15 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost R, C
             onAttack {
               damage 40
-              def dscrd = self.cards.select(min:0,"Discard a [R] or [D] Energy?",{it.cardTypes.is(ENERGY) && (it.asEnergyCard().containsType(R) || it.asEnergyCard().containsType(D))})
+              def dscrd = self.cards.select(min:0,"Discard a [R] or [D] Energy?",{it.cardTypes.is(ENERGY) && (it.asEnergyCard().containsType(R) || it.asEnergyCard().containsType(D))}).first()
               if (dscrd) {
-                if (dscrd.asEnergyCard.containsType(R)) {
+                if (dscrd.asEnergyCard().containsType(R)) {
                   applyAfterDamage BURNED
                 }
-                if (dscrd.asEnergyCard.containsType(D)) {
+                if (dscrd.asEnergyCard().containsType(D)) {
                   damage 30
                 }
+                discard dscrd
               }
             }
           }
@@ -736,14 +759,17 @@ public enum GreatEncounters implements LogicCardInfo {
             text "80 damage. If the Defending Pokémon would be Knocked Out by this attack, Kingler does 30 damage to itself."
             energyCost W, W, C
             onAttack {
+              damage 80
+              def pcs = defending
               delayed {
-                def pcs = defending
-                after KNOCKOUT, pcs {
-                  damage 30, self
+                before APPLY_ATTACK_DAMAGES, {
+                  if(bg.dm().find {it.from == self && it.to == pcs && it.dmg.value >= pcs.remainingHP.value}) {
+                    damage 30, self
+                    unregister()
+                  }
                 }
                 unregisterAfter 1
               }
-              damage 80
             }
           }
         };
@@ -780,7 +806,7 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 10
-              heal 20
+              heal 20, self
               afterDamage {
                 clearSpecialCondition self
               }
@@ -1486,12 +1512,14 @@ public enum GreatEncounters implements LogicCardInfo {
           move "Muddy Bomb", {
             text "Choose 1 of your opponent's Pokémon. This attack does 30 damage to that Pokémon and 10 damage to each of your opponent's other Pokémon."
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
+              def tar = opp.all.select("Deal 30 damage to which Pokémon?")
+              damage 30, tar
               opp.all.each {
-                damage 10
+                if(it!=tar) {
+                  damage 10, it
+                }
               }
-              damage 20, opp.all.select("Deal 30 damage to which Pokemon?")
             }
           }
         };
@@ -1535,7 +1563,6 @@ public enum GreatEncounters implements LogicCardInfo {
             }
             onAttack {
               def energies = my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(W).select(max: 2, "Select 2 basic [W] Energy cards to attach to $self")
-              my.hand.removeAll(energies)
               energies.each {
                 attachEnergy(self, it)
               }
@@ -1640,8 +1667,10 @@ public enum GreatEncounters implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              applyAfterDamage ASLEEP
-              applyAfterDamage ASLEEP, self
+              afterDamage {
+                apply ASLEEP
+                apply ASLEEP, self
+              }
             }
           }
         };
@@ -1651,17 +1680,18 @@ public enum GreatEncounters implements LogicCardInfo {
           move "Tail Blade", {
             text "20 damage. Flip a coin. If heads, your opponent can't play any Trainer cards from his or her hand during your opponent's next turn."
             energyCost P
-            attackRequirement {}
             onAttack {
               damage 20
-              delayed {
-                before PLAY_TRAINER, {
-                  if (bg.currentTurn == self.owner.opposite) {
-                    wcu "Tail Blade prevents playing Trainer Cards this turn"
-                    prevent()
+              flip {
+                delayed {
+                  before PLAY_TRAINER, {
+                    if (bg.currentTurn == self.owner.opposite) {
+                      wcu "Tail Blade prevents playing Trainer Cards this turn"
+                      prevent()
+                    }
                   }
+                  unregisterAfter 2
                 }
-                unregisterAfter 2
               }
             }
           }
@@ -1709,6 +1739,7 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
+              damage 20
               amnesia delegate
             }
           }
@@ -1782,14 +1813,14 @@ public enum GreatEncounters implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert self.benched : "$self is not on the Bench"
-              assert my.all.findAll {it != self && it.cards.filterByType(POKEMON_TOOL).empty} : "No available Pokémon to attach $self to"
+              assert my.all.findAll {it != self && canAttachPokemonTool(it)} : "No available Pokémon to attach $self to"
               powerUsed()
 
               def top = self.topPokemonCard
               self.cards.getExcludedList(top).discard()
               removePCS(self)
-
-              def toolCard = pokemonTool(new CustomCardInfo(top.staticInfo).setCardTypes(TRAINER, POKEMON_TOOL)) {
+              def toolCard
+              toolCard = pokemonTool(new CustomCardInfo(top.staticInfo).setCardTypes(TRAINER, POKEMON_TOOL)) {
                 def eff
                 onPlay {
                   eff = delayed {
@@ -1799,9 +1830,6 @@ public enum GreatEncounters implements LogicCardInfo {
                         prevent()
                       }
                     }
-                    unregisterAfter 2, {
-                      discard toolCard
-                    }
                   }
                 }
                 onRemoveFromPlay {
@@ -1809,6 +1837,7 @@ public enum GreatEncounters implements LogicCardInfo {
                   bg.em().run(new ChangeImplementation(top, toolCard))
                 }
               }
+              bg.em().run(new ChangeImplementation(toolCard, top))
               toolCard.player = top.player
               attachPokemonTool(toolCard, my.all.select("Attach to?"))
             }
@@ -1868,7 +1897,7 @@ public enum GreatEncounters implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
-              if (my.all.findAll { it.name == "Seviper" }) {
+              if (opp.all.find { it.name == "Seviper" }) {
                 damage 50
               }
             }
@@ -2073,11 +2102,11 @@ public enum GreatEncounters implements LogicCardInfo {
           weakness W, PLUS10
           move "Ember", {
             text "20 damage. Flip a coin. If tails, discard a [R] Energy attached to Houndour."
-            energyCost R, R
+            energyCost R
             attackRequirement {}
             onAttack {
               damage 20
-              flip 1, {}, { discardSelfEnergy R }
+              flip 1, {}, { discardSelfEnergyAfterDamage R }
             }
           }
           move "Smash Kick", {
@@ -2273,7 +2302,7 @@ public enum GreatEncounters implements LogicCardInfo {
               assert my.deck : "Deck is empty"
             }
             onAttack {
-              def card = my.deck.subList(0, 1)
+              def card = my.deck.subList(0, 1).showToOpponent("Rendezvous: Top card of your opponent's deck").first()
               if (card.cardTypes.is(POKEMON)) {
                 draw 3
               } else {
@@ -2388,6 +2417,7 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
+              heal 30, self
               clearSpecialCondition(self)
               apply ASLEEP, self
             }
@@ -2450,12 +2480,17 @@ public enum GreatEncounters implements LogicCardInfo {
           weakness G, PLUS20
           pokeBody "Sunlight", {
             text "If you have Lunatone in play, damage done to your opponent's Pokémon by your [P] or [F] Pokémon isn't affected by resistance."
-            getterA (GET_RESISTANCES) { h->
-              def isAttackerValidType = my.active.types.is(P) || my.active.types.is(F)
-              if (h.effect.target.owner == self.owner.opposite && my.all.find({ it.name == "Lunatone" } && isAttackerValidType)) {
-                h.object.clear()
+            delayedA {
+              after PROCESS_ATTACK_EFFECTS, {
+                bg.dm().each {
+                  if (it.to.owner == self.owner.opposite && it.from.owner == self.owner && (it.from.types.contains(P) || it.from.types.contains(F)) && my.all.findAll { it.name == "Lunatone" }) {
+                    it.flags.add(DamageManager.DamageFlag.NO_RESISTANCE)
+                  }
+                }
               }
             }
+
+
           }
           move "Sol Charge", {
             text "20 damage. Search your discard pile for a basic Energy card and attach it to 1 of your Benched Pokémon."
@@ -2487,7 +2522,9 @@ public enum GreatEncounters implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              damage 10, opp.bench.select("Do 10 damage to which Benched Pokémon")
+              if(opp.bench) {
+                damage 10, opp.bench.select("Do 10 damage to which Benched Pokémon")
+              }
             }
           }
         };
@@ -2507,7 +2544,7 @@ public enum GreatEncounters implements LogicCardInfo {
           }
           move "Grass Knot", {
             text "20+ damage. Plus 10 damage for each [C] Energy in the Defending Pokémon's Retreat Cost (after applying effects to the the Retreat Cost)."
-            energyCost G, C, C
+            energyCost G, C
             attackRequirement {}
             onAttack {
               damage 20 + 10 * defending.retreatCost
@@ -2619,15 +2656,8 @@ public enum GreatEncounters implements LogicCardInfo {
                 sourceDiscard = opp.discard
                 destDeck = opp.deck
               }
-
-              if (choice == 0) {
-                def cards = sourceDiscard.select(min:1, max: 2, "Select 2 cards to put on top of the deck")
-                cards.showToOpponent("Selected cards").moveTo(addToTop: true, destDeck)
-                if (cards.size() > 1) {
-                  def rearrangedCards = rearrange(my.deck.subList(0, 2))
-                  destDeck.setSubList(0, rearrangedCards)
-                }
-              }
+              def cards = rearrange(sourceDiscard.select(min:1, max: 2, "Select 2 cards to put on top of the deck"))
+              cards.showToOpponent("Selected cards").moveTo(addToTop: true, destDeck)
             }
           }
         };
@@ -2743,11 +2773,11 @@ public enum GreatEncounters implements LogicCardInfo {
           text "Attach Amulet Coin to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nIf the Pokémon Amulet Coin is attached to is your Active Pokémon at the end of your turn, draw a card."
           def eff
           onPlay { reason->
-            eff = delayed (priority: BEFORE_LAST) {
-              before (KNOCKOUT, self) {
-                if (self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
+            eff = delayed {
+              before BETWEEN_TURNS, {
+                if (bg.currentTurn==self.owner) {
                   bc "Amulet Coin activates"
-                  draw 1, TargetPlayer.OPPONENT // Targets the player being attacked (holding the lucky egg)
+                  draw 1
                 }
               }
             }
@@ -2757,11 +2787,11 @@ public enum GreatEncounters implements LogicCardInfo {
           }
         };
       case FELICITY_S_DRAWING_98:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDiscard up to 2 cards from your hand. If you discard 1 card, draw 3 cards. If you discard 2 cards, draw 4 cards."
           playRequirement {
             assert my.deck : "Your deck is empty!"
-            assert my.hand.size() > 1 : "You can't play this card"
+            assert my.hand.getExcludedList(thisCard) : "You have no other cards to discard"
           }
           onPlay {
             def toDiscard = my.hand.getExcludedList(thisCard).select(min: 1, max: 2, "Discard up to 2 cards")
@@ -2779,8 +2809,8 @@ public enum GreatEncounters implements LogicCardInfo {
           def eff
           onPlay { reason->
             eff = delayed() {
-              before BEGIN_TURN, {
-                if (self.numberOfDamageCounters >= 1) {
+              before BETWEEN_TURNS, {
+                if (self.numberOfDamageCounters >= 1 && bg.currentTurn==self.owner) {
                   bc "Leftovers activates"
                   heal 10, self
                 }
@@ -2890,11 +2920,11 @@ public enum GreatEncounters implements LogicCardInfo {
             text "Each basic Darkness Energy card attached to your Darkness Pokémon now has the effect \"If the Pokémon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance).\" You can't use more than 1 Dark Shadow Poké-Body each turn."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                if (ef.attacker.owner == self.owner && ef.attacker.cards.filterByType(BASIC_ENERGY) && bg.em().retrieveObject("Dark_Shadow") != bg.turnCount) {
+                if (ef.attacker.owner == self.owner && ef.attacker.cards.filterByBasicEnergyType(D) && bg.em().retrieveObject("Dark_Shadow") != bg.turnCount) {
                   bg.dm().each {
                     if (it.to.active && it.to != self.owner && it.notNoEffect && it.dmg.value) {
 
-                      def bonusDamage = it.from.cards.filterByType(BASIC_ENERGY).size() * 10
+                      def bonusDamage = it.from.cards.filterByBasicEnergyType(D).size() * 10
                       bc "Dark Shadow +$bonusDamage"
                       it.dmg += hp(bonusDamage)
                     }
@@ -2911,19 +2941,33 @@ public enum GreatEncounters implements LogicCardInfo {
             onAttack {
               damage 40
               apply ASLEEP
-              delayed {
-                before ASLEEP_SPC, null, null, BEGIN_TURN, {
-                  flip "Asleep (Endless Darkness)", 2, {}, {}, [2:{
-                    ef.unregisterItself(bg.em());
-                  }, 1:{
-                    bc "$ef.target is still asleep."
-                  }, 0:{
-                    bc "$ef.target is still asleep."
-                  }]
-                  prevent()
+              def pcs = defending
+              targeted(pcs) {
+                if (pcs.isSPC(ASLEEP)) {// Is !bg.em().run(new ApplySpecialCondition(POISONED, pcs, SOURCE.ATTACK)) better here
+                  delayed {
+                    before ASLEEP_SPC, null, null, BEGIN_TURN, {
+                      flip "Asleep (Endless Darkness)", 2, {}, {}, [2: {
+                        ef.unregisterItself(bg.em());
+                      }, 1:{
+                        bc "$ef.target is still asleep."
+                      }, 0:{
+                        new Knockout(pcs).run(bg)
+                        bc "$ef.target is knocked out by $thisMove."
+                      }]
+                      prevent()
+                    }
+                    after CLEAR_SPECIAL_CONDITION, pcs, {
+                      if (ef.types.contains(ASLEEP)) {
+                        unregister()
+                        bc "here"
+                      }
+                    }
+                    after FALL_BACK, pcs, { unregister() }
+                    after KNOCKOUT, pcs, { unregister() }
+                  }
                 }
-                unregisterAfter 2
               }
+
             }
           }
         };
@@ -2990,13 +3034,18 @@ public enum GreatEncounters implements LogicCardInfo {
             onAttack {
               damage 60
               afterDamage {
-                while(true) {
-                  if (!my.bench || !self.cards.filterByType(ENERGY)) break
-                  def energy = self.cards.filterByType(ENERGY).select("Select an Energy to move to a Benched Pokémon", false)
-                  if (!energy) break
-                  def target = my.bench.select("Move $energy to? (cancel to stop)", false)
-                  if (!target) break
-                  energySwitch(self, target, energy)
+                if(confirm("Hydro Reflect: Move all Energy cards attached to $self to your Benched Pokémon?")) {
+                  while(true) {
+                    if (!my.bench || !self.cards.filterByType(ENERGY)) break
+                    def energy = self.cards.filterByType(ENERGY)
+                    def sel = energy.select(max: energy.size(), "Select Energys to move to a Benched Pokémon")
+                    def target = my.bench.select("Move energys to?", false)
+                    if (target) {
+                      sel.each {
+                        energySwitch(self, target, it)
+                      }
+                    }
+                  }
                 }
               }
             }

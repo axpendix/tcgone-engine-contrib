@@ -655,12 +655,10 @@ public enum Platinum implements LogicCardInfo {
           pokeBody "Iron Skull", {
             text "Rampardos’s attack’s damage isn’t affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             delayedA {
-              before PROCESS_ATTACK_EFFECTS, {
-                if (ef.attacker == self){
-                  bg.dm().each{
-                    if (it.to.owner != self.owner && it.to.active) {
-                      it.flags.addAll(DamageManager.DamageFlag.NO_DEFENDING_EFFECT, DamageManager.DamageFlag.NO_RESISTANCE, DamageManager.DamageFlag.NO_WEAKNESS)
-                    }
+              after PROCESS_ATTACK_EFFECTS, {
+                bg.dm().each{
+                  if (it.to.owner != self.owner && it.to.active && it.from == self) {
+                    it.flags.addAll(DamageManager.DamageFlag.NO_DEFENDING_EFFECT, DamageManager.DamageFlag.NO_RESISTANCE)
                   }
                 }
               }
@@ -670,14 +668,17 @@ public enum Platinum implements LogicCardInfo {
             text "80 damage. If the Defending Pokémon would be Knocked Out by this attack, Rampardos does 40 damage to itself."
             energyCost F
             onAttack {
+              damage 80
+              def pcs = defending
               delayed {
-                def pcs = defending
-                after KNOCKOUT, pcs {
-                  damage 40, self
+                before APPLY_ATTACK_DAMAGES, {
+                  if(bg.dm().find {it.from == self && it.to == pcs && it.dmg.value >= pcs.remainingHP.value}) {
+                    damage 40, self
+                    unregister()
+                  }
                 }
                 unregisterAfter 1
               }
-              damage 80
             }
           }
           move "Mold Breaker", {
