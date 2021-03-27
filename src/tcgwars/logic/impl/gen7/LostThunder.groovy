@@ -848,7 +848,7 @@ public enum LostThunder implements LogicCardInfo {
             text "30 damage. If your opponent's Pokémon is Knocked Out by damage from this attack, prevent all effects of attacks, including damage, done to this Pokémon during your opponent's next turn."
             energyCost G
             onAttack{
-              damage 100
+              damage 30
               delayed {
                 def pcs = defending
                 after KNOCKOUT, pcs, {

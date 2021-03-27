@@ -195,7 +195,7 @@ class TcgStatics {
    */
   static CardList selectEnergy(PokemonCardSet pcs, Type...types=C) {
     def ef = new SelectEnergy(pcs.cards, types)
-    ef.playerType = pcs.owner
+    ef.playerType = bg.currentThreadPlayerType
     bg.em().activateEffect(ef)
     return ef.selectedCards ?: []
   }
@@ -1964,7 +1964,7 @@ class TcgStatics {
           applyEffect = bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})
         }
         after APPLY_ATTACK_DAMAGES, {
-          if (applyEffect) {
+          if (applyEffect && ef.attacker.inPlay) {
             eff.delegate=delegate
             eff.call()
             applyEffect = false
