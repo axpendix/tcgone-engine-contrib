@@ -760,7 +760,7 @@ public enum Stormfront implements LogicCardInfo {
             energyCost P, C
             onAttack {
               damage 20
-              if(my.hand.size == opp.hand.size()) {
+              if(my.hand.size() == opp.hand.size()) {
                 damage 40
                 applyAfterDamage CONFUSED
               }
@@ -1983,7 +1983,7 @@ public enum Stormfront implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              increasedBaseDamageNextTurn("Swords Dance", hp(30))
+              increasedBaseDamageNextTurn("Slashing Strike", hp(30))
             }
           }
           move "Slashing Strike", {
@@ -2681,7 +2681,7 @@ public enum Stormfront implements LogicCardInfo {
               flip {
                 def card = my.deck.seach("Search your deck for a [G] Energy card",energyFilter(G)).first()
                 if(card) {
-                  if(!bg.em().run(new AttachEnergy(self, card, ActivationReason.OTHER)) {
+                  if(!bg.em().run(new AttachEnergy(self, card, ActivationReason.OTHER))) {
                     preventAllEffectsNextTurn()
                   }
                 }
@@ -2923,7 +2923,7 @@ public enum Stormfront implements LogicCardInfo {
           resistance C, MINUS20
           pokePower "Ectoplasm", {
             text "If Dusknoir is your Active Pokémon and would be Knocked Out by damage from your opponent’s attack, you may discard all cards attached to Dusknoir LV. and put Dusknoir LV. as a Stadium card into play instead of discarding it. This counts as Dusknoir being Knocked Out and your opponent takes a Prize card. As long as you have Dusknoir LV. as a Stadium card in play, put 1 damage counter on each of your opponent’s Pokémon between turns. If another Stadium card comes into play or Dusknoir LV. X is discarded by the effects of any attacks, Poké-Powers, Poké-Bodies, Trainer, or Supporter cards, return Dusknoir LV.X to your hand."
-            delayedA priority:EffectPriority.BEFORE_LAST, {
+            delayedA priority:BEFORE_LAST, {
               before KNOCKOUT, self, {
                 if((ef as Knockout).byDamageFromAttack && self.owner.pbg.all.find{it != self} && confirm("Use Ectoplasm?")){
                   powerUsed()
@@ -2934,16 +2934,18 @@ public enum Stormfront implements LogicCardInfo {
                       def stadiumCard
                       stadiumCard = stadium(new CustomCardInfo(DUSKNOIR_LV_X_96).setCardTypes(TRAINER, STADIUM)) {
                         def eff
+                        bc "here"
                         onPlay {
-                          eff = delayed {
-                            before BEGIN_TURN, {
-                              thisCard.player.opposite.pbg.all.each {
-                                directDamage 10, it, TRAINER_CARD
-                              }
+                          bc "here 2"
+                          eff = delayedA {
+                            bc "here 3"
+                            before null, {
+                              bc "here 4"
                             }
                           }
                         }
                         onRemoveFromPlay {
+                          bc "here remove"
                           eff.unregister()
                           bg.em().run(new ChangeImplementation(pkmnCard, stadiumCard))
                           moveCard(pkmnCard, thisCard.player.pbg.hand)

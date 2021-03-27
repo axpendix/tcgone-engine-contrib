@@ -348,7 +348,7 @@ public enum Arceus implements LogicCardInfo {
 
         };
       case MOTHIM_6:
-        return evolution (this, from:"Burmy", hp:HP090, type:GRASS, retreatCost:0) {
+        return evolution (this, from:["Burmy","Burmy Plant Cloak","Burmy Sandy Cloak","Burmy Trash Cloak"], hp:HP090, type:GRASS, retreatCost:0) {
           weakness R, PLUS20
           resistance F, MINUS20
           move "Cloak Party", {

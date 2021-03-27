@@ -474,7 +474,7 @@ public enum Platinum implements LogicCardInfo {
             text "50+ damage. If the Defending Pokémon already has 2 or more damage counters on it, this attack does 50 damage plus 20 more damage."
             energyCost M, C, C
             onAttack {
-              if (opp.numberOfDamageCounters >=2) {
+              if (defending.numberOfDamageCounters >=2) {
                 damage 20
               }
               damage 50
@@ -655,12 +655,10 @@ public enum Platinum implements LogicCardInfo {
           pokeBody "Iron Skull", {
             text "Rampardos’s attack’s damage isn’t affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             delayedA {
-              before PROCESS_ATTACK_EFFECTS, {
-                if (ef.attacker == self){
-                  bg.dm().each{
-                    if (it.to.owner != self.owner && it.to.active) {
-                      it.flags.addAll(DamageManager.DamageFlag.NO_DEFENDING_EFFECT, DamageManager.DamageFlag.NO_RESISTANCE, DamageManager.DamageFlag.NO_WEAKNESS)
-                    }
+              after PROCESS_ATTACK_EFFECTS, {
+                bg.dm().each{
+                  if (it.to.owner != self.owner && it.to.active && it.from == self) {
+                    it.flags.addAll(DamageManager.DamageFlag.NO_DEFENDING_EFFECT, DamageManager.DamageFlag.NO_RESISTANCE)
                   }
                 }
               }
@@ -670,14 +668,17 @@ public enum Platinum implements LogicCardInfo {
             text "80 damage. If the Defending Pokémon would be Knocked Out by this attack, Rampardos does 40 damage to itself."
             energyCost F
             onAttack {
+              damage 80
+              def pcs = defending
               delayed {
-                def pcs = defending
-                after KNOCKOUT, pcs {
-                  damage 40, self
+                before APPLY_ATTACK_DAMAGES, {
+                  if(bg.dm().find {it.from == self && it.to == pcs && it.dmg.value >= pcs.remainingHP.value}) {
+                    damage 40, self
+                    unregister()
+                  }
                 }
                 unregisterAfter 1
               }
-              damage 80
             }
           }
           move "Mold Breaker", {
@@ -829,7 +830,7 @@ public enum Platinum implements LogicCardInfo {
             text "10+ damage. Does 10 damage plus 10 more damage for each Pokémon SP you have in play."
             energyCost D, C, C
             onAttack {
-              damage 10 + 10 * my.all.findAll(it.topPokemonCard.cardTypes.is(POKEMON_SP)).size()
+              damage 10 + 10 * my.all.findAll{it.topPokemonCard.cardTypes.is(POKEMON_SP)}.size()
             }
           }
 
@@ -1271,6 +1272,7 @@ public enum Platinum implements LogicCardInfo {
             energyCost W, C, C
             onAttack {
               opp.all.each {tar ->
+                bc "$tar"
                 flip {
                   damage 30, tar
                 }
@@ -1296,23 +1298,25 @@ public enum Platinum implements LogicCardInfo {
             text "80× damage. Discard as many [R] Energy cards as you like attached to your Pokémon in play. Flip a coin for each Energy card you discarded. This attack does 80 damage times the number of heads."
             energyCost R, R
             attackRequirement {
-              assert my.all.find(it.cards.filterByEnergyType(R)) : "You have no [R] Energy cards attached to your Pokémon in play"
+              assert my.all.find{it.cards.filterByEnergyType(R)} : "You have no [R] Energy cards attached to your Pokémon in play"
             }
-            def count=0
-            def toBeMoved=new CardList()
-            while (1) {
-              def tar = my.all.findAll {it.cards.filterByEnergyType(R).findAll {!toBeMoved.contains(it)}.notEmpty()}
-              if (!tar) break
-              def pcs = tar.select("Pokémon that has [R] energy to discard. Cancel to stop", false)
-              if (!pcs) break
-              def dd = pcs.cards.filterByEnergyType(R).findAll {!toBeMoved.contains(it)}.select("[R] Energy to discard")
-              toBeMoved.addAll(dd)
-              count++
+            onAttack {
+              def count = 0
+              def toBeMoved = new CardList()
+              while (1) {
+                def tar = my.all.findAll { it.cards.filterByEnergyType(R).find { !toBeMoved.contains(it) } }
+                if (!tar) break
+                def pcs = tar.select("Pokémon that has [R] energy to discard. Cancel to stop", false)
+                if (!pcs) break
+                def dd = pcs.cards.filterByEnergyType(R).findAll { !toBeMoved.contains(it) }.select("[R] Energy to discard")
+                toBeMoved.addAll(dd)
+                count++
+              }
+              flip count, {
+                damage 80
+              }
+              afterDamage { toBeMoved.discard() }
             }
-            flip count, {
-              damage 80
-            }
-            afterDamage {toBeMoved.discard()}
           }
           move "Rage", {
             text "30+ damage. Does 30 damage plus 10 more damage for each damage counter on Infernape."
@@ -1330,10 +1334,10 @@ public enum Platinum implements LogicCardInfo {
             text "20× damage. Does 20 damage times the number of Kricketot and Kricketune in your discard pile."
             energyCost C, C
             attackRequirement {
-              assert my.discard.find(it.name == "Kricketot" || it.name == "Kricketune") : "You have no Kricketot or Kricketune in your discard pile"
+              assert my.discard.find{it.name == "Kricketot" || it.name == "Kricketune"} : "You have no Kricketot or Kricketune in your discard pile"
             }
             onAttack {
-              damage 20 * my.discard.findAll(it.name == "Kricketot" || it.name == "Kricketune").size()
+              damage 20 * my.discard.findAll{it.name == "Kricketot" || it.name == "Kricketune"}.size()
             }
           }
           move "Bug Buzz", {
@@ -1566,11 +1570,11 @@ public enum Platinum implements LogicCardInfo {
             text "40+ damage. Does 40 damage plus 10 more damage for each [G] Energy attached to all of your Pokémon."
             energyCost G, C, C
             onAttack {
-              damage 40
               def count = 0
               my.all.each {
                 count += it.cards.energyCount(G)
               }
+              damage 40 + 10 * count
             }
           }
           move "Soothing Scent", {
@@ -1615,14 +1619,14 @@ public enum Platinum implements LogicCardInfo {
           resistance R, MINUS20
           pokeBody "Galactic Switch", {
             text "Once during your turn (before your attack), you may move an Energy card attached to one of your Pokémon SP to another of your Pokémon. Then, put 2 damage counters on Bronzong G. This power can't be used if Bronzong G is affected by a Special Condition. "
-            delayedA {
+            actionA {
               checkLastTurn()
               checkNoSPC()
-              assert my.all.findAll(it.topPokemonCard.cardTypes.is(POKEMON_SP)).find{it.cards.filterByType(ENERGY)} : "You have no Energy cards attached to your Pokémon SP"
+              assert my.all.findAll{it.topPokemonCard.cardTypes.is(POKEMON_SP) && it.cards.filterByType(ENERGY)}: "You have no Energy cards attached to your Pokémon SP"
               powerUsed()
-              def src = my.all.findAll(it.topPokemonCard.cardTypes.is(POKEMON_SP)).findAll{it.cards.filterByType(ENERGY)}.select("Move an Energy card from")
+              def src = my.all.findAll{it.topPokemonCard.cardTypes.is(POKEMON_SP) && it.cards.filterByType(ENERGY)}.select("Move an Energy card from")
               def card = src.cards.select("Choose the Energy card to move",cardTypeFilter(ENERGY)).first()
-              def tar = my.all.findAll{it!=src}.select("Move $card to").select()
+              def tar = my.all.findAll{it!=src}.select("Move $card to")
               energySwitch(src, tar, card)
               directDamage 20, self, SRC_ABILITY
             }
@@ -2099,7 +2103,9 @@ public enum Platinum implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
             }
             onAttack {
-              damage 50 * my.deck.subList(0,5).showToMe("Top 5 cards of your deck").showToOpponent("Top 5 cards of your opponent's deck").filterByType(ENERGY).size()
+              flip my.deck.subList(0,5).showToMe("Top 5 cards of your deck").showToOpponent("Top 5 cards of your opponent's deck").filterByType(ENERGY).size(), {
+                damage 50
+              }
               shuffleDeck()
             }
           }
@@ -2487,10 +2493,10 @@ public enum Platinum implements LogicCardInfo {
             text "Choose 1 of your opponent’s Benched Pokémon. This attack does 10 damage to that Pokémon. This attack’s damage isn’t affected by Weakness or Resistance."
             energyCost F
             attackRequirement {
-              assert oppp.bench : "Your opponent has no Benched Pokémon"
+              assert opp.bench : "Your opponent has no Benched Pokémon"
             }
             onAttack {
-              damage 10, oopp.bench.select()
+              damage 10, opp.bench.select()
             }
           }
           move "Trip Over", {
@@ -3257,7 +3263,7 @@ public enum Platinum implements LogicCardInfo {
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck for a Supporter card, a basic Energy card, and a Trainer card that has Team Galactic’s Invention in its name, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
           onPlay {
-            my.deck.search(max:3,"Search your deck for a Supporter card, a basic Energy card, and a Trainer card with Team Galactic's Invention in its name",{it.cardTypes.is(SUPPORTER) || it.cardTypes.is(BASIC_ENERGY) || (it.cardTypes.is(ITEM) && it.name.conatins("Team Galactic's Invention"))}, {!(it.filterByType(SUPPORTER).size() > 1 || it.filterByType(BASIC_ENERGY).size() > 1 || it.filterByType(ITEM).size() > 1)}).showToOpponent("Selected Cards").moveTo(my.hand)
+            my.deck.search(max:3,"Search your deck for a Supporter card, a basic Energy card, and a Trainer card with Team Galactic's Invention in its name",{it.cardTypes.is(SUPPORTER) || it.cardTypes.is(BASIC_ENERGY) || (it.cardTypes.is(ITEM) && it.name.contains("Team Galactic's Invention"))}, {!(it.filterByType(SUPPORTER).size() > 1 || it.filterByType(BASIC_ENERGY).size() > 1 || it.filterByType(ITEM).size() > 1)}).showToOpponent("Selected Cards").moveTo(my.hand)
           }
           playRequirement{
             assert my.deck : "Your deck is empty"
@@ -3266,11 +3272,17 @@ public enum Platinum implements LogicCardInfo {
       case GALACTIC_HQ_106:
         return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nWhenever any player plays any Pokémon from his or her hand to evolve his or her Pokémon, put 2 damage counters on that Pokémon."
+          def eff
           onPlay {
             eff = delayed {
-              before PREVENT_EVOLVE, null, null, EVOLVE_STANDARD, {
-                prevent()
+              boolean flag = false
+              before EVOLVE, {
+                flag = (ef.evolutionCard as Card).player.pbg.hand.contains(ef.evolutionCard)
               }
+              after EVOLVE, { if(flag) {
+                bc "Galactic HQ activates"
+                directDamage(20, ef.pokemonToBeEvolved, TRAINER_CARD)
+              } }
             }
           }
           onRemoveFromPlay{
@@ -3299,7 +3311,7 @@ public enum Platinum implements LogicCardInfo {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nLook at your opponent’s hand, then choose you or your opponent. That player shuffles his or her hand into his or her deck and draws up to 5 cards."
           onPlay {
             opp.hand.shuffledCopy().showToMe("Opponent's hand")
-            def choice = choose(["You","Your Opponent"],[0,1])
+            def choice = choose([0,1],["${thisCard.player.getPlayerUsername(bg)}","${thisCard.player.opposite.getPlayerUsername(bg)}"],"Choose a player")
             if(choice) {
               opp.hand.moveTo(hidden:true, opp.deck)
               shuffleDeck(null, TargetPlayer.OPPONENT)
@@ -3316,10 +3328,12 @@ public enum Platinum implements LogicCardInfo {
           text "Attach Memory Berry to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nThe Pokémon this card is attached to can use any attack from its Basic Pokémon or its Stage 1 Evolution card. (You still have to pay for that attack’s Energy cost.)"
           def eff
           onPlay {
-            eff = getter (GET_MOVE_LIST,self) {holder->
-              for (card in holder.effect.target.cards.filterByType(POKEMON)) {
-                if (card != holder.effect.target.topPokemonCard) {
-                  holder.object.addAll(card.moves)
+            eff = getter (GET_MOVE_LIST) { holder->
+              if(holder.effect.target.active && holder.effect.target.evolution) {
+                for(card in holder.effect.target.cards.filterByType(STAGE1, BASIC)) {
+                  if(card!=holder.effect.target.topPokemonCard){
+                    holder.object.addAll(card.moves)
+                  }
                 }
               }
             }
@@ -3331,10 +3345,12 @@ public enum Platinum implements LogicCardInfo {
       case MIASMA_VALLEY_111:
         return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nWhenever any player puts a Basic Pokémon (excluding [G] or [P] Pokémon) from his or hand onto his or her Bench, put 2 damage counters on that Pokémon."
+          def eff
           onPlay {
             eff = delayed {
               after PLAY_BASIC_POKEMON, {
                 if(!(ef.cardToPlay.types.contains(G) || ef.cardToPlay.types.contains(P))){
+                  bc "Miasma Valley activates"
                   ef.place.damage += 20
                 }
               }
@@ -3378,13 +3394,8 @@ public enum Platinum implements LogicCardInfo {
           onRemoveFromPlay {
             eff1.unregister()
           }
-          onMove {to->
-            if (!to.topPokemonCard.cardTypes.is(POKEMON_SP)) {
-              discard thisCard
-            }
-          }
           allowAttach { to->
-            !to.topPokemonCard.cardTypes.is(POKEMON_SP)
+            to.topPokemonCard.cardTypes.is(POKEMON_SP)
           }
         };
       case POWER_SPRAY_117:
@@ -3495,7 +3506,7 @@ public enum Platinum implements LogicCardInfo {
         return itemCard (this) {
           text "Return 1 of your Pokémon SP and all cards attached to it to your hand."
           onPlay {
-            def pcs = my.bench.findAll { it.topPokemonCard.cardTypes.is(POKEMON_SP) }.select("Which Pokémon SP to return to hand?")
+            def pcs = my.all.findAll { it.topPokemonCard.cardTypes.is(POKEMON_SP) }.select("Which Pokémon SP to return to hand?")
             scoopUpPokemon(pcs, delegate)
           }
           playRequirement{
@@ -3624,7 +3635,7 @@ public enum Platinum implements LogicCardInfo {
             actionA {
               checkLastTurn()
               checkNoSPC()
-              assert my.bench.size >=4 || opp.bench.size() >= 4 : "Neither player has 4 or more Benched Pokémon"
+              assert my.bench.size() >=4 || opp.bench.size() >= 4 : "Neither player has 4 or more Benched Pokémon"
               powerUsed()
               def list = LUtils.selectMultiPokemon(bg.oppClient(), opp.bench, "Opponent used Lost Cyclone. Select 3 pokemon to KEEP on your bench.", 3)
               opp.bench.findAll{!list.contains(it)}.each{
@@ -3857,7 +3868,7 @@ public enum Platinum implements LogicCardInfo {
             text "Remove 4 damage counters from Swablu. Swablu can't retreat during your next turn."
             energyCost ()
             onAttack {
-              heal 4, self
+              heal 40, self
               cantRetreat(self)
             }
           }
