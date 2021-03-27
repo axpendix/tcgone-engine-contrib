@@ -1379,7 +1379,7 @@ public enum SecretWonders implements LogicCardInfo {
             text "20 damage. If you have Minun on your Bench, you may do 20 damage to any 1 Benched Pokémon instead."
             energyCost L
             onAttack {
-              damage 20, my.bench.find{it.name = "Minun"}?defending:opp.all.select("Tag Play +")
+              damage 20, my.bench.find{it.name == "Minun"}?defending:opp.all.select("Tag Play +")
             }
           }
 
@@ -1389,10 +1389,14 @@ public enum SecretWonders implements LogicCardInfo {
           weakness L, PLUS20
           resistance P, MINUS20
           pokeBody "Rough Skin", {
-            text "If Sharpedo is your Active Pokémon and is damaged by an opponent’s attack, put 2 damage counter on the Attacking Pokémon."
-            ifActiveAndDamagedByAttackBody(delegate) {
-              directDamage(20, ef.attacker, Source.SRC_ABILITY)
-            }
+            text "If Sharpedo is your Active Pokémon and is damaged by an opponent’s attack , put 2 damage counter on the Attacking Pokémon."
+            delayedA{
+                before APPLY_ATTACK_DAMAGES, {
+                  if (bg.currentTurn == self.owner.opposite && bg.dm().find({ it.to==self && it.dmg.value }) && self.active) {
+                    directDamage(20, ef.attacker, Source.SRC_ABILITY)
+                  }
+                }
+              }
           }
           move "Strike Wound", {
             text "60+ damage. If the Defending Pokémon has 2 or more damage counters on it, this attack does 60 damage plus 20 more damage. This attack damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects of that Pokémon."
@@ -1448,8 +1452,8 @@ public enum SecretWonders implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert self.benched : "$self is not on your bench"
-              assert my.bench.find{it.name = "Unown E"} : "Unown E is not on your Bench"
-              assert my.bench.find{it.name = "Unown T"} : "Unown T is not on your Bench"
+              assert my.bench.find{it.name == "Unown E"} : "Unown E is not on your Bench"
+              assert my.bench.find{it.name == "Unown T"} : "Unown T is not on your Bench"
               powerUsed()
               flip {
                 my.discard.select("Search your discard pile for an Energy card", cardTypeFilter(ENERGY)).moveTo(addToTop: true, my.deck)
@@ -1935,19 +1939,21 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost C, C
             onAttack {
               damage 20
-              def pcs = defending
-              targeted(pcs){
-                delayed {
-                  before APPLY_ATTACK_DAMAGES, {
-                    bg.dm().each {if(it.to==pcs && it.from==self && it.dmg.value>0 && it.notNoEffect){
-                      bc "$thisMove increases damage"
-                      it.dmg+=hp(20)
-                    }}
+              afterDamage {
+                def pcs = defending
+                targeted(pcs){
+                  delayed {
+                    before APPLY_ATTACK_DAMAGES, {
+                      bg.dm().each {if(it.to==pcs && it.from==self && it.dmg.value>0 && it.notNoEffect){
+                        bc "$thisMove increases damage"
+                        it.dmg+=hp(20)
+                      }}
+                    }
+                    unregisterAfter 3
+                    after FALL_BACK, pcs, {unregister()}
+                    after EVOLVE, pcs, {unregister()}
+                    after DEVOLVE, pcs, {unregister()}
                   }
-                  unregisterAfter 3
-                  after FALL_BACK, pcs, {unregister()}
-                  after EVOLVE, pcs, {unregister()}
-                  after DEVOLVE, pcs, {unregister()}
                 }
               }
             }
@@ -2234,8 +2240,8 @@ public enum SecretWonders implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert self.benched : "$self is not on your bench"
-              assert my.bench.find{it.name = "Unown O"} : "Unown O is not on your Bench"
-              assert my.bench.find{it.name = "Unown D"} : "Unown D is not on your Bench"
+              assert my.bench.find{it.name == "Unown O"} : "Unown O is not on your Bench"
+              assert my.bench.find{it.name == "Unown D"} : "Unown D is not on your Bench"
               powerUsed()
               if(oppConfirm("You may take a Prize card. If you do, your opponent also takes a Prize card. If you don't, your opponent draws a card.")) {
                 bg.em().run(new TakePrize(self.owner.opposite, null))
@@ -2266,8 +2272,8 @@ public enum SecretWonders implements LogicCardInfo {
               checkLastTurn()
               assert my.hand.size() == 1 : "You don't have exactly 1 card in your hand"
               assert self.benched : "$self is not on your bench"
-              assert my.bench.find{it.name = "Unown N"} : "Unown N is not on your Bench"
-              assert my.bench.find{it.name = "Unown E"} : "Unown E is not on your Bench"
+              assert my.bench.find{it.name == "Unown N"} : "Unown N is not on your Bench"
+              assert my.bench.find{it.name == "Unown E"} : "Unown E is not on your Bench"
               powerUsed()
               draw 6
             }
@@ -2314,7 +2320,7 @@ public enum SecretWonders implements LogicCardInfo {
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
           pokePower "ZERO", {
-            text "Once during your turn, if Unown Z is on your Bench and you have no cards in you deck, you may discard all cards attached to Unown Z and put Unown Z on top of your deck."
+            text "Once during your turn , if Unown Z is on your Bench and you have no cards in you deck, you may discard all cards attached to Unown Z and put Unown Z on top of your deck."
             actionA {
               checkLastTurn()
               assert my.deck.size() == 0 : "Your deck is not empty"
@@ -2351,10 +2357,14 @@ public enum SecretWonders implements LogicCardInfo {
           resistance F, MINUS20
           pokeBody "Dangerous Scales", {
             text "If Venomoth is your Active Pokémon and is damaged by an opponent’s attack (even is Venomoth is Knocked Out), the Attacking Pokémon is now Asleep and Poisoned."
-            ifActiveAndDamagedByAttackBody(delegate) {
-              bc "Dangerous Scales"
-              apply ASLEEP, (ef.attacker as PokemonCardSet)
-              apply POISONED, (ef.attacker as PokemonCardSet)
+            delayedA (priority: LAST) {
+              before APPLY_ATTACK_DAMAGES, {
+                if (bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({it.to==self && it.dmg.value})) {
+                  bc "Dangerous Scales"
+                  apply ASLEEP, (ef.attacker as PokemonCardSet)
+                  apply POISONED, (ef.attacker as PokemonCardSet)
+                }
+              }
             }
           }
           move "Disturbance Dive", {
@@ -3004,14 +3014,16 @@ public enum SecretWonders implements LogicCardInfo {
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
           weakness L, PLUS20
           pokePower "Balloon Sting", {
-            text "Once during your opponent’s turn, if Qwilfish is your Active Pokémon and is damaged by an attack (even if Qwilfish is Knocked Out), you may flip a coin. If heads, the Attacking Pokémon is now Poisoned. Put 2 damage counter instead of 1 on that Pokémon between turns."
-            ifActiveAndDamagedByAttackBody(delegate) {
-              if (confirm("Use Balloon Sting?")) {
-                powerUsed()
-                bc "Balloon Sting activates"
-                flip {
-                  apply POISONED, (ef.attacker as PokemonCardSet), SRC_ABILITY
-                  extraPoison 1
+            text "Once during your opponent’s turn, if Qwilfish is your Active Pokémon and is damage by an attack (even if Qwilfish is Knocked Out), you may flip a coin. If heads, the Attacking Pokémon is now Poisoned. Put 2 damage counter instead of 1 on that Pokémon between turns."
+            delayedA (priority: LAST) {
+              before APPLY_ATTACK_DAMAGES, {
+                if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value}) && confirm ("Use Balloon Sting?")){
+                  powerUsed()
+                  bc "Balloon Sting activates"
+                  flip {
+                    apply POISONED, (ef.attacker as PokemonCardSet), SRC_ABILITY
+                    extraPoison 1
+                  }
                 }
               }
             }
