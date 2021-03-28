@@ -1,6 +1,7 @@
 package tcgwars.logic.impl.gen4;
 
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
+import tcgwars.logic.impl.gen3.RubySapphire
 
 import tcgwars.logic.effect.gm.PlayTrainer
 
@@ -1390,13 +1391,10 @@ public enum SecretWonders implements LogicCardInfo {
           resistance P, MINUS20
           pokeBody "Rough Skin", {
             text "If Sharpedo is your Active Pokémon and is damaged by an opponent’s attack , put 2 damage counter on the Attacking Pokémon."
-            delayedA{
-                before APPLY_ATTACK_DAMAGES, {
-                  if (bg.currentTurn == self.owner.opposite && bg.dm().find({ it.to==self && it.dmg.value }) && self.active) {
-                    directDamage(20, ef.attacker, Source.SRC_ABILITY)
-                  }
-                }
-              }
+            ifActiveAndDamagedByAttackBody(delegate) {
+              bc "Rough Skin activates"
+              directDamage(20, ef.attacker)
+            }
           }
           move "Strike Wound", {
             text "60+ damage. If the Defending Pokémon has 2 or more damage counters on it, this attack does 60 damage plus 20 more damage. This attack damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects of that Pokémon."
@@ -3015,15 +3013,12 @@ public enum SecretWonders implements LogicCardInfo {
           weakness L, PLUS20
           pokePower "Balloon Sting", {
             text "Once during your opponent’s turn, if Qwilfish is your Active Pokémon and is damage by an attack (even if Qwilfish is Knocked Out), you may flip a coin. If heads, the Attacking Pokémon is now Poisoned. Put 2 damage counter instead of 1 on that Pokémon between turns."
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value}) && confirm ("Use Balloon Sting?")){
-                  powerUsed()
-                  bc "Balloon Sting activates"
-                  flip {
-                    apply POISONED, (ef.attacker as PokemonCardSet), SRC_ABILITY
-                    extraPoison 1
-                  }
+            ifActiveAndDamagedByAttackBody(delegate) {
+              if(confirm("Use Balloon Sting?",self.owner)) {
+                bc "Balloon Sting activates"
+                flip {
+                  apply POISONED, ef.attacker
+                  new ExtraPoisonDamage(1,ef.attacker).run(bg())
                 }
               }
             }
@@ -3092,9 +3087,9 @@ public enum SecretWonders implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
             }
             onAttack {
-              def list = my.deck.sublist(0,2)
-              def choice = list.select("Choose a card to put into your hand").moveTo(my.hand)
-              list.getExcludedList(choice).moveTo(my.deck)
+              def top = my.deck.subList(0,2)
+              def choice = top.select("Choose a card to put into your hand").moveTo(my.hand)
+              top.getExcludedList(choice).moveTo(my.deck)
             }
           }
           move "Scratch", {
@@ -3163,6 +3158,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
             onAttack {
               healAll self
+              discardSelfEnergy W
             }
           }
 
@@ -3479,19 +3475,7 @@ public enum SecretWonders implements LogicCardInfo {
           }
         };
       case NIGHT_MAINTENANCE_120:
-        return basicTrainer (this) {
-          text "Search your discard pile for up to 3 in any combination of Pokémon and basic Energy cards. Show them to your opponent and shuffle them into your deck."
-          onPlay {
-            def tar = my.discard.findAll{it.cardTypes.is(BASIC_ENERGY) || it.cardTypes.is(POKEMON)}
-            def maxSel = Math.min(3,tar.size())
-            my.discard.select(count:maxSel,"Choose $maxSel cards to put back in your deck",{it.cardTypes.is(BASIC_ENERGY) || it.cardTypes.is(POKEMON)}).showToOpponent("Selected Cards").moveTo(my.deck)
-            shuffleDeck()
-          }
-          playRequirement{
-            assert my.discard.findAll{it.cardTypes.is(BASIC_ENERGY) || it.cardTypes.is(POKEMON)} : "There are no basic Pokémon or basic Energy cards in your discard"
-          }
-
-        };
+        return copy (MysteriousTreasures.NIGHT_MAINTENANCE_113, this);
       case PLUSPOWER_121:
         return copy (DiamondPearl.PLUSPOWER_109, this);
       case PROFESSOR_OAK_S_VISIT_122:
@@ -3521,17 +3505,7 @@ public enum SecretWonders implements LogicCardInfo {
           }
         };
       case RIVAL_124:
-        return supporter (this) {
-          text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nReveal the top 5 cards of your deck. Your opponent chooses 3 of those cards. Put those cards into your hand and put other 2 cards on top of your deck. Shuffle your deck afterward."
-          onPlay {
-            def top = my.deck.subList(0,5)
-            def cards = top.showToMe("Top 5 cards of your deck").oppSelect("Choose 3 cards for your opponent to draw").moveTo(my.hand)
-            shuffleDeck()
-          }
-          playRequirement{
-            assert my.deck : "Your deck is empty"
-          }
-        };
+        return copy (DiamondPearl.RIVAL_113, this);
       case ROSEANNE_S_RESEARCH_125:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck for up to 2 in any combination of Basic Pokémon and basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
@@ -3548,7 +3522,7 @@ public enum SecretWonders implements LogicCardInfo {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDraw 2 cards. Then, choose a card from your opponent’s hand without looking and put it on the bottom of his or her deck."
           onPlay {
             draw 2
-            opp.hand.shuffledCopy().select(hidden: true, "Choose a card from your opponent's hand without looking").moveTo(hidden: true, opp.deck)
+            opp.hand.select(hidden: true, "Choose a card from your opponent's hand without looking").moveTo(hidden: true, opp.deck)
           }
           playRequirement{
             assert my.deck || opp.hand : "Your deck and your opponent's hand are both empty"
@@ -3611,7 +3585,9 @@ public enum SecretWonders implements LogicCardInfo {
               delayed {
                 def pcs = defending
                 after KNOCKOUT, pcs, {
-                  my.discard.select(min:0,"Search your discard pile for a card").showToOpponent("Darkness Wing:Selected Cards").moveTo(my.hand)
+                  if(my.discard) {
+                    my.discard.select(min:0,"Darkness Wing: Search your discard pile for a card").showToOpponent("Darkness Wing: Selected Cards").moveTo(my.hand)
+                  }
                 }
                 unregisterAfter 1
               }
