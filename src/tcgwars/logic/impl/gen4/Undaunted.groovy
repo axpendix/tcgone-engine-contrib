@@ -2132,7 +2132,7 @@ public enum Undaunted implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
             }
             onAttack {
-              def top = my.deck.sublist(0,5)
+              def top = my.deck.subList(0,5)
               damage 100 * top.filterByType(ENERGY).size()
               top.discard()
             }

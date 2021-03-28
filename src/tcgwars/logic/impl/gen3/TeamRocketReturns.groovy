@@ -628,7 +628,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               assert my.all.size()>=2
 
               powerUsed()
-              def src=my.all.findAll {it.cards.energyCount(D)>0}.select("Source for [G]")
+              def src=my.all.findAll {it.cards.energyCount(D)>0}.select("Source for [D]")
               def card=src.cards.filterByEnergyType(D).select("Card to move").first()
               def tar=my.all
               tar.remove(src)
