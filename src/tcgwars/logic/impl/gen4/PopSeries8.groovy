@@ -268,13 +268,7 @@ public enum PopSeries8 implements LogicCardInfo {
 
         };
       case NIGHT_MAINTENANCE_9:
-        return basicTrainer (this) {
-          text "Search your discard pile for up to 3 in any combination of Pokémon and basic Energy cards. Show them to your opponent and shuffle them into your deck."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy (MysteriousTreasures.NIGHT_MAINTENANCE_113, this);
       case RARE_CANDY_10:
         return basicTrainer (this) {
           text "Choose 1 of your Basic Pokémon in play. If you have a Stage 1 or Stage 2 card that evolves from that Pokémon in your hand, put that card on the Basic Pokémon. (This counts as evolving that Pokémon.)"
