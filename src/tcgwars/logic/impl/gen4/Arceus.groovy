@@ -359,6 +359,7 @@ public enum Arceus implements LogicCardInfo {
             }
             onAttack {
               my.deck.search(max:3, {it.name.contains("Burmy") || it.name.contains("Wormadam")}).showToOpponent("Cloak Party : Selected cards").moveTo(my.hand)
+              shuffleDeck()
             }
           }
           move "Energy Assist", {

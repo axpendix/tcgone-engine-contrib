@@ -1296,7 +1296,7 @@ public enum Platinum implements LogicCardInfo {
           weakness W, PLUS30
           move "Rushing Flames", {
             text "80× damage. Discard as many [R] Energy cards as you like attached to your Pokémon in play. Flip a coin for each Energy card you discarded. This attack does 80 damage times the number of heads."
-            energyCost R, R
+            energyCost R
             attackRequirement {
               assert my.all.find{it.cards.filterByEnergyType(R)} : "You have no [R] Energy cards attached to your Pokémon in play"
             }
@@ -3640,6 +3640,11 @@ public enum Platinum implements LogicCardInfo {
               def list = LUtils.selectMultiPokemon(bg.oppClient(), opp.bench, "Opponent used Lost Cyclone. Select 3 pokemon to KEEP on your bench.", 3)
               opp.bench.findAll{!list.contains(it)}.each{
                 it.cards.moveTo(opp.lostZone)
+                removePCS(it)
+              }
+              def list2 = LUtils.selectMultiPokemon(bg.oppClient(), opp.bench, "Opponent used Lost Cyclone. Select 3 pokemon to KEEP on your bench.", 3)
+              my.bench.findAll{!list2.contains(it)}.each{
+                it.cards.moveTo(my.lostZone)
                 removePCS(it)
               }
             }

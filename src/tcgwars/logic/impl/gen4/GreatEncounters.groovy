@@ -895,7 +895,9 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost M, C
             onAttack {
               damage 20
-              increasedDamageDoneToDefending(self, defending, 20, thisMove.name)
+              afterDamage {
+                increasedDamageDoneToDefending(self, defending, 20, thisMove.name)
+              }
             }
           }
         };
@@ -973,10 +975,11 @@ public enum GreatEncounters implements LogicCardInfo {
             onAttack {
               damage 40
               afterDamage {
-                if (defending.evolution && !defending.slatedToKO && confirm("Flip for $thisMove?")) {
+                if (!defending.slatedToKO && confirm("Flip for $thisMove?")) {
                   flip {
                     discardAllSelfEnergy()
-                    devolve(defending, defending.topPokemonCard, opp.deck)
+                    defending.cards.moveTo(opp.deck)
+                    removePCS(defending)
                     shuffleDeck null, TargetPlayer.OPPONENT
                   }
                 }
@@ -992,7 +995,7 @@ public enum GreatEncounters implements LogicCardInfo {
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each{
-                  if (!it.from == self && it.to.active && it.to.owner != self.owner && it.dmg.value && self.numberOfDamageCounters) {
+                  if (it.from == self && it.to.active && it.to.owner != self.owner && it.dmg.value && self.numberOfDamageCounters) {
                     bc "Anger Point +40"
                     it.dmg += hp(40)
                   }
@@ -1056,9 +1059,9 @@ public enum GreatEncounters implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert self.benched : "$self is not on your bench"
-              assert my.bench.find{it.name = "Unown E"} : "Unown E is not on your Bench"
-              assert my.bench.find{it.name = "Unown A"} : "Unown A is not on your Bench"
-              assert my.bench.find{it.name = "Unown L"} : "Unown L is not on your Bench"
+              assert my.bench.find{it.name == "Unown E"} : "Unown E is not on your Bench"
+              assert my.bench.find{it.name == "Unown A"} : "Unown A is not on your Bench"
+              assert my.bench.find{it.name == "Unown L"} : "Unown L is not on your Bench"
               powerUsed()
               clearSpecialCondition(my.active, SRC_ABILITY)
             }
@@ -1312,6 +1315,7 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 30
               if (self.cards.energyCount(P)) {
                 damage 20
+                applyAfterDamage CONFUSED
               }
             }
           }
@@ -1566,7 +1570,7 @@ public enum GreatEncounters implements LogicCardInfo {
               energies.each {
                 attachEnergy(self, it)
               }
-              heal energies.size() * 10, self
+              heal energies.size() * 20, self
             }
           }
           move "Jet Return", {
@@ -1685,7 +1689,7 @@ public enum GreatEncounters implements LogicCardInfo {
               flip {
                 delayed {
                   before PLAY_TRAINER, {
-                    if (bg.currentTurn == self.owner.opposite) {
+                    if (bg.currentTurn == self.owner.opposite && ef.cardToPlay.cardTypes.is(ITEM)) {
                       wcu "Tail Blade prevents playing Trainer Cards this turn"
                       prevent()
                     }
@@ -1839,7 +1843,7 @@ public enum GreatEncounters implements LogicCardInfo {
               }
               bg.em().run(new ChangeImplementation(toolCard, top))
               toolCard.player = top.player
-              attachPokemonTool(toolCard, my.all.select("Attach to?"))
+              attachPokemonTool(toolCard, my.all.findAll{it != self && canAttachPokemonTool(it)}.select("Attach to?"))
             }
           }
           move "Hidden Power", {
@@ -2656,8 +2660,12 @@ public enum GreatEncounters implements LogicCardInfo {
                 sourceDiscard = opp.discard
                 destDeck = opp.deck
               }
-              def cards = rearrange(sourceDiscard.select(min:1, max: 2, "Select 2 cards to put on top of the deck"))
+              def cards = sourceDiscard.select(min:1, max: 2, "Select 2 cards to put on top of the deck")
               cards.showToOpponent("Selected cards").moveTo(addToTop: true, destDeck)
+              if (cards.size() > 1) {
+                def rearrangedCards = rearrange(destDeck.subList(0, 2))
+                destDeck.setSubList(0, rearrangedCards)
+              }
             }
           }
         };
@@ -2775,7 +2783,7 @@ public enum GreatEncounters implements LogicCardInfo {
           onPlay { reason->
             eff = delayed {
               before BETWEEN_TURNS, {
-                if (bg.currentTurn==self.owner) {
+                if (bg.currentTurn==self.owner && self.active) {
                   bc "Amulet Coin activates"
                   draw 1
                 }
@@ -2810,7 +2818,7 @@ public enum GreatEncounters implements LogicCardInfo {
           onPlay { reason->
             eff = delayed() {
               before BETWEEN_TURNS, {
-                if (self.numberOfDamageCounters >= 1 && bg.currentTurn==self.owner) {
+                if (self.numberOfDamageCounters >= 1 && self.active && bg.currentTurn==self.owner) {
                   bc "Leftovers activates"
                   heal 10, self
                 }
@@ -2920,7 +2928,7 @@ public enum GreatEncounters implements LogicCardInfo {
             text "Each basic Darkness Energy card attached to your Darkness Pokémon now has the effect \"If the Pokémon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance).\" You can't use more than 1 Dark Shadow Poké-Body each turn."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                if (ef.attacker.owner == self.owner && ef.attacker.cards.filterByBasicEnergyType(D) && bg.em().retrieveObject("Dark_Shadow") != bg.turnCount) {
+                if (ef.attacker.owner == self.owner && ef.attacker.types.contains(D) && ef.attacker.cards.filterByBasicEnergyType(D) && bg.em().retrieveObject("Dark_Shadow") != bg.turnCount) {
                   bg.dm().each {
                     if (it.to.active && it.to != self.owner && it.notNoEffect && it.dmg.value) {
 
@@ -2951,8 +2959,8 @@ public enum GreatEncounters implements LogicCardInfo {
                       }, 1:{
                         bc "$ef.target is still asleep."
                       }, 0:{
+                        bc "$pcs is knocked out by $thisMove."
                         new Knockout(pcs).run(bg)
-                        bc "$ef.target is knocked out by $thisMove."
                       }]
                       prevent()
                     }

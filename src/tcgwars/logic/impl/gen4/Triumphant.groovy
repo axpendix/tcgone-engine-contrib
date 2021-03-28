@@ -494,7 +494,7 @@ public enum Triumphant implements LogicCardInfo {
           pokeBody "Tangling Tendrils", {
             text "As long as Victreebel is your Active Pokémon, your opponent’s Active Pokémon’s Retreat Cost is [C][C] more."
             getterA (GET_RETREAT_COST) { h->
-              if(h.effect.target == self.owner.opposite.active && self.active) {
+              if(h.effect.target == self.owner.opposite.pbg.active && self.active) {
                 h.object += 2
               }
             }
@@ -548,8 +548,10 @@ public enum Triumphant implements LogicCardInfo {
               assert opp.all.find{it.cards.filterByType(ENERGY)} : "Your opponent's Pokémon have no energy attached"
             }
             onAttack {
-              def tar = opp.all.findAll{it.cards.filterByType(ENERGY)}.select("Select a Pokémon to remove an energy from")
-              tar.cards.select("Select an energy to move to put in the Lost Zone",cardTypeFilter(ENERGY)).moveTo(opp.lostZone)
+              flip {
+                def tar = opp.all.findAll{it.cards.filterByType(ENERGY)}.select("Select a Pokémon to remove an energy from")
+                tar.cards.select("Select an energy to move to put in the Lost Zone",cardTypeFilter(ENERGY)).moveTo(opp.lostZone)
+              }
             }
           }
           move "Breakdown", {
@@ -794,7 +796,7 @@ public enum Triumphant implements LogicCardInfo {
               delayed {
                 def eff = getter IS_ABILITY_BLOCKED, { Holder h->
                   if(h.effect.ability instanceof PokePower) {
-                    h.object == true
+                    h.object = true
                   }
                 }
                 unregisterAfter 2
@@ -858,6 +860,12 @@ public enum Triumphant implements LogicCardInfo {
             energyCost F, C
             onAttack {
               damage 60
+              my.bench.each {
+                damage 10, it
+              }
+              opp.bench.each {
+                damage 10, it
+              }
               damage 60, self
             }
           }
@@ -1277,7 +1285,7 @@ public enum Triumphant implements LogicCardInfo {
             text "Flip 3 coins. This attack does 20 damage times the number of heads."
             energyCost C, C
             onAttack {
-              damage 3, {
+              flip 3, {
                 damage 20
               }
             }
@@ -2052,7 +2060,7 @@ public enum Triumphant implements LogicCardInfo {
             onAttack {
               damage 10
               afterDamage {
-                whirlrwind()
+                whirlwind()
               }
             }
           }
@@ -2197,7 +2205,7 @@ public enum Triumphant implements LogicCardInfo {
           def eff
           onPlay {
             eff = getter GET_FULL_HP, {h->
-              if(h.effect.target.cardTypes.is(LEGEND)) {
+              if(h.effect.target.topPokemonCard.cardTypes.is(LEGEND)) {
                 h.object += hp(30)
               }
             }
@@ -2397,14 +2405,14 @@ public enum Triumphant implements LogicCardInfo {
               assert opp.hand : "Your opponent's hand is empty"
             }
             onAttack {
-              opp.hand.shuffledCopy().select(min:0,max:self.cards.energyCount(P),"Choose a number of Pokémon to put into your opponent's lost zone").moveto(opp.lostZone)
+              opp.hand.shuffledCopy().select(min:0,max:self.cards.energyCount(P),"Choose a number of Pokémon to put into your opponent's lost zone",{it.cardTypes.is(POKEMON)}).moveTo(opp.lostZone)
             }
           }
           move "Cursed Drop", {
             text "Put 4 damage counters on your opponent’s Pokémon in any way you like."
             energyCost P, C
             onAttack {
-              putDamageCountersOnOpponentsPokemon(counters)
+              putDamageCountersOnOpponentsPokemon(4)
             }
           }
 
@@ -2549,7 +2557,7 @@ public enum Triumphant implements LogicCardInfo {
               assert opp.bench : "Your opponent only has 1 Pokémon in play"
             }
             onAttack {
-              eff = delayed {
+              def eff = delayed {
                 before KNOCKOUT, {
                   prevent()
                 }
