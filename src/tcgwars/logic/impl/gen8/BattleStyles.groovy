@@ -423,6 +423,17 @@ public enum BattleStyles implements LogicCardInfo {
         bwAbility "Spring Bloom", {
           text "As often as you like during your turn, you may attach a [G] Energy card from your hand to 1 of your Pokémon that doesn't have a Rule Box (Pokémon V, Pokémon-GX, etc. have Rule Boxes)."
           actionA {
+            assert my.hand.filterByEnergyType(G) : "No [G] Energy in hand"
+            def validTargets = my.all.findAll {
+              it.topPokemonCard.cardTypes.any {
+                [POKEMON_V, VMAX, POKEMON_GX, POKEMON_EX].contains(it)
+              }
+            }
+            assert validTargets : "No valid targets"
+            powerUsed()
+            def selEnergy = my.hand.filterByBasicEnergyType(G).first()
+            def pcs = validTargets.select("Attach to?")
+            attachEnergy(pcs, selEnergy, PLAY_FROM_HAND)
           }
         }
         move "Seed Bomb", {
@@ -451,7 +462,7 @@ public enum BattleStyles implements LogicCardInfo {
           energyCost GRASS, COLORLESS, COLORLESS
           attackRequirement {}
           onAttack {
-            damage 60
+            flip 3, { damage 60 }
           }
         }
       };
@@ -471,7 +482,12 @@ public enum BattleStyles implements LogicCardInfo {
           energyCost COLORLESS, COLORLESS
           attackRequirement {}
           onAttack {
-
+            def count = my.all.count {it.name == "Durant" }
+            (1..count).each {
+              if (opp.deck.notEmpty) {
+                discard(opp.deck.first())
+              }
+            }
           }
         }
       };
@@ -483,7 +499,9 @@ public enum BattleStyles implements LogicCardInfo {
           energyCost COLORLESS
           attackRequirement {}
           onAttack {
-            damage 30
+            flip {
+              damage 30
+            }
           }
         }
       };
@@ -495,7 +513,7 @@ public enum BattleStyles implements LogicCardInfo {
           energyCost COLORLESS
           attackRequirement {}
           onAttack {
-
+            heal 40, self
           }
         }
         move "Bug Bite", {
@@ -513,9 +531,14 @@ public enum BattleStyles implements LogicCardInfo {
         move "Vital Powder", {
           text "Heal all damage from 2 of your Benched Pokémon."
           energyCost COLORLESS
-          attackRequirement {}
+          attackRequirement {
+            assert my.bench.findAll { it.numberOfDamageCounters } : "None of your Benched is damaged"
+          }
           onAttack {
-
+            healAll my.bench.findAll {it.numberOfDamageCounters}.select("Fully heal")
+            if (my.bench.findAll {it.numberOfDamageCounters}) {
+              healAll my.bench.findAll {it.numberOfDamageCounters}.select("Fully heal")
+            }
           }
         }
         move "Gust", {
@@ -535,7 +558,7 @@ public enum BattleStyles implements LogicCardInfo {
           energyCost GRASS
           attackRequirement {}
           onAttack {
-            damage 20
+            flipUntilTails { damage 20 }
           }
         }
       };
@@ -548,6 +571,7 @@ public enum BattleStyles implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            healAfterDamage(30, self)
           }
         }
         move "Solar Cutter", {
@@ -568,6 +592,7 @@ public enum BattleStyles implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            whirlwind()
           }
         }
         move "Nature's Judgment", {
@@ -576,6 +601,10 @@ public enum BattleStyles implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 80
+            if (confirm("Discard all Energy from $self to do 80 more damage?")) {
+              discardAllSelfEnergy()
+              damage 80
+            }
           }
         }
       };
@@ -600,6 +629,9 @@ public enum BattleStyles implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            afterDamage{
+              defendingAttacksCostsMore (defending, [C, C])
+            }
           }
         }
         move "Wing Attack", {
@@ -619,7 +651,7 @@ public enum BattleStyles implements LogicCardInfo {
           energyCost GRASS, COLORLESS, COLORLESS
           attackRequirement {}
           onAttack {
-            damage 250
+            damage 250 - (10*self.numberOfDamageCounters)
           }
         }
       };
@@ -632,6 +664,9 @@ public enum BattleStyles implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            afterDamage {
+              attachEnergyFrom(type:R, may:true, my.hand, self)
+            }
           }
         }
         move "Fire Fang", {
@@ -640,6 +675,7 @@ public enum BattleStyles implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 90
+            applyAfterDamage BURNED
           }
         }
       };
@@ -652,6 +688,9 @@ public enum BattleStyles implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            if (defending.topPokemonCard.cardTypes.is(POKEMON_V)) {
+              damage 50
+            }
           }
         }
         move "Flare Shot", {
@@ -660,6 +699,7 @@ public enum BattleStyles implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 120
+            discardAllSelfEnergy()
           }
         }
       };
@@ -669,9 +709,11 @@ public enum BattleStyles implements LogicCardInfo {
         move "Spreading Flames", {
           text "Attach up to 3 [R] Energy cards from your discard pile to your Pokémon in any way you like."
           energyCost COLORLESS
-          attackRequirement {}
+          attackRequirement {
+            assert discardPile.filterByEnergyType(R)
+          }
           onAttack {
-
+            discardPile.filterByEnergyType(R).select(count: 3).each { attachEnergy(my.all.select("Attach"), it) }
           }
         }
         move "Max Victory", {
@@ -680,6 +722,9 @@ public enum BattleStyles implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 100
+            if (defending.topPokemonCard.cardTypes.is(POKEMON_V)) {
+              damage 120
+            }
           }
         }
       };
@@ -728,7 +773,18 @@ public enum BattleStyles implements LogicCardInfo {
         weakness WATER
         bwAbility "Fighting Fury Stance", {
           text "Your Single Strike Pokémon's attacks do 30 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
-          actionA {
+          delayedA {
+            after PROCESS_ATTACK_EFFECTS, {
+              if (ef.attacker.owner == self.owner) {
+                bg.dm().each {
+                  if (it.from.active && it.from.owner == self.owner && it.to.active && it.to.owner != self.owner
+                    && it.dmg.value && it.from.topPokemonCard.cardTypes.is(SINGLE_STRIKE)) {
+                    bc "Fighting Fury Stance +30"
+                    it.dmg += hp(30)
+                  }
+                }
+              }
+            }
           }
         }
         move "Heat Crash", {
@@ -757,6 +813,14 @@ public enum BattleStyles implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 70
+
+            def count = 0
+            flip 2, { count += 1 }
+            afterDamage {
+              count.times {
+                discardDefendingEnergy()
+              }
+            }
           }
         }
       };
@@ -766,9 +830,18 @@ public enum BattleStyles implements LogicCardInfo {
         move "Call Sign", {
           text "Search your deck for a Pokémon, reveal it, and put it into your hand. Then, shuffle your deck."
           energyCost FIRE
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Deck is empty"
+          }
           onAttack {
-
+            my.deck.search(text, {
+              it.cardTypes.is(POKEMON)
+            }).each {
+              deck.remove(it)
+              hand.add(it)
+              bc "Moved $it to hand"
+            }
+            shuffleDeck()
           }
         }
       };
@@ -780,7 +853,7 @@ public enum BattleStyles implements LogicCardInfo {
           energyCost FIRE
           attackRequirement {}
           onAttack {
-
+            apply CONFUSED
           }
         }
         move "Derisive Roasting", {
@@ -788,7 +861,7 @@ public enum BattleStyles implements LogicCardInfo {
           energyCost COLORLESS, COLORLESS
           attackRequirement {}
           onAttack {
-            damage 90
+            damage 90 * defending.specialConditions.size()
           }
         }
       };
@@ -801,6 +874,7 @@ public enum BattleStyles implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            applyAfterDamage(BURNED)
           }
         }
       };
@@ -809,8 +883,30 @@ public enum BattleStyles implements LogicCardInfo {
         weakness WATER
         bwAbility "Overheater", {
           text "Whenever your opponent flips a coin for their Burned Pokémon during Pokémon Checkup, it doesn't recover from that Special Condition even if the result is heads."
-          actionA {
-          }
+          // TODO
+//          def flag
+//          delayedA {
+//            before BURNED_SPC, null, null, EVOLVE, {
+//              bc "Heat Metal prevents removing the Special Condition Burned by evolving or devolving"
+//              prevent()
+//            }
+//          }
+//          delayedA {// I don't know why but the two effects need to be in seperate delayedAs? If they aren't, the first effect will trigger during between turns.
+//            before BURNED_SPC, null, null, BEGIN_TURN, {//I don't think manually adding the burn effect here would work, as the burn rules were changed in SM.
+//              if(ef.target.owner == self.owner.opposite) {
+//                flag = true
+//              }
+//            }
+//            def doit = {
+//              if (flag) {
+//                bc "Heat Metal forced the coinflip to be TAILS."
+//                bg.deterministicCoinFlipQueue.offer(false)
+//              }
+//              flag = false
+//            }
+//            before COIN_FLIP, {doit()}//Neither of these trigger off of the burned coinflip.
+//            before COIN_FLIP_GETTER, {doit()}
+//          }
         }
         move "Bursting Inferno", {
           text "130 damage. Your opponent's Active Pokémon is now Burned."
@@ -818,6 +914,7 @@ public enum BattleStyles implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 130
+            applyAfterDamage(BURNED)
           }
         }
       };
@@ -830,6 +927,7 @@ public enum BattleStyles implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            sandAttack thisMove
           }
         }
       };
@@ -851,6 +949,44 @@ public enum BattleStyles implements LogicCardInfo {
         bwAbility "Deep Sea King", {
           text "When your Active Pokémon is Knocked Out by damage from an attack from your opponent's Pokémon, you may move any amount of [W] Energy from that Pokémon to this Pokémon."
           actionA {
+            // TODO
+          }
+          delayedA (priority: LAST) {
+            before KNOCKOUT, {
+              if (ef.pokemonToBeKnockedOut.owner == self.owner && bg.currentTurn == self.owner.opposite
+                && ef.pokemonToBeKnockedOut.active && ef.pokemonToBeKnockedOut != self
+                && (ef as Knockout).byDamageFromAttack
+                && ef.pokemonToBeKnockedOut.cards.filterByType(BASIC_ENERGY).notEmpty ) {
+                if (confirm("Use Exp. Share on $self? ",self.owner)) {
+                  CardList list = ef.pokemonToBeKnockedOut.cards.filterByType(BASIC_ENERGY)
+                  list.select("Energy to move", {true}, self.owner).each {
+                    energySwitch(ef.pokemonToBeKnockedOut, self, it)
+                  }
+                  bc "Exp. Share activated"
+                  discard thisCard
+                }
+              }
+            }
+          }
+          delayedA {
+            after SWITCH, {
+              if (lastUsedTurn != bg.turnCount && self.active && bg.currentTurn == self.owner && ef.switchedOut==self && confirm("Use $thisAbility?")) {
+                powerUsed()
+                def energiesToMove = selectCardTypeFromPokemon type:F,
+                  cardMsg:"Choose the Energy cards to move to $self", exclude:self, ENERGY
+                def pcsMap = [:]
+                energiesToMove.each {
+                  def pcs = it.findPCS()
+                  if (pcsMap.containsKey(pcs)) (pcsMap[pcs] as CardList).add(it)
+                  else pcsMap.put(pcs, new CardList(it))
+                  energySwitch pcs, self, it, true
+                }
+
+                pcsMap.each { key, val ->
+                  bc "$val moved from $key to $self"
+                }
+              }
+            }
           }
         }
         move "Aqua Burst", {
@@ -858,7 +994,7 @@ public enum BattleStyles implements LogicCardInfo {
           energyCost WATER
           attackRequirement {}
           onAttack {
-            damage 40
+            damage 40 * self.cards.energyCount(W)
           }
         }
       };
@@ -876,9 +1012,13 @@ public enum BattleStyles implements LogicCardInfo {
         move "Find It", {
           text "Search your deck for an Item card, reveal it, and put it into your hand. Then, shuffle your deck."
           energyCost COLORLESS, COLORLESS
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Deck is empty"
+          }
           onAttack {
-
+            def chosenCard = my.deck.search { it.cardTypes.is ITEM }
+            chosenCard.showToOpponent("Opponent's chosen Item card.").moveTo my.hand
+            shuffleDeck()
           }
         }
       };
@@ -890,7 +1030,14 @@ public enum BattleStyles implements LogicCardInfo {
           energyCost COLORLESS, COLORLESS
           attackRequirement {}
           onAttack {
+            // TODO
             damage 10
+            def tar = opp.deck.subList(0,6).filterByType(ITEM)
+
+            my.hand.filterByType(ITEM)
+            if(tar){
+              tar.select(max:tar.size(),"Choose the item to discard").discard()
+            }
           }
         }
         move "Frost Smash", {
@@ -1193,7 +1340,7 @@ public enum BattleStyles implements LogicCardInfo {
             opp.all.each {
               addDmg += it.cards.energyCount(C)
             }
-            damage 20 + 10 * addDmg
+            damage 20 + 40 * addDmg
           }
         }
       };
@@ -1439,7 +1586,18 @@ public enum BattleStyles implements LogicCardInfo {
           onActivate { r->
             if (r == PLAY_FROM_HAND && self.benched && confirm('Use Dummy Doll?')) {
               powerUsed()
-              preventAllDamageNextTurn()
+
+              delayed {
+                before APPLY_ATTACK_DAMAGES, {
+                  bg.dm().each {
+                    if (it.to == self) {
+                      bc "Dummy Doll prevents damage to Mimikyu V"
+                      it.dmg = hp(0)
+                    }
+                  }
+                }
+                unregisterAfter 2
+              }
             }
           }
         }
@@ -1870,9 +2028,8 @@ public enum BattleStyles implements LogicCardInfo {
           energyCost FIGHTING, COLORLESS
           attackRequirement {}
           onAttack {
-            damage 20
             my.all.each {
-              if (it.topPokemonCard.cardTypes.is(RAPID_STRIKE)) damage 50
+              if (it.topPokemonCard.cardTypes.is(RAPID_STRIKE)) damage 20
             }
           }
         }
@@ -2153,11 +2310,11 @@ public enum BattleStyles implements LogicCardInfo {
             powerUsed()
             def card = my.deck.search(count: 1, "Search for a Single Strike Energy Card to attach to one of your Single Strike Pokémon", {
               it.cardTypes.is(SPECIAL_ENERGY) && it.cardTypes.is(SINGLE_STRIKE)
-            })
+            }).first()
             shuffleDeck()
             if (card) {
               def tar = my.all.findAll{ it.topPokemonCard.cardTypes.is(SINGLE_STRIKE) }.select("Attach an Energy to?")
-              attachEnergy(card, tar)
+              attachEnergy(tar, card)
               directDamage 20, tar, SRC_ABILITY
             }
           }
@@ -2203,7 +2360,9 @@ public enum BattleStyles implements LogicCardInfo {
         move "Gather Food", {
           text "Put an Item card from your discard pile into your hand."
           energyCost COLORLESS
-          attackRequirement {}
+          attackRequirement {
+            assert my.discard.filterByType(ITEM) : "No Item cards in discard pile"
+          }
           onAttack {
             my.discard.filterByType(ITEM).select(text).moveTo(my.hand)
           }
@@ -2260,6 +2419,7 @@ public enum BattleStyles implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             shredDamage(100)
+            // TODO
           }
         }
       };
