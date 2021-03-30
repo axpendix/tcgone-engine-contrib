@@ -3111,14 +3111,32 @@ public enum BattleStyles implements LogicCardInfo {
       return specialEnergy (this, [[C]]) {
         text "This card can only be attached to a Rapid Strike Pokémon. If this card is attached to anything other than a Rapid Strike Pokémon, discard this card." +
           "As long as this card is attached to a Pokémon, it provides 2 in any combination of [W] Energy and [F] Energy."
+        def check = { PokemonCardSet pcs->
+          if (!pcs.rapidStrike) {
+            targeted null, SRC_SPENERGY, {
+              discard thisCard
+            }
+          }
+        }
+        def checkEff
         onPlay {reason->
-          // TODO
+          checkEff = delayed {
+            after EVOLVE, { check self }
+            after DEVOLVE, { check self }
+            after ATTACH_ENERGY, self, { check self }
+          }
         }
         onRemoveFromPlay {
+          checkEff.unregister()
         }
         onMove {to->
+          check to
         }
         allowAttach {to->
+          to.rapidStrike
+        }
+        getEnergyTypesOverride {
+          self != null ? [[W, F] as Set, [W, F] as Set] : [[] as Set]
         }
       };
       case SINGLE_STRIKE_ENERGY_141:
