@@ -2617,6 +2617,7 @@ public enum BattleStyles implements LogicCardInfo {
         resistance GRASS, MINUS30
         bwAbility "Lustrous Body", {
           text "Prevent all effects of your opponent's Pokémon's Abilities done to this Pokémon."
+          // Unsure of how this will work if Ability effects are chained
           def fromOpp
           delayedA {
             before BW_ABILITY, {
@@ -2626,6 +2627,7 @@ public enum BattleStyles implements LogicCardInfo {
             }
             before null, self, SRC_ABILITY, {
               if (fromOpp) {
+                fromOpp = false
                 bc "$thisAbility prevents effect"
                 prevent()
               }
