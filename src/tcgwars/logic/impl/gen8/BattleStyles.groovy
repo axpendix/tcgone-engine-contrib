@@ -3111,28 +3111,74 @@ public enum BattleStyles implements LogicCardInfo {
       return specialEnergy (this, [[C]]) {
         text "This card can only be attached to a Rapid Strike Pokémon. If this card is attached to anything other than a Rapid Strike Pokémon, discard this card." +
           "As long as this card is attached to a Pokémon, it provides 2 in any combination of [W] Energy and [F] Energy."
+        def check = { PokemonCardSet pcs->
+          if (!pcs.rapidStrike) {
+            targeted null, SRC_SPENERGY, {
+              discard thisCard
+            }
+          }
+        }
+        def checkEff
         onPlay {reason->
-          // TODO
+          checkEff = delayed {
+            after EVOLVE, { check self }
+            after DEVOLVE, { check self }
+            after ATTACH_ENERGY, self, { check self }
+          }
         }
         onRemoveFromPlay {
+          checkEff.unregister()
         }
         onMove {to->
+          check to
         }
         allowAttach {to->
+          to.rapidStrike
+        }
+        getEnergyTypesOverride {
+          self != null ? [[W, F] as Set, [W, F] as Set] : [[] as Set]
         }
       };
       case SINGLE_STRIKE_ENERGY_141:
       return specialEnergy (this, [[C]]) {
         text "This card can only be attached to a Single Strike Pokémon. If this card is attached to anything other than a Single Strike Pokémon, discard this card." +
           "As long as this card is attached to a Pokémon, it provides Fighting and [D] Energy but provides only 1 Energy at a time, and the attacks of the Pokémon this card is attached to do 20 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
+        def check = { PokemonCardSet pcs->
+          if (!pcs.singleStrike) {
+            targeted null, SRC_SPENERGY, {
+              discard thisCard
+            }
+          }
+        }
+        def damageInc
         onPlay {reason->
-          // TODO
+          damageInc = delayed {
+            after PROCESS_ATTACK_EFFECTS, {
+              targeted self, SRC_SPENERGY, {
+                bg.dm().each {
+                  if (ef.attacker == self && it.dmg.value && it.from == self && it.to.active && it.to.owner != self.owner) {
+                    bc "Single Strike Energy +20"
+                    it.dmg += hp 20
+                  }
+                }
+              }
+            }
+            after EVOLVE, { check self }
+            after DEVOLVE, { check self }
+            after ATTACH_ENERGY, self, { check self }
+          }
         }
         onRemoveFromPlay {
+          damageInc.unregister()
         }
         onMove {to->
+          check(to)
         }
         allowAttach {to->
+          to.singleStrike
+        }
+        getEnergyTypesOverride {
+          self != null ? [[F, D] as Set] : [[] as Set]
         }
       };
       case KRICKETUNE_V_142:
