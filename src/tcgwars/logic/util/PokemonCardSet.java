@@ -349,7 +349,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
   }
 
   public boolean isRuleBox() {
-    return getTopPokemonCard().getCardTypes().isIn(CardType.EX, CardType.LVL_X, CardType.POKEMON_EX, CardType.BREAK,
+    return getTopPokemonCard().getCardTypes().isIn(CardType.POKEMON_EX, CardType.BREAK,
       CardType.PRISM_STAR, CardType.POKEMON_GX, CardType.TAG_TEAM, CardType.POKEMON_V, CardType.VMAX);
   }
 
