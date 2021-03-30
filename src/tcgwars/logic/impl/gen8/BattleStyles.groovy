@@ -644,7 +644,7 @@ public enum BattleStyles implements LogicCardInfo {
         }
       };
       case FLAPPLE_VMAX_19:
-      return evolution (this, from:"FlappleV", hp:HP320, type:G, retreatCost:3) {
+      return evolution (this, from:"Flapple V", hp:HP320, type:G, retreatCost:3) {
         weakness FIRE
         move "G-Max Rolling", {
           text "250- damage. This attack does 10 less damage for each damage counter on this Pokémon."
@@ -704,7 +704,7 @@ public enum BattleStyles implements LogicCardInfo {
         }
       };
       case VICTINI_VMAX_22:
-      return evolution (this, from:"VictiniV", hp:HP310, type:R, retreatCost:2) {
+      return evolution (this, from:"Victini V", hp:HP310, type:R, retreatCost:2) {
         weakness WATER
         move "Spreading Flames", {
           text "Attach up to 3 [R] Energy cards from your discard pile to your Pokémon in any way you like."
@@ -1345,7 +1345,7 @@ public enum BattleStyles implements LogicCardInfo {
         }
       };
       case TAPU_KOKO_VMAX_51:
-      return evolution (this, from:"TapuKokoV", hp:HP320, type:L, retreatCost:1) {
+      return evolution (this, from:"Tapu Koko V", hp:HP320, type:L, retreatCost:1) {
         weakness FIGHTING
         move "Max Shock", {
           text "180 damage. If you have more Prize cards remaining than your opponent, their Active Pokémon is now Paralyzed."
@@ -2602,7 +2602,7 @@ public enum BattleStyles implements LogicCardInfo {
         }
       };
       case CORVIKNIGHT_VMAX_110:
-      return evolution (this, from:"CorviknightV", hp:HP320, type:M, retreatCost:0) {
+      return evolution (this, from:"Corviknight V", hp:HP320, type:M, retreatCost:0) {
         weakness FIRE
         resistance GRASS, MINUS30
         bwAbility "Lustrous Body", {
