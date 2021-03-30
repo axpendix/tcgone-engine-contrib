@@ -154,6 +154,7 @@ public enum Collection {
   CHAMPIONS_PATH(433, "CPA", "gen8.ChampionsPath"),
   VIVID_VOLTAGE(434, "VIV", "gen8.VividVoltage"),
   SHINING_FATES(435, "SHF", "gen8.ShiningFates"),
+  BATTLE_STYLES(436, "BST", "gen8.BattleStyles"),
 
   //POKEMOD
   POKEMOD_BASE_SET(910, "MODBS", "pokemod.PokemodBaseSet"),
