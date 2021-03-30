@@ -1131,10 +1131,20 @@ public enum BattleStyles implements LogicCardInfo {
         bwAbility "Emperor's Eyes", {
           text "As long as this Pokémon is in the Active Spot, your opponent's Basic Pokémon in play have no Abilities, except for Pokémon with a Rule Box (Pokémon V, Pokémon-GX, etc. have Rule Boxes)."
           getterA IS_ABILITY_BLOCKED, { Holder h ->
-            if (self.active && h.effect.ability.name != "Emperor's Eyes" && h.effect.ability instanceof BwAbility && h.effect.target.owner != self.owner && (h.effect.target as Card).cardTypes.is(BASIC) && !(h.effect.target as Card).cardTypes.isIn(POKEMON_V, VMAX, POKEMON_GX, POKEMON_EX)) {
-              targeted(h.effect.target, SRC_ABILITY) {
+            def tar = h.effect.target as PokemonCardSet
+            if (self.active && h.effect.ability.name != thisAbility.name && h.effect.ability instanceof BwAbility
+              && tar.owner != self.owner && tar.basic && !tar.ruleBox) {
+              targeted(tar, SRC_ABILITY) {
                 h.object = true
-                // TODO: Crashes on basic check
+              }
+            }
+          }
+          getterA IS_GLOBAL_ABILITY_BLOCKED, { Holder h ->
+            def tar = h.effect.target as PokemonCardSet
+            if (self.active && h.effect.ability instanceof BwAbility
+              && tar.owner != self.owner && tar.basic && !tar.ruleBox) {
+              targeted(tar, SRC_ABILITY) {
+                h.object = true
               }
             }
           }

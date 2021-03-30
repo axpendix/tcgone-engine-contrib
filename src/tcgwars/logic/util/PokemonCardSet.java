@@ -340,6 +340,19 @@ public class PokemonCardSet implements PokemonStack, Serializable {
     return getTopPokemonCard().getCardTypes().is(CardType.VMAX);
   }
 
+  public boolean isRapidStrike() {
+    return getTopPokemonCard().getCardTypes().is(CardType.RAPID_STRIKE);
+  }
+
+  public boolean isSingleStrike() {
+    return getTopPokemonCard().getCardTypes().is(CardType.SINGLE_STRIKE);
+  }
+
+  public boolean isRuleBox() {
+    return getTopPokemonCard().getCardTypes().isIn(CardType.POKEMON_EX, CardType.BREAK,
+      CardType.PRISM_STAR, CardType.POKEMON_GX, CardType.TAG_TEAM, CardType.POKEMON_V, CardType.VMAX);
+  }
+
   public List<Weakness> getWeaknesses(Battleground bg) {
     return bg.em().activateGetter(new GetWeaknesses(this));
   }
