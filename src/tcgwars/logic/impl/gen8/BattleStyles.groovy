@@ -2989,6 +2989,10 @@ public enum BattleStyles implements LogicCardInfo {
         onPlay { reason->
           def moveBody = {
             text "This attack does 30 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+            attackRequirement {
+              // self is not set properly creating a move like this, use bg.ownActive() instead
+              assert bg.ownActive().singleStrike : "${bg.ownActive()} is not a $RAPID_STRIKE Pokémon"
+            }
             energyCost C, C
             onAttack {
               opp.all.each { damage 30, it }
