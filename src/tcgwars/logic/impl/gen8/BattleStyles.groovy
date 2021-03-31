@@ -3099,12 +3099,12 @@ public enum BattleStyles implements LogicCardInfo {
       return itemCard (this) {
         text "Shuffle up to 2 Single Strike Energy cards from your discard pile into your deck."
         onPlay {
-          // TODO: Combine two types special energy and single strike
-          my.discard.filterByType(CardType.SPECIAL_ENERGY).select(count: 2, "Shuffle to deck").moveTo(deck)
+          my.discard.findAll (cardTypeFilter(SPECIAL_ENERGY, SINGLE_STRIKE)).select(min: 1, max: 2, "Shuffle to deck").moveTo(deck)
           shuffleDeck()
         }
         playRequirement{
-          assert my.discard.hasType(CardType.SPECIAL_ENERGY) : "No special energy"
+
+          assert my.discard.any(cardTypeFilter(SPECIAL_ENERGY, SINGLE_STRIKE)) : "No Single Strike energy"
         }
       };
       case RAPID_STRIKE_ENERGY_140:
