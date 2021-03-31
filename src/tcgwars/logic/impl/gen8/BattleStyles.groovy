@@ -2985,12 +2985,29 @@ public enum BattleStyles implements LogicCardInfo {
         text "The Rapid Strike Pokémon this card is attached to can use the attack on this card. (You still need the necessary Energy to use this attack.)" +
           "Fighting[C][C] Matchless Maelstrom" +
           "This attack does 30 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+        def newMove
         onPlay { reason->
-          // TODO
+          def moveBody = {
+            text "This attack does 30 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+            energyCost C, C
+            onAttack {
+              opp.all.each { damage 30, it }
+            }
+          }
+          Move move = new Move("Matchless Maelstrom")
+          moveBody.delegate = new MoveBuilder(thisMove: move)
+          moveBody.call()
+          newMove = getter GET_MOVE_LIST, self, {h->
+            if (h.effect.target.rapidStrike) {
+              def moveList = []
+              moveList.addAll h.object
+              moveList.add move
+              h.object = moveList
+            }
+          }
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          newMove.unregister()
         }
       };
       case RAPID_STRIKE_STYLE_MUSTARD_132:
