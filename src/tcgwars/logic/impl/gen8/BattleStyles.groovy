@@ -2829,18 +2829,16 @@ public enum BattleStyles implements LogicCardInfo {
         weakness FIGHTING
         bwAbility "Sap Sipper", {
           text "This Pokémon's attacks do 60 more damage to your opponent's [G] Pokémon (before applying Weakness and Resistance)."
-          // TODO
-//          delayedA {
-//            before APPLY_ATTACK_DAMAGES, {
-//              bg.dm().each {
-//                if (it.from == self && my.prizeCardSet.takenCount > 0 && it.dmg.value && it.notNoEffect) {
-//                  def plusDmg = 20*my.prizeCardSet.takenCount
-//                  bc "Beast Boost +$plusDmg"
-//                  it.dmg += hp(plusDmg)
-//                }
-//              }
-//            }
-//          }
+          delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if(it.from == self && it.to.owner == self.owner.opposite && it.to.types.contains(G) && it.dmg.value) {
+                  bc "Sap Sipper +60"
+                  it.dmg += hp(60)
+                }
+              }
+            }
+          }
         }
         move "Head Charge", {
           text "120 damage. This Pokémon also does 30 damage to itself."
