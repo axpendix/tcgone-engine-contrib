@@ -2938,7 +2938,6 @@ public enum BattleStyles implements LogicCardInfo {
                     energySwitch(ef.pokemonToBeKnockedOut, self, it)
                   }
                   bc "Exp. Share activated"
-                  discard thisCard
                 }
               }
             }
