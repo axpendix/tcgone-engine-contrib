@@ -2717,7 +2717,15 @@ public enum BattleStyles implements LogicCardInfo {
           energyCost COLORLESS, COLORLESS, COLORLESS
           attackRequirement {}
           onAttack {
-            // TODO
+            def choice = oppChoose([0, 1], ["Top cards of your deck", "Cards from your hand"], "Discard 3 cards from which source?")
+
+            if (choice == 0) {
+              opp.deck.subList(0, 3).discard()
+            } else if (opp.hand.size() <= 3) {
+              opp.hand.discard()
+            } else {
+              opp.hand.oppSelect(count: 3, "Discard 3 cards from your hand").discard()
+            }
           }
         }
         move "Pitch", {
