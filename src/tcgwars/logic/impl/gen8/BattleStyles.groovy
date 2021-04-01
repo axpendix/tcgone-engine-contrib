@@ -2942,7 +2942,16 @@ public enum BattleStyles implements LogicCardInfo {
         }
       };
       case ENERGY_RECYCLER_124:
-      return copy(GuardiansRising.ENERGY_RECYCLER_123, this)
+        return itemCard (this) {
+          text "Shuffle up to 5 basic Energy cards from your discard pile into your deck. You may play any number of Item cards during your turn."
+          onPlay {
+            my.discard.filterByType(BASIC_ENERGY).select(min: 1, max: 5).moveTo(deck)
+            shuffleDeck()
+          }
+          playRequirement{
+            assert my.discard.filterByType(BASIC_ENERGY)
+          }
+        };
       case ESCAPE_ROPE_125:
         return copy(PlasmaStorm.ESCAPE_ROPE_120, this)
       case EXP_SHARE_126:
