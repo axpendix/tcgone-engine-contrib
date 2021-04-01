@@ -2617,23 +2617,11 @@ public enum BattleStyles implements LogicCardInfo {
         resistance GRASS, MINUS30
         bwAbility "Lustrous Body", {
           text "Prevent all effects of your opponent's Pokémon's Abilities done to this Pokémon."
-          // Unsure of how this will work if Ability effects are chained
-          def fromOpp
+          // TODO implement properly after source refactoring and/or RichSource captivation
           delayedA {
-            before BW_ABILITY, {
-              if (ef.self.owner != self.owner) {
-                fromOpp = true
-              }
-            }
             before null, self, SRC_ABILITY, {
-              if (fromOpp) {
-                fromOpp = false
-                bc "$thisAbility prevents effect"
-                prevent()
-              }
-            }
-            after BW_ABILITY, {
-              fromOpp = false
+              bc "$thisAbility prevents effect"
+              prevent()
             }
           }
         }
@@ -3007,7 +2995,7 @@ public enum BattleStyles implements LogicCardInfo {
             text "This attack does 30 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             attackRequirement {
               // self is not set properly creating a move like this, use bg.ownActive() instead
-              assert bg.ownActive().singleStrike : "${bg.ownActive()} is not a $RAPID_STRIKE Pokémon"
+              assert bg.ownActive().rapidStrike : "${bg.ownActive()} is not a $RAPID_STRIKE Pokémon"
             }
             energyCost C, C
             onAttack {
@@ -3066,7 +3054,7 @@ public enum BattleStyles implements LogicCardInfo {
               damage 10 * self.numberOfDamageCounters
             }
           }
-          Move move = new Move("Fighting Furious Anger")
+          Move move = new Move("Furious Anger")
           moveBody.delegate = new MoveBuilder(thisMove: move)
           moveBody.call()
           newMove = getter GET_MOVE_LIST, self, {h->
