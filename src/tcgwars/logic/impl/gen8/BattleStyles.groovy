@@ -1019,7 +1019,7 @@ public enum BattleStyles implements LogicCardInfo {
         }
       };
       case GALARIAN_MR_RIME_35:
-      return evolution (this, from:"GalarianMrMime", hp:HP110, type:W, retreatCost:2) {
+      return evolution (this, from:"Galarian Mr Mime", hp:HP110, type:W, retreatCost:2) {
         weakness METAL
         move "Ball Juggling", {
           text "10+ damage. Discard any number of Item cards that have the word “Ball” in their name from your hand. This attack does 40 more damage for each card you discarded in this way."
