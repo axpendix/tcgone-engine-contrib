@@ -2551,7 +2551,16 @@ public enum BattleStyles implements LogicCardInfo {
         bwAbility "Stance Change", {
           text "Once during your turn (before your attack), you may switch this Pokémon with an Aegislash in your hand. (Any cards attached to this Pokémon, damage counters, Special Conditions, turns in play, and any other effects remain on the new Pokémon.)"
           actionA {
-            // TODO
+            checkLastTurn()
+            assert hand.filterByNameEquals("Aegislash")
+            powerUsed()
+            def card = hand.filterByNameEquals("Aegislash").select("Stance Change").first()
+            def old = self.topPokemonCard
+            self.cards.remove(old)
+            hand.remove(card)
+            self.cards.add(card)
+            hand.add(old)
+            bc "$old switched with $card"
           }
         }
         move "Full Metal Blade", {
@@ -2573,7 +2582,16 @@ public enum BattleStyles implements LogicCardInfo {
         bwAbility "Stance Change", {
           text "Once during your turn (before your attack), you may switch this Pokémon with an Aegislash in your hand. (Any cards attached to this Pokémon, damage counters, Special Conditions, turns in play, and any other effects remain on the new Pokémon.)"
           actionA {
-            // TODO
+            checkLastTurn()
+            assert hand.filterByNameEquals("Aegislash")
+            powerUsed()
+            def card = hand.filterByNameEquals("Aegislash").select("Stance Change").first()
+            def old = self.topPokemonCard
+            self.cards.remove(old)
+            hand.remove(card)
+            self.cards.add(card)
+            hand.add(old)
+            bc "$old switched with $card"
           }
         }
         move "Gigaton Bash", {
