@@ -3001,12 +3001,33 @@ public enum BattleStyles implements LogicCardInfo {
         text "The Rapid Strike Pokémon this card is attached to can use the attack on this card. (You still need the necessary Energy to use this attack.)" +
           "Fighting[C][C] Matchless Maelstrom" +
           "This attack does 30 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+        def newMove
         onPlay { reason->
-          // TODO
+          def moveBody = {
+            text "This attack does 30 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+            attackRequirement {
+              // self is not set properly creating a move like this, use bg.ownActive() instead
+              assert bg.ownActive().singleStrike : "${bg.ownActive()} is not a $RAPID_STRIKE Pokémon"
+            }
+            energyCost C, C
+            onAttack {
+              opp.all.each { damage 30, it }
+            }
+          }
+          Move move = new Move("Matchless Maelstrom")
+          moveBody.delegate = new MoveBuilder(thisMove: move)
+          moveBody.call()
+          newMove = getter GET_MOVE_LIST, self, {h->
+            if (h.effect.target.rapidStrike) {
+              def moveList = []
+              moveList.addAll h.object
+              moveList.add move
+              h.object = moveList
+            }
+          }
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          newMove.unregister()
         }
       };
       case RAPID_STRIKE_STYLE_MUSTARD_132:
@@ -3031,12 +3052,34 @@ public enum BattleStyles implements LogicCardInfo {
         text "The Single Strike Pokémon this card is attached to can use the attack on this card. (You still need the necessary Energy to use this attack.)" +
           "Fighting Furious Anger 10+" +
           "This attack does 10 more damage for each damage counter on this Pokémon."
-        onPlay {reason->
-          // TODO
+        def newMove
+        onPlay { reason->
+          def moveBody = {
+            text "This attack does 10 more damage for each damage counter on this Pokémon."
+            attackRequirement {
+              // self is not set properly creating a move like this, use bg.ownActive() instead
+              assert bg.ownActive().singleStrike : "${bg.ownActive()} is not a $SINGLE_STRIKE Pokémon"
+            }
+            energyCost F
+            onAttack {
+              damage 10
+              damage 10 * self.numberOfDamageCounters
+            }
+          }
+          Move move = new Move("Fighting Furious Anger")
+          moveBody.delegate = new MoveBuilder(thisMove: move)
+          moveBody.call()
+          newMove = getter GET_MOVE_LIST, self, {h->
+            if (h.effect.target.singleStrike) {
+              def moveList = []
+              moveList.addAll h.object
+              moveList.add move
+              h.object = moveList
+            }
+          }
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          newMove.unregister()
         }
       };
       case SINGLE_STRIKE_STYLE_MUSTARD_134:
