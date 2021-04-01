@@ -2930,8 +2930,12 @@ public enum BattleStyles implements LogicCardInfo {
         onPlay {
           my.all.each {
             if (it.topPokemonCard.cardTypes.is(EVOLUTION) && it.numberOfDamageCounters) {
+              def previousDamage = it.numberOfDamageCounters
               heal it.damage.value, it, TRAINER_CARD
-              it.cards.filterByType(ENERGY).discard()
+
+              if (previousDamage != it.numberOfDamageCounters) {
+                it.cards.filterByType(ENERGY).discard()
+              }
             }
           }
         }
@@ -3117,12 +3121,14 @@ public enum BattleStyles implements LogicCardInfo {
         text "You can play this card only when it is the last card in your hand." +
           "Search your deck for a Single Strike Pokémon and put it onto your Bench. Then, shuffle your deck. If you searched your deck in this way, draw 5 cards."
         onPlay {
-          // TODO
-//          def card = discardPile.findAll {it.cardTypes.is(POKEMON) && it.cardTypes.is(RAPID_STRIKE) }.select("Put on bench").first()
-//          def pcs = benchPCS(card)
-//          if (pcs) {
-//            draw 5
-//          }
+          def card = my.deck.search(count: 1, "Search for a Single Strike Pokémon to put onto the Bench", {
+            it.cardTypes.is(POKEMON) && it.cardTypes.is(SINGLE_STRIKE)
+          }).first()
+          shuffleDeck()
+          def pcs = benchPCS(card)
+          if (pcs) {
+            draw 5
+          }
         }
         playRequirement {
           assert hand.size() == 1 : "You can play this card only when it is the last card in your hand"
