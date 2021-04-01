@@ -2482,7 +2482,7 @@ public enum BattleStyles implements LogicCardInfo {
           energyCost COLORLESS
           attackRequirement {}
           onAttack {
-            increasedBaseDamageNextTurn("Slash", hp(30))
+            increasedBaseDamageNextTurn("Slash", hp(70))
           }
         }
         move "Slash", {
