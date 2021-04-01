@@ -2617,8 +2617,24 @@ public enum BattleStyles implements LogicCardInfo {
         resistance GRASS, MINUS30
         bwAbility "Lustrous Body", {
           text "Prevent all effects of your opponent's Pokémon's Abilities done to this Pokémon."
-          actionA {
-            // TODO
+          // Unsure of how this will work if Ability effects are chained
+          def fromOpp
+          delayedA {
+            before BW_ABILITY, {
+              if (ef.self.owner != self.owner) {
+                fromOpp = true
+              }
+            }
+            before null, self, SRC_ABILITY, {
+              if (fromOpp) {
+                fromOpp = false
+                bc "$thisAbility prevents effect"
+                prevent()
+              }
+            }
+            after BW_ABILITY, {
+              fromOpp = false
+            }
           }
         }
         move "G-Max Hurricane", {
