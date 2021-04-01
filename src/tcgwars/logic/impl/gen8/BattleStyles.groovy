@@ -424,16 +424,12 @@ public enum BattleStyles implements LogicCardInfo {
           text "As often as you like during your turn, you may attach a [G] Energy card from your hand to 1 of your Pokémon that doesn't have a Rule Box (Pokémon V, Pokémon-GX, etc. have Rule Boxes)."
           actionA {
             assert my.hand.filterByEnergyType(G) : "No [G] Energy in hand"
-            def validTargets = my.all.findAll {
-              it.topPokemonCard.cardTypes.any {
-                [POKEMON_V, VMAX, POKEMON_GX, POKEMON_EX].contains(it)
-              }
-            }
+            def validTargets = my.all.findAll { !it.ruleBox }
             assert validTargets : "No valid targets"
             powerUsed()
             def selEnergy = my.hand.filterByBasicEnergyType(G).first()
             def pcs = validTargets.select("Attach to?")
-            attachEnergy(pcs, selEnergy, PLAY_FROM_HAND)
+            attachEnergy(pcs, selEnergy)
           }
         }
         move "Seed Bomb", {
