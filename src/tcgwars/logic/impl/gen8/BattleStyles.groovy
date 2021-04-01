@@ -3054,7 +3054,7 @@ public enum BattleStyles implements LogicCardInfo {
               damage 10 * self.numberOfDamageCounters
             }
           }
-          Move move = new Move("Fighting Furious Anger")
+          Move move = new Move("Furious Anger")
           moveBody.delegate = new MoveBuilder(thisMove: move)
           moveBody.call()
           newMove = getter GET_MOVE_LIST, self, {h->
