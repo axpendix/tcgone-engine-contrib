@@ -3139,9 +3139,18 @@ public enum BattleStyles implements LogicCardInfo {
       return supporter (this) {
         text "Choose a Trainer card from your discard pile. Then, ask your opponent if you may put it into your hand. If yes, put that card into your hand. If no, draw 3 cards."
         onPlay {
-          // TODO
+          def card = my.discard.filterByType(TRAINER).select("Choose a Trainer Card to put into your hand")
+          card.showToOpponent("Sordward Shielbert: Your opponent wants to put this card into their hand")
+          def oppChoice = oppChoose([0, 1], ["Accept", "Decline"], "Do you allow your Opponent to put the previous card into their hand?  If not, they draw 3 cards instead")
+
+          if (oppChoice == 0) {
+            card.moveTo(my.hand)
+          } else {
+            draw 3
+          }
         }
-        playRequirement{
+        playRequirement {
+          assert my.discard.hasType(TRAINER) : "There are no Trainer cards in your discard pile."
         }
       };
       case TOOL_JAMMER_136:
