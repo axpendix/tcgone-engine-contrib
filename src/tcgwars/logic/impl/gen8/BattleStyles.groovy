@@ -2078,7 +2078,7 @@ public enum BattleStyles implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            attachEnergyFrom(basic: true, max: 2, type: L, my.deck, self)
+            attachEnergyFrom(basic: true, max: 2, type: F, my.deck, self)
             shuffleDeck()
           }
         }
