@@ -424,11 +424,7 @@ public enum BattleStyles implements LogicCardInfo {
           text "As often as you like during your turn, you may attach a [G] Energy card from your hand to 1 of your Pokémon that doesn't have a Rule Box (Pokémon V, Pokémon-GX, etc. have Rule Boxes)."
           actionA {
             assert my.hand.filterByEnergyType(G) : "No [G] Energy in hand"
-            def validTargets = my.all.findAll {
-              it.topPokemonCard.cardTypes.any {
-                [POKEMON_V, VMAX, POKEMON_GX, POKEMON_EX].contains(it)
-              }
-            }
+            def validTargets = my.all.findAll { !it.ruleBox }
             assert validTargets : "No valid targets"
             powerUsed()
             def selEnergy = my.hand.filterByBasicEnergyType(G).first()
@@ -688,7 +684,7 @@ public enum BattleStyles implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
-            if (defending.topPokemonCard.cardTypes.is(POKEMON_V)) {
+            if (defending.pokemonV) {
               damage 50
             }
           }
@@ -1023,7 +1019,7 @@ public enum BattleStyles implements LogicCardInfo {
         }
       };
       case GALARIAN_MR_RIME_35:
-      return evolution (this, from:"GalarianMrMime", hp:HP110, type:W, retreatCost:2) {
+      return evolution (this, from:"Galarian Mr Mime", hp:HP110, type:W, retreatCost:2) {
         weakness METAL
         move "Ball Juggling", {
           text "10+ damage. Discard any number of Item cards that have the word “Ball” in their name from your hand. This attack does 40 more damage for each card you discarded in this way."
@@ -2078,7 +2074,7 @@ public enum BattleStyles implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            attachEnergyFrom(basic: true, max: 2, type: L, my.deck, self)
+            attachEnergyFrom(basic: true, max: 2, type: F, my.deck, self)
             shuffleDeck()
           }
         }
@@ -2484,7 +2480,7 @@ public enum BattleStyles implements LogicCardInfo {
           energyCost COLORLESS
           attackRequirement {}
           onAttack {
-            increasedBaseDamageNextTurn("Slash", hp(30))
+            increasedBaseDamageNextTurn("Slash", hp(70))
           }
         }
         move "Slash", {
@@ -2553,7 +2549,18 @@ public enum BattleStyles implements LogicCardInfo {
         bwAbility "Stance Change", {
           text "Once during your turn (before your attack), you may switch this Pokémon with an Aegislash in your hand. (Any cards attached to this Pokémon, damage counters, Special Conditions, turns in play, and any other effects remain on the new Pokémon.)"
           actionA {
-            // TODO
+            checkLastTurn()
+            assert bg.em().retrieveObject("Stance_Change") != (bg.turnCount) : "Already used Stance Change"
+            assert my.hand.filterByNameEquals("Aegislash") : "No Aegislash in hand"
+            bg.em().storeObject("Stance_Change", bg.turnCount)
+            powerUsed()
+
+            def card = my.hand.filterByNameEquals("Aegislash").select("Stance Change")
+            discard(self.topPokemonCard)
+            card.moveTo(suppressLog:true, self.cards)
+
+            bc "Switched with $card"
+            bg.em().run new CheckAbilities(OTHER, new PcsList(self))
           }
         }
         move "Full Metal Blade", {
@@ -2575,7 +2582,18 @@ public enum BattleStyles implements LogicCardInfo {
         bwAbility "Stance Change", {
           text "Once during your turn (before your attack), you may switch this Pokémon with an Aegislash in your hand. (Any cards attached to this Pokémon, damage counters, Special Conditions, turns in play, and any other effects remain on the new Pokémon.)"
           actionA {
-            // TODO
+            checkLastTurn()
+            assert bg.em().retrieveObject("Stance_Change") != (bg.turnCount) : "Already used Stance Change"
+            assert my.hand.filterByNameEquals("Aegislash") : "No Aegislash in hand"
+            bg.em().storeObject("Stance_Change", bg.turnCount)
+            powerUsed()
+
+            def card = my.hand.filterByNameEquals("Aegislash").select("Stance Change")
+            discard(self.topPokemonCard)
+            card.moveTo(suppressLog:true, self.cards)
+
+            bc "Switched with $card"
+            bg.em().run new CheckAbilities(OTHER, new PcsList(self))
           }
         }
         move "Gigaton Bash", {
@@ -2689,7 +2707,15 @@ public enum BattleStyles implements LogicCardInfo {
           energyCost COLORLESS, COLORLESS, COLORLESS
           attackRequirement {}
           onAttack {
-            // TODO
+            def choice = oppChoose([0, 1], ["Top cards of your deck", "Cards from your hand"], "Discard 3 cards from which source?")
+
+            if (choice == 0) {
+              opp.deck.subList(0, 3).discard()
+            } else if (opp.hand.size() <= 3) {
+              opp.hand.discard()
+            } else {
+              opp.hand.oppSelect(count: 3, "Discard 3 cards from your hand").discard()
+            }
           }
         }
         move "Pitch", {
@@ -2793,18 +2819,16 @@ public enum BattleStyles implements LogicCardInfo {
         weakness FIGHTING
         bwAbility "Sap Sipper", {
           text "This Pokémon's attacks do 60 more damage to your opponent's [G] Pokémon (before applying Weakness and Resistance)."
-          // TODO
-//          delayedA {
-//            before APPLY_ATTACK_DAMAGES, {
-//              bg.dm().each {
-//                if (it.from == self && my.prizeCardSet.takenCount > 0 && it.dmg.value && it.notNoEffect) {
-//                  def plusDmg = 20*my.prizeCardSet.takenCount
-//                  bc "Beast Boost +$plusDmg"
-//                  it.dmg += hp(plusDmg)
-//                }
-//              }
-//            }
-//          }
+          delayedA {
+            after PROCESS_ATTACK_EFFECTS, {
+              bg.dm().each {
+                if(it.from == self && it.to.owner == self.owner.opposite && it.to.types.contains(G) && it.dmg.value) {
+                  bc "Sap Sipper +60"
+                  it.dmg += hp(60)
+                }
+              }
+            }
+          }
         }
         move "Head Charge", {
           text "120 damage. This Pokémon also does 30 damage to itself."
@@ -2869,7 +2893,7 @@ public enum BattleStyles implements LogicCardInfo {
         onPlay {
           shuffleDeck(hand.getExcludedList(thisCard))
           hand.removeAll(hand.getExcludedList(thisCard))
-          draw 4
+
           if (keyStore("Bruno_KO", thisCard, null) == bg.turnCount - 1) {
             draw 7
           } else {
@@ -2895,9 +2919,13 @@ public enum BattleStyles implements LogicCardInfo {
         text "Heal all damage from each of your Evolution Pokémon. If you do, discard all Energy from the Pokémon that were healed in this way."
         onPlay {
           my.all.each {
-            if (it.topPokemonCard.cardTypes.is(EVOLUTION) && it.numberOfDamageCounters) {
+            if (it.realEvolution && it.numberOfDamageCounters) {
+              def previousDamage = it.numberOfDamageCounters
               heal it.damage.value, it, TRAINER_CARD
-              it.cards.filterByType(ENERGY).discard()
+
+              if (previousDamage != it.numberOfDamageCounters) {
+                it.cards.filterByType(ENERGY).discard()
+              }
             }
           }
         }
@@ -2906,7 +2934,16 @@ public enum BattleStyles implements LogicCardInfo {
         }
       };
       case ENERGY_RECYCLER_124:
-      return copy(GuardiansRising.ENERGY_RECYCLER_123, this)
+        return itemCard (this) {
+          text "Shuffle up to 5 basic Energy cards from your discard pile into your deck. You may play any number of Item cards during your turn."
+          onPlay {
+            my.discard.filterByType(BASIC_ENERGY).select(min: 1, max: 5).moveTo(deck)
+            shuffleDeck()
+          }
+          playRequirement{
+            assert my.discard.filterByType(BASIC_ENERGY)
+          }
+        };
       case ESCAPE_ROPE_125:
         return copy(PlasmaStorm.ESCAPE_ROPE_120, this)
       case EXP_SHARE_126:
@@ -2926,7 +2963,6 @@ public enum BattleStyles implements LogicCardInfo {
                     energySwitch(ef.pokemonToBeKnockedOut, self, it)
                   }
                   bc "Exp. Share activated"
-                  discard thisCard
                 }
               }
             }
@@ -3075,12 +3111,14 @@ public enum BattleStyles implements LogicCardInfo {
         text "You can play this card only when it is the last card in your hand." +
           "Search your deck for a Single Strike Pokémon and put it onto your Bench. Then, shuffle your deck. If you searched your deck in this way, draw 5 cards."
         onPlay {
-          // TODO
-//          def card = discardPile.findAll {it.cardTypes.is(POKEMON) && it.cardTypes.is(RAPID_STRIKE) }.select("Put on bench").first()
-//          def pcs = benchPCS(card)
-//          if (pcs) {
-//            draw 5
-//          }
+          def card = my.deck.search(count: 1, "Search for a Single Strike Pokémon to put onto the Bench", {
+            it.cardTypes.is(POKEMON) && it.cardTypes.is(SINGLE_STRIKE)
+          }).first()
+          shuffleDeck()
+          def pcs = benchPCS(card)
+          if (pcs) {
+            draw 5
+          }
         }
         playRequirement {
           assert hand.size() == 1 : "You can play this card only when it is the last card in your hand"
@@ -3091,9 +3129,18 @@ public enum BattleStyles implements LogicCardInfo {
       return supporter (this) {
         text "Choose a Trainer card from your discard pile. Then, ask your opponent if you may put it into your hand. If yes, put that card into your hand. If no, draw 3 cards."
         onPlay {
-          // TODO
+          def card = my.discard.filterByType(TRAINER).select("Choose a Trainer Card to put into your hand")
+          card.showToOpponent("Sordward Shielbert: Your opponent wants to put this card into their hand")
+          def oppChoice = oppChoose([0, 1], ["Accept", "Decline"], "Do you allow your Opponent to put the previous card into their hand?  If not, they draw 3 cards instead")
+
+          if (oppChoice == 0) {
+            card.moveTo(my.hand)
+          } else {
+            draw 3
+          }
         }
-        playRequirement{
+        playRequirement {
+          assert my.discard.hasType(TRAINER) : "There are no Trainer cards in your discard pile."
         }
       };
       case TOOL_JAMMER_136:
@@ -3133,7 +3180,7 @@ public enum BattleStyles implements LogicCardInfo {
         def eff
         onPlay {
           eff = getter (GET_RETREAT_COST) { holder ->
-            if ((holder.effect.target as PokemonCardSet).topPokemonCard.cardTypes.is(SINGLE_STRIKE)) {
+            if ((holder.effect.target as PokemonCardSet).rapidStrike) {
               holder.object -= 2
             }
           }
