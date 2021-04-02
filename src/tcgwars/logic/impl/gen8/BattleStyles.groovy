@@ -2927,7 +2927,7 @@ public enum BattleStyles implements LogicCardInfo {
         text "Heal all damage from each of your Evolution Pokémon. If you do, discard all Energy from the Pokémon that were healed in this way."
         onPlay {
           my.all.each {
-            if (it.topPokemonCard.cardTypes.is(EVOLUTION) && it.numberOfDamageCounters) {
+            if (it.realEvolution && it.numberOfDamageCounters) {
               def previousDamage = it.numberOfDamageCounters
               heal it.damage.value, it, TRAINER_CARD
 
