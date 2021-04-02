@@ -429,7 +429,7 @@ public enum BattleStyles implements LogicCardInfo {
             powerUsed()
             def selEnergy = my.hand.filterByBasicEnergyType(G).first()
             def pcs = validTargets.select("Attach to?")
-            attachEnergy(pcs, selEnergy)
+            attachEnergy(pcs, selEnergy, PLAY_FROM_HAND)
           }
         }
         move "Seed Bomb", {
