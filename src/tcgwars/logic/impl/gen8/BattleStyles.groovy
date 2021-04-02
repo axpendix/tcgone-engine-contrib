@@ -684,9 +684,7 @@ public enum BattleStyles implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
-            if (defending.topPokemonCard.cardTypes.any {
-              [POKEMON_V, VMAX].contains(it)
-            }) {
+            if (defending.pokemonV) {
               damage 50
             }
           }
