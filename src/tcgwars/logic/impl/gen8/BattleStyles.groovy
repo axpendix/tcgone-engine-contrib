@@ -3188,7 +3188,7 @@ public enum BattleStyles implements LogicCardInfo {
         def eff
         onPlay {
           eff = getter (GET_RETREAT_COST) { holder ->
-            if ((holder.effect.target as PokemonCardSet).topPokemonCard.cardTypes.is(RAPID_STRIKE)) {
+            if ((holder.effect.target as PokemonCardSet).rapidStrike) {
               holder.object -= 2
             }
           }
