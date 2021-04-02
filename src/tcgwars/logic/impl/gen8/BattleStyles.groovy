@@ -2550,15 +2550,17 @@ public enum BattleStyles implements LogicCardInfo {
           text "Once during your turn (before your attack), you may switch this Pokémon with an Aegislash in your hand. (Any cards attached to this Pokémon, damage counters, Special Conditions, turns in play, and any other effects remain on the new Pokémon.)"
           actionA {
             checkLastTurn()
-            assert hand.filterByNameEquals("Aegislash")
+            assert bg.em().retrieveObject("Stance_Change") != (bg.turnCount) : "Already used Stance Change"
+            assert my.hand.filterByNameEquals("Aegislash") : "No Aegislash in hand"
+            bg.em().storeObject("Stance_Change", bg.turnCount)
             powerUsed()
-            def card = hand.filterByNameEquals("Aegislash").select("Stance Change").first()
-            def old = self.topPokemonCard
-            self.cards.remove(old)
-            hand.remove(card)
-            self.cards.add(card)
-            hand.add(old)
-            bc "$old switched with $card"
+
+            def card = my.hand.filterByNameEquals("Aegislash").select("Stance Change")
+            discard(self.topPokemonCard)
+            card.moveTo(suppressLog:true, self.cards)
+
+            bc "Switched with $card"
+            bg.em().run new CheckAbilities(OTHER, new PcsList(self))
           }
         }
         move "Full Metal Blade", {
@@ -2581,15 +2583,17 @@ public enum BattleStyles implements LogicCardInfo {
           text "Once during your turn (before your attack), you may switch this Pokémon with an Aegislash in your hand. (Any cards attached to this Pokémon, damage counters, Special Conditions, turns in play, and any other effects remain on the new Pokémon.)"
           actionA {
             checkLastTurn()
-            assert hand.filterByNameEquals("Aegislash")
+            assert bg.em().retrieveObject("Stance_Change") != (bg.turnCount) : "Already used Stance Change"
+            assert my.hand.filterByNameEquals("Aegislash") : "No Aegislash in hand"
+            bg.em().storeObject("Stance_Change", bg.turnCount)
             powerUsed()
-            def card = hand.filterByNameEquals("Aegislash").select("Stance Change").first()
-            def old = self.topPokemonCard
-            self.cards.remove(old)
-            hand.remove(card)
-            self.cards.add(card)
-            hand.add(old)
-            bc "$old switched with $card"
+
+            def card = my.hand.filterByNameEquals("Aegislash").select("Stance Change")
+            discard(self.topPokemonCard)
+            card.moveTo(suppressLog:true, self.cards)
+
+            bc "Switched with $card"
+            bg.em().run new CheckAbilities(OTHER, new PcsList(self))
           }
         }
         move "Gigaton Bash", {
