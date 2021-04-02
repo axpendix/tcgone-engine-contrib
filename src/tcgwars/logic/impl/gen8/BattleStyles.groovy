@@ -2988,10 +2988,10 @@ public enum BattleStyles implements LogicCardInfo {
       return supporter (this) {
         text "Draw cards until you have 6 cards in your hand."
         onPlay {
-          draw 6 - my.hand.size()
+          draw 6 - my.hand.getExcludedList(thisCard).size()
         }
         playRequirement {
-          assert my.hand.size() < 6 : "You have 6 or more cards in your hand"
+          assert my.hand.getExcludedList(thisCard).size() < 6 : "You have 6 or more cards in your hand"
           assert my.deck : "Your deck is empty"
         }
       };
