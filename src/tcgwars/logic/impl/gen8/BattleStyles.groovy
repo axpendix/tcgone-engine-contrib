@@ -2828,7 +2828,7 @@ public enum BattleStyles implements LogicCardInfo {
         bwAbility "Sap Sipper", {
           text "This Pokémon's attacks do 60 more damage to your opponent's [G] Pokémon (before applying Weakness and Resistance)."
           delayedA {
-            before APPLY_ATTACK_DAMAGES, {
+            after PROCESS_ATTACK_EFFECTS, {
               bg.dm().each {
                 if(it.from == self && it.to.owner == self.owner.opposite && it.to.types.contains(G) && it.dmg.value) {
                   bc "Sap Sipper +60"
