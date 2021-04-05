@@ -159,7 +159,7 @@ public enum BattleStyles implements LogicCardInfo {
   BOUFFALANT_118 ("Bouffalant", "118", Rarity.UNCOMMON, [POKEMON, BASIC, _COLORLESS_]),
   DRAMPA_119 ("Drampa", "119", Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
   INDEEDEE_120 ("Indeedee", "120", Rarity.UNCOMMON, [POKEMON, BASIC, _COLORLESS_]),
-  BRUNO_121 ("Bruno", "121", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  BRUNO_121 ("Bruno", "121", Rarity.UNCOMMON, [TRAINER, SUPPORTER, SINGLE_STRIKE]),
   CAMPING_GEAR_122 ("Camping Gear", "122", Rarity.UNCOMMON, [TRAINER, ITEM]),
   CHERYL_123 ("Cheryl", "123", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   ENERGY_RECYCLER_124 ("Energy Recycler", "124", Rarity.UNCOMMON, [TRAINER, ITEM]),
