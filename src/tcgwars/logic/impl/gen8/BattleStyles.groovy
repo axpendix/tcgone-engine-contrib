@@ -3000,24 +3000,24 @@ public enum BattleStyles implements LogicCardInfo {
       case PHOEBE_130:
       return supporter (this) {
         text "During this turn, damage from your Pokémon VMAX's attacks isn't affected by any effects on your opponent's Active Pokémon."
-        delayed {
-          //TODO Fix, not working currently against safeguard (Keldeo-GX) (copy of Ultra Forest Kartenvoy)
-          before PROCESS_ATTACK_EFFECTS, {
-            if (ef.attacker.topPokemonCard.cardTypes.is(VMAX)) {
-              bg.dm().each {
-                if (it.to.owner != self.owner && it.to.active) {
-                  bc "Phoebe's effect activated"
-                  it.flags.add(DamageManager.DamageFlag.NO_DEFENDING_EFFECT)
+        onPlay {
+          delayed {
+            //TODO Fix, not working currently against safeguard (Keldeo-GX) (copy of Ultra Forest Kartenvoy)
+            before PROCESS_ATTACK_EFFECTS, {
+              if (ef.attacker.topPokemonCard.cardTypes.is(VMAX)) {
+                bg.dm().each {
+                  if (it.to.owner != self.owner && it.to.active) {
+                    bc "Phoebe's effect activated"
+                    it.flags.add(DamageManager.DamageFlag.NO_DEFENDING_EFFECT)
+                  }
                 }
               }
             }
+            unregister {
+              bc "Phoebe's effect fades out"
+            }
+            unregisterAfter 1
           }
-          unregister {
-            bc "Phoebe's effect fades out"
-          }
-          unregisterAfter 1
-        }
-        playRequirement{
         }
       };
       case RAPID_STRIKE_SCROLL_OF_SWIRLS_131:
@@ -3111,14 +3111,13 @@ public enum BattleStyles implements LogicCardInfo {
         text "You can play this card only when it is the last card in your hand." +
           "Search your deck for a Single Strike Pokémon and put it onto your Bench. Then, shuffle your deck. If you searched your deck in this way, draw 5 cards."
         onPlay {
-          def card = my.deck.search(count: 1, "Search for a Single Strike Pokémon to put onto the Bench", {
+          my.deck.search(count: 1, "Search for a Single Strike Pokémon to put onto the Bench", {
             it.cardTypes.is(POKEMON) && it.cardTypes.is(SINGLE_STRIKE)
-          }).first()
-          shuffleDeck()
-          def pcs = benchPCS(card)
-          if (pcs) {
-            draw 5
+          }).each {
+            benchPCS(it)
           }
+
+          draw 5
         }
         playRequirement {
           assert hand.size() == 1 : "You can play this card only when it is the last card in your hand"
