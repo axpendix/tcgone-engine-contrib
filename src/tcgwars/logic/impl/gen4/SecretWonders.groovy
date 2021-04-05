@@ -253,6 +253,7 @@ public enum SecretWonders implements LogicCardInfo {
                 opp.bench.findAll{it.cards.energyCount(C)}.each{
                   damage 20, it
                 }
+                discardSelfEnergyAfterDamage(L)
               }
             }
           }
@@ -311,7 +312,7 @@ public enum SecretWonders implements LogicCardInfo {
             text "120 damage. Flip a coin. If heads, discard 2 Energy cards attached to Charizard. If tails, discard 4 Energy cards attached to Charizard. (If you can’t, this attack does nothing.)"
             energyCost R, R, R, C
             attackRequirement {
-              assert self.cards.filterByType(ENERGY) >= 2 : "You have fewer than 2 Energy cards attached to $self"
+              assert self.cards.filterByType(ENERGY).size() >= 2 : "You have fewer than 2 Energy cards attached to $self"
             }
             onAttack {
               flip 1, {
@@ -1915,7 +1916,7 @@ f
             delayedA {
               before BETWEEN_TURNS, {
                 if(self.owner.opposite.pbg.active.cards.energyCount(G) && !self.owner.opposite.pbg.active.isSPC(POISONED)) {
-                  apply POISONED, opp.active
+                  apply POISONED, self.owner.opposite.pbg.active
                   bc("$thisAbility poisons $self.owner.opposite.pbg.active")
                 }
               }
@@ -1944,7 +1945,7 @@ f
                 def pcs = defending
                 targeted(pcs){
                   delayed {
-                    before APPLY_ATTACK_DAMAGES, {
+                    after PROCESS_ATTACK_EFFECTS, {
                       bg.dm().each {if(it.to==pcs && it.from==self && it.dmg.value>0 && it.notNoEffect){
                         bc "$thisMove increases damage"
                         it.dmg+=hp(20)
@@ -1954,6 +1955,9 @@ f
                     after FALL_BACK, pcs, {unregister()}
                     after EVOLVE, pcs, {unregister()}
                     after DEVOLVE, pcs, {unregister()}
+                    after FALL_BACK, self, {unregister()}
+                    after EVOLVE, self, {unregister()}
+                    after DEVOLVE, self, {unregister()}
                   }
                 }
               }
@@ -3526,7 +3530,7 @@ f
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDraw 2 cards. Then, choose a card from your opponent’s hand without looking and put it on the bottom of his or her deck."
           onPlay {
             draw 2
-            opp.hand.select(hidden: true, "Choose a card from your opponent's hand without looking").moveTo(hidden: true, opp.deck)
+            opp.hand.select(hidden: true, "Choose a card from your opponent's hand without looking").showToOpponent("Team Galactic's Mars: This card will be put on the bottom of your deck").moveTo(hidden: true, opp.deck)
           }
           playRequirement{
             assert my.deck || opp.hand : "Your deck and your opponent's hand are both empty"
