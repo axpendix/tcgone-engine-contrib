@@ -3033,7 +3033,7 @@ public enum BattleStyles implements LogicCardInfo {
               // self is not set properly creating a move like this, use bg.ownActive() instead
               assert bg.ownActive().rapidStrike : "${bg.ownActive()} is not a $RAPID_STRIKE Pokémon"
             }
-            energyCost C, C
+            energyCost F, C, C
             onAttack {
               opp.all.each { damage 30, it }
             }
