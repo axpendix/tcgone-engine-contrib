@@ -879,26 +879,18 @@ public enum BattleStyles implements LogicCardInfo {
         weakness WATER
         bwAbility "Overheater", {
           text "Whenever your opponent flips a coin for their Burned Pokémon during Pokémon Checkup, it doesn't recover from that Special Condition even if the result is heads."
-          // TODO
           def flag
+          getterA COIN_FLIP_GETTER, { h->
+            if (flag && h.effect.info == "Burned") {
+              h.object = false
+              flag = false
+            }
+          }
           delayedA {
             before BURNED_SPC, null, null, BEGIN_TURN, {
               if (ef.target.owner == self.owner.opposite) {
                 flag = true
               }
-            }
-            def doit = {
-              if (flag) {
-                bc "Overheater forced the coinflip to be TAILS."
-                bg.deterministicCoinFlipQueue.offer(false)
-              }
-              flag = false
-            }
-            before COIN_FLIP, {
-              doit()
-            }
-            before COIN_FLIP_GETTER, {
-              doit()
             }
           }
         }
