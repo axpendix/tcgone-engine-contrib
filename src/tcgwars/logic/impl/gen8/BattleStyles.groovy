@@ -3015,7 +3015,7 @@ public enum BattleStyles implements LogicCardInfo {
         onPlay {
           delayed {
             before PROCESS_ATTACK_EFFECTS, {
-              if (ef.attacker.topPokemonCard) {
+              if (ef.attacker.pokemonVMAX) {
                 bg.dm().each {
                   if (it.to.owner != self.owner && it.to.active) {
                     bc "Phoebe's effect activated"
