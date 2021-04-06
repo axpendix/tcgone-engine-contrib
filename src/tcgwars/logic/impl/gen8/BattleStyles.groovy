@@ -2404,8 +2404,7 @@ public enum BattleStyles implements LogicCardInfo {
           energyCost COLORLESS, COLORLESS, COLORLESS
           attackRequirement {}
           onAttack {
-            shredDamage(100)
-            // TODO
+            swiftDamage(100, defending)
           }
         }
       };
