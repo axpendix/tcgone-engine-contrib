@@ -2643,6 +2643,12 @@ public enum GreatEncounters implements LogicCardInfo {
                   holder.object.addAll(it.topPokemonCard.moves)
                 }
               }
+              self.owner.opposite.pbg.bench.findAll { it.name.contains("Unown") }.each {
+                if (!cardList.contains("${it.topPokemonCard}") && it.topPokemonCard.name != "Unown L") {
+                  cardList.add("${it.topPokemonCard}")
+                  holder.object.addAll(it.topPokemonCard.moves)
+                }
+              }
               holder.object.unique()
             }
           }

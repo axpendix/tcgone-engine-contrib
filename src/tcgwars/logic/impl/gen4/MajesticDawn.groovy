@@ -217,7 +217,7 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost W, W, C
             onAttack {
               damage 60
-              flip 1, {my.bench.each {damage 10, it}}, {opp.bench.each {damage 10, it}}
+              flip 1, {opp.bench.each {damage 10, it}}, {my.bench.each {damage 10, it}}
             }
           }
 
@@ -258,14 +258,20 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost D
             attackRequirement {}
             onAttack {
-              delayed {
-                before BETWEEN_TURNS, {
-                  if(turnCount + 1 <= bg.turnCount){
-                    if(all.contains(pcs)){
-                      bc "Dark Slumber takes effect"
-                      apply ASLEEP
+              damage 10
+              def pcs = defending
+              targeted(pcs){
+                delayed {
+                  before BETWEEN_TURNS, {
+                    if (bg.currentTurn == self.owner.opposite && all.contains(pcs)) {
+                      bc "Dark Slumber activates."
+                      apply ASLEEP, pcs
                     }
                   }
+                  unregisterAfter 2
+                  after FALL_BACK, pcs, {unregister()}
+                  after EVOLVE, pcs, {unregister()}
+                  after DEVOLVE, pcs, {unregister()}
                 }
               }
             }
@@ -477,7 +483,7 @@ public enum MajesticDawn implements LogicCardInfo {
               if (r==PLAY_FROM_HAND && my.discard.filterByEnergyType(R) && confirm("Use Flame Charge?")) {
                 powerUsed()
                 flip {
-                  def maxCards = Math.min(3,my.filterByEnergyType(R))
+                  def maxCards = Math.min(3,my.discard.filterByEnergyType(R).size())
                   my.discard.select(max:maxCards,"Search your discard pile for up to 3 [R] Energy cards",energyFilter(R)).each {
                     attachEnergy(self, it)
                   }
@@ -581,7 +587,7 @@ public enum MajesticDawn implements LogicCardInfo {
               assert my.discard.filterByType(BASIC_ENERGY)
             }
             onAttack {
-              def cards = my.discard.select("Search your discard pile for up to 2 basic Energy",cardTypeFilter(BASIC_ENERGY))
+              def cards = my.discard.select(max:2,"Search your discard pile for up to 2 basic Energy",cardTypeFilter(BASIC_ENERGY))
               def tar = my.all.select("Attach to...")
               cards.each{
                 attachEnergy(tar, it)
@@ -609,8 +615,10 @@ public enum MajesticDawn implements LogicCardInfo {
             onActivate {r->
               if (r==PLAY_FROM_HAND && confirm("Use Sheet Lightning?")) {
                 powerUsed()
-                opp.all.each {
-                  directDamage 10, it, SRC_ABILITY
+                flip {
+                  opp.all.each {
+                    directDamage 10, it, SRC_ABILITY
+                  }
                 }
               }
             }
@@ -852,7 +860,7 @@ public enum MajesticDawn implements LogicCardInfo {
           weakness W, PLUS20
           move "Vacuum Sand", {
             text "20 damage. Search your discard for a [F] Energy card and attach it to Hippowdon."
-            energyCost F
+            energyCost ()
             onAttack {
               damage 20
               attachEnergyFrom(type: F, my.discard, self)
@@ -982,7 +990,7 @@ public enum MajesticDawn implements LogicCardInfo {
               if(r == PLAY_FROM_HAND && bg.em().retrieveObject("Primal_Swirl") != bg.turnCount && opp.all.find{it.evolution} && confirm("Use $thisAbility?")){
                 bg.em().storeObject("Primal_Swirl",bg.turnCount)
                 powerUsed()
-                opp.all.findAll{it.evolutoin}.each {
+                opp.all.findAll{it.evolution}.each {
                   def top = it.topPokemonCard
                   devolve(it, top, opp.hand)
                 }
@@ -1277,10 +1285,10 @@ public enum MajesticDawn implements LogicCardInfo {
         return basic (this, hp:HP090, type:COLORLESS, retreatCost:3) {
           weakness F, PLUS20
           move "Bite", {
-            text "20 damage. "
+            text "30 damage. "
             energyCost C, C
             onAttack {
-              damage 20
+              damage 30
             }
           }
           move "Comet Punch", {
@@ -1370,7 +1378,7 @@ public enum MajesticDawn implements LogicCardInfo {
 
         };
       case MOTHIM_42:
-        return evolution (this, from:"Burmy", hp:HP080, type:GRASS, retreatCost:0) {
+        return evolution (this, from:["Burmy","Burmy Plant Cloak","Burmy Sandy Cloak","Burmy Trash Cloak"], hp:HP080, type:GRASS, retreatCost:0) {
           weakness R, PLUS20
           resistance F, MINUS30
           pokeBody "Disturbance Scales", {
@@ -1400,7 +1408,7 @@ public enum MajesticDawn implements LogicCardInfo {
                   count ++
                 }
               }
-              dmage 30 * count
+              damage 30 * count
             }
           }
           move "Quick Touch", {
@@ -1432,7 +1440,7 @@ public enum MajesticDawn implements LogicCardInfo {
               assert my.discard.filterByEnergyType(L) : "You have no [L] Energy in your discard"
             }
             onAttack {
-              my.discard.select("Choose a [L] Energy to put into your hand",filterByEnergyType(L)).moveTo(my.hand)
+              my.discard.select("Choose a [L] Energy to put into your hand",basicEnergyFilter(L)).moveTo(my.hand)
             }
           }
           move "Thundershock", {
@@ -1537,7 +1545,7 @@ public enum MajesticDawn implements LogicCardInfo {
           }
           move "Drill Peck", {
             text "50 damage. "
-            energyCost C, C
+            energyCost C, C, C
             onAttack {
               damage 50
             }
@@ -1574,7 +1582,8 @@ public enum MajesticDawn implements LogicCardInfo {
               assert self.benched : "$self is not on your bench"
               assert my.all.find {it!=self && canAttachPokemonTool(it)} : "No place to attach"
               powerUsed()
-              self.cards.getExcludedList(self.topPokemonCard).discard()
+              def top = self.topPokemonCard
+              self.cards.getExcludedList(top).discard()
               removePCS(self)
               def trcard
               trcard = pokemonTool(new CustomCardInfo(top.staticInfo).setCardTypes(TRAINER, ITEM, POKEMON_TOOL)) {
@@ -1778,13 +1787,13 @@ public enum MajesticDawn implements LogicCardInfo {
               before BETWEEN_TURNS, {
                 if(self.isSPC(PARALYZED)){
                   bc "Cheri Berry removes paralysis"
-                  //TODO: find or make a better source. Ancient trait seems like a possible contender.
-                  clearSpecialCondition(my.active, SRC_ABILITY, PARALYZED)
+                  //TODO: find or make a better source.
+                  clearSpecialCondition(self, SRC_ABILITY, [PARALYZED])
                 }
               }
             }
           }
-          move "Fury Swipes 10× damage", {
+          move "Fury Swipes", {
             text "Flip 3 coins. This attack does 10 damage times the number of heads."
             energyCost C
             onAttack {
@@ -1900,8 +1909,15 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Call for Family", {
             text "Search your deck for as many Eevee as you like and put them onto your Bench. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
-            callForFamily(basic:true, 1, delegate)
+            attackRequirement {
+              assert my.deck : "Your deck is empty"
+              assert my.bench.notFull : "Your bench is full"
+            }
+            onAttack{
+              my.deck.search(max:my.bench.freeBenchCount,"Search your deck for as many Eevee as you like and put them onto your Bench",{it.name.contains("Eevee")}).each {
+                benchPCS(it)
+              }
+            }
           }
           move "Lunge", {
             text "20 damage. Flip a coin. If tails, this attack does nothing."
@@ -2076,10 +2092,14 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
           move "Wash Over", {
-            text "20 damage. "
+            text "20 damage. Does 10 damage to 2 of your opponent's benched Pokémon"
             energyCost W, C
             onAttack {
               damage 20
+              if(opp.bench) {
+                multiSelect(opp.bench,2,"Does 10 damage to 2 of your opponent's benched Pokémon").each {}
+                damage 10, it
+              }
             }
           }
 
@@ -2139,8 +2159,8 @@ public enum MajesticDawn implements LogicCardInfo {
               before BETWEEN_TURNS, {
                 if(self.isSPC(POISONED)){
                   bc "Pecha Berry removes poisoned"
-                  //TODO: find or make a better source. Ancient trait seems like a possible contender.
-                  clearSpecialCondition(my.active, SRC_ABILITY, POISONED)
+                  //TODO: find or make a better source
+                  clearSpecialCondition(self, SRC_ABILITY, [POISONED])
                 }
               }
             }
@@ -2271,8 +2291,8 @@ public enum MajesticDawn implements LogicCardInfo {
               before BETWEEN_TURNS, {
                 if(self.isSPC(CONFUSED)){
                   bc "Pecha Berry removes confused"
-                  //TODO: find or make a better source. Ancient trait seems like a possible contender.
-                  clearSpecialCondition(my.active, SRC_ABILITY, CONFUSED)
+                  //TODO: find or make a better source.
+                  clearSpecialCondition(self, SRC_ABILITY, [CONFUSED])
                 }
               }
             }
