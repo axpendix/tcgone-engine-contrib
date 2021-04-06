@@ -880,29 +880,27 @@ public enum BattleStyles implements LogicCardInfo {
         bwAbility "Overheater", {
           text "Whenever your opponent flips a coin for their Burned Pokémon during Pokémon Checkup, it doesn't recover from that Special Condition even if the result is heads."
           // TODO
-//          def flag
-//          delayedA {
-//            before BURNED_SPC, null, null, EVOLVE, {
-//              bc "Heat Metal prevents removing the Special Condition Burned by evolving or devolving"
-//              prevent()
-//            }
-//          }
-//          delayedA {// I don't know why but the two effects need to be in seperate delayedAs? If they aren't, the first effect will trigger during between turns.
-//            before BURNED_SPC, null, null, BEGIN_TURN, {//I don't think manually adding the burn effect here would work, as the burn rules were changed in SM.
-//              if(ef.target.owner == self.owner.opposite) {
-//                flag = true
-//              }
-//            }
-//            def doit = {
-//              if (flag) {
-//                bc "Heat Metal forced the coinflip to be TAILS."
-//                bg.deterministicCoinFlipQueue.offer(false)
-//              }
-//              flag = false
-//            }
-//            before COIN_FLIP, {doit()}//Neither of these trigger off of the burned coinflip.
-//            before COIN_FLIP_GETTER, {doit()}
-//          }
+          def flag
+          delayedA {
+            before BURNED_SPC, null, null, BEGIN_TURN, {
+              if (ef.target.owner == self.owner.opposite) {
+                flag = true
+              }
+            }
+            def doit = {
+              if (flag) {
+                bc "Overheater forced the coinflip to be TAILS."
+                bg.deterministicCoinFlipQueue.offer(false)
+              }
+              flag = false
+            }
+            before COIN_FLIP, {
+              doit()
+            }
+            before COIN_FLIP_GETTER, {
+              doit()
+            }
+          }
         }
         move "Bursting Inferno", {
           text "130 damage. Your opponent's Active Pokémon is now Burned."
@@ -2550,17 +2548,24 @@ public enum BattleStyles implements LogicCardInfo {
           text "Once during your turn (before your attack), you may switch this Pokémon with an Aegislash in your hand. (Any cards attached to this Pokémon, damage counters, Special Conditions, turns in play, and any other effects remain on the new Pokémon.)"
           actionA {
             checkLastTurn()
+            assert !bg.em().retrieveObject("ScoopUpBlock_Count$self.owner.opposite") || !self.numberOfDamageCounters : "Scoop-Up Block prevents $thisAbility's effect"
             assert bg.em().retrieveObject("Stance_Change") != (bg.turnCount) : "Already used Stance Change"
             assert my.hand.filterByNameEquals("Aegislash") : "No Aegislash in hand"
+
             bg.em().storeObject("Stance_Change", bg.turnCount)
             powerUsed()
 
-            def card = my.hand.filterByNameEquals("Aegislash").select("Stance Change")
-            discard(self.topPokemonCard)
-            card.moveTo(suppressLog:true, self.cards)
+            def card = my.hand.filterByNameEquals("Aegislash").select("Stance Change").first()
+            def pcs = self
+            def top = pcs.topPokemonCard
+            pcs.cards.remove(top)
+            my.hand.add(top)
+            my.hand.remove(card)
+            pcs.cards.add(card)
 
             bc "Switched with $card"
             bg.em().run new CheckAbilities(OTHER, new PcsList(self))
+            checkFaint()
           }
         }
         move "Full Metal Blade", {
@@ -2583,17 +2588,24 @@ public enum BattleStyles implements LogicCardInfo {
           text "Once during your turn (before your attack), you may switch this Pokémon with an Aegislash in your hand. (Any cards attached to this Pokémon, damage counters, Special Conditions, turns in play, and any other effects remain on the new Pokémon.)"
           actionA {
             checkLastTurn()
+            assert !bg.em().retrieveObject("ScoopUpBlock_Count$self.owner.opposite") || !self.numberOfDamageCounters : "Scoop-Up Block prevents $thisAbility's effect"
             assert bg.em().retrieveObject("Stance_Change") != (bg.turnCount) : "Already used Stance Change"
             assert my.hand.filterByNameEquals("Aegislash") : "No Aegislash in hand"
+
             bg.em().storeObject("Stance_Change", bg.turnCount)
             powerUsed()
 
-            def card = my.hand.filterByNameEquals("Aegislash").select("Stance Change")
-            discard(self.topPokemonCard)
-            card.moveTo(suppressLog:true, self.cards)
+            def card = my.hand.filterByNameEquals("Aegislash").select("Stance Change").first()
+            def pcs = self
+            def top = pcs.topPokemonCard
+            pcs.cards.remove(top)
+            my.hand.add(top)
+            my.hand.remove(card)
+            pcs.cards.add(card)
 
             bc "Switched with $card"
             bg.em().run new CheckAbilities(OTHER, new PcsList(self))
+            checkFaint()
           }
         }
         move "Gigaton Bash", {
@@ -3002,9 +3014,8 @@ public enum BattleStyles implements LogicCardInfo {
         text "During this turn, damage from your Pokémon VMAX's attacks isn't affected by any effects on your opponent's Active Pokémon."
         onPlay {
           delayed {
-            //TODO Fix, not working currently against safeguard (Keldeo-GX) (copy of Ultra Forest Kartenvoy)
             before PROCESS_ATTACK_EFFECTS, {
-              if (ef.attacker.topPokemonCard.cardTypes.is(VMAX)) {
+              if (ef.attacker.topPokemonCard) {
                 bg.dm().each {
                   if (it.to.owner != self.owner && it.to.active) {
                     bc "Phoebe's effect activated"
