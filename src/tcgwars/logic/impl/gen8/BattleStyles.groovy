@@ -942,33 +942,15 @@ public enum BattleStyles implements LogicCardInfo {
         weakness LIGHTNING
         bwAbility "Deep Sea King", {
           text "When your Active Pokémon is Knocked Out by damage from an attack from your opponent's Pokémon, you may move any amount of [W] Energy from that Pokémon to this Pokémon."
-          actionA {
-            // TODO
-          }
-          delayedA (priority: LAST) {
-            before KNOCKOUT, {
-              if (ef.pokemonToBeKnockedOut.owner == self.owner && bg.currentTurn == self.owner.opposite
-                && ef.pokemonToBeKnockedOut.active && ef.pokemonToBeKnockedOut != self
-                && (ef as Knockout).byDamageFromAttack
-                && ef.pokemonToBeKnockedOut.cards.filterByType(BASIC_ENERGY).notEmpty ) {
-                if (confirm("Use Exp. Share on $self? ",self.owner)) {
-                  CardList list = ef.pokemonToBeKnockedOut.cards.filterByType(BASIC_ENERGY)
-                  list.select("Energy to move", {true}, self.owner).each {
-                    energySwitch(ef.pokemonToBeKnockedOut, self, it)
-                  }
-                  bc "Exp. Share activated"
-                  discard thisCard
-                }
-              }
-            }
-          }
           delayedA {
-            after SWITCH, {
-              if (lastUsedTurn != bg.turnCount && self.active && bg.currentTurn == self.owner && ef.switchedOut==self && confirm("Use $thisAbility?")) {
+            before KNOCKOUT, {
+              def energies = self.owner.pbg.active.cards.filterByEnergyType(W)
+              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && !self.active && ef.pokemonToBeKnockedOut.owner == self.owner && energies && oppConfirm("Use $thisAbility?")) {
                 powerUsed()
-                def energiesToMove = selectCardTypeFromPokemon type:F,
-                  cardMsg:"Choose the Energy cards to move to $self", exclude:self, ENERGY
+                def energiesToMove = energies.oppSelect(max: energies.size(), "Which Energies to move to Kingdra?")
+
                 def pcsMap = [:]
+
                 energiesToMove.each {
                   def pcs = it.findPCS()
                   if (pcsMap.containsKey(pcs)) (pcsMap[pcs] as CardList).add(it)
