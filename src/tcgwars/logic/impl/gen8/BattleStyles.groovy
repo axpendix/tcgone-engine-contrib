@@ -998,13 +998,18 @@ public enum BattleStyles implements LogicCardInfo {
           energyCost COLORLESS, COLORLESS
           attackRequirement {}
           onAttack {
-            // TODO
             damage 10
-            def tar = opp.deck.subList(0,6).filterByType(ITEM)
 
-            my.hand.filterByType(ITEM)
-            if(tar){
-              tar.select(max:tar.size(),"Choose the item to discard").discard()
+            def ballCards = my.hand.filterByType(ITEM).filterByNameLike("Ball")
+            def selectedCards
+
+            if (ballCards.size()) {
+               selectedCards = ballCards.select(min:0, max:ballCards.size(), "Deal 40 more damage for each Ball card you choose to discard")
+            }
+            if (selectedCards) {
+              selectedCards.each {
+                damage 40
+              }
             }
           }
         }
