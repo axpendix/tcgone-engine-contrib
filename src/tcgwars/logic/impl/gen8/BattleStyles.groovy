@@ -159,7 +159,7 @@ public enum BattleStyles implements LogicCardInfo {
   BOUFFALANT_118 ("Bouffalant", "118", Rarity.UNCOMMON, [POKEMON, BASIC, _COLORLESS_]),
   DRAMPA_119 ("Drampa", "119", Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
   INDEEDEE_120 ("Indeedee", "120", Rarity.UNCOMMON, [POKEMON, BASIC, _COLORLESS_]),
-  BRUNO_121 ("Bruno", "121", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  BRUNO_121 ("Bruno", "121", Rarity.UNCOMMON, [TRAINER, SUPPORTER, SINGLE_STRIKE]),
   CAMPING_GEAR_122 ("Camping Gear", "122", Rarity.UNCOMMON, [TRAINER, ITEM]),
   CHERYL_123 ("Cheryl", "123", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   ENERGY_RECYCLER_124 ("Energy Recycler", "124", Rarity.UNCOMMON, [TRAINER, ITEM]),
@@ -174,7 +174,7 @@ public enum BattleStyles implements LogicCardInfo {
   SINGLE_STRIKE_SCROLL_OF_SCORN_133 ("Single Strike Scroll of Scorn", "133", Rarity.UNCOMMON, [TRAINER, ITEM, POKEMON_TOOL, SINGLE_STRIKE]),
   SINGLE_STRIKE_STYLE_MUSTARD_134 ("Single Strike Style Mustard", "134", Rarity.UNCOMMON, [TRAINER, SUPPORTER, SINGLE_STRIKE]),
   SORDWARD_SHIELBERT_135 ("Sordward & Shielbert", "135", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-  TOOL_JAMMER_136 ("Tool Jammer", "136", Rarity.UNCOMMON, [TRAINER, ITEM, POKEMON_TOOL]),
+  TOOL_JAMMER_136 ("Tool Jammer", "136", Rarity.UNCOMMON, [TRAINER, ITEM, POKEMON_TOOL, NOT_IMPLEMENTED]),
   TOWER_OF_DARKNESS_137 ("Tower of Darkness", "137", Rarity.UNCOMMON, [TRAINER, STADIUM, SINGLE_STRIKE]),
   TOWER_OF_WATERS_138 ("Tower of Waters", "138", Rarity.UNCOMMON, [TRAINER, STADIUM, RAPID_STRIKE]),
   URN_OF_VITALITY_139 ("Urn of Vitality", "139", Rarity.UNCOMMON, [TRAINER, ITEM, SINGLE_STRIKE]),
@@ -879,30 +879,20 @@ public enum BattleStyles implements LogicCardInfo {
         weakness WATER
         bwAbility "Overheater", {
           text "Whenever your opponent flips a coin for their Burned Pokémon during Pokémon Checkup, it doesn't recover from that Special Condition even if the result is heads."
-          // TODO
-//          def flag
-//          delayedA {
-//            before BURNED_SPC, null, null, EVOLVE, {
-//              bc "Heat Metal prevents removing the Special Condition Burned by evolving or devolving"
-//              prevent()
-//            }
-//          }
-//          delayedA {// I don't know why but the two effects need to be in seperate delayedAs? If they aren't, the first effect will trigger during between turns.
-//            before BURNED_SPC, null, null, BEGIN_TURN, {//I don't think manually adding the burn effect here would work, as the burn rules were changed in SM.
-//              if(ef.target.owner == self.owner.opposite) {
-//                flag = true
-//              }
-//            }
-//            def doit = {
-//              if (flag) {
-//                bc "Heat Metal forced the coinflip to be TAILS."
-//                bg.deterministicCoinFlipQueue.offer(false)
-//              }
-//              flag = false
-//            }
-//            before COIN_FLIP, {doit()}//Neither of these trigger off of the burned coinflip.
-//            before COIN_FLIP_GETTER, {doit()}
-//          }
+          def flag
+          getterA COIN_FLIP_GETTER, { h->
+            if (flag && h.effect.info == "Burned") {
+              h.object = false
+              flag = false
+            }
+          }
+          delayedA {
+            before BURNED_SPC, null, null, BEGIN_TURN, {
+              if (ef.target.owner == self.owner.opposite) {
+                flag = true
+              }
+            }
+          }
         }
         move "Bursting Inferno", {
           text "130 damage. Your opponent's Active Pokémon is now Burned."
@@ -944,33 +934,15 @@ public enum BattleStyles implements LogicCardInfo {
         weakness LIGHTNING
         bwAbility "Deep Sea King", {
           text "When your Active Pokémon is Knocked Out by damage from an attack from your opponent's Pokémon, you may move any amount of [W] Energy from that Pokémon to this Pokémon."
-          actionA {
-            // TODO
-          }
-          delayedA (priority: LAST) {
-            before KNOCKOUT, {
-              if (ef.pokemonToBeKnockedOut.owner == self.owner && bg.currentTurn == self.owner.opposite
-                && ef.pokemonToBeKnockedOut.active && ef.pokemonToBeKnockedOut != self
-                && (ef as Knockout).byDamageFromAttack
-                && ef.pokemonToBeKnockedOut.cards.filterByType(BASIC_ENERGY).notEmpty ) {
-                if (confirm("Use Exp. Share on $self? ",self.owner)) {
-                  CardList list = ef.pokemonToBeKnockedOut.cards.filterByType(BASIC_ENERGY)
-                  list.select("Energy to move", {true}, self.owner).each {
-                    energySwitch(ef.pokemonToBeKnockedOut, self, it)
-                  }
-                  bc "Exp. Share activated"
-                  discard thisCard
-                }
-              }
-            }
-          }
           delayedA {
-            after SWITCH, {
-              if (lastUsedTurn != bg.turnCount && self.active && bg.currentTurn == self.owner && ef.switchedOut==self && confirm("Use $thisAbility?")) {
+            before KNOCKOUT, {
+              def energies = self.owner.pbg.active.cards.filterByEnergyType(W)
+              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && !self.active && ef.pokemonToBeKnockedOut.owner == self.owner && ef.pokemonToBeKnockedOut.active && energies && confirm("Use $thisAbility?", self.owner)) {
                 powerUsed()
-                def energiesToMove = selectCardTypeFromPokemon type:F,
-                  cardMsg:"Choose the Energy cards to move to $self", exclude:self, ENERGY
+                def energiesToMove = energies.select(max: energies.size(), playerType: self.owner, "Which Energies to move to Kingdra?")
+
                 def pcsMap = [:]
+
                 energiesToMove.each {
                   def pcs = it.findPCS()
                   if (pcsMap.containsKey(pcs)) (pcsMap[pcs] as CardList).add(it)
@@ -2152,7 +2124,7 @@ public enum BattleStyles implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             discardAllSelfEnergy(null)
-            multiDamage(opp.bench, 2, 120)
+            multiDamage(opp.all, 2, 120)
           }
         }
       };
@@ -2424,8 +2396,7 @@ public enum BattleStyles implements LogicCardInfo {
           energyCost COLORLESS, COLORLESS, COLORLESS
           attackRequirement {}
           onAttack {
-            shredDamage(100)
-            // TODO
+            swiftDamage(100, defending)
           }
         }
       };
@@ -2550,17 +2521,24 @@ public enum BattleStyles implements LogicCardInfo {
           text "Once during your turn (before your attack), you may switch this Pokémon with an Aegislash in your hand. (Any cards attached to this Pokémon, damage counters, Special Conditions, turns in play, and any other effects remain on the new Pokémon.)"
           actionA {
             checkLastTurn()
+            assert !bg.em().retrieveObject("ScoopUpBlock_Count$self.owner.opposite") || !self.numberOfDamageCounters : "Scoop-Up Block prevents $thisAbility's effect"
             assert bg.em().retrieveObject("Stance_Change") != (bg.turnCount) : "Already used Stance Change"
             assert my.hand.filterByNameEquals("Aegislash") : "No Aegislash in hand"
+
             bg.em().storeObject("Stance_Change", bg.turnCount)
             powerUsed()
 
-            def card = my.hand.filterByNameEquals("Aegislash").select("Stance Change")
-            discard(self.topPokemonCard)
-            card.moveTo(suppressLog:true, self.cards)
+            def card = my.hand.filterByNameEquals("Aegislash").select("Stance Change").first()
+            def pcs = self
+            def top = pcs.topPokemonCard
+            pcs.cards.remove(top)
+            my.hand.add(top)
+            my.hand.remove(card)
+            pcs.cards.add(card)
 
             bc "Switched with $card"
             bg.em().run new CheckAbilities(OTHER, new PcsList(self))
+            checkFaint()
           }
         }
         move "Full Metal Blade", {
@@ -2583,17 +2561,24 @@ public enum BattleStyles implements LogicCardInfo {
           text "Once during your turn (before your attack), you may switch this Pokémon with an Aegislash in your hand. (Any cards attached to this Pokémon, damage counters, Special Conditions, turns in play, and any other effects remain on the new Pokémon.)"
           actionA {
             checkLastTurn()
+            assert !bg.em().retrieveObject("ScoopUpBlock_Count$self.owner.opposite") || !self.numberOfDamageCounters : "Scoop-Up Block prevents $thisAbility's effect"
             assert bg.em().retrieveObject("Stance_Change") != (bg.turnCount) : "Already used Stance Change"
             assert my.hand.filterByNameEquals("Aegislash") : "No Aegislash in hand"
+
             bg.em().storeObject("Stance_Change", bg.turnCount)
             powerUsed()
 
-            def card = my.hand.filterByNameEquals("Aegislash").select("Stance Change")
-            discard(self.topPokemonCard)
-            card.moveTo(suppressLog:true, self.cards)
+            def card = my.hand.filterByNameEquals("Aegislash").select("Stance Change").first()
+            def pcs = self
+            def top = pcs.topPokemonCard
+            pcs.cards.remove(top)
+            my.hand.add(top)
+            my.hand.remove(card)
+            pcs.cards.add(card)
 
             bc "Switched with $card"
             bg.em().run new CheckAbilities(OTHER, new PcsList(self))
+            checkFaint()
           }
         }
         move "Gigaton Bash", {
@@ -2999,10 +2984,10 @@ public enum BattleStyles implements LogicCardInfo {
       return supporter (this) {
         text "Draw cards until you have 6 cards in your hand."
         onPlay {
-          draw 6 - my.hand.size()
+          draw 6 - my.hand.getExcludedList(thisCard).size()
         }
         playRequirement {
-          assert my.hand.size() < 6 : "You have 6 or more cards in your hand"
+          assert my.hand.getExcludedList(thisCard).size() < 6 : "You have 6 or more cards in your hand"
           assert my.deck : "Your deck is empty"
         }
       };
@@ -3011,24 +2996,23 @@ public enum BattleStyles implements LogicCardInfo {
       case PHOEBE_130:
       return supporter (this) {
         text "During this turn, damage from your Pokémon VMAX's attacks isn't affected by any effects on your opponent's Active Pokémon."
-        delayed {
-          //TODO Fix, not working currently against safeguard (Keldeo-GX) (copy of Ultra Forest Kartenvoy)
-          before PROCESS_ATTACK_EFFECTS, {
-            if (ef.attacker.topPokemonCard.cardTypes.is(VMAX)) {
-              bg.dm().each {
-                if (it.to.owner != self.owner && it.to.active) {
-                  bc "Phoebe's effect activated"
-                  it.flags.add(DamageManager.DamageFlag.NO_DEFENDING_EFFECT)
+        onPlay {
+          delayed {
+            before PROCESS_ATTACK_EFFECTS, {
+              if (ef.attacker.pokemonVMAX) {
+                bg.dm().each {
+                  if (it.to.owner != self.owner && it.to.active) {
+                    bc "Phoebe's effect activated"
+                    it.flags.add(DamageManager.DamageFlag.NO_DEFENDING_EFFECT)
+                  }
                 }
               }
             }
+            unregister {
+              bc "Phoebe's effect fades out"
+            }
+            unregisterAfter 1
           }
-          unregister {
-            bc "Phoebe's effect fades out"
-          }
-          unregisterAfter 1
-        }
-        playRequirement{
         }
       };
       case RAPID_STRIKE_SCROLL_OF_SWIRLS_131:
@@ -3044,7 +3028,7 @@ public enum BattleStyles implements LogicCardInfo {
               // self is not set properly creating a move like this, use bg.ownActive() instead
               assert bg.ownActive().rapidStrike : "${bg.ownActive()} is not a $RAPID_STRIKE Pokémon"
             }
-            energyCost C, C
+            energyCost F, C, C
             onAttack {
               opp.all.each { damage 30, it }
             }
@@ -3122,14 +3106,13 @@ public enum BattleStyles implements LogicCardInfo {
         text "You can play this card only when it is the last card in your hand." +
           "Search your deck for a Single Strike Pokémon and put it onto your Bench. Then, shuffle your deck. If you searched your deck in this way, draw 5 cards."
         onPlay {
-          def card = my.deck.search(count: 1, "Search for a Single Strike Pokémon to put onto the Bench", {
+          my.deck.search(count: 1, "Search for a Single Strike Pokémon to put onto the Bench", {
             it.cardTypes.is(POKEMON) && it.cardTypes.is(SINGLE_STRIKE)
-          }).first()
-          shuffleDeck()
-          def pcs = benchPCS(card)
-          if (pcs) {
-            draw 5
+          }).each {
+            benchPCS(it)
           }
+          shuffleDeck()
+          draw 5
         }
         playRequirement {
           assert hand.size() == 1 : "You can play this card only when it is the last card in your hand"
