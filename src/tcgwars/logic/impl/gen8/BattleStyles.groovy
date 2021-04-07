@@ -937,7 +937,7 @@ public enum BattleStyles implements LogicCardInfo {
           delayedA {
             before KNOCKOUT, {
               def energies = self.owner.pbg.active.cards.filterByEnergyType(W)
-              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && !self.active && ef.pokemonToBeKnockedOut.owner == self.owner && energies && oppConfirm("Use $thisAbility?")) {
+              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && !self.active && ef.pokemonToBeKnockedOut.owner == self.owner && ef.pokemonToBeKnockedOut.active && energies && oppConfirm("Use $thisAbility?")) {
                 powerUsed()
                 def energiesToMove = energies.oppSelect(max: energies.size(), "Which Energies to move to Kingdra?")
 
