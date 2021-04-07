@@ -2531,10 +2531,10 @@ public enum BattleStyles implements LogicCardInfo {
           actionA {
             checkLastTurn()
             assert !bg.em().retrieveObject("ScoopUpBlock_Count$self.owner.opposite") || !self.numberOfDamageCounters : "Scoop-Up Block prevents $thisAbility's effect"
-            assert bg.em().retrieveObject("Stance_Change") != (bg.turnCount) : "Already used Stance Change"
+            assert bg.em().retrieveObject("Stance_Change_" + self.hashCode()) != (bg.turnCount) : "Already used Stance Change"
             assert my.hand.filterByNameEquals("Aegislash") : "No Aegislash in hand"
 
-            bg.em().storeObject("Stance_Change", bg.turnCount)
+            bg.em().storeObject("Stance_Change_" + self.hashCode(), bg.turnCount)
             powerUsed()
 
             def card = my.hand.filterByNameEquals("Aegislash").select("Stance Change").first()
@@ -2571,10 +2571,10 @@ public enum BattleStyles implements LogicCardInfo {
           actionA {
             checkLastTurn()
             assert !bg.em().retrieveObject("ScoopUpBlock_Count$self.owner.opposite") || !self.numberOfDamageCounters : "Scoop-Up Block prevents $thisAbility's effect"
-            assert bg.em().retrieveObject("Stance_Change") != (bg.turnCount) : "Already used Stance Change"
+            assert bg.em().retrieveObject("Stance_Change_" + self.hashCode()) != (bg.turnCount) : "Already used Stance Change"
             assert my.hand.filterByNameEquals("Aegislash") : "No Aegislash in hand"
 
-            bg.em().storeObject("Stance_Change", bg.turnCount)
+            bg.em().storeObject("Stance_Change_" + self.hashCode(), bg.turnCount)
             powerUsed()
 
             def card = my.hand.filterByNameEquals("Aegislash").select("Stance Change").first()
