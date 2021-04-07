@@ -598,8 +598,10 @@ public enum BattleStyles implements LogicCardInfo {
           onAttack {
             damage 80
             if (confirm("Discard all Energy from $self to do 80 more damage?")) {
-              discardAllSelfEnergy()
               damage 80
+              afterDamage {
+                discardAllSelfEnergy()
+              }
             }
           }
         }
@@ -695,7 +697,9 @@ public enum BattleStyles implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 120
-            discardAllSelfEnergy()
+            afterDamage {
+              discardAllSelfEnergy()
+            }
           }
         }
       };
@@ -1090,7 +1094,9 @@ public enum BattleStyles implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
-            discardRandomCardFromOpponentsHand()
+            afterDamage {
+              discardRandomCardFromOpponentsHand()
+            }
           }
         }
         move "Crabhammer", {
@@ -1995,7 +2001,9 @@ public enum BattleStyles implements LogicCardInfo {
                 damage 60
               }
             }
-            top.discard()
+            afterDamage {
+              top.discard()
+            }
           }
         }
         move "Skull Bash", {
@@ -2177,7 +2185,9 @@ public enum BattleStyles implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
-            discardSelfEnergy(C)
+            afterDamage {
+              discardSelfEnergy(C)
+            }
           }
         }
       };
