@@ -1045,6 +1045,10 @@ public enum BattleStyles implements LogicCardInfo {
           actionA {
             checkLastTurn()
             assert my.deck : "Your deck is empty"
+            assert bg.em().retrieveObject("Rapid_Strike_Search") != bg.turnCount : "You can't use more than 1 $thisAbility Ability each turn."
+            powerUsed()
+            bg.em().storeObject("Rapid_Strike_Search", bg.turnCount)
+
             powerUsed()
             my.deck.search(count: 1, "Choose a Rapid Strike card", cardTypeFilter(RAPID_STRIKE)).moveTo(my.hand)
             shuffleDeck()
