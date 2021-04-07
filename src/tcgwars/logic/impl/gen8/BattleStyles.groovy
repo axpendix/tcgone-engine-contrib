@@ -3100,7 +3100,7 @@ public enum BattleStyles implements LogicCardInfo {
           }).each {
             benchPCS(it)
           }
-
+          shuffleDeck()
           draw 5
         }
         playRequirement {
