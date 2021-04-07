@@ -2133,7 +2133,9 @@ public enum BattleStyles implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             multiDamage(opp.all, 2, 120)
-            discardAllSelfEnergy(null)
+            afterDamage {
+              discardAllSelfEnergy(null)
+            }
           }
         }
       };
