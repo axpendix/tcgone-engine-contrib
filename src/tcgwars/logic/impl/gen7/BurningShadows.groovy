@@ -1899,7 +1899,7 @@ public enum BurningShadows implements LogicCardInfo {
           weakness PSYCHIC
           bwAbility "Shadow Hunt", {
             text "This Pokémon can use the attacks of Basic Pokémon in your discard pile. (You still need the necessary Energy to use each attack.)"
-            metronomeA delegate, { self.owner.pbg.discard }
+            metronomeA delegate, { self.owner.pbg.discard.filterByType(BASIC) }
           }
           move "Beatdown", {
             text "120 damage."
