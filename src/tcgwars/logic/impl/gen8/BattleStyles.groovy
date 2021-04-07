@@ -2127,8 +2127,8 @@ public enum BattleStyles implements LogicCardInfo {
           energyCost FIGHTING, FIGHTING, COLORLESS
           attackRequirement {}
           onAttack {
-            discardAllSelfEnergy(null)
             multiDamage(opp.all, 2, 120)
+            discardAllSelfEnergy(null)
           }
         }
       };
