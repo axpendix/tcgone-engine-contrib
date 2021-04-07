@@ -1000,7 +1000,7 @@ public enum BattleStyles implements LogicCardInfo {
           onAttack {
             damage 10
 
-            def ballCards = my.hand.filterByType(ITEM).filterByNameLike("Ball")
+            def ballCards = my.hand.filterByType(ITEM).findAll { it.name.endsWith("Ball") }
             def selectedCards
 
             if (ballCards.size()) {
