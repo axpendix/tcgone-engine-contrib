@@ -598,8 +598,10 @@ public enum BattleStyles implements LogicCardInfo {
           onAttack {
             damage 80
             if (confirm("Discard all Energy from $self to do 80 more damage?")) {
-              discardAllSelfEnergy()
               damage 80
+              afterDamage {
+                discardAllSelfEnergy()
+              }
             }
           }
         }
@@ -695,7 +697,9 @@ public enum BattleStyles implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 120
-            discardAllSelfEnergy()
+            afterDamage {
+              discardAllSelfEnergy()
+            }
           }
         }
       };
@@ -998,13 +1002,18 @@ public enum BattleStyles implements LogicCardInfo {
           energyCost COLORLESS, COLORLESS
           attackRequirement {}
           onAttack {
-            // TODO
             damage 10
-            def tar = opp.deck.subList(0,6).filterByType(ITEM)
 
-            my.hand.filterByType(ITEM)
-            if(tar){
-              tar.select(max:tar.size(),"Choose the item to discard").discard()
+            def ballCards = my.hand.filterByType(ITEM).findAll { it.name.endsWith("Ball") }
+            def selectedCards
+
+            if (ballCards.size()) {
+               selectedCards = ballCards.select(min:0, max:ballCards.size(), "Deal 40 more damage for each Ball card you choose to discard")
+            }
+            if (selectedCards) {
+              selectedCards.each {
+                damage 40
+              }
             }
           }
         }
@@ -1045,6 +1054,10 @@ public enum BattleStyles implements LogicCardInfo {
           actionA {
             checkLastTurn()
             assert my.deck : "Your deck is empty"
+            assert bg.em().retrieveObject("Rapid_Strike_Search") != bg.turnCount : "You can't use more than 1 $thisAbility Ability each turn."
+            powerUsed()
+            bg.em().storeObject("Rapid_Strike_Search", bg.turnCount)
+
             powerUsed()
             my.deck.search(count: 1, "Choose a Rapid Strike card", cardTypeFilter(RAPID_STRIKE)).moveTo(my.hand)
             shuffleDeck()
@@ -1081,7 +1094,9 @@ public enum BattleStyles implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
-            discardRandomCardFromOpponentsHand()
+            afterDamage {
+              discardRandomCardFromOpponentsHand()
+            }
           }
         }
         move "Crabhammer", {
@@ -2123,8 +2138,10 @@ public enum BattleStyles implements LogicCardInfo {
           energyCost FIGHTING, FIGHTING, COLORLESS
           attackRequirement {}
           onAttack {
-            discardAllSelfEnergy(null)
             multiDamage(opp.all, 2, 120)
+            afterDamage {
+              discardAllSelfEnergy(null)
+            }
           }
         }
       };
@@ -2166,7 +2183,7 @@ public enum BattleStyles implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
-            discardSelfEnergy(C)
+            discardSelfEnergyAfterDamage(C)
           }
         }
       };
@@ -2522,10 +2539,10 @@ public enum BattleStyles implements LogicCardInfo {
           actionA {
             checkLastTurn()
             assert !bg.em().retrieveObject("ScoopUpBlock_Count$self.owner.opposite") || !self.numberOfDamageCounters : "Scoop-Up Block prevents $thisAbility's effect"
-            assert bg.em().retrieveObject("Stance_Change") != (bg.turnCount) : "Already used Stance Change"
+            assert bg.em().retrieveObject("Stance_Change_" + self.hashCode()) != (bg.turnCount) : "Already used Stance Change"
             assert my.hand.filterByNameEquals("Aegislash") : "No Aegislash in hand"
 
-            bg.em().storeObject("Stance_Change", bg.turnCount)
+            bg.em().storeObject("Stance_Change_" + self.hashCode(), bg.turnCount)
             powerUsed()
 
             def card = my.hand.filterByNameEquals("Aegislash").select("Stance Change").first()
@@ -2547,9 +2564,7 @@ public enum BattleStyles implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 210
-            afterDamage {
-              discardSelfEnergy M, M
-            }
+            discardSelfEnergyAfterDamage(M, M)
           }
         }
       };
@@ -2562,10 +2577,10 @@ public enum BattleStyles implements LogicCardInfo {
           actionA {
             checkLastTurn()
             assert !bg.em().retrieveObject("ScoopUpBlock_Count$self.owner.opposite") || !self.numberOfDamageCounters : "Scoop-Up Block prevents $thisAbility's effect"
-            assert bg.em().retrieveObject("Stance_Change") != (bg.turnCount) : "Already used Stance Change"
+            assert bg.em().retrieveObject("Stance_Change_" + self.hashCode()) != (bg.turnCount) : "Already used Stance Change"
             assert my.hand.filterByNameEquals("Aegislash") : "No Aegislash in hand"
 
-            bg.em().storeObject("Stance_Change", bg.turnCount)
+            bg.em().storeObject("Stance_Change_" + self.hashCode(), bg.turnCount)
             powerUsed()
 
             def card = my.hand.filterByNameEquals("Aegislash").select("Stance Change").first()
