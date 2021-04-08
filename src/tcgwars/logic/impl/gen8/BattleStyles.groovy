@@ -1014,6 +1014,7 @@ public enum BattleStyles implements LogicCardInfo {
               selectedCards.each {
                 damage 40
               }
+              selectedCards.discard()
             }
           }
         }
