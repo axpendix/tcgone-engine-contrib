@@ -2001,9 +2001,7 @@ public enum BattleStyles implements LogicCardInfo {
                 damage 60
               }
             }
-            afterDamage {
-              top.discard()
-            }
+            top.discard()
           }
         }
         move "Skull Bash", {
@@ -2185,9 +2183,7 @@ public enum BattleStyles implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
-            afterDamage {
-              discardSelfEnergy(C)
-            }
+            discardSelfEnergyAfterDamage(C)
           }
         }
       };
@@ -2568,9 +2564,7 @@ public enum BattleStyles implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 210
-            afterDamage {
-              discardSelfEnergy M, M
-            }
+            discardSelfEnergyAfterDamage(M, M)
           }
         }
       };
