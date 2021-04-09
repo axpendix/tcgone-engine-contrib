@@ -230,7 +230,7 @@ public enum Stormfront implements LogicCardInfo {
               powerUsed()
               draw 2
               if(my.hand.size() > 6) {
-                my.hand.select(count : my.hand.size() - 6, "Discard cards until you have 6 cards in your hand.")
+                my.hand.select(count : my.hand.size() - 6, "Discard cards until you have 6 cards in your hand.").discard()
               }
               directDamage 20, self, SRC_ABILITY
             }
@@ -269,7 +269,7 @@ public enum Stormfront implements LogicCardInfo {
                 after EVOLVE, self, {unregister()}
                 after DEVOLVE, self, {unregister()}
                 after FALL_BACK, self, {unregister()}
-                }
+              }
             }
           }
 
@@ -324,7 +324,7 @@ public enum Stormfront implements LogicCardInfo {
               if (r==PLAY_FROM_HAND && my.deck && confirm("Use Blaze Dance?")) {
                 powerUsed()
                 flip {
-                  def energys = my.deck.search(max:4,"Search your deck for up to $count basic [R] Energy cards",basicEnergyFilter(R))
+                  def energys = my.deck.search(max:4,"Search your deck for up to 4 basic [R] Energy cards",basicEnergyFilter(R))
                   def count = 1
                   energys.each {
                     def tar = my.all.select("Attach [R] Energy ($count/${energys.size()}) to")
@@ -382,13 +382,12 @@ public enum Stormfront implements LogicCardInfo {
               assert self.active : "$self is not your Active Pokémon"
               assert opp.hand : "Your opponent's hand is empty"
               powerUsed()
-              def oppHand = opp.hand.shuffledCopy()
-              if(opp.bench.notFull && oppHand.filterByType(BASIC_POKEMON)) {
-                def card = oppHand.select("Choose a Basic Pokémon to put onto your opponent's Bench")
+              if(opp.bench.notFull && opp.hand.filterByType(BASIC)) {
+                def card = opp.hand.select("Choose a Basic Pokémon to put onto your opponent's Bench").first()
                 def pcs = benchPCS(card)
                 sw opp.active, pcs
               } else {
-                oppHand.showToMe("Opponent's hand")
+                opp.hand.showToMe("Opponent's hand")
               }
 
             }
@@ -421,7 +420,7 @@ public enum Stormfront implements LogicCardInfo {
             actionA {
               checkLastTurn()
               checkNoSPC()
-              assert mydeck : "Your deck is empty"
+              assert my.deck : "Your deck is empty"
               powerUsed()
               my.deck.search("Search your deck for a [L] or [M] Pokémon", {it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(L) || it.asPokemonCard().types.contains(M)}).showToOpponent("Selected Cards").moveTo(my.hand)
             }
@@ -463,9 +462,11 @@ public enum Stormfront implements LogicCardInfo {
             energyCost L, C, C
             onAttack {
               damage 60
-              if(confirm("Switch $self with 1 of your Benched Pokémon?")) {
-                if(sw2(my.bench.select("New Active Pokémon"))) {
-                  whirlwind()
+              afterDamage {
+                if(confirm("Switch $self with 1 of your Benched Pokémon?")) {
+                  if(sw2(my.bench.select("New Active Pokémon"))) {
+                    whirlwind()
+                  }
                 }
               }
             }
