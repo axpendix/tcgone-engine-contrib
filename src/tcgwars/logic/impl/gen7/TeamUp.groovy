@@ -3560,7 +3560,7 @@ public enum TeamUp implements LogicCardInfo {
             eff = delayed{
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if(it.to == self && it.from.owner == self.owner.opposite && self.types.contains(M)){
+                  if(it.to == self && it.from.owner == self.owner.opposite && self.types.contains(M) && it.notNoEffect){
                     bc "Metal Goggles -30"
                     it.dmg-=hp(30)
                   }

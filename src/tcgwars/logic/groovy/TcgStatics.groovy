@@ -1871,11 +1871,14 @@ class TcgStatics {
 
   /**
    * Copies an attack from another PokemonCardSet as an Ability Attack
+   * @param params Optional map of parameters
+   * @param params.checkSpecialConditions
    * @param delegate onAttack delegate
    * @param target A Closure with a call to return the current targets (ex: { all() } or { bench() }
    */
-  static metronomeA(Object delegate, Closure target) {
+  static metronomeA(params=[:], Object delegate, Closure target) {
     delegate.getterA GET_MOVE_LIST, delegate.self, {holder->
+      if (params.checkSpecialConditions && !delegate.self.checkSpecialConditionsForClassic()) return
       if (!holder.effect.target.active) return
       def moves = [] as Set
       moves.addAll holder.object
