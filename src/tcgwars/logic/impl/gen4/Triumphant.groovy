@@ -816,7 +816,7 @@ public enum Triumphant implements LogicCardInfo {
             }
             onAttack {
               flip opp.bench.size(), {}, {
-                damage 40
+                noWrDamage 40
               }
             }
           }
@@ -2377,7 +2377,7 @@ public enum Triumphant implements LogicCardInfo {
               def flag = null
               before KNOCKOUT, {
                 if(self.active && ef.pokemonToBeKnockedOut.owner == self.owner.opposite ){
-                  flag = ef.pokemonToBeKnockedOut.cards.copy()
+                  flag = ef.pokemonToBeKnockedOut.cards.filterByType(POKEMON).copy()
                 }
               }
               after KNOCKOUT, {
