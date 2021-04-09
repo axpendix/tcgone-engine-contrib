@@ -28,6 +28,7 @@ import static tcgwars.logic.groovy.TcgStatics.*
 
 /**
  * @author axpendix@hotmail.com
+ * @author ufodynasty12@gmail.com
  */
 public enum RisingRivals implements LogicCardInfo {
 
@@ -118,17 +119,17 @@ public enum RisingRivals implements LogicCardInfo {
   TURTWIG_GL_85 ("Turtwig GL", "85", Rarity.COMMON, [BASIC, POKEMON, POKEMON_SP, _GRASS_]),
   WEEDLE_86 ("Weedle", "86", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
   WEEZING_87 ("Weezing", "87", Rarity.COMMON, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-  AARON_S_COLLECTION_88 ("Aaron's Collection", "88", Rarity.UNCOMMON, [TRAINER]),
-  BEBE_S_SEARCH_89 ("Bebe's Search", "89", Rarity.UNCOMMON, [TRAINER]),
-  BERTHA_S_WARMTH_90 ("Bertha's Warmth", "90", Rarity.UNCOMMON, [TRAINER]),
-  FLINT_S_WILLPOWER_91 ("Flint's Willpower", "91", Rarity.UNCOMMON, [TRAINER]),
-  LUCIAN_S_ASSIGNMENT_92 ("Lucian's Assignment", "92", Rarity.UNCOMMON, [TRAINER]),
+  AARON_S_COLLECTION_88 ("Aaron's Collection", "88", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  BEBE_S_SEARCH_89 ("Bebe's Search", "89", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  BERTHA_S_WARMTH_90 ("Bertha's Warmth", "90", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  FLINT_S_WILLPOWER_91 ("Flint's Willpower", "91", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  LUCIAN_S_ASSIGNMENT_92 ("Lucian's Assignment", "92", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   POKEMON_CONTEST_HALL_93 ("Pokémon Contest Hall", "93", Rarity.UNCOMMON, [TRAINER, STADIUM]),
   SUNYSHORE_CITY_GYM_94 ("Sunyshore City Gym", "94", Rarity.UNCOMMON, [TRAINER, STADIUM]),
   TECHNICAL_MACHINE_G_95 ("Team Galactic's Invention G-107 Technical Machine G", "95", Rarity.UNCOMMON, [TRAINER, ITEM, TECHNICAL_MACHINE]),
-  SP_RADAR_96 ("Team Galactic's Invention G-109 SP Radar", "96", Rarity.UNCOMMON, [TRAINER]),
-  UNDERGROUND_EXPEDITION_97 ("Underground Expedition", "97", Rarity.UNCOMMON, [TRAINER]),
-  VOLKNER_S_PHILOSOPHY_98 ("Volkner's Philosophy", "98", Rarity.UNCOMMON, [TRAINER]),
+  SP_RADAR_96 ("Team Galactic's Invention G-109 SP Radar", "96", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  UNDERGROUND_EXPEDITION_97 ("Underground Expedition", "97", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  VOLKNER_S_PHILOSOPHY_98 ("Volkner's Philosophy", "98", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   DARKNESS_ENERGY_99 ("Darkness Energy", "99", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   METAL_ENERGY_100 ("Metal Energy", "100", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   SP_ENERGY_101 ("SP Energy", "101", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
@@ -150,7 +151,7 @@ public enum RisingRivals implements LogicCardInfo {
   HEAT_ROTOM_RT3 ("Heat Rotom", "RT3", Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
   MOW_ROTOM_RT4 ("Mow Rotom", "RT4", Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
   WASH_ROTOM_RT5 ("Wash Rotom", "RT5", Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
-  CHARON_S_CHOICE_RT6 ("Charon's Choice", "RT6", Rarity.HOLORARE, [TRAINER]);
+  CHARON_S_CHOICE_RT6 ("Charon's Choice", "RT6", Rarity.HOLORARE, [TRAINER, SUPPORTER]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -2866,7 +2867,7 @@ public enum RisingRivals implements LogicCardInfo {
       case BEBE_S_SEARCH_89:
         return copy (MysteriousTreasures.BEBE_S_SEARCH_109, this);
       case BERTHA_S_WARMTH_90:
-        return basicTrainer (this) {
+        return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nRemove 5 damage counters from 1 of your Pokémon SP."
           onPlay {
             heal 50, my.all.findAll{it.pokemonSP && it.numberOfDamageCounters}.select("Remove 5 damage counters from 1 of your Pokémon SP"), TRAINER_CARD
