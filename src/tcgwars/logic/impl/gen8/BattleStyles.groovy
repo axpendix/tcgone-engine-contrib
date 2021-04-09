@@ -3014,10 +3014,10 @@ public enum BattleStyles implements LogicCardInfo {
         text "During this turn, damage from your Pokémon VMAX's attacks isn't affected by any effects on your opponent's Active Pokémon."
         onPlay {
           delayed {
-            before PROCESS_ATTACK_EFFECTS, {
+            after PROCESS_ATTACK_EFFECTS, {
               if (ef.attacker.pokemonVMAX) {
                 bg.dm().each {
-                  if (it.to.owner != self.owner && it.to.active) {
+                  if (it.to.owner != thisCard.player && it.to.active) {
                     bc "Phoebe's effect activated"
                     it.flags.add(DamageManager.DamageFlag.NO_DEFENDING_EFFECT)
                   }
