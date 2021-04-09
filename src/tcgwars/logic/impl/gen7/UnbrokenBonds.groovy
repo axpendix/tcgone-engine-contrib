@@ -4444,11 +4444,10 @@ public enum UnbrokenBonds implements LogicCardInfo {
           text "During this turn, damage from your Ultra Beasts' attacks isn't affected by any effects on your opponent's Active Pokémon."
           onPlay {
             delayed {
-              //TODO Fix, not working currently against safeguard (Keldeo-GX)
-              before PROCESS_ATTACK_EFFECTS, {
+              after PROCESS_ATTACK_EFFECTS, {
                 if (ef.attacker.topPokemonCard.cardTypes.is(ULTRA_BEAST)){
                   bg.dm().each{
-                    if (it.to.owner != self.owner && it.to.active) {
+                    if (it.to.owner != thisCard.player && it.to.active) {
                       bc "Ultra Forest Kartenvoy kicks in"
                       it.flags.add(DamageManager.DamageFlag.NO_DEFENDING_EFFECT)
                     }
