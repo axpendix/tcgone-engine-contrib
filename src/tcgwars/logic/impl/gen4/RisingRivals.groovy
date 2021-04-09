@@ -1,26 +1,19 @@
 package tcgwars.logic.impl.gen4
 
-import tcgwars.logic.TargetPlayer
 import tcgwars.logic.impl.gen3.RubySapphire;
 import tcgwars.logic.impl.gen4.MysteriousTreasures
 import tcgwars.logic.impl.gen7.CelestialStorm;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*
-import static tcgwars.logic.effect.EffectPriority.BEFORE_LAST
-import static tcgwars.logic.effect.EffectType.*
-import static tcgwars.logic.effect.special.SpecialConditionType.*
-import static tcgwars.logic.effect.Source.*
+import static tcgwars.logic.card.CardType.*;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
 
 import tcgwars.logic.card.*
-import tcgwars.logic.util.*
-
-import static tcgwars.logic.groovy.TcgStatics.reduceDamageNextTurn;
+import tcgwars.logic.util.*;
 
 /**
  * @author axpendix@hotmail.com
@@ -528,30 +521,16 @@ public enum RisingRivals implements LogicCardInfo {
         return evolution (this, from:"Kakuna", hp:HP110, type:GRASS, retreatCost:1) {
           weakness R, PLUS30
           pokePower "Flutter Wings", {
-            text "Once during your turn , you may search your deck for a [G] Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward. This power can’t be used if Beedrill is affected by a Special Condition."
+            text "Once during your turn , you may search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward. This power can’t be used if Beedrill is affected by a Special Condition."
             actionA {
-              checkLastTurn()
-              checkNoSPC()
-              assert my.deck : "Your deck is empty"
-              powerUsed()
-              my.deck.search("Search your deck for a [G] Pokémon",pokemonTypeFilter(G)).showToOpponent("Flutter Wings: Selected card").moveTo(my.hand)
-              shuffleDeck()
             }
           }
           move "Needle Shock", {
             text "30 damage. The Defending Pokémon is now Paralyzed and Poisoned. Ignore this effect if any of your Pokémon used Needle Shock during your last turn."
             energyCost G, C, C
+            attackRequirement {}
             onAttack {
-              damage 30
-              afterDamage {
-                bc"${bg.em().retrieveObject("Needle_Shock")}"
-                bc"$bg.turnCount"
-                if(bg.em().retrieveObject("Needle_Shock")!=(bg.turnCount - 2)) {
-                  apply PARALYZED
-                  apply POISONED
-                }
-                bg.em().storeObject("Needle_Shock",bg.turnCount)
-              }
+              damage 0
             }
           }
 
@@ -563,26 +542,19 @@ public enum RisingRivals implements LogicCardInfo {
           move "Hand Refresh", {
             text "Each player shuffles his or her hand into his or her deck and draws up to 4 cards. (You draw your cards first.)"
             energyCost ()
-            attackRequirement {
-              assert my.hand||my.deck||opp.hand||opp.deck : "Neither you nor your opponent have any cards in your hands or decks"
-            }
+            attackRequirement {}
             onAttack {
-              my.hand.moveTo(hidden:true,my.deck)
-              shuffleDeck()
-              opp.hand.moveTo(hidden:true,opp.deck)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
-              draw choose((1..4),"Draw how many cards?")
-              draw oppChoose((1..4),"Draw how many cards?"), TargetPlayer.OPPONENT
+              damage 0
             }
           }
           move "Payback", {
             text "10+ damage. If your opponent has only 1 Prize card left, this attack does 10 damage plus 50 more damage and the Defending Pokémon is now Confused."
             energyCost P, C
+            attackRequirement {}
             onAttack {
               damage 10
               if (opp.prizeCardSet.size() == 1) {
                 damage 50
-                applyAfterDamage CONFUSED
               }
             }
           }
@@ -595,18 +567,18 @@ public enum RisingRivals implements LogicCardInfo {
           move "Body Slam", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost C, C
+            attackRequirement {}
             onAttack {
               damage 20
-              flip {
-                applyAfterDamage PARALYZED
-              }
+              flip { apply PARALYZED }
             }
           }
           move "Mega Impact", {
             text "70 damage. "
             energyCost P, C, C, C
+            attackRequirement {}
             onAttack {
-              damage 70
+              damage 0
             }
           }
 
@@ -619,7 +591,7 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              apply ASLEEP
+              damage 0
             }
           }
           move "Psywave", {
@@ -638,10 +610,6 @@ public enum RisingRivals implements LogicCardInfo {
           pokePower "Undevelop", {
             text "Once during your turn , you may devolve Flareon and put Flareon into your hand. This power can’t be used if Flareon is affected by a Special Condition."
             actionA {
-              checkLastTurn()
-              checkNoSPC()
-              powerUsed()
-              devolve(self,self.topPokemonCard,my.hand)
             }
           }
           move "Tail Slap", {
@@ -649,7 +617,7 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 30
+              damage 0
             }
           }
           move "Evolving Flare", {
@@ -657,11 +625,7 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost R, C
             attackRequirement {}
             onAttack {
-              damage 40
-              if (self.lastEvolved == bg.turnCount && self.cards.any{it.name.contains("Eevee")}) {
-                damage 20
-                applyAfterDamage BURNED
-              }
+              damage 0
             }
           }
 
@@ -674,12 +638,7 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost P, C
             attackRequirement {}
             onAttack {
-              damage 20
-              opp.bench.each {
-                if(it.numberOfDamageCounters) {
-                  damage 10, it
-                }
-              }
+              damage 0
             }
           }
           move "Feint", {
@@ -700,29 +659,14 @@ public enum RisingRivals implements LogicCardInfo {
           pokeBody "Sticky Hold", {
             text "If Gastrodon East Sea is switched or retreats to your Bench, move as many Energy cards attached to Gastrodon East Sea as you like to the new Active Pokémon."
             delayedA {
-              after FALL_BACK, self, {
-                if(self.cards.energyCount(C) && confirm("Use Sticky Hold?")) {
-                  def energyList = self.cards.select(max:self.cards.filterByType(ENERGY).size(),"Move any number of Energy cards attached from $self to ${self.owner.pbg.active}",cardTypeFilter(ENERGY))
-                  energyList.each {
-                    energySwitch(self,self.owner.pbg.active,it)
-                  }
-                }
-              }
             }
           }
           move "Calling Wave", {
             text "Search your deck for up to 2 Gastrodon and put them onto your Bench as Basic Pokémon. Put 2 damage counters on each of them. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {
-              assert my.deck : "Your deck is empty"
-              assert my.bench.notFull : "Your bench is full"
-            }
+            attackRequirement {}
             onAttack {
-              def max = Math.min(2,my.bench.freeBenchCount)
-              my.deck.search(max:max,"Search your deck for up to 2 Gastrodon to put onto your bench",{it.cardTypes.is(POKEMON) && it.name.contains("Gastrodon")}).each {
-                def pcs = benchPCS(it)
-                directDamage 20, pcs, SRC_ABILITY
-              }
+              damage 0
             }
           }
           move "Wave Splash", {
@@ -730,7 +674,7 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost W, C
             attackRequirement {}
             onAttack {
-              damage 40
+              damage 0
             }
           }
 
@@ -744,7 +688,7 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 50
+              damage 0
             }
           }
           move "Muddy Bomb", {
@@ -752,13 +696,7 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost F, C, C
             attackRequirement {}
             onAttack {
-              def tar = opp.all.select("Deal 30 damage to which Pokémon?")
-              damage 30, tar
-              opp.all.each {
-                if(it!=tar) {
-                  damage 10, it
-                }
-              }
+              damage 0
             }
           }
           move "Raging Sea", {
@@ -766,7 +704,7 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost F, C, C, C
             attackRequirement {}
             onAttack {
-              damage 60 + 10 * my.bench.findAll{it.numberOfDamageCounters}.size()
+              damage 0
             }
           }
 
@@ -776,15 +714,15 @@ public enum RisingRivals implements LogicCardInfo {
           weakness G
           resistance L, MINUS20
           move "Rage", {
-            text "20+ damage. Does 20 damage plus 10 more damage for each damage counter on Golem E4."
+            text "20+ damage. ."
             energyCost F, C, C
             attackRequirement {}
             onAttack {
-              damage 20 + 10 * self.numberOfDamageCounters
+              damage 0
             }
           }
           move "Double-edge", {
-            text "100 damage. Golem E4 does 60 damage to itself."
+            text "100 damage. does 60 damage to itself."
             energyCost F, C, C, C
             attackRequirement {}
             onAttack {
@@ -797,12 +735,12 @@ public enum RisingRivals implements LogicCardInfo {
       case HERACROSS_E4_24:
         return basic (this, hp:HP090, type:GRASS, retreatCost:2) {
           weakness R
-          move "Focus Energy", {
-            text "During your next turn, Heracross E4's Megahorn attack's base damage is 100. "
+          move "", {
+            text "During damage. "
             energyCost ()
             attackRequirement {}
             onAttack {
-              increasedBaseDamageNextTurn("Megahorn",hp(50))
+              damage 0
             }
           }
           move "Megahorn", {
@@ -810,9 +748,7 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost G, C
             attackRequirement {}
             onAttack {
-              flip {
-                damage 50
-              }
+              damage 0
             }
           }
 
@@ -822,45 +758,24 @@ public enum RisingRivals implements LogicCardInfo {
           weakness W, PLUS20
           resistance L, MINUS20
           pokeBody "Sand Cover", {
-            text "As long as Hippowdon is your Active Pokémon, put 1 damage counter on each of your opponent’s Pokémon LV.X between turns."
+            text "As long as Hippowdon is your Active Pokémon, put 1 damage counter on each of your opponent’s Pokémon LV. between turns."
             delayedA {
-              before BEGIN_TURN, {
-                if(self.owner.opposite.pbg.all.find{it.pokemonLevelUp}) {
-                  bc "Sand Cover activates"
-                  self.owner.opposite.pbg.all.findAll{it.pokemonLevelUp}.each {
-                    directDamage 10, it, SRC_ABILITY
-                  }
-                }
-              }
             }
           }
           move "Save Sand", {
-            text "20+ damage. Does 20 damage plus 10 damage for each Energy attached to Hippowdon. Before doing damage, you may search your discard pile for a [F] Energy card and attach it to Hippowdon."
-            energyCost C
+            text "20+ damage. Energy card and attach it to Hippowdon."
+            energyCost C, F
             attackRequirement {}
             onAttack {
-              if(my.discard.filterByEnergyType(F) && confirm("You may search your discard pile for a [F] Energy card and attach it to $self")) {
-                attachEnergyFrom(type:F,my.discard,self)
-              }
-              damage 20 + 10 * self.cards.energyCount(C)
+              damage 0
             }
           }
           move "Groundquake", {
-            text "80 damage. Does 10 damage to each benched Pokémon that isn't an Evolved Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon)."
+            text "80 damage. . (Don’t apply Weakness and Resistance for Benched Pokémon)."
             energyCost F, F, C, C
             attackRequirement {}
             onAttack {
-              damage 80
-              my.bench.each {
-                if(!it.evolution) {
-                  directDamage 10, it
-                }
-              }
-              opp.bench.each {
-                if(!it.evolution) {
-                  directDamage 10, it
-                }
-              }
+              damage 0
             }
           }
 
@@ -872,10 +787,6 @@ public enum RisingRivals implements LogicCardInfo {
           pokePower "Undevelop", {
             text "Once during your turn , you may devolve Jolteon and put Jolteon into your hand. This power can’t be used if Jolteon is affected by a Special Condition."
             actionA {
-              checkLastTurn()
-              checkNoSPC()
-              powerUsed()
-              devolve(self,self.topPokemonCard,my.hand)
             }
           }
           move "Quick Attack", {
@@ -883,10 +794,7 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 10
-              flip {
-                damage 30
-              }
+              damage 0
             }
           }
           move "Evolving Thunder", {
@@ -894,12 +802,7 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost L, C
             attackRequirement {}
             onAttack {
-              damage 50
-              if (self.lastEvolved == bg.turnCount && self.cards.any{it.name.contains("Eevee")}) {
-                opp.bench.each {
-                  damage 10, it
-                }
-              }
+              damage 0
             }
           }
 
@@ -909,19 +812,8 @@ public enum RisingRivals implements LogicCardInfo {
           weakness M
           resistance L, MINUS20
           pokeBody "Icy Aura", {
-            text "As long as Mamoswine GL is your Active Pokémon, put 1 damage counter on each Active Pokémon (excluding W Pokémon) between turns."
+            text "As long as Mamoswine is your Active Pokémon, put 1 damage counter on each Active Pokémon (excluding Pokémon) between turns."
             delayedA {
-              before BEGIN_TURN, {
-                if(self.active && !self.owner.opposite.pbg.active.types.contains(W)||!self.types.contains(W)) {
-                  bc "Irritating Buzz Activates"
-                  if(!self.owner.opposite.pbg.active.types.contains(W)) {
-                    directDamage(10, self.owner.opposite.pbg.active, SRC_ABILITY)
-                  }
-                  if(!self.types.contains(W)) {
-                    directDamage(10, self, SRC_ABILITY)
-                  }
-                }
-              }
             }
           }
           move "Avalanche", {
@@ -929,12 +821,7 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost W, W, C, C
             attackRequirement {}
             onAttack {
-              damage 60
-              flip {
-                opp.bench.each {
-                  damage 10, it
-                }
-              }
+              damage 0
             }
           }
 
@@ -945,25 +832,17 @@ public enum RisingRivals implements LogicCardInfo {
           move "Magic Heal", {
             text "Flip 3 coins. Remove a number of damage counters equal to the number of heads from your Pokémon in any way you like."
             energyCost ()
-            attackRequirement {
-              assert my.all.find{it.numberOfDamageCounters} : "Your Pokémon are healthy"
-            }
+            attackRequirement {}
             onAttack {
-              flip 3, {
-                def damaged = my.all.findAll{it.numberOfDamageCounters}
-                if(damaged) {
-                  heal 10, damaged
-                }
-              }
+              damage 0
             }
           }
           move "Barrier Attack", {
-            text "30 damage. During your opponent's next turn, any damage done to Mr.Mime E4 by attacks is reduced by 10."
+            text "30 damage. ."
             energyCost P, C
             attackRequirement {}
             onAttack {
-              damage 30
-              reduceDamageNextTurn(hp(10),thisMove)
+              damage 0
             }
           }
 
@@ -975,16 +854,6 @@ public enum RisingRivals implements LogicCardInfo {
           pokeBody "Territoriality", {
             text "If your Active Pokémon is damaged by an opponent’s attack , put 2 damage counters on the Attacking Pokémon. You can’t put more than 2 damage counters in this way."
             delayedA {
-              def flag = false
-              before APPLY_ATTACK_DAMAGES, {
-                flag = bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self.owner.pbg.active && it.dmg.value})
-              }
-              after APPLY_ATTACK_DAMAGES, {
-                if (flag && ef.attacker.inPlay) {
-                  directDamage 20, ef.attacker, SRC_ABILITY
-                  flag = false
-                }
-              }
             }
           }
           move "Fling Away", {
@@ -992,19 +861,15 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 30
-              if(opp.bench) {
-                damage 30, opp.bench.select("Does 30 damage to 1 of your opponent's Benched Pokémon")
-              } else {
-                damage 30
-              }
+              damage 0
             }
           }
           move "Giga Horn", {
             text "100 damage. Flip 2 coins. If both of them are tails, this attack does nothing."
             energyCost F, C, C, C
+            attackRequirement {}
             onAttack {
-              flip 2, {}{},[2:{damage 100},1:{damage 100}]
+              damage 0
             }
           }
 
@@ -1108,10 +973,6 @@ public enum RisingRivals implements LogicCardInfo {
           pokePower "Undevelop", {
             text "Once during your turn , you may devolve Vaporeon and put Vaporeon into your hand. This power can’t be used if Vaporeon is affected by a Special Condition."
             actionA {
-              checkLastTurn()
-              checkNoSPC()
-              powerUsed()
-              devolve(self,self.topPokemonCard,my.hand)
             }
           }
           move "Muddy Water", {
@@ -1119,26 +980,15 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 20
-              if(opp.bench) {
-                damage 10, opp.bench.select("Does 10 damage to one of your opponent's Benched Pokémon")
-              }
+              damage 0
             }
           }
           move "Evolving Aqua", {
-            text "Choose 1 of your opponent's Pokémon that has any damage counters on it. This attack does 40 damage to that Pokémon. If Vaporeon evolved from Eevee during this turn, this attack does 60 damage instead."
+            text "If Vaporeon evolved from Eevee during this turn, this attack does 60 damage instead."
             energyCost W, C
-            attackRequirement {
-              assert opp.all.find{it.numberOfDamageCounters} : "All of your opponent's Pokémon are healthy"
-            }
+            attackRequirement {}
             onAttack {
-              def tar = opp.all.findAll{it.numberOfDamageCounters}.select("Choose 1 of your opponent's  Pokémonthat has any damage counters on it")
-              damage 40, tar
-              if (self.lastEvolved == bg.turnCount && self.cards.any{it.name.contains("Eevee")}) {
-                opp.bench.each {
-                  damage 20, tar
-                }
-              }
+              damage 0
             }
           }
 
