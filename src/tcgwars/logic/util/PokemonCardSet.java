@@ -320,6 +320,8 @@ public class PokemonCardSet implements PokemonStack, Serializable {
     return getTopPokemonCard().getCardTypes().is(CardType.LVL_X);
   }
 
+  public boolean isPokemonSP() { return getTopPokemonCard().getCardTypes().is(CardType.POKEMON_SP); }
+
   public boolean isPokemonBreak() {
     return getTopPokemonCard().getCardTypes().is(CardType.BREAK);
   }
