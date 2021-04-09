@@ -3471,17 +3471,7 @@ f
 
         };
       case BEBE_S_SEARCH_119:
-        return supporter (this) {
-          text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nChoose a card from your hand and put it on top of your deck. Search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward. (If this is the only card in your hand, you can’t play this card.)"
-          onPlay {
-            my.hand.getExcludedList(thisCard).select("Choose the card to put back in your deck").moveTo(addToTop: true, my.deck)
-            my.deck.search("Choose the Pokémon to put into your hand",cardTypeFilter(POKEMON)).showToOpponent("Selected Cards").moveTo(my.hand)
-            shuffleDeck()
-          }
-          playRequirement{
-            assert my.hand.size() > 1 : "You need one other card in your hand to play this card"
-          }
-        };
+        return copy (MysteriousTreasures.BEBE_S_SEARCH_109, this);
       case NIGHT_MAINTENANCE_120:
         return copy (MysteriousTreasures.NIGHT_MAINTENANCE_113, this);
       case PLUSPOWER_121:
