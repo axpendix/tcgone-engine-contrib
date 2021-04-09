@@ -253,6 +253,7 @@ public enum SecretWonders implements LogicCardInfo {
                 opp.bench.findAll{it.cards.energyCount(C)}.each{
                   damage 20, it
                 }
+                discardSelfEnergyAfterDamage(L)
               }
             }
           }
@@ -311,7 +312,7 @@ public enum SecretWonders implements LogicCardInfo {
             text "120 damage. Flip a coin. If heads, discard 2 Energy cards attached to Charizard. If tails, discard 4 Energy cards attached to Charizard. (If you can’t, this attack does nothing.)"
             energyCost R, R, R, C
             attackRequirement {
-              assert self.cards.filterByType(ENERGY) >= 2 : "You have fewer than 2 Energy cards attached to $self"
+              assert self.cards.filterByType(ENERGY).size() >= 2 : "You have fewer than 2 Energy cards attached to $self"
             }
             onAttack {
               flip 1, {
@@ -1267,7 +1268,7 @@ public enum SecretWonders implements LogicCardInfo {
 f
         };
       case MOTHIM_33:
-        return evolution (this, from:"Evolves from Burmy", hp:HP080, type:GRASS, retreatCost:0) {
+        return evolution (this, from:["Burmy","Burmy Plant Cloak","Burmy Sandy Cloak","Burmy Trash Cloak"], hp:HP080, type:GRASS, retreatCost:0) {
           weakness R, PLUS20
           resistance F, MINUS20
           move "Silver Wind", {
@@ -1915,7 +1916,7 @@ f
             delayedA {
               before BETWEEN_TURNS, {
                 if(self.owner.opposite.pbg.active.cards.energyCount(G) && !self.owner.opposite.pbg.active.isSPC(POISONED)) {
-                  apply POISONED, opp.active
+                  apply POISONED, self.owner.opposite.pbg.active
                   bc("$thisAbility poisons $self.owner.opposite.pbg.active")
                 }
               }
@@ -1944,7 +1945,7 @@ f
                 def pcs = defending
                 targeted(pcs){
                   delayed {
-                    before APPLY_ATTACK_DAMAGES, {
+                    after PROCESS_ATTACK_EFFECTS, {
                       bg.dm().each {if(it.to==pcs && it.from==self && it.dmg.value>0 && it.notNoEffect){
                         bc "$thisMove increases damage"
                         it.dmg+=hp(20)
@@ -1954,6 +1955,9 @@ f
                     after FALL_BACK, pcs, {unregister()}
                     after EVOLVE, pcs, {unregister()}
                     after DEVOLVE, pcs, {unregister()}
+                    after FALL_BACK, self, {unregister()}
+                    after EVOLVE, self, {unregister()}
+                    after DEVOLVE, self, {unregister()}
                   }
                 }
               }
@@ -3467,17 +3471,7 @@ f
 
         };
       case BEBE_S_SEARCH_119:
-        return supporter (this) {
-          text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nChoose a card from your hand and put it on top of your deck. Search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward. (If this is the only card in your hand, you can’t play this card.)"
-          onPlay {
-            my.hand.getExcludedList(thisCard).select("Choose the card to put back in your deck").moveTo(addToTop: true, my.deck)
-            my.deck.search("Choose the Pokémon to put into your hand",cardTypeFilter(POKEMON)).showToOpponent("Selected Cards").moveTo(my.hand)
-            shuffleDeck()
-          }
-          playRequirement{
-            assert my.hand.size() > 1 : "You need one other card in your hand to play this card"
-          }
-        };
+        return copy (MysteriousTreasures.BEBE_S_SEARCH_109, this);
       case NIGHT_MAINTENANCE_120:
         return copy (MysteriousTreasures.NIGHT_MAINTENANCE_113, this);
       case PLUSPOWER_121:
@@ -3526,7 +3520,7 @@ f
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDraw 2 cards. Then, choose a card from your opponent’s hand without looking and put it on the bottom of his or her deck."
           onPlay {
             draw 2
-            opp.hand.select(hidden: true, "Choose a card from your opponent's hand without looking").moveTo(hidden: true, opp.deck)
+            opp.hand.select(hidden: true, "Choose a card from your opponent's hand without looking").showToOpponent("Team Galactic's Mars: This card will be put on the bottom of your deck").moveTo(hidden: true, opp.deck)
           }
           playRequirement{
             assert my.deck || opp.hand : "Your deck and your opponent's hand are both empty"

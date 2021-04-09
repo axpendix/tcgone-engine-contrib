@@ -1644,6 +1644,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             // https://pokegym.net/community/index.php?threads/croconaw-mts-power.62819/#post-982469
             onActivate{reason ->
               if(reason == PLAY_FROM_HAND && confirm("Use Evolutionary Vitality?")){
+                powerUsed()
                 my.deck.subList(0, 5).select(min:0, max: 5, "Top cards of your deck. Which Energy cards do you want to put into your hand?", cardTypeFilter(ENERGY)).moveTo(my.hand)
                 shuffleDeck()
               }

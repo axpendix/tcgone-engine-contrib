@@ -1835,7 +1835,7 @@ public enum Undaunted implements LogicCardInfo {
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each {
-                  if (it.to == pcs && it.dmg.value) {
+                  if (it.to == pcs && it.dmg.value && it.notNoEffect) {
                     bc "Defender -20"
                     it.dmg -= hp(20)
                   }

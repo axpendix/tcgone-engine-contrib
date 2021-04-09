@@ -1,6 +1,7 @@
 package tcgwars.logic.impl.gen4;
 
-import tcgwars.logic.impl.gen2.Expedition;
+import tcgwars.logic.impl.gen2.Expedition
+import tcgwars.logic.impl.gen3.DragonFrontiers;
 import tcgwars.logic.impl.gen8.SwordShield;
 
 import tcgwars.logic.effect.gm.PlayTrainer;
@@ -2259,7 +2260,7 @@ public enum Arceus implements LogicCardInfo {
             eff = delayed {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if(!self.active && it.to == self){
+                  if(!self.active && it.to == self && it.dmg.value && it.notNoEffect){
                     bc "Bench Shield prevents all damage"
                     it.dmg=hp(0)
                   }
@@ -2272,35 +2273,7 @@ public enum Arceus implements LogicCardInfo {
           }
         };
       case BUFFER_PIECE_84:
-        return pokemonTool (this) {
-          text "Attach Buffer Piece to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nAny damage done to the Pokémon this card is attached to by an opponent’s attack is reduced by 20 (after applying Weakness and Resistance). At the end of your opponent’s turn after you played Buffer Piece, discard Buffer Piece."
-          def eff1, eff2
-          onPlay {
-            eff1 = delayed {
-              before APPLY_ATTACK_DAMAGES,{
-                if(ef.attacker.owner != self.owner && bg.currentTurn!=self.owner){
-                  bg.dm().each{
-                    if(it.to==self && it.notZero && it.notNoEffect){
-                      bc "Buffer Piece -20"
-                      it.dmg -= hp(20)
-                    }
-                  }
-                }
-              }
-            }
-            eff2 = delayed {
-              before BETWEEN_TURNS, {
-                if(bg.currentTurn != self.owner){
-                  discard thisCard
-                }
-              }
-            }
-          }
-          onRemoveFromPlay {
-            eff1.unregister()
-            eff2.unregister()
-          }
-        };
+        return copy (DragonFrontiers.BUFFER_PIECE_72, this);
       case DEPARTMENT_STORE_GIRL_85:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck for up to 3 Pokémon Tool cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."

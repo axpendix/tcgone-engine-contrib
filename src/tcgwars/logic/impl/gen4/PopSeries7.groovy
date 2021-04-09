@@ -171,7 +171,7 @@ public enum PopSeries7 implements LogicCardInfo {
 
         };
       case MOTHIM_5:
-        return evolution (this, from:"Burmy", hp:HP080, type:GRASS, retreatCost:0) {
+        return evolution (this, from:["Burmy","Burmy Plant Cloak","Burmy Sandy Cloak","Burmy Trash Cloak"], hp:HP080, type:GRASS, retreatCost:0) {
           weakness R, PLUS20
           resistance F, MINUS20
           move "Silver Wind", {

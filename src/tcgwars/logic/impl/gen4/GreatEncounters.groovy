@@ -420,7 +420,9 @@ public enum GreatEncounters implements LogicCardInfo {
               assert my.bench.find{it.cards.energyCount(W) || it.cards.energyCount(F)} : "There are no [W] or [F] Energys attached to your benched Pokémon"
               powerUsed()
               def src = my.bench.findAll{it.cards.energyCount(W) || it.cards.energyCount(F)}.select("Source for the Energy")
-              def energy = src.cards.select("Energy to move",{it.cardTypes.is(ENERGY) && (it.asEnergyCard().containsType(F) || it.asEnergyCard().containsType(W))}).first()
+              CardList energyList = src.cards.filterByEnergyType(W)
+              energyList.addAll(src.cards.filterByEnergyType(F))
+              def energy = src.cards.select(min:0,"Energy to move",{energyList.contains(it)}).first()
               energySwitch(src, my.active, energy)
             }
           }
@@ -708,15 +710,19 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost R, C
             onAttack {
               damage 40
-              def dscrd = self.cards.select(min:0,"Discard a [R] or [D] Energy?",{it.cardTypes.is(ENERGY) && (it.asEnergyCard().containsType(R) || it.asEnergyCard().containsType(D))}).first()
+              CardList energyList = self.cards.filterByEnergyType(R)
+              energyList.addAll(self.cards.filterByEnergyType(D))
+              def dscrd = self.cards.select(min:0,"Discard a [R] or [D] Energy?",{energyList.contains(it)})
               if (dscrd) {
-                if (dscrd.asEnergyCard().containsType(R)) {
+                if (dscrd.energyCount(R)) {
                   applyAfterDamage BURNED
                 }
-                if (dscrd.asEnergyCard().containsType(D)) {
+                if (dscrd.energyCount(D)) {
                   damage 30
                 }
-                discard dscrd
+              }
+              afterDamage {
+                dscrd.discard()
               }
             }
           }
@@ -2632,6 +2638,12 @@ public enum GreatEncounters implements LogicCardInfo {
             getterA (GET_MOVE_LIST, self) { holder->
               def cardList = []
               self.owner.pbg.bench.findAll { it.name.contains("Unown") }.each {
+                if (!cardList.contains("${it.topPokemonCard}") && it.topPokemonCard.name != "Unown L") {
+                  cardList.add("${it.topPokemonCard}")
+                  holder.object.addAll(it.topPokemonCard.moves)
+                }
+              }
+              self.owner.opposite.pbg.bench.findAll { it.name.contains("Unown") }.each {
                 if (!cardList.contains("${it.topPokemonCard}") && it.topPokemonCard.name != "Unown L") {
                   cardList.add("${it.topPokemonCard}")
                   holder.object.addAll(it.topPokemonCard.moves)

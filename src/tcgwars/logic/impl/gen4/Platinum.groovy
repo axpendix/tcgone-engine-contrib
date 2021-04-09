@@ -3642,7 +3642,7 @@ public enum Platinum implements LogicCardInfo {
                 it.cards.moveTo(opp.lostZone)
                 removePCS(it)
               }
-              def list2 = LUtils.selectMultiPokemon(bg.oppClient(), opp.bench, "Opponent used Lost Cyclone. Select 3 pokemon to KEEP on your bench.", 3)
+              def list2 = LUtils.selectMultiPokemon(bg.oppClient(), my.bench, "Lost Cyclone: Select 3 pokemon to KEEP on your bench.", 3)
               my.bench.findAll{!list2.contains(it)}.each{
                 it.cards.moveTo(my.lostZone)
                 removePCS(it)
