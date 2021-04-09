@@ -2334,7 +2334,7 @@ public enum RebelClash implements LogicCardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each{
-                if (!self.active && it.to == self) {
+                if (!self.active && it.to == self && it.dmg.value && it.notNoEffect) {
                   bc "Submerge prevent all damage"
                   it.dmg=hp(0)
                 }
