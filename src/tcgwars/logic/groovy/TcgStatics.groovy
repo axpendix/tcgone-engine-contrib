@@ -215,7 +215,7 @@ class TcgStatics {
   }
   /**
    * Selects Energy of specified Type from the attacking {@link PokemonCardSet} before damage, then moves it to a new
-   * location after damage. Should only be used for {@link Move}s
+   * location after damage. Should only be used for {@link Move}s and should not be moved to another PokemonCardSet
    * @param types {@link Type}s of energy to be moved. Default: C
    */
   static moveSelfEnergyAfterDamage(CardList newLocation, Type...types=C) {
@@ -1878,7 +1878,7 @@ class TcgStatics {
    */
   static metronomeA(params=[:], Object delegate, Closure target) {
     delegate.getterA GET_MOVE_LIST, delegate.self, {holder->
-      if (params.checkSpecialConditions && !delegate.self.checkSpecialConditionsForClassic()) return
+      if (params.checkSpecialConditions && !(delegate.self as PokemonCardSet).noSPC()) return
       if (!holder.effect.target.active) return
       def moves = [] as Set
       moves.addAll holder.object
