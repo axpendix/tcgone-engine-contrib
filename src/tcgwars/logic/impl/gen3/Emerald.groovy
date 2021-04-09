@@ -1252,7 +1252,7 @@ public enum Emerald implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if(!self.active && it.to == self){
+                  if(!self.active && it.to == self && it.dmg.value && it.notNoEffect){
                     bc "Submerge prevent all damage"
                     it.dmg=hp(0)
                   }
@@ -1553,7 +1553,7 @@ public enum Emerald implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if(!self.active && it.to == self && it.from.owner == self.owner.opposite){
+                  if(!self.active && it.to == self && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect){
                     bc "Feathery prevent all damage"
                     it.dmg=hp(0)
                   }
