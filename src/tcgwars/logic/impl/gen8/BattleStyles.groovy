@@ -1222,7 +1222,7 @@ public enum BattleStyles implements LogicCardInfo {
             assert deck.notEmpty : "Deck is empty"
           }
           onAttack {
-            my.deck.search(max: 1, cardTypeFilter(POKEMON)).moveTo(my.hand)
+            my.deck.search(max: 1, cardTypeFilter(POKEMON)).showToOpponent(text).moveTo(my.hand)
             shuffleDeck()
           }
         }
