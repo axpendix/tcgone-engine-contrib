@@ -3070,7 +3070,7 @@ public enum RisingRivals implements LogicCardInfo {
                   delayed(inline: true,priority: LAST){
                     after KNOCKOUT, pcs, {
                       if(confirm("Use Water Rescue?",self.owner)) {
-                        bc "W$thisAbility activates"
+                        bc "$thisAbility activates"
                         CardList returnList = []
                         cardList.each {
                           if(self.owner.pbg.discard.contains(it)) {
