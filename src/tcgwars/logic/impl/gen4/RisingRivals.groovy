@@ -1,9 +1,6 @@
 package tcgwars.logic.impl.gen4
 
-import tcgwars.logic.effect.basic.Evolve
-import tcgwars.logic.effect.basic.EvolveStandard
-import tcgwars.logic.effect.basic.LevelUp
-import tcgwars.logic.effect.gm.PlayEvolution
+
 import tcgwars.logic.impl.gen3.RubySapphire
 import tcgwars.logic.impl.gen4.MysteriousTreasures
 import tcgwars.logic.impl.gen7.CelestialStorm
@@ -11,7 +8,7 @@ import tcgwars.logic.impl.gen7.CelestialStorm
 import tcgwars.logic.TargetPlayer
 import tcgwars.logic.card.*
 import tcgwars.logic.effect.ability.*
-import tcgwars.logic.effect.basic.Knockout
+import tcgwars.logic.effect.basic.*
 import tcgwars.logic.effect.gm.PlayTrainer
 import tcgwars.logic.util.CardList
 import tcgwars.logic.util.CardTypeSet
@@ -1947,7 +1944,7 @@ public enum RisingRivals implements LogicCardInfo {
                       }
                     }
                     before LEVEL_UP_STANDARD, pcs, {
-                      if((ef as LevelUp).levelUpCard.player.pbg.hand.contains(ef.levelUpCard)) {
+                      if((ef as LevelUpStandard).levelUpCard.player.pbg.hand.contains(ef.levelUpCard)) {
                         warnAndPrevent()
                       }
                     }
