@@ -1787,7 +1787,7 @@ public enum MajesticDawn implements LogicCardInfo {
               before BETWEEN_TURNS, {
                 if(self.isSPC(PARALYZED)){
                   bc "Cheri Berry removes paralysis"
-                  clearSpecialCondition(self, SRC_HELD_ITEM, [PARALYZED])
+                  clearSpecialCondition(self, SRC_OTHER, [PARALYZED])
                 }
               }
             }
@@ -2158,7 +2158,7 @@ public enum MajesticDawn implements LogicCardInfo {
               before BETWEEN_TURNS, {
                 if(self.isSPC(POISONED)){
                   bc "Pecha Berry removes poisoned"
-                  clearSpecialCondition(self, SRC_HELD_ITEM, [POISONED])
+                  clearSpecialCondition(self, SRC_OTHER, [POISONED])
                 }
               }
             }
@@ -2289,7 +2289,7 @@ public enum MajesticDawn implements LogicCardInfo {
               before BETWEEN_TURNS, {
                 if(self.isSPC(CONFUSED)){
                   bc "Pecha Berry removes confused"
-                  clearSpecialCondition(self, SRC_HELD_ITEM, [CONFUSED])
+                  clearSpecialCondition(self, SRC_OTHER, [CONFUSED])
                 }
               }
             }

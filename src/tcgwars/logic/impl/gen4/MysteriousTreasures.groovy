@@ -2419,7 +2419,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               before ASLEEP_SPC, null, null, BEGIN_TURN, {
                 if(ef.target == self){ //MARK parentEvent
                   bc "Chesto Berry activates"
-                  clearSpecialCondition(self, SRC_HELD_ITEM, [ASLEEP])
+                  clearSpecialCondition(self, SRC_OTHER, [ASLEEP])
                   prevent()
                 }
               }
@@ -2920,7 +2920,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               before BEGIN_TURN,{
                 if(self.isSPC(BURNED)) {
                   bc "Rawst Berry activates"
-                  clearSpecialCondition(self, SRC_HELD_ITEM, [BURNED])
+                  clearSpecialCondition(self, SRC_OTHER, [BURNED])
                 }
               }
             }
