@@ -516,10 +516,8 @@ public enum BattleStyles implements LogicCardInfo {
             assert my.bench.findAll { it.numberOfDamageCounters } : "None of your Benched is damaged"
           }
           onAttack {
-            healAll my.bench.findAll {it.numberOfDamageCounters}.select("Fully heal")
-            if (my.bench.findAll {it.numberOfDamageCounters}) {
-              healAll my.bench.findAll {it.numberOfDamageCounters}.select("Fully heal")
-            }
+            def targets = multiSelect( my.bench.findAll { it.numberOfDamageCounters}, 2, "Fully heal")
+            targets.each { healAll it }
           }
         }
         move "Gust", {
