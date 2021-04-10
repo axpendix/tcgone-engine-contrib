@@ -2748,6 +2748,7 @@ public enum BattleStyles implements LogicCardInfo {
           bg.gm().betweenTurns()
         }
         playRequirement {
+          assert my.deck : "Your Deck is empty"
         }
       };
       case CHERYL_123:
