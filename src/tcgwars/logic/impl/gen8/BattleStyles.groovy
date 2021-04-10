@@ -1396,14 +1396,12 @@ public enum BattleStyles implements LogicCardInfo {
           text "Attach [P] Energy cards from your discard pile to your Pokémon in any way you like until your Pokémon and your opponent's Pokémon have the same total amount of Energy attached."
           energyCost COLORLESS
           attackRequirement {
-            assert my.discard.filterByEnergyType(P)
+            assert my.discard.filterByEnergyType(P) : "No $P Energy in your Discard Pile"
+            assert my.all.sum { it.cards.energyCount(C) } < opp.all.sum { it.cards.energyCount(C) } : "You don't have fewer Energy than your Opponent"
           }
           onAttack {
-            def numberOfEnergy = 0
-            opp.all.each {
-              numberOfEnergy += it.cards.energyCount(C)
-            }
-            my.discard.filterByEnergyType(P).select(max: numberOfEnergy).each {
+            def numberOfEnergy = opp.all.sum { it.cards.energyCount(C) } - my.all.sum { it.cards.energyCount(C) }
+            my.discard.filterByEnergyType(P).select(count: numberOfEnergy).each {
               attachEnergy(my.all.select("Attach to"), it)
             }
           }
