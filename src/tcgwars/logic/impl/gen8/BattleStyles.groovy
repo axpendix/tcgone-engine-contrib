@@ -679,7 +679,7 @@ public enum BattleStyles implements LogicCardInfo {
           text "Attach up to 3 [R] Energy cards from your discard pile to your Pokémon in any way you like."
           energyCost COLORLESS
           attackRequirement {
-            assert discardPile.filterByEnergyType(R)
+            assert discardPile.filterByEnergyType(R) : "No $R Energy in your Discard Pile."
           }
           onAttack {
             discardPile.filterByEnergyType(R).select(count: 3).each { attachEnergy(my.all.select("Attach"), it) }
