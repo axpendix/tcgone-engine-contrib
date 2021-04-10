@@ -1311,6 +1311,7 @@ public enum BattleStyles implements LogicCardInfo {
         move "Defiant Spark", {
           text "130 damage. If this Pokémon has any damage counters on it, this attack can be used for [L]."
           energyCost LIGHTNING
+          // TODO: How does this work with metronome/foul play?
           attackRequirement {
             if (!self.numberOfDamageCounters)  {
               assert self.cards.energySufficient(L, L, C) : "Not enough Energy"
@@ -2156,14 +2157,14 @@ public enum BattleStyles implements LogicCardInfo {
           actionA {
             checkLastTurn()
             assert my.deck : "Deck is empty"
-            assert my.all.findAll { it.topPokemonCard.cardTypes.is(SINGLE_STRIKE) } : "No Single Strike Pokémon to attach an Energy card to"
+            assert my.all.findAll { it.singleStrike } : "No Single Strike Pokémon to attach an Energy card to"
             powerUsed()
-            def card = my.deck.search(count: 1, "Search for a Single Strike Energy Card to attach to one of your Single Strike Pokémon", {
-              it.cardTypes.is(SPECIAL_ENERGY) && it.cardTypes.is(SINGLE_STRIKE)
+            def card = my.deck.search("Search for a Single Strike Energy Card to attach to one of your Single Strike Pokémon", {
+              it.name == "Single Strike Energy"
             }).first()
             shuffleDeck()
             if (card) {
-              def tar = my.all.findAll{ it.topPokemonCard.cardTypes.is(SINGLE_STRIKE) }.select("Attach an Energy to?")
+              def tar = my.all.findAll{ it.singleStrike }.select("Attach an Energy to?")
               attachEnergy(tar, card)
               directDamage 20, tar, SRC_ABILITY
             }
