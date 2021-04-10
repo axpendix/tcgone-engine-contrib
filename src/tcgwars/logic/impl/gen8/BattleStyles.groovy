@@ -1278,13 +1278,14 @@ public enum BattleStyles implements LogicCardInfo {
           onActivate {
             if (it == PLAY_FROM_HAND && my.discard.findAll { it.name == "Poké Ball" || it.name == "Great Ball" } && confirm("Use Ball Search?")){
               powerUsed()
-              if (my.discard.findAll { it.name == "Poké Ball" }) {
-                my.discard.findAll { it.name == "Poké Ball" }.select("You may move a Poké Ball into your hand").moveTo(my.hand)
+              def targets = my.discard.select thisAbility.description, 1, 2, self.owner, {
+                it.name == "Poké Ball" || it.name == "Great Ball"
+              }, {
+                it.filterByNameEquals("Poké Ball").size() <= 1 &&
+                  it.filterByNameEquals("Great Ball").size() <= 1 &&
+                  it.filterByNameEquals("Poké Ball", "Great Ball").size() <= 2
               }
-
-              if (my.discard.findAll { it.name == "Great Ball" }) {
-                my.discard.findAll { it.name == "Great Ball" }.select("You may move a Great Ball into your hand").moveTo(my.hand)
-              }
+              targets.moveTo my.hand
             }
           }
         }
