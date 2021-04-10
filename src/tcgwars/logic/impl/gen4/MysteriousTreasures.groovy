@@ -589,7 +589,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               assert opp.bench.any{it.fullHP.value >= 100} : "Your opponent has no benched Pokémon with a maximum HP of 100 or more."
               powerUsed()
               def pcs = opp.bench.findAll{it.fullHP.value >= 100}.select('Choose 1 of your opponent’s Benched Pokémon that has a maximum HP of 100 or more and switch it with 1 of the Defending Pokémon.')
-              sw2(pcs, null, SRC_ABILITY)
+              sw2(pcs, null, POKEPOWER)
             }
           }
           move "Reverse Stream", {
@@ -822,7 +822,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             text "If Abomasnow is your Active Pokémon and is damaged by an opponent’s attack (even if Abomasnow is Knocked Out), the Attacking Pokémon is now Asleep."
             ifActiveAndDamagedByAttackBody(delegate) {
               bc "Glacier Snow triggers"
-              apply ASLEEP, (ef.attacker as PokemonCardSet), SRC_ABILITY
+              apply ASLEEP, (ef.attacker as PokemonCardSet), POKEBODY
             }
           }
           move "Heavy Blizzard", {
@@ -937,7 +937,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             onActivate {r->
               if (r==PLAY_FROM_HAND && my.deck && confirm("Use Evolutionary Toxic?")) {
                 powerUsed()
-                apply POISONED, opp.active, SRC_ABILITY
+                apply POISONED, opp.active, POKEPOWER
                 extraPoison 1
               }
             }
@@ -1510,7 +1510,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 def doEff = true
                 flip 2, {}, {doEff = false}
                 if (doEff){
-                  targeted (opp.active, SRC_ABILITY/*, Source.POKEPOWER*/) {
+                  targeted (opp.active, POKEPOWER) {
                     opp.active.cards.reverse().discard()
                     removePCS(opp.active)
                   }
@@ -2202,7 +2202,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               assert self.active : "$self is not your Active Pokémon"
               assert opp.bench : "Your opponent has no Pokémon in their bench."
               powerUsed()
-              flip { switchYourOpponentsBenchedWithActive(SRC_ABILITY /*POKEPOWER*/) }
+              flip { switchYourOpponentsBenchedWithActive(POKEPOWER) }
             }
           }
           move "Hidden Power", {
@@ -2228,7 +2228,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               assert my.hand : "You don't have any cards in your hand"
               powerUsed()
               my.hand.select("Discard a card in order to use THROW").discard()
-              flip { directDamage 20, opp.bench.select(), SRC_ABILITY }
+              flip { directDamage 20, opp.bench.select(), POKEPOWER }
             }
           }
           move "Hidden Power", {
@@ -2419,7 +2419,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               before ASLEEP_SPC, null, null, BEGIN_TURN, {
                 if(ef.target == self){ //MARK parentEvent
                   bc "Chesto Berry activates"
-                  clearSpecialCondition(self, ATTACK, [ASLEEP]) //TODO Source.HELD_ITEM
+                  clearSpecialCondition(self, SRC_HELD_ITEM, [ASLEEP])
                   prevent()
                 }
               }
@@ -2920,7 +2920,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               before BEGIN_TURN,{
                 if(self.isSPC(BURNED)) {
                   bc "Rawst Berry activates"
-                  clearSpecialCondition(self, ATTACK, [BURNED])
+                  clearSpecialCondition(self, SRC_HELD_ITEM, [BURNED])
                 }
               }
             }
@@ -3353,7 +3353,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                     if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
                       bc "$self - Skull Stone activated"
                       if (self.owner.opposite.pbg.all) {
-                        flipUntilTails({ directDamage(10, self.owner.opposite.pbg.active, SRC_ABILITY) }, self.owner)
+                        flipUntilTails({ directDamage(10, self.owner.opposite.pbg.active, POKEBODY) }, self.owner)
                       }
                     }
                   }
@@ -3546,7 +3546,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               assert self.active : "$self is not your active Pokémon."
               powerUsed()
               def torridWaveRecipient = opp.active
-              apply BURNED, torridWaveRecipient, SRC_ABILITY
+              apply BURNED, torridWaveRecipient, POKEPOWER
               delayed {
                 def eff
                 register {

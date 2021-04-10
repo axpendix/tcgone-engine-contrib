@@ -232,7 +232,7 @@ public enum Stormfront implements LogicCardInfo {
               if(my.hand.size() > 6) {
                 my.hand.select(count : my.hand.size() - 6, "Discard cards until you have 6 cards in your hand.").discard()
               }
-              directDamage 20, self, SRC_ABILITY
+              directDamage 20, self, POKEPOWER
             }
           }
           move "Damage Even", {
@@ -454,7 +454,7 @@ public enum Stormfront implements LogicCardInfo {
               assert my.discard.filterByType(ENERGY).any{it.asEnergyCard().containsTypePlain(L) || it.asEnergyCard().containsTypePlain(M)} : "There are no [L] or [M] Energy card in your discard."
               powerUsed()
               attachEnergy(my.active,my.discard.filterByType(ENERGY).findAll{it.asEnergyCard().containsTypePlain(L) || it.asEnergyCard().containsTypePlain(M)}.select().first())
-              directDamage 10, my.active, SRC_ABILITY
+              directDamage 10, my.active, POKEPOWER
             }
           }
           move "Gyro Ball", {
@@ -918,7 +918,7 @@ public enum Stormfront implements LogicCardInfo {
                   bc "Spirit Pulse activates"
                   opp.all.each {
                     if(it.cards.energyCount(C)) {
-                      directDamage 10, it, SRC_ABILITY
+                      directDamage 10, it, POKEBODY
                     }
                   }
                 }
@@ -948,7 +948,7 @@ public enum Stormfront implements LogicCardInfo {
                 if ((ef as Knockout).byDamageFromAttack && self.active && bg.currentTurn==self.owner.opposite && self.owner.opposite.pbg.active != null && self.owner.opposite.pbg.active.inPlay) {
                   powerUsed()
                   flip{
-                    targeted (self.owner.opposite.pbg.active, SRC_ABILITY){
+                    targeted (self.owner.opposite.pbg.active, POKEPOWER){
                       new Knockout(self.owner.opposite.pbg.active).run(bg)
                     }
                   }
@@ -1099,7 +1099,7 @@ public enum Stormfront implements LogicCardInfo {
             text "If Rapidash is your Active Pokémon and is damaged by an opponent’s attack (even if Rapidash is Knocked Out), the Attacking Pokémon is now Burned."
             ifActiveAndDamagedByAttackBody(delegate) {
               bc "Burning Mane activates."
-              apply BURNED, ef.attacker, SRC_ABILITY
+              apply BURNED, ef.attacker, POKEBODY
             }
           }
           move "Rear Kick", {
@@ -1126,7 +1126,7 @@ public enum Stormfront implements LogicCardInfo {
             text "If Roserade is your Active Pokémon and is damaged by an opponent’s attack (even if Roserade is Knocked Out), the Defending Pokémon is now Poisoned."
             ifActiveAndDamagedByAttackBody(delegate) {
               bc "Hidden Poison activates."
-              apply POISONED, ef.attacker, SRC_ABILITY
+              apply POISONED, ef.attacker, POKEBODY
             }
           }
           move "Bowed Whip", {
@@ -1347,7 +1347,7 @@ public enum Stormfront implements LogicCardInfo {
             text "Remove 1 damage counter from Tangrowth between turns."
             delayedA {
               before BEGIN_TURN, {
-                heal 10, self, SRC_ABILITY
+                heal 10, self, POKEBODY
               }
             }
           }
@@ -1605,7 +1605,7 @@ public enum Stormfront implements LogicCardInfo {
             ifActiveAndDamagedByAttackBody(delegate) {
               bc "Radiance activates."
               self.owner.opposite.pbg.all.each {
-                directDamage 10, it, SRC_ABILITY
+                directDamage 10, it, POKEBODY
               }
             }
           }

@@ -1341,7 +1341,7 @@ public enum Unleashed implements LogicCardInfo {
             delayedA{
               after ATTACH_ENERGY, self, {
                 if (ef.reason == PLAY_FROM_HAND && ef.card.cardTypes.is(ENERGY)) {
-                  heal 10, self, SRC_ABILITY
+                  heal 10, self, POKEBODY
                 }
               }
             }
@@ -1843,7 +1843,7 @@ public enum Unleashed implements LogicCardInfo {
             onActivate {
               if(self.specialConditions){
                 bc "Perfect Metal clears special conditions"
-                clearSpecialCondition(self, SRC_ABILITY)
+                clearSpecialCondition(self, POKEBODY)
               }
             }
           }

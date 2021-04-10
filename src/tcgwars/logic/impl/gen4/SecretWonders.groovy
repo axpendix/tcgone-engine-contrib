@@ -238,7 +238,7 @@ public enum SecretWonders implements LogicCardInfo {
                 if(ef.cardToPlay.cardTypes.is(SUPPORTER) && bg.em().retrieveObject("Jamming")!=bg.turnCount && bg.currentThreadPlayerType == self.owner.opposite){
                   bg.em().storeObject("Jamming",bg.turnCount)
                   self.owner.opposite.pbg.all.each {
-                    directDamage(10, it, SRC_ABILITY)
+                    directDamage(10, it, POKEBODY)
                   }
                 }
               }
@@ -391,7 +391,7 @@ public enum SecretWonders implements LogicCardInfo {
               before BEGIN_TURN, {
                 if(self.active && !self.owner.opposite.pbg.active.types.contains(F)) {
                   bc "Irritating Buzz Activates"
-                  directDamage(10, self.owner.opposite.pbg.active, SRC_ABILITY)
+                  directDamage(10, self.owner.opposite.pbg.active, POKEBODY)
                 }
               }
             }
@@ -496,7 +496,7 @@ public enum SecretWonders implements LogicCardInfo {
               powerUsed()
               def count = choose(1..Math.min(self.numberOfDamageCounters,3),"Move how many damage counters?",Math.min(self.numberOfDamageCounters,3))
               self.damage -= hp(10 * count)
-              directDamage 10 * count, my.all.findAll{it.name=="Gastrodon West Sea"}.select("Move damage counters to"), SRC_ABILITY
+              directDamage 10 * count, my.all.findAll{it.name=="Gastrodon West Sea"}.select("Move damage counters to"), POKEPOWER
             }
           }
           move "Dwindling Wave", {
@@ -629,7 +629,7 @@ public enum SecretWonders implements LogicCardInfo {
                 before BEGIN_TURN, {
                   if (self.numberOfDamageCounters) {
                     bc "$thisAbility activates"
-                    heal 10, self, SRC_ABILITY
+                    heal 10, self, POKEBODY
                   }
                 }
               }
@@ -726,7 +726,7 @@ public enum SecretWonders implements LogicCardInfo {
                 if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(L) && opp.bench && keyStore("Thunder Rumble",self,null) != bg.turnCount && confirm("Use Thunder Rumble?")) {
                   keyStore("Thunder Rumble",self,bg.turnCount)
                   powerUsed()
-                  directDamage 10, opp.bench.select("put 1 damage counter on 1 of your opponent's Benched Pokémon"), SRC_ABILITY
+                  directDamage 10, opp.bench.select("put 1 damage counter on 1 of your opponent's Benched Pokémon"), POKEPOWER
                 }
               }
             }
@@ -836,7 +836,7 @@ public enum SecretWonders implements LogicCardInfo {
               powerUsed()
               flip {
                 def spc = choose([ASLEEP,BURNED,POISONED], ["Asleep", "Burned", "Poisoned"], "Apply to your opponent's Active Pokémon")
-                apply(spc as SpecialConditionType, opp.active, Source.SRC_ABILITY)
+                apply(spc as SpecialConditionType, opp.active, POKEPOWER)
               }
             }
           }
@@ -890,7 +890,7 @@ public enum SecretWonders implements LogicCardInfo {
               if (r==PLAY_FROM_HAND && self.benched && confirm("Use Flame Dash?")) {
                 powerUsed()
                 def active = self.owner.pbg.active
-                if(sw2 (self, null, Source.SRC_ABILITY)) {
+                if(sw2 (self, null, POKEPOWER)) {
                   active.cards.select(min:0, max:active.cards.filterByType(ENERGY).size(), "Move any number of Energy cards attached to $active to $self",cardTypeFilter(ENERGY)).each{
                     energySwitch(active,self,it)
                   }
@@ -1201,7 +1201,7 @@ public enum SecretWonders implements LogicCardInfo {
             after ATTACH_ENERGY, self, {
               if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(R)) {
                 bc "Flame Body removes 2 damage counters from $self"
-                heal 20, self, SRC_ABILITY
+                heal 20, self, POKEBODY
               }
             }
           }
@@ -1421,7 +1421,7 @@ f
               bg.em().storeObject("Grass Whistle", bg.turnCount)
               powerUsed()
               my.all.each{
-                heal 10, it, SRC_ABILITY
+                heal 10, it, POKEPOWER
               }
             }
           }
@@ -2029,7 +2029,7 @@ f
               assert self.active : "$self is not active"
               assert opp.active.cards.energyCount(C) : "$opp.active has no Energy attached to it"
               powerUsed()
-              heal 30, self, SRC_ABILITY
+              heal 30, self, POKEPOWER
             }
           }
           move "Muddy Water", {
@@ -2226,7 +2226,7 @@ f
               checkLastTurn()
               assert opp.active.numberOfDamageCounters : "$opp.active is healthy"
               powerUsed()
-              heal 20, opp.active, SRC_ABILITY
+              heal 20, opp.active, POKEPOWER
             }
           }
           move "Hidden Power", {
