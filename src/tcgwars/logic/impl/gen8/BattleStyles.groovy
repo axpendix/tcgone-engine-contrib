@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen8
 
+import tcgwars.logic.impl.gen5.NextDestinies
 import tcgwars.logic.impl.gen5.PlasmaStorm
 import tcgwars.logic.impl.gen6.AncientOrigins
 import tcgwars.logic.impl.gen7.GuardiansRising;
@@ -2784,31 +2785,7 @@ public enum BattleStyles implements LogicCardInfo {
       case ESCAPE_ROPE_125:
         return copy(PlasmaStorm.ESCAPE_ROPE_120, this)
       case EXP_SHARE_126:
-      return pokemonTool (this) {
-        text "When your Active Pokémon is Knocked Out by damage from an opponent's attack, you may move 1 basic Energy card that was attached to that Pokémon to the Pokémon this card is attached to."
-        def eff = null
-        onPlay {
-          eff = delayed (priority: LAST) {
-            before KNOCKOUT, {
-              if (ef.pokemonToBeKnockedOut.owner == self.owner && bg.currentTurn == self.owner.opposite
-                && ef.pokemonToBeKnockedOut.active && ef.pokemonToBeKnockedOut != self
-                && (ef as Knockout).byDamageFromAttack
-                && ef.pokemonToBeKnockedOut.cards.filterByType(BASIC_ENERGY).notEmpty ) {
-                if (confirm("Use Exp. Share on $self? ",self.owner)) {
-                  CardList list = ef.pokemonToBeKnockedOut.cards.filterByType(BASIC_ENERGY)
-                  list.select("Energy to move", {true}, self.owner).each {
-                    energySwitch(ef.pokemonToBeKnockedOut, self, it)
-                  }
-                  bc "Exp. Share activated"
-                }
-              }
-            }
-          }
-        }
-        onRemoveFromPlay{
-          eff.unregister()
-        }
-      };
+      return copy(NextDestinies.EXP__SHARE_87, this)
       case FAN_OF_WAVES_127:
       return itemCard (this) {
         text "Put a Special Energy attached to 1 of your opponent's Pokémon on the bottom of their deck."
