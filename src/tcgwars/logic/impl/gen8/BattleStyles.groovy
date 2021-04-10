@@ -377,6 +377,7 @@ public enum BattleStyles implements LogicCardInfo {
           text "Once during your turn, you may draw cards until you have 3 cards in your hand. If this Pokémon is in the Active Spot, you may draw cards until you have 4 cards in your hand instead. You can't use more than 1 Exciting Stage Ability each turn."
           actionA {
             checkLastTurn()
+            assert bg.em().retrieveObject("$self $thisAbility") != bg.turnCount : "Only 1 $thisAbility can be used per turn."
             assert my.deck : "Deck is empty"
             def cardSize = 3
             if (self.active) {
@@ -385,6 +386,7 @@ public enum BattleStyles implements LogicCardInfo {
 
             assert hand.size() < cardSize : "Requires a hand size of $cardSize or less to use"
             powerUsed()
+            bg.em().storeObject("$self $thisAbility", bg.turnCount)
             draw cardSize - hand.size()
           }
         }
