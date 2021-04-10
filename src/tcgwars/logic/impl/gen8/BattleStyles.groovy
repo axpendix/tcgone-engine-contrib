@@ -2727,7 +2727,7 @@ public enum BattleStyles implements LogicCardInfo {
         }
         onPlay {
           shuffleDeck(hand.getExcludedList(thisCard))
-          hand.removeAll(hand.getExcludedList(thisCard))
+          hand.getExcludedList(thisCard).discard()
 
           if (keyStore("Bruno_KO", thisCard, null) == bg.turnCount - 1) {
             draw 7
@@ -2736,6 +2736,7 @@ public enum BattleStyles implements LogicCardInfo {
           }
         }
         playRequirement{
+          assert my.hand || my.deck : "Both Hand and Deck are empty"
         }
       };
       case CAMPING_GEAR_122:
