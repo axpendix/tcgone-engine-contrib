@@ -2767,7 +2767,7 @@ public enum BattleStyles implements LogicCardInfo {
           }
         }
         playRequirement{
-          assert my.all.findAll {it.numberOfDamageCounters > 0 }
+          assert my.all.findAll {it.realEvolution && it.numberOfDamageCounters > 0 }
         }
       };
       case ENERGY_RECYCLER_124:
