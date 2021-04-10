@@ -690,7 +690,7 @@ public enum BattleStyles implements LogicCardInfo {
           energyCost FIRE, COLORLESS
           onAttack {
             damage 100
-            if (defending.topPokemonCard.cardTypes.is(POKEMON_V)) {
+            if (defending.pokemonV) {
               damage 120
             }
           }
