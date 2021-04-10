@@ -1895,7 +1895,7 @@ public enum BattleStyles implements LogicCardInfo {
           energyCost FIGHTING, COLORLESS
           onAttack {
             my.all.each {
-              if (it.topPokemonCard.cardTypes.is(RAPID_STRIKE)) damage 20
+              if (it.rapidStrike) damage 20
             }
           }
         }
