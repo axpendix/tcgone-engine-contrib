@@ -793,11 +793,7 @@ public enum BattleStyles implements LogicCardInfo {
           onAttack {
             my.deck.search(text, {
               it.cardTypes.is(POKEMON)
-            }).each {
-              deck.remove(it)
-              hand.add(it)
-              bc "Moved $it to hand"
-            }
+            }).showToOpponent("$thisMove: Chosen Pokémon").moveTo(my.hand)
             shuffleDeck()
           }
         }
