@@ -775,13 +775,9 @@ public enum BattleStyles implements LogicCardInfo {
           onAttack {
             damage 70
 
-            def count = 0
-            flip 2, { count += 1 }
-            afterDamage {
-              count.times {
-                discardDefendingEnergy()
-              }
-            }
+            def list = []
+            flip 2, { list.add C }
+            if (list) discardDefendingEnergyAfterDamage (*list)
           }
         }
       };
