@@ -1459,10 +1459,10 @@ public enum BattleStyles implements LogicCardInfo {
           text "Once during your turn, you may move 1 damage counter from 1 of your Pokémon to 1 of your opponent's Pokémon."
           actionA {
             checkLastTurn()
-            assert opp.all.findAll { it.numberOfDamageCounters } : "Opponent's Pokémon have no damage"
+            assert my.all.findAll { it.numberOfDamageCounters } : "Your Pokémon have no damage"
             powerUsed()
-            def pcs = opp.all.findAll { it.numberOfDamageCounters }.select("Choose the Pokémon to move the damage counter from")
-            def tar = opp.all.findAll { it != pcs }.select("Select the Pokémon to recieve the damage counter")
+            def pcs = my.all.findAll { it.numberOfDamageCounters }.select("Choose the Pokémon to move the damage counter from")
+            def tar = opp.all.select("Select the Pokémon to recieve the damage counter")
             pcs.damage -= hp(10)
             directDamage 10, tar, SRC_ABILITY
             bc "Moved 1 damage counter from $pcs to $tar"
