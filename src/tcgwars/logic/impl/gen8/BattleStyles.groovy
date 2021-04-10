@@ -2548,6 +2548,11 @@ public enum BattleStyles implements LogicCardInfo {
           text "Your opponent chooses to discard the top 3 cards of their deck or to discard 3 cards from their hand."
           energyCost COLORLESS, COLORLESS, COLORLESS
           onAttack {
+            if (opp.hand.size() == 0) {
+              opp.deck.subList(0, 3).discard()
+              return
+            }
+
             def choice = oppChoose([0, 1], ["Top cards of your deck", "Cards from your hand"], "Discard 3 cards from which source?")
 
             if (choice == 0) {
