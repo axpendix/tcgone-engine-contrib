@@ -1623,7 +1623,7 @@ public enum GuardiansRising implements LogicCardInfo {
             onActivate {reason ->
               if(reason == PLAY_FROM_HAND && self.benched && my.deck.notEmpty && confirm("Use Wonder Tag?")){
                 powerUsed()
-                deck.search (cardTypeFilter(SUPPORTER)).moveTo(my.hand)
+                deck.search (cardTypeFilter(SUPPORTER)).showToOpponent("Choosen Supporter card.").moveTo(my.hand)
                 shuffleDeck()
               }
             }
