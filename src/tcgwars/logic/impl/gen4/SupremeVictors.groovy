@@ -1069,16 +1069,7 @@ public enum SupremeVictors implements LogicCardInfo {
           weakness P
           pokeBody "Natural Cure", {
             text "When you attach an Energy card from your hand to Roserade C, remove all Special Conditions from Roserade C."
-            delayedA {
-<<<<<<< Updated upstream
-              after ATTACH_ENERGY, self, {
-                if (ef.reason == PLAY_FROM_HAND) {
-                  clearSpecialCondition(self, SRC_ABILITY)
-                }
-              }
-=======
->>>>>>> Stashed changes
-            }
+            delayedA {}
           }
           move "Magical Leaf", {
             text "40+ damage. Flip a coin. If heads, this attack does 40 damage plus 20 more damage and remove 2 damage counters from Roserade C."
