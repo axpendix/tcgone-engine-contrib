@@ -189,7 +189,9 @@ public enum ShinyStarV implements LogicCardInfo {
           }
           onAttack {
             def evolution = deck.search { it.cardTypes.is(EVOLUTION) && (it as EvolutionPokemonCard).predecessor == self.name }
-            evolve self, evolution.first(), OTHER
+            if (evolution) {
+              evolve self, evolution.first(), OTHER
+            }
           }
         }
       };
