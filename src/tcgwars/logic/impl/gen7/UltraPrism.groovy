@@ -2989,10 +2989,12 @@ public enum UltraPrism implements LogicCardInfo {
         return supporter (this) {
           text "Heal 80 damage from 1 of your Pokémon that has any [G] Energy attached to it.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
-            heal 80, my.all.findAll({it.cards.energyCount(G)}).select()
+            def targets = my.all.findAll { it.cards.energyCount(G) && it.numberOfDamageCounters }
+            def tar = targets.select()
+            heal 80, tar
           }
           playRequirement{
-            assert my.all.findAll({it.cards.energyCount(G)})
+            assert my.all.any {it.cards.energyCount(G) && it.numberOfDamageCounters }
           }
         };
       case LILLIE_125:
