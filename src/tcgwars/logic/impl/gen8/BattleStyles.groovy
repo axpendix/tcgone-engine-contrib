@@ -378,7 +378,7 @@ public enum BattleStyles implements LogicCardInfo {
           text "Once during your turn, you may draw cards until you have 3 cards in your hand. If this Pokémon is in the Active Spot, you may draw cards until you have 4 cards in your hand instead. You can't use more than 1 Exciting Stage Ability each turn."
           actionA {
             checkLastTurn()
-            assert bg.em().retrieveObject("$self $thisAbility") != bg.turnCount : "Only 1 $thisAbility can be used per turn."
+            assert bg.em().retrieveObject("$thisAbility") != bg.turnCount : "Only 1 $thisAbility can be used per turn."
             assert my.deck : "Deck is empty"
             def cardSize = 3
             if (self.active) {
@@ -387,7 +387,7 @@ public enum BattleStyles implements LogicCardInfo {
 
             assert hand.size() < cardSize : "Requires a hand size of $cardSize or less to use"
             powerUsed()
-            bg.em().storeObject("$self $thisAbility", bg.turnCount)
+            bg.em().storeObject("$thisAbility", bg.turnCount)
             draw cardSize - hand.size()
           }
         }
@@ -2727,8 +2727,8 @@ public enum BattleStyles implements LogicCardInfo {
           }
         }
         onPlay {
-          shuffleDeck(hand.getExcludedList(thisCard))
-          hand.getExcludedList(thisCard).discard()
+          hand.getExcludedList(thisCard).moveTo(hidden:true, my.deck)
+          shuffleDeck()
 
           if (keyStore("Bruno_KO", thisCard, null) == bg.turnCount - 1) {
             draw 7
@@ -2737,7 +2737,7 @@ public enum BattleStyles implements LogicCardInfo {
           }
         }
         playRequirement{
-          assert my.hand || my.deck : "Both Hand and Deck are empty"
+          assert my.hand.getExcludedList(thisCard) || my.deck : "Both Hand and Deck are empty"
         }
       };
       case CAMPING_GEAR_122:
