@@ -1912,15 +1912,6 @@ public enum RisingRivals implements LogicCardInfo {
               draw 2
             }
           }
-          delayedA {
-            def warnAndPrevent = {
-              if (self.active && bg.currentTurn == self.owner.opposite) {
-                wcu "$self's Primal Law prevents playing Pokémon from your hand to evolve your Pokémon"
-                prevent()
-              }
-            }
-
-          }
           move "Primal Breath", {
             text "30 damage. Your opponent can’t play any Pokémon from his or her hand to Evolve or to Level Up the Defending Pokémon during his or her next turn."
             energyCost F, C
