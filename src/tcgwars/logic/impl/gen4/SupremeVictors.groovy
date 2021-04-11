@@ -7,7 +7,8 @@ import tcgwars.logic.effect.basic.ResolvedDamage;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.effect.Source.POKEPOWER;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
@@ -336,8 +337,15 @@ public enum SupremeVictors implements LogicCardInfo {
           move "Dump and Draw", {
             text "Discard up to 2 Energy cards from your hand. For each card you discarded, draw 2 cards."
             energyCost C
-            attackRequirement {}
-            onAttack {}
+            attackRequirement {
+              assert my.hand.filterByType(ENERGY) : "You have no Energy cards in your hand"
+              assert my.deck : "Your deck is empty"
+            }
+            onAttack {
+              def energyCards = my.hand.select(min:0,max:2,text,cardTypeFilter(ENERGY))
+              draw 2 * energyCards.size()
+              energyCards.discard()
+            }
           }
           move "Electric Current", {
             text "40 damage. Move a [L] Energy card attached to Electivire FB to 1 of your Benched Pokémon."
@@ -345,6 +353,13 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
+              afterDamage {
+                if(my.bench && self.cards.energyCount(L)) {
+                  def energyCard = self.cards.select("Choose a [L] Energy to move",energyFilter(L)).fist()
+                  def tar = my.bench.select("Move $energyCard to which Pokémon?")
+                  energySwitch(self,tar,energyCard)
+                }
+              }
             }
           }
         };
@@ -353,7 +368,11 @@ public enum SupremeVictors implements LogicCardInfo {
           weakness C, '+30'
           pokeBody "Dragon Intimidation", {
             text "If Garchomp is your Active Pokémon and is damaged by an opponent's attack (even if Garchomp is Knocked Out), choose an Energy card attached to the Attacking Pokémon and put it into your opponent's hand."
-            delayedA {
+            ifActiveAndDamagedByAttackBody(delegate), {
+              if (ef.attacker.cards.filterByType(ENERGY)) {
+                bc "Dragon Intimidation Activates"
+                ef.attacker.cards.select("Select an Energy to move to the Opponent's hand", cardTypeFilter(ENERGY), self.owner).moveTo(ef.attacker.owner.pbg.hand)
+              }
             }
           }
           move "Guard Claw", {
@@ -362,6 +381,7 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
+              reduceDamageNextTurn(hp(20),thisMove)
             }
           }
           move "Speed Impact", {
@@ -369,7 +389,7 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 120
+              damage 120 - 20 * defending.cards.energyCount(C)
             }
           }
         };
@@ -378,14 +398,21 @@ public enum SupremeVictors implements LogicCardInfo {
           weakness W, '+30'
           pokePower "Evolutionary Flame", {
             text "Once during your turn, when you play Magmortar from your hand to evolve 1 of your Pokémon, you may use this power. Your opponent's Active Pokémon is now Burned and Confused."
-            actionA {
+            onActivate {r->
+              if (r==PLAY_FROM_HAND && confirm('Use Evolutionary Flame?')) {
+                powerUsed()
+                apply BURNED, opp.active, POKEPOWER
+                apply CONFUSED, opp.active, POKEPOWER
+              }
             }
           }
           move "Fire Arrow", {
             text "Choose 1 of your opponent's Pokémon. This attack does 30 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost R, C
             attackRequirement {}
-            onAttack {}
+            onAttack {
+              damage 30, opp.all.select()
+            }
           }
           move "Flame Ball", {
             text "60 damage. You may move a [R] Energy card attached to Magmortar to 1 of your Benched Pokémon."
@@ -393,6 +420,11 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 60
+              if(self.cards.energyCount(R) && my.bench && confirm("MOve a [R] Energy card attached to $self to 1 of yoru Benched Pokémon")) {
+                def energyCard = self.cards.select("Choose a [L] Energy to move",energyFilter(L)).fist()
+                def tar = my.bench.select("Move $energyCard to which Pokémon?")
+                energySwitch(self,tar,energyCard)
+              }
             }
           }
         };
