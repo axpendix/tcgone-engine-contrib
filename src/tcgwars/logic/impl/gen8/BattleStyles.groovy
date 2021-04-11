@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen8
 
+import tcgwars.logic.impl.gen5.NextDestinies
 import tcgwars.logic.impl.gen5.PlasmaStorm
 import tcgwars.logic.impl.gen6.AncientOrigins
 import tcgwars.logic.impl.gen7.GuardiansRising;
@@ -281,7 +282,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Venoshock", {
           text "10+ damage. If your opponent's Active Pokémon is Poisoned, this attack does 40 more damage."
           energyCost COLORLESS
-          attackRequirement {}
           onAttack {
             damage 10
             if (defending.isSPC(POISONED)) damage 40
@@ -304,7 +304,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Vine Whip", {
           text "40 damage."
           energyCost GRASS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -316,7 +315,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Panic Vine", {
           text "40 damage. Your opponent's Active Pokémon is now Confused. During your opponent's next turn, that Pokémon can't retreat."
           energyCost GRASS
-          attackRequirement {}
           onAttack {
             damage 40
             afterDamage {
@@ -328,7 +326,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Solar Beam", {
           text "120 damage."
           energyCost GRASS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 120
           }
@@ -340,7 +337,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Zzzt", {
           text "10 damage."
           energyCost COLORLESS
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -348,7 +344,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Beat", {
           text "20 damage."
           energyCost GRASS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -370,7 +365,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Spiny Punch", {
           text "60+ damage. If this Pokémon has any [D] Energy attached, this attack does 70 more damage."
           energyCost GRASS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 60
             if (self.cards.energyCount(D)) damage 70
@@ -384,6 +378,7 @@ public enum BattleStyles implements LogicCardInfo {
           text "Once during your turn, you may draw cards until you have 3 cards in your hand. If this Pokémon is in the Active Spot, you may draw cards until you have 4 cards in your hand instead. You can't use more than 1 Exciting Stage Ability each turn."
           actionA {
             checkLastTurn()
+            assert bg.em().retrieveObject("$thisAbility") != bg.turnCount : "Only 1 $thisAbility can be used per turn."
             assert my.deck : "Deck is empty"
             def cardSize = 3
             if (self.active) {
@@ -392,13 +387,13 @@ public enum BattleStyles implements LogicCardInfo {
 
             assert hand.size() < cardSize : "Requires a hand size of $cardSize or less to use"
             powerUsed()
+            bg.em().storeObject("$thisAbility", bg.turnCount)
             draw cardSize - hand.size()
           }
         }
         move "X-Scissor", {
           text "80+ damage. Flip a coin. If heads, this attack does 80 more damage."
           energyCost GRASS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 80
             flip { damage 80 }
@@ -411,7 +406,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Leafage", {
           text "10 damage."
           energyCost GRASS
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -435,7 +429,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Seed Bomb", {
           text "70 damage."
           energyCost GRASS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 70
           }
@@ -447,7 +440,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Big Bite", {
           text "30 damage. During your opponent's next turn, the Defending Pokémon can't retreat."
           energyCost COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 30
             cantRetreat(defending)
@@ -456,7 +448,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Triple Whip", {
           text "60x damage. Flip 3 coins. This attack does 60 damage for each heads."
           energyCost GRASS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             flip 3, { damage 60 }
           }
@@ -468,7 +459,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Vise Grip", {
           text "20 damage."
           energyCost GRASS
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -476,7 +466,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Devour", {
           text "For each of your Durant in play, discard the top card of your opponent's deck."
           energyCost COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             def count = my.all.count {it.name == "Durant" }
             (1..count).each {
@@ -493,7 +482,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Surprise Attack", {
           text "30 damage. Flip a coin. If tails, this attack does nothing."
           energyCost COLORLESS
-          attackRequirement {}
           onAttack {
             flip {
               damage 30
@@ -507,7 +495,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Grass Cocooning", {
           text "Heal 40 damage from this Pokémon."
           energyCost COLORLESS
-          attackRequirement {}
           onAttack {
             heal 40, self
           }
@@ -515,7 +502,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Bug Bite", {
           text "40 damage."
           energyCost GRASS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -531,16 +517,13 @@ public enum BattleStyles implements LogicCardInfo {
             assert my.bench.findAll { it.numberOfDamageCounters } : "None of your Benched is damaged"
           }
           onAttack {
-            healAll my.bench.findAll {it.numberOfDamageCounters}.select("Fully heal")
-            if (my.bench.findAll {it.numberOfDamageCounters}) {
-              healAll my.bench.findAll {it.numberOfDamageCounters}.select("Fully heal")
-            }
+            def targets = multiSelect( my.bench.findAll { it.numberOfDamageCounters}, 2, "Fully heal")
+            targets.each { healAll it }
           }
         }
         move "Gust", {
           text "90 damage."
           energyCost GRASS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 90
           }
@@ -552,7 +535,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Continuous Slash", {
           text "20x damage. Flip a coin until you get tails. This attack does 20 damage for each heads."
           energyCost GRASS
-          attackRequirement {}
           onAttack {
             flipUntilTails { damage 20 }
           }
@@ -564,7 +546,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Leaf Drain", {
           text "30 damage. Heal 30 damage from this Pokémon."
           energyCost GRASS
-          attackRequirement {}
           onAttack {
             damage 30
             healAfterDamage(30, self)
@@ -573,7 +554,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Solar Cutter", {
           text "70 damage."
           energyCost GRASS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 70
           }
@@ -585,7 +565,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Push Down", {
           text "20 damage. Your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
           energyCost GRASS
-          attackRequirement {}
           onAttack {
             damage 20
             whirlwind()
@@ -594,7 +573,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Nature's Judgment", {
           text "80+ damage. You may discard all Energy from this Pokémon. If you do, this attack does 80 more damage."
           energyCost GRASS, GRASS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 80
             if (confirm("Discard all Energy from $self to do 80 more damage?")) {
@@ -612,7 +590,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Stampede", {
           text "10 damage."
           energyCost COLORLESS
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -624,7 +601,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Sour Spit", {
           text "20 damage. During your opponent's next turn, the Defending Pokémon's attacks cost [C][C] more."
           energyCost GRASS
-          attackRequirement {}
           onAttack {
             damage 20
             afterDamage{
@@ -635,7 +611,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Wing Attack", {
           text "120 damage."
           energyCost GRASS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 120
           }
@@ -647,7 +622,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "G-Max Rolling", {
           text "250- damage. This attack does 10 less damage for each damage counter on this Pokémon."
           energyCost GRASS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 250 - (10*self.numberOfDamageCounters)
           }
@@ -659,7 +633,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Heat Dash", {
           text "30 damage. You may attach a [R] Energy card from your hand to this Pokémon."
           energyCost FIRE
-          attackRequirement {}
           onAttack {
             damage 30
             afterDamage {
@@ -670,7 +643,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Fire Fang", {
           text "90 damage. Your opponent's Active Pokémon is now Burned."
           energyCost FIRE, FIRE, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 90
             applyAfterDamage BURNED
@@ -683,7 +655,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "V Bullet", {
           text "10+ damage. If your opponent's Active Pokémon is a Pokémon V, this attack does 50 more damage."
           energyCost FIRE
-          attackRequirement {}
           onAttack {
             damage 10
             if (defending.pokemonV) {
@@ -694,7 +665,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Flare Shot", {
           text "120 damage. Discard all Energy from this Pokémon."
           energyCost FIRE, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 120
             afterDamage {
@@ -710,7 +680,7 @@ public enum BattleStyles implements LogicCardInfo {
           text "Attach up to 3 [R] Energy cards from your discard pile to your Pokémon in any way you like."
           energyCost COLORLESS
           attackRequirement {
-            assert discardPile.filterByEnergyType(R)
+            assert discardPile.filterByEnergyType(R) : "No $R Energy in your Discard Pile."
           }
           onAttack {
             discardPile.filterByEnergyType(R).select(count: 3).each { attachEnergy(my.all.select("Attach"), it) }
@@ -719,10 +689,9 @@ public enum BattleStyles implements LogicCardInfo {
         move "Max Victory", {
           text "100+ damage. If your opponent's Active Pokémon is a Pokémon V, this attack does 120 more damage."
           energyCost FIRE, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 100
-            if (defending.topPokemonCard.cardTypes.is(POKEMON_V)) {
+            if (defending.pokemonV) {
               damage 120
             }
           }
@@ -734,7 +703,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Ram", {
           text "20 damage."
           energyCost COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -742,7 +710,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Combustion", {
           text "50 damage."
           energyCost FIRE, FIRE, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -754,7 +721,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Ram", {
           text "30 damage."
           energyCost COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -762,7 +728,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Combustion", {
           text "90 damage."
           energyCost FIRE, FIRE, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 90
           }
@@ -790,7 +755,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Heat Crash", {
           text "130 damage."
           energyCost FIRE, FIRE, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 130
           }
@@ -802,7 +766,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Flare", {
           text "20 damage."
           energyCost FIRE
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -810,17 +773,12 @@ public enum BattleStyles implements LogicCardInfo {
         move "Burning Licks", {
           text "70 damage. Flip 2 coins. For each heads, discard an Energy from your opponent's Active Pokémon."
           energyCost COLORLESS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 70
 
-            def count = 0
-            flip 2, { count += 1 }
-            afterDamage {
-              count.times {
-                discardDefendingEnergy()
-              }
-            }
+            def list = []
+            flip 2, { list.add C }
+            if (list) discardDefendingEnergyAfterDamage (*list)
           }
         }
       };
@@ -836,11 +794,7 @@ public enum BattleStyles implements LogicCardInfo {
           onAttack {
             my.deck.search(text, {
               it.cardTypes.is(POKEMON)
-            }).each {
-              deck.remove(it)
-              hand.add(it)
-              bc "Moved $it to hand"
-            }
+            }).showToOpponent("$thisMove: Chosen Pokémon").moveTo(my.hand)
             shuffleDeck()
           }
         }
@@ -851,7 +805,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Perplex", {
           text "Your opponent's Active Pokémon is now Confused."
           energyCost FIRE
-          attackRequirement {}
           onAttack {
             apply CONFUSED
           }
@@ -859,7 +812,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Derisive Roasting", {
           text "90x damage. This attack does 90 damage for each Special Condition affecting your opponent's Active Pokémon."
           energyCost COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 90 * defending.specialConditions.size()
           }
@@ -871,7 +823,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Searing Flame", {
           text "20 damage. Your opponent's Active Pokémon is now Burned."
           energyCost FIRE, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 20
             applyAfterDamage(BURNED)
@@ -901,7 +852,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Bursting Inferno", {
           text "130 damage. Your opponent's Active Pokémon is now Burned."
           energyCost FIRE, FIRE, FIRE, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 130
             applyAfterDamage(BURNED)
@@ -914,7 +864,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Smokescreen", {
           text "10 damage. During your opponent's next turn, if the Defending Pokémon tries to attack, your opponent flips a coin. If tails, that attack doesn't happen."
           energyCost WATER
-          attackRequirement {}
           onAttack {
             damage 10
             sandAttack thisMove
@@ -927,7 +876,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Water Gun", {
           text "40 damage."
           energyCost WATER
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -964,7 +912,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Aqua Burst", {
           text "40x damage. This attack does 40 damage for each [W] Energy attached to this Pokémon."
           energyCost WATER
-          attackRequirement {}
           onAttack {
             damage 40 * self.cards.energyCount(W)
           }
@@ -976,7 +923,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Pound", {
           text "10 damage."
           energyCost WATER
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1000,7 +946,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Ball Juggling", {
           text "10+ damage. Discard any number of Item cards that have the word “Ball” in their name from your hand. This attack does 40 more damage for each card you discarded in this way."
           energyCost COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 10
 
@@ -1021,7 +966,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Frost Smash", {
           text "80 damage."
           energyCost WATER, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 80
           }
@@ -1033,7 +977,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Water Gun", {
           text "10 damage."
           energyCost WATER
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1041,7 +984,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Sharp Fin", {
           text "20 damage."
           energyCost COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1058,8 +1000,6 @@ public enum BattleStyles implements LogicCardInfo {
             assert bg.em().retrieveObject("Rapid_Strike_Search") != bg.turnCount : "You can't use more than 1 $thisAbility Ability each turn."
             powerUsed()
             bg.em().storeObject("Rapid_Strike_Search", bg.turnCount)
-
-            powerUsed()
             my.deck.search(count: 1, "Choose a Rapid Strike card", cardTypeFilter(RAPID_STRIKE)).moveTo(my.hand)
             shuffleDeck()
           }
@@ -1067,7 +1007,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Waterfall", {
           text "50 damage."
           energyCost WATER, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -1079,7 +1018,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Bubble Beam", {
           text "30 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
           energyCost WATER, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 30
             flipThenApplySC PARALYZED
@@ -1092,7 +1030,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Knock Off", {
           text "60 damage. Discard a random card from your opponent's hand."
           energyCost WATER, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 60
             afterDamage {
@@ -1103,7 +1040,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Crabhammer", {
           text "140 damage."
           energyCost WATER, WATER, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 140
           }
@@ -1142,7 +1078,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Swirling Slice", {
           text "130 damage. Move an Energy from this Pokémon to 1 of your Benched Pokémon."
           energyCost WATER, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 130
             afterDamage { moveEnergy(self, my.bench) }
@@ -1155,7 +1090,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Recover", {
           text "Discard an Energy from this Pokémon and heal all damage from it."
           energyCost COLORLESS
-          attackRequirement {}
           onAttack {
             discardSelfEnergyInOrderTo(C)
             healAll self
@@ -1164,7 +1098,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Rain Splash", {
           text "10 damage."
           energyCost WATER
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1176,7 +1109,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Sediment Sink", {
           text "10x damage. This attack does 10 damage for each [W] Energy card in your discard pile."
           energyCost WATER, WATER
-          attackRequirement {}
           onAttack {
             damage 10 * my.discard.filterByType(ENERGY).filterByEnergyType(W).size()
           }
@@ -1188,7 +1120,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Bite", {
           text "20 damage."
           energyCost COLORLESS
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1196,7 +1127,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Surf", {
           text "110 damage."
           energyCost WATER, WATER, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 110
           }
@@ -1208,7 +1138,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Haymaker", {
           text "30 damage. During your next turn, this Pokémon can't use Haymaker."
           energyCost LIGHTNING
-          attackRequirement {}
           onAttack {
             damage 30
             cantUseAttack(thisMove, self)
@@ -1221,7 +1150,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Tumbling Attack", {
           text "60+ damage. Flip a coin. If heads, this attack does 30 more damage."
           energyCost COLORLESS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 60
             flip { damage 30 }
@@ -1230,7 +1158,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Lightning Slam", {
           text "180 damage. During your next turn, this Pokémon can't use Lightning Slam."
           energyCost LIGHTNING, LIGHTNING, LIGHTNING, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 180
             cantUseAttack(thisMove, self)
@@ -1243,7 +1170,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Rear Kick", {
           text "20 damage."
           energyCost LIGHTNING
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1255,7 +1181,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Jumping Kick", {
           text "This attack does 30 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost LIGHTNING
-          attackRequirement {}
           onAttack {
             damage 30, opp.all.select(text)
           }
@@ -1263,7 +1188,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Head Bolt", {
           text "50 damage."
           energyCost LIGHTNING, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -1275,7 +1199,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Electrostep", {
           text "This attack does 40 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.) Switch this Pokémon with 1 of your Benched Pokémon."
           energyCost LIGHTNING
-          attackRequirement {}
           onAttack {
             damage 40, opp.all.select(text)
             switchYourActive()
@@ -1284,7 +1207,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Scar Strikes", {
           text "100+ damage. If your opponent's Active Pokémon already has any damage counters on it, this attack does 100 more damage."
           energyCost LIGHTNING, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 100
             if (defending.numberOfDamageCounters) damage 100
@@ -1301,14 +1223,13 @@ public enum BattleStyles implements LogicCardInfo {
             assert deck.notEmpty : "Deck is empty"
           }
           onAttack {
-            my.deck.search(max: 1, cardTypeFilter(POKEMON)).moveTo(my.hand)
+            my.deck.search(max: 1, cardTypeFilter(POKEMON)).showToOpponent(text).moveTo(my.hand)
             shuffleDeck()
           }
         }
         move "Gnaw", {
           text "30 damage."
           energyCost COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -1320,7 +1241,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Electro Ball", {
           text "40 damage."
           energyCost LIGHTNING
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -1328,7 +1248,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Spiral Thunder", {
           text "20+ damage. This attack does 40 more damage for each Energy attached to all of your opponent's Pokémon."
           energyCost LIGHTNING, LIGHTNING, COLORLESS
-          attackRequirement {}
           onAttack {
             def addDmg = 0
             opp.all.each {
@@ -1344,7 +1263,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Max Shock", {
           text "180 damage. If you have more Prize cards remaining than your opponent, their Active Pokémon is now Paralyzed."
           energyCost LIGHTNING, LIGHTNING, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 180
             if (my.prizeCardSet.size() > opp.prizeCardSet.size()) {
@@ -1361,20 +1279,20 @@ public enum BattleStyles implements LogicCardInfo {
           onActivate {
             if (it == PLAY_FROM_HAND && my.discard.findAll { it.name == "Poké Ball" || it.name == "Great Ball" } && confirm("Use Ball Search?")){
               powerUsed()
-              if (my.discard.findAll { it.name == "Poké Ball" }) {
-                my.discard.findAll { it.name == "Poké Ball" }.select("You may move a Poké Ball into your hand").moveTo(my.hand)
+              def targets = my.discard.select thisAbility.description, 1, 2, self.owner, {
+                it.name == "Poké Ball" || it.name == "Great Ball"
+              }, {
+                it.filterByNameEquals("Poké Ball").size() <= 1 &&
+                  it.filterByNameEquals("Great Ball").size() <= 1 &&
+                  it.filterByNameEquals("Poké Ball", "Great Ball").size() <= 2
               }
-
-              if (my.discard.findAll { it.name == "Great Ball" }) {
-                my.discard.findAll { it.name == "Great Ball" }.select("You may move a Great Ball into your hand").moveTo(my.hand)
-              }
+              targets.moveTo my.hand
             }
           }
         }
         move "Flop", {
           text "20 damage."
           energyCost COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1386,7 +1304,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Corner", {
           text "30 damage. During your opponent's next turn, the Defending Pokémon can't retreat."
           energyCost LIGHTNING
-          attackRequirement {}
           onAttack {
             damage 30
             cantRetreat(defending)
@@ -1395,6 +1312,7 @@ public enum BattleStyles implements LogicCardInfo {
         move "Defiant Spark", {
           text "130 damage. If this Pokémon has any damage counters on it, this attack can be used for [L]."
           energyCost LIGHTNING
+          // TODO: How does this work with metronome/foul play?
           attackRequirement {
             if (!self.numberOfDamageCounters)  {
               assert self.cards.energySufficient(L, L, C) : "Not enough Energy"
@@ -1427,7 +1345,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Headbutt Bounce", {
           text "10 damage."
           energyCost PSYCHIC
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1435,7 +1352,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Power Gem", {
           text "30 damage."
           energyCost PSYCHIC, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -1448,7 +1364,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Dazzle Dance", {
           text "30 damage. Your opponent's Active Pokémon is now Confused."
           energyCost PSYCHIC, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 30
             applyAfterDamage(CONFUSED)
@@ -1457,7 +1372,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Power Gem", {
           text "120 damage."
           energyCost PSYCHIC, PSYCHIC, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 120
           }
@@ -1470,7 +1384,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Self-Destruct", {
           text "60 damage. This Pokémon also does 60 damage to itself."
           energyCost PSYCHIC, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 60
             damage 60, self
@@ -1485,14 +1398,12 @@ public enum BattleStyles implements LogicCardInfo {
           text "Attach [P] Energy cards from your discard pile to your Pokémon in any way you like until your Pokémon and your opponent's Pokémon have the same total amount of Energy attached."
           energyCost COLORLESS
           attackRequirement {
-            assert my.discard.filterByEnergyType(P)
+            assert my.discard.filterByEnergyType(P) : "No $P Energy in your Discard Pile"
+            assert my.all.sum { it.cards.energyCount(C) } < opp.all.sum { it.cards.energyCount(C) } : "You don't have fewer Energy than your Opponent"
           }
           onAttack {
-            def numberOfEnergy = 0
-            opp.all.each {
-              numberOfEnergy += it.cards.energyCount(C)
-            }
-            my.discard.filterByEnergyType(P).select(max: numberOfEnergy).each {
+            def numberOfEnergy = opp.all.sum { it.cards.energyCount(C) } - my.all.sum { it.cards.energyCount(C) }
+            my.discard.filterByEnergyType(P).select(count: numberOfEnergy).each {
               attachEnergy(my.all.select("Attach to"), it)
             }
           }
@@ -1500,7 +1411,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Psyshot", {
           text "100 damage."
           energyCost PSYCHIC, PSYCHIC, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 100
           }
@@ -1524,7 +1434,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Pleasant Tone", {
           text "20 damage. Your opponent's Active Pokémon is now Asleep."
           energyCost COLORLESS
-          attackRequirement {}
           onAttack {
             damage 20
             applyAfterDamage(ASLEEP)
@@ -1538,7 +1447,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Focused Wish", {
           text "20+ damage. Flip a coin. If heads, this attack does 20 more damage."
           energyCost PSYCHIC, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 20
             flip { damage 20 }
@@ -1553,10 +1461,10 @@ public enum BattleStyles implements LogicCardInfo {
           text "Once during your turn, you may move 1 damage counter from 1 of your Pokémon to 1 of your opponent's Pokémon."
           actionA {
             checkLastTurn()
-            assert opp.all.findAll { it.numberOfDamageCounters } : "Opponent's Pokémon have no damage"
+            assert my.all.findAll { it.numberOfDamageCounters } : "Your Pokémon have no damage"
             powerUsed()
-            def pcs = opp.all.findAll { it.numberOfDamageCounters }.select("Choose the Pokémon to move the damage counter from")
-            def tar = opp.all.findAll { it != pcs }.select("Select the Pokémon to recieve the damage counter")
+            def pcs = my.all.findAll { it.numberOfDamageCounters }.select("Choose the Pokémon to move the damage counter from")
+            def tar = opp.all.select("Select the Pokémon to recieve the damage counter")
             pcs.damage -= hp(10)
             directDamage 10, tar, SRC_ABILITY
             bc "Moved 1 damage counter from $pcs to $tar"
@@ -1565,7 +1473,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Psychic Sphere", {
           text "50 damage."
           energyCost PSYCHIC, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -1598,7 +1505,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Jealous Eyes", {
           text "Put 3 damage counters on your opponent's Active Pokémon for each Prize card your opponent has taken."
           energyCost PSYCHIC
-          attackRequirement {}
           onAttack {
             directDamage 30 * opp.prizeCardSet.takenCount, defending
           }
@@ -1611,7 +1517,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Prismatic Ray", {
           text "20 damage. This attack also does 20 damage to 2 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost PSYCHIC
-          attackRequirement {}
           onAttack {
             damage 20
             multiDamage(opp.bench, 2, 20)
@@ -1620,7 +1525,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Special Laser", {
           text "100+ damage. If this Pokémon has any Special Energy attached, this attack does 120 more damage."
           energyCost PSYCHIC, PSYCHIC, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 100
             if (self.cards.filterByType(SPECIAL_ENERGY)) damage 120
@@ -1645,7 +1549,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Ram", {
           text "20 damage."
           energyCost COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1676,7 +1579,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Zen Headbutt", {
           text "120 damage."
           energyCost PSYCHIC, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 120
           }
@@ -1688,7 +1590,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Focus Fist", {
           text "50 damage. Flip a coin. If tails, this attack does nothing."
           energyCost FIGHTING, COLORLESS
-          attackRequirement {}
           onAttack {
             flip { damage 50 }
           }
@@ -1700,7 +1601,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Field Crush", {
           text "20 damage. If your opponent has a Stadium in play, discard it."
           energyCost COLORLESS
-          attackRequirement {}
           onAttack {
             damage 20
             afterDamage {
@@ -1713,7 +1613,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Steamin' Mad Strike", {
           text "50x damage. This attack does 50 damage for each of your Benched Pokémon that has any damage counters on it."
           energyCost FIGHTING, FIGHTING
-          attackRequirement {}
           onAttack {
             def count = my.bench.findAll { it.numberOfDamageCounters }.size()
             damage 50 * count
@@ -1726,7 +1625,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Rock Throw", {
           text "60 damage."
           energyCost COLORLESS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -1734,7 +1632,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Rocky Tackle", {
           text "170 damage. This Pokémon also does 60 damage to itself."
           energyCost FIGHTING, COLORLESS, COLORLESS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 170
             damage 60, self
@@ -1747,7 +1644,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Beat", {
           text "10 damage."
           energyCost FIGHTING
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1755,7 +1651,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Headbutt", {
           text "30 damage."
           energyCost FIGHTING, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -1780,7 +1675,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Bonemerang", {
           text "90x damage. Flip 2 coins. This attack does 90 damage for each heads."
           energyCost FIGHTING, COLORLESS
-          attackRequirement {}
           onAttack {
             flip 2, { damage 90 }
           }
@@ -1792,7 +1686,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Slash", {
           text "30 damage."
           energyCost COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -1804,7 +1697,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Acrobatics", {
           text "20+ damage. Flip 2 coins. This attack does 40 more damage for each heads."
           energyCost COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 20
             flip 2, { damage 40 }
@@ -1813,7 +1705,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Guillotine", {
           text "90 damage."
           energyCost FIGHTING, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 90
           }
@@ -1825,7 +1716,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Pound", {
           text "20 damage."
           energyCost COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1837,7 +1727,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Pound", {
           text "30 damage."
           energyCost COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -1845,7 +1734,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Hammer In", {
           text "60 damage."
           energyCost FIGHTING, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -1857,7 +1745,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Hammer Pressure", {
           text "90 damage. If the Defending Pokémon is an Evolution Pokémon, it can't attack during your opponent's next turn."
           energyCost FIGHTING, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 90
             if (defending.realEvolution) cantAttackNextTurn defending
@@ -1866,7 +1753,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Mega Punch", {
           text "150 damage."
           energyCost FIGHTING, FIGHTING, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 150
           }
@@ -1878,7 +1764,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Double Stab", {
           text "30x damage. Flip 2 coins. This attack does 30 damage for each heads."
           energyCost FIGHTING, COLORLESS
-          attackRequirement {}
           onAttack {
             flip 2, { damage 30 }
           }
@@ -1890,7 +1775,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Pound", {
           text "20 damage."
           energyCost COLORLESS
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1898,7 +1782,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Spinning Whip", {
           text "90 damage. Your opponent's Active Pokémon is now Confused. Shuffle this Pokémon and all attached cards into your deck."
           energyCost FIGHTING, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 90
 
@@ -1917,7 +1800,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Reckless Charge", {
           text "30 damage. This Pokémon also does 10 damage to itself."
           energyCost FIGHTING
-          attackRequirement {}
           onAttack {
             damage 30
             damage 10, self
@@ -1930,7 +1812,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Tackle", {
           text "50 damage."
           energyCost COLORLESS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -1938,7 +1819,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Wild Tackle", {
           text "100 damage. This Pokémon also does 10 damage to itself."
           energyCost FIGHTING, COLORLESS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 100
             damage 10, self
@@ -1951,7 +1831,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Coal Cannon", {
           text "90x damage. Flip a coin for each Energy attached to this Pokémon. This attack does 90 damage for each heads."
           energyCost COLORLESS
-          attackRequirement {}
           onAttack {
             flip self.cards.energyCount(C), { damage 90 }
           }
@@ -1959,7 +1838,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Wild Tackle", {
           text "200 damage. This Pokémon also does 50 damage to itself."
           energyCost FIGHTING, COLORLESS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 200
             damage 50, self
@@ -1972,7 +1850,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Tail Whap", {
           text "10 damage."
           energyCost FIGHTING
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -1980,7 +1857,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Mud Shot", {
           text "60 damage."
           energyCost FIGHTING, FIGHTING, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -2008,7 +1884,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Skull Bash", {
           text "120 damage."
           energyCost FIGHTING, FIGHTING, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 120
           }
@@ -2020,10 +1895,9 @@ public enum BattleStyles implements LogicCardInfo {
         move "Rapid Strike Squad", {
           text "20x damage. This attack does 20 damage for each of your Rapid Strike Pokémon in play."
           energyCost FIGHTING, COLORLESS
-          attackRequirement {}
           onAttack {
             my.all.each {
-              if (it.topPokemonCard.cardTypes.is(RAPID_STRIKE)) damage 20
+              if (it.rapidStrike) damage 20
             }
           }
         }
@@ -2034,7 +1908,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Land's Pulse", {
           text "30+ damage. If a Stadium is in play, this attack does 30 more damage."
           energyCost FIGHTING, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 30
             if (bg.stadiumInfoStruct) {
@@ -2045,7 +1918,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Giga Hammer", {
           text "120 damage. During your next turn, this Pokémon can't use Giga Hammer."
           energyCost FIGHTING, FIGHTING, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 120
             cantUseAttack(thisMove, self)
@@ -2069,7 +1941,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Impact Blow", {
           text "180 damage. During your next turn, this Pokémon can't use Impact Blow."
           energyCost FIGHTING, FIGHTING, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 180
             cantUseAttack(thisMove, self)
@@ -2082,7 +1953,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Beatdown", {
           text "100 damage."
           energyCost COLORLESS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 100
           }
@@ -2090,7 +1960,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "G-Max One Blow", {
           text "270 damage. Discard all Energy from this Pokémon. This attack's damage isn't affected by any effects on your opponent's Active Pokémon."
           energyCost FIGHTING, FIGHTING, FIGHTING, COLORLESS
-          attackRequirement {}
           onAttack {
             shredDamage 270
             afterDamage {
@@ -2105,7 +1974,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Strafe", {
           text "30 damage. You may switch this Pokémon with 1 of your Benched Pokémon."
           energyCost FIGHTING
-          attackRequirement {}
           onAttack {
             damage 30
             switchYourActive(may: true)
@@ -2114,7 +1982,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Hundred Furious Blows", {
           text "150 damage."
           energyCost FIGHTING, FIGHTING, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 150
           }
@@ -2126,7 +1993,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Gale Thrust", {
           text "30+ damage. If this Pokémon moved from your Bench to the Active Spot this turn, this attack does 120 more damage."
           energyCost FIGHTING
-          attackRequirement {}
           onAttack {
             damage 30
             if (wasSwitchedOutThisTurn(self)) {
@@ -2137,7 +2003,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "G-Max Rapid Flow", {
           text "Discard all Energy from this Pokémon. This attack does 120 damage to 2 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost FIGHTING, FIGHTING, COLORLESS
-          attackRequirement {}
           onAttack {
             multiDamage(opp.all, 2, 120)
             afterDamage {
@@ -2152,7 +2017,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Hide in Shadows", {
           text "Switch this Pokémon with 1 of your Benched Pokémon."
           energyCost COLORLESS
-          attackRequirement {}
           onAttack {
             switchYourActive()
           }
@@ -2160,7 +2024,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Speed Dive", {
           text "20 damage."
           energyCost COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -2181,7 +2044,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Air Slash", {
           text "50 damage. Discard an Energy from this Pokémon."
           energyCost COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 50
             discardSelfEnergyAfterDamage(C)
@@ -2203,7 +2065,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Wing Attack", {
           text "100 damage."
           energyCost COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 100
           }
@@ -2215,7 +2076,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Splattering Poison", {
           text "Both Active Pokémon are now Poisoned."
           energyCost DARKNESS
-          attackRequirement {}
           onAttack {
             apply POISONED, my.active
             apply POISONED, opp.active
@@ -2224,7 +2084,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Unhinged Hammer", {
           text "100+ damage. If this Pokémon is affected by a Special Condition, this attack does 120 more damage."
           energyCost DARKNESS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 100
             if (self.specialConditions) damage 120
@@ -2248,7 +2107,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Peck", {
           text "20 damage."
           energyCost DARKNESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -2275,7 +2133,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Voltage Dive", {
           text "80+ damage. If your opponent's Active Pokémon has any Special Energy attached, this attack does 80 more damage."
           energyCost DARKNESS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 80
             if (defending.cards.filterByType(SPECIAL_ENERGY)) damage 80
@@ -2288,7 +2145,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Bite", {
           text "20 damage."
           energyCost COLORLESS
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -2302,14 +2158,14 @@ public enum BattleStyles implements LogicCardInfo {
           actionA {
             checkLastTurn()
             assert my.deck : "Deck is empty"
-            assert my.all.findAll { it.topPokemonCard.cardTypes.is(SINGLE_STRIKE) } : "No Single Strike Pokémon to attach an Energy card to"
+            assert my.all.findAll { it.singleStrike } : "No Single Strike Pokémon to attach an Energy card to"
             powerUsed()
-            def card = my.deck.search(count: 1, "Search for a Single Strike Energy Card to attach to one of your Single Strike Pokémon", {
-              it.cardTypes.is(SPECIAL_ENERGY) && it.cardTypes.is(SINGLE_STRIKE)
+            def card = my.deck.search("Search for a Single Strike Energy Card to attach to one of your Single Strike Pokémon", {
+              it.name == "Single Strike Energy"
             }).first()
             shuffleDeck()
             if (card) {
-              def tar = my.all.findAll{ it.topPokemonCard.cardTypes.is(SINGLE_STRIKE) }.select("Attach an Energy to?")
+              def tar = my.all.findAll{ it.singleStrike }.select("Attach an Energy to?")
               attachEnergy(tar, card)
               directDamage 20, tar, SRC_ABILITY
             }
@@ -2318,7 +2174,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Darkness Fang", {
           text "50 damage."
           energyCost DARKNESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -2330,7 +2185,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Cragalanche", {
           text "60 damage. Discard the top 2 cards of your opponent's deck."
           energyCost DARKNESS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 60
             afterDamage {
@@ -2341,7 +2195,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Single Strike Crush", {
           text "240 damage. Discard the top 4 cards of your deck."
           energyCost DARKNESS, DARKNESS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 240
             afterDamage {
@@ -2366,7 +2219,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Hangry Tackle", {
           text "20+ damage. If you have no cards in your hand, this attack does 90 more damage."
           energyCost DARKNESS
-          attackRequirement {}
           onAttack {
             damage 20
             if (my.hand.size() == 0) {
@@ -2382,7 +2234,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Steel Swing", {
           text "80x damage. Flip 2 coins. This attack does 80 damage for each heads."
           energyCost COLORLESS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             flip 2, { damage 80 }
           }
@@ -2390,7 +2241,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Heavy Impact", {
           text "200 damage."
           energyCost METAL, METAL, METAL, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 200
           }
@@ -2403,7 +2253,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Powerful Vise", {
           text "20 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
           energyCost METAL
-          attackRequirement {}
           onAttack {
             damage 20
             flipThenApplySC(PARALYZED)
@@ -2412,7 +2261,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Piercing Strike", {
           text "100 damage. This attack's damage isn't affected by Weakness or Resistance, or by any effects on your opponent's Active Pokémon."
           energyCost COLORLESS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             swiftDamage(100, defending)
           }
@@ -2425,7 +2273,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Ram", {
           text "30 damage."
           energyCost METAL, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -2454,7 +2301,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Zen Headbutt", {
           text "70 damage."
           energyCost METAL, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 70
           }
@@ -2467,7 +2313,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Swords Dance", {
           text "During your next turn, this Pokémon's Slash attack does 70 more damage (before applying Weakness and Resistance)."
           energyCost COLORLESS
-          attackRequirement {}
           onAttack {
             increasedBaseDamageNextTurn("Slash", hp(70))
           }
@@ -2475,7 +2320,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Slash", {
           text "10 damage."
           energyCost METAL
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -2488,7 +2332,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Slash", {
           text "30 damage."
           energyCost COLORLESS
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -2496,7 +2339,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Steel Slice", {
           text "90+ damage. If your opponent's Active Pokémon is a [M] Pokémon, this attack does 90 more damage."
           energyCost METAL, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 90
             if (defending.types.contains(M)) damage 90
@@ -2510,7 +2352,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Ambush", {
           text "10+ damage. Flip a coin. If heads, this attack does 30 more damage."
           energyCost METAL
-          attackRequirement {}
           onAttack {
             damage 10
             flip { damage 30 }
@@ -2524,7 +2365,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Cut Down", {
           text "40 damage. Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon."
           energyCost METAL, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 40
             flip { discardDefendingEnergyAfterDamage() }
@@ -2562,7 +2402,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Full Metal Blade", {
           text "210 damage. Discard 2 [M] Energy from this Pokémon."
           energyCost METAL, METAL, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 210
             discardSelfEnergyAfterDamage(M, M)
@@ -2600,7 +2439,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Gigaton Bash", {
           text "70 damage. During your opponent's next turn, prevent all damage done to this Pokémon by attacks from Pokémon VMAX."
           energyCost METAL, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 70
             preventAllDamageFromCustomPokemonNextTurn thisMove, self, { it.pokemonVMAX }
@@ -2614,7 +2452,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Clutch", {
           text "30 damage. During your opponent's next turn, the Defending Pokémon can't retreat."
           energyCost METAL
-          attackRequirement {}
           onAttack {
             damage 30
             cantRetreat(defending)
@@ -2623,7 +2460,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Sky Hurricane", {
           text "190 damage. During your next turn, this Pokémon can't use Sky Hurricane."
           energyCost METAL, METAL, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 190
             cantUseAttack(thisMove, self)
@@ -2658,7 +2494,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "G-Max Hurricane", {
           text "240 damage. During your next turn, this Pokémon can't use G-Max Hurricane."
           energyCost METAL, METAL, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 240
             cantUseAttack(thisMove, self)
@@ -2672,7 +2507,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Peck", {
           text "20 damage."
           energyCost COLORLESS
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -2685,7 +2519,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Drill Peck", {
           text "70 damage."
           energyCost COLORLESS
-          attackRequirement {}
           onAttack {
             damage 70
           }
@@ -2697,7 +2530,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Tongue Slap", {
           text "50 damage."
           energyCost COLORLESS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -2705,7 +2537,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Hammer In", {
           text "80 damage."
           energyCost COLORLESS, COLORLESS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 80
           }
@@ -2717,8 +2548,12 @@ public enum BattleStyles implements LogicCardInfo {
         move "Selickt", {
           text "Your opponent chooses to discard the top 3 cards of their deck or to discard 3 cards from their hand."
           energyCost COLORLESS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
+            if (opp.hand.size() == 0) {
+              opp.deck.subList(0, 3).discard()
+              return
+            }
+
             def choice = oppChoose([0, 1], ["Top cards of your deck", "Cards from your hand"], "Discard 3 cards from which source?")
 
             if (choice == 0) {
@@ -2733,7 +2568,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Pitch", {
           text "100 damage. Your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
           energyCost COLORLESS, COLORLESS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 100
             afterDamage {
@@ -2748,7 +2582,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Cat Kick", {
           text "10 damage."
           energyCost COLORLESS
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -2756,7 +2589,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Claw Slash", {
           text "40 damage."
           energyCost COLORLESS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -2768,7 +2600,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Caturday", {
           text "Draw 3 cards. If you do, this Pokémon is now Asleep."
           energyCost COLORLESS
-          attackRequirement {}
           onAttack {
             def currentHandSize = my.hand.size()
             draw 3
@@ -2780,7 +2611,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Claw Slash", {
           text "120 damage."
           energyCost COLORLESS, COLORLESS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 120
           }
@@ -2792,14 +2622,13 @@ public enum BattleStyles implements LogicCardInfo {
         move "Double Dip Fangs", {
           text "40 damage. If your opponent's Basic Pokémon is Knocked Out by damage from this attack, take 1 more Prize card."
           energyCost COLORLESS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             def pcs = defending
             delayed {
               def eff2
               register {
                 eff2 = getter GET_GIVEN_PRIZES, BEFORE_LAST, pcs, { Holder holder ->
-                  if (holder.object > 0 && pcs.KOBYDMG == bg.turnCount && defending.topPokemonCard.cardTypes.is(BASIC)) {
+                  if (holder.object > 0 && pcs.KOBYDMG == bg.turnCount && defending.basic) {
                     bc "Double Dip Fangs gives the player an additional prize"
                     holder.object += 1
                   }
@@ -2819,7 +2648,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Wild Tackle", {
           text "200 damage. This Pokémon also does 30 damage to itself."
           energyCost COLORLESS, COLORLESS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 200
             damage 30, self
@@ -2845,7 +2673,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Head Charge", {
           text "120 damage. This Pokémon also does 30 damage to itself."
           energyCost COLORLESS, COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 120
             damage 30, self
@@ -2863,7 +2690,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Spiral Rush", {
           text "30+ damage. Flip a coin until you get tails. This attack does 30 more damage for each heads."
           energyCost COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 30
             flipUntilTails { damage 30 }
@@ -2876,7 +2702,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Collect", {
           text "Draw 2 cards."
           energyCost COLORLESS
-          attackRequirement {}
           onAttack {
             draw 2
           }
@@ -2884,7 +2709,6 @@ public enum BattleStyles implements LogicCardInfo {
         move "Hand Kinesis", {
           text "10x damage. This attack does 10 damage for each card in your hand."
           energyCost COLORLESS, COLORLESS
-          attackRequirement {}
           onAttack {
             damage 10 * my.hand.size()
           }
@@ -2903,8 +2727,8 @@ public enum BattleStyles implements LogicCardInfo {
           }
         }
         onPlay {
-          shuffleDeck(hand.getExcludedList(thisCard))
-          hand.removeAll(hand.getExcludedList(thisCard))
+          hand.getExcludedList(thisCard).moveTo(hidden:true, my.deck)
+          shuffleDeck()
 
           if (keyStore("Bruno_KO", thisCard, null) == bg.turnCount - 1) {
             draw 7
@@ -2913,6 +2737,7 @@ public enum BattleStyles implements LogicCardInfo {
           }
         }
         playRequirement{
+          assert my.hand.getExcludedList(thisCard) || my.deck : "Both Hand and Deck are empty"
         }
       };
       case CAMPING_GEAR_122:
@@ -2924,6 +2749,7 @@ public enum BattleStyles implements LogicCardInfo {
           bg.gm().betweenTurns()
         }
         playRequirement {
+          assert my.deck : "Your Deck is empty"
         }
       };
       case CHERYL_123:
@@ -2942,7 +2768,7 @@ public enum BattleStyles implements LogicCardInfo {
           }
         }
         playRequirement{
-          assert my.all.findAll {it.numberOfDamageCounters > 0 }
+          assert my.all.findAll {it.realEvolution && it.numberOfDamageCounters > 0 }
         }
       };
       case ENERGY_RECYCLER_124:
@@ -2959,31 +2785,7 @@ public enum BattleStyles implements LogicCardInfo {
       case ESCAPE_ROPE_125:
         return copy(PlasmaStorm.ESCAPE_ROPE_120, this)
       case EXP_SHARE_126:
-      return pokemonTool (this) {
-        text "When your Active Pokémon is Knocked Out by damage from an opponent's attack, you may move 1 basic Energy card that was attached to that Pokémon to the Pokémon this card is attached to."
-        def eff = null
-        onPlay {
-          eff = delayed (priority: LAST) {
-            before KNOCKOUT, {
-              if (ef.pokemonToBeKnockedOut.owner == self.owner && bg.currentTurn == self.owner.opposite
-                && ef.pokemonToBeKnockedOut.active && ef.pokemonToBeKnockedOut != self
-                && (ef as Knockout).byDamageFromAttack
-                && ef.pokemonToBeKnockedOut.cards.filterByType(BASIC_ENERGY).notEmpty ) {
-                if (confirm("Use Exp. Share on $self? ",self.owner)) {
-                  CardList list = ef.pokemonToBeKnockedOut.cards.filterByType(BASIC_ENERGY)
-                  list.select("Energy to move", {true}, self.owner).each {
-                    energySwitch(ef.pokemonToBeKnockedOut, self, it)
-                  }
-                  bc "Exp. Share activated"
-                }
-              }
-            }
-          }
-        }
-        onRemoveFromPlay{
-          eff.unregister()
-        }
-      };
+      return copy(NextDestinies.EXP__SHARE_87, this)
       case FAN_OF_WAVES_127:
       return itemCard (this) {
         text "Put a Special Energy attached to 1 of your opponent's Pokémon on the bottom of their deck."
@@ -3203,12 +3005,12 @@ public enum BattleStyles implements LogicCardInfo {
       return itemCard (this) {
         text "Shuffle up to 2 Single Strike Energy cards from your discard pile into your deck."
         onPlay {
-          my.discard.findAll (cardTypeFilter(SPECIAL_ENERGY, SINGLE_STRIKE)).select(min: 1, max: 2, "Shuffle to deck").moveTo(deck)
+          my.discard.findAll { it.name == "Single Strike Energy" }.select(min: 1, max: 2, "Shuffle to deck").moveTo(deck)
           shuffleDeck()
         }
         playRequirement{
 
-          assert my.discard.any(cardTypeFilter(SPECIAL_ENERGY, SINGLE_STRIKE)) : "No Single Strike energy"
+          assert my.discard.any { it.name == "Single Strike Energy" } : "No Single Strike Energy"
         }
       };
       case RAPID_STRIKE_ENERGY_140:
