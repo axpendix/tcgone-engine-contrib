@@ -2537,7 +2537,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
             onAttack {
               my.deck.search(max:2,"Search your deck for up to 2 [W] Energy cards",energyFilter(W)).moveTo(my.hand)
-              shuffleDeck
+              shuffleDeck()
             }
           }
           move "Sheer Cold", {
@@ -3049,7 +3049,7 @@ public enum RisingRivals implements LogicCardInfo {
           weakness L
           pokeBody "Water Rescue", {
             text "Whenever any of your [W] Pokémon (excluding any Floatzel) is Knocked Out by damage from your opponent’s attack, you may put that Pokémon and all cards that were attached to it from your discard pile into your hand."
-            delayedA (priority: LAST) {
+            delayedA (priority: BEFORE_LAST) {
               before KNOCKOUT, {
                 def pcs=ef.pokemonToBeKnockedOut
                 if((ef as Knockout).byDamageFromAttack && pcs != self && pcs.owner == self.owner && pcs.types.contains(W)) {
@@ -3059,7 +3059,7 @@ public enum RisingRivals implements LogicCardInfo {
                     after KNOCKOUT, pcs, {
                       if(confirm("Use Water Rescue?",self.owner)) {
                         bc "$thisAbility activates"
-                        self.owner.pbg.discard.getExcludedList(dscrd).moveTo(self.owner.pbg.hand)
+                        self.owner.pbg.discard.getExcludedList(dscrd).moveTo(self.owner.pbg.hand)//This feels naive, but I haven't been able to break it yet
                       }
                       owner.delegate.unregister()
                     }
