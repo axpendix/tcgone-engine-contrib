@@ -13,6 +13,7 @@ import tcgwars.logic.effect.gm.PlayTrainer
 import tcgwars.logic.util.CardList
 import tcgwars.logic.util.CardTypeSet
 import tcgwars.logic.util.Holder
+import tcgwars.logic.util.PokemonCardSet
 
 import static tcgwars.logic.card.CardType.*
 import static tcgwars.logic.card.HP.*
@@ -3053,11 +3054,12 @@ public enum RisingRivals implements LogicCardInfo {
               before KNOCKOUT, {
                 def pcs=ef.pokemonToBeKnockedOut
                 if((ef as Knockout).byDamageFromAttack && pcs != self && pcs.owner == self.owner && pcs.types.contains(W)) {
+                  def tpc = pcs.topPokemonCard
                   CardList dscrd = []
                   dscrd.addAll(self.owner.pbg.discard)
                   delayed(inline: true,priority: BEFORE_LAST){
                     after KNOCKOUT, pcs, {
-                      if(confirm("Use Water Rescue?",self.owner)) {
+                      if(self.owner.pbg.discard.contains(tpc) && confirm("Use Water Rescue?",self.owner)) {
                         bc "$thisAbility activates"
                         self.owner.pbg.discard.getExcludedList(dscrd).moveTo(self.owner.pbg.hand)//This feels naive, but I haven't been able to break it yet
                       }
