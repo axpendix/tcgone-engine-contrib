@@ -1,6 +1,6 @@
 package tcgwars.logic.impl.gen4
 
-
+import tcgwars.logic.DamageManager
 import tcgwars.logic.impl.gen3.RubySapphire
 import tcgwars.logic.impl.gen4.MysteriousTreasures
 import tcgwars.logic.impl.gen7.CelestialStorm
@@ -2521,9 +2521,7 @@ public enum RisingRivals implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
-              if(my.bench && confirm("Switch $self with one of your benched pokémon?")){
-                sw self,my.bench.select("New active")
-              }
+              switchYourActive(may:true)
             }
           }
 
@@ -2539,6 +2537,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
             onAttack {
               my.deck.search(max:2,"Search your deck for up to 2 [W] Energy cards",energyFilter(W)).moveTo(my.hand)
+              shuffleDeck
             }
           }
           move "Sheer Cold", {
@@ -2563,7 +2562,7 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              delayed {
+              delayed PRIORITY:BEFORE_LAST, {
                 before APPLY_ATTACK_DAMAGES, {
                   bg.dm().each {
                     if(it.to == self && it.dmg.value <= 40 && it.notNoEffect) {
@@ -2625,11 +2624,9 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost ()
             attackRequirement {}
             onAttack {
+              def pcs = my.all.findAll{it.numberOfDamageCounters}.select(text)
               flip 2, {
-                def pcsList = my.all.findAll{it.numberOfDamageCounters}
-                if(pcsList) {
-                  heal 10, pcsList.select("Remove 1 damage counter from 1 of your Pokémon")
-                }
+                heal 10, pcs
               }
             }
           }
@@ -2896,6 +2893,7 @@ public enum RisingRivals implements LogicCardInfo {
           }
           playRequirement{
             assert my.all.find{it.cards.energyCount(C)} : "You don't have any energy in play"
+            assert my.bench : "You have no Benched Pokémon"
           }
         };
       case POKEMON_CONTEST_HALL_93:
@@ -2936,10 +2934,10 @@ public enum RisingRivals implements LogicCardInfo {
               }
             }
             eff2 = delayed {
-              before APPLY_RESISTANCE, {
+              after PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each {
                   if (it.from.types.contains(L) && it.to.active) {
-                    prevent()
+                    it.flags.add(DamageManager.DamageFlag.NO_RESISTANCE)
                   }
                 }
               }
@@ -3055,20 +3053,13 @@ public enum RisingRivals implements LogicCardInfo {
               before KNOCKOUT, {
                 def pcs=ef.pokemonToBeKnockedOut
                 if((ef as Knockout).byDamageFromAttack && pcs != self && pcs.owner == self.owner && pcs.types.contains(W)) {
-                  CardList cardList = []
-                  cardList.addAll(pcs.cards)
-
-                  delayed(inline: true,priority: LAST){
+                  CardList dscrd = []
+                  dscrd.addAll(self.owner.pbg.discard)
+                  delayed(inline: true,priority: BEFORE_LAST){
                     after KNOCKOUT, pcs, {
                       if(confirm("Use Water Rescue?",self.owner)) {
                         bc "$thisAbility activates"
-                        CardList returnList = []
-                        cardList.each {
-                          if(self.owner.pbg.discard.contains(it)) {
-                            returnList.add(it)
-                          }
-                        }
-                        returnList.moveTo(self.owner.pbg.hand)
+                        self.owner.pbg.discard.getExcludedList(dscrd).moveTo(self.owner.pbg.hand)
                       }
                       owner.delegate.unregister()
                     }
@@ -3125,7 +3116,7 @@ public enum RisingRivals implements LogicCardInfo {
           pokePower "Blade Storm", {
             text "Once during your turn , when you put Gallade LV.X from your hand onto your Active Gallade , you may put 1 damage counter on each of your opponent’s Pokémon."
             onActivate {r->
-              if (r==PLAY_FROM_HAND && opp.bench && confirm('Use Blade Storm?')) {
+              if (r==PLAY_FROM_HAND && confirm('Use Blade Storm?')) {
                 powerUsed()
                 opp.all.each {
                   directDamage 10, it, POKEPOWER
@@ -3207,7 +3198,7 @@ public enum RisingRivals implements LogicCardInfo {
             onActivate {r->
               if(r==PLAY_FROM_HAND && opp.bench && confirm("Use Bright Look?")) {
                 powerUsed()
-                sw2 opp.active, opp.bench.select("Choose your opponent's new active Pokémon"), POKEPOWER
+                sw opp.active, opp.bench.select("Choose your opponent's new active Pokémon"), POKEPOWER
               }
             }
           }
@@ -3242,7 +3233,7 @@ public enum RisingRivals implements LogicCardInfo {
               assert my.hand : "Your hand is empty"
             }
             onAttack {
-              def count = Math.max(my.hand.size(),8)
+              def count = Math.min(my.hand.size(),8)
               directDamage count, defending
             }
           }
@@ -3259,7 +3250,7 @@ public enum RisingRivals implements LogicCardInfo {
               assert my.hand.size() < 6 : "You already have 6 cards in your hand"
               powerUsed()
               draw 6 - my.hand.size()
-
+              apply ASLEEP, self, POKEPOWER
             }
           }
           move "Exercise", {
@@ -3268,8 +3259,8 @@ public enum RisingRivals implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 80
+              def energyList = my.hand.select(min:0,max:my.hand.fitlerByType(ENERGY).size(),"You many discard as many Energy cards as you like from you hand to remove that many damage counters from $self")
               afterDamage {
-                def energyList = my.hand.select(min:0,max:my.hand.fitlerByType(ENERGY).size(),"You many discard as many Energy cards as you like from you hand to remove that many damage counters from $self")
                 heal 10 * energyList.size(), self
                 energyList.discard()
               }
