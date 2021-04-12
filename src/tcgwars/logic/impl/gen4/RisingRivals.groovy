@@ -3595,8 +3595,9 @@ public enum RisingRivals implements LogicCardInfo {
             }
             shuffleDeck()
             delayed {
-              before BETWEEN_TURNS
-              new CardList(thisCard).moveTo(thisCard.player.owner.pbg.hand)
+              before BETWEEN_TURNS, {
+                new CardList(thisCard).moveTo(thisCard.player.pbg.hand)
+              }
               unregisterAfter 1
             }
           }
