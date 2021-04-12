@@ -2926,38 +2926,53 @@ public enum Stormfront implements LogicCardInfo {
             text "If Dusknoir is your Active Pokémon and would be Knocked Out by damage from your opponent’s attack, you may discard all cards attached to Dusknoir LV. and put Dusknoir LV. as a Stadium card into play instead of discarding it. This counts as Dusknoir being Knocked Out and your opponent takes a Prize card. As long as you have Dusknoir LV. as a Stadium card in play, put 1 damage counter on each of your opponent’s Pokémon between turns. If another Stadium card comes into play or Dusknoir LV. X is discarded by the effects of any attacks, Poké-Powers, Poké-Bodies, Trainer, or Supporter cards, return Dusknoir LV.X to your hand."
             delayedA priority:BEFORE_LAST, {
               before KNOCKOUT, self, {
-                if((ef as Knockout).byDamageFromAttack && self.owner.pbg.all.find{it != self} && confirm("Use Ectoplasm?")){
+                if((ef as Knockout).byDamageFromAttack && self.active && confirm("Use Ectoplasm?")){
                   powerUsed()
+
+                  // Dusknoir Lv.X violates many of the rules of stadiums due to rulings. https://compendium.pokegym.net/compendium-lvx.html#303
+                  // Manually playing the stadium based on those rulings. This is a very unique effect and should not exist elsewhere currently.
                   def pkmnCard = self.topPokemonCard
-                  def pcs=self
-                  delayed(inline: true){
-                    after KNOCKOUT, pcs, {
-                      def stadiumCard
-                      stadiumCard = stadium(new CustomCardInfo(DUSKNOIR_LV_X_96).setCardTypes(TRAINER, STADIUM)) {
-                        def eff
-                        bc "here"
-                        onPlay {
-                          bc "here 2"
-                          eff = delayedA {
-                            bc "here 3"
-                            before null, {
-                              bc "here 4"
-                            }
+                  def stadiumCard
+                  stadiumCard = stadium(new CustomCardInfo(DUSKNOIR_LV_X_96).setCardTypes(TRAINER, STADIUM)) {
+                    def eff
+                    onPlay {
+                      eff = delayed inline:true, {
+                        before BEGIN_TURN, {
+                          thisCard.player.opposite.pbg.all.each {
+                            directDamage 10, it, TRAINER_CARD
                           }
                         }
-                        onRemoveFromPlay {
-                          bc "here remove"
-                          eff.unregister()
-                          bg.em().run(new ChangeImplementation(pkmnCard, stadiumCard))
-                          moveCard(pkmnCard, thisCard.player.pbg.hand)
+                      }
+                      delayed inline:true, {
+                        after REMOVE_FROM_PLAY, {
+                          if (LUtils.isRemoveFromPlayAndContainsCard(e, stadiumCard)) {
+                            stadiumCard.onDiscard bg
+                            bg.setStadiumInfoStruct null
+                            unregister()
+                          }
                         }
                       }
-                      stadiumCard.player = thisCard.player
-                      bg.em().run(new ChangeImplementation(stadiumCard, pkmnCard))
-                      bg.em().run(new PlayStadium(stadiumCard))
-                      bc "$stadiumCard is now a Stadium"
+                    }
+                    onRemoveFromPlay {
+                      eff.unregister()
+                      bg.em().run(new ChangeImplementation(pkmnCard, stadiumCard))
+                      moveCard(pkmnCard, thisCard.player.pbg.hand)
                     }
                   }
+                  stadiumCard.player = thisCard.player
+                  bg.em().run(new ChangeImplementation(stadiumCard, pkmnCard))
+                  if (bg.stadiumInfoStruct) {
+                    discardStadium()
+                  }
+
+                  PlayStadium.StadiumInfoStruct stadiumInfoStruct = new PlayStadium.StadiumInfoStruct()
+                  stadiumInfoStruct.stadiumCard = stadiumCard
+                  bg.setStadiumInfoStruct(stadiumInfoStruct)
+                  bg.em().activateEffect(stadiumCard)
+
+                  self.cards.remove(stadiumCard)
+
+                  bc "$stadiumCard is now a Stadium"
                 }
               }
             }
