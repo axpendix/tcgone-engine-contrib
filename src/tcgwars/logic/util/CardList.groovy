@@ -445,6 +445,17 @@ public class CardList extends ArrayList<Card> {
     return this
   }
 
+  /**
+   * Move the contents of a CardList to another CardList
+   * @param params Optional map of parameters
+   * @param params.hidden Hide what the move contents are in the Game Log
+   * @param params.suppressLog Don't write to the Game Log at all about these cards moving.
+   * Should usually have a custom message written instead.
+   * @param params.addToTop Add the Cards to the front of the new CardList
+   * @param newLocation The new CardList to move all of the Cards in this CardList to
+   * @return The CardList the Cards were moved from. If the CardList is a persistent CardList in the PlayerBattleGround
+   * then the CardList should be empty. If it is a temporary CardList, it will still contain it's Cards.
+   */
   public CardList moveTo(params = [:], CardList newLocation) {
     MoveCard effect = new MoveCard(copyWithoutNulls(this), newLocation)
     if (params.hidden)
