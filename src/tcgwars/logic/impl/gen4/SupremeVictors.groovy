@@ -1,9 +1,14 @@
 package tcgwars.logic.impl.gen4
 
+import tcgwars.logic.Battleground
 import tcgwars.logic.DamageManager
+import tcgwars.logic.TargetPlayer
+import tcgwars.logic.card.energy.BasicEnergyCard
 import tcgwars.logic.effect.Source
+import tcgwars.logic.effect.advanced.EnergySwitch
 import tcgwars.logic.effect.basic.DirectDamage
-import tcgwars.logic.effect.basic.ResolvedDamage;
+import tcgwars.logic.effect.basic.ResolvedDamage
+import tcgwars.logic.effect.special.SpecialConditionType;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -368,7 +373,7 @@ public enum SupremeVictors implements LogicCardInfo {
           weakness C, '+30'
           pokeBody "Dragon Intimidation", {
             text "If Garchomp is your Active Pokémon and is damaged by an opponent's attack (even if Garchomp is Knocked Out), choose an Energy card attached to the Attacking Pokémon and put it into your opponent's hand."
-            ifActiveAndDamagedByAttackBody(delegate), {
+            ifActiveAndDamagedByAttackBody(delegate) {
               if (ef.attacker.cards.filterByType(ENERGY)) {
                 bc "Dragon Intimidation Activates"
                 ef.attacker.cards.select("Select an Energy to move to the Opponent's hand", cardTypeFilter(ENERGY), self.owner).moveTo(ef.attacker.owner.pbg.hand)
@@ -435,6 +440,36 @@ public enum SupremeVictors implements LogicCardInfo {
           pokeBody "Gravitation", {
             text "Each Pokémon in play (both yours and your opponent's) gets -20 HP. No more than 20 HP can be reduced by all Gravitation Poké-Bodies."
             delayedA {
+              def target = []
+              def source = []
+              bg.em().storeObject("Gravitation_target", target)
+              bg.em().storeObject("Gravitation_source", source)
+              def eff
+              onActivate {
+                eff = getter (GET_FULL_HP) {h->
+                  def pcs = h.effect.target
+                  if (true){
+                    target = bg.em().retrieveObject("Gravitation_target")
+                    source = bg.em().retrieveObject("Gravitation_source")
+                    if(!target.contains(pcs)){
+                      h.object -= hp(20)
+                      target.add(pcs)
+                      bg.em().storeObject("Gravitation_target", target)
+                      source.add(self)
+                      bg.em().storeObject("Gravitation_source", source)
+                    } else if(source.get(target.indexOf(pcs)) == self){
+                      h.object -= hp(20)
+                    }
+                  }
+                }
+              }
+              onDeactivate {
+                eff.unregister()
+                target = []
+                source = []
+                bg.em().storeObject("Gravitation_target", target)
+                bg.em().storeObject("Gravitation_source", source)
+              }
             }
           }
           move "Geo Impact", {
@@ -443,6 +478,11 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 60
+              if(bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player == self.owner) {
+                opp.all.findAll{it.types.containsAny(defending.types)}.each {
+                  damage 20, it
+                }
+              }
             }
           }
         };
@@ -456,6 +496,11 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
+              def energyList = my.hand.select(min:0,max:5,"You may discard up to 5 Energy cards in order to deal 10 additional damage per Energy card",cardTypeFilter(ENERGY))
+              damage 10 * energyList.size()
+              afterDamage {
+                energyList.discard()
+              }
             }
           }
           move "Twister", {
@@ -463,7 +508,15 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost C, C, C, C
             attackRequirement {}
             onAttack {
-              damage 50
+              flip 2, {}, {}, [
+                2: {
+                  damage 50
+                  discardDefendingEnergyAfterDamage C, C
+                },
+                1: {
+                  damage 50
+                  discardDefendingEnergyAfterDamage C
+                }]
             }
           }
         };
@@ -476,6 +529,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
+              afterDamage {
+                heal 10 * defending.card.energyCount(C), self
+              }
             }
           }
           move "Rainbow Lariat", {
@@ -483,7 +539,10 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost C, C, C, C
             attackRequirement {}
             onAttack {
-              damage 20
+              for(Type t1:Type.values()){
+                if(my.bench.find{it.pokemonSP && it.types.contains(t1)})
+                  damage 20
+              }
             }
           }
         };
@@ -496,7 +555,7 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost F, C
             attackRequirement {}
             onAttack {
-              damage 30
+              damage 30 + 10 * self.numberOfDamageCounters()
             }
           }
           move "Deep Scrap", {
@@ -505,6 +564,16 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 60
+              delayed {
+                def pcs = defending
+                before KNOCKOUT, pcs, {
+                  if (opp.deck) {
+                    opp.deck.subList(0,3).discard()
+                  }
+                  unregister()
+                }
+                unregisterAfter 1
+              }
             }
           }
         };
@@ -518,6 +587,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
+              flip {
+                damage 10
+              }
             }
           }
           move "Whirlwind", {
@@ -526,6 +598,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
+              afterDamage {
+                whirlwind()
+              }
             }
           }
         };
@@ -535,6 +610,14 @@ public enum SupremeVictors implements LogicCardInfo {
           pokeBody "Root Protector", {
             text "Any damage done to Swampert by attacks from your opponent's Pokémon that isn't an Evolved Pokémon is reduced by 20 (after applying Weakness and Resistance)."
             delayedA {
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each {
+                  if (self.active && it.to == self && it.from.owner == self.owner.opposite && !it.from.evolution && it.dmg.value && it.notNoEffect) {
+                    bc "$thisAbility -20"
+                    it.dmg -= hp(20)
+                  }
+                }
+              }
             }
           }
           move "Drag Off", {
@@ -542,6 +625,9 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost W, C, C
             attackRequirement {}
             onAttack {
+              if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon before doing damage?")) {
+                switchYourOpponentsBenchedWithActive()
+              }
               damage 30
             }
           }
@@ -550,7 +636,7 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost W, C, C, C
             attackRequirement {}
             onAttack {
-              damage 60
+              damage 60 + 10 * self.cards.energyCount(F)
             }
           }
         };
@@ -560,6 +646,20 @@ public enum SupremeVictors implements LogicCardInfo {
           pokeBody "Green Aroma", {
             text "Remove all Special Conditions from each of your [G] Pokémon. Each of your [G] Pokémon can't be affected by any Special Conditions."
             delayedA {
+              before APPLY_SPECIAL_CONDITION, {
+                if (ef.target.owner == self.owner && ef.target.types.contains(G)) {
+                  bc "$thiAbility prevents $self from becoming $ef.type."
+                  prevent()
+                }
+              }
+            }
+            onActivate {
+              my.all.findAll{it.types.contains(G)}.each {
+                if(it.specialConditions) {
+                  bc "$thisAbility clears special conditions of $it"
+                  clearSpecialCondition(it)
+                }
+              }
             }
           }
           move "Desperate Pollen", {
@@ -568,6 +668,13 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
+              afterDamage {
+                if(self.numberOfDamageCounters() >= 8) {
+                  apply BURNED
+                  apply CONFUSED
+                  apply POISONED
+                }
+              }
             }
           }
           move "Special Reaction", {
@@ -575,7 +682,7 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost G, G, C, C
             attackRequirement {}
             onAttack {
-              damage 40
+              damage 40 + 40 * defending.specialConditions.size()
             }
           }
         };
@@ -586,6 +693,12 @@ public enum SupremeVictors implements LogicCardInfo {
           pokePower "Speed Boost", {
             text "Once during your turn (before your attack), if Yanmega is your Active Pokémon, you may search your discard pile for a [G] Energy card and attach it to Yanmega. This power can't be used if Yanmega is affected by a Special Condition."
             actionA {
+              checkLastTurn()
+              checkNoSPC()
+              assert self.active : "$self is not your active Pokémon"
+              assert my.discard.filterByEnergyType(G) : "You have no [G] Energy cards in your discard pile"
+              powerUsed()
+              attachEnergyFrom(type:G,my.discard,self)
             }
           }
           move "Wind Return", {
@@ -594,6 +707,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
+              if(confirm("Return all [G] Energy attached to $self in order to do 20 additional damage?")) {
+                damage 20
+              }
             }
           }
           move "Speed Dive", {
@@ -610,7 +726,10 @@ public enum SupremeVictors implements LogicCardInfo {
           weakness W
           pokeBody "Extreme Speed", {
             text "Arcanine G‘s Retreat Cost is [C] less for each [R] Energy attached to Arcanine G."
-            delayedA {
+            getterA (GET_RETREAT_COST, self) {h->
+              if(self.active) {
+                h.object -= self.energyCount(R)
+              }
             }
           }
           move "Overrun", {
@@ -619,6 +738,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
+              if(opp.bench) {
+                damage 20, opp.bench.selet("Does 20 damage to 1 of your opponent's Benched Pokémon")
+              }
             }
           }
         };
@@ -632,6 +754,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
+              flip {
+                damage 10
+              }
             }
           }
           move "Ice Beam", {
@@ -640,6 +765,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 50
+              flip {
+                applyAfterDamage PARALYZED
+              }
             }
           }
         };
@@ -650,6 +778,14 @@ public enum SupremeVictors implements LogicCardInfo {
           pokeBody "Compound Eyes", {
             text "If your opponent's Active Pokémon has any Poké-Bodies, each of Butterfree FB‘s attacks does 30 more damage to the Active Pokémon (before applying Weakness and Resistance)."
             delayedA {
+              after PROCESS_ATTACK_EFFECTS, {
+                if(ef.attacker==self) bg.dm().each {
+                  if(it.from==self && it.to.active && it.to.hasPokePower() && it.to.owner!=self.owner && it.dmg.value){
+                    bc "$thisAbility +30"
+                    it.dmg += hp(30)
+                  }
+                }
+              }
             }
           }
           move "Select Powder", {
@@ -658,6 +794,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
+              def list=[BURNED,POISONED]
+              SpecialConditionType spc=choose(list, list.collect({it.toString()})) as SpecialConditionType
+              afterDamage {apply spc, defending}
             }
           }
         };
@@ -670,6 +809,13 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
+              afterDamage {
+                if(my.bench.find{it.cards.energyCount(R)} && confirm("Move a [R] Energy card attached to 1 of your Benched Pokémon to $self?")) {
+                  def src = my.bench.findAll{it.cards.energyCount(R)}.select("Move [R] Energy from which Pokémon?")
+                  def card = src.cards.select("Move which energy?",energyFilter(R)).first()
+                  energySwitch(src,self,card)
+                }
+              }
             }
           }
           move "Volcanic Crash", {
@@ -678,6 +824,17 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 100
+              afterDamage {
+                if(!opp.all.find{it.types.contains(W)}) {
+                  def count = 0
+                  flip 3, {
+                    count++
+                  }
+                  if(count) {
+                    my.deck.subList(0,count).discard()
+                  }
+                }
+              }
             }
           }
         };
@@ -690,6 +847,7 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
+              applyAfterDamage BURNED
             }
           }
           move "Earth Power", {
@@ -698,6 +856,11 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 60
+              flip 2, {
+                opp.bench.each {
+                  damage 10, it
+                }
+              }
             }
           }
         };
@@ -709,7 +872,11 @@ public enum SupremeVictors implements LogicCardInfo {
             text "Flip a coin. If heads, this attack does 40 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost R, C
             attackRequirement {}
-            onAttack {}
+            onAttack {
+              flip {
+                damage 40, opp.all.select("Choose a Pokémon to deal 40 damage to")
+              }
+            }
           }
           move "Heat Blast", {
             text "50 damage. "
@@ -726,14 +893,25 @@ public enum SupremeVictors implements LogicCardInfo {
           move "Heal Bell", {
             text "Remove 3 damage counters from each of your Pokémon."
             energyCost C
-            attackRequirement {}
-            onAttack {}
+            attackRequirement {
+              assert my.all.find{it.numberOfDamageCounters()} : "Your Pokémon are healthy"
+            }
+            onAttack {
+              my.all.each {
+                heal 30, it
+              }
+            }
           }
           move "Super Psywave", {
             text "Choose 1 of your opponent's Pokémon. Count the amount of Energy attached to that Pokémon. Put that many damage counters on the Pokémon."
             energyCost P
-            attackRequirement {}
-            onAttack {}
+            attackRequirement {
+              assert opp.all.find{it.cards.energyCount(C)} : "None of your opponent's Pokémon have any Energy attached"
+            }
+            onAttack {
+              def tar = opp.all.findAll{it.numberOfDamageCounters()}.select("Choose 1 of your oppopnent's Pokémon")
+              directDamage 10*tar.numberOfDamageCounters(), tar
+            }
           }
         };
       case CLAYDOL_22:
@@ -743,7 +921,9 @@ public enum SupremeVictors implements LogicCardInfo {
             text "Put 3 damage counters on any Pokémon (both yours and your opponent's) in any way you like."
             energyCost C, C
             attackRequirement {}
-            onAttack {}
+            onAttack {
+              putDamageCountersOnOpponentsPokemon(3,all)
+            }
           }
           move "Synchro Attack", {
             text "30 damage. If the Defending Pokémon has the same remaining HP as Claydol, this attack's base damage is 90 instead of 30."
@@ -751,6 +931,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
+              if(defending.remainingHP.value == self.remainingHP.value) {
+                damage 60
+              }
             }
           }
         };
@@ -763,6 +946,7 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
+              switchYourActive(may:true)
             }
           }
           move "Hyper Beam", {
@@ -771,6 +955,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
+              flip {
+                discardDefendingEnergyAfterDamage(C)
+              }
             }
           }
         };
@@ -780,6 +967,14 @@ public enum SupremeVictors implements LogicCardInfo {
           pokeBody "Thick Fat", {
             text "Any damage done to Dewgong by attacks from [R] Pokémon and [W] Pokémon is reduced by 30 (after applying Weakness and Resistance)."
             delayedA {
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each {
+                  if (self.active && it.to == self && it.from.owner == self.owner.opposite && (it.from.types.contains(R) || it.from.types.contains(W)) && it.dmg.value && it.notNoEffect) {
+                    bc "$thisAbility -30"
+                    it.dmg -= hp(30)
+                  }
+                }
+              }
             }
           }
           move "Ice Shard", {
@@ -788,6 +983,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
+              if(defending.types.contains(F)) {
+                damage 30
+              }
             }
           }
           move "Aurora Beam", {
@@ -806,6 +1004,11 @@ public enum SupremeVictors implements LogicCardInfo {
           pokePower "Echo Draw", {
             text "Once during your turn (before your attack), you may draw a card. This power can't be used if Dodrio is affected by a Special Condition."
             actionA {
+              checkLastTurn()
+              checkNoSPC()
+              assert my.deck : "Your deck is empty"
+              powerUsed()
+              draw 1
             }
           }
           move "Drill Peck", {
@@ -827,14 +1030,19 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
+              if(my.bench) {
+                directDamage 10, my.bench.select("Put 1 damage counter on 1 of your Benched Pokémon")
+              }
             }
           }
           move "Cursed Wrath", {
             text "10x damage. Does 10 damage times the number of Pokémon SP in your discard pile."
             energyCost P, C, C
-            attackRequirement {}
+            attackRequirement {
+              assert my.discard.filterByType(POKEMON_SP) : "You have no Pokémon SP in your discard pile"
+            }
             onAttack {
-              damage 10
+              damage 10 * my.discard.filterByType(POKEMON_SP).size()
             }
           }
         };
@@ -847,6 +1055,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
+              if (defending.cards.energyCount(C)) {
+                moveEnergy(defending, opp.bench)
+              }
             }
           }
           move "Escort", {
@@ -855,6 +1066,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
+              if(bg.em().retrieveObject("last_supporter_play_turn") == bg.turnCount) {
+                damage 20
+              }
             }
           }
         };
@@ -863,7 +1077,10 @@ public enum SupremeVictors implements LogicCardInfo {
           weakness F, '+30'
           pokeBody "Erasing Sound", {
             text "Each of your Pokémon has no Weakness."
-            delayedA {
+            getterA (GET_WEAKNESSES) {h->
+              if(h.effect.target.owner == self.owner){
+                h.object = []
+              }
             }
           }
           move "Knock Back", {
@@ -872,6 +1089,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
+              afterDamage {
+                whirlwind()
+              }
             }
           }
           move "Hyper Beam", {
@@ -880,6 +1100,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 60
+              flip {
+                discardDefendingEnergyAfterDamage C
+              }
             }
           }
         };
@@ -890,6 +1113,14 @@ public enum SupremeVictors implements LogicCardInfo {
           pokePower "Darkness Restore", {
             text "Once during your turn (before your attack), if Honchkrow is your Active Pokémon and your opponent's Bench isn't full, you may use this power. Search your opponent's discard pile for a Basic Pokémon and put it onto his or her bench. This power can't be used if Honchkrow is affected by a Special Condition."
             actionA {
+              checkLastTurn()
+              checkNoSPC()
+              assert self.active : "$self is not your Active Pokémon"
+              assert opp.bench.notFull()
+              assert opp.discard.filterByType(POKEMON)
+              powerUsed()
+              def card = opp.discard.slect("Search your opponent's discard pile for a Basic Pokémon",cardTypeFilter(BASIC)).first()
+              benchPcs(card, OTHER)
             }
           }
           move "Riot", {
@@ -897,7 +1128,7 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost D, C, C
             attackRequirement {}
             onAttack {
-              damage 30
+              damage 30 + 10 * all.findAll{!it.evolution}
             }
           }
         };
@@ -907,8 +1138,15 @@ public enum SupremeVictors implements LogicCardInfo {
           move "Licking-Licking Heal", {
             text "Attach a Basic Energy card from your hand to 1 of your Pokémon. Then, remove 2 damage counters from that Pokémon."
             energyCost C
-            attackRequirement {}
-            onAttack {}
+            attackRequirement {
+              assert my.hand.filterByType(BASIC_ENERGY) : "You have no Basic Energy cards in your hand"
+            }
+            onAttack {
+              def card = my.hand.select("Choose a Basic Energy card to attach to 1 of your Pokémon").first()
+              def tar = my.all.select("Choose a Pokémon to attach $card to")
+              attachEnergy (tar,card)
+              heal 20, tar
+            }
           }
           move "Return", {
             text "40 damage. Draw cards until you have 6 cards in your hand."
@@ -916,6 +1154,11 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
+              afterDamage {
+                if(self.owner.hand.size() < 6) {
+                  draw 6 - self.owner.hand.size()
+                }
+              }
             }
           }
         };
@@ -936,6 +1179,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
+              flip {
+                damage 30
+              }
             }
           }
         };
@@ -945,6 +1191,26 @@ public enum SupremeVictors implements LogicCardInfo {
           pokeBody "Marvel Eyes", {
             text "If you have Solrock in play, prevent all effects of attacks, including damage, done to any of your Lunatone or Solrock by your opponent's Pokémon LV.X."
             delayedA {
+              before null, self, Source.ATTACK, {
+                if (self.owner.pbg.all.findAll{it.name = "Solrock"} && self.owner.opposite.pbg.active.pokemonLevelUp && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                  bc "$thisAbility prevents effect"
+                  prevent()
+                }
+              }
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each {
+                  if(self.owner.pbg.all.findAll{it.name = "Solrock"} && it.to == self && it.notNoEffect && it.from.pokemonLevelUp){
+                    it.dmg = hp(0)
+                    bc "$thisAbility prevents damage"
+                  }
+                }
+              }
+              after ENERGY_SWITCH, {
+                def efs = (ef as EnergySwitch)
+                if(self.owner.pbg.all.findAll{it.name = "Solrock"} && efs.from.pokemonLevelUp && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
+                  discard efs.card
+                }
+              }
             }
           }
           move "Gravity Wave", {
@@ -953,6 +1219,11 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
+              opp.bench.each {
+                if(it.retreatCost == 0) {
+                  damage 30, it
+                }
+              }
             }
           }
         };
@@ -964,7 +1235,10 @@ public enum SupremeVictors implements LogicCardInfo {
             text "During your next turn, any damage done by Mawile's Swallow or Bite to your opponent's Active Pokémon is increased by 40 (before applying Weakness and Resistance)."
             energyCost M
             attackRequirement {}
-            onAttack {}
+            onAttack {
+              increasedBaseDamageNextTurn("Swallow",hp(40))
+              increasedBaseDamageNextTurn("Bite",hp(40))
+            }
           }
           move "Swallow", {
             text "20 damage. Remove from Mawile the number of damage counters equal to the damage you did to the Defending Pokémon."
@@ -972,6 +1246,7 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
+              removeDamageCounterEqualToDamageDone()
             }
           }
           move "Bite", {
@@ -992,6 +1267,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 60
+              if(opp.deck) {
+                draw 2, TargetPlayer.OPPONENT
+              }
             }
           }
           move "Chakra Points", {
@@ -999,7 +1277,7 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost P, C, C
             attackRequirement {}
             onAttack {
-              damage 10
+              damage 10 + 10 * self.owner.opposite.pbg.hand.size()
             }
           }
         };
@@ -1012,6 +1290,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
+              flip self.cards.energyCount(W), {
+                damage 20
+              }
             }
           }
           move "Wrap", {
@@ -1020,6 +1301,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
+              flip {
+                applyAfterDamage PARALYZED
+              }
             }
           }
         };
@@ -1040,15 +1324,30 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost R, R, C, C
             attackRequirement {}
             onAttack {
-              damage 80
+              flip {
+                damage 80
+              }
             }
           }
         };
-      case MR_MIME_37:
+      case MR__MIME_37:
         return basic (this, hp:HP070, type:P, retreatCost:1) {
           pokeBody "Focus Wall", {
             text "If Mr. Mime would be Knocked Out by damage from an attack that does 70 or more damage (after applying Weakness and Resistance), Mr. Mime is not Knocked Out and its remaining HP becomes 10 instead."
             delayedA {
+              def flag
+              before APPLY_ATTACK_DAMAGES, {
+                if(it.to == self && it.dmg.value >= 70) {
+                  flag = true
+                }
+              }
+              after APPLY_ATTACK_DAMAGES, {
+                if(flag && self.slatedToKO) {
+                  self.damage = self.fullHP - hp(10)
+                  bc "$thisAbility saved $self!"
+                }
+                flag = false
+              }
             }
           }
           move "Desperate Slap", {
@@ -1057,6 +1356,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
+              if(self.numberOfDamageCounters >= 5) {
+                damage 40
+              }
             }
           }
         };
@@ -1066,8 +1368,14 @@ public enum SupremeVictors implements LogicCardInfo {
           move "Nutritional Support", {
             text "Search your deck for up to 2 [G] Energy cards and attach them to any of your Pokémon in any way you like. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
-            onAttack {}
+            attackRequirement {
+              assert my.deck : "Your deck is empty"
+            }
+            onAttack {
+              attachEnergyFrom(type: G, max: 1, my.deck, my.bench.select())
+              attachEnergyFrom(type: G, max: 1, my.deck, my.bench.select())
+              shuffleDeck()
+            }
           }
           move "Hibernation Spore", {
             text "40 damage. The Defending Pokémon is now Asleep. Flip 2 coins instead of 1 between turns. If either of them is tails, the Defending Pokémon is still Asleep."
@@ -1075,6 +1383,34 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
+              afterDamage {
+                apply ASLEEP
+                def pcs = defending
+                targeted(pcs) {
+                  if (pcs.isSPC(ASLEEP)) {
+                    delayed {
+                      before ASLEEP_SPC, null, null, BEGIN_TURN, {
+                        flip "Asleep (Hibernation Spore)", 2, {}, {}, [2: {
+                          ef.unregisterItself(bg.em());
+                        }, 1:{
+                          bc "$ef.target is still asleep."
+                        }, 0:{
+                          bc "$pcs is knocked out by $thisMove."
+                          bc "$ef.target is still asleep"
+                        }]
+                        prevent()
+                      }
+                      after CLEAR_SPECIAL_CONDITION, pcs, {
+                        if (ef.types.contains(ASLEEP)) {
+                          unregister()
+                        }
+                      }
+                      after FALL_BACK, pcs, { unregister() }
+                      after KNOCKOUT, pcs, { unregister() }
+                    }
+                  }
+                }
+              }
             }
           }
         };
@@ -1084,15 +1420,25 @@ public enum SupremeVictors implements LogicCardInfo {
           move "Top Drop", {
             text "Discard the top card from your opponent's deck. If you discarded a Pokémon, this attack does damage equal to the HP of that Pokémon."
             energyCost C, C
-            attackRequirement {}
-            onAttack {}
+            attackRequirement {
+              assert opp.deck : "Your opponent's deck is empty"
+            }
+            onAttack {
+              def card = opp.deck.first()
+              if(card.cardTypes.is(POKEMON)) {
+                damage card.asPokemonCard().hp.value
+              }
+              afterDamage {
+                discard card
+              }
+            }
           }
           move "Brick Break", {
             text "40 damage. This attack's damage isn't affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             energyCost F, C
             attackRequirement {}
             onAttack {
-              damage 40
+              noResistanceOrAnyEffectDamage(40, defending)
             }
           }
         };
@@ -1101,7 +1447,13 @@ public enum SupremeVictors implements LogicCardInfo {
           weakness P
           pokeBody "Natural Cure", {
             text "When you attach an Energy card from your hand to Roserade C, remove all Special Conditions from Roserade C."
-            delayedA {}
+            delayedA {
+              after ATTACH_ENERGY, self, {
+                if(ef.reason==PLAY_FROM_HAND){
+                  clearSpecialCondition(self,POKEBODY)
+                }
+              }
+            }
           }
           move "Magical Leaf", {
             text "40+ damage. Flip a coin. If heads, this attack does 40 damage plus 20 more damage and remove 2 damage counters from Roserade C."
@@ -1129,6 +1481,7 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
+              astonish()
             }
           }
         };
@@ -1139,6 +1492,13 @@ public enum SupremeVictors implements LogicCardInfo {
           pokePower "Dig Down", {
             text "Once during your turn (before your attack), you may look at the top 5 cards in your deck. Choose as many [F] Energy cards as you like, show them to your opponent, and put them into your hand. Put the other cards back on top of your deck. Shuffle your deck afterward. This power can't be used if Sandslash is affected by a Special Condition."
             actionA {
+              checkLastTurn()
+              checkNoSPC()
+              assert my.deck : "Your deck is empty"
+              powerUsed()
+              def top = my.deck.subList(0,5)
+              top.select(min:0,max:top.filterByEnergyType(F).size(),"Choose as many [F] Energy cards as you like",energyFilter(F)).moveTo(my.hand)
+              shuffleDeck()
             }
           }
           move "Needle", {
@@ -1147,6 +1507,12 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
+              flip {
+                afterDamage {
+                  apply PARALYZED
+                  apply POISONED
+                }
+              }
             }
           }
         };
@@ -1158,7 +1524,7 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 90
+              flip 2, {}, {}, [2:{damage 90}]
             }
           }
           move "Endure", {
@@ -1167,6 +1533,21 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
+              flip {
+                delayed {
+                  before KNOCKOUT, self, {
+                    if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite){
+                      self.damage = self.fullHP - hp(10)
+                      bc "$self endured the hit!"
+                      prevent()
+                    }
+                  }
+                  unregisterAfter 2
+                  after EVOLVE, self, {unregister()}
+                  after DEVOLVE, self, {unregister()}
+                  after FALL_BACK, self, {unregister()}
+                }
+              }
             }
           }
         };
@@ -1176,13 +1557,37 @@ public enum SupremeVictors implements LogicCardInfo {
           pokeBody "Marvel Shell", {
             text "Prevent all effects of attacks, including damage, done to Shedinja by your opponent's Pokémon that has any Poké-Powers or Poké-Bodies."
             delayedA {
+              before null, self, Source.ATTACK, {
+                if ((self.owner.opposite.pbg.active.hasPokePower || self.owner.opposite.pbg.active.hasPokeBody) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                  bc "$thisAbility prevents effect"
+                  prevent()
+                }
+              }
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each {
+                  if(it.to == self && it.notNoEffect && (it.from.hasPokePower || it.from.hasPokeBody)){
+                    it.dmg = hp(0)
+                    bc "$thisAbility prevents damage"
+                  }
+                }
+              }
+              after ENERGY_SWITCH, {
+                def efs = (ef as EnergySwitch)
+                if((efs.from.hasPokePower || efs.from.hasPokeBody) && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
+                  discard efs.card
+                }
+              }
             }
           }
           move "Spike Wound", {
             text "Choose 1 of your opponent's Pokémon that has any damage counters on it. This attack does 30 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C
-            attackRequirement {}
-            onAttack {}
+            attackRequirement {
+              assert opp.all.find{it.numberOfDamageCounters} : "Your opponent's Pokémon are healthy"
+            }
+            onAttack {
+              damage 30, opp.all.findAll{it.numberOfDamageCounters}.select(text)
+            }
           }
         };
       case SOLROCK_45:
@@ -1191,6 +1596,15 @@ public enum SupremeVictors implements LogicCardInfo {
           pokePower "Sunshine Fate", {
             text "Once during your turn (before your attack), if you have Lunatone in play, you may look at the top 3 cards of your deck and put them back on top of your deck in any order. This power can't be used if Solrock is affected by a Special Condition."
             actionA {
+              checkLastTurn()
+              checkNoSPC()
+              assert my.all.find{it.name == "Lunatone"} : "You don't have Lunatone in play"
+              assert my.deck : "Your deck is empty"
+              powerUsed()
+              def maxSize = Math.min(my.deck.size(),3)
+              def list = rearrange(my.deck.subList(0,maxSize), "Rearrange top $maxSize cards of your deck")
+              my.deck.setSubList(0, list)
+              bc "$thisAbility rearranged the top cards of ${self.owner.getPlayerUsername(bg)}'s deck"
             }
           }
           move "Luna Turn", {
@@ -1199,6 +1613,13 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
+              if(my.discard.find{it.name == "Lunatone"}) {
+                damage 30
+                afterDamage {
+                  my.discard.select("Search your discard pile for Lunatone",{it.name == "Lunatone"}).showToOpponent("Luna Turn: Selected cards").moveTo(my.deck)
+                  shuffleDeck()
+                }
+              }
             }
           }
         };
@@ -1208,8 +1629,24 @@ public enum SupremeVictors implements LogicCardInfo {
           move "Synchro Removal", {
             text "If any Energy card attached to Spinda is the same type as any Energy card attached to the Defending Pokémon, discard 1 of those Energy cards from the Defending Pokémon."
             energyCost C
-            attackRequirement {}
-            onAttack {}
+            attackRequirement {
+              def flag = false
+              for(Type t1:Type.values()){
+                if(self.cards.filterByType(ENERGY).find{it.containsType(t1)} && defending.cards.filterByType(ENERGY).find{it.containsType(t1)})
+                  flag = true
+              }
+              assert flag : "$self and $defending don't have any Energy that share a type"
+            }
+            onAttack {
+              CardList energyList = []
+              for(Type t1:Type.values()){
+                if(self.cards.energyCount(t1) && defending.cards.energyCount(t1))
+                  energyList.addAll(defending.cards.filterByEnergyType(t1))
+              }
+              if(energyList) {
+                energyList.select("Choose an Energy card to discard from $defending").discard()
+              }
+            }
           }
           move "Pulled Punch", {
             text "30 damage. If the Defending Pokémon already has any damage counters on it, this attack's base damage is 10 instead of 30."

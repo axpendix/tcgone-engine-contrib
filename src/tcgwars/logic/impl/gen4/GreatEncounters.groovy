@@ -942,16 +942,11 @@ public enum GreatEncounters implements LogicCardInfo {
               flip 2, {}, {}, [
                 2: {
                   damage 50
-                  afterDamage {
-                    discardDefendingEnergy()
-                    discardDefendingEnergy()
-                  }
+                  discardDefendingEnergyAfterDamage C, C
                 },
                 1: {
                   damage 50
-                  afterDamage {
-                    discardDefendingEnergy()
-                  }
+                  discardDefendingEnergyAfterDamage C
                 }]
             }
           }
@@ -2960,34 +2955,34 @@ public enum GreatEncounters implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
-              apply ASLEEP
-              def pcs = defending
-              targeted(pcs) {
-                if (pcs.isSPC(ASLEEP)) {// Is !bg.em().run(new ApplySpecialCondition(POISONED, pcs, SOURCE.ATTACK)) better here
-                  delayed {
-                    before ASLEEP_SPC, null, null, BEGIN_TURN, {
-                      flip "Asleep (Endless Darkness)", 2, {}, {}, [2: {
-                        ef.unregisterItself(bg.em());
-                      }, 1:{
-                        bc "$ef.target is still asleep."
-                      }, 0:{
-                        bc "$pcs is knocked out by $thisMove."
-                        new Knockout(pcs).run(bg)
-                      }]
-                      prevent()
-                    }
-                    after CLEAR_SPECIAL_CONDITION, pcs, {
-                      if (ef.types.contains(ASLEEP)) {
-                        unregister()
-                        bc "here"
+              afterDamage {
+                apply ASLEEP
+                def pcs = defending
+                targeted(pcs) {
+                  if (pcs.isSPC(ASLEEP)) {// Is !bg.em().run(new ApplySpecialCondition(POISONED, pcs, SOURCE.ATTACK)) better here
+                    delayed {
+                      before ASLEEP_SPC, null, null, BEGIN_TURN, {
+                        flip "Asleep (Endless Darkness)", 2, {}, {}, [2: {
+                          ef.unregisterItself(bg.em());
+                        }, 1:{
+                          bc "$ef.target is still asleep."
+                        }, 0:{
+                          bc "$pcs is knocked out by $thisMove."
+                          new Knockout(pcs).run(bg)
+                        }]
+                        prevent()
                       }
+                      after CLEAR_SPECIAL_CONDITION, pcs, {
+                        if (ef.types.contains(ASLEEP)) {
+                          unregister()
+                        }
+                      }
+                      after FALL_BACK, pcs, { unregister() }
+                      after KNOCKOUT, pcs, { unregister() }
                     }
-                    after FALL_BACK, pcs, { unregister() }
-                    after KNOCKOUT, pcs, { unregister() }
                   }
                 }
               }
-
             }
           }
         };
