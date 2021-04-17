@@ -637,7 +637,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
           getEnergyTypesOverride {
-            if (self) return bg.getGame().getRuleSet().ordinal() >= RuleSet.DPP_RULES.ordinal()?[valuesBasicEnergyNonColorless() as Set]:[[R, G, W, L, F, P] as Set];
+            if (self) return [valuesBasicEnergyNonColorless() as Set]
             else return [[] as Set]
           }
           onRemoveFromPlay {
