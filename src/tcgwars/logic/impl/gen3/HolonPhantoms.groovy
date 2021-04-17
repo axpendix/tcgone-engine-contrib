@@ -2296,7 +2296,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             return [[C] as Set]
           boolean cond1 = self.topPokemonCard.cardTypes.is(DELTA)
           if (cond1) {
-            return [[R, D, F, G, W, Y, L, M, P, N] as Set]
+            return [[R, D, F, G, W, Y, L, M, P, C] as Set]
           }
           else {
             return [[C] as Set]

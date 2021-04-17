@@ -743,7 +743,7 @@ public enum LegendMaker implements LogicCardInfo {
           getterA GET_ENERGY_TYPES, { holder->
             def pcs = holder.effect.target
             if(pcs.owner == self.owner && ["Huntail", "Gorebyss"].contains(pcs.name) && holder.effect.card.name == "React Energy") {
-              holder.object = [[R, D, F, G, W, Y, L, M, P] as Set,[R, D, F, G, W, Y, L, M, P] as Set]
+              holder.object = [[R, D, F, G, W, Y, L, M, P, C] as Set,[R, D, F, G, W, Y, L, M, P, C] as Set]
             }
           }
         }

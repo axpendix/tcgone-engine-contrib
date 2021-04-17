@@ -3002,7 +3002,7 @@ public enum RisingRivals implements LogicCardInfo {
           }
           getEnergyTypesOverride {
             if (self && self.pokemonSP) {
-              return [[R, D, F, G, W, Y, L, M, P, N] as Set]
+              return [[R, D, F, G, W, Y, L, M, P, C] as Set]
             }
             else {
               return [[C] as Set]
