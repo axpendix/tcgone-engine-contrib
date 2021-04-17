@@ -1059,7 +1059,7 @@ class TcgStatics {
               def energyEquivalent = []
               def typeImages = []
               def energyImage = (colorless) ? COLORLESS : RAINBOW
-              def energyTypes = (colorless) ? [C] : [R, D, F, G, W, L, M, P, Y, C]
+              def energyTypes = (colorless) ? [C] : valuesBasicEnergy()
 
               energyCount.times {
                 energyEquivalent.add(energyTypes)

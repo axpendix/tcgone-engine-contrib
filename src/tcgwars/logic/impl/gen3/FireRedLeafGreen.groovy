@@ -2430,7 +2430,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               return [[C] as Set]
             }
             else {
-              return [[R, D, F, G, W, Y, L, M, P, C] as Set]
+              return [valuesBasicEnergy() as Set]
             }
           }
         };

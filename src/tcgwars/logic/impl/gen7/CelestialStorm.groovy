@@ -3327,7 +3327,7 @@ public enum CelestialStorm implements LogicCardInfo {
             }
           }
           getEnergyTypesOverride {
-            self != null ? [[R, D, F, G, W, Y, L, M, P, C] as Set] : [[C] as Set]
+            self != null ? [valuesBasicEnergy() as Set] : [[C] as Set]
           }
         };
       case SHIFTRY_GX_152:

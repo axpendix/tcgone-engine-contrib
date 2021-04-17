@@ -1883,7 +1883,7 @@ public enum Emerald implements LogicCardInfo {
             to.evolution && !to.EX
           }
           getEnergyTypesOverride{
-            if (self) return [[R, D, F, G, W, Y, L, M, P, C] as Set, [R, D, F, G, W, Y, L, M, P, C] as Set]
+            if (self) return [valuesBasicEnergy() as Set, valuesBasicEnergy() as Set]
             else return [[] as Set]
           }
 

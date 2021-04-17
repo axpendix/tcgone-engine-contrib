@@ -3170,7 +3170,7 @@ public enum UltraPrism implements LogicCardInfo {
             boolean cond1 = self.stage2
             boolean cond2 = self.owner.pbg.all.findAll{it.stage2}.size() >= 3
             if(cond1 && cond2) {
-              return [[R, D, F, G, W, Y, L, M, P, C] as Set, [R, D, F, G, W, Y, L, M, P, C] as Set, [R, D, F, G, W, Y, L, M, P, C] as Set, [R, D, F, G, W, Y, L, M, P, C] as Set]
+              return [valuesBasicEnergy() as Set, valuesBasicEnergy() as Set, valuesBasicEnergy() as Set, valuesBasicEnergy() as Set]
             }
             else if(cond1) {
               return [[R, D, F, G, W, Y, L, M, P, C] as Set]
