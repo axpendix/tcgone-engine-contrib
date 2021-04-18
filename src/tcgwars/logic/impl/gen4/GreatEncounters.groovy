@@ -565,7 +565,6 @@ public enum GreatEncounters implements LogicCardInfo {
                 before APPLY_ATTACK_DAMAGES, {
                   if (ef.attacker == self && my.all.find{ it.numberOfDamageCounters }) {
                     bg.dm().each {
-                      bc "$it.dmg.value"
                       if (it.to == defending && it.dmg.value) {
                         heal it.dmg.value, my.all.findAll { it.numberOfDamageCounters }.select("Heal which Pokémon")
                       }
