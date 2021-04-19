@@ -134,6 +134,7 @@ public enum SunMoonPromos implements LogicCardInfo {
   LYCANROC_SM105 ("Lycanroc", "SM105", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
   DAWN_WINGS_NECROZMA_SM106 ("Dawn Wings Necrozma", "SM106", Rarity.PROMO, [POKEMON, BASIC, ULTRA_BEAST, _PSYCHIC_]),
   DUSK_MANE_NECROZMA_SM107 ("Dusk Mane Necrozma", "SM107", Rarity.PROMO, [POKEMON, BASIC, ULTRA_BEAST, _METAL_]),
+  ASHS_PIKACHU_SM108 ("Ash's Pikachu", "SM108", Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
   ASH_S_PIKACHU_SM108 ("Ash's Pikachu", "SM108", Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
   ASH_S_PIKACHU_SM109 ("Ash's Pikachu", "SM109", Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
   ASH_S_PIKACHU_SM110 ("Ash's Pikachu", "SM110", Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
@@ -1568,6 +1569,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
         };
+      case ASHS_PIKACHU_SM108:
       case ASH_S_PIKACHU_SM108:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
