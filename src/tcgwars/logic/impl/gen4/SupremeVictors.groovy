@@ -7,6 +7,7 @@ import tcgwars.logic.card.energy.BasicEnergyCard
 import tcgwars.logic.effect.Source
 import tcgwars.logic.effect.advanced.EnergySwitch
 import tcgwars.logic.effect.basic.DirectDamage
+import tcgwars.logic.effect.basic.Move
 import tcgwars.logic.effect.basic.ResolvedDamage
 import tcgwars.logic.effect.gm.PlayTrainer
 import tcgwars.logic.effect.special.SpecialConditionType;
@@ -2930,7 +2931,7 @@ public enum SupremeVictors implements LogicCardInfo {
               assert my.hand.findAll{it.name.contains("Chimecho")} : "There is no pokémon in your hand to evolve ${self}."
               checkLastTurn()
               powerUsed()
-              def tar = my.hand.findAll { it.name.contains("Snorlax") }.select()
+              def tar = my.hand.findAll { it.name.contains("Chimecho") }.select()
               if (tar) {
                 evolve(self, tar.first(), OTHER)
                 heal self.numberOfDamageCounters*10, self
@@ -3027,6 +3028,7 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
+              damage 10, self
             }
           }
         };
@@ -3040,13 +3042,18 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
+              damage 10, self
             }
           }
           move "Collect", {
             text "Draw a card."
             energyCost P
-            attackRequirement {}
-            onAttack {}
+            attackRequirement {
+              assert my.deck : "Your deck is empty"
+            }
+            onAttack {
+              draw 1
+            }
           }
         };
       case FEEBAS_104:
@@ -3057,14 +3064,21 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost ()
             attackRequirement {}
             onAttack {
-              damage 20
+              flip {
+                damage 20
+              }
             }
           }
           move "Count and Draw", {
             text "Draw a card for each of your opponent's Pokémon that isn't an Evolved Pokémon."
             energyCost W
-            attackRequirement {}
-            onAttack {}
+            attackRequirement {
+              assert my.deck : "Your deck is empty"
+              assert opp.all.find{!it.evolution} : "All of your opponent's Pokémon are Evolved Pokémon"
+            }
+            onAttack {
+              draw opp.all.findAll{!it.evolution}.size()
+            }
           }
         };
       case GEODUDE_105:
@@ -3083,7 +3097,9 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost F, C
             attackRequirement {}
             onAttack {
-              damage 30
+              flip {
+                damage 30
+              }
             }
           }
         };
@@ -3094,7 +3110,9 @@ public enum SupremeVictors implements LogicCardInfo {
             text "If the Defending Pokémon tries to attack during your opponent's next turn, your opponent flips a coin. If tails, that attack does nothing."
             energyCost C
             attackRequirement {}
-            onAttack {}
+            onAttack {
+              sandAttack thisMove
+            }
           }
           move "Bite", {
             text "10 damage. "
@@ -3111,9 +3129,11 @@ public enum SupremeVictors implements LogicCardInfo {
           move "Flail", {
             text "10x damage. Does 10 damage times the number of damage counters on Goldeen."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert self.numberOfDamageCounters : "$self is healthy"
+            }
             onAttack {
-              damage 10
+              damage 10 * self.numberOfDamageCounters
             }
           }
           move "Fury Attack", {
@@ -3121,7 +3141,9 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 10
+              flip 3, {
+                damage 10
+              }
             }
           }
         };
@@ -3142,6 +3164,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
+              flip 1, {}, {
+                discardSelfEnergyAfterDamage R
+              }
             }
           }
         };
@@ -3173,7 +3198,9 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 10
+              flip 3, {
+                damage 10
+              }
             }
           }
         };
@@ -3195,6 +3222,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
+              flip {
+                damage 20
+              }
             }
           }
         };
@@ -3207,6 +3237,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
+              if(defending.pokemonLevelUp) {
+                damage 50
+              }
             }
           }
         };
@@ -3224,9 +3257,11 @@ public enum SupremeVictors implements LogicCardInfo {
           move "Karate Chop", {
             text "30- damage. Does 30 damage minus 10 damage for each damage counter on Meditite."
             energyCost P, C
-            attackRequirement {}
+            attackRequirement {
+              assert self.numberOfDamageCounters < 3 : "This attack will deal no damage"
+            }
             onAttack {
-              damage 30
+              damage 30 - 10 * self.numberOfDamageCounters
             }
           }
         };
@@ -3246,7 +3281,9 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 20
+              flip 2, {
+                damage 20
+              }
             }
           }
         };
@@ -3256,13 +3293,39 @@ public enum SupremeVictors implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn (before your attack), you may put Mr. Mime from your hand onto Mime Jr. (this counts as evolving Mime Jr.) and remove all damage counters from Mime Jr."
             actionA {
+              assert my.hand.findAll{it.name.contains("Mr. Mime")} : "There is no pokémon in your hand to evolve ${self}."
+              checkLastTurn()
+              powerUsed()
+              def tar = my.hand.findAll { it.name.contains("Mr. Mime") }.select()
+              if (tar) {
+                evolve(self, tar.first(), OTHER)
+                heal self.numberOfDamageCounters*10, self
+              }
             }
           }
           move "Encore", {
             text "Choose 1 of the Defending Pokémon's attacks. That Pokémon can use only that attack during your opponent's next turn."
             energyCost C
-            attackRequirement {}
-            onAttack {}
+            attackRequirement {
+              assert !defending.topPokemonCard.moves.isEmpty() : "$defending has no attacks"
+            }
+            onAttack {
+              def move=choose(defending.topPokemonCard.moves, defending.topPokemonCard.moves.collect({it.name}), "Encore") as Move
+              def pcs = defending
+              bc "$pcs can only use ${move.name} next turn."
+              delayed{
+                before CHECK_ATTACK_REQUIREMENTS, {
+                  if (ef.move != move) {
+                    wcu "$pcs can only use ${move.name}"
+                    prevent()
+                  }
+                }
+                unregisterAfter 2
+                after FALL_BACK, pcs, {unregister()}
+                after EVOLVE, pcs, {unregister()}
+                after DEVOLVE, pcs, {unregister()}
+              }
+            }
           }
         };
       case MUDKIP_116:
@@ -3274,6 +3337,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
+              if(self.cards.energyCount(C) < defending.cards.energyCount(C)) {
+                damage 10
+              }
             }
           }
           move "Surf", {
@@ -3291,14 +3357,17 @@ public enum SupremeVictors implements LogicCardInfo {
           move "Call for Family", {
             text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
             energyCost C
-            attackRequirement {}
-            onAttack {}
+            callForFamily(basic: true, 1, delegate)
           }
           move "Dash Attack", {
             text "Choose 1 of your opponent's Benched Pokémon. This attack does 10 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C
-            attackRequirement {}
-            onAttack {}
+            attackRequirement {
+              assert opp.bench : "Your opponent has no Benched Pokémon"
+            }
+            onAttack {
+              damage 10, opp.bench.select(text)
+            }
           }
         };
       case PACHIRISU_118:
@@ -3319,6 +3388,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
+              flip {
+                damage 10
+              }
             }
           }
         };
@@ -3329,7 +3401,9 @@ public enum SupremeVictors implements LogicCardInfo {
             text "The Defending Pokémon is now Asleep."
             energyCost C
             attackRequirement {}
-            onAttack {}
+            onAttack {
+              apply ASLEEP
+            }
           }
           move "Stomp", {
             text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
@@ -3337,6 +3411,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
+              flip {
+                damage 10
+              }
             }
           }
         };
@@ -3358,6 +3435,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
+              flip {
+                applyAfterDamage PARALYZED
+              }
             }
           }
         };
@@ -3391,6 +3471,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
+              flip {
+                damage 20
+              }
             }
           }
           move "Horn Drill", {
@@ -3419,6 +3502,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
+              flip {
+                applyAfterDamage POISONED
+              }
             }
           }
         };
@@ -3452,6 +3538,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
+              flip {
+                apply ASLEEP
+              }
             }
           }
         };
@@ -3476,7 +3565,11 @@ public enum SupremeVictors implements LogicCardInfo {
             text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost C
             attackRequirement {}
-            onAttack {}
+            onAttack {
+              flip {
+                apply PARALYZED
+              }
+            }
           }
           move "Tackle", {
             text "20 damage. "
@@ -3496,6 +3589,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
+              flip {
+                apply POISONED
+              }
             }
           }
           move "Tail Smash", {
@@ -3503,7 +3599,9 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost P, C, C
             attackRequirement {}
             onAttack {
-              damage 40
+              flip {
+                damage 40
+              }
             }
           }
         };
@@ -3529,6 +3627,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
+              flip {
+                damage 10
+              }
             }
           }
         };
@@ -3550,6 +3651,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
+              flip {
+                damage 10
+              }
             }
           }
         };
@@ -3560,7 +3664,11 @@ public enum SupremeVictors implements LogicCardInfo {
             text "Flip a coin. If heads, the Defending Pokémon is now Confused."
             energyCost C
             attackRequirement {}
-            onAttack {}
+            onAttack {
+              flip {
+                apply CONFUSED
+              }
+            }
           }
           move "Rollout", {
             text "20 damage. "
@@ -3580,7 +3688,9 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 10
+              flip 2, {
+                damage 10
+              }
             }
           }
         };
