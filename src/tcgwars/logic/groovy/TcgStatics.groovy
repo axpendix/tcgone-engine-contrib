@@ -1915,7 +1915,7 @@ class TcgStatics {
         after APPLY_ATTACK_DAMAGES, {
           if (applyEffect) {
             eff.delegate=delegate
-            eff.call()
+            eff.call(ef)
             applyEffect = false
           }
         }
@@ -1943,7 +1943,7 @@ class TcgStatics {
           after APPLY_ATTACK_DAMAGES, {
             if (applyEffect && self.cards.contains(thisCard)) {
               c2.delegate=delegate
-              c2.call() // card didn't get discarded by an attack effect
+              c2.call(ef) // card didn't get discarded by an attack effect
               applyEffect = false
             }
           }
@@ -1969,7 +1969,7 @@ class TcgStatics {
         after APPLY_ATTACK_DAMAGES, {
           if (applyEffect && ef.attacker.inPlay) {
             eff.delegate=delegate
-            eff.call()
+            eff.call(ef)
             applyEffect = false
           }
         }
