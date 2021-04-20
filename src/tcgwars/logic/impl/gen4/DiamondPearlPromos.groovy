@@ -1,7 +1,7 @@
 package tcgwars.logic.impl.gen4
 
 import tcgwars.logic.impl.gen3.NintendoBlackStarPromos
-import tcgwars.logic.impl.gen8.RebelClash;
+import tcgwars.logic.impl.gen4.MysteriousTreasures
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -142,49 +142,9 @@ public enum DiamondPearlPromos implements LogicCardInfo {
       case BUNEARY_DP06:
         return copy(DiamondPearl.BUNEARY_73, this);
       case CRANIDOS_DP07:
-        return evolution (this, from:"Skull Fossil", hp:HP070, type:FIGHTING, retreatCost:1) {
-          weakness G, PLUS20
-          move "Headbutt", {
-            text "20 damage. "
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Steamroll", {
-            text "30 damage. Does 20 damage to 1 of your opponent�s Benched Pok�mon."
-            energyCost F, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(MysteriousTreasures.CRANIDOS_43, this);
       case SHIELDON_DP08:
-        return evolution (this, from:"Armor Fossil", hp:HP080, type:METAL, retreatCost:2) {
-          weakness R, PLUS20
-          resistance P, MINUS20
-          move "Hard Face", {
-            text "20 damage. ."
-            energyCost M, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Shield Attack", {
-            text "40+ damage. Flip a coin. If heads, this attack does 40 damage plus 20 more damage."
-            energyCost M, C, C
-            attackRequirement {}
-            onAttack {
-              damage 40
-              flip { damage 20 }
-            }
-          }
-
-        };
+        return copy(MysteriousTreasures.SHIELDON_63, this);
       case TORTERRA_LV_X_DP09:
         return copy(DiamondPearl.TORTERRA_LV_X_122, this);
       case INFERNAPE_LV_X_DP10:
@@ -192,22 +152,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
       case EMPOLEON_LV_X_DP11:
         return copy(DiamondPearl.EMPOLEON_LV_X_120, this);
       case LUCARIO_LV_X_DP12:
-        return levelUp (this, from:"Lucario", hp:HP110, type:FIGHTING, retreatCost:1) {
-          weakness P
-          pokePower "Stance", {
-            text "Once during your turn , when you put Lucario LV. from your hand onto your Active Lucario, you may use this power. Prevent all effects of an attack, including damage, done to Lucario during your opponent�s next turn. (If Lucario is no longer your Active Pok�mon, this effect ends.)"
-            actionA {
-            }
-          }
-          move "Close Combat", {
-            text "80 damage."
-            energyCost F, F, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-        };
+        return copy(MysteriousTreasures.LUCARIO_LV_X_122, this);
       case BUIZEL_DP13:
         return copy(DiamondPearl.BUIZEL_72, this);
       case CHATOT_DP14:
@@ -215,25 +160,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
       case SHINX_DP15:
         return copy(DiamondPearl.SHINX_98, this);
       case PIKACHU_DP16:
-        return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
-          weakness F, PLUS10
-          resistance M, MINUS20
-          pokePower "Electro Recycle", {
-            text "Once during your turn , if Pichu is anywhere under Pikachu, you may search your discard pile for a Energy card, show it to your opponent, and put it into your hand. This power can�t be used if Pikachu is affecte by a Special Condition."
-            actionA {
-            }
-          }
-          move "BikaBika", {
-            text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 10 more damage."
-            energyCost L, C
-            attackRequirement {}
-            onAttack {
-              damage 20
-              flip { damage 10 }
-            }
-          }
-
-        };
+        return copy(MysteriousTreasures.PIKACHU_94, this);
       case DIALGA_LV_X_DP17:
         return copy(GreatEncounters.DIALGA_LV_X_105, this);
       case PALKIA_LV_X_DP18:
@@ -241,48 +168,9 @@ public enum DiamondPearlPromos implements LogicCardInfo {
       case DARKRAI_LV_X_DP19:
         return copy(GreatEncounters.DARKRAI_LV_X_104, this);
       case MAGMORTAR_DP20:
-        return evolution (this, from:"Magmar", hp:HP100, type:FIRE, retreatCost:3) {
-          weakness W, PLUS30
-          move "Smoke Bomb", {
-            text "30 damage. If the Defending Pok�mon tries to attack during your opponent�s next turn, your opponent flips a coin. If tails, that attack does nothing."
-            energyCost R, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Flame Drum", {
-            text "80 damage. If Magby isn�t anywhere under Magmortar, discard 2 Energy cards from your hand. (If you can�t discard 2 Energy cards from your hand, this attack does nothing.)"
-            energyCost R, R, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(MysteriousTreasures.MAGMORTAR_12, this);
       case RAICHU_DP21:
-        return evolution (this, from:"Pikachu", hp:HP090, type:LIGHTNING, retreatCost:1) {
-          weakness F, PLUS20
-          resistance M, MINUS20
-          move "Electromagnetic Induction", {
-            text "Energy cards and attach them to 1 of your Pok�mon. Shuffle your deck afterward."
-            energyCost L
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Explosive Thunder", {
-            text "30� damage. Energy cards you discarded."
-            energyCost L, C, L, L
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy(MysteriousTreasures.RAICHU_15, this);
       case MIME_JR__DP22:
         return copy(DiamondPearl.MIME_JR__90, this);
       case GLAMEOW_DP23:
@@ -297,6 +185,8 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 0
+              //https://bulbapedia.bulbagarden.net/wiki/Darkrai_(DP_Promo_24)
+              // TODO
             }
           }
           move "Spacial Rend", {
@@ -305,6 +195,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 0
+              // TODO
             }
           }
           move "Roar of Time", {
@@ -313,92 +204,24 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 0
+              // TODO
             }
           }
-
         };
       case TROPICAL_WIND_DP25:
         return copy (TROPICAL_WIND_DP05, this)
-        /*basicTrainer (this) {
-					text "Flip a coin. If heads, remove 2 damage counters from each Active Pok�mon (remove 1 damage counter if a Pok�mon has only 1). If tails, each Active Pok�mon is now Asleep."
-					onPlay {
-					}
-					playRequirement{
-					}
-				}*/;
       case DIALGA_DP26:
         return copy(DiamondPearl.DIALGA_1, this);
       case PALKIA_DP27:
         return copy(DiamondPearl.PALKIA_11, this);
       case MEWTWO_LV_X_DP28:
-        return levelUp (this, from:"Mewtwo", hp:HP120, type:PSYCHIC, retreatCost:2) {
-          weakness P
-          pokeBody "Psybarrier", {
-            text "Prevent all effects of attacks, including damage, done to Mewtwo by your opponent�s Pok�mon that isn�t an Evolved Pok�mon."
-            delayedA {
-            }
-          }
-          move "Giga Burn", {
-            text "120 damage. Discard all Energy attached to Mewtwo."
-            energyCost P, P, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-        };
+        return copy(LegendsAwakened.MEWTWO_LV_X_144, this);
       case RHYPERIOR_LV_X_DP29:
-        return levelUp (this, from:"Rhyperior", hp:HP170, type:FIGHTING, retreatCost:4) {
-          weakness W
-          resistance L, MINUS20
-          move "Hard Crush", {
-            text "50� damage. Discard the top 5 cards from your deck. This attack does 50 damage for each Energy card you discarded."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Upthrow", {
-            text "60 damage. Energy cards, show them to your opponent, and shuffle them into your deck."
-            energyCost F, F, C, F
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-        };
+        return copy(LegendsAwakened.RHYPERIOR_LV_X_145, this);
       case REGIGIGAS_LV_X_DP30:
-        return levelUp (this, from:"Regigigas", hp:HP150, type:COLORLESS, retreatCost:4) {
-          weakness F
-          pokePower "Sacrifice", {
-            text "Once during your turn , you may choose 1 of your Pok�mon and that Pok�mon is Knocked Out. Then, search your discard pile for up to 2 basic Energy cards, attach them to Regigigas, and remove 8 damage counters from Regigigas. This power can�t be used if Regigigas is affected by a Special Condition."
-            actionA {
-            }
-          }
-          move "Giga Blaster", {
-            text "100 damage. Discard the top card from your opponent�s deck. Then, choose 1 card from your opponent�s hand without looking and discard it. Regigigas can�t use Giga Blaster during your next turn."
-            energyCost W, F, M, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-        };
+        return copy(Stormfront.REGIGIGAS_LV_X_100, this);
       case HEATRAN_LV_X_DP31:
-        return levelUp (this, from:"Heatran", hp:HP120, type:FIRE, retreatCost:4) {
-          weakness W
-          pokeBody "Heat Metal", {
-            text "Your opponent can�t remove the Special Condition Burned by evolving or devolving his or her Burned Pok�mon. (This also includes putting a Pok�mon Level-Up card onto the Burned Pok�mon.) Whenever your opponent flips a coin for the Special Condition Burned between turns, treat it as tails."
-            delayedA {
-            }
-          }
-          pokePower "Heat Wave", {
-            text "Once at the end of your turn, if Heatran is on your Bench, you may use this power. If you discarded basic Energy cards attached to your or Active Pok�mon by that Pok�mon�s attack this turn, attach up to 2 of those Energy cards to that Pok�mon."
-            actionA {
-            }
-          }
-        };
+        return copy(Stormfront.HEATRAN_LV_X_97, this);
       case MAGNEZONE_DP32:
         return evolution (this, from:"Magneton", hp:HP130, type:METAL, retreatCost:2) {
           weakness R
@@ -409,6 +232,8 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 0
+              // https://bulbapedia.bulbagarden.net/wiki/Magnezone_(DP_Promo_32)
+              // TODO
             }
           }
           move "Magnet Slash", {
@@ -417,6 +242,8 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 0
+              // https://bulbapedia.bulbagarden.net/wiki/Magnezone_(DP_Promo_32)
+              // TODO
             }
           }
 
@@ -428,6 +255,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
           pokePower "Dark Hide", {
             text "Once during your turn , you may flip a coin. If heads, look at your opponent�s hand, choose a Pok�mon you find there, and put it on the bottom of his or her deck. This power can�t be used if Dusknoir is affected by a Special Condition."
             actionA {
+              // TODO
             }
           }
           move "Reaper Pulse", {
@@ -436,6 +264,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 0
+              // TODO
             }
           }
 
@@ -448,6 +277,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
           pokePower "Install", {
             text "As often as you like during your turn , move a Technical Machine card attached to 1 of your Pok�mon to another of your Pok�mon. This power can�t be used if Porygon-Z is affected by a Special Condition."
             actionA {
+              // TODO
             }
           }
           move "Learning", {
@@ -456,6 +286,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 0
+              // TODO
             }
           }
           move "Overload", {
@@ -464,6 +295,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 0
+              // TODO
             }
           }
 
@@ -475,6 +307,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
           pokeBody "Blind Eye", {
             text "As long as Gliscor is your Active Pok�mon, your opponent can�t remove any Special Conditions by evolving or devolving his or her Pok�mon. (This also including putting a Pok�mon Level-Up card onto that Pok�mon.)"
             delayedA {
+              // TODO
             }
           }
           move "Cutting Turn", {
@@ -483,6 +316,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 0
+              // TODO
             }
           }
           move "Friction Heat", {
@@ -491,6 +325,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 0
+              // TODO
             }
           }
 
@@ -498,41 +333,9 @@ public enum DiamondPearlPromos implements LogicCardInfo {
       case DIALGA_LV_X_DP37:
         return copy(GreatEncounters.DIALGA_LV_X_105, this);
       case GIRATINA_LV_X_DP38:
-        return levelUp (this, from:"Giratina", hp:HP130, type:PSYCHIC, retreatCost:3) {
-          weakness D
-          resistance C, MINUS20
-          pokeBody "Invisible Tentacles", {
-            text "Whenever your opponent�s Pok�mon tries to attack, your opponent discards 1 card from his or her hand. (If your opponent can�t discard 1 card, your opponent�s Pok�mon can�t attack.) You can�t use more than 1 Invisible Tentacles Pok�-Body each turn."
-            delayedA {
-            }
-          }
-          move "Darkness Lost", {
-            text "If any of your opponent�s Pok�mon would be Knocked Out by damage from this attack, put that Pok�mon and all cards attached to it in the Lost Zone instead of discarding it."
-            energyCost P, P, C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-        };
+        return copy(Platinum.GIRATINA_LV_X_124, this);
       case SHAYMIN_LV_X_DP39:
-        return levelUp (this, from:"Shaymin", hp:HP110, type:GRASS, retreatCost:0) {
-          weakness R
-          resistance F, MINUS20
-          pokeBody "Revenge Seed", {
-            text "If any of your Pok�mon were Knocked Out by damage from an opponent�s attack during his or her last turn, each of Shaymin�s attack does 60 more damage to the Active Pok�mon ."
-            delayedA {
-            }
-          }
-          move "Energy Flare", {
-            text "50 damage. You may move any number of Energy cards attached to your Pok�mon to your other Pok�mon is any way you like."
-            energyCost G, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-        };
+        return copy(Platinum.SHAYMIN_LV_X_127, this);
       case REGIGIGAS_DP40:
         return basic (this, hp:HP100, type:COLORLESS, retreatCost:4) {
           weakness F
@@ -558,9 +361,9 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 0
+              // TODO
             }
           }
-
         };
       case TOXICROAK_G_DP41:
         return basic (this, hp:HP090, type:FIGHTING, retreatCost:2) {
@@ -583,28 +386,30 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 0
+              // TODO
             }
           }
-
         };
       case CARNIVINE_G_DP42:
         return basic (this, hp:HP080, type:GRASS, retreatCost:1) {
           weakness R
           resistance W, MINUS20
           move "Power Whip", {
-            text "to that Pok�mon."
+            text "Choose 1 of your opponent's Pokémon. This attack does 10 damage for each Energy attached to Carnivine Pokémon G to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C
             attackRequirement {}
             onAttack {
               damage 0
+              // TODO
             }
           }
           move "Grass Knot", {
-            text "20+ damage. Energy in the Defending Pok�mon�s Retreat Cost (after applying effects to the Retreat Cost)."
+            text "20+ damage. Does 20 damage plus 10 more damage for each [C] Energy in the Defending Pokémon's Retreat Cost (after applying effects to the Retreat Cost)."
             energyCost G, C, C
             attackRequirement {}
             onAttack {
               damage 0
+              // TODO
             }
           }
 
@@ -618,6 +423,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 0
+              // TODO
             }
           }
           move "Loud Snort", {
@@ -626,6 +432,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 0
+              // TODO
             }
           }
 
@@ -644,77 +451,24 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             }
           }
           move "Metallic Bolt", {
-            text "60 damage. Energy attached to Magnezone. If you do, this attack�s base damage is 120 instead of 60."
+            text "60 damage. You may discard a [L] Energy and a [M] Energy attached to Magnezone. If you do, this attack's base damage is 120 instead of 60."
             energyCost L, M, C, C, L, M
             attackRequirement {}
             onAttack {
               damage 0
+              // TODO
             }
           }
 
         };
       case CHARIZARD_G_LV_X_DP45:
-        return levelUp (this, from:"Charizard G", hp:HP120, type:FIRE, retreatCost:3) {
-          weakness W
-          resistance F, MINUS20
-          pokePower "Call for Power", {
-            text "As often as you like during your turn , you may move an Energy attached to 1 of your Pok�mon to Charizard . This power can�t be used if Charizard is affected by a Special Condition."
-            actionA {
-            }
-          }
-          move "Malevolent Fire", {
-            text "150 damage. ."
-            energyCost R, R, C, C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-        };
+        return copy(SupremeVictors.CHARIZARD_G_LV_X_143, this);
       case GARCHOMP_C_LV_X_DP46:
-        return levelUp (this, from:"Garchomp C", hp:HP110, type:COLORLESS, retreatCost:0) {
-          weakness C
-          pokePower "Healing Breath", {
-            text "Once during your turn , when you put Garchomp LV. from your hand onto your Active Garchomp , you may remove all damage counters from each of your Pok�mon ."
-            actionA {
-            }
-          }
-          move "Dragon Rush", {
-            text "can�t use Dragon Rush during your next turn."
-            energyCost C, C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-        };
+        return copy(SupremeVictors.GARCHOMP_C_LV_X_145, this);
       case RAYQUAZA_C_LV_X_DP47:
-        return levelUp (this, from:"Rayquaza C", hp:HP120, type:COLORLESS, retreatCost:3) {
-          weakness C
-          resistance F, MINUS20
-          pokeBody "Dragon Spirit", {
-            text "If Rayquaza is your Active Pok�mon and is damaged but not Knocked Out by an opponent�s attack, you may search your discard pile for an Energy card and attach it to Rayquaza ."
-            delayedA {
-            }
-          }
-          move "Final Blowup", {
-            text "200 damage. . Ignore this effect if you have no cards in your hand."
-            energyCost W, P, F, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-        };
+        return copy(SupremeVictors.RAYQUAZA_C_LV_X_146, this);
       case TROPICAL_WIND_DP48:
         return copy (TROPICAL_WIND_DP05, this)
-        /*basicTrainer (this) {
-					text "Flip a coin. If heads, remove 2 damage counters from each Active Pok�mon (remove 1 damage counter if a Pok�mon has only 1). If tails, each Active Pok�mon is now Asleep."
-					onPlay {
-					}
-					playRequirement{
-					}
-				}*/;
       case DIALGA_DP49:
         return basic (this, hp:HP100, type:METAL, retreatCost:2) {
           weakness R
@@ -725,6 +479,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 0
+              // TODO
             }
           }
           move "Time Wager", {
@@ -733,6 +488,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 0
+              // TODO
             }
           }
 
@@ -746,6 +502,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 0
+              // TODO
             }
           }
 
@@ -756,6 +513,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
           pokeBody "Lunar Aura", {
             text "If you have Darkrai in play, remove 1 damage counter from Cresselia between turns."
             delayedA {
+              // TODO
             }
           }
           move "Lunar Flight", {
@@ -764,6 +522,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 0
+              // TODO
             }
           }
 
@@ -776,6 +535,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             text "If you have Cresselia in play, each of Darkrai�s attack does 20 more damage to the Defending Pok�mon ."
             delayedA {
             }
+            // TODO
           }
           move "Hypnoblast", {
             text "60 damage. Flip a coin. If heads, the Defending Pok�mon is now Asleep."
@@ -783,75 +543,20 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 0
+              // TODO
             }
           }
-
         };
       case ARCEUS_LV_X_DP53:
-        // TODO: Is Reprint
-        return levelUp (this, from:"Arceus", hp:HP120, type:COLORLESS, retreatCost:1) {
-          pokeBody "Multitype", {
-            text "Arceus LV.�s type is the same type as its previous Level."
-            delayedA {
-            }
-          }
-          pokeBody "Omniscient", {
-            text "Arceus can use the attacks of all Arceus you have in play as its own."
-            delayedA {
-            }
-          }
-          move "", {
-            text "You may have as many of this card in your deck as you like."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-        };
+        return copy(Arceus.ARCEUS_LV_X_94, this);
       case BEGINNING_DOOR_DP54:
-        return basicTrainer (this) {
-          text "Search your deck for Arceus, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy(Arceus.BEGINNING_DOOR_82, this);
       case ULTIMATE_ZONE_DP55:
-        return basicTrainer (this) {
-          text "During each player�s turn, the player may move an Energy card attached to 1 of his or her Benched Pok�mon to his or her Active Arceus as often as he or she likes.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can�t play this card."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy(Arceus.ULTIMATE_ZONE_91, this);
       case ARCEUS_LV_X_DP56:
-        return levelUp (this, from:"Arceus", hp:HP120, type:COLORLESS, retreatCost:1) {
-          pokeBody "Multitype", {
-            text "Arceus LV.�s type is the same as its previous Level."
-            delayedA {
-            }
-          }
-          move "", {
-            text "You may have as many of this card in your deck as you like."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Meteor Blast", {
-            text "100 damage. Flip a coin. If tails, this attack�s base damage is 50 instead of 100."
-            energyCost G, R, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-        };
+        return copy(Arceus.ARCEUS_LV_X_95, this);
       default:
         return null;
     }
   }
-
 }
