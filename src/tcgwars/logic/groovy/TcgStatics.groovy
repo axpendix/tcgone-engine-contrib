@@ -1913,7 +1913,7 @@ class TcgStatics {
           applyEffect = bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({ it.to == self && it.dmg.value })
         }
         after APPLY_ATTACK_DAMAGES, {
-          if (applyEffect && ef.attacker) {
+          if (applyEffect && ef.attacker.inPlay) {
             eff.delegate=delegate
             eff.call(ef)
           }
@@ -1941,7 +1941,7 @@ class TcgStatics {
             }
           }
           after APPLY_ATTACK_DAMAGES, {
-            if (applyEffect && self.cards.contains(thisCard) && ef.attacker) {
+            if (applyEffect && self.cards.contains(thisCard) && ef.attacker.inPlay) {
               c2.delegate=delegate
               c2.call(ef) // card didn't get discarded by an attack effect
             }
