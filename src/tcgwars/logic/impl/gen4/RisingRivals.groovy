@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen4
 
+import tcgwars.logic.DamageManager
 import tcgwars.logic.impl.gen3.RubySapphire
 import tcgwars.logic.impl.gen4.MysteriousTreasures
 import tcgwars.logic.impl.gen7.CelestialStorm
@@ -7,11 +8,12 @@ import tcgwars.logic.impl.gen7.CelestialStorm
 import tcgwars.logic.TargetPlayer
 import tcgwars.logic.card.*
 import tcgwars.logic.effect.ability.*
-import tcgwars.logic.effect.basic.Knockout
+import tcgwars.logic.effect.basic.*
 import tcgwars.logic.effect.gm.PlayTrainer
 import tcgwars.logic.util.CardList
 import tcgwars.logic.util.CardTypeSet
 import tcgwars.logic.util.Holder
+import tcgwars.logic.util.PokemonCardSet
 
 import static tcgwars.logic.card.CardType.*
 import static tcgwars.logic.card.HP.*
@@ -268,11 +270,8 @@ public enum RisingRivals implements LogicCardInfo {
           pokeBody "Eerie Aura", {
             text "Put 1 damage counter on each of your opponent’s Pokémon that remains Asleep between turns."
             before BEGIN_TURN, {
-              if(my.active.isSPC(ASLEEP)){
-                directDamage 10, self, SRC_ABILITY
-              }
-              if(opp.active.isSPC(ASLEEP)){
-                directDamage 10, opp.active, SRC_ABILITY
+              if(self.owner.opposite.pbg.active.isSPC(ASLEEP)){
+                directDamage 10, opp.active, POKEBODY
               }
             }
           }
@@ -406,7 +405,6 @@ public enum RisingRivals implements LogicCardInfo {
                 unregisterAfter 1
               }
               def card = my.playedSupporter.select("Select a Supporter to copy its effect as this attack.").first()
-              discard card
               bg.deterministicCurrentThreadPlayerType=self.owner
               bg.em().run(new PlayTrainer(card))
               bg.clearDeterministicCurrentThreadPlayerType()
@@ -426,38 +424,19 @@ public enum RisingRivals implements LogicCardInfo {
           weakness P
           pokeBody "Boundary Aura", {
             text "Apply Weakness for each Pokémon as ×2 instead."
-            delayedA {
-              def flag = false
-              before PROCESS_ATTACK_EFFECTS, {
-                if (ef.attacker == self){
-                  bg.dm().each{
-                    if (it.to.owner != self.owner && it.to.active && !it.flags.contains(DamageManager.DamageFlag.NO_WEAKNESS)) {
-                      it.flags.add(DamageManager.DamageFlag.NO_WEAKNESS)
-                      flag = true
-                    }
-                  }
-                }
+            getterA GET_WEAKNESSES, { h ->
+              def pcs = h.effect.target
+              def list = [] as List<Weakness>
+              h.object.each {
+                list.add(new Weakness(it.type, "X2"))
               }
-              after PROCESS_ATTACK_EFFECTS, {
-                if(ef.attacker){
-                  bg.dm().each {
-                    if (it.from.active && it.to.active && it.dmg.value && flag) {
-                      for(Type t1:Type.values()){//Doing it this way in case of 4x weakness
-                        if(it.from.types.contains(t1) && it.to.weaknesses.find{it.type == t1}){
-                          it.dmg *= 2
-                        }
-                      }
-                    }
-                  }
-                }
-              }
+              h.object = list
             }
           }
           move "Combo Throw", {
             text "30+ damage. Does 30 damage plus 10 more damage for each Energy attached to the Defending Pokémon."
             energyCost M, C, C
             onAttack {
-              damage
               damage 30 + 10 * defending.cards.energyCount(C)
             }
           }
@@ -499,8 +478,10 @@ public enum RisingRivals implements LogicCardInfo {
             onAttack {
               damage 10
               flip 2, {}, {}, [2:{
-                targeted (defending) {
-                  opp.active.cards.filterByType(ENERGY).discard()
+                afterDamage {
+                  targeted (defending) {
+                    opp.active.cards.filterByType(ENERGY).discard()
+                  }
                 }
               }]
             }
@@ -523,16 +504,14 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost F, C
             attackRequirement {}
             onAttack {
-              my.bench.each {
-                bc"$it"
-                flip {
-                  damage 30, it
+              my.bench.each {pcs ->
+                flip "$pcs", {
+                  damage 30, pcs
                 }
               }
-              opp.bench.each {
-                bc"$it"
-                flip {
-                  damage 30, it
+              opp.bench.each {pcs ->
+                flip "$pcs", {
+                  damage 30, pcs
                 }
               }
             }
@@ -581,14 +560,17 @@ public enum RisingRivals implements LogicCardInfo {
           pokeBody "Unlucky Wind", {
             text "As long as Shiftry is your Active Pokémon, whenever your opponent flips a coin during his or her turn, treat it as tails."
             delayedA {
-              def doit = {
-                if (bg.currentThreadPlayerType != self.owner) {
-                  bc "Hidden Power forced the coinflip to be TAILS."
+              before COIN_FLIP, {
+                if (bg.currentThreadPlayerType == self.owner.opposite && bg.currentTurn == self.owner.opposite && self.active) {
+                  bc "$thisAbility forced the coin flip to be TAILS."
                   bg.deterministicCoinFlipQueue.offer(false)
                 }
               }
-              before COIN_FLIP, {doit()}
-              before COIN_FLIP_GETTER, {doit()}
+            }
+            getterA COIN_FLIP_GETTER, { h->
+              if (bg.currentThreadPlayerType == self.owner.opposite && bg.currentTurn == self.owner.opposite && self.active) {
+                h.object = false
+              }
             }
           }
           move "Conform", {
@@ -605,6 +587,7 @@ public enum RisingRivals implements LogicCardInfo {
             text "60 damage. The Defending Pokémon can’t use any Poké-Powers or Poké-Bodies during your opponent’s next turn."
             energyCost D, C, C
             onAttack {
+              damage 60
               afterDamage {
                 delayed {
                   def eff
@@ -659,9 +642,9 @@ public enum RisingRivals implements LogicCardInfo {
               if(my.deck && confirm("Discard the top card of your deck?")) {
                 afterDamage {
                   discard my.deck.first()
+                  heal 20, self
+                  clearSpecialCondition(self)
                 }
-                heal 20, self
-                clearSpecialCondition(self)
               }
             }
           }
@@ -694,13 +677,11 @@ public enum RisingRivals implements LogicCardInfo {
             onAttack {
               damage 30
               afterDamage {
-                bc"${bg.em().retrieveObject("Needle_Shock")}"
-                bc"$bg.turnCount"
-                if(bg.em().retrieveObject("Needle_Shock")!=(bg.turnCount - 2)) {
+                if(bg.em().retrieveObject("Needle_Shock_"+thisCard.player)!=(bg.turnCount - 2)) {
                   apply PARALYZED
                   apply POISONED
                 }
-                bg.em().storeObject("Needle_Shock",bg.turnCount)
+                bg.em().storeObject("Needle_Shock_"+thisCard.player,bg.turnCount)
               }
             }
           }
@@ -854,8 +835,9 @@ public enum RisingRivals implements LogicCardInfo {
                 if(self.cards.energyCount(C) && confirm("Use Sticky Hold?")) {
                   def energyList = self.cards.select(max:self.cards.filterByType(ENERGY).size(),"Move any number of Energy cards attached from $self to ${self.owner.pbg.active}",cardTypeFilter(ENERGY))
                   energyList.each {
-                    energySwitch(self,self.owner.pbg.active,it)
+                    energySwitch(self,self.owner.pbg.active,it,true)
                   }
+                  bc "$thisAbility activates"
                 }
               }
             }
@@ -871,7 +853,7 @@ public enum RisingRivals implements LogicCardInfo {
               def max = Math.min(2,my.bench.freeBenchCount)
               my.deck.search(max:max,"Search your deck for up to 2 Gastrodon to put onto your bench",{it.cardTypes.is(POKEMON) && it.name.contains("Gastrodon")}).each {
                 def pcs = benchPCS(it)
-                directDamage 20, pcs, SRC_ABILITY
+                directDamage 20, pcs
               }
             }
           }
@@ -976,9 +958,9 @@ public enum RisingRivals implements LogicCardInfo {
             delayedA {
               before BEGIN_TURN, {
                 if(self.active &&self.owner.opposite.pbg.all.find{it.pokemonLevelUp}) {
-                  bc "Sand Cover activates"
+                  bc "$thisAbility activates"
                   self.owner.opposite.pbg.all.findAll{it.pokemonLevelUp}.each {
-                    directDamage 10, it, SRC_ABILITY
+                    directDamage 10, it, POKEBODY
                   }
                 }
               }
@@ -1062,13 +1044,17 @@ public enum RisingRivals implements LogicCardInfo {
             text "As long as Mamoswine GL is your Active Pokémon, put 1 damage counter on each Active Pokémon (excluding W Pokémon) between turns."
             delayedA {
               before BEGIN_TURN, {
-                if(self.active && !self.owner.opposite.pbg.active.types.contains(W)||!self.types.contains(W)) {
-                  bc "Icy Aura Activates"
-                  if(!self.owner.opposite.pbg.active.types.contains(W)) {
-                    directDamage(10, self.owner.opposite.pbg.active, SRC_ABILITY)
+                if(self.active) {
+                  def selfWaterType = self.types.contains(W)
+                  def oppWaterType = self.owner.opposite.pbg.active.types.contains(W)
+                  if(!selfWaterType||!oppWaterType) {
+                    bc "$thisAbility Activates"
                   }
-                  if(!self.types.contains(W)) {
-                    directDamage(10, self, SRC_ABILITY)
+                  if(!oppWaterType) {
+                    directDamage(10, self.owner.opposite.pbg.active, POKEBODY)
+                  }
+                  if(!selfWaterType) {
+                    directDamage(10, self, POKEBODY)
                   }
                 }
               }
@@ -1131,7 +1117,7 @@ public enum RisingRivals implements LogicCardInfo {
               }
               after APPLY_ATTACK_DAMAGES, {
                 if (flag && ef.attacker.inPlay && bg.em().retrieveObject("Territoriality") != bg.turnCount) {
-                  directDamage 20, ef.attacker, SRC_ABILITY
+                  directDamage 20, ef.attacker, POKEBODY
                   flag = false
                   bg.em().storeObject("Territoriality",bg.turnCount)
                 }
@@ -1169,9 +1155,9 @@ public enum RisingRivals implements LogicCardInfo {
             delayedA {
               before BEGIN_TURN, {
                 if(bg.em().retrieveObject("Maternal Comfort")!=bg.turnCount && my.all.find{it.numberOfDamageCounters}) {
-                  bc "Maternal Comfort Activates"
+                  bc "$thisAbility Activates"
                   my.all.each {
-                    heal 10, it, SRC_ABILITY
+                    heal 10, it, POKEBODY
                   }
                 }
               }
@@ -1325,8 +1311,8 @@ public enum RisingRivals implements LogicCardInfo {
             delayedA {
               after ATTACH_ENERGY, self, {
                 if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(G)) {
-                  bc "Royal Gain heals 10 damage from $self"
-                  heal 10, self, SRC_ABILITY
+                  bc "$thisAbility heals 10 damage from $self"
+                  heal 10, self, POKEBODY
                 }
               }
             }
@@ -1353,7 +1339,7 @@ public enum RisingRivals implements LogicCardInfo {
               if(reason == PLAY_FROM_HAND && my.hand.filterByEnergyType(W) && confirm("Use Gather Ice?")){
                 powerUsed()
                 my.hand.select(min:0,max:my.hand.filterByEnergyType(W).size(),"Attach as many [W] Energy cards from your hand to $self as you like",energyFilter(W)).each {
-                  attachEnergy(self,it)
+                  attachEnergy(self,it,PLAY_FROM_HAND)
                 }
               }
             }
@@ -1364,10 +1350,8 @@ public enum RisingRivals implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 70
-              afterDamage {
-                discardSelfEnergy C
-                discardDefendingEnergy C
-              }
+              discardSelfEnergyAfterDamage C
+              discardDefendingEnergyAfterDamage C
             }
           }
 
@@ -1487,7 +1471,7 @@ public enum RisingRivals implements LogicCardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
                   if(self.active && it.to.owner == self.owner && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect){
-                    bc "Frost Wind -10"
+                    bc "$thisAbility Wind -10"
                     it.dmg -= hp(10)
                   }
                 }
@@ -1526,8 +1510,8 @@ public enum RisingRivals implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if(it.to == self && it.from.owner == self.owner.opposite && it.notNoEffect && it.dmg.value){
-                    bc "Sand Armor -10"
+                  if(it.to == self && it.notNoEffect && it.dmg.value){
+                    bc "$thisAbility -10"
                     it.dmg -= hp(10)
                   }
                 }
@@ -1604,9 +1588,9 @@ public enum RisingRivals implements LogicCardInfo {
             text "As long as Leafeon is your Active Pokémon, whenever you attach an Energy card from your hand to 1 of your Pokémon, remove 2 damage counters from that Pokémon."
             delayedA {
               after ATTACH_ENERGY, {
-                if (bg.currentTurn == self.owner.opposite && self.active) {
-                  wcu "Energy Refresh activates."
-                  heal 20, ef.resolvedTarget, SRC_ABILITY
+                if (ef.reason == PLAY_FROM_HAND && bg.currentTurn == self.owner.opposite && self.active) {
+                  bc "$thisAbility activates."
+                  heal 20, ef.resolvedTarget, POKEBODY
                 }
               }
             }
@@ -1622,7 +1606,7 @@ public enum RisingRivals implements LogicCardInfo {
                   def card = my.hand.select(min:0,"You may attack a basic Energy card from your hand to 1 of your Pokémon",cardTypeFilter(BASIC_ENERGY)).first()
                   if(card) {
                     def tar = my.all.select("Attach $card to which Pokémon?")
-                    attachEnergy(tar,card)
+                    attachEnergy(tar,card,PLAY_FROM_HAND)
                   }
                 }
               }
@@ -1731,9 +1715,9 @@ public enum RisingRivals implements LogicCardInfo {
             text "If Sharpedo is your Active Pokémon and is damaged by an opponent’s attack , flip a coin. If heads, discard an Energy card attached to the Attacking Pokémon."
             ifActiveAndDamagedByAttackBody(delegate){
               if (ef.attacker.cards.filterByType(ENERGY)) {
-                bc "Energy Shark Activates"
+                bc "$thisAbility Activates"
                 flip {
-                  ef.attacker.cards.select("Select an Energy to move to the Opponent's hand", cardTypeFilter(ENERGY), self.owner).discard()
+                  ef.attacker.cards.select("Select an Energy to discard", cardTypeFilter(ENERGY), self.owner).discard()
                 }
               }
             }
@@ -1937,19 +1921,33 @@ public enum RisingRivals implements LogicCardInfo {
               damage 30
               afterDamage {
                 targeted (defending) {
-                  bc "During ${opp.owner.getPlayerUsername(bg)}'s next turn, Energy can't be attached from their hand to the Defending ${defending}. (This effect can be removed by evolving or benching ${defending}.)"
+                  bc "During ${opp.owner.getPlayerUsername(bg)}'s next turn, ${opp.owner.getPlayerUsername(bg)} can't play any Pokémon from their hand to Evolve or Level Up the defending $defending. (This effect can be removed by evolving or benching ${defending}.)"
                   def pcs = defending
                   delayed {
-                    before LEVEL_UP_STANDARD, pcs, {//Todo This is still broken until level up source is fixed
-                      if(ef.reason == PLAY_FROM_HAND) {
-                        wcu "Primal Breath: Can't Level Up ${pcs}"
+                    def warnAndPrevent = {
+                      if (self.active && bg.currentTurn == self.owner.opposite) {
+                        wcu "$self's $thisMove prevents playing Pokémon from your hand to evolve your Pokémon"
                         prevent()
                       }
                     }
+                    before LEVEL_UP, pcs, {
+                      if((ef as LevelUp).levelUpCard.player.pbg.hand.contains(ef.levelUpCard)) {
+                        warnAndPrevent()
+                      }
+                    }
+                    before LEVEL_UP_STANDARD, pcs, {
+                      if((ef as LevelUpStandard).levelUpCard.player.pbg.hand.contains(ef.levelUpCard)) {
+                        warnAndPrevent()
+                      }
+                    }
+                    before EVOLVE, pcs, {
+                      if ((ef as Evolve).evolutionCard.player.pbg.hand.contains(ef.evolutionCard)) {
+                        warnAndPrevent()
+                      }
+                    }
                     before EVOLVE_STANDARD, pcs, {
-                      if(ef.reason == PLAY_FROM_HAND) {
-                        wcu "Primal Breath: Can't Evolve ${pcs}"
-                        prevent()
+                      if ((ef as EvolveStandard).evolutionCard.player.pbg.hand.contains(ef.evolutionCard)) {
+                        warnAndPrevent()
                       }
                     }
                     unregisterAfter 2
@@ -2087,7 +2085,7 @@ public enum RisingRivals implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
-              flip {
+              flip 1, {}, {
                 discardSelfEnergyAfterDamage(R)
               }
             }
@@ -2099,13 +2097,10 @@ public enum RisingRivals implements LogicCardInfo {
           weakness R
           resistance P, MINUS20
           move "Shell Scatter", {
-            text "This attack does 10 damage to each of your opponent's Benched Pokémon. Foretress G can’t use Shell Scatter during your next turn."
+            text "This attack does 10 damage to each of your opponent's Pokémon. Foretress G can’t use Shell Scatter during your next turn."
             energyCost C
-            attackRequirement {
-              assert opp.bench : "Your opponent has no Benched Pokémon"
-            }
             onAttack {
-              opp.bench.each {
+              opp.all.each {
                 damage 10, it
               }
               cantUseAttack(thisMove,self)
@@ -2191,7 +2186,9 @@ public enum RisingRivals implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              whirlwind()
+              afterDamage {
+                whirlwind()
+              }
             }
           }
           move "Endeavor", {
@@ -2239,8 +2236,8 @@ public enum RisingRivals implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if (self.active && it.to == self && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect) {
-                    bc "Exoskeleton -20"
+                  if (self.active && it.to == self && it.dmg.value && it.notNoEffect) {
+                    bc "$thisAbility -20"
                     it.dmg -= hp(20)
                   }
                 }
@@ -2391,7 +2388,7 @@ public enum RisingRivals implements LogicCardInfo {
               damage 10
             }
           }
-          move "Get Help", {
+          move "Offer Help", {
             text "Search your deck for a Supporter card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
             energyCost C, C
             attackRequirement {
@@ -2512,7 +2509,7 @@ public enum RisingRivals implements LogicCardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
                   if (!self.active && it.to == self && it.dmg.value && it.notNoEffect) {
-                    bc "Submerge prevent all damage"
+                    bc "$thisAbility prevents all damage"
                     it.dmg=hp(0)
                   }
                 }
@@ -2525,9 +2522,7 @@ public enum RisingRivals implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
-              if(my.bench && confirm("Switch $self with one of your benched pokémon?")){
-                sw self,my.bench.select("New active")
-              }
+              switchYourActive(may:true)
             }
           }
 
@@ -2543,6 +2538,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
             onAttack {
               my.deck.search(max:2,"Search your deck for up to 2 [W] Energy cards",energyFilter(W)).moveTo(my.hand)
+              shuffleDeck()
             }
           }
           move "Sheer Cold", {
@@ -2567,11 +2563,11 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              delayed {
+              delayed PRIORITY:BEFORE_LAST, {
                 before APPLY_ATTACK_DAMAGES, {
                   bg.dm().each {
                     if(it.to == self && it.dmg.value <= 40 && it.notNoEffect) {
-                      bc "Harden prevents that damage"
+                      bc "$thisMove prevents that damage"
                       it.dmg = hp(0)
                     }
                   }
@@ -2629,11 +2625,9 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost ()
             attackRequirement {}
             onAttack {
+              def pcs = my.all.findAll{it.numberOfDamageCounters}.select(text)
               flip 2, {
-                def pcsList = my.all.findAll{it.numberOfDamageCounters}
-                if(pcsList) {
-                  heal 10, pcsList.select("Remove 1 damage counter from 1 of your Pokémon")
-                }
+                heal 10, pcs
               }
             }
           }
@@ -2775,7 +2769,7 @@ public enum RisingRivals implements LogicCardInfo {
               after PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each {
                   if(self.remainingHP.value <= 60 && it.from == self && it.to.owner == self.owner.opposite && it.to.active) {
-                    bc "Overgrow +30"
+                    bc "$thisAbility +30"
                     it.dmg += hp(30)
                   }
                 }
@@ -2826,7 +2820,7 @@ public enum RisingRivals implements LogicCardInfo {
           pokeBody "Camoflage Gas", {
             getterA GET_GIVEN_PRIZES, self, {holder ->
               if(self.isSPC(CONFUSED)) {
-                bc "Camoflage prevents taking any prize card from ${self}"
+                bc "$thisAbility prevents taking any prize card from ${self}"
                 holder.object = 0
               }
             }
@@ -2900,6 +2894,7 @@ public enum RisingRivals implements LogicCardInfo {
           }
           playRequirement{
             assert my.all.find{it.cards.energyCount(C)} : "You don't have any energy in play"
+            assert my.bench : "You have no Benched Pokémon"
           }
         };
       case POKEMON_CONTEST_HALL_93:
@@ -2940,10 +2935,10 @@ public enum RisingRivals implements LogicCardInfo {
               }
             }
             eff2 = delayed {
-              before APPLY_RESISTANCE, {
+              after PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each {
                   if (it.from.types.contains(L) && it.to.active) {
-                    prevent()
+                    it.flags.add(DamageManager.DamageFlag.NO_RESISTANCE)
                   }
                 }
               }
@@ -3036,7 +3031,7 @@ public enum RisingRivals implements LogicCardInfo {
               tar.remove(src)
               tar=tar.select("Target for damage counter")
               src.damage-=hp(10)
-              directDamage 10, tar, SRC_ABILITY
+              directDamage 10, tar, POKEPOWER
               bc "Swapped a damage counter from $src to $tar"
               checkFaint()
             }
@@ -3055,24 +3050,18 @@ public enum RisingRivals implements LogicCardInfo {
           weakness L
           pokeBody "Water Rescue", {
             text "Whenever any of your [W] Pokémon (excluding any Floatzel) is Knocked Out by damage from your opponent’s attack, you may put that Pokémon and all cards that were attached to it from your discard pile into your hand."
-            delayedA (priority: LAST) {
+            delayedA (priority: BEFORE_LAST) {
               before KNOCKOUT, {
                 def pcs=ef.pokemonToBeKnockedOut
                 if((ef as Knockout).byDamageFromAttack && pcs != self && pcs.owner == self.owner && pcs.types.contains(W)) {
-                  CardList cardList = []
-                  cardList.addAll(pcs.cards)
-
-                  delayed(inline: true,priority: LAST){
+                  def tpc = pcs.topPokemonCard
+                  CardList dscrd = []
+                  dscrd.addAll(self.owner.pbg.discard)
+                  delayed(inline: true,priority: BEFORE_LAST){
                     after KNOCKOUT, pcs, {
-                      if(confirm("Use Water Rescue?",self.owner)) {
-                        bc "Water Rescue activates"
-                        CardList returnList = []
-                        cardList.each {
-                          if(self.owner.pbg.discard.contains(it)) {
-                            returnList.add(it)
-                          }
-                        }
-                        returnList.moveTo(self.owner.pbg.hand)
+                      if(self.owner.pbg.discard.contains(tpc) && confirm("Use Water Rescue?",self.owner)) {
+                        bc "$thisAbility activates"
+                        self.owner.pbg.discard.getExcludedList(dscrd).moveTo(self.owner.pbg.hand)//This feels naive, but I haven't been able to break it yet
                       }
                       owner.delegate.unregister()
                     }
@@ -3129,10 +3118,10 @@ public enum RisingRivals implements LogicCardInfo {
           pokePower "Blade Storm", {
             text "Once during your turn , when you put Gallade LV.X from your hand onto your Active Gallade , you may put 1 damage counter on each of your opponent’s Pokémon."
             onActivate {r->
-              if (r==PLAY_FROM_HAND && opp.bench && confirm('Use Blade Storm?')) {
+              if (r==PLAY_FROM_HAND && confirm('Use Blade Storm?')) {
                 powerUsed()
                 opp.all.each {
-                  directDamage 10, it, SRC_ABILITY
+                  directDamage 10, it, POKEPOWER
                 }
               }
             }
@@ -3211,7 +3200,7 @@ public enum RisingRivals implements LogicCardInfo {
             onActivate {r->
               if(r==PLAY_FROM_HAND && opp.bench && confirm("Use Bright Look?")) {
                 powerUsed()
-                sw2 opp.active, opp.bench.select("Choose your opponent's new active Pokémon"), SRC_ABILITY
+                sw opp.active, opp.bench.select("Choose your opponent's new active Pokémon"), POKEPOWER
               }
             }
           }
@@ -3246,7 +3235,7 @@ public enum RisingRivals implements LogicCardInfo {
               assert my.hand : "Your hand is empty"
             }
             onAttack {
-              def count = Math.max(my.hand.size(),8)
+              def count = Math.min(my.hand.size(),8)
               directDamage count, defending
             }
           }
@@ -3263,7 +3252,7 @@ public enum RisingRivals implements LogicCardInfo {
               assert my.hand.size() < 6 : "You already have 6 cards in your hand"
               powerUsed()
               draw 6 - my.hand.size()
-
+              apply ASLEEP, self, POKEPOWER
             }
           }
           move "Exercise", {
@@ -3272,8 +3261,8 @@ public enum RisingRivals implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 80
+              def energyList = my.hand.select(min:0,max:my.hand.fitlerByType(ENERGY).size(),"You many discard as many Energy cards as you like from you hand to remove that many damage counters from $self")
               afterDamage {
-                def energyList = my.hand.select(min:0,max:my.hand.fitlerByType(ENERGY).size(),"You many discard as many Energy cards as you like from you hand to remove that many damage counters from $self")
                 heal 10 * energyList.size(), self
                 energyList.discard()
               }
@@ -3607,6 +3596,12 @@ public enum RisingRivals implements LogicCardInfo {
               checkFaint()
             }
             shuffleDeck()
+            delayed {
+              before BETWEEN_TURNS, {
+                new CardList(thisCard).moveTo(thisCard.player.pbg.hand)
+              }
+              unregisterAfter 1
+            }
           }
           playRequirement{
             assert my.deck : "Your deck is empty"

@@ -542,7 +542,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               assert opp.bench : "There are no benched Pokémon to switch to"
               powerUsed()
               flip {
-                switchYourOpponentsBenchedWithActive(SRC_ABILITY)
+                switchYourOpponentsBenchedWithActive(POKEPOWER)
               }
             }
           }
@@ -702,7 +702,7 @@ public enum LegendsAwakened implements LogicCardInfo {
                 powerUsed()
                 all.each {
                   if (it.numberOfDamageCounters) {
-                    directDamage 10, it, SRC_ABILITY
+                    directDamage 10, it, POKEPOWER
                   }
                 }
               }
@@ -909,7 +909,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             ifActiveAndDamagedByAttackBody(delegate) {
               bc "Attracting Body activates"
               flip {
-                apply CONFUSED, ef.attacker, SRC_ABILITY
+                apply CONFUSED, ef.attacker, POKEBODY
               }
             }
           }
@@ -1389,7 +1389,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             delayedA {
               after ATTACH_ENERGY, self, {
                 if(ef.reason==PLAY_FROM_HAND && ef.card.cardTypes.is(ENERGY)){
-                  clearSpecialCondition(self, SRC_ABILITY)
+                  clearSpecialCondition(self, POKEBODY)
                 }
               }
             }
@@ -1474,7 +1474,7 @@ public enum LegendsAwakened implements LogicCardInfo {
                 if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && confirm(text, self.owner)) {
                   self.owner.opposite.pbg.all.each {
                     if (it.name == self.owner.opposite.pbg.active.name) {
-                      directDamage 40, it, SRC_ABILITY
+                      directDamage 40, it, POKEPOWER
                     }
                   }
                 }

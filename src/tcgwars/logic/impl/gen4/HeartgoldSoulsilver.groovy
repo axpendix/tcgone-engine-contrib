@@ -747,7 +747,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               powerUsed()
-              flip {apply(ASLEEP, opp.active, SRC_ABILITY)}
+              flip {apply(ASLEEP, opp.active, POKEPOWER)}
             }
           }
           move "Psychic Shot", {

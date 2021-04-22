@@ -396,7 +396,7 @@ public enum Triumphant implements LogicCardInfo {
               }
             }
             onActivate {
-              clearSpecialCondition(self, SRC_ABILITY, [CONFUSED])
+              clearSpecialCondition(self, POKEBODY, [CONFUSED])
             }
           }
           move "Ring of Fire", {
@@ -470,9 +470,9 @@ public enum Triumphant implements LogicCardInfo {
               checkLastTurn()
               powerUsed()
               flip 1, {
-                apply POISONED, opp.active, SRC_ABILITY
+                apply POISONED, opp.active, POKEPOWER
               }, {
-                apply POISONED, my.active, SRC_ABILITY
+                apply POISONED, my.active, POKEPOWER
               }
             }
           }
@@ -1481,7 +1481,7 @@ public enum Triumphant implements LogicCardInfo {
             onActivate {r->
               if(r==PLAY_FROM_HAND && my.active.specialConditions && confirm("Use CURE?")) {
                 powerUsed()
-                clearSpecialCondition my.active, SRC_ABILITY
+                clearSpecialCondition my.active, POKEPOWER
               }
             }
           }
@@ -2428,7 +2428,7 @@ public enum Triumphant implements LogicCardInfo {
               assert my.active.cards.filterByEnergyType(F) : "No [F] Energy to move"
               powerUsed()
               my.active.cards.filterByEnergyType(F).each{energySwitch(my.active,self,it)}
-              sw2 self, null, SRC_ABILITY
+              sw2 self, null, POKEPOWER
             }
           }
           move "Crushing Punch", {
