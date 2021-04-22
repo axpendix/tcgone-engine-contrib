@@ -34,6 +34,7 @@ import tcgwars.logic.util.*;
 
 /**
  * @author axpendix@hotmail.com
+ * @author ufodynasty12@gmail.com
  */
 public enum SupremeVictors implements LogicCardInfo {
 
@@ -4056,15 +4057,14 @@ public enum SupremeVictors implements LogicCardInfo {
             onAttack {
               damage 30
               flip 1, {
-                if(opp.bench) {
+                if (opp.bench) {
                   damage 30, opp.bench.select("Does 30 damage to 1 of your opponent's Benched Pokémon")
-                }, {
-                  damgae 30, self
                 }
+              }, {
+                damgae 30, self
               }
             }
           }
-
         };
       case MILOTIC_SH7:
         return evolution (this, from:"Feebas", hp:HP080, type:W, retreatCost:1) {
