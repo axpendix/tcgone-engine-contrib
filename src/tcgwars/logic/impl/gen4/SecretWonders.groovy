@@ -1019,7 +1019,7 @@ public enum SecretWonders implements LogicCardInfo {
                       def pkmnCard = pcs.topPokemonCard
                       def tar = pcs.owner.pbg.all.findAll{it != self}.select("Choose a pokemon to attach $self to",pcs.owner)
                       def energyCard
-                      energyCard = specialEnergy(new CustomCardInfo(ELECTRODE_26).setCardTypes(ENERGY, SPECIAL_ENERGY), [[R, D, F, G, W, Y, L, M, P]]) {
+                      energyCard = specialEnergy(new CustomCardInfo(ELECTRODE_26).setCardTypes(ENERGY, SPECIAL_ENERGY), [valuesBasicEnergy()]) {
                         typeImagesOverride = [RAINBOW]
                         onPlay {}
                         onRemoveFromPlay {

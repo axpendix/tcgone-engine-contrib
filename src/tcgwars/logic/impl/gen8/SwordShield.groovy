@@ -3614,7 +3614,7 @@ public enum SwordShield implements LogicCardInfo {
           }
         }
         getEnergyTypesOverride {
-          if (self) return [[R, D, F, G, W, Y, L, M, P] as Set]
+          if (self) return [valuesBasicEnergy() as Set]
           else return [[] as Set]
         }
         allowAttach {to->

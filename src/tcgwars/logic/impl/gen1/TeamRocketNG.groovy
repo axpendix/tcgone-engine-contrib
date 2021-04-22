@@ -629,12 +629,16 @@ public enum TeamRocketNG implements LogicCardInfo {
           }
         };
       case RAINBOW_ENERGY_17:
-        return specialEnergy (this, [[R, D, F, G, W, Y, L, M, P]]) {
+        return specialEnergy (this, [[]]) {
           text "Attach Rainbow Energy to 1 of your Pokémon. While in play, Rainbow Energy counts as every type of basic Energy but only provides 1 Energy at a time. (Doesn’t count as a basic Energy card when not in play.) When you attach this card from your hand to 1 of your Pokémon, it does 10 damage to that Pokémon. (Don’t apply Weakness and Resistance.)"
           onPlay {reason->
             if(reason == PLAY_FROM_HAND){
               directDamage(10, self)  //TODO: This one print does damage, not counters.
             }
+          }
+          getEnergyTypesOverride {
+            if (self) return [valuesBasicEnergyNonColorless() as Set]
+            else return [[] as Set]
           }
           onRemoveFromPlay {
           }
