@@ -1455,7 +1455,7 @@ public enum SupremeVictors implements LogicCardInfo {
             delayedA {
               after ATTACH_ENERGY, self, {
                 if(ef.reason==PLAY_FROM_HAND){
-                  clearSpecialCondition(self,POKEBODY)
+                  clearSpecialCondition(self, POKEBODY)
                 }
               }
             }
