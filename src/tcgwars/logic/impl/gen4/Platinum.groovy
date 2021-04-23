@@ -1141,7 +1141,7 @@ public enum Platinum implements LogicCardInfo {
             energyCost G, C, C
             onAttack {
               damage 60
-              if(defending.hasPokePower() || defending.hasPokeBody()) {
+              if(defending.hasPokePower() || defending.hasPokeBody() || defending.hasPokemonPower()) {
                 applyAfterDamage BURNED
                 applyAfterDamage CONFUSED
               }

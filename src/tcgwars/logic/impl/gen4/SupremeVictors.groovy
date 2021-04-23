@@ -1563,14 +1563,14 @@ public enum SupremeVictors implements LogicCardInfo {
             text "Prevent all effects of attacks, including damage, done to Shedinja by your opponent's Pokémon that has any Poké-Powers or Poké-Bodies."
             delayedA {
               before null, self, Source.ATTACK, {
-                if ((self.owner.opposite.pbg.active.hasPokePower || self.owner.opposite.pbg.active.hasPokeBody) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                if ((self.owner.opposite.pbg.active.hasPokePower() || self.owner.opposite.pbg.active.hasPokeBody() || self.owner.opposite.pbg.active.hasPokemonPower()) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
                   bc "$thisAbility prevents effect"
                   prevent()
                 }
               }
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if(it.to == self && it.notNoEffect && (it.from.hasPokePower || it.from.hasPokeBody)){
+                  if(it.to == self && it.notNoEffect && (it.from.hasPokePower() || it.from.hasPokeBody() || it.from.hasPokemonPower())){
                     it.dmg = hp(0)
                     bc "$thisAbility prevents damage"
                   }
@@ -1578,7 +1578,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
               after ENERGY_SWITCH, {
                 def efs = (ef as EnergySwitch)
-                if((efs.from.hasPokePower || efs.from.hasPokeBody) && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
+                if((efs.from.hasPokePower() || efs.from.hasPokeBody() || efs.from.hasPokemonPower()) && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
                   discard efs.card
                 }
               }
