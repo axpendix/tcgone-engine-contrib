@@ -3665,17 +3665,15 @@ public enum Platinum implements LogicCardInfo {
           pokeBody "Thankfulness", {
             text "Each of your Pokémon (excluding any Shaymin) gets +40 HP. You can’t use more than 1 Thankfulness Poké-Body each turn."
             delayedA {
-              def target = []
-              def source = []
-              bg.em().storeObject("Thankfulness_target", target)
-              bg.em().storeObject("Thankfulness_source", source)
-              def eff
+              def eff, source, target
               onActivate {
                 eff = getter (GET_FULL_HP) {h->
                   def pcs = h.effect.target
                   if (pcs.owner == self.owner && !pcs.name.contains("Shaymin")){
                     target = bg.em().retrieveObject("Thankfulness_target")
+                    target = target ? target : []
                     source = bg.em().retrieveObject("Thankfulness_source")
+                    source = source ? source : []
                     if(!target.contains(pcs)){
                       h.object += hp(40)
                       target.add(pcs)
