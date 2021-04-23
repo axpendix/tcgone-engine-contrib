@@ -985,7 +985,7 @@ public enum SupremeVictors implements LogicCardInfo {
             onAttack {
               damage 30
               if(defending.types.contains(F)) {
-                damage 30
+                damage 50
               }
             }
           }
