@@ -429,7 +429,9 @@ public enum SupremeVictors implements LogicCardInfo {
               if(self.cards.energyCount(R) && my.bench && confirm("MOve a [R] Energy card attached to $self to 1 of yoru Benched Pokémon")) {
                 def energyCard = self.cards.select("Choose a [L] Energy to move",energyFilter(L)).fist()
                 def tar = my.bench.select("Move $energyCard to which Pokémon?")
-                energySwitch(self,tar,energyCard)
+                afterDamage {
+                  energySwitch(self,tar,energyCard)
+                }
               }
             }
           }
@@ -440,37 +442,33 @@ public enum SupremeVictors implements LogicCardInfo {
           resistance P, MINUS20
           pokeBody "Gravitation", {
             text "Each Pokémon in play (both yours and your opponent's) gets -20 HP. No more than 20 HP can be reduced by all Gravitation Poké-Bodies."
-            delayedA {
-              def target = []
-              def source = []
-              bg.em().storeObject("Gravitation_target", target)
-              bg.em().storeObject("Gravitation_source", source)
-              def eff
-              onActivate {
-                eff = getter (GET_FULL_HP) {h->
-                  def pcs = h.effect.target
-                  if (true){
-                    target = bg.em().retrieveObject("Gravitation_target")
-                    source = bg.em().retrieveObject("Gravitation_source")
-                    if(!target.contains(pcs)){
-                      h.object -= hp(20)
-                      target.add(pcs)
-                      bg.em().storeObject("Gravitation_target", target)
-                      source.add(self)
-                      bg.em().storeObject("Gravitation_source", source)
-                    } else if(source.get(target.indexOf(pcs)) == self){
-                      h.object -= hp(20)
-                    }
-                  }
+            def target = []
+            def source = []
+            bg.em().storeObject("Gravitation_target", target)
+            bg.em().storeObject("Gravitation_source", source)
+            def eff
+            onActivate {
+              eff = getter (GET_FULL_HP) {h->
+                def pcs = h.effect.target
+                target = bg.em().retrieveObject("Gravitation_target")
+                source = bg.em().retrieveObject("Gravitation_source")
+                if(!target.contains(pcs)){
+                  h.object -= hp(20)
+                  target.add(pcs)
+                  bg.em().storeObject("Gravitation_target", target)
+                  source.add(self)
+                  bg.em().storeObject("Gravitation_source", source)
+                } else if(source.get(target.indexOf(pcs)) == self){
+                  h.object -= hp(20)
                 }
               }
-              onDeactivate {
-                eff.unregister()
-                target = []
-                source = []
-                bg.em().storeObject("Gravitation_target", target)
-                bg.em().storeObject("Gravitation_source", source)
-              }
+            }
+            onDeactivate {
+              eff.unregister()
+              target = []
+              source = []
+              bg.em().storeObject("Gravitation_target", target)
+              bg.em().storeObject("Gravitation_source", source)
             }
           }
           move "Geo Impact", {
@@ -643,7 +641,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case VENUSAUR_13:
         return evolution (this, from:"Ivysaur", hp:HP140, type:G, retreatCost:4) {
-          weakness R, '+40'
+          weakness R, PLUS40
           pokeBody "Green Aroma", {
             text "Remove all Special Conditions from each of your [G] Pokémon. Each of your [G] Pokémon can't be affected by any Special Conditions."
             delayedA {
@@ -708,8 +706,11 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              if(confirm("Return all [G] Energy attached to $self in order to do 20 additional damage?")) {
-                damage 20
+              if(confirm("Return all [G] Energy attached to $self in order to do aditional damgae?")) {
+                damage 20 * self.cards.filterByEnergyType(G)
+                afterDamage {
+                  self.cards.filterByEnergyType(G).moveTo(my.hand)
+                }
               }
             }
           }
@@ -911,7 +912,7 @@ public enum SupremeVictors implements LogicCardInfo {
             }
             onAttack {
               def tar = opp.all.findAll{it.numberOfDamageCounters()}.select("Choose 1 of your oppopnent's Pokémon")
-              directDamage 10*tar.numberOfDamageCounters(), tar
+              directDamage 10*tar.energyCount(C), tar
             }
           }
         };
@@ -970,7 +971,7 @@ public enum SupremeVictors implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if (self.active && it.to == self && it.from.owner == self.owner.opposite && (it.from.types.contains(R) || it.from.types.contains(W)) && it.dmg.value && it.notNoEffect) {
+                  if (it.to == self && (it.from.types.contains(R) || it.from.types.contains(W)) && it.dmg.value && it.notNoEffect) {
                     bc "$thisAbility -30"
                     it.dmg -= hp(30)
                   }
@@ -2019,7 +2020,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case HIPPOPOTAS_61:
         return basic (this, hp:HP070, type:F, retreatCost:2) {
-          weakness W, '+10'
+          weakness W, PLUS10
           move "Double Headbutt", {
             text "10x damage. Flip 2 coins. This attack does 10 damage times the number of heads."
             energyCost C, C
@@ -2263,7 +2264,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case MINUN_71:
         return basic (this, hp:HP060, type:L, retreatCost:1) {
-          weakness F, '+10'
+          weakness F, PLUS10
           resistance M, MINUS20
           move "Call for Family", {
             text "Search your deck for up to 2 Lightning Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
@@ -2282,7 +2283,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case MURKROW_72:
         return basic (this, hp:HP070, type:D, retreatCost:1) {
-          weakness L, '+10'
+          weakness L, PLUS10
           resistance F, MINUS20
           move "Switcheroo", {
             text "Move a Pokémon Tool card attached to 1 of your opponent's Pokémon to another of your opponent's Pokémon (excluding Pokémon that already has a Pokémon Tool attached to it). (If an effect of this attack is prevented, this attack does nothing.)"
@@ -2401,7 +2402,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case PLUSLE_76:
         return basic (this, hp:HP060, type:L, retreatCost:1) {
-          weakness F, '+10'
+          weakness F, PLUS10
           resistance M, MINUS20
           move "Greedy Draw", {
             text "If you have the same number of cards or less in your hand as your opponent, draw cards until you have 1 more card than your opponent. (If you have more cards in your hand than your opponent, this attack does nothing.)"
@@ -2733,7 +2734,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case BALTOY_89:
         return basic (this, hp:HP050, type:P, retreatCost:1) {
-          weakness P, '+10'
+          weakness P, PLUS10
           move "Spinning Attack", {
             text "10 damage. "
             energyCost C
@@ -2755,7 +2756,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case BELDUM_90:
         return basic (this, hp:HP050, type:M, retreatCost:2) {
-          weakness R, '+10'
+          weakness R, PLUS10
           resistance P, MINUS20
           move "Pit Search", {
             text "Search your deck for a Stadium card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
@@ -2779,7 +2780,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case BIDOOF_91:
         return basic (this, hp:HP060, type:C, retreatCost:2) {
-          weakness F, '+10'
+          weakness F, PLUS10
           move "Whimsy Tackle", {
             text "20 damage. Flip a coin. If tails, this attack does nothing."
             energyCost C
@@ -2793,7 +2794,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case BUIZEL_92:
         return basic (this, hp:HP050, type:W, retreatCost:1) {
-          weakness L, '+10'
+          weakness L, PLUS10
           move "Tackle", {
             text "10 damage. "
             energyCost C
@@ -2813,7 +2814,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case BULBASAUR_93:
         return basic (this, hp:HP060, type:G, retreatCost:1) {
-          weakness R, '+10'
+          weakness R, PLUS10
           move "Tackle", {
             text "10 damage. "
             energyCost C
@@ -2833,7 +2834,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case BUNEARY_94:
         return basic (this, hp:HP050, type:C, retreatCost:1) {
-          weakness F, '+10'
+          weakness F, PLUS10
           move "Bounce", {
             text "Switch Buneary with 1 of your Benched Pokémon."
             energyCost C
@@ -2856,7 +2857,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case CHATOT_95:
         return basic (this, hp:HP060, type:C, retreatCost:1) {
-          weakness L, '+10'
+          weakness L, PLUS10
           resistance F, MINUS20
           move "Call for Family", {
             text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
@@ -2877,7 +2878,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case CHERUBI_96:
         return basic (this, hp:HP050, type:G, retreatCost:1) {
-          weakness R, '+10'
+          weakness R, PLUS10
           resistance W, MINUS20
           move "Growth", {
             text "Attach a [G] Energy from your hand to Cherubi."
@@ -2900,7 +2901,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case CHIMCHAR_97:
         return basic (this, hp:HP050, type:R, retreatCost:1) {
-          weakness W, '+10'
+          weakness W, PLUS10
           move "Chop", {
             text "10 damage. "
             energyCost R
@@ -2923,7 +2924,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case CHINGLING_98:
         return basic (this, hp:HP050, type:P, retreatCost:1) {
-          weakness P, '+10'
+          weakness P, PLUS10
           pokePower "Baby Evolution", {
             text "Once during your turn (before your attack), you may put Chimecho from your hand onto Chingling (this counts as evolving Chingling) and remove all damage counters from Chingling."
             actionA {
@@ -2953,7 +2954,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case COMBEE_99:
         return basic (this, hp:HP040, type:G, retreatCost:1) {
-          weakness R, '+10'
+          weakness R, PLUS10
           resistance F, MINUS20
           move "Nap", {
             text "Remove 2 damage counters from Combee."
@@ -2976,7 +2977,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case CORPHISH_100:
         return basic (this, hp:HP050, type:W, retreatCost:1) {
-          weakness L, '+10'
+          weakness L, PLUS10
           move "Crabhammer", {
             text "10 damage. "
             energyCost C
@@ -2999,7 +3000,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case CROAGUNK_101:
         return basic (this, hp:HP060, type:P, retreatCost:1) {
-          weakness P, '+10'
+          weakness P, PLUS10
           move "Hook", {
             text "10 damage. "
             energyCost C
@@ -3019,7 +3020,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case DODUO_102:
         return basic (this, hp:HP050, type:C, retreatCost:0) {
-          weakness L, '+10'
+          weakness L, PLUS10
           resistance F, MINUS20
           move "Take Down", {
             text "20 damage. Doduo does 10 damage to itself."
@@ -3033,7 +3034,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case DRIFLOON_103:
         return basic (this, hp:HP040, type:P, retreatCost:1) {
-          weakness D, '+10'
+          weakness D, PLUS10
           resistance C, MINUS20
           move "Reckless Charge", {
             text "20 damage. Drifloon does 10 damage to itself."
@@ -3057,7 +3058,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case FEEBAS_104:
         return basic (this, hp:HP030, type:W, retreatCost:1) {
-          weakness L, '+10'
+          weakness L, PLUS10
           move "Surprise Attack", {
             text "20 damage. Flip a coin. If tails, this attack does nothing."
             energyCost ()
@@ -3082,7 +3083,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case GEODUDE_105:
         return basic (this, hp:HP060, type:F, retreatCost:2) {
-          weakness W, '+10'
+          weakness W, PLUS10
           move "Knuckle Punch", {
             text "10 damage. "
             energyCost C
@@ -3104,7 +3105,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case GIBLE_106:
         return basic (this, hp:HP060, type:C, retreatCost:1) {
-          weakness C, '+10'
+          weakness C, PLUS10
           move "Sand Attack", {
             text "If the Defending Pokémon tries to attack during your opponent's next turn, your opponent flips a coin. If tails, that attack does nothing."
             energyCost C
@@ -3124,7 +3125,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case GOLDEEN_107:
         return basic (this, hp:HP050, type:W, retreatCost:1) {
-          weakness L, '+10'
+          weakness L, PLUS10
           move "Flail", {
             text "10x damage. Does 10 damage times the number of damage counters on Goldeen."
             energyCost C
@@ -3148,7 +3149,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case GROWLITHE_108:
         return basic (this, hp:HP060, type:R, retreatCost:1) {
-          weakness W, '+10'
+          weakness W, PLUS10
           move "Smash Kick", {
             text "10 damage. "
             energyCost C
@@ -3171,7 +3172,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case KRICKETOT_109:
         return basic (this, hp:HP050, type:G, retreatCost:1) {
-          weakness R, '+10'
+          weakness R, PLUS10
           move "Headbutt", {
             text "10 damage. "
             energyCost C
@@ -3191,7 +3192,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case MAGIKARP_110:
         return basic (this, hp:HP030, type:W, retreatCost:1) {
-          weakness L, '+10'
+          weakness L, PLUS10
           move "Flail Around", {
             text "10x damage. Flip 3 coins. This attack does 10 damage times the number of heads."
             energyCost C
@@ -3205,7 +3206,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case MAGNEMITE_111:
         return basic (this, hp:HP040, type:L, retreatCost:1) {
-          weakness F, '+10'
+          weakness F, PLUS10
           resistance M, MINUS20
           move "Speed Ball", {
             text "10 damage. "
@@ -3229,7 +3230,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case MANKEY_112:
         return basic (this, hp:HP050, type:F, retreatCost:1) {
-          weakness P, '+10'
+          weakness P, PLUS10
           move "Extra Punch", {
             text "10+ damage. If the Defending Pokémon is a Pokémon LV.X, this attack does 10 damage plus 50 more damage."
             energyCost F
@@ -3244,7 +3245,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case MEDITITE_113:
         return basic (this, hp:HP060, type:P, retreatCost:1) {
-          weakness P, '+10'
+          weakness P, PLUS10
           move "Psyshot", {
             text "10 damage. "
             energyCost C
@@ -3266,7 +3267,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case MEOWTH_114:
         return basic (this, hp:HP060, type:C, retreatCost:1) {
-          weakness F, '+10'
+          weakness F, PLUS10
           move "Scratch", {
             text "10 damage. "
             energyCost C
@@ -3288,7 +3289,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case MIME_JR__115:
         return basic (this, hp:HP050, type:P, retreatCost:1) {
-          weakness P, '+10'
+          weakness P, PLUS10
           pokePower "Baby Evolution", {
             text "Once during your turn (before your attack), you may put Mr. Mime from your hand onto Mime Jr. (this counts as evolving Mime Jr.) and remove all damage counters from Mime Jr."
             actionA {
@@ -3329,7 +3330,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case MUDKIP_116:
         return basic (this, hp:HP060, type:W, retreatCost:1) {
-          weakness G, '+10'
+          weakness G, PLUS10
           move "Mud Sport", {
             text "10+ damage. If Mudkip has less Energy attached to it than the Defending Pokémon, this attack does 10 damage plus 10 more damage."
             energyCost W
@@ -3352,7 +3353,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case NINCADA_117:
         return basic (this, hp:HP040, type:G, retreatCost:1) {
-          weakness R, '+10'
+          weakness R, PLUS10
           move "Call for Family", {
             text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
             energyCost C
@@ -3371,7 +3372,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case PACHIRISU_118:
         return basic (this, hp:HP060, type:L, retreatCost:1) {
-          weakness F, '+10'
+          weakness F, PLUS10
           resistance M, MINUS20
           move "Tail Slap", {
             text "10 damage. "
@@ -3395,7 +3396,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case PARAS_119:
         return basic (this, hp:HP050, type:G, retreatCost:1) {
-          weakness R, '+10'
+          weakness R, PLUS10
           move "Spore", {
             text "The Defending Pokémon is now Asleep."
             energyCost C
@@ -3418,7 +3419,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case PIKACHU_120:
         return basic (this, hp:HP050, type:L, retreatCost:1) {
-          weakness F, '+10'
+          weakness F, PLUS10
           resistance M, MINUS20
           move "Gnaw", {
             text "10 damage. "
@@ -3442,7 +3443,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case PIPLUP_121:
         return basic (this, hp:HP060, type:W, retreatCost:1) {
-          weakness L, '+10'
+          weakness L, PLUS10
           move "Pound", {
             text "10 damage. "
             energyCost C
@@ -3462,7 +3463,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case RHYHORN_122:
         return basic (this, hp:HP070, type:F, retreatCost:2) {
-          weakness W, '+10'
+          weakness W, PLUS10
           resistance L, MINUS20
           move "Stomp", {
             text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 20 more damage."
@@ -3486,7 +3487,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case ROSELIA_123:
         return basic (this, hp:HP060, type:G, retreatCost:1) {
-          weakness R, '+10'
+          weakness R, PLUS10
           move "Vine Slap", {
             text "10 damage. "
             energyCost C
@@ -3509,7 +3510,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case SANDSHREW_124:
         return basic (this, hp:HP050, type:F, retreatCost:1) {
-          weakness W, '+10'
+          weakness W, PLUS10
           resistance L, MINUS20
           move "Scratch", {
             text "20 damage. "
@@ -3522,7 +3523,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case SEEL_125:
         return basic (this, hp:HP060, type:W, retreatCost:2) {
-          weakness M, '+10'
+          weakness M, PLUS10
           move "Tail Slap", {
             text "10 damage. "
             energyCost C
@@ -3545,7 +3546,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case SHINX_126:
         return basic (this, hp:HP060, type:L, retreatCost:1) {
-          weakness F, '+10'
+          weakness F, PLUS10
           resistance M, MINUS20
           move "Bite", {
             text "20 damage. "
@@ -3558,7 +3559,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case SHROOMISH_127:
         return basic (this, hp:HP060, type:G, retreatCost:1) {
-          weakness R, '+10'
+          weakness R, PLUS10
           resistance W, MINUS20
           move "Stun Spore", {
             text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
@@ -3581,7 +3582,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case SKORUPI_128:
         return basic (this, hp:HP050, type:P, retreatCost:2) {
-          weakness P, '+10'
+          weakness P, PLUS10
           move "Poison Sting", {
             text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Poisoned."
             energyCost P, C
@@ -3606,7 +3607,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case STARLY_129:
         return basic (this, hp:HP050, type:C, retreatCost:1) {
-          weakness L, '+10'
+          weakness L, PLUS10
           resistance F, MINUS20
           move "Peck", {
             text "20 damage. "
@@ -3619,7 +3620,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case SURSKIT_130:
         return basic (this, hp:HP050, type:G, retreatCost:1) {
-          weakness R, '+10'
+          weakness R, PLUS10
           move "Quick Attack", {
             text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
             energyCost C
@@ -3634,7 +3635,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case TURTWIG_131:
         return basic (this, hp:HP060, type:G, retreatCost:2) {
-          weakness R, '+10'
+          weakness R, PLUS10
           resistance W, MINUS20
           move "Shell Attack", {
             text "10 damage. "
@@ -3658,7 +3659,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case WHISMUR_132:
         return basic (this, hp:HP060, type:C, retreatCost:1) {
-          weakness F, '+10'
+          weakness F, PLUS10
           move "Tone-Deaf", {
             text "Flip a coin. If heads, the Defending Pokémon is now Confused."
             energyCost C
@@ -3680,7 +3681,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case ZUBAT_133:
         return basic (this, hp:HP050, type:P, retreatCost:1) {
-          weakness P, '+10'
+          weakness P, PLUS10
           resistance F, MINUS20
           move "Quick Turn", {
             text "10x damage. Flip 2 coins. This attack does 10 damage times the number of heads."
