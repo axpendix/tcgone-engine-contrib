@@ -707,7 +707,7 @@ public enum SupremeVictors implements LogicCardInfo {
             onAttack {
               damage 20
               if(confirm("Return all [G] Energy attached to $self in order to do aditional damgae?")) {
-                damage 20 * self.cards.filterByEnergyType(G)
+                damage 20 * self.cards.filterByEnergyType(G).size()
                 afterDamage {
                   self.cards.filterByEnergyType(G).moveTo(my.hand)
                 }
@@ -911,7 +911,7 @@ public enum SupremeVictors implements LogicCardInfo {
               assert opp.all.find{it.cards.energyCount(C)} : "None of your opponent's Pokémon have any Energy attached"
             }
             onAttack {
-              def tar = opp.all.findAll{it.numberOfDamageCounters()}.select("Choose 1 of your oppopnent's Pokémon")
+              def tar = opp.all.findAll{it.energyCount(C)}.select("Choose 1 of your oppopnent's Pokémon")
               directDamage 10*tar.energyCount(C), tar
             }
           }
