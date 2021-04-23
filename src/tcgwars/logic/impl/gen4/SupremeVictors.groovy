@@ -259,7 +259,8 @@ public enum SupremeVictors implements LogicCardInfo {
           move "Doom News", {
             text "Return all Energy cards attached to Absol G to your hand. The Defending Pokémon is Knocked Out at the end of your opponent's next turn."
             energyCost D, C, C
-            attackRequirement {
+            attackRequirement {}
+            onAttack {
               self.cards.filterByType(ENERGY).moveTo(my.hand)
               def pcs = defending
               targeted (pcs) {
@@ -277,10 +278,10 @@ public enum SupremeVictors implements LogicCardInfo {
                   after FALL_BACK, pcs, {unregister()}
                   after EVOLVE, pcs, {unregister()}
                   after DEVOLVE, pcs, {unregister()}
+                  after LEVEL_UP, pcs, {unregister()}
                 }
               }
             }
-            onAttack {}
           }
         };
       case BLAZIKEN_FB_2:
@@ -330,13 +331,8 @@ public enum SupremeVictors implements LogicCardInfo {
               assert opp.bench : "Your opponent has no Benched Pokémon"
             }
             onAttack {
-              def pcs = opp.all.select()
-              new ResolvedDamage(hp(40), self, pcs, ATTACK, DamageManager.DamageFlag.FORCE_WEAKNESS_RESISTANCE).run(bg)
-              bg.dm().applyWeakness()
-              bg.dm().applyResistance()
-              def damage = bg.dm().getTotalDamage(self, pcs)
-              bg.dm().clearDamages()
-              bg.em().run(new DirectDamage(damage, pcs))
+              def pcs = opp.bench.select(text)
+              new ResolvedDamage(hp(40), my.active, pcs, Source.ATTACK, DamageManager.DamageFlag.FORCE_WEAKNESS_RESISTANCE).run(bg)
             }
           }
         };
@@ -363,18 +359,18 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
-              afterDamage {
-                if(my.bench && self.cards.energyCount(L)) {
-                  def energyCard = self.cards.select("Choose a [L] Energy to move",energyFilter(L)).fist()
-                  def tar = my.bench.select("Move $energyCard to which Pokémon?")
-                  energySwitch(self,tar,energyCard)
+              if(my.bench && self.cards.energyCount(L)) {
+                def energyCard = self.cards.select("Choose a [L] Energy to move", energyFilter(L)).fist()
+                def tar = my.bench.select("Move $energyCard to which Pokémon?")
+                afterDamage {
+                  energySwitch(self, tar, energyCard)
                 }
               }
             }
           }
         };
       case GARCHOMP_5:
-        return evolution (this, from:"Gabite", hp:HP130, type:C, retreatCost:null) {
+        return evolution (this, from:"Gabite", hp:HP130, type:C, retreatCost:0) {
           weakness C, PLUS30
           pokeBody "Dragon Intimidation", {
             text "If Garchomp is your Active Pokémon and is damaged by an opponent's attack (even if Garchomp is Knocked Out), choose an Energy card attached to the Attacking Pokémon and put it into your opponent's hand."
@@ -692,7 +688,7 @@ public enum SupremeVictors implements LogicCardInfo {
           }
         };
       case YANMEGA_14:
-        return evolution (this, from:"Yanma", hp:HP100, type:G, retreatCost:null) {
+        return evolution (this, from:"Yanma", hp:HP100, type:G, retreatCost:0) {
           weakness L, PLUS20
           resistance F, MINUS20
           pokePower "Speed Boost", {
@@ -1003,7 +999,7 @@ public enum SupremeVictors implements LogicCardInfo {
           }
         };
       case DODRIO_25:
-        return evolution (this, from:"Doduo", hp:HP080, type:C, retreatCost:null) {
+        return evolution (this, from:"Doduo", hp:HP080, type:C, retreatCost:0) {
           weakness L, PLUS20
           resistance F, MINUS20
           pokePower "Echo Draw", {
@@ -1191,7 +1187,7 @@ public enum SupremeVictors implements LogicCardInfo {
           }
         };
       case LUNATONE_32:
-        return basic (this, hp:HP070, type:P, retreatCost:null) {
+        return basic (this, hp:HP070, type:P, retreatCost:0) {
           weakness P, PLUS20
           pokeBody "Marvel Eyes", {
             text "If you have Solrock in play, prevent all effects of attacks, including damage, done to any of your Lunatone or Solrock by your opponent's Pokémon LV.X."
@@ -2189,7 +2185,7 @@ public enum SupremeVictors implements LogicCardInfo {
           }
         };
       case MASQUERAIN_68:
-        return evolution (this, from:"Surskit", hp:HP080, type:G, retreatCost:null) {
+        return evolution (this, from:"Surskit", hp:HP080, type:G, retreatCost:0) {
           weakness L, PLUS20
           resistance F, MINUS20
           pokeBody "Intimidating Pattern", {
@@ -2321,7 +2317,7 @@ public enum SupremeVictors implements LogicCardInfo {
           }
         };
       case NINJASK_73:
-        return evolution (this, from:"Nincada", hp:HP080, type:G, retreatCost:null) {
+        return evolution (this, from:"Nincada", hp:HP080, type:G, retreatCost:0) {
           weakness R, PLUS20
           resistance F, MINUS20
           move "Circling Dive", {
@@ -2429,7 +2425,7 @@ public enum SupremeVictors implements LogicCardInfo {
           }
         };
       case RAICHU_77:
-        return evolution (this, from:"Pikachu", hp:HP090, type:L, retreatCost:null) {
+        return evolution (this, from:"Pikachu", hp:HP090, type:L, retreatCost:0) {
           weakness F, PLUS20
           resistance M, MINUS20
           move "Quick Attack", {
@@ -2458,7 +2454,7 @@ public enum SupremeVictors implements LogicCardInfo {
           }
         };
       case RATICATE_G_78:
-        return basic (this, hp:HP070, type:C, retreatCost:null) {
+        return basic (this, hp:HP070, type:C, retreatCost:0) {
           weakness F
           move "Find", {
             text "Search your discard pile for a Trainer card or a Supporter card, show it to your opponent, and put it into your hand."
@@ -2664,7 +2660,7 @@ public enum SupremeVictors implements LogicCardInfo {
           }
         };
       case TOGEKISS_C_86:
-        return basic (this, hp:HP070, type:C, retreatCost:null) {
+        return basic (this, hp:HP070, type:C, retreatCost:0) {
           weakness L
           resistance F, MINUS20
           move "Collect", {
@@ -3022,7 +3018,7 @@ public enum SupremeVictors implements LogicCardInfo {
           }
         };
       case DODUO_102:
-        return basic (this, hp:HP050, type:C, retreatCost:null) {
+        return basic (this, hp:HP050, type:C, retreatCost:0) {
           weakness L, '+10'
           resistance F, MINUS20
           move "Take Down", {

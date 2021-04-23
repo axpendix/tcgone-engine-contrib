@@ -2978,6 +2978,9 @@ public enum GreatEncounters implements LogicCardInfo {
                       }
                       after FALL_BACK, pcs, { unregister() }
                       after KNOCKOUT, pcs, { unregister() }
+                      after EVOLVE, pcs, { unregister() }
+                      after DEVOLVE, pcs, { unregister() }
+                      after LEVEL_UP, pcs, { unregister() }
                     }
                   }
                 }
