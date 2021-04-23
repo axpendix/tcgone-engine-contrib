@@ -448,7 +448,7 @@ public enum SupremeVictors implements LogicCardInfo {
             bg.em().storeObject("Gravitation_source", source)
             def eff
             onActivate {
-              eff = getter (GET_FULL_HP) {h->
+              eff = getter (GET_FULL_HP,BEFORE_LAST) {h->
                 def pcs = h.effect.target
                 target = bg.em().retrieveObject("Gravitation_target")
                 source = bg.em().retrieveObject("Gravitation_source")
