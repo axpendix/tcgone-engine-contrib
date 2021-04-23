@@ -442,16 +442,14 @@ public enum SupremeVictors implements LogicCardInfo {
           resistance P, MINUS20
           pokeBody "Gravitation", {
             text "Each Pokémon in play (both yours and your opponent's) gets -20 HP. No more than 20 HP can be reduced by all Gravitation Poké-Bodies."
-            def target = []
-            def source = []
-            bg.em().storeObject("Gravitation_target", target)
-            bg.em().storeObject("Gravitation_source", source)
             def eff
             onActivate {
               eff = getter (GET_FULL_HP,BEFORE_LAST) {h->
                 def pcs = h.effect.target
-                target = bg.em().retrieveObject("Gravitation_target")
-                source = bg.em().retrieveObject("Gravitation_source")
+                def target = bg.em().retrieveObject("Gravitation_target")
+                target = target?target:[]
+                def source = bg.em().retrieveObject("Gravitation_source")
+                source = source?source:[]
                 if(!target.contains(pcs)){
                   h.object -= hp(20)
                   target.add(pcs)
