@@ -118,7 +118,6 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               // TODO
             }
           }
-
         };
       case LUGIA_HGSS02:
         return basic (this, hp:HP090, type:WATER, retreatCost:2) {
@@ -140,7 +139,6 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case PIKACHU_HGSS03:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
@@ -162,7 +160,6 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case WOBBUFFET_HGSS04:
         return basic (this, hp:HP090, type:PSYCHIC, retreatCost:3) {
@@ -181,7 +178,6 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               flip { damage 30 }
             }
           }
-
         };
       case HOOTHOOT_HGSS05:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
@@ -200,7 +196,6 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case NOCTOWL_HGSS06:
         return evolution (this, from:"Hoothoot", hp:HP090, type:COLORLESS, retreatCost:1) {
@@ -219,7 +214,6 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case FERALIGATR_HGSS07:
         return copy (HeartgoldSoulsilver.FERALIGATR_108, this);
@@ -246,7 +240,6 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case LATIOS_HGSS11:
         return basic (this, hp:HP090, type:COLORLESS, retreatCost:2) {
@@ -264,7 +257,6 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case CLEFFA_HGSS12:
         return copy (HeartgoldSoulsilver.CLEFFA_17, this);
@@ -289,7 +281,6 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case SHUCKLE_HGSS15:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
@@ -307,7 +298,6 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case PLUSLE_HGSS16:
         return copy (Unleashed.PLUSLE_36, this);
@@ -327,7 +317,6 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case ENTEI_HGSS20:
         return basic (this, hp:HP080, type:FIRE, retreatCost:1) {
@@ -340,7 +329,6 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case SUICUNE_HGSS21:
         return basic (this, hp:HP080, type:WATER, retreatCost:1) {
@@ -353,7 +341,6 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case PORYGON_HGSS22:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
@@ -374,7 +361,6 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case PORYGON2_HGSS23:
         return evolution (this, from:"Porygon", hp:HP080, type:COLORLESS, retreatCost:2) {
@@ -392,7 +378,6 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case HITMONCHAN_HGSS24:
         return copy (Undaunted.HITMONCHAN_51, this);
