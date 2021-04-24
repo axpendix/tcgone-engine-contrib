@@ -98,7 +98,7 @@ public enum PopSeries9 implements LogicCardInfo {
             }
           }
           move "Jet Sword", {
-            text "100 damage. Discard 2 Energy attached to Garchomp and this attack does 10 damage to each of your opponent’s Benched Pokémon."
+            text "100 damage. Discard 2 Energy attached to Garchomp and this attack does 10 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C, C, C
             attackRequirement {}
             onAttack {
@@ -118,7 +118,7 @@ public enum PopSeries9 implements LogicCardInfo {
             }
           }
           move "Water Glow", {
-            text "Remove from Manaphy the number of damage counters equal to the damage you did to that Pokémon."
+            text "Choose 1 of your opponent's Pokémon. This attack does 20 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.) Remove from Manaphy the number of damage counters equal to the damage you did to that Pokémon."
             energyCost W
             attackRequirement {}
             onAttack {
@@ -265,7 +265,7 @@ public enum PopSeries9 implements LogicCardInfo {
         return evolution (this, from:"Buneary", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS20
           move "Jump Kick", {
-            text "20 damage. Does 20 damage to 1 of your opponent’s Benched Pokémon."
+            text "20 damage. Does 20 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C, C
             attackRequirement {}
             onAttack {
@@ -361,7 +361,7 @@ public enum PopSeries9 implements LogicCardInfo {
             }
           }
           move "Sleepy", {
-            text "40+ damage. "
+            text "40+ damage. If you have Piplup in play, this attack does 40 damage plus 20 more damage and the Defending Pokémon is now Asleep."
             energyCost R, C, C
             attackRequirement {}
             onAttack {
@@ -370,23 +370,13 @@ public enum PopSeries9 implements LogicCardInfo {
           }
         };
       case GIBLE_14:
-        return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
-          weakness C, PLUS10
-          move "Push Down", {
-            text "10 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-        };
+        return copy (MysteriousTreasures.GIBLE_85, this);
       case PIKACHU_15:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
           resistance M, MINUS20
           move "Growl", {
-            text "."
+            text "During your opponent's next turn, any damage done by the attack from the Defending Pokémon is reduced by 20 (before applying Weakness and Resistance)."
             energyCost C
             attackRequirement {}
             onAttack {
