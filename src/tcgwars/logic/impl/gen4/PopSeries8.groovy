@@ -1,4 +1,7 @@
-package tcgwars.logic.impl.gen4;
+package tcgwars.logic.impl.gen4
+
+import tcgwars.logic.impl.gen3.Sandstorm
+import tcgwars.logic.impl.gen3.SandstormNG;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -195,174 +198,25 @@ public enum PopSeries8 implements LogicCardInfo {
           }
         };
       case CHERRIM_6:
-        return evolution (this, from:"Cherubi", hp:HP080, type:GRASS, retreatCost:2) {
-          weakness R, PLUS20
-          resistance W, MINUS20
-          move "Worry Seed", {
-            text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
-            energyCost G
-            attackRequirement {}
-            onAttack {
-              damage 20
-              flip { apply CONFUSED }
-            }
-          }
-          move "Magical Leaf", {
-            text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 20 more damage and remove 3 damage counters from Cherrim."
-            energyCost G, G
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-        };
+        return copy (DiamondPearl.CHERRIM_45, this);
       case CARNIVINE_7:
-        return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
-          weakness R, PLUS20
-          resistance W, MINUS20
-          move "Swallow Up", {
-            text "30 damage. Before doing damage, count the remaining HP of the Defending Pokémon and Carnivine. If the Defending Pokémon has fewer remaining HP than Carnivine’s, this attack does 60 damage instead."
-            energyCost G, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Wring Out", {
-            text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed and discard an Energy card attached to the Defending Pokémon."
-            energyCost G, G
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-        };
+        return copy (DiamondPearl.CARNIVINE_21, this);
       case LUXIO_8:
-        return evolution (this, from:"Shinx", hp:HP080, type:LIGHTNING, retreatCost:0) {
-          weakness F, PLUS20
-          resistance M, MINUS20
-          move "Fasten Claw", {
-            text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 30 more damage."
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Thunder Fang", {
-            text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-            energyCost L, L
-            attackRequirement {}
-            onAttack {
-              damage 30
-              flip { apply PARALYZED }
-            }
-          }
-        };
+        return copy (DiamondPearl.LUXIO_52, this);
       case NIGHT_MAINTENANCE_9:
         return copy (MysteriousTreasures.NIGHT_MAINTENANCE_113, this);
       case RARE_CANDY_10:
-        return basicTrainer (this) {
-          text "Choose 1 of your Basic Pokémon in play. If you have a Stage 1 or Stage 2 card that evolves from that Pokémon in your hand, put that card on the Basic Pokémon. (This counts as evolving that Pokémon.)"
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy (Sandstorm.RARE_CANDY_88, this);
       case ROSEANNE_S_RESEARCH_11:
-        return basicTrainer (this) {
-          text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck for up to 2 in any combination of Basic Pokémon and basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy (SecretWonders.ROSEANNE_S_RESEARCH_125, this);
       case CHIMCHAR_12:
-        return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
-          weakness W, PLUS10
-          move "Scratch", {
-            text "10 damage. "
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Ember", {
-            text "30 damage. Energy attached to Chimchar."
-            energyCost R, C, R
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-        };
+        return copy (DiamondPearl.CHIMCHAR_76, this);
       case CROAGUNK_13:
-        return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
-          weakness P, PLUS10
-          move "Ghastly Sound", {
-            text "Flip a coin. If heads, your opponent can’t play any Supporter cards from his or her hand during his or her next turn."
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Finger Poke", {
-            text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Poisoned."
-            energyCost P, P
-            attackRequirement {}
-            onAttack {
-              damage 20
-              flip { apply POISONED }
-            }
-          }
-        };
+        return copy (MysteriousTreasures.CROAGUNK_78, this);
       case HAPPINY_14:
-        return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
-          weakness F, PLUS10
-          pokePower "Baby Evolution", {
-            text "Once during your turn , you may put Chansey from your hand onto Happiny (this counts as evolving Happiny) and remove all damage counters from Happiny."
-            actionA {
-              assert my.hand.findAll{it.name.contains("Chansey")} : "There is no pokémon in your hand to evolve ${self}."
-              checkLastTurn()
-              powerUsed()
-              def tar = my.hand.findAll { it.name.contains("Chansey") }.select()
-              if (tar) {
-                evolve(self, tar.first(), OTHER)
-                heal self.numberOfDamageCounters*10, self
-              }
-            }
-          }
-          move "Lively", {
-            text "Remove 2 damage counters from 1 of your Pokémon."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-        };
+        return copy (MysteriousTreasures.HAPPINY_52, this);
       case PIPLUP_15:
-        return basic (this, hp:HP060, type:WATER, retreatCost:1) {
-          weakness L, PLUS10
-          move "Peck", {
-            text "10 damage. "
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Water Splash", {
-            text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 10 more damage."
-            energyCost W, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-        };
+        return copy (DiamondPearl.PIPLUP_93, this);
       case RIOLU_16:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness P, PLUS10
