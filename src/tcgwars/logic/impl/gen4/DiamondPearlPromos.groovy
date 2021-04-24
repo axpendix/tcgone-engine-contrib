@@ -1,11 +1,34 @@
 package tcgwars.logic.impl.gen4
 
+import tcgwars.logic.TargetPlayer
+import tcgwars.logic.card.pokemon.EvolutionPokemonCard
+import tcgwars.logic.card.pokemon.LevelUpPokemonCard
+import tcgwars.logic.card.pokemon.PokemonCard
+import tcgwars.logic.effect.ability.Ability
+import tcgwars.logic.effect.ability.ActivateAbilities
+import tcgwars.logic.effect.ability.PokeBody
+import tcgwars.logic.effect.basic.Evolve
+import tcgwars.logic.effect.basic.LevelUp
+import tcgwars.logic.effect.blocking.CantEvolve
 import tcgwars.logic.impl.gen3.NintendoBlackStarPromos
 import tcgwars.logic.impl.gen4.MysteriousTreasures
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.effect.EffectPriority.LAST
+import static tcgwars.logic.effect.EffectType.BEGIN_TURN
+import static tcgwars.logic.effect.EffectType.BETWEEN_TURNS
+import static tcgwars.logic.effect.EffectType.DEVOLVE
+import static tcgwars.logic.effect.EffectType.EVOLVE
+import static tcgwars.logic.effect.EffectType.FALL_BACK
+import static tcgwars.logic.effect.EffectType.GET_RETREAT_COST
+import static tcgwars.logic.effect.EffectType.PROCESS_ATTACK_EFFECTS
+import static tcgwars.logic.effect.ability.Ability.ActivationReason.OTHER
+import static tcgwars.logic.effect.ability.Ability.ActivationReason.PLAY_FROM_HAND
+import static tcgwars.logic.effect.special.SpecialConditionType.CONFUSED
+import static tcgwars.logic.effect.special.SpecialConditionType.POISONED
+import static tcgwars.logic.effect.special.SpecialConditionType.POISONED;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
@@ -179,14 +202,20 @@ public enum DiamondPearlPromos implements LogicCardInfo {
         return basic (this, hp:HP080, type:DARKNESS, retreatCost:1) {
           weakness F
           resistance P, MINUS20
-          move "", {
-            text "If damage. "
-            energyCost F
-            attackRequirement {}
-            onAttack {
-              damage 0
-              //https://bulbapedia.bulbagarden.net/wiki/Darkrai_(DP_Promo_24)
-              // TODO
+          // Enigma Berry: If Darkrai is damaged by an attack from your opponent's Fighting Pokémon, remove 4 damage counters at the end of that turn."
+          customAbility {
+            ifActiveAndDamagedByAttackBody(delegate) {
+              if (opp.active.types.contains(F)) {
+                delayed {
+                  before BETWEEN_TURNS, {
+                    if (bg.currentTurn == self.owner.opposite) {
+                      bc "Enigma Berry activates"
+                      heal 40, self
+                    }
+                  }
+                  unregisterAfter 1
+                }
+              }
             }
           }
           move "Spacial Rend", {
@@ -194,17 +223,31 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
-              // TODO
+              damage 10
+              afterDamage {
+                if (my.deck) {
+                  my.deck.search(cardTypeFilter(STADIUM)).showToOpponent("Selected cards").moveTo(hand)
+                  shuffleDeck()
+                }
+                if (bg.stadiumInfoStruct) {
+                  discard bg.stadiumInfoStruct.stadiumCard
+                }
+              }
             }
           }
           move "Roar of Time", {
-            text "80 damage. Search your discard pile for 3 Pok�mon, show them to your opponent, and put them on top of your deck. Shuffle your deck afterward. (If you don�t have 3 Pok�mon in your discard pile, this attack does nothing.)"
+            text "80 damage. Search your discard pile for 3 Pokémon, show them to your opponent, and put them on top of your deck. Shuffle your deck afterward. (If you don't have 3 Pokémon in your discard pile, this attack does nothing.)"
             energyCost M, M, M
-            attackRequirement {}
+            attackRequirement {
+              assert my.discard.filterByType(POKEMON).size() >= 3 : "Need 3 Pokémon in discard"
+            }
             onAttack {
-              damage 0
-              // TODO
+              damage 80
+              afterDamage {
+                def list = my.discard.select(count:3, "Search your discard pile for 3 Pokémon to put into your deck", { it.cardTypes.is(POKEMON) })
+                list.moveTo(addToTop: true, my.deck)
+                shuffleDeck()
+              }
             }
           }
         };
@@ -227,47 +270,69 @@ public enum DiamondPearlPromos implements LogicCardInfo {
           weakness R
           resistance P, MINUS20
           move "Mirror Shot", {
-            text "40 damage. If the Defending Pok�mon tries to attack during your opponent�s next turn, your opponent flips a coin. If tails, that attack does nothing."
+            text "40 damage. If the Defending Pokémon tries to attack during your opponent's next turn, your opponent flips a coin. If tails, that attack does nothing."
             energyCost M, C
             attackRequirement {}
             onAttack {
-              damage 0
-              // https://bulbapedia.bulbagarden.net/wiki/Magnezone_(DP_Promo_32)
-              // TODO
+              damage 40
+              sandAttack(thisMove)
             }
           }
           move "Magnet Slash", {
-            text "100 damage. Energy attached to Magnezone."
+            text "100 damage. Discard all [L] Energy attached to Magnezone."
             energyCost L, M, C, C, L
             attackRequirement {}
             onAttack {
-              damage 0
-              // https://bulbapedia.bulbagarden.net/wiki/Magnezone_(DP_Promo_32)
-              // TODO
+              damage 100
+              afterDamage {
+                discardAllSelfEnergy(L)
+              }
             }
           }
-
         };
       case DUSKNOIR_DP33:
         return evolution (this, from:"Dusclops", hp:HP130, type:PSYCHIC, retreatCost:2) {
           weakness D, PLUS30
           resistance C, MINUS20
           pokePower "Dark Hide", {
-            text "Once during your turn , you may flip a coin. If heads, look at your opponent�s hand, choose a Pok�mon you find there, and put it on the bottom of his or her deck. This power can�t be used if Dusknoir is affected by a Special Condition."
+            text "Once during your turn (before your attack), you may flip a coin. If heads, look at your opponent's hand, choose a Pokémon you find there, and put it on the bottom of his or her deck. This power can't be used if Dusknoir is affected by a Special Condition."
             actionA {
-              // TODO
+              checkNoSPC()
+              checkLastTurn()
+              assert opp.hand.notEmpty() : "Opponent's hand is empty"
+              powerUsed()
+
+              flip {
+                def card = opp.hand.select(min:0, max: 1,"Look at your opponent's hand, choose a Pokémon you find there, and put it on the bottom of his or her deck", cardTypeFilter(POKEMON))
+                if (card.notEmpty()) {
+                  opp.hand.removeAll(card)
+                  shuffleDeck(card, TargetPlayer.OPPONENT)
+                  bc "$thisAbility shuffled $card into deck"
+                }
+              }
             }
           }
           move "Reaper Pulse", {
-            text "70 damage. Move up to 2 damage counters from Dusknoir to 1 of your opponent�s Benched Pok�mon."
+            text "70 damage. Move up to 2 damage counters from Dusknoir to 1 of your opponent's Benched Pokémon."
             energyCost P, P, C
             attackRequirement {}
             onAttack {
-              damage 0
-              // TODO
+              damage 70
+
+              afterDamage {
+                if (self.numberOfDamageCounters && opp.bench) {
+                  def countersToMove = Math.min(self.numberOfDamageCounters, 2)
+                  countersToMove.each {
+                    def target = opp.bench.select(min: 0, max: 1, "Select which Benched Pokémon will receive one damage counter")
+                    if (target) {
+                      self.damage -= hp(10)
+                      directDamage 10, target
+                    }
+                  }
+                }
+              }
             }
           }
-
         };
       case DRIFBLIM_DP34:
         return copy(DiamondPearl.DRIFBLIM_24, this);
@@ -275,18 +340,51 @@ public enum DiamondPearlPromos implements LogicCardInfo {
         return evolution (this, from:"Porygon2", hp:HP120, type:COLORLESS, retreatCost:2) {
           weakness F, PLUS30
           pokePower "Install", {
-            text "As often as you like during your turn , move a Technical Machine card attached to 1 of your Pok�mon to another of your Pok�mon. This power can�t be used if Porygon-Z is affected by a Special Condition."
+            text "As often as you like during your turn (before your attack), move a Technical Machine card attached to 1 of your Pokémon to another of your Pokémon. This power can't be used if Porygon-Z is affected by a Special Condition."
             actionA {
-              // TODO
+              checkNoSPC()
+              assert my.all.findAll {it.cards.hasType(TECHNICAL_MACHINE)} : "No Technical Machine cards attached to your Pokémon"
+              assert my.all.size() >= 2 : "Need at least 2 Pokémon"
+              powerUsed()
+
+              def src = my.all.findAll {it.cards.hasType(TECHNICAL_MACHINE)}.select("Source for Technical Machine")
+              def technicalMachine = src.cards.filterByType(TECHNICAL_MACHINE).select("Card to move").first()
+              def tar = my.all
+              tar.remove(src)
+              tar = tar.select("Target for $technicalMachine")
+
+              if (technicalMachine && tar) {
+                src.cards.remove(technicalMachine)
+                tar.cards.add(technicalMachine)
+                bc "$thisAbility moved $technicalMachine from $src to $tar"
+              }
             }
           }
           move "Learning", {
-            text "that levels up from 1 of your Pok�mon, and put it onto that Pok�mon. (This counts as leveling up that Pok�mon.) Shuffle your deck afterward."
+            text "Search your deck for a Pokémon LV.X that levels up from 1 of your Pokémon and put it onto that Pokémon. (This counts as leveling up that Pokémon). Shuffle your deck afterward."
             energyCost ()
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Deck is empty"
+            }
             onAttack {
-              damage 0
-              // TODO
+              def predecessors = []
+              my.all.each {
+                predecessors.add(it.name)
+              }
+              def lvX = my.deck.search("Select a Pokémon LV.X that evolves from one of your Pokémon", {
+                it.cardTypes.is(LVL_X) && it.predecessor in predecessors
+              }).first()
+
+              if (lvX) {
+                def target = my.all.findAll {
+                  it.topPokemonCard.name == (lvX as LevelUpPokemonCard).predecessor
+                }.select("Which Pokémon to Level Up?")
+
+                bg().em().run(new LevelUp(target, lvX));
+                bg().em().run(new ActivateAbilities((PokemonCard) lvX, target, reason));
+              }
+
+              shuffleDeck()
             }
           }
           move "Overload", {
@@ -294,38 +392,43 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
-              // TODO
+              damage 40 + (20 * self.cards.filterByType(TECHNICAL_MACHINE).size())
             }
           }
-
         };
       case GLISCOR_DP36:
         return evolution (this, from:"Gligar", hp:HP090, type:FIGHTING, retreatCost:0) {
           weakness W, PLUS20
           resistance F, MINUS20
           pokeBody "Blind Eye", {
-            text "As long as Gliscor is your Active Pok�mon, your opponent can�t remove any Special Conditions by evolving or devolving his or her Pok�mon. (This also including putting a Pok�mon Level-Up card onto that Pok�mon.)"
+            text "As long as Gliscor is your Active Pokémon, your opponent can't remove any Special Conditions by evolving or devolving his or her Pokémon. (This also includes putting a Pokémon Level-Up card onto that Pokémon.)"
             delayedA {
               // TODO
             }
           }
           move "Cutting Turn", {
-            text "Flip a coin. If heads, put damage counters on the Defending Pok�mon until it is 10HP away from being Knocked Out. If you do, shuffle Gliscor and all cards attached to it back into your deck."
+            text "Flip a coin. If heads, put damage counters on the Defending Pokémon until it is 10HP away from being Knocked Out. If you do, shuffle Gliscor and all cards attached to it into your deck."
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
-              // TODO
+              flip {
+                directDamage defending.remainingHP.value - 10, defending
+
+                afterDamage {
+                  self.cards.moveTo(my.deck)
+                  shuffleDeck()
+                  removePCS(self)
+                }
+              }
             }
           }
           move "Friction Heat", {
-            text "20 damage. The Defending Pok�mon is now Burned."
+            text "20 damage. The Defending Pokémon is now Burned."
             energyCost F
             attackRequirement {}
             onAttack {
-              damage 0
-              // TODO
+              damage 20
+              applyAfterDamage(BURNED)
             }
           }
 
@@ -345,8 +448,8 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               def pcs = defending
-              if(opp.bench){
-                if(confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon before doing damage?")){
+              if (opp.bench) {
+                if (confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon before doing damage?")) {
                   pcs = opp.bench.select()
                   sw defending, pcs
                 }
@@ -356,12 +459,12 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             }
           }
           move "Giga Hammer", {
-            text "80 damage. Regigigas can�t use Giga Hammer during your next turn."
+            text "80 damage. Regigigas can't use Giga Hammer during your next turn."
             energyCost C, C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
-              // TODO
+              damage 80
+              cantUseAttack(thisMove, self)
             }
           }
         };
@@ -381,12 +484,15 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             }
           }
           move "Poison Revenge", {
-            text "20+ damage. If any of your Pok�mon were Knocked Out by damage from an opponent�s attack during his of her last turn, this attack does 20 damage plus 40 more damage and the Defending Pok�mon is now Poisoned."
+            text "20+ damage. If any of your Pokémon were Knocked Out by damage from an opponent's attack during his or her last turn, this attack does 20 damage plus 40 more damage and the Defending Pokémon is now Poisoned."
             energyCost P, C
             attackRequirement {}
             onAttack {
-              damage 0
-              // TODO
+              damage 20
+              if (my.lastKnockoutByOpponentDamageTurn == bg.turnCount - 1) {
+                damage 40
+                applyAfterDamage(POISONED)
+              }
             }
           }
         };
@@ -397,10 +503,11 @@ public enum DiamondPearlPromos implements LogicCardInfo {
           move "Power Whip", {
             text "Choose 1 of your opponent's Pokémon. This attack does 10 damage for each Energy attached to Carnivine Pokémon G to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 0
-              // TODO
+              def damageAmount = 10 * self.cards.energyCount(C)
+              def info = "Select Pokémon to deal $damageAmount damage to."
+              def selectedPokemon = opp.all.select info
+              damage damageAmount, selectedPokemon
             }
           }
           move "Grass Knot", {
@@ -408,8 +515,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             energyCost G, C, C
             attackRequirement {}
             onAttack {
-              damage 0
-              // TODO
+              damage 20 + 10 * defending.retreatCost
             }
           }
 
@@ -418,21 +524,39 @@ public enum DiamondPearlPromos implements LogicCardInfo {
         return basic (this, hp:HP090, type:FIGHTING, retreatCost:3) {
           weakness W
           move "Nose Unit", {
-            text "This attack does 20 damage to each of your opponent�s Pok�mon that has any Pok�-Bodies."
+            text "This attack does 20 damage to each of your opponent's Pokémon that has any Poké-Bodies. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost M, C
             attackRequirement {}
             onAttack {
-              damage 0
-              // TODO
+              opp.all.each {
+                for (Ability ability : it.getAbilities().keySet()) {
+                  if (ability instanceof PokeBody) {
+                    directDamage(10, it)
+                  }
+                }
+              }
             }
           }
           move "Loud Snort", {
-            text "70 damage. �s Retreat Cost is 0 until the end of your next turn."
+            text "70 damage. Probopass Pokémon G's Retreat Cost is 0 until the end of your next turn."
             energyCost M, C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
-              // TODO
+              damage 70
+              afterDamage {
+                delayed {
+                  def eff
+                  register {
+                    eff = getter GET_RETREAT_COST, LAST, self, { h ->
+                      h.object = 0
+                    }
+                  }
+                  unregister {
+                    eff.unregister()
+                  }
+                  unregisterAfter 3
+                }
+              }
             }
           }
 
@@ -452,11 +576,19 @@ public enum DiamondPearlPromos implements LogicCardInfo {
           }
           move "Metallic Bolt", {
             text "60 damage. You may discard a [L] Energy and a [M] Energy attached to Magnezone. If you do, this attack's base damage is 120 instead of 60."
-            energyCost L, M, C, C, L, M
+            energyCost L, M, C, C
             attackRequirement {}
             onAttack {
-              damage 0
-              // TODO
+              damage 60
+
+              if (confirm(text)) {
+                damage 60
+
+                afterDamage {
+                  discardSelfEnergy L
+                  discardSelfEnergy M
+                }
+              }
             }
           }
 
@@ -474,21 +606,40 @@ public enum DiamondPearlPromos implements LogicCardInfo {
           weakness R
           resistance P, MINUS20
           move "Time Call", {
-            text "Search your deck for a card that evolves from 1 of your Pok�mon and put it onto that Pok�mon. (This counts as evolving that Pok�mon.) Shuffle your deck afterward."
+            text "Search your deck for a card that evolves from 1 of your Pokémon and put it on that Pokémon. (This counts as evolving that Pokémon.) Shuffle your deck afterward."
             energyCost M
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Deck is empty"
+            }
             onAttack {
-              damage 0
-              // TODO
+              flip {
+                def names = my.all.collect {it.name }
+                def evolutionCard = deck.search ("Evolves from $names", {
+                  it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)
+                }).first()
+
+                if (evolutionCard) {
+                  def eligibleToEvolve = my.all.findAll({
+                    it.name == (evolutionCard as EvolutionPokemonCard).predecessor
+                  })
+                  def cardToEvolve = eligibleToEvolve.select("Evolve which one?")
+                  evolve(cardToEvolve, evolutionCard, OTHER)
+                }
+                shuffleDeck()
+              }
             }
           }
           move "Time Wager", {
-            text "100 damage. Flip 2 coins. If either of them is tails, this attack�s base damage is 50 instead of 100."
+            text "100 damage. Flip 2 coins. If either of them is tails, this attack's base damage is 50 instead of 100."
             energyCost M, C, C
             attackRequirement {}
             onAttack {
-              damage 0
-              // TODO
+              def damageToDeal = 100
+
+              flip 2,{},{},[2:{
+                damageToDeal = 50
+              }]
+              damage damageToDeal
             }
           }
 
@@ -497,15 +648,16 @@ public enum DiamondPearlPromos implements LogicCardInfo {
         return basic (this, hp:HP090, type:COLORLESS, retreatCost:2) {
           weakness F
           move "Judgement", {
-            text "80 damage. Discard all Energy cards attached to Arceus and this attack does 10 damage to each of your opponent�s Benched Pok�mon."
+            text "80 damage. Discard all Energy cards attached to Arceus and this attack does 10 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C, C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
-              // TODO
+              discardAllSelfEnergy()
+              opp.bench.each {
+                directDamage(10, it)
+              }
             }
           }
-
         };
       case CRESSELIA_DP51:
         return basic (this, hp:HP090, type:PSYCHIC, retreatCost:2) {
@@ -513,7 +665,11 @@ public enum DiamondPearlPromos implements LogicCardInfo {
           pokeBody "Lunar Aura", {
             text "If you have Darkrai in play, remove 1 damage counter from Cresselia between turns."
             delayedA {
-              // TODO
+              before BEGIN_TURN, {
+                if (my.all.find {it.name == "Darkrai" }) {
+                  heal 10, self, SRC_ABILITY
+                }
+              }
             }
           }
           move "Lunar Flight", {
@@ -521,29 +677,36 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             energyCost P, P, C
             attackRequirement {}
             onAttack {
-              damage 0
-              // TODO
+              damage 50 - (10 * self.numberOfDamageCounters)
             }
           }
-
         };
       case DARKRAI_DP52:
         return basic (this, hp:HP090, type:DARKNESS, retreatCost:2) {
           weakness F
           resistance P, MINUS20
           pokeBody "Darkness Aura", {
-            text "If you have Cresselia in play, each of Darkrai�s attack does 20 more damage to the Defending Pok�mon ."
+            text "If you have Cresselia in play, each of Darkrai's attacks does 20 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
             delayedA {
+              after PROCESS_ATTACK_EFFECTS, {
+                if (ef.attacker.owner == self.owner self.owner.pbg.all.find { it.name == "Cresselia" }) {
+                  bg.dm().each {
+                    if (it.to != self.owner && it.to.active && it.notNoEffect && it.dmg.value) {
+                      bc "Darkness Aura +20"
+                      it.dmg += hp(20)
+                    }
+                  }
+                }
+              }
             }
-            // TODO
           }
           move "Hypnoblast", {
-            text "60 damage. Flip a coin. If heads, the Defending Pok�mon is now Asleep."
+            text "60 damage. Flip a coin. If heads, the Defending Pokémon is now Asleep."
             energyCost D, D, C
             attackRequirement {}
             onAttack {
-              damage 0
-              // TODO
+              damage 60
+              applyAfterDamage(ASLEEP)
             }
           }
         };
