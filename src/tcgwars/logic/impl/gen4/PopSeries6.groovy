@@ -103,7 +103,6 @@ public enum PopSeries6 implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case LUCARIO_2:
         return evolution (this, from:"Riolu", hp:HP090, type:FIGHTING, retreatCost:1) {
@@ -125,7 +124,6 @@ public enum PopSeries6 implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case MANAPHY_3:
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
@@ -143,7 +141,6 @@ public enum PopSeries6 implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case PACHIRISU_4:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
@@ -165,7 +162,6 @@ public enum PopSeries6 implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case RAMPARDOS_5:
         return evolution (this, from:"Cranidos", hp:HP120, type:FIGHTING, retreatCost:1) {
@@ -186,7 +182,6 @@ public enum PopSeries6 implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case DRIFLOON_6:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
@@ -208,7 +203,6 @@ public enum PopSeries6 implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case GIBLE_7:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
@@ -229,7 +223,6 @@ public enum PopSeries6 implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case RIOLU_8:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
@@ -242,7 +235,6 @@ public enum PopSeries6 implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case PIKACHU_9:
         return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
@@ -264,7 +256,6 @@ public enum PopSeries6 implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case STARAVIA_10:
         return evolution (this, from:"Starly", hp:HP070, type:COLORLESS, retreatCost:0) {
@@ -287,7 +278,6 @@ public enum PopSeries6 implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case BIDOOF_11:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
@@ -308,7 +298,6 @@ public enum PopSeries6 implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case BUNEARY_12:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
@@ -329,7 +318,6 @@ public enum PopSeries6 implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case CHERUBI_13:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -351,7 +339,6 @@ public enum PopSeries6 implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case CHIMCHAR_14:
         return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
@@ -372,7 +359,6 @@ public enum PopSeries6 implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case PIPLUP_15:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
@@ -393,7 +379,6 @@ public enum PopSeries6 implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case STARLY_16:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
@@ -415,7 +400,6 @@ public enum PopSeries6 implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case TURTWIG_17:
         return basic (this, hp:HP060, type:GRASS, retreatCost:2) {
@@ -437,7 +421,6 @@ public enum PopSeries6 implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       default:
         return null;
