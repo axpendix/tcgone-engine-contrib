@@ -1,4 +1,6 @@
-package tcgwars.logic.impl.gen4;
+package tcgwars.logic.impl.gen4
+
+import tcgwars.logic.impl.gen8.SwordShield;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -87,358 +89,39 @@ public enum PopSeries7 implements LogicCardInfo {
   public Card getImplementation() {
     switch (this) {
       case AMPHAROS_1:
-        return evolution (this, from:"Flaffy", hp:HP130, type:LIGHTNING, retreatCost:3) {
-          weakness F, PLUS30
-          resistance M, MINUS20
-          pokeBody "Jamming", {
-            text "After your opponent plays a Support card from his or her hand, put 1 damage counter on each of your opponent’s Pokémon. You can’t use more than 1 Jamming Poké-Body each turn."
-            delayedA {
-            }
-          }
-          move "Cluster Bolt", {
-            text "70 damage. Energy attached to Ampharos. If you do, this attack does 20 damage to each of your opponent’s Benched Pokémon that has any Energy cards attached to it."
-            energyCost L, C, C, L
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (SecretWonders.AMPHAROS_1, this);
       case GALLADE_2:
-        return evolution (this, from:"Kirlia", hp:HP130, type:FIGHTING, retreatCost:2) {
-          weakness P, PLUS30
-          move "Sonic Blade", {
-            text "Put damage counters on the Defending Pokémon until it is 50 HP away from being Knocked Out. If you do, your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
-            energyCost F, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Psychic Cut", {
-            text "60+ damage. You may choose as many of your face-down Prize cards as you like and put them face up. If you do, this attack does 60 damage plus 20 more damage for each Prize card you chose. (These cards remain face up for the rest of the game.)"
-            energyCost P, C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (SecretWonders.GALLADE_6, this);
       case LATIAS_3:
-        return basic (this, hp:HP080, type:COLORLESS, retreatCost:1) {
-          weakness C, PLUS20
-          resistance F, MINUS20
-          move "Miraculous Light", {
-            text "10 damage. Remove 2 damage counters and all Special Conditions from Latias."
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Mist Ball", {
-            text "80 damage. Energy attached to Latias."
-            energyCost R, W, C, R, W
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (GreatEncounters.LATIAS_22, this);
       case LATIOS_4:
-        return basic (this, hp:HP090, type:COLORLESS, retreatCost:2) {
-          weakness C, PLUS20
-          resistance F, MINUS20
-          move "Energy Draw", {
-            text "10 damage. Flip a coin. If heads, search your deck for a basic Energy card and attach it to Latios. Shuffle your deck afterward."
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Luster Purge", {
-            text "120 damage. Discard 3 Energy attached to Latios."
-            energyCost G, L, C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (GreatEncounters.LATIOS_23, this);
       case MOTHIM_5:
-        return evolution (this, from:["Burmy","Burmy Plant Cloak","Burmy Sandy Cloak","Burmy Trash Cloak"], hp:HP080, type:GRASS, retreatCost:0) {
-          weakness R, PLUS20
-          resistance F, MINUS20
-          move "Silver Wind", {
-            text ", that attack does 40 more damage."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Raging Scales", {
-            text "30+ damage. If Mothim has any damage counters on it, this attack does 30 damage plus 40 more damage."
-            energyCost G, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (SecretWonders.MOTHIM_33, this);
       case DELIBIRD_6:
-        return basic (this, hp:HP070, type:WATER, retreatCost:1) {
-          weakness M, PLUS20
-          move "Present", {
-            text "Flip a coin. If heads, search your deck for any 1 card and put it into your hand. Shuffle your deck afterward."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Ice Ball", {
-            text "20 damage. "
-            energyCost W
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (GreatEncounters.DELIBIRD_36, this);
       case FLAAFFY_7:
-        return evolution (this, from:"Mareep", hp:HP080, type:LIGHTNING, retreatCost:1) {
-          weakness F, PLUS20
-          resistance M, MINUS20
-          move "Attract Current", {
-            text "10 damage. Energy card and attach it to 1 of your Pokémon. Shuffle your deck afterward."
-            energyCost C, L
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Electromagnetic Kick", {
-            text "60 damage. Flip a coin. If tails, Flaffy does 10 damage to itself."
-            energyCost L, L, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (SecretWonders.FLAAFFY_50, this);
       case KIRLIA_8:
-        return evolution (this, from:"Ralts", hp:HP080, type:PSYCHIC, retreatCost:1) {
-          weakness P, PLUS20
-          move "Psychic Research", {
-            text "Search your discard pile for a Supporter card and use the effect of that card as the effect of this attack. (The Supporter card remains in your discard pile.)"
-            energyCost P
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Telekinesis", {
-            text "Choose 1 of your opponent’s Pokémon. This attack does 40 damage to that Pokémon. This attack’s damage isn’t affected by Weakness or Resistance."
-            energyCost P, C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (SecretWonders.KIRLIA_53, this);
       case STANTLER_9:
-        return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
-          weakness F, PLUS20
-          move "Lead", {
-            text "Search your deck for a Supporter card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Frighten Horn", {
-            text "20 damage. If the Defending Pokémon isn’t an Evolved Pokémon, that Pokémon is now Confused."
-            energyCost C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (SecretWonders.STANTLER_113, this);
       case WORMADAM_SANDY_CLOAK_10:
-        return evolution (this, from:"Burmy Sandy Cloak", hp:HP080, type:FIGHTING, retreatCost:1) {
-          weakness R, PLUS20
-          resistance L, MINUS20
-          pokeBody "Sandy Cloak", {
-            text "Prevent all effects, excluding damage, done to Wormadam Sandy Cloak."
-            delayedA {
-            }
-          }
-          move "Push Over", {
-            text "40+ damage. Energy attached to Wormadam Sandy Cloak."
-            energyCost F, C, C, F
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (SecretWonders.WORMADAM_SANDY_CLOAK_42, this);
       case BURMY_PLANT_CLOAK_11:
-        return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
-          weakness R, PLUS10
-          pokePower "Wear Cloak", {
-            text "Once during your turn , if Burmy Plant Cloak is your Active Pokémon, you may search your discard pile for a basic Energy card and attach it to Burmy Plant Cloak."
-            actionA {
-            }
-          }
-          move "Plant Cloak Tackle", {
-            text "10+ damage. Energy attached to it, this attack does 10 damage plus 10 more damage."
-            energyCost C, G
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (SecretWonders.BURMY_PLANT_CLOAK_78, this);
       case BURMY_SANDY_CLOAK_12:
-        return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
-          weakness R, PLUS10
-          pokePower "Wear Cloak", {
-            text "Once during your turn , if Burmy Sandy Cloak is your Active Pokémon, you may search your discard pile for a basic Energy card and attach it to Burmy Sandy Cloak."
-            actionA {
-            }
-          }
-          move "Sandy Cloak Tackle", {
-            text "10+ damage. Energy attached to it, this attack does 10 damage plus 10 more damage."
-            energyCost C, F
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (SecretWonders.BURMY_SANDY_CLOAK_79, this);
       case CORSOLA_13:
-        return basic (this, hp:HP070, type:WATER, retreatCost:1) {
-          weakness G, PLUS20
-          move "Rally", {
-            text "Search your deck for up to 3 different types of Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Hook", {
-            text "30 damage. "
-            energyCost W, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (SecretWonders.CORSOLA_84, this);
       case MAREEP_14:
-        return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
-          weakness F, PLUS10
-          resistance M, MINUS20
-          move "Thundershock", {
-            text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-            energyCost L
-            attackRequirement {}
-            onAttack {
-              damage 10
-              flip { apply PARALYZED }
-            }
-          }
-          move "Static Shock", {
-            text "20 damage. "
-            energyCost L, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (SecretWonders.MAREEP_94, this);
       case RALTS_15:
-        return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
-          weakness P, PLUS10
-          move "Smack", {
-            text "10 damage. "
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Confuse Ray", {
-            text "Flip a coin. If heads, the Defending Pokémon is now Confused."
-            energyCost P
-            attackRequirement {}
-            onAttack {
-              flip { apply CONFUSED }
-            }
-          }
-
-        };
+        return copy (SecretWonders.RALTS_102, this);
       case SENTRET_16:
-        return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
-          weakness F, PLUS10
-          move "Grope", {
-            text "Look at the top 2 cards of your deck, choose 1 of them, and put it into your hand. Put the other card on the bottom of your deck."
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Scratch", {
-            text "10 damage. "
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (SecretWonders.SENTRET_104, this);
       case SPINDA_17:
-        return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
-          weakness F, PLUS20
-          move "Dish Out", {
-            text "Draw a card from the top and the bottom of your deck."
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Synchro Punch", {
-            text "10+ damage. If any basic Energy card attached to Spinda is the same type as any Energy attached to the Defending Pokémon, this attack does 10 damage plus 30 more damage."
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (SecretWonders.SPINDA_111, this);
       default:
         return null;
     }
