@@ -1,7 +1,6 @@
 package tcgwars.logic.impl.gen4
 
 import tcgwars.logic.impl.gen3.Sandstorm
-import tcgwars.logic.impl.gen3.SandstormNG;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
