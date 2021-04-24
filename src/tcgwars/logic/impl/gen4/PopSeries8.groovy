@@ -5,11 +5,14 @@ import tcgwars.logic.impl.gen3.SandstormNG;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.effect.Source.SRC_ABILITY;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.special.SpecialConditionType.*
 
 import tcgwars.logic.card.*
 import tcgwars.logic.util.*;
@@ -98,15 +101,21 @@ public enum PopSeries8 implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              flip { apply PARALYZED }
+              flip { applyAfterDamage(PARALYZED) }
             }
           }
           move "Fire Spin", {
             text "90 damage. Discard 2 Basic Energy cards attached to Heatran. (If you can’t discard cards, this attack does nothing."
             energyCost R, R, R, C
-            attackRequirement {}
+            attackRequirement {
+              assert self.cards.filterByType(BASIC_ENERGY).size() >= 2 : "Needs at least 2 Basic Energy cards attached"
+            }
             onAttack {
-              damage 0
+              damage 90
+
+              afterDamage {
+                self.cards.filterByType(BASIC_ENERGY).select(count: 2, "Discard 2 Basic energy cards from $self.").discard()
+              }
             }
           }
         };
@@ -118,7 +127,8 @@ public enum PopSeries8 implements LogicCardInfo {
             energyCost M, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              reduceDamageNextTurn(hp(20),thisMove)
             }
           }
           move "Striking Kick", {
@@ -126,7 +136,7 @@ public enum PopSeries8 implements LogicCardInfo {
             energyCost F, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              noResistanceOrAnyEffectDamage(60, defending)
             }
           }
         };
@@ -135,8 +145,16 @@ public enum PopSeries8 implements LogicCardInfo {
           weakness F, PLUS30
           resistance M, MINUS20
           pokeBody "Intimidating Fang", {
-            text "As long as Luxray is your Active Pokémon, any damage done by an opponent’s attack is reduced by 10 ."
+            text "As long as Luxray is your Active Pokémon, any damage done by an opponent’s attack is reduced by 10."
             delayedA {
+              after PROCESS_ATTACK_EFFECTS, {
+                bg.dm().each {
+                  if (self.active && it.to.owner == self.owner && it.dmg.value && it.notNoEffect) {
+                    bc "Intimidating Fang -10"
+                    it.dmg -= hp(10)
+                  }
+                }
+              }
             }
           }
           move "Thunder", {
@@ -144,7 +162,8 @@ public enum PopSeries8 implements LogicCardInfo {
             energyCost L, L, L, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 120
+              flip 1, {}, { damage 40, self }
             }
           }
         };
@@ -172,7 +191,8 @@ public enum PopSeries8 implements LogicCardInfo {
             energyCost M, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              flip 3, { damage 20 }
             }
           }
         };
@@ -185,7 +205,7 @@ public enum PopSeries8 implements LogicCardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
-              flip { apply CONFUSED }
+              flipThenApplySC(CONFUSED)
             }
           }
           move "Air Slash", {
@@ -193,7 +213,8 @@ public enum PopSeries8 implements LogicCardInfo {
             energyCost C, C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 70
+              flip { discardSelfEnergyAfterDamage() }
             }
           }
         };
@@ -222,7 +243,16 @@ public enum PopSeries8 implements LogicCardInfo {
           weakness P, PLUS10
           pokeBody "Inner Focus", {
             text "Riolu can’t be Paralyzed."
-            delayedA {
+            delayedA{
+              before APPLY_SPECIAL_CONDITION, self, {
+                if (ef.type == PARALYZED) {
+                  bc "$self's $thisAbility prevents it from being Paralyzed"
+                  prevent()
+                }
+              }
+            }
+            onActivate {
+              clearSpecialCondition(self, SRC_ABILITY, [PARALYZED])
             }
           }
           move "Quick Attack", {
@@ -230,7 +260,8 @@ public enum PopSeries8 implements LogicCardInfo {
             energyCost F
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { damage 10 }
             }
           }
         };
@@ -240,5 +271,4 @@ public enum PopSeries8 implements LogicCardInfo {
         return null;
     }
   }
-
 }
