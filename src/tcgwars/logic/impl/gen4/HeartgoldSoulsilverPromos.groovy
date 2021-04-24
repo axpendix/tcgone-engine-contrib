@@ -5,7 +5,15 @@ import tcgwars.logic.impl.gen8.SwordShield;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.effect.EffectPriority.BEFORE_LAST
+import static tcgwars.logic.effect.EffectType.APPLY_SPECIAL_CONDITION
+import static tcgwars.logic.effect.EffectType.ATTACH_ENERGY
+import static tcgwars.logic.effect.EffectType.GET_RETREAT_COST
+import static tcgwars.logic.effect.Source.SRC_ABILITY
+import static tcgwars.logic.effect.ability.Ability.ActivationReason.PLAY_FROM_HAND
+import static tcgwars.logic.effect.special.SpecialConditionType.ASLEEP
+import static tcgwars.logic.effect.special.SpecialConditionType.ASLEEP;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
@@ -106,7 +114,7 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
             energyCost R
             attackRequirement {}
             onAttack {
-              damage 10
+              damage 20
             }
           }
           move "Sacred Fire", {
@@ -114,8 +122,10 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
             energyCost R, R, C, C
             attackRequirement {}
             onAttack {
-              damage 0
-              // TODO
+              flip {
+                def target = opp.all.select("Select the Pokémon to target.")
+                noWrDamage 80, target
+              }
             }
           }
         };
@@ -136,7 +146,11 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
             energyCost W, W, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+
+              flip 2, {
+                damage 20
+              }
             }
           }
         };
@@ -147,9 +161,11 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
           move "Recharge", {
             text "Flip a coin. If heads, search your deck for a [L] Energy card and attach it to Pikachu. Shuffle your deck afterward."
             energyCost C, L
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Deck is empty"
+            }
             onAttack {
-              damage 0
+              flip { attachEnergyFrom(type: L, my.deck, self) }
             }
           }
           move "Thunderbolt", {
@@ -157,7 +173,8 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
             energyCost L, L, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 100
+              afterDamage { discardAllSelfEnergy() }
             }
           }
         };
@@ -165,8 +182,11 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
         return basic (this, hp:HP090, type:PSYCHIC, retreatCost:3) {
           weakness P
           pokeBody "Tenacious Bind", {
-            text "As long as Wobbuffet is your Active Pokémon, your opponent�s Active Pokémon�s Retreat Cost is [C][C] Energy more."
-            delayedA {
+            text "As long as Wobbuffet is your Active Pokémon, your opponent's Active Pokémon's Retreat Cost is [C][C] Energy more."
+            getterA (GET_RETREAT_COST) { h->
+              if (self.active && h.effect.target.owner == self.owner.opposite && h.effect.target.active) {
+                h.object += 2
+              }
             }
           }
           move "Trip Over", {
@@ -186,6 +206,15 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
           pokeBody "Insomnia", {
             text "Hoothoot can't be Asleep."
             delayedA {
+              before APPLY_SPECIAL_CONDITION, self, {
+                if (ef.type == ASLEEP) {
+                  bc "Insomnia prevents $self from being Asleep."
+                  prevent()
+                }
+              }
+            }
+            onActivate {
+              clearSpecialCondition(self, SRC_ABILITY, [ASLEEP])
             }
           }
           move "Peck", {
@@ -204,6 +233,11 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
           pokePower "Night Scope", {
             text "Once during your turn (before you attack), you may look at your opponent's hand. This Power can't be used if Noctowl is affected by a Special Condition."
             actionA {
+              checkNoSPC()
+              checkLastTurn()
+              assert opp.hand.size() : "Opponent's hand is empty"
+              powerUsed()
+              opp.hand.showToMe("Opponent's Hand")
             }
           }
           move "Hypnoblast", {
@@ -211,7 +245,8 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              applyAfterDamage(ASLEEP)
             }
           }
         };
@@ -229,7 +264,8 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              attachEnergyFrom(basic: true, my.discard, my.bench)
             }
           }
           move "Infinite Wind", {
@@ -237,7 +273,12 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              if (my.bench.find {it.name == "Latios" }) {
+                my.bench.each {
+                  heal 20, it
+                }
+              }
             }
           }
         };
@@ -246,7 +287,10 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
           weakness C
           pokeBody "Luster Float", {
             text "If you have Latias in play, the Retreat Cost for Latios is 0."
-            delayedA {
+            getterA (GET_RETREAT_COST, BEFORE_LAST, self) { holder->
+              if (my.all.any {it.name == "Latias"}) {
+                holder.object = 0
+              }
             }
           }
           move "Infinite Wing", {
@@ -254,7 +298,8 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
             energyCost C, C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 80
+              discardSelfEnergyAfterDamage(C, C)
             }
           }
         };
@@ -268,9 +313,13 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
           move "Ferry", {
             text "Search your discard pile for a Supporter card, show it to your opponent, and put it into your hand."
             energyCost W
-            attackRequirement {}
+            attackRequirement {
+              assert my.discard.any { it.cardTypes.is(SUPPORTER) } : "No Supporters in discard pile"
+            }
             onAttack {
-              damage 0
+              my.discard.findAll {
+                it.cardTypes.is(SUPPORTER)
+              }.select(text).moveTo(my.hand)
             }
           }
           move "Surf", {
@@ -278,7 +327,7 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
             energyCost W, W, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
             }
           }
         };
@@ -288,6 +337,11 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
           pokeBody "Fermenting Liquid", {
             text "Whenever you attach an Energy card from your hand to Shuckle, draw a card."
             delayedA {
+              after ATTACH_ENERGY, self, {
+                if (ef.reason == PLAY_FROM_HAND && ef.card.cardTypes.is(ENERGY)) {
+                  draw 1
+                }
+              }
             }
           }
           move "Shell Stunner", {
@@ -295,7 +349,8 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
             energyCost G, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              flip { preventAllDamageNextTurn() }
             }
           }
         };
@@ -314,7 +369,8 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
             energyCost L, L, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 70
+              cantUseAttack(thisMove, self)
             }
           }
         };
@@ -326,7 +382,8 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
             energyCost R, R, C, R
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 80
+              discardSelfEnergyAfterDamage(R)
             }
           }
         };
@@ -338,7 +395,8 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
             energyCost W, W, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              flip { cantAttackNextTurn(defending) }
             }
           }
         };
@@ -350,15 +408,19 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              reduceDamageNextTurn(hp(20), thisMove)
             }
           }
           move "Version Update", {
             text "Search your deck for Porygon2, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
             energyCost C, C
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Deck is empty"
+            }
             onAttack {
-              damage 0
+              def card = my.deck.search { it.name == "Porygon2" }
+              if (card) { card.moveTo(my.hand) }
+              shuffleDeck()
             }
           }
         };
@@ -367,7 +429,11 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
           weakness F
           pokeBody "Shortcut", {
             text "The Retreat Cost for each Porygon, Porygon2, and Porygon-Z you have in play is [C] less."
-            delayedA {
+            getterA (GET_RETREAT_COST, BEFORE_LAST) { holder->
+              def name = holder.effect.target.name
+              if (["Porygon", "Porygon2", "Porygon-Z"].contains(name)) {
+                holder.object -= 1
+              }
             }
           }
           move "Reckless Charge", {
@@ -375,7 +441,8 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              damage 10, self
             }
           }
         };
