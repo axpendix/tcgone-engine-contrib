@@ -106,7 +106,6 @@ public enum PopSeries8 implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case LUCARIO_2:
         return evolution (this, from:"Riolu", hp:HP090, type:FIGHTING, retreatCost:1) {
@@ -127,7 +126,6 @@ public enum PopSeries8 implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case LUXRAY_3:
         return evolution (this, from:"Luxio", hp:HP120, type:LIGHTNING, retreatCost:1) {
@@ -146,7 +144,6 @@ public enum PopSeries8 implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case PROBOPASS_4:
         return evolution (this, from:"Nosepass", hp:HP090, type:METAL, retreatCost:3) {
@@ -175,7 +172,6 @@ public enum PopSeries8 implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case YANMEGA_5:
         return evolution (this, from:"Yanma", hp:HP090, type:GRASS, retreatCost:0) {
@@ -197,7 +193,6 @@ public enum PopSeries8 implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case CHERRIM_6:
         return evolution (this, from:"Cherubi", hp:HP080, type:GRASS, retreatCost:2) {
@@ -220,7 +215,6 @@ public enum PopSeries8 implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case CARNIVINE_7:
         return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
@@ -242,7 +236,6 @@ public enum PopSeries8 implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case LUXIO_8:
         return evolution (this, from:"Shinx", hp:HP080, type:LIGHTNING, retreatCost:0) {
@@ -265,7 +258,6 @@ public enum PopSeries8 implements LogicCardInfo {
               flip { apply PARALYZED }
             }
           }
-
         };
       case NIGHT_MAINTENANCE_9:
         return copy (MysteriousTreasures.NIGHT_MAINTENANCE_113, this);
@@ -304,7 +296,6 @@ public enum PopSeries8 implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case CROAGUNK_13:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
@@ -326,7 +317,6 @@ public enum PopSeries8 implements LogicCardInfo {
               flip { apply POISONED }
             }
           }
-
         };
       case HAPPINY_14:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
@@ -352,7 +342,6 @@ public enum PopSeries8 implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case PIPLUP_15:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
@@ -373,7 +362,6 @@ public enum PopSeries8 implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case RIOLU_16:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
@@ -391,30 +379,9 @@ public enum PopSeries8 implements LogicCardInfo {
               damage 0
             }
           }
-
         };
       case TURTWIG_17:
-        return basic (this, hp:HP060, type:GRASS, retreatCost:2) {
-          weakness R, PLUS10
-          resistance W, MINUS20
-          move "Tackle", {
-            text "10 damage. "
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Razor Leaf", {
-            text "20 damage. "
-            energyCost G
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (DiamondPearl.TURTWIG_103, this);
       default:
         return null;
     }
