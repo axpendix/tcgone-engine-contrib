@@ -360,7 +360,7 @@ public enum SupremeVictors implements LogicCardInfo {
             onAttack {
               damage 40
               if(my.bench && self.cards.energyCount(L)) {
-                def energyCard = self.cards.select("Choose a [L] Energy to move", energyFilter(L)).fist()
+                def energyCard = self.cards.select("Choose a [L] Energy to move", energyFilter(L)).first()
                 def tar = my.bench.select("Move $energyCard to which Pokémon?")
                 afterDamage {
                   energySwitch(self, tar, energyCard)
@@ -426,8 +426,8 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 60
-              if(self.cards.energyCount(R) && my.bench && confirm("MOve a [R] Energy card attached to $self to 1 of yoru Benched Pokémon")) {
-                def energyCard = self.cards.select("Choose a [L] Energy to move",energyFilter(L)).fist()
+              if(self.cards.energyCount(R) && my.bench && confirm("Move a [R] Energy card attached to $self to 1 of your Benched Pokémon")) {
+                def energyCard = self.cards.select("Choose a [R] Energy to move",energyFilter(L)).first()
                 def tar = my.bench.select("Move $energyCard to which Pokémon?")
                 afterDamage {
                   energySwitch(self,tar,energyCard)
@@ -537,7 +537,7 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               for(Type t1:Type.values()){
-                if(my.bench.find{it.pokemonSP && it.types.contains(t1)})
+                if(my.all.find{it.pokemonSP && it.types.contains(t1)})
                   damage 20
               }
             }
@@ -739,7 +739,7 @@ public enum SupremeVictors implements LogicCardInfo {
             onAttack {
               damage 40
               if(opp.bench) {
-                damage 20, opp.bench.selet("Does 20 damage to 1 of your opponent's Benched Pokémon")
+                damage 20, opp.bench.select("Does 20 damage to 1 of your opponent's Benched Pokémon")
               }
             }
           }
