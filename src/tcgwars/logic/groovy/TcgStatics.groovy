@@ -1612,6 +1612,12 @@ class TcgStatics {
     } */
   }
 
+  /**
+   * Allows you to place damage counters without triggering knockouts. No longer needed for attacks, but still needed for abilities.
+   * @param counters The number of damage counters to place
+   * @param selectArea A PcsList of targets to choose from - Can be for either side of the field regardless of method name
+   * @param src The Source of the damage counters
+   */
   static putDamageCountersOnOpponentsPokemon(int counters, def selectArea = opp.all, def src = Source.ATTACK){
     if (selectArea.notEmpty) {
       def eff = delayed {
