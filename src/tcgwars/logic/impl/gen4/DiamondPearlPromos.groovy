@@ -577,11 +577,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
 
               if (confirm(text)) {
                 damage 60
-
-                afterDamage {
-                  discardSelfEnergy L
-                  discardSelfEnergy M
-                }
+                discardSelfEnergyAfterDamage(L, M)
               }
             }
           }
