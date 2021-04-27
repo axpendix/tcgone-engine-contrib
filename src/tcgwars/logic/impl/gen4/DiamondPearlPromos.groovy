@@ -344,14 +344,13 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               powerUsed()
 
               def src = my.all.findAll {it.cards.hasType(TECHNICAL_MACHINE)}.select("Source for Technical Machine")
-              def technicalMachine = src.cards.filterByType(TECHNICAL_MACHINE).select("Card to move").first()
+              def technicalMachine = src.cards.filterByType(TECHNICAL_MACHINE).select("Card to move")
               def tar = my.all
               tar.remove(src)
               tar = tar.select("Target for $technicalMachine")
 
               if (technicalMachine && tar) {
-                src.cards.remove(technicalMachine)
-                tar.cards.add(technicalMachine)
+                technicalMachine.moveTo(tar.cards)
                 bc "$thisAbility moved $technicalMachine from $src to $tar"
               }
             }
