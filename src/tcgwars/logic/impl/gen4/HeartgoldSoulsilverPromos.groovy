@@ -383,7 +383,7 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 80
-              discardSelfEnergyAfterDamage(R)
+              discardAllSelfEnergy(R)
             }
           }
         };
