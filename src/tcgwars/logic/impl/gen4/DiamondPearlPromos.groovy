@@ -204,7 +204,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
           resistance P, MINUS20
           // Enigma Berry: If Darkrai is damaged by an attack from your opponent's Fighting Pokémon, remove 4 damage counters at the end of that turn."
           customAbility {
-            ifActiveAndDamagedByAttackBody(delegate) {
+            ifDamagedByAttackNextTurn(delegate) {
               if (opp.active.types.contains(F)) {
                 delayed {
                   before BETWEEN_TURNS, {
