@@ -26,6 +26,7 @@ import static tcgwars.logic.effect.EffectType.GET_RETREAT_COST
 import static tcgwars.logic.effect.EffectType.PROCESS_ATTACK_EFFECTS
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.OTHER
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.PLAY_FROM_HAND
+import static tcgwars.logic.effect.special.SpecialConditionType.ASLEEP
 import static tcgwars.logic.effect.special.SpecialConditionType.CONFUSED
 import static tcgwars.logic.effect.special.SpecialConditionType.POISONED
 import static tcgwars.logic.effect.special.SpecialConditionType.POISONED;
@@ -696,7 +697,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 60
-              applyAfterDamage(ASLEEP)
+              flipThenApplySC(ASLEEP)
             }
           }
         };
