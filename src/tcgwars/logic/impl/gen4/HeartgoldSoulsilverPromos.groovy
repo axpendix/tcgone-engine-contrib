@@ -138,7 +138,7 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
             }
           }
           move "Aeroblast", {
