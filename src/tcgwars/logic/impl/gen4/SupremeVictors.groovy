@@ -1117,7 +1117,7 @@ public enum SupremeVictors implements LogicCardInfo {
               checkNoSPC()
               assert self.active : "$self is not your Active Pokémon"
               assert opp.bench.notFull()
-              assert opp.discard.filterByType(POKEMON)
+              assert opp.discard.filterByType(BASIC)
               powerUsed()
               def card = opp.discard.slect("Search your opponent's discard pile for a Basic Pokémon",cardTypeFilter(BASIC)).first()
               benchPcs(card, OTHER)
@@ -1128,7 +1128,7 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost D, C, C
             attackRequirement {}
             onAttack {
-              damage 30 + 10 * all.findAll{!it.evolution}
+              damage 30 + 10 * all.findAll{!it.evolution}.size()
             }
           }
         };
@@ -1372,8 +1372,8 @@ public enum SupremeVictors implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
             }
             onAttack {
-              attachEnergyFrom(type: G, max: 1, my.deck, my.bench.select())
-              attachEnergyFrom(type: G, max: 1, my.deck, my.bench.select())
+              attachEnergyFrom(type: G, max: 1, may:true, my.deck, my.all.select())
+              attachEnergyFrom(type: G, max: 1, may:true, my.deck, my.all.select())
               shuffleDeck()
             }
           }
@@ -1407,6 +1407,9 @@ public enum SupremeVictors implements LogicCardInfo {
                       }
                       after FALL_BACK, pcs, { unregister() }
                       after KNOCKOUT, pcs, { unregister() }
+                      after EVOLVE, pcs, { unregister() }
+                      after DEVOLVE, pcs, { unregister() }
+                      after LEVEL_UP, pcs, { unregister() }
                     }
                   }
                 }
@@ -1461,6 +1464,10 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
+              flip {
+                damage 40
+                heal 20, self
+              }
             }
           }
         };
@@ -1546,6 +1553,7 @@ public enum SupremeVictors implements LogicCardInfo {
                   after EVOLVE, self, {unregister()}
                   after DEVOLVE, self, {unregister()}
                   after FALL_BACK, self, {unregister()}
+                  after LEVEL_UP, self, { unregister() }
                 }
               }
             }
@@ -1666,9 +1674,7 @@ public enum SupremeVictors implements LogicCardInfo {
           move "Rest", {
             text "Remove all Special Conditions and 4 damage counters from Wailord. Wailord is now Asleep."
             energyCost C, C
-            attackRequirement {
-              assert self.specialConditions || self.numberOfDamageCounters : "$self is healthy"
-            }
+            attackRequirement {}
             onAttack {
               clearSpecialCondition(self)
               heal 50, self
@@ -3322,6 +3328,7 @@ public enum SupremeVictors implements LogicCardInfo {
                 after FALL_BACK, pcs, {unregister()}
                 after EVOLVE, pcs, {unregister()}
                 after DEVOLVE, pcs, {unregister()}
+                after LEVEL_UP, pcs, {unregister()}
               }
             }
           }
@@ -3857,6 +3864,7 @@ public enum SupremeVictors implements LogicCardInfo {
                   after EVOLVE, self, {unregister()}
                   after DEVOLVE, self, {unregister()}
                   after FALL_BACK, self, {unregister()}
+                  after LEVEL_UP, self, {unregister()}
                 }
               }
             }
