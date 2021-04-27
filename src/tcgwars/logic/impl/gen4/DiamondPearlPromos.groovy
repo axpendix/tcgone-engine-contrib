@@ -3,33 +3,18 @@ package tcgwars.logic.impl.gen4
 import tcgwars.logic.TargetPlayer
 import tcgwars.logic.card.pokemon.EvolutionPokemonCard
 import tcgwars.logic.card.pokemon.LevelUpPokemonCard
-import tcgwars.logic.card.pokemon.PokemonCard
 import tcgwars.logic.effect.ability.Ability
-import tcgwars.logic.effect.ability.ActivateAbilities
 import tcgwars.logic.effect.ability.PokeBody
-import tcgwars.logic.effect.basic.Evolve
 import tcgwars.logic.effect.basic.LevelUp
-import tcgwars.logic.effect.blocking.CantEvolve
 import tcgwars.logic.impl.gen3.NintendoBlackStarPromos
-import tcgwars.logic.impl.gen4.MysteriousTreasures
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*
 import static tcgwars.logic.effect.EffectPriority.LAST
-import static tcgwars.logic.effect.EffectType.BEGIN_TURN
-import static tcgwars.logic.effect.EffectType.BETWEEN_TURNS
-import static tcgwars.logic.effect.EffectType.DEVOLVE
-import static tcgwars.logic.effect.EffectType.EVOLVE
-import static tcgwars.logic.effect.EffectType.FALL_BACK
-import static tcgwars.logic.effect.EffectType.GET_RETREAT_COST
-import static tcgwars.logic.effect.EffectType.PROCESS_ATTACK_EFFECTS
+import static tcgwars.logic.effect.EffectType.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.OTHER
-import static tcgwars.logic.effect.ability.Ability.ActivationReason.PLAY_FROM_HAND
-import static tcgwars.logic.effect.special.SpecialConditionType.ASLEEP
-import static tcgwars.logic.effect.special.SpecialConditionType.CONFUSED
-import static tcgwars.logic.effect.special.SpecialConditionType.POISONED
-import static tcgwars.logic.effect.special.SpecialConditionType.POISONED;
+import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
