@@ -667,7 +667,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             energyCost P, P, C
             attackRequirement {}
             onAttack {
-              damage 50 - (10 * self.numberOfDamageCounters)
+              damage 80 - (10 * self.numberOfDamageCounters)
             }
           }
         };
