@@ -379,7 +379,7 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
           weakness W
           move "Flare Blitz", {
             text "80 damage. Discard all [R] Energy attached to Entei."
-            energyCost R, R, C, R
+            energyCost R, R, C
             attackRequirement {}
             onAttack {
               damage 80
