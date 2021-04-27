@@ -222,7 +222,7 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
             }
           }
         };
