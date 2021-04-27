@@ -625,10 +625,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               def damageToDeal = 100
-
-              flip 2,{},{},[2:{
-                damageToDeal = 50
-              }]
+              flip 2, {}, { damageToDeal = 50 }
               damage damageToDeal
             }
           }
