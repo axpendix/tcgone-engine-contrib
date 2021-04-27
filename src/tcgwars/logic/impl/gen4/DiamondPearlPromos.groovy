@@ -322,13 +322,9 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               afterDamage {
                 if (self.numberOfDamageCounters && opp.bench) {
                   def countersToMove = Math.min(self.numberOfDamageCounters, 2)
-                  countersToMove.each {
-                    def target = opp.bench.select(min: 0, max: 1, "Select which Benched Pokémon will receive one damage counter")
-                    if (target) {
-                      self.damage -= hp(10)
-                      directDamage 10, target
-                    }
-                  }
+                  def target = opp.bench.select("Which target to receive $countersToMove damage counters")
+                  self.damage -= hp(10)
+                  directDamage 10, target
                 }
               }
             }
