@@ -639,7 +639,10 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             energyCost C, C, C, C
             attackRequirement {}
             onAttack {
-              discardAllSelfEnergy()
+              afterDamage {
+                discardAllSelfEnergy()
+              }
+
               opp.bench.each {
                 directDamage(10, it)
               }
