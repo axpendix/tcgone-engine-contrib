@@ -2984,7 +2984,7 @@ public enum Stormfront implements LogicCardInfo {
           CardList energyList = []
           customAbility {
             delayed {
-              before ATTACK_MAIN, {// I couldn't get DISCARD_ENERGY or DISCARD_SELF_ENERGY to keep track of which cards were discarded or where they were discarded from.
+              before ATTACK_MAIN, {
                 src = ef.attacker
                 energyList = ef.attacker.cards.filterByType(ENERGY)
               }
@@ -2992,28 +2992,29 @@ public enum Stormfront implements LogicCardInfo {
           }
           pokeBody "Heat Metal", {
             text "Your opponent can’t remove the Special Condition Burned by evolving or devolving his or her Burned Pokémon. (This also includes putting a Pokémon Level-Up card onto the Burned Pokémon.) Whenever your opponent flips a coin for the Special Condition Burned between turns, treat it as tails."
-            def flag
             delayedA {
               before BURNED_SPC, null, null, EVOLVE, {
                 bc "Heat Metal prevents removing the Special Condition Burned by evolving or devolving"
                 prevent()
               }
+              before BURNED_SPC, null, null, DEVOLVE, {
+                bc "Heat Metal prevents removing the Special Condition Burned by evolving or devolving"
+                prevent()
+              }
             }
-            delayedA {// I don't know why but the two effects need to be in seperate delayedAs? If they aren't, the first effect will trigger during between turns.
-              before BURNED_SPC, null, null, BEGIN_TURN, {//I don't think manually adding the burn effect here would work, as the burn rules were changed in SM.
-                if(ef.target.owner == self.owner.opposite) {
+            def flag
+            getterA COIN_FLIP_GETTER, { h->
+              if (flag && h.effect.info == "Burned") {
+                h.object = false
+                flag = false
+              }
+            }
+            delayedA {
+              before BURNED_SPC, null, null, BEGIN_TURN, {
+                if (ef.target.owner == self.owner.opposite) {
                   flag = true
                 }
               }
-              def doit = {
-                if (flag) {
-                  bc "Heat Metal forced the coinflip to be TAILS."
-                  bg.deterministicCoinFlipQueue.offer(false)
-                }
-                flag = false
-              }
-              before COIN_FLIP, {doit()}//Neither of these trigger off of the burned coinflip.
-              before COIN_FLIP_GETTER, {doit()}
             }
           }
           pokePower "Heat Wave", {
