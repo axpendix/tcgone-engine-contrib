@@ -573,7 +573,7 @@ public enum Stormfront implements LogicCardInfo {
             onAttack {
               damage 100
               def energyList = []
-              while(list.energyCount(C) < 3 && my.all.find{it.cards.filterByType(ENERGY).find{!energyList.contains(it)}}) {
+              while(energyList.energyCount(C) < 3 && my.all.find{it.cards.filterByType(ENERGY).find{!energyList.contains(it)}}) {
                 def src = my.all.findAll{it.cards.filterByType(ENERGY).find{!energyList.contains(it)}}.select("Discard an Energy from which Pokémon")
                 energyList.add(src.cards.findAll{!energyList.contains(it)}.select("Discard which Energy?",cardTypeFilter(ENERGY)))
               }
