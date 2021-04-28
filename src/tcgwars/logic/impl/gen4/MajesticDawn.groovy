@@ -10,7 +10,8 @@ import tcgwars.logic.impl.gen5.BlackWhite;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.effect.EffectPriority.BEFORE_LAST;
 import static tcgwars.logic.effect.EffectType.*;
 import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
@@ -761,17 +762,15 @@ public enum MajesticDawn implements LogicCardInfo {
           pokeBody "Sunlight Veil", {
             text "Each of your Pokémon that evolves from Eevee gets +20 HP. You can’t use more than 1 Sunlight Veil Poké-Body each turn."
 
-            def target = []
-            def source = []
-            bg.em().storeObject("Sunlight_Veil_target", target)
-            bg.em().storeObject("Sunlight_Veil_source", source)
-            def eff
+            def eff, source, target
             onActivate {
-              eff = getter (GET_FULL_HP) {h->
+              eff = getter (GET_FULL_HP,BEFORE_LAST) {h->
                 def pcs = h.effect.target
                 if (pcs.owner == self.owner && pcs.realEvolution && pcs.topPokemonCard.predecessor == "Eevee"){
                   target = bg.em().retrieveObject("Sunlight_Veil_target")
+                  target = target?target:[]
                   source = bg.em().retrieveObject("Sunlight_Veil_source")
+                  source = source?source:[]
                   if(!target.contains(pcs)){
                     h.object += hp(20)
                     target.add(pcs)
