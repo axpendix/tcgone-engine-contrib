@@ -1396,7 +1396,7 @@ public enum MajesticDawn implements LogicCardInfo {
             text "30× damage. Does 30 damage times the number of different types of Wormadam on your Bench."
             energyCost G
             attackRequirement {
-              assert my.bench.find{it.name.contains("Wormadam")}
+              assert my.bench.find{it.name.contains("Wormadam")} : "You have no Wormadam on your Bench"
             }
             onAttack {
               def worms = []
