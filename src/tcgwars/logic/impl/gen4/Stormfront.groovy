@@ -1931,9 +1931,7 @@ public enum Stormfront implements LogicCardInfo {
           resistance C, MINUS20
           pokeBody "Overeager", {
             text "If Sableye is your Active Pokémon at the beginning of the game, you go first. (If each player’s Active Pokémon has the Overeager Poké-Body, this power does nothing.)"
-            delayedA {
-              //TODO : I think this has to be engine level?
-            }
+            //This is hard coded into TcgBuilders
           }
           move "Impersonate", {
             text "Search your deck for a Supporter card and discard it. Shuffle your deck afterward. Then, use the effect of that card as the effect of this attack."
@@ -1954,13 +1952,14 @@ public enum Stormfront implements LogicCardInfo {
                 }
                 unregisterAfter 1
               }
-              def card = my.deck.select("Select a Supporter to copy its effect as this attack.",cardTypeFilter(SUPPORTER)).first()
+              def card = my.deck.search("Search your deck for a Supporter and copy its effect as this attack.",cardTypeFilter(SUPPORTER)).first()
               if(card) {
                 discard card
                 bg.deterministicCurrentThreadPlayerType=self.owner
                 bg.em().run(new PlayTrainer(card))
                 bg.clearDeterministicCurrentThreadPlayerType()
               }
+              shuffleDeck()
             }
           }
           move "Overconfident", {

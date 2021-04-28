@@ -2443,7 +2443,7 @@ public enum Arceus implements LogicCardInfo {
           pokePower "Double Fall", {
             text "Once during your turn , when you put Salamence LV. X from your hand onto your Active Salamence, you may use this power. For each of your opponent’s Pokémon that is Knocked Out by damage from Salamence’s attacks this turn, take 1 more Prize card."
             onActivate{r->
-              if(r==OTHER && confirm("Use Double Fall?")){// TODO: Fix this once level up is fixed
+              if(r==PLAY_FROM_HAND && confirm("Use Double Fall?")){
                 powerUsed()
                 delayed {
                   def flag = false
