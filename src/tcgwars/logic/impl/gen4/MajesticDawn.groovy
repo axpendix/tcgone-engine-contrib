@@ -986,11 +986,10 @@ public enum MajesticDawn implements LogicCardInfo {
           pokePower "Primal Swirl", {
             text "Once during your turn, when you play Omastar from your hand to evolve 1 of your Pokémon, you may remove the highest Stage Evolution card from each of your opponent’s Benched Evolved Pokémon and put those cards back into his or her hand. You can’t use more than 1 Primal Swirl Poké-Power each turn."
             onActivate {r ->
-              bc "$r"
-              if(r == PLAY_FROM_HAND && bg.em().retrieveObject("Primal_Swirl") != bg.turnCount && opp.all.find{it.evolution} && confirm("Use $thisAbility?")){
+              if(r == PLAY_FROM_HAND && bg.em().retrieveObject("Primal_Swirl") != bg.turnCount && opp.bench.find{it.evolution} && confirm("Use $thisAbility?")){
                 bg.em().storeObject("Primal_Swirl",bg.turnCount)
                 powerUsed()
-                opp.all.findAll{it.evolution}.each {
+                opp.bench.findAll{it.evolution}.each {
                   def top = it.topPokemonCard
                   devolve(it, top, opp.hand)
                 }
@@ -1397,7 +1396,7 @@ public enum MajesticDawn implements LogicCardInfo {
             text "30× damage. Does 30 damage times the number of different types of Wormadam on your Bench."
             energyCost G
             attackRequirement {
-              assert my.bench.find{it.name.contains("Wormadam")}
+              assert my.bench.find{it.name.contains("Wormadam")} : "You have no Wormadam on your Bench"
             }
             onAttack {
               def worms = []
@@ -2610,7 +2609,6 @@ public enum MajesticDawn implements LogicCardInfo {
           pokePower "Dragon Pulse", {
             text "Once during your turn , when you put Garchomp LV.X from your hand onto your Active Garchomp, you may flip 3 coins. For each heads, put 1 damage counter on each of your opponent’s Benched Pokémon."
             onActivate {r->
-              bc "$r"
               if (r==PLAY_FROM_HAND && opp.bench && confirm('Use Dragon Pulse?')) {
                 flip 3, {
                   opp.bench.each {

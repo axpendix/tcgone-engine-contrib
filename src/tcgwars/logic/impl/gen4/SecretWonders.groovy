@@ -253,7 +253,9 @@ public enum SecretWonders implements LogicCardInfo {
                 opp.bench.findAll{it.cards.energyCount(C)}.each{
                   damage 20, it
                 }
-                discardSelfEnergyAfterDamage(L)
+                afterDamage {
+                  discardAllSelfEnergy(L)
+                }
               }
             }
           }
@@ -315,22 +317,22 @@ public enum SecretWonders implements LogicCardInfo {
               assert self.cards.filterByType(ENERGY).size() >= 2 : "You have fewer than 2 Energy cards attached to $self"
             }
             onAttack {
+              CardList energyList = []
               flip 1, {
                 if(self.cards.filterByType(ENERGY).size()>=2){
                   damage 120
-                  afterDamage {
-                    self.cards.select(count:2,"Discard 2 Energy cards attached to $self",cardTypeFilter(ENERGY))
-                  }
+                  energyList = self.cards.select(count:2,"Discard 2 Energy cards attached to $self",cardTypeFilter(ENERGY))
                 }
               }, {
                 if(self.cards.filterByType(ENERGY).size()>=4){
                   damage 120
-                  afterDamage {
-                    self.cards.select(count:4,"Discard 4 Energy cards attached to $self",cardTypeFilter(ENERGY))
-                  }
+                  energyList = self.cards.select(count:4,"Discard 4 Energy cards attached to $self",cardTypeFilter(ENERGY))
                 } else {
                   bc "Blast Burn failed"
                 }
+              }
+              afterDamage {
+                energyList.discard()
               }
             }
           }
