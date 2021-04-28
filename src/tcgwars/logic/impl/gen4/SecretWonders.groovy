@@ -253,7 +253,9 @@ public enum SecretWonders implements LogicCardInfo {
                 opp.bench.findAll{it.cards.energyCount(C)}.each{
                   damage 20, it
                 }
-                discardSelfEnergyAfterDamage(L)
+                afterDamage {
+                  discardAllSelfEnergy(L)
+                }
               }
             }
           }
