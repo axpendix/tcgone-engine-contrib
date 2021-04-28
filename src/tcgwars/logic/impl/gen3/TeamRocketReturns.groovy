@@ -337,8 +337,11 @@ public enum TeamRocketReturns implements LogicCardInfo {
             onAttack {
               damage 40
               if(confirm("discard a [R] Energy or [D] Energy attached to Dark Houndoom for 20 more damage?")){
-                self.cards.filterByType(BASIC_ENERGY).findAll{it.asEnergyCard().containsTypePlain(D) || it.asEnergyCard().containsTypePlain(R)}.select().discard()
+                def card = self.cards.filterByType(ENERGY).findAll{it.asEnergyCard().containsTypePlain(D) || it.asEnergyCard().containsTypePlain(R)}.select()
                 damage 20
+                afterDamage {
+                  card.discard()
+                }
               }
             }
           }
