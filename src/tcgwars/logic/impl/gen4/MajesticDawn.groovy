@@ -617,7 +617,7 @@ public enum MajesticDawn implements LogicCardInfo {
                 powerUsed()
                 flip {
                   opp.all.each {
-                    directDamage 10, it, POKEPOWER
+                    directDamage 10, it, Source.POKEPOWER
                   }
                 }
               }
@@ -651,7 +651,7 @@ public enum MajesticDawn implements LogicCardInfo {
               after POKEPOWER, {
                 if (pcs && pcs.cards && pcsTPC == pcs.topPokemonCard) {
                   bc "$thisAbility activates"
-                  directDamage(20, pcs, POKEBODY)
+                  directDamage(20, pcs, Source.POKEBODY)
                   pcs = null
                   pcsTPC = null
                 }
@@ -659,7 +659,7 @@ public enum MajesticDawn implements LogicCardInfo {
               after ACTIVATE_ABILITY, {
                 if (pcs && pcs.cards && pcsTPC == pcs.topPokemonCard) {
                   bc "$thisAbility activates"
-                  directDamage(20, pcs, POKEBODY)
+                  directDamage(20, pcs, Source.POKEBODY)
                   pcs = null
                   pcsTPC = null
                 }
@@ -699,7 +699,7 @@ public enum MajesticDawn implements LogicCardInfo {
                         bc "Cursed Alloy"
                         once = false
                       }
-                      directDamage(10, it, POKEBODY)
+                      directDamage(10, it, Source.POKEBODY)
                       hasPokePower = false
                     }
                   }
@@ -1163,7 +1163,7 @@ public enum MajesticDawn implements LogicCardInfo {
               assert self.benched : "$self is not you your Bench"
               assert my.all.find{!it.name.contains("Unown")} : "All of your Pokémon are Unown"
               powerUsed()
-              directDamage 10, my.all.findAll{!it.name.contains("Unown")}.select("Put 1 damage counter on 1 of your Pokémon"), POKEPOWER
+              directDamage 10, my.all.findAll{!it.name.contains("Unown")}.select("Put 1 damage counter on 1 of your Pokémon"), Source.POKEPOWER
             }
           }
           move "Hidden Power", {
@@ -2612,7 +2612,7 @@ public enum MajesticDawn implements LogicCardInfo {
               if (r==PLAY_FROM_HAND && opp.bench && confirm('Use Dragon Pulse?')) {
                 flip 3, {
                   opp.bench.each {
-                    directDamage 10, it, POKEPOWER
+                    directDamage 10, it, Source.POKEPOWER
                   }
                 }
               }

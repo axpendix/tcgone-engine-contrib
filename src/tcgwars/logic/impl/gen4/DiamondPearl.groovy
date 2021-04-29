@@ -405,7 +405,7 @@ public enum DiamondPearl implements LogicCardInfo {
                   def card = list.select("Put a Basic Pokémon you find there onto your opponent's Bench").first()
                   def pcs = benchPCS(card, OTHER)
                   if (pcs) {
-                    sw opp.active, pcs, POKEPOWER
+                    sw opp.active, pcs, Source.POKEPOWER
                   }
                 }
               }
@@ -3106,7 +3106,7 @@ public enum DiamondPearl implements LogicCardInfo {
               assert my.prizeCardSet.size() > opp.prizeCardSet.size() : "You need to have more Prize cards left than your opponent in order to use this Poké-Power."
               assert opp.bench : "Your opponent has no benched Pokémon."
               powerUsed()
-              switchYourOpponentsBenchedWithActive(POKEPOWER)
+              switchYourOpponentsBenchedWithActive(Source.POKEPOWER)
             }
           }
           move "Vigorous Dash", {

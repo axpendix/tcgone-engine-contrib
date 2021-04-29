@@ -1069,7 +1069,7 @@ public enum GreatEncounters implements LogicCardInfo {
               assert my.bench.find{it.name == "Unown A"} : "Unown A is not on your Bench"
               assert my.bench.find{it.name == "Unown L"} : "Unown L is not on your Bench"
               powerUsed()
-              clearSpecialCondition(my.active, POKEPOWER)
+              clearSpecialCondition(my.active, Source.POKEPOWER)
             }
           }
           move "Hidden Power", {
@@ -1095,7 +1095,7 @@ public enum GreatEncounters implements LogicCardInfo {
               before BEGIN_TURN, {
                 if (self.isSPC(ASLEEP)) {
                   bc "Sleeping Pulse activates."
-                  heal 10, self, POKEBODY
+                  heal 10, self, Source.POKEBODY
                 }
               }
             }
@@ -1143,8 +1143,8 @@ public enum GreatEncounters implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               powerUsed()
-              apply ASLEEP, self, POKEPOWER
-              apply ASLEEP, opp.active, POKEPOWER
+              apply ASLEEP, self, Source.POKEPOWER
+              apply ASLEEP, opp.active, Source.POKEPOWER
             }
           }
           move "Ballon Attack", {
@@ -2979,7 +2979,6 @@ public enum GreatEncounters implements LogicCardInfo {
                     after CLEAR_SPECIAL_CONDITION, pcs, {
                       if (ef.types.contains(ASLEEP)) {
                         unregister()
-                        bc "here"
                       }
                     }
                     after FALL_BACK, pcs, { unregister() }
@@ -3040,11 +3039,11 @@ public enum GreatEncounters implements LogicCardInfo {
               powerUsed()
               assert my.bench && opp.bench : "Both players must have a Benched Pokémon"
 
-              targeted (opp.active, POKEPOWER) {
-                sw opp.active, opp.bench.select("Select the new Active Pokémon"), POKEPOWER
+              targeted (opp.active, Source.POKEPOWER) {
+                sw opp.active, opp.bench.select("Select the new Active Pokémon"), Source.POKEPOWER
               }
 
-              sw my.active, my.bench.oppSelect("Select new Active Pokémon"), POKEPOWER
+              sw my.active, my.bench.oppSelect("Select new Active Pokémon"), Source.POKEPOWER
             }
           }
           move "Hydro Reflect", {

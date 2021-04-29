@@ -232,7 +232,7 @@ public enum Stormfront implements LogicCardInfo {
               if(my.hand.size() > 6) {
                 my.hand.select(count : my.hand.size() - 6, "Discard cards until you have 6 cards in your hand.").discard()
               }
-              directDamage 20, self, POKEPOWER
+              directDamage 20, self, Source.POKEPOWER
             }
           }
           move "Damage Even", {
@@ -454,7 +454,7 @@ public enum Stormfront implements LogicCardInfo {
               assert my.discard.filterByType(ENERGY).any{it.asEnergyCard().containsTypePlain(L) || it.asEnergyCard().containsTypePlain(M)} : "There are no [L] or [M] Energy card in your discard."
               powerUsed()
               attachEnergy(my.active,my.discard.filterByType(ENERGY).findAll{it.asEnergyCard().containsTypePlain(L) || it.asEnergyCard().containsTypePlain(M)}.select().first())
-              directDamage 10, my.active, POKEPOWER
+              directDamage 10, my.active, Source.POKEPOWER
             }
           }
           move "Gyro Ball", {
@@ -708,7 +708,7 @@ public enum Stormfront implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if (self.active && it.to == self && it.dmg.value && it.notNoEffect) {
+                  if (self.active && it.to.owner == self.owner && it.dmg.value && it.notNoEffect) {
                     bc "$thisAbility -20"
                     it.dmg -= hp(20)
                   }
@@ -885,9 +885,9 @@ public enum Stormfront implements LogicCardInfo {
             }
             onAttack {
               def maxSpace = Math.min(my.bench.freeBenchCount,2)
-              my.deck.seach(max:maxSpace, "Search your deck for " + maxSpace>1?"up to 2":"a" + " Basic Pokémon",cardTypeFilter(BASIC)).each {
+              my.deck.search(max:maxSpace, "Search your deck for " + (maxSpace>1?"up to 2":"a") + " Basic Pokémon",cardTypeFilter(BASIC)).each {
                 def pcs = benchPCS(it)
-                def energy = my.deck.seach("Search your deck for a Basic Energy to attach to $pcs",cardTypeFilter(BASIC_ENERGY)).first()
+                def energy = my.deck.search("Search your deck for a Basic Energy to attach to $pcs",cardTypeFilter(BASIC_ENERGY)).first()
                 attachEnergy(pcs, energy)
               }
             }
@@ -916,9 +916,9 @@ public enum Stormfront implements LogicCardInfo {
               before BEGIN_TURN, {
                 if(self.active) {
                   bc "Spirit Pulse activates"
-                  opp.all.each {
+                  self.owner.opposite.all.each {
                     if(it.cards.energyCount(C)) {
-                      directDamage 10, it, POKEBODY
+                      directDamage 10, it, Source.POKEBODY
                     }
                   }
                 }
@@ -948,7 +948,7 @@ public enum Stormfront implements LogicCardInfo {
                 if ((ef as Knockout).byDamageFromAttack && self.active && bg.currentTurn==self.owner.opposite && self.owner.opposite.pbg.active != null && self.owner.opposite.pbg.active.inPlay) {
                   powerUsed()
                   flip{
-                    targeted (self.owner.opposite.pbg.active, POKEPOWER){
+                    targeted (self.owner.opposite.pbg.active, Source.POKEPOWER){
                       new Knockout(self.owner.opposite.pbg.active).run(bg)
                     }
                   }
@@ -1078,6 +1078,7 @@ public enum Stormfront implements LogicCardInfo {
                   flag = false
                 }
               }
+              damage 30 * count
             }
           }
           move "Parade", {
@@ -1099,7 +1100,7 @@ public enum Stormfront implements LogicCardInfo {
             text "If Rapidash is your Active Pokémon and is damaged by an opponent’s attack (even if Rapidash is Knocked Out), the Attacking Pokémon is now Burned."
             ifActiveAndDamagedByAttackBody(delegate) {
               bc "Burning Mane activates."
-              apply BURNED, ef.attacker, POKEBODY
+              apply BURNED, ef.attacker, Source.POKEBODY
             }
           }
           move "Rear Kick", {
@@ -1126,7 +1127,7 @@ public enum Stormfront implements LogicCardInfo {
             text "If Roserade is your Active Pokémon and is damaged by an opponent’s attack (even if Roserade is Knocked Out), the Defending Pokémon is now Poisoned."
             ifActiveAndDamagedByAttackBody(delegate) {
               bc "Hidden Poison activates."
-              apply POISONED, ef.attacker, POKEBODY
+              apply POISONED, ef.attacker, Source.POKEBODY
             }
           }
           move "Bowed Whip", {
@@ -1226,7 +1227,7 @@ public enum Stormfront implements LogicCardInfo {
             energyCost G, G
             onAttack {
               damage 40
-              if(!my.all.find{it.hasPokePower}) {
+              if(!my.all.find{it.hasPokePower()}) {
                 damage 30
               }
             }
@@ -1248,6 +1249,7 @@ public enum Stormfront implements LogicCardInfo {
                     bc "Evolutionary Gas prevents the attack"
                     prevent()
                   }
+                  unregisterAfter 2
                 }
               }
             }
@@ -1281,7 +1283,7 @@ public enum Stormfront implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if (it.from.stage2 && it.to == self && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect) {
+                  if (it.from.stage2 && it.to.owner == self.owner && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect) {
                     bc "$thisAbility -20"
                     it.dmg -= hp(20)
                   }
@@ -1347,7 +1349,7 @@ public enum Stormfront implements LogicCardInfo {
             text "Remove 1 damage counter from Tangrowth between turns."
             delayedA {
               before BEGIN_TURN, {
-                heal 10, self, POKEBODY
+                heal 10, self, Source.POKEBODY
               }
             }
           }
@@ -1386,9 +1388,9 @@ public enum Stormfront implements LogicCardInfo {
             text "After your opponent’s Pokémon uses a Poké-Power, you may search your discard pile for a basic [D] Energy and attach it to Tyranitar."
             delayedA {
               after POKEPOWER, {
-                if (my.discard.filterByBasicEnergyType(D) && confirm("Use Darkness Drive?")) {
+                if (self.owner.pbg.discard.filterByBasicEnergyType(D) && confirm("Use Darkness Drive?")) {
                   bc "Darkness Drive activates"
-                  attachEnergyFrom(basic:true, type:D, my.discard, self)
+                  attachEnergyFrom(basic:true, type:D, self.owner.pbg.discard, self)
                 }
               }
             }
@@ -1605,7 +1607,7 @@ public enum Stormfront implements LogicCardInfo {
             ifActiveAndDamagedByAttackBody(delegate) {
               bc "Radiance activates."
               self.owner.opposite.pbg.all.each {
-                directDamage 10, it, POKEBODY
+                directDamage 10, it, Source.POKEBODY
               }
             }
           }
@@ -1730,7 +1732,7 @@ public enum Stormfront implements LogicCardInfo {
               damage 30
               def maxSelect = Math.min(opp.discard.filterByType(ITEM,SUPPORTER,STADIUM).size(),3)
               if(maxSelect > 0) {
-                opp.discard.select(min:0, max:maxSelect, "Select up to 3 Trainer, Supporter, or Stadium cards to put into your opponent's hand",{it.cardTypes.is(ITEM)||it.cardTypes.is(SUPPORTER)||it.cardTypes.is(STADIUM)})
+                opp.discard.select(min:0, max:maxSelect, "Select up to 3 Trainer, Supporter, or Stadium cards to put into your opponent's hand",{it.cardTypes.is(ITEM)||it.cardTypes.is(SUPPORTER)||it.cardTypes.is(STADIUM)}).moveTo(opp.hand)
               }
             }
           }
@@ -1778,7 +1780,7 @@ public enum Stormfront implements LogicCardInfo {
             text "40+ damage. Does 40 damage plus 10 more damage for each Energy attached to the Defending Pokémon."
             energyCost L, C, C
             onAttack {
-              damage 40 + 10 * defending.energyCount(C)
+              damage 40 + 10 * defending.cards.energyCount(C)
             }
           }
 
@@ -1869,7 +1871,7 @@ public enum Stormfront implements LogicCardInfo {
           }
           move "Electric Circuit", {
             text "Search your discard pile for up to 4 [L] Energy cards, show them to your opponent, and put them into your hand."
-            energyCost L
+            energyCost ()
             attackRequirement {
               assert my.discard.filterByEnergyType(L) : "There are no [L] Energy cards in your discard"
             }
@@ -1910,8 +1912,17 @@ public enum Stormfront implements LogicCardInfo {
           weakness G, PLUS20
           resistance L, MINUS20
           pokeBody "Energy Protection", {
-            text "Any damage done to Pupitar by attacks is reduced by 10 for each Energy attached to Pupitar . You can’t reduce more than 30 damage in this way."
+            text "Any damage done to Pupitar by attacks is reduced by 10 for each Energy attached to Pupitar. You can’t reduce more than 30 damage in this way."
             delayedA {
+              before APPLY_ATTACK_DAMAGES,{
+                def dmgRed = Math.min(3,self.cards.energyCount(C))
+                bg.dm().each{
+                  if(it.to == self && it.notNoEffect && it.dmg.value) {
+                    bc "Energy Protection -${10*dmgRed}"
+                    it.dmg -= hp(10*dmgRed)
+                  }
+                }
+              }
             }
           }
           move "Rock Smash", {
@@ -2173,7 +2184,7 @@ public enum Stormfront implements LogicCardInfo {
             //Honey : Once during your turn, when you put Combee from your hand onto your Bench, you may search your discard pile for a Basic Pokémon and put it onto your Bench.
             onActivate {reason ->
               if(reason == PLAY_FROM_HAND && self.benched && my.discard.filterByType(BASIC) && my.bench.notFull && confirm("Use Honey?")){
-                benchPCS(my.discard.select("Choose a Basic Pokémon to put onto your Bench",cardTypeFilter(BASIC)))
+                benchPCS(my.discard.select("Choose a Basic Pokémon to put onto your Bench",cardTypeFilter(BASIC)).first())
               }
             }
           }
@@ -2679,7 +2690,7 @@ public enum Stormfront implements LogicCardInfo {
             }
             onAttack {
               flip {
-                def card = my.deck.seach("Search your deck for a [G] Energy card",energyFilter(G)).first()
+                def card = my.deck.search("Search your deck for a [G] Energy card",energyFilter(G)).first()
                 if(card) {
                   if(!bg.em().run(new AttachEnergy(self, card, ActivationReason.OTHER))) {
                     preventAllEffectsNextTurn()
