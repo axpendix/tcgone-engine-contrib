@@ -10,7 +10,7 @@ import static tcgwars.logic.effect.EffectPriority.BEFORE_LAST
 import static tcgwars.logic.effect.EffectType.APPLY_SPECIAL_CONDITION
 import static tcgwars.logic.effect.EffectType.ATTACH_ENERGY
 import static tcgwars.logic.effect.EffectType.GET_RETREAT_COST
-import static tcgwars.logic.effect.Source.SRC_ABILITY
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.PLAY_FROM_HAND
 import static tcgwars.logic.effect.special.SpecialConditionType.ASLEEP
 import static tcgwars.logic.effect.special.SpecialConditionType.ASLEEP;
@@ -215,7 +215,7 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               }
             }
             onActivate {
-              clearSpecialCondition(self, SRC_ABILITY, [ASLEEP])
+              clearSpecialCondition(self, POKEBODY, [ASLEEP])
             }
           }
           move "Peck", {
