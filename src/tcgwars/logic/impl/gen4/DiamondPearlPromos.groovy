@@ -216,7 +216,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
                   shuffleDeck()
                 }
                 if (bg.stadiumInfoStruct) {
-                  discard bg.stadiumInfoStruct.stadiumCard
+                  discardStadium()
                 }
               }
             }
@@ -297,7 +297,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
                 }
               }
             }
-          }
+          }discard bg.stadiumInfoStruct.stadiumCard
           move "Reaper Pulse", {
             text "70 damage. Move up to 2 damage counters from Dusknoir to 1 of your opponent's Benched Pokémon."
             energyCost P, P, C
@@ -513,9 +513,11 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               opp.all.each {
+                def damageAlreadyApplied = false
                 for (Ability ability : it.getAbilities().keySet()) {
-                  if (ability instanceof PokeBody) {
-                    directDamage(10, it)
+                  if (ability instanceof PokeBody && !damageAlreadyApplied) {
+                    directDamage(20, it)
+                    damageAlreadyApplied = true
                   }
                 }
               }
