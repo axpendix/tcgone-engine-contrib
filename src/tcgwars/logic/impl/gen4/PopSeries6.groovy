@@ -151,9 +151,7 @@ public enum PopSeries6 implements LogicCardInfo {
               damage 10
               if (opp.bench) {
                 multiSelect(opp.bench, 2, text).each {
-                  targeted(it) {
-                    damage 10, it
-                  }
+                  damage 10, it
                 }
               }
             }
