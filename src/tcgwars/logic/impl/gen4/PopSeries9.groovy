@@ -263,7 +263,7 @@ public enum PopSeries9 implements LogicCardInfo {
             onAttack {
               damage 30
 
-              if (my.all.findAll {it.name == "Turtwig" }) {
+              if (my.all.any {it.name == "Turtwig" }) {
                 removeDamageCounterEqualToDamageDone()
               }
             }
