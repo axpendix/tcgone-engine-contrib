@@ -234,7 +234,7 @@ public enum Platinum implements LogicCardInfo {
             }
             getterA IS_ABILITY_BLOCKED, { Holder h ->
               if (h.effect.target.numberOfDamageCounters && h.effect.target.pokemonGX && h.effect.ability instanceof PokePower) {
-                targeted(h.effect.target, POKEBODY) {
+                targeted(h.effect.target, Source.POKEBODY) {
                   h.object = true
                 }
               }
@@ -329,7 +329,7 @@ public enum Platinum implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               powerUsed()
-              apply BURNED, opp.active, POKEPOWER
+              apply BURNED, opp.active, Source.POKEPOWER
             }
           }
           move "Clutch", {
@@ -362,7 +362,7 @@ public enum Platinum implements LogicCardInfo {
               powerUsed()
               def list = rearrange(my.discard.select(max:2, cardTypeFilter(BASIC_ENERGY)))
               list.moveTo(addToTop : true, my.deck)
-              directDamage 20, self, POKEPOWER
+              directDamage 20, self, Source.POKEPOWER
             }
           }
           move "Power Heal", {
@@ -901,7 +901,7 @@ public enum Platinum implements LogicCardInfo {
               checkNoSPC()
               assert my.hand : "Your hand is empty"
               powerUsed()
-              directDamage 10 * my.hand.select(min:0,max:my.hand.size(),"Discard as many cardsas you like from your hand").discard().size(), self, POKEPOWER
+              directDamage 10 * my.hand.select(min:0,max:my.hand.size(),"Discard as many cardsas you like from your hand").discard().size(), self, Source.POKEPOWER
             }
           }
           move "Darkness Switch", {
@@ -1013,7 +1013,7 @@ public enum Platinum implements LogicCardInfo {
               assert bg.em().retrieveObject("Nurse_Call") != bg.turnCount : "You cannot use Nurse Call more than once per turn"
               powerUsed()
               my.hand.select("Choose a card to discard").discard()
-              heal 20, my.all.findAll(it.numberOfDamageCounters).select("Heal which Pokémon"), POKEPOWER
+              heal 20, my.all.findAll(it.numberOfDamageCounters).select("Heal which Pokémon"), Source.POKEPOWER
             }
           }
           move "Return", {
@@ -1071,7 +1071,7 @@ public enum Platinum implements LogicCardInfo {
             delayedA {
               after RETREAT, {
                 if(ef.retreater.owner == self.owner.opposite && ef.newActive != null){
-                  directDamage 20, ef.retreater, POKEBODY
+                  directDamage 20, ef.retreater, Source.POKEBODY
                 }
               }
             }
@@ -1628,7 +1628,7 @@ public enum Platinum implements LogicCardInfo {
               def card = src.cards.select("Choose the Energy card to move",cardTypeFilter(ENERGY)).first()
               def tar = my.all.findAll{it!=src}.select("Move $card to")
               energySwitch(src, tar, card)
-              directDamage 20, self, POKEBODY
+              directDamage 20, self, Source.POKEBODY
             }
           }
           move "Psychic Pulse", {
@@ -1795,7 +1795,7 @@ public enum Platinum implements LogicCardInfo {
             text "Once during your turn, when you put Crobat from your hand onto your Bench, you may put 1 damage counter on 1 of your opponent’s Pokémon."
             onActivate {r->
               if (r==PLAY_FROM_HAND && confirm("Use Flash Bite?")) {
-                directDamage 10, opp.all.select(), POKEPOWER
+                directDamage 10, opp.all.select(), Source.POKEPOWER
               }
             }
           }
@@ -2061,7 +2061,7 @@ public enum Platinum implements LogicCardInfo {
             delayedA {
               before BEGIN_TURN, {
                 if(self.specialCondition) {
-                  heal 20, self, POKEBODY
+                  heal 20, self, Source.POKEBODY
                 }
               }
             }
@@ -2332,7 +2332,7 @@ public enum Platinum implements LogicCardInfo {
             onActivate {
               if(self.specialConditions){
                 bc "Thick Skin clears special conditions"
-                clearSpecialCondition(self, POKEBODY)
+                clearSpecialCondition(self, Source.POKEBODY)
               }
             }
           }
@@ -3020,10 +3020,10 @@ public enum Platinum implements LogicCardInfo {
               assert !opp.active.topPokemonCard.cardTypes.is(POKEMON_SP) || !my.active.pokemonSP : "Both active Pokémon are Pokémon SP"
               powerUsed()
               if(!opp.active.pokemonSP) {
-                apply POISONED, opp.active, POKEPOWER
+                apply POISONED, opp.active, Source.POKEPOWER
               }
               if(!my.active.topPokemonCard.cardTypes.is(POKEMON_SP)) {
-                apply POISONED, my.active, POKEPOWER
+                apply POISONED, my.active, Source.POKEPOWER
               }
             }
           }
@@ -3566,7 +3566,7 @@ public enum Platinum implements LogicCardInfo {
               checkNoSPC()
               powerUsed()
               flip {
-                apply POISONED, opp.active, POKEPOWER
+                apply POISONED, opp.active, Source.POKEPOWER
                 extraPoison 2
               }
             }

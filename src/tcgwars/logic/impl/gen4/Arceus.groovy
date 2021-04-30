@@ -664,7 +664,7 @@ public enum Arceus implements LogicCardInfo {
               def pcs = opp.all.findAll{it.numberOfDamageCounters}.select("Choose the pokémon to move the damage counter from")
               def tar = opp.all.findAll{it != pcs}.select("Select the pokémon to recieve the damage counter")
               pcs.damage-=hp(10)
-              directDamage 10, tar, POKEPOWER
+              directDamage 10, tar, Source.POKEPOWER
               bc "Moved 1 damage counter from $pcs to $tar"
             }
           }
@@ -1364,7 +1364,7 @@ public enum Arceus implements LogicCardInfo {
             text "If Haunter is your Active Pokémon and is damaged by an opponent’s attack (even if Haunter is Knocked Out), the Attacking Pokémon is now Poisoned."
             ifActiveAndDamagedByAttackBody(delegate) {
               bc "$thisAbility"
-              apply POISONED, (ef.attacker as PokemonCardSet), POKEBODY
+              apply POISONED, (ef.attacker as PokemonCardSet), Source.POKEBODY
             }
           }
           move "Tongue Spring", {
@@ -2443,7 +2443,7 @@ public enum Arceus implements LogicCardInfo {
           pokePower "Double Fall", {
             text "Once during your turn , when you put Salamence LV. X from your hand onto your Active Salamence, you may use this power. For each of your opponent’s Pokémon that is Knocked Out by damage from Salamence’s attacks this turn, take 1 more Prize card."
             onActivate{r->
-              if(r==OTHER && confirm("Use Double Fall?")){// TODO: Fix this once level up is fixed
+              if(r==PLAY_FROM_HAND && confirm("Use Double Fall?")){
                 powerUsed()
                 delayed {
                   def flag = false
