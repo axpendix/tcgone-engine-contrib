@@ -339,7 +339,7 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
             text "Whenever you attach an Energy card from your hand to Shuckle, draw a card."
             delayedA {
               after ATTACH_ENERGY, self, {
-                if (ef.reason == PLAY_FROM_HAND && ef.card.cardTypes.is(ENERGY)) {
+                if (ef.reason == PLAY_FROM_HAND) {
                   draw 1
                 }
               }
