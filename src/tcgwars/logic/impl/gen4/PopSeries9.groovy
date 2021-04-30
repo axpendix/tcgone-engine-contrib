@@ -235,7 +235,7 @@ public enum PopSeries9 implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              if (my.all.findAll {it.name == "Pachirisu" }) {
+              if (my.all.any {it.name == "Pachirisu" }) {
                 flip { preventAllEffectsNextTurn() }
               }
             }
@@ -337,7 +337,7 @@ public enum PopSeries9 implements LogicCardInfo {
             onAttack {
               damage 20
 
-              if (my.all.findAll {it.name == "Croagunk" }) {
+              if (my.all.any {it.name == "Croagunk" }) {
                 damage 20
                 applyAfterDamage(POISONED)
               }
@@ -409,7 +409,7 @@ public enum PopSeries9 implements LogicCardInfo {
             onAttack {
               damage 40
 
-              if (my.all.findAll { it.name == "Piplup" }) {
+              if (my.all.any { it.name == "Piplup" }) {
                 damage 20
                 applyAfterDamage(ASLEEP)
               }
@@ -463,7 +463,7 @@ public enum PopSeries9 implements LogicCardInfo {
             onAttack {
               damage 40
 
-              if (my.all.findAll {it.name == "Buizel" }) {
+              if (my.all.any {it.name == "Buizel" }) {
                 opp.bench.each {
                   damage 10, it
                 }
@@ -491,7 +491,7 @@ public enum PopSeries9 implements LogicCardInfo {
             onAttack {
               damage 40
 
-              if (my.all.findAll {it.name == "Chimchar" }) {
+              if (my.all.any {it.name == "Chimchar" }) {
                 damage 20
                 applyAfterDamage(BURNED)
               }
