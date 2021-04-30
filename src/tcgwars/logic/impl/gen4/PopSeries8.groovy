@@ -5,7 +5,7 @@ import tcgwars.logic.impl.gen3.Sandstorm
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*
-import static tcgwars.logic.effect.Source.SRC_ABILITY;
+import static tcgwars.logic.effect.Source.*;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
@@ -252,7 +252,7 @@ public enum PopSeries8 implements LogicCardInfo {
               }
             }
             onActivate {
-              clearSpecialCondition(self, SRC_ABILITY, [PARALYZED])
+              clearSpecialCondition(self, POKEBODY, [PARALYZED])
             }
           }
           move "Quick Attack", {
