@@ -11,6 +11,7 @@ import tcgwars.logic.impl.gen3.NintendoBlackStarPromos
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.effect.EffectPriority.BEFORE_LAST
 import static tcgwars.logic.effect.EffectPriority.LAST
 import static tcgwars.logic.effect.EffectType.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.OTHER
@@ -533,7 +534,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
                 delayed {
                   def eff
                   register {
-                    eff = getter GET_RETREAT_COST, LAST, self, { h ->
+                    eff = getter GET_RETREAT_COST, BEFORE_LAST, self, { h ->
                       h.object = 0
                     }
                   }
