@@ -383,7 +383,7 @@ public enum Stormfront implements LogicCardInfo {
               assert opp.hand : "Your opponent's hand is empty"
               powerUsed()
               if(opp.bench.notFull && opp.hand.filterByType(BASIC)) {
-                def card = opp.hand.select("Choose a Basic Pokémon to put onto your opponent's Bench").first()
+                def card = opp.hand.select("Choose a Basic Pokémon to put onto your opponent's Bench", cardTypeFilter(BASIC)).first()
                 def pcs = benchPCS(card)
                 sw opp.active, pcs
               } else {
@@ -423,6 +423,7 @@ public enum Stormfront implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
               powerUsed()
               my.deck.search("Search your deck for a [L] or [M] Pokémon", {it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(L) || it.asPokemonCard().types.contains(M)}).showToOpponent("Selected Cards").moveTo(my.hand)
+              shuffleDeck()
             }
           }
           move "Speed Shot", {
@@ -499,10 +500,8 @@ public enum Stormfront implements LogicCardInfo {
                     options += [2]
                     text += ["Your Pokémon"]
                   }
-                  if(i==1){
-                    options += [3]
-                    text += ["Stop"]
-                  }
+                  options += [3]
+                  text += ["Stop"]
                   def choice = choose(options,text, "Remove a Pokémon Tool or Technical Machine from...? (${5-i}/4)",options.get(0))
                   if(choice == 1){
                     tar = opp.all.findAll {it.cards.filterByType(POKEMON_TOOL, TECHNICAL_MACHINE)}
@@ -572,10 +571,14 @@ public enum Stormfront implements LogicCardInfo {
             energyCost L, L, C
             onAttack {
               damage 100
-              def energyList = []
+              CardList energyList = []
               while(energyList.energyCount(C) < 3 && my.all.find{it.cards.filterByType(ENERGY).find{!energyList.contains(it)}}) {
-                def src = my.all.findAll{it.cards.filterByType(ENERGY).find{!energyList.contains(it)}}.select("Discard an Energy from which Pokémon")
-                energyList.add(src.cards.findAll{!energyList.contains(it)}.select("Discard which Energy?",cardTypeFilter(ENERGY)))
+                def remaining = 3 - energyList.energyCount(C)
+                def src = my.all.findAll{it.cards.filterByType(ENERGY).find{!energyList.contains(it)}}.select("Discard an Energy from which Pokémon $remaining/3 left")
+                energyList.add(src.cards.findAll{!energyList.contains(it)}.select("Discard which Energy? $remaining/3 left",cardTypeFilter(ENERGY)).first())
+              }
+              afterDamage {
+                energyList.discard()
               }
             }
           }
@@ -916,7 +919,7 @@ public enum Stormfront implements LogicCardInfo {
               before BEGIN_TURN, {
                 if(self.active) {
                   bc "Spirit Pulse activates"
-                  self.owner.opposite.all.each {
+                  self.owner.opposite.pbg.all.each {
                     if(it.cards.energyCount(C)) {
                       directDamage 10, it, Source.POKEBODY
                     }
@@ -1244,12 +1247,21 @@ public enum Stormfront implements LogicCardInfo {
               if (r==PLAY_FROM_HAND && confirm("Use Evolutionary Gas?")) {
                 powerUsed()
                 bc "Evolutionary Gas activates"
-                delayed (priority: FIRST) {
-                  before PROCESS_ATTACK_EFFECTS, {
-                    bc "Evolutionary Gas prevents the attack"
-                    prevent()
+                def pcs = opp.active
+                targeted (pcs, Source.POKEPOWER) {
+                  delayed (priority: FIRST) {
+                    before PROCESS_ATTACK_EFFECTS, {
+                      if(ef.attacker == pcs) {
+                        bc "Evolutionary Gas prevents the attack"
+                        prevent()
+                      }
+                    }
+                    unregisterAfter 2
+                    after FALL_BACK, pcs, {unregister()}
+                    after EVOLVE, pcs, {unregister()}
+                    after DEVOLVE, pcs, {unregister()}
+                    after LEVEL_UP, pcs, {unregister()}
                   }
-                  unregisterAfter 2
                 }
               }
             }
@@ -1283,7 +1295,7 @@ public enum Stormfront implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if (it.from.stage2 && it.to.owner == self.owner && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect) {
+                  if (it.from.stage2 && it.from.evolution && it.to.owner == self.owner && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect) {
                     bc "$thisAbility -20"
                     it.dmg -= hp(20)
                   }
@@ -1732,7 +1744,7 @@ public enum Stormfront implements LogicCardInfo {
               damage 30
               def maxSelect = Math.min(opp.discard.filterByType(ITEM,SUPPORTER,STADIUM).size(),3)
               if(maxSelect > 0) {
-                opp.discard.select(min:0, max:maxSelect, "Select up to 3 Trainer, Supporter, or Stadium cards to put into your opponent's hand",{it.cardTypes.is(ITEM)||it.cardTypes.is(SUPPORTER)||it.cardTypes.is(STADIUM)}).moveTo(opp.hand)
+                opp.discard.select(min:1, max:maxSelect, "Select up to 3 Trainer, Supporter, or Stadium cards to put into your opponent's hand",{it.cardTypes.is(ITEM)||it.cardTypes.is(SUPPORTER)||it.cardTypes.is(STADIUM)}).moveTo(opp.hand)
               }
             }
           }
@@ -1917,7 +1929,7 @@ public enum Stormfront implements LogicCardInfo {
               before APPLY_ATTACK_DAMAGES,{
                 def dmgRed = Math.min(3,self.cards.energyCount(C))
                 bg.dm().each{
-                  if(it.to == self && it.notNoEffect && it.dmg.value) {
+                  if(it.to == self && it.notNoEffect && it.dmg.value && dmgRed) {
                     bc "Energy Protection -${10*dmgRed}"
                     it.dmg -= hp(10*dmgRed)
                   }
@@ -2580,7 +2592,7 @@ public enum Stormfront implements LogicCardInfo {
             onAttack {
               damage 20
               flip 1, {
-                damage applyAfterDamage PARALYZED
+                applyAfterDamage PARALYZED
               }, {
                 applyAfterDamage POISONED
               }
@@ -2658,12 +2670,16 @@ public enum Stormfront implements LogicCardInfo {
       case SWINUB_77:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness G, PLUS10
-          resistance F, MINUS20
+          resistance L, MINUS20
           move "Freezing Breath", {
-            text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+            text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed. If tails, the Defending Pokémon is now Asleep"
             energyCost W
             onAttack {
-              flip { apply PARALYZED }
+              flip 1, {
+                apply PARALYZED
+              }, {
+                apply ASLEEP
+              }
             }
           }
           move "Take Down", {
@@ -2768,7 +2784,7 @@ public enum Stormfront implements LogicCardInfo {
               assert my.deck : "Your deck is emtpy"
             }
             onAttack {
-              my.deck.search("Search your deck for a [L] Energy card",energyFilter[L]).moveTo(my.hand)
+              my.deck.search("Search your deck for a [L] Energy card",energyFilter(L)).moveTo(my.hand)
               shuffleDeck()
             }
           }
@@ -2791,7 +2807,7 @@ public enum Stormfront implements LogicCardInfo {
           def actions=[]
           onPlay {
             actions=action("Stadium: Conductive Quarry") {
-              assert my.discard.find{it.cardTypes.is(ENERGY) && it.asEnergyCard().containsType(L)||it.asEnergyCard().containsType(M)} : "There are no [L] or [M] Energy cards in your discard pile"
+              assert my.discard.find{it.cardTypes.is(ENERGY) && (it.asEnergyCard().containsType(L)||it.asEnergyCard().containsType(M))} : "There are no [L] or [M] Energy cards in your discard pile"
               assert lastTurn != bg().turnCount : "You've already used Conductive Quarry this turn."
               bc "Used Conductive Quarry"
               lastTurn = bg().turnCount
@@ -2805,33 +2821,29 @@ public enum Stormfront implements LogicCardInfo {
           }
         };
       case ENERGY_LINK_83:
-        return basicTrainer (this) {
+        return pokemonTool (this) {
           text "Attach Energy Link to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nAs long as Energy Link is attached to a Pokémon, you may move an Energy card attached to that Pokémon to another of your Pokémon that has Energy Link attached to it. You may use this effect as often as you like during your turn."
-          def loaded
           def actions=[]
           onPlay {reason->
-            loaded = bg.em().retrieveObject("Energy_Link")
-            if(!loaded) {
-              actions = action("Energy Link") {
-                assert my.all.findAll{it.cards.find{it.name == "Energy Link"}}.size() >= 2 : "You only have 1 Energy Link in play"
+            if(!bg.em().retrieveObject("Energy_Link+$thisCard.player")) {
+              actions = action("Energy Link",[TargetPlayer.SELF]) {
+                assert my.all.findAll{it.cards.find{it.name == "Energy Link"}}.size() >= 2 : "You don't have 2 Energy Link in play"
                 assert my.all.find{it.cards.find{it.name == "Energy Link"} && it.cards.filterByType(ENERGY)} : "You don't have any Energy attached to your Pokémon with Energy Link attached"
                 def src=my.all.findAll {it.cards.find{it.name == "Energy Link"} && it.cards.filterByType(ENERGY)}.select("Source for Energy")
                 def card=src.cards.filterByType(ENERGY).select("Card to move").first()
-                def tar=my.all
+                def tar=my.all.findAll {it.cards.find{it.name == "Energy Link"}}
                 tar.remove(src)
                 tar=tar.select("Target for $card")
                 energySwitch(src, tar, card)
               }
-              loaded = 0
+              bg.em().storeObject("Energy_Link+$thisCard.player",actions)
             }
-            loaded ++
-            bg.em().storeObject("Energy Link",loaded)
           }
           onRemoveFromPlay {
-            actions.each { bg().gm().unregisterAction(it) }
-            loaded = bg.em().retrieveObject("Energy_Link")
-            loaded --
-            bg.em().storeObject("Energy Link",loaded)
+            actions = bg.em().retrieveObject("Energy_Link+$thisCard.player")
+            if(!thisCard.player.pbg.all.find{it.cards.find{it.name == "Energy Link"}}) {
+              actions.each { bg().gm().unregisterAction(it) }
+            }
           }
         };
       case ENERGY_SWITCH_84:
@@ -2854,7 +2866,7 @@ public enum Stormfront implements LogicCardInfo {
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your discard pile for 2 different Trainer, Supporter, or Stadium cards, show them to your opponent, and your opponent chooses 1 of them. Put that card into your hand, and discard the other card. (If all Trainer, Supporter, and Stadium cards in your discard pile have the same name, choose 1 of them. Show that card to your opponent and put it into your hand.)"
           onPlay {
-            my.discard.select(count:2,"Select 2 different Trainer, Supporter, or Stadium cards",{it.cardTypes.is(ITEM)||it.cardTypes.is(SUPPORTER)||it.cardTypes.is(STADIUM)}, {
+            my.discard.select(count:2,"Select 2 different Trainer, Supporter, or Stadium cards",{it.cardTypes.is(ITEM)||it.cardTypes.is(SUPPORTER)||it.cardTypes.is(STADIUM)}, thisCard.player, {
               def names = []
               for (card in it) {
                 if (names.contains(card.name)) {
@@ -2905,13 +2917,16 @@ public enum Stormfront implements LogicCardInfo {
         return basicTrainer (this) {
           text "You may play 2 Poké Healer + at the same time. If you play 1 Poké Healer +, remove 1 damage counter and a Special Condition from 1 of your Active Pokémon. If you play 2 Poké Healer +, remove 8 damage counters and all Special Conditions from 1 of your Active Pokémon."
           onPlay {
-            if(my.hand.findAll({it.name=="Poké Drawer +"}).size()>=2 && confirm("Play 2 Poké Drawer + at the same time?")) {
+            if(my.hand.findAll({it.name=="Poké Healer +"}).size()>=2 && confirm("Play 2 Poké Healer + at the same time?")) {
               heal 80, my.active, TRAINER_CARD
               clearSpecialCondition(my.active, TRAINER_CARD)
+              my.hand.findAll({it.name=="Poké Healer +" && it!= thisCard}).subList(0,1).discard()
             } else {
               heal 10, my.active, TRAINER_CARD
-              SpecialConditionType spc = choose(my.active.specialConditions.asList(), "Which special condition you want to remove");
-              clearSpecialCondition(my.active, TRAINER_CARD, [spc])
+              if(my.active.specialConditions) {
+                SpecialConditionType spc = choose(my.active.specialConditions.asList(), "Which special condition you want to remove")
+                clearSpecialCondition(my.active, TRAINER_CARD, [spc])
+              }
             }
           }
           playRequirement{
@@ -2923,7 +2938,7 @@ public enum Stormfront implements LogicCardInfo {
       case POTION_92:
         return copy (FireRedLeafGreen.POTION_101, this);
       case SWITCH_93:
-        return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this);
+        return copy(FireRedLeafGreen.SWITCH_102, this);
       case CYCLONE_ENERGY_94:
         return copy (UnseenForces.CYCLONE_ENERGY_99, this)
       case WARP_ENERGY_95:
@@ -2992,54 +3007,80 @@ public enum Stormfront implements LogicCardInfo {
         return levelUp (this, from:"Heatran", hp:HP120, type:FIRE, retreatCost:4) {
           weakness W
           def src
+          def heatWaveFlag = false
           CardList energyList = []
           customAbility {
             delayed {
               before ATTACK_MAIN, {
                 src = ef.attacker
                 energyList = ef.attacker.cards.filterByType(ENERGY)
+                heatWaveFlag = true
               }
             }
           }
           pokeBody "Heat Metal", {
             text "Your opponent can’t remove the Special Condition Burned by evolving or devolving his or her Burned Pokémon. (This also includes putting a Pokémon Level-Up card onto the Burned Pokémon.) Whenever your opponent flips a coin for the Special Condition Burned between turns, treat it as tails."
-            delayedA {
-              before BURNED_SPC, null, null, EVOLVE, {
-                bc "Heat Metal prevents removing the Special Condition Burned by evolving or devolving"
-                prevent()
-              }
-              before BURNED_SPC, null, null, DEVOLVE, {
-                bc "Heat Metal prevents removing the Special Condition Burned by evolving or devolving"
-                prevent()
-              }
-            }
-            def flag
-            getterA COIN_FLIP_GETTER, { h->
-              if (flag && h.effect.info == "Burned") {
-                h.object = false
-                flag = false
-              }
-            }
-            delayedA {
-              before BURNED_SPC, null, null, BEGIN_TURN, {
-                if (ef.target.owner == self.owner.opposite) {
-                  flag = true
+            def eff1, eff2, eff3, eff4, eff5
+            onActivate {
+              eff1 = delayed {//This was tripple triggering when put into a single delayed effect. This works but I don't know why.
+                before BURNED_SPC, null, null, EVOLVE, {
+                  bc "Heat Metal prevents removing the Special Condition Burned by evolving or devolving"
+                  prevent()
                 }
               }
+              eff2 = delayed {
+                before BURNED_SPC, null, null, DEVOLVE, {
+                  bc "Heat Metal prevents removing the Special Condition Burned by evolving or devolving"
+                  prevent()
+                }
+              }
+              eff3 = delayed {
+                before BURNED_SPC, null, null, LEVEL_UP, {
+                  bc "Heat Metal prevents removing the Special Condition Burned by evolving or devolving"
+                  prevent()
+                }
+              }
+              def heatMetalFlag
+              eff4 = getter COIN_FLIP_GETTER, { h ->
+                if (heatMetalFlag && h.effect.info == "Burned") {
+                  if (h.object) {
+                    bc "Heat Metal changes coin flip result to TAILS"
+                  }
+                  h.object = false
+                  heatMetalFlag = false
+                }
+              }
+              eff5 = delayed {
+                before BURNED_SPC, null, null, BEGIN_TURN, {
+                  if (ef.target.owner == self.owner.opposite) {
+                    heatMetalFlag = true
+                  }
+                }
+              }
+            }
+            onDeactivate {
+              eff1.unregister()
+              eff2.unregister()
+              eff3.unregister()
+              eff4.unregister()
+              eff5.unregister()
             }
           }
           pokePower "Heat Wave", {
             text "Once at the end of your turn, if Heatran is on your Bench, you may use this power. If you discarded basic Energy cards attached to your [R] or [M] Active Pokémon by that Pokémon’s attack this turn, attach up to 2 of those Energy cards to that Pokémon."
             delayedA {
               before BETWEEN_TURNS, {
-                energyList.removeAll(src.cards.filterByType(ENERGY))
-                if(bg.currentTurn == self.owner && src && (src.types.contains(R) || src.types.contains(M)) && energyList.filterByType(BASIC_ENERGY) && self.benched && confirm("Use Heat Wave?")) {
-                  powerUsed()
-                  energyList.select(max:2,"Attach up to 2 Basic Energy cards to $src",cardTypeFilter(BASIC_ENERGY)).each {
-                    attachEnergy(src, it)
+                if(heatWaveFlag) {
+                  energyList.removeAll(src.cards.filterByType(ENERGY))
+                  if(bg.currentTurn == self.owner && src && (src.types.contains(R) || src.types.contains(M)) && energyList.filterByType(BASIC_ENERGY) && self.benched && confirm("Use Heat Wave?")) {
+                    powerUsed()
+                    energyList.select(max:2,"Attach up to 2 Basic Energy cards to $src",cardTypeFilter(BASIC_ENERGY)).each {
+                      attachEnergy(src, it)
+                    }
                   }
+                  energyList.retainAll()
                 }
-                energyList.retainAll()
+                heatWaveFlag = false
               }
             }
           }
@@ -3173,7 +3214,10 @@ public enum Stormfront implements LogicCardInfo {
               if (opp.deck) {
                 opp.deck.subList(0, 1).discard()
               }
-              if (opp.hand) opp.hand.shuffledCopy().select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be discarded").showToMe("Selected card").showToOpponent("This card will be discarded").discard()
+              if (opp.hand) {
+                opp.hand.shuffledCopy().select(hidden: true, count: 1, "Choose a random card from your opponent's hand to be discarded").showToMe("Selected card").showToOpponent("This card will be discarded").discard()
+              }
+              cantUseAttack thisMove, self
             }
           }
         };
@@ -3222,35 +3266,11 @@ public enum Stormfront implements LogicCardInfo {
           weakness W
           resistance F, MINUS30
           pokeBody "Energy Burn", {// Taken directly from BaseSetNG
-            text "As often as you like during your turn , you may turn all Energy attached to Charizard into [R] Energy for the rest of the turn."
-            text "As often as you like during your turn (before your attack), you may turn all Energy attached to Charizard into [R] Energy for the rest of the turn. This power can’t be used if Charizard is Asleep, Confused, or Paralyzed."
-            def set = [] as Set
-            def eff1, eff2
-            onActivate {
-              if(eff1) eff1.unregister()
-              if(eff2) eff2.unregister()
-              eff1 = delayed {
-                before BETWEEN_TURNS, {
-                  set.clear()
-                }
-              }
-              eff2 = getter GET_ENERGY_TYPES, { holder->
-                if(set.contains(holder.effect.card)) {
-                  int count = holder.object.size()
-                  holder.object = [(1..count).collect{[FIRE] as Set}]
-                }
-              }
-            }
-            actionA {
-              checkNoSPC()
-              def newSet = [] as Set
-              newSet.addAll(self.cards.filterByType(ENERGY))
-              if(newSet != set){
-                powerUsed()
-                set.clear()
-                set.addAll(newSet)
-              } else {
-                wcu "Nothing to burn more"
+            text "All Energy attached to Charizard are [R] Energy instead of their usual type. "
+            getterA GET_ENERGY_TYPES, { holder ->
+              if (holder.effect.target.owner == self.owner) {
+                int count = holder.object.size()
+                holder.object = (1..count).collect { [FIRE] as Set }
               }
             }
           }
