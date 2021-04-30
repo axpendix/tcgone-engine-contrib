@@ -676,7 +676,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             text "If you have Cresselia in play, each of Darkrai's attacks does 20 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                if (ef.attacker.owner == self.owner self.owner.pbg.all.find { it.name == "Cresselia" }) {
+                if (ef.attacker.owner == self.owner && self.owner.pbg.all.find { it.name == "Cresselia" }) {
                   bg.dm().each {
                     if (it.to != self.owner && it.to.active && it.notNoEffect && it.dmg.value) {
                       bc "Darkness Aura +20"
