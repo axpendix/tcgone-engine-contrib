@@ -110,10 +110,11 @@ public enum PopSeries8 implements LogicCardInfo {
               assert self.cards.filterByType(BASIC_ENERGY).size() >= 2 : "Needs at least 2 Basic Energy cards attached"
             }
             onAttack {
+              def cards = self.cards.filterByType(BASIC_ENERGY).select(count: 2, "Discard 2 Basic energy cards from $self.")
               damage 90
 
               afterDamage {
-                self.cards.filterByType(BASIC_ENERGY).select(count: 2, "Discard 2 Basic energy cards from $self.").discard()
+                cards.discard()
               }
             }
           }
