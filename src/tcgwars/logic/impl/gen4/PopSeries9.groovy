@@ -463,7 +463,7 @@ public enum PopSeries9 implements LogicCardInfo {
             onAttack {
               damage 40
 
-              if (my.all.findAll {it.name == "Chimchar" }) {
+              if (my.all.findAll {it.name == "Buizel" }) {
                 opp.bench.each {
                   damage 10, it
                 }
