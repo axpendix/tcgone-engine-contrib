@@ -247,7 +247,9 @@ public enum PopSeries9 implements LogicCardInfo {
           move "Knock Off", {
             text "Flip a coin. If heads, choose 1 card from your opponent’s hand without looking and discard it."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert opp.hand : "Opponent's hand is empty"
+            }
             onAttack {
               flip {
                 discardRandomCardFromOpponentsHand()
