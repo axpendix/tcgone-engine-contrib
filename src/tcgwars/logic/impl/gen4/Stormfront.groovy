@@ -1974,10 +1974,10 @@ public enum Stormfront implements LogicCardInfo {
               }
               def card = my.deck.search("Search your deck for a Supporter and copy its effect as this attack.",cardTypeFilter(SUPPORTER)).first()
               if(card) {
-                discard card
                 bg.deterministicCurrentThreadPlayerType=self.owner
                 bg.em().run(new PlayTrainer(card))
                 bg.clearDeterministicCurrentThreadPlayerType()
+                discard card
               }
               shuffleDeck()
               bef.unregister()
