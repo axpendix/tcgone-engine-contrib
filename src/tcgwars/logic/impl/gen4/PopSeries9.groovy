@@ -106,14 +106,10 @@ public enum PopSeries9 implements LogicCardInfo {
             onAttack {
               damage 100
 
-              if (confirm(text)) {
-                opp.bench.each {
-                  damage 10, it
-                }
-                afterDamage {
-                  discardSelfEnergy C,C
-                }
+              opp.bench.each {
+                damage 10, it
               }
+              discardSelfEnergyAfterDamage(C, C)
             }
           }
         };
