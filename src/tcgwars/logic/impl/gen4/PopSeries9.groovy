@@ -213,7 +213,7 @@ public enum PopSeries9 implements LogicCardInfo {
             energyCost P, C
             attackRequirement {}
             onAttack {
-              def filteredHand = opp.hand.shuffledCopy().showToMe("Opponent's hand").filterByType(ITEM, SUPPORTER, STADIUM)
+              def filteredHand = opp.hand.showToMe("Opponent's hand").filterByType(ITEM, SUPPORTER, STADIUM)
               damage 30 + (10 * filteredHand.size())
             }
           }
