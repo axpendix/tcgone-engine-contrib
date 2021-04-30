@@ -211,9 +211,7 @@ public enum PopSeries9 implements LogicCardInfo {
           move "Poltergeist", {
             text "30+ damage. Look at your opponent’s hand. This attack does 30 damage plus 10 more damage for each Trainer, Supporter, and Stadium card in your opponent’s hand."
             energyCost P, C
-            attackRequirement {
-              assert opp.hand : "Opponent's hand is empty"
-            }
+            attackRequirement {}
             onAttack {
               def filteredHand = opp.hand.shuffledCopy().showToMe("Opponent's hand").filterByType(ITEM, SUPPORTER, STADIUM)
               damage 30 + (10 * filteredHand.size())
