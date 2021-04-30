@@ -6,6 +6,7 @@ import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*
 import static tcgwars.logic.effect.EffectType.BEGIN_TURN
+import static tcgwars.logic.effect.EffectType.BETWEEN_TURNS
 import static tcgwars.logic.effect.EffectType.EVOLVE_STANDARD
 import static tcgwars.logic.effect.EffectType.PREVENT_EVOLVE;
 import static tcgwars.logic.groovy.TcgBuilders.*;
@@ -109,7 +110,7 @@ public enum PopSeries6 implements LogicCardInfo {
           customAbility {
             // Oran Berry: Remove 1 damage counter from Gible at the end of your turn.
             delayedA {
-              before BEGIN_TURN,{
+              before BETWEEN_TURNS,{
                 if (self.numberOfDamageCounters >= 1) {
                   bc "Oran Berry activates"
                   heal 10, self
@@ -135,7 +136,7 @@ public enum PopSeries6 implements LogicCardInfo {
           customAbility {
             // Oran Berry: Remove 1 damage counter from Gible at the end of your turn.
             delayedA {
-              before BEGIN_TURN,{
+              before BETWEEN_TURNS,{
                 if (self.numberOfDamageCounters >= 1) {
                   bc "Oran Berry activates"
                   heal 10, self
