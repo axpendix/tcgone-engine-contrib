@@ -236,7 +236,7 @@ public enum PopSeries9 implements LogicCardInfo {
             onAttack {
               damage 30
               if (my.all.findAll {it.name == "Pachirisu" }) {
-                flip { preventAllDamageNextTurn() }
+                flip { preventAllEffectsNextTurn() }
               }
             }
           }
