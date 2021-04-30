@@ -14,6 +14,7 @@ import static tcgwars.logic.card.CardType.*
 import static tcgwars.logic.effect.EffectPriority.BEFORE_LAST
 import static tcgwars.logic.effect.EffectPriority.LAST
 import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.POKEBODY
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.OTHER
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.groovy.TcgBuilders.*;
@@ -653,7 +654,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             delayedA {
               before BEGIN_TURN, {
                 if (my.all.find {it.name == "Darkrai" }) {
-                  heal 10, self, SRC_ABILITY
+                  heal 10, self, POKEBODY
                 }
               }
             }
