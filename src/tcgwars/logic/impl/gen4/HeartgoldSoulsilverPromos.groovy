@@ -166,6 +166,7 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
             }
             onAttack {
               flip { attachEnergyFrom(type: L, my.deck, self) }
+              shuffleDeck()
             }
           }
           move "Thunderbolt", {
