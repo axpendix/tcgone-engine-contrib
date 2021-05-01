@@ -895,6 +895,7 @@ public enum Stormfront implements LogicCardInfo {
                   attachEnergy(pcs, energy)
                 }
               }
+              shuffleDeck()
             }
           }
           move "Ominous Wind", {
@@ -1297,7 +1298,7 @@ public enum Stormfront implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if (it.from.stage2 && it.from.evolution && it.to.owner == self.owner && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect) {
+                  if (self.active && it.from.stage2 && it.from.evolution && it.to.owner == self.owner && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect) {
                     bc "$thisAbility -20"
                     it.dmg -= hp(20)
                   }
@@ -1406,7 +1407,8 @@ public enum Stormfront implements LogicCardInfo {
               after POKEPOWER, {
                 if (self.owner.pbg.discard.filterByBasicEnergyType(D) && confirm("Use Darkness Drive?",self.owner)) {
                   bc "Darkness Drive activates"
-                  attachEnergyFrom(basic:true, type:D, self.owner.pbg.discard, self)
+                  def card = self.owner.pbg.discard.select("Select a basic [D] Energy to attach to $self",basicEnergyFilter(D),self.owner).first()
+                  attachEnergy(self,card)
                 }
               }
             }
@@ -2868,7 +2870,7 @@ public enum Stormfront implements LogicCardInfo {
             def names = []
             def unique = 0
             for (card in my.discard.filterByType(ITEM,SUPPORTER,STADIUM)) {
-              if (names.contains(card.name)) {
+              if (!names.contains(card.name)) {
                 unique ++
               }
               names.add card.name
@@ -3040,7 +3042,7 @@ public enum Stormfront implements LogicCardInfo {
                 }
               }
               eff2 = delayed {
-                before BURNED_SPC, null, null, DEVOLVE, {
+                before BURNED_SPC, null, null, DEVOLVE, {//TODO: This doesn't work. REMOVE_FROM_PLAY is what actually clears the special condition and I don't know how to tell the difference.
                   bc "Heat Metal prevents removing the Special Condition Burned by evolving or devolving"
                   prevent()
                 }
