@@ -299,7 +299,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
                 }
               }
             }
-          }discard bg.stadiumInfoStruct.stadiumCard
+          }
           move "Reaper Pulse", {
             text "70 damage. Move up to 2 damage counters from Dusknoir to 1 of your opponent's Benched Pokémon."
             energyCost P, P, C
