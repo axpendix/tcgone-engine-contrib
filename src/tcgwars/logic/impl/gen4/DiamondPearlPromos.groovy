@@ -12,16 +12,13 @@ import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*
 import static tcgwars.logic.effect.EffectPriority.BEFORE_LAST
-import static tcgwars.logic.effect.EffectPriority.LAST
 import static tcgwars.logic.effect.EffectType.*
-import static tcgwars.logic.effect.Source.POKEBODY
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.OTHER
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
-import static tcgwars.logic.effect.Source.*;
 
 import tcgwars.logic.card.*
 import tcgwars.logic.util.*;
