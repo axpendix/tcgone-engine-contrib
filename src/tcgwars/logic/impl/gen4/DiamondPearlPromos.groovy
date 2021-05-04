@@ -572,7 +572,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             onAttack {
               damage 60
 
-              if (self.cards.energyCount(L) && self.cards.energyCount(M) && confirm(text)) {
+              if (self.cards.energySufficient(L, M) && confirm(text)) {
                 damage 60
                 discardSelfEnergyAfterDamage(L, M)
               }
