@@ -2148,11 +2148,10 @@ public enum MysteriousTreasures implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert self.benched : "$self is not on the Bench" //No need to check for other Poké, if it's benched there's at least the active.
-              assert my.all.findAll {it != self && it.cards.filterByType(POKEMON_TOOL).empty} : "No place to attach $self as a tool"
+              assert my.all.findAll {it != self && canAttachPokemonTool(it)} : "No place to attach $self as a tool"
               powerUsed()
               def top = self.topPokemonCard
               self.cards.getExcludedList(top).discard()
-              removePCS(self)
               def trcard
               trcard = pokemonTool(new CustomCardInfo(top.staticInfo).setCardTypes(TRAINER, ITEM, POKEMON_TOOL)) {
                 def eff
@@ -2165,10 +2164,16 @@ public enum MysteriousTreasures implements LogicCardInfo {
                   eff.unregister()
                   bg.em().run(new ChangeImplementation(top, trcard))
                 }
+                onDisable {
+                  eff.unregister()
+                }
               }
               trcard.player = top.player
-              def pcs = my.all.findAll {it!=self && it.cards.filterByType(POKEMON_TOOL).empty}.select("Attach to?")
-              attachPokemonTool(trcard,pcs)
+              def pcs = my.all.findAll {it!=self && canAttachPokemonTool(it)}.select("Attach to?")
+              removeFromPlay(self, [top] as CardList)
+              bg.em().run(new ChangeImplementation(trcard, top))
+              attachPokemonTool(trcard, pcs)
+              removePCS(self)
             }
           }
           move "Hidden Power", {

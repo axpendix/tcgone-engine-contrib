@@ -1828,9 +1828,8 @@ public enum GreatEncounters implements LogicCardInfo {
 
               def top = self.topPokemonCard
               self.cards.getExcludedList(top).discard()
-              removePCS(self)
-              def toolCard
-              toolCard = pokemonTool(new CustomCardInfo(top.staticInfo).setCardTypes(TRAINER, POKEMON_TOOL)) {
+
+              def toolCard = pokemonTool(new CustomCardInfo(top.staticInfo).setCardTypes(TRAINER, POKEMON_TOOL)) {
                 def eff
                 onPlay {
                   eff = delayed {
@@ -1846,10 +1845,17 @@ public enum GreatEncounters implements LogicCardInfo {
                   eff.unregister()
                   bg.em().run(new ChangeImplementation(top, toolCard))
                 }
+                onDisable {
+                  eff.unregister()
+                }
               }
               bg.em().run(new ChangeImplementation(toolCard, top))
               toolCard.player = top.player
-              attachPokemonTool(toolCard, my.all.findAll{it != self && canAttachPokemonTool(it)}.select("Attach to?"))
+              def pcs = my.all.findAll {it!=self && canAttachPokemonTool(it)}.select("Attach to?")
+              removeFromPlay(self, [top] as CardList)
+              bg.em().run(new ChangeImplementation(toolCard, top))
+              attachPokemonTool(toolCard, pcs)
+              removePCS(self)
             }
           }
           move "Hidden Power", {

@@ -899,23 +899,8 @@ class TcgStatics {
       }
     } } }
   }
-  /**
-   * Attaches a tool to a pcs. Callers MUST remove card manually from source, else it will be duplicated. Vastly taken from {@link tcgwars.logic.effect.gm.PlayPokemonTool}
-   */
   static attachPokemonTool (PokemonToolCard card, PokemonCardSet pcs) {
-    // attach to selected pokemon
-    pcs.cards().add(card);
-    //play
-    card.play(bg, pcs);
-    //register for remove from play
-    delayed {
-      after REMOVE_FROM_PLAY, pcs, null, {
-        if(LUtils.isRemoveFromPlayAndContainsCard(e, card)){
-          card.removeFromPlay(bg, pcs)
-          unregister()
-        }
-      }
-    }
+    new AttachPokemonTool(pcs, card, OTHER).run(bg)
     bc("$card is attached to $pcs")
     bg.gm().woosh();
   }
