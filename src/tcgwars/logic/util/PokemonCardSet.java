@@ -48,6 +48,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
 //	private Map<PokemonCard, PokemonCard> evolutionChain;
 
   public final String id;
+  public final String ref;
 
   //turn played
   public final int turnCount = Battleground.getInstance().getTurnCount();
@@ -73,6 +74,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
     this.owner = owner;
     this.specialConditions = new THashSet<>();
     this.id = UUID.randomUUID().toString();
+    this.ref = owner.getPbg().nextRef();
 //		this.evolutionChain = new HashMap<PokemonCard, PokemonCard>();
   }
 
@@ -470,7 +472,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
     return getName() + " (" + getShortId() + ")";
   }
 
-//	public void setCards(CardList set) {
+  //	public void setCards(CardList set) {
 //		this.set = set;
 //	}
 

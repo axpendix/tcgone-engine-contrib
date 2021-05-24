@@ -301,7 +301,7 @@ public class CardList extends ArrayList<Card> {
     select([:], info, filter, playerType)
   }
 
-  def CardList select(Map params, String info, Closure filter = { true }, PlayerType playerType = TcgStatics.bg().currentThreadPlayerType, Closure passFilter = { true }) {
+  def CardList select(Map params, String info, Closure filter = { true }, PlayerType playerType = TcgStatics.bg().currentThreadPlayerType, Closure passFilter = null) {
     int min = params.get("min") != null ? params.get("min") : 1
     int max = params.get("max") != null ? params.get("max") : 1
     int count = params.get("count") ?: 0
@@ -319,7 +319,11 @@ public class CardList extends ArrayList<Card> {
       TcgStatics.block()
     }
     def ret = TcgStatics.bg().getClient(playerType).selectCard(new CardSelectUIRequestBuilder()
-      .setMinMax(min, max).setInfo(info).setCards(cards).setCustomCardFilter(filter as CardSelectUIRequestBuilder.CustomCardFilter).setCustomPassFilter(passFilter as CardSelectUIRequestBuilder.CustomPassFilter)
+      .setMinMax(min, max)
+      .setInfo(info)
+      .setCards(cards)
+      .setCustomCardFilter(filter != null ? filter as CardSelectUIRequestBuilder.CustomCardFilter : null)
+      .setCustomPassFilter(passFilter != null ?  passFilter as CardSelectUIRequestBuilder.CustomPassFilter : null)
       .setShowAsHidden(hidden))
       .setType(CardListType.TEMPORARY)
     if (playerType != TcgStatics.bg().currentThreadPlayerType) {

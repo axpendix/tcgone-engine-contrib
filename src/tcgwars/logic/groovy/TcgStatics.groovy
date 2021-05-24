@@ -648,6 +648,19 @@ class TcgStatics {
     ef.run(bg())
     ef
   }
+  static boolean wrapperEffect (EffectType effectType, Runnable runnable){
+    def effect = new DirectEffect() {
+      @Override
+      void process(Battleground bg, Event event) {
+        runnable.run()
+      }
+      @Override
+      EffectType getEffectType() {
+        return effectType
+      }
+    }
+    !bg().em().run(effect)
+  }
   static cantPlayEnergy (){
     new CantPlayEnergy().run(bg())
   }
