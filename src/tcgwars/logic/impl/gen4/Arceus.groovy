@@ -388,7 +388,7 @@ public enum Arceus implements LogicCardInfo {
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
                 if(ef.attacker==self) bg.dm().each {
-                  if(it.from==self && it.to.active && it.to.owner!=self.owner && it.dmg.value && bg.em().retrieveObject("last_supporter_play_turn") != bg.turnCount) {
+                  if(it.to.active && it.to.owner!=self.owner && it.notZero && bg.em().retrieveObject("last_supporter_play_turn") != bg.turnCount) {
                     it.dmg += hp(30)
                     bc "$thisAbility +30"
                   }
@@ -2301,7 +2301,7 @@ public enum Arceus implements LogicCardInfo {
             eff2 = delayed {
               after PROCESS_ATTACK_EFFECTS, {
                 if(ef.attacker==self) bg.dm().each {
-                  if(it.from==self && it.to.active && it.to.owner!=self.owner && it.dmg.value){
+                  if(it.to.active && it.to.owner!=self.owner && it.notZero){
                     it.dmg += hp(20)
                     bc "Expect Belt +20"
                   }

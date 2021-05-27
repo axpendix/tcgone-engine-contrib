@@ -1392,9 +1392,9 @@ public enum Platinum implements LogicCardInfo {
               delayed {
                 def registeredOn=0
                 after PROCESS_ATTACK_EFFECTS, {
-                  if(bg.turnCount!=registeredOn){
-                    bg.dm().each {if(it.from==self && it.dmg.value){
-                      bc "Cheerfull Voice does +60 to ${it.to}"
+                  if(bg.turnCount!=registeredOn && ef.attacker == self){
+                    bg.dm().each {if(it.to.owner == self.owner.opposite && it.to.active && it.notZero){
+                      bc "Cheerfull Voice +60"
                       it.dmg+=hp(60)
                     }}
                   }
@@ -3727,7 +3727,7 @@ public enum Platinum implements LogicCardInfo {
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
                 if(ef.attacker==self && bg.em().retrieveObject("Revenge_Seed") == bg.turnCount-1) bg.dm().each {
-                  if(it.from==self && it.to.active && it.to.owner!=self.owner && it.dmg.value){
+                  if(it.to.active && it.notZero){
                     bc "Revenge seed +60"
                     it.dmg += hp(60)
                   }
