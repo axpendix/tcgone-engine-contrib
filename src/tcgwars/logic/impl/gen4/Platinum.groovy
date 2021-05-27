@@ -1473,7 +1473,6 @@ public enum Platinum implements LogicCardInfo {
           weakness W, PLUS20
           move "Flame Bash", {
             text "Flip a coin until you get tails. Search your deck for a number of basic [R] Energy cards up to the number of heads and attach them to any of your Pokémon in any way you like. Shuffle your deck afterward."
-            energyCost R
             attackRequirement {
               assert my.deck : "Your deck is empty"
             }
