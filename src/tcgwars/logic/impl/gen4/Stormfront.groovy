@@ -1207,10 +1207,12 @@ public enum Stormfront implements LogicCardInfo {
             text "If Scizor has 6 or more damage counters on it, any damage done to Scizor by attacks is reduced by 40 ."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if (self.numberOfDamageCounters >= 6 && it.to == self && it.dmg.value && it.notNoEffect) {
-                    bc "$thisAbility -40"
-                    it.dmg -= hp(40)
+                if (self.numberOfDamageCounters >= 6) {
+                  bg.dm().each {
+                    if (it.to == self && it.dmg.value && it.notNoEffect) {
+                      bc "$thisAbility -40"
+                      it.dmg -= hp(40)
+                    }
                   }
                 }
               }
@@ -3123,10 +3125,12 @@ public enum Stormfront implements LogicCardInfo {
                 }
               }
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if(it.to == self && it.dmg.value && it.notNoEffect){
-                    bc "No Guard +60"
-                    it.dmg+=hp(60)
+                if (ef.attacker.owner != self.owner) {
+                  bg.dm().each {
+                    if(it.to == self && it.dmg.value && it.notNoEffect){
+                      bc "No Guard +60"
+                      it.dmg+=hp(60)
+                    }
                   }
                 }
               }

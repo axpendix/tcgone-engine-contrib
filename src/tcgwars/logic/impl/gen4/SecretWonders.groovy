@@ -301,10 +301,12 @@ public enum SecretWonders implements LogicCardInfo {
             text "If your opponent has 3 or less Prize cards left, each of Charizard’s attacks does 50 more damage to the Active Pokémon ."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                if(ef.attacker==self) bg.dm().each {
-                  if(it.from==self && it.to.active && it.to.owner!=self.owner && it.dmg.value && opp.prizeCardSet.size()<=3) {
-                    it.dmg += hp(50)
-                    bc "$thisAbility +50"
+                if(ef.attacker==self && opp.prizeCardSet.size()<=3) {
+                  bg.dm().each {
+                    if(it.to.active && it.notZero) {
+                      it.dmg += hp(50)
+                      bc "$thisAbility +50"
+                    }
                   }
                 }
               }
@@ -1579,10 +1581,12 @@ f
             text "If Wormadam Trash Cloak has a Pokémon Tool Card attached to it, any damage done to Wormadam Trash Cloak by attacks is reduced by 20 ."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if (it.to == self && self.cards.filterByType(POKEMON_TOOL) && it.dmg.value && it.notNoEffect) {
-                    bc "$thisAbility -20"
-                    it.dmg -= hp(20)
+                if (self.cards.filterByType(POKEMON_TOOL)) {
+                  bg.dm().each {
+                    if (it.to == self && it.dmg.value && it.notNoEffect) {
+                      bc "$thisAbility -20"
+                      it.dmg -= hp(20)
+                    }
                   }
                 }
               }
@@ -1801,11 +1805,12 @@ f
             text "If any basic Energy card attached to Kecleon is the same as the Attacking Pokémon’s type, any damage done by attacks from the Pokémon to Kecleon is reduced by 40 ."
             delayedA{
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  def src = it.from
-                  if(it.to == self && self.cards.filterByType(BASIC_ENERGY).find{src.types.contains(it.basicType)} && it.dmg.value && it.notNoEffect) {
-                    bc "Camoflage -40"
-                    it.dmg -= hp(40)
+                if (ef.attacker.owner != self.owner && self.cards.filterByType(BASIC_ENERGY).find{ef.attacker.types.contains(it.basicType)}) {
+                  bg.dm().each {
+                    if(it.to == self && it.dmg.value && it.notNoEffect) {
+                      bc "Camoflage -40"
+                      it.dmg -= hp(40)
+                    }
                   }
                 }
               }
@@ -1943,26 +1948,7 @@ f
             energyCost C, C
             onAttack {
               damage 20
-              afterDamage {
-                def pcs = defending
-                targeted(pcs){
-                  delayed {
-                    after PROCESS_ATTACK_EFFECTS, {
-                      bg.dm().each {if(it.to==pcs && it.from==self && it.dmg.value>0 && it.notNoEffect){
-                        bc "$thisMove increases damage"
-                        it.dmg+=hp(20)
-                      }}
-                    }
-                    unregisterAfter 3
-                    after FALL_BACK, pcs, {unregister()}
-                    after EVOLVE, pcs, {unregister()}
-                    after DEVOLVE, pcs, {unregister()}
-                    after FALL_BACK, self, {unregister()}
-                    after EVOLVE, self, {unregister()}
-                    after DEVOLVE, self, {unregister()}
-                  }
-                }
-              }
+              doMoreDamageNextTurn(thisMove, 20, self)
             }
           }
           move "Poison Horn", {
@@ -2146,10 +2132,12 @@ f
             text "If Skiploom has any Energy attached to it, any damage done to Skiploom by attacks from your opponent’s Evolved Pokémon is reduced by 20 ."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each{
-                  if (self.cards.energyCount(C) && it.to == self && it.from.owner != self.owner && it.from.evolution && it.notNoEffect && it.dmg.value) {
-                    bc "Cotton Balloon -20"
-                    it.dmg=hp(0)
+                if (ef.attacker.owner != self.owner && ef.attacker.evolution && self.cards.energyCount(C)) {
+                  bg.dm().each{
+                    if (it.to == self && it.notNoEffect && it.dmg.value) {
+                      bc "Cotton Balloon -20"
+                      it.dmg=hp(0)
+                    }
                   }
                 }
               }
