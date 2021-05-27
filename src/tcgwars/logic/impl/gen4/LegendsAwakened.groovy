@@ -584,8 +584,14 @@ public enum LegendsAwakened implements LogicCardInfo {
             text "If you have Poliwag, Poliwhirl, and Poliwrath in play, each of these Pokémon's attacks does 60 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each {
-                  if (it.from.name in ["Poliwag", "Poliwhirl", "Poliwrath"] && it.to.active && it.to.owner != self.owner && it.dmg.value && it.notNoEffect) {
+                if (
+                  ef.attacker.owner == self.owner &&
+                  ef.attacker.name in ["Poliwag", "Poliwhirl", "Poliwrath"] &&
+                  ["Poliwag", "Poliwhirl", "Poliwrath"].every{
+                    toadName -> self.owner.pbg.all.any{ it.name == toadName }
+                  }
+                ) bg.dm().each {
+                  if (it.to.active && it.notZero) {
                     bc "Enthusiasm +60"
                     it.dmg += hp(60)
                   }
