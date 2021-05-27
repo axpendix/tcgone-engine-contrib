@@ -740,10 +740,9 @@ public enum BattleStyles implements LogicCardInfo {
           text "Your Single Strike Pokémon's attacks do 30 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
           delayedA {
             after PROCESS_ATTACK_EFFECTS, {
-              if (ef.attacker.owner == self.owner) {
+              if (ef.attacker.owner == self.owner && ef.attacker.topPokemonCard.cardTypes.is(SINGLE_STRIKE)) {
                 bg.dm().each {
-                  if (it.from.active && it.from.owner == self.owner && it.to.active && it.to.owner != self.owner
-                    && it.dmg.value && it.from.topPokemonCard.cardTypes.is(SINGLE_STRIKE)) {
+                  if (it.to.active && it.to.owner != self.owner && it.notZero) {
                     bc "Fighting Fury Stance +30"
                     it.dmg += hp(30)
                   }
@@ -2661,10 +2660,12 @@ public enum BattleStyles implements LogicCardInfo {
           text "This Pokémon's attacks do 60 more damage to your opponent's [G] Pokémon (before applying Weakness and Resistance)."
           delayedA {
             after PROCESS_ATTACK_EFFECTS, {
-              bg.dm().each {
-                if(it.from == self && it.to.owner == self.owner.opposite && it.to.types.contains(G) && it.dmg.value) {
-                  bc "Sap Sipper +60"
-                  it.dmg += hp(60)
+              if (ef.attacker == self) {
+                bg.dm().each {
+                  if(it.to.owner == self.owner.opposite && it.to.types.contains(G) && it.notZero) {
+                    bc "Sap Sipper +60"
+                    it.dmg += hp(60)
+                  }
                 }
               }
             }
@@ -3061,10 +3062,12 @@ public enum BattleStyles implements LogicCardInfo {
           damageInc = delayed {
             after PROCESS_ATTACK_EFFECTS, {
               targeted self, SRC_SPENERGY, {
-                bg.dm().each {
-                  if (ef.attacker == self && it.dmg.value && it.from == self && it.to.active && it.to.owner != self.owner) {
-                    bc "Single Strike Energy +20"
-                    it.dmg += hp 20
+                if (ef.attacker == self) {
+                  bg.dm().each {
+                    if (it.to.active && it.to.owner != self.owner && it.notZero) {
+                      bc "Single Strike Energy +20"
+                      it.dmg += hp 20
+                    }
                   }
                 }
               }

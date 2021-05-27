@@ -2746,7 +2746,7 @@ public enum SwordShield implements LogicCardInfo {
             after PROCESS_ATTACK_EFFECTS, {
               if (ef.attacker.owner == self.owner && ef.attacker.types.contains(M)) {
                 bg.dm().each {
-                  if (it.from.active && it.from.owner == self.owner && it.to.active && it.to.owner != self.owner && it.dmg.value) {
+                  if (it.to.active && it.to.owner != self.owner && it.notZero) {
                     bc "Steely Spirit +20"
                     it.dmg += hp(20)
                   }
@@ -3591,7 +3591,7 @@ public enum SwordShield implements LogicCardInfo {
           eff1=delayed {
             after PROCESS_ATTACK_EFFECTS, {
               if(ef.attacker==self) bg.dm().each {
-                if(it.from==self && it.to.active && it.to.owner!=self.owner && it.dmg.value) {
+                if(it.to.active && it.to.owner!=self.owner && it.notZero) {
                   it.dmg += hp(10)
                   bc "Vitality Band +10"
                 }
