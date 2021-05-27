@@ -2060,9 +2060,9 @@ public enum Platinum implements LogicCardInfo {
           weakness P, PLUS20
           pokeBody "Sludge Cell", {
             text "If Muk remains affected by any Special Conditions between turns, remove 2 damage counters from Muk."
-            delayedA {
+            delayedA(priority: BEFORE_LAST) {
               before BEGIN_TURN, {
-                if(self.specialCondition) {
+                if (self.specialConditions) {
                   heal 20, self, Source.POKEBODY
                 }
               }
@@ -2087,7 +2087,7 @@ public enum Platinum implements LogicCardInfo {
             energyCost P, P, C
             onAttack {
               damage 50
-              if(self.isSPC(POISONED)) {
+              if (self.isSPC(POISONED)) {
                 damage 20
                 applyAfterDamage CONFUSED
               }
