@@ -465,11 +465,11 @@ public enum LegendsAwakened implements LogicCardInfo {
             text "If your opponent has any Pokémon LV.X in play, each of Luxray's attacks does 50 more damage to the Active Pokémon (before applying Weakness and Resistance)."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                if (opp.all.any { it.isPokemonLevelUp() }) {
+                if (ef.attacker == self && opp.all.any { it.isPokemonLevelUp() }) {
                   bg.dm().each {
-                    if (it.from == self && it.to.active && it.to.owner != self.owner && it.dmg.value && it.notNoEffect) {
-                      bc "Rivalry +30"
-                      it.dmg += hp(30)
+                    if (it.to.active && it.notZero) {
+                      bc "Rivalry +50"
+                      it.dmg += hp(50)
                     }
                   }
                 }
