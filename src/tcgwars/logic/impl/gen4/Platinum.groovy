@@ -1237,9 +1237,8 @@ public enum Platinum implements LogicCardInfo {
           weakness L, PLUS20
           move "Swim", {
             text "30 damage. If your opponent has any [W] Energy attached to any of his or her Pokémon, you may do 30 damage to any 1 Benched Pokémon instead."
-            energyCost W
             onAttack {
-              if(opp.all.find{it.cards.filterByEnergyType(W)}) {
+              if (opp.all.find {it.cards.filterByEnergyType(W)}) {
                 damage 30, opp.all.select()
               } else {
                 damage 30
