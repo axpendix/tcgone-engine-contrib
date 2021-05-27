@@ -1009,11 +1009,11 @@ public enum Platinum implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               assert my.hand : "Your hand is empty"
-              assert my.all.find{it.numberOfDamageCounters} : "Your Pokémon are healthy"
+              assert my.all.find {it.numberOfDamageCounters} : "Your Pokémon are healthy"
               assert bg.em().retrieveObject("Nurse_Call") != bg.turnCount : "You cannot use Nurse Call more than once per turn"
               powerUsed()
               my.hand.select("Choose a card to discard").discard()
-              heal 20, my.all.findAll(it.numberOfDamageCounters).select("Heal which Pokémon"), Source.POKEPOWER
+              heal 20, my.all.findAll{it.numberOfDamageCounters}.select("Heal which Pokémon"), Source.POKEPOWER
             }
           }
           move "Return", {
