@@ -1723,23 +1723,28 @@ public enum Unleashed implements LogicCardInfo {
           }
         };
       case PLUSPOWER_80:
-        return basicTrainer (this) {
-          //TODO: Handle errata here (and in all prints of pluspower in general).
-          text "During this turn, your Pokémon’s attacks do 10 more damage to the Active Pokémon (before applying Weakness and Resistance)."
-          onPlay {
-            delayed {
-              after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each {if(it.to.active && it.from.owner==thisCard.player && it.to.owner!=it.from.owner && it.dmg.value){
-                  bc "Plus Power +10"
-                  it.dmg += hp(10)
-                }}
-              }
-              unregisterAfter 1
-            }
-          }
-          playRequirement{
-          }
-        };
+        //TODO: Handle errata here (and in all prints of pluspower in general).
+        return copy(DiamondPearl.PLUSPOWER_109, this);
+//        return basicTrainer (this) {
+//          text "During this turn, your Pokémon’s attacks do 10 more damage to the Active Pokémon (before applying Weakness and Resistance)."
+//          onPlay {
+//            delayed {
+//              after PROCESS_ATTACK_EFFECTS, {
+//                if (ef.attacker.owner == thisCard.player) {
+//                  bg.dm().each {
+//                    if (it.to.active && it.notZero) {
+//                      bc "$thisCard +10"
+//                      it.dmg += hp(10)
+//                    }
+//                  }
+//                }
+//              }
+//              unregisterAfter 1
+//            }
+//          }
+//          playRequirement{
+//          }
+//        };
       case POKEMON_CIRCULATOR_81:
         return copy (SunMoon.REPEL_130, this);
       case RARE_CANDY_82:
