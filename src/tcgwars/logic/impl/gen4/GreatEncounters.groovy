@@ -1215,28 +1215,12 @@ public enum GreatEncounters implements LogicCardInfo {
           weakness W, PLUS20
           move "Bulk Up", {
             text "30 damage. During your next turn, each of Combusken's attacks does 30 more damage to the Defending Pokémon."
+            // "The effect of Bulk Up only resides on Combusken's attacks. If the Defending Pokemon retreats, evolves, etc. the effect still remains on Combusken."
+            // Source: PUI Rules Team (2008-05-08)
             energyCost R
             onAttack {
               damage 30
-              afterDamage {
-                def pcs = defending
-                targeted(pcs) {
-                  delayed {
-                    before APPLY_ATTACK_DAMAGES, {
-                      bg.dm().each {
-                        if (it.to==pcs && it.from==self && it.dmg.value>0 && it.notNoEffect) {
-                          bc "$thisMove increases damage"
-                          it.dmg += hp(30)
-                        }
-                      }
-                    }
-                    unregisterAfter 3
-                    after FALL_BACK, pcs, {unregister()}
-                    after EVOLVE, pcs, {unregister()}
-                    after DEVOLVE, pcs, {unregister()}
-                  }
-                }
-              }
+              doMoreDamageNextTurn(thisMove, 30, self)
             }
           }
           move "Double Kick", {
