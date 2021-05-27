@@ -1141,7 +1141,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               while (1) {
                 def tar = my.all.findAll {it.cards.filterByEnergyType(W).findAll {!toBeMoved.contains(it)}.notEmpty()}
                 if (!tar) break
-                def pcs = tar.select("Pokemon that has [W] energy to be shuffled to deck. Cancel to stop", false)
+                def pcs = tar.select("Pokémon that has [W] energy to be shuffled to deck. Cancel to stop", false)
                 if (!pcs) break
                 def dd = pcs.cards.filterByEnergyType(W).findAll {!toBeMoved.contains(it)}.select("[W] Energy to shuffle into your deck")
                 toBeMoved.addAll(dd)
@@ -1354,7 +1354,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             energyCost C, C, C
             onAttack {
               discardSelfEnergy C,C
-              multiSelect(opp.all,2).each{ damage 60, it }
+              multiSelect(opp.all, 2, text).each { damage 60, it }
             }
           }
 
@@ -1957,7 +1957,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
                 if(kef.pokemonToBeKnockedOut.owner != self.owner && kef.pokemonToBeKnockedOut.active && kef.pokemonToBeKnockedOut.owner.pbg.bench.notEmpty){
                   powerUsed()
                   flip "Hypnotic Pendulum", {
-                    kef.nextActive = kef.pokemonToBeKnockedOut.owner.pbg.bench.select("Hypnotic Pendulum: select new active pokemon", self.owner)
+                    kef.nextActive = kef.pokemonToBeKnockedOut.owner.pbg.bench.select("Hypnotic Pendulum: select new active Pokémon.", self.owner)
                   }
                 }
               }
@@ -2717,7 +2717,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             def cl1 = {my.discard.findAll{it.cardTypes.isIn(POKEMON_GX, POKEMON_EX) && it.asPokemonCard().types.contains(D)}}
             attackRequirement {
               gxCheck()
-              assert cl1() : "No [D] Pokemon-GX or Pokemon-EX in your discard pile"
+              assert cl1() : "No [D] Pokémon-GX or Pokémon-EX in your discard pile"
               assert my.bench.notFull : "Bench full"
             }
             onAttack {
@@ -3161,17 +3161,9 @@ public enum UnbrokenBonds implements LogicCardInfo {
             energyCost M, C, C
             onAttack {
               damage 80
-              delayed (priority: LAST) {
-                before APPLY_ATTACK_DAMAGES, {
-                  if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                    bc "Extra-Tight activates"
-                    directDamage(80, ef.attacker as PokemonCardSet)
-                  }
-                }
-                unregisterAfter 2
-                after FALL_BACK, self, {unregister()}
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
+              ifDamagedByAttackNextTurn(delegate) {
+                bc "Extra-Tight activates"
+                directDamage(80, ef.attacker as PokemonCardSet)
               }
             }
           }
@@ -4079,7 +4071,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
         return itemCard (this) {
           text "Devolve 1 of your evolved Pokémon by shuffling any number of Evolution cards on it into your deck. (That Pokémon can't evolve this turn.)"
           onPlay {
-            def pcs = my.all.findAll{it.evolution}.select("Pokemon to devolve")
+            def pcs = my.all.findAll{it.evolution}.select("Pokémon to devolve")
             def top = pcs.topPokemonCard
             devolve(pcs, top, my.deck)
             while(pcs.evolution && confirm("$top was devolved. Devolve the next evolution?")){
@@ -4462,11 +4454,10 @@ public enum UnbrokenBonds implements LogicCardInfo {
           text "During this turn, damage from your Ultra Beasts' attacks isn't affected by any effects on your opponent's Active Pokémon."
           onPlay {
             delayed {
-              //TODO Fix, not working currently against safeguard (Keldeo-GX)
-              before PROCESS_ATTACK_EFFECTS, {
+              after PROCESS_ATTACK_EFFECTS, {
                 if (ef.attacker.topPokemonCard.cardTypes.is(ULTRA_BEAST)){
                   bg.dm().each{
-                    if (it.to.owner != self.owner && it.to.active) {
+                    if (it.to.owner != thisCard.player && it.to.active) {
                       bc "Ultra Forest Kartenvoy kicks in"
                       it.flags.add(DamageManager.DamageFlag.NO_DEFENDING_EFFECT)
                     }
@@ -4501,17 +4492,28 @@ public enum UnbrokenBonds implements LogicCardInfo {
             "This card provides [C][C][C] Energy only while it is attached to an Evolution Pokémon." +
             "If this card is attached to anything other than an Evolution Pokémon, discard this card."
           def eff
+          def turnCount
           def check = {
-            if (!it.realEvolution) discard thisCard
-          }
-          onPlay {reason->
-            eff = delayed (priority: BEFORE_LAST) {
-              before BETWEEN_TURNS, {
+            if (!it.realEvolution) {
+              targeted null, SRC_SPENERGY, {
                 discard thisCard
               }
-              after EVOLVE, self, {check(self)}
-              after DEVOLVE, self, {check(self)}
-              after ATTACH_ENERGY, self, {check(self)}
+            }
+          }
+          onPlay {reason->
+            turnCount = bg.turnCount
+            eff = delayed (priority: BEFORE_LAST) {
+              before BETWEEN_TURNS, {
+                if (bg.turnCount == turnCount) {
+                  targeted null, SRC_SPENERGY, {
+                    discard thisCard
+                  }
+                }
+              }
+              after EVOLVE, self, { check(self) }
+              after DEVOLVE, self, { check(self) }
+              after ATTACH_ENERGY, self, { check(self) }
+              after CHECK_ABILITIES, { check(self) } // Miraculous Wind (LIGHT_DRAGONITE_14) and Spectral Breach (DUSKNOIR_45)
             }
             check(self)
           }

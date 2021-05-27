@@ -1254,7 +1254,7 @@ public enum Emerald implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if(!self.active && it.to == self){
+                  if(!self.active && it.to == self && it.dmg.value && it.notNoEffect){
                     bc "Submerge prevent all damage"
                     it.dmg=hp(0)
                   }
@@ -1555,7 +1555,7 @@ public enum Emerald implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if(!self.active && it.to == self && it.from.owner == self.owner.opposite){
+                  if(!self.active && it.to == self && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect){
                     bc "Feathery prevent all damage"
                     it.dmg=hp(0)
                   }
@@ -1847,22 +1847,29 @@ public enum Emerald implements LogicCardInfo {
           //TODO: Check non-groovy prints, see if they properly reduce damage before W/R (pre-errata they did so after W/R)
           def eff
           def check = {
-            if(!it.evolution || it.EX){discard thisCard}
+            if (!it.evolution || it.EX) {
+              targeted null, Source.SRC_SPENERGY, {
+                discard thisCard
+              }
+            }
           }
           typeImagesOverride = [RAINBOW, RAINBOW]
-          onPlay {reason->
+          onPlay { reason ->
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
-                if(ef.attacker == self) bg.dm().each {
-                  if(it.to.owner != self.owner && it.notZero) {
-                    bc "Double Rainbow Energy -10"
-                    it.dmg -= hp(10)
+                targeted self, Source.SRC_SPENERGY, {
+                  if (ef.attacker == self) bg.dm().each {
+                    if (it.to.owner != self.owner && it.notZero) {
+                      bc "Double Rainbow Energy -10"
+                      it.dmg -= hp(10)
+                    }
                   }
                 }
               }
-              after EVOLVE, self, {check(self)}
-              after DEVOLVE, self, {check(self)}
-              after ATTACH_ENERGY, self, {check(self)}
+              after EVOLVE, self, { check(self) }
+              after DEVOLVE, self, { check(self) }
+              after ATTACH_ENERGY, self, { check(self) }
+              after CHECK_ABILITIES, { check(self) }
             }
           }
           onRemoveFromPlay {
@@ -1875,7 +1882,7 @@ public enum Emerald implements LogicCardInfo {
             to.evolution && !to.EX
           }
           getEnergyTypesOverride{
-            if (self) return [[R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set]
+            if (self) return [valuesBasicEnergy() as Set, valuesBasicEnergy() as Set]
             else return [[] as Set]
           }
 

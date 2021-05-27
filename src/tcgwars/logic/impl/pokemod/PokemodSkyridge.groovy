@@ -34,7 +34,7 @@ import tcgwars.logic.util.*;
  * @author lithogenn@gmail.com
  */
 public enum PokemodSkyridge implements LogicCardInfo {
-    
+
   AERODACTYL_1 ("Aerodactyl", "1", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
   ALAKAZAM_2 ("Alakazam", "2", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _PSYCHIC_]),
   ARCANINE_3 ("Arcanine", "3", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
@@ -225,9 +225,9 @@ public enum PokemodSkyridge implements LogicCardInfo {
   MUK_EX_189 ("Muk ex", "189", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, EX, _GRASS_]),
   MAGCARGO_EX_190 ("Magcargo ex", "190", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, EX, _FIRE_]),
   RAYQUAZA_EX_191 ("Rayquaza ex", "191", Rarity.HOLORARE, [POKEMON, BASIC, EX, _COLORLESS_]);
-    
+
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
-  
+
   protected CardTypeSet cardTypes;
   protected String name;
   protected Rarity rarity;
@@ -431,7 +431,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost R
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Burn Booster", {
@@ -771,7 +771,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Frog Hop", {
@@ -816,7 +816,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Lightning Storm", {
@@ -825,6 +825,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 50
+            flip 1, {}, { directDamage 20, self }
           }
         }
       };
@@ -1036,7 +1037,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost F, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Mega Punch", {
@@ -1065,7 +1066,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost P, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -1096,7 +1097,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Drag Off", {
@@ -1211,7 +1212,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -1223,7 +1224,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Kick Away", {
@@ -1262,7 +1263,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -1335,7 +1336,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Leek Rush", {
@@ -1393,7 +1394,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Syncroblast", {
@@ -1421,7 +1422,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost F, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -1433,7 +1434,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost G
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Strength in Numbers", {
@@ -1536,7 +1537,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Eerie Light", {
@@ -1544,7 +1545,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -1575,7 +1576,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -1588,7 +1589,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Lullaby", {
@@ -1645,7 +1646,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Hypnoblast", {
@@ -1666,7 +1667,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Quick Turn", {
@@ -1726,7 +1727,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Splash", {
@@ -1746,7 +1747,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Magnetic Lines", {
@@ -1809,7 +1810,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -1821,7 +1822,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Removal Beam", {
@@ -1841,7 +1842,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Scratch", {
@@ -1949,7 +1950,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Double Kick", {
@@ -1991,7 +1992,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Body Slam", {
@@ -2152,7 +2153,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost R
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -2195,7 +2196,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Bite", {
@@ -2216,7 +2217,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Antler Swipe", {
@@ -2224,7 +2225,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -2236,7 +2237,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Doubleslap", {
@@ -2277,7 +2278,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost G, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Trip Over", {
@@ -2326,7 +2327,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost W
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -2439,7 +2440,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost L
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Spin Tackle", {
@@ -2471,7 +2472,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Poison Horn", {
@@ -2479,7 +2480,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost G
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -2513,7 +2514,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Flitter", {
@@ -2794,7 +2795,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost G, W
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Mind Bend", {
@@ -3057,7 +3058,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost W, W
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Hydrocannon", {
@@ -3172,7 +3173,7 @@ public enum PokemodSkyridge implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Dragon Burst", {

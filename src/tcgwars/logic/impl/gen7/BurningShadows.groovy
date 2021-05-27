@@ -288,7 +288,7 @@ public enum BurningShadows implements LogicCardInfo {
             text "Heal all damage from all of your Pokémon. Shuffle this Pokémon and all cards attached to it into your deck."
             energyCost G
             attackRequirement {
-              assert my.bench.notEmpty : "This is your only pokemon"
+              assert my.bench.notEmpty : "This is your only Pokémon."
             }
             onAttack {
               my.all.each {heal(it.damage.value, it)}
@@ -1446,11 +1446,8 @@ public enum BurningShadows implements LogicCardInfo {
                   register {
                     eff = getter (GET_WEAKNESSES, pcs) {h->
                       def list = h.object as List<Weakness>
-                      if(list) {
-                        list.get(0).type = PSYCHIC
-                      } else {
-                        list.add(new Weakness(PSYCHIC))
-                      }
+                      list.clear()
+                      list.add new Weakness(P)
                     }
                   }
                   unregister {
@@ -1555,7 +1552,7 @@ public enum BurningShadows implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {
               gxCheck()
-              assert opp.all.findAll {it.pokemonGX || it.pokemonEX} : "No opponent Pokemon-GX or Pokemon-EX in play"
+              assert opp.all.findAll {it.pokemonGX || it.pokemonEX} : "No opponent Pokémon-GX or Pokémon-EX in play"
             }
             onAttack {
               gxPerform()
@@ -1902,13 +1899,7 @@ public enum BurningShadows implements LogicCardInfo {
           weakness PSYCHIC
           bwAbility "Shadow Hunt", {
             text "This Pokémon can use the attacks of Basic Pokémon in your discard pile. (You still need the necessary Energy to use each attack.)"
-            getterA (GET_MOVE_LIST, self) {holder->
-              self.owner.pbg.discard.each {
-                if(it.cardTypes.is(BASIC)) {
-                  holder.object.addAll(it.moves)
-                }
-              }
-            }
+            metronomeA delegate, { self.owner.pbg.discard.filterByType(BASIC) }
           }
           move "Beatdown", {
             text "120 damage."
@@ -2369,6 +2360,7 @@ public enum BurningShadows implements LogicCardInfo {
               damage 50
               delayed {
                 before PLAY_TRAINER, {
+                  if (checkBodyguard()) return
                   if (ef.cardToPlay.cardTypes.is(ITEM) && bg.currentTurn == self.owner.opposite) {
                     wcu "Distort prevents playing this card"
                     prevent()

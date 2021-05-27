@@ -1,5 +1,6 @@
-package tcgwars.logic.impl.gen4;
+package tcgwars.logic.impl.gen4
 
+import tcgwars.logic.impl.gen1.BaseSet;
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen3.TeamRocketReturns;
 import tcgwars.logic.impl.gen5.BlackWhite;
@@ -324,17 +325,20 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
               damage 60
               afterDamage {
                 delayed {
-                  after PROCESS_ATTACK_EFFECTS, {
+                  before APPLY_ATTACK_DAMAGES, {
                     if (ef.attacker.owner == self.owner.opposite) {
                       bg.dm().each {
-                        if(it.to == self && it.notNoEffect && it.dmg.value){
-                          bc "${thisMove.name} increases damage"
-                          it.dmg+=20
+                        if (it.to == self && it.notNoEffect && it.dmg.value) {
+                          bc "${thisMove.name} +20"
+                          it.dmg+=hp(20)
                         }
                       }
                     }
                   }
                   unregisterAfter 2
+                  after FALL_BACK, self, {unregister()}
+                  after EVOLVE, self, {unregister()}
+                  after DEVOLVE, self, {unregister()}
                 }
               }
             }
@@ -659,7 +663,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
               damage 20
               afterDamage{
                 if(my.bench) {
-                  def pcs = my.bench.select("Select the new active pokemon")
+                  def pcs = my.bench.select("Select the new active Pokémon.")
                   sw my.active, pcs
                 }
               }
@@ -721,7 +725,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
               damage 20, self
               afterDamage{
                 if(my.bench) {
-                  def pcs = my.bench.select("Select the new active pokemon")
+                  def pcs = my.bench.select("Select the new active Pokémon.")
                   sw my.active, pcs
                 }
               }
@@ -745,7 +749,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               powerUsed()
-              flip {apply(ASLEEP, opp.active, SRC_ABILITY)}
+              flip {apply(ASLEEP, opp.active, Source.POKEPOWER)}
             }
           }
           move "Psychic Shot", {
@@ -863,20 +867,15 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
           move "Playground", {
             text "Each player may search his or her deck for as many Basic Pokémon as he or she likes, put them onto his or her Bench, and shuffle his or her deck afterward. (You put your Pokémon on the Bench first.) Pichu is now Asleep."
             energyCost ()
-            attackRequirement {
-              assert my.deck.notEmpty
-              assert my.bench.notFull
-            }
             onAttack {
-              def myBenchSpace = my.bench.freeBenchCount
-              deck.search (max:myBenchSpace,"Search for up to $myBenchSpace Basic Pokemon",cardTypeFilter(BASIC)).each {
-                benchPCS(it)
+              if(my.bench.notFull) {
+                deck.search (max:my.bench.freeBenchCount,"Please search for Basic Pokémon to put on your bench.",cardTypeFilter(BASIC)).each {
+                  benchPCS(it)
+                }
+                shuffleDeck()
               }
-              shuffleDeck()
-
               if(opp.bench.notFull) {
-                def oppBenchSpace = opp.bench.getFreeBenchCount()
-                opp.deck.search(max:oppBenchSpace,"Search for up to $oppBenchSpace Basic Pokemon",cardTypeFilter(BASIC)).each{
+                opp.deck.oppSelect(min:0,max:opp.bench.getFreeBenchCount(),"Pichu used Playground: Each player may search his or her deck for as many Basic Pokémon as he or she likes, put them onto his or her Bench. Please search for Basic Pokémon to put on your bench.",cardTypeFilter(BASIC)).each{
                   benchPCS(it, OTHER)
                 }
                 shuffleDeck(null, TargetPlayer.OPPONENT)
@@ -1691,7 +1690,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
               damage 10
               afterDamage{
                 if(my.bench) {
-                  def pcs = my.bench.select("Select the new active pokemon")
+                  def pcs = my.bench.select("Select the new active Pokémon.")
                   sw my.active, pcs
                 }
               }
@@ -2149,7 +2148,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
         return supporter (this) {
           text "Search your deck for up to 3 Basic Pokémon, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
           onPlay {
-            my.deck.search(max : 3,"Select up to 3 basic pokemon", {it.cardTypes.is(BASIC)}).moveTo(my.hand)
+            my.deck.search(max : 3,"Select up to 3 basic Pokémon.", {it.cardTypes.is(BASIC)}).moveTo(my.hand)
             shuffleDeck()
           }
           playRequirement{
@@ -2186,10 +2185,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
       case SWITCH_102:
         return copy (FireRedLeafGreen.SWITCH_102, this)
       case DOUBLE_COLORLESS_ENERGY_103:
-        return specialEnergy (this, [[C],[C]]) {
-          text "Double Colorless Energy Provides 2 Colorless Energy."
-          onPlay {}
-        };
+        return copy (BaseSet.DOUBLE_COLORLESS_ENERGY, this)
       case RAINBOW_ENERGY_104:
         return copy (CelestialStorm.RAINBOW_ENERGY_151, this)
       case AMPHAROS_105:

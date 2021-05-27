@@ -322,7 +322,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             energyCost R, R
             attackRequirement {}
             onAttack {
-              def flipNum = self.cards.energyCount(R)
+              def flipNum = self.cards.filterByEnergyType(R)
               flip flipNum, {
                 damage 50
                 discardSelfEnergy R
@@ -341,7 +341,7 @@ public enum TeamRocketNG implements LogicCardInfo {
                 if(my.bench.notFull){
                   def cnt = Math.min(my.bench.getFreeBenchCount(),2)
                   bc "$cnt"
-                  my.deck.search (max: cnt,"Search for 2 basic pokemon",{it.cardTypes.is(BASIC)}).each {
+                  my.deck.search (max: cnt,"Search for 2 basic Pokémon.",{it.cardTypes.is(BASIC)}).each {
                     benchPCS(it)
                   }
                   shuffleDeck()
@@ -629,12 +629,16 @@ public enum TeamRocketNG implements LogicCardInfo {
           }
         };
       case RAINBOW_ENERGY_17:
-        return specialEnergy (this, [[R, D, F, G, W, Y, L, M, P]]) {
+        return specialEnergy (this, [[]]) {
           text "Attach Rainbow Energy to 1 of your Pokémon. While in play, Rainbow Energy counts as every type of basic Energy but only provides 1 Energy at a time. (Doesn’t count as a basic Energy card when not in play.) When you attach this card from your hand to 1 of your Pokémon, it does 10 damage to that Pokémon. (Don’t apply Weakness and Resistance.)"
           onPlay {reason->
             if(reason == PLAY_FROM_HAND){
               directDamage(10, self)  //TODO: This one print does damage, not counters.
             }
+          }
+          getEnergyTypesOverride {
+            if (self) return [valuesBasicEnergyNonColorless() as Set]
+            else return [[] as Set]
           }
           onRemoveFromPlay {
           }
@@ -717,12 +721,11 @@ public enum TeamRocketNG implements LogicCardInfo {
 
         };
       case DARK_ELECTRODE:
-        return evolution (this, from:"Voltorb", hp:HP060, type:LIGHTNING, retreatCost:1) {
+        return evolution(this, from: "Voltorb", hp: HP060, type: LIGHTNING, retreatCost: 1) {
           weakness FIGHTING
           move "Rolling Tackle", {
             text "10 damage."
             energyCost C
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -730,20 +733,22 @@ public enum TeamRocketNG implements LogicCardInfo {
           move "Energy Bomb", {
             text "30 damage. Take all Energy cards attached to Dark Electrode and attach them to your Benched Pokémon (in any way you choose). If you have no Benched Pokémon, discard all Energy cards attached to Dark Electrode."
             energyCost L, L
-            attackRequirement {}
             onAttack {
               damage 30
-              if(my.bench){
-                while(self.cards.energyCount(C)){
-                  moveEnergy(self,my.bench)
+              if (my.bench) {
+                self.energyCards.each { thisEnergy ->
+                  def pcs = my.bench.select "Select target for energy: $it"
+                  afterDamage {
+                    energySwitch self, pcs, thisEnergy
+                  }
                 }
-              }
-              else{
-                discardAllSelfEnergy null
+              } else {
+                afterDamage {
+                  discardAllSelfEnergy null
+                }
               }
             }
           }
-
         };
       case DARK_FLAREON:
         return evolution (this, from:"Eevee", hp:HP050, type:FIRE, retreatCost:1) {
@@ -1104,29 +1109,32 @@ public enum TeamRocketNG implements LogicCardInfo {
             text "If the Defending Pokémon has a Weakness, you may change it to a type of your choice other than Colorless."
             energyCost C
             attackRequirement {
+              assert opp.active.weaknesses : "$opp.active does not have a Weakness"
             }
             onAttack {
-              targeted (defending) {
+              targeted defending, {
+                def newWeakness = choose([R, F, G, W, P, L, M, D, Y, N], "Select the new Weakness for $defending") as Type
+                bc "${defending}'s Weakness is now ${newWeakness}"
+                def eff
                 delayed {
-                  if(opp.active.weaknesses)
-                  {
-                    def newWeakness = choose([R,F,G,W,P,L,M,D,Y,N],"Select the new weakness")
-                    bc "${defending}'s Weakness is now ${newWeakness}"
-                    def eff
-                    register {
-                      eff = getter (GET_WEAKNESSES, defending) {h->
-                        def list = h.object as List<Weakness>
-                        if(list) {
-                          list.get(0).type = newWeakness
-                        }
-                      }
-                    }
-                    unregister {
-                      eff.unregister()
-                    }
-                    after FALL_BACK, defending, {unregister()}
-                    after EVOLVE, defending, {unregister()}
-                    after DEVOLVE, defending, {unregister()}
+                  eff = getter GET_WEAKNESSES, defending, { h ->
+                    def list = [] as List<Weakness>
+                    def feature = (h.object.get(0) as Weakness).feature
+                    list.add(new Weakness(newWeakness, feature))
+                    h.object = list
+                  }
+
+                  after FALL_BACK, defending, {
+                    eff.unregister()
+                    unregister()
+                  }
+                  after EVOLVE, defending, {
+                    eff.unregister()
+                    unregister()
+                  }
+                  after DEVOLVE, defending, {
+                    eff.unregister()
+                    unregister()
                   }
                 }
               }
@@ -1629,13 +1637,13 @@ public enum TeamRocketNG implements LogicCardInfo {
               if(oppConfirm("accepts the challenge (if decline your opponent draws 2 cards, otherwise you both put as many basic pokemon on your bench fro your deck)")){
                 if(my.bench.notFull) {
                   def myCnt = my.bench.getFreeBenchCount()
-                  my.deck.search(max:myCnt,"search for at most $myCnt Basic Pokemon",cardTypeFilter(BASIC)).each{
+                  my.deck.search(max:myCnt,"search for at most $myCnt Basic Pokémon",cardTypeFilter(BASIC)).each{
                     benchPCS(it)
                   }
                 }
                 if(opp.bench.notFull) {
                   def oppCnt = opp.bench.getFreeBenchCount()
-                  opp.deck.search(max:oppCnt,"search for at most $oppCnt Basic Pokemon",cardTypeFilter(BASIC)).each{
+                  opp.deck.search(max:oppCnt,"search for at most $oppCnt Basic Pokémon",cardTypeFilter(BASIC)).each{
                     benchPCS(it,OTHER)
                   }
                 }

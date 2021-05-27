@@ -1,5 +1,6 @@
-package tcgwars.logic.impl.gen7;
+package tcgwars.logic.impl.gen7
 
+import tcgwars.logic.effect.gm.PlayEvolution;
 import tcgwars.logic.impl.gen2.Aquapolis
 
 import static tcgwars.logic.card.HP.*;
@@ -515,7 +516,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if(!self.active && it.to == self){
+                  if(!self.active && it.to == self && it.dmg.value && it.notNoEffect){
                     bc "Submerge prevent all damage"
                     it.dmg=hp(0)
                   }
@@ -1124,16 +1125,28 @@ public enum CrimsonInvasion implements LogicCardInfo {
             onAttack {
               damage 10
               delayed {
-                before PLAY_BASIC_POKEMON, {
-                  if(ef.cardToPlay.abilities) {
-                    wcu "Bell of Silence: Can't play Pokémon that has an Ability"
-                    prevent()
+                def warnAndPrevent = {
+                  wcu "$self's $thisMove prevents playing Pokémon from your hand if they have an ability"
+                  prevent()
+                }
+                before EVOLVE, {
+                  if ((ef as Evolve).evolutionCard.player.pbg.hand.contains(ef.evolutionCard) && ef.evolutionCard.abilities) {
+                    warnAndPrevent()
+                  }
+                }
+                before EVOLVE_STANDARD, {
+                  if ((ef as EvolveStandard).evolutionCard.player.pbg.hand.contains(ef.evolutionCard) && ef.evolutionCard.abilities) {
+                    warnAndPrevent()
                   }
                 }
                 before PLAY_EVOLUTION, {
+                  if ((ef as PlayEvolution).cardToPlay.player.pbg.hand.contains(ef.cardToPlay) && ef.evolutionCard.abilities) {
+                    warnAndPrevent()
+                  }
+                }
+                before PLAY_BASIC_POKEMON, {
                   if(ef.cardToPlay.abilities) {
-                    wcu "Bell of Silence: Can't play Pokémon that has an Ability"
-                    prevent()
+                    warnAndPrevent()
                   }
                 }
                 unregisterAfter 2
@@ -1591,6 +1604,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
           }
 
         };
+      case GUZZLORD_GX_63A:
       case GUZZLORD_GX_63:
         return basic (this, hp:HP210, type:DARKNESS, retreatCost:4) {
           weakness FIGHTING
@@ -1644,8 +1658,6 @@ public enum CrimsonInvasion implements LogicCardInfo {
           }
 
         };
-      case GUZZLORD_GX_63A:
-        return copy (GUZZLORD_GX_63, this);
       case MAWILE_64:
         return basic (this, hp:HP080, type:METAL, retreatCost:1) {
           weakness FIRE
@@ -2438,13 +2450,9 @@ public enum CrimsonInvasion implements LogicCardInfo {
           text "This card provides [C] Energy.\nIf you have more Prize cards remaining than your opponent, and if this card is attached to a Pokémon that isn't a Pokémon-GX or Pokémon-EX, this card provides every type of Energy but provides only 2 Energy at a time"
           onPlay {reason->
           }
-          onRemoveFromPlay {
-          }
-          onMove {to->
-          }
           getEnergyTypesOverride{
             if(self && !self.pokemonGX && !self.pokemonEX && self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size()) {
-              return [[R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set]
+              return [valuesBasicEnergy() as Set, valuesBasicEnergy() as Set]
             }
             else {
               return [[C] as Set]

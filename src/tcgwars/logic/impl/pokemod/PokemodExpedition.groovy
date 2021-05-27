@@ -34,7 +34,7 @@ import tcgwars.logic.util.*;
  * @author lithogenn@gmail.com
  */
 public enum PokemodExpedition implements LogicCardInfo {
-    
+
   ALAKAZAM_1 ("Alakazam", "1", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _PSYCHIC_]),
   AMPHAROS_2 ("Ampharos", "2", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _LIGHTNING_]),
   ARBOK_3 ("Arbok", "3", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
@@ -220,9 +220,9 @@ public enum PokemodExpedition implements LogicCardInfo {
   CHANSEY_EX_184 ("Chansey ex", "184", Rarity.RARE, [POKEMON, BASIC, EX, _COLORLESS_]),
   POKEMON_MASTER_KEY_185 ("Pokémon Master Key", "185", Rarity.RARE, [TRAINER]),
   POKEMON_LEGEND_BOX_186 ("Pokémon Legend Box", "186", Rarity.RARE, [TRAINER, STADIUM]);
-    
+
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
-  
+
   protected CardTypeSet cardTypes;
   protected String name;
   protected Rarity rarity;
@@ -283,7 +283,7 @@ public enum PokemodExpedition implements LogicCardInfo {
         }
         move "Syncroblast", {
           text "80 damage. If Alakazam and the Defending Pokémon don''t have the same number of Energy cards attached to them, this attack''s base damage is 20 instead of 80."
-          energyCost P, C, C, C
+          energyCost P, C, C
           attackRequirement {}
           onAttack {
             damage 80
@@ -315,7 +315,7 @@ public enum PokemodExpedition implements LogicCardInfo {
           energyCost G
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Poison Reaction", {
@@ -572,7 +572,7 @@ public enum PokemodExpedition implements LogicCardInfo {
           energyCost R
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -602,7 +602,7 @@ public enum PokemodExpedition implements LogicCardInfo {
           energyCost P, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -614,7 +614,7 @@ public enum PokemodExpedition implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Psychic", {
@@ -634,7 +634,7 @@ public enum PokemodExpedition implements LogicCardInfo {
           energyCost R, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Ethereal Flame", {
@@ -653,7 +653,7 @@ public enum PokemodExpedition implements LogicCardInfo {
           energyCost L
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -830,7 +830,7 @@ public enum PokemodExpedition implements LogicCardInfo {
           energyCost G
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Misfire", {
@@ -1037,7 +1037,7 @@ public enum PokemodExpedition implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Razor Leaf", {
@@ -1058,7 +1058,7 @@ public enum PokemodExpedition implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Dogpile", {
@@ -1130,7 +1130,7 @@ public enum PokemodExpedition implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Reflect Energy", {
@@ -1291,7 +1291,7 @@ public enum PokemodExpedition implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Confuse Ray", {
@@ -1461,7 +1461,7 @@ public enum PokemodExpedition implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -1493,7 +1493,7 @@ public enum PokemodExpedition implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Vine Whip", {
@@ -1574,7 +1574,7 @@ public enum PokemodExpedition implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Double Scratch", {
@@ -1616,7 +1616,7 @@ public enum PokemodExpedition implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Slap", {
@@ -1677,7 +1677,7 @@ public enum PokemodExpedition implements LogicCardInfo {
           energyCost R
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Quick Attack", {
@@ -1755,7 +1755,7 @@ public enum PokemodExpedition implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -1825,7 +1825,7 @@ public enum PokemodExpedition implements LogicCardInfo {
           energyCost G
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -1995,7 +1995,7 @@ public enum PokemodExpedition implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Tackle", {
@@ -2035,7 +2035,7 @@ public enum PokemodExpedition implements LogicCardInfo {
           energyCost R
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Smash Kick", {
@@ -2191,7 +2191,7 @@ public enum PokemodExpedition implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Bite", {
@@ -2211,7 +2211,7 @@ public enum PokemodExpedition implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Flare", {
@@ -2597,7 +2597,7 @@ public enum PokemodExpedition implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Psyburn", {
@@ -2656,11 +2656,11 @@ public enum PokemodExpedition implements LogicCardInfo {
         weakness F
         resistance P, MINUS30
         move "Healing Egg", {
-          text "Remove 2 damage counters (1 if there is only 1) from each of your Pokemon. Remove no damage counters from Chansey ex."
+          text "Remove 2 damage counters (1 if there is only 1) from each of your Pokémon. Remove no damage counters from Chansey ex."
           energyCost C, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Double-edge", {

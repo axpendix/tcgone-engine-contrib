@@ -13,6 +13,7 @@ import tcgwars.logic.card.energy.EnergyCard;
 import tcgwars.logic.card.pokemon.PokemonCard;
 import tcgwars.logic.effect.ability.*;
 import tcgwars.logic.effect.ability.Ability.*;
+import tcgwars.logic.effect.advanced.ExtraEnergyCalculator;
 import tcgwars.logic.effect.getter.*;
 import tcgwars.logic.effect.special.SpecialConditionType;
 import tcgwars.logic.groovy.TcgStatics;
@@ -21,6 +22,7 @@ import java.io.Serializable;
 import java.util.*;
 
 import static tcgwars.logic.card.CardType.EVOLUTION;
+import static tcgwars.logic.card.CardType.LVL_X;
 
 /**
  * Models an in-game pokemon
@@ -278,12 +280,13 @@ public class PokemonCardSet implements PokemonStack, Serializable {
 
   public String getName() {
     try {
-      lastName = getTopPokemonCard().getName().replace(" Lv.X", "");
+      lastName = getTopPokemonCard().getName();
       return lastName;
     } catch (Exception e) {
       return lastName;
     }
   }
+
 
   public boolean isActive() {
     return TcgStatics.bg().getPBG(owner).getActive() == this;
@@ -317,6 +320,8 @@ public class PokemonCardSet implements PokemonStack, Serializable {
     return getTopPokemonCard().getCardTypes().is(CardType.LVL_X);
   }
 
+  public boolean isPokemonSP() { return getTopPokemonCard().getCardTypes().is(CardType.POKEMON_SP); }
+
   public boolean isPokemonBreak() {
     return getTopPokemonCard().getCardTypes().is(CardType.BREAK);
   }
@@ -335,6 +340,19 @@ public class PokemonCardSet implements PokemonStack, Serializable {
 
   public boolean isPokemonVMAX() {
     return getTopPokemonCard().getCardTypes().is(CardType.VMAX);
+  }
+
+  public boolean isRapidStrike() {
+    return getTopPokemonCard().getCardTypes().is(CardType.RAPID_STRIKE);
+  }
+
+  public boolean isSingleStrike() {
+    return getTopPokemonCard().getCardTypes().is(CardType.SINGLE_STRIKE);
+  }
+
+  public boolean isRuleBox() {
+    return getTopPokemonCard().getCardTypes().isIn(CardType.POKEMON_EX, CardType.BREAK, CardType.MEGA_POKEMON,
+      CardType.PRISM_STAR, CardType.POKEMON_GX, CardType.TAG_TEAM, CardType.POKEMON_V, CardType.VMAX);
   }
 
   public List<Weakness> getWeaknesses(Battleground bg) {
@@ -362,7 +380,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
   }
 
   public Integer getEnergyCount(Battleground bg) {
-    return bg.em().activateGetter(new GetEnergyCount(this));
+    return bg.em().activateGetter(new ExtraEnergyCalculator(this, Type.COLORLESS));
   }
 
   public boolean noSPC() {
@@ -437,6 +455,9 @@ public class PokemonCardSet implements PokemonStack, Serializable {
 
   @Override
   public String toString() {
+    if (getTopPokemonCard().getCardTypes().contains(LVL_X)) {
+      return getName() + " Lv.X";
+    }
     return getName();
 //		return "\n\tPokemonCardSet [set=" + cards() + ", damage=" + damage + "]" ;
   }

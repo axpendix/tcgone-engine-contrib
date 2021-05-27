@@ -12,6 +12,7 @@ import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
+import tcgwars.logic.effect.basic.Knockout;
 
 import tcgwars.logic.card.*
 import tcgwars.logic.util.*;
@@ -21,47 +22,47 @@ import tcgwars.logic.util.*;
  */
 public enum SupremeVictors implements LogicCardInfo {
 
-  ABSOL_G_1 ("Absol G", "1", Rarity.HOLORARE, [BASIC, POKEMON, _DARKNESS_]),
-  BLAZIKEN_FB_2 ("Blaziken FB", "2", Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_]),
-  DRIFBLIM_FB_3 ("Drifblim FB", "3", Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_]),
-  ELECTIVIRE_FB_4 ("Electivire FB", "4", Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
+  ABSOL_G_1 ("Absol G", "1", Rarity.HOLORARE, [BASIC, POKEMON, POKEMON_SP, _DARKNESS_]),
+  BLAZIKEN_FB_2 ("Blaziken FB", "2", Rarity.HOLORARE, [BASIC, POKEMON, POKEMON_SP, _FIRE_]),
+  DRIFBLIM_FB_3 ("Drifblim FB", "3", Rarity.HOLORARE, [BASIC, POKEMON, POKEMON_SP, _PSYCHIC_]),
+  ELECTIVIRE_FB_4 ("Electivire FB", "4", Rarity.HOLORARE, [BASIC, POKEMON, POKEMON_SP, _LIGHTNING_]),
   GARCHOMP_5 ("Garchomp", "5", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
   MAGMORTAR_6 ("Magmortar", "6", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
   METAGROSS_7 ("Metagross", "7", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _METAL_]),
-  RAYQUAZA_C_8 ("Rayquaza C", "8", Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
-  REGIGIGAS_FB_9 ("Regigigas FB", "9", Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
+  RAYQUAZA_C_8 ("Rayquaza C", "8", Rarity.HOLORARE, [BASIC, POKEMON, POKEMON_SP, _COLORLESS_]),
+  REGIGIGAS_FB_9 ("Regigigas FB", "9", Rarity.HOLORARE, [BASIC, POKEMON, POKEMON_SP, _COLORLESS_]),
   RHYPERIOR_10 ("Rhyperior", "10", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
-  STARAPTOR_FB_11 ("Staraptor FB", "11", Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
+  STARAPTOR_FB_11 ("Staraptor FB", "11", Rarity.HOLORARE, [BASIC, POKEMON, POKEMON_SP, _COLORLESS_]),
   SWAMPERT_12 ("Swampert", "12", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
   VENUSAUR_13 ("Venusaur", "13", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
   YANMEGA_14 ("Yanmega", "14", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  ARCANINE_G_15 ("Arcanine G", "15", Rarity.RARE, [BASIC, POKEMON, _FIRE_]),
+  ARCANINE_G_15 ("Arcanine G", "15", Rarity.RARE, [BASIC, POKEMON, POKEMON_SP, _FIRE_]),
   ARTICUNO_16 ("Articuno", "16", Rarity.RARE, [BASIC, POKEMON, _WATER_]),
-  BUTTERFREE_FB_17 ("Butterfree FB", "17", Rarity.RARE, [BASIC, POKEMON, _GRASS_]),
+  BUTTERFREE_FB_17 ("Butterfree FB", "17", Rarity.RARE, [BASIC, POKEMON, POKEMON_SP, _GRASS_]),
   CAMERUPT_18 ("Camerupt", "18", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
-  CAMERUPT_G_19 ("Camerupt G", "19", Rarity.RARE, [BASIC, POKEMON, _FIRE_]),
-  CHARIZARD_G_20 ("Charizard G", "20", Rarity.RARE, [BASIC, POKEMON, _FIRE_]),
+  CAMERUPT_G_19 ("Camerupt G", "19", Rarity.RARE, [BASIC, POKEMON, POKEMON_SP, _FIRE_]),
+  CHARIZARD_G_20 ("Charizard G", "20", Rarity.RARE, [BASIC, POKEMON, POKEMON_SP, _FIRE_]),
   CHIMECHO_21 ("Chimecho", "21", Rarity.RARE, [BASIC, POKEMON, _PSYCHIC_]),
   CLAYDOL_22 ("Claydol", "22", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-  CRAWDAUNT_G_23 ("Crawdaunt G", "23", Rarity.RARE, [BASIC, POKEMON, _DARKNESS_]),
+  CRAWDAUNT_G_23 ("Crawdaunt G", "23", Rarity.RARE, [BASIC, POKEMON, POKEMON_SP, _DARKNESS_]),
   DEWGONG_24 ("Dewgong", "24", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
   DODRIO_25 ("Dodrio", "25", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-  DUSKNOIR_FB_26 ("Dusknoir FB", "26", Rarity.RARE, [BASIC, POKEMON, _PSYCHIC_]),
-  EMPOLEON_FB_27 ("Empoleon FB", "27", Rarity.RARE, [BASIC, POKEMON, _WATER_]),
+  DUSKNOIR_FB_26 ("Dusknoir FB", "26", Rarity.RARE, [BASIC, POKEMON, POKEMON_SP, _PSYCHIC_]),
+  EMPOLEON_FB_27 ("Empoleon FB", "27", Rarity.RARE, [BASIC, POKEMON, POKEMON_SP, _WATER_]),
   EXPLOUD_28 ("Exploud", "28", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
   HONCHKROW_29 ("Honchkrow", "29", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  LICKILICKY_C_30 ("Lickilicky C", "30", Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
-  LUCARIO_C_31 ("Lucario C", "31", Rarity.RARE, [BASIC, POKEMON, _FIGHTING_]),
+  LICKILICKY_C_30 ("Lickilicky C", "30", Rarity.RARE, [BASIC, POKEMON, POKEMON_SP, _COLORLESS_]),
+  LUCARIO_C_31 ("Lucario C", "31", Rarity.RARE, [BASIC, POKEMON, POKEMON_SP, _FIGHTING_]),
   LUNATONE_32 ("Lunatone", "32", Rarity.RARE, [BASIC, POKEMON, _PSYCHIC_]),
   MAWILE_33 ("Mawile", "33", Rarity.RARE, [BASIC, POKEMON, _METAL_]),
   MEDICHAM_34 ("Medicham", "34", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
-  MILOTIC_C_35 ("Milotic C", "35", Rarity.RARE, [BASIC, POKEMON, _WATER_]),
+  MILOTIC_C_35 ("Milotic C", "35", Rarity.RARE, [BASIC, POKEMON, POKEMON_SP, _WATER_]),
   MOLTRES_36 ("Moltres", "36", Rarity.RARE, [BASIC, POKEMON, _FIRE_]),
   MR__MIME_37 ("Mr. Mime", "37", Rarity.RARE, [BASIC, POKEMON, _PSYCHIC_]),
   PARASECT_38 ("Parasect", "38", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
   PRIMEAPE_39 ("Primeape", "39", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
-  ROSERADE_C_40 ("Roserade C", "40", Rarity.RARE, [BASIC, POKEMON, _PSYCHIC_]),
-  SABLEYE_G_41 ("Sableye G", "41", Rarity.RARE, [BASIC, POKEMON, _DARKNESS_]),
+  ROSERADE_C_40 ("Roserade C", "40", Rarity.RARE, [BASIC, POKEMON, POKEMON_SP, _PSYCHIC_]),
+  SABLEYE_G_41 ("Sableye G", "41", Rarity.RARE, [BASIC, POKEMON, POKEMON_SP, _DARKNESS_]),
   SANDSLASH_42 ("Sandslash", "42", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
   SEAKING_43 ("Seaking", "43", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
   SHEDINJA_44 ("Shedinja", "44", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
@@ -69,24 +70,24 @@ public enum SupremeVictors implements LogicCardInfo {
   SPINDA_46 ("Spinda", "46", Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
   WAILORD_47 ("Wailord", "47", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
   ZAPDOS_48 ("Zapdos", "48", Rarity.RARE, [BASIC, POKEMON, _LIGHTNING_]),
-  ALTARIA_C_49 ("Altaria C", "49", Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
+  ALTARIA_C_49 ("Altaria C", "49", Rarity.UNCOMMON, [BASIC, POKEMON, POKEMON_SP, _COLORLESS_]),
   ARCANINE_50 ("Arcanine", "50", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
   BIBAREL_51 ("Bibarel", "51", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
   BRELOOM_52 ("Breloom", "52", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
   CARNIVINE_53 ("Carnivine", "53", Rarity.UNCOMMON, [BASIC, POKEMON, _GRASS_]),
-  CHATOT_G_54 ("Chatot G", "54", Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
+  CHATOT_G_54 ("Chatot G", "54", Rarity.UNCOMMON, [BASIC, POKEMON, POKEMON_SP, _COLORLESS_]),
   CHERRIM_55 ("Cherrim", "55", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  DRAGONITE_FB_56 ("Dragonite FB", "56", Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
+  DRAGONITE_FB_56 ("Dragonite FB", "56", Rarity.UNCOMMON, [BASIC, POKEMON, POKEMON_SP, _COLORLESS_]),
   DRIFBLIM_57 ("Drifblim", "57", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
   FLOATZEL_58 ("Floatzel", "58", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
   GABITE_59 ("Gabite", "59", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-  GARCHOMP_C_60 ("Garchomp C", "60", Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
+  GARCHOMP_C_60 ("Garchomp C", "60", Rarity.UNCOMMON, [BASIC, POKEMON, POKEMON_SP, _COLORLESS_]),
   HIPPOPOTAS_61 ("Hippopotas", "61", Rarity.UNCOMMON, [BASIC, POKEMON, _FIGHTING_]),
   IVYSAUR_62 ("Ivysaur", "62", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
   LOPUNNY_63 ("Lopunny", "63", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
   LOUDRED_64 ("Loudred", "64", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
   MAGMAR_65 ("Magmar", "65", Rarity.UNCOMMON, [BASIC, POKEMON, _FIRE_]),
-  MANECTRIC_G_66 ("Manectric G", "66", Rarity.UNCOMMON, [BASIC, POKEMON, _LIGHTNING_]),
+  MANECTRIC_G_66 ("Manectric G", "66", Rarity.UNCOMMON, [BASIC, POKEMON, POKEMON_SP, _LIGHTNING_]),
   MARSHTOMP_67 ("Marshtomp", "67", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
   MASQUERAIN_68 ("Masquerain", "68", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
   METANG_69 ("Metang", "69", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _METAL_]),
@@ -98,15 +99,15 @@ public enum SupremeVictors implements LogicCardInfo {
   PINSIR_75 ("Pinsir", "75", Rarity.UNCOMMON, [BASIC, POKEMON, _GRASS_]),
   PLUSLE_76 ("Plusle", "76", Rarity.UNCOMMON, [BASIC, POKEMON, _LIGHTNING_]),
   RAICHU_77 ("Raichu", "77", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
-  RATICATE_G_78 ("Raticate G", "78", Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
+  RATICATE_G_78 ("Raticate G", "78", Rarity.UNCOMMON, [BASIC, POKEMON, POKEMON_SP, _COLORLESS_]),
   RELICANTH_79 ("Relicanth", "79", Rarity.UNCOMMON, [BASIC, POKEMON, _FIGHTING_]),
   RHYDON_80 ("Rhydon", "80", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _FIGHTING_]),
   ROSERADE_81 ("Roserade", "81", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
   ROTOM_82 ("Rotom", "82", Rarity.UNCOMMON, [BASIC, POKEMON, _LIGHTNING_]),
-  SKARMORY_FB_83 ("Skarmory FB", "83", Rarity.UNCOMMON, [BASIC, POKEMON, _METAL_]),
-  SPIRITOMB_C_84 ("Spiritomb C", "84", Rarity.UNCOMMON, [BASIC, POKEMON, _PSYCHIC_]),
+  SKARMORY_FB_83 ("Skarmory FB", "83", Rarity.UNCOMMON, [BASIC, POKEMON, POKEMON_SP, _METAL_]),
+  SPIRITOMB_C_84 ("Spiritomb C", "84", Rarity.UNCOMMON, [BASIC, POKEMON, POKEMON_SP, _PSYCHIC_]),
   STARAVIA_85 ("Staravia", "85", Rarity.UNCOMMON, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-  TOGEKISS_C_86 ("Togekiss C", "86", Rarity.UNCOMMON, [BASIC, POKEMON, _COLORLESS_]),
+  TOGEKISS_C_86 ("Togekiss C", "86", Rarity.UNCOMMON, [BASIC, POKEMON, POKEMON_SP, _COLORLESS_]),
   WAILMER_87 ("Wailmer", "87", Rarity.UNCOMMON, [BASIC, POKEMON, _WATER_]),
   YANMA_88 ("Yanma", "88", Rarity.UNCOMMON, [BASIC, POKEMON, _GRASS_]),
   BALTOY_89 ("Baltoy", "89", Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
@@ -161,13 +162,13 @@ public enum SupremeVictors implements LogicCardInfo {
   NIGHT_TELEPORTER_138 ("Night Teleporter", "138", Rarity.UNCOMMON, [TRAINER]),
   PALMER_S_CONTRIBUTION_139 ("Palmer's Contribution", "139", Rarity.UNCOMMON, [TRAINER]),
   VS_SEEKER_140 ("VS Seeker", "140", Rarity.UNCOMMON, [TRAINER]),
-  ABSOL_G_LV_X_141 ("Absol G Lv.X", "141", Rarity.HOLORARE, [LVL_X, POKEMON, _DARKNESS_]),
-  BLAZIKEN_FB_LV_X_142 ("Blaziken FB Lv.X", "142", Rarity.HOLORARE, [LVL_X, POKEMON, _FIRE_]),
-  CHARIZARD_G_LV_X_143 ("Charizard G Lv.X", "143", Rarity.HOLORARE, [LVL_X, POKEMON, _FIRE_]),
-  ELECTIVIRE_FB_LV_X_144 ("Electivire FB Lv.X", "144", Rarity.HOLORARE, [LVL_X, POKEMON, _LIGHTNING_]),
-  GARCHOMP_C_LV_X_145 ("Garchomp C Lv.X", "145", Rarity.HOLORARE, [LVL_X, POKEMON, _COLORLESS_]),
-  RAYQUAZA_C_LV_X_146 ("Rayquaza C Lv.X", "146", Rarity.HOLORARE, [LVL_X, POKEMON, _COLORLESS_]),
-  STARAPTOR_FB_LV_X_147 ("Staraptor FB Lv.X", "147", Rarity.HOLORARE, [LVL_X, POKEMON, _COLORLESS_]),
+  ABSOL_G_LV_X_141 ("Absol G Lv.X", "141", Rarity.HOLORARE, [LVL_X, POKEMON, POKEMON_SP, _DARKNESS_]),
+  BLAZIKEN_FB_LV_X_142 ("Blaziken FB Lv.X", "142", Rarity.HOLORARE, [LVL_X, POKEMON, POKEMON_SP, _FIRE_]),
+  CHARIZARD_G_LV_X_143 ("Charizard G Lv.X", "143", Rarity.HOLORARE, [LVL_X, POKEMON, POKEMON_SP, _FIRE_]),
+  ELECTIVIRE_FB_LV_X_144 ("Electivire FB Lv.X", "144", Rarity.HOLORARE, [LVL_X, POKEMON, POKEMON_SP, _LIGHTNING_]),
+  GARCHOMP_C_LV_X_145 ("Garchomp C Lv.X", "145", Rarity.HOLORARE, [LVL_X, POKEMON, POKEMON_SP, _COLORLESS_]),
+  RAYQUAZA_C_LV_X_146 ("Rayquaza C Lv.X", "146", Rarity.HOLORARE, [LVL_X, POKEMON, POKEMON_SP, _COLORLESS_]),
+  STARAPTOR_FB_LV_X_147 ("Staraptor FB Lv.X", "147", Rarity.HOLORARE, [LVL_X, POKEMON, POKEMON_SP, _COLORLESS_]),
   ARTICUNO_148 ("Articuno", "148", Rarity.ULTRARARE, [BASIC, POKEMON, _WATER_]),
   MOLTRES_149 ("Moltres", "149", Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_]),
   ZAPDOS_150 ("Zapdos", "150", Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
@@ -234,17 +235,32 @@ public enum SupremeVictors implements LogicCardInfo {
           move "Feint Attack", {
             text "Choose 1 of your opponent’s Pokémon. This attack does 20 damage to that Pokémon. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
             energyCost D
-            attackRequirement {}
             onAttack {
               swiftDamage(20, opp.all.select())
             }
           }
           move "Doom News", {
-            text "to your hand. The Defending Pokémon is Knocked Out at the end of your opponent’s next turn."
+            text "Return all Energy cards attached to this Pokémon to your hand. The Defending Pokémon is Knocked Out at the end of your opponent’s next turn."
             energyCost D, C, C
-            attackRequirement {}
             onAttack {
-              damage 0
+              self.cards.filterByType(ENERGY).each { it.moveTo(my.hand) }
+
+              def pcs = defending
+              targeted(pcs) {
+                bc "At the end of ${self.owner.opposite}'s next turn, the Defending ${defending} will be Knocked Out. (This effect can be removed by benching/evolving ${defending}.)"
+                delayed {
+                  before BETWEEN_TURNS, {
+                    if (bg.currentTurn == self.owner.opposite && all.contains(pcs)) {
+                      bc "Doom News' effect occurs."
+                      new Knockout(pcs).run(bg)
+                    }
+                  }
+                  unregisterAfter 2
+                  after FALL_BACK, pcs, {unregister()}
+                  after EVOLVE, pcs, {unregister()}
+                  after DEVOLVE, pcs, {unregister()}
+                }
+              }
             }
           }
 
@@ -1108,7 +1124,7 @@ public enum SupremeVictors implements LogicCardInfo {
             delayedA {
               after ATTACH_ENERGY, self, {
                 if (ef.reason == PLAY_FROM_HAND) {
-                  clearSpecialCondition(self, SRC_ABILITY)
+                  clearSpecialCondition(self, Source.POKEBODY)
                 }
               }
             }

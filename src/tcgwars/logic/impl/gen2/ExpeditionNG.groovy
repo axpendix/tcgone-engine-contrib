@@ -28,7 +28,7 @@ import tcgwars.logic.effect.blocking.*;
 import tcgwars.logic.effect.event.*;
 import tcgwars.logic.effect.getter.*;
 import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import tcgwars.logic.util.*
 
 /**
  * @author lithogenn@gmail.com
@@ -258,15 +258,16 @@ public enum ExpeditionNG implements LogicCardInfo {
         weakness P
         pokePower "Psymimic", {
           text "Once during your turn, instead of Alakazam's normal attack, you may choose 1 of your opponent's Pokémon's attack. Alakazam copies that attack including its Energy costs and anything else required in order to use that attack, such as discarding Energy cards. (No matter what type that Pokémon is, Alakazam's type is still Psychic.) This power can't be used if Alakazam is affected by a Special Condition."
-          actionA {
-          }
+          metronomeA checkSpecialConditions: true, delegate, { opp.all }
         }
         move "Syncroblast", {
           text "If Alakazam and the Defending Pokémon don't have the same number of Energy cards on them, this attack's base damage is 20 instead of 80."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
-
+            if (self.energyCards.size() != defending.energyCards.size())
+              damage 20
+            else
+              damage 80
           }
         }
       };
@@ -753,15 +754,17 @@ public enum ExpeditionNG implements LogicCardInfo {
         resistance P, MINUS30
         pokeBody "Dark Aura", {
           text "All Energy attached to Tyranitar is Dark instead of its usual type."
-          delayedA {
+          getterA GET_ENERGY_TYPES, self, { holder ->
+            int count = holder.object.size()
+            holder.object = (1..count).collect { [D] as Set }
           }
         }
         move "Stamp", {
           text "50+ damage. Flip a coin. If heads, this attack does 50 damage plus 10 more damage and does 10 damage to each of your opponent's Benched Pokémon, if any. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost D, D, D, D
-          attackRequirement {}
           onAttack {
             damage 50
+            flip { opp.all.each { damage 10, it } }
           }
         }
       };

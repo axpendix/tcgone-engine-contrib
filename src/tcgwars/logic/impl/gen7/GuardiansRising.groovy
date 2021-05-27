@@ -624,17 +624,9 @@ public enum GuardiansRising implements LogicCardInfo {
             energyCost C, C
             onAttack {
               damage 20
-              delayed (priority: LAST) {
-                before APPLY_ATTACK_DAMAGES, {
-                  if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                    bc "Counter Head activates"
-                    directDamage(80, ef.attacker as PokemonCardSet)
-                  }
-                }
-                unregisterAfter 2
-                after FALL_BACK, self, {unregister()}
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
+              ifDamagedByAttackNextTurn(delegate) {
+                bc "Shell Trap activates"
+                directDamage(80, ef.attacker as PokemonCardSet)
               }
             }
           }
@@ -836,10 +828,10 @@ public enum GuardiansRising implements LogicCardInfo {
             text "Flip a coin until you get tails. For each heads, you may search your deck for a card and put it into your hand. Then, shuffle your deck."
             energyCost C
             onAttack {
-              int c=0
-              flipUntilTails {c++}
-              if(c && my.deck){
-                my.deck.select(min: 0, max: c).moveTo(hidden:true, my.hand)
+              int count = 0
+              flipUntilTails { count++ }
+              if (count && my.deck) {
+                my.deck.select(min: 0, max: count).moveTo(hidden:true, my.hand)
                 shuffleDeck()
               }
             }
@@ -1298,17 +1290,19 @@ public enum GuardiansRising implements LogicCardInfo {
           bwAbility "Aero Trail", {
             text "When you play this Pokémon from your hand onto your Bench during your turn, you may move any number of [L] Energy from your other Pokémon to this Pokémon. If you do, switch this Pokémon with your Active Pokémon."
             onActivate {reason ->
-              if(reason == PLAY_FROM_HAND && self.benched && confirm("Use Aero Trail?")){
+              if(reason == PLAY_FROM_HAND && self.benched && my.all.any { it.cards.energyCount(L) } && confirm("Use Aero Trail?")){
                 powerUsed()
+                def card = null
                 while(1){
                   def pl=(my.all.findAll {it.cards.filterByEnergyType(L) && it!=self})
                   if(!pl) break;
                   def src=pl.select("Source for energy (cancel to stop)", false)
                   if(!src) break;
-                  def card=src.cards.filterByEnergyType(L).select("Card to move").first()
+                  card=src.cards.filterByEnergyType(L).select("Card to move").first()
                   energySwitch(src, self, card)
                 }
-                sw my.active, self
+                if (card != null)
+                  sw my.active, self
               }
             }
           }
@@ -1631,7 +1625,7 @@ public enum GuardiansRising implements LogicCardInfo {
             onActivate {reason ->
               if(reason == PLAY_FROM_HAND && self.benched && my.deck.notEmpty && confirm("Use Wonder Tag?")){
                 powerUsed()
-                deck.search (cardTypeFilter(SUPPORTER)).moveTo(my.hand)
+                deck.search (cardTypeFilter(SUPPORTER)).showToOpponent("Choosen Supporter card.").moveTo(my.hand)
                 shuffleDeck()
               }
             }
@@ -2379,7 +2373,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
             onAttack {
               gxPerform()
-              multiSelect(opp.bench, 2).each{
+              multiSelect(opp.bench, 2, text).each{
                 scoopUpPokemon(it, delegate)
               }
             }
@@ -3072,16 +3066,16 @@ public enum GuardiansRising implements LogicCardInfo {
           onPlay {
             def i = 2
             while(i-- > 0){
-              if (bg.stadiumInfoStruct && confirm("Would you like to discard stadium in play (${bg.stadiumInfoStruct.stadiumCard})? If not, you can select a Pokemon Tool in play")) {
+              if (bg.stadiumInfoStruct && confirm("Would you like to discard stadium in play (${bg.stadiumInfoStruct.stadiumCard})? If not, you can select a Pokémon Tool in play")) {
                 if (stadiumCanBeAffectedByItemAndSupporter())
                   discard bg.stadiumInfoStruct.stadiumCard
                 continue
               }
               def tar = all.findAll {it.cards.hasType(POKEMON_TOOL)}
               if(tar) {
-                def sel = tar.select("Select Pokemon to discard a Pokemon Tool from (cancel to stop)", i == 1)
+                def sel = tar.select("Select Pokémon to discard a Pokémon Tool from (cancel to stop)", i == 1)
                 if(sel){
-                  def list = sel.cards.filterByType(POKEMON_TOOL).select("Discard a Pokemon Tool from $sel")
+                  def list = sel.cards.filterByType(POKEMON_TOOL).select("Discard a Pokémon Tool from $sel")
                   targeted (sel, TRAINER_CARD) {
                     list.discard()
                   }
@@ -3138,9 +3132,8 @@ public enum GuardiansRising implements LogicCardInfo {
             "Shuffle 3 Pokémon from your discard pile into your deck.\n" +
             "You may play as many Item cards as you like during your turn (before your attack)."
           onPlay {
-            def cl=[1,2]
-            def c=choose(cl,['Put a Pokémon from your discard pile into your hand', 'Shuffle 3 Pokémon from your discard pile into your deck'], "Choose 1")
-            if(c==1){
+            def choice = choose([1,2],['Put a Pokémon from your discard pile into your hand', 'Shuffle 3 Pokémon from your discard pile into your deck'], "Choose 1")
+            if (choice == 1) {
               my.discard.filterByType(POKEMON).select("Put to hand").moveTo(my.hand)
             } else {
               my.discard.filterByType(POKEMON).select(count: 3, "Shuffle 3 to deck").moveTo(my.deck)

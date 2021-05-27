@@ -1130,7 +1130,7 @@ public enum SunMoon implements LogicCardInfo {
             text "Heal all damage from all of your Pokémon. (You can't use more than 1 GX attack per game.)"
             energyCost C, C
             attackRequirement {
-              assert my.all.findAll {it.numberOfDamageCounters} : "Your Pokemon are allright"
+              assert my.all.findAll {it.numberOfDamageCounters} : "Your Pokémon are allright"
               gxCheck()
             }
             onAttack {
@@ -1644,7 +1644,7 @@ public enum SunMoon implements LogicCardInfo {
             energyCost P, P, P
             attackRequirement {
               gxCheck()
-              assert opp.all.findAll {it.basic && !it.pokemonGX} : "Opponent has no suitable pokemon"
+              assert opp.all.findAll {it.basic && !it.pokemonGX} : "Opponent has no suitable Pokémon."
             }
             onAttack {
               gxPerform()
@@ -1740,7 +1740,7 @@ public enum SunMoon implements LogicCardInfo {
               while (1) {
                 def tar = my.all.findAll {it.cards.filterByEnergyType(F).notEmpty()}
                 if (!tar) break
-                def pcs = tar.select("Pokemon that has [F] energy to discard. Cancel to stop", false)
+                def pcs = tar.select("Pokémon that has [F] energy to discard. Cancel to stop", false)
                 if (!pcs) break
                 pcs.cards.filterByEnergyType(F).select("[F] Energy to discard").discard()
                 count++
@@ -1978,13 +1978,9 @@ public enum SunMoon implements LogicCardInfo {
           resistance PSYCHIC, MINUS20
           bwAbility "Rough Skin", {
             text "If this Pokémon is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), put 3 damage counters on the Attacking Pokémon."
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if(self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                  bc "Rough Skin activates"
-                  directDamage(30, ef.attacker)
-                }
-              }
+            ifActiveAndDamagedByAttackBody(delegate) {
+              bc "Rough Skin activates"
+              directDamage(30, ef.attacker)
             }
           }
           move "Aqua Impact", {
@@ -2241,7 +2237,7 @@ public enum SunMoon implements LogicCardInfo {
             text "Once during your turn (before your attack), you may heal 20 damage from 1 of your Pokémon."
             actionA {
               checkLastTurn()
-              assert my.all.findAll {it.numberOfDamageCounters} : "No suitable pokemon"
+              assert my.all.findAll {it.numberOfDamageCounters} : "No suitable Pokémon."
               powerUsed()
               def pcs=my.all.findAll {it.numberOfDamageCounters}.select("Heal which one")
               heal(20,pcs,SRC_ABILITY)
@@ -2774,22 +2770,9 @@ public enum SunMoon implements LogicCardInfo {
       case POISON_BARB_124:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nIf the Pokémon this card is attached to is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Poisoned.\nYou may play as many Item cards as you like during your turn (before your attack)."
-          def eff
-          onPlay {reason->
-            eff = delayed(priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                bg().dm().each {
-                  if (it.to == self && it.dmg.value > 0 && bg.currentTurn==self.owner.opposite
-                    && self.active) {
-                    bc "Poison Barb activates"
-                    apply POISONED, it.from, SRC_ABILITY
-                  }
-                }
-              }
-            }
-          }
-          onRemoveFromPlay {
-            eff.unregister()
+          ifActiveAndDamagedByAttackAttached(delegate) {
+            bc "Poison Barb activates"
+            apply POISONED, ef.attacker, TRAINER_CARD
           }
         }
       case POKE_BALL_125:
@@ -2827,7 +2810,7 @@ public enum SunMoon implements LogicCardInfo {
         return itemCard (this) {
           text "Your opponent switches their Active Pokémon with 1 of their Benched Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
           onPlay {
-            def pcs = opp.bench.oppSelect("Select new active pokemon")
+            def pcs = opp.bench.oppSelect("Select new active Pokémon.")
             sw(opp.active, pcs)
           }
           playRequirement{

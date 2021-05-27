@@ -1066,7 +1066,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             text "Search your deck for an Item card, reveal it, and put it into your hand. Then, shuffle your deck.\n"
             energyCost C
             attackRequirement{
-              assert my.deck : "There are no more cards in your deck"
+              assert my.deck : "There are no more cards in your deck."
             }
             onAttack{
               my.deck.search(count:1,"Choose an Item card",cardTypeFilter(ITEM)).showToOpponent("The chosen Item card.").moveTo(my.hand)
@@ -1117,10 +1117,14 @@ public enum SunMoonPromos implements LogicCardInfo {
             text "If this Pokémon is your Active Pokémon and is Knocked Out by damage from an opponent's attack, move up to 2 basic Energy cards from this Pokémon to your Benched Pokémon in any way you like."
             delayedA {
               before (KNOCKOUT,self) {
-                if(self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.bench.notEmpty && self.cards.filterByType(ENERGY)) {
-                  bc "Golden Wing activates"
-                  moveEnergy(basic: true, self, self.owner.pbg.bench)
-                  moveEnergy(basic: true, self, self.owner.pbg.bench)
+                if(self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.bench.notEmpty && self.cards.filterByType(BASIC_ENERGY)) {
+                  powerUsed()
+                  def energiesToMove = self.cards.select("Basic Energy to move from $self to your benched Pokémon.",
+                    1, 2, self.owner, {BASIC_ENERGY in it.cardTypes}, {true })
+                  energiesToMove.each {
+                    def pcs = self.owner.pbg.bench.select "Choose the Pokémon to attach $it to", true, self.owner
+                    energySwitch self, pcs, it
+                  }
                 }
               }
             }
@@ -2538,15 +2542,9 @@ public enum SunMoonPromos implements LogicCardInfo {
           weakness W
           bwAbility "Cursed Body", {
             text "If this Pokémon is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Confused."
-            delayedA {
-              before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if (it.to == self && self.active && it.dmg.value && bg.currentTurn == self.owner.opposite) {
-                    bc "Cursed Body activates."
-                    apply CONFUSED, it.from, SRC_ABILITY
-                  }
-                }
-              }
+            ifActiveAndDamagedByAttackBody(delegate) {
+              bc "Cursed Body activates."
+              apply CONFUSED, ef.attacker, SRC_ABILITY
             }
           }
           move "Fiery Bone", {
@@ -2564,7 +2562,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
             onAttack {
               gxPerform()
-              def pcs = multiSelect(opp.all, 2)
+              def pcs = multiSelect(opp.all, 2, text)
               pcs.each {
                 noWrDamage 50, it
               }
@@ -2626,7 +2624,7 @@ public enum SunMoonPromos implements LogicCardInfo {
           weakness FIGHTING
           resistance METAL, MINUS20
           move "Coffee Break", {
-            text "Heal 30 damage from this pokemon"
+            text "Heal 30 damage from this Pokémon."
             energyCost C
             onAttack {
               heal 30, self
@@ -2902,7 +2900,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
           move "Abnormal Overheating", {
-            text "160 damage. This Pokemon is now burned"
+            text "160 damage. This Pokémon is now burned"
             energyCost C, C, C
             onAttack {
               damage 160
@@ -3011,7 +3009,7 @@ public enum SunMoonPromos implements LogicCardInfo {
           text "Search your deck for up to 3 Pokémon-GX with different names, reveal them, and put them into your hand. Then, shuffle your deck."
           energyCost C
           attackRequirement {
-            assert my.deck : "Your deck is empty"
+            assert my.deck : "Your deck is empty!"
           }
           onAttack {
             def info = "Search your deck for up to 3 Pokémon-GX with different names."
@@ -3160,12 +3158,8 @@ public enum SunMoonPromos implements LogicCardInfo {
         weakness M
         bwAbility "Spiky Shield", {
           text "If this Pokémon is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), put 3 damage counters on the Attacking Pokémon."
-          delayedA {
-            before APPLY_ATTACK_DAMAGES, {
-              if (bg.currentTurn == self.owner.opposite && bg.dm().find({ it.to==self && it.dmg.value }) && self.active) {
-                directDamage(30, ef.attacker, Source.SRC_ABILITY)
-              }
-            }
+          ifActiveAndDamagedByAttackBody(delegate) {
+            directDamage(30, ef.attacker, Source.SRC_ABILITY)
           }
         }
         move "Frost Breath", {

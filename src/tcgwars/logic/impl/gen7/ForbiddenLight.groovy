@@ -1359,13 +1359,9 @@ public enum ForbiddenLight implements LogicCardInfo {
           weakness PSYCHIC
           bwAbility "Poison Point", {
             text "If this Pokémon is your Active Pokémon and is damaged by an opponent’s attack (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Poisoned."
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if(self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                  bc "Poison Point"
-                  apply POISONED, (ef.attacker as PokemonCardSet), SRC_ABILITY
-                }
-              }
+            ifActiveAndDamagedByAttackBody(delegate) {
+              bc "Poison Point"
+              apply POISONED, (ef.attacker as PokemonCardSet), SRC_ABILITY
             }
           }
           move "Twister", {
@@ -2198,7 +2194,7 @@ public enum ForbiddenLight implements LogicCardInfo {
               if (opp.hand) {
                 def randomOppHand = opp.hand.shuffledCopy()
                 if(randomOppHand.hasType(SUPPORTER)){
-                  def support = randomOppHand.select(max: 0, "Your opponent's hand. You may discard a Supporter card you find there and use the effect of that card as the effect of this attack.", cardTypeFilter(SUPPORTER))
+                  def support = randomOppHand.select(min: 0, "Your opponent's hand. You may discard a Supporter card you find there and use the effect of that card as the effect of this attack.", cardTypeFilter(SUPPORTER))
                   if (support){
                     discard support.first()
                     bg.deterministicCurrentThreadPlayerType=self.owner
@@ -2704,12 +2700,11 @@ public enum ForbiddenLight implements LogicCardInfo {
               def disable={card,pcs->
                 def dset = bg.em().retrieveObject("Tool Concealment dset") as Set
                 if(!dset.contains(card)){
-                  card.removeFromPlay(bg, pcs)
+                  card.disable(bg, pcs)
                   dset.add(card)
                 }
               }
-              after PLAY_POKEMON_TOOL, {disable(ef.cardToPlay,ef.target)}
-              after PLAY_POKEMON_TOOL_FLARE, {disable(ef.cardToPlay,ef.target)}
+              after ATTACH_POKEMON_TOOL, {disable(ef.card,ef.target)}
             }
 
             def count = (bg.em().retrieveObject("Tool Concealment count") ?: 0) + 1
@@ -2719,7 +2714,7 @@ public enum ForbiddenLight implements LogicCardInfo {
                 def pcs = it
                 it.cards.filterByType(POKEMON_TOOL).each {
                   if(!dset.contains(it)){
-                    it.removeFromPlay(bg, pcs)
+                    it.disable(bg, pcs)
                     dset.add(it)
                   }
                 }
@@ -2827,13 +2822,15 @@ public enum ForbiddenLight implements LogicCardInfo {
         return specialEnergy (this, [[C]]) {
           text "♢ (Prism Star) Rule: You can’t have more than 1 ♢ card with the same name in your deck. If a ♢ card would go to the discard pile, put it in the Lost Zone instead.\nThis card provides [C] Energy.\nWhile this card is attached to an Ultra Beast, it provides every type of Energy but provides only 1 Energy at a time. The attacks of the Ultra Beast this card is attached to do 30 more damage to your opponent’s Active Pokémon (before applying Weakness and Resistance)."
           def eff
-          onPlay {reason->
+          onPlay { reason ->
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each{
-                  if(it.from == self && it.to.active && it.to.owner != self.owner && self.topPokemonCard.cardTypes.is(ULTRA_BEAST) && it.notZero) {
-                    bc "Beast Energy +30"
-                    it.dmg += hp(30)
+                targeted self, SRC_SPENERGY, {
+                  bg.dm().each {
+                    if (it.from == self && it.to.active && it.to.owner != self.owner && self.topPokemonCard.cardTypes.is(ULTRA_BEAST) && it.notZero) {
+                      bc "Beast Energy +30"
+                      it.dmg += hp(30)
+                    }
                   }
                 }
               }
@@ -2842,11 +2839,9 @@ public enum ForbiddenLight implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-          onMove {to->
-          }
           getEnergyTypesOverride{
             if(self != null && self.topPokemonCard.cardTypes.is(ULTRA_BEAST)) {
-              return [[R, D, F, G, W, Y, L, M, P] as Set]
+              return [valuesBasicEnergy() as Set]
             }
             else {
               return [[C] as Set]
@@ -2858,8 +2853,6 @@ public enum ForbiddenLight implements LogicCardInfo {
           text "This card provides [C] Energy.\nWhile this card is attached to a Pokémon, it provides [F], [D], and [Y] Energy but provides only 1 Energy at a time."
           // TODO: Request appropriate typeImageOverride be added
           onPlay {reason->
-          }
-          onRemoveFromPlay {
           }
           getEnergyTypesOverride {
             self != null ? [[F,D,Y] as Set] : [[C] as Set]

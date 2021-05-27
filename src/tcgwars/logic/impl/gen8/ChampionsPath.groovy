@@ -1,7 +1,6 @@
 package tcgwars.logic.impl.gen8
 
 import tcgwars.logic.impl.gen3.FireRedLeafGreen
-import tcgwars.logic.impl.gen5.BlackWhite
 import tcgwars.logic.impl.gen5.EmergingPowers;
 
 import static tcgwars.logic.card.HP.*;
@@ -11,27 +10,11 @@ import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
 import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
-import static tcgwars.logic.effect.EffectPriority.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
+import tcgwars.logic.card.*
 import tcgwars.logic.util.*
 
 /**
@@ -201,7 +184,7 @@ public enum ChampionsPath implements LogicCardInfo {
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
         move "Call for Family", {
-          text "Search your deck for a Basic Pokemon and put it on your Bench. Then, shuffle your deck."
+          text "Search your deck for a Basic Pokémon and put it on your Bench. Then, shuffle your deck."
           energyCost C
           callForFamily basic:true, 1, delegate
         }
@@ -221,7 +204,7 @@ public enum ChampionsPath implements LogicCardInfo {
       return evolution (this, from:"Kakuna", hp:HP140, type:G, retreatCost:1) {
         weakness R
         move "Poison Jab", {
-          text "80 damage. Your opponent’s Active Pokemon is now Poisoned."
+          text "80 damage. Your opponent’s Active Pokémon is now Poisoned."
           energyCost G
           onAttack {
             damage 80
@@ -259,7 +242,7 @@ public enum ChampionsPath implements LogicCardInfo {
           text "Draw a card."
           energyCost C
           attackRequirement {
-            assert my.deck : "Your deck is empty"
+            assert my.deck : "Your deck is empty!"
           }
           onAttack {
             draw 1
@@ -490,13 +473,9 @@ public enum ChampionsPath implements LogicCardInfo {
         resistance F, MINUS30
         bwAbility "Hazard Sensor", {
           text "If this Pokémon is in the Active Spot and is damaged by an attack from your opponent's Pokémon (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Confused."
-          delayedA {
-            before APPLY_ATTACK_DAMAGES, {
-              if (self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})) {
-                bc "$thisAbility activates"
-                apply CONFUSED, ef.attacker, SRC_ABILITY
-              }
-            }
+          ifActiveAndDamagedByAttackBody(delegate) {
+            bc "$thisAbility activates"
+            apply CONFUSED, ef.attacker, SRC_ABILITY
           }
         }
         move "Life Sucker", {
@@ -576,27 +555,7 @@ public enum ChampionsPath implements LogicCardInfo {
             assert my.all.any { it.cards.energyCount() } : "No Pokémon with energy cards attached"
           }
           onAttack {
-            def damageAmount = 0
-            if(confirm("Discard energy from your Pokémon for 60 damage per energy discarded?")){
-              CardList toDiscard = []
-              Map<PokemonCardSet, CardList> workMap = [:]
-              for (PokemonCardSet pcs : my.all) {
-                if (pcs.cards.filterByType(ENERGY)) workMap.put(pcs, pcs.cards.filterByType(ENERGY))
-              }
-              PcsList mapTar = workMap.keySet().findAll { workMap.get(it).notEmpty() }
-              while(mapTar) {
-                PokemonCardSet tar = mapTar.select("Choose the Pokémon to discard energy from. Current Damage: $damageAmount", false)
-                if (!tar) break
-                def tarCards = workMap.get(tar).select(min:0,max : tar.cards.filterByType(ENERGY).size(), "Choose the energies to discard. Current Damage: $damageAmount")
-                if (!tarCards) break
-                toDiscard.addAll tarCards
-                workMap.get(tar).removeAll(tarCards)
-                damageAmount = 60 * toDiscard.size()
-                mapTar = workMap.keySet().findAll { workMap.get(it).notEmpty() }
-              }
-              afterDamage { toDiscard.discard() }
-            }
-            damage damageAmount
+            additionalDamageByDiscardingCardTypeFromPokemon 60, ENERGY
           }
         }
       };
@@ -697,9 +656,7 @@ public enum ChampionsPath implements LogicCardInfo {
           energyCost F, F, C, C
           onAttack {
             damage 130
-            afterDamage {
-              discardSelfEnergy F
-            }
+            discardSelfEnergyAfterDamage F
           }
         }
       };
@@ -710,7 +667,7 @@ public enum ChampionsPath implements LogicCardInfo {
           text "Draw a card."
           energyCost C
           attackRequirement {
-            assert my.deck : "Your deck is empty"
+            assert my.deck : "Your deck is empty!"
           }
           onAttack {
             draw 1
@@ -969,7 +926,7 @@ public enum ChampionsPath implements LogicCardInfo {
           text "Draw a card."
           energyCost C
           attackRequirement {
-            assert my.deck : "Your deck is empty"
+            assert my.deck : "Your deck is empty!"
           }
           onAttack {
             draw 1
@@ -1089,14 +1046,14 @@ public enum ChampionsPath implements LogicCardInfo {
           my.deck.add(0, card)
         }
         playRequirement{
-          assert my.deck.notEmpty : "Your deck is empty"
+          assert my.deck.notEmpty : "Your deck is empty!"
         }
       };
       case SONIA_65:
       return copy (RebelClash.SONIA_167, this);
       case STRANGE_CANNED_FOOD_66:
       return itemCard (this) {
-        text "Heal 80 damage from 1 of your Pokemon with a [P] Energy attached to it. Then, discard a [P] Energy from that Pokemon."
+        text "Heal 80 damage from 1 of your Pokémon with a [P] Energy attached to it. Then, discard a [P] Energy from that Pokémon."
         onPlay {
           def pcs = my.all.findAll{it.cards.energyCount(P) && it.numberOfDamageCounters}.select("Choose which Pokémon to heal 80 damage from")
           def prevented = heal 80, pcs

@@ -96,7 +96,6 @@ public enum PokemonRumble implements LogicCardInfo {
               removeDamageCounterEqualToDamageDone()
             }
           }
-
         }
       case CHERRIM_2:
         return evolution (this, from:"Cherubi", hp:HP080, type:GRASS, retreatCost:2) {
@@ -109,7 +108,6 @@ public enum PokemonRumble implements LogicCardInfo {
               damage 60
             }
           }
-
         }
       case NINETALES_3:
         return evolution (this, from:"Vulpix", hp:HP090, type:FIRE, retreatCost:1) {
@@ -121,22 +119,20 @@ public enum PokemonRumble implements LogicCardInfo {
               damage 60
             }
           }
-
         }
       case HEATRAN_4:
         return basic (this, hp:HP110, type:FIRE, retreatCost:4) {
           weakness W
           move "Heat Boiler", {
-            text "60+ damage. If the Defending Pokémon is a Water Pokémon, this attack does 60 damage plus 40 more damage."
+            text "60+ damage. If the Defending Pokémon is a [W] Pokémon, this attack does 60 damage plus 40 more damage."
             energyCost R, C, C, C
             onAttack {
               damage 60
-              if(defending.types.contains(W)) {
+              if (defending.types.contains(W)) {
                 damage 40
               }
             }
           }
-
         }
       case STARMIE_5:
         return evolution (this, from:"Staryu", hp:HP080, type:WATER, retreatCost:1) {
@@ -146,10 +142,9 @@ public enum PokemonRumble implements LogicCardInfo {
             energyCost W, C, C
             onAttack {
               damage 50
-              heal 10
+              heal 10, self
             }
           }
-
         }
       case GYRADOS_6:
         return evolution (this, from:"Magikarp", hp:HP130, type:WATER, retreatCost:3) {
@@ -163,7 +158,6 @@ public enum PokemonRumble implements LogicCardInfo {
               damage 20, self
             }
           }
-
         }
       case PIKACHU_7:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
@@ -177,7 +171,6 @@ public enum PokemonRumble implements LogicCardInfo {
               damage 10, self
             }
           }
-
         }
       case ZAPDOS_8:
         return basic (this, hp:HP100, type:LIGHTNING, retreatCost:2) {
@@ -190,7 +183,6 @@ public enum PokemonRumble implements LogicCardInfo {
               damage 70
             }
           }
-
         }
       case MEWTWO_9:
         return basic (this, hp:HP100, type:PSYCHIC, retreatCost:2) {
@@ -202,7 +194,6 @@ public enum PokemonRumble implements LogicCardInfo {
               damage 70
             }
           }
-
         }
       case MEW_10:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:0) {
@@ -221,10 +212,9 @@ public enum PokemonRumble implements LogicCardInfo {
               damage 60
             }
           }
-
         }
       case DIGLETT_11:
-        return basic (this, hp:HP30, type:FIGHTING, retreatCost:1) {
+        return basic (this, hp:HP030, type:FIGHTING, retreatCost:1) {
           weakness G
           resistance L, MINUS20
           move "Dig", {
@@ -234,7 +224,6 @@ public enum PokemonRumble implements LogicCardInfo {
               damage 20
             }
           }
-
         }
       case LUCARIO_12:
         return evolution (this, from:"Riolu", hp:HP090, type:FIGHTING, retreatCost:1) {
@@ -253,7 +242,6 @@ public enum PokemonRumble implements LogicCardInfo {
               damage 80
             }
           }
-
         }
       case SKUNTANK_13:
         return evolution (this, from:"Stunky", hp:HP090, type:DARKNESS, retreatCost:2) {
@@ -263,11 +251,9 @@ public enum PokemonRumble implements LogicCardInfo {
             text "20+ damage. Does 20 damage plus 10 more damage for each damage counter on Skuntank"
             energyCost D, C, C
             onAttack {
-              damage 20
-              damage 10*ef.attacker.numberOfDamageCounters
+              damage 20 + (10 * self.numberOfDamageCounters)
             }
           }
-
         }
       case BASTIODON_14:
         return evolution (this, from:"Shieldon", hp:HP120, type:METAL, retreatCost:4) {
@@ -280,10 +266,9 @@ public enum PokemonRumble implements LogicCardInfo {
               damage 40
             }
           }
-
         }
       case RATTATA_15:
-        return basic (this, hp:HP30, type:COLORLESS, retreatCost:1) {
+        return basic (this, hp:HP030, type:COLORLESS, retreatCost:1) {
           weakness F
           move "Bite", {
             text "20 damage."
@@ -292,7 +277,6 @@ public enum PokemonRumble implements LogicCardInfo {
               damage 20
             }
           }
-
         }
       case BIBAREL_16:
         return evolution (this, from:"Bidoof", hp:HP090, type:COLORLESS, retreatCost:3) {
@@ -304,11 +288,9 @@ public enum PokemonRumble implements LogicCardInfo {
               damage 50
             }
           }
-
         }
       default:
         return null
     }
   }
-
 }

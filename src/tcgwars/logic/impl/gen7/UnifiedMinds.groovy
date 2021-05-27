@@ -104,6 +104,7 @@ public enum UnifiedMinds implements LogicCardInfo {
   WYNAUT_77 ("Wynaut", "77", Rarity.UNCOMMON, [POKEMON, BASIC, _PSYCHIC_]),
   LATIOS_GX_78 ("Latios-GX", "78", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, _PSYCHIC_]),
   JIRACHI_GX_79 ("Jirachi-GX", "79", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, _PSYCHIC_]),
+  JIRACHI_GX_79A ("Jirachi-GX", "79a", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_GX, _PSYCHIC_]),
   DRIFLOON_80 ("Drifloon", "80", Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
   DRIFBLIM_81 ("Drifblim", "81", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
   SKORUPI_82 ("Skorupi", "82", Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
@@ -1209,7 +1210,7 @@ public enum UnifiedMinds implements LogicCardInfo {
         return evolution (this, from:"Tirtouga", hp:HP160, type:W, retreatCost:3) {
           weakness G
           bwAbility "Ancient Custom", {
-            text "Pokemon Tool cards attached to your opponent's Pokemon have no effect"
+            text "Pokémon Tool cards attached to your opponent's Pokémon have no effect"
             def eff
             onActivate {
               eff = delayed {
@@ -1774,25 +1775,8 @@ public enum UnifiedMinds implements LogicCardInfo {
           weakness P
           bwAbility "Perfection", {
             text "This Pokémon can use the attacks of any Pokémon-GX or Pokémon-EX on your Bench or in your discard pile. (You still need the necessary Energy to use each attack.)"
-            getterA (GET_MOVE_LIST, self) {holder->
-              def cardList = []
-              def perfectionMoves = []
-              self.owner.pbg.bench.findAll {it.pokemonGX || it.pokemonEX}.each {
-                if(!cardList.contains("${it.topPokemonCard}") && it.topPokemonCard.name != "Mewtwo & Mew-GX"){
-                  cardList.add("${it.topPokemonCard}")
-                  perfectionMoves.addAll(it.topPokemonCard.moves)
-                }
-              }
-              self.owner.pbg.discard.each {
-                if (it.cardTypes.isIn(POKEMON_EX, POKEMON_GX) && it.name != "Mewtwo & Mew-GX") {
-                  if(!cardList.contains("${it}")){
-                    cardList.add("${it}")
-                    perfectionMoves.addAll(it.moves)
-                  }
-                }
-              }
-              holder.object.addAll(perfectionMoves)
-            }
+            metronomeA delegate, { my.bench.findAll { it.pokemonGX || it.pokemonEX } }
+            metronomeA delegate, { my.discard.findAll { it.cardTypes.isIn(POKEMON_EX, POKEMON_GX) } }
           }
           move "Miraculous Duo GX", {
             text "200 damage. If this Pokémon has at least 1 extra Energy attached to it (in addition to this attack’s cost), heal all damage from all of your Pokémon. (You can’t use more than 1 GX attack in a game.)"
@@ -1982,6 +1966,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             }
           }
         };
+      case JIRACHI_GX_79A:
       case JIRACHI_GX_79:
         return basic (this, hp:HP160, type:P, retreatCost:1) {
           weakness P
@@ -2536,6 +2521,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "If 1 of your opponent's Pokémon used a GX attack during their last turn, your opponent shuffles their Active Pokémon and all cards attached to it into their deck."
             energyCost C
             attackRequirement {
+              assert opp.lastTurnMove : "Your opponent did not attack last turn"
               assert opp.lastTurnMove.contains("GX") : "Your opponent did not use a GX attack last turn."
             }
             onAttack {
@@ -3086,18 +3072,9 @@ public enum UnifiedMinds implements LogicCardInfo {
             energyCost D
             onAttack {
               damage 10
-
-              delayed (priority: LAST) {
-                before APPLY_ATTACK_DAMAGES, {
-                  if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})) {
-                    bc "Mirror Gem activates."
-                    directDamage(80, ef.attacker as PokemonCardSet)
-                  }
-                }
-                unregisterAfter 2
-                after FALL_BACK, self, {unregister()}
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
+              ifDamagedByAttackNextTurn(delegate) {
+                bc "Mirror Gem activates."
+                directDamage(80, ef.attacker as PokemonCardSet)
               }
             }
           }
@@ -3143,7 +3120,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "Discard a Pokémon Tool card from 1 of your opponent's Pokémon."
             energyCost C
             attackRequirement {
-              assertOppAll(overrideText: true, info: "There are no Pokémon Tool cards attached to your opponent's Pokemon.", {it.cards.filterByType(POKEMON_TOOL)})
+              assertOppAll(overrideText: true, info: "There are no Pokémon Tool cards attached to your opponent's Pokémon.", {it.cards.filterByType(POKEMON_TOOL)})
             }
             onAttack {
               def target = opp.all.findAll{ it.cards.filterByType(POKEMON_TOOL) }.select("Choose the Pokémon to discard a Pokémon Tool from.")
@@ -3912,13 +3889,9 @@ public enum UnifiedMinds implements LogicCardInfo {
           weakness F
           bwAbility "Counterattack", {
             text "If this Pokémon is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), put 4 damage counters on the Attacking Pokémon."
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if (self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({ it.to == self && it.dmg.value })) {
-                  bc "Counterattack activates."
-                  directDamage(40, ef.attacker)
-                }
-              }
+            ifActiveAndDamagedByAttackBody(delegate) {
+              bc "Counterattack activates."
+              directDamage(40, ef.attacker)
             }
           }
           move "Dynamic Swing", {
@@ -4227,7 +4200,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               before BEGIN_TURN, {
                 if (self.isSPC(ASLEEP)) {
                   bc "Drowsing activates."
-                  directDamage 60, self.owner.opposite.pbg.active
+                  directDamage 60, self.owner.opposite.pbg.active, SRC_ABILITY
                 }
               }
             }
@@ -4348,22 +4321,9 @@ public enum UnifiedMinds implements LogicCardInfo {
       case EAR_RINGING_BELL_194:
         return pokemonTool (this) {
           text "If the Pokémon this card is attached to is your Active Pokémon and is damaged by an opponent’s attack (even if that Pokémon is Knocked Out), the Attacking Pokémon is now Confused."
-          def eff
-          onPlay {reason->
-            eff = delayed(priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                bg().dm().each {
-                  if (it.to == self && it.dmg.value > 0 && bg.currentTurn==self.owner.opposite
-                    && self.active) {
-                    bc "Ear-Ringing Bell activates."
-                    apply CONFUSED, it.from, SRC_ABILITY
-                  }
-                }
-              }
-            }
-          }
-          onRemoveFromPlay {
-            eff.unregister()
+          ifActiveAndDamagedByAttackAttached(delegate) {
+            bc "Ear-Ringing Bell activates."
+            apply CONFUSED, ef.attacker, TRAINER_CARD
           }
         };
       case FLYINIUM_Z_AIR_SLASH_195:
@@ -4401,10 +4361,19 @@ public enum UnifiedMinds implements LogicCardInfo {
           def eff
           onPlay {reason->
             eff=delayed (priority: LAST){
+              def applyEffect = false
               before APPLY_ATTACK_DAMAGES,{
                 if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value >= 180}) && self.active){
-                  bc "Giant Bomb explodes."
-                  directDamage(100, ef.attacker, TRAINER_CARD)
+                  applyEffect = true
+                }
+              }
+              after APPLY_ATTACK_DAMAGES, {
+                if (applyEffect) {
+                  if (self.cards.contains(thisCard)) {
+                    bc "Giant Bomb activates."
+                    directDamage(100, ef.attacker, TRAINER_CARD)
+                  }
+                  applyEffect = false
                 }
               }
               unregister {discard thisCard}
@@ -4563,7 +4532,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           def lastTurn=0
           def actions=[]
           onPlay {
-            actions=action("Stadium: Pokemon Research Lab") {
+            actions=action("Stadium: Pokémon Research Lab") {
               assert my.deck : "Your deck is empty."
               assert my.bench.notFull : "You have no space in your bench"
               assert lastTurn != bg().turnCount : "You've already used Pokémon Research Lab this turn."
@@ -4682,11 +4651,13 @@ public enum UnifiedMinds implements LogicCardInfo {
               def newLocationChanged = false
               before MOVE_CARD, {
                 if (ef.cards.contains(thisCard) && ef.newLocation == self.owner.pbg.discard && !newLocationChanged) {
-                  newLocationChanged = true
-                  def res = moveCard(supresssLog: true, thisCard, thisCard.player.pbg.hand)
-                  if (!res) {
-                    prevent()
-                    bc "Recycle Energy was recycled into its owner's hand."
+                  targeted null, SRC_SPENERGY, {
+                    newLocationChanged = true
+                    def res = moveCard(supresssLog: true, thisCard, thisCard.player.pbg.hand)
+                    if (!res) {
+                      prevent()
+                      bc "Recycle Energy was recycled into its owner's hand."
+                    }
                   }
                 }
               }
@@ -4703,7 +4674,9 @@ public enum UnifiedMinds implements LogicCardInfo {
           def eff
           onPlay {reason->
             eff = getter (GET_WEAKNESSES, self) { h->
-              h.object.clear()
+              targeted self, SRC_SPENERGY, {
+                h.object.clear()
+              }
             }
           }
           onRemoveFromPlay {

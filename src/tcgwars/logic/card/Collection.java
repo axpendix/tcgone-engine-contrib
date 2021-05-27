@@ -1,10 +1,10 @@
 package tcgwars.logic.card;
 
 import org.apache.commons.lang.WordUtils;
+import tcgwars.logic.GameFormat;
+import tcgwars.logic.GameType;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * @author axpendix@hotmail.com
@@ -23,7 +23,6 @@ public enum Collection {
   GYM_CHALLENGE(122, "G2", "gen1.GymChallenge"),
 
   WIZARDS_BLACK_STAR_PROMOS(110, "WBSP", "gen1.WizardsBlackStarPromos"),
-  WIZARDS_BLACK_STAR_PROMOS_NG(111, "WBSP", "gen1.WizardsBlackStarPromosNG"),
   VENDING_MACHINE(131, "VM", "gen1.VendingMachine"),
   SOUTHERN_ISLANDS(132, "SI", "gen2.SouthernIslands"),
   LEGENDARY_COLLECTION(133, "LC", "gen1.LegendaryCollection"),
@@ -46,7 +45,7 @@ public enum Collection {
   DRAGON(213, "DR", "gen3.Dragon"),
   TEAM_MAGMA_VS_TEAM_AQUA(214, "Team Magma vs Team Aqua", "MA", "gen3.TeamMagmaVsTeamAqua"),
   HIDDEN_LEGENDS(215, "HL", "gen3.HiddenLegends"),
-  FIRERED_LEAFGREEN(216, "FireRed & LeafGreen", "FRLG", "gen3.FireRedLeafGreen"),
+  FIRERED_LEAFGREEN(216, "FireRed & LeafGreen", "RG", "gen3.FireRedLeafGreen"),
   TEAM_ROCKET_RETURNS(217, "TRR", "gen3.TeamRocketReturns"),
   DEOXYS(218, "DX", "gen3.Deoxys"),
   EMERALD(219, "EM", "gen3.Emerald"),
@@ -92,7 +91,7 @@ public enum Collection {
   POP_SERIES_8(288, "POP Series 8", "POP8", "gen4.PopSeries8"),
   POP_SERIES_9(289, "POP Series 9", "POP9", "gen4.PopSeries9"),
 
-  POKEMON_RUMBLE(290, "Pokemon Rumble", "RUMBLE", "gen4.PokemonRumble"),
+  POKEMON_RUMBLE(290, "Pokémon Rumble", "RUMBLE", "gen4.PokemonRumble"),
 
   //BLACK & WHITE
   BLACK_WHITE_PROMOS(310, "Black & White Promos", "BWP", "gen5.BlackWhitePromos"),
@@ -153,6 +152,9 @@ public enum Collection {
   REBEL_CLASH(431, "RCL", "gen8.RebelClash"),
   DARKNESS_ABLAZE(432, "DAA", "gen8.DarknessAblaze"),
   CHAMPIONS_PATH(433, "CPA", "gen8.ChampionsPath"),
+  VIVID_VOLTAGE(434, "VIV", "gen8.VividVoltage"),
+  SHINING_FATES(435, "SHF", "gen8.ShiningFates"),
+  BATTLE_STYLES(436, "BST", "gen8.BattleStyles"),
 
   //POKEMOD
   POKEMOD_BASE_SET(910, "MODBS", "pokemod.PokemodBaseSet"),
@@ -172,6 +174,12 @@ public enum Collection {
   POKEMOD_VENDING_MACHINE(924, "MODVM", "pokemod.PokemodVendingMachine"),
   POKEMOD_PROMOS(925, "MODPRO", "pokemod.PokemodPromos"),
 //	POKEMOD_(900, "MOD", "pokemod.Pokemod"),
+
+  // DEV/TESTING ONLY
+  LEGENDARY_HEARTBEAT(1010, "JS3A", "gen8.LegendaryHeartbeat"),
+  AMAZING_VOLT_TACKLE(1011, "JS4", "gen8.AmazingVoltTackle"),
+  WIZARDS_BLACK_STAR_PROMOS_NG(111, "WBSP", "gen1.WizardsBlackStarPromosNG"),
+  SHINY_STAR_V(1012, "JS4A", "gen8.ShinyStarV"),
 
   ;
 

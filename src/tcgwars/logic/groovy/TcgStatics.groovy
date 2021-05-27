@@ -18,6 +18,7 @@ import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
 import static tcgwars.logic.groovy.TcgBuilders.delayed
 import static tcgwars.logic.groovy.TcgBuilders.getter
+import static tcgwars.logic.groovy.TcgBuilders.specialEnergy
 import static tcgwars.logic.groovy.TcgStatics.*
 import tcgwars.logic.*
 import tcgwars.logic.card.*
@@ -44,7 +45,7 @@ class TcgStatics {
 //		}
   }
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY;
 
   static Weakness weak (Type t, String f=Weakness.X2){
     new Weakness(t,f)
@@ -185,6 +186,59 @@ class TcgStatics {
     ef.run(bg())
     ef.getList()
   }
+  /**
+   * Select energy cards attached to a {@link PokemonCardSet} using the
+   * {@link EnergySelectUIRequestBuilder Energy Select UI}
+   * @param pcs {@link PokemonCardSet} with the Energy cards to choose
+   * @param types {@link Type}s of energy to be selected. Default: C
+   * @return {@link CardList} of the selected cards, can be empty CardList
+   */
+  static CardList selectEnergy(PokemonCardSet pcs, Type...types=C) {
+    def ef = new SelectEnergy(pcs.cards, types)
+    ef.playerType = bg.currentThreadPlayerType
+    bg.em().activateEffect(ef)
+    return ef.selectedCards ?: []
+  }
+  /**
+   * Selects Energy of specified Type from the attacking {@link PokemonCardSet} before damage, then discards it after
+   * damage. Should only be used for {@link Move}s
+   * @param types {@link Type}s of energy to be discarded. Default: C
+   */
+  static discardSelfEnergyAfterDamage(Type...types=C) {
+    def pcs = Target.YOUR_ACTIVE.getSingleTarget(bg)
+    def cards = selectEnergy(pcs, types)
+    afterDamage {
+      def de = new DiscardEnergy(cards)
+      de.source = ATTACK
+      bg.em().activateEffect(de)
+    }
+  }
+  /**
+   * Selects Energy of specified Type from the attacking {@link PokemonCardSet} before damage, then moves it to a new
+   * location after damage. Should only be used for {@link Move}s and should not be moved to another PokemonCardSet
+   * @param types {@link Type}s of energy to be moved. Default: C
+   */
+  static moveSelfEnergyAfterDamage(CardList newLocation, Type...types=C) {
+    def pcs = Target.YOUR_ACTIVE.getSingleTarget(bg)
+    def cards = selectEnergy(pcs, types)
+    afterDamage {
+      cards.moveTo newLocation
+    }
+  }
+  /**
+   * Selects Energy of specified Type from the opponent's active {@link PokemonCardSet} before damage, then discards it
+   * after damage. Should only be used for {@link Move}s
+   * @param types (optional) {@link Type}s of energy to be discarded. Default: C
+   */
+  static discardDefendingEnergyAfterDamage(Type...types=C) {
+    def pcs = Target.OPP_ACTIVE.getSingleTarget(bg)
+    def cards = selectEnergy(pcs, types)
+    afterDamage {
+      def de = new DiscardEnergy(cards)
+      de.source = ATTACK
+      bg.em().activateEffect(de)
+    }
+  }
   static CardList hand(){
     bg().ownHand()
   }
@@ -324,8 +378,13 @@ class TcgStatics {
   static oppChoose (List choices, String info="", defaultChoice=null){
     oppChoose(choices, null, info, defaultChoice)
   }
-  static multiSelect (List pcsList, int count, String info="Select Pokemon"){
-    LUtils.selectMultiPokemon(bg().ownClient(), pcsList, info, count)
+  static multiSelect (List pcsList, Integer count, String info="Select Pokémon") {
+    // Optional parameters in the middle of a param list confuse the parser. In order to have min before max in the
+    // following definition we'll add this overload to handle "count" variations that also provide custom text
+    multiSelect(pcsList, count, count, info)
+  }
+  static multiSelect (List pcsList, Integer min, Integer max, String info="Select Pokémon"){
+    LUtils.selectMultiPokemon(bg().ownClient(), pcsList, info, min, max)
   }
   static multiDamage (List pcsList, int count, int dmg, String info="Select to deal damage"){
     def a=LUtils.selectMultiPokemon(bg().ownClient(), pcsList, info, count)
@@ -340,6 +399,9 @@ class TcgStatics {
   }
   static noWeaknessDamage (int dmg, PokemonCardSet to){
     new ResolvedDamage(hp(dmg), my.active, to, Source.ATTACK, DamageManager.DamageFlag.NO_WEAKNESS).run(bg)
+  }
+  static noResistanceDamage (int dmg, PokemonCardSet to) {
+    new ResolvedDamage(hp(dmg), my.active, to, Source.ATTACK, DamageManager.DamageFlag.NO_RESISTANCE).run(bg)
   }
   static noResistanceOrAnyEffectDamage(int dmg, PokemonCardSet to){
     new ResolvedDamage(hp(dmg), my.active, to, Source.ATTACK, DamageManager.DamageFlag.NO_RESISTANCE, DamageManager.DamageFlag.NO_DEFENDING_EFFECT).run(bg)
@@ -388,7 +450,10 @@ class TcgStatics {
     }
   }
   static energySwitch (PokemonCardSet from, PokemonCardSet to, Card card){
-    bg().em().run(new EnergySwitch(from,to,card))
+    energySwitch(from, to, card, false)
+  }
+  static energySwitch (PokemonCardSet from, PokemonCardSet to, Card card, Boolean suppressLog){
+    bg().em().run(new EnergySwitch(from,to,card, suppressLog))
   }
   static int MAX=Short.MAX_VALUE
   static cantUseAttack(Move move, PokemonCardSet t, int turns=3){
@@ -425,8 +490,8 @@ class TcgStatics {
   static healAll(PokemonCardSet target, Source source=Source.ATTACK){
     bg().em().run(new RemoveDamageCounter(target,source,target.damage))
   }
-  static reduceDamageNextTurn (HP reduce, Move thisMove){
-    new ReduceDamageNextTurn(reduce, thisMove.name).run(bg())
+  static reduceDamageNextTurn (HP reduce, Move thisMove, boolean either=false, boolean beforeWR=false){
+    new ReduceDamageNextTurn(reduce, thisMove.name).setEither(either).setBeforeWR(beforeWR).run(bg())
   }
   static reduceDamageFromDefendingNextTurn (HP reduce, Move thisMove, PokemonCardSet defending){
     afterDamage { targeted (defending) {
@@ -473,7 +538,7 @@ class TcgStatics {
         bg.game.endGame(opp.owner, WinCondition.NOPOKEMON)
         return
       }
-      sw ( null, my.bench.select("New active pokemon"))
+      sw ( null, my.bench.select("New active Pokémon."))
       //my.bench.remove(pcs)
     }
     else if (my.bench.contains(pcs)){
@@ -489,7 +554,7 @@ class TcgStatics {
         bg.game.endGame(my.owner, WinCondition.NOPOKEMON)
         return
       }
-      sw ( null, opp.bench.oppSelect("New active pokemon"))
+      sw ( null, opp.bench.oppSelect("New active Pokémon."))
       //opp.bench.remove(pcs)
     }
     else if (opp.bench.contains(pcs)){
@@ -700,6 +765,19 @@ class TcgStatics {
       }
     }
   }
+  static reducedDamageFromAttacksAbility(PokemonCardSet self, int amount, Object abilityDelegate) {
+    // TODO: Add additional params for similar abilities if it makes sense to
+    abilityDelegate.delayedA {
+      before APPLY_ATTACK_DAMAGES, {
+        bg.dm().each {
+          if (it.to == self && it.dmg.value && it.notNoEffect) {
+            bc "$abilityDelegate.name -$amount"
+            it.dmg -= hp(amount)
+          }
+        }
+      }
+    }
+  }
   static preventAllEffectsFromPokemonExNextTurn(Move thisMove, PokemonCardSet self){
     delayed {
       before null, self, Source.ATTACK, {
@@ -821,25 +899,19 @@ class TcgStatics {
       }
     } } }
   }
-  /**
-   * Attaches a tool to a pcs. Callers MUST remove card manually from source, else it will be duplicated. Vastly taken from {@link tcgwars.logic.effect.gm.PlayPokemonTool}
-   */
   static attachPokemonTool (PokemonToolCard card, PokemonCardSet pcs) {
-    // attach to selected pokemon
-    pcs.cards().add(card);
-    //play
-    card.play(bg, pcs);
-    //register for remove from play
-    delayed {
-      after REMOVE_FROM_PLAY, pcs, null, {
-        if(LUtils.isRemoveFromPlayAndContainsCard(e, card)){
-          card.removeFromPlay(bg, pcs)
-          unregister()
-        }
-      }
-    }
+    new AttachPokemonTool(pcs, card, OTHER).run(bg)
     bc("$card is attached to $pcs")
     bg.gm().woosh();
+  }
+  static boolean canAttachPokemonTool (PokemonCardSet pcs) {
+    int tool_limit = 1;
+    if (bg.em().retrieveObject("SIGILYPH_41_Toolbox" + pcs.hashCode()) != null) {
+        tool_limit = 4;
+    } else if (bg.em().retrieveObject("OMEGA_DOUBLE_" + pcs.hashCode()) != null) {
+        tool_limit = 2;
+    }
+    return pcs.cards.filterByType(POKEMON_TOOL).size() < tool_limit
   }
   static boolean checkGlobalAbility (Card thisCard) {
     return !bg.em().get(new IsGlobalAbilityBlocked(thisCard));
@@ -963,6 +1035,61 @@ class TcgStatics {
     }
   }
 
+  static holon_pokemon_energy(Object delegate, Integer energyCount, Boolean colorless=false) {
+    delegate.globalAbility { Card thisCard->
+      delayed {
+          before PLAY_CARD, {
+            //If the user chooses Pokémon, play the card normally
+            if (ef.cardToPlay == thisCard && choose([1,2], ["Pokémon", "Energy"], "Play this card as a Pokémon or as an energy?") == 2) {
+              def energyEquivalent = []
+              def typeImages = []
+              def energyImage = (colorless) ? COLORLESS : RAINBOW
+              def energyTypes = (colorless) ? [C] : valuesBasicEnergy()
+
+              energyCount.times {
+                energyEquivalent.add(energyTypes)
+                typeImages.add(energyImage)
+              }
+
+              def energyCard
+              energyCard = specialEnergy(new CustomCardInfo(thisCard.staticInfo).setCardTypes(ENERGY, SPECIAL_ENERGY), energyEquivalent) {
+                typeImagesOverride = typeImages
+                onPlay {}
+                onRemoveFromPlay {
+                  bg.em().run(new ChangeImplementation(thisCard, energyCard))
+                }
+                allowAttach { to ->
+                  if (energyCount > 1 && !colorless) {
+                    to.cards.energyCount()
+                  } else {
+                    to
+                  }
+                }
+              }
+              energyCard.player = thisCard.player
+
+              bg.em().run(new ChangeImplementation(energyCard, thisCard))
+              def playEnergy = new PlayEnergy(energyCard)
+              bg.em().run(playEnergy)
+              def cannotPlayEnergy = !playEnergy.attached
+              if (cannotPlayEnergy) {
+                bg.em().run(new ChangeImplementation(thisCard, energyCard))
+              } else {
+                if (energyCount > 1 && !colorless) {
+                  // Select an energy before attachment so that thisCard doesn't show up as an option
+                  def returningEnergy = playEnergy.attached.cards.getExcludedList(energyCard).select cardTypeFilter(ENERGY)
+                  returningEnergy.moveTo(thisCard.player.pbg.hand)
+                }
+
+                bc "$energyCard is now a Special Energy Card"
+              }
+              prevent()
+            }
+          }
+        }
+    }
+  }
+
   static duringYourOpponentsNextTurnThisPokemonHasNoWeakness(PokemonCardSet self) {
     delayed {
       def eff=null
@@ -999,7 +1126,7 @@ class TcgStatics {
 
   static void astonish(int count=1){
     if(checkBodyguard() || !opp.hand) return
-    def sel = opp.hand.shuffledCopy().select(hidden: true, count: count, "Choose ${count==1?'a':count} random ${count==1?'card':'cards'} from your opponent's hand to be shuffled into his or her deck").showToMe("Selected card(s)").showToOpponent("Astonish: these cards will be shuffled from your hand to your deck")
+    def sel = opp.hand.shuffledCopy().select(hidden: true, count: count, "Choose ${count==1?'a':count} random ${count==1?'card':'cards'} from your opponent's hand to be shuffled into his or her deck").showToMe("Selected card(s)").showToOpponent("These cards will be shuffled from your hand to your deck")
     sel.moveTo(opp.deck)
     shuffleDeck(null, TargetPlayer.OPPONENT)
 //		opp.hand.removeAll(sel)
@@ -1021,7 +1148,7 @@ class TcgStatics {
     Source src = params.source ? params.source : ATTACK
     def doit = {
       if(bench.notEmpty && my.active){
-        def pcs = bench.select("Switch your active pokemon", !may)
+        def pcs = bench.select("Switch your active Pokémon.", !may)
         if(pcs){
           sw my.active, pcs, src
         }
@@ -1173,7 +1300,7 @@ class TcgStatics {
    * @param params  Optional settings Map
    * @param params.count  Number of energy to attach. All must be attached. Overrides max and may.
    * @param params.max  Maximum number of energy that can be chosen to attach
-   * @param params.tostrOverride  Override for the
+   * @param params.tostr Override  Override for the
    * @param params.type The type of energy to attach
    * @param params.basic  Whether the energy should be a Basic energy card
    * @param params.may  Whether the player can fail the attachment (e.g. from Hand or Deck)
@@ -1422,13 +1549,13 @@ class TcgStatics {
       assert my.deck || opp.deck : "Both players' decks are empty"
     }
     delegate.onAttack {
-      def c = !opp.deck ? 1 : 2
+      def choice = !opp.deck ? 1 : 2
       if (my.deck && opp.deck){
-        c = choose([1,2],["Your deck", "Your opponent's deck"], "Rearrange the top $count cards of which player's deck?")
+        choice = choose([1,2],["Your deck", "Your opponent's deck"], "Rearrange the top $count cards of which player's deck?")
       }
 
       def chosenDeck, playerString, bcString
-      if (c == 1) {
+      if (choice == 1) {
         chosenDeck = my.deck
         playerString = "your"
         bcString = "owner's"
@@ -1470,6 +1597,12 @@ class TcgStatics {
     } */
   }
 
+  /**
+   * Allows you to place damage counters without triggering knockouts. No longer needed for attacks, but still needed for abilities.
+   * @param counters The number of damage counters to place
+   * @param selectArea A PcsList of targets to choose from - Can be for either side of the field regardless of method name
+   * @param src The Source of the damage counters
+   */
   static putDamageCountersOnOpponentsPokemon(int counters, def selectArea = opp.all, def src = Source.ATTACK){
     if (selectArea.notEmpty) {
       def eff = delayed {
@@ -1574,6 +1707,11 @@ class TcgStatics {
       return false
     }
     return !targeted(target, source) {
+      def eff = delayed {
+        before KNOCKOUT, {
+          prevent()
+        }
+      }
       CardList toHand
       if(params.only) {
         if (params.only instanceof Card) toHand = new CardList(params.only)
@@ -1588,18 +1726,255 @@ class TcgStatics {
 
       bc "Scooped up ${toHand}"
 
-      CardList toHand2 = toHand.filterByType(POKEMON)
-      target.owner.pbg.hand.addAll(toHand2)
-      // FIXME: Remove duplicate Pokemon cards from discard if called after a knockout
-      // See: Breakpoint SPLASH_ENERGY_113, DragonsExalted RESCUE_SCARF_115, Triumphant RESCUE_ENERGY_90
-      target.owner.pbg.discard.removeAll(toHand2)
-      toHand.getExcludedList(toHand2).moveTo(target.owner.pbg.hand)
+      // Only add true POKEMON cards to hand, let moveTo handle removing changed implementations from play
+      CardList toHand2 = toHand.filterByType(POKEMON).findAll { it.staticInfo.cardTypes.contains(POKEMON) }
 
-      CardList toDiscard2 = toDiscard.filterByType(POKEMON)
+      // Special handling for knocked out Pokémon
+      if (target.slatedToKO) {
+        toHand2.moveTo(target.owner.pbg.hand)
+        // Move any cards that changed implementation from POKEMON when removed from play to hand as well
+        CardList toCleanup = []
+        toHand.getExcludedList(toHand2).each { pcsCard -> toCleanup.add(target.owner.pbg.discard.find { it.staticInfo == pcsCard.staticInfo })}
+        toCleanup.moveTo(target.owner.pbg.hand)
+      }
+      else {
+        target.owner.pbg.hand.addAll(toHand2)
+        toHand.getExcludedList(toHand2).moveTo(target.owner.pbg.hand)
+      }
+
+      CardList toDiscard2 = toDiscard.filterByType(POKEMON).findAll { it.staticInfo.cardTypes.contains(POKEMON) }
       target.owner.pbg.discard.addAll(toDiscard2)
       toDiscard.getExcludedList(toDiscard2).discard()
       removePCS(target)
+      eff.unregister()
     }
+  }
+
+  /**
+   * Do additional damage per Energy card discarded from owner's PokemonCardSets
+   * @param damagePerCard Integer damage amount to add per card discarded
+   * @return
+   */
+  static additionalDamageByDiscardingCardTypeFromPokemon(int baseDamage = 0, int damagePerCard, CardType cardType) {
+    def additionalDamage = 0
+    def pcsMsgOverride = baseDamage ? "Base Damage: $baseDamage + $additionalDamage." : "Base Damage: $additionalDamage."
+    def params = [
+      pcsMsg : pcsMsgOverride,
+    ]
+    def updateDamageAmount = { CardList list ->
+      additionalDamage = damagePerCard * list.size()
+      params.pcsMsg = "$cardType cards already marked for discard: ${list.size()}\n"
+      params.pcsMsg += baseDamage ? "Base Damage: $baseDamage + $additionalDamage." : "Base Damage: $additionalDamage."
+    }
+    CardList toDiscard = selectCardTypeFromPokemon params, cardType, updateDamageAmount
+    afterDamage { toDiscard.discard() }
+    damage baseDamage + additionalDamage
+  }
+
+  /**
+   * Select any number of a CardType from any of your Pokémon
+   * @param params Optional settings map
+   * @param params.cardType CardType to select
+   * @param params.pcsMsg Override message for selecting the PokemonCardSet
+   * @param params.cardMsg Override message for selecting the card
+   * @param params.type Type of Energy to allow for selection
+   * @param params.exclude PcsList of Pokémon to exclude from selection
+   *
+   * @param c Closure passed the list of energies after selecting them from a Pokémon. Use for additional processing.
+   */
+  static CardList selectCardTypeFromPokemon(params=[:], CardType cardType, Closure c = {}) {
+    if (cardType == ENERGY && params.type && !(params.type instanceof Type)) throw new IllegalArgumentException("selectCardTypeFromPokemon() params.type=${params.type} type not supported")
+    Type eType = params.type ? params.type as Type : null
+
+    PcsList excludedPcs = []
+    if (params.exclude && params.exclude instanceof PokemonCardSet) excludedPcs.add(params.exclude)
+    else if (params.exclude && !(params.exclude instanceof PcsList)) throw new IllegalArgumentException("selectCardTypeFromPokemon() params.exclude=${params.exclude} type not supported")
+
+    CardList energies = []
+    def pcsSelectMessage = (params.pcsMsg ? params.pcsMsg as String : "Choose the Pokémon to select an $cardType from. Current count: ${energies.size()}") + " Cancel to choose none."
+    def cardSelectMessage = (params.cardMsg ? params.cardMsg as String : "Choose the $cardType cards to discard.") + " Select 0 to return to the Pokémon list"
+    Map<PokemonCardSet, CardList> workMap = [:]
+    for (PokemonCardSet pcs : my.all) {
+      if (excludedPcs.contains(pcs)) continue
+      if (pcs.cards.filterByType(cardType)) {
+        if (cardType == ENERGY && params.type) {
+          workMap.put(pcs, pcs.cards.filterByType(ENERGY).filterByEnergyType(eType))
+        }
+        else {
+          workMap.put(pcs, pcs.cards.filterByType(cardType));
+        }
+      }
+    }
+    PcsList mapTar = workMap.keySet().findAll { workMap.get(it).notEmpty() }
+    while (mapTar) {
+      PokemonCardSet tar = mapTar.select(pcsSelectMessage, false)
+      if (!tar) break
+      def tarCards = workMap.get(tar).select(min:0,max : tar.cards.filterByType(cardType).size(), cardSelectMessage)
+      if (!tarCards) continue
+      energies.addAll(tarCards)
+      workMap.get(tar).removeAll(tarCards)
+
+      // Update values
+      c(energies)
+      pcsSelectMessage = (params.pcsMsg ? params.pcsMsg as String : "Choose the Pokémon to select an $cardType from. Current count: ${energies.size()}") + " Cancel to choose none."
+      cardSelectMessage = (params.cardMsg ? params.cardMsg as String : "Choose the $cardType cards to discard.") + " Select none to return to the Pokémon list"
+      mapTar = workMap.keySet().findAll { workMap.get(it).notEmpty() }
+    }
+    return energies
+  }
+
+  /**
+   * Copies an attack from another PokemonCardSet as a Subattack
+   * @param params Optional settings map
+   * @param params.keepEnergyRequirement Should the move retain the original energy cost
+   * @param params.unblockEndTurn Should blocking between turns be disabled (set to true for Abilities. Do not set to true for Attacks)
+   * @param target A PokemonCardSet or PcsList to choose a move from
+   * @param delegate onAttack delegate
+   */
+  static metronome(params = [:], target, delegate) {
+    if (target instanceof PokemonCardSet) {
+      target = new PcsList(target)
+    }
+    def moveList = []
+    def labelList = []
+    target.each {pcs ->
+      if (pcs == delegate.self) return
+      def newMoves = []
+      newMoves.addAll bg.em().activateGetter(new GetMoveList(pcs))
+      newMoves.removeAll newMoves.findAll { it.name == delegate.thisMove.name }
+      moveList.addAll newMoves
+      labelList.addAll newMoves.collect {"$pcs.name - $it.name" }
+    }
+    moveList.add "Skip"
+    labelList.add "End Turn (Skip)"
+    def choice = choose moveList, labelList, "Choose an attack to use as this attack."
+    if (choice instanceof String) return
+    Move move = (choice as Move).shallowCopy()
+    bc "$delegate.self copied $move.name"
+    if (!params.keepEnergyRequirement) move.energyCost = delegate.thisMove.energyCost
+    // TODO: Why can't we just skip BetweenTurns if it is a sub attack?
+    def bef = null
+    if (!params.unblockEndTurn)
+      bef = blockingEffect(BETWEEN_TURNS)
+    attack(move)
+    bef?.unregisterItself bg.em()
+  }
+
+  /**
+   * Copies an attack from another PokemonCardSet as an Ability Attack
+   * @param params Optional map of parameters
+   * @param params checkSpecialConditions Check for any Special Conditions before adding moves
+   * @param params checkClassicSpecialConditions Check for any Pokemon Power Special Conditions before adding moves
+   * @param delegate onAttack delegate
+   * @param target A Closure with a call to return the current targets (ex: { all() } or { bench() }
+   */
+  static metronomeA(params=[:], Object delegate, Closure target) {
+    delegate.getterA GET_MOVE_LIST, delegate.self, {holder->
+      if (params.checkSpecialConditions && !(delegate.self as PokemonCardSet).noSPC()) return
+      if (params.checkClassicSpecialConditions && !(delegate.self as PokemonCardSet).checkSpecialConditionsForClassic()) return
+      if (!holder.effect.target.active) return
+      def moves = [] as Set
+      moves.addAll holder.object
+      def resp = target.call()
+      def fun = {
+        if (!it) return
+        if (it == holder.effect.target) return
+        if (it instanceof PokemonCard) {
+          moves.addAll it.moves
+        }
+        if (it instanceof PokemonCardSet) {
+          moves.addAll bg.em().activateGetter(new GetMoveList(it))
+        }
+      }
+      if (resp instanceof Iterable) {
+        resp.each(fun)
+      } else {
+        fun(resp)
+      }
+      holder.object = moves as List
+    }
+  }
+
+  /* Effects that trigger when a Pokémon is active and damaged by an opposing attack, can be called by either a Poké-Body / Ability, an attack, or a card attached to the Pokémon. */
+
+  // poke bodies and abilities
+  static ifActiveAndDamagedByAttackBody (Object delegate1, Closure eff) {
+    def c1 = {
+      delayedA(priority: BEFORE_LAST, inline: true) {
+        def applyEffect = false
+        before APPLY_ATTACK_DAMAGES, {
+          applyEffect = bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({ it.to == self && it.dmg.value })
+        }
+        after APPLY_ATTACK_DAMAGES, {
+          if (applyEffect) {
+            eff.delegate=delegate
+            eff.call()
+            applyEffect = false
+          }
+        }
+      }
+    }
+    c1.resolveStrategy=Closure.DELEGATE_FIRST
+    c1.delegate=delegate1
+    c1.call()
+  }
+
+  // tools and special energy
+  static ifActiveAndDamagedByAttackAttached (Object delegate1, Closure c2) {
+    def c1 = {
+      def eff
+      onPlay {reason->
+        eff = delayed(priority: BEFORE_LAST, inline: true) {
+          def applyEffect = false
+          before APPLY_ATTACK_DAMAGES, {
+            bg().dm().each {
+              if (it.to == self && it.dmg.value && bg.currentTurn == self.owner.opposite && self.active) {
+                applyEffect = true
+              }
+            }
+          }
+          after APPLY_ATTACK_DAMAGES, {
+            if (applyEffect && self.cards.contains(thisCard)) {
+              c2.delegate=delegate
+              c2.call() // card didn't get discarded by an attack effect
+              applyEffect = false
+            }
+          }
+        }
+      }
+      onRemoveFromPlay {
+        eff.unregister()
+      }
+    }
+    c1.resolveStrategy=Closure.DELEGATE_FIRST
+    c1.delegate=delegate1
+    c1.call()
+  }
+
+  // attacks that put the effect on itself for one turn
+  static ifDamagedByAttackNextTurn (Object delegate1, Closure eff) {
+    def c1 = {
+      delayed(priority: BEFORE_LAST, inline: true) {
+        def applyEffect = false
+        before APPLY_ATTACK_DAMAGES, {
+          applyEffect = bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})
+        }
+        after APPLY_ATTACK_DAMAGES, {
+          if (applyEffect && ef.attacker.inPlay) {
+            eff.delegate=delegate
+            eff.call()
+            applyEffect = false
+          }
+        }
+        unregisterAfter 2
+        after FALL_BACK, self, {unregister()}
+        after EVOLVE, self, {unregister()}
+        after DEVOLVE, self, {unregister()}
+      }
+    }
+    c1.resolveStrategy=Closure.DELEGATE_FIRST
+    c1.delegate=delegate1
+    c1.call()
   }
 
 }

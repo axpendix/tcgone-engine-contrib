@@ -263,7 +263,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               assert self.active : "Dark Crobat is not your active"
               checkLastTurn()
               powerUsed()
-              apply POISONED, self.owner.opposite.pbg.active
+              apply POISONED, self.owner.opposite.pbg.active, SRC_ABILITY
             }
           }
           move "Dark Drain", {
@@ -628,7 +628,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               assert my.all.size()>=2
 
               powerUsed()
-              def src=my.all.findAll {it.cards.energyCount(D)>0}.select("Source for [G]")
+              def src=my.all.findAll {it.cards.energyCount(D)>0}.select("Source for [D]")
               def card=src.cards.filterByEnergyType(D).select("Card to move").first()
               def tar=my.all
               tar.remove(src)
@@ -725,13 +725,9 @@ public enum TeamRocketReturns implements LogicCardInfo {
           weakness GRASS
           pokeBody "Poison Payback", {
             text "If Dark Sandslash is your Active Pokémon and is damaged by an opponent’s attack (even if Dark Sandslash is Knocked Out), the Attacking Pokémon is now Poisoned."
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if(self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                  bc "Poison Payback"
-                  apply POISONED, (ef.attacker as PokemonCardSet)
-                }
-              }
+            ifActiveAndDamagedByAttackBody(delegate) {
+              bc "Poison Payback"
+              apply POISONED, (ef.attacker as PokemonCardSet)
             }
           }
           move "Swift", {
@@ -963,21 +959,11 @@ public enum TeamRocketReturns implements LogicCardInfo {
           weakness LIGHTNING
           pokeBody "Spiny", {
             text "If Qwilfish is your Active Pokémon and is damaged by an opponent’s attack (even if Qwilfish is Knocked Out), flip a coin until you get tails. For each heads, put 1 damage counter on the Attacking Pokémon."
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if (self.active) {
-                  def pcs = self.owner.opposite.pbg.active
-                  def counterDmg = 0
-                  bg.dm().each{
-                    if(it.to == self && it.notNoEffect && it.dmg.value) {
-                      bc "Spiny"
-                      pcs = it.from
-                      flipUntilTails {counterDmg += 10}
-                    }
-                  }
-                  directDamage counterDmg, pcs
-                }
-              }
+            ifActiveAndDamagedByAttackBody(delegate) {
+              bc "Spiny"
+              def counterDmg = 0
+              flipUntilTails {counterDmg += 10}
+              directDamage(counterDmg, ef.attacker, Source.SRC_ABILITY)
             }
           }
           move "Stun Poison", {
@@ -1455,24 +1441,26 @@ public enum TeamRocketReturns implements LogicCardInfo {
         return basic (this, hp:HP070, type:DARKNESS, retreatCost:1) {
           weakness PSYCHIC
           move "Dark Aid", {
-            text "Search your discard pile for Pokémon Tool cards and Rocket’s Secret Machine cards. You may show either 1 Pokémon Tool card or Rocket’s Secret Machine card to your opponent and put it into your hand, or show a combination of 3 Pokémon Tool cards or Rocket’s Secret Machine cards to your opponent and shuffle them into your deck."
+            text "Search your discard pile for Pokémon Tool cards and Rocket’s Secret Machine cards. You may" +
+              "show either 1 Pokémon Tool card or Rocket’s Secret Machine card to your opponent and put it into your" +
+              "hand, or show a combination of 3 Pokémon Tool cards or Rocket’s Secret Machine cards to your opponent" +
+              "and shuffle them into your deck."
             energyCost C
             attackRequirement {
-              assert my.discard.filterByType(POKEMON_TOOL)
+              assert my.discard.filterByType(POKEMON_TOOL) || my.discard.filterByType(ROCKETS_SECRET_MACHINE): "No" +
+                "Pokémon Tool cards or Rocket's Secret Machine cards in your discard"
             }
             onAttack {
-              if(my.discard.filterByType(POKEMON_TOOL).size() < 3){
-                my.discard.filterByType(POKEMON_TOOL).select(count : 1,"Select 1 Pokémon Tool card or Rocket’s Secret Machine").showToOpponent("Selected card.").moveTo(my.hand)
-              }
-              else{
-                def choice = choose([0,1],["Select 1 card : put it in your hand","Select 3 cards : shuffle them in your deck"],"What do you want to do?")
-                if(choice){
-                  my.discard.filterByType(POKEMON_TOOL).select(count : 3,"Select a combination of 3 Pokémon Tool card and Rocket’s Secret Machine").showToOpponent("Selected cards.").moveTo(my.deck)
-                  shuffleDeck()
-                }
-                else{
-                  my.discard.filterByType(POKEMON_TOOL).select(count : 1,"Select 1 Pokémon Tool card or Rocket’s Secret Machine").showToOpponent("Selected card.").moveTo(my.hand)
-                }
+              def targets = my.discard.findAll { it.cardTypes.is(POKEMON_TOOL) || it.cardTypes.is(ROCKETS_SECRET_MACHINE) }
+              def choice = choose([1, 3], ["Select 1 card: put it in your hand", "Select 3 cards: shuffle them in your deck"], "What do you want to do?")
+              def info = choice == 1 ? "Select 1 Pokémon Tool or Rocket’s Secret Machine card" : "Select a combination of 3 Pokémon Tool and Rocket’s Secret Machine cards"
+              def tar = my.discard.select count: Math.min(choice as Integer, targets.size()), info, { targets.contains(it) }
+              tar.showToOpponent("Opponent's selected cards.")
+              if (choice == 1) {
+                tar.moveTo my.hand
+              } else {
+                tar.moveTo my.deck
+                shuffleDeck()
               }
             }
           }
@@ -1532,7 +1520,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             onAttack {
               damage 10
               flip {
-                applyAfterDamage choose([POISONED,ASLEEP,CONFUSED,BURNED,PARALYZED],"Choose 1 Special Condition to apply to the defending pokemon")
+                applyAfterDamage choose([POISONED,ASLEEP,CONFUSED,BURNED,PARALYZED],"Choose 1 Special Condition to apply to the defending Pokémon.")
               }
             }
           }
@@ -1552,16 +1540,18 @@ public enum TeamRocketReturns implements LogicCardInfo {
             text "Flip a coin. If heads, choose 1 of the Defending Pokémon’s attacks. Mini-Metronome copies that attack except for its Energy cost. (You must still do anything else required for that attack.) (No matter what type that Pokémon is, Togepi’s type is still [C].) Togepi performs that attack."
             energyCost C, C
             onAttack {
-              def moveList = []
-              def labelList = []
+              flip {
+                def moveList = []
+                def labelList = []
 
-              moveList.addAll(defending.topPokemonCard.moves);
-              labelList.addAll(defending.topPokemonCard.moves.collect{it.name})
+                moveList.addAll(defending.topPokemonCard.moves);
+                labelList.addAll(defending.topPokemonCard.moves.collect{it.name})
 
-              def move=choose(moveList, labelList, "Which move do you want to use")
-              def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
-              attack (move as Move)
-              bef.unregisterItself(bg().em())
+                def move=choose(moveList, labelList, "Which move do you want to use")
+                def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
+                attack (move as Move)
+                bef.unregisterItself(bg().em())
+              }
             }
           }
 
@@ -1721,7 +1711,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             energyCost C
             onAttack {
               flip {
-                applyAfterDamage choose([POISONED,ASLEEP,CONFUSED,BURNED,PARALYZED],"Choose 1 Special Condition to apply to the defending pokemon")
+                applyAfterDamage choose([POISONED,ASLEEP,CONFUSED,BURNED,PARALYZED],"Choose 1 Special Condition to apply to the defending Pokémon.")
               }
             }
           }
@@ -2283,11 +2273,11 @@ public enum TeamRocketReturns implements LogicCardInfo {
           onPlay {
             def choice = choose([0,1],["Select 1 card : put it in your hand","Select 3 cards : shuffle them in your deck"],"What do you want to do?")
             if(choice){
-              my.discard.filterByType(BASIC, EVOLUTION).select(count : 3,"Select a combination of 3 Basic Pokémon or Evolution cards.").showToOpponent("Opponent used Pokemon Retriever to shuffle these cards into their deck").moveTo(my.deck)
+              my.discard.filterByType(BASIC, EVOLUTION).select(count : 3,"Select a combination of 3 Basic Pokémon or Evolution cards.").showToOpponent("Opponent used Pokémon Retriever to shuffle these cards into their deck").moveTo(my.deck)
               shuffleDeck()
             }
             else{
-              my.discard.filterByType(BASIC, EVOLUTION).select(count : 1,"Select 1 Basic Pokémon or Evolution").showToOpponent("Opponent used Pokemon Retriever to put this card into their hand").moveTo(my.hand)
+              my.discard.filterByType(BASIC, EVOLUTION).select(count : 1,"Select 1 Basic Pokémon or Evolution").showToOpponent("Opponent used Pokémon Retriever to put this card into their hand").moveTo(my.hand)
             }
           }
           playRequirement{
@@ -2312,7 +2302,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
           }
           playRequirement{
             assert my.prizeCardSet.size() > opp.prizeCardSet.size() : "You need more Prize cards left than your opponent to use this card"
-            assert opp.bench : "Your opponent has no Benched Pokémon"
+            assert opp.bench : "Your opponent has no Benched Pokémon."
           }
         };
       case ROCKET_S_ADMIN__86:
@@ -2464,8 +2454,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
           // TODO: Request appropriate typeImageOverride be added
           onPlay {reason->
           }
-          onRemoveFromPlay {
-          }
           getEnergyTypesOverride {
             if (self) return [[D, M] as Set]
             else return [[] as Set]
@@ -2475,27 +2463,40 @@ public enum TeamRocketReturns implements LogicCardInfo {
         return specialEnergy (this, [[]]) {
           text "R Energy can be attached only to a Pokémon that have Dark or Rocket’s in its name. While in play, R Energy provides 2 [D] Energy. (Doesn’t count as a basic Energy card.) If the Pokémon R Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). When your turn ends, discard R Energy."
           def eff
+          def turnCount
           def check = {
-            if(!(it.name.contains("Dark ") || it.name.contains("Rocket's "))){discard thisCard}
+            if (!(it.name.contains("Dark ") || it.name.contains("Rocket's "))) {
+              targeted null, SRC_SPENERGY, {
+                discard thisCard
+              }
+            }
           }
-          onPlay {reason->
+          onPlay { reason ->
+            turnCount = bg.turnCount
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
-                if (ef.attacker == self) {
-                  bg.dm().each {
-                    if(it.to.active && it.notZero){
-                      bc "R Energy +10"
-                      it.dmg += hp(10)
+                targeted self, SRC_SPENERGY, {
+                  if (ef.attacker == self) {
+                    bg.dm().each {
+                      if (it.to.active && it.notZero) {
+                        bc "R Energy +10"
+                        it.dmg += hp(10)
+                      }
                     }
                   }
                 }
               }
               before BETWEEN_TURNS, {
-                discard thisCard
+                if (bg.turnCount == turnCount) {
+                  targeted null, SRC_SPENERGY, {
+                    discard thisCard
+                  }
+                }
               }
-              after EVOLVE, self, {check(self)}
-              after DEVOLVE, self, {check(self)}
-              after ATTACH_ENERGY, self, {check(self)}
+              after EVOLVE, self, { check(self) }
+              after DEVOLVE, self, { check(self) }
+              after ATTACH_ENERGY, self, { check(self) }
+              after CHECK_ABILITIES, { check(self) }
             }
           }
           onRemoveFromPlay {
@@ -2578,13 +2579,9 @@ public enum TeamRocketReturns implements LogicCardInfo {
           weakness PSYCHIC
           pokeBody "Strikes Back", {
             text "If Rocket’s Hitmonchan ex is your Active Pokémon and is damaged by an opponent’s attack (even if Rocket’s Hitmonchan ex is Knocked Out), put 2 damage counters on the Attacking Pokémon."
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if(self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                  bc "$self Strikes Back!"
-                  directDamage 20, (ef.attacker as PokemonCardSet)
-                }
-              }
+            ifActiveAndDamagedByAttackBody(delegate) {
+              bc "$self Strikes Back!"
+              directDamage 20, (ef.attacker as PokemonCardSet)
             }
           }
           move "Mach Punch", {

@@ -310,12 +310,16 @@ public class CardList extends ArrayList<Card> {
       min = count
       max = count
     }
+    CardList cards = this;
     boolean hidden = params.hidden ?: false
+    if (hidden && this.persistent && this.persistentName == "Hand") {
+      cards = this.shuffledCopy();
+    }
     if (playerType != TcgStatics.bg().currentThreadPlayerType) {
       TcgStatics.block()
     }
     def ret = TcgStatics.bg().getClient(playerType).selectCard(new CardSelectUIRequestBuilder()
-      .setMinMax(min, max).setInfo(info).setCards(this).setCustomCardFilter(filter as CardSelectUIRequestBuilder.CustomCardFilter).setCustomPassFilter(passFilter as CardSelectUIRequestBuilder.CustomPassFilter)
+      .setMinMax(min, max).setInfo(info).setCards(cards).setCustomCardFilter(filter as CardSelectUIRequestBuilder.CustomCardFilter).setCustomPassFilter(passFilter as CardSelectUIRequestBuilder.CustomPassFilter)
       .setShowAsHidden(hidden))
       .setType(CardListType.TEMPORARY)
     if (playerType != TcgStatics.bg().currentThreadPlayerType) {
@@ -441,6 +445,17 @@ public class CardList extends ArrayList<Card> {
     return this
   }
 
+  /**
+   * Move the contents of a CardList to another CardList
+   * @param params Optional map of parameters
+   * @param params.hidden Hide what the move contents are in the Game Log
+   * @param params.suppressLog Don't write to the Game Log at all about these cards moving.
+   * Should usually have a custom message written instead.
+   * @param params.addToTop Add the Cards to the front of the new CardList
+   * @param newLocation The new CardList to move all of the Cards in this CardList to
+   * @return The CardList the Cards were moved from. If the CardList is a persistent CardList in the PlayerBattleGround
+   * then the CardList should be empty. If it is a temporary CardList, it will still contain it's Cards.
+   */
   public CardList moveTo(params = [:], CardList newLocation) {
     MoveCard effect = new MoveCard(copyWithoutNulls(this), newLocation)
     if (params.hidden)
@@ -472,6 +487,12 @@ public class CardList extends ArrayList<Card> {
       filterByEnergyType(type).size();
   }
 
+  public int basicEnergyCardCount(Type type = Type.COLORLESS) {
+    return type == Type.COLORLESS ?
+      filterByType(CardType.BASIC_ENERGY).size() :
+      filterByEnergyType(type).size();
+  }
+
   public boolean energySufficient(Type... types) {
     return Battleground.getInstance().em().activateGetter(new EnergySufficientGetter(getAsEnergyCards(), types))
   }
@@ -487,7 +508,7 @@ public class CardList extends ArrayList<Card> {
   }
 
   public void shuffle() {
-    if (autosort) throw new IllegalStateException("Autosort is active");
+    if (autosort) throw new IllegalStateException("Autosort is active.");
     Collections.shuffle(this, Battleground.getInstance().rng);
   }
 

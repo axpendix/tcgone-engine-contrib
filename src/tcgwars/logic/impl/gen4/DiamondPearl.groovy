@@ -405,7 +405,7 @@ public enum DiamondPearl implements LogicCardInfo {
                   def card = list.select("Put a Basic Pokémon you find there onto your opponent's Bench").first()
                   def pcs = benchPCS(card, OTHER)
                   if (pcs) {
-                    sw opp.active, pcs, SRC_ABILITY
+                    sw opp.active, pcs, Source.POKEPOWER
                   }
                 }
               }
@@ -1033,7 +1033,7 @@ public enum DiamondPearl implements LogicCardInfo {
             text "Flip a coin until you get tails. Remove a number of damage counters equal to the number of heads from 1 of your Pokémon."
             energyCost C
             attackRequirement {
-              assert my.all.findAll { it.numberOfDamageCounters }: "No damaged Pokemon"
+              assert my.all.findAll { it.numberOfDamageCounters }: "No damaged Pokémon"
             }
             onAttack {
               def healAmount = 0
@@ -1993,7 +1993,7 @@ public enum DiamondPearl implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert self.benched : "$self is not on the Bench"
-              assert my.bench.notFull : "Your bench is full"
+              assert my.bench.notFull : "Your bench is full."
               powerUsed()
               flip {
                 deck.search (count: 1,{it.name.contains("Unown")}).each {
@@ -2289,7 +2289,7 @@ public enum DiamondPearl implements LogicCardInfo {
             text "Switch 1 of your opponent’s Benched Pokémon with 1 of the Defending Pokémon. The new Defending Pokémon is now Asleep."
             energyCost G
             attackRequirement {
-              assert opp.bench : "Your opponent has no Benched Pokémon"
+              assert opp.bench : "Your opponent has no Benched Pokémon."
             }
             onAttack {
               def target = opp.bench.select("Select the new Active Pokémon.")
@@ -2400,7 +2400,7 @@ public enum DiamondPearl implements LogicCardInfo {
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness L, PLUS10
           move "Horn Attack", {
-            text "10 damage. "
+            text "10 damage."
             energyCost C
             attackRequirement {}
             onAttack {
@@ -2444,7 +2444,7 @@ public enum DiamondPearl implements LogicCardInfo {
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:2) {
           weakness P, PLUS10
           move "Low Kick", {
-            text "20 damage. "
+            text "20 damage."
             energyCost F
             attackRequirement {}
             onAttack {
@@ -2577,7 +2577,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               if (opp.bench) {
-                multiSelect(opp.bench, 2).each{
+                multiSelect(opp.bench, 1, 2, text).each{
                   targeted(it){
                     damage 10, it
                   }
@@ -3103,11 +3103,10 @@ public enum DiamondPearl implements LogicCardInfo {
             actionA {
               checkNoSPC()
               checkLastTurn()
-              assert my.prizeCardSet.size() > opp.prizeCardSet.size() : "You need to have more Prize cards left than your opponent in order to use this Poké-Power"
+              assert my.prizeCardSet.size() > opp.prizeCardSet.size() : "You need to have more Prize cards left than your opponent in order to use this Poké-Power."
               assert opp.bench : "Your opponent has no benched Pokémon."
               powerUsed()
-              //TODO: Check against immunity to pokéPower.
-              switchYourOpponentsBenchedWithActive(SRC_ABILITY)
+              switchYourOpponentsBenchedWithActive(Source.POKEPOWER)
             }
           }
           move "Vigorous Dash", {

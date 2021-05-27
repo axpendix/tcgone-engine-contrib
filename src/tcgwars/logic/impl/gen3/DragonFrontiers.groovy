@@ -386,7 +386,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           onAttack {
             damage 60
 
-            if (my.hand.filterByType(POKEMON) && confirm("Discard Pokemon from Hand?")) {
+            if (my.hand.filterByType(POKEMON) && confirm("Discard Pokémon from Hand?")) {
               my.hand.filterByType(BASIC, EVOLUTION).select("Which card to discard?").discard()
               if (opp.bench) damage 20, opp.bench.select("Damage to?")
             }
@@ -403,7 +403,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             checkNoSPC()
             assert my.deck : "Deck is empty"
             powerUsed()
-            my.deck.search(max: 1, "Select a Pokemon card to put into your hand", {
+            my.deck.search(max: 1, "Select a Pokémon card to put into your hand", {
               it.cardTypes.is(POKEMON)
             }).showToOpponent("Your opponent used Invitation. They're moving this Pokémon card from their deck into their hand.").moveTo(my.hand)
             shuffleDeck()
@@ -472,7 +472,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             assert my.deck : "Deck is Empty"
           }
           onAttack {
-            deck.search("Search your deck for a δ Pokemon", {
+            deck.search("Search your deck for a δ Pokémon", {
               it.cardTypes.pokemon && it.cardTypes.is(DELTA)
             }).showToOpponent("Your opponent used Delta Call. They're moving this Pokémon card from their deck into their hand.").moveTo(my.hand)
             shuffleDeck()
@@ -490,7 +490,7 @@ public enum DragonFrontiers implements LogicCardInfo {
       return basic (this, hp:HP080, type:G, retreatCost:3) {
         weakness F
         pokePower "Dozing", {
-          text "Once during your turn (before your attack), if Snorlax is your Active Pokemon, you may remove 2 damage counters from Snorlax and Snorlax is now Asleep. This power can't be used if Snorlax is affected by a Special Condition"
+          text "Once during your turn (before your attack), if Snorlax is your Active Pokémon, you may remove 2 damage counters from Snorlax and Snorlax is now Asleep. This power can't be used if Snorlax is affected by a Special Condition"
           actionA {
             checkLastTurn()
             checkNoSPC()
@@ -520,7 +520,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "Choose an attack on 1 of your opponent's Pokémon in play that has δ on its card. Delta Copy copies that attack except for its Energy cost. (You must still do anything else required for that attack.) Togetic performs that attack."
           energyCost C, C
           attackRequirement {
-            assert opp.all.any{ it.topPokemonCard.cardTypes.is(DELTA) } : "Opponent has no Delta Pokemon"
+            assert opp.all.any{ it.topPokemonCard.cardTypes.is(DELTA) } : "Opponent has no Delta Pokémon"
           }
           onAttack {
             def card = opp.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) }.select("Source of move")
@@ -553,7 +553,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           actionA {
             checkNoSPC()
             checkLastTurn()
-            assert self.active : "This Pokemon is not the Active Pokemon"
+            assert self.active : "This Pokémon is not the Active Pokémon"
             assert all.any{it.numberOfDamageCounters} : "No Damage Counters in any Pokémon"
             powerUsed()
             def source = all.findAll{it.numberOfDamageCounters}.select("Source for damage counter")
@@ -978,7 +978,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           actionA {
             checkLastTurn()
             checkNoSPC()
-            assert self.evolution : "This Electabuzz is not an Evolved Pokemon"
+            assert self.evolution : "This Electabuzz is not an Evolved Pokémon"
             assert my.deck : "Deck is empty"
 
             powerUsed()
@@ -1864,7 +1864,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             checkLastTurn()
             checkNoSPC()
             assert my.hand.filterByType(BASIC_ENERGY) : "No Basic Energy in Hand"
-            assert my.all.any{ it.EX && it.stage2 } : "No Stage 2 Pokemon-ex in play"
+            assert my.all.any{ it.EX && it.stage2 } : "No Stage 2 Pokémon-ex in play"
             powerUsed()
             def tar = my.all.findAll{ it.EX && it.stage2 }.select()
             attachEnergyFrom(basic: true, my.hand, tar)
@@ -2255,9 +2255,9 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "80 damage. You may do 40 damage instead of 80 to the Defending Pokémon. If you do, this attack does 40 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W, W, C, C
           onAttack {
-            if (opp.bench && confirm("Deal 40 instead of 80 to Defending in order to do 40 damage to a Pokemon on the Opponent's bench?")) {
+            if (opp.bench && confirm("Deal 40 instead of 80 to Defending in order to do 40 damage to a Pokémon on the Opponent's bench?")) {
               damage 40
-              damage 40, opp.bench.select("Select a benched Pokemon to deal 40 damage to")
+              damage 40, opp.bench.select("Select a benched Pokémon to deal 40 damage to")
             } else {
               damage 80
             }
@@ -2411,7 +2411,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "Choose an attack on 1 of your opponent's Pokémon in play. Mimicry copies that attack. This attack does nothing if Mew Star doesn't have the Energy necessary to use that attack. (You must still do anything else required for that attack.) Mew Star performs that attack."
           energyCost C
           onAttack {
-            def tar = opp.all.select("Choose Pokemon to copy moves from")
+            def tar = opp.all.select("Choose Pokémon to copy moves from")
             if (tar.topPokemonCard.moves) {
               def moveOptions = tar.topPokemonCard.moves
               def move = choose(moveOptions + ["End Turn (Skip)"], "Choose 1 of the Pokémon's attacks.")
@@ -2428,10 +2428,10 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "Choose 1 basic Energy card attached to Mew Star. This attack does 20 damage to each of your opponent's Pokémon that is the same type as the basic Energy card that you chose. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W
           attackRequirement {
-            assert self.cards.filterByType(BASIC_ENERGY) : "This Pokemon has no Basic Energies."
+            assert self.cards.filterByType(BASIC_ENERGY) : "This Pokémon has no Basic Energies."
           }
           onAttack {
-            def energy = self.cards.filterByType(BASIC_ENERGY).select("Deal 20 damage to your opponent's Pokemon of the same type of the chosen Energy.")
+            def energy = self.cards.filterByType(BASIC_ENERGY).select("Deal 20 damage to your opponent's Pokémon of the same type of the chosen Energy.")
             def type = energy.basicType
             bc "Rainbow Wave - Chosen type is $type"
             def flag = false

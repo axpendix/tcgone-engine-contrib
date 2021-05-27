@@ -536,7 +536,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Search your deck for a [G] Energy card and attach it to 1 of your Pokémon. Then, shuffle your deck."
           energyCost C
           attackRequirement {
-            assert my.deck : "Your deck is empty"
+            assert my.deck : "Your deck is empty!"
           }
           onAttack {
             attachEnergyFrom type:G, my.deck, my.all
@@ -655,9 +655,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 220
-            afterDamage {
-              discardSelfEnergy C, C
-            }
+            discardSelfEnergyAfterDamage C, C
           }
         }
       };
@@ -678,9 +676,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 300
-            afterDamage {
-              discardSelfEnergy C, C
-            }
+            discardSelfEnergyAfterDamage C, C
           }
         }
       };
@@ -909,13 +905,9 @@ public enum DarknessAblaze implements LogicCardInfo {
         resistance F, MINUS30
         bwAbility "Scorching Feathers", {
           text "If this Pokémon is in the Active Spot and is damaged by an attack from your opponent’s Pokémon (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Burned."
-          delayedA {
-            before APPLY_ATTACK_DAMAGES, {
-              if (self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})) {
-                bc "$thisAbility activates"
-                apply BURNED, ef.attacker, SRC_ABILITY
-              }
-            }
+          ifActiveAndDamagedByAttackBody(delegate) {
+            bc "$thisAbility activates"
+            apply BURNED, ef.attacker, SRC_ABILITY
           }
         }
         move "Mach Flight", {
@@ -938,10 +930,8 @@ public enum DarknessAblaze implements LogicCardInfo {
           onAttack {
             damage 20
             if (self.cards.energyCount(C) && confirm("Discard an Energy from $self.name to discard an energy from $defending.name?")) {
-              afterDamage {
-                discardSelfEnergy C
-                discardDefendingEnergy()
-              }
+              discardSelfEnergyAfterDamage C
+              discardDefendingEnergyAfterDamage()
             }
           }
         }
@@ -999,7 +989,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Once during your turn, you may switch 1 of your opponent’s face-down Prize cards with the top card of their deck. (The cards stay face down.)"
           actionA {
             checkLastTurn()
-            assert opp.deck : "Your opponent's deck is empty"
+            assert opp.deck : "Your opponent's deck is empty!"
             assert opp.prizeCardSet.faceDownCards : "Your opponent has no face down Prize cards"
             powerUsed()
 
@@ -1024,7 +1014,6 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Wave Splash", {
           text "20 damage."
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1032,31 +1021,9 @@ public enum DarknessAblaze implements LogicCardInfo {
         move "Aurora Loop", {
           text "130 damage. Put 2 [W] Energy attached to this Pokémon into your hand."
           energyCost W, W, C
-          attackRequirement {}
           onAttack {
             damage 130
-            afterDamage {
-              // TODO: Make a static method to do this
-              if (self.cards.energyCount(W))
-                if (self.cards.energyCount(W) <= 2) {
-                  self.cards.filterByEnergyType(W).moveTo my.hand
-                } else {
-                  def targetCount = Math.min self.cards.energyCount(W), 2
-                  def finalCount = 0
-                  while (self.cards.energyCount(W) > 0 && finalCount < targetCount) {
-                    def info = "Select [W] Energy to return to your hand."
-                    def energy = self.cards.filterByType(ENERGY).select(info, energyFilter(W))
-                    def energyCount = 1
-                    if (energy.energyCount(W) > 1) {
-                      def choices = 1..energy.energyCount(W)
-                      def choiceInfo = "How many Energy do you want this card to count as?"
-                      energyCount = choose(choices, choiceInfo)
-                    }
-                    finalCount += energyCount
-                    energy.moveTo my.hand
-                  }
-                }
-            }
+            moveSelfEnergyAfterDamage my.hand, W, W
           }
         }
       };
@@ -1104,7 +1071,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Search your deck for up to 2 Rare Fossil cards and put them onto your Bench. Then, shuffle your deck."
           energyCost C
           attackRequirement {
-            assert my.deck : "Your deck is empty"
+            assert my.deck : "Your deck is empty!"
           }
           onAttack {
             def info = "Select up to 2 Rare Fossil cards to put on your bench."
@@ -1521,9 +1488,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 190
-            afterDamage {
-              discardSelfEnergy C, C
-            }
+            discardSelfEnergyAfterDamage C, C
           }
         }
       };
@@ -1534,7 +1499,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Draw 2 cards."
           energyCost C
           attackRequirement {
-            assert my.deck : "Your deck is empty"
+            assert my.deck : "Your deck is empty!"
           }
           onAttack {
             draw 2
@@ -1996,7 +1961,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "You must discard a Pokémon that has the Mad Party attack from your hand in order to use this Ability. Once during your turn, you may draw 2 cards."
           actionA {
             assert my.hand.any{ it.cardTypes.is(POKEMON) && it.moves.any{it.name=="Mad Party"} } : "You have no Pokémon with Mad Party in your hand"
-            assert my.deck : "Your deck is empty"
+            assert my.deck : "Your deck is empty!"
             checkLastTurn()
             powerUsed()
             my.hand.findAll{ it.cardTypes.is(POKEMON) && it.moves.any{it.name=="Mad Party"} }.select("Choose a Pokémon with Mad Party to discard").discard()
@@ -2170,7 +2135,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-        move "Desert Geizer", {
+        move "Desert Geyser", {
           text "130 damage. If your opponent has a Stadium in play, discard it. If you discarded a Stadium in this way, during your opponent’s next turn, prevent all damage from and effects of attacks done to this Pokémon."
           energyCost F, C, C
           attackRequirement {}
@@ -2259,9 +2224,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 80
-            afterDamage {
-              discardDefendingEnergy()
-            }
+            discardDefendingEnergyAfterDamage()
           }
         }
         move "Heavy Rock Artillery", {
@@ -2343,7 +2306,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Discard the top card of your opponent’s deck."
           energyCost D
           attackRequirement {
-            assert opp.deck : "Your opponent's deck is empty"
+            assert opp.deck : "Your opponent's deck is empty!"
           }
           onAttack {
             if (opp.deck) {
@@ -2623,7 +2586,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
           energyCost D
           attackRequirement {
-            assert my.deck : "Your deck is empty"
+            assert my.deck : "Your deck is empty!"
           }
           onAttack {
             if (my.deck) {
@@ -2658,28 +2621,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 200
-            afterDamage {
-              // TODO: Make a static method to do this
-              if (self.cards.energyCount(D))
-                if (self.cards.energyCount(D) <= 2) {
-                  self.cards.filterByEnergyType(D).moveTo my.hand
-                } else {
-                  def targetCount = Math.min self.cards.energyCount(D), 2
-                  def finalCount = 0
-                  while (self.cards.energyCount(D) > 0 && finalCount < targetCount) {
-                    def info = "Select [D] Energy to return to your hand."
-                    def energy = self.cards.filterByType(ENERGY).select(info, energyFilter(D))
-                    def energyCount = 1
-                    if (energy.energyCount(D) > 1) {
-                      def choices = 1..energy.energyCount(D)
-                      def choiceInfo = "How many Energy do you want this card to count as?"
-                      energyCount = choose(choices, choiceInfo)
-                    }
-                    finalCount += energyCount
-                    energy.moveTo my.hand
-                  }
-                }
-            }
+            moveSelfEnergyAfterDamage my.hand, D, D
           }
         }
       };
@@ -2809,31 +2751,31 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
             before PLAY_BASIC_POKEMON, {
               if (!isPokemonPlayable(ef)) {
-                wcu "Cannot play non-Darkness Pokemon"
+                wcu "Cannot play non-Darkness Pokémon"
                 prevent()
               }
             }
             before PLAY_EVOLUTION, {
               if (!isPokemonPlayable(ef)) {
-                wcu "Cannot play non-Darkness Pokemon"
+                wcu "Cannot play non-Darkness Pokémon"
                 prevent()
               }
             }
             before EVOLVE_STANDARD, {
               if (bg.em().retrieveObject("Infinity_Zone_" + self.hashCode()) && ef.evolutionCard.player == self.owner && !ef.evolutionCard.types.contains(D)) {
-                wcu "Cannot play non-Darkness Pokemon"
+                wcu "Cannot play non-Darkness Pokémon"
                 prevent()
               }
             }
             before EVOLVE, {
               if (bg.em().retrieveObject("Infinity_Zone_" + self.hashCode()) && ef.evolutionCard.player == self.owner  && !ef.evolutionCard.types.contains(D)) {
-                wcu "Cannot play non-Darkness Pokemon"
+                wcu "Cannot play non-Darkness Pokémon"
                 prevent()
               }
             }
             before PUT_ON_BENCH, {
               if (!isPokemonPlayable(ef)) {
-                wcu "Cannot play non-Darkness Pokemon"
+                wcu "Cannot play non-Darkness Pokémon"
                 prevent()
               }
             }
@@ -3102,17 +3044,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
-            delayed (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                  bc "Trap Bite activates"
-                  directDamage(120, ef.attacker as PokemonCardSet)
-                }
-              }
-              unregisterAfter 2
-              after FALL_BACK, self, {unregister()}
-              after EVOLVE, self, {unregister()}
-              after DEVOLVE, self, {unregister()}
+            ifDamagedByAttackNextTurn(delegate) {
+              bc "Trap Bite activates"
+              directDamage(120, ef.attacker as PokemonCardSet)
             }
           }
         }
@@ -3459,7 +3393,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-        move "Sharp Eyes", {
+        move "Keen Eyes", {
           text "Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
           energyCost C, C
           attackRequirement {
@@ -3957,9 +3891,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           shuffleDeck()
         }
         playRequirement{
-          assert my.deck : "Your deck is empty."
+          assert my.deck : "Your deck is empty!."
           assert bg.turnCount > 2 : "Cannot use this card during your first turn."
-          assert my.all.any{bg().gm().hasEvolution(it.name)} : "No Pokemon with evolutions in play"
+          assert my.all.any{bg().gm().hasEvolution(it.name)} : "No Pokémon with evolutions in play"
           assert my.all.any{it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount && bg().gm().hasEvolution(it.name)} : "Cannot use this on Pokémon put into play this turn"
         }
       };
@@ -4132,7 +4066,9 @@ public enum DarknessAblaze implements LogicCardInfo {
         def getterRegister = {
           eff1 = getter (GET_FULL_HP, self) {h->
             if (self.types.contains(R)) {
-              h.object += hp(20)
+              targeted self, SRC_SPENERGY, {
+                h.object += hp(20)
+              }
             }
           }
         }
@@ -4161,7 +4097,9 @@ public enum DarknessAblaze implements LogicCardInfo {
         onPlay { reason->
           eff = getter (GET_RETREAT_COST, BEFORE_LAST, self) {h->
             if (self.types.contains(D)) {
-              h.object = 0
+              targeted self, SRC_SPENERGY, {
+                h.object = 0
+              }
             }
           }
         }
@@ -4180,10 +4118,12 @@ public enum DarknessAblaze implements LogicCardInfo {
         onPlay { reason->
           eff = delayed {
             after PROCESS_ATTACK_EFFECTS, {
-              bg.dm().each{
-                if(it.from == self && it.to.active && it.to.owner != self.owner && self.types.contains(C) && it.dmg.value) {
-                  bc "Powerful [C] Energy +20"
-                  it.dmg += hp(20)
+              targeted self, SRC_SPENERGY, {
+                bg.dm().each {
+                  if (it.from == self && it.to.active && it.to.owner != self.owner && self.types.contains(C) && it.dmg.value) {
+                    bc "Powerful [C] Energy +20"
+                    it.dmg += hp(20)
+                  }
                 }
               }
             }

@@ -1,4 +1,6 @@
-package tcgwars.logic.impl.gen3;
+package tcgwars.logic.impl.gen3
+
+import tcgwars.logic.effect.ability.custom.Safeguard;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -191,26 +193,9 @@ public enum Deoxys implements LogicCardInfo {
         return evolution (this, from:"Swablu", hp:HP070, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
           resistance FIGHTING, MINUS30
-          pokeBody "Safeguard", {
-            text "Prevent all effects of attacks, including damage, done to Altaria by your opponent’s Pokémon-ex."
-            //TODO: Change static safeguard so it's configurable.
-            delayedA {
-              before null, self, Source.ATTACK, {
-                if (self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
-                  bc "Safeguard prevents effect"
-                  prevent()
-                }
-              }
-              before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if(it.to == self && it.notNoEffect && it.from.EX ) {
-                    it.dmg = hp(0)
-                    bc "Safeguard prevents damage"
-                  }
-                }
-              }
-            }
-          }
+
+          // TODO: Replace with a static for Pokémon-ex and/or change static safeguard so it's configurable.
+          thisCard.addAbility new Safeguard("Prevent all effects of attacks, including damage, done to Altaria by your opponents Pokémon-ex.")
           move "Double Wing Attack", {
             text "Does 20 Damage to each Defending Pokémon."
             energyCost L
@@ -304,7 +289,7 @@ public enum Deoxys implements LogicCardInfo {
             text "Choose 2 of your opponent’s Pokémon. This attack does 30 damage to each of them. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost R, C, C
             onAttack {
-              multiSelect(opp.all, 2).each{ damage 30, it }
+              multiSelect(opp.all, 2, text).each{ damage 30, it }
             }
           }
 
@@ -921,7 +906,7 @@ public enum Deoxys implements LogicCardInfo {
             text "Choose 3 of your opponent’s Pokémon. This attack does 10 damage to each of those Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost W
             onAttack {
-              multiSelect(opp.all, 3).each{ damage 10, it }
+              multiSelect(opp.all, 3, text).each{ damage 10, it }
             }
           }
           move "Rend", {
@@ -942,7 +927,7 @@ public enum Deoxys implements LogicCardInfo {
             actionA {
               checkLastTurn()
               checkNoSPC()
-              assert opp.bench : "There is no benched Pokemon"
+              assert opp.bench : "There is no benched Pokémon"
               powerUsed()
 
               sw opp.active, opp.bench.oppSelect(), SRC_ABILITY
@@ -1002,7 +987,7 @@ public enum Deoxys implements LogicCardInfo {
             energyCost G
             onAttack {
               flip {
-                apply choose([POISONED,ASLEEP,CONFUSED,BURNED,PARALYZED],"Choose 1 Special Condition to apply to the defending pokemon")
+                apply choose([POISONED,ASLEEP,CONFUSED,BURNED,PARALYZED],"Choose 1 Special Condition to apply to the defending Pokémon.")
               }
             }
           }
@@ -1537,7 +1522,7 @@ public enum Deoxys implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if(it.to == self && self.cards.energyCount(P)) {
+                  if(it.to == self && self.cards.energyCount(P) && it.notNoEffect) {
                     bc "Core Guard -10"
                     it.dmg -= hp(10)
                   }
@@ -2309,7 +2294,7 @@ public enum Deoxys implements LogicCardInfo {
             energyCost G
             onAttack {
               flip {
-                apply choose([POISONED,ASLEEP,CONFUSED,BURNED,PARALYZED],"Choose 1 Special Condition to apply to the defending pokemon")
+                apply choose([POISONED,ASLEEP,CONFUSED,BURNED,PARALYZED],"Choose 1 Special Condition to apply to the defending Pokémon.")
               }
             }
           }
@@ -2338,25 +2323,7 @@ public enum Deoxys implements LogicCardInfo {
 
         };
       case BALLOON_BERRY_84:
-        return pokemonTool (this) {
-          text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nAs long as Balloon Berry is attached to a Pokémon, that Pokémon’s Retreat Cost is 0. When this Pokémon retreats, discard Balloon Berry."
-          def eff1
-          def eff2
-          onPlay {reason->
-            eff1=getter (GET_RETREAT_COST, BEFORE_LAST,self) {h->
-              h.object = 0
-            }
-            eff2 = delayed{
-              after RETREAT, self, {
-                discard thisCard
-              }
-            }
-          }
-          onRemoveFromPlay {
-            eff1.unregister()
-            eff2.unregister()
-          }
-        };
+        return copy(Dragon.BALLOON_BERRY_82, BALLOON_BERRY_84);
       case CRYSTAL_SHARD_85:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nAs long as this card is attached to a Pokémon, that Pokémon’s type is [C]. If that Pokémon attacks, discard this card at the end of the turn."
@@ -2502,22 +2469,34 @@ public enum Deoxys implements LogicCardInfo {
         return specialEnergy (this, [[C],[C],[C]]) {
           text "Boost Energy can be attached only to an Evolved Pokémon. Discard Boost Energy at the end of the turn it was attached. Boost Energy provides [C][C][C] Energy. The Pokémon Boost Energy is attached to can’t retreat. If the Pokémon Boost Energy is attached to isn’t an Evolved Pokémon, discard Boost Energy."
           def eff
+          def turnCount
           def check = {
-            if(!it.evolution){discard thisCard}
+            if (!it.evolution) {
+              targeted null, SRC_SPENERGY, {
+                discard thisCard
+              }
+            }
           }
-          onPlay {reason->
+          onPlay { reason ->
+            turnCount = bg.turnCount
             eff = delayed {
               before RETREAT, self, {
-                wcu "$self can't retreat due to having Boost Energy attached."
-                prevent()
+                targeted self, SRC_SPENERGY, {
+                  wcu "$self can't retreat due to having Boost Energy attached."
+                  prevent()
+                }
               }
               before BETWEEN_TURNS, {
-                discard thisCard
-                unregister()
+                if (turnCount == bg.turnCount) {
+                  targeted null, SRC_SPENERGY, {
+                    discard thisCard
+                  }
+                }
               }
-              after EVOLVE, self, {check(self)}
-              after DEVOLVE, self, {check(self)}
-              after ATTACH_ENERGY, self, {check(self)}
+              after EVOLVE, self, { check(self) }
+              after DEVOLVE, self, { check(self) }
+              after ATTACH_ENERGY, self, { check(self) }
+              after CHECK_ABILITIES, { check(self) }
             }
           }
           onRemoveFromPlay {
@@ -2533,10 +2512,10 @@ public enum Deoxys implements LogicCardInfo {
       case HEAL_ENERGY_94:
         return specialEnergy (this, [[C]]) {
           text "Heal Energy provides [C] Energy. When you attach this card from your hand to 1 of your Pokémon, remove 1 damage counter and all Special Conditions from that Pokémon. If heal Energy is attached to Pokémon-ex, Heal Energy has no effect other than providing Energy."
-          onPlay {reason->
-            if(!self.EX && reason == PLAY_FROM_HAND){
-              heal (10, self, SRC_SPENERGY)
-              clearSpecialCondition(self)
+          onPlay { reason ->
+            if (!self.EX && reason == PLAY_FROM_HAND) {
+              heal(10, self, SRC_SPENERGY)
+              clearSpecialCondition(self, SRC_SPENERGY)
             }
           }
           onRemoveFromPlay {
@@ -2547,13 +2526,18 @@ public enum Deoxys implements LogicCardInfo {
           text "Scramble Energy can be attached only to an Evolved Pokémon (excluding Pokémon-ex). Scramble Energy provides [C] Energy. While in play, if you have more prizes left than your opponent, Scramble Energy provides every type of Energy but provides only 3 in any combination at a time. If the Pokémon Scramble Energy is attached to isn’t an Evolved Pokémon (or evolves into Pokémon-ex), discard Scramble Energy."
           def eff
           def check = {
-            if(!it.evolution || it.EX){discard thisCard}
+            if (!it.evolution || it.EX) {
+              targeted null, SRC_SPENERGY, {
+                discard thisCard
+              }
+            }
           }
           onPlay {reason->
             eff = delayed {
-              after EVOLVE, self, {check(self)}
-              after DEVOLVE, self, {check(self)}
-              after ATTACH_ENERGY, self, {check(self)}
+              after EVOLVE, self, { check(self) }
+              after DEVOLVE, self, { check(self) }
+              after ATTACH_ENERGY, self, { check(self) }
+              after CHECK_ABILITIES, { check(self) }
             }
           }
           onRemoveFromPlay {
@@ -2567,7 +2551,7 @@ public enum Deoxys implements LogicCardInfo {
           }
           getEnergyTypesOverride{
             if(self && self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size()) {
-              return [[R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set]
+              return [valuesBasicEnergy() as Set, valuesBasicEnergy() as Set, valuesBasicEnergy() as Set]
             }
             else {
               return [[C] as Set]
