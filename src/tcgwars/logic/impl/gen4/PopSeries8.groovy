@@ -148,10 +148,14 @@ public enum PopSeries8 implements LogicCardInfo {
             text "As long as Luxray is your Active Pokémon, any damage done by an opponent’s attack is reduced by 10."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each {
-                  if (self.active && it.from.owner == self.owner && it.dmg.value && it.notNoEffect) {
-                    bc "Intimidating Fang -10"
-                    it.dmg -= hp(10)
+                if (self.active && ef.attacker.owner == self.owner.opposite) {
+                  bg.dm().each {
+                    //Not checking for it.notNoEffect since it's applied before W/R, should count as an effect on the attacking pokemon.
+                    //Not checking "it.to.owner==self.owner" since it reduces any damage done, not just to one's own Pokémon.
+                    if(it.notZero) {
+                      bc "Intimidating Fang: -10"
+                      it.dmg-=hp(10)
+                    }
                   }
                 }
               }

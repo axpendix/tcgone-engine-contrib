@@ -342,13 +342,14 @@ public enum UnseenForces implements LogicCardInfo {
       return evolution (this, from:"Croconaw", hp:HP120, type:W, retreatCost:2) {
         weakness L
         pokeBody "Intimidating Fang", {
-          text "As long as Feraligatr is your Active Pokémon, any damage done to your Pokémon by an opponent's attack is reduced by 10 (before applying Weakness and Resistance)."
+          text "As long as Feraligatr is your Active Pokémon, any damage done by an opponent's attack is reduced by 10 (before applying Weakness and Resistance)."
           delayedA {
             after PROCESS_ATTACK_EFFECTS, {
               if (self.active && ef.attacker.owner == self.owner.opposite) {
                 bg.dm().each {
                   //Not checking for it.notNoEffect since it's applied before W/R, should count as an effect on the attacking pokemon.
-                  if(it.to.owner==self.owner && it.notZero) {
+                  //Not checking "it.to.owner==self.owner" since it reduces any damage done, not just to your Pokémon.
+                  if(it.notZero) {
                     bc "Intimidating Fang: -10"
                     it.dmg-=hp(10)
                   }
