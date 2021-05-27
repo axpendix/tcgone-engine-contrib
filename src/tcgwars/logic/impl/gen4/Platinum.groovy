@@ -1828,12 +1828,16 @@ public enum Platinum implements LogicCardInfo {
             energyCost L, C
             onAttack {
               damage 30
-              def card = defending.cards.select("Choose an Energy card to move",cardTypeFilter(ENERGY))
-              def tar = opp.bench.select("Choose the pokémon to receive the energy")
-              energySwitch(defending,tar,card)
+
+              if (defending.cards.filterByType(ENERGY) && opp.all.size() >= 2) {
+                def energyCard = defending.cards.select("Choose an Energy card to move", cardTypeFilter(ENERGY)).first()
+                def tar = opp.bench.select("Choose the Pokémon to receive the energy")
+                afterDamage {
+                  energySwitch(defending, tar, energyCard)
+                }
+              }
             }
           }
-
         };
       case GROTLE_49:
         return evolution (this, from:"Turtwig", hp:HP090, type:GRASS, retreatCost:3) {
