@@ -1167,7 +1167,6 @@ public enum SunMoonPromos implements LogicCardInfo {
                     }
                   }
                 }
-
               }
             }
           }

@@ -398,10 +398,12 @@ public enum CrimsonInvasion implements LogicCardInfo {
             text "This Pokémon's attacks do 80 more damage to your opponent's [G] Pokémon (before applying Weakness and Resistance)."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each{
-                  if(it.from == self && it.to.owner == self.owner.opposite && it.to.types.contains(G) && it.notZero){
-                    bc "Sap Sipper +80"
-                    it.dmg += hp(80)
+                if (ef.attacker == self) {
+                  bg.dm().each {
+                    if (it.to.owner == self.owner.opposite && it.to.types.contains(G) && it.notZero) {
+                      bc "Sap Sipper +80"
+                      it.dmg += hp(80)
+                    }
                   }
                 }
               }
@@ -1374,7 +1376,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
               after PROCESS_ATTACK_EFFECTS, {
                 if(ef.attacker.owner == self.owner && (ef.attacker.name=="Registeel")){
                   bg.dm().each {
-                    if (it.from.active && it.from.owner == self.owner && it.to.active && it.to.owner != self.owner && it.notZero) {
+                    if (it.to.active && it.to.owner != self.owner && it.notZero) {
                       bc "Rock Peak Growl +10"
                       it.dmg += hp(10)
                     }
@@ -2000,7 +2002,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
                 before APPLY_ATTACK_DAMAGES, {
                   bg.dm().each{
                     if(it.to==self && it.dmg.value && it.notNoEffect){
-                      bc "+30 to $self due to Clanging Scales"
+                      bc "Clanging Scales +30"
                       it.dmg += hp(30)
                     }
                   }

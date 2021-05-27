@@ -785,7 +785,6 @@ public enum DragonMajesty implements LogicCardInfo {
                       }
                     }
                   }
-
                 }
               }
             }

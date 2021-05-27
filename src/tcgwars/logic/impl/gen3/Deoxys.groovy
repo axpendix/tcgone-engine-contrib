@@ -2449,9 +2449,9 @@ public enum Deoxys implements LogicCardInfo {
               }
               after PROCESS_ATTACK_EFFECTS, {
                 if(attackUsed) bg.dm().each {
-                  if(it.from==self && it.to.active && it.to.owner!=self.owner && it.notZero){
+                  if(it.to.active && it.notZero){
                     it.dmg += hp(10)
-                    attackUsed=true
+                    attackUsed=true // TODO: Remove?
                     bc "Strength Charm +10"
                   }
                 }
@@ -2770,7 +2770,7 @@ public enum Deoxys implements LogicCardInfo {
                   if (ef.attacker.owner == self.owner.opposite) {
                     bg.dm().each {
                       if(it.to==self && it.notZero && it.notNoEffect){
-                        bc "Pivot Throw increases damage"
+                        bc "Pivot Throw +10"
                         it.dmg+=hp(10)
                       }
                     }

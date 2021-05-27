@@ -292,7 +292,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                     if (ef.attacker.owner == self.owner.opposite && ef.attacker.stage2) {
                       bg.dm().each {
                         if (it.to==self && it.dmg.value && it.notNoEffect) {
-                          bc "-30 to $self ($thisMove)"
+                          bc "$thisMove -30"
                           it.dmg-=hp(30)
                         }
                       }
@@ -3285,7 +3285,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                   before APPLY_ATTACK_DAMAGES, {
                     if(ef.attacker.owner != self.owner) {
                       bg.dm().each{
-                        if(it.to == self && it.dmg.value) {
+                        if(it.to == self && it.notNoEffect && it.dmg.value) {
                           bc "$self - Armor Stone activated"
                           def reducedDmg = 0
                           flipUntilTails({ reducedDmg += 10 }, self.owner)
@@ -3529,7 +3529,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                   if (ef.attacker.owner == self.owner.opposite) {
                     bg.dm().each {
                       if(it.to==self && it.dmg.value && it.notNoEffect){
-                        bc "Close Combat increases damage"
+                        bc "Close Combat +30"
                         it.dmg+=hp(30)
                       }
                     }

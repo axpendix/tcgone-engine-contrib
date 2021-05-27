@@ -1582,9 +1582,9 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "As long as you have more Prize cards left than your opponent, each of Hariyama's attacks does 20 more damage to the Active Pokémon (before applying Weakness and Resistance) and damage done by the Active Pokémon to Hariyama is reduced by 20 (after applying Weakness and Resistance)."
           delayedA {
             after PROCESS_ATTACK_EFFECTS, {
-              if (self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size()) {
+              if (ef.attacker == self && self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size()) {
                 bg.dm().each {
-                  if (it.from == self && it.to.active && it.to.owner != self.owner && it.notZero) {
+                  if (it.to.active && it.to.owner != self.owner && it.notZero) {
                     bc "Reversal Aura +20"
                     it.dmg += hp(20)
                   }

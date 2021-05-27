@@ -4296,7 +4296,7 @@ public enum LostThunder implements LogicCardInfo {
                 if (ef.attacker.owner != thisCard.player) {
                   bg.dm().each {
                     if(it.to.owner == thisCard.player && it.to.topPokemonCard.cardTypes.is(ULTRA_BEAST) && it.notNoEffect && it.dmg.value){
-                      bc "Lusamine prevent damage done to Ultra Beasts"
+                      bc "Lusamine Prism Star prevents damage done to Ultra Beasts"
                       it.dmg = hp(0)
                     }
                   }

@@ -878,7 +878,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               after PROCESS_ATTACK_EFFECTS, {
                 if (bg.em().retrieveObject("Power_Cheer") != bg.turnCount && ef.attacker.owner == self.owner && ef.attacker.pokemonGX && ef.attacker.realEvolution ){
                   bg.dm().each{
-                    if(it.from.owner == self.owner && it.from.pokemonGX && it.from.realEvolution && it.from.topPokemonCard.predecessor == "Eevee" && it.to.active && it.to.owner != self.owner && it.notZero) {
+                    if(it.to.active && it.to.owner != self.owner && it.notZero) {
                       bc "Power Cheer +30"
                       it.dmg += hp(30)
                     }
@@ -3777,7 +3777,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                     if (ef.attacker == pcs){
                       bg.dm().each {
                         if(it.notZero){
-                          bc "${thisMove.name} reduces damage by 30"
+                          bc "${thisMove.name} -30"
                           it.dmg-=hp(30)
                         }
                       }
@@ -4488,11 +4488,13 @@ public enum CosmicEclipse implements LogicCardInfo {
           onPlay { reason ->
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each {
-                  def plusDmg = 10*my.prizeCardSet.takenCount
-                  if (it.from == self && it.to.active && it.to.owner != self.owner && self.topPokemonCard.cardTypes.is(ULTRA_BEAST) && it.notZero) {
-                    bc "Beastite +$plusDmg"
-                    it.dmg += hp(plusDmg)
+                if (ef.attacker == self && self.topPokemonCard.cardTypes.is(ULTRA_BEAST)) {
+                  def plusDmg = 10 * my.prizeCardSet.takenCount
+                  bg.dm().each {
+                    if (it.to.active && it.to.owner != self.owner && it.notZero) {
+                      bc "Beastite +$plusDmg"
+                      it.dmg += hp(plusDmg)
+                    }
                   }
                 }
               }
