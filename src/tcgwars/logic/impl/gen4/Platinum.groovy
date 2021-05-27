@@ -2038,9 +2038,7 @@ public enum Platinum implements LogicCardInfo {
             energyCost R, R
             onAttack {
               damage 40
-              flip {
-                discardSelfEnergyAfterDamage R
-              }
+              flip 1, {}, { discardSelfEnergyAfterDamage R }
             }
           }
           move "Paralyzing Gaze", {
@@ -2048,12 +2046,9 @@ public enum Platinum implements LogicCardInfo {
             energyCost C, C
             onAttack {
               damage 20
-              flip {
-                apply PARALYZED
-              }
+              flipThenApplySC(PARALYZED)
             }
           }
-
         };
       case MUK_57:
         return evolution (this, from:"Grimer", hp:HP100, type:PSYCHIC, retreatCost:3) {
