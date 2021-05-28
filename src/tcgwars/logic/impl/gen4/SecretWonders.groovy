@@ -3522,10 +3522,10 @@ f
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDraw 2 cards. Then, choose a card from your opponent’s hand without looking and put it on the bottom of his or her deck."
           onPlay {
             draw 2
-            opp.hand.select(hidden: true, "Choose a card from your opponent's hand without looking").showToOpponent("Team Galactic's Mars: This card will be put on the bottom of your deck").moveTo(hidden: true, opp.deck)
+            if (opp.hand) opp.hand.shuffledCopy().select(hidden: true, "Choose a card from your opponent's hand without looking").showToOpponent("Team Galactic's Mars: This card will be put on the bottom of your deck.").moveTo(hidden: true, opp.deck)
           }
           playRequirement{
-            assert my.deck || opp.hand : "Your deck and your opponent's hand are both empty"
+            assert my.deck : "There are no cards left in your deck."
           }
         };
       case POTION_127:
