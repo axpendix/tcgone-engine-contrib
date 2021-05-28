@@ -478,15 +478,18 @@ public enum RubySapphireNG implements LogicCardInfo {
         move "Lizard Poison", {
           text "20 damage. If 1 Energy is attached to Sceptile, the Defending Pokémon is now Asleep. If 2 Energy is attached to Sceptile, the Defending Pokémon is now Poisoned. If 3 Energy is attached to Sceptile, the Defending Pokémon is now Asleep and Poisoned. If 4 or more Energy is attached to Sceptile, the Defending Pokémon is now Asleep, Burned, and Poisoned."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
+            def energyAttached = self.cards.energyCount()
+            if (energyAttached >= 3 || energyAttached == 1) applyAfterDamage(ASLEEP)
+            if (energyAttached >= 2) applyAfterDamage(POISONED)
+            if (energyAttached >= 4) applyAfterDamage(BURNED)
+
           }
         }
         move "Solarbeam", {
           text "70 damage."
           energyCost G, G, C, C, C
-          attackRequirement {}
           onAttack {
             damage 70
           }
