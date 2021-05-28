@@ -727,9 +727,8 @@ public enum RubySapphireNG implements LogicCardInfo {
         move "Water Arrow", {
           text "Choose 1 of your opponent's Pokémon. This attack does 20 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W
-          attackRequirement {}
           onAttack {
-
+            damage 20, opp.all.select()
           }
         }
         move "Fast Stream", {
@@ -738,6 +737,7 @@ public enum RubySapphireNG implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            // Only one defending Pokémon in single battles, so the effect is ignored.
           }
         }
       };
