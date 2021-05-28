@@ -206,15 +206,16 @@ public enum RubySapphireNG implements LogicCardInfo {
         move "Retaliate", {
           text "10x damage. Flip a coin. If heads, this attack does 10 damage times the number of damage counters on Aggron."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
+            flip {
+              damage 10 * self.numberOfDamageCounters
+            }
           }
         }
         move "Mega Punch", {
           text "40 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -222,9 +223,8 @@ public enum RubySapphireNG implements LogicCardInfo {
         move "Double Lariat", {
           text "70x damage. Flip 2 coins. This attack does 70 damage times the number of heads."
           energyCost M, M, C, C, C
-          attackRequirement {}
           onAttack {
-            damage 70
+            flip 2, {damage 70}
           }
         }
       };
