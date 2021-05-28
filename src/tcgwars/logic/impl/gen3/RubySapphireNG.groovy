@@ -300,14 +300,20 @@ public enum RubySapphireNG implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            if (opp.bench) damage 10, opp.bench.select()
           }
         }
         move "Fire Spin", {
           text "100 damage. Discard 2 basic Energy cards attached to Camerupt or this attack does nothing."
           energyCost R, R, C, C
-          attackRequirement {}
+          attackRequirement {
+            assert self.cards.filterByType(BASIC_ENERGY).size() >= 2 : "$self needs 2 or more Basic Energies attached"
+          }
           onAttack {
             damage 100
+            afterDamage {
+              self.cards.filterByType(BASIC_ENERGY).select(count: 2, "Select 2 Basic Energies to discard.").discard()
+            }
           }
         }
       };
