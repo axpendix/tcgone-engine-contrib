@@ -2417,13 +2417,11 @@ public enum Platinum implements LogicCardInfo {
           weakness W
           resistance L, MINUS20
           move "Dig Under", {
-            text "Choose 1 of your opponent’s Benched Pokémon. This attack does 10 damage to that Pokémon. This attack’s damage isn’t affected by Weakness or Resistance."
+            text "Choose 1 of your opponent’s Pokémon. This attack does 10 damage to that Pokémon. This attack’s damage isn’t affected by Weakness or Resistance."
             energyCost F
-            attackRequirement {
-              assert opp.bench : "Your opponent has no Benched Pokémon"
-            }
+            attackRequirement {}
             onAttack {
-              damage 10, opp.bench.select()
+              damage 10, opp.all.select("Deal damage to?")
             }
           }
           move "Trip Over", {
