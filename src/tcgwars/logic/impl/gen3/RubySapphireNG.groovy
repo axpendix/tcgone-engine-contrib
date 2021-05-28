@@ -746,7 +746,9 @@ public enum RubySapphireNG implements LogicCardInfo {
         weakness L
         pokeBody "Rough Skin", {
           text "If Sharpedo is your Active Pokémon and is damaged by an opponent's attack (even if Sharpedo is Knocked Out), put 2 damage counters on the Attacking Pokémon."
-          delayedA {
+          ifActiveAndDamagedByAttackBody(delegate) {
+            bc "$thisAbility activates"
+            directDamage(10, ef.attacker, Source.POKEBODY)
           }
         }
         move "Dark Slash", {
@@ -755,6 +757,10 @@ public enum RubySapphireNG implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            if(self.cards.energyCardCount(D) && confirm("Discard a [D] Energy attached to $self?")) {
+              damage 30
+              discardSelfEnergyAfterDamage D
+            }
           }
         }
       };
