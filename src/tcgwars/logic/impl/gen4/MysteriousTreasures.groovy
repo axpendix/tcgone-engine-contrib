@@ -3187,7 +3187,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             if (chosenCard)
               chosenCard.showToOpponent("Chosen card").moveTo(my.hand)
 
-            shuffleDeck()
+            if (choice == 1 && my.deck) shuffleDeck()
           }
           playRequirement {
             assert ( my.deck.notEmpty || my.discard.any{isValidFossilCard(it)}) : "You have no cards in deck, and there are no cards in your discard pile that satisfy this supporter's requirements"
