@@ -565,15 +565,14 @@ public enum RubySapphireNG implements LogicCardInfo {
         move "Take Down", {
           text "50 damage. Wailord does 20 damage to itself."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 50
+            damage 20, self
           }
         }
         move "Surf", {
           text "70 damage."
           energyCost W, W, W, C, C
-          attackRequirement {}
           onAttack {
             damage 70
           }
