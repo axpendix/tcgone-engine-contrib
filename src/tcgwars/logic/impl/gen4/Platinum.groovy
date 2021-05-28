@@ -2444,13 +2444,11 @@ public enum Platinum implements LogicCardInfo {
             callForFamily(basic:true, 1, delegate)
           }
           move "Spring Out", {
-            text "Choose 1 of your opponent’s Benched Pokémon. This attack does 10 damage to that Pokémon."
+            text "Choose 1 of your opponent’s Pokémon. This attack does 10 damage to that Pokémon."
             energyCost C
-            attackRequirement {
-              assert opp.bench : "Your opponent has no Benched Pokémon"
-            }
+            attackRequirement {}
             onAttack {
-              damage 10, opp.bench.select()
+              damage 10, opp.bench.select("Deal damage to?")
             }
           }
         };
