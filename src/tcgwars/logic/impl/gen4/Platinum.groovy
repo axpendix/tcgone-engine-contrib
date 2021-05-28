@@ -2625,7 +2625,9 @@ public enum Platinum implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
             }
             onAttack {
-              attachEnergyFrom(type: G, my.deck, my.all)
+              flip {
+                attachEnergyFrom(type: G, my.deck, my.all)
+              }
             }
           }
         };
