@@ -541,14 +541,21 @@ public enum RubySapphireNG implements LogicCardInfo {
         pokePower "Water Call", {
           text "Once during your turn (before your attack), you may attach a [W] Energy card from your hand to your Active Pokémon. This power can't be used if Swampert is affected by a Special Condition."
           actionA {
+            checkNoSPC()
+            checkLastTurn()
+            assert my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(W) : "You have no [W] Energy cards in your hand"
+
+            powerUsed()
+            def pcs = my.all.select()
+            attachEnergyFrom(type:W, my.hand, pcs)
           }
         }
         move "Hypno Splash", {
           text "50 damage. The Defending Pokémon is now Asleep."
           energyCost W, W, C, C
-          attackRequirement {}
           onAttack {
             damage 50
+            applyAfterDamage(ASLEEP)
           }
         }
       };
