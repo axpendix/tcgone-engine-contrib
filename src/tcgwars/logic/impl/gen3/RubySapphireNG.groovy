@@ -672,15 +672,14 @@ public enum RubySapphireNG implements LogicCardInfo {
         move "Stockpile", {
           text "During your next turn, Spit Up's base damage is 70 instead of 30, and Swallow's base damage is 60 instead of 20."
           energyCost C
-          attackRequirement {}
           onAttack {
-
+            increasedBaseDamageNextTurn("Spit Up", hp(40))
+            increasedBaseDamageNextTurn("Swallow", hp(40))
           }
         }
         move "Spit Up", {
           text "30 damage."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -688,9 +687,9 @@ public enum RubySapphireNG implements LogicCardInfo {
         move "Swallow", {
           text "20 damage. After your attack, remove from Pelipper the number of damage counters equal to the damage you did to the Defending Pokémon. If Pelipper has fewer damage counters than that, remove all of them."
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 20
+            removeDamageCounterEqualToDamageDone()
           }
         }
       };
