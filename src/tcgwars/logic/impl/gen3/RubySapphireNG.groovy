@@ -427,17 +427,17 @@ public enum RubySapphireNG implements LogicCardInfo {
         move "Attract Current", {
           text "10 damage. Search your deck for a [L] Energy card and attach it to 1 of your Pokémon. Shuffle your deck afterward."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
+            attachEnergyFrom(type:L, my.deck, my.all)
           }
         }
         move "Thunder Jolt", {
           text "50 damage. Flip a coin. If tails, Manectric does 10 damage to itself."
           energyCost L, L, C
-          attackRequirement {}
           onAttack {
             damage 50
+            flip 1, {}, {damage 10, self}
           }
         }
       };
