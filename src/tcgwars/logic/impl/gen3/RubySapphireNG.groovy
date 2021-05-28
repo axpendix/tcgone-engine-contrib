@@ -234,22 +234,30 @@ public enum RubySapphireNG implements LogicCardInfo {
         pokeBody "Withering Dust", {
           text "As long as Beautifly is in play, do not apply Resistance for all Active Pokémon."
           delayedA {
+            before APPLY_RESISTANCE, {
+              bg.dm().each{
+                if(it.to.active){
+                  bc "Resistance isn't applied due to $thisAbility"
+                  prevent()
+                }
+              }
+            }
           }
         }
         move "Stun Spore", {
           text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 20
+            flip {applyAfterDamage PARALYZED}
           }
         }
         move "Parallel Gain", {
           text "50 damage. Remove 1 damage counter from each of your Pokémon, including Beautifly."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 50
+            my.all.each {heal 10, it}
           }
         }
       };
