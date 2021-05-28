@@ -448,14 +448,26 @@ public enum RubySapphireNG implements LogicCardInfo {
         pokeBody "Intimidating Fang", {
           text "As long as Mightyena is your Active Pokémon, any damage done to your Pokémon done by an opponent's attack is reduced by 10 (before applying Weakness and Resistance)."
           delayedA {
+            after PROCESS_ATTACK_EFFECTS, {
+              if (self.active && ef.attacker.owner != self.owner) {
+                bg.dm().each {
+                  if(it.to.owner==self.owner && it.notZero) {
+                    bc "$thisPower -10"
+                    it.dmg-=hp(10)
+                  }
+                }
+              }
+            }
           }
         }
         move "Shakedown", {
           text "40 damage. Flip a coin. If heads, choose 1 card from your opponent's hand without looking and discard it."
           energyCost D, C, C
-          attackRequirement {}
           onAttack {
             damage 40
+            afterDamage {
+              flip {discardRandomCardFromOpponentsHand()}
+            }
           }
         }
       };
