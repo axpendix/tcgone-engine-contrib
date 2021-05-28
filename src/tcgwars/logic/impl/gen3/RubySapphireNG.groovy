@@ -584,17 +584,19 @@ public enum RubySapphireNG implements LogicCardInfo {
         move "Clutch", {
           text "20 damage. The Defending Pokémon can't retreat until the end of your opponent's next turn."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
+            cantRetreat defending
           }
         }
         move "Flamethrower", {
           text "80 damage. Discard a [R] Energy card attached to Blaziken."
           energyCost R, C, C, C
-          attackRequirement {}
           onAttack {
             damage 80
+            afterDamage{
+              discardSelfEnergy(R)
+            }
           }
         }
       };
