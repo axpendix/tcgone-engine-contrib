@@ -407,17 +407,16 @@ public enum RubySapphireNG implements LogicCardInfo {
         move "Super Slap Push", {
           text "Does 20 damage to each Defending Pokémon."
           energyCost F
-          attackRequirement {}
           onAttack {
-
+            damage 20
           }
         }
         move "Mega Throw", {
           text "40+ damage. If the Defending Pokémon is a Pokémon-ex, this attack does 40 damage plus 40 more damage."
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             damage 40
+            if (defending.EX) damage 40
           }
         }
       };
