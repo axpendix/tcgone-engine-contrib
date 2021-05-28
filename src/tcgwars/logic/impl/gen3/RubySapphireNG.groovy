@@ -606,7 +606,6 @@ public enum RubySapphireNG implements LogicCardInfo {
         move "Headbutt", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -614,9 +613,8 @@ public enum RubySapphireNG implements LogicCardInfo {
         move "Battle Blast", {
           text "40+ damage. Does 40 damage plus 10 more damage for each [F] Energy attached to Breloom."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
-            damage 40
+            damage 40 + 10 * self.cards.energyCount(F)
           }
         }
       };
