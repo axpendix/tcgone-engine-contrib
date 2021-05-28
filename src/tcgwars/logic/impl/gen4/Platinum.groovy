@@ -3402,8 +3402,8 @@ public enum Platinum implements LogicCardInfo {
             def pcs = my.all.findAll { it.topPokemonCard.cardTypes.is(POKEMON_SP) }.select("Which Pokémon SP to return to hand?")
             scoopUpPokemon(pcs, delegate)
           }
-          playRequirement{
-            my.bench.any { it.topPokemonCard.cardTypes.is(POKEMON_SP) }
+          playRequirement {
+            assert my.all.any { it.topPokemonCard.cardTypes.is(POKEMON_SP) } : "No Pokémon SP cards in play"
           }
         };
       case ARMOR_FOSSIL_119:
