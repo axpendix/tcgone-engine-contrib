@@ -2244,8 +2244,8 @@ public enum Platinum implements LogicCardInfo {
             onAttack {
               damage 30
               damage 10, self
-              flip {
-                preventAllDamageNextTurn()
+              afterDamage {
+                flip { preventAllDamageNextTurn() }
               }
             }
           }
