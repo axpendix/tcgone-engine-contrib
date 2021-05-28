@@ -2460,7 +2460,7 @@ public enum Platinum implements LogicCardInfo {
             text "Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
             energyCost C
             attackRequirement {
-              switchYourOpponentsBenchedWithActive()
+              assert opp.bench : "Opponent's Bench is empty"
             }
             onAttack {
               whirlwind()
