@@ -893,6 +893,7 @@ public enum Platinum implements LogicCardInfo {
               assert self.cards.filterByType(ENERGY) : "You have no Energy cards to discard"
             }
             onAttack {
+              discardSelfEnergy C
               targeted (opp.active) {
                 def tmp = opp.active.damage;
                 opp.active.damage = self.damage;
