@@ -624,17 +624,18 @@ public enum RubySapphireNG implements LogicCardInfo {
         move "Rend", {
           text "20+ damage. If the Defending Pokémon has any damage counters on it, this attack does 20 damage plus 20 more damage."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 20
+            if(defending.numberOfDamageCounters) {
+              damage 20
+            }
           }
         }
         move "Double Spin", {
           text "60x damage. Flip 2 coins. This attack does 60 damage times the number of heads."
           energyCost F, C, C, C
-          attackRequirement {}
           onAttack {
-            damage 60
+            flip 2, {damage 60}
           }
         }
       };
