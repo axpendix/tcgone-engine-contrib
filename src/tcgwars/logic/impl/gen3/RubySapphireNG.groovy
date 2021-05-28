@@ -350,20 +350,25 @@ public enum RubySapphireNG implements LogicCardInfo {
         pokeBody "Protective Dust", {
           text "Prevent all effects of attacks, except damage, done to Dustox by the Attacking Pokémon."
           delayedA {
+            before null, null, ATTACK, {
+              if (ef instanceof TargetedEffect && ef.effectType != DAMAGE && (ef as TargetedEffect).getResolvedTarget(bg, e) == self) {
+                bc "$thisAbility prevents all effects done to $self."
+                prevent()
+              }
+            }
           }
         }
         move "Toxic", {
           text "The Defending Pokémon is now Poisoned. Put 2 damage counters instead of 1 on the Defending Pokémon between turns."
           energyCost G, C
-          attackRequirement {}
           onAttack {
-
+            apply POISONED
+            extraPoison 1
           }
         }
         move "Gust", {
           text "50 damage."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
