@@ -3465,10 +3465,13 @@ public enum Platinum implements LogicCardInfo {
             }
           }
           move "Sniping Tail", {
-            text "40 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+            text "40 damage. Does 40 damage to 1 of your opponent's Benched Pokemon.  (Don't apply Weakness and Resistance for Benched Pokemon) The Defending Pokémon can’t retreat during your opponent’s next turn."
             energyCost D, D, C, C
             onAttack {
               damage 40
+              if (opp.bench) {
+                damage 40, opp.bench.select("Deal damage to?")
+              }
               cantRetreat defending
             }
           }
