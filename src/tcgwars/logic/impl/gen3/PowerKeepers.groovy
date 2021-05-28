@@ -327,34 +327,7 @@ public enum PowerKeepers implements LogicCardInfo {
         }
       };
       case BLAZIKEN_5:
-      return evolution (this, from:"Combusken", hp:HP100, type:R, retreatCost:2) {
-        weakness W
-        pokePower "Firestarter", {
-          text "Once during your turn (before your attack), you may attach a [R] Energy card from your discard pile to 1 of your Benched Pokémon. This power can't be used if Blaziken is affected by a Special Condition."
-          actionA {
-            checkLastTurn()
-            checkNoSPC()
-            assert my.bench : "No benched Pokémon"
-            assert my.discard.filterByEnergyType(R) : "You have no [R] Energy cards in your discard pile"
-            powerUsed()
-
-            attachEnergyFrom(type: R, my.discard, my.bench)
-          }
-        }
-        move "Fire Stream", {
-          text "50 damage. Discard a [R] Energy card attached to Blaziken. This attack does 10 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
-          energyCost R, C, C
-          onAttack {
-            damage 50
-            opp.bench.each {
-              damage 10, it
-            }
-            afterDamage {
-              discardSelfEnergy(R)
-            }
-          }
-        }
-      };
+      return copy (RubySapphire.BLAZIKEN_3, this);
       case CHARIZARD_6:
       return evolution (this, from:"Charmeleon", hp:HP120, type:R, retreatCost:2) {
         weakness W
@@ -400,59 +373,9 @@ public enum PowerKeepers implements LogicCardInfo {
         }
       };
       case DELCATTY_8:
-      return evolution (this, from:"Skitty", hp:HP070, type:C, retreatCost:1) {
-        weakness F
-        pokePower "Energy Draw", {
-          text "Once during your turn (before your attack), you may discard 1 Energy card from your hand. Then draw up to 3 cards from your deck. This power can't be used if Delcatty is affected by a Special Condition."
-          actionA {
-            checkNoSPC()
-            checkLastTurn()
-            assert my.hand.filterByType(ENERGY) : "No Energy in hand"
-            //Using LV.X Compendium Ruling instead of the EX: You can discard even if you don't have cards in deck.
-            powerUsed()
-
-            my.hand.filterByType(ENERGY).select("Discard").discard()
-            if (my.deck){
-              def maxDraw = Math.min(3, my.deck.size())
-              draw choose(1..maxDraw, "Draw how many cards?")
-            }
-          }
-        }
-        move "Max Energy Source", {
-          text "10x damage. Does 10 damage times the amount of Energy attached to all of your Active Pokémon."
-          energyCost C
-          onAttack {
-            damage 10*self.cards.energyCount(C)
-          }
-        }
-      };
+      return copy(RubySapphireNG.DELCATTY_5, this);
       case GARDEVOIR_9:
-      return evolution (this, from:"Kirlia", hp:HP100, type:P, retreatCost:2) {
-        weakness P
-        pokePower "Psy Shadow", {
-          text "Once during your turn (before your attack), you may search your deck for a [P] Energy card and attach it to 1 of your Pokémon. Put 2 damage counters on that Pokémon. Shuffle your deck afterward. This power can't be used if Gardevoir is affected by a Special Condition."
-          actionA {
-            checkLastTurn()
-            checkNoSPC()
-            assert my.deck : "Deck is empty"
-            powerUsed()
-
-            my.deck.search("Search for a [P] Energy card to attach to one of your Pokémon.", energyFilter(P)).each {
-              def tar = my.all.select("Attach $it to? That Pokémon will receive 2 damage counters.")
-              attachEnergy(tar, it)
-              directDamage 20, tar, SRC_ABILITY
-            }
-            shuffleDeck()
-          }
-        }
-        move "Energy Burst", {
-          text "10x damage. Does 10 damage times the total amount of Energy attached to Gardevoir and the Defending Pokémon."
-          energyCost P
-          onAttack {
-            damage 10 * (self.cards.energyCount(C) + defending.cards.energyCount(C))
-          }
-        }
-      };
+      return copy(RubySapphireNG.GARDEVOIR_7, this);
       case KABUTOPS_10:
       return evolution (this, from:"Kabuto", hp:HP110, type:F, retreatCost:2) {
         weakness G
@@ -547,45 +470,7 @@ public enum PowerKeepers implements LogicCardInfo {
         }
       };
       case SLAKING_13:
-      return evolution (this, from:"Vigoroth", hp:HP120, type:C, retreatCost:3) {
-        weakness F
-        pokeBody "Lazy", {
-          text "As long as Slaking is your Active Pokémon, your opponent's Pokémon can't use any Poké-Powers."
-          getterA IS_ABILITY_BLOCKED, { Holder h->
-            if (self.active && h.effect.target.owner == self.owner.opposite && h.effect.ability instanceof PokePower) {
-              h.object=true
-            }
-          }
-          //TODO: Is this needed here?
-          getterA IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
-            if (self.active && h.effect.target.owner == self.owner.opposite) {
-              h.object=true
-            }
-          }
-          onActivate {
-            new CheckAbilities().run(bg)
-          }
-          onDeactivate {
-            new CheckAbilities().run(bg)
-          }
-        }
-        move "Critical Move", {
-          text "100 damage. Discard a basic Energy card attached to Slaking or this attack does nothing. Slaking can't attack during your next turn."
-          energyCost C, C, C, C
-          attackRequirement {
-            assert self.cards.filterByType(BASIC_ENERGY) : "$self has no Basic Energy attached"
-          }
-          onAttack {
-            if(self.cards.filterByType(BASIC_ENERGY)){
-              damage 100
-              afterDamage {
-                self.cards.filterByType(BASIC_ENERGY).select("Discard a basic energy from $self.").discard()
-                cantAttackNextTurn(self)
-              }
-            }
-          }
-        }
-      };
+      return copy(RubySapphireNG.SLAKING_12, this);
       case DUSCLOPS_14:
       return evolution (this, from:"Duskull", hp:HP080, type:P, retreatCost:2) {
         weakness D

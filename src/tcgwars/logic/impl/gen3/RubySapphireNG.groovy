@@ -1,4 +1,6 @@
-package tcgwars.logic.impl.gen3;
+package tcgwars.logic.impl.gen3
+
+import tcgwars.logic.effect.gm.Attack;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -257,14 +259,27 @@ public enum RubySapphireNG implements LogicCardInfo {
         pokePower "Firestarter", {
           text "Once during your turn (before your attack), you may attach a [R] Energy card from your discard pile to 1 of your Benched Pokémon. This power can't be used if Blaziken is affected by a Special Condition."
           actionA {
+            checkLastTurn()
+            checkNoSPC()
+            assert my.bench : "No benched Pokémon"
+            assert my.discard.filterByEnergyType(R) : "You have no [R] Energy cards in your discard pile"
+            powerUsed()
+
+            attachEnergyFrom(type: R, my.discard, my.bench)
           }
         }
         move "Fire Stream", {
           text "50 damage. Discard a [R] Energy card attached to Blaziken. If you do, this attack does 10 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+          // Compendium Ruling: no "If you do", the discard is mandatory. PK print corrects this.
           energyCost R, C, C
-          attackRequirement {}
           onAttack {
             damage 50
+            opp.bench.each {
+              damage 10, it
+            }
+            afterDamage {
+              discardSelfEnergy(R)
+            }
           }
         }
       };
@@ -294,14 +309,24 @@ public enum RubySapphireNG implements LogicCardInfo {
         pokePower "Energy Draw", {
           text "Once during your turn (before your attack), you may discard 1 Energy card from your hand. Then draw up to 3 cards from your deck. This power can't be used if Delcatty is affected by a Special Condition."
           actionA {
+            checkNoSPC()
+            checkLastTurn()
+            assert my.hand.filterByType(ENERGY) : "No Energy in hand"
+            //Using LV.X Compendium Ruling instead of the EX: You can discard even if you don't have cards in deck.
+            powerUsed()
+
+            my.hand.filterByType(ENERGY).select("Discard").discard()
+            if (my.deck){
+              def maxDraw = Math.min(3, my.deck.size())
+              draw choose(1..maxDraw, "Draw how many cards?")
+            }
           }
         }
         move "Max Energy Source", {
           text "10x damage. Does 10 damage times the amount of Energy attached to all of your Active Pokémon."
           energyCost C
-          attackRequirement {}
           onAttack {
-            damage 10
+            damage 10*self.cards.energyCount(C)
           }
         }
       };
@@ -336,14 +361,24 @@ public enum RubySapphireNG implements LogicCardInfo {
         pokePower "Psy Shadow", {
           text "Once during your turn (before your attack), you may search your deck for a [P] Energy card and attach it to 1 of your Pokémon. Put 2 damage counters on that Pokémon. Shuffle your deck afterward. This power can't be used if Gardevoir is affected by a Special Condition."
           actionA {
+            checkLastTurn()
+            checkNoSPC()
+            assert my.deck : "Deck is empty"
+            powerUsed()
+
+            my.deck.search("Search for a [P] Energy card to attach to one of your Pokémon.", energyFilter(P)).each {
+              def tar = my.all.select("Attach $it to? That Pokémon will receive 2 damage counters.")
+              attachEnergy(tar, it)
+              directDamage 20, tar, SRC_ABILITY
+            }
+            shuffleDeck()
           }
         }
         move "Energy Burst", {
           text "10x damage. Does 10 damage times the total amount of Energy attached to Gardevoir and the Defending Pokémon."
           energyCost P
-          attackRequirement {}
           onAttack {
-            damage 10
+            damage 10 * (self.cards.energyCount(C) + defending.cards.energyCount(C))
           }
         }
       };
@@ -432,15 +467,38 @@ public enum RubySapphireNG implements LogicCardInfo {
         weakness F
         pokeBody "Lazy", {
           text "As long as Slaking is your Active Pokémon, your opponent's Pokémon can't use any Poké-Powers."
-          delayedA {
+          getterA IS_ABILITY_BLOCKED, { Holder h->
+            if (self.active && h.effect.target.owner == self.owner.opposite && h.effect.ability instanceof PokePower) {
+              h.object=true
+            }
+          }
+          //TODO: Is this needed here?
+          getterA IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
+            if (self.active && h.effect.target.owner == self.owner.opposite) {
+              h.object=true
+            }
+          }
+          onActivate {
+            new CheckAbilities().run(bg)
+          }
+          onDeactivate {
+            new CheckAbilities().run(bg)
           }
         }
         move "Critical Move", {
           text "100 damage. Discard a basic Energy card attached to Slaking or this attack does nothing. Slaking can't attack during your next turn."
           energyCost C, C, C, C
-          attackRequirement {}
+          attackRequirement {
+            assert self.cards.filterByType(BASIC_ENERGY) : "$self has no Basic Energy attached"
+          }
           onAttack {
-            damage 100
+            if(self.cards.filterByType(BASIC_ENERGY)){
+              damage 100
+              afterDamage {
+                self.cards.filterByType(BASIC_ENERGY).select("Discard a basic energy from $self.").discard()
+                cantAttackNextTurn(self)
+              }
+            }
           }
         }
       };
@@ -597,14 +655,24 @@ public enum RubySapphireNG implements LogicCardInfo {
         pokePower "Energy Trans", {
           text "As often as you like during your turn (before your attack), move a [G] Energy card attached to 1 of your Pokémon to another of your Pokémon. This power can't be used if Sceptile is affected by a Special Condition."
           actionA {
+            checkNoSPC()
+            assert my.all.findAll {it.cards.energyCount(G)>0} : "There are no Pokémon with [G] Energy cards"
+            assert my.all.size()>=2 : "There is only one Pokémon on the field"
+
+            powerUsed()
+            def src=my.all.findAll {it.cards.energyCount(G)>0}.select("Source for [G]")
+            def card=src.cards.filterByEnergyType(G).select("Card to move").first()
+            def tar=my.all
+            tar.remove(src)
+            tar=tar.select("Target for [G]")
+            energySwitch(src, tar, card)
           }
         }
         move "Tail Rap", {
           text "50x damage. Flip 2 coins. This attack does 50 damage times the number of heads."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
-            damage 50
+            flip 2, { damage 50 }
           }
         }
       };
