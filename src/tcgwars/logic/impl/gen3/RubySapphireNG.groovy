@@ -645,17 +645,23 @@ public enum RubySapphireNG implements LogicCardInfo {
         move "Invisible Hand", {
           text "If any of your opponent's Active Pokémon are Evolved Pokémon, search your deck for any 1 card and put it into your hand. Shuffle your deck afterward."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "There are no more cards in your deck."
+            assert opp.active.evolution : "Your opponent's Active Pokémon isn't an Evolved Pokémon"
+          }
           onAttack {
-
+            my.deck.select().moveTo(hidden: true, my.hand)
+            shuffleDeck()
           }
         }
         move "Repulsion", {
           text "Flip a coin. If heads, your opponent returns the Defending Pokémon and all cards attached to it to his or her hand. (If your opponent doesn't have any Benched Pokémon or other Active Pokémon, this attack does nothing.)"
           energyCost C, C
-          attackRequirement {}
+          attackRequirement { assert opp.bench: "Opponent's bench is empty" }
           onAttack {
-
+            flip {
+              scoopUpPokemon(defending, delegate)
+            }
           }
         }
       };
