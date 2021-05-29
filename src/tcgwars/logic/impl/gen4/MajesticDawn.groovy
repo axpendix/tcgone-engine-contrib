@@ -2631,7 +2631,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
             onAttack {
               def pcs = benchPCS(my.discard.select("Choose a Pokémon to put on your bench", cardTypeFilter(POKEMON)).first())
-              if(my.discard.filterByType(BASIC_ENERGY)) {
+              if(pcs != null && my.discard.filterByType(BASIC_ENERGY)) {
                 my.discard.select(min:0, max:3, "Attach up to 3 basic Energy cards to $pcs",cardTypeFilter(BASIC_ENERGY)).each {
                   attachEnergy(pcs, it)
                 }
