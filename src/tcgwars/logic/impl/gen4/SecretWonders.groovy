@@ -631,7 +631,7 @@ public enum SecretWonders implements LogicCardInfo {
                 before BEGIN_TURN, {
                   if (self.numberOfDamageCounters) {
                     bc "$thisAbility activates"
-                    heal 10, self, Source.POKBODY
+                    heal 10, self, Source.POKEBODY
                   }
                 }
               }
