@@ -2100,8 +2100,7 @@ public enum MajesticDawn implements LogicCardInfo {
             onAttack {
               damage 20
               if(opp.bench) {
-                multiSelect(opp.bench,2,"Does 10 damage to 2 of your opponent's benched Pokémon").each {}
-                damage 10, it
+                multiSelect(opp.bench,2,"Does 10 damage to 2 of your opponent's benched Pokémon").each{damage 10, it}
               }
             }
           }
