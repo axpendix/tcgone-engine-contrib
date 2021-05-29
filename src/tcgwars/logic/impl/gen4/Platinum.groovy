@@ -2448,7 +2448,7 @@ public enum Platinum implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 10, opp.bench.select("Deal damage to?")
+              damage 10, opp.all.select("Deal damage to?")
             }
           }
         };
