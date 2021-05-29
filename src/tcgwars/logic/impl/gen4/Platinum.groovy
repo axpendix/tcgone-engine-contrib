@@ -2421,7 +2421,7 @@ public enum Platinum implements LogicCardInfo {
             energyCost F
             attackRequirement {}
             onAttack {
-              damage 10, opp.all.select("Deal damage to?")
+              noWrDamage 10, opp.all.select("Deal damage to?")
             }
           }
           move "Trip Over", {
