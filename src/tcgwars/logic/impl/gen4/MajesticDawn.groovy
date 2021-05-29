@@ -1920,6 +1920,7 @@ public enum MajesticDawn implements LogicCardInfo {
               my.deck.search(max:my.bench.freeBenchCount,"Search your deck for as many Eevee as you like and put them onto your Bench",{it.name.contains("Eevee")}).each {
                 benchPCS(it)
               }
+              shuffleDeck()
             }
           }
           move "Lunge", {
