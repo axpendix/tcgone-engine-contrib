@@ -1235,7 +1235,7 @@ public enum MajesticDawn implements LogicCardInfo {
         };
       case FEAROW_36:
         return evolution (this, from:"Spearow", hp:HP080, type:COLORLESS, retreatCost:0) {
-          weakness L
+          weakness L, PLUS20
           resistance F, MINUS20
           move "Fury Attack", {
             text "20× damage. Flip 3 coins. This attack does 20 damage times the number of heads."
@@ -1355,7 +1355,7 @@ public enum MajesticDawn implements LogicCardInfo {
         };
       case MONFERNO_41:
         return evolution (this, from:"Chimchar", hp:HP070, type:FIRE, retreatCost:0) {
-          weakness W
+          weakness W, PLUS20
           move "Fire Fang", {
             text "30 damage. The Defending Pokémon is now Burned."
             energyCost R
@@ -1935,8 +1935,7 @@ public enum MajesticDawn implements LogicCardInfo {
         };
       case EEVEE_63:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
-          weakness F
-          resistance F
+          weakness F, PLUS10
           move "Gnaw", {
             text "10 damage. "
             energyCost ()
