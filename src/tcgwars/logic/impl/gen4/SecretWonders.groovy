@@ -238,7 +238,7 @@ public enum SecretWonders implements LogicCardInfo {
                 if(ef.cardToPlay.cardTypes.is(SUPPORTER) && bg.em().retrieveObject("Jamming")!=bg.turnCount && bg.currentThreadPlayerType == self.owner.opposite){
                   bg.em().storeObject("Jamming",bg.turnCount)
                   self.owner.opposite.pbg.all.each {
-                    directDamage(10, it, Source.POKBODY)
+                    directDamage(10, it, Source.POKEBODY)
                   }
                 }
               }
@@ -393,7 +393,7 @@ public enum SecretWonders implements LogicCardInfo {
               before BEGIN_TURN, {
                 if(self.active && !self.owner.opposite.pbg.active.types.contains(F)) {
                   bc "Irritating Buzz Activates"
-                  directDamage(10, self.owner.opposite.pbg.active, Source.POKBODY)
+                  directDamage(10, self.owner.opposite.pbg.active, Source.POKEBODY)
                 }
               }
             }
@@ -1203,7 +1203,7 @@ public enum SecretWonders implements LogicCardInfo {
             after ATTACH_ENERGY, self, {
               if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(R)) {
                 bc "Flame Body removes 2 damage counters from $self"
-                heal 20, self, Source.POKBODY
+                heal 20, self, Source.POKEBODY
               }
             }
           }
