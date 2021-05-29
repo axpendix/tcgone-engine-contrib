@@ -2622,7 +2622,7 @@ public enum GreatEncounters implements LogicCardInfo {
         };
       case UNOWN_L_91:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
-          weakness P
+          weakness P, PLUS10
           pokeBody "LINK", {
             text "Unown L can use any attack from any Unown in play."
             getterA (GET_MOVE_LIST, self) { holder->
