@@ -1783,7 +1783,7 @@ public enum Platinum implements LogicCardInfo {
             onAttack {
               damage 30
 
-              if (defending.cards.filterByType(ENERGY) && opp.all.size() >= 2) {
+              if (defending.cards.filterByType(ENERGY) && opp.bench.notEmpty) {
                 def energyCard = defending.cards.select("Choose an Energy card to move", cardTypeFilter(ENERGY)).first()
                 def tar = opp.bench.select("Choose the Pokémon to receive the energy")
                 afterDamage {
