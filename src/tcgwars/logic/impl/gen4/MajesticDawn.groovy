@@ -200,7 +200,7 @@ public enum MajesticDawn implements LogicCardInfo {
   public Card getImplementation() {
     switch (this) {
       case ARTICUNO_1:
-        return basic (this, hp:HP100, type:WATER, retreatCost:3) {
+        return basic (this, hp:HP100, type:WATER, retreatCost:2) {
           weakness M
           resistance F, MINUS20
           pokePower "Freezing Screech", {
@@ -208,7 +208,7 @@ public enum MajesticDawn implements LogicCardInfo {
             onActivate {
               if(it==PLAY_FROM_HAND && confirm("Use Freezing Screech?")) {
                 powerUsed()
-                flip {apply PARALYZED}
+                flip {apply PARALYZED, opp.active, Source.POKEPOWER}
               }
             }
           }
