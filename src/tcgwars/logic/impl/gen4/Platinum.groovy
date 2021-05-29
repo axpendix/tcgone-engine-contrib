@@ -268,7 +268,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case BLASTOISE_2:
         return evolution (this, from:"Wartortle", hp:HP130, type:WATER, retreatCost:2) {
@@ -318,7 +317,6 @@ public enum Platinum implements LogicCardInfo {
               cantUseAttack thisMove, self
             }
           }
-
         };
       case BLAZIKEN_3:
         return evolution (this, from:"Combusken", hp:HP130, type:FIRE, retreatCost:1) {
@@ -348,7 +346,6 @@ public enum Platinum implements LogicCardInfo {
               discardSelfEnergyAfterDamage C, C
             }
           }
-
         };
       case DELCATTY_4:
         return evolution (this, from:"Skitty", hp:HP090, type:COLORLESS, retreatCost:1) {
@@ -380,7 +377,6 @@ public enum Platinum implements LogicCardInfo {
               damage 60
             }
           }
-
         };
       case DIALGA_5:
         return basic (this, hp:HP100, type:METAL, retreatCost:3) {
@@ -406,7 +402,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case DIALGA_6:
         return basic (this, hp:HP100, type:METAL, retreatCost:2) {
@@ -448,7 +443,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case DIALGA_G_7:
         return basic (this, hp:HP100, type:METAL, retreatCost:2) {
@@ -480,7 +474,6 @@ public enum Platinum implements LogicCardInfo {
               damage 50
             }
           }
-
         };
       case GARDEVOIR_8:
         return evolution (this, from:"Kirlia", hp:HP120, type:PSYCHIC, retreatCost:1) {
@@ -524,7 +517,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case GIRATINA_9:
         return basic (this, hp:HP100, type:PSYCHIC, retreatCost:3) {
@@ -556,7 +548,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case GIRATINA_10:
         return basic (this, hp:HP100, type:PSYCHIC, retreatCost:3) {
@@ -588,7 +579,6 @@ public enum Platinum implements LogicCardInfo {
               damage 60
             }
           }
-
         };
       case MANECTRIC_11:
         return evolution (this, from:"Electrike", hp:HP090, type:LIGHTNING, retreatCost:0) {
@@ -624,7 +614,6 @@ public enum Platinum implements LogicCardInfo {
               attachEnergyFrom(type:L, my.deck, my.all)
             }
           }
-
         };
       case PALKIA_G_12:
         return basic (this, hp:HP100, type:WATER, retreatCost:2) {
@@ -647,7 +636,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case RAMPARDOS_13:
         return evolution (this, from:"Cranidos", hp:HP130, type:FIGHTING, retreatCost:1) {
@@ -704,7 +692,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case SHAYMIN_14:
         return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
@@ -730,7 +717,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case SHAYMIN_15:
         return basic (this, hp:HP080, type:GRASS, retreatCost:1) {
@@ -756,7 +742,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case SLAKING_16:
         return evolution (this, from:"Vigoroth", hp:HP150, type:COLORLESS, retreatCost:4) {
@@ -805,7 +790,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case WEAVILE_G_17:
         return basic (this, hp:HP080, type:DARKNESS, retreatCost:0) {
@@ -833,7 +817,6 @@ public enum Platinum implements LogicCardInfo {
               damage 10 + 10 * my.all.findAll{it.topPokemonCard.cardTypes.is(POKEMON_SP)}.size()
             }
           }
-
         };
       case ALTARIA_18:
         return evolution (this, from:"Swablu", hp:HP090, type:COLORLESS, retreatCost:1) {
@@ -888,7 +871,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case BANETTE_19:
         return evolution (this, from:"Shuppet", hp:HP090, type:PSYCHIC, retreatCost:1) {
@@ -911,6 +893,7 @@ public enum Platinum implements LogicCardInfo {
               assert self.cards.filterByType(ENERGY) : "You have no Energy cards to discard"
             }
             onAttack {
+              discardSelfEnergy C
               targeted (opp.active) {
                 def tmp = opp.active.damage;
                 opp.active.damage = self.damage;
@@ -932,7 +915,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case BASTIODON_20:
         return evolution (this, from:"Shieldon", hp:HP130, type:METAL, retreatCost:4) {
@@ -967,7 +949,6 @@ public enum Platinum implements LogicCardInfo {
               damage 30, self
             }
           }
-
         };
       case BEAUTIFLY_21:
         return evolution (this, from:"Silcoon", hp:HP120, type:GRASS, retreatCost:0) {
@@ -998,7 +979,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case BLISSEY_22:
         return evolution (this, from:"Chansey", hp:HP120, type:COLORLESS, retreatCost:2) {
@@ -1034,7 +1014,6 @@ public enum Platinum implements LogicCardInfo {
               damage 60, self
             }
           }
-
         };
       case DIALGA_23:
         return basic (this, hp:HP100, type:METAL, retreatCost:3) {
@@ -1060,7 +1039,6 @@ public enum Platinum implements LogicCardInfo {
               cantAttackNextTurn self
             }
           }
-
         };
       case DUGTRIO_24:
         return evolution (this, from:"Diglett", hp:HP090, type:FIGHTING, retreatCost:0) {
@@ -1097,7 +1075,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case DUSTOX_25:
         return evolution (this, from:"Cascoon", hp:HP130, type:PSYCHIC, retreatCost:0) {
@@ -1147,7 +1124,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case EMPOLEON_26:
         return evolution (this, from:"Prinplup", hp:HP130, type:WATER, retreatCost:2) {
@@ -1170,7 +1146,6 @@ public enum Platinum implements LogicCardInfo {
               cantUseAttack thisMove, self
             }
           }
-
         };
       case GIRATINA_27:
         return basic (this, hp:HP100, type:PSYCHIC, retreatCost:3) {
@@ -1207,7 +1182,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case GIRATINA_28:
         return basic (this, hp:HP110, type:PSYCHIC, retreatCost:2) {
@@ -1230,16 +1204,14 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case GOLDUCK_29:
         return evolution (this, from:"Psyduck", hp:HP090, type:WATER, retreatCost:0) {
           weakness L, PLUS20
           move "Swim", {
             text "30 damage. If your opponent has any [W] Energy attached to any of his or her Pokémon, you may do 30 damage to any 1 Benched Pokémon instead."
-            energyCost W
             onAttack {
-              if(opp.all.find{it.cards.filterByEnergyType(W)}) {
+              if (opp.all.find {it.cards.filterByEnergyType(W)}) {
                 damage 30, opp.all.select()
               } else {
                 damage 30
@@ -1262,7 +1234,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case GYARADOS_G_30:
         return basic (this, hp:HP110, type:WATER, retreatCost:3) {
@@ -1289,7 +1260,6 @@ public enum Platinum implements LogicCardInfo {
               damage 100 - 10 * self.numberOfDamageCounters
             }
           }
-
         };
       case INFERNAPE_31:
         return evolution (this, from:"Monferno", hp:HP110, type:FIRE, retreatCost:0) {
@@ -1325,7 +1295,6 @@ public enum Platinum implements LogicCardInfo {
               damage 30 + 10 * self.numberOfDamageCounters
             }
           }
-
         };
       case KRICKETUNE_32:
         return evolution (this, from:"Kricketot", hp:HP090, type:GRASS, retreatCost:1) {
@@ -1351,7 +1320,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case LICKILICKY_33:
         return evolution (this, from:"Lickitung", hp:HP120, type:COLORLESS, retreatCost:4) {
@@ -1378,7 +1346,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case LUDICOLO_34:
         return evolution (this, from:"Lombre", hp:HP120, type:GRASS, retreatCost:2) {
@@ -1424,7 +1391,6 @@ public enum Platinum implements LogicCardInfo {
               cantUseAttack thisMove, self
             }
           }
-
         };
       case LUVDISC_35:
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
@@ -1467,14 +1433,12 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case NINETALES_36:
         return evolution (this, from:"Vulpix", hp:HP090, type:FIRE, retreatCost:0) {
           weakness W, PLUS20
           move "Flame Bash", {
             text "Flip a coin until you get tails. Search your deck for a number of basic [R] Energy cards up to the number of heads and attach them to any of your Pokémon in any way you like. Shuffle your deck afterward."
-            energyCost R
             attackRequirement {
               assert my.deck : "Your deck is empty"
             }
@@ -1513,7 +1477,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case PALKIA_37:
         return basic (this, hp:HP100, type:WATER, retreatCost:2) {
@@ -1538,7 +1501,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case SHAYMIN_38:
         return basic (this, hp:HP080, type:GRASS, retreatCost:1) {
@@ -1561,7 +1523,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case TORTERRA_39:
         return evolution (this, from:"Grotle", hp:HP140, type:GRASS, retreatCost:4) {
@@ -1585,7 +1546,6 @@ public enum Platinum implements LogicCardInfo {
               applyAfterDamage ASLEEP
             }
           }
-
         };
       case TOXICROAK_G_40:
         return basic (this, hp:HP090, type:PSYCHIC, retreatCost:2) {
@@ -1611,7 +1571,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case BRONZONG_G_41:
         return basic (this, hp:HP090, type:METAL, retreatCost:3) {
@@ -1643,7 +1602,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case CACTURNE_42:
         return evolution (this, from:"Cacnea", hp:HP090, type:GRASS, retreatCost:2) {
@@ -1677,7 +1635,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case CARNIVINE_43:
         return basic (this, hp:HP080, type:GRASS, retreatCost:2) {
@@ -1714,7 +1671,6 @@ public enum Platinum implements LogicCardInfo {
               damage 30
             }
           }
-
         };
       case CASCOON_44:
         return evolution (this, from:"Wurmple", hp:HP080, type:GRASS, retreatCost:2) {
@@ -1740,7 +1696,6 @@ public enum Platinum implements LogicCardInfo {
               applyAfterDamage POISONED
             }
           }
-
         };
       case COMBUSKEN_45:
         return evolution (this, from:"Torchic", hp:HP080, type:FIRE, retreatCost:1) {
@@ -1760,7 +1715,6 @@ public enum Platinum implements LogicCardInfo {
               damage 60
             }
           }
-
         };
       case CRANIDOS_46:
         return evolution (this, from:"Skull Fossil", hp:HP080, type:FIGHTING, retreatCost:1) {
@@ -1785,7 +1739,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case CROBAT_G_47:
         return basic (this, hp:HP080, type:PSYCHIC, retreatCost:0) {
@@ -1807,7 +1760,6 @@ public enum Platinum implements LogicCardInfo {
               extraPoison 1
             }
           }
-
         };
       case FLAAFFY_48:
         return evolution (this, from:"Flaaffy", hp:HP080, type:LIGHTNING, retreatCost:1) {
@@ -1830,12 +1782,16 @@ public enum Platinum implements LogicCardInfo {
             energyCost L, C
             onAttack {
               damage 30
-              def card = defending.cards.select("Choose an Energy card to move",cardTypeFilter(ENERGY))
-              def tar = opp.bench.select("Choose the pokémon to receive the energy")
-              energySwitch(defending,tar,card)
+
+              if (defending.cards.filterByType(ENERGY) && opp.bench.notEmpty) {
+                def energyCard = defending.cards.select("Choose an Energy card to move", cardTypeFilter(ENERGY)).first()
+                def tar = opp.bench.select("Choose the Pokémon to receive the energy")
+                afterDamage {
+                  energySwitch(defending, tar, energyCard)
+                }
+              }
             }
           }
-
         };
       case GROTLE_49:
         return evolution (this, from:"Turtwig", hp:HP090, type:GRASS, retreatCost:3) {
@@ -1856,7 +1812,6 @@ public enum Platinum implements LogicCardInfo {
               damage 60
             }
           }
-
         };
       case HOUNDOOM_G_50:
         return basic (this, hp:HP090, type:FIRE, retreatCost:1) {
@@ -1897,7 +1852,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case KIRLIA_51:
         return evolution (this, from:"Ralts", hp:HP080, type:PSYCHIC, retreatCost:1) {
@@ -1917,7 +1871,6 @@ public enum Platinum implements LogicCardInfo {
               damage 60
             }
           }
-
         };
       case LOMBRE_52:
         return evolution (this, from:"Lotad", hp:HP080, type:GRASS, retreatCost:1) {
@@ -1940,7 +1893,6 @@ public enum Platinum implements LogicCardInfo {
               damage 60
             }
           }
-
         };
       case LUCARIO_53:
         return evolution (this, from:"Riolu", hp:HP090, type:METAL, retreatCost:0) {
@@ -1962,7 +1914,6 @@ public enum Platinum implements LogicCardInfo {
               damage 20 + 10 * my.bench.size()
             }
           }
-
         };
       case MIGHTYENA_54:
         return evolution (this, from:"Poochyena", hp:HP090, type:DARKNESS, retreatCost:0) {
@@ -2002,7 +1953,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case MISMAGIUS_55:
         return evolution (this, from:"Misdreavus", hp:HP090, type:PSYCHIC, retreatCost:1) {
@@ -2026,7 +1976,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case MONFERNO_56:
         return evolution (this, from:"Chimchar", hp:HP080, type:FIRE, retreatCost:0) {
@@ -2036,9 +1985,7 @@ public enum Platinum implements LogicCardInfo {
             energyCost R, R
             onAttack {
               damage 40
-              flip {
-                discardSelfEnergyAfterDamage R
-              }
+              flip 1, {}, { discardSelfEnergyAfterDamage R }
             }
           }
           move "Paralyzing Gaze", {
@@ -2046,21 +1993,18 @@ public enum Platinum implements LogicCardInfo {
             energyCost C, C
             onAttack {
               damage 20
-              flip {
-                apply PARALYZED
-              }
+              flipThenApplySC(PARALYZED)
             }
           }
-
         };
       case MUK_57:
         return evolution (this, from:"Grimer", hp:HP100, type:PSYCHIC, retreatCost:3) {
           weakness P, PLUS20
           pokeBody "Sludge Cell", {
             text "If Muk remains affected by any Special Conditions between turns, remove 2 damage counters from Muk."
-            delayedA {
+            delayedA(priority: BEFORE_LAST) {
               before BEGIN_TURN, {
-                if(self.specialCondition) {
+                if (self.specialConditions) {
                   heal 20, self, Source.POKEBODY
                 }
               }
@@ -2085,13 +2029,12 @@ public enum Platinum implements LogicCardInfo {
             energyCost P, P, C
             onAttack {
               damage 50
-              if(self.isSPC(POISONED)) {
+              if (self.isSPC(POISONED)) {
                 damage 20
                 applyAfterDamage CONFUSED
               }
             }
           }
-
         };
       case OCTILLERY_58:
         return evolution (this, from:"Remoraid", hp:HP090, type:WATER, retreatCost:2) {
@@ -2117,7 +2060,6 @@ public enum Platinum implements LogicCardInfo {
               sandAttack(thisMove)
             }
           }
-
         };
       case PRINPLUP_59:
         return evolution (this, from:"Piplup", hp:HP080, type:WATER, retreatCost:1) {
@@ -2139,7 +2081,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case PROBOPASS_60:
         return evolution (this, from:"Nosepass", hp:HP090, type:FIGHTING, retreatCost:3) {
@@ -2162,7 +2103,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case SEVIPER_61:
         return basic (this, hp:HP080, type:PSYCHIC, retreatCost:1) {
@@ -2191,12 +2131,9 @@ public enum Platinum implements LogicCardInfo {
             onAttack {
               damage 40
               applyAfterDamage POISONED
-              flip {
-                PARALYZED
-              }
+              flipThenApplySC PARALYZED
             }
           }
-
         };
       case SHIELDON_62:
         return evolution (this, from:"Armor Fossil", hp:HP080, type:METAL, retreatCost:1) {
@@ -2238,7 +2175,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case SILCOON_63:
         return evolution (this, from:"Wurmple", hp:HP080, type:GRASS, retreatCost:2) {
@@ -2266,7 +2202,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case VIGOROTH_64:
         return evolution (this, from:"Slakoth", hp:HP080, type:COLORLESS, retreatCost:1) {
@@ -2291,7 +2226,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case WARTORTLE_65:
         return evolution (this, from:"Squirtle", hp:HP080, type:WATER, retreatCost:1) {
@@ -2311,12 +2245,11 @@ public enum Platinum implements LogicCardInfo {
             onAttack {
               damage 30
               damage 10, self
-              flip {
-                preventAllDamageNextTurn()
+              afterDamage {
+                flip { preventAllDamageNextTurn() }
               }
             }
           }
-
         };
       case ZANGOOSE_66:
         return basic (this, hp:HP080, type:COLORLESS, retreatCost:1) {
@@ -2361,7 +2294,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case CACNEA_67:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -2384,7 +2316,6 @@ public enum Platinum implements LogicCardInfo {
               flip 2, {}, {}, [2:{multiSelect(opp.all, 1, 2, "Choose up to 2 of your opponent's Pokémon").each{damage 10, it}},1:{damage 10, opp.all.select()}]
             }
           }
-
         };
       case CARNIVINE_68:
         return basic (this, hp:HP080, type:GRASS, retreatCost:2) {
@@ -2409,7 +2340,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case CHANSEY_69:
         return basic (this, hp:HP090, type:COLORLESS, retreatCost:2) {
@@ -2438,7 +2368,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case CHIMCHAR_70:
         return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
@@ -2457,7 +2386,6 @@ public enum Platinum implements LogicCardInfo {
               damage 20
             }
           }
-
         };
       case COMBEE_71:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
@@ -2483,20 +2411,17 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case DIGLETT_72:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness W
           resistance L, MINUS20
           move "Dig Under", {
-            text "Choose 1 of your opponent’s Benched Pokémon. This attack does 10 damage to that Pokémon. This attack’s damage isn’t affected by Weakness or Resistance."
+            text "Choose 1 of your opponent’s Pokémon. This attack does 10 damage to that Pokémon. This attack’s damage isn’t affected by Weakness or Resistance."
             energyCost F
-            attackRequirement {
-              assert opp.bench : "Your opponent has no Benched Pokémon"
-            }
+            attackRequirement {}
             onAttack {
-              damage 10, opp.bench.select()
+              noWrDamage 10, opp.all.select("Deal damage to?")
             }
           }
           move "Trip Over", {
@@ -2509,7 +2434,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case DUNSPARCE_73:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
@@ -2520,16 +2444,13 @@ public enum Platinum implements LogicCardInfo {
             callForFamily(basic:true, 1, delegate)
           }
           move "Spring Out", {
-            text "Choose 1 of your opponent’s Benched Pokémon. This attack does 10 damage to that Pokémon."
+            text "Choose 1 of your opponent’s Pokémon. This attack does 10 damage to that Pokémon."
             energyCost C
-            attackRequirement {
-              assert opp.bench : "Your opponent has no Benched Pokémon"
-            }
+            attackRequirement {}
             onAttack {
-              damage 10, opp.bench.select()
+              damage 10, opp.all.select("Deal damage to?")
             }
           }
-
         };
       case ELECTRIKE_74:
         return basic (this, hp:HP050, type:LIGHTNING, retreatCost:0) {
@@ -2539,7 +2460,7 @@ public enum Platinum implements LogicCardInfo {
             text "Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
             energyCost C
             attackRequirement {
-              switchYourOpponentsBenchedWithActive()
+              assert opp.bench : "Opponent's Bench is empty"
             }
             onAttack {
               whirlwind()
@@ -2555,7 +2476,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case GRIMER_75:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:2) {
@@ -2572,7 +2492,6 @@ public enum Platinum implements LogicCardInfo {
               apply POISONED
             }
           }
-
         };
       case HAPPINY_76:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
@@ -2601,7 +2520,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case HONCHKROW_G_77:
         return basic (this, hp:HP080, type:DARKNESS, retreatCost:1) {
@@ -2629,7 +2547,6 @@ public enum Platinum implements LogicCardInfo {
               damage 20, tar
             }
           }
-
         };
       case KRICKETOT_78:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
@@ -2649,7 +2566,6 @@ public enum Platinum implements LogicCardInfo {
               damage 20
             }
           }
-
         };
       case LAPRAS_79:
         return basic (this, hp:HP080, type:WATER, retreatCost:2) {
@@ -2671,7 +2587,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case LICKITUNG_80:
         return basic (this, hp:HP090, type:COLORLESS, retreatCost:3) {
@@ -2691,7 +2606,6 @@ public enum Platinum implements LogicCardInfo {
               discardRandomCardFromOpponentsHand()
             }
           }
-
         };
       case LOTAD_81:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -2711,10 +2625,11 @@ public enum Platinum implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
             }
             onAttack {
-              attachEnergyFrom(type: G, my.deck, my.all)
+              flip {
+                attachEnergyFrom(type: G, my.deck, my.all)
+              }
             }
           }
-
         };
       case MAREEP_82:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
@@ -2739,7 +2654,6 @@ public enum Platinum implements LogicCardInfo {
               reduceDamageNextTurn(hp(10), thisMove)
             }
           }
-
         };
       case MISDREAVUS_83:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
@@ -2764,7 +2678,6 @@ public enum Platinum implements LogicCardInfo {
               damage 10
             }
           }
-
         };
       case NOSEPASS_84:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
@@ -2786,7 +2699,6 @@ public enum Platinum implements LogicCardInfo {
               damage 20
             }
           }
-
         };
       case PIPLUP_85:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
@@ -2808,7 +2720,6 @@ public enum Platinum implements LogicCardInfo {
               damage 20
             }
           }
-
         };
       case POOCHYENA_86:
         return basic (this, hp:HP050, type:DARKNESS, retreatCost:1) {
@@ -2828,7 +2739,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case PSYDUCK_87:
         return basic (this, hp:HP060, type:WATER, retreatCost:2) {
@@ -2861,7 +2771,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case PURUGLY_G_88:
         return basic (this, hp:HP090, type:COLORLESS, retreatCost:3) {
@@ -2891,7 +2800,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case RALTS_89:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
@@ -2911,7 +2819,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case REMORAID_90:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
@@ -2932,7 +2839,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case RIOLU_91:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
@@ -2954,7 +2860,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case SHUPPET_92:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
@@ -2980,7 +2885,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case SKITTY_93:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
@@ -3005,7 +2909,6 @@ public enum Platinum implements LogicCardInfo {
               damage 10, self
             }
           }
-
         };
       case SKUNTANK_G_94:
         return basic (this, hp:HP080, type:PSYCHIC, retreatCost:2) {
@@ -3035,7 +2938,6 @@ public enum Platinum implements LogicCardInfo {
               sandAttack(thisMove)
             }
           }
-
         };
       case SLAKOTH_95:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
@@ -3058,7 +2960,6 @@ public enum Platinum implements LogicCardInfo {
               cantAttackNextTurn self
             }
           }
-
         };
       case SQUIRTLE_96:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
@@ -3077,7 +2978,6 @@ public enum Platinum implements LogicCardInfo {
               damage 20
             }
           }
-
         };
       case SWABLU_97:
         return basic (this, hp:HP040, type:COLORLESS, retreatCost:0) {
@@ -3098,7 +2998,6 @@ public enum Platinum implements LogicCardInfo {
               switchYourActive(may:true)
             }
           }
-
         };
       case TAUROS_98:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
@@ -3123,7 +3022,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case TORCHIC_99:
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
@@ -3144,7 +3042,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case TORKOAL_100:
         return basic (this, hp:HP080, type:FIRE, retreatCost:2) {
@@ -3171,7 +3068,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case TURTWIG_101:
         return basic (this, hp:HP060, type:GRASS, retreatCost:2) {
@@ -3194,7 +3090,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case VULPIX_102:
         return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
@@ -3220,7 +3115,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case WURMPLE_103:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -3242,7 +3136,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case BROKEN_TIME_SPACE_104:
         return stadium (this) {
@@ -3509,8 +3402,8 @@ public enum Platinum implements LogicCardInfo {
             def pcs = my.all.findAll { it.topPokemonCard.cardTypes.is(POKEMON_SP) }.select("Which Pokémon SP to return to hand?")
             scoopUpPokemon(pcs, delegate)
           }
-          playRequirement{
-            my.bench.any { it.topPokemonCard.cardTypes.is(POKEMON_SP) }
+          playRequirement {
+            assert my.all.any { it.topPokemonCard.cardTypes.is(POKEMON_SP) } : "No Pokémon SP cards in play"
           }
         };
       case ARMOR_FOSSIL_119:
@@ -3572,10 +3465,13 @@ public enum Platinum implements LogicCardInfo {
             }
           }
           move "Sniping Tail", {
-            text "40 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
+            text "40 damage. Does 40 damage to 1 of your opponent's Benched Pokemon.  (Don't apply Weakness and Resistance for Benched Pokemon) The Defending Pokémon can’t retreat during your opponent’s next turn."
             energyCost D, D, C, C
             onAttack {
               damage 40
+              if (opp.bench) {
+                damage 40, opp.bench.select("Deal damage to?")
+              }
               cantRetreat defending
             }
           }
@@ -3663,7 +3559,7 @@ public enum Platinum implements LogicCardInfo {
           weakness R
           resistance W, MINUS20
           pokeBody "Thankfulness", {
-            text "Each of your Pokémon (excluding any Shaymin) gets +40 HP. You can’t use more than 1 Thankfulness Poké-Body each turn."
+            text "Each of your [G] Pokémon (excluding any Shaymin) gets +40 HP. You can’t use more than 1 Thankfulness Poké-Body each turn."
             delayedA {
               def target = []
               def source = []
@@ -3673,16 +3569,16 @@ public enum Platinum implements LogicCardInfo {
               onActivate {
                 eff = getter (GET_FULL_HP) {h->
                   def pcs = h.effect.target
-                  if (pcs.owner == self.owner && !pcs.name.contains("Shaymin")){
+                  if (pcs.owner == self.owner && pcs.name != "Shaymin" && pcs.types.contains(G)) {
                     target = bg.em().retrieveObject("Thankfulness_target")
                     source = bg.em().retrieveObject("Thankfulness_source")
-                    if(!target.contains(pcs)){
+                    if (!target.contains(pcs)) {
                       h.object += hp(40)
                       target.add(pcs)
                       bg.em().storeObject("Thankfulness_target", target)
                       source.add(self)
                       bg.em().storeObject("Thankfulness_source", source)
-                    } else if(source.get(target.indexOf(pcs)) == self){
+                    } else if (source.get(target.indexOf(pcs)) == self) {
                       h.object += hp(40)
                     }
                   }
@@ -3781,7 +3677,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case HITMONCHAN_129:
         return basic (this, hp:HP070, type:FIGHTING, retreatCost:2) {
@@ -3800,7 +3695,6 @@ public enum Platinum implements LogicCardInfo {
               damage 40
             }
           }
-
         };
       case SCYTHER_130:
         return basic (this, hp:HP070, type:GRASS, retreatCost:0) {
@@ -3820,7 +3714,6 @@ public enum Platinum implements LogicCardInfo {
               damage 30
             }
           }
-
         };
       case LOTAD_SH4:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
@@ -3851,7 +3744,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case SWABLU_SH5:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
@@ -3896,7 +3788,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       case VULPIX_SH6:
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
@@ -3937,7 +3828,6 @@ public enum Platinum implements LogicCardInfo {
               }
             }
           }
-
         };
       default:
         return null;
