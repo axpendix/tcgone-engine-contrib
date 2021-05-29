@@ -2725,11 +2725,11 @@ public enum MajesticDawn implements LogicCardInfo {
               checkNoSPC()
               assert my.deck : "Your deck is empty"
               powerUsed()
-              def min = Math.min(2, my.deck.size())
-              def cards = my.deck.search(min:min, max:2, "Search your deck for any 2 cards", {true})
-              rearrange(cards)
+              def list = my.deck.select(count:2)
+              list = rearrange(list)
+              my.deck.removeAll(list)
               shuffleDeck()
-              cards.moveTo(addToTop:true,hidden: true, my.deck)
+              my.deck.addAll(0, list)
             }
           }
         };
