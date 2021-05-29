@@ -3569,7 +3569,7 @@ public enum Platinum implements LogicCardInfo {
               onActivate {
                 eff = getter (GET_FULL_HP) {h->
                   def pcs = h.effect.target
-                  if (pcs.owner == self.owner && !pcs.name.contains("Shaymin") && pcs.types.contains(G)) {
+                  if (pcs.owner == self.owner && pcs.name != "Shaymin" && pcs.types.contains(G)) {
                     target = bg.em().retrieveObject("Thankfulness_target")
                     source = bg.em().retrieveObject("Thankfulness_source")
                     if (!target.contains(pcs)) {
