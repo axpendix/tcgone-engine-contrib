@@ -295,7 +295,7 @@ public enum SecretWonders implements LogicCardInfo {
         };
       case CHARIZARD_3:
         return evolution (this, from:"Charmeleon", hp:HP130, type:FIRE, retreatCost:3) {
-          weakness W
+          weakness W, PLUS40
           resistance F, MINUS20
           pokeBody "Fury Blaze", {
             text "If your opponent has 3 or less Prize cards left, each of Charizard’s attacks does 50 more damage to the Active Pokémon ."
@@ -412,7 +412,7 @@ public enum SecretWonders implements LogicCardInfo {
         };
       case GALLADE_6:
         return evolution (this, from:"Kirlia", hp:HP130, type:FIGHTING, retreatCost:2) {
-          weakness P
+          weakness P, PLUS30
           move "Sonic Blade", {
             text "Put damage counters on the Defending Pokémon until it is 50 HP away from being Knocked Out. If you do, your opponent switchs the Defending Pokémon with 1 of this or her Benched Pokémon."
             energyCost F, C
@@ -1129,7 +1129,7 @@ public enum SecretWonders implements LogicCardInfo {
         };
       case GOLEM_29:
         return evolution (this, from:"Graveler", hp:HP130, type:FIGHTING, retreatCost:4) {
-          weakness G
+          weakness G, PLUS30
           resistance L, MINUS20
           move "Double Throw", {
             text "Choose 2 of your opponent’s Pokémon. This attack does 30 damage to each of them."
@@ -1626,7 +1626,7 @@ f
         };
       case BRELOOM_45:
         return evolution (this, from:"Shroomish", hp:HP100, type:GRASS, retreatCost:2) {
-          weakness R
+          weakness R, PLUS30
           move "Darin Punch", {
             text "40 damage. Remove from Breloom a number of damage counters equal to the amount of Energy attached to the Defending Pokémon."
             energyCost F, C
@@ -2021,7 +2021,7 @@ f
         };
       case QUAGSIRE_60:
         return evolution (this, from:"Wooper", hp:HP090, type:WATER, retreatCost:3) {
-          weakness G
+          weakness G, PLUS30
           resistance L, MINUS20
           pokePower "Aqua Healing", {
             text "Once during your turn , if Quagsire is your Active Pokémon and the Defending Pokémon has any Energy attached to it, you may remove 3 damage counters from Quagsire."
@@ -2300,7 +2300,7 @@ f
         };
       case UNOWN_X_71:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
-          weakness P
+          weakness P, PLUS10
           pokePower "X-RAY", {
             text "Once during your turn , if you have Unown X on your Bench, you may look at the top card of your opponent’s deck and put it back on top of his or her deck."
             actionA {
@@ -2945,7 +2945,7 @@ f
         };
       case PHANPY_98:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
-          weakness W
+          weakness W, PLUS10
           resistance L, MINUS20
           move "Flail", {
             text "10× damage. Does 10 damage times the number of damage counters on Phanpy."
