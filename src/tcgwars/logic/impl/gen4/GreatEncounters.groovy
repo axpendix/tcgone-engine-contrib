@@ -1972,6 +1972,7 @@ public enum GreatEncounters implements LogicCardInfo {
             text "Once during your turn , if Caterpie is your Active Pokémon, you may flip a coin, if heads search your deck for a card that evolves from Caterpie and put it onto Caterpie. (This counts as evolving Caterpie.) Shuffle your deck afterward. This power can't be used if Caterpie is affected by a Special Condition."
             actionA {
               assert my.deck : "Your Deck is empty"
+              assert self.active : "$self is not your Active Pokémon"
               checkLastTurn()
               powerUsed()
               flip {
