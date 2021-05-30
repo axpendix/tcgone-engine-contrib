@@ -175,7 +175,7 @@ public enum BattleStyles implements LogicCardInfo {
   SINGLE_STRIKE_SCROLL_OF_SCORN_133 ("Single Strike Scroll of Scorn", "133", Rarity.UNCOMMON, [TRAINER, ITEM, POKEMON_TOOL, SINGLE_STRIKE]),
   SINGLE_STRIKE_STYLE_MUSTARD_134 ("Single Strike Style Mustard", "134", Rarity.UNCOMMON, [TRAINER, SUPPORTER, SINGLE_STRIKE]),
   SORDWARD_SHIELBERT_135 ("Sordward & Shielbert", "135", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-  TOOL_JAMMER_136 ("Tool Jammer", "136", Rarity.UNCOMMON, [TRAINER, ITEM, POKEMON_TOOL, NOT_IMPLEMENTED]),
+  TOOL_JAMMER_136 ("Tool Jammer", "136", Rarity.UNCOMMON, [TRAINER, ITEM, POKEMON_TOOL]),
   TOWER_OF_DARKNESS_137 ("Tower of Darkness", "137", Rarity.UNCOMMON, [TRAINER, STADIUM, SINGLE_STRIKE]),
   TOWER_OF_WATERS_138 ("Tower of Waters", "138", Rarity.UNCOMMON, [TRAINER, STADIUM, RAPID_STRIKE]),
   URN_OF_VITALITY_139 ("Urn of Vitality", "139", Rarity.UNCOMMON, [TRAINER, ITEM, SINGLE_STRIKE]),
@@ -2958,12 +2958,84 @@ public enum BattleStyles implements LogicCardInfo {
       case TOOL_JAMMER_136:
       return pokemonTool (this) {
         text "As long as the Pokémon this card is attached to is in the Active Spot, Pokémon Tools attached to your opponent's Active Pokémon have no effect, except for Tool Jammer."
+        def eff
+        def deactivateEffect
+        def ensureOnlyActiveAffected
         onPlay {reason->
-          // TODO
+          eff = delayed {
+            def disable = { PokemonToolCard card, pcs ->
+              if (card.name == "Tool Jammer" || !pcs.active || card.player == self?.owner)
+                return
+              def dset = bg.em().retrieveObject("$self.owner Tool Jammer dset") as Set
+              if (!dset.contains(card)) {
+                card.disable bg, pcs
+                dset.add card
+              }
+            }
+
+            def activateEffect = {
+              keyStore("Tool Jammer", thisCard, 1)
+              def count = (bg.em().retrieveObject("$self.owner Tool Jammer count") ?: 0) + 1
+              if (count == 1) {
+                def pcs = self.owner.opposite.pbg.active
+                def dset = bg.em().retrieveObject("$self.owner Tool Jammer dset") as Set ?: [] as Set
+                pcs.cards.filterByType(POKEMON_TOOL).each { PokemonToolCard card ->
+                  if (!dset.contains(card)) {
+                    card.disable(bg, pcs)
+                    dset.add(card)
+                  }
+                }
+                bg.em().storeObject("$self.owner Tool Jammer dset", dset)
+              }
+              bg.em().storeObject("$self.owner Tool Jammer count", count)
+            }
+
+            deactivateEffect = {
+              keyStore("Tool Jammer", thisCard, 0)
+              def count = (bg.em().retrieveObject("$self.owner Tool Jammer count") ?: 0) - 1
+              if (count == 0) {
+                def pcs = self.owner.opposite.pbg.active
+                def dset = bg.em().retrieveObject("$self.owner Tool Jammer dset") as Set
+                pcs.cards.filterByType(POKEMON_TOOL).each { PokemonToolCard card ->
+                  if (dset.contains(card)) {
+                    card.play(bg, pcs)
+                    dset.remove(card)
+                  }
+                }
+              }
+              if (count >= 0) bg.em().storeObject("$self.owner Tool Jammer count", count)
+            }
+
+            ensureOnlyActiveAffected = {
+              def dset = bg.em().retrieveObject("$self.owner Tool Jammer dset") as Set
+              dset.each { PokemonToolCard card ->
+                if (opp.active.cards.contains(card))
+                  return
+                def pcs = card.findPCS()
+                if (pcs) card.play(bg, pcs)
+                dset.remove(card)
+              }
+            }
+
+            def checkEffect = {
+              if (self.active && !keyStore("Tool Jammer", thisCard, null)) {
+                activateEffect()
+              }
+              else if (!self.active && keyStore("Tool Jammer", thisCard, null)) {
+                deactivateEffect()
+              }
+            }
+
+            after ATTACH_POKEMON_TOOL, { disable ef.card, ef.resolvedTarget }
+            after SWITCH_OUT, { checkEffect(); ensureOnlyActiveAffected() }
+            after FALL_BACK, { checkEffect(); ensureOnlyActiveAffected() }
+            register { checkEffect() }
+          }
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          deactivateEffect()
+          ensureOnlyActiveAffected()
+          eff.unregister()
         }
       };
       case TOWER_OF_DARKNESS_137:
