@@ -3463,16 +3463,18 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 50
-              def cardsDiscarded = 0
-              if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player != self.owner){
-                discard bg.stadiumInfoStruct.stadiumCard
-                cardsDiscarded += 1
+              afterDamage {
+                def cardsDiscarded = 0
+                if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player != self.owner){
+                  discard bg.stadiumInfoStruct.stadiumCard
+                  cardsDiscarded += 1
+                }
+                opp.all.findAll {it.cards.hasType(POKEMON_TOOL)}.each{
+                  it.cards.filterByType(POKEMON_TOOL).discard()
+                  cardsDiscarded += 1
+                }
+                if (cardsDiscarded) preventAllEffectsNextTurn()
               }
-              opp.all.findAll {it.cards.hasType(POKEMON_TOOL)}.each{
-                it.cards.filterByType(POKEMON_TOOL).discard()
-                cardsDiscarded += 1
-              }
-              if (cardsDiscarded) preventAllEffectsNextTurn()
             }
           }
 
