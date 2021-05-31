@@ -296,7 +296,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               opp.all.each {
-                flip { damage 50 }
+                flip { damage 50, it }
               }
             }
           }
