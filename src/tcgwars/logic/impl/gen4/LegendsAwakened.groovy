@@ -666,7 +666,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               powerUsed()
 
               flipUntilTails {
-                attachEnergy(my.active,my.discard.filterByType(ENERGY).findAll {
+                attachEnergy(self,my.discard.filterByType(ENERGY).findAll {
                   it.asEnergyCard().containsTypePlain(R) || it.asEnergyCard().containsTypePlain(L)
                 }.select("Attach which Energy to Rayquaza?").first())
               }
