@@ -3187,7 +3187,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             if (chosenCard)
               chosenCard.showToOpponent("Chosen card").moveTo(my.hand)
 
-            shuffleDeck()
+            if (choice == 1 && my.deck) shuffleDeck()
           }
           playRequirement {
             assert ( my.deck.notEmpty || my.discard.any{isValidFossilCard(it)}) : "You have no cards in deck, and there are no cards in your discard pile that satisfy this supporter's requirements"
@@ -3463,16 +3463,19 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 50
-              def cardsDiscarded = 0
-              if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player != self.owner){
-                discard bg.stadiumInfoStruct.stadiumCard
-                cardsDiscarded += 1
+              afterDamage {
+                def cardsDiscarded = new CardList()
+                if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player != self.owner){
+                  cardsDiscarded.add(bg.stadiumInfoStruct.stadiumCard)
+                }
+                opp.all.findAll {it.cards.hasType(POKEMON_TOOL)}.each{
+                  cardsDiscarded.addAll(it.cards.filterByType(POKEMON_TOOL))
+                }
+                if (cardsDiscarded) {
+                  cardsDiscarded.discard()
+                  preventAllEffectsNextTurn()
+                }
               }
-              opp.all.findAll {it.cards.hasType(POKEMON_TOOL)}.each{
-                it.cards.filterByType(POKEMON_TOOL).discard()
-                cardsDiscarded += 1
-              }
-              if (cardsDiscarded) preventAllEffectsNextTurn()
             }
           }
 

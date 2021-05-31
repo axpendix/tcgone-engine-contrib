@@ -390,9 +390,10 @@ public enum GreatEncounters implements LogicCardInfo {
           weakness R, PLUS30
           resistance W, MINUS20
           pokeBody "Wild Growth", {
-            text "Each basic [G] Energy card attached to your Pokémon provides [G][G] Energy instead. You can't use more than 1 Wild Growth Poké-Body each turn."
+            text "Each basic [G] Energy card attached to your [G] Pokémon provides [G][G] Energy instead. You can't use more than 1 Wild Growth Poké-Body each turn."
             getterA GET_ENERGY_TYPES, { holder->
               if(holder.effect.target.owner == self.owner
+                && holder.effect.target.types.contains(G)
                 && holder.effect.card.containsTypePlain(G)
                 && holder.effect.card.cardTypes.is(BASIC_ENERGY)) {
                 holder.object = [[G] as Set,[G] as Set]
@@ -1971,6 +1972,7 @@ public enum GreatEncounters implements LogicCardInfo {
             text "Once during your turn , if Caterpie is your Active Pokémon, you may flip a coin, if heads search your deck for a card that evolves from Caterpie and put it onto Caterpie. (This counts as evolving Caterpie.) Shuffle your deck afterward. This power can't be used if Caterpie is affected by a Special Condition."
             actionA {
               assert my.deck : "Your Deck is empty"
+              assert self.active : "$self is not your Active Pokémon"
               checkLastTurn()
               powerUsed()
               flip {
@@ -2622,7 +2624,7 @@ public enum GreatEncounters implements LogicCardInfo {
         };
       case UNOWN_L_91:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
-          weakness P
+          weakness P, PLUS10
           pokeBody "LINK", {
             text "Unown L can use any attack from any Unown in play."
             getterA (GET_MOVE_LIST, self) { holder->

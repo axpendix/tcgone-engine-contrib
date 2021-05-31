@@ -200,7 +200,7 @@ public enum MajesticDawn implements LogicCardInfo {
   public Card getImplementation() {
     switch (this) {
       case ARTICUNO_1:
-        return basic (this, hp:HP100, type:WATER, retreatCost:3) {
+        return basic (this, hp:HP100, type:WATER, retreatCost:2) {
           weakness M
           resistance F, MINUS20
           pokePower "Freezing Screech", {
@@ -208,7 +208,7 @@ public enum MajesticDawn implements LogicCardInfo {
             onActivate {
               if(it==PLAY_FROM_HAND && confirm("Use Freezing Screech?")) {
                 powerUsed()
-                flip {apply PARALYZED}
+                flip {apply PARALYZED, opp.active, Source.POKEPOWER}
               }
             }
           }
@@ -1235,7 +1235,7 @@ public enum MajesticDawn implements LogicCardInfo {
         };
       case FEAROW_36:
         return evolution (this, from:"Spearow", hp:HP080, type:COLORLESS, retreatCost:0) {
-          weakness L
+          weakness L, PLUS20
           resistance F, MINUS20
           move "Fury Attack", {
             text "20× damage. Flip 3 coins. This attack does 20 damage times the number of heads."
@@ -1355,7 +1355,7 @@ public enum MajesticDawn implements LogicCardInfo {
         };
       case MONFERNO_41:
         return evolution (this, from:"Chimchar", hp:HP070, type:FIRE, retreatCost:0) {
-          weakness W
+          weakness W, PLUS20
           move "Fire Fang", {
             text "30 damage. The Defending Pokémon is now Burned."
             energyCost R
@@ -1379,7 +1379,7 @@ public enum MajesticDawn implements LogicCardInfo {
       case MOTHIM_42:
         return evolution (this, from:["Burmy","Burmy Plant Cloak","Burmy Sandy Cloak","Burmy Trash Cloak"], hp:HP080, type:GRASS, retreatCost:0) {
           weakness R, PLUS20
-          resistance F, MINUS30
+          resistance F, MINUS20
           pokeBody "Disturbance Scales", {
             text "Any damage done by attacks from your Pokémon to the Defending Pokémon isn’t affected by Resistance."
             delayedA {
@@ -1920,6 +1920,7 @@ public enum MajesticDawn implements LogicCardInfo {
               my.deck.search(max:my.bench.freeBenchCount,"Search your deck for as many Eevee as you like and put them onto your Bench",{it.name.contains("Eevee")}).each {
                 benchPCS(it)
               }
+              shuffleDeck()
             }
           }
           move "Lunge", {
@@ -1935,8 +1936,7 @@ public enum MajesticDawn implements LogicCardInfo {
         };
       case EEVEE_63:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
-          weakness F
-          resistance F
+          weakness F, PLUS10
           move "Gnaw", {
             text "10 damage. "
             energyCost ()
@@ -2100,8 +2100,7 @@ public enum MajesticDawn implements LogicCardInfo {
             onAttack {
               damage 20
               if(opp.bench) {
-                multiSelect(opp.bench,2,"Does 10 damage to 2 of your opponent's benched Pokémon").each {}
-                damage 10, it
+                multiSelect(opp.bench,2,"Does 10 damage to 2 of your opponent's benched Pokémon").each{damage 10, it}
               }
             }
           }
@@ -2632,7 +2631,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
             onAttack {
               def pcs = benchPCS(my.discard.select("Choose a Pokémon to put on your bench", cardTypeFilter(POKEMON)).first())
-              if(my.discard.filterByType(BASIC_ENERGY)) {
+              if(pcs != null && my.discard.filterByType(BASIC_ENERGY)) {
                 my.discard.select(min:0, max:3, "Attach up to 3 basic Energy cards to $pcs",cardTypeFilter(BASIC_ENERGY)).each {
                   attachEnergy(pcs, it)
                 }
@@ -2726,11 +2725,11 @@ public enum MajesticDawn implements LogicCardInfo {
               checkNoSPC()
               assert my.deck : "Your deck is empty"
               powerUsed()
-              def min = Math.min(2, my.deck.size())
-              def cards = my.deck.search(min:min, max:2, "Search your deck for any 2 cards", {true})
-              rearrange(cards)
+              def list = my.deck.select(count:2)
+              list = rearrange(list)
+              my.deck.removeAll(list)
               shuffleDeck()
-              cards.moveTo(addToTop:true,hidden: true, my.deck)
+              my.deck.addAll(0, list)
             }
           }
         };
