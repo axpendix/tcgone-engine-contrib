@@ -440,10 +440,11 @@ public enum LegendsAwakened implements LogicCardInfo {
               assert my.discard.findAll(basicEnergyFilter(W)) : "No [W] Energy cards in your discard"
             }
             onAttack {
-              def energies = my.discard.findAll(basicEnergyFilter(W)).select("Select [W] Energies")
-              damage 10 * energies.size()
+              def energies = my.discard.findAll(basicEnergyFilter(W))
+              def usedEnergies = energies.select(max: energies.size(), "Select [W] Energies")
+              damage 10 * usedEnergies.size()
 
-              energies.moveTo(my.deck)
+              usedEnergies.moveTo(my.deck)
               shuffleDeck()
             }
           }
