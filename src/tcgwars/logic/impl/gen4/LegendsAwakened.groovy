@@ -311,8 +311,14 @@ public enum LegendsAwakened implements LogicCardInfo {
             onAttack {
               self.cards.filterByEnergyType(P).select("Discard a [P] Energy to use this attack").discard()
               delayed {
+                def atk_pkm = null
+                before PROCESS_ATTACK_EFFECTS, {
+                  if (bg.currentTurn == self.owner.opposite) {
+                    atk_pkm = self.owner.opposite.pbg.active //needed to make ensure attacking pokemon is the target of Destiny Bond.
+                  }
+                }
                 before KNOCKOUT, self, {
-                  if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && self.owner.opposite.pbg.active.inPlay){
+                  if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && atk_pkm && atk_pkm.inPlay){
                     bc "Destiny Bond activates"
                     new Knockout(self.owner.opposite.pbg.active).run(bg)
                   }
@@ -332,7 +338,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 40
               applyAfterDamage ASLEEP
               opp.bench.each {
-                damage 10
+                directDamage 10
               }
             }
           }
