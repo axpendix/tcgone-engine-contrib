@@ -1061,7 +1061,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness R, '+20'
           resistance P, MINUS20
           pokeBody "Iron Shell", {
-            text "Whenever you attach a basic Energy card from your hand to Forretress (excluding effects of attacks), you may flip a coin. If tails, put 2 damage counters on each Pokémon (both yours and your opponent's) (excluding any Forretress)." //Errata issued to make coin flip mandatory.
+            text "Whenever you attach a basic Energy card from your hand to Forretress (excluding effects of attacks), you may flip a coin. If tails, put 2 damage counters on each Pokémon (both yours and your opponent's) (excluding any Forretress)." //Errata: https://compendium.pokegym.net/compendium-lvx.html#280
             delayedA {
               after ATTACH_ENERGY, self, {
                 if (ef.reason == PLAY_FROM_HAND && (ef.card as EnergyCard).cardTypes.is(BASIC_ENERGY))) {
