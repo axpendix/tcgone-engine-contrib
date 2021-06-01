@@ -869,12 +869,13 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
+              def pcs = defending
               if (opp.bench && confirm("Switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon?")) {
-                sw2 opp.bench.select("New Defending Pokémon")
+                pcs = opp.bench.select("New Defending Pokémon")
+                sw2 pcs
               }
 
               delayed {
-                def pcs = defending
                 before KNOCKOUT, pcs, {
                   if (self.numberOfDamageCounters && confirm("Remove all damage counters from Cradily?")) {
                     healAll self
