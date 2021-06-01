@@ -249,18 +249,15 @@ public enum LegendsAwakened implements LogicCardInfo {
               bg.em().storeObject("Form_Change",bg.turnCount)
               powerUsed()
 
-              def oldDeoxys = self.topPokemonCard
-              def newDeoxys = my.deck.search(min:0, max: 1, {
-                it.name == "Deoxys"
-              })
-
-              if (newDeoxys) {
-                newDeoxys.moveTo(self.cards)
-                my.deck.add(oldDeoxys)
-                self.cards.remove(oldDeoxys)
+              def selected = my.deck.search(max:1,"Select a Deoxys",{it.name.contains("Deoxys") && it.cardTypes.isNot(EX)}) //Deoxys cannot Form Change into Deoxys ex.
+              if (selected) {
+                def tpc = self.topPokemonCard
+                selected.moveTo(suppressLog: true, self.cards)
+                my.deck.add(tpc)
+                self.cards.remove(tpc)
+                new CheckAbilities().run(bg)
                 checkFaint()
               }
-
               shuffleDeck()
             }
           }
@@ -957,18 +954,15 @@ public enum LegendsAwakened implements LogicCardInfo {
               bg.em().storeObject("Form_Change",bg.turnCount)
               powerUsed()
 
-              def oldDeoxys = self.topPokemonCard
-              def newDeoxys = my.deck.search(min:0, max: 1, {
-                it.name == "Deoxys"
-              })
-
-              if (newDeoxys) {
-                newDeoxys.moveTo(self.cards)
-                my.deck.add(oldDeoxys)
-                self.cards.remove(oldDeoxys)
+              def selected = my.deck.search(max:1,"Select a Deoxys",{it.name.contains("Deoxys") && it.cardTypes.isNot(EX)}) //Deoxys cannot Form Change into Deoxys ex.
+              if (selected) {
+                def tpc = self.topPokemonCard
+                selected.moveTo(suppressLog: true, self.cards)
+                my.deck.add(tpc)
+                self.cards.remove(tpc)
+                new CheckAbilities().run(bg)
                 checkFaint()
               }
-
               shuffleDeck()
             }
           }
@@ -996,18 +990,15 @@ public enum LegendsAwakened implements LogicCardInfo {
               bg.em().storeObject("Form_Change",bg.turnCount)
               powerUsed()
 
-              def oldDeoxys = self.topPokemonCard
-              def newDeoxys = my.deck.search(min:0, max: 1, {
-                it.name == "Deoxys"
-              })
-
-              if (newDeoxys) {
-                newDeoxys.moveTo(self.cards)
-                my.deck.add(oldDeoxys)
-                self.cards.remove(oldDeoxys)
+              def selected = my.deck.search(max:1,"Select a Deoxys",{it.name.contains("Deoxys") && it.cardTypes.isNot(EX)}) //Deoxys cannot Form Change into Deoxys ex.
+              if (selected) {
+                def tpc = self.topPokemonCard
+                selected.moveTo(suppressLog: true, self.cards)
+                my.deck.add(tpc)
+                self.cards.remove(tpc)
+                new CheckAbilities().run(bg)
                 checkFaint()
               }
-
               shuffleDeck()
             }
           }
@@ -1034,18 +1025,15 @@ public enum LegendsAwakened implements LogicCardInfo {
               bg.em().storeObject("Form_Change",bg.turnCount)
               powerUsed()
 
-              def oldDeoxys = self.topPokemonCard
-              def newDeoxys = my.deck.search(min:0, max: 1, {
-                it.name == "Deoxys"
-              })
-
-              if (newDeoxys) {
-                newDeoxys.moveTo(self.cards)
-                my.deck.add(oldDeoxys)
-                self.cards.remove(oldDeoxys)
+              def selected = my.deck.search(max:1,"Select a Deoxys",{it.name.contains("Deoxys") && it.cardTypes.isNot(EX)}) //Deoxys cannot Form Change into Deoxys ex.
+              if (selected) {
+                def tpc = self.topPokemonCard
+                selected.moveTo(suppressLog: true, self.cards)
+                my.deck.add(tpc)
+                self.cards.remove(tpc)
+                new CheckAbilities().run(bg)
                 checkFaint()
               }
-
               shuffleDeck()
             }
           }
@@ -1757,15 +1745,13 @@ public enum LegendsAwakened implements LogicCardInfo {
               bg.em().storeObject("Temperament", bg.turnCount)
               powerUsed()
 
-              def oldCastform = self.topPokemonCard
-              def newCastform = my.deck.search(min:0, max: 1, {
-                it.name == "Castform"
-              })
-
-              if (newCastform) {
-                newCastform.moveTo(self.cards)
-                my.deck.add(oldCastform)
-                self.cards.remove(oldCastform)
+              def selected = my.deck.search(max:1,"Select a Castform",{it.name.contains("Castform")})
+              if (selected) {
+                def tpc = self.topPokemonCard
+                selected.moveTo(suppressLog: true, self.cards)
+                my.deck.add(tpc)
+                self.cards.remove(tpc)
+                new CheckAbilities().run(bg)
                 checkFaint()
               }
               shuffleDeck()
@@ -1799,15 +1785,13 @@ public enum LegendsAwakened implements LogicCardInfo {
               bg.em().storeObject("Temperament", bg.turnCount)
               powerUsed()
 
-              def oldCastform = self.topPokemonCard
-              def newCastform = my.deck.search(min:0, max: 1, {
-                it.name == "Castform"
-              })
-
-              if (newCastform) {
-                newCastform.moveTo(self.cards)
-                my.deck.add(oldCastform)
-                self.cards.remove(oldCastform)
+              def selected = my.deck.search(max:1,"Select a Castform",{it.name.contains("Castform")})
+              if (selected) {
+                def tpc = self.topPokemonCard
+                selected.moveTo(suppressLog: true, self.cards)
+                my.deck.add(tpc)
+                self.cards.remove(tpc)
+                new CheckAbilities().run(bg)
                 checkFaint()
               }
               shuffleDeck()
@@ -1835,15 +1819,13 @@ public enum LegendsAwakened implements LogicCardInfo {
               bg.em().storeObject("Temperament", bg.turnCount)
               powerUsed()
 
-              def oldCastform = self.topPokemonCard
-              def newCastform = my.deck.search(min:0, max: 1, {
-                it.name == "Castform"
-              })
-
-              if (newCastform) {
-                newCastform.moveTo(self.cards)
-                my.deck.add(oldCastform)
-                self.cards.remove(oldCastform)
+              def selected = my.deck.search(max:1,"Select a Castform",{it.name.contains("Castform")})
+              if (selected) {
+                def tpc = self.topPokemonCard
+                selected.moveTo(suppressLog: true, self.cards)
+                my.deck.add(tpc)
+                self.cards.remove(tpc)
+                new CheckAbilities().run(bg)
                 checkFaint()
               }
               shuffleDeck()
@@ -1872,15 +1854,13 @@ public enum LegendsAwakened implements LogicCardInfo {
               bg.em().storeObject("Temperament", bg.turnCount)
               powerUsed()
 
-              def oldCastform = self.topPokemonCard
-              def newCastform = my.deck.search(min:0, max: 1, {
-                it.name == "Castform"
-              })
-
-              if (newCastform) {
-                newCastform.moveTo(self.cards)
-                my.deck.add(oldCastform)
-                self.cards.remove(oldCastform)
+              def selected = my.deck.search(max:1,"Select a Castform",{it.name.contains("Castform")})
+              if (selected) {
+                def tpc = self.topPokemonCard
+                selected.moveTo(suppressLog: true, self.cards)
+                my.deck.add(tpc)
+                self.cards.remove(tpc)
+                new CheckAbilities().run(bg)
                 checkFaint()
               }
               shuffleDeck()
