@@ -30,6 +30,16 @@ public class CardList extends ArrayList<Card> {
     PERSISTENT, TEMPORARY;
   }
 
+  enum ZoneType {
+    HAND,
+    DISCARD,
+    DECK,
+    PRIZE,
+    LOST_ZONE,
+    SUPPORTER,
+    STADIUM
+  }
+
   private boolean autosort = false;
   protected CardListType type = CardListType.TEMPORARY;
   protected String persistentName;
@@ -143,7 +153,7 @@ public class CardList extends ArrayList<Card> {
   }
 
   public CardList filterByEnergyType(Type type) {
-    CardList newlist = new CardList().setType(CardListType.TEMPORARY)
+    CardList newlist = new CardList()
     for (Card c : this.filterByType(CardType.BASIC_ENERGY, CardType.SPECIAL_ENERGY)) {
       if (((EnergyCard) c).containsType(type)) {
         newlist.add(c);
@@ -153,7 +163,7 @@ public class CardList extends ArrayList<Card> {
   }
 
   public CardList filterByBasicEnergyType(Type type) {
-    CardList newlist = new CardList().setType(CardListType.TEMPORARY)
+    CardList newlist = new CardList()
     for (Card c : this.filterByType(CardType.BASIC_ENERGY)) {
       if (((BasicEnergyCard) c).containsTypePlain(type)) {
         newlist.add(c);
@@ -163,7 +173,7 @@ public class CardList extends ArrayList<Card> {
   }
 
   public CardList filterByType(CardType... type) {
-    CardList newlist = new CardList().setType(CardListType.TEMPORARY)
+    CardList newlist = new CardList()
     for (Card card : this) {
       if (card.getCardTypes().isIn(type)) {
         newlist.add(card);
@@ -173,7 +183,7 @@ public class CardList extends ArrayList<Card> {
   }
 
   public CardList filterByAllType(CardType... type) {
-    CardList newlist = new CardList().setType(CardListType.TEMPORARY)
+    CardList newlist = new CardList()
     for (Card card : this) {
       if (card.getCardTypes().isAll(type)) {
         newlist.add(card);
@@ -184,7 +194,7 @@ public class CardList extends ArrayList<Card> {
 
   public CardList filterByNameEquals(String... names) {
     List<String> namess = Arrays.asList(names);
-    CardList newlist = new CardList().setType(CardListType.TEMPORARY)
+    CardList newlist = new CardList()
     for (Card card : this) {
       if (namess.contains(card.getName())) {
         newlist.add(card);
@@ -195,7 +205,7 @@ public class CardList extends ArrayList<Card> {
 
   public CardList filterByNameLike(String... names) {
     List<String> namess = Arrays.asList(names);
-    CardList newlist = new CardList().setType(CardListType.TEMPORARY)
+    CardList newlist = new CardList()
     for (Card card : this) {
       for (String string : namess) {
         if (card.getName().contains(string)) {
@@ -211,7 +221,7 @@ public class CardList extends ArrayList<Card> {
   }
 
   public CardList getExcludedList(CardList exclusion) {
-    CardList newlist = new CardList(this).setType(CardListType.TEMPORARY)
+    CardList newlist = new CardList(this)
     for (Card card : exclusion) {
       newlist.remove(card);
     }
@@ -325,7 +335,6 @@ public class CardList extends ArrayList<Card> {
       .setCustomCardFilter(filter != null ? filter as CardSelectUIRequestBuilder.CustomCardFilter : null)
       .setCustomPassFilter(passFilter != null ?  passFilter as CardSelectUIRequestBuilder.CustomPassFilter : null)
       .setShowAsHidden(hidden))
-      .setType(CardListType.TEMPORARY)
     if (playerType != TcgStatics.bg().currentThreadPlayerType) {
       TcgStatics.unblock()
     }
@@ -353,12 +362,10 @@ public class CardList extends ArrayList<Card> {
 
   public CardList ownSelect(Battleground bg, String info, int min, int max, CardType... filters) {
     return bg.ownClient().selectCard(new CardSelectUIRequestBuilder().setCards(this).setMinMax(min, max).setInfo(info).addCardType(filters))
-      .setType(CardListType.TEMPORARY)
   }
 
   public CardList oppSelect(Battleground bg, String info, int min, int max, CardType... filters) {
     return bg.oppClient().selectCard(new CardSelectUIRequestBuilder().setCards(this).setMinMax(min, max).setInfo(info).addCardType(filters))
-      .setType(CardListType.TEMPORARY)
   }
 
   public CardList showToMe(Battleground bg = TcgStatics.bg(), String info) {
