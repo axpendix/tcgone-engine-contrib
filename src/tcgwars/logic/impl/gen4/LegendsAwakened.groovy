@@ -2,7 +2,6 @@ package tcgwars.logic.impl.gen4
 
 import tcgwars.logic.effect.gm.Attack
 import tcgwars.logic.impl.gen3.LegendMaker;
-
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
@@ -794,22 +793,25 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness P, '+20'
           pokePower "Time Walk", {
             text "Once during your turn, when you put Azelf from your hand onto your Bench, you may look at all of your face-down Prize cards. If you do, you may choose 1 Pokémon you find there, show it to your opponent, and put it into your hand. Then, choose 1 card in your hand and put it as a Prize card face down."
-            actionA {
+            onActivate { reason ->
+              if (reason == PLAY_FROM_HAND && self.benched && confirm("Use Set Up?")) {
               assert my.hand : "No cards in hand"
-              checkLastTurn()
               powerUsed()
 
-              def newPrize = my.hand.select(hidden: true, "Card to put into Prizes").first()
-
-              def tar = my.prizeCardSet.faceDownCards.select(hidden: false, "Choose a Prize card to replace with one in your hand.").first()
+              def tar = my.prizeCardSet.faceDownCards.select(hidden: false, min: 0, "Choose a Prize card to replace with one in your hand.", cardTypeFilter(POKEMON).first())
+                
+                if (tar) {
+              
+              def newPrize = my.hand.select(hidden: false, "Card to put into Prizes").first()
               my.hand.add(tar)
 
               def indexOfOldPrize = my.prizeCardSet.indexOf(tar)
               my.prizeCardSet.set(indexOfOldPrize, newPrize)
-              my.prizeCardSet.setVisible(newPrize, true)
               my.hand.remove(newPrize)
             }
           }
+        }
+      }
           move "Lock Up", {
             text "20 damage. The Defending Pokémon can't retreat during your opponent's next turn."
             energyCost P
