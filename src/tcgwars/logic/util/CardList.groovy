@@ -37,42 +37,57 @@ public class CardList extends ArrayList<Card> {
     PRIZE,
     LOST_ZONE,
     SUPPORTER,
-    STADIUM
+    STADIUM,
+    PCS;
+
+    String getName() {
+      org.apache.commons.lang.WordUtils.capitalizeFully(this.name(), "_".toCharArray()).replaceAll("_", " ");
+    }
+    String getRef(PlayerType playerType) {
+      String.format("Z:%s:%s", playerType, this.name())
+    }
   }
 
   private boolean autosort = false;
   protected CardListType type = CardListType.TEMPORARY;
   protected String persistentName;
+  protected String ref
+  protected ZoneType zoneType
 
   @PersistenceConstructor
   public CardList() {
     super();
   }
 
-  public CardList(Collection<? extends Card> c) {
-    super(c);
+  CardList(Collection<? extends Card> contents) {
+    super(contents)
   }
 
-  public CardList(Card... cards) {
-    this(Arrays.asList(cards));
+  CardList(Card... cards) {
+    this(Arrays.asList(cards))
   }
 
-  public CardList(String persistentName) {
-    this.persistentName = persistentName
+  CardList(Collection<? extends Card> contents, ZoneType zoneType, PlayerType playerType) {
+    super(contents)
     this.type = CardListType.PERSISTENT
+    this.zoneType = zoneType
+    this.persistentName = zoneType.name
+    this.ref = zoneType.getRef(playerType)
   }
 
-  public CardList(String persistentName, int initialSize) {
+  CardList(int initialSize, ZoneType zoneType, PlayerType playerType) {
     super(initialSize)
-    this.persistentName = persistentName
     this.type = CardListType.PERSISTENT
+    this.zoneType = zoneType
+    this.persistentName = zoneType.name
+    this.ref = zoneType.getRef(playerType)
   }
 
-  public CardList copy() {
+  CardList copy() {
     return new CardList(this);
   }
 
-  public CardList shuffledCopy() {
+  CardList shuffledCopy() {
     def shCopy = this.copy()
     shCopy.shuffle()
     return shCopy
@@ -82,12 +97,20 @@ public class CardList extends ArrayList<Card> {
     this.collect { it.fullName }
   }
 
+  String getRef() {
+    return ref
+  }
+
   String getPersistentName() {
     return persistentName
   }
 
   boolean isPersistent() {
     type == CardListType.PERSISTENT
+  }
+
+  ZoneType getZoneType() {
+    return zoneType
   }
 
   public CardList setAutosort(boolean autosort) {
@@ -322,7 +345,7 @@ public class CardList extends ArrayList<Card> {
     }
     CardList cards = this;
     boolean hidden = params.hidden ?: false
-    if (hidden && this.persistent && this.persistentName == "Hand") {
+    if (hidden && this.zoneType == ZoneType.HAND) {
       cards = this.shuffledCopy();
     }
     if (playerType != TcgStatics.bg().currentThreadPlayerType) {

@@ -1351,7 +1351,7 @@ class TcgStatics {
         to = to.select("To?")
       }
       def reason = OTHER
-      if(from.persistentName == "Hand"){
+      if(from.zoneType == CardList.ZoneType.HAND){
         reason = PLAY_FROM_HAND
       }
       list.each{

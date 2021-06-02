@@ -68,7 +68,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
   Map<Ability, PokemonCard> lastAbilities;
 
   public PokemonCardSet(PlayerType owner) {
-    set = new CardList("PCS");
+    set = new CardList(Collections.emptyList(), CardList.ZoneType.PCS, owner);
     set.setAutosort(true);
     damage = HP.HP000;
     this.owner = owner;

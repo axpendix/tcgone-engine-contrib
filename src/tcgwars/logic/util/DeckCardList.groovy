@@ -1,5 +1,6 @@
 package tcgwars.logic.util
 
+import tcgwars.logic.PlayerType
 import tcgwars.logic.card.Card
 import tcgwars.logic.groovy.TcgStatics
 import tcgwars.logic.client.CardSelectUIRequestBuilder
@@ -11,14 +12,12 @@ import tcgwars.logic.util.CardList
  * @since 25.12.2013
  */
 class DeckCardList extends CardList {
-  DeckCardList() {
-    this(new ArrayList<Card>())
+  DeckCardList(PlayerType playerType) {
+    this(playerType, new ArrayList<Card>())
   }
 
-  DeckCardList(Collection<? extends Card> c) {
-    super(c)
-    this.persistentName = "Deck"
-    this.type = CardListType.PERSISTENT
+  DeckCardList(PlayerType playerType, Collection<? extends Card> contents) {
+    super(contents, ZoneType.DECK, playerType)
   }
 
   def CardList search(Closure filter) {
