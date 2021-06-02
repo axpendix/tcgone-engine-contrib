@@ -2968,7 +2968,9 @@ public enum BattleStyles implements LogicCardInfo {
                 return
               def dset = bg.em().retrieveObject("$self.owner Tool Jammer dset") as Set
               if (!dset.contains(card)) {
-                card.disable bg, pcs
+                if (self.owner.opposite.pbg.active?.cards?.contains(card)) {
+                  card.disable bg, pcs
+                }
                 dset.add card
               }
             }
