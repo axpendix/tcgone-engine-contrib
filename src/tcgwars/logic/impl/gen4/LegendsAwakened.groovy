@@ -794,24 +794,16 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokePower "Time Walk", {
             text "Once during your turn, when you put Azelf from your hand onto your Bench, you may look at all of your face-down Prize cards. If you do, you may choose 1 Pokémon you find there, show it to your opponent, and put it into your hand. Then, choose 1 card in your hand and put it as a Prize card face down."
             onActivate { reason ->
-              if (reason == PLAY_FROM_HAND && self.benched && confirm("Use Set Up?")) {
-              assert my.hand : "No cards in hand"
-              powerUsed()
-
-              def tar = my.prizeCardSet.faceDownCards.select(hidden: false, min: 0, "Choose a Prize card to replace with one in your hand.", cardTypeFilter(POKEMON).first())
-                
+              if (reason == PLAY_FROM_HAND && self.benched && confirm("Use Time Walk?")) {
+                powerUsed()
+                def tar = my.prizeCardSet.faceDownCards.select(hidden: false, min: 0, "Choose a Pokemon card from your prizes.", cardTypeFilter(POKEMON))
                 if (tar) {
-              
-              def newPrize = my.hand.select(hidden: false, "Card to put into Prizes").first()
-              my.hand.add(tar)
-
-              def indexOfOldPrize = my.prizeCardSet.indexOf(tar)
-              my.prizeCardSet.set(indexOfOldPrize, newPrize)
-              my.hand.remove(newPrize)
+                  tar.moveTo(my.hand)
+                  my.hand.select("Card to put back into Prizes").moveTo(hidden:true, my.prizeCardSet)
+                }
+              }
             }
           }
-        }
-      }
           move "Lock Up", {
             text "20 damage. The Defending Pokémon can't retreat during your opponent's next turn."
             energyCost P
