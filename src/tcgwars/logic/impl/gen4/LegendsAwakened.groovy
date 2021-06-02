@@ -638,10 +638,8 @@ public enum LegendsAwakened implements LogicCardInfo {
             onAttack {
               damage 60
               def maxCount = Math.min(self.cards.filterByEnergyType(M).size(), opp.bench.size())
-              if (maxCount != 0) {
-                multiSelect(opp.bench, 1, maxCount, text).each {
-                  damage 20, it
-                }
+              multiSelect(opp.bench, 1, maxCount, text).each {
+                damage 20, it
               }
             }
           }
