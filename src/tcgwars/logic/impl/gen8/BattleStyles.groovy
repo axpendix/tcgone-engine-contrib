@@ -2964,11 +2964,13 @@ public enum BattleStyles implements LogicCardInfo {
         onPlay {reason->
           eff = delayed {
             def disable = { PokemonToolCard card, pcs ->
-              if (card.name == "Tool Jammer" || !pcs.active || card.player == self?.owner)
+              if (card.name == "Tool Jammer" || card.player == self?.owner)
                 return
               def dset = bg.em().retrieveObject("$self.owner Tool Jammer dset") as Set
               if (!dset.contains(card)) {
-                card.disable bg, pcs
+                if (self.owner.opposite.pbg.active?.cards?.contains(card)) {
+                  card.disable bg, pcs
+                }
                 dset.add card
               }
             }
@@ -2977,12 +2979,13 @@ public enum BattleStyles implements LogicCardInfo {
               keyStore("Tool Jammer", thisCard, 1)
               def count = (bg.em().retrieveObject("$self.owner Tool Jammer count") ?: 0) + 1
               if (count == 1) {
-                def pcs = self.owner.opposite.pbg.active
                 def dset = bg.em().retrieveObject("$self.owner Tool Jammer dset") as Set ?: [] as Set
-                pcs.cards.filterByType(POKEMON_TOOL).each { PokemonToolCard card ->
-                  if (!dset.contains(card)) {
-                    card.disable(bg, pcs)
-                    dset.add(card)
+                self.owner.opposite.pbg.all.each { PokemonCardSet pcs ->
+                  pcs.cards.filterByType(POKEMON_TOOL).each { PokemonToolCard card ->
+                    if (!dset.contains(card)) {
+                      card.disable(bg, pcs)
+                      dset.add(card)
+                    }
                   }
                 }
                 bg.em().storeObject("$self.owner Tool Jammer dset", dset)
@@ -2994,26 +2997,25 @@ public enum BattleStyles implements LogicCardInfo {
               keyStore("Tool Jammer", thisCard, 0)
               def count = (bg.em().retrieveObject("$self.owner Tool Jammer count") ?: 0) - 1
               if (count == 0) {
-                def pcs = self.owner.opposite.pbg.active
                 def dset = bg.em().retrieveObject("$self.owner Tool Jammer dset") as Set
-                pcs.cards.filterByType(POKEMON_TOOL).each { PokemonToolCard card ->
-                  if (dset.contains(card)) {
-                    card.play(bg, pcs)
-                    dset.remove(card)
-                  }
+                dset.each { PokemonToolCard card ->
+                  card.play(bg, card.findPCS())
                 }
+                dset.clear()
+                bg.em().storeObject("$self.owner Tool Jammer dset", dset)
               }
               if (count >= 0) bg.em().storeObject("$self.owner Tool Jammer count", count)
             }
 
-            ensureOnlyActiveAffected = {
+            ensureOnlyActiveAffected = { PokemonCardSet target ->
+              if (target == self.owner.pbg.active) target = self.owner.opposite.pbg.active
               def dset = bg.em().retrieveObject("$self.owner Tool Jammer dset") as Set
               dset.each { PokemonToolCard card ->
-                if (opp.active.cards.contains(card))
-                  return
                 def pcs = card.findPCS()
-                if (pcs) card.play(bg, pcs)
-                dset.remove(card)
+                if (target.cards.contains(card)) {
+                  card.disable(bg, pcs)
+                }
+                else card.play(bg, pcs)
               }
             }
 
@@ -3027,14 +3029,13 @@ public enum BattleStyles implements LogicCardInfo {
             }
 
             after ATTACH_POKEMON_TOOL, { disable ef.card, ef.resolvedTarget }
-            after SWITCH_OUT, { checkEffect(); ensureOnlyActiveAffected() }
-            after FALL_BACK, { checkEffect(); ensureOnlyActiveAffected() }
+            after SWITCH_OUT, { checkEffect(); ensureOnlyActiveAffected(ef.resolvedTarget) }
+            after FALL_BACK, { checkEffect() }
             register { checkEffect() }
           }
         }
         onRemoveFromPlay {
           deactivateEffect()
-          ensureOnlyActiveAffected()
           eff.unregister()
         }
       };
