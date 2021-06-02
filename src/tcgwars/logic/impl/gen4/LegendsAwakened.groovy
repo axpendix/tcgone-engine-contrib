@@ -1046,7 +1046,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             getterA (GET_FULL_HP, self) { Holder h->
               if (self.active) {
                 def tar = self.owner.opposite.pbg.active
-                if (tar.name == "Ditto" && tar.hasPokeBody() && tar.getAbilities().keySet().first().name == "Ditto DNA") {
+                if (tar.fullName == "Ditto (LA 27)") {
                   h.object = hp(60)
                 }
                 else {
