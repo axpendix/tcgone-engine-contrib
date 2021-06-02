@@ -810,6 +810,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               if (r==PLAY_FROM_HAND && confirm("Use Time Walk?")){
                 assert my.hand : "No cards in hand"
                 powerUsed()
+<<<<<<< HEAD
                 def tar = my.prizeCardSet.faceDownCards.select(hidden: false, min: 0, "Choose a Pokemon in your prizes to replace with a card in your hand.").first()
                 assert tar : "No Pokemon selected."
                 assert tar.hasTypes(POKEMON) : "Only Pokemon can be grabbed by Time Walk."
@@ -820,6 +821,14 @@ public enum LegendsAwakened implements LogicCardInfo {
                 my.prizeCardSet.setVisible(newPrize, false)
                 my.hand.remove(newPrize)
 >>>>>>> fixed Azelf_19 Time Walk
+=======
+                def tar = my.prizeCardSet.faceDownCards.cardTypeFilter(POKEMON).select(hidden: false, min: 0, "Choose a Pokemon in your prizes to replace with a card in your hand.").first()
+                if (tar) {
+                  def newPrize = my.hand.select(hidden: true, "Card to put into Prizes").first()
+                  newPrize.moveTo(hidden: true, my.prizeCardSet)
+                  tar.moveTo(my.hand)
+                }
+>>>>>>> simplified Azelf_19
               }
             }
           }
