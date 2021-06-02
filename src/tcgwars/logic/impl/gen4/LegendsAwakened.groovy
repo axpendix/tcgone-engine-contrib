@@ -1744,8 +1744,8 @@ public enum LegendsAwakened implements LogicCardInfo {
               if (selected) {
                 def tpc = self.topPokemonCard
                 selected.moveTo(suppressLog: true, self.cards)
-                my.deck.add(tpc)
-                self.cards.remove(tpc)
+                tpc.moveTo(suppressLog: true, my.deck)
+                bc "${tpc.name} was swapped with ${selected.name}."
                 new CheckAbilities().run(bg)
                 checkFaint()
               }
@@ -1784,8 +1784,8 @@ public enum LegendsAwakened implements LogicCardInfo {
               if (selected) {
                 def tpc = self.topPokemonCard
                 selected.moveTo(suppressLog: true, self.cards)
-                my.deck.add(tpc)
-                self.cards.remove(tpc)
+                tpc.moveTo(suppressLog: true, my.deck)
+                bc "${tpc.name} was swapped with ${selected.name}."
                 new CheckAbilities().run(bg)
                 checkFaint()
               }
@@ -1818,8 +1818,8 @@ public enum LegendsAwakened implements LogicCardInfo {
               if (selected) {
                 def tpc = self.topPokemonCard
                 selected.moveTo(suppressLog: true, self.cards)
-                my.deck.add(tpc)
-                self.cards.remove(tpc)
+                tpc.moveTo(suppressLog: true, my.deck)
+                bc "${tpc.name} was swapped with ${selected.name}."
                 new CheckAbilities().run(bg)
                 checkFaint()
               }
@@ -1853,8 +1853,8 @@ public enum LegendsAwakened implements LogicCardInfo {
               if (selected) {
                 def tpc = self.topPokemonCard
                 selected.moveTo(suppressLog: true, self.cards)
-                my.deck.add(tpc)
-                self.cards.remove(tpc)
+                tpc.moveTo(suppressLog: true, my.deck)
+                bc "${tpc.name} was swapped with ${selected.name}."
                 new CheckAbilities().run(bg)
                 checkFaint()
               }
