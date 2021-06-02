@@ -796,43 +796,16 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness P, '+20'
           pokePower "Time Walk", {
             text "Once during your turn, when you put Azelf from your hand onto your Bench, you may look at all of your face-down Prize cards. If you do, you may choose 1 Pokémon you find there, show it to your opponent, and put it into your hand. Then, choose 1 card in your hand and put it as a Prize card face down."
-<<<<<<< HEAD
             onActivate { reason ->
               if (reason == PLAY_FROM_HAND && self.benched && confirm("Use Time Walk?")) {
                 powerUsed()
-                def tar = my.prizeCardSet.faceDownCards.select(hidden: false, min: 0, "Choose a Pokemon card from your prizes.", cardTypeFilter(POKEMON))
-                if (tar) {
-                  tar.moveTo(my.hand)
-                  my.hand.select("Card to put back into Prizes").moveTo(hidden:true, my.prizeCardSet)
-                }
-=======
-            onActivate {r->
-              if (r==PLAY_FROM_HAND && confirm("Use Time Walk?")){
-                assert my.hand : "No cards in hand"
-                powerUsed()
-<<<<<<< HEAD
-                def tar = my.prizeCardSet.faceDownCards.select(hidden: false, min: 0, "Choose a Pokemon in your prizes to replace with a card in your hand.").first()
-                assert tar : "No Pokemon selected."
-                assert tar.hasTypes(POKEMON) : "Only Pokemon can be grabbed by Time Walk."
-                def newPrize = my.hand.select(hidden: true, "Card to put into Prizes").first()
-                def indexOfOldPrize = my.prizeCardSet.indexOf(tar)
-                my.hand.add(tar)
-                my.prizeCardSet.set(indexOfOldPrize, newPrize)
-                my.prizeCardSet.setVisible(newPrize, false)
-                my.hand.remove(newPrize)
->>>>>>> fixed Azelf_19 Time Walk
-=======
                 def tar = my.prizeCardSet.faceDownCards.cardTypeFilter(POKEMON).select(hidden: false, min: 0, "Choose a Pokemon in your prizes to replace with a card in your hand.").first()
                 if (tar) {
                   def newPrize = my.hand.select(hidden: true, "Card to put into Prizes").first()
                   newPrize.moveTo(hidden: true, my.prizeCardSet)
                   tar.moveTo(my.hand)
                 }
-<<<<<<< HEAD
->>>>>>> simplified Azelf_19
-=======
                 rearrange(my.prizeCardSet.faceDownCards)
->>>>>>> fixed rearrangement of prizes during time walk
               }
             }
           }
