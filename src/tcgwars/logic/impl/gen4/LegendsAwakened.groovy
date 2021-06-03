@@ -828,7 +828,11 @@ public enum LegendsAwakened implements LogicCardInfo {
                   newPrize.moveTo(hidden: true, my.prizeCardSet)
                   tar.moveTo(my.hand)
                 }
+<<<<<<< HEAD
 >>>>>>> simplified Azelf_19
+=======
+                rearrange(my.prizeCardSet.faceDownCards)
+>>>>>>> fixed rearrangement of prizes during time walk
               }
             }
           }
