@@ -249,7 +249,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               bg.em().storeObject("Form_Change",bg.turnCount)
               powerUsed()
 
-              def selected = my.deck.search(max:1,"Select a Deoxys",{it.name.contains("Deoxys") && it.cardTypes.isNot(EX) && it.cardTypes.isNot(LEGEND) && it.cardTypes.isNot(POKEMON_EX) && it.cardTypes.isNot(POKEMON_GX) && it.cardTypes.isNot(POKEMON_V)}) //Deoxys cannot Form Change into Deoxys ex.
+              def selected = my.deck.search(max:1,"Select a Deoxys",{it.name == "Deoxys" || (it.name.contains("Deoxys") && it.name.contains("Forme"))}) //Deoxys cannot Form Change into Deoxys ex.
               if (selected) {
                 def tpc = self.topPokemonCard
                 selected.moveTo(suppressLog: true, self.cards)
@@ -947,7 +947,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               bg.em().storeObject("Form_Change",bg.turnCount)
               powerUsed()
 
-              def selected = my.deck.search(max:1,"Select a Deoxys",{it.name.contains("Deoxys") && it.cardTypes.isNot(EX) && it.cardTypes.isNot(LEGEND) && it.cardTypes.isNot(POKEMON_EX) && it.cardTypes.isNot(POKEMON_GX) && it.cardTypes.isNot(POKEMON_V)}) //Deoxys cannot Form Change into Deoxys ex.
+              def selected = my.deck.search(max:1,"Select a Deoxys",{it.name == "Deoxys" || (it.name.contains("Deoxys") && it.name.contains("Forme"))}) //Deoxys cannot Form Change into Deoxys ex.
               if (selected) {
                 def tpc = self.topPokemonCard
                 selected.moveTo(suppressLog: true, self.cards)
@@ -983,7 +983,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               bg.em().storeObject("Form_Change",bg.turnCount)
               powerUsed()
 
-              def selected = my.deck.search(max:1,"Select a Deoxys",{it.name.contains("Deoxys") && it.cardTypes.isNot(EX) && it.cardTypes.isNot(LEGEND) && it.cardTypes.isNot(POKEMON_EX) && it.cardTypes.isNot(POKEMON_GX) && it.cardTypes.isNot(POKEMON_V)}) //Deoxys cannot Form Change into Deoxys ex.
+              def selected = my.deck.search(max:1,"Select a Deoxys",{it.name == "Deoxys" || (it.name.contains("Deoxys") && it.name.contains("Forme"))}) //Deoxys cannot Form Change into Deoxys ex.
               if (selected) {
                 def tpc = self.topPokemonCard
                 selected.moveTo(suppressLog: true, self.cards)
@@ -1018,7 +1018,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               bg.em().storeObject("Form_Change",bg.turnCount)
               powerUsed()
 
-              def selected = my.deck.search(max:1,"Select a Deoxys",{it.name.contains("Deoxys") && it.cardTypes.isNot(EX) && it.cardTypes.isNot(LEGEND) && it.cardTypes.isNot(POKEMON_EX) && it.cardTypes.isNot(POKEMON_GX) && it.cardTypes.isNot(POKEMON_V)}) //Deoxys cannot Form Change into Deoxys ex.
+              def selected = my.deck.search(max:1,"Select a Deoxys",{it.name == "Deoxys" || (it.name.contains("Deoxys") && it.name.contains("Forme"))}) //Deoxys cannot Form Change into Deoxys ex.
               if (selected) {
                 def tpc = self.topPokemonCard
                 selected.moveTo(suppressLog: true, self.cards)
