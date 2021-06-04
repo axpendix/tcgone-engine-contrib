@@ -21,8 +21,7 @@ import tcgwars.logic.groovy.TcgStatics;
 import java.io.Serializable;
 import java.util.*;
 
-import static tcgwars.logic.card.CardType.EVOLUTION;
-import static tcgwars.logic.card.CardType.LVL_X;
+import static tcgwars.logic.card.CardType.*;
 
 /**
  * Models an in-game pokemon
@@ -217,6 +216,9 @@ public class PokemonCardSet implements PokemonStack, Serializable {
   public HP getRemainingHP() {
     HP fullHP = getFullHP(TcgStatics.bg());
     return (HP.valueOf(fullHP.getValue() - damage.getValue()));
+  }
+  public HP getLastRemainingHP() {
+    return (HP.valueOf(lastFullHP.getValue() - damage.getValue()));
   }
 
   public HP getDamage() {
@@ -425,6 +427,9 @@ public class PokemonCardSet implements PokemonStack, Serializable {
   public boolean isTeamPlasma() {
     return getTopPokemonCard().getCardTypes().is(CardType.TEAM_PLASMA);
   }
+  public boolean isDeltaSpecies() {
+    return getTopPokemonCard().getCardTypes().is(CardType.DELTA);
+  }
 
   public boolean hasModernAbility() {
     for (Ability ability : getAbilities().keySet()) {
@@ -470,6 +475,16 @@ public class PokemonCardSet implements PokemonStack, Serializable {
     return getName() + " (" + getShortId() + ")";
   }
 
+  public String getFullStageString(boolean withSecondaryTypes) {
+    CardTypeSet cts = getTopNonLevelUpPokemonCard().getCardTypes();
+    if (isPokemonLevelUp())
+      cts.add(CardType.LVL_X);
+    if (isTeamPlasma())
+      cts.add(CardType.TEAM_PLASMA);
+    if (isDeltaSpecies())
+      cts.add(CardType.DELTA);
+    return cts.toPcsStageString(withSecondaryTypes);
+  }
 //	public void setCards(CardList set) {
 //		this.set = set;
 //	}
