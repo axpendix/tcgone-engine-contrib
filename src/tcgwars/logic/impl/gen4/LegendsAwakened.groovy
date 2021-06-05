@@ -414,9 +414,8 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
-              if (confirm("Would you like to discard basic energy cards attached to Heatran?")) {
-                assert self.cards.findAll(cardTypeFilter(BASIC_ENERGY)): "There are no basic energies attached to Heatran."
-                def atchEnergy = self.cards.filterByType(BASIC_ENERGY)
+              def atchEnergy = self.cards.filterByType(BASIC_ENERGY)
+              if (atchEnergy.size() != 0 && confirm("Would you like to discard basic energy cards attached to Heatran?")) {
                 def lostEnergy = atchEnergy.select(max: atchEnergy.size(), "Choose basic energies to discard.")
                 damage 20 * lostEnergy.size()
                 lostEnergy.discard()
