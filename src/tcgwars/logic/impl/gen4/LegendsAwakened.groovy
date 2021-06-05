@@ -802,7 +802,7 @@ public enum LegendsAwakened implements LogicCardInfo {
                 powerUsed()
                 def tar = my.prizeCardSet.faceDownCards.select(hidden: false, min: 0, "Choose a Pokemon card from your prizes.", cardTypeFilter(POKEMON))
                 if (tar) {
-                  tar.moveTo(my.hand)
+                  tar.moveTo(my.hand).showToOpponent("Your opponent has swapped this prize card with a card from their hand.")
                   my.hand.select("Card to put back into Prizes").moveTo(hidden:true, my.prizeCardSet)
                 }
               }
