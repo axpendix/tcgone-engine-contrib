@@ -1033,7 +1033,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              swiftDamage 50, opp.all.select("Deal damage to?")
+              swiftDamage 30, opp.all.select("Deal damage to?")
             }
           }
         };
