@@ -415,7 +415,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             onAttack {
               damage 40
               if (confirm("Would you like to discard basic energy cards attached to Heatran?")) {
-                assert self.cards.findAll(cardTypeFilter(BASIC_ENERGY): "There are no basic energies attached to Heatran.")
+                assert self.cards.findAll(cardTypeFilter(BASIC_ENERGY)): "There are no basic energies attached to Heatran."
                 def atchEnergy = self.cards.filterByType(BASIC_ENERGY)
                 def lostEnergy = atchEnergy.select(max: atchEnergy.size(), "Choose basic energies to discard.")
                 damage 20 * lostEnergy.size()
@@ -1044,7 +1044,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             delayedA {
               def recur = false
               def tar = self.owner.opposite.pbg.active
-              before GET_FULL_HP, self {
+              before GET_FULL_HP, self, {
                 if (recur) {
                   recur = false
                   prevent()
@@ -1067,10 +1067,11 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness R, '+20'
           resistance P, MINUS20
           pokeBody "Iron Shell", {
-            text "Whenever you attach a basic Energy card from your hand to Forretress (excluding effects of attacks), you may flip a coin. If tails, put 2 damage counters on each Pokémon (both yours and your opponent's) (excluding any Forretress)." //Errata: https://compendium.pokegym.net/compendium-lvx.html#280
+            text "Whenever you attach a basic Energy card from your hand to Forretress (excluding effects of attacks), you may flip a coin. If tails, put 2 damage counters on each Pokémon (both yours and your opponent's) (excluding any Forretress)."
+            //Errata: https://compendium.pokegym.net/compendium-lvx.html#280
             delayedA {
               after ATTACH_ENERGY, self, {
-                if (ef.reason == PLAY_FROM_HAND && (ef.card as EnergyCard).cardTypes.is(BASIC_ENERGY))) {
+                if (ef.reason == PLAY_FROM_HAND && (ef.card as EnergyCard).cardTypes.is(BASIC_ENERGY)) {
                   flip 1, { }, {
                     all.each {
                       if (it.name != "Forretress") {
