@@ -316,7 +316,7 @@ public enum LegendsAwakened implements LogicCardInfo {
                 before KNOCKOUT, self, {
                   if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && atk_pkm && atk_pkm.inPlay){
                     bc "Destiny Bond activates"
-                    new Knockout(self.owner.opposite.pbg.active).run(bg)
+                    new Knockout(atk_pkm).run(bg)
                   }
                 }
                 after EVOLVE, self, {unregister()}
