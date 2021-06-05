@@ -334,7 +334,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 40
               applyAfterDamage ASLEEP
               opp.bench.each {
-                directDamage 10
+                directDamage 10, it
               }
             }
           }
