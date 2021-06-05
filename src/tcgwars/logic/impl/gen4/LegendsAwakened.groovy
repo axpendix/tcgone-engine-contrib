@@ -709,6 +709,8 @@ public enum LegendsAwakened implements LogicCardInfo {
             text "Once during your turn, when you put Spiritomb from your hand onto your Bench, you may put 1 damage counter on all Pokémon that already have any damage counters on them (both yours and your opponent's). You can't use more than 1 Curse Breath Poké-Power each turn."
             onActivate { r->
               if (r == PLAY_FROM_HAND && self.benched && confirm("Use Curse Breath?")) {
+                assert bg.em().retrieveObject("Curse_Breath") != bg.turnCount : "You can’t use more than 1 Curse Breath Poké-Power each turn."
+                bg.em().storeObject("Curse_Breath",bg.turnCount)
                 powerUsed()
                 all.each {
                   if (it.numberOfDamageCounters) {
