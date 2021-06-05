@@ -808,6 +808,7 @@ public enum LegendsAwakened implements LogicCardInfo {
                   tar.moveTo(my.hand).showToOpponent("Your opponent has swapped this prize card with a card from their hand.")
                   my.hand.select("Card to put back into Prizes").moveTo(hidden:true, my.prizeCardSet)
                 }
+                rearrange(my.prizeCardSet)
               }
             }
           }
