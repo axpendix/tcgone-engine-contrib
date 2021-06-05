@@ -1045,12 +1045,12 @@ public enum LegendsAwakened implements LogicCardInfo {
             text "As long as Ditto is your Active Pokémon, its maximum HP is the same as your opponent's Active Pokémon. Ditto can use the attacks of that Pokémon as its own. (You still need the necessary Energy to use each attack.) If that Pokémon is no longer your opponent's Active Pokémon, choose 1 of your opponent's Active Pokémon for Ditto to copy."
             delayedA {
               def recur = false
-              def tar = self.owner.opposite.pbg.active
               before GET_FULL_HP, self, {
                 if (recur) {
                   recur = false
                   prevent()
                 }
+                def tar = self.owner.opposite.pbg.active
                 if (tar.fullName == 'Ditto (LA 27)' || tar.fullName == 'Ditto (FO 3)' || tar.fullName == 'Ditto (FO 18)') {
                   recur = true
                 }
@@ -1058,7 +1058,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             }
             getterA (GET_FULL_HP, self) { Holder h->
               if (self.active) {
-                h.object = tar.getFullHP()
+                h.object = self.owner.opposite.pbg.active.getFullHP()
               }
             }
             metronomeA delegate, { self.owner.opposite.pbg.active }
