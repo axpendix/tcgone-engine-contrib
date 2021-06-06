@@ -723,9 +723,9 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              def src = my.all.findAll{it.numberOfDamageCounters}.select(max: 1)
+              def src = my.all.findAll{it.numberOfDamageCounters}.select()
               if (src) {
-                def tar = opp.all.findAll{it != src}.select()
+                def tar = opp.all.select()
                 src.damage -= hp(10)
                 directDamage 10, tar
               }
