@@ -949,10 +949,10 @@ public enum LegendsAwakened implements LogicCardInfo {
 
               def selected = my.deck.search(max:1,"Select a Deoxys",{it.name == "Deoxys" || (it.name.contains("Deoxys") && it.name.contains("Forme"))}) //Deoxys cannot Form Change into Deoxys ex.
               if (selected) {
-                def tpc = new CardList (self.topPokemonCard)
+                def tpc = self.topPokemonCard
                 selected.moveTo(suppressLog: true, self.cards)
-                tpc.moveTo(suppressLog: true, my.deck)
-                bc "${tpc.first().name} was swapped with ${selected.name}."
+                tpc.moveCard(suppressLog: true, my.deck)
+                bc "${tpc.name} was swapped with ${selected.name}."
                 new CheckAbilities().run(bg)
                 checkFaint()
               }
@@ -985,10 +985,10 @@ public enum LegendsAwakened implements LogicCardInfo {
 
               def selected = my.deck.search(max:1,"Select a Deoxys",{it.name == "Deoxys" || (it.name.contains("Deoxys") && it.name.contains("Forme"))}) //Deoxys cannot Form Change into Deoxys ex.
               if (selected) {
-                def tpc = new CardList (self.topPokemonCard)
+                def tpc = self.topPokemonCard
                 selected.moveTo(suppressLog: true, self.cards)
-                tpc.moveTo(suppressLog: true, my.deck)
-                bc "${tpc.first().name} was swapped with ${selected.name}."
+                tpc.moveCard(suppressLog: true, my.deck)
+                bc "${tpc.name} was swapped with ${selected.name}."
                 new CheckAbilities().run(bg)
                 checkFaint()
               }
@@ -1020,10 +1020,10 @@ public enum LegendsAwakened implements LogicCardInfo {
 
               def selected = my.deck.search(max:1,"Select a Deoxys",{it.name == "Deoxys" || (it.name.contains("Deoxys") && it.name.contains("Forme"))}) //Deoxys cannot Form Change into Deoxys ex.
               if (selected) {
-                def tpc = new CardList (self.topPokemonCard)
+                def tpc = self.topPokemonCard
                 selected.moveTo(suppressLog: true, self.cards)
-                tpc.moveTo(suppressLog: true, my.deck)
-                bc "${tpc.first().name} was swapped with ${selected.name}."
+                tpc.moveCard(suppressLog: true, my.deck)
+                bc "${tpc.name} was swapped with ${selected.name}."
                 new CheckAbilities().run(bg)
                 checkFaint()
               }
@@ -1748,10 +1748,10 @@ public enum LegendsAwakened implements LogicCardInfo {
 
               def selected = my.deck.search(max:1,"Select a Castform",{it.name.contains("Castform")})
               if (selected) {
-                def tpc = new CardList (self.topPokemonCard)
+                def tpc = self.topPokemonCard
                 selected.moveTo(suppressLog: true, self.cards)
-                tpc.moveTo(suppressLog: true, my.deck)
-                bc "${tpc.first().name} was swapped with ${selected.name}."
+                tpc.moveCard(suppressLog: true, my.deck)
+                bc "${tpc.name} was swapped with ${selected.name}."
                 new CheckAbilities().run(bg)
                 checkFaint()
               }
@@ -1788,10 +1788,10 @@ public enum LegendsAwakened implements LogicCardInfo {
 
               def selected = my.deck.search(max:1,"Select a Castform",{it.name.contains("Castform")})
               if (selected) {
-                def tpc = new CardList (self.topPokemonCard)
+                def tpc = self.topPokemonCard
                 selected.moveTo(suppressLog: true, self.cards)
-                tpc.moveTo(suppressLog: true, my.deck)
-                bc "${tpc.first().name} was swapped with ${selected.name}."
+                tpc.moveCard(suppressLog: true, my.deck)
+                bc "${tpc.name} was swapped with ${selected.name}."
                 new CheckAbilities().run(bg)
                 checkFaint()
               }
@@ -1822,10 +1822,10 @@ public enum LegendsAwakened implements LogicCardInfo {
 
               def selected = my.deck.search(max:1,"Select a Castform",{it.name.contains("Castform")})
               if (selected) {
-                def tpc = new CardList (self.topPokemonCard)
+                def tpc = self.topPokemonCard
                 selected.moveTo(suppressLog: true, self.cards)
-                tpc.moveTo(suppressLog: true, my.deck)
-                bc "${tpc.first().name} was swapped with ${selected.name}."
+                tpc.moveCard(suppressLog: true, my.deck)
+                bc "${tpc.name} was swapped with ${selected.name}."
                 new CheckAbilities().run(bg)
                 checkFaint()
               }
@@ -1857,10 +1857,10 @@ public enum LegendsAwakened implements LogicCardInfo {
 
               def selected = my.deck.search(max:1,"Select a Castform",{it.name.contains("Castform")})
               if (selected) {
-                def tpc = new CardList (self.topPokemonCard)
+                def tpc = self.topPokemonCard
                 selected.moveTo(suppressLog: true, self.cards)
-                tpc.moveTo(suppressLog: true, my.deck)
-                bc "${tpc.first().name} was swapped with ${selected.name}."
+                tpc.moveCard(suppressLog: true, my.deck)
+                bc "${tpc.name} was swapped with ${selected.name}."
                 new CheckAbilities().run(bg)
                 checkFaint()
               }
