@@ -207,7 +207,6 @@ public enum RubySapphireNG implements LogicCardInfo {
           text "10x damage. Flip a coin. If heads, this attack does 10 damage times the number of damage counters on Aggron."
           energyCost C
           onAttack {
-            damage 10
             flip {
               damage 10 * self.numberOfDamageCounters
             }
@@ -249,7 +248,7 @@ public enum RubySapphireNG implements LogicCardInfo {
           energyCost G
           onAttack {
             damage 20
-            flip {applyAfterDamage PARALYZED}
+            flipThenApplySC PARALYZED
           }
         }
         move "Parallel Gain", {
@@ -285,9 +284,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             opp.bench.each {
               damage 10, it
             }
-            afterDamage {
-              discardSelfEnergy(R)
-            }
+            discardSelfEnergyAfterDamage R
           }
         }
       };
@@ -388,7 +385,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             my.deck.search("Search for a [P] Energy card to attach to one of your Pokémon.", energyFilter(P)).each {
               def tar = my.all.select("Attach $it to? That Pokémon will receive 2 damage counters.")
               attachEnergy(tar, it)
-              directDamage 20, tar, SRC_ABILITY
+              directDamage 20, tar, POKEPOWER
             }
             shuffleDeck()
           }
@@ -543,7 +540,7 @@ public enum RubySapphireNG implements LogicCardInfo {
           actionA {
             checkNoSPC()
             checkLastTurn()
-            assert my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(W) : "You have no [W] Energy cards in your hand"
+            assert my.hand.filterByEnergyType(W) : "You have no [W] Energy cards in your hand"
 
             powerUsed()
             def pcs = my.all.select()
@@ -594,9 +591,7 @@ public enum RubySapphireNG implements LogicCardInfo {
           energyCost R, C, C, C
           onAttack {
             damage 80
-            afterDamage{
-              discardSelfEnergy(R)
-            }
+            discardSelfEnergyAfterDamage R
           }
         }
       };
@@ -701,7 +696,7 @@ public enum RubySapphireNG implements LogicCardInfo {
           text "As often as you like during your turn (before your attack), move a [G] Energy card attached to 1 of your Pokémon to another of your Pokémon. This power can't be used if Sceptile is affected by a Special Condition."
           actionA {
             checkNoSPC()
-            assert my.all.findAll {it.cards.energyCount(G)>0} : "There are no Pokémon with [G] Energy cards"
+            assert my.all.find{it.cards.energyCount(G)>0} : "There are no Pokémon with [G] Energy cards"
             assert my.all.size()>=2 : "There is only one Pokémon on the field"
 
             powerUsed()
