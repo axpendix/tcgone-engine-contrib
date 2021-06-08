@@ -1481,7 +1481,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             text "Once during your opponent's turn, if Shedinja would be Knocked Out by damage from an attack, you may put 4 damage counters on the Attacking Pokémon and each of your opponent's Pokémon that has the same name as the Attacking Pokémon."
             delayedA {
               before (KNOCKOUT, self) {
-                if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && confirm(text, self.owner)) {
+                if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && confirm("Use Resent?", self.owner)) {
                   self.owner.opposite.pbg.all.each {
                     if (it.name == self.owner.opposite.pbg.active.name) {
                       directDamage 40, it, Source.POKEPOWER
