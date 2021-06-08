@@ -231,7 +231,7 @@ public enum Arceus implements LogicCardInfo {
           }
           move "Burning Tail", {
             text "80 damage. Discard a Fire Energy attached to Charizard."
-            energyCost R, R, C, R
+            energyCost R, R, C
             onAttack {
               damage 80
               discardSelfEnergyAfterDamage R
