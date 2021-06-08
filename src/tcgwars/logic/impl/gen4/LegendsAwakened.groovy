@@ -1375,6 +1375,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               powerUsed()
 
               my.hand.select(count: 2, "Select 2 cards to discard").discard()
+              sw opp.active, opp.bench.oppSelect("New active")
             }
           }
           move "Ice Reflect", {
