@@ -2747,7 +2747,8 @@ public enum LegendsAwakened implements LogicCardInfo {
               assert my.deck : "Deck is empty"
             }
             onAttack {
-              deck.search(max:2, cardTypeFilter(TRAINER)).moveTo(hand)
+              // DP Trainer Cards do not include Supporters or Stadiums
+              deck.search(max:2, cardTypeFilter(ITEM)).moveTo(hand)
               shuffleDeck()
             }
           }
