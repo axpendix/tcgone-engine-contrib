@@ -2429,7 +2429,7 @@ public enum MajesticDawn implements LogicCardInfo {
               pokeBody "Rock Reaction", {
                 delayedA{
                   after ATTACH_ENERGY, self, {
-                    if(ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(F) && self.owner.pbg.deck && confirm("Use Rock Reaction?")){
+                    if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(F) && self.owner.pbg.deck) {
                       def sel=my.deck.search("Search your deck for a card that evolved from $self",{it.cardTypes.is(EVOLUTION) && it.predecessor==self.name})
                       if(sel){
                         evolve(self, sel.first(), OTHER)
