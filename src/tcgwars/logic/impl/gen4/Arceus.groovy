@@ -1827,7 +1827,7 @@ public enum Arceus implements LogicCardInfo {
         };
       case ELECTRIKE_62:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
-          weakness F
+          weakness F, PLUS10
           resistance M, MINUS20
           move "Zap Kick", {
             text "10 damage. "
