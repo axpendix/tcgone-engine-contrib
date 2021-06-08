@@ -916,7 +916,7 @@ public enum Arceus implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
             }
             onAttack {
-              my.deck.subList(0,5).select("Choose a card to put into your hand").moveTo(my.hand)
+              my.deck.subList(0,5).select("Choose a card to put into your hand").moveTo(hidden:true, my.hand)
               shuffleDeck()
             }
           }
