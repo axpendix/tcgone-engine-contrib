@@ -2032,10 +2032,12 @@ public enum Arceus implements LogicCardInfo {
             }
           }
           move "Mega Shot", {
-            text "Energy attached to Pikachu and then choose 1 of your opponent’s Pokémon. This attack does 40 damage to that Pokémon."
+            text "Discard all [L] Energy attached to Pikachu and then choose 1 of your opponent’s Pokémon. This attack does 40 damage to that Pokémon."
             energyCost L, C, C
             onAttack {
-              discardAllSelfEnergy L
+              afterDamage {
+                discardAllSelfEnergy L
+              }
               damage 40, opp.all.select()
             }
           }
