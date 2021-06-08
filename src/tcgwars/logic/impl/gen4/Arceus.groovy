@@ -570,6 +570,7 @@ public enum Arceus implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
               powerUsed()
               my.deck.search("Unearth",{ ["Helix Fossil", "Dome Fossil", "Old Amber"].contains(it.name) }).moveTo(my.hand)
+              shuffleDeck()
             }
           }
           move "Hyper Beam", {
