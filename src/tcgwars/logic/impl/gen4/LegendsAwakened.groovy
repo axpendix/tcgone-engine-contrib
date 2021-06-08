@@ -1688,7 +1688,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              reduceDamageNextTurn hp(20), thisMove, defending
+              reduceDamageNextTurn(hp(20), thisMove)
             }
           }
           move "X-Scissor", {
