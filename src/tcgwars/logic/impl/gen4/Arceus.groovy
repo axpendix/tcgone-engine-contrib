@@ -2279,6 +2279,7 @@ public enum Arceus implements LogicCardInfo {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck for up to 3 Pokémon Tool cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
           onPlay {
             my.deck.search(max:3,"Search your deck for up to 3 Pokémon Tool cards",cardTypeFilter(POKEMON_TOOL)).showToOpponent("Selected cards").moveTo(my.hand)
+            shuffleDeck()
           }
           playRequirement{
             assert my.deck : "Your deck is empty"
