@@ -248,6 +248,7 @@ public enum Arceus implements LogicCardInfo {
               if (r==PLAY_FROM_HAND && my.deck && confirm("Use Snow Gift")) {
                 powerUsed()
                 my.deck.search(min:1,"Search your deck for a card",{true}).moveTo(hidden:true,my.hand)
+                shuffleDeck()
               }
             }
           }
