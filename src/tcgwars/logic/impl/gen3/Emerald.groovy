@@ -212,7 +212,7 @@ public enum Emerald implements LogicCardInfo {
           }
           move "Damage Burn", {
             text "50+ damage. If the Defending Pokémon already has any damage counters on it, this attack does 50 damage plus 20 more damage."
-            energyCost F, F, C
+            energyCost R, R, C
             onAttack {
               damage 50
               if(defending.numberOfDamageCounters) damage 20
