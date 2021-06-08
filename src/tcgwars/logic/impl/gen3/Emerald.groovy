@@ -1930,7 +1930,7 @@ public enum Emerald implements LogicCardInfo {
             text "As long as Cacturne ex is your Active Pokémon, your opponent can’t attach any Special Energy cards (except for [D] and [M] Energy cards) from his or her hand to his or her Active Pokémon."
             delayedA {
               before ATTACH_ENERGY, self.owner.opposite.pbg.active, {
-                if(ef.reason == PLAY_FROM_HAND && ef.resolvedTarget.owner == self.owner.opposite && ef.resolvedTarget.active && self.active && (ef.card instanceof SpecialEnergyCard && ef.card.name != "Darkness Energy" && ef.card.name != "Metal Energy")) {
+                if(ef.reason == PLAY_FROM_HAND && ef.resolvedTarget.owner == self.owner.opposite && ef.resolvedTarget.active && self.active && (ef.card.cardTypes.is(SPECIAL_ENERGY) && ef.card.name != "Darkness Energy" && ef.card.name != "Metal Energy")) {
                   wcu "Cursed Glare: Can't attach energy"
                   prevent()
                 }
