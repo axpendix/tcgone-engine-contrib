@@ -1469,7 +1469,7 @@ public enum Arceus implements LogicCardInfo {
         };
       case PONYTA_46:
         return basic (this, hp:HP040, type:FIRE, retreatCost:1) {
-          weakness W
+          weakness W, PLUS10
           move "Ascension", {
             text "Search your deck for a card that evolves from Ponyta and put it onto Ponyta. (This counts as evolving Ponyta.) Shuffle your deck afterward."
             energyCost C
