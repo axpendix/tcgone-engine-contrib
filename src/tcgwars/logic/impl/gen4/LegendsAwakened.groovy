@@ -3647,8 +3647,8 @@ public enum LegendsAwakened implements LogicCardInfo {
             onAttack {
               opp.hand.showToMe("Opponent's hand")
               if (opp.hand.filterByType(POKEMON_TOOL, TECHNICAL_MACHINE)) {
-                opp.moveTo(suppressLog: true, opp.deck)
-                shuffleDeck()
+                opp.hand.filterByType(POKEMON_TOOL, TECHNICAL_MACHINE).moveTo(opp.deck)
+                shuffleDeck(null, TargetPlayer.OPPONENT)
               }
             }
           }
