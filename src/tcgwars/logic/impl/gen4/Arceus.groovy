@@ -2553,7 +2553,7 @@ public enum Arceus implements LogicCardInfo {
         };
       case SHINX_SH12:
         return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
-          weakness F
+          weakness F, PLUS10
           resistance M, MINUS20
           pokeBody "Star Barrier", {
             text "As long as Shinx has any Energy attached to it, Shinx has no Weakness."
