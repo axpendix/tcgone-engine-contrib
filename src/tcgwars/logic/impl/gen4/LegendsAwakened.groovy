@@ -2646,9 +2646,9 @@ public enum LegendsAwakened implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if (it.to.owner==self.owner && self.benched && it.to.name == "Unown" && it.dmg.value) {
+                  if (it.to.owner==self.owner && self.benched && it.to.name.contains("Unown") && it.dmg.value) {
                     bc "UNSEEN prevents damage"
-                    it.dmg=hp(0)
+                    it.dmg = hp(0)
                   }
                 }
               }
