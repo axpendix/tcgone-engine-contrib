@@ -2912,7 +2912,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              apply CONFUSED
+              flipThenApplySC(CONFUSED)
             }
           }
           move "Wave Splash", {
