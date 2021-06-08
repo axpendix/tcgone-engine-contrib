@@ -2854,7 +2854,7 @@ public enum LegendsAwakened implements LogicCardInfo {
                   def eff
                   register {
                     eff = getter (IS_ABILITY_BLOCKED) { Holder h ->
-                      if (h.effect.target.owner == self.owner.opposite && h.effect.ability instanceof PokePower) {
+                      if (h.effect.target == defending && h.effect.ability instanceof PokePower) {
                         h.object=true
                       }
                     }
