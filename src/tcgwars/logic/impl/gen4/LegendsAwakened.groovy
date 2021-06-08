@@ -1454,6 +1454,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               assert my.hand.size() >= 2 : "Need 2 cards or more in hand"
+              powerUsed()
               my.hand.select(count: 2, "Select 2 cards to discard").discard()
               heal 30, self
             }
