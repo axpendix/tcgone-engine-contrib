@@ -2797,12 +2797,12 @@ public enum LegendsAwakened implements LogicCardInfo {
             text "Once during your turn (before your attack), when you attach a [M] Energy card from your hand to Beldum (excluding effects of attacks or Poké-Powers), you may search your deck for Beldum and put it onto your Bench. Shuffle your deck afterward. This power can't be used if Beldum is affected by a Special Condition."
             delayedA {
               before ATTACH_ENERGY, {
-                if (ef.reason == PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(W) && bg.currentTurn == self.owner && ef.resolvedTarget == self && self.noSPC()) {
+                if (ef.reason == PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(M) && bg.currentTurn == self.owner && ef.resolvedTarget == self && self.noSPC() && confirm("Use Metal Chain?")) {
                   checkLastTurn()
                   assert my.bench.notFull : "Bench full"
                   assert deck.notEmpty : "Deck is empty"
                   powerUsed()
-                  deck.search({Card c -> c.name != "Beldum" && c.cardTypes.is(POKEMON)}).each {
+                  deck.search({Card c -> c.name == "Beldum" && c.cardTypes.is(POKEMON)}).each {
                     benchPCS(it)
                   }
                   shuffleDeck()
