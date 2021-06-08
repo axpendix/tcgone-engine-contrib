@@ -1233,7 +1233,7 @@ public enum Arceus implements LogicCardInfo {
         };
       case GASTLY_36:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
-          weakness D
+          weakness D, PLUS10
           resistance C, MINUS20
           move "Lick", {
             text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
