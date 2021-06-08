@@ -3979,7 +3979,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               def src = my.all.findAll { it.cards.energyCount(R) || it.cards.energyCount(F) }.select("Source for the Energy")
               def energy = src.cards.select("Energy to move", {
                 it.cardTypes.is(ENERGY) && (it.asEnergyCard().containsType(R) || it.asEnergyCard().containsType(F))
-              })
+              }).first()
               def tar = my.all.findAll { it.types.contains(R) || it.types.contains(F) }.select("Target for the Energy")
               energySwitch(src, tar, energy)
             }
