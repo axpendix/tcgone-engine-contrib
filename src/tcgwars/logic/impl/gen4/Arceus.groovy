@@ -2249,7 +2249,7 @@ public enum Arceus implements LogicCardInfo {
         return basicTrainer (this) {
           text "Search your deck for Arceus, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
           onPlay {
-            my.deck.search("Search your deck for Arceus",{it.name == "Arceus"}).showToOpponent("Arceus").moveTo(my.hand)
+            my.deck.search("Search your deck for Arceus",{it.name == "Arceus" || it.name == "Arceus Lv.X"}).showToOpponent("Arceus").moveTo(my.hand)
             shuffleDeck()
           }
           playRequirement{
