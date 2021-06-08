@@ -1863,7 +1863,7 @@ public enum Arceus implements LogicCardInfo {
         };
       case GASTLY_64:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
-          weakness D
+          weakness D, PLUS10
           resistance C, MINUS20
           move "Gnaw", {
             text "10 damage. "
