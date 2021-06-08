@@ -2771,11 +2771,15 @@ public enum LegendsAwakened implements LogicCardInfo {
               def opponentChoice = oppChoose(choices, types, "Guess the type of Pokémon your opponent has chosen")
 
               myCard.showToOpponent("Your Opponent's chosen card.")
-              if (!myCard.cardTypes.contains(opponentChoice)) {
-                bc "Hidden Power - The correct type was guessed."
-                draw 1
+              def myCardTypes = myCard.first().asPokemonCard().types
+              bc "myCardTypes: $myCardTypes"
+              bc "opponentChoice: $opponentChoice"
+
+              if (myCardTypes.contains(opponentChoice)) {
+                bc "Hidden Power - The correct type was guessed"
               } else {
                 bc "Hidden Power - The wrong type was guessed"
+                draw 1
               }
             }
           }
