@@ -4110,7 +4110,11 @@ public enum LegendsAwakened implements LogicCardInfo {
             text "200 damage. If you don't have Uxie LV.X and Azelf LV.X in play, this attack does nothing. Discard all Energy attached to Mesprit."
             energyCost P, P
             attackRequirement {
-              my.all.findAll { it.name == ("Uxie Lv.X") } && my.all.findAll{ it.name == ("Azelf Lv.X") }
+              assert my.all.findAll {
+                it.name == ("Uxie") && it.pokemonLevelUp
+              } && my.all.findAll {
+                it.name == ("Azelf") && it.pokemonLevelUp
+              } : "Uxie Lv.X and Azelf Lv.X are not in play"
             }
             onAttack {
               damage 200
