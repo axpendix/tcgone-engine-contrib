@@ -2734,9 +2734,10 @@ public enum LegendsAwakened implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert self.benched : "Unown Y not benched"
+              assert my.active.name.contains("Unown") : "Your active Pokémon is not an Unown"
               powerUsed()
               heal 10, my.active
-              apply ASLEEP, self
+              apply ASLEEP, my.active
             }
           }
           move "Hidden Power", {
