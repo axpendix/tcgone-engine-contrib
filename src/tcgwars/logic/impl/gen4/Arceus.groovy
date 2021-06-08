@@ -2510,7 +2510,7 @@ public enum Arceus implements LogicCardInfo {
         };
       case BAGON_SH10:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
-          weakness C
+          weakness C, PLUS10
           pokeBody "Star Barrier", {
             text "As long as Bagon has any Energy attached to it, Bagon has no Weakness."
             getterA GET_WEAKNESSES, self, { h ->
