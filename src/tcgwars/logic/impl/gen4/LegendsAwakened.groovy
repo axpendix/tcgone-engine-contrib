@@ -2625,11 +2625,11 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               while(1) {
-                def pl = (my.all.findAll { it.cards.energyCount(C) })
+                def pl = (my.all.findAll { it.cards.filterByType(BASIC_ENERGY) })
                 if (!pl) break;
                 def src = pl.select("Source for energy (cancel to stop)", false)
                 if (!src) break;
-                def card = src.cards.select("Card to move",cardTypeFilter(ENERGY)).first()
+                def card = src.cards.select("Card to move", cardTypeFilter(BASIC_ENERGY)).first()
 
                 def tar = my.all.select("Target for energy (cancel to stop)", false)
                 if (!tar) break;
