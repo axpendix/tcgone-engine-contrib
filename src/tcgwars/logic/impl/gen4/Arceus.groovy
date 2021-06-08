@@ -2636,7 +2636,7 @@ public enum Arceus implements LogicCardInfo {
             text "50 damage. This attack’s damage isn’t affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             energyCost W, C, C
             onAttack {
-              swiftDamage 50, defending
+              noResistanceOrAnyEffectDamage(50, defending)
             }
           }
 
