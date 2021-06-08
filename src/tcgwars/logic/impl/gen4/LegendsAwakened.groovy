@@ -2536,7 +2536,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               flip my.all.findAll{it.name == "Tauros"}.size(), {
-                damage 30
+                damage 20
               }
             }
           }
