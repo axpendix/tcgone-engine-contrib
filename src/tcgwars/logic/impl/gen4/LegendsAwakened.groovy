@@ -1242,7 +1242,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             delayedA {
               before BEGIN_TURN, {
                 if (self.active) {
-                  self.owner.pbg.all.each {
+                  self.owner.pbg.bench.each {
                     if (it.numberOfDamageCounters) {
                       heal 10, it
                     }
