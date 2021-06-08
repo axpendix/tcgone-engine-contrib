@@ -1213,7 +1213,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               my.hand.removeAll(energies)
               energies.each {
                 if (my.bench) {
-                  attachEnergy(my.bench.select("Attach to which?"))
+                  attachEnergy(my.bench.select("Attach to which?"), it)
                 } else {
                   attachEnergy(self, it)
                 }
