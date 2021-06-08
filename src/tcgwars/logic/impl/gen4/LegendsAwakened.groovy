@@ -2141,9 +2141,12 @@ public enum LegendsAwakened implements LogicCardInfo {
             onAttack {
               damage 50
               afterDamage {
-                if (my.bench) {
-                  def pcs = my.bench.select(text)
-                  self.cards.filterByEnergyType(G).each { energySwitch(self, pcs, it) }
+                if (my.bench && confirm("You may switch $self with a Benched Pokémon. If you do, move as many Energy cards attached to $self as you like to the new Active Pokémon.")) {
+                  def pcs = my.bench.select("Which Benched Pokémon to switch with?")
+
+                  self.cards.select(min:0, max:self.cards.filterByType(ENERGY).size(), "Move any number of Energy cards to $pcs", cardTypeFilter(ENERGY)).each {
+                    energySwitch(self, pcs, it)
+                  }
                   sw2(pcs)
                 }
               }
