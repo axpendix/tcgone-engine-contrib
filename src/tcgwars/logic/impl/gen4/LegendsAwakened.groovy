@@ -1937,17 +1937,17 @@ public enum LegendsAwakened implements LogicCardInfo {
               def toDraw = opp.hand.size()
               def oppToDraw = my.hand.size()
 
-              if (opp.hand) {
-                my.hand.getExcludedList(thisCard).moveTo(hidden:true, my.deck)
-                shuffleDeck()
-              }
-              draw oppToDraw, TargetPlayer.OPPONENT
-
-              if (my.hand.getExcludedList(thisCard).size()) {
-                my.hand.getExcludedList(thisCard).moveTo(hidden:true, my.deck)
+              if (my.hand) {
+                my.hand.moveTo(hidden:true, my.deck)
                 shuffleDeck()
               }
               draw toDraw
+
+              if (opp.hand) {
+                opp.hand.moveTo(hidden:true, my.deck)
+                shuffleDeck(null, TargetPlayer.OPPONENT)
+              }
+              draw oppToDraw, TargetPlayer.OPPONENT
             }
           }
           move "Super Eggsplosion", {
