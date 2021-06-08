@@ -2161,7 +2161,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost F
             attackRequirement {}
             onAttack {
-              damage 20, opp.all.select("Deal damage to?")
+              damage 30, opp.all.select("Deal damage to?")
             }
           }
           move "Spike Lariat", {
