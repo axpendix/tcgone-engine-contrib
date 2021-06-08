@@ -2590,7 +2590,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               if (r == PLAY_FROM_HAND && bg.currentTurn == self.owner && my.discard.filterByType(TRAINER) && confirm("Use $thisAbility?")) {
                 powerUsed()
                 flip {
-                  my.discard.select(max:1, "Select a Trainer card").moveTo(my.hand)
+                  my.discard.filterByType(TRAINER).select(max:1, "Select a Trainer card").moveTo(my.hand)
                 }
               }
             }
