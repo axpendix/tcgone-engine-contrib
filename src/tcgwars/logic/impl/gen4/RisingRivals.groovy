@@ -314,13 +314,15 @@ public enum RisingRivals implements LogicCardInfo {
 
         };
       case FLYGON_5:
-        return evolution (this, from:"Vibrava", hp:HP120, type:COLORLESS, retreatCost:0) {
+        return evolution (this, from:"Vibrava", hp:HP120, type:WATER, retreatCost:0) {
           weakness C, PLUS30
           resistance L, MINUS20
           pokeBody "Rainbow Float", {
             text "If any basic Energy card attached to Flygon is the same type as any of your Pokémon, the Retreat Cost for those Pokémon is 0."
-            getterA (GET_RETREAT_COST) { h->
-              if (!self.active && h.effect.target.owner == self.owner && h.effect.target.active && self.cards.filterByType(BASIC_ENERGY).find{h.effect.target.types.contains(it.basicType.first())}) {
+            getterA (GET_RETREAT_COST) { h ->
+              if (!self.active && h.effect.target.owner == self.owner && h.effect.target.active && self.cards.filterByType(BASIC_ENERGY).any {
+                h.effect.target.types.contains(it.asEnergyCard().energyTypes.first().first())
+              }) {
                 h.object = 0
               }
             }
@@ -329,7 +331,9 @@ public enum RisingRivals implements LogicCardInfo {
             text "40 damage. Discard a Stadium card your opponent has in play. If you do, prevent all effects of an attack, including damage, done to Flygon during your opponent’s next turn."
             energyCost C, C
             onAttack {
-              if(bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player == self.owner.opposite){
+              damage 40
+
+              if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player == self.owner.opposite) {
                 preventAllEffectsNextTurn()
                 afterDamage {
                   discard bg.stadiumInfoStruct.stadiumCard
