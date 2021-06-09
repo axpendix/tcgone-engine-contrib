@@ -327,7 +327,7 @@ public enum PowerKeepers implements LogicCardInfo {
         }
       };
       case BLAZIKEN_5:
-      return copy (RubySapphire.BLAZIKEN_3, this);
+      return copy (RubySapphireNG.BLAZIKEN_3, this);
       case CHARIZARD_6:
       return evolution (this, from:"Charmeleon", hp:HP120, type:R, retreatCost:2) {
         weakness W
