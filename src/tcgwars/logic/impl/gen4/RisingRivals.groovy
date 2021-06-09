@@ -1093,13 +1093,19 @@ public enum RisingRivals implements LogicCardInfo {
             text "Flip 3 coins. Remove a number of damage counters equal to the number of heads from your Pokémon in any way you like."
             energyCost ()
             attackRequirement {
-              assert my.all.find{it.numberOfDamageCounters} : "Your Pokémon are healthy"
+              assert my.all.find {it.numberOfDamageCounters} : "Your Pokémon are healthy"
             }
             onAttack {
-              flip 3, {
-                def damaged = my.all.findAll{it.numberOfDamageCounters}
-                if(damaged) {
-                  heal 10, damaged
+              def countersToRemove = 0
+              flip 3, { countersToRemove += 1 }
+              countersToRemove.times {
+                if (my.all.findAll { it.numberOfDamageCounters }) {
+                  if (my.bench) {
+                    def pcs = my.all.findAll { it.numberOfDamageCounters }.select("Which Pokémon to remove 1 damage counter from?")
+                    heal 10, pcs
+                  } else {
+                    heal 10, self
+                  }
                 }
               }
             }
