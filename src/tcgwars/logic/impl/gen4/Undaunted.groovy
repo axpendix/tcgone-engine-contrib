@@ -910,8 +910,10 @@ public enum Undaunted implements LogicCardInfo {
             energyCost M
             onAttack {
               damage 20
-              afterDamage{
-                attachEnergyFrom(type:M,my.discard,self)
+              afterDamage {
+                flip {
+                  attachEnergyFrom(type:M,my.discard,self)
+                }
               }
             }
           }
