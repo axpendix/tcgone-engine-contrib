@@ -1867,7 +1867,7 @@ public enum RisingRivals implements LogicCardInfo {
               damage 20 * opp.discard.filterByType(ENERGY).size()
               afterDamage {
                 opp.discard.filterByType(ENERGY).moveTo(opp.deck)
-                shuffleDeck()
+                shuffleDeck(null, TargetPlayer.OPPONENT)
               }
             }
           }
