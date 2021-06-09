@@ -2390,7 +2390,7 @@ public enum RisingRivals implements LogicCardInfo {
         };
       case NIDORAN_FEMALE_71:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
-          weakness P
+          weakness P, PLUS10
           move "Scratch", {
             text "10 damage. "
             energyCost P
