@@ -2759,6 +2759,7 @@ public enum RisingRivals implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert my.discard.filterByEnergyType(F) : "You have no basic [F] Energy cards in your discard pile"
+              assert self.active : "$self is not your Active Pokémon"
               powerUsed()
               attachEnergyFrom(basic:true,type:F,my.discard,self)
             }
