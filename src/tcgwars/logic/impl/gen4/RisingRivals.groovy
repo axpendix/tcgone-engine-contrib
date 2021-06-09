@@ -2064,6 +2064,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
             onAttack {
               my.deck.search(max:2,"Search your deck for up to 2 cards that evolve from Eevee",{it.cardTypes.is(EVOLUTION) && it.predecessor.contains("Eevee")}).showToOpponent("Signs of Evolution: Selected cards").moveTo(my.hand)
+              shuffleDeck()
             }
           }
           move "Bounce", {
