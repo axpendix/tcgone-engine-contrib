@@ -3194,7 +3194,7 @@ public enum RisingRivals implements LogicCardInfo {
           }
         };
       case INFERNAPE_E4_LV_X_108:
-        return levelUp (this, from:"Infernape 4", hp:HP110, type:FIRE, retreatCost:0) {
+        return levelUp (this, from:"Infernape E4", hp:HP110, type:FIRE, retreatCost:0) {
           weakness W
           pokePower "Intimidating Roar", {
             text "Once during your turn , you may have your opponent switch his or her Active Pokémon with one of his or her Benched Pokémon. This power can’t be used if Infernape E4 is affected by a Special Condition."
