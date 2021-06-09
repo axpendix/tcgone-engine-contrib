@@ -2907,7 +2907,7 @@ public enum RisingRivals implements LogicCardInfo {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nMove as many Energy cards attached to 1 of your Pokémon as you like to another of your Pokémon."
           onPlay {
             def src = my.all.findAll{it.cards.filterByType(ENERGY)}.select("Select Pokémon to move energy from")
-            def energyList = src.cards.filterByType(ENERGY).select(min:1, "Choose energy cards to move")
+            def energyList = src.cards.filterByType(ENERGY).select(min:1, max:src.cards.filterByType(ENERGY).size(), "Choose energy cards to move")
             def tar = my.all.findAll{it != src}.select("Choose Pokémon to move energy cards to")
             energyList.each {
               energySwitch(src, tar, it)
