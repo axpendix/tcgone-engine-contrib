@@ -1743,7 +1743,9 @@ public enum RisingRivals implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              increasedDamageDoneToDefending(self,defending,40,thisMove.name)
+              afterDamage {
+                increasedDamageDoneToDefending(self, defending, 40, thisMove.name)
+              }
             }
           }
           move "Sharp Fang", {
