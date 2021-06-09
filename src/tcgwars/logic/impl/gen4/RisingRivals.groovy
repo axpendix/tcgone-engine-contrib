@@ -3040,20 +3040,22 @@ public enum RisingRivals implements LogicCardInfo {
           }
         };
       case ALAKAZAM_E4_LV_X_103:
-        return levelUp (this, from:"Alakazam 4", hp:HP100, type:PSYCHIC, retreatCost:2) {
+        return levelUp (this, from:"Alakazam E4", hp:HP100, type:PSYCHIC, retreatCost:2) {
           weakness P
           pokePower "Damage Switch", {
-            text "As often as you like during your turn , you may move 1 damage counter from 1 of your Pokémon to another of your Pokémon . This power can’t be used if Alakazam 4 is affected by a Special Condition."
+            text "As often as you like during your turn (before your attack), you may move 1 damage counter from 1 of your SP Pokémon to another of your SP Pokémon . This power can’t be used if Alakazam 4 is affected by a Special Condition."
             actionA {
               checkNoSPC()
-              assert my.all.find({it.numberOfDamageCounters>0}) : "None of your Pokémon have any damage counters"
-              assert my.all.size()>=2 : "You only have 1 Pokémon in play"
+
+              assert my.all.findAll { it.pokemonSP }.size() >= 2 : "You only have 1 SP Pokémon in play"
+              assert my.all.any {it.numberOfDamageCounters > 0 && it.pokemonSP } : "None of your SP Pokémon have any damage counters"
+
               powerUsed()
-              def src=my.all.findAll {it.numberOfDamageCounters>0}.select("Source for damage counter")
-              def tar=my.all
+              def src = my.all.findAll {it.numberOfDamageCounters > 0 && it.pokemonSP }.select("Source for damage counter")
+              def tar = my.all
               tar.remove(src)
-              tar=tar.select("Target for damage counter")
-              src.damage-=hp(10)
+              tar = tar.select("Target for damage counter")
+              src.damage -= hp(10)
               directDamage 10, tar, Source.POKEPOWER
               bc "Swapped a damage counter from $src to $tar"
               checkFaint()
@@ -3064,7 +3066,7 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost P, P, C
             attackRequirement {}
             onAttack {
-              noWrDamage 50
+              noWrDamage 50, defending
             }
           }
         };
