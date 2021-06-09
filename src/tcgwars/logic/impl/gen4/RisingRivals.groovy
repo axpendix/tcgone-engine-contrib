@@ -1152,7 +1152,7 @@ public enum RisingRivals implements LogicCardInfo {
             text "100 damage. Flip 2 coins. If both of them are tails, this attack does nothing."
             energyCost F, C, C, C
             onAttack {
-              flip 2, {}{},[2:{damage 100},1:{damage 100}]
+              flip 2, {}, {}, [2:{ damage 100 }, 1:{ damage 100 }]
             }
           }
 
