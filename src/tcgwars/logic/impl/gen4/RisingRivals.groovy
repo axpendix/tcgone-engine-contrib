@@ -2863,7 +2863,7 @@ public enum RisingRivals implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              applyAfterDamage POISNED
+              applyAfterDamage POISONED
             }
           }
 
