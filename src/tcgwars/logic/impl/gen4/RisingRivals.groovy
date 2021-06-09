@@ -3138,7 +3138,7 @@ public enum RisingRivals implements LogicCardInfo {
           }
         };
       case GALLADE_E4_LV_X_106:
-        return levelUp (this, from:"Gallade 4", hp:HP100, type:PSYCHIC, retreatCost:1) {
+        return levelUp (this, from:"Gallade E4", hp:HP100, type:PSYCHIC, retreatCost:1) {
           weakness P
           pokePower "Blade Storm", {
             text "Once during your turn , when you put Gallade LV.X from your hand onto your Active Gallade , you may put 1 damage counter on each of your opponent’s Pokémon."
