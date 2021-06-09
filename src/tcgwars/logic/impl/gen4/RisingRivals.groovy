@@ -3260,8 +3260,8 @@ public enum RisingRivals implements LogicCardInfo {
               assert my.hand : "Your hand is empty"
             }
             onAttack {
-              def count = Math.min(my.hand.size(),8)
-              directDamage count, defending
+              def count = Math.min(my.hand.size(), 8)
+              directDamage count * 10, defending
             }
           }
         };
