@@ -314,7 +314,7 @@ public enum RisingRivals implements LogicCardInfo {
 
         };
       case FLYGON_5:
-        return evolution (this, from:"Vibrava", hp:HP120, type:WATER, retreatCost:0) {
+        return evolution (this, from:"Vibrava", hp:HP120, type:COLORLESS, retreatCost:0) {
           weakness C, PLUS30
           resistance L, MINUS20
           pokeBody "Rainbow Float", {
