@@ -1191,7 +1191,7 @@ public enum Undaunted implements LogicCardInfo {
             text "10 damage. "
             energyCost P
             onAttack {
-              damage 0
+              damage 10
             }
           }
 
