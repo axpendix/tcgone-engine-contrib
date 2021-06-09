@@ -1048,23 +1048,23 @@ public enum RisingRivals implements LogicCardInfo {
 
         };
       case MAMOSWINE_GL_27:
-        return basic (this, hp:HP100, type:WATER, retreatCost:2) {
+        return basic (this, hp:HP100, type:WATER, retreatCost:4) {
           weakness M
           resistance L, MINUS20
           pokeBody "Icy Aura", {
             text "As long as Mamoswine GL is your Active Pokémon, put 1 damage counter on each Active Pokémon (excluding W Pokémon) between turns."
             delayedA {
               before BEGIN_TURN, {
-                if(self.active) {
+                if (self.active) {
                   def selfWaterType = self.types.contains(W)
                   def oppWaterType = self.owner.opposite.pbg.active.types.contains(W)
-                  if(!selfWaterType||!oppWaterType) {
+                  if (!selfWaterType||!oppWaterType) {
                     bc "$thisAbility Activates"
                   }
-                  if(!oppWaterType) {
+                  if (!oppWaterType) {
                     directDamage(10, self.owner.opposite.pbg.active, Source.POKEBODY)
                   }
-                  if(!selfWaterType) {
+                  if (!selfWaterType) {
                     directDamage(10, self, Source.POKEBODY)
                   }
                 }
