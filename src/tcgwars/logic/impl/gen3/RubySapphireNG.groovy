@@ -183,7 +183,7 @@ public enum RubySapphireNG implements LogicCardInfo {
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.RUBY_SAPPHIRE;
+    return tcgwars.logic.card.Collection.RUBY_SAPPHIRE_NG;
   }
 
   @Override
