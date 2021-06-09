@@ -1788,7 +1788,7 @@ public enum RisingRivals implements LogicCardInfo {
 
         };
       case STEELIX_GL_51:
-        return basic (this, hp:HP110, type:METAL, retreatCost:2) {
+        return basic (this, hp:HP110, type:METAL, retreatCost:4) {
           weakness R
           resistance P, MINUS20
           move "Mend", {
@@ -1799,7 +1799,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
             onAttack {
               def energy = my.discard.select("Search your discard pile for a [M] Energy card",energyFilter(M)).first()
-              attachEnergy(self,energy)
+              attachEnergy(self, energy)
               heal 10, self
             }
           }
