@@ -181,6 +181,8 @@ public enum Collection {
   WIZARDS_BLACK_STAR_PROMOS_NG(111, "WBSP", "gen1.WizardsBlackStarPromosNG"),
   SHINY_STAR_V(1012, "JS4A", "gen8.ShinyStarV"),
 
+  RUBY_SAPPHIRE_NG(1301, "Ruby & Sapphire", "RS", "gen3.RubySapphireNG"),
+
   ;
 
   int id;

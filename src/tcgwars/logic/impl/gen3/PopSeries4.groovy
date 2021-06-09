@@ -181,33 +181,7 @@ public enum PopSeries4 implements LogicCardInfo {
         }
       };
       case SCEPTILE_5:
-      return evolution (this, from:"Grovyle", hp:HP100, type:G, retreatCost:3) {
-        weakness R
-        resistance W, MINUS30
-        pokePower "Energy Trans", {
-          text "As often as you like during your turn (before your attack), move a [G] Energy card attached to 1 of your Pokémon to another of your Pokémon. This power can't be used if Sceptile is affected by a Special Condition."
-          actionA {
-            checkNoSPC()
-            assert my.all.findAll {it.cards.energyCount(G)>0} : "There are no Pokémon with [G] Energy cards"
-            assert my.all.size()>=2 : "There is only one Pokémon on the field"
-
-            powerUsed()
-            def src=my.all.findAll {it.cards.energyCount(G)>0}.select("Source for [G]")
-            def card=src.cards.filterByEnergyType(G).select("Card to move").first()
-            def tar=my.all
-            tar.remove(src)
-            tar=tar.select("Target for [G]")
-            energySwitch(src, tar, card)
-          }
-        }
-        move "Tail Rap", {
-          text "50x damage. Flip 2 coins. This attack does 50 damage times the number of heads."
-          energyCost G, C, C
-          onAttack {
-            flip 2, { damage 50 }
-          }
-        }
-      };
+      return copy(RubySapphireNG.SCEPTILE_20, this);
       case COMBUSKEN_6:
       return evolution (this, from:"Torchic", hp:HP070, type:R, retreatCost:1) {
         weakness W
