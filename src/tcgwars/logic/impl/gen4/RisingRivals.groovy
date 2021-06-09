@@ -3028,8 +3028,10 @@ public enum RisingRivals implements LogicCardInfo {
       case UPPER_ENERGY_102:
         return specialEnergy (this, [[C]]) {
           text "Upper Energy provides [C] Energy. If you have more Prize cards left than your opponent and this card is attached to a Pokémon (excluding Pokémon LV.X), Upper Energy provides [C][C]."
+          onPlay { reason ->
+          }
           getEnergyTypesOverride{
-            if(self && !self.pokemonLevelUp && self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size()) {
+            if (self && !self.pokemonLevelUp && self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size()) {
               return [[C] as Set,[C] as Set]
             }
             else {
