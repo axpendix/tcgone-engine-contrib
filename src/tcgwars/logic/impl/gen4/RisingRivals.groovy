@@ -1245,7 +1245,7 @@ public enum RisingRivals implements LogicCardInfo {
         };
       case SNORLAX_33:
         return basic (this, hp:HP100, type:COLORLESS, retreatCost:4) {
-          weakness F
+          weakness F, PLUS20
           move "Pick and Collect", {
             text "Search your discard pile for up to 4 basic Energy cards, show them to your opponent, and put them into your hand."
             energyCost ()
