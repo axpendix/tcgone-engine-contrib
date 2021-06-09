@@ -3177,7 +3177,7 @@ public enum RisingRivals implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               discardSelfEnergyAfterDamage F, F
-              multiSelect(opp.all,2,"Choose 2 of your opponent's Pokémon").each {
+              multiSelect(opp.bench,2,"Choose 2 of your opponent's Pokémon").each {
                 damage 40, it
               }
             }
