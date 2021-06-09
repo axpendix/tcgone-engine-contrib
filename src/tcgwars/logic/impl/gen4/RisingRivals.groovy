@@ -308,7 +308,7 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost W, W
             onAttack {
               damage 50
-              cantuseAttack thisMove, self
+              cantUseAttack(thisMove, self)
             }
           }
 
