@@ -2364,7 +2364,7 @@ public enum RisingRivals implements LogicCardInfo {
         };
       case MUNCHLAX_70:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:2) {
-          weakness F
+          weakness F, PLUS20
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Snorlax from your hand onto Munchlax (this counts as evolving Munchlax) and remove all damage counters from Munchlax."
             actionA {
