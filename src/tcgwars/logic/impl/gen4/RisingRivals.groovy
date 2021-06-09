@@ -1521,11 +1521,11 @@ public enum RisingRivals implements LogicCardInfo {
           weakness W
           resistance L, MINUS20
           pokeBody "Sand Armor", {
-            text "If Hippowdon E4 has any Energy attached to it, any damage done to Hippowdon 4 by attacks is reduced by 10 ."
+            text "If Hippowdon E4 has any [F] Energy attached to it, any damage done to Hippowdon 4 by attacks is reduced by 10 ."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if(it.to == self && it.notNoEffect && it.dmg.value){
+                  if (it.to == self && it.notNoEffect && it.dmg.value && self.cards.energyCount(F)) {
                     bc "$thisAbility -10"
                     it.dmg -= hp(10)
                   }
