@@ -2423,7 +2423,7 @@ public enum RisingRivals implements LogicCardInfo {
         };
       case NIDORAN_MALE_72:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
-          weakness P
+          weakness P, PLUS10
           move "Leer", {
             text "Flip a coin. If heads, the Defending Pokémon can’t attack during your opponent’s next turn."
             energyCost C
