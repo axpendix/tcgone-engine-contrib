@@ -2498,7 +2498,7 @@ public enum RisingRivals implements LogicCardInfo {
         };
       case NUZLEAF_75:
         return evolution (this, from:"Seedot", hp:HP080, type:DARKNESS, retreatCost:1) {
-          weakness F, PLUS20
+          weakness R, PLUS20
           resistance P, MINUS20
           move "Blind", {
             text "10 damage. If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
