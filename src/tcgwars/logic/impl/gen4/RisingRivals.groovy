@@ -3201,9 +3201,9 @@ public enum RisingRivals implements LogicCardInfo {
             actionA {
               checkLastTurn()
               checkNoSPC()
-              assert opp.bench : "Your opponent only has 1  Pokémonin play"
+              assert opp.bench : "Your opponent only has 1  Pokémon in play"
               powerUsed()
-              whirlwind()
+              sw opp.active, opp.bench.oppSelect("Choose your new Active Pokémon.")
             }
           }
           move "Fire Spin", {
