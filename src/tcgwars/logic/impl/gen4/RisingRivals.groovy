@@ -622,12 +622,14 @@ public enum RisingRivals implements LogicCardInfo {
         return evolution (this, from:"Lairon", hp:HP130, type:METAL, retreatCost:3) {
           weakness R, PLUS30
           resistance P, MINUS20
+          def lastDamage = null
+          def turnCount = null
           customAbility {
             delayed (priority: LAST) {
               before APPLY_ATTACK_DAMAGES, {
-                if(bg().currentTurn==self.owner.opposite) {
-                  turnCount=bg.turnCount
-                  lastDamage=bg().dm().find({it.to==self && it.dmg.value>=0})?.dmg
+                if (bg().currentTurn==self.owner.opposite) {
+                  turnCount = bg.turnCount
+                  lastDamage = bg().dm().find({it.to==self && it.dmg.value>=0})?.dmg
                 }
               }
             }
@@ -647,7 +649,7 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost M, C, C
             onAttack {
               damage 40
-              if(my.deck && confirm("Discard the top card of your deck?")) {
+              if (my.deck && confirm("Discard the top card of your deck?")) {
                 afterDamage {
                   discard my.deck.first()
                   heal 20, self
