@@ -385,7 +385,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             my.deck.search("Search for a [P] Energy card to attach to one of your Pokémon.", energyFilter(P)).each {
               def tar = my.all.select("Attach $it to? That Pokémon will receive 2 damage counters.")
               attachEnergy(tar, it)
-              directDamage 20, tar, POKEPOWER
+              directDamage 20, tar, Source.POKEPOWER
             }
             shuffleDeck()
           }
