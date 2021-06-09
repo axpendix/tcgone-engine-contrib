@@ -1698,14 +1698,19 @@ public enum Undaunted implements LogicCardInfo {
             energyCost C
             attackRequirement {
               assert my.deck : "Your deck is empty"
-              assert my.bench.notFull
             }
             onAttack {
-              def top = my.deck.subList(0,5)
-              def max = Math.min(my.bench.freeBenchCount, top.filterByType(BASIC).size())
-              top.select(min:0,max:max,"Choose any number of Basic Pokémon to put on your bench",cardTypeFilter(BASIC)).each{
-                benchPCS(it)
+              def top = my.deck.subList(0, 5)
+
+              if (my.bench.notFull) {
+                def max = Math.min(my.bench.freeBenchCount, top.filterByType(BASIC).size())
+                top.select(min:0,max:max,"Choose any number of Basic Pokémon to put on your bench",cardTypeFilter(BASIC)).each{
+                  benchPCS(it)
+                }
+              } else {
+                top.showToMe("Top cards of your deck")
               }
+
               shuffleDeck()
             }
           }
