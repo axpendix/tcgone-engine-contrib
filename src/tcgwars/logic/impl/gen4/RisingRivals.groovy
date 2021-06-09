@@ -1985,11 +1985,11 @@ public enum RisingRivals implements LogicCardInfo {
             text "Move an Energy card attached to the Defending Pokémon to another of your opponent’s Pokémon."
             energyCost C
             attackRequirement {
-              assert opp.bench : "Your opponent has no other Pokémon"
+              assert opp.bench : "Opponent has no Benched Pokémon"
             }
             onAttack {
               if (opp.active.cards.filterByType(ENERGY) && opp.bench) {
-                def energy = opp.active.findAll{it.cards.filterByType(ENERGY)}.select("Select energy to move to benched Pokémon").first()
+                def energy = opp.active.cards.filterByType(ENERGY).select("Select energy to move to benched Pokémon").first()
                 def tar = opp.bench.select("Select the Pokémon to move energy to")
                 energySwitch(opp.active, tar, energy)
               }
