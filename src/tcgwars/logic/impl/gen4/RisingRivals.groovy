@@ -2657,11 +2657,11 @@ public enum RisingRivals implements LogicCardInfo {
         };
       case SNORLAX_81:
         return basic (this, hp:HP100, type:COLORLESS, retreatCost:4) {
-          weakness F
+          weakness F, PLUS20
           customAbility {
             delayedA {
               before ASLEEP_SPC, self, null, CHECK_ATTACK_REQUIREMENTS, {
-                if(e.parentEvent.effect.move.name=="Toss and Turn")
+                if (e.parentEvent.effect.move.name=="Toss and Turn")
                   prevent()
               }
             }
@@ -2670,7 +2670,7 @@ public enum RisingRivals implements LogicCardInfo {
             text "As long as Snorlax is Asleep, your opponent’s Active Pokémon can’t retreat."
             delayedA {
               before RETREAT, opp.active, {
-                if(self.isSPC(ASLEEP)) {
+                if (self.isSPC(ASLEEP)) {
                   wcu "$thisAbility prevents retreating"
                   prevent()
                 }
@@ -2683,7 +2683,7 @@ public enum RisingRivals implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              if(self.isSPC(ASLEEP)) {
+              if (self.isSPC(ASLEEP)) {
                 damage 30
               }
             }
