@@ -3586,11 +3586,13 @@ public enum RisingRivals implements LogicCardInfo {
             onAttack {
               damage 30
               def count = 0
-              flipUntilTails{
+              flipUntilTails {
                 count ++
               }
-              count = Math.min(opp.hand.size(),count)
-              opp.hand.select(count:count,hidden:true,"Choose $count cards to discard from your opponent's hand").discard()
+              count = Math.min(opp.hand.size(), count)
+              if (count > 0) {
+                opp.hand.select(count:count, hidden:true,"Choose $count cards to discard from your opponent's hand").discard()
+              }
             }
           }
 
