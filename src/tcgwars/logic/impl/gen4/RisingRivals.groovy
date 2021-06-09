@@ -880,7 +880,7 @@ public enum RisingRivals implements LogicCardInfo {
         };
       case GASTRODON_WEST_SEA_22:
         return evolution (this, from:"Shellos West Sea", hp:HP110, type:FIGHTING, retreatCost:3) {
-          weakness G
+          weakness G, PLUS30
           resistance L, MINUS20
           move "Tackle", {
             text "50 damage. "
