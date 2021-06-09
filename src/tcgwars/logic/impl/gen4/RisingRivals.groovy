@@ -1836,10 +1836,10 @@ public enum RisingRivals implements LogicCardInfo {
             text "Remove all damage counters from one of your benched [G] Pokémon."
             energyCost G, G
             attackRequirement {
-              assert my.all.find{it.types.contains(G) && it.numberOfDamageCounters} : "All of your benched [G] Pokémon are healthy"
+              assert my.bench.find {it.types.contains(G) && it.numberOfDamageCounters } : "All of your benched [G] Pokémon are healthy"
             }
             onAttack {
-              def pcs = my.all.findAll{it.types.contains(G) && it.numberOfDamageCounters}.select(text)
+              def pcs = my.bench.findAll {it.types.contains(G) && it.numberOfDamageCounters }.select(text)
               healAll(pcs)
             }
           }
