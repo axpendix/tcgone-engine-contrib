@@ -1305,15 +1305,13 @@ public enum RisingRivals implements LogicCardInfo {
             text "Choose 1 of your opponent's Pokémon that has any damage counters on it. This attack does 40 damage to that Pokémon. If Vaporeon evolved from Eevee during this turn, this attack does 60 damage instead."
             energyCost W, C
             attackRequirement {
-              assert opp.all.find{it.numberOfDamageCounters} : "All of your opponent's Pokémon are healthy"
+              assert opp.all.find {it.numberOfDamageCounters } : "All of your opponent's Pokémon are healthy"
             }
             onAttack {
-              def tar = opp.all.findAll{it.numberOfDamageCounters}.select("Choose 1 of your opponent's  Pokémonthat has any damage counters on it")
+              def tar = opp.all.findAll {it.numberOfDamageCounters }.select("Choose 1 of your opponent's  Pokémonthat has any damage counters on it")
               damage 40, tar
-              if (self.lastEvolved == bg.turnCount && self.cards.any{it.name.contains("Eevee")}) {
-                opp.bench.each {
-                  damage 20, tar
-                }
+              if (self.lastEvolved == bg.turnCount && self.cards.any {it.name.contains("Eevee") }) {
+                damage 20, tar
               }
             }
           }
