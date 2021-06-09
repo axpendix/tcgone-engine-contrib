@@ -836,7 +836,7 @@ public enum RisingRivals implements LogicCardInfo {
         };
       case GASTRODON_EAST_SEA_21:
         return evolution (this, from:"Shellos East Sea", hp:HP090, type:WATER, retreatCost:1) {
-          weakness G
+          weakness G, PLUS30
           resistance L, MINUS20
           pokeBody "Sticky Hold", {
             text "If Gastrodon East Sea is switched or retreats to your Bench, move as many Energy cards attached to Gastrodon East Sea as you like to the new Active Pokémon."
@@ -865,6 +865,7 @@ public enum RisingRivals implements LogicCardInfo {
                 def pcs = benchPCS(it)
                 directDamage 20, pcs
               }
+              shuffleDeck()
             }
           }
           move "Wave Splash", {
