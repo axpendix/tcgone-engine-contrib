@@ -3101,9 +3101,9 @@ public enum RisingRivals implements LogicCardInfo {
             text "As long as Flygon is your Active Pokémon, discard the top card from your opponent’s deck between turns."
             delayedA {
               before BEGIN_TURN, {
-                if(self.active && self.owner.opposite.pbg.deck) {
+                if (self.active && self.owner.opposite.pbg.deck) {
                   bc"Wind Erosion activates"
-                  self.owner.opposite.pbg.deck.sublist(0,1).discard()
+                  self.owner.opposite.pbg.deck.subList(0, 1).discard()
                 }
               }
             }
