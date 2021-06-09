@@ -1077,16 +1077,21 @@ public enum Undaunted implements LogicCardInfo {
             energyCost C, C
             onAttack {
               damage 20
-              afterDamage{
+
+              afterDamage {
                 delayed (priority: BEFORE_LAST) {
                   before APPLY_ATTACK_DAMAGES, {
-                    def entry=bg.dm().find({it.to==self && it.dmg.value && it.notNoEffect})
+                    def entry = bg.dm().find {it.to == self && it.dmg.value && it.notNoEffect}
                     if (entry) {
                       flip "Afterimage Strike", self.owner, {
-                        entry.dmg=hp(0)
+                        entry.dmg = hp(0)
                       }
                     }
                   }
+                  unregisterAfter 2
+                  after EVOLVE, self, { unregister() }
+                  after DEVOLVE, self, { unregister() }
+                  after FALL_BACK, self, { unregister() }
                 }
               }
             }
