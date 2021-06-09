@@ -3385,7 +3385,7 @@ public enum RisingRivals implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 60
-              flip {
+              flip 1, {}, {
                 discardSelfEnergyAfterDamage C
               }
             }
