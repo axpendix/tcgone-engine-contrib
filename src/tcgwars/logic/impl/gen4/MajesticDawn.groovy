@@ -292,12 +292,12 @@ public enum MajesticDawn implements LogicCardInfo {
           weakness R, PLUS20
           resistance P, MINUS20
           customAbility {
-          //Adamant Orb: If an Active Pokémon has Weakness to [M] type, Dialga’s attacks do 20 more damage to that Pokémon (before applying Weakness and Resistance).
+            //Adamant Orb: If an Active Pokémon has Weakness to [M] type, Dialga’s attacks do 20 more damage to that Pokémon (before applying Weakness and Resistance).
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each {
-                  if (it.from.owner==self.owner && it.from == self && self.active && it.to.active && it.to.owner!=self.owner && it.dmg.value) {
-                    if (it.to.getWeaknesses().findAll{it.type == M}) {
+                if (ef.attacker == self) {
+                  bg.dm().each {
+                    if (it.to.active && it.to.owner != self.owner && it.to.getWeaknesses().any{it.type == M} && it.notZero) {
                       bc "Adamant Orb +20"
                       it.dmg += hp(20)
                     }
@@ -510,12 +510,12 @@ public enum MajesticDawn implements LogicCardInfo {
           //Lustrous Orb: If an Active Pokémon has Weakness to [W] type, Dialga’s attacks do 20 more damage to that Pokémon (before applying Weakness and Resistance).
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each {
-                  if (it.from.owner==self.owner && it.from == self && self.active && it.to.active && it.to.owner!=self.owner && it.dmg.value) {
-                    if (it.to.getWeaknesses().find{it.type == W}) {
-                      bc "Adamant Orb +20"
-                      it.dmg += hp(20)
-                    }
+                if (ef.attacker == self) {
+                  bg.dm().each {
+                    if (it.to.active && it.notZero && it.to.getWeaknesses().find{it.type == W}) {
+                        bc "Adamant Orb +20"
+                        it.dmg += hp(20)
+                      }
                   }
                 }
               }
@@ -2353,10 +2353,12 @@ public enum MajesticDawn implements LogicCardInfo {
               pokeBody "Hard Amber", {
                 delayedA {
                   before APPLY_ATTACK_DAMAGES, {
-                    bg.dm().each{
-                      if(!self.active && it.to == self && it.dmg.value && it.notNoEffect){
-                        bc "$thisAbility prevents all damage"
-                        it.dmg=hp(0)
+                    if (self.benched) {
+                      bg.dm().each{
+                        if(it.to == self && it.dmg.value && it.notNoEffect){
+                          bc "$thisAbility prevents all damage while benched"
+                          it.dmg=hp(0)
+                        }
                       }
                     }
                   }

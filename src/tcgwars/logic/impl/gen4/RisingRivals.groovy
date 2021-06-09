@@ -1470,10 +1470,12 @@ public enum RisingRivals implements LogicCardInfo {
             text "As long as Glaceon is your Active Pokémon, any damage done to your Pokémon by your opponent’s attacks is reduced by 10 ."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if(self.active && it.to.owner == self.owner && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect){
-                    bc "$thisAbility Wind -10"
-                    it.dmg -= hp(10)
+                if (self.active && ef.attacker.owner != self.owner) {
+                  bg.dm().each {
+                    if(it.to.owner == self.owner && it.dmg.value && it.notNoEffect){
+                      bc "$thisAbility -10"
+                      it.dmg -= hp(10)
+                    }
                   }
                 }
               }
@@ -1507,13 +1509,15 @@ public enum RisingRivals implements LogicCardInfo {
           weakness W
           resistance L, MINUS20
           pokeBody "Sand Armor", {
-            text "If Hippowdon E4 has any Energy attached to it, any damage done to Hippowdon 4 by attacks is reduced by 10 ."
+            text "If Hippowdon E4 has any Energy attached to it, any damage done to Hippowdon E4 by attacks is reduced by 10 ."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if(it.to == self && it.notNoEffect && it.dmg.value){
-                    bc "$thisAbility -10"
-                    it.dmg -= hp(10)
+                if (self.cards.filterByType(ENERGY)) {
+                  bg.dm().each {
+                    if(it.to == self && it.notNoEffect && it.dmg.value){
+                      bc "$thisAbility -10"
+                      it.dmg -= hp(10)
+                    }
                   }
                 }
               }
@@ -2237,7 +2241,7 @@ public enum RisingRivals implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if (self.active && it.to == self && it.dmg.value && it.notNoEffect) {
+                  if (it.to == self && it.dmg.value && it.notNoEffect) {
                     bc "$thisAbility -20"
                     it.dmg -= hp(20)
                   }
@@ -2508,10 +2512,12 @@ public enum RisingRivals implements LogicCardInfo {
             text "As long as Quagsire is on your Bench, prevent all damage done to Quagsire by attacks ."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if (!self.active && it.to == self && it.dmg.value && it.notNoEffect) {
-                    bc "$thisAbility prevents all damage"
-                    it.dmg=hp(0)
+                if (self.benched) {
+                  bg.dm().each {
+                    if (it.to == self && it.dmg.value && it.notNoEffect) {
+                      bc "$thisAbility prevents all damage"
+                      it.dmg=hp(0)
+                    }
                   }
                 }
               }

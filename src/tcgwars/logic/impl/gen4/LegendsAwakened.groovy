@@ -1517,10 +1517,12 @@ public enum LegendsAwakened implements LogicCardInfo {
                 }
               }
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if (self.active && it.to.owner == self.owner && it.to.benched && it.notNoEffect && it.dmg.value) {
-                    bc "White Smoke prevents damage"
-                    it.dmg = hp(0)
+                if (ef.attacker.owner != self.owner && self.active) {
+                  bg.dm().each {
+                    if (it.to.owner == self.owner && it.to.benched && it.notNoEffect && it.dmg.value) {
+                      bc "White Smoke prevents damage"
+                      it.dmg = hp(0)
+                    }
                   }
                 }
               }
@@ -2636,10 +2638,12 @@ public enum LegendsAwakened implements LogicCardInfo {
             text "As long as Unown U is on your Bench, prevent all effects of attacks, including damage, done by your opponent's Pokémon to any Unown on your Bench."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if (it.to.owner==self.owner && self.benched && it.to.name == "Unown" && it.dmg.value) {
-                    bc "UNSEEN prevents damage"
-                    it.dmg=hp(0)
+                if (ef.attacker.owner != self.owner && self.benched) {
+                  bg.dm().each {
+                    if (it.to.owner==self.owner && it.to.name == "Unown" && it.notNoEffect && it.dmg.value) {
+                      bc "UNSEEN prevents damage"
+                      it.dmg=hp(0)
+                    }
                   }
                 }
               }
@@ -3877,10 +3881,12 @@ public enum LegendsAwakened implements LogicCardInfo {
             draw 2
             delayed {
               after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each {
-                  if (it.to.active && it.from.owner == thisCard.player && it.to.owner != it.from.owner && it.dmg.value) {
-                  bc "Buck's Training +10"
-                  it.dmg += hp(10)
+                if (ef.attacker.owner == thisCard.player) {
+                  bg.dm().each {
+                    if (it.to.active && it.notZero) {
+                      bc "Buck's Training +10"
+                      it.dmg += hp(10)
+                    }
                   }
                 }
               }

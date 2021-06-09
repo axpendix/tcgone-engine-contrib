@@ -710,10 +710,12 @@ public enum Stormfront implements LogicCardInfo {
             text "As long as Abomasnow is your Active Pokémon, any damage done to your Pokémon by an opponent’s attack is reduced by 20 ."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if (self.active && it.to.owner == self.owner && it.dmg.value && it.notNoEffect) {
-                    bc "$thisAbility -20"
-                    it.dmg -= hp(20)
+                if (self.active && ef.attacker.owner != self.owner) {
+                  bg.dm().each {
+                    if (it.to.owner == self.owner && it.dmg.value && it.notNoEffect) {
+                      bc "$thisAbility -20"
+                      it.dmg -= hp(20)
+                    }
                   }
                 }
               }
@@ -792,10 +794,10 @@ public enum Stormfront implements LogicCardInfo {
             text "Each of your [G] Pokémon’s and [R] Pokémon’s attacks does 10 more damage to the Defending Pokémon ."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                if(ef.attacker && ef.attacker.owner == self.owner && (ef.attacker.types.contains(G) || ef.attacker.types.contains(R))){
+                if(ef.attacker.owner == self.owner && (ef.attacker.types.contains(G) || ef.attacker.types.contains(R))){
                   bg.dm().each {
-                    if (it.from.active && it.from.owner == self.owner && it.to.active && it.to.owner != self.owner && it.dmg.value) {
-                      bc "Sunny Day +10"
+                    if (it.to.active && it.to.owner != self.owner && it.notZero) {
+                      bc "$thisAbility +10"
                       it.dmg += hp(10)
                     }
                   }
@@ -1205,10 +1207,12 @@ public enum Stormfront implements LogicCardInfo {
             text "If Scizor has 6 or more damage counters on it, any damage done to Scizor by attacks is reduced by 40 ."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if (self.numberOfDamageCounters >= 6 && it.to == self && it.dmg.value && it.notNoEffect) {
-                    bc "$thisAbility -40"
-                    it.dmg -= hp(40)
+                if (self.numberOfDamageCounters >= 6) {
+                  bg.dm().each {
+                    if (it.to == self && it.dmg.value && it.notNoEffect) {
+                      bc "$thisAbility -40"
+                      it.dmg -= hp(40)
+                    }
                   }
                 }
               }
@@ -1295,12 +1299,16 @@ public enum Stormfront implements LogicCardInfo {
           resistance F, MINUS20
           pokeBody "Protect Wing", {
             text "As long as Staraptor is your Active Pokémon, any damage done by attacks from your opponent’s Stage 2 Evolved Pokémon is reduced by 20 ."
+            // Errata: Some abilities referring to "Stage 2 Evolved Pokémon" are receiving errata. These cards do not care if the Pokémon is evolved or not, only if it is a Stage 2 Pokémon. So, Stage 2 Pokémon put into play with abilities like Garchomp LV.X's "Restore" attack still count for these abilities. Staraptor's correct card text should read: "(Poké-Body) Protect Wing - As long as Staraptor is your Active Pokémon, any damage done by attacks from your opponent's Stage 2 Pokémon is reduced by 20 (after applying Weakness and Resistance)". (May 1, 2009 Pokemon Organized Play News; May 7, 2009 PUI Rules Team)
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if (self.active && it.from.stage2 && it.from.evolution && it.to.owner == self.owner && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect) {
-                    bc "$thisAbility -20"
-                    it.dmg -= hp(20)
+                if (self.active && ef.attacker.owner != self.owner && ef.attacker.stage2) {
+                  bg.dm().each {
+                    // Looking at JP FAQs, this is similar to "Intimidating Fang"
+                    if (it.notZero) {
+                      bc "$thisAbility -20"
+                      it.dmg -= hp(20)
+                    }
                   }
                 }
               }
@@ -1440,11 +1448,13 @@ public enum Stormfront implements LogicCardInfo {
             text "As long as you have more Prize cards left than your opponent, Vespiquen’s attacks do 10 more damage for each [G] Pokémon on your Bench to the Active Pokémon ."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each {
-                  if(my.prizeCardSet.size() > opp.prizeCardSet.size() && it.from==self && it.to.active && it.to.owner!=self.owner && it.dmg.value){
-                    def extraDamage = 10 * my.bench.findAll{it.types.contains(G)}.size()
-                    it.dmg += hp(extraDamage)
-                    bc "Green Dignity +$extraDamage"
+                if (ef.attacker == self && my.prizeCardSet.size() > opp.prizeCardSet.size() && my.bench.any{it.types.contains(G)}) {
+                  bg.dm().each {
+                    if(it.to.active && it.notZero){
+                      def extraDamage = 10 * my.bench.findAll{it.types.contains(G)}.size()
+                      it.dmg += hp(extraDamage)
+                      bc "$thisAbility +$extraDamage"
+                    }
                   }
                 }
               }
@@ -1934,10 +1944,12 @@ public enum Stormfront implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES,{
                 def dmgRed = Math.min(3,self.cards.energyCount(C))
-                bg.dm().each{
-                  if(it.to == self && it.notNoEffect && it.dmg.value && dmgRed) {
-                    bc "Energy Protection -${10*dmgRed}"
-                    it.dmg -= hp(10*dmgRed)
+                if (dmgRed) {
+                  bg.dm().each{
+                    if(it.to == self && it.notNoEffect && it.dmg.value) {
+                      bc "Energy Protection -${10*dmgRed}"
+                      it.dmg -= hp(10*dmgRed)
+                    }
                   }
                 }
               }
@@ -3106,17 +3118,19 @@ public enum Stormfront implements LogicCardInfo {
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
                 if(ef.attacker==self) bg.dm().each {
-                  if(it.from==self && it.to.active && it.to.owner!=self.owner && it.dmg.value){
-                    bc "No Guard +60"
+                  if(it.to.active && it.notZero){
+                    bc "$thisAbility +60"
                     it.dmg += hp(60)
                   }
                 }
               }
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if(it.to == self && it.dmg.value && it.notNoEffect){
-                    bc "No Guard +60"
-                    it.dmg+=hp(60)
+                if (ef.attacker.owner != self.owner) {
+                  bg.dm().each {
+                    if(it.to == self && it.dmg.value && it.notNoEffect){
+                      bc "No Guard +60"
+                      it.dmg+=hp(60)
+                    }
                   }
                 }
               }

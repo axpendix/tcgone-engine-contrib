@@ -1001,10 +1001,12 @@ public enum GreatEncounters implements LogicCardInfo {
             text "If Primeape has any damage counters on it, Primeape's attacks do 40 more damage to the Active Pokémon (before applying Weakness and Resistance)."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each{
-                  if (it.from == self && it.to.active && it.to.owner != self.owner && it.dmg.value && self.numberOfDamageCounters) {
-                    bc "Anger Point +40"
-                    it.dmg += hp(40)
+                if (ef.attacker == self && self.numberOfDamageCounters) {
+                  bg.dm().each{
+                    if (it.to.active && it.notZero) {
+                      bc "Anger Point +40"
+                      it.dmg += hp(40)
+                    }
                   }
                 }
               }
@@ -2934,8 +2936,7 @@ public enum GreatEncounters implements LogicCardInfo {
               after PROCESS_ATTACK_EFFECTS, {
                 if (ef.attacker.owner == self.owner && ef.attacker.types.contains(D) && ef.attacker.cards.filterByBasicEnergyType(D) && bg.em().retrieveObject("Dark_Shadow") != bg.turnCount) {
                   bg.dm().each {
-                    if (it.to.active && it.to != self.owner && it.notNoEffect && it.dmg.value) {
-
+                    if (it.to.active && it.notZero) {
                       def bonusDamage = it.from.cards.filterByBasicEnergyType(D).size() * 10
                       bc "Dark Shadow +$bonusDamage"
                       it.dmg += hp(bonusDamage)

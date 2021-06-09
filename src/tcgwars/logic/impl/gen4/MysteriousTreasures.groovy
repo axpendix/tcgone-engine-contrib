@@ -289,10 +289,12 @@ public enum MysteriousTreasures implements LogicCardInfo {
               afterDamage {
                 delayed {
                   before APPLY_ATTACK_DAMAGES, {
-                    bg.dm().each {
-                      if (it.to==self && it.dmg.value && it.notNoEffect && it.from.stage2) {
-                        bc "-30 to $self ($thisMove)"
-                        it.dmg-=hp(30)
+                    if (ef.attacker.owner == self.owner.opposite && ef.attacker.stage2) {
+                      bg.dm().each {
+                        if (it.to==self && it.dmg.value && it.notNoEffect) {
+                          bc "$thisMove -30"
+                          it.dmg-=hp(30)
+                        }
                       }
                     }
                   }
@@ -534,9 +536,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
                 def typesOfBasicEn = Type.values().toList().findAll{self.cards.filterByEnergyType(it)}
-                if(ef.attacker == self && !self.cards.filterByType(SPECIAL_ENERGY)){
+                if(ef.attacker == self && !self.cards.hasType(SPECIAL_ENERGY)){
                   bg.dm().each {
-                    if (it.to.active && it.to.getWeaknesses().any{we -> typesOfBasicEn.contains(we.type)} && it.dmg.value) {
+                    if (it.to.active && it.to.getWeaknesses().any{we -> typesOfBasicEn.contains(we.type)} && it.notZero) {
                       bc "Rainbow Scale +40"
                       it.dmg += hp(40)
                     }
@@ -1050,7 +1052,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               after PROCESS_ATTACK_EFFECTS, {
                 if (ef.attacker == self && boostedMoves.contains((ef as Attack).move.name)) {
                   bg.dm().each {
-                    if (it.to.active && it.to.owner != self.owner && it.dmg.value) {
+                    if (it.to.active && it.to.owner != self.owner && it.notZero) {
                       bc "Dragon DNA +30"
                       it.dmg += hp(30)
                     }
@@ -3428,7 +3430,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                   targeted self, SRC_SPENERGY, {
                     bg.dm().each() {
                       //Self damage appears to be increased as well, similar to PlusPower
-                      if (it.to.active && it.dmg.value) {
+                      if (it.to.active && it.notZero) {
                         bc "Darkness Energy +10"
                         it.dmg += hp(10)
                       }
@@ -3527,10 +3529,12 @@ public enum MysteriousTreasures implements LogicCardInfo {
               //TODO: Modularize?
               delayed {
                 before APPLY_ATTACK_DAMAGES, {
-                  bg.dm().each {
-                    if(it.from.owner==self.owner.opposite && it.to==self && it.dmg.value && it.notNoEffect){
-                      bc "Close Combat increases damage"
-                      it.dmg+=hp(30)
+                  if (ef.attacker.owner == self.owner.opposite) {
+                    bg.dm().each {
+                      if(it.to==self && it.dmg.value && it.notNoEffect){
+                        bc "Close Combat +30"
+                        it.dmg+=hp(30)
+                      }
                     }
                   }
                 }

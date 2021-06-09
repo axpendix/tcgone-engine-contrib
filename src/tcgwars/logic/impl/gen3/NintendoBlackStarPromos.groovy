@@ -605,7 +605,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
             after PROCESS_ATTACK_EFFECTS, {
               if (ef.attacker == self && opp.all.any{["Groudon", "Groudon ex", "Rayquaza", "Rayquaza ex"].contains(it.name)}) {
                 bg.dm().each {
-                  if (it.to.active && it.to.owner != self.owner && it.dmg.value) {
+                  if (it.to.active && it.to.owner != self.owner && it.notZero) {
                     bc "Frenzy +40"
                     it.dmg += hp(40)
                   }
@@ -644,7 +644,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
             after PROCESS_ATTACK_EFFECTS, {
               if (ef.attacker == self && opp.all.any{["Kyogre", "Kyogre ex", "Rayquaza", "Rayquaza ex"].contains(it.name)}) {
                 bg.dm().each {
-                  if (it.to.active && it.to.owner != self.owner && it.dmg.value) {
+                  if (it.to.active && it.to.owner != self.owner && it.notZero) {
                     bc "Frenzy +40"
                     it.dmg += hp(40)
                   }
@@ -686,7 +686,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
             after PROCESS_ATTACK_EFFECTS, {
               if (ef.attacker == self && opp.all.any{["Kyogre", "Kyogre ex", "Groudon", "Groudon ex"].contains(it.name)}) {
                 bg.dm().each {
-                  if (it.to.active && it.to.owner != self.owner && it.dmg.value) {
+                  if (it.to.active && it.to.owner != self.owner && it.notZero) {
                     bc "Frenzy +40"
                     it.dmg += hp(40)
                   }

@@ -2919,7 +2919,7 @@ public enum DiamondPearl implements LogicCardInfo {
             after PROCESS_ATTACK_EFFECTS, {
               if (ef.attacker == pcs) {
                 bg.dm().each {
-                  if (it.to.active && it.dmg.value) {
+                  if (it.to.active && it.notZero) {
                     bc "PlusPower +10"
                     it.dmg += hp(10)
                   }

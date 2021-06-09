@@ -905,7 +905,7 @@ public enum ShiningLegends implements LogicCardInfo {
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each{
-                  if(self.active && it.from.active && it.from.owner != self.owner && it.dmg.value && it.notNoEffect) {
+                  if(self.active && it.from.active && it.from.owner != self.owner && it.dmg.value) {
                     bc "Intimidating Pattern -30"
                     it.dmg -= hp(30)
                   }
@@ -1372,9 +1372,9 @@ public enum ShiningLegends implements LogicCardInfo {
             text "As long as this Pokémon is your Active Pokémon, prevent all damage done to your Benched Pokémon by your opponent's attacks."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                if(self.active) {
-                  bg.dm().each {if(it.to.owner==self.owner && it.from.owner!=self.owner && it.to.benched && it.dmg.value && it.notNoEffect){
-                    bc "Fabled Defense reduces damage"
+                if(self.active && ef.attacker.owner != self.owner) {
+                  bg.dm().each {if(it.to.owner==self.owner && it.to.benched && it.dmg.value && it.notNoEffect){
+                    bc "Fabled Defense prevents damage"
                     it.dmg=hp(0)
                   }}
                 }

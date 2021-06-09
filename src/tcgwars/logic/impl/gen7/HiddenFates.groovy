@@ -1110,10 +1110,12 @@ public enum HiddenFates implements LogicCardInfo {
         onPlay {
           eff = delayed {
             after PROCESS_ATTACK_EFFECTS, {
-              bg.dm().each{
-                if(it.from.name == "Starmie-GX" && it.dmg.value && it.from.owner == it.to.owner.opposite && it.to.active){
-                  bc "Misty's Cerulean City Gym +40"
-                  it.dmg += hp(40)
+              if (ef.attacker.name == "Starmie-GX") {
+                bg.dm().each{
+                  if(it.from.owner == it.to.owner.opposite && it.to.active && it.notZero){
+                    bc "Misty's Cerulean City Gym +40"
+                    it.dmg += hp(40)
+                  }
                 }
               }
             }

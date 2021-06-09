@@ -616,7 +616,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               after PROCESS_ATTACK_EFFECTS, {
                 if(ef.attacker && ef.attacker.owner == self.owner && (ef.attacker.types.contains(G) || ef.attacker.types.contains(R))){
                   bg.dm().each {
-                    if (it.from.active && it.from.owner == self.owner && it.to.active && it.to.owner != self.owner && it.dmg.value) {
+                    if (it.to.active && it.to.owner != self.owner && it.notZero) {
                       bc "Sunny Day +20"
                       it.dmg += hp(20)
                     }
@@ -982,39 +982,11 @@ public enum SunMoonPromos implements LogicCardInfo {
           }
         };
       case DHELMISE_SM53:
-        return basic (this, hp:HP120, type:PSYCHIC, retreatCost:2) {
-          weakness DARKNESS
-          resistance FIGHTING, MINUS20
-          bwAbility "Steelworker" , {
-            text "Your [M] Pokémon's attacks do 10 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
-            delayedA {
-              after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each {if(it.from.owner==self.owner && it.from.types.contains(M) && it.to.active && it.to.owner!=self.owner && it.dmg.value){
-                  bc "Steelworker +10"
-                  it.dmg += hp(10)
-                }}
-              }
-            }
-          }
-          move "Anchor Shot" , {
-            text "70 damage. The Defending Pokémon can't retreat during your opponent's next turn."
-            energyCost P,C,C
-          }
-        };
+        return copy(GuardiansRising.DHELMISE_59, this);
       case LUCARIO_SM54:
         return copy(BurningShadows.LUCARIO_71, this);
       case DECIDUEYE_SM55:
-        return 	evolution (this, from:"Dartrix", hp:HP140, type:GRASS, retreatCost:1) {
-          weakness FIRE
-          move "Leaf Blade" , {
-            text "30+ damage. Flip a coin. If heads, this attack does 30 more damage.\n"
-            energyCost G
-          }
-          move "Brave Bird" , {
-            text "120 damage. This Pokémon does 20 damage to itself."
-            energyCost G,C,C
-          }
-        };
+        return copy(SunMoon.DECIDUEYE_11, this);
       case TSAREENA_GX_SM56:
         return evolution (this, from:"Steenee", hp:HP230, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -1187,10 +1159,12 @@ public enum SunMoonPromos implements LogicCardInfo {
             text "As long as this Pokémon is your Active Pokémon, your opponent's Active Pokémon's attack do 20 less damage (before applying Weakness and Resistance)."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each{
-                  if(self.active && it.from.active && it.from.owner != self.owner && it.dmg.value && it.notNoEffect) {
-                    bc "Pressure -20"
-                    it.dmg -= hp(20)
+                if (ef.attacker.owner != self.owner) {
+                  bg.dm().each{
+                    if(self.active && it.notZero) {
+                      bc "Pressure -20"
+                      it.dmg -= hp(20)
+                    }
                   }
                 }
               }
@@ -3265,10 +3239,12 @@ public enum SunMoonPromos implements LogicCardInfo {
             text "If this Pokémon has full HP, it takes 90 less damage from your opponent’s attacks (after applying Weakness and Resistance)."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if (self.damage == hp(0) && it.to.owner == self.owner && it.notNoEffect && it.dmg.value && it.to == self) {
-                    bc "High Density Armor -90"
-                    it.dmg -= hp(90)
+                if ( ef.attacker.owner != self.owner && self.damage == hp(0) ) {
+                  bg.dm().each {
+                    if (it.to == self && it.dmg.value && it.notNoEffect) {
+                      bc "High Density Armor -90"
+                      it.dmg -= hp(90)
+                    }
                   }
                 }
               }

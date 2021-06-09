@@ -226,7 +226,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             after PROCESS_ATTACK_EFFECTS, {
               if (ef.attacker.owner == self.owner && ef.attacker.topPokemonCard.cardTypes.is(DELTA)) {
                 bg.dm().each {
-                  if (it.to.active && it.to != self.owner && it.notNoEffect && it.dmg.value) {
+                  if (it.to.active && it.to.owner != self.owner && it.notNoEffect && it.notZero) {
                     bc "Battle Aura +10"
                     it.dmg += hp(10)
                   }
@@ -901,7 +901,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             after PROCESS_ATTACK_EFFECTS, {
               if (ef.attacker.owner == self.owner && ef.attacker.EX && ef.attacker.stage2) {
                 bg.dm().each {
-                  if (it.to.active && it.to.owner != self.owner && it.dmg.value) {
+                  if (it.to.active && it.to.owner != self.owner && it.notZero) {
                     bc "Extra Feather +10"
                     it.dmg += hp(10)
                   }
@@ -2071,7 +2071,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             after PROCESS_ATTACK_EFFECTS, {
               if (ef.attacker.owner != self.owner) {
                 bg.dm().each {
-                  if (it.to.owner == self.owner && it.to.EX && it.to.stage2 && it.dmg.value) {
+                  if (it.to.owner == self.owner && it.to.EX && it.to.stage2 && it.notZero) {
                     bc "Extra Smoke -10"
                     it.dmg -= hp(10)
                   }

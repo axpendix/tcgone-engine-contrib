@@ -2788,10 +2788,15 @@ public enum SunMoon implements LogicCardInfo {
             draw 2
             delayed {
               after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each {if(it.to.active && it.from.owner==thisCard.player && it.to.owner!=it.from.owner && it.dmg.value){
-                  bc "Professor Kukui +20"
-                  it.dmg += hp(20)
-                }}
+                if (ef.attacker.owner == thisCard.player) {
+                  bg.dm().each{
+                    if (it.to.active && it.to.owner!=it.from.owner && it.notZero){
+                      bc "Professor Kukui +20"
+                      it.dmg += hp(20)
+                    }
+                  }
+
+                }
               }
               unregisterAfter 1
             }

@@ -326,10 +326,12 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
               afterDamage {
                 delayed {
                   before APPLY_ATTACK_DAMAGES, {
-                    bg.dm().each {
-                      if(it.to == self && it.dmg.value && it.notNoEffect){
-                        bc "${thisMove.name} +20"
-                        it.dmg+=hp(20)
+                    if (ef.attacker.owner == self.owner.opposite) {
+                      bg.dm().each {
+                        if (it.to == self && it.notNoEffect && it.dmg.value) {
+                          bc "${thisMove.name} +20"
+                          it.dmg+=hp(20)
+                        }
                       }
                     }
                   }

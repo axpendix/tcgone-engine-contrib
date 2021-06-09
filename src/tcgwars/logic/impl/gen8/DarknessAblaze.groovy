@@ -4119,10 +4119,12 @@ public enum DarknessAblaze implements LogicCardInfo {
           eff = delayed {
             after PROCESS_ATTACK_EFFECTS, {
               targeted self, SRC_SPENERGY, {
-                bg.dm().each {
-                  if (it.from == self && it.to.active && it.to.owner != self.owner && self.types.contains(C) && it.dmg.value) {
-                    bc "Powerful [C] Energy +20"
-                    it.dmg += hp(20)
+                if (ef.attacker == self && self.type.contains(C)) {
+                  bg.dm().each {
+                    if (it.to.active && it.to.owner != self.owner && it.notZero) {
+                      bc "Powerful [C] Energy +20"
+                      it.dmg += hp(20)
+                    }
                   }
                 }
               }

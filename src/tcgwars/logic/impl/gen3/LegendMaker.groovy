@@ -195,13 +195,15 @@ public enum LegendMaker implements LogicCardInfo {
           text "Any damage done to Aerodactyl by attacks from your opponent's Pokémon is reduced by 10 for each React Energy card attached to Aerodactyl (after applying Weakness and Resistance)."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
-              bg.dm().each {
-                if (it.to == self && it.dmg.value && it.notNoEffect) {
-                  def energies = self.cards.findAll{it.name == "React Energy"}
-                  if (energies) {
-                    def reducedDamage = energies.size()*10
-                    bc "Reactive Protection -$reducedDamage"
-                    it.dmg -= hp(reducedDamage)
+              if (ef.attacker.owner == self.owner.opposite) {
+                bg.dm().each {
+                  if (it.to == self && it.dmg.value && it.notNoEffect) {
+                    def energies = self.cards.findAll{it.name == "React Energy"}
+                    if (energies) {
+                      def reducedDamage = energies.size()*10
+                      bc "Reactive Protection -$reducedDamage"
+                      it.dmg -= hp(reducedDamage)
+                    }
                   }
                 }
               }
@@ -933,7 +935,7 @@ public enum LegendMaker implements LogicCardInfo {
             after PROCESS_ATTACK_EFFECTS, {
               if (ef.attacker == self) {
                 bg.dm().each {
-                  if (it.to.active && it.to.owner != self.owner && it.notNoEffect && it.dmg.value) {
+                  if (it.to.active && it.to.owner != self.owner && it.notZero) {
                     if (self.owner.pbg.all.any{
                       it.name == "Kabuto" ||
                       it.name == "Kabutops" ||
@@ -1432,7 +1434,7 @@ public enum LegendMaker implements LogicCardInfo {
             before PROCESS_ATTACK_EFFECTS, {
               if (ef.attacker == self && self.isSPC(CONFUSED)) {
                 bg.dm().each {
-                  if (it.to == self.owner.opposite.active && it.notNoEffect && it.dmg.value) {
+                  if (it.to == self.owner.opposite.active && it.notZero) {
                     bc "Paranoid +50"
                     it.dmg += hp(50)
                   }

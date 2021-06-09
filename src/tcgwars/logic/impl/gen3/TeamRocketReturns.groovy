@@ -2484,10 +2484,12 @@ public enum TeamRocketReturns implements LogicCardInfo {
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
                 targeted self, SRC_SPENERGY, {
-                  bg.dm().each {
-                    if (it.from == self && it.to.active && it.notNoEffect && it.dmg.value) {
-                      bc "R Energy +10"
-                      it.dmg += hp(10)
+                  if (ef.attacker == self) {
+                    bg.dm().each {
+                      if (it.to.active && it.notZero) {
+                        bc "R Energy +10"
+                        it.dmg += hp(10)
+                      }
                     }
                   }
                 }

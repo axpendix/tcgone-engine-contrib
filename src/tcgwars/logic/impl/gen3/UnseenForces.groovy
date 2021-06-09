@@ -342,13 +342,17 @@ public enum UnseenForces implements LogicCardInfo {
       return evolution (this, from:"Croconaw", hp:HP120, type:W, retreatCost:2) {
         weakness L
         pokeBody "Intimidating Fang", {
-          text "As long as Feraligatr is your Active Pokémon, any damage done to your Pokémon by an opponent's attack is reduced by 10 (before applying Weakness and Resistance)."
+          text "As long as Feraligatr is your Active Pokémon, any damage done by an opponent's attack is reduced by 10 (before applying Weakness and Resistance)."
           delayedA {
             after PROCESS_ATTACK_EFFECTS, {
-              bg.dm().each {
-                if(self.active && it.to.owner==self.owner && it.from.owner==self.owner.opposite && it.dmg.value && it.notNoEffect) {
-                  bc "Intimidating Fang: -10"
-                  it.dmg-=hp(10)
+              if (self.active && ef.attacker.owner == self.owner.opposite) {
+                bg.dm().each {
+                  //Not checking for it.notNoEffect since it's applied before W/R, should count as an effect on the attacking pokemon.
+                  //Not checking "it.to.owner==self.owner" since it reduces any damage done, not just to your Pokémon.
+                  if(it.notZero) {
+                    bc "Intimidating Fang: -10"
+                    it.dmg-=hp(10)
+                  }
                 }
               }
             }
@@ -1017,7 +1021,7 @@ public enum UnseenForces implements LogicCardInfo {
             after PROCESS_ATTACK_EFFECTS, {
               if(ef.attacker == self && self.evolution) {
                 bg.dm().each {
-                  if (it.to.owner != self.owner && it.dmg.value && it.notNoEffect) {
+                  if (it.to.owner != self.owner && it.notZero) {
                     bc "Stages of Evolution +20"
                     it.dmg += hp(20)
                   }
@@ -1357,10 +1361,13 @@ public enum UnseenForces implements LogicCardInfo {
           text "As long as Granbull is your Active Pokémon, any damage done to your Pokémon by an opponent's attack is reduced by 10 (before applying Weakness and Resistance)."
           delayedA {
             after PROCESS_ATTACK_EFFECTS, {
-              bg.dm().each {
-                if (self.active && it.to.owner == self.owner && it.dmg.value && it.notNoEffect) {
-                  bc "Intimidating Fang -10"
-                  it.dmg -= hp(10)
+              if (self.active && ef.attacker.owner == self.owner.opposite) {
+                bg.dm().each {
+                  //Not checking for it.notNoEffect since it's applied before W/R, should count as an effect on the attacking pokemon.
+                  if (it.to.owner == self.owner && it.notZero) {
+                    bc "Intimidating Fang -10"
+                    it.dmg -= hp(10)
+                  }
                 }
               }
             }
@@ -2404,10 +2411,14 @@ public enum UnseenForces implements LogicCardInfo {
         onPlay {reason->
           eff = delayed {
             after PROCESS_ATTACK_EFFECTS, {
-              bg.dm().each {if(it.from == self && ( self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size() ) && it.to.active && it.to.owner != self.owner && it.dmg.value){
-                bc "Solid Rage +20"
-                it.dmg += hp(20)
-              }}
+              if (ef.attacker == self && self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size() ) {
+                bg.dm().each {
+                  if(it.to.active && it.to.owner == self.owner.opposite && it.notZero){
+                    bc "Solid Rage +20"
+                    it.dmg += hp(20)
+                  }
+                }
+              }
             }
             after EVOLVE, self, {check(self)}
             after DEVOLVE, self, {check(self)}

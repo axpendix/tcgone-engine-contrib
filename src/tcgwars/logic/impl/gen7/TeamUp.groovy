@@ -1655,13 +1655,16 @@ public enum TeamUp implements LogicCardInfo {
               damage 70
               delayed{
                 before APPLY_ATTACK_DAMAGES, {
-                  bg.dm().each {
-                    if(it.to == self && it.from.topPokemonCard.cardTypes.is(ULTRA_BEAST) && it.dmg.value && it.notNoEffect) {
-                      bc "Paranormal prevents damage from Ultra Beasts"
-                      it.dmg = hp(0)
+                  if (ef.attacker.owner != self.owner && ef.attacker.cardTypes.is(ULTRA_BEAST)) {
+                    bg.dm().each {
+                      if(it.to == self && it.dmg.value && it.notNoEffect) {
+                        bc "Paranormal prevents damage from Ultra Beasts done to $self"
+                        it.dmg = hp(0)
+                      }
                     }
                   }
                 }
+                unregisterAfter(2)
               }
             }
           }
@@ -2558,10 +2561,12 @@ public enum TeamUp implements LogicCardInfo {
             text "Prevent all damage done to this Pokémon by attacks from your opponent's [R] Pokémon."
             delayedA{
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if(it.to == self && it.from.types.contains(R) && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect) {
-                    bc "Heatproof prevents damage from [R] Pokémon"
-                    it.dmg = hp(0)
+                if (ef.attacker.owner == self.owner.opposite && ef.attacker.types.contains(R)) {
+                  bg.dm().each {
+                    if(it.to == self && it.dmg.value && it.notNoEffect) {
+                      bc "Heatproof prevents damage from [R] Pokémon"
+                      it.dmg = hp(0)
+                    }
                   }
                 }
               }

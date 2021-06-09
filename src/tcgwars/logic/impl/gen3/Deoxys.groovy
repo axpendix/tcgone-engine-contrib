@@ -612,10 +612,12 @@ public enum Deoxys implements LogicCardInfo {
             text "As long as Slaking is your Active Pokémon, any damage done by attacks from your opponent’s Pokémon-ex is reduced by 30 (before applying Weakness and Resistance)."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each{
-                  if(it.to == self && it.notNoEffect && it.dmg.value && it.from.EX && self.active) {
-                    bc "Lazy Aura -30"
-                    it.dmg -= hp(30)
+                if (self.active && ef.attacker.owner == self.owner.opposite && ef.attacker.EX) {
+                  bg.dm().each{
+                    if(it.notZero) {
+                      bc "Lazy Aura -30"
+                      it.dmg -= hp(30)
+                    }
                   }
                 }
               }
@@ -2447,9 +2449,9 @@ public enum Deoxys implements LogicCardInfo {
               }
               after PROCESS_ATTACK_EFFECTS, {
                 if(attackUsed) bg.dm().each {
-                  if(it.from==self && it.to.active && it.to.owner!=self.owner && it.dmg.value){
+                  if(it.to.active && it.notZero){
                     it.dmg += hp(10)
-                    attackUsed=true
+                    attackUsed=true // TODO: Remove?
                     bc "Strength Charm +10"
                   }
                 }
@@ -2765,10 +2767,12 @@ public enum Deoxys implements LogicCardInfo {
               damage 80
               delayed {
                 after PROCESS_ATTACK_EFFECTS, {
-                  bg.dm().each {
-                    if(it.from.owner==self.owner.opposite && it.to==self && it.dmg.value && it.notNoEffect){
-                      bc "Pivot Throw increases damage"
-                      it.dmg+=hp(10)
+                  if (ef.attacker.owner == self.owner.opposite) {
+                    bg.dm().each {
+                      if(it.to==self && it.notZero && it.notNoEffect){
+                        bc "Pivot Throw +10"
+                        it.dmg+=hp(10)
+                      }
                     }
                   }
                 }

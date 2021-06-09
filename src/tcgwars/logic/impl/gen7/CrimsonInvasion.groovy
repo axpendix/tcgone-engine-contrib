@@ -397,11 +397,13 @@ public enum CrimsonInvasion implements LogicCardInfo {
           bwAbility "Sap Sipper", {
             text "This Pokémon's attacks do 80 more damage to your opponent's [G] Pokémon (before applying Weakness and Resistance)."
             delayedA {
-              before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each{
-                  if(it.from == self && it.to.owner == self.owner.opposite && it.to.types.contains(G) && it.dmg.value){
-                    bc "Sap Sipper +80"
-                    it.dmg += hp(80)
+              after PROCESS_ATTACK_EFFECTS, {
+                if (ef.attacker == self) {
+                  bg.dm().each {
+                    if (it.to.owner == self.owner.opposite && it.to.types.contains(G) && it.notZero) {
+                      bc "Sap Sipper +80"
+                      it.dmg += hp(80)
+                    }
                   }
                 }
               }
@@ -1327,10 +1329,10 @@ public enum CrimsonInvasion implements LogicCardInfo {
             onAttack {
               damage 90
               delayed{
-                before APPLY_ATTACK_DAMAGES, {
+                after PROCESS_ATTACK_EFFECTS, {
                   if(ef.attacker.owner == self.owner.opposite) {
                     bg.dm().each{
-                      if(it.to == self && it.notNoEffect && it.dmg.value) {
+                      if(it.notZero) {
                         bc "Lucha Fight +30"
                         it.dmg += hp(30)
                       }
@@ -1374,7 +1376,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
               after PROCESS_ATTACK_EFFECTS, {
                 if(ef.attacker.owner == self.owner && (ef.attacker.name=="Registeel")){
                   bg.dm().each {
-                    if (it.from.active && it.from.owner == self.owner && it.to.active && it.to.owner != self.owner && it.dmg.value) {
+                    if (it.to.active && it.to.owner != self.owner && it.notZero) {
                       bc "Rock Peak Growl +10"
                       it.dmg += hp(10)
                     }
@@ -1999,9 +2001,9 @@ public enum CrimsonInvasion implements LogicCardInfo {
               delayed{
                 before APPLY_ATTACK_DAMAGES, {
                   bg.dm().each{
-                    if(it.to==self && it.dmg.value){
-                      bc "+30 to kommo-o (Clanging Scales)"
-                      it.dmg+=hp(30)
+                    if(it.to==self && it.dmg.value && it.notNoEffect){
+                      bc "Clanging Scales +30"
+                      it.dmg += hp(30)
                     }
                   }
                   unregisterAfter 2
@@ -2327,8 +2329,9 @@ public enum CrimsonInvasion implements LogicCardInfo {
           onPlay {
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
+                if (ef.attacker.types.contains(D) || ef.attacker.types.contains(N))
                 bg.dm().each{
-                  if((it.from.types.contains(D) || it.from.types.contains(N)) && it.dmg.value && it.from.owner == it.to.owner.opposite && it.to.active){
+                  if(it.to.owner == it.to.owner.opposite && it.to.active && it.notZero){
                     bc "Devoured Field +10"
                     it.dmg += hp(10)
                   }

@@ -588,10 +588,12 @@ public enum Platinum implements LogicCardInfo {
             text "Prevent all damage done to your Benched Pokémon (excluding any Manectric) by attacks."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {if(it.to.owner==self.owner && it.from.owner!=self.owner && it.to.benched && !it.to.name == "Manectric" && it.dmg.value && it.notNoEffect){
-                  bc "Electric Barrier reduces damage"
-                  it.dmg=hp(0)
-                }}
+                bg.dm().each {
+                  if(it.to.owner == self.owner && it.to.benched && !it.to.name == "Manectric" && it.dmg.value && it.notNoEffect){
+                    bc "Electric Barrier prevents damage"
+                    it.dmg=hp(0)
+                  }
+                }
               }
             }
           }
@@ -679,7 +681,7 @@ public enum Platinum implements LogicCardInfo {
                   before APPLY_ATTACK_DAMAGES, {
                     bg.dm().each {
                       if(it.to == self && it.dmg.value && it.notNoEffect){
-                        bc "${thisMove.name} : -20"
+                        bc "${thisMove.name} -20"
                         it.dmg-=hp(20)
                       }
                     }
@@ -1359,9 +1361,9 @@ public enum Platinum implements LogicCardInfo {
               delayed {
                 def registeredOn=0
                 after PROCESS_ATTACK_EFFECTS, {
-                  if(bg.turnCount!=registeredOn){
-                    bg.dm().each {if(it.from==self && it.dmg.value){
-                      bc "Cheerfull Voice does +60 to ${it.to}"
+                  if(bg.turnCount!=registeredOn && ef.attacker == self){
+                    bg.dm().each {if(it.to.owner == self.owner.opposite && it.to.active && it.notZero){
+                      bc "Cheerfull Voice +60"
                       it.dmg+=hp(60)
                     }}
                   }
@@ -3623,7 +3625,7 @@ public enum Platinum implements LogicCardInfo {
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
                 if(ef.attacker==self && bg.em().retrieveObject("Revenge_Seed") == bg.turnCount-1) bg.dm().each {
-                  if(it.from==self && it.to.active && it.to.owner!=self.owner && it.dmg.value){
+                  if(it.to.active && it.notZero){
                     bc "Revenge seed +60"
                     it.dmg += hp(60)
                   }

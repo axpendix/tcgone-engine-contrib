@@ -757,7 +757,7 @@ public enum Undaunted implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if(it.from.owner != self.owner && it.to.owner==self.owner && it.to.benched && it.to.types.contains(G) && it.dmg.value && it.notNoEffect){
+                  if(it.to.owner==self.owner && it.to.benched && it.to.types.contains(G) && it.dmg.value && it.notNoEffect){
                     bc "$thisAbility prevents damage"
                     it.dmg=hp(0)
                   }
@@ -1833,11 +1833,13 @@ public enum Undaunted implements LogicCardInfo {
             my.hand.remove(thisCard)
 
             eff = delayed {
-              after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each {
-                  if (it.to == pcs && it.dmg.value && it.notNoEffect) {
-                    bc "Defender -20"
-                    it.dmg -= hp(20)
+              before APPLY_ATTACK_DAMAGES, {
+                if (ef.attacker.owner != pcs.owner) {
+                  bg.dm().each {
+                    if (it.to == pcs && it.dmg.value && it.notNoEffect) {
+                      bc "Defender -20"
+                      it.dmg -= hp(20)
+                    }
                   }
                 }
               }

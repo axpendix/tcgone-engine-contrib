@@ -1055,8 +1055,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           onAttack {
             damage 60
             targeted defending, {
-              bc ("Attaching an Energy from hand to the Defending Pokémon ($defending) during ${self.owner.opposite.getPlayerUsername(bg)}'s next turn"
-                + " will place 6 damage counters on the Defending Pokémon. (This effect can be removed by benching/evolving ${defending})")
+              bc ("Attaching an Energy from hand to the Defending Pokémon ($defending) during ${self.owner.opposite.getPlayerUsername(bg)}'s next turn will place 6 damage counters on the Defending Pokémon. (This effect can be removed by benching/evolving ${defending})")
               def pcs = defending
               delayed {
                 after ATTACH_ENERGY, {
@@ -2001,10 +2000,12 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         onPlay {reason->
           eff = delayed {
             after PROCESS_ATTACK_EFFECTS, {
-              bg.dm().each {
-                if(it.from==self && it.to.benched && (it.to.pokemonV || it.to.pokemonGX) && it.dmg.value){
-                  it.dmg += hp(30)
-                  bc "$thisCard +30"
+              if (ef.attacker == self) {
+                bg.dm().each {
+                  if(it.to.benched && (it.to.pokemonV || it.to.pokemonGX) && it.notZero){
+                    it.dmg += hp(30)
+                    bc "$thisCard +30"
+                  }
                 }
               }
             }

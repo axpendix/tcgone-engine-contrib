@@ -1681,7 +1681,7 @@ public enum Triumphant implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if(self.owner.pbg.discard.find{it.name == "Marowak"} && it.to == self && it.from.owner == self.owner.opposite && it.notNoEffect && it.dmg.value) {
+                  if(it.to == self && it.from.owner == self.owner.opposite && it.notNoEffect && it.dmg.value && self.owner.pbg.discard.find{it.name == "Marowak"}) {
                     def reduction = 20 * self.owner.pbg.discard.findAll{it.name == "Marowak"}.size()
                     bc "$thisAbility -$reduction"
                     it.dmg -= hp(reduction)

@@ -347,9 +347,9 @@ public enum CrystalGuardians implements LogicCardInfo {
           text "If your opponent has any Pokémon-ex in play, each of Ludicolo's attacks does 30 more damage to the Defending Pokémon."
           delayedA {
             after PROCESS_ATTACK_EFFECTS, {
-              if (opp.all.any{ it.EX }) {
+              if (ef.attacker == self && opp.all.any{ it.EX }) {
                 bg.dm().each {
-                  if (it.from == self && it.to.active && it.to.owner != self.owner && it.dmg.value && it.notNoEffect) {
+                  if (it.to.owner != self.owner && it.to.active && it.notZero) {
                     bc "Overzealous +30"
                     it.dmg += hp(30)
                   }
@@ -588,7 +588,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             after PROCESS_ATTACK_EFFECTS, {
               if (ef.attacker == self && self.getRemainingHP().value <= 40) {
                 bg.dm().each {
-                  if (it.to.owner == self.owner.opposite && it.to.active && it.dmg.value && it.notNoEffect) {
+                  if (it.to.owner == self.owner.opposite && it.to.active && it.notZero) {
                     bc "Water Pressure +40"
                     it.dmg += hp(40)
                   }

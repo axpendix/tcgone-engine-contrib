@@ -1263,10 +1263,15 @@ public enum UltraPrism implements LogicCardInfo {
             text "As long as this Pokémon is your Active Pokémon, your opponent’s Active Pokémon’s attacks do 30 less damage (before applying Weakness and Resistance)."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each {if(self.active && it.to==self && it.dmg.value && it.notNoEffect){
-                  bc "Intimidating Fang -30"
-                  it.dmg -= hp(30)
-                }}
+                if (self.active && ef.attacker.owner == self.owner.opposite) {
+                  bg.dm().each {
+                    if(it.notZero){
+                      bc "Intimidating Fang -30"
+                      it.dmg -= hp(30)
+                    }
+                  }
+                }
+
               }
             }
           }
@@ -1274,8 +1279,10 @@ public enum UltraPrism implements LogicCardInfo {
             text "Discard all [L] Energy from this Pokémon. This attack does 150 damage to 1 of your opponent’s Pokémon. (Don’t apply Weakness or Resistance for Benched Pokémon.)"
             energyCost L, L, C
             onAttack {
-              discardAllSelfEnergy(L) //Should this come before or after the damage step?
               damage 150, opp.all.select()
+              afterDamage{
+                discardAllSelfEnergy(L)
+              }
             }
           }
 
@@ -1734,10 +1741,12 @@ public enum UltraPrism implements LogicCardInfo {
             text "As long as this Pokémon is on your Bench, your Passimian’s attacks do 30 more damage to your opponent’s Active Evolution Pokémon (before applying Weakness and Resistance)."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each {
-                  if (self.benched && it.from.owner == self.owner && self.owner.pbg.active.name=="Passimian" && it.to.active && it.to.realEvolution && it.to.owner != self.owner && it.dmg.value) {
-                    it.dmg += hp(30)
-                    bc "Power Huddle +30"
+                if (self.benched && ef.attacker.owner == self.owner && ef.attacker.name=="Passimian" ) {
+                  bg.dm().each {
+                    if (it.to.active && it.to.owner != self.owner && it.to.realEvolution && it.notZero) {
+                      bc "Power Huddle +30"
+                      it.dmg += hp(30)
+                    }
                   }
                 }
               }
