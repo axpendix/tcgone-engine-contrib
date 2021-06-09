@@ -3247,10 +3247,24 @@ public enum RisingRivals implements LogicCardInfo {
             text "As often as you like during your turn , you may return a Pokémon Tool or Technical Machine card attached to your Pokémon to your hand. This power can’t be used if Mismagius is affected by a Special Condition."
             actionA {
               checkNoSPC()
-              assert my.all.find{it.cards.find{it.cardTypes.contains(POKEMON_TOOL)||it.cardTypes.contains(TECHNICAL_MACHINE)}} : "You have no Pokémon Tool or Technical Machine cards in play"
+              assert my.all.find {pcs ->
+                pcs.cards.find {
+                  it.cardTypes.contains(POKEMON_TOOL) || it.cardTypes.contains(TECHNICAL_MACHINE)
+                }
+              } : "You have no Pokémon Tool or Technical Machine cards in play"
+
               powerUsed()
-              def tar = my.all.findAll{it.cards.find{it.cardTypes.contains(POKEMON_TOOL)||it.cardTypes.contains(TECHNICAL_MACHINE)}}.select("Choose 1 of your Pokémon with a Pokémon Tool or Technical Machine card attached")
-              def card = tar.cards.select("Choose a Pokémon Tool or Technical Machine card to return to your hand",{it.types.contains(POKEMON_TOOL) || it.types.contains(TECHNICAL_MACHINE)}).moveTo(my.hand)
+              def tar = my.all.findAll {pcs ->
+                pcs.cards.find {
+                  it.cardTypes.contains(POKEMON_TOOL) || it.cardTypes.contains(TECHNICAL_MACHINE)
+                }
+              }.select("Choose 1 of your Pokémon with a Pokémon Tool or Technical Machine card attached")
+
+              def card = tar.cards.select("Choose a Pokémon Tool or Technical Machine card to return to your hand",{
+                it.cardTypes.contains(POKEMON_TOOL) || it.cardTypes.contains(TECHNICAL_MACHINE)
+              })
+
+              card.moveTo(my.hand)
             }
           }
           move "Darkness Magic", {
