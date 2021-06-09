@@ -768,7 +768,7 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost P, C
             attackRequirement {}
             onAttack {
-              damage 20+20*defending.cards.energyCount(C)
+              damage 20+10*defending.cards.energyCount(C)
             }
           }
 
