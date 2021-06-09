@@ -3300,7 +3300,7 @@ public enum RisingRivals implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 80
-              def energyList = my.hand.select(min:0,max:my.hand.fitlerByType(ENERGY).size(),"You many discard as many Energy cards as you like from you hand to remove that many damage counters from $self")
+              def energyList = my.hand.select(min:0,max:my.hand.filterByType(ENERGY).size(),"You many discard as many Energy cards as you like from you hand to remove that many damage counters from $self")
               afterDamage {
                 heal 10 * energyList.size(), self
                 energyList.discard()
