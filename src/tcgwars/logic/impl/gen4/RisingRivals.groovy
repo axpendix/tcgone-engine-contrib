@@ -2262,10 +2262,12 @@ public enum RisingRivals implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               apply POISONED
-              def nam=self.name
-              def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-              if(tar) evolve(self, tar.first(), OTHER)
-              shuffleDeck()
+              flip {
+                def name = self.name
+                def tar = my.deck.search("Evolves from $name", { it.cardTypes.is(EVOLUTION) && name == it.predecessor })
+                if (tar) evolve(self, tar.first(), OTHER)
+                shuffleDeck()
+              }
             }
           }
 
