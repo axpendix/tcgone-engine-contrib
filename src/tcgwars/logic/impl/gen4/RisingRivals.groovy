@@ -601,7 +601,7 @@ public enum RisingRivals implements LogicCardInfo {
                   def eff
                   register{
                     eff = getter (IS_ABILITY_BLOCKED) { Holder h ->
-                      if (h.effect.target.owner == self.owner.opposite && (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody)) {
+                      if (h.effect.target == defending && h.effect.target.owner == self.owner.opposite && (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody)) {
                         h.object=true
                       }
                     }
