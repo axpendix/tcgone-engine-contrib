@@ -270,9 +270,11 @@ public enum RisingRivals implements LogicCardInfo {
           resistance P, MINUS20
           pokeBody "Eerie Aura", {
             text "Put 1 damage counter on each of your opponent’s Pokémon that remains Asleep between turns."
-            before BEGIN_TURN, {
-              if(self.owner.opposite.pbg.active.isSPC(ASLEEP)){
-                directDamage 10, opp.active, Source.POKEBODY
+            delayedA {
+              before BEGIN_TURN, {
+                if (self.owner.opposite.pbg.active.isSPC(ASLEEP)) {
+                  directDamage 10, opp.active, Source.POKEBODY
+                }
               }
             }
           }
