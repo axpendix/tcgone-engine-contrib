@@ -1678,9 +1678,9 @@ public enum RisingRivals implements LogicCardInfo {
               flip 3, {
                 count ++
               }
-              count = Math.min(count,my.discard.filterByType(BASIC_ENERGY).size())
-              if(count) {
-                my.discard.select(count:count,"Search your discar pile for $count basic Energy cards to put into your hand").showToOpponent("Pickup Power: Selected Cards").moveTo(my.hand)
+              count = Math.min(count, my.discard.filterByType(BASIC_ENERGY).size())
+              if (count) {
+                my.discard.filterByType(BASIC_ENERGY).select(count:count,"Search your discard pile for $count basic Energy cards to put into your hand").showToOpponent("Pickup Power: Selected Cards").moveTo(my.hand)
               }
             }
           }
