@@ -2588,7 +2588,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokePower "JUNK", {
             text "Once during your turn, when you put Unown J from your hand onto your Bench, you may flip a coin. If heads, search your discard pile for a Trainer card, show it to your opponent, and put it into your hand."
             onActivate { r->
-              if (r == PLAY_FROM_HAND && bg.currentTurn == self.owner && my.discard.filterByType(TRAINER) && confirm("Use $thisAbility?")) {
+              if (r == PLAY_FROM_HAND && bg.currentTurn == self.owner && my.discard.filterByType(ITEM) && confirm("Use $thisAbility?")) {
                 powerUsed()
                 flip {
                   my.discard.filterByType(TRAINER).select(max:1, "Select a Trainer card").moveTo(my.hand)
