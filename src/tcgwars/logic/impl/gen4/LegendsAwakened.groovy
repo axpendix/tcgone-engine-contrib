@@ -2422,8 +2422,8 @@ public enum LegendsAwakened implements LogicCardInfo {
             onAttack {
               damage 30
 
-              if (my.hand.filterByBasicEnergyType(W)) {
-                def toDiscard = my.hand.filterByBasicEnergyType(W).select(min: 0, max: 2, "For each [W] Energy discarded, do +10")
+              if (my.hand.filterByEnergyType(W)) {
+                def toDiscard = my.hand.filterByEnergyType(W).select(min: 0, max: 2, "For each [W] Energy discarded, do +10")
                 if (toDiscard) {
                   damage 10 * toDiscard.size()
                 }
