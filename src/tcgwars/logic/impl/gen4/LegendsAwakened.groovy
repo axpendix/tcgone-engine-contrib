@@ -2359,7 +2359,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
-              while(opp.hand.size() > 5) {
+              while(opp.hand.size() >= 6) {
                 opp.hand.select(hidden: true, "Opponent's hand, select 1 to discard").discard()
               }
             }
