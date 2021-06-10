@@ -2646,10 +2646,12 @@ public enum LegendsAwakened implements LogicCardInfo {
             text "As long as Unown U is on your Bench, prevent all effects of attacks, including damage, done by your opponent's Pokémon to any Unown on your Bench."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if (it.to.owner==self.owner && self.benched && it.to.name.contains("Unown") && it.dmg.value) {
-                    bc "UNSEEN prevents damage"
-                    it.dmg = hp(0)
+                if (ef.attacker.owner != self.owner && self.benched) {
+                  bg.dm().each {
+                    if (it.to.owner==self.owner && it.to.benched && it.to.name.contains("Unown") && it.dmg.value && it.notNoEffect) {
+                      bc "UNSEEN prevents damage"
+                      it.dmg = hp(0)
+                    }
                   }
                 }
               }
