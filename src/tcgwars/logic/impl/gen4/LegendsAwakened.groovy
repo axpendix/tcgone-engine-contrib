@@ -2045,11 +2045,13 @@ public enum LegendsAwakened implements LogicCardInfo {
             text "If you have less Benched Pokémon than your opponent, each of Houndoom's attacks does 40 more damage to the Active Pokémon (before applying Weakness and Resistance)."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each {
-                  if (it.from == self && it.to.active && it.to.owner != self.owner && it.dmg.value && my.bench.size() < opp.bench.size()) {
-                    bc "Revenge Fang +40"
-                    it.dmg += hp(40)
-                  }
+                if (ef.attacker == self) {
+                  bg.dm().each {
+                    if (it.to.active && it.notZero && my.bench.size() < opp.bench.size()) {
+                      bc "Revenge Fang +40"
+                      it.dmg += hp(40)
+                    }
+                }
                 }
               }
             }
