@@ -4142,10 +4142,12 @@ public enum LegendsAwakened implements LogicCardInfo {
                 }
               }
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if (it.to == self && it.notNoEffect && !it.from.evolution) {
-                    it.dmg = hp(0)
-                    bc "Psybarrier prevents damage"
+                if (ef.attacker.owner != self.owner && ef.attacker.evolution) {
+                  bg.dm().each {
+                    if (it.to == self && it.dmg.value && it.notNoEffect) {
+                      it.dmg = hp(0)
+                      bc "Psybarrier prevents damage"
+                    }
                   }
                 }
               }
