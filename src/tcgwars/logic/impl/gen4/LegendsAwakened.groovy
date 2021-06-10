@@ -2559,7 +2559,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               if (opp.discard.filterByType(ENERGY)) {
-                def energies = opp.discard.filterByType(ENERGY).select(min:0, max: 2, "Select up to 2 Energy Cards to attach")
+                def energies = opp.discard.filterByType(ENERGY).select(min:1, max: 2, "Select up to 2 Energy Cards to attach")
 
                 energies.each {
                   def target = opp.all.select("Attach to?")
