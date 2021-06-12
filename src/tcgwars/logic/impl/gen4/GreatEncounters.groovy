@@ -2995,7 +2995,7 @@ public enum GreatEncounters implements LogicCardInfo {
               powerUsed()
 
               flip 2, {}, {}, [
-                2: { bg().gm().betweenTurns() },
+                2: { usingThisAbilityEndsTurn delegate },
                 0: {
                   eff = delayed {
                     after DRAW_CARD, {
