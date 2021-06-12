@@ -1396,8 +1396,8 @@ f
           pokeBody "Rough Skin", {
             text "If Sharpedo is your Active Pokémon and is damaged by an opponent’s attack , put 2 damage counter on the Attacking Pokémon."
             ifActiveAndDamagedByAttackBody(delegate) {
-              bc "Rough Skin activates"
-              directDamage(20, ef.attacker)
+              bc "$thisAbility activates"
+              directDamage(20, ef.attacker, Source.POKEBODY)
             }
           }
           move "Strike Wound", {

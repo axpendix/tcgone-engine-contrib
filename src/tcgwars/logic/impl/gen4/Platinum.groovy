@@ -1846,7 +1846,7 @@ public enum Platinum implements LogicCardInfo {
             energyCost D, C, C
             onAttack {
               damage 40
-              if(confirm("Discard a [D] Energy attached to Houndoom G?")) {
+              if(self.cards.energyCardCount(D) && confirm("Discard a [D] Energy attached to $self?")) {
                 damage 20
                 discardSelfEnergyAfterDamage D
               }
