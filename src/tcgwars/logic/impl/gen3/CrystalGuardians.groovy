@@ -2295,9 +2295,9 @@ public enum CrystalGuardians implements LogicCardInfo {
             checkLastTurn()
             checkNoSPC()
             assert my.discard.filterByType(ENERGY) : "No Energies in discard"
-            powerUsed()
+            powerUsed({ usingThisAbilityEndsTurn delegate })
             3.times{attachEnergyFrom(my.discard, my.all)}
-            bg.gm().betweenTurns()
+            usingThisAbilityEndsTurn delegate
           }
         }
         move "Ultra Pump", {
