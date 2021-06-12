@@ -2576,6 +2576,7 @@ public enum MajesticDawn implements LogicCardInfo {
                   benchPCS(it)
                 }
                 shuffleDeck()
+                bc "${self.owner.getPlayerUsername(bg)}'s turn ends due to using $thisCard's effect."
                 bg.gm().betweenTurns()
               }
             }
