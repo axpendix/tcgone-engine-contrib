@@ -171,7 +171,7 @@ public enum LegendsAwakened implements LogicCardInfo {
   ENERGY_PICKUP_132 ("Energy Pickup", "132", Rarity.UNCOMMON, [TRAINER, ITEM]),
   POKE_RADAR_133 ("Poké Radar", "133", Rarity.UNCOMMON, [TRAINER, ITEM]),
   SNOWPOINT_TEMPLE_134 ("Snowpoint Temple", "134", Rarity.UNCOMMON, [TRAINER, STADIUM]),
-  STARK_MOUNTAIN_135 ("Stark Mountain", "135", Rarity.UNCOMMON, [TRAINER]),
+  STARK_MOUNTAIN_135 ("Stark Mountain", "135", Rarity.UNCOMMON, [TRAINER, STADIUM]),
   TECHNICAL_MACHINE_TS_1_136 ("Technical Machine TS-1", "136", Rarity.UNCOMMON, [TRAINER, ITEM, TECHNICAL_MACHINE]),
   TECHNICAL_MACHINE_TS_2_137 ("Technical Machine TS-2", "137", Rarity.UNCOMMON, [TRAINER, ITEM, TECHNICAL_MACHINE]),
   CLAW_FOSSIL_138 ("Claw Fossil", "138", Rarity.COMMON, [TRAINER]),
