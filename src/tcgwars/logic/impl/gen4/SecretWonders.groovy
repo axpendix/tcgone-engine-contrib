@@ -228,7 +228,7 @@ public enum SecretWonders implements LogicCardInfo {
   public Card getImplementation() {
     switch (this) {
       case AMPHAROS_1:
-        return evolution (this, from:"Flaffy", hp:HP130, type:LIGHTNING, retreatCost:3) {
+        return evolution (this, from:"Flaaffy", hp:HP130, type:LIGHTNING, retreatCost:3) {
           weakness F, PLUS30
           resistance M, MINUS20
           pokeBody "Jamming", {
