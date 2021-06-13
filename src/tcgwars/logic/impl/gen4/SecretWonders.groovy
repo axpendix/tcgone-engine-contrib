@@ -915,10 +915,15 @@ public enum SecretWonders implements LogicCardInfo {
           weakness D, PLUS20
           resistance C, MINUS20
           move "Ghost Head", {
-            text "Put as many damage counters as you like on Banette. (You can’t put more than Banette’s remaining HP.) Put that many damage counters on the Defending Pokémon."
+            text "Put as many damage counters as you like on Banette. (You can't Knock Out Banette.) Put that many damage counters on the Defending Pokémon."
+            //Old text: "Put as many damage counters as you like on Banette. (You can’t put more than Banette’s remaining HP.) Put that many damage counters on the Defending Pokémon."
+            //Errata: Ghost Head can't cause Banette to Knock Out itself ... the attack has to leave Banette with at least 10 HP. "Put as many damage counters as you like on Banette. (You can't Knock Out Banette.) Put that many damage counters on the Defending Pokémon." (Jan 29, 2008 Pokemon Organized Play News)
             energyCost ()
+            attackRequirement {
+              assert self.remainingHP.value + 10 == self.fullHP  : "You can't place any more damage counters in $self"
+            }
             onAttack {
-              def count = choose(1..self.remainingHP.value / 10, "Put as many damage counters as you like on Banette")
+              def count = choose(1..((self.remainingHP.value / 10) - 1), "Put as many damage counters as you like on Banette")
               directDamage 10 * count, self
               directDamage 10 * count, defending
             }
