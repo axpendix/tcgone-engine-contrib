@@ -359,7 +359,9 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
           move "Blaze Roar", {
-            text "60 damage. Does 20 damage to 1 of your opponent's Benched Pokémon. Filp a coin. If tails, discard 2 [R] Energy attached to Entei."
+            text "60 damage. Does 20 damage to 1 of your opponent's Benched Pokémon. Filp a coin. If tails, discard 2 [R] Energy cards attached to Entei."
+            //Original Text: "Filp a coin. If tails, discard 2 [R] Energy attached to Entei."
+            //Errata: Entei's "Blaze Roar" attack should say "discard 2 Fire Energy CARDS" rather than just "discard 2 Fire Energy". (Nov 16, 2007 Pokemon Organized Play News)
             energyCost R, R, R
             onAttack {
               damage 60
