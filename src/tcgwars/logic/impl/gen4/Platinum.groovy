@@ -1762,7 +1762,7 @@ public enum Platinum implements LogicCardInfo {
           }
         };
       case FLAAFFY_48:
-        return evolution (this, from:"Flaaffy", hp:HP080, type:LIGHTNING, retreatCost:1) {
+        return evolution (this, from:"Mareep", hp:HP080, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS20
           resistance M, MINUS20
           move "Spark", {
