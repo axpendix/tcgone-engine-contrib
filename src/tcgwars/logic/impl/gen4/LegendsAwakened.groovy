@@ -1227,10 +1227,10 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 60
-              discardSelfEnergy(W, W)
               opp.bench.each {
-                damage 20
+                damage 20, it
               }
+              discardSelfEnergyAfterDamage W, W
             }
           }
         };
