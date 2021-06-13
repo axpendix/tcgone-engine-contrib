@@ -1982,7 +1982,7 @@ public enum Platinum implements LogicCardInfo {
           weakness W, PLUS20
           move "Fire Tail Slap", {
             text "40 damage. Flip a coin. If tails, discard a [R] Energy attached to Monferno."
-            energyCost R, R
+            energyCost R
             onAttack {
               damage 40
               flip 1, {}, { discardSelfEnergyAfterDamage R }
