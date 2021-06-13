@@ -1367,13 +1367,16 @@ public enum LegendsAwakened implements LogicCardInfo {
             actionA {
               checkNoSPC()
               checkLastTurn()
-              assert opp.bench : "Opponent has no Benched Pokémon"
-              assert !opp.active.evolution : "Opponent's Active Pokemon is Evolved"
+              // No assert for bench or not being evolved
+              // Q. Can you discard 2 cards from your hand with Regice's "Regi Move" Poke-POWER even if the opponent's Defending Pokemon is not a Basic [read: unevolved] Pokemon? Or what if they have no Benched Pokemon?
+              //A. Yes, but then you cannot switch the opponent's Defending Pokemon. (Sep 4, 2008 PUI Rules Team; Jan 22, 2009 PUI Rules Team)
               assert my.hand.size() >= 2 : "Hand is less than 2 cards"
               powerUsed()
 
               my.hand.select(count: 2, "Select 2 cards to discard").discard()
-              sw opp.active, opp.bench.oppSelect("New active")
+              if (!opp.active.evolution && opp.bench) {
+                sw opp.active, opp.bench.oppSelect("New active")
+              }
             }
           }
           move "Ice Reflect", {
