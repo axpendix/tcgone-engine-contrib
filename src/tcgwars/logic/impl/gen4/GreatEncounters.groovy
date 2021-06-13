@@ -1008,6 +1008,7 @@ public enum GreatEncounters implements LogicCardInfo {
               assert my.bench.find{it.name == "Unown E"} : "Unown E is not on your Bench"
               assert my.bench.find{it.name == "Unown A"} : "Unown A is not on your Bench"
               assert my.bench.find{it.name == "Unown L"} : "Unown L is not on your Bench"
+              assert !my.active.getSpecialConditions().isEmpty() : "Your Active Pokémon needs to have at least 1 Special Condition applied"
               powerUsed()
               clearSpecialCondition(my.active, Source.POKEPOWER)
             }
@@ -1021,7 +1022,9 @@ public enum GreatEncounters implements LogicCardInfo {
             onAttack {
               if (my.hand) {
                 damage 30
-                my.hand.select("Discard a card").discard()
+                afterDamage{
+                  my.hand.select("Discard a card").discard()
+                }
               }
             }
           }
