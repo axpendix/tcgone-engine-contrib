@@ -1511,7 +1511,7 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost W, C, C
             attackRequirement {}
             onAttack {
-              damage 30 * self.cards.energyCount(C)
+              damage 30 * self.cards.energyCardCount()
               afterDamage {
                 self.cards.filterByType(ENERGY).moveTo(my.deck)
                 shuffleDeck()
