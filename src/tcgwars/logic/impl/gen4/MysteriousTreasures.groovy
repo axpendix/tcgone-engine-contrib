@@ -3245,7 +3245,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               revealCard.clear()
               revealCard.add(curCard)
               revealCard.moveTo(my.hand)
-              shuffleDeck()
+              if (ind > 1) shuffleDeck()
           }
           playRequirement{
             assert my.deck
