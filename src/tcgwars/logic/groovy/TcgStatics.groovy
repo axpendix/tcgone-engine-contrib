@@ -852,8 +852,8 @@ class TcgStatics {
       if(params.name){
         pkmnName = params.name
       }
-      if(params.type){
-        deck.search (max: maxSpace,{it.name.contains(pkmnName) && it.cardTypes.is(basicFilter) && it.asPokemonCard().types.contains(params.type)}).each {
+      if(params.types){
+        deck.search (max: maxSpace,{it.name.contains(pkmnName) && it.cardTypes.is(basicFilter) && params.types.any{ty -> it.asPokemonCard().types.contains(ty)}}).each {
           benchPCS(it)
         }
       }

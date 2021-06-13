@@ -3042,7 +3042,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           move "Call for Family", {
             text "Search your deck for up to 2 in any combination of Grass Basic Pokémon and Psychic Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
             energyCost C
-            callForFamily([basic:true, type:[G, P]], 2, delegate)
+            callForFamily([basic:true, types:[G, P]], 2, delegate)
           }
           move "Hypnosis", {
             text "10 damage. The Defending Pokémon is now Asleep."
