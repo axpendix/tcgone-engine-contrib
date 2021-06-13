@@ -1404,7 +1404,7 @@ f
             text "60+ damage. If the Defending Pokémon has 2 or more damage counters on it, this attack does 60 damage plus 20 more damage. This attack damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects of that Pokémon."
             energyCost W, C, C
             onAttack {
-              swiftDamage (60 + (defending.numberOfDamageCounters > 2 ? 20 : 0), defending)
+              swiftDamage (60 + (defending.numberOfDamageCounters >= 2 ? 20 : 0), defending)
             }
           }
 
