@@ -1384,9 +1384,13 @@ public enum MajesticDawn implements LogicCardInfo {
             text "Any damage done by attacks from your Pokémon to the Defending Pokémon isn’t affected by Resistance."
             delayedA {
               before APPLY_RESISTANCE, {
-                bg.dm().each {
-                  if (it.from.owner == self.owner && it.to.owner == self.owner.opposite && it.to.active) {
-                    prevent()
+                if (ef.attacker.owner == self.owner) {
+                  bg.dm().each {
+                    if (it.to.owner == self.owner.opposite && it.to.active) {
+                      // TODO: For below line, add Additional if? " && it.from.types.any{ty -> it.to.resistances.contains(ty)}"
+                      // bc "$thisAbility ignores resistance" // This shouldn't always print.
+                      prevent()
+                    }
                   }
                 }
               }
@@ -1396,18 +1400,21 @@ public enum MajesticDawn implements LogicCardInfo {
             text "30× damage. Does 30 damage times the number of different types of Wormadam on your Bench."
             energyCost G
             attackRequirement {
-              assert my.bench.find{it.name.contains("Wormadam")} : "You have no Wormadam on your Bench"
+              assertMyBench(info: "with Wormadam in their name", {it.name.contains("Wormadam")})
             }
             onAttack {
-              def worms = []
-              def count = 0
+              def wormTypes = []
               my.bench.each {
-                if(it.name.contains("Wormadam") && !worms.contains(it.name)) {
-                  worms.add(it.name)
-                  count ++
+                if(it.name.contains("Wormadam")) {
+                  for (Type ty : it.getTypes()) {
+                    if (!wormTypes.contains(ty)) {
+                      wormTypes.add(ty)
+                      break
+                    }
+                  }
                 }
               }
-              damage 30 * count
+              damage 30 * wormTypes.size()
             }
           }
           move "Quick Touch", {
