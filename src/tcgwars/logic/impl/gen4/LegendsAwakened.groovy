@@ -1929,7 +1929,7 @@ public enum LegendsAwakened implements LogicCardInfo {
         return evolution (this, from:"Exeggcute", hp:HP080, type:P, retreatCost:1) {
           weakness P, '+20'
           move "Psychic Strategy", {
-            text "Each player counts the number of cards in his or her opponent's hand. Each player shuffles his or her hand into his or her deck. Then, each player draws a number of cards equal to the number of cards his or her opponent had."
+            text "Each player counts the number of cards in his or her opponent’s hand. Each player shuffles his or her hand into his or her deck. Then, each player draws a number of cards up to the number of cards his or her opponent had. (You draw your cards first.)"
             attackRequirement {}
             onAttack {
               def toDraw = opp.hand.size()
@@ -1939,13 +1939,13 @@ public enum LegendsAwakened implements LogicCardInfo {
                 my.hand.moveTo(hidden:true, my.deck)
                 shuffleDeck()
               }
-              draw toDraw
-
               if (opp.hand) {
                 opp.hand.moveTo(hidden:true, my.deck)
                 shuffleDeck(null, TargetPlayer.OPPONENT)
               }
-              draw oppToDraw, TargetPlayer.OPPONENT
+
+              if (toDraw) draw( choose(1..toDraw,"How many cards would you like to draw?") as int )
+              if (oppToDraw) draw( oppChoose(1..oppToDraw, "How many cards would you like to draw?") as int, TargetPlayer.OPPONENT )
             }
           }
           move "Super Eggsplosion", {
