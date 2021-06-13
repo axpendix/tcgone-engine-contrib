@@ -962,13 +962,15 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return evolution (this, from:"Exeggcute", hp:HP090, type:GRASS, retreatCost:2) {
           weakness R, PLUS20
           move "String Bomb", {
-            text "30× damage. Flip a coin for each basic Energy card attached to Exeggutor and to the Defending Pokémon. This attack does 30 damage times the number of heads."
+            text "30× damage. Flip a coin for each Energy from basic Energy cards attached to Exeggutor and to the Defending Pokémon. This attack does 30 damage times the number of heads."
+            // Used to say "Flip a coin for each basic Energy card attached to Exeggutor and to the Defending Pokémon."
+            // * Exeggutor's "String Bomb" attack should say, "Flip a coin for each Energy from basic Energy cards attached to Exeggutor and to the Defending Pokémon." (Feb 28, 2008 Pokemon Organized Play News)
             energyCost C
             attackRequirement {
               assert ( [self, defending].any{it.cards.filterByType(BASIC_ENERGY)} ) : "Neither $self nor the Defending Pokémon have any basic Energy cards attached"
             }
             onAttack {
-              def basicEnergies = self.cards.filterByType(BASIC_ENERGY).size() + defending.cards.filterByType(BASIC_ENERGY).size()
+              def basicEnergies = self.cards.filterByType(BASIC_ENERGY).energyCount() + defending.cards.filterByType(BASIC_ENERGY).energyCount()
               flip basicEnergies, { damage 30 }
             }
           }
