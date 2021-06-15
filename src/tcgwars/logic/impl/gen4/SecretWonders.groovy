@@ -1559,7 +1559,8 @@ f
           weakness R, PLUS20
           resistance L, MINUS20
           pokeBody "Sandy Cloak", {
-            text "Prevent all effects of attacks, excluding damage, done to Wormadam Sandy Cloak."
+            text "Prevent all effects of attacks, excluding damage, done to Wormadam Sandy Cloak by your opponent's Pokemon."
+            //Errata'd. Original text: "Prevent all effects of attacks, excluding damage, done to Wormadam Sandy Cloak."
             delayedA {
               before null, self, Source.ATTACK, {
                 if(bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages)){
