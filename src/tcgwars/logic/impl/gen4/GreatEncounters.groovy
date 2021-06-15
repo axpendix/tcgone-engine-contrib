@@ -443,13 +443,14 @@ public enum GreatEncounters implements LogicCardInfo {
           weakness R, PLUS30
           resistance W, MINUS20
           move "Power Whip", {
-            text "Choose 1 of your opponent's Pokémon. This attack does 10 damage for each basic Energy card attached to Tangrowth to that Pokémon."
+            text "Choose 1 of your opponent's Pokémon. This attack does 10 damage for each Energy from basic Energy cards attached to Tangrowth to that Pokemon."
+            //Errata'd. Original text: "This attack does 10 damage for each basic Energy card attached to Tangrowth to that Pokémon."
             energyCost G
             attackRequirement {
               assert self.cards.filterByType(BASIC_ENERGY) : "$self has no basic Energy cards attached to it"
             }
             onAttack {
-              damage 10 * self.cards.filterByType(BASIC_ENERGY).size(), opp.all.select()
+              damage 10 * self.cards.filterByType(BASIC_ENERGY).energyCount(), opp.all.select()
             }
           }
           move "Stick and Absorb", {
