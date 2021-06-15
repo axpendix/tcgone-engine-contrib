@@ -1107,13 +1107,14 @@ public enum MysteriousTreasures implements LogicCardInfo {
           weakness F, PLUS20
           resistance M, MINUS20
           move "Lightning Twister", {
-            text "20× damage. Does 20 damage times the number of basic Energy cards attached to Manectric."
+            text "20× damage. Does 20 damage times the amount of Energy from basic Energy cards attached to Manectric."
+            // Erratad. Original Text: "Does 20 damage times the number of basic Energy cards attached to Manectric."
             energyCost C
             attackRequirement {
               assert self.cards.filterByType(BASIC_ENERGY) : "$self has no basic Energy cards attached."
             }
             onAttack {
-              damage 20 * self.cards.filterByType(BASIC_ENERGY).size()
+              damage 20 * self.cards.filterByType(BASIC_ENERGY).energyCount()
             }
           }
           move "Chain Lightning", {
