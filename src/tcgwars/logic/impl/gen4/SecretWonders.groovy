@@ -3106,8 +3106,8 @@ f
             }
             onAttack {
               def top = my.deck.subList(0,2)
-              def choice = top.select("Choose a card to put into your hand").moveTo(my.hand)
-              top.getExcludedList(choice).moveTo(my.deck)
+              def choice = top.select("Choose a card to put into your hand").moveTo(hidden: true, my.hand)
+              top.getExcludedList(choice).moveTo(hidden: true, my.deck)
             }
           }
           move "Scratch", {
