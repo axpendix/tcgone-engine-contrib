@@ -1762,7 +1762,7 @@ public enum Platinum implements LogicCardInfo {
           }
         };
       case FLAAFFY_48:
-        return evolution (this, from:"Flaaffy", hp:HP080, type:LIGHTNING, retreatCost:1) {
+        return evolution (this, from:"Mareep", hp:HP080, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS20
           resistance M, MINUS20
           move "Spark", {
@@ -1982,7 +1982,7 @@ public enum Platinum implements LogicCardInfo {
           weakness W, PLUS20
           move "Fire Tail Slap", {
             text "40 damage. Flip a coin. If tails, discard a [R] Energy attached to Monferno."
-            energyCost R, R
+            energyCost R
             onAttack {
               damage 40
               flip 1, {}, { discardSelfEnergyAfterDamage R }

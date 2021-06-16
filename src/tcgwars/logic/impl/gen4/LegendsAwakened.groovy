@@ -171,7 +171,7 @@ public enum LegendsAwakened implements LogicCardInfo {
   ENERGY_PICKUP_132 ("Energy Pickup", "132", Rarity.UNCOMMON, [TRAINER, ITEM]),
   POKE_RADAR_133 ("Poké Radar", "133", Rarity.UNCOMMON, [TRAINER, ITEM]),
   SNOWPOINT_TEMPLE_134 ("Snowpoint Temple", "134", Rarity.UNCOMMON, [TRAINER, STADIUM]),
-  STARK_MOUNTAIN_135 ("Stark Mountain", "135", Rarity.UNCOMMON, [TRAINER]),
+  STARK_MOUNTAIN_135 ("Stark Mountain", "135", Rarity.UNCOMMON, [TRAINER, STADIUM]),
   TECHNICAL_MACHINE_TS_1_136 ("Technical Machine TS-1", "136", Rarity.UNCOMMON, [TRAINER, ITEM, TECHNICAL_MACHINE]),
   TECHNICAL_MACHINE_TS_2_137 ("Technical Machine TS-2", "137", Rarity.UNCOMMON, [TRAINER, ITEM, TECHNICAL_MACHINE]),
   CLAW_FOSSIL_138 ("Claw Fossil", "138", Rarity.COMMON, [TRAINER]),
@@ -1227,10 +1227,10 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 60
-              discardSelfEnergy(W, W)
               opp.bench.each {
-                damage 20
+                damage 20, it
               }
+              discardSelfEnergyAfterDamage W, W
             }
           }
         };
@@ -1367,13 +1367,16 @@ public enum LegendsAwakened implements LogicCardInfo {
             actionA {
               checkNoSPC()
               checkLastTurn()
-              assert opp.bench : "Opponent has no Benched Pokémon"
-              assert !opp.active.evolution : "Opponent's Active Pokemon is Evolved"
+              // No assert for bench or not being evolved
+              // Q. Can you discard 2 cards from your hand with Regice's "Regi Move" Poke-POWER even if the opponent's Defending Pokemon is not a Basic [read: unevolved] Pokemon? Or what if they have no Benched Pokemon?
+              //A. Yes, but then you cannot switch the opponent's Defending Pokemon. (Sep 4, 2008 PUI Rules Team; Jan 22, 2009 PUI Rules Team)
               assert my.hand.size() >= 2 : "Hand is less than 2 cards"
               powerUsed()
 
               my.hand.select(count: 2, "Select 2 cards to discard").discard()
-              sw opp.active, opp.bench.oppSelect("New active")
+              if (!opp.active.evolution && opp.bench) {
+                sw opp.active, opp.bench.oppSelect("New active")
+              }
             }
           }
           move "Ice Reflect", {
@@ -1478,10 +1481,18 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokePower "Resent", {
             text "Once during your opponent's turn, if Shedinja would be Knocked Out by damage from an attack, you may put 4 damage counters on the Attacking Pokémon and each of your opponent's Pokémon that has the same name as the Attacking Pokémon."
             delayedA {
+              def attackerName = null
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each {
+                  if (it.to==self && it.dmg.value) {
+                    attackerName = it.from.name
+                  }
+                }
+              }
               before (KNOCKOUT, self) {
                 if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && confirm("Use Resent?", self.owner)) {
                   self.owner.opposite.pbg.all.each {
-                    if (it.name == self.owner.opposite.pbg.active.name) {
+                    if (it.name == attackerName) {
                       directDamage 40, it, Source.POKEPOWER
                     }
                   }
@@ -1929,7 +1940,7 @@ public enum LegendsAwakened implements LogicCardInfo {
         return evolution (this, from:"Exeggcute", hp:HP080, type:P, retreatCost:1) {
           weakness P, '+20'
           move "Psychic Strategy", {
-            text "Each player counts the number of cards in his or her opponent's hand. Each player shuffles his or her hand into his or her deck. Then, each player draws a number of cards equal to the number of cards his or her opponent had."
+            text "Each player counts the number of cards in his or her opponent’s hand. Each player shuffles his or her hand into his or her deck. Then, each player draws a number of cards up to the number of cards his or her opponent had. (You draw your cards first.)"
             attackRequirement {}
             onAttack {
               def toDraw = opp.hand.size()
@@ -1939,13 +1950,13 @@ public enum LegendsAwakened implements LogicCardInfo {
                 my.hand.moveTo(hidden:true, my.deck)
                 shuffleDeck()
               }
-              draw toDraw
-
               if (opp.hand) {
                 opp.hand.moveTo(hidden:true, my.deck)
                 shuffleDeck(null, TargetPlayer.OPPONENT)
               }
-              draw oppToDraw, TargetPlayer.OPPONENT
+
+              if (toDraw) draw( choose(1..toDraw,"How many cards would you like to draw?") as int )
+              if (oppToDraw) draw( oppChoose(1..oppToDraw, "How many cards would you like to draw?") as int, TargetPlayer.OPPONENT )
             }
           }
           move "Super Eggsplosion", {
@@ -2358,8 +2369,9 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
-              while(opp.hand.size() >= 6) {
-                opp.hand.select(hidden: true, "Opponent's hand, select 1 to discard").discard()
+              if (opp.hand.size() > 5) {
+                def count = opp.hand.size() - 5
+                opp.hand.select(hidden: true, count: count, "Choose ${count==1?'a':count} random ${count==1?'card':'cards'} from your opponent's hand to discard").discard()
               }
             }
           }
@@ -3042,7 +3054,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           move "Call for Family", {
             text "Search your deck for up to 2 in any combination of Grass Basic Pokémon and Psychic Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
             energyCost C
-            callForFamily([basic:true, type:[G, P]], 2, delegate)
+            callForFamily([basic:true, types:[G, P]], 2, delegate)
           }
           move "Hypnosis", {
             text "10 damage. The Defending Pokémon is now Asleep."

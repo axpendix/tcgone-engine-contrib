@@ -443,13 +443,14 @@ public enum GreatEncounters implements LogicCardInfo {
           weakness R, PLUS30
           resistance W, MINUS20
           move "Power Whip", {
-            text "Choose 1 of your opponent's Pokémon. This attack does 10 damage for each basic Energy card attached to Tangrowth to that Pokémon."
+            text "Choose 1 of your opponent's Pokémon. This attack does 10 damage for each Energy from basic Energy cards attached to Tangrowth to that Pokemon."
+            //Errata'd. Original text: "This attack does 10 damage for each basic Energy card attached to Tangrowth to that Pokémon."
             energyCost G
             attackRequirement {
               assert self.cards.filterByType(BASIC_ENERGY) : "$self has no basic Energy cards attached to it"
             }
             onAttack {
-              damage 10 * self.cards.filterByType(BASIC_ENERGY).size(), opp.all.select()
+              damage 10 * self.cards.filterByType(BASIC_ENERGY).energyCount(), opp.all.select()
             }
           }
           move "Stick and Absorb", {
@@ -615,33 +616,7 @@ public enum GreatEncounters implements LogicCardInfo {
           }
         };
       case DIALGA_16:
-        return basic (this, hp:HP090, type:METAL, retreatCost:2) {
-          weakness R, PLUS20
-          resistance P, MINUS20
-          move "Time Bellow", {
-            text "10 damage. Draw a Card."
-            energyCost M
-            onAttack {
-              damage 10
-              afterDamage {
-                draw 1
-              }
-            }
-          }
-          move "Flash Cannon", {
-            text "40 damage. You may return all Energy cards attached to Dialga to your hand. If you do, remove the highest Stage Evolution card from the Defending Pokémon and shuffle that card into your opponent's deck."
-            energyCost M, M, C
-            onAttack {
-              damage 40
-              afterDamage {
-                if (defending.evolution && !defending.slatedToKO && confirm("Return all Energy cards attached to $self to your hand?")) {
-                  devolve(defending, defending.topPokemonCard, opp.deck)
-                  shuffleDeck null, TargetPlayer.OPPONENT
-                }
-              }
-            }
-          }
-        };
+        return copy(DiamondPearl.DIALGA_1, this);
       case EXPLOUD_17:
         return evolution (this, from:"Loudred", hp:HP130, type:COLORLESS, retreatCost:3) {
           weakness F, PLUS30
@@ -958,42 +933,7 @@ public enum GreatEncounters implements LogicCardInfo {
           }
         };
       case PALKIA_26:
-        return basic (this, hp:HP090, type:WATER, retreatCost:2) {
-          weakness L, PLUS20
-          move "Spacial Rend", {
-            text "10 damage. Search your deck for a Stadium card, show it to your opponent, and put it into your hand. Shuffle your deck afterward. If there is any Stadium card in play, discard it."
-            energyCost W
-            onAttack {
-              damage 10
-              afterDamage {
-                if (my.deck) {
-                  my.deck.search(cardTypeFilter(STADIUM)).showToOpponent("Selected cards").moveTo(hand)
-                  shuffleDeck()
-                }
-                if (bg.stadiumInfoStruct) {
-                  discard bg.stadiumInfoStruct.stadiumCard
-                }
-              }
-            }
-          }
-          move "Transback", {
-            text "40 damage. You may flip a coin. If heads, discard all energy attached to Palkia and put the Defending Pokémon and all cards attached to it on top of your opponent's deck. Your opponent shuffles his or her deck aftward."
-            energyCost W, W, C
-            onAttack {
-              damage 40
-              afterDamage {
-                if (!defending.slatedToKO && confirm("Flip for $thisMove?")) {
-                  flip {
-                    discardAllSelfEnergy()
-                    defending.cards.moveTo(opp.deck)
-                    removePCS(defending)
-                    shuffleDeck null, TargetPlayer.OPPONENT
-                  }
-                }
-              }
-            }
-          }
-        };
+        return copy(DiamondPearl.PALKIA_11, this);
       case PRIMEAPE_27:
         return evolution (this, from:"Mankey", hp:HP090, type:FIGHTING, retreatCost:1) {
           weakness P, PLUS20
@@ -1069,6 +1009,7 @@ public enum GreatEncounters implements LogicCardInfo {
               assert my.bench.find{it.name == "Unown E"} : "Unown E is not on your Bench"
               assert my.bench.find{it.name == "Unown A"} : "Unown A is not on your Bench"
               assert my.bench.find{it.name == "Unown L"} : "Unown L is not on your Bench"
+              assert !my.active.getSpecialConditions().isEmpty() : "Your Active Pokémon needs to have at least 1 Special Condition applied"
               powerUsed()
               clearSpecialCondition(my.active, Source.POKEPOWER)
             }
@@ -1082,7 +1023,9 @@ public enum GreatEncounters implements LogicCardInfo {
             onAttack {
               if (my.hand) {
                 damage 30
-                my.hand.select("Discard a card").discard()
+                afterDamage{
+                  my.hand.select("Discard a card").discard()
+                }
               }
             }
           }
@@ -1569,7 +1512,7 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost W, C, C
             attackRequirement {}
             onAttack {
-              damage 30 * self.cards.energyCount(C)
+              damage 30 * self.cards.energyCardCount()
               afterDamage {
                 self.cards.filterByType(ENERGY).moveTo(my.deck)
                 shuffleDeck()

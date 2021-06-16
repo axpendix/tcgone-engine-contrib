@@ -228,7 +228,7 @@ public enum SecretWonders implements LogicCardInfo {
   public Card getImplementation() {
     switch (this) {
       case AMPHAROS_1:
-        return evolution (this, from:"Flaffy", hp:HP130, type:LIGHTNING, retreatCost:3) {
+        return evolution (this, from:"Flaaffy", hp:HP130, type:LIGHTNING, retreatCost:3) {
           weakness F, PLUS30
           resistance M, MINUS20
           pokeBody "Jamming", {
@@ -359,7 +359,9 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
           move "Blaze Roar", {
-            text "60 damage. Does 20 damage to 1 of your opponent's Benched Pokémon. Filp a coin. If tails, discard 2 [R] Energy attached to Entei."
+            text "60 damage. Does 20 damage to 1 of your opponent's Benched Pokémon. Filp a coin. If tails, discard 2 [R] Energy cards attached to Entei."
+            //Original Text: "Filp a coin. If tails, discard 2 [R] Energy attached to Entei."
+            //Errata: Entei's "Blaze Roar" attack should say "discard 2 Fire Energy CARDS" rather than just "discard 2 Fire Energy". (Nov 16, 2007 Pokemon Organized Play News)
             energyCost R, R, R
             onAttack {
               damage 60
@@ -915,10 +917,15 @@ public enum SecretWonders implements LogicCardInfo {
           weakness D, PLUS20
           resistance C, MINUS20
           move "Ghost Head", {
-            text "Put as many damage counters as you like on Banette. (You can’t put more than Banette’s remaining HP.) Put that many damage counters on the Defending Pokémon."
+            text "Put as many damage counters as you like on Banette. (You can't Knock Out Banette.) Put that many damage counters on the Defending Pokémon."
+            //Old text: "Put as many damage counters as you like on Banette. (You can’t put more than Banette’s remaining HP.) Put that many damage counters on the Defending Pokémon."
+            //Errata: Ghost Head can't cause Banette to Knock Out itself ... the attack has to leave Banette with at least 10 HP. "Put as many damage counters as you like on Banette. (You can't Knock Out Banette.) Put that many damage counters on the Defending Pokémon." (Jan 29, 2008 Pokemon Organized Play News)
             energyCost ()
+            attackRequirement {
+              assert self.remainingHP.value + 10 == self.fullHP  : "You can't place any more damage counters in $self"
+            }
             onAttack {
-              def count = choose(1..self.remainingHP.value / 10, "Put as many damage counters as you like on Banette")
+              def count = choose(1..((self.remainingHP.value / 10) - 1), "Put as many damage counters as you like on Banette")
               directDamage 10 * count, self
               directDamage 10 * count, defending
             }
@@ -1404,7 +1411,7 @@ f
             text "60+ damage. If the Defending Pokémon has 2 or more damage counters on it, this attack does 60 damage plus 20 more damage. This attack damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects of that Pokémon."
             energyCost W, C, C
             onAttack {
-              swiftDamage (60 + (defending.numberOfDamageCounters > 2 ? 20 : 0), defending)
+              swiftDamage (60 + (defending.numberOfDamageCounters >= 2 ? 20 : 0), defending)
             }
           }
 
@@ -1552,7 +1559,8 @@ f
           weakness R, PLUS20
           resistance L, MINUS20
           pokeBody "Sandy Cloak", {
-            text "Prevent all effects of attacks, excluding damage, done to Wormadam Sandy Cloak."
+            text "Prevent all effects of attacks, excluding damage, done to Wormadam Sandy Cloak by your opponent's Pokemon."
+            //Errata'd. Original text: "Prevent all effects of attacks, excluding damage, done to Wormadam Sandy Cloak."
             delayedA {
               before null, self, Source.ATTACK, {
                 if(bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages)){
@@ -2975,7 +2983,7 @@ f
             text "During your opponent's next turn, any damage done by attacks from the Defending Pokémon is reduced by 20."
             energyCost C
             onAttack {
-              reduceDamageFromDefendingNextTurn(hp(50), thisMove, defending)
+              reduceDamageFromDefendingNextTurn(hp(20), thisMove, defending)
             }
           }
           move "Peck", {
@@ -3098,8 +3106,8 @@ f
             }
             onAttack {
               def top = my.deck.subList(0,2)
-              def choice = top.select("Choose a card to put into your hand").moveTo(my.hand)
-              top.getExcludedList(choice).moveTo(my.deck)
+              def choice = top.select("Choose a card to put into your hand").moveTo(hidden: true, my.hand)
+              top.getExcludedList(choice).moveTo(hidden: true, my.deck)
             }
           }
           move "Scratch", {
