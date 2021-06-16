@@ -2983,7 +2983,7 @@ f
             text "During your opponent's next turn, any damage done by attacks from the Defending Pokémon is reduced by 20."
             energyCost C
             onAttack {
-              reduceDamageFromDefendingNextTurn(hp(50), thisMove, defending)
+              reduceDamageFromDefendingNextTurn(hp(20), thisMove, defending)
             }
           }
           move "Peck", {
