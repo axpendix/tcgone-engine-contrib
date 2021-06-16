@@ -521,9 +521,11 @@ public enum DiamondPearl implements LogicCardInfo {
                 if(confirm ("You may flip a coin. If heads, discard all Energy attached to Palkia and put the Defending Pokémon and all cards attached to it on top of your opponent’s deck. Your opponent shuffles his or her deck afterward.")) {
                   flip {
                     discardAllSelfEnergy()
-                    defending.cards.moveTo(opp.deck)
-                    removePCS(defending)
-                    shuffleDeck(null, TargetPlayer.OPPONENT)
+                    targeted (defending) {
+                      defending.cards.moveTo(opp.deck)
+                      removePCS(defending)
+                      shuffleDeck(null, TargetPlayer.OPPONENT)
+                    }
                   }
                 }
               }
