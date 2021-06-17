@@ -325,7 +325,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP040, type:G, retreatCost:1) {
           weakness FIRE
           move "Pierce", {
-            text "20 damage. "
+            text "20 damage."
             energyCost GRASS
             attackRequirement {}
             onAttack {
@@ -378,7 +378,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Punch", {
-            text "20 damage. "
+            text "20 damage."
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -412,7 +412,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP120, type:G, retreatCost:2) {
           weakness GRASS
           move "Horn Attack", {
-            text "20 damage. "
+            text "20 damage."
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
@@ -489,7 +489,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP080, type:G, retreatCost:2) {
           weakness FIRE
           move "Whap Down", {
-            text "60 damage. "
+            text "60 damage."
             energyCost GRASS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -506,7 +506,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Mega Punch", {
-            text "90 damage. "
+            text "90 damage."
             energyCost GRASS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -526,7 +526,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Rear Kick", {
-            text "20 damage. "
+            text "20 damage."
             energyCost GRASS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -538,7 +538,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Deerling", hp:HP110, type:G, retreatCost:1) {
           weakness FIRE
           move "Tackle", {
-            text "30 damage. "
+            text "30 damage."
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
@@ -558,7 +558,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP060, type:G, retreatCost:1) {
           weakness FIRE
           move "Hop", {
-            text "30 damage. "
+            text "30 damage."
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -570,7 +570,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Bounsweet", hp:HP080, type:G, retreatCost:1) {
           weakness FIRE
           move "Hop", {
-            text "20 damage. "
+            text "20 damage."
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
@@ -598,7 +598,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Solar Beam", {
-            text "120 damage. "
+            text "120 damage."
             energyCost GRASS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -674,7 +674,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP210, type:R, retreatCost:2) {
           weakness WATER
           move "High Jump Kick", {
-            text "50 damage. "
+            text "50 damage."
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -743,7 +743,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Larvesta", hp:HP130, type:R, retreatCost:2) {
           weakness WATER
           move "Combustion", {
-            text "50 damage. "
+            text "50 damage."
             energyCost FIRE, COLORLESS
             attackRequirement {}
             onAttack {
@@ -763,7 +763,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP220, type:R, retreatCost:3) {
           weakness WATER
           move "Heat Blast", {
-            text "50 damage. "
+            text "50 damage."
             energyCost FIRE, COLORLESS
             attackRequirement {}
             onAttack {
@@ -783,7 +783,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP060, type:R, retreatCost:1) {
           weakness WATER
           move "Headbutt", {
-            text "20 damage. "
+            text "20 damage."
             energyCost FIRE
             attackRequirement {}
             onAttack {
@@ -876,7 +876,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP090, type:W, retreatCost:1) {
           weakness METAL
           move "Icy Snow", {
-            text "10 damage. "
+            text "10 damage."
             energyCost WATER
             attackRequirement {}
             onAttack {
@@ -930,7 +930,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP060, type:W, retreatCost:1) {
           weakness METAL
           move "Headbutt", {
-            text "30 damage. "
+            text "30 damage."
             energyCost WATER, COLORLESS
             attackRequirement {}
             onAttack {
@@ -959,7 +959,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP070, type:W, retreatCost:2) {
           weakness METAL
           move "Ram", {
-            text "10 damage. "
+            text "10 damage."
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
@@ -971,7 +971,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Spheal", hp:HP110, type:W, retreatCost:4) {
           weakness METAL
           move "Ram", {
-            text "30 damage. "
+            text "30 damage."
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -979,7 +979,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Aurora Beam", {
-            text "70 damage. "
+            text "70 damage."
             energyCost WATER, WATER, COLORLESS
             attackRequirement {}
             onAttack {
@@ -991,7 +991,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Sealeo", hp:HP170, type:W, retreatCost:4) {
           weakness METAL
           move "Aurora Beam", {
-            text "70 damage. "
+            text "70 damage."
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1068,7 +1068,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Waterfall", {
-            text "70 damage. "
+            text "70 damage."
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1080,7 +1080,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Kubfu", hp:HP140, type:W, retreatCost:2) {
           weakness LIGHTNING
           move "Slashing Claw", {
-            text "40 damage. "
+            text "40 damage."
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
@@ -1100,7 +1100,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP210, type:W, retreatCost:2) {
           weakness METAL
           move "Pierce", {
-            text "40 damage. "
+            text "40 damage."
             energyCost WATER
             attackRequirement {}
             onAttack {
@@ -1148,7 +1148,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Static Shock", {
-            text "20 damage. "
+            text "20 damage."
             energyCost LIGHTNING, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1250,7 +1250,7 @@ public enum ChillingReign implements LogicCardInfo {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           move "Sting", {
-            text "10 damage. "
+            text "10 damage."
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
@@ -1258,7 +1258,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Headbutt", {
-            text "20 damage. "
+            text "20 damage."
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1415,7 +1415,7 @@ public enum ChillingReign implements LogicCardInfo {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           move "Pound", {
-            text "10 damage. "
+            text "10 damage."
             energyCost PSYCHIC
             attackRequirement {}
             onAttack {
@@ -1423,7 +1423,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Punch", {
-            text "30 damage. "
+            text "30 damage."
             energyCost PSYCHIC, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1476,7 +1476,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Fairy Wind", {
-            text "80 damage. "
+            text "80 damage."
             energyCost COLORLESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1489,7 +1489,7 @@ public enum ChillingReign implements LogicCardInfo {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           move "Spinning Attack", {
-            text "20 damage. "
+            text "20 damage."
             energyCost PSYCHIC
             attackRequirement {}
             onAttack {
@@ -1515,7 +1515,7 @@ public enum ChillingReign implements LogicCardInfo {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           move "Psyshot", {
-            text "10 damage. "
+            text "10 damage."
             energyCost PSYCHIC
             attackRequirement {}
             onAttack {
@@ -1633,7 +1633,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Galarian Farfetch'd", hp:HP130, type:F, retreatCost:2) {
           weakness PSYCHIC
           move "Peck", {
-            text "40 damage. "
+            text "40 damage."
             energyCost FIGHTING
             attackRequirement {}
             onAttack {
@@ -1719,7 +1719,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP080, type:F, retreatCost:3) {
           weakness PSYCHIC
           move "Toss", {
-            text "20 damage. "
+            text "20 damage."
             energyCost FIGHTING
             attackRequirement {}
             onAttack {
@@ -1739,7 +1739,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Crabrawler", hp:HP150, type:F, retreatCost:4) {
           weakness PSYCHIC
           move "Crabhammer", {
-            text "130 damage. "
+            text "130 damage."
             energyCost FIGHTING, COLORLESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1800,7 +1800,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Land Crush", {
-            text "140 damage. "
+            text "140 damage."
             energyCost FIGHTING, FIGHTING, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1824,7 +1824,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP070, type:F, retreatCost:2) {
           weakness PSYCHIC
           move "Slap", {
-            text "30 damage. "
+            text "30 damage."
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1861,7 +1861,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Elbow Strike", {
-            text "60 damage. "
+            text "60 damage."
             energyCost COLORLESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1873,7 +1873,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP070, type:D, retreatCost:1) {
           weakness FIGHTING
           move "Smog", {
-            text "20 damage. "
+            text "20 damage."
             energyCost DARKNESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1944,7 +1944,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Spray Fluid", {
-            text "90 damage. "
+            text "90 damage."
             energyCost DARKNESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2066,7 +2066,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Rolling Tackle", {
-            text "50 damage. "
+            text "50 damage."
             energyCost DARKNESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2111,7 +2111,7 @@ public enum ChillingReign implements LogicCardInfo {
           weakness FIRE
           resistance GRASS, MINUS30
           move "Gnaw", {
-            text "20 damage. "
+            text "20 damage."
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2119,7 +2119,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Rolling Tackle", {
-            text "50 damage. "
+            text "50 damage."
             energyCost METAL, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2132,7 +2132,7 @@ public enum ChillingReign implements LogicCardInfo {
           weakness FIRE
           resistance GRASS, MINUS30
           move "Tackle", {
-            text "50 damage. "
+            text "50 damage."
             energyCost METAL, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2140,7 +2140,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Metal Claw", {
-            text "90 damage. "
+            text "90 damage."
             energyCost METAL, METAL, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2208,7 +2208,7 @@ public enum ChillingReign implements LogicCardInfo {
           weakness FIRE
           resistance GRASS, MINUS30
           move "Headbang", {
-            text "40 damage. "
+            text "40 damage."
             energyCost METAL, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2240,7 +2240,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP060, type:C, retreatCost:2) {
           weakness FIGHTING
           move "Sharpen", {
-            text "20 damage. "
+            text "20 damage."
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
@@ -2332,7 +2332,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Spinning Attack", {
-            text "90 damage. "
+            text "90 damage."
             energyCost COLORLESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2388,7 +2388,7 @@ public enum ChillingReign implements LogicCardInfo {
           weakness LIGHTNING
           resistance FIGHTING, MINUS30
           move "Blast Wind", {
-            text "60 damage. "
+            text "60 damage."
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2436,7 +2436,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Gnaw", {
-            text "10 damage. "
+            text "10 damage."
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
@@ -2453,7 +2453,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Gnaw", {
-            text "90 damage. "
+            text "90 damage."
             energyCost COLORLESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2865,7 +2865,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Electric Ball", {
-            text "100 damage. "
+            text "100 damage."
             energyCost LIGHTNING, LIGHTNING, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2883,7 +2883,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Zen Headbutt", {
-            text "70 damage. "
+            text "70 damage."
             energyCost METAL, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
