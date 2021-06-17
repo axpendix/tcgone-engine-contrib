@@ -267,8 +267,7 @@ public enum ChillingReign implements LogicCardInfo {
   WELCOMING_LANTERN_230 ("Welcoming Lantern", "230", Rarity.UNCOMMON, [TRAINER, ITEM]),
   WATER_ENERGY_231 ("Water Energy", "231", Rarity.UNCOMMON, [ENERGY, BASIC_ENERGY]),
   PSYCHIC_ENERGY_232 ("Psychic Energy", "232", Rarity.UNCOMMON, [ENERGY, BASIC_ENERGY]),
-  FIGHTING_ENERGY_233 ("Fighting Energy", "233", Rarity.UNCOMMON, [ENERGY, BASIC_ENERGY]),
-  ;
+  FIGHTING_ENERGY_233 ("Fighting Energy", "233", Rarity.UNCOMMON, [ENERGY, BASIC_ENERGY]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
