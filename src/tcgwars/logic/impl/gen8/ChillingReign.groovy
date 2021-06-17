@@ -503,6 +503,7 @@ public enum ChillingReign implements LogicCardInfo {
           bwAbility "Toughness Up", {
             text "As long as this Pokemon is in play, the maximum HP of your Single Strike Pokemon in play (excluding any Abomasnow) is increased by 50. You can't apply more than 1 Toughness Up Ability at a time."
             actionA {
+              // TODO
             }
           }
           move "Mega Punch", {
@@ -522,7 +523,7 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
-
+              reduceDamageNextTurn(hp(20), thisMove)
             }
           }
           move "Rear Kick", {
@@ -550,7 +551,10 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost GRASS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
-
+              damage 80
+              if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player == self.owner) {
+                damage 80
+              }
             }
           }
         };
@@ -582,7 +586,8 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost GRASS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
-
+              damage 50
+              flip { damage 30 }
             }
           }
         };
@@ -594,7 +599,8 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
-
+              damage 10
+              damage opp.active.retreatCost * 10
             }
           }
           move "Solar Beam", {
@@ -614,7 +620,7 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost GRASS, COLORLESS
             attackRequirement {}
             onAttack {
-
+              flip 2, { damage 30 }
             }
           }
         };
@@ -1004,6 +1010,10 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 160
+              if (confirm("Discard 2 Energy to Paralyze Defending Pokemon?")){
+                damage 70
+                discardSelfEnergy C, C
+              }
             }
           }
         };
@@ -1016,6 +1026,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
+
             }
           }
           move "Ocean Loop", {
@@ -1043,7 +1054,7 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
-
+              flip 2, { damage 20 }
             }
           }
         };
@@ -1170,6 +1181,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 50
+              flipThenApplySC(PARALYZED)
             }
           }
           move "Searchlight Tail", {
@@ -1209,7 +1221,7 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost LIGHTNING, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
-
+              flipUntilTails { damage 90 }
             }
           }
         };
@@ -1276,6 +1288,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
+              flipThenApplySC(ASLEEP)
             }
           }
         };
@@ -1472,7 +1485,11 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
-
+              def count = 0
+              flip 3, {
+                count += 1
+              }
+              my.discard.select(count:count).showToOpponent("Cards to be placed into hand").moveTo(my.hand)
             }
           }
           move "Fairy Wind", {
@@ -1602,6 +1619,9 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
+              flip {
+                preventAllEffectsFromPokemonExNextTurn(thisMove, self)
+              }
             }
           }
         };
@@ -1613,7 +1633,14 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost FIGHTING, COLORLESS
             attackRequirement {}
             onAttack {
-
+              def count = 0
+              flip 3, {
+                count += 1
+                damage 60
+              }
+              if (count == 3) {
+                preventAllEffectsFromPokemonExNextTurn(thisMove, self)
+              }
             }
           }
         };
@@ -1694,7 +1721,8 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
-
+              damage 10
+              flip { damage 30 }
             }
           }
         };
@@ -1731,7 +1759,7 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost FIGHTING, COLORLESS
             attackRequirement {}
             onAttack {
-
+              flip 2, { damage 40 }
             }
           }
         };
@@ -1941,6 +1969,7 @@ public enum ChillingReign implements LogicCardInfo {
           bwAbility "Secret Medicine", {
             text "Once during your turn, you may choose 1 of your Pokemon. Flip a coin, if heads restore 90 HP to that Pokemon. If tails, place 3 damage counters on that Pokemon."
             actionA {
+              // TODO
             }
           }
           move "Spray Fluid", {
@@ -2178,7 +2207,8 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost METAL
             attackRequirement {}
             onAttack {
-
+              damage 20
+              flip 2, { damage 20 }
             }
           }
           move "Syncrohammer", {
@@ -2905,6 +2935,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 100
+              flipThenApplySC(PARALYZED)
             }
           }
         };
