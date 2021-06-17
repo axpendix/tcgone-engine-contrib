@@ -337,7 +337,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Weedle", hp:HP080, type:G, retreatCost:3) {
           weakness FIRE
           move "Stiffen", {
-            text "During your opponent's next turn, this Pokemon takes 40 less damage from attacks (after applying Weakness and Resistance)."
+            text "During your opponent's next turn, this Pokémon takes 40 less damage from attacks (after applying Weakness and Resistance)."
             energyCost GRASS
             attackRequirement {}
             onAttack {
@@ -349,7 +349,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Kakuna", hp:HP130, type:G, retreatCost:1) {
           weakness FIRE
           move "Persistent Sting", {
-            text "If your opponent's Active Pokemon has any Special Energy attached to it, it is now Knocked Out."
+            text "If your opponent's Active Pokémon has any Special Energy attached to it, it is now Knocked Out."
             energyCost GRASS
             attackRequirement {}
             onAttack {
@@ -357,7 +357,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Jet Spear", {
-            text "110 damage. Discard an Energy from this Pokemon."
+            text "110 damage. Discard an Energy from this Pokémon."
             energyCost GRASS
             attackRequirement {}
             onAttack {
@@ -399,7 +399,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Air Slash", {
-            text "100 damage. Discard an Energy from this Pokemon."
+            text "100 damage. Discard an Energy from this Pokémon."
             energyCost COLORLESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -433,7 +433,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP190, type:G, retreatCost:1) {
           weakness FIRE
           move "Lew Leaf Dance", {
-            text "Attach any number of [G] Energy from your hand to your Pokemon in any way you like."
+            text "Attach any number of [G] Energy from your hand to your Pokémon in any way you like."
             energyCost GRASS
             attackRequirement {
               assert my.hand.filterByEnergyType(G) : "No [G] Energy in hand"
@@ -448,7 +448,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Slash Back", {
-            text "60 damage. Switch this Pokemon with 1 of your Benched Pokemon."
+            text "60 damage. Switch this Pokémon with 1 of your Benched Pokémon."
             energyCost GRASS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -461,10 +461,10 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Celebi V", hp:HP310, type:G, retreatCost:1) {
           weakness FIRE
           bwAbility "Healing Forest", {
-            text "Once during your turn you may heal 20 damage from each of your [G] Pokemon."
+            text "Once during your turn you may heal 20 damage from each of your [G] Pokémon."
             actionA {
               checkLastTurn()
-              assert my.all.find { it.numberOfDamageCounters && it.types.contains(G) } : "No damaged [G] Pokemon"
+              assert my.all.find { it.numberOfDamageCounters && it.types.contains(G) } : "No damaged [G] Pokémon"
               powerUsed()
 
               my.all.each {
@@ -474,7 +474,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Max Plant", {
-            text "130 damage. Search your deck for up to 2 Pokemon and put them into your hand. Then, shuffle your deck."
+            text "130 damage. Search your deck for up to 2 Pokémon and put them into your hand. Then, shuffle your deck."
             energyCost GRASS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -501,7 +501,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Snover", hp:HP140, type:G, retreatCost:3) {
           weakness FIRE
           bwAbility "Toughness Up", {
-            text "As long as this Pokemon is in play, the maximum HP of your Single Strike Pokemon in play (excluding any Abomasnow) is increased by 50. You can't apply more than 1 Toughness Up Ability at a time."
+            text "As long as this Pokémon is in play, the maximum HP of your Single Strike Pokémon in play (excluding any Abomasnow) is increased by 50. You can't apply more than 1 Toughness Up Ability at a time."
             actionA {
               // TODO
             }
@@ -519,7 +519,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP060, type:G, retreatCost:1) {
           weakness FIRE
           move "Growl", {
-            text "During your opponent's next turn, damage done by the Defending Pokemon's attacks is reduced by 20."
+            text "During your opponent's next turn, damage done by the Defending Pokémon's attacks is reduced by 20."
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
@@ -595,7 +595,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Steenee", hp:HP140, type:G, retreatCost:2) {
           weakness FIRE
           move "Trod On", {
-            text "10+ damage. This attack does 50 more damage for each Energy in the Retreat Cost of your opponent's Active Pokemon."
+            text "10+ damage. This attack does 50 more damage for each Energy in the Retreat Cost of your opponent's Active Pokémon."
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -640,7 +640,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Thwackey", hp:HP180, type:G, retreatCost:3) {
           weakness FIRE
           move "Wood Drain", {
-            text "60 damage. Heal 30 damage from this Pokemon."
+            text "60 damage. Heal 30 damage from this Pokémon."
             energyCost GRASS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -648,7 +648,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Surging Beat", {
-            text "120+ damage. You may discard any number of Energy cards attached to your Pokemon in play. If you do, this attack does 30 more damage for each card discarded in this way."
+            text "120+ damage. You may discard any number of Energy cards attached to your Pokémon in play. If you do, this attack does 30 more damage for each card discarded in this way."
             energyCost GRASS, GRASS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -660,7 +660,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP130, type:G, retreatCost:2) {
           weakness FIRE
           move "Clan Summoning Song", {
-            text "Search your deck for a [G] Pokemon, reveal it, and put it in your hand. Then, shuffle your deck. If you go second, on your first turn you may search for up to 3 [G] Pokemon instead."
+            text "Search your deck for a [G] Pokémon, reveal it, and put it in your hand. Then, shuffle your deck. If you go second, on your first turn you may search for up to 3 [G] Pokémon instead."
             energyCost GRASS
             attackRequirement {}
             onAttack {
@@ -668,7 +668,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Spring Rain Whip", {
-            text "60+ damage. Does 20 additional damage for each [G] Energy attached to this Pokemon."
+            text "60+ damage. Does 20 additional damage for each [G] Energy attached to this Pokémon."
             energyCost COLORLESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -688,7 +688,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Fire Spin", {
-            text "210 damage. Discard 2 Energy from this Pokemon."
+            text "210 damage. Discard 2 Energy from this Pokémon."
             energyCost FIRE, FIRE, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -700,7 +700,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Blaziken V", hp:HP320, type:R, retreatCost:2) {
           weakness WATER
           move "Clutch", {
-            text "60 damage. The Defending Pokemon can't retreat during your opponent's next turn."
+            text "60 damage. The Defending Pokémon can't retreat during your opponent's next turn."
             energyCost FIRE
             attackRequirement {}
             onAttack {
@@ -708,7 +708,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Max Blaze", {
-            text "130 damage. Attach an Energy card from your discard pile to up to 2 of your Benched Rapid Strike Pokemon."
+            text "130 damage. Attach an Energy card from your discard pile to up to 2 of your Benched Rapid Strike Pokémon."
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -720,7 +720,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP070, type:R, retreatCost:0) {
           weakness WATER
           bwAbility "Forecast", {
-            text "If you have 8 or more Stadium cards in your discard pile, ignore all Energy in the attack cost of each of this Pokemon's attacks."
+            text "If you have 8 or more Stadium cards in your discard pile, ignore all Energy in the attack cost of each of this Pokémon's attacks."
             actionA {
             }
           }
@@ -737,7 +737,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP080, type:R, retreatCost:3) {
           weakness WATER
           move "Flame Charge", {
-            text "10 damage. Search your deck for a [R] Energy card and attach it to this Pokemon. Then, shuffle your deck."
+            text "10 damage. Search your deck for a [R] Energy card and attach it to this Pokémon. Then, shuffle your deck."
             energyCost FIRE
             attackRequirement {}
             onAttack {
@@ -757,7 +757,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Fire Spin", {
-            text "170 damage. Discard 2 Energy from this Pokemon."
+            text "170 damage. Discard 2 Energy from this Pokémon."
             energyCost FIRE, FIRE, COLORLESS
             attackRequirement {}
             onAttack {
@@ -777,7 +777,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Dynamite Tackle", {
-            text "100+ damage. If this Pokemon has 10 damage counters or more on it, this attack does 150 more damage."
+            text "100+ damage. If this Pokémon has 10 damage counters or more on it, this attack does 150 more damage."
             energyCost FIRE, FIRE, COLORLESS
             attackRequirement {}
             onAttack {
@@ -801,7 +801,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Scorbunny", hp:HP090, type:R, retreatCost:1) {
           weakness WATER
           move "Volley Kick", {
-            text "60 damage. During your next turn, this Pokemon can't attack."
+            text "60 damage. During your next turn, this Pokémon can't attack."
             energyCost FIRE, COLORLESS
             attackRequirement {}
             onAttack {
@@ -813,12 +813,12 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Raboot", hp:HP170, type:R, retreatCost:1) {
           weakness WATER
           bwAbility "Crisis Power", {
-            text "This Pokemon's attacks do 30 more damage to your opponent's Active Pokemon for each Prize card your opponent has already taken."
+            text "This Pokémon's attacks do 30 more damage to your opponent's Active Pokémon for each Prize card your opponent has already taken."
             actionA {
             }
           }
           move "Fireball Shoot", {
-            text "150 damage. This Pokemon can't attack during your next turn."
+            text "150 damage. This Pokémon can't attack during your next turn."
             energyCost FIRE, COLORLESS
             attackRequirement {}
             onAttack {
@@ -838,7 +838,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Icy Wind", {
-            text "50 damage. Your opponent's Active Pokemon is now Asleep."
+            text "50 damage. Your opponent's Active Pokémon is now Asleep."
             energyCost WATER, COLORLESS
             attackRequirement {}
             onAttack {
@@ -850,7 +850,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP070, type:W, retreatCost:1) {
           weakness METAL
           move "Lop Off", {
-            text "Flip a coin. If heads, discard an Energy attached to your opponent's Active Pokemon."
+            text "Flip a coin. If heads, discard an Energy attached to your opponent's Active Pokémon."
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
@@ -862,7 +862,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Sneasel", hp:HP110, type:W, retreatCost:1) {
           weakness METAL
           move "Two Hit KO", {
-            text "If the Defending Pokemon takes damage from 1 of your Rapid Strike Pokemon during your next turn, it is Knocked Out."
+            text "If the Defending Pokémon takes damage from 1 of your Rapid Strike Pokémon during your next turn, it is Knocked Out."
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
@@ -890,7 +890,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Delivery", {
-            text "Return this Pokemon and all cards attached to it to your deck. Then search your deck for any card, put it in your hand, and shuffle your deck."
+            text "Return this Pokémon and all cards attached to it to your deck. Then search your deck for any card, put it in your hand, and shuffle your deck."
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -902,12 +902,12 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP070, type:W, retreatCost:0) {
           weakness LIGHTNING
           bwAbility "Forecast", {
-            text "If you have 8 or more Stadium cards in your discard pile, ignore all Energy in the attack cost of each of this Pokemon's attacks."
+            text "If you have 8 or more Stadium cards in your discard pile, ignore all Energy in the attack cost of each of this Pokémon's attacks."
             actionA {
             }
           }
           move "Rain Shower", {
-            text "This attack does 20 damage to each of your opponent's Pokemon."
+            text "This attack does 20 damage to each of your opponent's Pokémon."
             energyCost WATER, COLORLESS
             attackRequirement {}
             onAttack {
@@ -919,12 +919,12 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP070, type:W, retreatCost:0) {
           weakness METAL
           bwAbility "Forecast", {
-            text "If you have 8 or more Stadium cards in your discard pile, ignore all Energy in the attack cost of each of this Pokemon's attacks."
+            text "If you have 8 or more Stadium cards in your discard pile, ignore all Energy in the attack cost of each of this Pokémon's attacks."
             actionA {
             }
           }
           move "Frost Typhoon", {
-            text "120 damage. This Pokemon can't use Frost Typhoon during your next turn."
+            text "120 damage. This Pokémon can't use Frost Typhoon during your next turn."
             energyCost WATER, WATER, COLORLESS
             attackRequirement {}
             onAttack {
@@ -948,12 +948,12 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Snorunt", hp:HP090, type:W, retreatCost:1) {
           weakness METAL
           bwAbility "Snowfall", {
-            text "Once during your turn when you play this card from your hand to evolve a Pokemon, you may search your discard pile for a [W] Energy and attach it to 1 of your Pokemon."
+            text "Once during your turn when you play this card from your hand to evolve a Pokémon, you may search your discard pile for a [W] Energy and attach it to 1 of your Pokémon."
             actionA {
             }
           }
           move "Crystal Breath", {
-            text "90 damage. This Pokemon can't attack during your next turn."
+            text "90 damage. This Pokémon can't attack during your next turn."
             energyCost WATER, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1005,12 +1005,12 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Hail Prison", {
-            text "160 damage. Discard 2 Energy from this Pokemon. If you do, the opponent's Active Pokemon is now Paralyzed."
+            text "160 damage. Discard 2 Energy from this Pokémon. If you do, the opponent's Active Pokémon is now Paralyzed."
             energyCost WATER, WATER, COLORLESS
             attackRequirement {}
             onAttack {
               damage 160
-              if (confirm("Discard 2 Energy to Paralyze Defending Pokemon?")){
+              if (confirm("Discard 2 Energy to Paralyze Defending Pokémon?")){
                 damage 70
                 discardSelfEnergy C, C
               }
@@ -1021,7 +1021,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP120, type:W, retreatCost:1) {
           weakness LIGHTNING
           move "Smash Turn", {
-            text "30 damage. You may switch this Pokemon with 1 of your Benched Pokemon."
+            text "30 damage. You may switch this Pokémon with 1 of your Benched Pokémon."
             energyCost WATER
             attackRequirement {}
             onAttack {
@@ -1030,7 +1030,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Ocean Loop", {
-            text "120 damage. Return an Energy from this Pokemon to your hand."
+            text "120 damage. Return an Energy from this Pokémon to your hand."
             energyCost WATER, WATER, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1042,7 +1042,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP060, type:W, retreatCost:1) {
           weakness LIGHTNING
           move "Continuous Call", {
-            text "Search your deck for up to 3 Rapid Strike Basic Pokemon and put them on your Bench. Then, shuffle your deck."
+            text "Search your deck for up to 3 Rapid Strike Basic Pokémon and put them on your Bench. Then, shuffle your deck."
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
@@ -1074,7 +1074,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Drizzile", hp:HP150, type:W, retreatCost:1) {
           weakness LIGHTNING
           bwAbility "Quick Shooter", {
-            text "Once during your turn, you may place 2 damage counters on 1 of your opponent's Pokemon."
+            text "Once during your turn, you may place 2 damage counters on 1 of your opponent's Pokémon."
             actionA {
             }
           }
@@ -1099,7 +1099,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Slash Rapid Bullet", {
-            text "Does 30 damage for each of your Rapid Strike Pokemon in play."
+            text "Does 30 damage for each of your Rapid Strike Pokémon in play."
             energyCost WATER, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1119,7 +1119,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Glacial Lance", {
-            text "200 damage. Discard 2 Energy from this Pokemon."
+            text "200 damage. Discard 2 Energy from this Pokémon."
             energyCost WATER, WATER, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1131,7 +1131,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Ice Rider Calyrex V", hp:HP320, type:W, retreatCost:2) {
           weakness METAL
           move "Ride of the High King", {
-            text "10+ damage. This attack does 30 more damage for each of your opponent's Benched Pokemon."
+            text "10+ damage. This attack does 30 more damage for each of your opponent's Benched Pokémon."
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1139,7 +1139,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Max Lance", {
-            text "10+ damage. You may discard up to 2 Energy cards from this Pokemon. If you do, this attack does 120 more damage for each Energy card discarded in this way."
+            text "10+ damage. You may discard up to 2 Energy cards from this Pokémon. If you do, this attack does 120 more damage for each Energy card discarded in this way."
             energyCost WATER, WATER
             attackRequirement {}
             onAttack {
@@ -1151,7 +1151,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP070, type:L, retreatCost:2) {
           weakness FIGHTING
           move "Growl", {
-            text "During your opponent's next turn, any damage done by the Defending Pokemon is reduced by 20."
+            text "During your opponent's next turn, any damage done by the Defending Pokémon is reduced by 20."
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
@@ -1176,7 +1176,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Flaaffy", hp:HP160, type:L, retreatCost:2) {
           weakness FIGHTING
           move "Thundershock", {
-            text "50 damage. Flip a coin. If heads, your opponent's Active Pokemon is now Paralyzed."
+            text "50 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
             energyCost LIGHTNING
             attackRequirement {}
             onAttack {
@@ -1197,7 +1197,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP060, type:[], retreatCost:1) {
           weakness FIGHTING
           move "Thunder Spear", {
-            text "This attack does 10 damage to 1 of your opponent's Benched Pokemon. (Don't apply Weakness and Resistance for Benched Pokemon)"
+            text "This attack does 10 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon)"
             energyCost LIGHTNING
             attackRequirement {}
             onAttack {
@@ -1209,7 +1209,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Blitzle", hp:HP120, type:L, retreatCost:1) {
           weakness FIGHTING
           move "Link Bolt", {
-            text "30+ damage. If any of your other Rapid Strike Pokemon used an attack during your last turn, this attack does 90 more damage."
+            text "30+ damage. If any of your other Rapid Strike Pokémon used an attack during your last turn, this attack does 90 more damage."
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
@@ -1229,7 +1229,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP120, type:L, retreatCost:1) {
           weakness FIGHTING
           move "Assist Spark", {
-            text "30 damage. You may attach a [L] from your hand to 1 of your Benched Pokemon."
+            text "30 damage. You may attach a [L] from your hand to 1 of your Benched Pokémon."
             energyCost LIGHTNING
             attackRequirement {}
             onAttack {
@@ -1237,7 +1237,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Thunder", {
-            text "130 damage. This Pokemon does 30 damage to itself."
+            text "130 damage. This Pokémon does 30 damage to itself."
             energyCost LIGHTNING, LIGHTNING, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1249,7 +1249,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP210, type:L, retreatCost:2) {
           weakness FIGHTING
           move "Cross Fist", {
-            text "100 damage. If any of your other Rapid Strike Pokemon used an attack during your last turn, this attack does 160 damage to 1 of your opponent's Benched Pokemon. (Don't apply Weakness and Resistance for Benched Pokemon)"
+            text "100 damage. If any of your other Rapid Strike Pokémon used an attack during your last turn, this attack does 160 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon)"
             energyCost LIGHTNING, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1283,7 +1283,7 @@ public enum ChillingReign implements LogicCardInfo {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           move "Sleep Wave", {
-            text "10 damage. Flip a coin. If heads, your opponent's Active Pokemon is now Asleep."
+            text "10 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Asleep."
             energyCost PSYCHIC
             attackRequirement {}
             onAttack {
@@ -1303,12 +1303,12 @@ public enum ChillingReign implements LogicCardInfo {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           bwAbility "Dying Gift", {
-            text "When this Pokemon is Knocked Out by damage from an opponent's attack, you may search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
+            text "When this Pokémon is Knocked Out by damage from an opponent's attack, you may search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
             actionA {
             }
           }
           move "Pain Burst", {
-            text "10+ damage. This attack does 40 more damage for each damage counter on your opponent's Active Pokemon."
+            text "10+ damage. This attack does 40 more damage for each damage counter on your opponent's Active Pokémon."
             energyCost COLORLESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1326,7 +1326,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Psychic Beam", {
-            text "110 damage. Your opponent's Active Pokemon is now Confused."
+            text "110 damage. Your opponent's Active Pokémon is now Confused."
             energyCost PSYCHIC, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1338,7 +1338,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP060, type:P, retreatCost:1) {
           weakness METAL
           move "Confuse Ray", {
-            text "Your opponent's Active Pokemon is now Confused."
+            text "Your opponent's Active Pokémon is now Confused."
             energyCost PSYCHIC
             attackRequirement {}
             onAttack {
@@ -1350,7 +1350,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Kirlia", hp:HP080, type:P, retreatCost:1) {
           weakness METAL
           move "Mirage Step", {
-            text "Search your deck for up to 3 Pokemon named"
+            text "Search your deck for up to 3 Pokémon named"
             energyCost PSYCHIC
             attackRequirement {}
             onAttack {
@@ -1362,12 +1362,12 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Kirlia", hp:HP140, type:P, retreatCost:2) {
           weakness METAL
           bwAbility "Arcana Shine", {
-            text "Once during your turn you may look at the top 2 cards of your deck. Choose any number of basic Energy you find there and attach them to your Pokemon in any way you like. Put the other cards into your hand."
+            text "Once during your turn you may look at the top 2 cards of your deck. Choose any number of basic Energy you find there and attach them to your Pokémon in any way you like. Put the other cards into your hand."
             actionA {
             }
           }
           move "Brain Wave", {
-            text "60+ damage. This attack does 30 more damage for each [P] Energy attached to this Pokemon."
+            text "60+ damage. This attack does 30 more damage for each [P] Energy attached to this Pokémon."
             energyCost COLORLESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1386,7 +1386,7 @@ public enum ChillingReign implements LogicCardInfo {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           move "Spiteful Resolve", {
-            text "20x damage. Put up to 7 damage counters on this Pokemon. This attack does 20 damage for each damage counter you placed in this way."
+            text "20x damage. Put up to 7 damage counters on this Pokémon. This attack does 20 damage for each damage counter you placed in this way."
             energyCost PSYCHIC
             attackRequirement {}
             onAttack {
@@ -1394,7 +1394,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Eerie Light", {
-            text "50 damage. Your opponent's Active Pokemon is now Confused."
+            text "50 damage. Your opponent's Active Pokémon is now Confused."
             energyCost PSYCHIC, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1407,7 +1407,7 @@ public enum ChillingReign implements LogicCardInfo {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           move "Crescent Growth", {
-            text "Search your deck for a [P] Energy and attach it to 1 of your Pokemon. Then, shuffle your deck. If you go second, on your first turn you may attach up to 3 [P] Energy to 1 of your Pokemon instead."
+            text "Search your deck for a [P] Energy and attach it to 1 of your Pokémon. Then, shuffle your deck. If you go second, on your first turn you may attach up to 3 [P] Energy to 1 of your Pokémon instead."
             energyCost PSYCHIC
             attackRequirement {}
             onAttack {
@@ -1449,7 +1449,7 @@ public enum ChillingReign implements LogicCardInfo {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           move "Enhanced Punch", {
-            text "60+ damage. If this Pokemon has a Pokemon Tool attached to it, this attack does 90 more damage."
+            text "60+ damage. If this Pokémon has a Pokémon Tool attached to it, this attack does 90 more damage."
             energyCost PSYCHIC, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1457,7 +1457,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Megaton Fall", {
-            text "190 damage. This Pokemon does 30 damage to itself."
+            text "190 damage. This Pokémon does 30 damage to itself."
             energyCost PSYCHIC, PSYCHIC, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1469,7 +1469,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP060, type:P, retreatCost:1) {
           weakness METAL
           move "Draining Kiss", {
-            text "20 damage. Heal 10 damage from this Pokemon."
+            text "20 damage. Heal 10 damage from this Pokémon."
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1545,7 +1545,7 @@ public enum ChillingReign implements LogicCardInfo {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           move "Spiral Drain", {
-            text "Heal 30 damage from this Pokemon."
+            text "Heal 30 damage from this Pokémon."
             energyCost PSYCHIC
             attackRequirement {}
             onAttack {
@@ -1558,12 +1558,12 @@ public enum ChillingReign implements LogicCardInfo {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           bwAbility "Witch's Sonata", {
-            text "Once during your turn, you may switch your Active Pokemon with 1 of your Benched Pokemon, then have your opponent switch their Active Pokemon with 1 of their Benched Pokemon."
+            text "Once during your turn, you may switch your Active Pokémon with 1 of your Benched Pokémon, then have your opponent switch their Active Pokémon with 1 of their Benched Pokémon."
             actionA {
             }
           }
           move "Psychic", {
-            text "30+ damage. This attack does 50 more damage for each Energy attached to your opponent's Active Pokemon."
+            text "30+ damage. This attack does 50 more damage for each Energy attached to your opponent's Active Pokémon."
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1584,7 +1584,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Astral Barrage", {
-            text "Put 5 damage counters on 2 of your opponent's Pokemon."
+            text "Put 5 damage counters on 2 of your opponent's Pokémon."
             energyCost COLORLESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1597,12 +1597,12 @@ public enum ChillingReign implements LogicCardInfo {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           bwAbility "Underworld Door", {
-            text "Once during your turn you may attach a [P] Energy card from your hand to 1 of your Benched [P] Pokemon. Then, draw 2 cards."
+            text "Once during your turn you may attach a [P] Energy card from your hand to 1 of your Benched [P] Pokémon. Then, draw 2 cards."
             actionA {
             }
           }
           move "Max Geist", {
-            text "10+ damage. This attack does 30 more damage for each [P] Energy attached to your Pokemon in play."
+            text "10+ damage. This attack does 30 more damage for each [P] Energy attached to your Pokémon in play."
             energyCost COLORLESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1614,7 +1614,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP050, type:F, retreatCost:1) {
           weakness GRASS
           move "Dig", {
-            text "10 damage. Flip a coin. If heads, during your opponent's next turn, prevent all effects of attacks, including damage, done to this Pokemon."
+            text "10 damage. Flip a coin. If heads, during your opponent's next turn, prevent all effects of attacks, including damage, done to this Pokémon."
             energyCost FIGHTING
             attackRequirement {}
             onAttack {
@@ -1629,7 +1629,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Diglett", hp:HP090, type:F, retreatCost:1) {
           weakness GRASS
           move "Triple Head", {
-            text "60x damage. Flip 3 coins. This attack does 60 damage times the number of heads. If all of the coins are heads, prevent all effects of attacks, including damage, done to this Pokemon during your opponent's next turn."
+            text "60x damage. Flip 3 coins. This attack does 60 damage times the number of heads. If all of the coins are heads, prevent all effects of attacks, including damage, done to this Pokémon during your opponent's next turn."
             energyCost FIGHTING, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1668,7 +1668,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Leek Strike", {
-            text "70+ damage. If this Pokemon has a Pokemon Tool attached, this attack does 90 more damage and this attack's damage isn't affected by Resistance."
+            text "70+ damage. If this Pokémon has a Pokémon Tool attached, this attack does 90 more damage and this attack's damage isn't affected by Resistance."
             energyCost FIGHTING, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1680,12 +1680,12 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP200, type:F, retreatCost:1) {
           weakness PSYCHIC
           bwAbility "Fighting Instinct", {
-            text "For each Pokemon V your opponent has in play, this Pokemon's attacks cost [C] less."
+            text "For each Pokémon V your opponent has in play, this Pokémon's attacks cost [C] less."
             actionA {
             }
           }
           move "Thunderclap Kick", {
-            text "170 damage. Before doing damage, discard a Special Energy from your opponent's Active Pokemon."
+            text "170 damage. Before doing damage, discard a Special Energy from your opponent's Active Pokémon."
             energyCost FIGHTING, COLORLESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1705,7 +1705,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Dynablade", {
-            text "This attack does 60 damage times the number of your opponent's Pokemon V in play."
+            text "This attack does 60 damage times the number of your opponent's Pokémon V in play."
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1730,7 +1730,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Galarian Yamask", hp:HP120, type:F, retreatCost:2) {
           weakness GRASS
           bwAbility "Spiteful Lithograph", {
-            text "If this Pokemon is in the Active Spot and is damaged by an attack from your opponent's Pokemon VMAX (even if this Pokemon is Knocked Out), put damage counters on the Attacking Pokemon equal to the damage done to this Pokémon."
+            text "If this Pokémon is in the Active Spot and is damaged by an attack from your opponent's Pokémon VMAX (even if this Pokémon is Knocked Out), put damage counters on the Attacking Pokémon equal to the damage done to this Pokémon."
             actionA {
             }
           }
@@ -1779,7 +1779,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP070, type:F, retreatCost:1) {
           weakness GRASS
           move "Crunch", {
-            text "30 damage. Flip a coin. If heads, discard an Energy from your opponent's Active Pokemon."
+            text "30 damage. Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon."
             energyCost FIGHTING, FIGHTING
             attackRequirement {}
             onAttack {
@@ -1794,7 +1794,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Rockruff", hp:HP120, type:F, retreatCost:2) {
           weakness GRASS
           move "Rogue Fang", {
-            text "80+ damage. This attack does 10 more damage for each Single Strike Pokemon in your discard pile."
+            text "80+ damage. This attack does 10 more damage for each Single Strike Pokémon in your discard pile."
             energyCost FIGHTING, FIGHTING
             attackRequirement {}
             onAttack {
@@ -1806,12 +1806,12 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP110, type:F, retreatCost:1) {
           weakness PSYCHIC
           bwAbility "Throwing Coach", {
-            text "All of your Rapid Strike Pokemon's attacks do 30 more damage to your opponent's Benched Pokemon V and Pokemon-GX. You can't use more than 1 Throwing Coach Ability at a time."
+            text "All of your Rapid Strike Pokémon's attacks do 30 more damage to your opponent's Benched Pokémon V and Pokémon-GX. You can't use more than 1 Throwing Coach Ability at a time."
             actionA {
             }
           }
           move "Fling", {
-            text "This attack does 20 damage to 1 of your opponent's Pokemon. (Don't apply Weakness and Resistance for Benched Pokemon)"
+            text "This attack does 20 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon)"
             energyCost FIGHTING
             attackRequirement {}
             onAttack {
@@ -1823,7 +1823,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP220, type:F, retreatCost:2) {
           weakness GRASS
           bwAbility "Sand Barricade", {
-            text "This Pokemon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+            text "This Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
             actionA {
             }
           }
@@ -1864,7 +1864,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Clobbopus", hp:HP140, type:F, retreatCost:3) {
           weakness PSYCHIC
           bwAbility "Grappling Master", {
-            text "If this Pokemon is your Active Pokemon, your opponent's Active Pokemon's Retreat Cost is increased by 2."
+            text "If this Pokémon is your Active Pokémon, your opponent's Active Pokémon's Retreat Cost is increased by 2."
             actionA {
             }
           }
@@ -1913,7 +1913,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Koffing", hp:HP130, type:D, retreatCost:2) {
           weakness FIGHTING
           move "Blend Toxin", {
-            text "Your opponent's Active Pokemon is now Confused. Attach a [D] Energy from your discard pile to this Pokemon."
+            text "Your opponent's Active Pokémon is now Confused. Attach a [D] Energy from your discard pile to this Pokémon."
             energyCost DARKNESS
             attackRequirement {}
             onAttack {
@@ -1921,7 +1921,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Smog Burst", {
-            text "20+ damage. This attack does 20 more damage for each [D] Energy attached to your Pokemon in play."
+            text "20+ damage. This attack does 20 more damage for each [D] Energy attached to your Pokémon in play."
             energyCost DARKNESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1933,7 +1933,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Koffing", hp:HP130, type:D, retreatCost:2) {
           weakness FIGHTING
           bwAbility "Energy Factory", {
-            text "Each basic [D] Energy attached to your Pokemon with “Weezing” in its name provides [D][D] Energy. You can't apply more than 1 Energy Factory Ability at a time."
+            text "Each basic [D] Energy attached to your Pokémon with “Weezing” in its name provides [D][D] Energy. You can't apply more than 1 Energy Factory Ability at a time."
             actionA {
             }
           }
@@ -1950,12 +1950,12 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP220, type:D, retreatCost:2) {
           weakness GRASS
           bwAbility "Bolstered Wings", {
-            text "Once during your turn, you may attach a [D] Energy from your discard pile to this Pokemon. You can't use more than 1 Bolstered Wings Ability per turn."
+            text "Once during your turn, you may attach a [D] Energy from your discard pile to this Pokémon. You can't use more than 1 Bolstered Wings Ability per turn."
             actionA {
             }
           }
           move "Aura Burn", {
-            text "190 damage. This Pokemon does 30 damage to itself."
+            text "190 damage. This Pokémon does 30 damage to itself."
             energyCost DARKNESS, DARKNESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1967,7 +1967,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Galarian Slowpoke", hp:HP120, type:D, retreatCost:3) {
           weakness FIGHTING
           bwAbility "Secret Medicine", {
-            text "Once during your turn, you may choose 1 of your Pokemon. Flip a coin, if heads restore 90 HP to that Pokemon. If tails, place 3 damage counters on that Pokemon."
+            text "Once during your turn, you may choose 1 of your Pokémon. Flip a coin, if heads restore 90 HP to that Pokémon. If tails, place 3 damage counters on that Pokémon."
             actionA {
               // TODO
             }
@@ -1993,7 +1993,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Doom Word", {
-            text "The Defending Pokemon is Knocked Out at the end of your opponent's next turn."
+            text "The Defending Pokémon is Knocked Out at the end of your opponent's next turn."
             energyCost DARKNESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2005,7 +2005,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Galarian Slowking V", hp:HP320, type:D, retreatCost:3) {
           weakness FIGHTING
           move "Max Toxin", {
-            text "10 damage. Your opponent's Active Pokemon is now Poisoned. During Pokemon Checkup, put 12 damage counters on that Pokemon instead of 1."
+            text "10 damage. Your opponent's Active Pokémon is now Poisoned. During Pokémon Checkup, put 12 damage counters on that Pokémon instead of 1."
             energyCost DARKNESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2017,12 +2017,12 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP090, type:D, retreatCost:1) {
           weakness FIGHTING
           bwAbility "Burst Needle", {
-            text "If this Pokemon is your Active Pokemon and is Knocked Out by damage from an opponent's attack, put 6 damage counters on the Attacking Pokemon."
+            text "If this Pokémon is your Active Pokémon and is Knocked Out by damage from an opponent's attack, put 6 damage counters on the Attacking Pokémon."
             actionA {
             }
           }
           move "Poison Job", {
-            text "30 damage. Your opponent's Active Pokemon is now Poisoned."
+            text "30 damage. Your opponent's Active Pokémon is now Poisoned."
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2046,7 +2046,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP070, type:D, retreatCost:1) {
           weakness GRASS
           move "Ghostly Scream", {
-            text "Count the number of Pokemon cards in your opponent's discard pile. Put that many damage counters on your opponent's Pokemon in any way you like. Then, your opponent shuffles all of the Pokemon cards from their discard pile into their deck."
+            text "Count the number of Pokémon cards in your opponent's discard pile. Put that many damage counters on your opponent's Pokémon in any way you like. Then, your opponent shuffles all of the Pokémon cards from their discard pile into their deck."
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
@@ -2058,12 +2058,12 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP190, type:D, retreatCost:1) {
           weakness GRASS
           bwAbility "Concealing Claw", {
-            text "Once during your turn when you play this Pokemon from your hand onto your Bench, you may discard 1 Pokemon Tool card attached to any Pokemon in play (yours or your opponent's)."
+            text "Once during your turn when you play this Pokémon from your hand onto your Bench, you may discard 1 Pokémon Tool card attached to any Pokémon in play (yours or your opponent's)."
             actionA {
             }
           }
           move "Shadow Reaper", {
-            text "110 damage. You may return this Pokemon and all cards attached to it to your hand."
+            text "110 damage. You may return this Pokémon and all cards attached to it to your hand."
             energyCost DARKNESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2075,7 +2075,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP070, type:D, retreatCost:2) {
           weakness FIGHTING
           move "Poison Sting", {
-            text "10 damage. Your opponent's Active Pokemon is now Poisoned."
+            text "10 damage. Your opponent's Active Pokémon is now Poisoned."
             energyCost DARKNESS
             attackRequirement {}
             onAttack {
@@ -2087,7 +2087,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Venipede", hp:HP070, type:D, retreatCost:3) {
           weakness FIGHTING
           move "Poison Sting", {
-            text "20 damage. Your opponent's Active Pokemon is now Poisoned."
+            text "20 damage. Your opponent's Active Pokémon is now Poisoned."
             energyCost DARKNESS
             attackRequirement {}
             onAttack {
@@ -2107,7 +2107,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Whirlipede", hp:HP160, type:D, retreatCost:3) {
           weakness FIGHTING
           move "Poison Sting", {
-            text "50 damage. Your opponent's Active Pokemon is now Poisoned."
+            text "50 damage. Your opponent's Active Pokémon is now Poisoned."
             energyCost DARKNESS
             attackRequirement {}
             onAttack {
@@ -2115,7 +2115,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Venoshock", {
-            text "100+ damage. If your opponent's Active Pokemon is Poisoned, this attack does 120 more damage."
+            text "100+ damage. If your opponent's Active Pokémon is Poisoned, this attack does 120 more damage."
             energyCost DARKNESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2182,7 +2182,7 @@ public enum ChillingReign implements LogicCardInfo {
           weakness FIRE
           resistance GRASS, MINUS30
           move "Guard Press", {
-            text "100 damage. During your opponent's next turn, any damage done to this Pokemon by attacks is reduced by 30."
+            text "100 damage. During your opponent's next turn, any damage done to this Pokémon by attacks is reduced by 30."
             energyCost METAL, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2190,7 +2190,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Ground Split", {
-            text "240 damage. This attack does 30 damage to each of your Pokemon. (Don't apply Weakness and Resistance for Benched Pokemon)."
+            text "240 damage. This attack does 30 damage to each of your Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon)."
             energyCost METAL, METAL, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2212,7 +2212,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Syncrohammer", {
-            text "60+ damage. If this Pokemon and the Defending Pokemon have the same number of Energy attached, this attack does 90 more damage."
+            text "60+ damage. If this Pokémon and the Defending Pokémon have the same number of Energy attached, this attack does 90 more damage."
             energyCost METAL, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2246,7 +2246,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Metal Slash", {
-            text "130 damage. This Pokemon can't attack during your next turn."
+            text "130 damage. This Pokémon can't attack during your next turn."
             energyCost METAL, METAL, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2258,7 +2258,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP130, type:C, retreatCost:2) {
           weakness FIGHTING
           move "Raging Bull", {
-            text "20+ damage. This attack does 20 more damage for each damage counter on this Pokemon. This Pokemon is now Confused."
+            text "20+ damage. This attack does 20 more damage for each damage counter on this Pokémon. This Pokémon is now Confused."
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2294,12 +2294,12 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Porygon2", hp:HP140, type:C, retreatCost:2) {
           weakness FIGHTING
           bwAbility "Bug Transmission", {
-            text "Once during your turn when you attach an Energy from your hand to this Pokemon, you may leave the opponent's Active Pokemon Confused."
+            text "Once during your turn when you attach an Energy from your hand to this Pokémon, you may leave the opponent's Active Pokémon Confused."
             actionA {
             }
           }
           move "Super Beam", {
-            text "170 damage. Discard 2 Energy from this Pokemon."
+            text "170 damage. Discard 2 Energy from this Pokémon."
             energyCost COLORLESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2311,12 +2311,12 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP250, type:C, retreatCost:4) {
           weakness FIGHTING
           bwAbility "Natural Cure", {
-            text "Whenever you attach an Energy from your hand to this Pokemon, remove all Special Conditions from this Pokemon."
+            text "Whenever you attach an Energy from your hand to this Pokémon, remove all Special Conditions from this Pokémon."
             actionA {
             }
           }
           move "Blissey Bomber", {
-            text "10+ damage. This attack does 30 more damage for each Energy attached to this Pokemon. After doing damage, you may attach up to 3 Energy cards from your discard pile to this Pokemon."
+            text "10+ damage. This attack does 30 more damage for each Energy attached to this Pokémon. After doing damage, you may attach up to 3 Energy cards from your discard pile to this Pokémon."
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
@@ -2340,7 +2340,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP070, type:C, retreatCost:0) {
           weakness FIGHTING
           bwAbility "Forecast", {
-            text "If you have 8 or more Stadium cards in your discard pile, ignore all Energy in the attack cost of each of this Pokemon's attacks."
+            text "If you have 8 or more Stadium cards in your discard pile, ignore all Energy in the attack cost of each of this Pokémon's attacks."
             actionA {
             }
           }
@@ -2357,7 +2357,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP090, type:C, retreatCost:2) {
           weakness FIGHTING
           bwAbility "Colorful change", {
-            text "This Pokemon is the same type as the Basic Energy attached to it. (If 2 or more types of Basic Energy are attached, it becomes all of those types)"
+            text "This Pokémon is the same type as the Basic Energy attached to it. (If 2 or more types of Basic Energy are attached, it becomes all of those types)"
             actionA {
             }
           }
@@ -2383,7 +2383,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Sky Return", {
-            text "30 damage. Return this Pokemon and all cards attached to it to your hand."
+            text "30 damage. Return this Pokémon and all cards attached to it to your hand."
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2404,7 +2404,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Blast Hammer", {
-            text "180 damage. Discard an Energy from this Pokemon."
+            text "180 damage. Discard an Energy from this Pokémon."
             energyCost COLORLESS, COLORLESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2438,7 +2438,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP090, type:C, retreatCost:1) {
           weakness FIGHTING
           move "Find a Friend", {
-            text "Search your deck for a Pokemon, reveal it, and put it into your hand. Then, shuffle your deck."
+            text "Search your deck for a Pokémon, reveal it, and put it into your hand. Then, shuffle your deck."
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
@@ -2446,7 +2446,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Fur Attack", {
-            text "90 damage. During your opponent's next turn, any damage done to this Pokemon by attacks is reduced by 20."
+            text "90 damage. During your opponent's next turn, any damage done to this Pokémon by attacks is reduced by 20."
             energyCost COLORLESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2458,7 +2458,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP060, type:C, retreatCost:1) {
           weakness FIGHTING
           move "Scavenge", {
-            text "Put a Pokemon Tool card from your discard pile into your hand."
+            text "Put a Pokémon Tool card from your discard pile into your hand."
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
@@ -2478,7 +2478,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Skwovet", hp:HP120, type:C, retreatCost:1) {
           weakness FIGHTING
           bwAbility "Brazen Tail", {
-            text "Prevent all effects of your opponent's Item and Supporter cards that would discard Energy from your Pokemon or return Energy from your Pokemon to your hand or deck."
+            text "Prevent all effects of your opponent's Item and Supporter cards that would discard Energy from your Pokémon or return Energy from your Pokémon to your hand or deck."
             actionA {
             }
           }
@@ -2493,7 +2493,7 @@ public enum ChillingReign implements LogicCardInfo {
         };
       case AGATHA_129:
         return supporter (this) {
-          text "Move up to 3 damage counters from your Active Pokemon to your opponent's Active Pokemon. You may play only 1 Supporter card during your turn."
+          text "Move up to 3 damage counters from your Active Pokémon to your opponent's Active Pokémon. You may play only 1 Supporter card during your turn."
           onPlay {
           }
           playRequirement{
@@ -2501,7 +2501,7 @@ public enum ChillingReign implements LogicCardInfo {
         };
       case AVERY_130:
         return supporter (this) {
-          text "Draw 3 cards. Then, your opponent discards their Benched Pokemon until they have 3 Benched Pokemon. You may play only 1 Supporter card during your turn."
+          text "Draw 3 cards. Then, your opponent discards their Benched Pokémon until they have 3 Benched Pokémon. You may play only 1 Supporter card during your turn."
           onPlay {
           }
           playRequirement{
@@ -2509,7 +2509,7 @@ public enum ChillingReign implements LogicCardInfo {
         };
       case BRAWLY_131:
         return supporter (this) {
-          text "Search your deck for up to 3 Rapid Strike Basic Pokemon and put them on your Bench. Then, shuffle your deck. You may play only 1 Supporter card during your turn."
+          text "Search your deck for up to 3 Rapid Strike Basic Pokémon and put them on your Bench. Then, shuffle your deck. You may play only 1 Supporter card during your turn."
           onPlay {
           }
           playRequirement{
@@ -2525,7 +2525,7 @@ public enum ChillingReign implements LogicCardInfo {
         };
       case CRUSHING_GLOVES_133:
         return itemCard (this) {
-          text "Pokemon Tool Attach a Pokemon Tool to 1 of your Pokemon that doesn't already have a Pokemon Tool attached. The Pokemon this card is attached to does 30 more damage to your opponent's Active M Pokemon. You may play as many Item cards as you like during your turn."
+          text "Pokémon Tool Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached. The Pokémon this card is attached to does 30 more damage to your opponent's Active M Pokémon. You may play as many Item cards as you like during your turn."
           onPlay {
           }
           playRequirement{
@@ -2533,7 +2533,7 @@ public enum ChillingReign implements LogicCardInfo {
         };
       case DOCTOR_134:
         return supporter (this) {
-          text "Draw 2 cards. If your opponent's Active Pokemon is a Pokemon VMAX, draw 2 more cards. You may play only 1 Supporter card during your turn."
+          text "Draw 2 cards. If your opponent's Active Pokémon is a Pokémon VMAX, draw 2 more cards. You may play only 1 Supporter card during your turn."
           onPlay {
           }
           playRequirement{
@@ -2541,7 +2541,7 @@ public enum ChillingReign implements LogicCardInfo {
         };
       case DYNA_TREE_HILL_135:
         return stadium (this) {
-          text "Pokemon in play (both yours and your opponent's) can't be healed. Note Pokemon uses the word recover when referring to Special Conditions, so although Pokemon in play can't have their HP healed, they can still recover from Special Conditions."
+          text "Pokémon in play (both yours and your opponent's) can't be healed. Note Pokémon uses the word recover when referring to Special Conditions, so although Pokémon in play can't have their HP healed, they can still recover from Special Conditions."
           onPlay {
           }
           onRemoveFromPlay{
@@ -2549,7 +2549,7 @@ public enum ChillingReign implements LogicCardInfo {
         };
       case ECHOING_HORN_136:
         return itemCard (this) {
-          text "Put a Basic Pokemon from your opponent's discard pile onto their Bench. You may play any number of Item cards during your turn."
+          text "Put a Basic Pokémon from your opponent's discard pile onto their Bench. You may play any number of Item cards during your turn."
           onPlay {
           }
           playRequirement{
@@ -2565,7 +2565,7 @@ public enum ChillingReign implements LogicCardInfo {
         };
       case FIRE_RESISTANT_GLOVES_138:
         return itemCard (this) {
-          text "Pokemon Tool Attach a Pokemon Tool to 1 of your Pokemon that doesn't already have a Pokemon Tool attached. When the Pokemon this card is attached to attacks, damage done to your opponent's Active R Pokemon is increased by 30. You may play any number of Item cards during your turn."
+          text "Pokémon Tool Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached. When the Pokémon this card is attached to attacks, damage done to your opponent's Active R Pokémon is increased by 30. You may play any number of Item cards during your turn."
           onPlay {
           }
           playRequirement{
@@ -2573,7 +2573,7 @@ public enum ChillingReign implements LogicCardInfo {
         };
       case FLANNERY_139:
         return supporter (this) {
-          text "Choose a Special Energy card attached to 1 of your opponent's Pokemon, and any Stadium card in play, and discard them. You may play only 1 Supporter card during your turn."
+          text "Choose a Special Energy card attached to 1 of your opponent's Pokémon, and any Stadium card in play, and discard them. You may play only 1 Supporter card during your turn."
           onPlay {
           }
           playRequirement{
@@ -2581,7 +2581,7 @@ public enum ChillingReign implements LogicCardInfo {
         };
       case FOG_CRYSTAL_140:
         return itemCard (this) {
-          text "Search your deck for either a Basic P Pokemon or P Energy, reveal it, and put it into your hand. Then, shuffle your deck. You may play as many Item cards as you like during your turn."
+          text "Search your deck for either a Basic P Pokémon or P Energy, reveal it, and put it into your hand. Then, shuffle your deck. You may play as many Item cards as you like during your turn."
           onPlay {
           }
           playRequirement{
@@ -2589,7 +2589,7 @@ public enum ChillingReign implements LogicCardInfo {
         };
       case GALARIAN_BREASTPLATE_141:
         return itemCard (this) {
-          text "Pokemon Tool Attach a Pokemon Tool to 1 of your Pokemon that doesn't already have a Pokemon Tool attached. If the Pokemon this card is attached to has Galarian in its name, it takes 30 less damage from your opponent's attacks (after applying Weakness and Resistance). You may play any number of Item cards during your turn."
+          text "Pokémon Tool Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached. If the Pokémon this card is attached to has Galarian in its name, it takes 30 less damage from your opponent's attacks (after applying Weakness and Resistance). You may play any number of Item cards during your turn."
           onPlay {
           }
           playRequirement{
@@ -2597,7 +2597,7 @@ public enum ChillingReign implements LogicCardInfo {
         };
       case HONEY_142:
         return supporter (this) {
-          text "Draw a card for each Pokemon V on your opponent's Bench. You may play only 1 Supporter card during your turn."
+          text "Draw a card for each Pokémon V on your opponent's Bench. You may play only 1 Supporter card during your turn."
           onPlay {
           }
           playRequirement{
@@ -2605,7 +2605,7 @@ public enum ChillingReign implements LogicCardInfo {
         };
       case JUSTIFIED_GLOVES_143:
         return itemCard (this) {
-          text "Pokemon Tool Attach a Pokemon Tool to 1 of your Pokemon that doesn't already have a Pokemon Tool attached. When the Pokemon this card is attached to attacks, damage done to your opponent's Active D Pokemon is increased by 30. You may play any number of Item cards during your turn."
+          text "Pokémon Tool Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached. When the Pokémon this card is attached to attacks, damage done to your opponent's Active D Pokémon is increased by 30. You may play any number of Item cards during your turn."
           onPlay {
           }
           playRequirement{
@@ -2613,7 +2613,7 @@ public enum ChillingReign implements LogicCardInfo {
         };
       case KAREN_S_CONVICTION_144:
         return supporter (this) {
-          text "During this turn, your Single Strike Pokemon's attacks do 20 more damage to your opponent's Active Pokemon for each Prize Card your opponent has already taken. You may play only 1 Supporter card during your turn."
+          text "During this turn, your Single Strike Pokémon's attacks do 20 more damage to your opponent's Active Pokémon for each Prize Card your opponent has already taken. You may play only 1 Supporter card during your turn."
           onPlay {
           }
           playRequirement{
@@ -2621,7 +2621,7 @@ public enum ChillingReign implements LogicCardInfo {
         };
       case KLARA_145:
         return supporter (this) {
-          text "Choose up to 2 Pokemon and up to 2 Basic Energy from your discard pile, show them to your opponent, and put them into your hand. You may play only 1 Supporter card during your turn."
+          text "Choose up to 2 Pokémon and up to 2 Basic Energy from your discard pile, show them to your opponent, and put them into your hand. You may play only 1 Supporter card during your turn."
           onPlay {
           }
           playRequirement{
@@ -2629,7 +2629,7 @@ public enum ChillingReign implements LogicCardInfo {
         };
       case MELONY_146:
         return supporter (this) {
-          text "Attach a W Energy from your discard pile to 1 of your Pokemon V. Then, draw 3 cards. You may play only 1 Supporter card during your turn."
+          text "Attach a W Energy from your discard pile to 1 of your Pokémon V. Then, draw 3 cards. You may play only 1 Supporter card during your turn."
           onPlay {
           }
           playRequirement{
@@ -2637,7 +2637,7 @@ public enum ChillingReign implements LogicCardInfo {
         };
       case OLD_CEMETERY_147:
         return stadium (this) {
-          text "Whenever a player attaches an Energy from their hand to 1 of their Pokemon (excluding P Pokemon), put 2 damage counters on that Pokemon. This Stadium stays in play when you play it. Discard it if another Stadium comes into play. If a Stadium with the same name is in play, you can't play this card."
+          text "Whenever a player attaches an Energy from their hand to 1 of their Pokémon (excluding P Pokémon), put 2 damage counters on that Pokémon. This Stadium stays in play when you play it. Discard it if another Stadium comes into play. If a Stadium with the same name is in play, you can't play this card."
           onPlay {
           }
           onRemoveFromPlay{
@@ -2645,7 +2645,7 @@ public enum ChillingReign implements LogicCardInfo {
         };
       case PATH_TO_THE_PEAK_148:
         return stadium (this) {
-          text "Each player's Pokemon in play with a Rule Box has no Abilities. This Stadium stays in play when you play it. Discard it if another Stadium comes into play. If a Stadium with the same name is in play, you can't play this card."
+          text "Each player's Pokémon in play with a Rule Box has no Abilities. This Stadium stays in play when you play it. Discard it if another Stadium comes into play. If a Stadium with the same name is in play, you can't play this card."
           onPlay {
           }
           onRemoveFromPlay{
@@ -2669,7 +2669,7 @@ public enum ChillingReign implements LogicCardInfo {
         };
       case RAPID_STRIKE_SCROLL_OF_THE_SKIES_151:
         return itemCard (this) {
-          text "Attach a Pokemon Tool to 1 of your Pokemon that doesn't already have a Pokemon Tool attached. The Rapid Strike Pokemon this card is attached to can use the attack on this card. LC Flying Suplex 10 damage. This attack does 50 more damage for each Energy attached to your opponent's Active Pokemon. You may play as many Item cards as you like during your turn."
+          text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached. The Rapid Strike Pokémon this card is attached to can use the attack on this card. LC Flying Suplex 10 damage. This attack does 50 more damage for each Energy attached to your opponent's Active Pokémon. You may play as many Item cards as you like during your turn."
           onPlay {
           }
           playRequirement{
@@ -2677,7 +2677,7 @@ public enum ChillingReign implements LogicCardInfo {
         };
       case RUGGED_HELMET_152:
         return itemCard (this) {
-          text "Pokemon Tool Attach a Pokemon Tool to 1 of your Pokemon that doesn't already have a Pokemon Tool attached. When the Pokemon this card is attached to is your Active Pokemon and is damaged by an opponent's attack, choose an Energy attached to the Attacking Pokemon and return it to your opponent's hand. You may play as many Item cards as you like during your turn."
+          text "Pokémon Tool Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached. When the Pokémon this card is attached to is your Active Pokémon and is damaged by an opponent's attack, choose an Energy attached to the Attacking Pokémon and return it to your opponent's hand. You may play as many Item cards as you like during your turn."
           onPlay {
           }
           playRequirement{
@@ -2685,7 +2685,7 @@ public enum ChillingReign implements LogicCardInfo {
         };
       case SIEBOLD_153:
         return supporter (this) {
-          text "Choose up to 2 of your Rapid Strike Pokemon in play and heal 60 damage from each of them. You may play only 1 Supporter card during your turn."
+          text "Choose up to 2 of your Rapid Strike Pokémon in play and heal 60 damage from each of them. You may play only 1 Supporter card during your turn."
           onPlay {
           }
           playRequirement{
@@ -2693,7 +2693,7 @@ public enum ChillingReign implements LogicCardInfo {
         };
       case SINGLE_STRIKE_SCROLL_OF_PIERCING_154:
         return itemCard (this) {
-          text "Attach a Pokemon Tool to 1 of your Pokemon that doesn't already have a Pokemon Tool attached. The Single Strike Pokemon this card is attached to can use the attack on this card. RCC Overreach 120 damage. This attack's damage isn't affected by Weakness, Resistance, or any other effects on your opponent's Active Pokemon. You may play as many Item cards as you like during your turn."
+          text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached. The Single Strike Pokémon this card is attached to can use the attack on this card. RCC Overreach 120 damage. This attack's damage isn't affected by Weakness, Resistance, or any other effects on your opponent's Active Pokémon. You may play as many Item cards as you like during your turn."
           onPlay {
           }
           playRequirement{
@@ -2701,7 +2701,7 @@ public enum ChillingReign implements LogicCardInfo {
         };
       case WEEDING_GLOVES_155:
         return itemCard (this) {
-          text "Pokemon Tool Attach a Pokemon Tool to 1 of your Pokemon that doesn't already have a Pokemon Tool attached. When the Pokemon this card is attached to attacks, damage done to your opponent's Active G Pokemon is increased by 30. You may play any number of Item cards during your turn."
+          text "Pokémon Tool Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached. When the Pokémon this card is attached to attacks, damage done to your opponent's Active G Pokémon is increased by 30. You may play any number of Item cards during your turn."
           onPlay {
           }
           playRequirement{
@@ -2717,7 +2717,7 @@ public enum ChillingReign implements LogicCardInfo {
         };
       case IMPACT_ENERGY_157:
         return specialEnergy (this, [[C]]) {
-          text "This card can only be attached to a Single Strike Pokemon. If this card is attached to anything other than a Single Strike Pokemon, discard this card. As long as this card is attached to a Pokemon, this card provides every type of Energy but provides only 1 Energy at a time. If this Pokemon is Poisoned, it is no longer Poisoned and cannot be Poisoned. Editor's note ToineLay has commented on this card's translation with regard to whether or not it would be possible to accelerate Impact Energy with Houndoom BST's Single Strike Roar ability. The answer is no. Although Impact Energy is a Single Strike Energy, it is not Single Strike Energy. Similarly, it is not possible to recover Impact Energy using Urn of Vitality BST."
+          text "This card can only be attached to a Single Strike Pokémon. If this card is attached to anything other than a Single Strike Pokémon, discard this card. As long as this card is attached to a Pokémon, this card provides every type of Energy but provides only 1 Energy at a time. If this Pokémon is Poisoned, it is no longer Poisoned and cannot be Poisoned. Editor's note ToineLay has commented on this card's translation with regard to whether or not it would be possible to accelerate Impact Energy with Houndoom BST's Single Strike Roar ability. The answer is no. Although Impact Energy is a Single Strike Energy, it is not Single Strike Energy. Similarly, it is not possible to recover Impact Energy using Urn of Vitality BST."
           onPlay {reason->
           }
           onRemoveFromPlay {
@@ -2729,7 +2729,7 @@ public enum ChillingReign implements LogicCardInfo {
         };
       case LUCKY_ENERGY_158:
         return specialEnergy (this, [[C]]) {
-          text "This card provides 1 C Energy while attached to a Pokemon. If the Pokemon this card is attached to is your Active Pokemon and is damaged by an opponent's attack, draw 1 card."
+          text "This card provides 1 C Energy while attached to a Pokémon. If the Pokémon this card is attached to is your Active Pokémon and is damaged by an opponent's attack, draw 1 card."
           onPlay {reason->
           }
           onRemoveFromPlay {
@@ -2741,7 +2741,7 @@ public enum ChillingReign implements LogicCardInfo {
         };
       case SPIRAL_ENERGY_159:
         return specialEnergy (this, [[C]]) {
-          text "This card can only be attached to a Rapid Strike Pokemon. If this card is attached to anything other than a Rapid Strike Pokemon, discard this card. As long as this card is attached to a Pokemon, this card provides every type of Energy but provides only 1 Energy at a time. If this Pokemon is Paralyzed, it is no longer Paralyzed and cannot be Paralyzed."
+          text "This card can only be attached to a Rapid Strike Pokémon. If this card is attached to anything other than a Rapid Strike Pokémon, discard this card. As long as this card is attached to a Pokémon, this card provides every type of Energy but provides only 1 Energy at a time. If this Pokémon is Paralyzed, it is no longer Paralyzed and cannot be Paralyzed."
           onPlay {reason->
           }
           onRemoveFromPlay {
@@ -2770,7 +2770,7 @@ public enum ChillingReign implements LogicCardInfo {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           move "Psychokinesis", {
-            text "60+ damage. This attack does 30 more damage for each Energy attached to your opponent's Active Pokemon."
+            text "60+ damage. This attack does 30 more damage for each Energy attached to your opponent's Active Pokémon."
             energyCost PSYCHIC, PSYCHIC
             attackRequirement {}
             onAttack {
@@ -2890,7 +2890,7 @@ public enum ChillingReign implements LogicCardInfo {
         return evolution (this, from:"Voltorb", hp:HP090, type:L, retreatCost:1) {
           weakness FIGHTING
           bwAbility "Buzzap Generator", {
-            text "Once during your turn (before your attack), if this Pokemon is in your Bench, you may Knock Out this Pokemon. If you do, search your deck for up to 2 [L] Energy and attach them to your [L] Pokemon in play in any way you like. Then, shuffle your deck."
+            text "Once during your turn (before your attack), if this Pokémon is in your Bench, you may Knock Out this Pokémon. If you do, search your deck for up to 2 [L] Energy and attach them to your [L] Pokémon in play in any way you like. Then, shuffle your deck."
             actionA {
             }
           }
@@ -2908,7 +2908,7 @@ public enum ChillingReign implements LogicCardInfo {
           weakness FIRE
           resistance GRASS, MINUS30
           bwAbility "Metal Trans", {
-            text "As often as you like during your turn, you may move a [M] Energy from 1 of your Pokemon to another.1 of your Pokemon."
+            text "As often as you like during your turn, you may move a [M] Energy from 1 of your Pokémon to another.1 of your Pokémon."
             actionA {
             }
           }
@@ -2925,12 +2925,12 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP130, type:C, retreatCost:3) {
           weakness FIGHTING
           bwAbility "Gormandize", {
-            text "Once during your turn, if this Pokemon is your Active Pokemon, you may draw cards until you have 7 cards in your hand. If you use this Ability, your turn ends."
+            text "Once during your turn, if this Pokémon is your Active Pokémon, you may draw cards until you have 7 cards in your hand. If you use this Ability, your turn ends."
             actionA {
             }
           }
           move "Body Slam", {
-            text "100 damage. Flip a coin. If heads, your opponent's Active Pokemon is now Paralyzed."
+            text "100 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
             energyCost COLORLESS, COLORLESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2943,7 +2943,7 @@ public enum ChillingReign implements LogicCardInfo {
         return copy (ECHOING_HORN_136, this);
       case FAN_OF_WAVES_226:
         return itemCard (this) {
-          text "Return a Special Energy attached to 1 of your opponent's Pokemon to the bottom of your opponent's deck. You may play any number of Item cards during your turn."
+          text "Return a Special Energy attached to 1 of your opponent's Pokémon to the bottom of your opponent's deck. You may play any number of Item cards during your turn."
           onPlay {
           }
           playRequirement{
