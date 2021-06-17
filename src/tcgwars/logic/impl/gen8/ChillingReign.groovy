@@ -31,7 +31,7 @@ import tcgwars.logic.effect.special.*;
 import tcgwars.logic.util.*;
 
 /**
- * @author
+ * @author Lithogenn@gmail.com
  */
 public enum ChillingReign implements LogicCardInfo {
 
@@ -152,7 +152,7 @@ public enum ChillingReign implements LogicCardInfo {
   TAUROS_115 ("Tauros", "115", Rarity.UNCOMMON, [POKEMON, BASIC, SINGLE_STRIKE, _COLORLESS_]),
   PORYGON_116 ("Porygon", "116", Rarity.UNCOMMON, [POKEMON, BASIC, _COLORLESS_]),
   PORYGON2_117 ("Porygon2", "117", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
-  PORYGON_Z_118 ("Porygon-Z", "118", Rarity.HOLORARE, [POKEMON, BASIC]),
+  PORYGON_Z_118 ("Porygon-Z", "118", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]),
   BLISSEY_V_119 ("Blissey V", "119", Rarity.UNCOMMON, [POKEMON, POKEMON_V, BASIC, _COLORLESS_]),
   ZANGOOSE_120 ("Zangoose", "120", Rarity.UNCOMMON, [POKEMON, BASIC, RAPID_STRIKE, _COLORLESS_]),
   CASTFORM_121 ("Castform", "121", Rarity.UNCOMMON, [POKEMON, BASIC, _COLORLESS_]),
@@ -172,7 +172,7 @@ public enum ChillingReign implements LogicCardInfo {
   DYNA_TREE_HILL_135 ("Dyna Tree Hill", "135", Rarity.UNCOMMON, [TRAINER, STADIUM]),
   ECHOING_HORN_136 ("Echoing Horn", "136", Rarity.UNCOMMON, [TRAINER, ITEM]),
   EXPEDITION_UNIFORM_137 ("Expedition Uniform", "137", Rarity.UNCOMMON, [TRAINER, ITEM]),
-  FIRE_RESISTANT_GLOVES_138 ("Fire-Resistant Gloves", "138", Rarity.HOLORARE, [POKEMON, BASIC]),
+  FIRE_RESISTANT_GLOVES_138 ("Fire-Resistant Gloves", "138", Rarity.UNCOMMON, [TRAINER, ITEM]),
   FLANNERY_139 ("Flannery", "139", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   FOG_CRYSTAL_140 ("Fog Crystal", "140", Rarity.UNCOMMON, [TRAINER, ITEM]),
   GALARIAN_BREASTPLATE_141 ("Galarian Breastplate", "141", Rarity.UNCOMMON, [TRAINER, ITEM]),
@@ -267,7 +267,8 @@ public enum ChillingReign implements LogicCardInfo {
   WELCOMING_LANTERN_230 ("Welcoming Lantern", "230", Rarity.UNCOMMON, [TRAINER, ITEM]),
   WATER_ENERGY_231 ("Water Energy", "231", Rarity.UNCOMMON, [ENERGY, BASIC_ENERGY]),
   PSYCHIC_ENERGY_232 ("Psychic Energy", "232", Rarity.UNCOMMON, [ENERGY, BASIC_ENERGY]),
-  FIGHTING_ENERGY_233 ("Fighting Energy", "233", Rarity.UNCOMMON, [ENERGY, BASIC_ENERGY]);
+  FIGHTING_ENERGY_233 ("Fighting Energy", "233", Rarity.UNCOMMON, [ENERGY, BASIC_ENERGY]),
+  ;
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -325,7 +326,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP040, type:G, retreatCost:1) {
           weakness FIRE
           move "Pierce", {
-            text "20 damage."
+            text "20 damage. "
             energyCost GRASS
             attackRequirement {}
             onAttack {
@@ -334,7 +335,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case KAKUNA_2:
-        return evolution (this, from:"null", hp:HP080, type:G, retreatCost:3) {
+        return evolution (this, from:"Weedle", hp:HP080, type:G, retreatCost:3) {
           weakness FIRE
           move "Stiffen", {
             text "During your opponent's next turn, this Pokemon takes 40 less damage from attacks (after applying Weakness and Resistance)."
@@ -346,7 +347,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case BEEDRILL_3:
-        return evolution (this, from:"null", hp:HP130, type:G, retreatCost:1) {
+        return evolution (this, from:"Kakuna", hp:HP130, type:G, retreatCost:1) {
           weakness FIRE
           move "Persistent Sting", {
             text "If your opponent's Active Pokemon has any Special Energy attached to it, it is now Knocked Out."
@@ -377,7 +378,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Punch", {
-            text "20 damage."
+            text "20 damage. "
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -386,7 +387,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case LEDIAN_5:
-        return evolution (this, from:"null", hp:HP090, type:G, retreatCost:1) {
+        return evolution (this, from:"Ledyba", hp:HP090, type:G, retreatCost:1) {
           weakness FIRE
           move "Quick Draw", {
             text "20 damage. Draw 2 cards."
@@ -409,7 +410,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP120, type:G, retreatCost:2) {
           weakness GRASS
           move "Horn Attack", {
-            text "20 damage."
+            text "20 damage. "
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
@@ -446,7 +447,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case CELEBI_VMAX_8:
-        return evolution (this, from:"null", hp:HP310, type:G, retreatCost:1) {
+        return evolution (this, from:"Celebi V", hp:HP310, type:G, retreatCost:1) {
           weakness FIRE
           bwAbility "Healing Forest", {
             text "Once during your turn you may heal 20 damage from each of your [G] Pokemon."
@@ -466,7 +467,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP080, type:G, retreatCost:2) {
           weakness FIRE
           move "Whap Down", {
-            text "60 damage."
+            text "60 damage. "
             energyCost GRASS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -475,7 +476,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case ABOMASNOW_10:
-        return evolution (this, from:"null", hp:HP140, type:G, retreatCost:3) {
+        return evolution (this, from:"Snover", hp:HP140, type:G, retreatCost:3) {
           weakness FIRE
           bwAbility "Toughness Up", {
             text "As long as this Pokemon is in play, the maximum HP of your Single Strike Pokemon in play (excluding any Abomasnow) is increased by 50. You can't apply more than 1 Toughness Up Ability at a time."
@@ -483,7 +484,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Mega Punch", {
-            text "90 damage."
+            text "90 damage. "
             energyCost GRASS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -503,7 +504,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Rear Kick", {
-            text "20 damage."
+            text "20 damage. "
             energyCost GRASS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -512,10 +513,10 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case SAWSBUCK_12:
-        return evolution (this, from:"null", hp:HP110, type:G, retreatCost:1) {
+        return evolution (this, from:"Deerling", hp:HP110, type:G, retreatCost:1) {
           weakness FIRE
           move "Tackle", {
-            text "30 damage."
+            text "30 damage. "
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
@@ -535,7 +536,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP060, type:G, retreatCost:1) {
           weakness FIRE
           move "Hop", {
-            text "30 damage."
+            text "30 damage. "
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -544,10 +545,10 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case STEENEE_14:
-        return evolution (this, from:"null", hp:HP080, type:G, retreatCost:1) {
+        return evolution (this, from:"Bounsweet", hp:HP080, type:G, retreatCost:1) {
           weakness FIRE
           move "Hop", {
-            text "20 damage."
+            text "20 damage. "
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
@@ -564,7 +565,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case TSAREENA_15:
-        return evolution (this, from:"null", hp:HP140, type:G, retreatCost:2) {
+        return evolution (this, from:"Steenee", hp:HP140, type:G, retreatCost:2) {
           weakness FIRE
           move "Trod On", {
             text "10+ damage. This attack does 50 more damage for each Energy in the Retreat Cost of your opponent's Active Pokemon."
@@ -575,7 +576,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Solar Beam", {
-            text "120 damage."
+            text "120 damage. "
             energyCost GRASS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -596,7 +597,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case THWACKEY_17:
-        return evolution (this, from:"null", hp:HP100, type:G, retreatCost:2) {
+        return evolution (this, from:"Grookey", hp:HP100, type:G, retreatCost:2) {
           weakness FIRE
           move "Knock Off", {
             text "30 damage. Discard a random card from your opponent's hand."
@@ -608,7 +609,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case RILLABOOM_18:
-        return evolution (this, from:"null", hp:HP180, type:G, retreatCost:3) {
+        return evolution (this, from:"Thwackey", hp:HP180, type:G, retreatCost:3) {
           weakness FIRE
           move "Wood Drain", {
             text "60 damage. Heal 30 damage from this Pokemon."
@@ -651,7 +652,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP210, type:R, retreatCost:2) {
           weakness WATER
           move "High Jump Kick", {
-            text "50 damage."
+            text "50 damage. "
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -668,7 +669,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case BLAZIKEN_VMAX_21:
-        return evolution (this, from:"null", hp:HP320, type:R, retreatCost:2) {
+        return evolution (this, from:"Blaziken V", hp:HP320, type:R, retreatCost:2) {
           weakness WATER
           move "Clutch", {
             text "60 damage. The Defending Pokemon can't retreat during your opponent's next turn."
@@ -717,10 +718,10 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case VOLCARONA_24:
-        return evolution (this, from:"null", hp:HP130, type:R, retreatCost:2) {
+        return evolution (this, from:"Larvesta", hp:HP130, type:R, retreatCost:2) {
           weakness WATER
           move "Combustion", {
-            text "50 damage."
+            text "50 damage. "
             energyCost FIRE, COLORLESS
             attackRequirement {}
             onAttack {
@@ -740,7 +741,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP220, type:R, retreatCost:3) {
           weakness WATER
           move "Heat Blast", {
-            text "50 damage."
+            text "50 damage. "
             energyCost FIRE, COLORLESS
             attackRequirement {}
             onAttack {
@@ -760,7 +761,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP060, type:R, retreatCost:1) {
           weakness WATER
           move "Headbutt", {
-            text "20 damage."
+            text "20 damage. "
             energyCost FIRE
             attackRequirement {}
             onAttack {
@@ -769,7 +770,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case RABOOT_27:
-        return evolution (this, from:"null", hp:HP090, type:R, retreatCost:1) {
+        return evolution (this, from:"Scorbunny", hp:HP090, type:R, retreatCost:1) {
           weakness WATER
           move "Volley Kick", {
             text "60 damage. During your next turn, this Pokemon can't attack."
@@ -781,7 +782,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case CINDERACE_28:
-        return evolution (this, from:"null", hp:HP170, type:R, retreatCost:1) {
+        return evolution (this, from:"Raboot", hp:HP170, type:R, retreatCost:1) {
           weakness WATER
           bwAbility "Crisis Power", {
             text "This Pokemon's attacks do 30 more damage to your opponent's Active Pokemon for each Prize card your opponent has already taken."
@@ -830,7 +831,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case WEAVILE_31:
-        return evolution (this, from:"null", hp:HP110, type:W, retreatCost:1) {
+        return evolution (this, from:"Sneasel", hp:HP110, type:W, retreatCost:1) {
           weakness METAL
           move "Two Hit KO", {
             text "If the Defending Pokemon takes damage from 1 of your Rapid Strike Pokemon during your next turn, it is Knocked Out."
@@ -853,7 +854,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP090, type:W, retreatCost:1) {
           weakness METAL
           move "Icy Snow", {
-            text "10 damage."
+            text "10 damage. "
             energyCost WATER
             attackRequirement {}
             onAttack {
@@ -907,7 +908,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP060, type:W, retreatCost:1) {
           weakness METAL
           move "Headbutt", {
-            text "30 damage."
+            text "30 damage. "
             energyCost WATER, COLORLESS
             attackRequirement {}
             onAttack {
@@ -916,7 +917,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case FROSLASS_36:
-        return evolution (this, from:"null", hp:HP090, type:W, retreatCost:1) {
+        return evolution (this, from:"Snorunt", hp:HP090, type:W, retreatCost:1) {
           weakness METAL
           bwAbility "Snowfall", {
             text "Once during your turn when you play this card from your hand to evolve a Pokemon, you may search your discard pile for a [W] Energy and attach it to 1 of your Pokemon."
@@ -936,7 +937,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP070, type:W, retreatCost:2) {
           weakness METAL
           move "Ram", {
-            text "10 damage."
+            text "10 damage. "
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
@@ -945,10 +946,10 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case SEALEO_38:
-        return evolution (this, from:"null", hp:HP110, type:W, retreatCost:4) {
+        return evolution (this, from:"Spheal", hp:HP110, type:W, retreatCost:4) {
           weakness METAL
           move "Ram", {
-            text "30 damage."
+            text "30 damage. "
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -956,7 +957,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Aurora Beam", {
-            text "70 damage."
+            text "70 damage. "
             energyCost WATER, WATER, COLORLESS
             attackRequirement {}
             onAttack {
@@ -965,10 +966,10 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case WALREIN_39:
-        return evolution (this, from:"null", hp:HP170, type:W, retreatCost:4) {
+        return evolution (this, from:"Sealeo", hp:HP170, type:W, retreatCost:4) {
           weakness METAL
           move "Aurora Beam", {
-            text "70 damage."
+            text "70 damage. "
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1025,7 +1026,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case DRIZZILE_42:
-        return evolution (this, from:"null", hp:HP090, type:W, retreatCost:1) {
+        return evolution (this, from:"Sobble", hp:HP090, type:W, retreatCost:1) {
           weakness LIGHTNING
           move "Bounce", {
             text "40 damage. Switch this Pokémon with 1 of your Benched Pokémon."
@@ -1037,7 +1038,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case INTELEON_43:
-        return evolution (this, from:"null", hp:HP150, type:W, retreatCost:1) {
+        return evolution (this, from:"Drizzile", hp:HP150, type:W, retreatCost:1) {
           weakness LIGHTNING
           bwAbility "Quick Shooter", {
             text "Once during your turn, you may place 2 damage counters on 1 of your opponent's Pokemon."
@@ -1045,7 +1046,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Waterfall", {
-            text "70 damage."
+            text "70 damage. "
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1054,10 +1055,10 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case RAPID_STRIKE_URSHIFU_44:
-        return evolution (this, from:"null", hp:HP140, type:W, retreatCost:2) {
+        return evolution (this, from:"Kubfu", hp:HP140, type:W, retreatCost:2) {
           weakness LIGHTNING
           move "Slashing Claw", {
-            text "40 damage."
+            text "40 damage. "
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
@@ -1077,7 +1078,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP210, type:W, retreatCost:2) {
           weakness METAL
           move "Pierce", {
-            text "40 damage."
+            text "40 damage. "
             energyCost WATER
             attackRequirement {}
             onAttack {
@@ -1094,7 +1095,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case ICE_RIDER_CALYREX_VMAX_46:
-        return evolution (this, from:"null", hp:HP320, type:W, retreatCost:2) {
+        return evolution (this, from:"Ice Rider Calyrex V", hp:HP320, type:W, retreatCost:2) {
           weakness METAL
           move "Ride of the High King", {
             text "10+ damage. This attack does 30 more damage for each of your opponent's Benched Pokemon."
@@ -1125,7 +1126,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Static Shock", {
-            text "20 damage."
+            text "20 damage. "
             energyCost LIGHTNING, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1134,12 +1135,12 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case FLAAFFY_48:
-        return evolution (this, from:"null", hp:HP100, type:L, retreatCost:2) {
+        return evolution (this, from:"Mareep", hp:HP100, type:L, retreatCost:2) {
           weakness FIGHTING
 
         };
       case AMPHAROS_49:
-        return evolution (this, from:"null", hp:HP160, type:L, retreatCost:2) {
+        return evolution (this, from:"Flaaffy", hp:HP160, type:L, retreatCost:2) {
           weakness FIGHTING
           move "Thundershock", {
             text "50 damage. Flip a coin. If heads, your opponent's Active Pokemon is now Paralyzed."
@@ -1171,7 +1172,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case ZEBSTRIKA_51:
-        return evolution (this, from:"null", hp:HP120, type:L, retreatCost:1) {
+        return evolution (this, from:"Blitzle", hp:HP120, type:L, retreatCost:1) {
           weakness FIGHTING
           move "Link Bolt", {
             text "30+ damage. If any of your other Rapid Strike Pokemon used an attack during your last turn, this attack does 90 more damage."
@@ -1227,7 +1228,7 @@ public enum ChillingReign implements LogicCardInfo {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           move "Sting", {
-            text "10 damage."
+            text "10 damage. "
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
@@ -1235,7 +1236,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Headbutt", {
-            text "20 damage."
+            text "20 damage. "
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1257,13 +1258,13 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case HAUNTER_56:
-        return evolution (this, from:"null", hp:HP080, type:P, retreatCost:1) {
+        return evolution (this, from:"Gastly", hp:HP080, type:P, retreatCost:1) {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
 
         };
       case GENGAR_57:
-        return evolution (this, from:"null", hp:HP130, type:P, retreatCost:1) {
+        return evolution (this, from:"Haunter", hp:HP130, type:P, retreatCost:1) {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           bwAbility "Dying Gift", {
@@ -1311,7 +1312,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case KIRLIA_60:
-        return evolution (this, from:"null", hp:HP080, type:P, retreatCost:1) {
+        return evolution (this, from:"Kirlia", hp:HP080, type:P, retreatCost:1) {
           weakness METAL
           move "Mirage Step", {
             text "Search your deck for up to 3 Pokemon named"
@@ -1323,7 +1324,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case GARDEVOIR_61:
-        return evolution (this, from:"null", hp:HP140, type:P, retreatCost:2) {
+        return evolution (this, from:"Kirlia", hp:HP140, type:P, retreatCost:2) {
           weakness METAL
           bwAbility "Arcana Shine", {
             text "Once during your turn you may look at the top 2 cards of your deck. Choose any number of basic Energy you find there and attach them to your Pokemon in any way you like. Put the other cards into your hand."
@@ -1346,7 +1347,7 @@ public enum ChillingReign implements LogicCardInfo {
 
         };
       case BANETTE_63:
-        return evolution (this, from:"null", hp:HP080, type:P, retreatCost:1) {
+        return evolution (this, from:"Shuppet", hp:HP080, type:P, retreatCost:1) {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           move "Spiteful Resolve", {
@@ -1392,7 +1393,7 @@ public enum ChillingReign implements LogicCardInfo {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           move "Pound", {
-            text "10 damage."
+            text "10 damage. "
             energyCost PSYCHIC
             attackRequirement {}
             onAttack {
@@ -1400,7 +1401,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Punch", {
-            text "30 damage."
+            text "30 damage. "
             energyCost PSYCHIC, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1409,7 +1410,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case GOLURK_66:
-        return evolution (this, from:"null", hp:HP150, type:P, retreatCost:4) {
+        return evolution (this, from:"Golett", hp:HP150, type:P, retreatCost:4) {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           move "Enhanced Punch", {
@@ -1442,7 +1443,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case SLURPUFF_68:
-        return evolution (this, from:"null", hp:HP110, type:P, retreatCost:2) {
+        return evolution (this, from:"Swirlix", hp:HP110, type:P, retreatCost:2) {
           weakness METAL
           move "Follow the Smell", {
             text "Flip 3 coins. For each heads, choose a card from your discard pile, show it to your opponent, and put it into your hand."
@@ -1453,7 +1454,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Fairy Wind", {
-            text "80 damage."
+            text "80 damage. "
             energyCost COLORLESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1466,7 +1467,7 @@ public enum ChillingReign implements LogicCardInfo {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           move "Spinning Attack", {
-            text "20 damage."
+            text "20 damage. "
             energyCost PSYCHIC
             attackRequirement {}
             onAttack {
@@ -1475,7 +1476,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case MALAMAR_70:
-        return evolution (this, from:"null", hp:HP120, type:P, retreatCost:3) {
+        return evolution (this, from:"Inkay", hp:HP120, type:P, retreatCost:3) {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           move "Rapid Tentacles", {
@@ -1492,7 +1493,7 @@ public enum ChillingReign implements LogicCardInfo {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           move "Psyshot", {
-            text "10 damage."
+            text "10 damage. "
             energyCost PSYCHIC
             attackRequirement {}
             onAttack {
@@ -1514,7 +1515,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case HATTERENE_73:
-        return evolution (this, from:"null", hp:HP130, type:P, retreatCost:1) {
+        return evolution (this, from:"Hattrem", hp:HP130, type:P, retreatCost:1) {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           bwAbility "Witch's Sonata", {
@@ -1553,7 +1554,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case SHADOW_RIDER_CALYREX_VMAX_75:
-        return evolution (this, from:"null", hp:HP320, type:P, retreatCost:2) {
+        return evolution (this, from:"Shadow Rider Calyrex V", hp:HP320, type:P, retreatCost:2) {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           bwAbility "Underworld Door", {
@@ -1583,7 +1584,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case DUGTRIO_77:
-        return evolution (this, from:"null", hp:HP090, type:F, retreatCost:1) {
+        return evolution (this, from:"Diglett", hp:HP090, type:F, retreatCost:1) {
           weakness GRASS
           move "Triple Head", {
             text "60x damage. Flip 3 coins. This attack does 60 damage times the number of heads. If all of the coins are heads, prevent all effects of attacks, including damage, done to this Pokemon during your opponent's next turn."
@@ -1607,10 +1608,10 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case GALARIAN_SIRFETCH_D_79:
-        return evolution (this, from:"null", hp:HP130, type:F, retreatCost:2) {
+        return evolution (this, from:"Galarian Farfetch'd", hp:HP130, type:F, retreatCost:2) {
           weakness PSYCHIC
           move "Peck", {
-            text "40 damage."
+            text "40 damage. "
             energyCost FIGHTING
             attackRequirement {}
             onAttack {
@@ -1644,7 +1645,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case GALLADE_81:
-        return evolution (this, from:"null", hp:HP170, type:F, retreatCost:2) {
+        return evolution (this, from:"Kirlia", hp:HP170, type:F, retreatCost:2) {
           weakness PSYCHIC
           move "Feint", {
             text "60 damage. This attack isn't affected by Resistance."
@@ -1676,7 +1677,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case GALARIAN_RUNERIGUS_83:
-        return evolution (this, from:"null", hp:HP120, type:F, retreatCost:2) {
+        return evolution (this, from:"Galarian Yamask", hp:HP120, type:F, retreatCost:2) {
           weakness GRASS
           bwAbility "Spiteful Lithograph", {
             text "If this Pokemon is in the Active Spot and is damaged by an attack from your opponent's Pokemon VMAX (even if this Pokemon is Knocked Out), put damage counters on the Attacking Pokemon equal to the damage done to this Pokémon."
@@ -1696,7 +1697,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP080, type:F, retreatCost:3) {
           weakness PSYCHIC
           move "Toss", {
-            text "20 damage."
+            text "20 damage. "
             energyCost FIGHTING
             attackRequirement {}
             onAttack {
@@ -1713,10 +1714,10 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case CRABOMINABLE_85:
-        return evolution (this, from:"null", hp:HP150, type:F, retreatCost:4) {
+        return evolution (this, from:"Crabrawler", hp:HP150, type:F, retreatCost:4) {
           weakness PSYCHIC
           move "Crabhammer", {
-            text "130 damage."
+            text "130 damage. "
             energyCost FIGHTING, COLORLESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1737,7 +1738,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case LYCANROC_87:
-        return evolution (this, from:"null", hp:HP120, type:F, retreatCost:2) {
+        return evolution (this, from:"Rockruff", hp:HP120, type:F, retreatCost:2) {
           weakness GRASS
           move "Rogue Fang", {
             text "80+ damage. This attack does 10 more damage for each Single Strike Pokemon in your discard pile."
@@ -1774,7 +1775,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Land Crush", {
-            text "140 damage."
+            text "140 damage. "
             energyCost FIGHTING, FIGHTING, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1783,7 +1784,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case SANDACONDA_VMAX_90:
-        return evolution (this, from:"null", hp:HP320, type:F, retreatCost:3) {
+        return evolution (this, from:"Sandaconda V", hp:HP320, type:F, retreatCost:3) {
           weakness GRASS
           move "Sand Pulse", {
             text "60 damage. This attack also does 20 damage to each of your opponent's Benched Pokémon."
@@ -1798,7 +1799,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP070, type:F, retreatCost:2) {
           weakness PSYCHIC
           move "Slap", {
-            text "30 damage."
+            text "30 damage. "
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1807,7 +1808,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case GRAPPLOCT_92:
-        return evolution (this, from:"null", hp:HP140, type:F, retreatCost:3) {
+        return evolution (this, from:"Clobbopus", hp:HP140, type:F, retreatCost:3) {
           weakness PSYCHIC
           bwAbility "Grappling Master", {
             text "If this Pokemon is your Active Pokemon, your opponent's Active Pokemon's Retreat Cost is increased by 2."
@@ -1835,7 +1836,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Elbow Strike", {
-            text "60 damage."
+            text "60 damage. "
             energyCost COLORLESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1847,7 +1848,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP070, type:D, retreatCost:1) {
           weakness FIGHTING
           move "Smog", {
-            text "20 damage."
+            text "20 damage. "
             energyCost DARKNESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1856,7 +1857,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case WEEZING_95:
-        return evolution (this, from:"null", hp:HP130, type:D, retreatCost:2) {
+        return evolution (this, from:"Koffing", hp:HP130, type:D, retreatCost:2) {
           weakness FIGHTING
           move "Blend Toxin", {
             text "Your opponent's Active Pokemon is now Confused. Attach a [D] Energy from your discard pile to this Pokemon."
@@ -1876,7 +1877,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case GALARIAN_WEEZING_96:
-        return evolution (this, from:"null", hp:HP130, type:D, retreatCost:2) {
+        return evolution (this, from:"Koffing", hp:HP130, type:D, retreatCost:2) {
           weakness FIGHTING
           bwAbility "Energy Factory", {
             text "Each basic [D] Energy attached to your Pokemon with “Weezing” in its name provides [D][D] Energy. You can't apply more than 1 Energy Factory Ability at a time."
@@ -1910,7 +1911,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case GALARIAN_SLOWKING_98:
-        return evolution (this, from:"null", hp:HP120, type:D, retreatCost:3) {
+        return evolution (this, from:"Galarian Slowpoke", hp:HP120, type:D, retreatCost:3) {
           weakness FIGHTING
           bwAbility "Secret Medicine", {
             text "Once during your turn, you may choose 1 of your Pokemon. Flip a coin, if heads restore 90 HP to that Pokemon. If tails, place 3 damage counters on that Pokemon."
@@ -1918,7 +1919,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Spray Fluid", {
-            text "90 damage."
+            text "90 damage. "
             energyCost DARKNESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -1947,7 +1948,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case GALARIAN_SLOWKING_VMAX_100:
-        return evolution (this, from:"null", hp:HP320, type:D, retreatCost:3) {
+        return evolution (this, from:"Galarian Slowking V", hp:HP320, type:D, retreatCost:3) {
           weakness FIGHTING
           move "Max Toxin", {
             text "10 damage. Your opponent's Active Pokemon is now Poisoned. During Pokemon Checkup, put 12 damage counters on that Pokemon instead of 1."
@@ -2029,7 +2030,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case WHIRLIPEDE_106:
-        return evolution (this, from:"null", hp:HP070, type:D, retreatCost:3) {
+        return evolution (this, from:"Venipede", hp:HP070, type:D, retreatCost:3) {
           weakness FIGHTING
           move "Poison Sting", {
             text "20 damage. Your opponent's Active Pokemon is now Poisoned."
@@ -2040,7 +2041,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Rolling Tackle", {
-            text "50 damage."
+            text "50 damage. "
             energyCost DARKNESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2049,7 +2050,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case SCOLIPEDE_107:
-        return evolution (this, from:"null", hp:HP160, type:D, retreatCost:3) {
+        return evolution (this, from:"Whirlipede", hp:HP160, type:D, retreatCost:3) {
           weakness FIGHTING
           move "Poison Sting", {
             text "50 damage. Your opponent's Active Pokemon is now Poisoned."
@@ -2069,7 +2070,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case SINGLE_STRIKE_URSHIFU_108:
-        return evolution (this, from:"null", hp:HP140, type:D, retreatCost:2) {
+        return evolution (this, from:"Kubfu", hp:HP140, type:D, retreatCost:2) {
           weakness GRASS
           move "Field Crush", {
             text "50 damage. If your opponent has any Stadium in play, discard it."
@@ -2085,7 +2086,7 @@ public enum ChillingReign implements LogicCardInfo {
           weakness FIRE
           resistance GRASS, MINUS30
           move "Gnaw", {
-            text "20 damage."
+            text "20 damage. "
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2093,7 +2094,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Rolling Tackle", {
-            text "50 damage."
+            text "50 damage. "
             energyCost METAL, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2102,11 +2103,11 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case LAIRON_110:
-        return evolution (this, from:"null", hp:HP100, type:M, retreatCost:3) {
+        return evolution (this, from:"Aron", hp:HP100, type:M, retreatCost:3) {
           weakness FIRE
           resistance GRASS, MINUS30
           move "Tackle", {
-            text "50 damage."
+            text "50 damage. "
             energyCost METAL, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2114,7 +2115,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Metal Claw", {
-            text "90 damage."
+            text "90 damage. "
             energyCost METAL, METAL, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2123,7 +2124,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case AGGRON_111:
-        return evolution (this, from:"null", hp:HP180, type:M, retreatCost:4) {
+        return evolution (this, from:"Lairon", hp:HP180, type:M, retreatCost:4) {
           weakness FIRE
           resistance GRASS, MINUS30
           move "Guard Press", {
@@ -2165,7 +2166,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case METAGROSS_VMAX_113:
-        return evolution (this, from:"null", hp:HP330, type:M, retreatCost:3) {
+        return evolution (this, from:"Metagross V", hp:HP330, type:M, retreatCost:3) {
           weakness FIRE
           resistance GRASS, MINUS30
           move "Magnetic Pull", {
@@ -2182,7 +2183,7 @@ public enum ChillingReign implements LogicCardInfo {
           weakness FIRE
           resistance GRASS, MINUS30
           move "Headbang", {
-            text "40 damage."
+            text "40 damage. "
             energyCost METAL, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2214,7 +2215,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP060, type:C, retreatCost:2) {
           weakness FIGHTING
           move "Sharpen", {
-            text "20 damage."
+            text "20 damage. "
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
@@ -2223,7 +2224,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case PORYGON2_117:
-        return evolution (this, from:"null", hp:HP090, type:C, retreatCost:2) {
+        return evolution (this, from:"Porygon", hp:HP090, type:C, retreatCost:2) {
           weakness FIGHTING
           move "Tri Attack", {
             text "Flip 3 coins. This attack does 30 damage times the number of heads."
@@ -2235,20 +2236,19 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case PORYGON_Z_118:
-        return basic (this, hp:HP00, type:null, retreatCost:20) {
-          weakness FAIRY, '2x'
-          resistance FIGHTING, MINUS30
-          bwAbility "ability_name", {
-            text "ability_text"
+        return evolution (this, from:"Porygon2", hp:HP140, type:C, retreatCost:2) {
+          weakness FIGHTING
+          bwAbility "Bug Transmission", {
+            text "Once during your turn when you attach an Energy from your hand to this Pokemon, you may leave the opponent's Active Pokemon Confused."
             actionA {
             }
           }
-          move "move_name", {
-            text "100 damage. move_text"
+          move "Super Beam", {
+            text "170 damage. Discard 2 Energy from this Pokemon."
             energyCost COLORLESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
-              damage 100
+              damage 170
             }
           }
         };
@@ -2307,7 +2307,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Spinning Attack", {
-            text "90 damage."
+            text "90 damage. "
             energyCost COLORLESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2358,11 +2358,11 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case TORNADUS_VMAX_125:
-        return evolution (this, from:"null", hp:HP320, type:C, retreatCost:2) {
+        return evolution (this, from:"Tornadus V", hp:HP320, type:C, retreatCost:2) {
           weakness LIGHTNING
           resistance FIGHTING, MINUS30
           move "Blast Wind", {
-            text "60 damage."
+            text "60 damage. "
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2410,7 +2410,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Gnaw", {
-            text "10 damage."
+            text "10 damage. "
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
@@ -2419,7 +2419,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case GREEDENT_128:
-        return evolution (this, from:"null", hp:HP120, type:C, retreatCost:1) {
+        return evolution (this, from:"Skwovet", hp:HP120, type:C, retreatCost:1) {
           weakness FIGHTING
           bwAbility "Brazen Tail", {
             text "Prevent all effects of your opponent's Item and Supporter cards that would discard Energy from your Pokemon or return Energy from your Pokemon to your hand or deck."
@@ -2427,7 +2427,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Gnaw", {
-            text "90 damage."
+            text "90 damage. "
             energyCost COLORLESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2508,21 +2508,11 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case FIRE_RESISTANT_GLOVES_138:
-        return basic (this, hp:HP00, type:null, retreatCost:20) {
-          weakness FAIRY, '2x'
-          resistance FIGHTING, MINUS30
-          bwAbility "ability_name", {
-            text "ability_text"
-            actionA {
-            }
+        return itemCard (this) {
+          text "Pokemon Tool Attach a Pokemon Tool to 1 of your Pokemon that doesn't already have a Pokemon Tool attached. When the Pokemon this card is attached to attacks, damage done to your opponent's Active R Pokemon is increased by 30. You may play any number of Item cards during your turn."
+          onPlay {
           }
-          move "move_name", {
-            text "100 damage. move_text"
-            energyCost COLORLESS, COLORLESS, COLORLESS
-            attackRequirement {}
-            onAttack {
-              damage 100
-            }
+          playRequirement{
           }
         };
       case FLANNERY_139:
@@ -2841,7 +2831,7 @@ public enum ChillingReign implements LogicCardInfo {
       case SIEBOLD_221:
         return copy (SIEBOLD_153, this);
       case ELECTRODE_222:
-        return evolution (this, from:"null", hp:HP090, type:L, retreatCost:1) {
+        return evolution (this, from:"Voltorb", hp:HP090, type:L, retreatCost:1) {
           weakness FIGHTING
           bwAbility "Buzzap Generator", {
             text "Once during your turn (before your attack), if this Pokemon is in your Bench, you may Knock Out this Pokemon. If you do, search your deck for up to 2 [L] Energy and attach them to your [L] Pokemon in play in any way you like. Then, shuffle your deck."
@@ -2849,7 +2839,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Electric Ball", {
-            text "100 damage."
+            text "100 damage. "
             energyCost LIGHTNING, LIGHTNING, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2858,7 +2848,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case BRONZONG_223:
-        return evolution (this, from:"null", hp:HP110, type:M, retreatCost:3) {
+        return evolution (this, from:"Bronzor", hp:HP110, type:M, retreatCost:3) {
           weakness FIRE
           resistance GRASS, MINUS30
           bwAbility "Metal Trans", {
@@ -2867,7 +2857,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Zen Headbutt", {
-            text "70 damage."
+            text "70 damage. "
             energyCost METAL, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
