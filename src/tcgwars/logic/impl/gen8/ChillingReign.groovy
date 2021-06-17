@@ -341,7 +341,7 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost GRASS
             attackRequirement {}
             onAttack {
-
+              reduceDamageNextTurn(hp(40), thisMove)
             }
           }
         };
@@ -353,7 +353,7 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost GRASS
             attackRequirement {}
             onAttack {
-
+              // TODO
             }
           }
           move "Jet Spear", {
@@ -362,6 +362,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 110
+              discardSelfEnergyAfterDamage C
             }
           }
         };
@@ -371,9 +372,9 @@ public enum ChillingReign implements LogicCardInfo {
           move "Collect", {
             text "Draw a card."
             energyCost COLORLESS
-            attackRequirement {}
+            attackRequirement { assert my.deck : "Deck is empty" }
             onAttack {
-
+              draw 1
             }
           }
           move "Punch", {
@@ -394,6 +395,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
+              draw 2
             }
           }
           move "Air Slash", {
@@ -402,6 +404,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 100
+              discardSelfEnergyAfterDamage C
             }
           }
         };
@@ -417,11 +420,12 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Ippon Throw", {
-            text "Flip 2 coins. If both are heads, this attack does 160 more damage."
+            text "40 damage+. Flip 2 coins. If both are heads, this attack does 160 more damage."
             energyCost GRASS, COLORLESS
             attackRequirement {}
             onAttack {
-
+              damage 40
+              flip 2, {}, {}, [2:{ damage 160 }]
             }
           }
         };
@@ -431,9 +435,16 @@ public enum ChillingReign implements LogicCardInfo {
           move "Lew Leaf Dance", {
             text "Attach any number of [G] Energy from your hand to your Pokemon in any way you like."
             energyCost GRASS
-            attackRequirement {}
+            attackRequirement {
+              assert my.hand.filterByEnergyType(G) : "No [G] Energy in hand"
+            }
             onAttack {
-
+              def tar = my.hand.filterByEnergyType(G)
+              if (tar) {
+                tar.select(min:0, max:tar.size(), "Select the ones you want to attach").each {
+                  attachEnergy(my.all.select("Attach $it to?"), it)
+                }
+              }
             }
           }
           move "Slash Back", {
@@ -442,6 +453,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 60
+              switchYourActive()
             }
           }
         };
@@ -451,6 +463,14 @@ public enum ChillingReign implements LogicCardInfo {
           bwAbility "Healing Forest", {
             text "Once during your turn you may heal 20 damage from each of your [G] Pokemon."
             actionA {
+              checkLastTurn()
+              assert my.all.find { it.numberOfDamageCounters && it.types.contains(G) } : "No damaged [G] Pokemon"
+              powerUsed()
+
+              my.all.each {
+                if (it.types.contains(G))
+                  heal(30, it, SRC_ABILITY)
+              }
             }
           }
           move "Max Plant", {
@@ -459,6 +479,9 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 130
+
+              my.deck.search(max:2,"Search your deck for up to 2 Pokémon.", cardTypeFilter(POKEMON)).showToOpponent("Selected Cards").moveTo(my.hand)
+              shuffleDeck()
             }
           }
         };
@@ -825,7 +848,7 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
-
+              flip { discardDefendingEnergy() }
             }
           }
         };
@@ -1733,6 +1756,9 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
+              flip {
+                discardDefendingEnergyAfterDamage()
+              }
             }
           }
         };
@@ -2353,6 +2379,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 180
+              discardSelfEnergyAfterDamage()
             }
           }
         };
