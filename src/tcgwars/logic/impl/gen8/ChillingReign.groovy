@@ -693,6 +693,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 210
+              discardSelfEnergy(C, C)
             }
           }
         };
@@ -762,6 +763,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 170
+              discardSelfEnergy(C, C)
             }
           }
         };
@@ -823,6 +825,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 150
+              cantAttackNextTurn self
             }
           }
         };
@@ -843,6 +846,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 50
+              applyAfterDamage(ASLEEP)
             }
           }
         };
@@ -958,6 +962,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 90
+              cantAttackNextTurn self
             }
           }
         };
@@ -1124,6 +1129,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 200
+              discardSelfEnergy(C, C)
             }
           }
         };
@@ -1323,6 +1329,8 @@ public enum ChillingReign implements LogicCardInfo {
           bwAbility "Psychic Construct", {
             text "Once during your turn, you may discard 2 cards from your hand. If you do, draw 1 card."
             actionA {
+              // TODO
+//              discardSelfEnergy(C, C)
             }
           }
           move "Psychic Beam", {
@@ -1331,6 +1339,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 110
+              applyAfterDamage(CONFUSED)
             }
           }
         };
@@ -1342,7 +1351,7 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost PSYCHIC
             attackRequirement {}
             onAttack {
-
+              apply(CONFUSED)
             }
           }
         };
@@ -1399,6 +1408,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 50
+              applyAfterDamage(CONFUSED)
             }
           }
         };
@@ -1917,7 +1927,7 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost DARKNESS
             attackRequirement {}
             onAttack {
-
+              // TODO
             }
           }
           move "Smog Burst", {
@@ -2010,6 +2020,8 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
+              applyAfterDamage(POISONED)
+              extraPoison(9)
             }
           }
         };
@@ -2027,6 +2039,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
+              applyAfterDamage(POISONED)
             }
           }
         };
@@ -2080,6 +2093,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
+              applyAfterDamage(POISONED)
             }
           }
         };
@@ -2092,6 +2106,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
+              applyAfterDamage(POISONED)
             }
           }
           move "Rolling Tackle", {
@@ -2112,6 +2127,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 50
+              applyAfterDamage(POISONED)
             }
           }
           move "Venoshock", {
@@ -2251,6 +2267,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 130
+              cantAttackNextTurn self
             }
           }
         };
@@ -2262,7 +2279,8 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
-
+              damage 20 + self.numberOfDamageCounters * 10
+              afterDamage { apply(CONFUSED, self) }
             }
           }
         };
@@ -2286,7 +2304,7 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
-
+              flip 3, { damage 30 }
             }
           }
         };
@@ -2304,6 +2322,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 170
+              discardSelfEnergy(C, C)
             }
           }
         };
@@ -2328,7 +2347,7 @@ public enum ChillingReign implements LogicCardInfo {
         return basic (this, hp:HP110, type:C, retreatCost:2) {
           weakness FIGHTING
           move "Gale Claw", {
-            text "50 damage. If you played a"
+            text "50 damage. If you played a “Rapid Strike” Supporter card from your hand during this turn, this attack also does 50 damage to 2 of your opponent’s Benched Pokemon. (Don’t apply Weakness and Resistance for Benched Pokemon.)"
             energyCost COLORLESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
@@ -2350,6 +2369,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 80
+              draw 6 - my.hand.size()
             }
           }
         };
@@ -2380,6 +2400,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
+              draw 6 - my.hand.size()
             }
           }
           move "Sky Return", {
@@ -2774,7 +2795,7 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost PSYCHIC, PSYCHIC
             attackRequirement {}
             onAttack {
-
+              damage 60 + 30 * defending.cards.energyCount(C)
             }
           }
         };
@@ -2887,80 +2908,21 @@ public enum ChillingReign implements LogicCardInfo {
       case SIEBOLD_221:
         return copy (SIEBOLD_153, this);
       case ELECTRODE_222:
-        return evolution (this, from:"Voltorb", hp:HP090, type:L, retreatCost:1) {
-          weakness FIGHTING
-          bwAbility "Buzzap Generator", {
-            text "Once during your turn (before your attack), if this Pokémon is in your Bench, you may Knock Out this Pokémon. If you do, search your deck for up to 2 [L] Energy and attach them to your [L] Pokémon in play in any way you like. Then, shuffle your deck."
-            actionA {
-            }
-          }
-          move "Electric Ball", {
-            text "100 damage."
-            energyCost LIGHTNING, LIGHTNING, COLORLESS
-            attackRequirement {}
-            onAttack {
-              damage 100
-            }
-          }
-        };
+        return copy (VividVoltage.ELECTRODE_46, this);
       case BRONZONG_223:
-        return evolution (this, from:"Bronzor", hp:HP110, type:M, retreatCost:3) {
-          weakness FIRE
-          resistance GRASS, MINUS30
-          bwAbility "Metal Trans", {
-            text "As often as you like during your turn, you may move a [M] Energy from 1 of your Pokémon to another.1 of your Pokémon."
-            actionA {
-            }
-          }
-          move "Zen Headbutt", {
-            text "70 damage."
-            energyCost METAL, COLORLESS, COLORLESS
-            attackRequirement {}
-            onAttack {
-              damage 70
-            }
-          }
-        };
+        return copy (BattleStyles.BRONZONG_102, this);
       case SNORLAX_224:
-        return basic (this, hp:HP130, type:C, retreatCost:3) {
-          weakness FIGHTING
-          bwAbility "Gormandize", {
-            text "Once during your turn, if this Pokémon is your Active Pokémon, you may draw cards until you have 7 cards in your hand. If you use this Ability, your turn ends."
-            actionA {
-            }
-          }
-          move "Body Slam", {
-            text "100 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
-            energyCost COLORLESS, COLORLESS, COLORLESS, COLORLESS
-            attackRequirement {}
-            onAttack {
-              damage 100
-              flipThenApplySC(PARALYZED)
-            }
-          }
-        };
+        return copy (AmazingVoltTackle.SNORLAX_84, this);
       case ECHOING_HORN_225:
         return copy (ECHOING_HORN_136, this);
       case FAN_OF_WAVES_226:
-        return itemCard (this) {
-          text "Return a Special Energy attached to 1 of your opponent's Pokémon to the bottom of your opponent's deck. You may play any number of Item cards during your turn."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy (BattleStyles.FAN_OF_WAVES_127, this);
       case FOG_CRYSTAL_227:
         return copy (FOG_CRYSTAL_140, this);
       case RUGGED_HELMET_228:
         return copy (RUGGED_HELMET_152, this);
       case URN_OF_VITALITY_229:
-        return itemCard (this) {
-          text "Choose up to 2 Single Strike Energy cards from your discard pile, reveal them, and shuffle them into your deck. You may play any number of Item cards during your turn."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy (BattleStyles.URN_OF_VITALITY_139, this);
       case WELCOMING_LANTERN_230:
         return copy (WELCOMING_LANTERN_156, this);
       case WATER_ENERGY_231:
