@@ -356,7 +356,9 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               if (defending.cards.filterByType(SPECIAL_ENERGY)) {
-                new Knockout(defending).run(bg)
+                targeted (defending) {
+                  new Knockout(defending).run(bg)
+                }
               }
             }
           }
@@ -655,7 +657,9 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              discardRandomCardFromOpponentsHand()
+              afterDamage {
+                discardRandomCardFromOpponentsHand()
+              }
             }
           }
         };
@@ -668,17 +672,20 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 60
-              heal 30, self
+              afterDamage {
+                heal 30, self
+              }
             }
           }
           move "Surging Beat", {
             text "120+ damage. You may discard any number of Energy cards attached to your Pokémon in play. If you do, this attack does 30 more damage for each card discarded in this way."
             energyCost GRASS, GRASS, COLORLESS
-            attackRequirement {}
+            attackRequirement {
+              assert my.all.any { it.cards.energyCount() } : "No Pokémon with energy cards attached"
+            }
             onAttack {
-              def energiesToDiscard = self.cards.select(min:0, max:self.cards.filterByType(ENERGY).size())
-              damage 120 + 10 * energiesToDiscard.size()
-              afterDamage { energiesToDiscard.discard() }
+              damage 120
+              additionalDamageByDiscardingCardTypeFromPokemon 30, ENERGY
             }
           }
         };
@@ -692,8 +699,7 @@ public enum ChillingReign implements LogicCardInfo {
               assert my.deck : "Deck is empty"
             }
             onAttack {
-              def maxSearch = 1
-              if (bg.turnCount == 2) maxSearch = 3
+              def maxSearch = (bg.turnCount == 2) ? 3 : 1
 
               my.deck.search(min: 0, max: maxSearch, {
                 it.types.contains(G)
@@ -2593,6 +2599,17 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
+          move "Fist of Strife", {
+            text "100+ damage. If this Pokémon has any damage counters on it, this attack does 100 more damage."
+            energyCost DARKNESS, DARKNESS, COLORLESS
+            attackRequirement {}
+            onAttack {
+              damage 100
+              if (defending.numberOfDamageCounters) {
+                damage 100
+              }
+            }
+          }
         };
       case ARON_109:
         return basic (this, hp:HP070, type:M, retreatCost:2) {
@@ -2680,7 +2697,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 60
-              if (self.energyCards.size() == defending.energyCards.size()) {
+              if (self.getEnergyCount() == defending.getEnergyCount()) {
                 damage 90
               }
             }
@@ -2857,7 +2874,7 @@ public enum ChillingReign implements LogicCardInfo {
           bwAbility "Colorful change", {
             text "This Pokémon is the same type as the Basic Energy attached to it. (If 2 or more types of Basic Energy are attached, it becomes all of those types)"
             getterA (GET_POKEMON_TYPE, self) { h->
-              if (self.cards.energyCount()) {
+              if (self.cards.hasType(BASIC_ENERGY)) {
                 h.object.clear()
 
                 self.cards.filterByType(BASIC_ENERGY).each {
