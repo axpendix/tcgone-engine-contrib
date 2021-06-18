@@ -757,7 +757,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 130
 
               afterDamage {
-                def targets = multiSelect( my.bench.findAll { it.rapidStrike}, 2, "Attach an Energy Card to")
+                def targets = multiSelect( my.bench.findAll { it.rapidStrike }, 2, "Attach an Energy Card to")
                 targets.each {
                   if (my.discard.filterByType(ENERGY)) {
                     attachEnergyFrom(my.discard, it)
@@ -791,9 +791,9 @@ public enum ChillingReign implements LogicCardInfo {
               assert bg.stadiumInfoStruct : "No Stadium in play"
             }
             onAttack {
-              damage 150
-              afterDamage {
-                if (bg.stadiumInfoStruct) {
+              if (bg.stadiumInfoStruct) {
+                damage 150
+                afterDamage {
                   discard bg.stadiumInfoStruct.stadiumCard
                 }
               }
@@ -894,7 +894,7 @@ public enum ChillingReign implements LogicCardInfo {
               after PROCESS_ATTACK_EFFECTS, {
                 if (ef.attacker == self && opp.prizeCardSet.takenCount) {
                   bg.dm().each {
-                    if (it.to != self.owner && it.to.active && it.notNoEffect && it.dmg.value) {
+                    if (it.to.owner != self.owner && it.to.active && it.notZero) {
                       def bonus = opp.prizeCardSet.takenCount * 10
                       bc "Crisis Power +$bonus"
                       it.dmg += hp(bonus)
@@ -967,7 +967,7 @@ public enum ChillingReign implements LogicCardInfo {
                     if (bg.currentTurn == self.owner) {
                       bg.dm().each {
                         if (it.to == defending && it.dmg.value && it.notNoEffect && it.from.rapidStrike) {
-                          bc "Two Hit KO activates"
+                          bc "$thisMove activates"
                           new Knockout(opp.active).run(bg)
                         }
                       }
@@ -1092,8 +1092,7 @@ public enum ChillingReign implements LogicCardInfo {
           bwAbility "Snowfall", {
             text "Once during your turn when you play this card from your hand to evolve a Pokémon, you may search your discard pile for a [W] Energy and attach it to 1 of your Pokémon."
             onActivate { reason->
-              if (reason == PLAY_FROM_HAND && bg.em().retrieveObject("Snowfall") != bg.turnCount && my.discard.filterByEnergyType(W) && confirm("Use Snowfall?")) {
-                bg.em().storeObject("Snowfall", bg.turnCount)
+              if (reason == PLAY_FROM_HAND && my.discard.filterByEnergyType(W) && confirm("Use Snowfall?")) {
                 powerUsed()
                 attachEnergyFrom(count:1, type: W, my.discard, my.all.select("Attach to?"))
               }
