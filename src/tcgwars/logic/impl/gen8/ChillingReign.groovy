@@ -1604,7 +1604,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case SHUPPET_62:
-        return basic (this, hp:HP060, type:P, retreatCost:1) {
+        return basic (this, hp:HP050, type:P, retreatCost:1) {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           move "Will-O-Wisp", {
