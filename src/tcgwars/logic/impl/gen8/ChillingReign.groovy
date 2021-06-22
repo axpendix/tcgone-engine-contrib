@@ -1565,7 +1565,7 @@ public enum ChillingReign implements LogicCardInfo {
             onAttack {
               def maxSpace = Math.min(my.bench.freeBenchCount, 3)
 
-              my.deck.search(min: 0, max: maxSpace, "Search your deck for up to $maxSpace Kirlia cards and put them onto your hand", {
+              my.deck.search(min: 0, max: maxSpace, "Search your deck for up to $maxSpace Kirlia cards and put them onto your bench", {
                 it.name == "Kirlia"
               }).each {
                 benchPCS(it)
