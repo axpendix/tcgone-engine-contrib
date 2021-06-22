@@ -1553,7 +1553,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case KIRLIA_60:
-        return evolution (this, from:"Kirlia", hp:HP080, type:P, retreatCost:1) {
+        return evolution (this, from:"Ralts", hp:HP080, type:P, retreatCost:1) {
           weakness METAL
           move "Mirage Step", {
             text "Search your deck for up to 3 Pokemon named 'Kirlia' and put them on your Bench. Then, shuffle your deck"
