@@ -1811,7 +1811,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case HATTREM_72:
-        return evolution (this, from:"null", hp:HP080, type:P, retreatCost:1) {
+        return evolution (this, from:"Hatenna", hp:HP080, type:P, retreatCost:1) {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           move "Spiral Drain", {
@@ -1821,6 +1821,7 @@ public enum ChillingReign implements LogicCardInfo {
               assert self.numberOfDamageCounters : "This Pokémon is healthy"
             }
             onAttack {
+              damage 30
               heal 30, self
             }
           }
