@@ -2369,9 +2369,12 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
-              if (opp.hand.size() > 5) {
-                def count = opp.hand.size() - 5
-                opp.hand.select(hidden: true, count: count, "Choose ${count==1?'a':count} random ${count==1?'card':'cards'} from your opponent's hand to discard").discard()
+              damage 30
+              afterDamage {
+                if (opp.hand.size() > 5) {
+                  def count = opp.hand.size() - 5
+                  opp.hand.select(hidden: true, count: count, "Choose ${count==1?'a':count} random ${count==1?'card':'cards'} from your opponent's hand to discard").discard()
+                }
               }
             }
           }
