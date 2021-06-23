@@ -2419,7 +2419,7 @@ public enum ChillingReign implements LogicCardInfo {
                 delayed {
                   before BETWEEN_TURNS, {
                     if (bg.currentTurn == self.owner.opposite && all.contains(pcs)) {
-                      bc "Doom Word effect activates."
+                      bc "Word of Ruin effect activates."
                       new Knockout(pcs).run(bg)
                     }
                   }
