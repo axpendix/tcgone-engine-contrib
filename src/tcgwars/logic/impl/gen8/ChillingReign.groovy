@@ -2442,7 +2442,7 @@ public enum ChillingReign implements LogicCardInfo {
             onAttack {
               damage 10
               applyAfterDamage(POISONED)
-              extraPoison(9)
+              extraPoison(11)
             }
           }
         };
