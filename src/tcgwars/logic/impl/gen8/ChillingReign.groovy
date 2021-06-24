@@ -3006,7 +3006,6 @@ public enum ChillingReign implements LogicCardInfo {
             }
             onAttack {
               my.discard.filterByType(POKEMON_TOOL).select(count: 1, "Select a Pokémon Tool card to move to your hand.").showToOpponent("Opponent's selected Pokémon Tool").moveTo(my.hand)
-              shuffleDeck()
             }
           }
           move "Gnaw", {
