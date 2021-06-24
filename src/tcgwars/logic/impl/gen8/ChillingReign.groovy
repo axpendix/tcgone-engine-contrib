@@ -3050,11 +3050,10 @@ public enum ChillingReign implements LogicCardInfo {
         };
       case AVERY_130:
         return supporter (this) {
-          text "Draw 3 cards. Then, your opponent discards their Benched Pokémon until they have 3 Benched Pokémon. You may play only 1 Supporter card during your turn."
+          text "Draw 3 cards. If you drew any cards in this way, your opponent discards Pokémon from their Bench until they have 3. You may play only 1 Supporter card during your turn."
           def eff
           onPlay {
             draw 3
-
             if ( opp.bench.size() > 3 && confirm("Discard 3 cards to force both players to discard their Benched Pokémon until they have 3 Benched Pokémon?") ) {
               eff = getter(GET_BENCH_SIZE) { h ->
                 h.object = 3
@@ -3162,7 +3161,7 @@ public enum ChillingReign implements LogicCardInfo {
               deck.setSubList(0, list)
             }
 
-            bc "Drew ${list.size()} cards from the bottom of their deck, rearranged and put it to the top of their deck."
+            bc "Put ${list.size()} cards from the bottom of their deck, rearranged and put it to the top of their deck."
           }
           playRequirement {
             assert my.deck : "Deck is empty"
