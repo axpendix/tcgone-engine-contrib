@@ -1237,7 +1237,7 @@ public enum ChillingReign implements LogicCardInfo {
           bwAbility "Quick Shooting", {
             text "Once during your turn, you may place 2 damage counters on 1 of your opponent's Pokémon."
             actionA {
-              if (checkLastTurn() && confirm("Use Quick Shooting?")) {
+              if (checkLastTurn() && confirm("Use $thisAbility?")) {
                 powerUsed()
                 def pcs = opp.all.select("Place 2 damage counters on which Pokémon?")
                 directDamage 20, pcs, SRC_ABILITY
@@ -1498,7 +1498,7 @@ public enum ChillingReign implements LogicCardInfo {
             delayedA (priority: LAST) {
               before (KNOCKOUT, self) {
                 if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && my.deck) {
-                  bc "Last Gift activates"
+                  bc "$thisAbility activates"
                   self.owner.pbg.deck.select(min: 0, max: 2, "Search for up to 2 cards").showToOpponent("Selected Cards").moveTo(my.hand)
                   shuffleDeck(null, self.owner.toTargetPlayer())
                 }
@@ -1580,7 +1580,7 @@ public enum ChillingReign implements LogicCardInfo {
           bwAbility "Shining Arcana", {
             text "Once during your turn you may look at the top 2 cards of your deck. Choose any number of basic Energy you find there and attach them to your Pokémon in any way you like. Put the other cards into your hand."
             actionA {
-              if (my.deck && confirm("Use Shining Arcana?")) {
+              if (my.deck && confirm("Use $thisAbility?")) {
                 def maxSize = Math.min(my.deck.size(), 2)
                 def topCards = my.deck.subList(0, maxSize)
                 def selectedEnergies = topCards.select(min: 0, max: topCards.filterByType(BASIC_ENERGY).size(), "Which Basic Energies to attach?", cardTypeFilter(BASIC_ENERGY))
@@ -2193,7 +2193,7 @@ public enum ChillingReign implements LogicCardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
                   if (it.to == self && it.dmg.value && it.notNoEffect) {
-                    bc "Wall of Sand -30"
+                    bc "$thisAbility -30"
                     it.dmg -= hp(30)
                   }
                 }
