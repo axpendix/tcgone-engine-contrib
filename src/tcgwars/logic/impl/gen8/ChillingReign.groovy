@@ -2169,7 +2169,7 @@ public enum ChillingReign implements LogicCardInfo {
                 bg.dm().each {
                   if (it.from == self && it.to.benched && (it.to.pokemonV || it.to.pokemonVMAX || it.to.pokemonGX) && it.dmg.value) {
                     it.dmg += hp(30)
-                    bc "Throwing Coach +30"
+                    bc "$thisAbility +30"
                   }
                 }
               }
@@ -2787,7 +2787,7 @@ public enum ChillingReign implements LogicCardInfo {
             text "Once during your turn when you attach an Energy from your hand to this Pokémon, you may leave the opponent's Active Pokémon Confused."
             delayedA {
               after ATTACH_ENERGY, self, {
-                if (ef.reason == PLAY_FROM_HAND && bg.currentThreadPlayerType == self.owner && confirm("Use Bug Transmission?")) {
+                if (ef.reason == PLAY_FROM_HAND && bg.currentThreadPlayerType == self.owner && confirm("Use $thisAbility?")) {
                   apply CONFUSED, self.owner.opposite.pbg.active, SRC_ABILITY
                 }
               }
