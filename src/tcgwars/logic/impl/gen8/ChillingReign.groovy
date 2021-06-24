@@ -896,7 +896,7 @@ public enum ChillingReign implements LogicCardInfo {
                   bg.dm().each {
                     if (it.to != self.owner && it.to.active && it.notNoEffect && it.dmg.value) {
                       def bonus = opp.prizeCardSet.takenCount * 30
-                      bc "Crisis Power +$bonus"
+                      bc "$thisAbility +$bonus"
                       it.dmg += hp(bonus)
                     }
                   }
@@ -967,7 +967,7 @@ public enum ChillingReign implements LogicCardInfo {
                     if (bg.currentTurn == self.owner) {
                       bg.dm().each {
                         if (it.to == defending && it.dmg.value && it.notNoEffect && it.from.rapidStrike) {
-                          bc "Two-Hit KO activates"
+                          bc "$thisMove activates"
                           new Knockout(opp.active).run(bg)
                         }
                       }
@@ -989,7 +989,7 @@ public enum ChillingReign implements LogicCardInfo {
             }
             onAttack {
               if (my.deck) {
-                my.deck.search(min:0, max: 2, "Select up to 2 cards", { true }).moveTo(hidden: true, my.hand)
+                my.deck.search(min:1, max: 2, "Select up to 2 cards", { true }).moveTo(hidden: true, my.hand)
                 shuffleDeck()
               }
             }
@@ -1092,8 +1092,8 @@ public enum ChillingReign implements LogicCardInfo {
           bwAbility "Frost Over", {
             text "Once during your turn when you play this card from your hand to evolve a Pokémon, you may search your discard pile for a [W] Energy and attach it to 1 of your Pokémon."
             onActivate { reason->
-              if (reason == PLAY_FROM_HAND && bg.em().retrieveObject("Frost Over") != bg.turnCount && my.discard.filterByEnergyType(W) && confirm("Use Frost Over?")) {
-                bg.em().storeObject("Frost Over", bg.turnCount)
+              if (reason == PLAY_FROM_HAND && bg.em().retrieveObject("Frost_Over") != bg.turnCount && my.discard.filterByEnergyType(W) && confirm("Use $thisAbility?")) {
+                bg.em().storeObject("Frost_Over", bg.turnCount)
                 powerUsed()
                 attachEnergyFrom(count:1, type: W, my.discard, my.all.select("Attach to?"))
               }
@@ -2289,7 +2289,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              apply(POISONED)
+              applyAfterDamage(POISONED)
             }
           }
         };
@@ -2347,7 +2347,7 @@ public enum ChillingReign implements LogicCardInfo {
           bwAbility "Direflame Wings", {
             text "Once during your turn, you may attach a [D] Energy from your discard pile to this Pokémon. You can't use more than 1 Bolstered Wings Ability per turn."
             actionA {
-              assert bg.em().retrieveObject("Direflame_Wings") != bg.turnCount : "You can't use more than 1 Direflame Wings ability per turn."
+              assert bg.em().retrieveObject("Direflame_Wings") != bg.turnCount : "You can't use more than 1 $thisAbility ability per turn."
               assert my.hand.filterByEnergyType(D) : "No [D] Energy in hand"
               powerUsed()
               bg.em().storeObject("Direflame_Wings", bg.turnCount)
@@ -2376,7 +2376,7 @@ public enum ChillingReign implements LogicCardInfo {
               checkLastTurn()
               powerUsed()
 
-              def target = my.all.select("Which to use Mysterious Potion on?")
+              def target = my.all.select("Which Pokémon to use $thisAbility on?")
               flip 1, {
                 heal 90, target
               }, {
@@ -2454,7 +2454,7 @@ public enum ChillingReign implements LogicCardInfo {
             delayedA {
               before (KNOCKOUT, self) {
                 if (self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite ) {
-                  bc "Bursting Needles activates."
+                  bc "$thisAbility activates."
                   directDamage(60, self.owner.opposite.pbg.active, SRC_ABILITY)
                 }
               }
@@ -2716,7 +2716,7 @@ public enum ChillingReign implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
             }
             onAttack{
-              my.deck.select(min: 0, max: 2).moveTo(hidden: true, my.hand)
+              my.deck.select(min: 1, max: 2).moveTo(hidden: true, my.hand)
               shuffleDeck()
             }
           }
