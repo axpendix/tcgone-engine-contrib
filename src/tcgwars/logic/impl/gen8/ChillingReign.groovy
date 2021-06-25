@@ -3176,7 +3176,7 @@ public enum ChillingReign implements LogicCardInfo {
               after APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
                   if (it.to.owner == self.owner.opposite && it.from.owner == self.owner && it.to.active && it.to.types.contains(R)) {
-                    bc "Fire-Resistant Gloves +20"
+                    bc "Fire-Resistant Gloves +30"
                     it.dmg += 30
                   }
                 }
@@ -3350,7 +3350,7 @@ public enum ChillingReign implements LogicCardInfo {
           def newMove
           onPlay { reason->
             def moveBody = {
-              text "This attack does 10 more damage for each damage counter on this Pokémon."
+              text "120 damage. This attack’s damage isn’t affected by Weakness or Resistance, or by any effects on your opponent’s Active Pokémon."
               attackRequirement {
                 // self is not set properly creating a move like this, use bg.ownActive() instead
                 assert bg.ownActive().singleStrike : "${bg.ownActive()} is not a $SINGLE_STRIKE Pokémon"
@@ -3361,7 +3361,7 @@ public enum ChillingReign implements LogicCardInfo {
                 damage 10 * self.numberOfDamageCounters
               }
             }
-            Move move = new Move("Furious Anger")
+            Move move = new Move("Bullet Breakthrough")
             moveBody.delegate = new MoveBuilder(thisMove: move)
             moveBody.call()
             newMove = getter GET_MOVE_LIST, self, {h->
