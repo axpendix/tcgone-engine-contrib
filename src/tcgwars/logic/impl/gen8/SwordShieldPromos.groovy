@@ -1047,7 +1047,8 @@ public enum SwordShieldPromos implements LogicCardInfo {
           onAttack {
             damage 120
             deck.search (max:3,basicEnergyFilter(W)).each {
-                attachEnergy(my.bench.select("Attach $it to"),it)
+              attachEnergy(my.bench.select("Attach $it to"), it)
+            }
             shuffleDeck()
           }
         }
