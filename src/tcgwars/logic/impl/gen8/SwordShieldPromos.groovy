@@ -1130,6 +1130,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           energyCost C
           attackRequirement {
             assert my.deck "You have no cards in deck."
+            assert my.deck : "You have no cards in deck."
           }
           onAttack {
             draw 1
