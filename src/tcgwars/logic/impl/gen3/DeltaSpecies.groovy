@@ -1625,9 +1625,13 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "As long as you have Volbeat in play, prevent all effects, including damage, done to Illumise by attacks from your opponent's Pokémon that has Dark in its name."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
-              if (self.owner.pbg.all.find{it.name == "Volbeat"}) {
+              if (
+                self.owner.pbg.all.find{it.name == "Volbeat"} &&
+                ef.attacker.owner != self.owner &&
+                ef.attacker.topPokemonCard.name.contains("Dark ")
+              ) {
                 bg.dm().each {
-                  if (it.to == self && it.from.topPokemonCard.name.contains("Dark ") && it.notNoEffect && it.dmg.value) {
+                  if (it.to == self && it.notNoEffect && it.dmg.value) {
                     bc "Beacon Protection prevents all damage"
                     it.dmg=hp(0)
                   }
@@ -1884,9 +1888,9 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "As long as you have Illumise in play, prevent all effects, including damage, done to Volbeat by attacks from your opponent's Pokémon-ex."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
-              if (self.owner.pbg.all.find{it.name == "Illumise"}){
+              if (self.owner.pbg.all.find{it.name == "Illumise"} && ef.attacker.EX){
                 bg.dm().each {
-                  if (it.to == self && it.from.EX && it.notNoEffect && it.dmg.value) {
+                  if (it.to == self && it.notNoEffect && it.dmg.value) {
                     bc "Extra Protection prevents all damage"
                     it.dmg=hp(0)
                   }
@@ -2777,10 +2781,12 @@ public enum DeltaSpecies implements LogicCardInfo {
             before APPLY_ATTACK_DAMAGES, {
               if (self != null && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(L)) {
                 targeted self, SRC_SPENERGY, {
-                  bg.dm().each {
-                    if (it.to == self && it.from.owner != self.owner && it.from.EX && it.dmg.value && it.notNoEffect) {
-                      it.dmg -= hp(10)
-                      bc "Holon Energy GL -10"
+                  if (ef.attacker.owner != self.owner && ef.attacker.EX) {
+                    bg.dm().each {
+                      if (it.to == self && it.dmg.value && it.notNoEffect) {
+                        it.dmg -= hp(10)
+                        bc "Holon Energy GL -10"
+                      }
                     }
                   }
                 }

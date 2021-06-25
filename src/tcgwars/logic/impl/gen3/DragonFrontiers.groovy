@@ -456,10 +456,12 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "If your opponent has 5 or more cards in his or her hand, any damage done to Pinsir by attacks is reduced by 30 (after applying Weakness and Resistance)."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
-              bg.dm().each {
-                if (it.to == self && it.dmg.value && it.notNoEffect && self.owner.opposite.pbg.hand.size() >= 5) {
-                  bc "Armor -30"
-                  it.dmg -= hp(30)
+              if (self.owner.opposite.pbg.hand.size() >= 5) {
+                bg.dm().each {
+                  if (it.to == self && it.dmg.value && it.notNoEffect) {
+                    bc "Armor -30"
+                    it.dmg -= hp(30)
+                  }
                 }
               }
             }

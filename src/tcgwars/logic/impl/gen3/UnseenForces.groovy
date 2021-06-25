@@ -925,9 +925,9 @@ public enum UnseenForces implements LogicCardInfo {
           text "As long as Electabuzz is an Evolved Pokémon, damage done by attacks from your opponent's Pokémon that has any Special Energy cards attached to it is reduced by 40 (after applying Weakness and Resistance)."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
-              if (self.evolution) {
+              if (self.evolution && ef.attacker.cards.filterByType(SPECIAL_ENERGY)) {
                 bg.dm().each{
-                  if(it.to == self && it.from.cards.filterByType(SPECIAL_ENERGY) && it.dmg.value && it.notNoEffect) {
+                  if(it.to == self && it.dmg.value && it.notNoEffect) {
                     bc "Stages of Evolution -20"
                     it.dmg -= hp(40)
                   }
@@ -1510,10 +1510,12 @@ public enum UnseenForces implements LogicCardInfo {
           text "Any damage done to Quagsire by attacks from your opponent's Evolved Pokémon is reduced by 20 (after applying Weakness and Resistance)."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
-              bg.dm().each {
-                if (it.to == self && it.from.evolution && it.dmg.value && it.notNoEffect) {
-                  bc "Dense -20"
-                  it.dmg -= hp(20)
+              if (ef.attacker.evolution) {
+                bg.dm().each {
+                  if (it.to == self && it.dmg.value && it.notNoEffect) {
+                    bc "Dense -20"
+                    it.dmg -= hp(20)
+                  }
                 }
               }
             }
@@ -1588,10 +1590,12 @@ public enum UnseenForces implements LogicCardInfo {
           text "Prevent all damage done to Shuckle by attacks from your opponent's Pokémon-ex."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
-              bg.dm().each {
-                if (it.to == self && it.from.EX && it.dmg.value && it.notNoEffect) {
-                  bc "Shell Barricade prevents all damage"
-                  it.dmg=hp(0)
+              if (ef.attacker.EX) {
+                bg.dm().each {
+                  if (it.to == self && it.dmg.value && it.notNoEffect) {
+                    bc "Shell Barricade prevents all damage"
+                    it.dmg=hp(0)
+                  }
                 }
               }
             }

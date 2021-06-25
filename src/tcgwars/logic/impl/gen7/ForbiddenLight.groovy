@@ -811,10 +811,12 @@ public enum ForbiddenLight implements LogicCardInfo {
               damage 50
               delayed{
                 before APPLY_ATTACK_DAMAGES, {
-                  bg.dm().each {
-                    if(it.to == self && it.from.realEvolution && it.dmg.value && it.notNoEffect) {
-                      bc "Frost Wall"
-                      it.dmg = hp(0)
+                  if (ef.attacker.realEvolution) {
+                    bg.dm().each {
+                      if(it.to == self && it.dmg.value && it.notNoEffect) {
+                        bc "Frost Wall prevents all damage"
+                        it.dmg = hp(0)
+                      }
                     }
                   }
                 }
@@ -2762,9 +2764,9 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
             eff2 = delayed{
               before APPLY_ATTACK_DAMAGES, {
-                if (ef.attacker.owner != self.owner){
+                if (ef.attacker.owner != self.owner && self.types.contains(M)){
                   bg.dm().each{
-                    if(it.to == self && self.types.contains(M) && it.dmg.value && it.notNoEffect) {
+                    if(it.to == self && it.dmg.value && it.notNoEffect) {
                       bc "Metal Frying Pan -30"
                       it.dmg-=hp(30)
                     }

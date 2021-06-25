@@ -1986,10 +1986,12 @@ public enum Deoxys implements LogicCardInfo {
             text "Any damage done to Numel by attacks from Evolved Pokémon (both yours and your opponent’s) is reduced by 20 (after applying Weakness and Resistance)."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each{
-                  if(it.to == self && it.from.evolution && it.notNoEffect && it.dmg.value) {
-                    bc "Dense -20"
-                    it.dmg -= hp(20)
+                if (ef.attacker.evolution) {
+                  bg.dm().each{
+                    if(it.to == self && it.notNoEffect && it.dmg.value) {
+                      bc "Dense -20"
+                      it.dmg -= hp(20)
+                    }
                   }
                 }
               }
