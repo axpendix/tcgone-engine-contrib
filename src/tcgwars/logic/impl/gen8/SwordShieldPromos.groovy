@@ -1041,7 +1041,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           text "120 damage. Search your deck for up to 3 [W] Energy cards and attach them to your Benched Pokémon in any way you like. Then, shuffle your deck."
           energyCost W, W, W
           attackRequirement {
-            assert my.bench "You have no Benched Pokémon."
+            assert my.bench : "You have no Benched Pokémon."
             assert my.deck : "You have no cards in deck."
           }
           onAttack {
