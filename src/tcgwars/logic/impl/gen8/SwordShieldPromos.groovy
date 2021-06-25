@@ -207,7 +207,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           energyCost R
           onAttack {
             damage 10
-            flip { apply BURNED }
+            flip { applyAfterDamage BURNED }
           }
         }
       };
@@ -219,7 +219,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           energyCost W, C
           onAttack {
             damage 20
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -298,7 +298,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           energyCost L, C, C
           onAttack {
             damage 60
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -345,7 +345,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           energyCost L, L, C
           onAttack {
             damage 120
-            apply POISONED
+            applyAfterDamage POISONED
           }
         }
       };
@@ -390,7 +390,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           energyCost P, C, C
           onAttack {
             damage 100
-            apply CONFUSED
+            applyAfterDamage CONFUSED
           }
         }
       };
@@ -464,7 +464,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           energyCost L, C
           onAttack {
             damage 40
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -947,7 +947,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           text "Draw a card."
           energyCost C
           attackRequirement {
-            assert my.deck "There are no cards in your deck."
+            assert my.deck : "There are no cards in your deck."
           }
           onAttack {
             draw 1
@@ -963,13 +963,13 @@ public enum SwordShieldPromos implements LogicCardInfo {
         }
       }
       case DRAGAPULT_V_SWSH96:
-      return copy (VividVoltage.ARROKUDA_41, this)
+      return copy (RebelClash.DRAGAPULT_V_92, this)
       case DRAGAPULT_VMAX_SWSH97:
-      return copy (VividVoltage.ARROKUDA_41, this)
+      return copy (RebelClash.DRAGAPULT_VMAX_93, this)
       case CROBAT_V_SWSH98:
-      return copy (VividVoltage.ARROKUDA_41, this)
+      return copy (DarknessAblaze.CROBAT_V_104, this)
       case CROBAT_VMAX_SWSH99:
-      return copy (VividVoltage.ARROKUDA_41, this)
+      return copy (ShinyStarV.CROBAT_VMAX_7, this)
       case VENUSAUR_V_SWSH100:
       return basic (this, hp:HP220, type:G, retreatCost:3) {
         weakness R
@@ -1040,12 +1040,14 @@ public enum SwordShieldPromos implements LogicCardInfo {
         move "Grand Falls", {
           text "120 damage. Search your deck for up to 3 [W] Energy cards and attach them to your Benched Pokémon in any way you like. Then, shuffle your deck."
           energyCost W, W, W
-          attackRequirement {}
+          attackRequirement {
+            assert my.bench "You have no Benched Pokémon."
+            assert my.deck : "You have no cards in deck."
+          }
           onAttack {
             damage 120
-            attachEnergyFrom(type: W, max: 1, my.deck, my.bench.select())
-            attachEnergyFrom(type: W, max: 1, my.deck, my.bench.select())
-            attachEnergyFrom(type: W, max: 1, my.deck, my.bench.select())
+            deck.search (max:3,basicEnergyFilter(W)).each {
+                attachEnergy(my.bench.select("Attach $it to"),it)
             shuffleDeck()
           }
         }
@@ -1138,7 +1140,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       }
