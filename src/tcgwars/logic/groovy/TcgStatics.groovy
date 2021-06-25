@@ -497,10 +497,12 @@ class TcgStatics {
     afterDamage { targeted (defending) {
       delayed {
         after PROCESS_ATTACK_EFFECTS, {
-          bg.dm().each {
-            if(it.from==defending && ef.attacker==defending && it.dmg.value){
-              bc "${thisMove.name} reduces damage"
-              it.dmg-=reduce
+          if (ef.attacker == defending) {
+            bg.dm().each {
+              if(it.notZero){
+                bc "${thisMove.name} reduces damage"
+                it.dmg-=reduce
+              }
             }
           }
         }
@@ -631,9 +633,10 @@ class TcgStatics {
   }
   static decreasedBaseDamageNextTurn (PokemonCardSet pcs, String atkname, HP minus){
     delayed {
+      //TODO: Maybe rework? Seems to work fine but might be worth, check main trello board
       after PROCESS_ATTACK_EFFECTS, {
         if(ef.attacker == pcs && ef.move.name == atkname) {
-          bg.dm().findAll{it.from == pcs && it.to.owner != pcs.owner && it.dmg.value}.each{
+          bg.dm().findAll{it.from == pcs && it.to.owner != pcs.owner && it.notZero}.each{
             bc "-"+minus.value+" damage from last turn"
             it.dmg -= minus
           }
@@ -703,11 +706,13 @@ class TcgStatics {
     delayed {
       def registeredOn=0
       after PROCESS_ATTACK_EFFECTS, {
-        if(bg.turnCount!=registeredOn){
-          bg.dm().each {if(it.from==self && it.dmg.value){
-            bc "$thisMove does +$inc to ${it.to}"
-            it.dmg+=hp(inc)
-          }}
+        if(bg.turnCount!=registeredOn && ef.attacker == self){
+          bg.dm().each {
+            if(it.to.active && it.notZero){
+              bc "$thisMove +$inc"
+              it.dmg+=hp(inc)
+            }
+          }
         }
       }
       unregisterAfter 3
@@ -1229,6 +1234,7 @@ class TcgStatics {
     }
   }
 
+  //TODO: Update based on LegendMaker.DUSTOX_EX_86, with more verbose broadcasting
   static void increasedDamageDoneToDefending (PokemonCardSet self, PokemonCardSet pcs, int value, String atkName=""){
     targeted(pcs){
       delayed {
