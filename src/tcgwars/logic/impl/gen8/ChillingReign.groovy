@@ -2760,6 +2760,15 @@ public enum ChillingReign implements LogicCardInfo {
               afterDamage { apply(CONFUSED, self) }
             }
           }
+          move "Take Down", {
+            text "80 damage. This Pokémon also does 30 damage to itself."
+            energyCost R, R, C, C
+            attackRequirement {}
+            onAttack {
+              damage 80
+              damage 30, self
+            }
+          }
         };
       case PORYGON_116:
         return basic (this, hp:HP060, type:C, retreatCost:2) {
