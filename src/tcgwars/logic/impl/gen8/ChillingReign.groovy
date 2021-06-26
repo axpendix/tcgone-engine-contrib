@@ -2804,7 +2804,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 170
-              discardSelfEnergy(C, C)
+              discardSelfEnergyAfterDamage(C, C)
             }
           }
         };
