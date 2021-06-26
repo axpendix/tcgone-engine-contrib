@@ -1158,9 +1158,9 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 160
-              if (confirm("Discard 2 Energy to Paralyze Defending Pokémon?")){
-                damage 70
-                discardSelfEnergy C, C
+              if (confirm("Discard 2 Energy to Paralyze Defending Pokémon?")) {
+                discardSelfEnergyAfterDamage(C, C)
+                applyAfterDamage(PARALYZED)
               }
             }
           }
