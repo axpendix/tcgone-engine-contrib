@@ -1173,7 +1173,9 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              switchYourActive(may: true)
+              afterDamage {
+                switchYourActive(may: true)
+              }
             }
           }
           move "Ocean Loop", {
@@ -1182,9 +1184,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 120
-              afterDamage {
-                self.cards.filterByType(ENERGY).select(count: 1).moveTo(my.hand)
-              }
+              moveSelfEnergyAfterDamage(my.hand)
             }
           }
         };
@@ -1200,12 +1200,14 @@ public enum ChillingReign implements LogicCardInfo {
             }
             onAttack {
               def maxSpace = Math.min(my.bench.freeBenchCount, 3)
-              my.deck.search(min: 0, max: maxSpace, "Search your deck for up to $maxSpace Rapid Strike Basic Pokémon", {
-                it.cardTypes.pokemon && it.cardTypes.is(RAPID_STRIKE) && it.cardTypes.is(BASIC)
-              }).each {
-                benchPCS(it)
+              if (maxSpace > 0) {
+                my.deck.search(min: 0, max: maxSpace, "Search your deck for up to $maxSpace Rapid Strike Basic Pokémon", {
+                  it.cardTypes.pokemon && it.cardTypes.is(RAPID_STRIKE) && it.cardTypes.is(BASIC)
+                }).each {
+                  benchPCS(it)
+                }
+                shuffleDeck()
               }
-              shuffleDeck()
             }
           }
           move "Double Spin", {
@@ -1236,7 +1238,8 @@ public enum ChillingReign implements LogicCardInfo {
           bwAbility "Quick Shooter", {
             text "Once during your turn, you may place 2 damage counters on 1 of your opponent's Pokémon."
             actionA {
-              if (checkLastTurn() && confirm("Use Quick Shooter?")) {
+              checkLastTurn()
+              if (confirm("Use Quick Shooter?")) {
                 powerUsed()
                 def pcs = opp.all.select("Place 2 damage counters on which Pokémon")
                 directDamage 20, pcs, SRC_ABILITY
@@ -1268,7 +1271,7 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost WATER, COLORLESS
             attackRequirement {}
             onAttack {
-              damage 30 * my.all.findAll { it.rapidStrike }.size()
+              damage 30 * my.all.count { it.rapidStrike }
             }
           }
         };
@@ -1309,7 +1312,11 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost WATER, WATER
             attackRequirement {}
             onAttack {
-              damage 10 + 120 * self.cards.filterByType(ENERGY).select(min: 0, max: 2, "For each energy discarded, do +120").discard().size()
+              def cards = self.cards.filterByType(ENERGY).select(min: 0, max: 2, "For each energy discarded, do +120")
+              damage 10 + 120 * cards.size()
+              afterDamage {
+                cards.discard().size()
+              }
             }
           }
         };
@@ -1363,10 +1370,13 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 90
-              opp.hand.showToMe("Your opponent's hand")
-              if (opp.hand.filterByType(ENERGY)) {
-                bc "Energy was found in Opponent's hand"
-                damage 90
+
+              if (opp.hand) {
+                opp.hand.showToMe("Your opponent's hand")
+                if (opp.hand.filterByType(ENERGY)) {
+                  bc "Energy was found in Opponent's hand"
+                  damage 90
+                }
               }
             }
           }
@@ -1379,7 +1389,7 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost LIGHTNING
             attackRequirement {}
             onAttack {
-              damage 10, opp.all.select("20 damage to?")
+              damage 10, opp.all.select("Deal damage to?")
             }
           }
         };
@@ -1493,12 +1503,12 @@ public enum ChillingReign implements LogicCardInfo {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           bwAbility "Dying Gift", {
-            text "When this Pokémon is Knocked Out by damage from an opponent's attack, you may search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
+            text "If this Pokémon is Knocked Out by damage from an attack from your opponent's Pokémon, search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
             delayedA (priority: LAST) {
               before (KNOCKOUT, self) {
                 if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && my.deck) {
                   bc "Dying Gift activates"
-                  self.owner.pbg.deck.select(min: 0, max: 2, "Search for up to 2 cards").showToOpponent("Selected Cards").moveTo(my.hand)
+                  self.owner.pbg.deck.select(min: 1, max: 2, "Search for up to 2 cards").showToOpponent("Selected Cards").moveTo(my.hand)
                   shuffleDeck(null, self.owner.toTargetPlayer())
                 }
               }
@@ -1518,7 +1528,7 @@ public enum ChillingReign implements LogicCardInfo {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           bwAbility "Psychic Construct", {
-            text "Once during your turn, you may discard 2 cards from your hand. If you do, draw 1 card."
+            text "You must discard 2 cards from your hand in order to use this Ability. Once during your turn, you may draw a card."
             actionA {
               checkLastTurn()
               assert my.hand.size() >= 2 : "Need at least 2 cards in hand"
@@ -1526,7 +1536,7 @@ public enum ChillingReign implements LogicCardInfo {
               powerUsed()
 
               my.hand.select(count: 2, "Discard 2 cards").discard()
-              draw 2
+              draw 1
             }
           }
           move "Psychic Beam", {
@@ -1563,13 +1573,14 @@ public enum ChillingReign implements LogicCardInfo {
             }
             onAttack {
               def maxSpace = Math.min(my.bench.freeBenchCount, 3)
-
-              my.deck.search(min: 0, max: maxSpace, "Search your deck for up to $maxSpace Kirlia cards and put them onto your hand", {
-                it.name == "Kirlia"
-              }).each {
-                benchPCS(it)
+              if (maxSpace > 0) {
+                my.deck.search(min: 0, max: maxSpace, "Search your deck for up to $maxSpace Kirlia cards and put them onto your hand", {
+                  it.name == "Kirlia"
+                }).each {
+                  benchPCS(it)
+                }
+                shuffleDeck()
               }
-              shuffleDeck()
             }
           }
         };
