@@ -1986,10 +1986,10 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 70
-              if (self.cards.filterByType(POKEMON_TOOL)) {
+              if (self.cards.hasType(POKEMON_TOOL)) {
                 damage 90
+                dontApplyResistance()
               }
-              dontApplyResistance()
             }
           }
         };
