@@ -2813,10 +2813,13 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
+              def oldHp = defending.damage
               damage 10 + 30 * self.energyCards.size()
               afterDamage {
-                my.discard.filterByType(ENERGY).select(min: 0, max: 3).each {
-                  attachEnergy(self, it)
+                if (oldHp != defending.damage) { // Did damage with the attack
+                  my.discard.filterByType(ENERGY).select(min: 0, max: 3).each {
+                    attachEnergy(self, it)
+                  }
                 }
               }
             }
