@@ -2128,6 +2128,13 @@ public enum ChillingReign implements LogicCardInfo {
       case CRABOMINABLE_85:
         return evolution (this, from:"Crabrawler", hp:HP150, type:F, retreatCost:4) {
           weakness PSYCHIC
+          move "Double Lariat", {
+            text "90x damage. Flip 2 coins. This attack does 90 damage for each heads."
+            energyCost FIGHTING, COLORLESS, COLORLESS
+            onAttack {
+              flip 2, { damage 90 }
+            }
+          }
           move "Crabhammer", {
             text "130 damage."
             energyCost FIGHTING, COLORLESS, COLORLESS, COLORLESS
