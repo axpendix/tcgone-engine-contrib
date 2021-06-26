@@ -1680,13 +1680,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              def energyInPlay = 0
-              thisCard.player.pbg.all.findAll {
-                it.cards.energyCardCount()
-              }.each {
-                energyInPlay += it.cards.energyCardCount()
-              }
-
+              def energyInPlay = thisCard.player.pbg.all.sum { it.cards.energyCount() }
               if (energyInPlay >= 5) {
                 damage 90
               }
