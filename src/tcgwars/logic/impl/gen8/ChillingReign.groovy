@@ -1310,7 +1310,11 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost WATER, WATER
             attackRequirement {}
             onAttack {
-              damage 10 + 120 * self.cards.filterByType(ENERGY).select(min: 0, max: 2, "For each energy discarded, do +120").discard().size()
+              def cards = self.cards.filterByType(ENERGY).select(min: 0, max: 2, "For each energy discarded, do +120")
+              damage 10 + 120 * cards.size()
+              afterDamage {
+                cards.discard()
+              }
             }
           }
         };
