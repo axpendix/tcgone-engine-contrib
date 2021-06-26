@@ -1590,17 +1590,20 @@ public enum ChillingReign implements LogicCardInfo {
           bwAbility "Arcana Shine", {
             text "Once during your turn you may look at the top 2 cards of your deck. Choose any number of basic Energy you find there and attach them to your Pokémon in any way you like. Put the other cards into your hand."
             actionA {
-              if (my.deck && confirm("Use Arcana Shine?")) {
-                def maxSize = Math.min(my.deck.size(), 2)
-                def topCards = my.deck.subList(0, maxSize)
-                def selectedEnergies = topCards.select(min: 0, max: topCards.filterByType(BASIC_ENERGY).size(), "Which Basic Energies to attach?", cardTypeFilter(BASIC_ENERGY))
-                selectedEnergies.each {
-                  attachEnergy(my.all.select("Attach $it to which Pokémon"), it)
-                }
-                def nonSelectedSize = maxSize - selectedEnergies.size()
-                if (nonSelectedSize) {
-                  my.deck.subList(0, nonSelectedSize).getExcludedList(selectedEnergies).moveTo(hidden: true, my.hand)
-                }
+              checkLastTurn()
+              assert my.deck : "Deck is empty"
+              powerUsed()
+
+              def maxSize = Math.min(my.deck.size(), 2)
+              def topCards = my.deck.subList(0, maxSize)
+              def selectedEnergies = topCards.select(min: 0, max: topCards.filterByType(BASIC_ENERGY).size(), "Which Basic Energies to attach?", cardTypeFilter(BASIC_ENERGY))
+
+              selectedEnergies.each {
+                attachEnergy(my.all.select("Attach $it to which Pokémon"), it)
+              }
+              def nonSelectedSize = maxSize - selectedEnergies.size()
+              if (nonSelectedSize) {
+                my.deck.subList(0, nonSelectedSize).getExcludedList(selectedEnergies).moveTo(hidden: true, my.hand)
               }
             }
           }
