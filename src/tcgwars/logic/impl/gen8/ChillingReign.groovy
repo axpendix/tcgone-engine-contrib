@@ -2986,7 +2986,7 @@ public enum ChillingReign implements LogicCardInfo {
               assert deck.notEmpty : "Deck is empty"
             }
             onAttack {
-              my.deck.search(min: 0, max: 1, cardTypeFilter(POKEMON)).showToOpponent().moveTo(my.hand)
+              my.deck.search(min: 0, max: 1, cardTypeFilter(POKEMON)).showToOpponent("Selected card").moveTo(my.hand)
               shuffleDeck()
             }
           }
