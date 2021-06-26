@@ -2151,7 +2151,7 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost FIGHTING, FIGHTING
             attackRequirement {}
             onAttack {
-              damage 80 + 10 * my.discard.findAll { it.cardTypes.is(POKEMON) && it.cardTypes.is(SINGLE_STRIKE) }.size()
+              damage 80 + 10 * my.discard.count { it.cardTypes.is(POKEMON) && it.cardTypes.is(SINGLE_STRIKE) }
             }
           }
         };
