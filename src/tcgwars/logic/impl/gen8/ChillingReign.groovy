@@ -1717,7 +1717,7 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost PSYCHIC, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
-              if (self.cards.filterByType(POKEMON_TOOL)) {
+              if (self.cards.hasType(POKEMON_TOOL)) {
                 damage 90
               }
             }
@@ -1821,12 +1821,11 @@ public enum ChillingReign implements LogicCardInfo {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           move "Spiral Drain", {
-            text "Heal 30 damage from this Pokémon."
+            text "30 damage. Heal 30 damage from this Pokémon."
             energyCost PSYCHIC
-            attackRequirement {
-              assert self.numberOfDamageCounters : "This Pokémon is healthy"
-            }
+            attackRequirement {}
             onAttack {
+              damage 30
               heal 30, self
             }
           }
@@ -1838,8 +1837,8 @@ public enum ChillingReign implements LogicCardInfo {
           bwAbility "Witch's Sonata", {
             text "Once during your turn, you may switch your Active Pokémon with 1 of your Benched Pokémon, then have your opponent switch their Active Pokémon with 1 of their Benched Pokémon."
             actionA {
-              assert my.bench.notEmpty || opp.bench.notEmpty : "Neither player has Benched Pokémon"
               checkLastTurn()
+              assert my.bench.notEmpty || opp.bench.notEmpty : "Neither player has Benched Pokémon"
               powerUsed()
               if (my.bench.notEmpty) {
                 sw my.active, my.bench.select("New active")
@@ -1873,13 +1872,13 @@ public enum ChillingReign implements LogicCardInfo {
               delayed {
                 before PLAY_ENERGY, {
                   if (ef.cardToPlay.cardTypes.is(SPECIAL_ENERGY) && bg.currentTurn == self.owner.opposite) {
-                    wcu "Shadow Mist prevents playing Special Energy Cards this turn"
+                    wcu "$thisAbility prevents playing Special Energy Cards this turn"
                     prevent()
                   }
                 }
                 before PLAY_TRAINER, {
                   if (ef.cardToPlay.cardTypes.is(STADIUM) && bg.currentTurn == self.owner.opposite) {
-                    wcu "Shadow Mist prevents playing Stadium cards this turn"
+                    wcu "$thisAbility prevents playing Stadium cards this turn"
                     prevent()
                   }
                 }
@@ -1892,14 +1891,8 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost COLORLESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
-              if (opp.all.size() > 2) {
-                multiSelect(opp.all, 2, text).each {
-                  directDamage 50, it
-                }
-              } else {
-                opp.all.each {
-                  directDamage 50, it
-                }
+              ( opp.all.size() > 2 ? multiSelect(opp.all, 2, text) : opp.all ).each {
+                directDamage 50, it
               }
             }
           }
