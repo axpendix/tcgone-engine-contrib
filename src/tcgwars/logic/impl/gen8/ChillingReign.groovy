@@ -2518,9 +2518,9 @@ public enum ChillingReign implements LogicCardInfo {
           bwAbility "Hidden Claw", {
             text "Once during your turn when you play this Pokémon from your hand onto your Bench, you may discard 1 Pokémon Tool card attached to any Pokémon in play (yours or your opponent's)."
             onActivate { reason ->
-              if (reason == PLAY_FROM_HAND && self.benched && opp.all.any { it.cards.filterByType(POKEMON_TOOL) } && confirm("Use Concealing Claw?")) {
+              if (reason == PLAY_FROM_HAND && self.benched && all.any { it.cards.filterByType(POKEMON_TOOL) } && confirm("Use Concealing Claw?")) {
                 powerUsed()
-                def target = opp.all.findAll { it.cards.filterByType(POKEMON_TOOL) }.select("Which Pokémon to remove a Pokémon Tool card from?")
+                def target = all.findAll { it.cards.filterByType(POKEMON_TOOL) }.select("Which Pokémon to remove a Pokémon Tool card from?")
                 target.cards.filterByType(POKEMON_TOOL).select("Discard").discard()
               }
             }
