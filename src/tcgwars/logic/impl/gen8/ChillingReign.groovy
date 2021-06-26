@@ -1666,8 +1666,7 @@ public enum ChillingReign implements LogicCardInfo {
               assert my.deck : "Deck is empty"
             }
             onAttack {
-              def maxSearch = 1
-              if (bg.turnCount == 2) maxSearch = 3
+              def maxSearch = (bg.turnCount == 2) ? 3 : 1
 
               my.deck.search(min: 0, max: maxSearch, {
                 it.types.contains(P)
