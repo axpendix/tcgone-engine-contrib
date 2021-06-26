@@ -1941,7 +1941,7 @@ public enum ChillingReign implements LogicCardInfo {
             onAttack {
               damage 10
               flip {
-                preventAllEffectsFromPokemonExNextTurn(thisMove, self)
+                preventAllEffectsNextTurn()
               }
             }
           }
@@ -1960,7 +1960,7 @@ public enum ChillingReign implements LogicCardInfo {
                 damage 60
               }
               if (count == 3) {
-                preventAllEffectsFromPokemonExNextTurn(thisMove, self)
+                preventAllEffectsNextTurn()
               }
             }
           }
