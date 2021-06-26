@@ -2079,7 +2079,7 @@ public enum ChillingReign implements LogicCardInfo {
             delayedA (priority:LAST) {
               def counterDmg = 0
               before APPLY_ATTACK_DAMAGES, {
-                if(self.active && ef.attacker.owner != self.owner && (ef.attacker.VMAX || ef.attacker.pokemonV)) {
+                if (self.active && ef.attacker.owner != self.owner && (ef.attacker.topPokemonCard.cardTypes.is(VMAX))) {
                   bg.dm().each {
                     if (it.to == self && it.dmg.value) {
                       counterDmg = it.dmg.value
