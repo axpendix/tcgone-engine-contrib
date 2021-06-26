@@ -1612,7 +1612,7 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost COLORLESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
-              damage 60 + 30 * self.cards.filterByEnergyType(P).size()
+              damage 60 + 30 * self.cards.energyCount(P)
             }
           }
         };
