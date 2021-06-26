@@ -1715,6 +1715,7 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost PSYCHIC, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
+              damage 60
               if (self.cards.filterByType(POKEMON_TOOL)) {
                 damage 90
               }
