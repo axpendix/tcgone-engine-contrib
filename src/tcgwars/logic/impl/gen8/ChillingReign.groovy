@@ -3487,6 +3487,22 @@ public enum ChillingReign implements LogicCardInfo {
               damage 60 + 30 * defending.cards.energyCount(C)
             }
           }
+          move "Libra Horn", {
+            text "Put damage counters on 1 of your opponent’s Pokémon until its remaining HP is 100."
+            energyCost COLORLESS, COLORLESS
+            attackRequirement {
+              assert opp.all.any { it.getRemainingHP().value > 100 } : "No Pokémon with HP over 100"
+            }
+            onAttack {
+              def targets = opp.all.findAll { it.getRemainingHP().value > 100 }
+              def target = targets.first()
+              if (targets.size() > 1) {
+                target = targets.select("Which Pokémon to reduce HP to 100?")
+              }
+              def dmg = target.getRemainingHP().value - 100
+              directDamage dmg, target
+            }
+          }
         };
       case GALARIAN_RAPIDASH_V_168:
         return copy (GALARIAN_RAPIDASH_V_167, this);
