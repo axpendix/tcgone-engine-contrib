@@ -1792,7 +1792,7 @@ public enum ChillingReign implements LogicCardInfo {
               assert my.hand.filterByType(RAPID_STRIKE) : "No Rapid Strike cards in hand"
             }
             onAttack {
-              def rapidStrike = my.hand.select(min: 0, "Choose Rapid Strike cards to shuffle into deck", cardTypeFilter(RAPID_STRIKE))
+              def rapidStrike = my.hand.select(min: 0, max:my.hand.filterByType(RAPID_STRIKE).size(),"Choose Rapid Strike cards to shuffle into deck", cardTypeFilter(RAPID_STRIKE))
               if (rapidStrike) {
                 rapidStrike.showToOpponent("Cards to shuffle into deck, does 40x damage for each")
                 damage 40 * rapidStrike.size()
