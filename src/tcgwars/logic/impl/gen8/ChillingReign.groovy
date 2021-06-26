@@ -1377,7 +1377,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case BLITZLE_50:
-        return basic (this, hp:HP060, type:[], retreatCost:1) {
+        return basic (this, hp:HP060, type:L, retreatCost:1) {
           weakness FIGHTING
           move "Thunder Spear", {
             text "This attack does 10 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon)"
