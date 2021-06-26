@@ -1638,7 +1638,7 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost PSYCHIC
             attackRequirement {}
             onAttack {
-              def count = choose([0, 1, 2, 3, 4, 5, 6, 7], "How many damage counters would you like to put on $self? Does 20 damage for each") as Integer
+              def count = choose([1, 2, 3, 4, 5, 6, 7], "How many damage counters would you like to put on $self? Does 20 damage for each") as Integer
               damage 20 * count
               afterDamage {
                 directDamage 10 * count, self
