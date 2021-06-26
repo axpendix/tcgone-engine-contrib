@@ -2042,10 +2042,10 @@ public enum ChillingReign implements LogicCardInfo {
             text "This attack does 60 damage times the number of your opponent's Pokémon V in play."
             energyCost COLORLESS, COLORLESS
             attackRequirement {
-              assert opp.all.findAll { it.pokemonV || it.pokemonVMAX } : "Opponent has no Pokémon V in play"
+              assertOppAll(hasVariants: POKEMON_V)
             }
             onAttack {
-              damage 60 * opp.all.findAll { it.pokemonV || it.pokemonVMAX }.size()
+              damage 60 * opp.all.count { it.pokemonV }
             }
           }
         };
