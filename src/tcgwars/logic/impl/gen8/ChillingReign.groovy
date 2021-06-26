@@ -1997,8 +1997,8 @@ public enum ChillingReign implements LogicCardInfo {
               damage 70
               if (self.cards.filterByType(POKEMON_TOOL)) {
                 damage 90
+                dontApplyResistance()
               }
-              dontApplyResistance()
             }
           }
         };
