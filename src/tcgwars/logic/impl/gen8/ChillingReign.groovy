@@ -1820,11 +1820,8 @@ public enum ChillingReign implements LogicCardInfo {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           move "Spiral Drain", {
-            text "Heal 30 damage from this Pokémon."
+            text "30 damage. Heal 30 damage from this Pokémon."
             energyCost PSYCHIC
-            attackRequirement {
-              assert self.numberOfDamageCounters : "This Pokémon is healthy"
-            }
             onAttack {
               damage 30
               heal 30, self
