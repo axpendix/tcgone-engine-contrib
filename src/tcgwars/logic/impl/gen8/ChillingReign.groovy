@@ -1660,9 +1660,13 @@ public enum ChillingReign implements LogicCardInfo {
               def maxSearch = 1
               if (bg.turnCount == 2) maxSearch = 3
 
-              my.deck.search(min: 0, max: maxSearch, {
-                it.types.contains(P)
-              }).moveTo(my.hand)
+              def cards = my.deck.search(min: 0, max: maxSearch, {
+                it.cardTypes.is(ENERGY) && it.asEnergyCard().containsType(P)
+              })
+              def target = my.all.select("Attach energies to?")
+              cards.each {
+                attachEnergy(target, it)
+              }
               shuffleDeck()
             }
           }
