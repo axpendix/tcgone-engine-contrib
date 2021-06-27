@@ -1750,13 +1750,15 @@ public enum ChillingReign implements LogicCardInfo {
           move "Follow the Scent", {
             text "Flip 3 coins. For each heads, choose a card from your discard pile, show it to your opponent, and put it into your hand."
             energyCost COLORLESS, COLORLESS
-            attackRequirement {}
+            attackRequirement {
+              assert my.discard : "No cards in discard"
+            }
             onAttack {
               def count = 0
               flip 3, {
                 count += 1
               }
-              my.discard.select(count:count).showToOpponent("Cards to be placed into hand").moveTo(my.hand)
+              my.discard.select(min: 0, max: count).showToOpponent("Cards to be placed into hand").moveTo(my.hand)
             }
           }
           move "Fairy Wind", {
