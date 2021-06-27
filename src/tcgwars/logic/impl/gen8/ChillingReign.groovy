@@ -1878,7 +1878,7 @@ public enum ChillingReign implements LogicCardInfo {
                 }
                 before PLAY_TRAINER, {
                   if (ef.cardToPlay.cardTypes.is(STADIUM) && bg.currentTurn == self.owner.opposite) {
-                    wcu "$thisAbility prevents playing Stadium cards this turn"
+                    wcu "$thisMove prevents playing Stadium cards this turn"
                     prevent()
                   }
                 }
