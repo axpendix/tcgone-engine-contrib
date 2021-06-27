@@ -1807,11 +1807,11 @@ public enum ChillingReign implements LogicCardInfo {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           move "Psyshot", {
-            text "10 damage."
+            text "20 damage."
             energyCost PSYCHIC
             attackRequirement {}
             onAttack {
-              damage 10
+              damage 20
             }
           }
         };
