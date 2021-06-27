@@ -2338,7 +2338,7 @@ public enum ChillingReign implements LogicCardInfo {
               if (holder.effect.target.owner == self.owner
                 && holder.effect.card.containsTypePlain(D)
                 && holder.effect.card.cardTypes.is(BASIC_ENERGY)
-                && holder.effect.target.name == "Weezing") {
+                && holder.effect.target.name.contains("Weezing")) {
                 holder.object = [[D] as Set, [D] as Set]
               }
             }
