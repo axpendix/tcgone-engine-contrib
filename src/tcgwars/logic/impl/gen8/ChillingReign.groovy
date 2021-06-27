@@ -2321,7 +2321,7 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost DARKNESS, COLORLESS
             attackRequirement {}
             onAttack {
-              def count = 1
+              def count = 0
               my.all.each {
                 count += it.cards.energyCount(D)
               }
