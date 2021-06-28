@@ -757,7 +757,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 130
 
               afterDamage {
-                def targets = multiSelect( my.bench.findAll { it.rapidStrike}, 2, "Attach an Energy Card to")
+                def targets = multiSelect( my.bench.findAll { it.rapidStrike }, 2, "Attach an Energy Card to")
                 targets.each {
                   if (my.discard.filterByType(ENERGY)) {
                     attachEnergyFrom(my.discard, it)
@@ -791,9 +791,9 @@ public enum ChillingReign implements LogicCardInfo {
               assert bg.stadiumInfoStruct : "No Stadium in play"
             }
             onAttack {
-              damage 150
-              afterDamage {
-                if (bg.stadiumInfoStruct) {
+              if (bg.stadiumInfoStruct) {
+                damage 150
+                afterDamage {
                   discard bg.stadiumInfoStruct.stadiumCard
                 }
               }
@@ -1092,8 +1092,7 @@ public enum ChillingReign implements LogicCardInfo {
           bwAbility "Frost Over", {
             text "Once during your turn when you play this card from your hand to evolve a Pokémon, you may search your discard pile for a [W] Energy and attach it to 1 of your Pokémon."
             onActivate { reason->
-              if (reason == PLAY_FROM_HAND && bg.em().retrieveObject("Frost_Over") != bg.turnCount && my.discard.filterByEnergyType(W) && confirm("Use $thisAbility?")) {
-                bg.em().storeObject("Frost_Over", bg.turnCount)
+              if (reason == PLAY_FROM_HAND && my.discard.filterByEnergyType(W) && confirm("Use Snowfall?")) {
                 powerUsed()
                 attachEnergyFrom(count:1, type: W, my.discard, my.all.select("Attach to?"))
               }
@@ -1174,7 +1173,9 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              switchYourActive(may: true)
+              afterDamage {
+                switchYourActive(may: true)
+              }
             }
           }
           move "Ocean Loop", {
@@ -1183,9 +1184,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 120
-              afterDamage {
-                self.cards.filterByType(ENERGY).select(count: 1).moveTo(my.hand)
-              }
+              moveSelfEnergyAfterDamage(my.hand)
             }
           }
         };
@@ -1201,12 +1200,14 @@ public enum ChillingReign implements LogicCardInfo {
             }
             onAttack {
               def maxSpace = Math.min(my.bench.freeBenchCount, 3)
-              my.deck.search(min: 0, max: maxSpace, "Search your deck for up to $maxSpace Rapid Strike Basic Pokémon", {
-                it.cardTypes.pokemon && it.cardTypes.is(RAPID_STRIKE) && it.cardTypes.is(BASIC)
-              }).each {
-                benchPCS(it)
+              if (maxSpace > 0) {
+                my.deck.search(min: 0, max: maxSpace, "Search your deck for up to $maxSpace Rapid Strike Basic Pokémon", {
+                  it.cardTypes.pokemon && it.cardTypes.is(RAPID_STRIKE) && it.cardTypes.is(BASIC)
+                }).each {
+                  benchPCS(it)
+                }
+                shuffleDeck()
               }
-              shuffleDeck()
             }
           }
           move "Double Spin", {
@@ -1237,7 +1238,8 @@ public enum ChillingReign implements LogicCardInfo {
           bwAbility "Quick Shooting", {
             text "Once during your turn, you may place 2 damage counters on 1 of your opponent's Pokémon."
             actionA {
-              if (checkLastTurn() && confirm("Use $thisAbility?")) {
+              checkLastTurn()
+              if (confirm("Use Quick Shooter?")) {
                 powerUsed()
                 def pcs = opp.all.select("Place 2 damage counters on which Pokémon?")
                 directDamage 20, pcs, SRC_ABILITY
@@ -1269,7 +1271,7 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost WATER, COLORLESS
             attackRequirement {}
             onAttack {
-              damage 30 * my.all.findAll { it.rapidStrike }.size()
+              damage 30 * my.all.count { it.rapidStrike }
             }
           }
         };
@@ -1368,10 +1370,13 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 90
-              opp.hand.showToMe("Your opponent's hand")
-              if (opp.hand.filterByType(ENERGY)) {
-                bc "Energy was found in Opponent's hand"
-                damage 90
+
+              if (opp.hand) {
+                opp.hand.showToMe("Your opponent's hand")
+                if (opp.hand.filterByType(ENERGY)) {
+                  bc "Energy was found in Opponent's hand"
+                  damage 90
+                }
               }
             }
           }
@@ -1384,7 +1389,7 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost LIGHTNING
             attackRequirement {}
             onAttack {
-              damage 10, opp.all.select("10 damage to?")
+              damage 10, opp.all.select("Deal damage to?")
             }
           }
         };
@@ -1568,13 +1573,14 @@ public enum ChillingReign implements LogicCardInfo {
             }
             onAttack {
               def maxSpace = Math.min(my.bench.freeBenchCount, 3)
-
-              my.deck.search(min: 0, max: maxSpace, "Search your deck for up to $maxSpace Kirlia cards and put them onto your bench", {
-                it.name == "Kirlia"
-              }).each {
-                benchPCS(it)
+              if (maxSpace > 0) {
+                my.deck.search(min: 0, max: maxSpace, "Search your deck for up to $maxSpace Kirlia cards and put them onto your hand", {
+                  it.name == "Kirlia"
+                }).each {
+                  benchPCS(it)
+                }
+                shuffleDeck()
               }
-              shuffleDeck()
             }
           }
         };
@@ -1584,17 +1590,20 @@ public enum ChillingReign implements LogicCardInfo {
           bwAbility "Shining Arcana", {
             text "Once during your turn you may look at the top 2 cards of your deck. Choose any number of basic Energy you find there and attach them to your Pokémon in any way you like. Put the other cards into your hand."
             actionA {
-              if (my.deck && confirm("Use $thisAbility?")) {
-                def maxSize = Math.min(my.deck.size(), 2)
-                def topCards = my.deck.subList(0, maxSize)
-                def selectedEnergies = topCards.select(min: 0, max: topCards.filterByType(BASIC_ENERGY).size(), "Which Basic Energies to attach?", cardTypeFilter(BASIC_ENERGY))
-                selectedEnergies.each {
-                  attachEnergy(my.all.select("Attach $it to which Pokémon"), it)
-                }
-                def nonSelectedSize = maxSize - selectedEnergies.size()
-                if (nonSelectedSize) {
-                  my.deck.subList(0, nonSelectedSize).getExcludedList(selectedEnergies).moveTo(hidden: true, my.hand)
-                }
+              checkLastTurn()
+              assert my.deck : "Deck is empty"
+              powerUsed()
+
+              def maxSize = Math.min(my.deck.size(), 2)
+              def topCards = my.deck.subList(0, maxSize)
+              def selectedEnergies = topCards.select(min: 0, max: topCards.filterByType(BASIC_ENERGY).size(), "Which Basic Energies to attach?", cardTypeFilter(BASIC_ENERGY))
+
+              selectedEnergies.each {
+                attachEnergy(my.all.select("Attach $it to which Pokémon"), it)
+              }
+              def nonSelectedSize = maxSize - selectedEnergies.size()
+              if (nonSelectedSize) {
+                my.deck.subList(0, nonSelectedSize).moveTo(hidden: true, my.hand)
               }
             }
           }
@@ -1603,7 +1612,7 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost COLORLESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
-              damage 60 + 30 * self.cards.filterByEnergyType(P).size()
+              damage 60 + 30 * self.cards.energyCount(P)
             }
           }
         };
@@ -1629,7 +1638,7 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost PSYCHIC
             attackRequirement {}
             onAttack {
-              def count = choose([0, 1, 2, 3, 4, 5, 6, 7], "How many damage counters would you like to put on $self? Does 20 damage for each") as Integer
+              def count = choose([1, 2, 3, 4, 5, 6, 7], "How many damage counters would you like to put on $self? Does 20 damage for each") as Integer
               damage 20 * count
               afterDamage {
                 directDamage 10 * count, self
@@ -1657,8 +1666,7 @@ public enum ChillingReign implements LogicCardInfo {
               assert my.deck : "Deck is empty"
             }
             onAttack {
-              def maxSearch = 1
-              if (bg.turnCount == 2) maxSearch = 3
+              def maxSearch = (bg.turnCount == 2) ? 3 : 1
 
               def cards = my.deck.search(min: 0, max: maxSearch, {
                 it.cardTypes.is(ENERGY) && it.asEnergyCard().containsType(P)
@@ -1676,13 +1684,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              def energyInPlay = 0
-              thisCard.player.pbg.all.findAll {
-                it.cards.energyCardCount()
-              }.each {
-                energyInPlay += it.cards.energyCardCount()
-              }
-
+              def energyInPlay = thisCard.player.pbg.all.sum { it.cards.energyCount() }
               if (energyInPlay >= 5) {
                 damage 90
               }
@@ -1841,8 +1843,8 @@ public enum ChillingReign implements LogicCardInfo {
           bwAbility "Witch Rondo", {
             text "Once during your turn, you may switch your Active Pokémon with 1 of your Benched Pokémon, then have your opponent switch their Active Pokémon with 1 of their Benched Pokémon."
             actionA {
-              assert my.bench.notEmpty || opp.bench.notEmpty : "Neither player has Benched Pokémon"
               checkLastTurn()
+              assert my.bench.notEmpty || opp.bench.notEmpty : "Neither player has Benched Pokémon"
               powerUsed()
               if (my.bench.notEmpty) {
                 sw my.active, my.bench.select("New active")
@@ -1874,15 +1876,15 @@ public enum ChillingReign implements LogicCardInfo {
               damage 10
 
               delayed {
-                before PLAY_ENERGY, {
+                before ATTACH_ENERGY, {
                   if (ef.cardToPlay.cardTypes.is(SPECIAL_ENERGY) && bg.currentTurn == self.owner.opposite) {
-                    wcu "Shadow Mist prevents playing Special Energy Cards this turn"
+                    wcu "$thisMove prevents playing Special Energy Cards this turn"
                     prevent()
                   }
                 }
                 before PLAY_TRAINER, {
                   if (ef.cardToPlay.cardTypes.is(STADIUM) && bg.currentTurn == self.owner.opposite) {
-                    wcu "Shadow Mist prevents playing Stadium cards this turn"
+                    wcu "$thisMove prevents playing Stadium cards this turn"
                     prevent()
                   }
                 }
@@ -1895,14 +1897,8 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost COLORLESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
-              if (opp.all.size() > 2) {
-                multiSelect(opp.all, 2, text).each {
-                  directDamage 50, it
-                }
-              } else {
-                opp.all.each {
-                  directDamage 50, it
-                }
+              ( opp.all.size() > 2 ? multiSelect(opp.all, 2, text) : opp.all ).each {
+                directDamage 50, it
               }
             }
           }
@@ -1914,14 +1910,13 @@ public enum ChillingReign implements LogicCardInfo {
           bwAbility "Underworld Door", {
             text "Once during your turn you may attach a [P] Energy card from your hand to 1 of your Benched [P] Pokémon. Then, draw 2 cards."
             actionA {
-              checkNoSPC()
               checkLastTurn()
-              assert my.hand.filterByEnergyType(P) : "You have no [P] Energy cards in your hand"
-              assert my.bench : "Bench is empty"
-
+              assert my.hand.hasEnergyType(P) : "You have no [P] Energy cards in your hand"
+              assertMyBench(hasType: P)
               powerUsed()
               def pcs = my.bench.select("Attach energy to?")
               attachEnergyFrom(type:P, my.hand, pcs)
+              draw 2
             }
           }
           move "Max Geist", {
@@ -1929,8 +1924,7 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost COLORLESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
-              damage 10
-              my.all.each { damage 30 * it.cards.energyCount(P) }
+              damage 10 + 30 * my.all.sum { it.cards.energyCount(P) }
             }
           }
         };
@@ -1998,7 +1992,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 70
-              if (self.cards.filterByType(POKEMON_TOOL)) {
+              if (self.cards.hasType(POKEMON_TOOL)) {
                 damage 90
                 dontApplyResistance()
               }
@@ -2054,10 +2048,10 @@ public enum ChillingReign implements LogicCardInfo {
             text "This attack does 60 damage times the number of your opponent's Pokémon V in play."
             energyCost COLORLESS, COLORLESS
             attackRequirement {
-              assert opp.all.findAll { it.pokemonV || it.pokemonVMAX } : "Opponent has no Pokémon V in play"
+              assertOppAll(hasVariants: POKEMON_V)
             }
             onAttack {
-              damage 60 * opp.all.findAll { it.pokemonV || it.pokemonVMAX }.size()
+              damage 60 * opp.all.count { it.pokemonV }
             }
           }
         };
@@ -2170,7 +2164,7 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost FIGHTING, FIGHTING
             attackRequirement {}
             onAttack {
-              damage 80 + 10 * my.discard.findAll { it.cardTypes.is(POKEMON) && it.cardTypes.is(SINGLE_STRIKE) }.size()
+              damage 80 + 10 * my.discard.count { it.cardTypes.is(POKEMON) && it.cardTypes.is(SINGLE_STRIKE) }
             }
           }
         };
@@ -2325,10 +2319,7 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost DARKNESS, COLORLESS
             attackRequirement {}
             onAttack {
-              def count = 0
-              my.all.each {
-                count += it.cards.energyCount(D)
-              }
+              def count = my.all.sum { it.cards.energyCount(D) }
               damage 20 + 20 * count
             }
           }
@@ -2845,10 +2836,13 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
+              def oldHp = defending.damage
               damage 10 + 30 * self.energyCards.size()
               afterDamage {
-                my.discard.filterByType(ENERGY).select(min: 0, max: 3).each {
-                  attachEnergy(self, it)
+                if (oldHp != defending.damage) { // Did damage with the attack
+                  my.discard.filterByType(ENERGY).select(min: 0, max: 3).each {
+                    attachEnergy(self, it)
+                  }
                 }
               }
             }
