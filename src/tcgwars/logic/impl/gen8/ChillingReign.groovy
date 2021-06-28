@@ -547,7 +547,7 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
-              reduceDamageNextTurn(hp(20), thisMove)
+              reduceDamageFromDefendingNextTurn(hp(10), thisMove, defending)
             }
           }
           move "Rear Kick", {
