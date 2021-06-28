@@ -2866,7 +2866,7 @@ public enum ChillingReign implements LogicCardInfo {
             text "Whenever you attach an Energy from your hand to this Pokémon, remove all Special Conditions from this Pokémon."
             delayedA {
               after ATTACH_ENERGY, self, {
-                if (ef.reason == PLAY_FROM_HAND && ef.card instanceof EnergyCard && ef.card.basicType == W){
+                if (ef.reason == PLAY_FROM_HAND && ef.card instanceof EnergyCard) {
                   clearSpecialCondition(self, SRC_ABILITY)
                 }
               }
@@ -2880,7 +2880,7 @@ public enum ChillingReign implements LogicCardInfo {
               def oldHp = defending.damage
               damage 10 + 30 * self.cards.energyCount(C)
               afterDamage {
-                if (oldHp != defending.damage) { // Did damage with the attack
+                if (oldHp != defending.damage && my.discard.filterByType(ENERGY)) { // Did damage with the attack
                   my.discard.filterByType(ENERGY).select(min: 0, max: 3).each {
                     attachEnergy(self, it)
                   }
