@@ -2028,8 +2028,12 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost FIGHTING, COLORLESS, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
+              targeted (defending) {
+                if (defending.cards.filterByType(SPECIAL_ENERGY)){
+                  defending.cards.filterByType(SPECIAL_ENERGY).select("Discard").discard()
+                }
+              }
               damage 170
-              discardDefendingSpecialEnergy(delegate)
             }
           }
         };
