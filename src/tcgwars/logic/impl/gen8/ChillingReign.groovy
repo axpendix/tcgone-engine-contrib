@@ -224,7 +224,7 @@ public enum ChillingReign implements LogicCardInfo {
   TORNADUS_V_185 ("Tornadus V", "185", Rarity.UNCOMMON, [POKEMON, POKEMON_V, BASIC, SINGLE_STRIKE, _COLORLESS_]),
   AGATHA_186 ("Agatha", "186", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   AVERY_187 ("Avery", "187", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-  BRAWLY_188 ("Brawly", "188", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  BRAWLY_188 ("Brawly", "188", Rarity.UNCOMMON, [TRAINER, SUPPORTER, RAPID_STRIKE]),
   CAITLIN_189 ("Caitlin", "189", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   DOCTOR_190 ("Doctor", "190", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   FLANNERY_191 ("Flannery", "191", Rarity.UNCOMMON, [TRAINER, SINGLE_STRIKE, SUPPORTER]),
@@ -234,7 +234,7 @@ public enum ChillingReign implements LogicCardInfo {
   MELONY_195 ("Melony", "195", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   PEONIA_196 ("Peonia", "196", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   PEONY_197 ("Peony", "197", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-  SIEBOLD_198 ("Siebold", "198", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  SIEBOLD_198 ("Siebold", "198", Rarity.UNCOMMON, [TRAINER, SUPPORTER, RAPID_STRIKE]),
   CELEBI_VMAX_199 ("Celebi VMAX", "199", Rarity.UNCOMMON, [POKEMON, EVOLUTION, VMAX, _GRASS_]),
   BLAZIKEN_VMAX_200 ("Blaziken VMAX", "200", Rarity.UNCOMMON, [POKEMON, EVOLUTION, VMAX, RAPID_STRIKE, _FIRE_]),
   BLAZIKEN_VMAX_201 ("Blaziken VMAX", "201", Rarity.UNCOMMON, [POKEMON, EVOLUTION, VMAX, RAPID_STRIKE, _FIRE_]),
@@ -248,7 +248,7 @@ public enum ChillingReign implements LogicCardInfo {
   TORNADUS_VMAX_209 ("Tornadus VMAX", "209", Rarity.UNCOMMON, [POKEMON, EVOLUTION, VMAX, SINGLE_STRIKE, _COLORLESS_]),
   AGATHA_210 ("Agatha", "210", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   AVERY_211 ("Avery", "211", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-  BRAWLY_212 ("Brawly", "212", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  BRAWLY_212 ("Brawly", "212", Rarity.UNCOMMON, [TRAINER, SUPPORTER, RAPID_STRIKE]),
   CAITLIN_213 ("Caitlin", "213", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   DOCTOR_214 ("Doctor", "214", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   FLANNERY_215 ("Flannery", "215", Rarity.UNCOMMON, [TRAINER, SINGLE_STRIKE, SUPPORTER]),
@@ -257,7 +257,7 @@ public enum ChillingReign implements LogicCardInfo {
   MELONY_218 ("Melony", "218", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   PEONIA_219 ("Peonia", "219", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   PEONY_220 ("Peony", "220", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-  SIEBOLD_221 ("Siebold", "221", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
+  SIEBOLD_221 ("Siebold", "221", Rarity.UNCOMMON, [TRAINER, SUPPORTER, RAPID_STRIKE]),
   ELECTRODE_222 ("Electrode", "222", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
   BRONZONG_223 ("Bronzong", "223", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
   SNORLAX_224 ("Snorlax", "224", Rarity.UNCOMMON, [POKEMON, BASIC, _COLORLESS_]),
@@ -733,7 +733,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 210
-              discardSelfEnergy(C, C)
+              discardSelfEnergyAfterDamage(C, C)
             }
           }
         };
@@ -833,7 +833,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 170
-              discardSelfEnergy(C, C)
+              discardSelfEnergyAfterDamage(C, C)
             }
           }
         };
@@ -1157,9 +1157,9 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 160
-              if (confirm("Discard 2 Energy to Paralyze Defending Pokémon?")){
-                damage 70
-                discardSelfEnergy C, C
+              if (confirm("Discard 2 Energy to Paralyze Defending Pokémon?")) {
+                discardSelfEnergyAfterDamage(C, C)
+                applyAfterDamage(PARALYZED)
               }
             }
           }
@@ -1292,7 +1292,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 200
-              discardSelfEnergy(C, C)
+              discardSelfEnergyAfterDamage(C, C)
             }
           }
         };
@@ -1315,7 +1315,7 @@ public enum ChillingReign implements LogicCardInfo {
               def cards = self.cards.filterByType(ENERGY).select(min: 0, max: 2, "For each energy discarded, do +120")
               damage 10 + 120 * cards.size()
               afterDamage {
-                cards.discard().size()
+                cards.discard()
               }
             }
           }
@@ -1382,7 +1382,7 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case BLITZLE_50:
-        return basic (this, hp:HP060, type:[], retreatCost:1) {
+        return basic (this, hp:HP060, type:L, retreatCost:1) {
           weakness FIGHTING
           move "Thunder Spear", {
             text "This attack does 10 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon)"
@@ -1668,9 +1668,13 @@ public enum ChillingReign implements LogicCardInfo {
             onAttack {
               def maxSearch = (bg.turnCount == 2) ? 3 : 1
 
-              my.deck.search(min: 0, max: maxSearch, {
-                it.types.contains(P)
-              }).moveTo(my.hand)
+              def cards = my.deck.search(min: 0, max: maxSearch, {
+                it.cardTypes.is(ENERGY) && it.asEnergyCard().containsType(P)
+              })
+              def target = my.all.select("Attach energies to?")
+              cards.each {
+                attachEnergy(target, it)
+              }
               shuffleDeck()
             }
           }
@@ -1717,7 +1721,8 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost PSYCHIC, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
-              if (self.cards.hasType(POKEMON_TOOL)) {
+              damage 60
+              if (self.cards.filterByType(POKEMON_TOOL)) {
                 damage 90
               }
             }
@@ -1751,13 +1756,15 @@ public enum ChillingReign implements LogicCardInfo {
           move "Follow the Scent", {
             text "Flip 3 coins. For each heads, choose a card from your discard pile, show it to your opponent, and put it into your hand."
             energyCost COLORLESS, COLORLESS
-            attackRequirement {}
+            attackRequirement {
+              assert my.discard : "No cards in discard"
+            }
             onAttack {
               def count = 0
               flip 3, {
                 count += 1
               }
-              my.discard.select(count:count).showToOpponent("Cards to be placed into hand").moveTo(my.hand)
+              my.discard.select(min: 0, max: count).showToOpponent("Cards to be placed into hand").moveTo(my.hand)
             }
           }
           move "Fairy Wind", {
@@ -1793,7 +1800,7 @@ public enum ChillingReign implements LogicCardInfo {
               assert my.hand.filterByType(RAPID_STRIKE) : "No Rapid Strike cards in hand"
             }
             onAttack {
-              def rapidStrike = my.hand.select(min: 0, "Choose Rapid Strike cards to shuffle into deck", cardTypeFilter(RAPID_STRIKE))
+              def rapidStrike = my.hand.select(min: 0, max:my.hand.filterByType(RAPID_STRIKE).size(),"Choose Rapid Strike cards to shuffle into deck", cardTypeFilter(RAPID_STRIKE))
               if (rapidStrike) {
                 rapidStrike.showToOpponent("Cards to shuffle into deck, does 40x damage for each")
                 damage 40 * rapidStrike.size()
@@ -1808,11 +1815,11 @@ public enum ChillingReign implements LogicCardInfo {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           move "Psyshot", {
-            text "10 damage."
+            text "20 damage."
             energyCost PSYCHIC
             attackRequirement {}
             onAttack {
-              damage 10
+              damage 20
             }
           }
         };
@@ -1823,7 +1830,6 @@ public enum ChillingReign implements LogicCardInfo {
           move "Spiral Drain", {
             text "30 damage. Heal 30 damage from this Pokémon."
             energyCost PSYCHIC
-            attackRequirement {}
             onAttack {
               damage 30
               heal 30, self
@@ -1932,7 +1938,7 @@ public enum ChillingReign implements LogicCardInfo {
             onAttack {
               damage 10
               flip {
-                preventAllEffectsFromPokemonExNextTurn(thisMove, self)
+                preventAllEffectsNextTurn()
               }
             }
           }
@@ -1951,7 +1957,7 @@ public enum ChillingReign implements LogicCardInfo {
                 damage 60
               }
               if (count == 3) {
-                preventAllEffectsFromPokemonExNextTurn(thisMove, self)
+                preventAllEffectsNextTurn()
               }
             }
           }
@@ -2070,7 +2076,7 @@ public enum ChillingReign implements LogicCardInfo {
             delayedA (priority:LAST) {
               def counterDmg = 0
               before APPLY_ATTACK_DAMAGES, {
-                if(self.active && ef.attacker.owner != self.owner && (ef.attacker.VMAX || ef.attacker.pokemonV)) {
+                if (self.active && ef.attacker.owner != self.owner && (ef.attacker.topPokemonCard.cardTypes.is(VMAX))) {
                   bg.dm().each {
                     if (it.to == self && it.dmg.value) {
                       counterDmg = it.dmg.value
@@ -2119,6 +2125,13 @@ public enum ChillingReign implements LogicCardInfo {
       case CRABOMINABLE_85:
         return evolution (this, from:"Crabrawler", hp:HP150, type:F, retreatCost:4) {
           weakness PSYCHIC
+          move "Double Lariat", {
+            text "90x damage. Flip 2 coins. This attack does 90 damage for each heads."
+            energyCost FIGHTING, COLORLESS, COLORLESS
+            onAttack {
+              flip 2, { damage 90 }
+            }
+          }
           move "Crabhammer", {
             text "130 damage."
             energyCost FIGHTING, COLORLESS, COLORLESS, COLORLESS
@@ -2320,7 +2333,7 @@ public enum ChillingReign implements LogicCardInfo {
               if (holder.effect.target.owner == self.owner
                 && holder.effect.card.containsTypePlain(D)
                 && holder.effect.card.cardTypes.is(BASIC_ENERGY)
-                && holder.effect.target.name == "Weezing") {
+                && holder.effect.target.name.contains("Weezing")) {
                 holder.object = [[D] as Set, [D] as Set]
               }
             }
@@ -2499,9 +2512,9 @@ public enum ChillingReign implements LogicCardInfo {
           bwAbility "Hidden Claw", {
             text "Once during your turn when you play this Pokémon from your hand onto your Bench, you may discard 1 Pokémon Tool card attached to any Pokémon in play (yours or your opponent's)."
             onActivate { reason ->
-              if (reason == PLAY_FROM_HAND && self.benched && opp.all.any { it.cards.filterByType(POKEMON_TOOL) } && confirm("Use Concealing Claw?")) {
+              if (reason == PLAY_FROM_HAND && self.benched && all.any { it.cards.filterByType(POKEMON_TOOL) } && confirm("Use Concealing Claw?")) {
                 powerUsed()
-                def target = opp.all.findAll { it.cards.filterByType(POKEMON_TOOL) }.select("Which Pokémon to remove a Pokémon Tool card from?")
+                def target = all.findAll { it.cards.filterByType(POKEMON_TOOL) }.select("Which Pokémon to remove a Pokémon Tool card from?")
                 target.cards.filterByType(POKEMON_TOOL).select("Discard").discard()
               }
             }
@@ -2748,6 +2761,15 @@ public enum ChillingReign implements LogicCardInfo {
               afterDamage { apply(CONFUSED, self) }
             }
           }
+          move "Take Down", {
+            text "80 damage. This Pokémon also does 30 damage to itself."
+            energyCost R, R, C, C
+            attackRequirement {}
+            onAttack {
+              damage 80
+              damage 30, self
+            }
+          }
         };
       case PORYGON_116:
         return basic (this, hp:HP060, type:C, retreatCost:2) {
@@ -2792,7 +2814,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 170
-              discardSelfEnergy(C, C)
+              discardSelfEnergyAfterDamage(C, C)
             }
           }
         };
@@ -2977,7 +2999,7 @@ public enum ChillingReign implements LogicCardInfo {
               assert deck.notEmpty : "Deck is empty"
             }
             onAttack {
-              my.deck.search(min: 0, max: 1, cardTypeFilter(POKEMON)).showToOpponent().moveTo(my.hand)
+              my.deck.search(min: 0, max: 1, cardTypeFilter(POKEMON)).showToOpponent("Selected card").moveTo(my.hand)
               shuffleDeck()
             }
           }
@@ -3481,6 +3503,22 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 60 + 30 * defending.cards.energyCount(C)
+            }
+          }
+          move "Libra Horn", {
+            text "Put damage counters on 1 of your opponent’s Pokémon until its remaining HP is 100."
+            energyCost COLORLESS, COLORLESS
+            attackRequirement {
+              assert opp.all.any { it.getRemainingHP().value > 100 } : "No Pokémon with HP over 100"
+            }
+            onAttack {
+              def targets = opp.all.findAll { it.getRemainingHP().value > 100 }
+              def target = targets.first()
+              if (targets.size() > 1) {
+                target = targets.select("Which Pokémon to reduce HP to 100?")
+              }
+              def dmg = target.getRemainingHP().value - 100
+              directDamage dmg, target
             }
           }
         };
