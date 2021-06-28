@@ -2531,6 +2531,13 @@ public enum ChillingReign implements LogicCardInfo {
               shuffleDeck(null, TargetPlayer.OPPONENT)
             }
           }
+          move "Will-O-Wisp", {
+            text "20 damage."
+            energyCost DARKNESS
+            onAttack {
+              damage 20
+            }
+          }
         };
       case LIEPARD_V_104:
         return basic (this, hp:HP190, type:D, retreatCost:1) {
