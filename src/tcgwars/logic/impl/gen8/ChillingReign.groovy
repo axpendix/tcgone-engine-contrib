@@ -2754,9 +2754,17 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {
               assert my.deck : "Your deck is empty"
             }
-            onAttack{
+            onAttack {
               my.deck.select(min: 1, max: 2).moveTo(hidden: true, my.hand)
               shuffleDeck()
+            }
+          }
+          move "Max Rush", {
+            text "100 damage. During your next turn, this Pokémon’s Max Rush attack does 150 more damage."
+            energyCost METAL, COLORLESS
+            onAttack {
+              damage 100
+              increasedBaseDamageNextTurn thisMove.name, hp(150)
             }
           }
         };
