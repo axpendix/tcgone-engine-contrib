@@ -1603,7 +1603,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
               def nonSelectedSize = maxSize - selectedEnergies.size()
               if (nonSelectedSize) {
-                my.deck.subList(0, nonSelectedSize).getExcludedList(selectedEnergies).moveTo(hidden: true, my.hand)
+                my.deck.subList(0, nonSelectedSize).moveTo(hidden: true, my.hand)
               }
             }
           }
