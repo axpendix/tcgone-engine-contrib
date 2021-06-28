@@ -2878,7 +2878,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               def oldHp = defending.damage
-              damage 10 + 30 * self.energyCards.size()
+              damage 10 + 30 * self.cards.energyCount(C)
               afterDamage {
                 if (oldHp != defending.damage) { // Did damage with the attack
                   my.discard.filterByType(ENERGY).select(min: 0, max: 3).each {
