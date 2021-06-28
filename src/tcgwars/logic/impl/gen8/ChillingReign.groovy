@@ -2738,7 +2738,7 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 60
-              if (self.getEnergyCount() == defending.getEnergyCount()) {
+              if (self.getEnergyCount(bg) == defending.getEnergyCount(bg)) {
                 damage 90
               }
             }
