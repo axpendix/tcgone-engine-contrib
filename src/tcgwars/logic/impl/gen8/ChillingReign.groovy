@@ -1765,7 +1765,9 @@ public enum ChillingReign implements LogicCardInfo {
               flip 3, {
                 count += 1
               }
-              my.discard.select(min: 0, max: count).showToOpponent("Cards to be placed into hand").moveTo(my.hand)
+              if (count > 0) {
+                my.discard.select(min: 1, max: count).showToOpponent("Cards to be placed into hand").moveTo(my.hand)
+              }
             }
           }
           move "Fairy Wind", {
