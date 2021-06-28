@@ -3115,8 +3115,10 @@ public enum ChillingReign implements LogicCardInfo {
           text "Draw 3 cards. If you drew any cards in this way, your opponent discards Pokémon from their Bench until they have 3. You may play only 1 Supporter card during your turn."
           def eff
           onPlay {
+            def deckBefore = my.deck.size()
             draw 3
-            if ( opp.bench.size() > 3 && confirm("Discard 3 cards to force both players to discard their Benched Pokémon until they have 3 Benched Pokémon?") ) {
+
+            if (my.deck.size() != deckBefore && opp.bench.size() > 3) {
               eff = getter(GET_BENCH_SIZE) { h ->
                 h.object = 3
               }
