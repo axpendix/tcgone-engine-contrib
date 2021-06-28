@@ -2381,13 +2381,12 @@ public enum ChillingReign implements LogicCardInfo {
             text "Once during your turn, you may attach a [D] Energy from your discard pile to this Pokémon. You can't use more than 1 Bolstered Wings Ability per turn."
             actionA {
               assert bg.em().retrieveObject("Direflame_Wings") != bg.turnCount : "You can't use more than 1 $thisAbility ability per turn."
-              assert my.hand.filterByEnergyType(D) : "No [D] Energy in hand"
+              assert my.discard.filterByEnergyType(D) : "No [D] Energy in discard"
               powerUsed()
               bg.em().storeObject("Direflame_Wings", bg.turnCount)
 
-              def list = my.hand.filterByEnergyType(D).select("Choose a [D] Energy Card to attach")
-              def pcs = my.all.select("Attach to?")
-              attachEnergy(pcs, list.first(), PLAY_FROM_HAND)
+              def list = my.discard.filterByEnergyType(D).select("Choose a [D] Energy Card to attach")
+              attachEnergy(self, list.first(), PLAY_FROM_HAND)
             }
           }
           move "Aura Burn", {
