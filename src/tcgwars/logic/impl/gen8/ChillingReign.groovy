@@ -2237,6 +2237,28 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
+          move "G-Max Cyclone", {
+            text "180 damage. Move any amount of Energy from your Pokémon to your other Pokémon in any way you like."
+            energyCost FIGHTING, FIGHTING, COLORLESS
+            attackRequirement {}
+            onAttack {
+              damage 180
+              afterDamage {
+                if (my.bench && confirm("Do you want to move any amount of Energy from your Pokémon to your other Pokémon in any way you like?"))
+                  while (true) {
+                    def pl = (my.all.findAll { it.cards.filterByType(ENERGY) })
+                    if (!pl) break;
+                    def src = pl.select("Source for energy (cancel to stop)", false)
+                    if (!src) break;
+                    def card = src.cards.filterByType(ENERGY).select("Energy to move").first()
+
+                    def tar = my.all.findAll{it != src}.select("Target for energy (cancel to stop)", false)
+                    if (!tar) break;
+                    energySwitch(src, tar, card)
+                  }
+              }
+            }
+          }
         };
       case CLOBBOPUS_91:
         return basic (this, hp:HP070, type:F, retreatCost:2) {
