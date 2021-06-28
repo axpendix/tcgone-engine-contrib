@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen8
 
+import tcgwars.logic.effect.gm.AttachEnergy
 import tcgwars.logic.impl.gen5.PlasmaBlast;
 
 import static tcgwars.logic.card.HP.*;
@@ -1877,7 +1878,7 @@ public enum ChillingReign implements LogicCardInfo {
 
               delayed {
                 before ATTACH_ENERGY, {
-                  if (ef.cardToPlay.cardTypes.is(SPECIAL_ENERGY) && bg.currentTurn == self.owner.opposite) {
+                  if (ef.reason == PLAY_FROM_HAND && ef.card.cardTypes.is(SPECIAL_ENERGY) && bg.currentTurn == self.owner.opposite) {
                     wcu "$thisMove prevents playing Special Energy Cards this turn"
                     prevent()
                   }
