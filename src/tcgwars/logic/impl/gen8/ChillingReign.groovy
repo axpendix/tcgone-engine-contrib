@@ -758,10 +758,14 @@ public enum ChillingReign implements LogicCardInfo {
               damage 130
 
               afterDamage {
-                def targets = multiSelect( my.bench.findAll { it.rapidStrike }, 2, "Attach an Energy Card to")
-                targets.each {
-                  if (my.discard.filterByType(ENERGY)) {
-                    attachEnergyFrom(my.discard, it)
+                def rapidStrikes = my.bench.findAll { it.rapidStrike }
+                if (rapidStrikes && my.discard.filterByType(ENERGY)) {
+                  def max = Math.min(my.discard.filterByType(ENERGY).size(), 2)
+                  def targets = multiSelect(rapidStrikes, 1, max, "Attach to?")
+                  targets.each {
+                    if (my.discard.filterByType(ENERGY)) {
+                      attachEnergyFrom(my.discard, it)
+                    }
                   }
                 }
               }
