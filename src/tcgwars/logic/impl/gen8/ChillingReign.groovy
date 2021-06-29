@@ -1502,12 +1502,12 @@ public enum ChillingReign implements LogicCardInfo {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           bwAbility "Last Gift", {
-            text "When this Pokémon is Knocked Out by damage from an opponent's attack, you may search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
+            text "If this Pokémon is Knocked Out by damage from an attack from your opponent’s Pokémon, search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
             delayedA (priority: LAST) {
               before (KNOCKOUT, self) {
                 if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && my.deck) {
                   bc "$thisAbility activates"
-                  self.owner.pbg.deck.select(min: 0, max: 2, "Search for up to 2 cards").showToOpponent("Selected Cards").moveTo(my.hand)
+                  self.owner.pbg.deck.select(min: 1, max: 2, "Search for up to 2 cards").showToOpponent("Selected Cards").moveTo(my.hand)
                   shuffleDeck(null, self.owner.toTargetPlayer())
                 }
               }
@@ -2487,7 +2487,7 @@ public enum ChillingReign implements LogicCardInfo {
             text "If this Pokémon is your Active Pokémon and is Knocked Out by damage from an opponent's attack, put 6 damage counters on the Attacking Pokémon."
             delayedA {
               before (KNOCKOUT, self) {
-                if (self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite ) {
+                if (self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite) {
                   bc "$thisAbility activates."
                   directDamage(60, self.owner.opposite.pbg.active, SRC_ABILITY)
                 }
