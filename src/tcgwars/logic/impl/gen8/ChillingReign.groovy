@@ -3401,10 +3401,14 @@ public enum ChillingReign implements LogicCardInfo {
       case RUGGED_HELMET_152:
         return pokemonTool (this) {
           text "When the Pokémon this card is attached to is your Active Pokémon and is damaged by an opponent's attack, choose an Energy attached to the Attacking Pokémon and return it to your opponent's hand. You may play as many Item cards as you like during your turn."
-          onPlay {
-            // TODO
-          }
-          onRemoveFromPlay {
+          ifActiveAndDamagedByAttackAttached(delegate) {
+            bc "Rugged Helmet activates"
+            def opponent = self.owner.opposite.pbg
+            def attacker = opponent.active
+            if (attacker.cards.filterByType(ENERGY)) {
+              def card = attacker.cards.filterByType(ENERGY).select("Energy card to move to hand", { true }, self.owner)
+              card.moveTo(opponent.hand)
+            }
           }
         };
       case SIEBOLD_153:
