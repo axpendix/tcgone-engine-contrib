@@ -3237,7 +3237,7 @@ public enum ChillingReign implements LogicCardInfo {
           def eff
           onPlay {
             eff = delayed {
-              after APPLY_ATTACK_DAMAGES, {
+              before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
                   if (it.to.owner == self.owner.opposite && it.from.owner == self.owner && it.to.active && it.to.types.contains(R)) {
                     bc "Fire-Resistant Gloves +30"
