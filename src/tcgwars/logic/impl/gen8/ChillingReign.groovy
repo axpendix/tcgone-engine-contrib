@@ -1805,8 +1805,10 @@ public enum ChillingReign implements LogicCardInfo {
               if (rapidStrike) {
                 rapidStrike.showToOpponent("Cards to shuffle into deck, does 40x damage for each")
                 damage 40 * rapidStrike.size()
-                rapidStrike.moveTo(my.deck)
-                shuffleDeck()
+                afterDamage {
+                  rapidStrike.moveTo(my.deck)
+                  shuffleDeck()
+                }
               }
             }
           }
