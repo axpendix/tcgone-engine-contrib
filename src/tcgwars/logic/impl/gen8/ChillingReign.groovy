@@ -3255,13 +3255,17 @@ public enum ChillingReign implements LogicCardInfo {
         return supporter (this) {
           text "Choose a Special Energy card attached to 1 of your opponent's Pokémon, and any Stadium card in play, and discard them. You may play only 1 Supporter card during your turn."
           onPlay {
-            def pcs = opp.all.findAll {
-              it.cards.filterByType(SPECIAL_ENERGY)
-            }.select("Which Pokémon to remove a Special Energy from?")
+            if (opp.all.any { it.cards.filterByType(SPECIAL_ENERGY) }) {
+              def pcs = opp.all.findAll {
+                it.cards.filterByType(SPECIAL_ENERGY)
+              }.select("Which Pokémon to remove a Special Energy from?")
 
-            pcs.cards.select("Remove which Special Energy?", cardTypeFilter(SPECIAL_ENERGY)).discard()
+              pcs.cards.select("Remove which Special Energy?", cardTypeFilter(SPECIAL_ENERGY)).discard()
+            }
 
-            discard bg.stadiumInfoStruct.stadiumCard
+            if (bg.stadiumInfoStruct) {
+              discard bg.stadiumInfoStruct.stadiumCard
+            }
           }
           playRequirement {
             assert bg.stadiumInfoStruct || opp.all.any { it.cards.filterByType(SPECIAL_ENERGY) } : "No Stadium in play or Special Energy attached"
