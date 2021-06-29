@@ -1136,7 +1136,7 @@ public enum ChillingReign implements LogicCardInfo {
             text "70 damage."
             energyCost WATER, WATER, COLORLESS
             attackRequirement {}
-            onAttack {
+            onAttack {TAUROS_115
               damage 70
             }
           }
@@ -2798,13 +2798,13 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
-              damage 20 + self.numberOfDamageCounters * 10
+              damage 20 + self.numberOfDamageCounters * 20
               afterDamage { apply(CONFUSED, self) }
             }
           }
           move "Take Down", {
             text "80 damage. This Pokémon also does 30 damage to itself."
-            energyCost R, R, C, C
+            energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
               damage 80
