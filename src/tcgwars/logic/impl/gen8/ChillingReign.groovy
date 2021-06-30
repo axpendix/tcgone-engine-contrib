@@ -3359,11 +3359,21 @@ public enum ChillingReign implements LogicCardInfo {
         };
       case OLD_CEMETERY_147:
         return stadium (this) {
-          text "Whenever a player attaches an Energy from their hand to 1 of their Pokémon (excluding P Pokémon), put 2 damage counters on that Pokémon. This Stadium stays in play when you play it. Discard it if another Stadium comes into play. If a Stadium with the same name is in play, you can't play this card."
+          text "Whenever a player attaches an Energy from their hand to 1 of their Pokémon (excluding [P] Pokémon), put 2 damage counters on that Pokémon. This Stadium stays in play when you play it. Discard it if another Stadium comes into play. If a Stadium with the same name is in play, you can't play this card."
+          def eff
           onPlay {
-            // TODO
+            eff = delayed {
+              after ATTACH_ENERGY, {
+                def target = e.getTarget(bg)
+                if (target && ef.reason==PLAY_FROM_HAND && !target.types.contains(P)) {
+                  bc "Old Cemetery activates"
+                  directDamage(20, target, TRAINER_CARD)
+                }
+              }
+            }
           }
-          onRemoveFromPlay{
+          onRemoveFromPlay {
+            eff.unregister()
           }
         };
       case PATH_TO_THE_PEAK_148:
