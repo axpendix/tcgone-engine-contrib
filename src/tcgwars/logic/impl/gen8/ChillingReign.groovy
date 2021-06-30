@@ -3447,9 +3447,16 @@ public enum ChillingReign implements LogicCardInfo {
         return supporter (this) {
           text "Discard your hand and search your deck for up to 2 Trainer cards, reveal them, and put them into your hand. Then, shuffle your deck. You may play only 1 Supporter card during your turn."
           onPlay {
-            // TODO
+            my.hand.getExcludedList(thisCard).discard()
+            def card = my.deck.search(min:0, max: 2, cardTypeFilter(TRAINER))
+            if (card) {
+              card.showToOpponent("$thisCard: Chose this card to move to hand")
+              card.moveTo(my.hand)
+            }
+            shuffleDeck()
           }
-          playRequirement{
+          playRequirement {
+            assert my.deck : "Deck is empty"
           }
         };
       case RAPID_STRIKE_SCROLL_OF_THE_SKIES_151:
