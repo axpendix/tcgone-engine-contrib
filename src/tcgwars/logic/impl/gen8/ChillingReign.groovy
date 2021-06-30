@@ -1444,13 +1444,28 @@ public enum ChillingReign implements LogicCardInfo {
       case ZERAORA_V_53:
         return basic (this, hp:HP210, type:L, retreatCost:2) {
           weakness FIGHTING
+          globalAbility { Card thisCard ->
+            delayed (priority: LAST) {
+              after PROCESS_ATTACK_EFFECTS, {
+                if (ef.attacker.owner == thisCard.player && ef.attacker.rapidStrike) {
+                  bg.em().storeObject("Cross_Fist_${thisCard.player}", bg.turnCount)
+                  bg.em().storeObject("Cross_Fist_Attacker_${thisCard.player}", ef.attacker.hashCode())
+                }
+              }
+            }
+          }
           move "Cross Fist", {
             text "100 damage. If any of your other Rapid Strike Pokémon used an attack during your last turn, this attack does 160 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon)"
             energyCost LIGHTNING, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
               damage 100
-              // TODO
+
+              def tc = bg.em().retrieveObject("Cross_Fist_${thisCard.player}") ?: -1
+              def attacker = bg.em().retrieveObject("Cross_Fist_Attacker_${thisCard.player}")
+              if (tc == bg.turnCount - 2 && attacker != self.hashCode() && opp.bench) {
+                damage 160, opp.bench.select("Deal damage to?")
+              }
             }
           }
         };
