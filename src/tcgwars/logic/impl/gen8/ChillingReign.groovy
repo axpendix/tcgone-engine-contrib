@@ -2761,7 +2761,7 @@ public enum ChillingReign implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
             }
             onAttack {
-              my.deck.select(min: 0, max: 2).moveTo(hidden: true, my.hand)
+              my.deck.select(min: 1, max: 2).moveTo(hidden: true, my.hand)
               shuffleDeck()
             }
           }
