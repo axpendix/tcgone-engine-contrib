@@ -3166,7 +3166,19 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case CAITLIN_132:
-        return copy(PlasmaBlast.CAITLIN_78, this);
+        return supporter (this) {
+          text "Put any number of cards from your hand on the bottom of your deck in any order. Then, draw that many cards."
+          onPlay {
+            def list = hand.getExcludedList(thisCard)
+            list = list.select(max: list.size(), "Put as many cards from your hand as you like on the bottom of your deck in any order. Then, draw a card for each card you put on the bottom of your deck")
+            def rearranged = rearrange(list)
+            rearranged.moveTo(hidden:true, my.deck)
+            draw list.size()
+          }
+          playRequirement {
+            assert hand.getExcludedList(thisCard).size() >= 1 : "Not enough cards in hand to use"
+          }
+        };
       case CRUSHING_GLOVES_133:
         return pokemonTool (this) {
           text "The Pokémon this card is attached to does 30 more damage to your opponent's Active [M] Pokémon."
