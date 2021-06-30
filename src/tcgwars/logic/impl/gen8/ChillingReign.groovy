@@ -3650,7 +3650,7 @@ public enum ChillingReign implements LogicCardInfo {
             eff = delayed (priority: BEFORE_LAST) {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if (it.to == self && it.from.owner != self.owner && it.dmg.value && it.notNoEffect) {
+                  if (it.to == self && it.from.owner != self.owner && self.active && it.dmg.value && it.notNoEffect) {
                     bc "Lucky Energy activates"
                     draw 1, TargetPlayer.OPPONENT // Targets the player being attacked (holding the lucky energy)
                   }
