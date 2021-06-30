@@ -3485,9 +3485,15 @@ public enum ChillingReign implements LogicCardInfo {
         return supporter (this) {
           text "Choose up to 2 of your Rapid Strike Pokémon in play and heal 60 damage from each of them. You may play only 1 Supporter card during your turn."
           onPlay {
-            // TODO
+            def eligible = my.all.findAll { it.rapidStrike && it.numberOfDamageCounters }
+            def max = Math.min(2, eligible.size())
+            def targets = multiSelect(eligible, 1, max, "Select Rapid Strike Pokémon to heal")
+            targets.each {
+              heal 60, it
+            }
           }
-          playRequirement{
+          playRequirement {
+            assert my.all.find { it.rapidStrike } : "Couldn't find any Rapid Strike Pokémon with damage counters"
           }
         };
       case SINGLE_STRIKE_SCROLL_OF_PIERCING_154:
