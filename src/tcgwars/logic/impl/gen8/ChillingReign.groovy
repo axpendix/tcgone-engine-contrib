@@ -3468,11 +3468,8 @@ public enum ChillingReign implements LogicCardInfo {
             def prizes = my.prizeCardSet.select(min: 1, max: maxPrizes, hidden:true, "Choose up to $maxPrizes prize cards to move to your hand")
             prizes.moveTo(hidden: true, my.hand)
 
-            def cards = my.hand.select(count: prizes.size(), "Choose cards to put back as prize cards")
+            def cards = my.hand.getExcludedList(thisCard).select(count: prizes.size(), "Choose cards to put back as prize cards")
             cards.moveTo(hidden:true, my.prizeCardSet)
-          }
-          playRequirement {
-            assert my.hand.getExcludedList(thisCard).size() >= 1
           }
         };
       case PEONY_150:
