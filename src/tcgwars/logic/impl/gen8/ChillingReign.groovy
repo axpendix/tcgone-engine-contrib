@@ -1512,7 +1512,7 @@ public enum ChillingReign implements LogicCardInfo {
               before (KNOCKOUT, self) {
                 if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && my.deck) {
                   bc "$thisAbility activates"
-                  self.owner.pbg.deck.select(min: 1, max: 2, "Search for up to 2 cards").showToOpponent("Selected Cards").moveTo(my.hand)
+                  self.owner.pbg.deck.select(min: 1, max: 2, "Search for up to 2 cards").moveTo(my.hand, hidden: true)
                   shuffleDeck(null, self.owner.toTargetPlayer())
                 }
               }
