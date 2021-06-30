@@ -179,7 +179,7 @@ public enum ChillingReign implements LogicCardInfo {
   FIRE_RESISTANT_GLOVES_138 ("Fire-Resistant Gloves", "138", Rarity.UNCOMMON, [TRAINER, ITEM, POKEMON_TOOL]),
   FLANNERY_139 ("Flannery", "139", Rarity.UNCOMMON, [TRAINER, SINGLE_STRIKE, SUPPORTER]),
   FOG_CRYSTAL_140 ("Fog Crystal", "140", Rarity.UNCOMMON, [TRAINER, ITEM]),
-  GALARIAN_BREASTPLATE_141 ("Galarian Breastplate", "141", Rarity.UNCOMMON, [TRAINER, ITEM, POKEMON_TOOL]),
+  GALARIAN_CHESTPLATE_141 ("Galarian Chestplate", "141", Rarity.UNCOMMON, [TRAINER, ITEM, POKEMON_TOOL]),
   HONEY_142 ("Honey", "142", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   JUSTIFIED_GLOVES_143 ("Justified Gloves", "143", Rarity.UNCOMMON, [TRAINER, ITEM, POKEMON_TOOL]),
   KAREN_S_CONVICTION_144 ("Karen's Conviction", "144", Rarity.UNCOMMON, [TRAINER, SINGLE_STRIKE, SUPPORTER]),
@@ -3293,13 +3293,24 @@ public enum ChillingReign implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
         };
-      case GALARIAN_BREASTPLATE_141:
-        return itemCard (this) {
-          text "If the Pokémon this card is attached to has Galarian in its name, it takes 30 less damage from your opponent's attacks (after applying Weakness and Resistance). You may play any number of Item cards during your turn."
+      case GALARIAN_CHESTPLATE_141:
+        return pokemonTool (this) {
+          text "If the Pokémon this card is attached to has 'Galarian' in its name, it takes 30 less damage from attacks from your opponent’s Pokémon (after applying Weakness and Resistance)."
+          def eff
           onPlay {
-            // TODO
+            eff = delayed {
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each {
+                  if (it.from.owner == self.owner.opposite && it.to == self && self.name.contains("Galarian") && it.dmg.value && it.notNoEffect) {
+                    bc "Galarian Chestplate -30"
+                    it.dmg -= hp(30)
+                  }
+                }
+              }
+            }
           }
-          playRequirement{
+          onRemoveFromPlay {
+            eff.unregister()
           }
         };
       case HONEY_142:
