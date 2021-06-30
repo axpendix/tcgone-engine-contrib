@@ -1400,12 +1400,27 @@ public enum ChillingReign implements LogicCardInfo {
       case ZEBSTRIKA_51:
         return evolution (this, from:"Blitzle", hp:HP120, type:L, retreatCost:1) {
           weakness FIGHTING
+          globalAbility { Card thisCard ->
+            delayed (priority: LAST) {
+              after PROCESS_ATTACK_EFFECTS, {
+                if (ef.attacker.owner == thisCard.player && ef.attacker.rapidStrike) {
+                  bg.em().storeObject("Coordinated_Bolt_${thisCard.player}", bg.turnCount)
+                  bg.em().storeObject("Coordinated_Bolt_Attacker_${thisCard.player}", ef.attacker.hashCode())
+                }
+              }
+            }
+          }
           move "Coordinated Bolt", {
             text "30+ damage. If any of your other Rapid Strike Pokémon used an attack during your last turn, this attack does 90 more damage."
             energyCost COLORLESS
-            attackRequirement {}
             onAttack {
-              // TODO
+              damage 30
+
+              def tc = bg.em().retrieveObject("Coordinated_Bolt_${thisCard.player}") ?: -1
+              def attacker = bg.em().retrieveObject("Coordinated_Bolt_Attacker_${thisCard.player}")
+              if (tc == bg.turnCount - 2 && attacker != self.hashCode() && opp.bench) {
+                damage 90
+              }
             }
           }
           move "Spark Rush", {
