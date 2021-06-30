@@ -2528,7 +2528,7 @@ public enum ChillingReign implements LogicCardInfo {
             text "Count the number of Pokémon cards in your opponent's discard pile. Put that many damage counters on your opponent's Pokémon in any way you like. Then, your opponent shuffles all of the Pokémon cards from their discard pile into their deck."
             energyCost COLORLESS
             attackRequirement {
-//              assert opp.discard.filterByType(POKEMON) : "Opponent has no Pokémon in discard pile"
+              assert opp.discard.filterByType(POKEMON) : "Opponent has no Pokémon in discard pile"
             }
             onAttack {
               def totalCountersBefore = opp.all.sum { it.numberOfDamageCounters }
