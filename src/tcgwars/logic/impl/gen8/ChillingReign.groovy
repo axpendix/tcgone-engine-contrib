@@ -3248,8 +3248,9 @@ public enum ChillingReign implements LogicCardInfo {
             def list = my.deck.subList(drawStart, my.deck.size())
 
             if (list.size() >= 2) {
-              list = rearrange(list, "Rearrange to put to the top of the deck")
-              deck.setSubList(0, list)
+              list = rearrange(list, "Rearrange to put to the top of the deck, left = topmost card")
+              list = list.reverse()
+              list.moveTo(my.deck, hidden: true, addToTop: true)
             }
 
             bc "Put ${list.size()} cards from the bottom of their deck, rearranged and put it to the top of their deck."
