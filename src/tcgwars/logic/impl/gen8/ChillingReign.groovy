@@ -3348,9 +3348,18 @@ public enum ChillingReign implements LogicCardInfo {
         return supporter (this) {
           text "During this turn, your Single Strike Pokémon's attacks do 20 more damage to your opponent's Active Pokémon for each Prize Card your opponent has already taken. You may play only 1 Supporter card during your turn."
           onPlay {
-            // TODO
-          }
-          playRequirement{
+            delayed {
+              after PROCESS_ATTACK_EFFECTS, {
+                bg.dm().each {
+                  if (it.to.active && it.from.owner == thisCard.player && it.to.owner != it.from.owner && it.dmg.value && it.from.singleStrike) {
+                    def bonusDamage = opp.prizeCardSet.takenCount * 20
+                    bc "$thisCard +$bonusDamage"
+                    it.dmg += hp(bonusDamage)
+                  }
+                }
+              }
+              unregisterAfter 1
+            }
           }
         };
       case KLARA_145:
