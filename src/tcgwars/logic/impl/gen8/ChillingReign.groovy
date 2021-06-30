@@ -1400,12 +1400,27 @@ public enum ChillingReign implements LogicCardInfo {
       case ZEBSTRIKA_51:
         return evolution (this, from:"Blitzle", hp:HP120, type:L, retreatCost:1) {
           weakness FIGHTING
+          globalAbility { Card thisCard ->
+            delayed (priority: LAST) {
+              after PROCESS_ATTACK_EFFECTS, {
+                if (ef.attacker.owner == thisCard.player && ef.attacker.rapidStrike) {
+                  bg.em().storeObject("Coordinated_Bolt_${thisCard.player}", bg.turnCount)
+                  bg.em().storeObject("Coordinated_Bolt_Attacker_${thisCard.player}", ef.attacker.hashCode())
+                }
+              }
+            }
+          }
           move "Coordinated Bolt", {
             text "30+ damage. If any of your other Rapid Strike Pokémon used an attack during your last turn, this attack does 90 more damage."
             energyCost COLORLESS
-            attackRequirement {}
             onAttack {
-              // TODO
+              damage 30
+
+              def tc = bg.em().retrieveObject("Coordinated_Bolt_${thisCard.player}") ?: -1
+              def attacker = bg.em().retrieveObject("Coordinated_Bolt_Attacker_${thisCard.player}")
+              if (tc == bg.turnCount - 2 && attacker != self.hashCode() && opp.bench) {
+                damage 90
+              }
             }
           }
           move "Spark Rush", {
@@ -1444,13 +1459,28 @@ public enum ChillingReign implements LogicCardInfo {
       case ZERAORA_V_53:
         return basic (this, hp:HP210, type:L, retreatCost:2) {
           weakness FIGHTING
+          globalAbility { Card thisCard ->
+            delayed (priority: LAST) {
+              after PROCESS_ATTACK_EFFECTS, {
+                if (ef.attacker.owner == thisCard.player && ef.attacker.rapidStrike) {
+                  bg.em().storeObject("Cross_Fist_${thisCard.player}", bg.turnCount)
+                  bg.em().storeObject("Cross_Fist_Attacker_${thisCard.player}", ef.attacker.hashCode())
+                }
+              }
+            }
+          }
           move "Cross Fist", {
             text "100 damage. If any of your other Rapid Strike Pokémon used an attack during your last turn, this attack does 160 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon)"
             energyCost LIGHTNING, COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
               damage 100
-              // TODO
+
+              def tc = bg.em().retrieveObject("Cross_Fist_${thisCard.player}") ?: -1
+              def attacker = bg.em().retrieveObject("Cross_Fist_Attacker_${thisCard.player}")
+              if (tc == bg.turnCount - 2 && attacker != self.hashCode() && opp.bench) {
+                damage 160, opp.bench.select("Deal damage to?")
+              }
             }
           }
         };
@@ -3464,7 +3494,7 @@ public enum ChillingReign implements LogicCardInfo {
           text "Choose up to 3 of your Prize cards and put them into your hand. Then, place the same number of cards from your hand face-down as Prize cards. You may play only 1 Supporter card during your turn."
           onPlay {
             def maxPrizes = Math.min(3, my.prizeCardSet.size())
-            maxPrizes = Math.min(maxPrizes, my.hand.size())
+            maxPrizes = Math.max(maxPrizes, my.hand.size())
             def prizes = my.prizeCardSet.select(min: 1, max: maxPrizes, hidden:true, "Choose up to $maxPrizes prize cards to move to your hand")
             prizes.moveTo(hidden: true, my.hand)
 
@@ -3632,6 +3662,11 @@ public enum ChillingReign implements LogicCardInfo {
                   discard thisCard
                 }
               }
+              before BETWEEN_TURNS, {
+                if (!self.singleStrike) {
+                  discard thisCard
+                }
+              }
             }
           }
           getEnergyTypesOverride {
@@ -3681,6 +3716,11 @@ public enum ChillingReign implements LogicCardInfo {
                 }
               }
               after ATTACH_ENERGY, self, {
+                if (!self.rapidStrike) {
+                  discard thisCard
+                }
+              }
+              before BETWEEN_TURNS, {
                 if (!self.rapidStrike) {
                   discard thisCard
                 }
