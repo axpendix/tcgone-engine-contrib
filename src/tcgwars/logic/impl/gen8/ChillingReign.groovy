@@ -3493,8 +3493,8 @@ public enum ChillingReign implements LogicCardInfo {
         return supporter (this) {
           text "Choose up to 3 of your Prize cards and put them into your hand. Then, place the same number of cards from your hand face-down as Prize cards. You may play only 1 Supporter card during your turn."
           onPlay {
-            def maxPrizes = Math.min(3, my.prizeCardSet.size())
-            maxPrizes = Math.max(maxPrizes, my.hand.size())
+            def maxPrizes = Math.max(my.prizeCardSet.size(), my.hand.size())
+            maxPrizes = Math.min(3, maxPrizes)
             def prizes = my.prizeCardSet.select(min: 1, max: maxPrizes, hidden:true, "Choose up to $maxPrizes prize cards to move to your hand")
             prizes.moveTo(hidden: true, my.hand)
 
