@@ -703,7 +703,7 @@ public enum ChillingReign implements LogicCardInfo {
               def maxSearch = (bg.turnCount == 2) ? 3 : 1
 
               my.deck.search(min: 0, max: maxSearch, {
-                it.types.contains(G)
+                it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(G)
               }).moveTo(my.hand)
               shuffleDeck()
             }
