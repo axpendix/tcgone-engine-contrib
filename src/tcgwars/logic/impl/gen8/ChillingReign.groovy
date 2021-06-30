@@ -1512,7 +1512,7 @@ public enum ChillingReign implements LogicCardInfo {
               before (KNOCKOUT, self) {
                 if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && my.deck) {
                   bc "$thisAbility activates"
-                  self.owner.pbg.deck.select(min: 1, max: 2, "Search for up to 2 cards").showToOpponent("Selected Cards").moveTo(my.hand)
+                  self.owner.pbg.deck.select(min: 1, max: 2, "Search for up to 2 cards").moveTo(my.hand, hidden: true)
                   shuffleDeck(null, self.owner.toTargetPlayer())
                 }
               }
@@ -2951,7 +2951,7 @@ public enum ChillingReign implements LogicCardInfo {
           weakness FIGHTING
           bwAbility "Chromashift", {
             text "This Pokémon is the same type as any basic Energy attached to it. (If it has 2 or more different types of basic Energy attached, this Pokémon is each of those types.)"
-            getterA (GET_POKEMON_TYPE, self) { h->
+            getterA (GET_POKEMON_TYPE, LAST, self) { h->
               if (self.cards.hasType(BASIC_ENERGY)) {
                 h.object.clear()
 
@@ -3265,11 +3265,13 @@ public enum ChillingReign implements LogicCardInfo {
           def eff
           onPlay {
             eff = delayed {
-              before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if (it.to.owner == self.owner.opposite && it.from.owner == self.owner && it.to.active && it.to.types.contains(R)) {
-                    bc "Fire-Resistant Gloves +30"
-                    it.dmg += 30
+              after PROCESS_ATTACK_EFFECTS, {
+                if (ef.attacker == self) {
+                  bg.dm().each {
+                    if (it.to.owner == self.owner.opposite && it.to.active && it.to.types.contains(R)) {
+                      bc "$thisCard +30"
+                      it.dmg += hp(30)
+                    }
                   }
                 }
               }
@@ -3349,11 +3351,13 @@ public enum ChillingReign implements LogicCardInfo {
           def eff
           onPlay {
             eff = delayed {
-              before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if (it.to.owner == self.owner.opposite && it.from.owner == self.owner && it.to.active && it.to.types.contains(D)) {
-                    bc "Justified Gloves +20"
-                    it.dmg += 30
+              after PROCESS_ATTACK_EFFECTS, {
+                if (ef.attacker == self) {
+                  bg.dm().each {
+                    if (it.to.owner == self.owner.opposite && it.to.active && it.to.types.contains(D)) {
+                      bc "$thisCard +30"
+                      it.dmg += hp(30)
+                    }
                   }
                 }
               }
@@ -3464,11 +3468,8 @@ public enum ChillingReign implements LogicCardInfo {
             def prizes = my.prizeCardSet.select(min: 1, max: maxPrizes, hidden:true, "Choose up to $maxPrizes prize cards to move to your hand")
             prizes.moveTo(hidden: true, my.hand)
 
-            def cards = my.hand.select(count: prizes.size(), "Choose cards to put back as prize cards")
+            def cards = my.hand.getExcludedList(thisCard).select(count: prizes.size(), "Choose cards to put back as prize cards")
             cards.moveTo(hidden:true, my.prizeCardSet)
-          }
-          playRequirement {
-            assert my.hand.getExcludedList(thisCard).size() >= 1
           }
         };
       case PEONY_150:
@@ -3585,11 +3586,13 @@ public enum ChillingReign implements LogicCardInfo {
           def eff
           onPlay {
             eff = delayed {
-              before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if (it.to.owner == self.owner.opposite && it.from.owner == self.owner && it.to.active && it.to.types.contains(G)) {
-                    bc "Weeding Gloves +20"
-                    it.dmg += 30
+              after PROCESS_ATTACK_EFFECTS, {
+                if (ef.attacker == self) {
+                  bg.dm().each {
+                    if (it.to.owner == self.owner.opposite && it.to.active && it.to.types.contains(G)) {
+                      bc "$thisCard +30"
+                      it.dmg += hp(30)
+                    }
                   }
                 }
               }
@@ -3624,6 +3627,11 @@ public enum ChillingReign implements LogicCardInfo {
                   prevent()
                 }
               }
+              after ATTACH_ENERGY, self, {
+                if (!self.singleStrike) {
+                  discard thisCard
+                }
+              }
             }
           }
           getEnergyTypesOverride {
@@ -3645,7 +3653,7 @@ public enum ChillingReign implements LogicCardInfo {
             eff = delayed (priority: BEFORE_LAST) {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if (it.to == self && it.from.owner != self.owner && it.dmg.value && it.notNoEffect) {
+                  if (it.to == self && it.from.owner != self.owner && self.active && it.dmg.value && it.notNoEffect) {
                     bc "Lucky Energy activates"
                     draw 1, TargetPlayer.OPPONENT // Targets the player being attacked (holding the lucky energy)
                   }
@@ -3670,6 +3678,11 @@ public enum ChillingReign implements LogicCardInfo {
                 if (ef.type == PARALYZED) {
                   bc "$thisCard prevents $self from being Paralyzed"
                   prevent()
+                }
+              }
+              after ATTACH_ENERGY, self, {
+                if (!self.rapidStrike) {
+                  discard thisCard
                 }
               }
             }
