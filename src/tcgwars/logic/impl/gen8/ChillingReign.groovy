@@ -2951,7 +2951,7 @@ public enum ChillingReign implements LogicCardInfo {
           weakness FIGHTING
           bwAbility "Chromashift", {
             text "This Pokémon is the same type as any basic Energy attached to it. (If it has 2 or more different types of basic Energy attached, this Pokémon is each of those types.)"
-            getterA (GET_POKEMON_TYPE, self) { h->
+            getterA (GET_POKEMON_TYPE, LAST, self) { h->
               if (self.cards.hasType(BASIC_ENERGY)) {
                 h.object.clear()
 
@@ -3622,6 +3622,11 @@ public enum ChillingReign implements LogicCardInfo {
                 if (ef.type == POISONED) {
                   bc "$thisCard prevents $self from being Poisoned"
                   prevent()
+                }
+              }
+              after ATTACH_ENERGY, self, {
+                if (!self.singleStrike) {
+                  discard thisCard
                 }
               }
             }
