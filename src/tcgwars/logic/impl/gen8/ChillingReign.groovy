@@ -3627,7 +3627,17 @@ public enum ChillingReign implements LogicCardInfo {
           text "This card can only be attached to a Rapid Strike Pokémon. If this card is attached to anything other than a Rapid Strike Pokémon, discard this card. As long as this card is attached to a Pokémon, this card provides every type of Energy but provides only 1 Energy at a time. If this Pokémon is Paralyzed, it is no longer Paralyzed and cannot be Paralyzed."
           def eff
           onPlay { reason->
-            // TODO
+            if (self.isSPC(PARALYZED)) {
+              clearSpecialCondition(self, SRC_SPENERGY, [PARALYZED])
+            }
+            eff = delayed {
+              before APPLY_SPECIAL_CONDITION, self, {
+                if (ef.type == PARALYZED) {
+                  bc "$thisCard prevents $self from being Paralyzed"
+                  prevent()
+                }
+              }
+            }
           }
           getEnergyTypesOverride {
             if (self) return [[R, D, F, G, W, Y, L, M, P, C] as Set]
