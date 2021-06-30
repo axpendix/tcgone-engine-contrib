@@ -3350,11 +3350,16 @@ public enum ChillingReign implements LogicCardInfo {
         };
       case MELONY_146:
         return supporter (this) {
-          text "Attach a W Energy from your discard pile to 1 of your Pokémon V. Then, draw 3 cards. You may play only 1 Supporter card during your turn."
+          text "Attach a [W] Energy from your discard pile to 1 of your Pokémon V. Then, draw 3 cards. You may play only 1 Supporter card during your turn."
           onPlay {
-            // TODO
+            my.discard.filterByType(ENERGY).filterByEnergyType(W).select("Select a [W] energy to attach").each {
+              attachEnergy(my.all.findAll { it.pokemonV }.select("Attach to?"), it)
+            }
+            draw 3
           }
-          playRequirement{
+          playRequirement {
+            assert my.all.any { it.pokemonV } : "No Pokémon V available"
+            assert my.discard.filterByType(ENERGY).filterByEnergyType(W) : "No [W] energies in discard"
           }
         };
       case OLD_CEMETERY_147:
