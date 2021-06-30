@@ -3475,14 +3475,35 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case RAPID_STRIKE_SCROLL_OF_THE_SKIES_151:
-        return itemCard (this) {
-          text "The Rapid Strike Pokémon this card is attached to can use the attack on this card. LC Flying Suplex 10 damage. This attack does 50 more damage for each Energy attached to your opponent's Active Pokémon. You may play as many Item cards as you like during your turn."
-          onPlay {
-            // TODO
+        return pokemonTool (this) {
+          text "The Rapid Strike Pokémon this card is attached to can use the attack on this card. (You still need the necessary Energy to use this attack.)" +
+            "[L] [C] Gravdrop 10+" +
+            "This attack does 50 more damage for each Energy attached to your opponent’s Active Pokémon."
+          def newMove
+          onPlay { reason ->
+            def moveBody = {
+              text "10+ damage. This attack does 50 more damage for each Energy attached to your opponent’s Active Pokémon."
+              energyCost L, C
+              onAttack {
+                damage 10 + 50 * opp.active.cards.energyCount(C)
+              }
+            }
+            Move move = new Move("Gravdrop")
+            moveBody.delegate = new MoveBuilder(thisMove: move)
+            moveBody.call()
+            newMove = getter GET_MOVE_LIST, self, { h ->
+              if (h.effect.target.rapidStrike) {
+                def moveList = []
+                moveList.addAll h.object
+                moveList.add move
+                h.object = moveList
+              }
+            }
           }
-          playRequirement{
+          onRemoveFromPlay {
+            newMove.unregister()
           }
-        };
+        }
       case RUGGED_HELMET_152:
         return pokemonTool (this) {
           text "When the Pokémon this card is attached to is your Active Pokémon and is damaged by an opponent's attack, choose an Energy attached to the Attacking Pokémon and return it to your opponent's hand. You may play as many Item cards as you like during your turn."
@@ -3513,7 +3534,9 @@ public enum ChillingReign implements LogicCardInfo {
         };
       case SINGLE_STRIKE_SCROLL_OF_PIERCING_154:
         return pokemonTool (this) {
-          text "The Single Strike Pokémon this card is attached to can use the attack on this card. RCC Overreach 120 damage. This attack's damage isn't affected by Weakness, Resistance, or any other effects on your opponent's Active Pokémon. You may play as many Item cards as you like during your turn."
+          text "The Single Strike Pokémon this card is attached to can use the attack on this card. (You still need the necessary Energy to use this attack.) " +
+            "[R] [C] [C] Bullet Breakthrough 120" +
+            "This attack’s damage isn’t affected by Weakness or Resistance, or by any effects on your opponent’s Active Pokémon."
           def newMove
           onPlay { reason->
             def moveBody = {
@@ -3522,10 +3545,9 @@ public enum ChillingReign implements LogicCardInfo {
                 // self is not set properly creating a move like this, use bg.ownActive() instead
                 assert bg.ownActive().singleStrike : "${bg.ownActive()} is not a $SINGLE_STRIKE Pokémon"
               }
-              energyCost F
+              energyCost R, C, C
               onAttack {
-                damage 10
-                damage 10 * self.numberOfDamageCounters
+                swiftDamage 120, defending
               }
             }
             Move move = new Move("Bullet Breakthrough")
