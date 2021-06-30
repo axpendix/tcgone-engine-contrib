@@ -1,6 +1,7 @@
 package tcgwars.logic.impl.gen8
 
 import tcgwars.logic.effect.gm.AttachEnergy
+import tcgwars.logic.groovy.TcgStatics
 import tcgwars.logic.impl.gen5.PlasmaBlast;
 
 import static tcgwars.logic.card.HP.*;
@@ -178,7 +179,7 @@ public enum ChillingReign implements LogicCardInfo {
   FIRE_RESISTANT_GLOVES_138 ("Fire-Resistant Gloves", "138", Rarity.UNCOMMON, [TRAINER, ITEM, POKEMON_TOOL]),
   FLANNERY_139 ("Flannery", "139", Rarity.UNCOMMON, [TRAINER, SINGLE_STRIKE, SUPPORTER]),
   FOG_CRYSTAL_140 ("Fog Crystal", "140", Rarity.UNCOMMON, [TRAINER, ITEM]),
-  GALARIAN_BREASTPLATE_141 ("Galarian Breastplate", "141", Rarity.UNCOMMON, [TRAINER, ITEM, POKEMON_TOOL]),
+  GALARIAN_CHESTPLATE_141 ("Galarian Chestplate", "141", Rarity.UNCOMMON, [TRAINER, ITEM, POKEMON_TOOL]),
   HONEY_142 ("Honey", "142", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   JUSTIFIED_GLOVES_143 ("Justified Gloves", "143", Rarity.UNCOMMON, [TRAINER, ITEM, POKEMON_TOOL]),
   KAREN_S_CONVICTION_144 ("Karen's Conviction", "144", Rarity.UNCOMMON, [TRAINER, SINGLE_STRIKE, SUPPORTER]),
@@ -548,7 +549,7 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost COLORLESS
             attackRequirement {}
             onAttack {
-              reduceDamageFromDefendingNextTurn(hp(10), thisMove, defending)
+              reduceDamageFromDefendingNextTurn(hp(20), thisMove, defending)
             }
           }
           move "Rear Kick", {
@@ -703,7 +704,7 @@ public enum ChillingReign implements LogicCardInfo {
               def maxSearch = (bg.turnCount == 2) ? 3 : 1
 
               my.deck.search(min: 0, max: maxSearch, {
-                it.types.contains(G)
+                it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(G)
               }).moveTo(my.hand)
               shuffleDeck()
             }
@@ -758,10 +759,14 @@ public enum ChillingReign implements LogicCardInfo {
               damage 130
 
               afterDamage {
-                def targets = multiSelect( my.bench.findAll { it.rapidStrike }, 2, "Attach an Energy Card to")
-                targets.each {
-                  if (my.discard.filterByType(ENERGY)) {
-                    attachEnergyFrom(my.discard, it)
+                def rapidStrikes = my.bench.findAll { it.rapidStrike }
+                if (rapidStrikes && my.discard.filterByType(ENERGY)) {
+                  def max = Math.min(my.discard.filterByType(ENERGY).size(), 2)
+                  def targets = multiSelect(rapidStrikes, 1, max, "Attach to?")
+                  targets.each {
+                    if (my.discard.filterByType(ENERGY)) {
+                      attachEnergyFrom(my.discard, it)
+                    }
                   }
                 }
               }
@@ -1136,7 +1141,7 @@ public enum ChillingReign implements LogicCardInfo {
             text "70 damage."
             energyCost WATER, WATER, COLORLESS
             attackRequirement {}
-            onAttack {
+            onAttack {TAUROS_115
               damage 70
             }
           }
@@ -1158,10 +1163,8 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 160
-              if (confirm("Discard 2 Energy to Paralyze Defending Pokémon?")) {
-                discardSelfEnergyAfterDamage(C, C)
-                applyAfterDamage(PARALYZED)
-              }
+              discardSelfEnergyAfterDamage(C, C)
+              applyAfterDamage(PARALYZED)
             }
           }
         };
@@ -1504,12 +1507,12 @@ public enum ChillingReign implements LogicCardInfo {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           bwAbility "Last Gift", {
-            text "When this Pokémon is Knocked Out by damage from an opponent's attack, you may search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
+            text "If this Pokémon is Knocked Out by damage from an attack from your opponent’s Pokémon, search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
             delayedA (priority: LAST) {
               before (KNOCKOUT, self) {
                 if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && my.deck) {
                   bc "$thisAbility activates"
-                  self.owner.pbg.deck.select(min: 0, max: 2, "Search for up to 2 cards").showToOpponent("Selected Cards").moveTo(my.hand)
+                  self.owner.pbg.deck.select(min: 1, max: 2, "Search for up to 2 cards").showToOpponent("Selected Cards").moveTo(my.hand)
                   shuffleDeck(null, self.owner.toTargetPlayer())
                 }
               }
@@ -1807,8 +1810,10 @@ public enum ChillingReign implements LogicCardInfo {
               if (rapidStrike) {
                 rapidStrike.showToOpponent("Cards to shuffle into deck, does 40x damage for each")
                 damage 40 * rapidStrike.size()
-                rapidStrike.moveTo(my.deck)
-                shuffleDeck()
+                afterDamage {
+                  rapidStrike.moveTo(my.deck)
+                  shuffleDeck()
+                }
               }
             }
           }
@@ -2485,11 +2490,17 @@ public enum ChillingReign implements LogicCardInfo {
           weakness FIGHTING
           bwAbility "Bursting Needles", {
             text "If this Pokémon is your Active Pokémon and is Knocked Out by damage from an opponent's attack, put 6 damage counters on the Attacking Pokémon."
-            delayedA {
+            def attacker
+            delayedA (priority: LAST) {
+              before APPLY_ATTACK_DAMAGES, {
+                attacker = self.owner.opposite.pbg.active
+              }
               before (KNOCKOUT, self) {
-                if (self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite ) {
-                  bc "$thisAbility activates."
-                  directDamage(60, self.owner.opposite.pbg.active, SRC_ABILITY)
+                if ((ef as Knockout).byDamageFromAttack && self.active && bg.currentTurn == self.owner.opposite && self.owner.opposite.pbg.all.find { it == attacker as PokemonCardSet }) {
+                  targeted (attacker as PokemonCardSet, SRC_ABILITY) {
+                    bc "$thisAbility activates"
+                    directDamage(60, attacker as PokemonCardSet, SRC_ABILITY)
+                  }
                 }
               }
             }
@@ -2527,10 +2538,14 @@ public enum ChillingReign implements LogicCardInfo {
               assert opp.discard.filterByType(POKEMON) : "Opponent has no Pokémon in discard pile"
             }
             onAttack {
+              def totalCountersBefore = opp.all.sum { it.numberOfDamageCounters }
               def discardedPokemon = opp.discard.filterByType(POKEMON)
               putDamageCountersOnOpponentsPokemon(discardedPokemon.size())
-              discardedPokemon.moveTo(opp.deck)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+
+              if (totalCountersBefore != opp.all.sum { it.numberOfDamageCounters }) {
+                discardedPokemon.moveTo(opp.deck)
+                shuffleDeck(null, TargetPlayer.OPPONENT)
+              }
             }
           }
           move "Will-O-Wisp", {
@@ -2757,7 +2772,7 @@ public enum ChillingReign implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
             }
             onAttack {
-              my.deck.select(min: 0, max: 2).moveTo(hidden: true, my.hand)
+              my.deck.select(min: 1, max: 2).moveTo(hidden: true, my.hand)
               shuffleDeck()
             }
           }
@@ -2800,13 +2815,13 @@ public enum ChillingReign implements LogicCardInfo {
             energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
-              damage 20 + self.numberOfDamageCounters * 10
+              damage 20 + self.numberOfDamageCounters * 20
               afterDamage { apply(CONFUSED, self) }
             }
           }
           move "Take Down", {
             text "80 damage. This Pokémon also does 30 damage to itself."
-            energyCost R, R, C, C
+            energyCost COLORLESS, COLORLESS
             attackRequirement {}
             onAttack {
               damage 80
@@ -3151,7 +3166,19 @@ public enum ChillingReign implements LogicCardInfo {
           }
         };
       case CAITLIN_132:
-        return copy(PlasmaBlast.CAITLIN_78, this);
+        return supporter (this) {
+          text "Put any number of cards from your hand on the bottom of your deck in any order. Then, draw that many cards."
+          onPlay {
+            def list = hand.getExcludedList(thisCard)
+            list = list.select(max: list.size(), "Put as many cards from your hand as you like on the bottom of your deck in any order. Then, draw a card for each card you put on the bottom of your deck")
+            def rearranged = rearrange(list)
+            rearranged.moveTo(hidden:true, my.deck)
+            draw list.size()
+          }
+          playRequirement {
+            assert hand.getExcludedList(thisCard).size() >= 1 : "Not enough cards in hand to use"
+          }
+        };
       case CRUSHING_GLOVES_133:
         return pokemonTool (this) {
           text "The Pokémon this card is attached to does 30 more damage to your opponent's Active [M] Pokémon."
@@ -3221,8 +3248,9 @@ public enum ChillingReign implements LogicCardInfo {
             def list = my.deck.subList(drawStart, my.deck.size())
 
             if (list.size() >= 2) {
-              list = rearrange(list, "Rearrange to put to the top of the deck")
-              deck.setSubList(0, list)
+              list = rearrange(list, "Rearrange to put to the top of the deck, left = topmost card")
+              list = list.reverse()
+              list.moveTo(my.deck, hidden: true, addToTop: true)
             }
 
             bc "Put ${list.size()} cards from the bottom of their deck, rearranged and put it to the top of their deck."
@@ -3237,7 +3265,7 @@ public enum ChillingReign implements LogicCardInfo {
           def eff
           onPlay {
             eff = delayed {
-              after APPLY_ATTACK_DAMAGES, {
+              before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
                   if (it.to.owner == self.owner.opposite && it.from.owner == self.owner && it.to.active && it.to.types.contains(R)) {
                     bc "Fire-Resistant Gloves +30"
@@ -3255,13 +3283,17 @@ public enum ChillingReign implements LogicCardInfo {
         return supporter (this) {
           text "Choose a Special Energy card attached to 1 of your opponent's Pokémon, and any Stadium card in play, and discard them. You may play only 1 Supporter card during your turn."
           onPlay {
-            def pcs = opp.all.findAll {
-              it.cards.filterByType(SPECIAL_ENERGY)
-            }.select("Which Pokémon to remove a Special Energy from?")
+            if (opp.all.any { it.cards.filterByType(SPECIAL_ENERGY) }) {
+              def pcs = opp.all.findAll {
+                it.cards.filterByType(SPECIAL_ENERGY)
+              }.select("Which Pokémon to remove a Special Energy from?")
 
-            pcs.cards.select("Remove which Special Energy?", cardTypeFilter(SPECIAL_ENERGY)).discard()
+              pcs.cards.select("Remove which Special Energy?", cardTypeFilter(SPECIAL_ENERGY)).discard()
+            }
 
-            discard bg.stadiumInfoStruct.stadiumCard
+            if (bg.stadiumInfoStruct) {
+              discard bg.stadiumInfoStruct.stadiumCard
+            }
           }
           playRequirement {
             assert bg.stadiumInfoStruct || opp.all.any { it.cards.filterByType(SPECIAL_ENERGY) } : "No Stadium in play or Special Energy attached"
@@ -3280,22 +3312,35 @@ public enum ChillingReign implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
         };
-      case GALARIAN_BREASTPLATE_141:
-        return itemCard (this) {
-          text "If the Pokémon this card is attached to has Galarian in its name, it takes 30 less damage from your opponent's attacks (after applying Weakness and Resistance). You may play any number of Item cards during your turn."
+      case GALARIAN_CHESTPLATE_141:
+        return pokemonTool (this) {
+          text "If the Pokémon this card is attached to has 'Galarian' in its name, it takes 30 less damage from attacks from your opponent’s Pokémon (after applying Weakness and Resistance)."
+          def eff
           onPlay {
-            // TODO
+            eff = delayed {
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each {
+                  if (it.from.owner == self.owner.opposite && it.to == self && self.name.contains("Galarian") && it.dmg.value && it.notNoEffect) {
+                    bc "Galarian Chestplate -30"
+                    it.dmg -= hp(30)
+                  }
+                }
+              }
+            }
           }
-          playRequirement{
+          onRemoveFromPlay {
+            eff.unregister()
           }
         };
       case HONEY_142:
         return supporter (this) {
-          text "Draw a card for each Pokémon V on your opponent's Bench. You may play only 1 Supporter card during your turn."
+          text "Draw a card for each of your opponent’s Benched Pokémon V."
           onPlay {
-            // TODO
+            def cards = opp.bench.count { it.pokemonV } as Integer
+            draw cards
           }
-          playRequirement{
+          playRequirement {
+            assert opp.bench.any { it.pokemonV } : "No Pokémon V on your opponent's bench"
           }
         };
       case JUSTIFIED_GLOVES_143:
@@ -3304,7 +3349,7 @@ public enum ChillingReign implements LogicCardInfo {
           def eff
           onPlay {
             eff = delayed {
-              after APPLY_ATTACK_DAMAGES, {
+              before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
                   if (it.to.owner == self.owner.opposite && it.from.owner == self.owner && it.to.active && it.to.types.contains(D)) {
                     bc "Justified Gloves +20"
@@ -3322,95 +3367,189 @@ public enum ChillingReign implements LogicCardInfo {
         return supporter (this) {
           text "During this turn, your Single Strike Pokémon's attacks do 20 more damage to your opponent's Active Pokémon for each Prize Card your opponent has already taken. You may play only 1 Supporter card during your turn."
           onPlay {
-            // TODO
-          }
-          playRequirement{
+            delayed {
+              after PROCESS_ATTACK_EFFECTS, {
+                bg.dm().each {
+                  if (it.to.active && it.from.owner == thisCard.player && it.to.owner != it.from.owner && it.dmg.value && it.from.singleStrike) {
+                    def bonusDamage = opp.prizeCardSet.takenCount * 20
+                    bc "$thisCard +$bonusDamage"
+                    it.dmg += hp(bonusDamage)
+                  }
+                }
+              }
+              unregisterAfter 1
+            }
           }
         };
       case KLARA_145:
         return supporter (this) {
           text "Choose up to 2 Pokémon and up to 2 Basic Energy from your discard pile, show them to your opponent, and put them into your hand. You may play only 1 Supporter card during your turn."
           onPlay {
-            // TODO
+            def cards = my.discard.select(min: 1, max: 4, "Choose up to 2 Pokémon and up to 2 Basic Energy from your discard pile", {
+              it.cardTypes.is(BASIC_ENERGY) || it.cardTypes.is(POKEMON)
+            }, bg.currentThreadPlayerType, { CardList list ->
+              list.filterByType(BASIC_ENERGY).size() <= 2 && list.filterByType(POKEMON).size() <= 2
+            })
+            cards.showToOpponent("$thisCard: Chosen cards to be put into hand")
+            cards.moveTo(my.hand)
           }
-          playRequirement{
+          playRequirement {
+            assert my.discard.filterByType(BASIC_ENERGY) || my.discard.filterByType(POKEMON) : "No Basic Energies or Pokémon in discard"
           }
         };
       case MELONY_146:
         return supporter (this) {
-          text "Attach a W Energy from your discard pile to 1 of your Pokémon V. Then, draw 3 cards. You may play only 1 Supporter card during your turn."
+          text "Attach a [W] Energy from your discard pile to 1 of your Pokémon V. Then, draw 3 cards. You may play only 1 Supporter card during your turn."
           onPlay {
-            // TODO
+            my.discard.filterByType(ENERGY).filterByEnergyType(W).select("Select a [W] energy to attach").each {
+              attachEnergy(my.all.findAll { it.pokemonV }.select("Attach to?"), it)
+            }
+            draw 3
           }
-          playRequirement{
+          playRequirement {
+            assert my.all.any { it.pokemonV } : "No Pokémon V available"
+            assert my.discard.filterByType(ENERGY).filterByEnergyType(W) : "No [W] energies in discard"
           }
         };
       case OLD_CEMETERY_147:
         return stadium (this) {
-          text "Whenever a player attaches an Energy from their hand to 1 of their Pokémon (excluding P Pokémon), put 2 damage counters on that Pokémon. This Stadium stays in play when you play it. Discard it if another Stadium comes into play. If a Stadium with the same name is in play, you can't play this card."
+          text "Whenever a player attaches an Energy from their hand to 1 of their Pokémon (excluding [P] Pokémon), put 2 damage counters on that Pokémon. This Stadium stays in play when you play it. Discard it if another Stadium comes into play. If a Stadium with the same name is in play, you can't play this card."
+          def eff
           onPlay {
-            // TODO
+            eff = delayed {
+              after ATTACH_ENERGY, {
+                def target = e.getTarget(bg)
+                if (target && ef.reason==PLAY_FROM_HAND && !target.types.contains(P)) {
+                  bc "Old Cemetery activates"
+                  directDamage(20, target, TRAINER_CARD)
+                }
+              }
+            }
           }
-          onRemoveFromPlay{
+          onRemoveFromPlay {
+            eff.unregister()
           }
         };
       case PATH_TO_THE_PEAK_148:
         return stadium (this) {
           text "Each player's Pokémon in play with a Rule Box has no Abilities. This Stadium stays in play when you play it. Discard it if another Stadium comes into play. If a Stadium with the same name is in play, you can't play this card."
+          def effect1
+          def effect2
           onPlay {
-            // TODO
+            effect1 = getter(GET_ABILITIES, BEFORE_LAST) { h->
+              if (h.effect.target.ruleBox) {
+                h.object.keySet().removeIf { it instanceof BwAbility }
+              }
+            }
+            effect2 = getter IS_GLOBAL_ABILITY_BLOCKED, { Holder h ->
+              if ((h.effect.target.cardTypes.contains(POKEMON) && h.effect.target.cardTypes.isIn(POKEMON_EX, BREAK, MEGA_POKEMON,
+                PRISM_STAR, POKEMON_GX, TAG_TEAM, POKEMON_V, VMAX))) {
+                h.object=true
+              }
+            }
+            new CheckAbilities().run(bg)
           }
           onRemoveFromPlay{
+            effect1.unregister()
+            effect2.unregister()
+            new CheckAbilities().run(bg)
           }
         };
       case PEONIA_149:
         return supporter (this) {
           text "Choose up to 3 of your Prize cards and put them into your hand. Then, place the same number of cards from your hand face-down as Prize cards. You may play only 1 Supporter card during your turn."
           onPlay {
-            // TODO
+            def maxPrizes = Math.min(3, my.prizeCardSet.size())
+            maxPrizes = Math.min(maxPrizes, my.hand.size())
+            def prizes = my.prizeCardSet.select(min: 1, max: maxPrizes, hidden:true, "Choose up to $maxPrizes prize cards to move to your hand")
+            prizes.moveTo(hidden: true, my.hand)
+
+            def cards = my.hand.select(count: prizes.size(), "Choose cards to put back as prize cards")
+            cards.moveTo(hidden:true, my.prizeCardSet)
           }
-          playRequirement{
+          playRequirement {
+            assert my.hand.getExcludedList(thisCard).size() >= 1
           }
         };
       case PEONY_150:
         return supporter (this) {
           text "Discard your hand and search your deck for up to 2 Trainer cards, reveal them, and put them into your hand. Then, shuffle your deck. You may play only 1 Supporter card during your turn."
           onPlay {
-            // TODO
+            my.hand.getExcludedList(thisCard).discard()
+            def card = my.deck.search(min:0, max: 2, cardTypeFilter(TRAINER))
+            if (card) {
+              card.showToOpponent("$thisCard: Chose this card to move to hand")
+              card.moveTo(my.hand)
+            }
+            shuffleDeck()
           }
-          playRequirement{
+          playRequirement {
+            assert my.deck : "Deck is empty"
           }
         };
       case RAPID_STRIKE_SCROLL_OF_THE_SKIES_151:
-        return itemCard (this) {
-          text "The Rapid Strike Pokémon this card is attached to can use the attack on this card. LC Flying Suplex 10 damage. This attack does 50 more damage for each Energy attached to your opponent's Active Pokémon. You may play as many Item cards as you like during your turn."
-          onPlay {
-            // TODO
+        return pokemonTool (this) {
+          text "The Rapid Strike Pokémon this card is attached to can use the attack on this card. (You still need the necessary Energy to use this attack.)" +
+            "[L] [C] Gravdrop 10+" +
+            "This attack does 50 more damage for each Energy attached to your opponent’s Active Pokémon."
+          def newMove
+          onPlay { reason ->
+            def moveBody = {
+              text "10+ damage. This attack does 50 more damage for each Energy attached to your opponent’s Active Pokémon."
+              energyCost L, C
+              onAttack {
+                damage 10 + 50 * opp.active.cards.energyCount(C)
+              }
+            }
+            Move move = new Move("Gravdrop")
+            moveBody.delegate = new MoveBuilder(thisMove: move)
+            moveBody.call()
+            newMove = getter GET_MOVE_LIST, self, { h ->
+              if (h.effect.target.rapidStrike) {
+                def moveList = []
+                moveList.addAll h.object
+                moveList.add move
+                h.object = moveList
+              }
+            }
           }
-          playRequirement{
+          onRemoveFromPlay {
+            newMove.unregister()
           }
-        };
+        }
       case RUGGED_HELMET_152:
         return pokemonTool (this) {
           text "When the Pokémon this card is attached to is your Active Pokémon and is damaged by an opponent's attack, choose an Energy attached to the Attacking Pokémon and return it to your opponent's hand. You may play as many Item cards as you like during your turn."
-          onPlay {
-            // TODO
-          }
-          onRemoveFromPlay {
+          ifActiveAndDamagedByAttackAttached(delegate) {
+            bc "Rugged Helmet activates"
+            def opponent = self.owner.opposite.pbg
+            def attacker = opponent.active
+            if (attacker.cards.filterByType(ENERGY)) {
+              def card = attacker.cards.filterByType(ENERGY).select("Energy card to move to hand", { true }, self.owner)
+              card.moveTo(opponent.hand)
+            }
           }
         };
       case SIEBOLD_153:
         return supporter (this) {
           text "Choose up to 2 of your Rapid Strike Pokémon in play and heal 60 damage from each of them. You may play only 1 Supporter card during your turn."
           onPlay {
-            // TODO
+            def eligible = my.all.findAll { it.rapidStrike && it.numberOfDamageCounters }
+            def max = Math.min(2, eligible.size())
+            def targets = multiSelect(eligible, 1, max, "Select Rapid Strike Pokémon to heal")
+            targets.each {
+              heal 60, it
+            }
           }
-          playRequirement{
+          playRequirement {
+            assert my.all.find { it.rapidStrike } : "Couldn't find any Rapid Strike Pokémon with damage counters"
           }
         };
       case SINGLE_STRIKE_SCROLL_OF_PIERCING_154:
         return pokemonTool (this) {
-          text "The Single Strike Pokémon this card is attached to can use the attack on this card. RCC Overreach 120 damage. This attack's damage isn't affected by Weakness, Resistance, or any other effects on your opponent's Active Pokémon. You may play as many Item cards as you like during your turn."
+          text "The Single Strike Pokémon this card is attached to can use the attack on this card. (You still need the necessary Energy to use this attack.) " +
+            "[R] [C] [C] Bullet Breakthrough 120" +
+            "This attack’s damage isn’t affected by Weakness or Resistance, or by any effects on your opponent’s Active Pokémon."
           def newMove
           onPlay { reason->
             def moveBody = {
@@ -3419,10 +3558,9 @@ public enum ChillingReign implements LogicCardInfo {
                 // self is not set properly creating a move like this, use bg.ownActive() instead
                 assert bg.ownActive().singleStrike : "${bg.ownActive()} is not a $SINGLE_STRIKE Pokémon"
               }
-              energyCost F
+              energyCost R, C, C
               onAttack {
-                damage 10
-                damage 10 * self.numberOfDamageCounters
+                swiftDamage 120, defending
               }
             }
             Move move = new Move("Bullet Breakthrough")
@@ -3447,7 +3585,7 @@ public enum ChillingReign implements LogicCardInfo {
           def eff
           onPlay {
             eff = delayed {
-              after APPLY_ATTACK_DAMAGES, {
+              before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
                   if (it.to.owner == self.owner.opposite && it.from.owner == self.owner && it.to.active && it.to.types.contains(G)) {
                     bc "Weeding Gloves +20"
@@ -3476,7 +3614,17 @@ public enum ChillingReign implements LogicCardInfo {
           text "This card can only be attached to a Single Strike Pokémon. If this card is attached to anything other than a Single Strike Pokémon, discard this card. As long as this card is attached to a Pokémon, this card provides every type of Energy but provides only 1 Energy at a time. If this Pokémon is Poisoned, it is no longer Poisoned and cannot be Poisoned."
           def eff
           onPlay { reason->
-            // TODO
+            if (self.isSPC(POISONED)) {
+              clearSpecialCondition(self, SRC_SPENERGY, [POISONED])
+            }
+            eff = delayed {
+              before APPLY_SPECIAL_CONDITION, self, {
+                if (ef.type == POISONED) {
+                  bc "$thisCard prevents $self from being Poisoned"
+                  prevent()
+                }
+              }
+            }
           }
           getEnergyTypesOverride {
             if (self) return [[R, D, F, G, W, Y, L, M, P, C] as Set]
@@ -3495,10 +3643,12 @@ public enum ChillingReign implements LogicCardInfo {
           def eff
           onPlay { reason->
             eff = delayed (priority: BEFORE_LAST) {
-              before (KNOCKOUT, self) {
-                if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite) {
-                  bc "Lucky Energy activates"
-                  draw 1, TargetPlayer.OPPONENT // Targets the player being attacked (holding the lucky energy)
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each {
+                  if (it.to == self && it.from.owner != self.owner && it.dmg.value && it.notNoEffect) {
+                    bc "Lucky Energy activates"
+                    draw 1, TargetPlayer.OPPONENT // Targets the player being attacked (holding the lucky energy)
+                  }
                 }
               }
             }
@@ -3512,7 +3662,17 @@ public enum ChillingReign implements LogicCardInfo {
           text "This card can only be attached to a Rapid Strike Pokémon. If this card is attached to anything other than a Rapid Strike Pokémon, discard this card. As long as this card is attached to a Pokémon, this card provides every type of Energy but provides only 1 Energy at a time. If this Pokémon is Paralyzed, it is no longer Paralyzed and cannot be Paralyzed."
           def eff
           onPlay { reason->
-            // TODO
+            if (self.isSPC(PARALYZED)) {
+              clearSpecialCondition(self, SRC_SPENERGY, [PARALYZED])
+            }
+            eff = delayed {
+              before APPLY_SPECIAL_CONDITION, self, {
+                if (ef.type == PARALYZED) {
+                  bc "$thisCard prevents $self from being Paralyzed"
+                  prevent()
+                }
+              }
+            }
           }
           getEnergyTypesOverride {
             if (self) return [[R, D, F, G, W, Y, L, M, P, C] as Set]
