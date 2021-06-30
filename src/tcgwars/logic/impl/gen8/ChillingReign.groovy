@@ -3579,7 +3579,17 @@ public enum ChillingReign implements LogicCardInfo {
           text "This card can only be attached to a Single Strike Pokémon. If this card is attached to anything other than a Single Strike Pokémon, discard this card. As long as this card is attached to a Pokémon, this card provides every type of Energy but provides only 1 Energy at a time. If this Pokémon is Poisoned, it is no longer Poisoned and cannot be Poisoned."
           def eff
           onPlay { reason->
-            // TODO
+            if (self.isSPC(POISONED)) {
+              clearSpecialCondition(self, SRC_SPENERGY, [POISONED])
+            }
+            eff = delayed {
+              before APPLY_SPECIAL_CONDITION, self, {
+                if (ef.type == POISONED) {
+                  bc "$thisCard prevents $self from being Poisoned"
+                  prevent()
+                }
+              }
+            }
           }
           getEnergyTypesOverride {
             if (self) return [[R, D, F, G, W, Y, L, M, P, C] as Set]
