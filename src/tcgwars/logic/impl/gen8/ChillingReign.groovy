@@ -2490,12 +2490,10 @@ public enum ChillingReign implements LogicCardInfo {
           weakness FIGHTING
           bwAbility "Bursting Needles", {
             text "If this Pokémon is your Active Pokémon and is Knocked Out by damage from an opponent's attack, put 6 damage counters on the Attacking Pokémon."
-            delayedA {
-              before (KNOCKOUT, self) {
-                if (self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite) {
-                  bc "$thisAbility activates."
-                  directDamage(60, self.owner.opposite.pbg.active, SRC_ABILITY)
-                }
+            ifActiveAndDamagedByAttackBody(delegate) {
+              if (ef.attacker == opp.active) {
+                bc "$thisAbility activates"
+                directDamage(60, (ef.attacker as PokemonCardSet), SRC_ABILITY)
               }
             }
           }
