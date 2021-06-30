@@ -3304,11 +3304,13 @@ public enum ChillingReign implements LogicCardInfo {
         };
       case HONEY_142:
         return supporter (this) {
-          text "Draw a card for each Pokémon V on your opponent's Bench. You may play only 1 Supporter card during your turn."
+          text "Draw a card for each of your opponent’s Benched Pokémon V."
           onPlay {
-            // TODO
+            def cards = opp.bench.count { it.pokemonV } as Integer
+            draw cards
           }
-          playRequirement{
+          playRequirement {
+            assert opp.bench.any { it.pokemonV } : "No Pokémon V on your opponent's bench"
           }
         };
       case JUSTIFIED_GLOVES_143:
