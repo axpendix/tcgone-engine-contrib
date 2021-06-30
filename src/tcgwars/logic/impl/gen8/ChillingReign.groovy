@@ -3662,6 +3662,11 @@ public enum ChillingReign implements LogicCardInfo {
                   discard thisCard
                 }
               }
+              before BETWEEN_TURNS, {
+                if (!self.singleStrike) {
+                  discard thisCard
+                }
+              }
             }
           }
           getEnergyTypesOverride {
@@ -3711,6 +3716,11 @@ public enum ChillingReign implements LogicCardInfo {
                 }
               }
               after ATTACH_ENERGY, self, {
+                if (!self.rapidStrike) {
+                  discard thisCard
+                }
+              }
+              before BETWEEN_TURNS, {
                 if (!self.rapidStrike) {
                   discard thisCard
                 }
