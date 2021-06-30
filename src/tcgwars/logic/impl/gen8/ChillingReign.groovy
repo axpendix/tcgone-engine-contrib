@@ -1,6 +1,7 @@
 package tcgwars.logic.impl.gen8
 
 import tcgwars.logic.effect.gm.AttachEnergy
+import tcgwars.logic.groovy.TcgStatics
 import tcgwars.logic.impl.gen5.PlasmaBlast;
 
 import static tcgwars.logic.card.HP.*;
@@ -3343,9 +3344,16 @@ public enum ChillingReign implements LogicCardInfo {
         return supporter (this) {
           text "Choose up to 2 Pokémon and up to 2 Basic Energy from your discard pile, show them to your opponent, and put them into your hand. You may play only 1 Supporter card during your turn."
           onPlay {
-            // TODO
+            def cards = my.discard.select(min: 1, max: 4, "Choose up to 2 Pokémon and up to 2 Basic Energy from your discard pile", {
+              it.cardTypes.is(BASIC_ENERGY) || it.cardTypes.is(POKEMON)
+            }, bg.currentThreadPlayerType, { CardList list ->
+              list.filterByType(BASIC_ENERGY).size() <= 2 && list.filterByType(POKEMON).size() <= 2
+            })
+            cards.showToOpponent("$thisCard: Chosen cards to be put into hand")
+            cards.moveTo(my.hand)
           }
-          playRequirement{
+          playRequirement {
+            assert my.discard.filterByType(BASIC_ENERGY) || my.discard.filterByType(POKEMON) : "No Basic Energies or Pokémon in discard"
           }
         };
       case MELONY_146:
