@@ -3677,6 +3677,11 @@ public enum ChillingReign implements LogicCardInfo {
                   prevent()
                 }
               }
+              after ATTACH_ENERGY, self, {
+                if (!self.rapidStrike) {
+                  discard thisCard
+                }
+              }
             }
           }
           getEnergyTypesOverride {
