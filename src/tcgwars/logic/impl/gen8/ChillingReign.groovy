@@ -2217,11 +2217,14 @@ public enum ChillingReign implements LogicCardInfo {
             text "All of your Rapid Strike Pokémon's attacks do 30 more damage to your opponent's Benched Pokémon V and Pokémon-GX. You can't use more than 1 Throwing Coach Ability at a time."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each {
-                  if (it.from == self && it.to.benched && (it.to.pokemonV || it.to.pokemonVMAX || it.to.pokemonGX) && it.dmg.value) {
-                    it.dmg += hp(30)
-                    bc "$thisAbility +30"
+                if(bg.em().retrieveObject("Throwing_Coach") != bg.turnCount) {
+                  bg.dm().each {
+                    if (it.from.owner == self.owner && it.from.rapidStrike && it.to.benched && (it.to.pokemonV || it.to.pokemonGX) && it.dmg.value) {
+                      it.dmg += hp(30)
+                      bc "$thisAbility +30"
+                    }
                   }
+                  bg.em().storeObject("Throwing_Coach", bg.turnCount)
                 }
               }
             }
@@ -2423,7 +2426,7 @@ public enum ChillingReign implements LogicCardInfo {
               bg.em().storeObject("Direflame_Wings", bg.turnCount)
 
               def list = my.discard.filterByEnergyType(D).select("Choose a [D] Energy Card to attach")
-              attachEnergy(self, list.first(), PLAY_FROM_HAND)
+              attachEnergy(self, list.first())
             }
           }
           move "Aura Burn", {
@@ -2554,7 +2557,26 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 90
-              // TODO
+
+              if (bg.em().retrieveObject("last_single_strike_supporter_play_turn") == bg.turnCount) {
+                damage 90
+              }
+            }
+            globalAbility {
+              def flag
+              delayed {
+                before PLAY_TRAINER, {
+                  if (ef.supporter && ef.cardToPlay.cardTypes.is(SINGLE_STRIKE) && bg.currentTurn == thisCard.player && hand.contains(ef.cardToPlay)) {
+                    flag = true
+                  }
+                }
+                after PLAY_TRAINER, {
+                  if (flag) {
+                    bg.em().storeObject("last_single_strike_supporter_play_turn", bg.turnCount)
+                    flag = false
+                  }
+                }
+              }
             }
           }
         };
@@ -2945,7 +2967,30 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 50
-              // TODO
+
+              if (bg.em().retrieveObject("last_rapid_strike_supporter_play_turn") == bg.turnCount && opp.bench) {
+                multiSelect(opp.bench, 2, "Deal damage to which?").each {
+                  targeted(it) {
+                    damage 50, it
+                  }
+                }
+              }
+            }
+            globalAbility {
+              def flag
+              delayed {
+                before PLAY_TRAINER, {
+                  if (ef.supporter && ef.cardToPlay.cardTypes.is(SINGLE_STRIKE) && bg.currentTurn == thisCard.player && hand.contains(ef.cardToPlay)) {
+                    flag = true
+                  }
+                }
+                after PLAY_TRAINER, {
+                  if (flag) {
+                    bg.em().storeObject("last_rapid_strike_supporter_play_turn", bg.turnCount)
+                    flag = false
+                  }
+                }
+              }
             }
           }
         };
