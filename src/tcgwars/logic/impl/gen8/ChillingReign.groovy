@@ -2964,7 +2964,30 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 50
-              // TODO
+
+              if (bg.em().retrieveObject("last_rapid_strike_supporter_play_turn") == bg.turnCount && opp.bench) {
+                multiSelect(opp.bench, 2, "Deal damage to which?").each {
+                  targeted(it) {
+                    damage 50, it
+                  }
+                }
+              }
+            }
+            globalAbility {
+              def flag
+              delayed {
+                before PLAY_TRAINER, {
+                  if (ef.supporter && ef.cardToPlay.cardTypes.is(SINGLE_STRIKE) && bg.currentTurn == thisCard.player && hand.contains(ef.cardToPlay)) {
+                    flag = true
+                  }
+                }
+                after PLAY_TRAINER, {
+                  if (flag) {
+                    bg.em().storeObject("last_rapid_strike_supporter_play_turn", bg.turnCount)
+                    flag = false
+                  }
+                }
+              }
             }
           }
         };
