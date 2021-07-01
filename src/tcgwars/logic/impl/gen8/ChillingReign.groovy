@@ -2980,7 +2980,7 @@ public enum ChillingReign implements LogicCardInfo {
               def flag
               delayed {
                 before PLAY_TRAINER, {
-                  if (ef.supporter && ef.cardToPlay.cardTypes.is(SINGLE_STRIKE) && bg.currentTurn == thisCard.player && hand.contains(ef.cardToPlay)) {
+                  if (ef.supporter && ef.cardToPlay.cardTypes.is(RAPID_STRIKE) && bg.currentTurn == thisCard.player && hand.contains(ef.cardToPlay)) {
                     flag = true
                   }
                 }
