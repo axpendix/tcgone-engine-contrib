@@ -2218,7 +2218,7 @@ public enum ChillingReign implements LogicCardInfo {
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each {
-                  if (it.from == self && it.to.benched && (it.to.pokemonV || it.to.pokemonVMAX || it.to.pokemonGX) && it.dmg.value) {
+                  if (it.from.owner == self.owner && it.from.rapidStrike && it.to.benched && (it.to.pokemonV || it.to.pokemonVMAX || it.to.pokemonGX) && it.dmg.value) {
                     it.dmg += hp(30)
                     bc "$thisAbility +30"
                   }
