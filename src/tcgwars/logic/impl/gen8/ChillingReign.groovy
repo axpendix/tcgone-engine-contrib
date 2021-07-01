@@ -2423,7 +2423,7 @@ public enum ChillingReign implements LogicCardInfo {
               bg.em().storeObject("Direflame_Wings", bg.turnCount)
 
               def list = my.discard.filterByEnergyType(D).select("Choose a [D] Energy Card to attach")
-              attachEnergy(self, list.first(), PLAY_FROM_HAND)
+              attachEnergy(self, list.first())
             }
           }
           move "Aura Burn", {
