@@ -2217,11 +2217,14 @@ public enum ChillingReign implements LogicCardInfo {
             text "All of your Rapid Strike Pokémon's attacks do 30 more damage to your opponent's Benched Pokémon V and Pokémon-GX. You can't use more than 1 Throwing Coach Ability at a time."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each {
-                  if (it.from.owner == self.owner && it.from.rapidStrike && it.to.benched && (it.to.pokemonV || it.to.pokemonGX) && it.dmg.value) {
-                    it.dmg += hp(30)
-                    bc "$thisAbility +30"
+                if(bg.em().retrieveObject("Throwing_Coach") != bg.turnCount) {
+                  bg.dm().each {
+                    if (it.from.owner == self.owner && it.from.rapidStrike && it.to.benched && (it.to.pokemonV || it.to.pokemonGX) && it.dmg.value) {
+                      it.dmg += hp(30)
+                      bc "$thisAbility +30"
+                    }
                   }
+                  bg.em().storeObject("Throwing_Coach", bg.turnCount)
                 }
               }
             }
