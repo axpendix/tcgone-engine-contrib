@@ -1350,12 +1350,12 @@ public enum Platinum implements LogicCardInfo {
       case LUDICOLO_34:
         return evolution (this, from:"Lombre", hp:HP120, type:GRASS, retreatCost:2) {
           weakness L, PLUS30
-          pokePower "Cheerful Voice", {// TODO: Use a stored object to end the turn if the effect is blocked https://compendium.pokegym.net/compendium-bw.html#4
+          pokePower "Cheerful Voice", {
             text "Once during your turn , you may use this power. If you do, your turn ends. During your next turn, each of Ludicolo’s attacks does 60 more damage to the Defending Pokémon . This power can’t be used if Ludicolo is affected by a Special Condition."
             actionA {
               checkLastTurn()
               checkNoSPC()
-              powerUsed()
+              powerUsed({ usingThisAbilityEndsTurn delegate })
               delayed {
                 def registeredOn=0
                 after PROCESS_ATTACK_EFFECTS, {
@@ -1372,6 +1372,7 @@ public enum Platinum implements LogicCardInfo {
                 after DEVOLVE, self, {unregister()}
                 register{registeredOn=bg.turnCount}
               }
+              usingThisAbilityEndsTurn delegate
             }
           }
           move "Mad Dance", {
