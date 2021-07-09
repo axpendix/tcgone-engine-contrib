@@ -41,7 +41,7 @@ import tcgwars.logic.util.*;
 /**
  * @author @gmail.com
  */
-public enum BestOfTheGame implements LogicCardInfo {
+public enum BestOfGame implements LogicCardInfo {
 
   ELECTABUZZ_1 ("Electabuzz", "1", Rarity.PROMO, [BASIC, POKEMON, _LIGHTNING_]),
   HITMONCHAN_2 ("Hitmonchan", "2", Rarity.PROMO, [BASIC, POKEMON, _FIGHTING_]),
@@ -60,7 +60,7 @@ public enum BestOfTheGame implements LogicCardInfo {
   protected Rarity rarity;
   protected String collectionLineNo;
 
-  BestOfTheGame(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+  BestOfGame(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
     this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
     this.name = name;
     this.rarity = rarity;
