@@ -174,8 +174,9 @@ public enum BestOfTheGame implements LogicCardInfo {
         };
        case DARK_VENUSAUR_7:
         return evolution (this, hp:HP070, type:GRASS, retreatCost:2) {
-         move "Continuous Scratch", {
-            text "10× damage. Flip 4 coins. This attack does 10 damage times the number of heads."
+         weakness FIRE
+         move "Horrid Pollen ", {
+            text "Flip 2 coins. If 1 is heads, the Defending Pokémon is now Asleep and Poisoned. If both are heads, the Defending Pokémon is now Confused and Poisoned. If both are tails, the Defending Pokémon is now Paralyzed and Poisoned. "
             energyCost G, G, G
             onAttack {
             damage 30
