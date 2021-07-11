@@ -31,8 +31,9 @@ import tcgwars.logic.effect.basic.*;
 import tcgwars.logic.effect.blocking.*;
 import tcgwars.logic.effect.event.*;
 import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.exception.NotEnoughEnergyException;
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -561,9 +562,32 @@ public enum MysteriousTreasures implements LogicCardInfo {
           resistance F, MINUS20
           pokeBody "Dark Genes", {
             text "As long as Honchkrow has the Energy necessary to use its attack, each of your Murkrow can use Honchkrow’s attack as its own without the Energy necessary to use that attack."
-            delayedA {
-              //TODO
-              //Future TODO: This should work even when Honchkrow levels up, as it has the attack and Poké-Power of the base one (and Lv.X's attacks should also be available to be copied)
+            def selfOwner = self.owner
+            def selfPcs = self
+            getterA GET_MOVE_LIST, { h ->
+              PokemonCardSet hTarget = h.effect.target
+              if (hTarget.active && hTarget.owner == selfOwner && hTarget.name == "Murkrow" && selfPcs.benched) {
+                List<Move> honchkrowMoves = bg.em().activateGetter(new GetMoveList(selfPcs))
+                for (move in honchkrowMoves) {
+                  Move copy = move.shallowCopy()
+                  def ogCost = copy.energyCost.clone() as List<Type>
+                  copy.energyCost.retainAll()
+                  copy.addAttackRequirement(new AttackRequirement() {
+                    @Override
+                    boolean process(Battleground bg, Event e) {
+                      EnergySufficiencyCalculator esc = new EnergySufficiencyCalculator(selfPcs.energyCards, ogCost)
+                      try {
+                        bg.em().run(esc)
+                        return false
+                      } catch (NotEnoughEnergyException ignored) {
+                        wcu "$selfPcs doesn't have the necessary energy: ${esc.getRequirement()}"
+                        return true
+                      }
+                    }
+                  })
+                  h.object.add(copy)
+                }
+              }
             }
           }
           move "Dark Wing Flaps", {
