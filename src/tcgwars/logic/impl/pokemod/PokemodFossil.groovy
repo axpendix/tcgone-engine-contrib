@@ -106,7 +106,7 @@ public enum PokemodFossil implements LogicCardInfo {
   POKEMON_BREEDER_FIELDS_65 ("Pokemon Breeder Fields", "65", Rarity.UNCOMMON, [TRAINER]),
   RELIC_HUNTER_66 ("Relic Hunter", "66", Rarity.UNCOMMON, [TRAINER]),
   LOST_EXPEDITION_67 ("Lost Expedition", "67", Rarity.UNCOMMON, [TRAINER]),
-  UNDERGROUND_EXPEDITION_68 ("Underground Expedition", "68", Rarity.UNCOMMON, [TRAINER]),
+  UNDERGROUND_EXPEDITION_68 ("Underground Expedition", "68", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   LOST_WORLD_69 ("Lost World", "69", Rarity.RARE, [TRAINER, STADIUM]),
   CRYSTAL_BEACH_70 ("Crystal Beach","70", Rarity.RARE, [TRAINER, STADIUM]),
   DNA_ENERGY_71 ("DNA Energy", "71", Rarity.RARE, [ENERGY, SPECIAL_ENERGY]),
@@ -197,17 +197,17 @@ public enum PokemodFossil implements LogicCardInfo {
               }
             }
             }
-//          }
-//          move "Wing Attack", {
-//            text "30 damage."
-//            energyCost C, C, C
-//            attackRequirement {}
-//            onAttack {
-//              damage 30
-//            }
-//          }
-//
-//        };
+          }
+          move "Wing Attack", {
+            text "30 damage."
+            energyCost C, C, C
+            attackRequirement {}
+            onAttack {
+              damage 30
+            }
+          }
+
+        };
       case ARTICUNO_2:
         return basic (this, hp:HP070, type:WATER, retreatCost:2) {
           weakness METAL
@@ -435,7 +435,33 @@ public enum PokemodFossil implements LogicCardInfo {
 
         };
       case MUK_13:
-        break
+                return evolution (this, from:"Grimer", hp:HP060, type:PSYCHIC, retreatCost:0) {
+          weakness PSYCHIC
+          pokeBody "Toxic Gas", {
+            text "Ignore all Poké-Powers and Poké-Bodies other than Toxic Gases. This power stops working while Muk is affected by a Special Condition."
+            def effect1
+            onActivate {
+              checkNoSPC()
+              effect1 = getter IS_ABILITY_BLOCKED, { Holder h->
+                if (h.effect.ability.name != "Toxic Gas" && (h.effect.ability instanceof PokeBody || h.effect.ability instanceof PokePower)) {
+                }
+              }
+                }
+              }
+            }
+            onDeactivate {
+              effect1.unregister()
+            }
+          }
+          move "Sludge", {
+            text "30 damage. Flip a coin. If heads, the Defending Pokemon is now Poisoned"
+             energyCost G, G, C
+             attackRequirement {}
+            onAttack {
+                damage 30
+            flip {
+                applyAfterDamage POISONED
+        };
       case RAICHU_14:
         return evolution (this, from:"Pikachu", hp:HP090, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -524,11 +550,11 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
           move "Poison Fang", {
-            text "20 damage. The Defending Pokémon is now Poisoned."
+            text "30 damage. The Defending Pokémon is now Poisoned."
             energyCost G, G, C
             attackRequirement {}
             onAttack {
-              damage 20
+              damage 30
               applyAfterDamage POISONED
             }
           }
@@ -536,7 +562,7 @@ public enum PokemodFossil implements LogicCardInfo {
         };
       case CLOYSTER_32:
         return evolution (this, from:"Shellder", hp:HP080, type:WATER, retreatCost:2) {
-          weakness LIGHTNING
+          weakness LIGHTNING+++
           move "Clamp", {
             text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed. If tails, this attack does nothing (not even damage)."
             energyCost W, W
@@ -853,6 +879,7 @@ public enum PokemodFossil implements LogicCardInfo {
       case KABUTO_50:
         return evolution (this, from:"Mysterious Fossil", hp:HP040, type:FIGHTING, retreatCost:1) {
           weakness GRASS
+          resistance FIRE, MINUS30
           pokeBody "Kabuto Armor", {
             text "Whenever an attack (even your own) does damage to Kabuto (after applying Weakness and Resistance), that attack only does half the damage to Kabuto (rounded down to nearest 10). (Any other effects of attacks still happen.) This power stops working while Kabuto is affected by a Special Condition."
             delayedA {
@@ -887,6 +914,7 @@ public enum PokemodFossil implements LogicCardInfo {
         };
       case KRABBY_51:
         return basic (this, hp:HP050, type:WATER, retreatCost:2) {
+          weakness LIGHTNING
           move "Call for Family", {
             text "Search your deck for a Basic Pokémon named Krabby and put it onto your Bench. Shuffle your deck afterward. (You can't use this attack if your Bench is full.)"
             energyCost W
@@ -918,6 +946,7 @@ public enum PokemodFossil implements LogicCardInfo {
           pokeBody "Clairvoyance", {
             text "Your opponent plays with his or her hand face up. This power stops working while Omanyte is affected by a Special Condition."
             actionA {
+              checkNoSPC()
               //TODO: Make cards visible, even to spectators.
               // could you potentialy make it say the hand in chat?
               opp.hand.shuffledCopy().showToMe("opponent's hand")
@@ -935,7 +964,36 @@ public enum PokemodFossil implements LogicCardInfo {
 
         };
       case PSYDUCK_53:
-        break
+                return basic (this, hp:HP050, type:WATER, retreatCost:1) {
+          weakness LIGHTNING
+          move "Headache", {
+            text "Flip a coin. If heads, your opponent can’t play Trainer cards(except Supporter cards) during his or her next turn."
+            energyCost P
+            attackRequirement {}
+            onAttack {
+              flip{
+              delayed{
+                before PLAY_TRAINER, {
+                  if (bg.currentTurn == self.owner.opposite) {
+                    wcu "Psyduck's Headache prevents playing this card!"
+                    prevent()
+                  }
+                }
+                unregisterAfter 2
+              }
+             }
+            }
+          }
+          move "Fury Swipes", {
+            text "10× damage. Flip 3 coins. This attack does 10 damage times the number of heads."
+            energyCost W
+            attackRequirement {}
+            onAttack {
+              flip 3, {damage 10}
+            }
+          }
+
+        };
       case SHELLDER_54:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -987,7 +1045,17 @@ public enum PokemodFossil implements LogicCardInfo {
       case ZUBAT_57:
        return copy (Fossil.ZUBAT_57, this);
       case MR_FUJI_58:
-        break
+              return supporter (this) {
+          text "Choose a Pokémon on your Bench. Shuffle it any any cards attached to it into your deck."
+          onPlay {
+            def tar = my.bench.select()
+            shuffleDeck(tar.cards)
+            removePCS(tar)
+          }
+          playRequirement{
+            assert my.bench : "There is no Benched Pokémon"
+          }
+        };
       case ENERGY_SEARCH_59:
         return copy (Fossil.ENERGY_SEARCH_59, this);
       case GAMBLER_60:
@@ -999,7 +1067,16 @@ public enum PokemodFossil implements LogicCardInfo {
       case CRYSTAL_GUARD_63:
        break
       case HEAVY_BALL_64:
-       break
+           return basicTrainer (this) {
+          text "Search your deck for a Pokémon that has a Retreat Cost of 3 or more, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
+          onPlay {
+            deck.search(max:1,"Select a Pokémon with a Retreat Cost of 3 or more.",{it.cardTypes.is(POKEMON) && it.retreatCost >= 3}).moveTo(hand)
+            shuffleDeck()
+          }
+          playRequirement{
+            assert my.deck : "Your deck is empty."
+          }
+        };
       case POKEMON_BREEDER_FIELDS_65:
        break
       case RELIC_HUNTER_66:
@@ -1013,13 +1090,40 @@ public enum PokemodFossil implements LogicCardInfo {
           }
         };
       case LOST_EXPEDITION_67:
-       break
+       return basicTrainer (this) {
+          text "You may play 2 Lost Expedition at the same time. If you play 1 Lost Expedition, draw a card. If you play 2 Lost Expedition, search your deck for any 1 card and put it into your hand. Shuffle your deck afterward."
+          onPlay {
+            if(my.hand.findAll({it.name=="Lost Expedition"}).size()>=2 && confirm("Play 2 Lost Expedition at the same time?")) {
+              my.deck.search(min:1,max:1,"Select a card",{true}).moveTo(hidden:true,my.hand)
+              shuffleDeck()
+              my.hand.findAll({it.name=="Lost Expedition" && it!= thisCard}).subList(0,1).discard()
+            } else {
+              draw 1
+            }
+          }
+          playRequirement{
+            assert my.deck : "Your deck is empty"
+          }
+        };
       case UNDERGROUND_EXPEDITION_68:
        return copy (CelestialStorm.UNDERGROUND_EXPEDITION_150, this);
       case LOST_WORLD_69:
        break
       case CRYSTAL_BEACH_70:
-       break
+             return stadium (this) {
+        text "Each Special Energy card that provides 2 or more Energy (both yours and your opponent's) now provides only 1 [C] Energy. This isn't affected by any Pokémon Powers or Pokémon   Bodies."
+        def eff
+        onPlay {
+          eff = getter (GET_ENERGY_TYPES, BEFORE_LAST) { holder->
+            if (holder.object.size() >= 2 && holder.effect.card.cardTypes.is(SPECIAL_ENERGY)) {
+              holder.object = [[C] as Set]
+            }
+          }
+        }
+        onRemoveFromPlay{
+          eff.unregister()
+        }
+      };
       case DNA_ENERGY_71:
        break
       case DOUBLE_COLORLESS_ENERGY_72:
@@ -1043,7 +1147,29 @@ public enum PokemodFossil implements LogicCardInfo {
       case HO_OH_81:
        break
       case LUGIA_82:
-       break
+       return basic (this, hp:HP070, type:COLORLESS, retreatCost:2) {
+          weakness PSYCHIC
+          resistance FIGHTING, MINUS30
+           move "Dive Bomb", {
+            text "20 damage."
+            energyCost C, C
+            attackRequirement {}
+            onAttack {
+              damage 20
+            }
+          }
+          move "Elemental Blast", {
+            text "30+ damage. You may discard a [R] Energy card, a [W] Energy card and a [L] Energy card attached to Lugia ex. If you do, this attack does 30 damage plus 60 more damage."
+            energyCost C, C, C
+            onAttack {
+              damage 30
+              if (confirm("Discard a [R] a [W] and a [L] Energy attached to $self for +60?")) {
+                damage 60
+                afterDamage {discardSelfEnergy R, W, L}
+              }
+            }
+          }
+        };
       case ARTICUNO_83:
        return copy (ARTICUNO_2, this);
       case MOLTRES_84:
@@ -1051,14 +1177,105 @@ public enum PokemodFossil implements LogicCardInfo {
       case ZAPDOS_85:
        return copy (ZAPDOS_15, this);
       case ARTICUNO_EX_86:
-       break
+       return basic (this, hp:HP100, type:WATER, retreatCost:2) {
+          weakness METAL
+          pokePower "Legendary Ascent", {
+            text "Once during your turn, when you put Articuno ex from your hand onto your Bench, you may switch 1 of your Active Pokémon with Articuno ex. If you do, you may also move any number of basic [W] Energy cards attached to your Pokémon to Articuno ex."
+            onActivate {reason ->
+              if(reason == PLAY_FROM_HAND && self.benched && confirm("Use Legendary Ascent to switch your active with $self ?")){
+                powerUsed()
+                sw my.active, self
+                while(1){
+                  def pl=(my.all.findAll {it.cards.filterByBasicEnergyType(W) && it!=self})
+                  if(!pl) break;
+                  def src=pl.select("Source for basic [W] Energy (cancel to stop moving)", false)
+                  if(!src) break;
+                  def card=src.cards.filterByBasicEnergyType(W).select("Card to move").first()
+                  energySwitch(src, self, card)
+                }
+              }
+            }
+          }
+          move "Cold Crush", {
+            text "40 damage. You may discard an Energy card attached to Articuno ex. If you do, your opponent discards an Energy card attached to the Defending Pokémon."
+            energyCost W, W, C
+            onAttack {
+              damage 40
+              if (confirm("Discard an Energy card attached to $self?")) {
+                afterDamage {
+                  discardSelfEnergy C
+                  discardDefendingEnergy()
+                }
+              }
+            }
+          }
+
+        };
       case MOLTRES_EX_87:
-       break
+       return basic (this, hp:HP100, type:FIRE, retreatCost:2) {
+          weakness WATER
+          pokePower "Legendary Ascent", {
+            text "Once during your turn, when you put Moltres ex from your hand onto your Bench, you may switch 1 of your Active Pokémon with Moltres ex. If you do, you may also move any number of basic [R] Energy cards attached to your Pokémon to Moltres ex."
+            onActivate { reason ->
+              if (reason == PLAY_FROM_HAND && self.benched && confirm("Use Legendary Ascent to switch your active with $self ?")) {
+                powerUsed()
+                sw my.active, self
+                while (1) {
+                  def pl = (my.all.findAll { it.cards.filterByBasicEnergyType(R) && it != self })
+                  if (!pl) break;
+                  def src = pl.select("Source for basic [R] Energy (cancel to stop moving)", false)
+                  if (!src) break;
+                  def card = src.cards.filterByBasicEnergyType(R).select("Card to move").first()
+                  energySwitch(src, self, card)
+                }
+              }
+            }
+          }
+          move "Crushing Flames", {
+            text "40 damage. You may discard an Energy card attached to Moltres ex. If you do, the Defending Pokémon is now Confused."
+            energyCost R, C, C
+            onAttack {
+              damage 40
+              if (confirm("Discard an Energy card attached to $self?")) {
+                afterDamage {discardSelfEnergy C}
+                applyAfterDamage CONFUSED
+              }
+            }
+          }
+        };
       case ZAPDOS_EX_88:
-       break
+       return basic (this, hp:HP100, type:LIGHTNING, retreatCost:2) {
+          weakness LIGHTNING
+          pokePower "Legendary Ascent", {
+            text "Once during your turn, when you put Zapdos ex from your hand onto your Bench, you may switch 1 of your Active Pokémon with Zapdos ex. If you do, you may also move any number of basic [L] Energy cards attached to your Pokémon to Zapdos ex."
+            onActivate { reason ->
+              if (reason == PLAY_FROM_HAND && self.benched && confirm("Use Legendary Ascent to switch your active with $self ?")) {
+                powerUsed()
+                sw my.active, self
+                while (1) {
+                  def pl = (my.all.findAll { it.cards.filterByBasicEnergyType(L) && it != self })
+                  if (!pl) break;
+                  def src = pl.select("Source for basic [L] Energy (cancel to stop moving)", false)
+                  if (!src) break;
+                  def card = src.cards.filterByBasicEnergyType(L).select("Card to move").first()
+                  energySwitch(src, self, card)
+                }
+              }
+            }
+          }
+          move "Electron Crush", {
+            text "40+ damage. You may discard an Energy card attached to Zapdos ex. If you do, this attack does 40 damage plus 20 more damage."
+            energyCost L, L, C
+            onAttack {
+              damage 40
+              if (confirm("Discard an Energy card attached to $self for +20?")) {
+                damage 20
+                afterDamage {discardSelfEnergy C}
+              }
+            }
+          }
+        };
       default:
         return null;
     }
   }
-
-}
