@@ -829,9 +829,14 @@ public enum Platinum implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 20
-              turn flag = bg.turnCount + 2
+              applyAfterDamage(ASLEEP)
+
+              turnFlag = bg.turnCount + 2
               pokeFlag = true
+
               delayed {
+                def pcs = defending
+
                 unregisterAfter 3
                 after FALL_BACK, pcs, {
                   pokeFlag = false
