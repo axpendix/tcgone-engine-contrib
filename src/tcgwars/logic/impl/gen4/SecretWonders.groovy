@@ -1028,7 +1028,7 @@ public enum SecretWonders implements LogicCardInfo {
                           bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
                         }
                       }
-                      energyCard.player = thisCard.player
+                      energyCard.initializeFrom thisCard
                       bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
                       attachEnergy(tar, energyCard)
                       bc "$energyCard is now a Special Energy Card attached to $tar"

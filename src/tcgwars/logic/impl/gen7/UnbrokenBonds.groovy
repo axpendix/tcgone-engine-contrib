@@ -1635,7 +1635,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
                   bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
                 }
               }
-              energyCard.player = thisCard.player
+              energyCard.initializeFrom thisCard
               bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
               attachEnergy(pcs, energyCard)
               bc "$energyCard is now a Special Energy Card that provides 2 [L] energy attached to $pcs"

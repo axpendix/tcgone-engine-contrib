@@ -1079,7 +1079,7 @@ class TcgStatics {
                   }
                 }
               }
-              energyCard.player = thisCard.player
+              energyCard.initializeFrom(thisCard)
 
               bg.em().run(new ChangeImplementation(energyCard, thisCard))
               def playEnergy = new PlayEnergy(energyCard)

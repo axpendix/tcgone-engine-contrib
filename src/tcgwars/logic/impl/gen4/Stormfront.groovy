@@ -2997,7 +2997,7 @@ public enum Stormfront implements LogicCardInfo {
                       moveCard(pkmnCard, thisCard.player.pbg.hand)
                     }
                   }
-                  stadiumCard.player = thisCard.player
+                  stadiumCard.initializeFrom thisCard
                   bg.em().run(new ChangeImplementation(stadiumCard, pkmnCard))
                   if (bg.stadiumInfoStruct) {
                     discardStadium()

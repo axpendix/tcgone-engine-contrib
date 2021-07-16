@@ -1850,7 +1850,7 @@ public enum GreatEncounters implements LogicCardInfo {
                 }
               }
               bg.em().run(new ChangeImplementation(toolCard, top))
-              toolCard.player = top.player
+              toolCard.initializeFrom(top)
               def pcs = my.all.findAll {it!=self && canAttachPokemonTool(it)}.select("Attach to?")
               removeFromPlay(self, [top] as CardList)
               bg.em().run(new ChangeImplementation(toolCard, top))

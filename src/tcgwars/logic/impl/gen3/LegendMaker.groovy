@@ -2338,7 +2338,7 @@ public enum LegendMaker implements LogicCardInfo {
               }
             }
           }
-          pokemonCard.player = trainerCard.player
+          pokemonCard.initializeFrom(trainerCard)
           bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
           benchPCS(pokemonCard)
         }
@@ -2389,7 +2389,7 @@ public enum LegendMaker implements LogicCardInfo {
               }
             }
           }
-          pokemonCard.player = trainerCard.player
+          pokemonCard.initializeFrom(trainerCard)
           bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
           benchPCS(pokemonCard)
         }
@@ -2460,7 +2460,7 @@ public enum LegendMaker implements LogicCardInfo {
               }
             }
           }
-          pokemonCard.player = trainerCard.player
+          pokemonCard.initializeFrom(trainerCard)
           bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
           benchPCS(pokemonCard)
         }
