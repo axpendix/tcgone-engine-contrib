@@ -1540,9 +1540,10 @@ public enum ChillingReign implements LogicCardInfo {
             text "If this Pokémon is Knocked Out by damage from an attack from your opponent’s Pokémon, search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
             delayedA (priority: LAST) {
               before (KNOCKOUT, self) {
-                if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && my.deck) {
+                // Here opp refers to the owner of Gengar
+                if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && opp.deck) {
                   bc "$thisAbility activates"
-                  self.owner.pbg.deck.select(min: 1, max: 2, "Search for up to 2 cards").moveTo(my.hand, hidden: true)
+                  self.owner.pbg.deck.select(min: 1, max: 2, "Search for up to 2 cards").moveTo(opp.hand, hidden: true)
                   shuffleDeck(null, self.owner.toTargetPlayer())
                 }
               }
