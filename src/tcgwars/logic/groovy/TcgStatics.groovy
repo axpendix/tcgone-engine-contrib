@@ -6,6 +6,7 @@ import tcgwars.logic.effect.blocking.*
 import tcgwars.logic.effect.getter.*
 import tcgwars.logic.effect.gm.*
 import tcgwars.logic.client.*
+import tcgwars.logic.exception.EffectRequirementException
 import tcgwars.logic.util.*
 
 import java.util.function.Predicate
@@ -1979,6 +1980,94 @@ class TcgStatics {
     c1.resolveStrategy=Closure.DELEGATE_FIRST
     c1.delegate=delegate1
     c1.call()
+  }
+
+  /**
+   * If there are at least 3 Pokemon SP in play then a Power Spray might be used by opponent to block this ability.
+   * This method is called in every UseAbility, thus it should throw a EffectRequirementException if ability is blocked.
+   *
+   * @param self the pokemon with thisAbility
+   * @param thisAbility the ability performed
+   * @throws EffectRequirementException when Power Spray needs to block the ability
+   * @author ufodynasty
+   */
+  static triggerPowerSpray(PokemonCardSet self, Ability thisAbility) {
+    def bluffing = true
+    def tempIgnoreList = []
+    def permIgnoreList = []
+    def ignoreList = []
+    if(bg.em().retrieveObject("This_Turn_Ignore_List_$self.owner.opposite") && bg.em().retrieveObject("This_Turn_Ignore_List_$self.owner.opposite").get(0) == bg.turnCount) {
+      ignoreList.addAll(bg.em().retrieveObject("This_Turn_Ignore_List_$self.owner.opposite").get(1))
+      tempIgnoreList.addAll(bg.em().retrieveObject("This_Turn_Ignore_List_$self.owner.opposite").get(1))
+    }
+    if(bg.em().retrieveObject("Always_Ignore_List_$self.owner.opposite")) {
+      ignoreList.addAll(bg.em().retrieveObject("Always_Ignore_List_$self.owner.opposite"))
+      permIgnoreList.addAll(bg.em().retrieveObject("Always_Ignore_List_$self.owner.opposite"))
+    }
+    if(bg.em().retrieveObject("Dont_Bluff_This_Turn_$self.owner.opposite") == bg.turnCount) {
+      bluffing = false
+    }
+    if(bg.em().retrieveObject("Dont_Bluff_Ever_$self.owner.opposite")) {
+      bluffing = false
+    }
+
+    def hasPowerSprayInHand = self.owner.opposite.pbg.hand.find { it.name == "Team Galactic's Invention G-103 Power Spray" }
+    if(
+    (!ignoreList.contains(thisAbility.name) &&
+      (hasPowerSprayInHand || bluffing)) &&
+      (self.owner.opposite.pbg.all.findAll{it.topPokemonCard.cardTypes.is(POKEMON_SP)}.size() >= 3) &&
+      (thisAbility instanceof PokePower) &&
+      (bg.currentThreadPlayerType == self.owner)
+    ) {
+      def options = []
+      def text = []
+      if (hasPowerSprayInHand) {
+        options += [1]
+        text += ["Play Power Spray"]
+      }
+      options += [2]
+      text += ["Skip"]
+      if (!ignoreList.contains(thisAbility.name)) {
+        // commented out option 4 because if user misclicks then they won't be able to use Power Spray on that ability.
+        options += [3/*, 4*/]
+        text += ["Skip & ignore \"$thisAbility\" this turn"/*, "Skip & ignore \"$thisAbility\" this game"*/]
+      }
+      if (bluffing && !hasPowerSprayInHand) {
+        options += [5, 6]
+        text += ["Skip & don't bluff this turn", "Skip & don't bluff this game"]
+      }
+      def message = (hasPowerSprayInHand ?
+        "Power Spray option: Opponent's ${self.name} is about to use $thisAbility. You HAVE a Power Spray in hand. What would you like to do?" :
+        "Power Spray bluffing: Opponent's ${self.name} is about to use $thisAbility. You DON'T have a Power Spray in hand but the game allows bluffing. You may either skip this instance (and continue bluffing) or disable bluffing for this turn or this game.")
+      def choice = oppChoose(options, text, message, options.get(0))
+      //oppChoose works since this only triggers if the active player thread is the opponent's
+      if (choice == 1) {
+        bg.em().storeObject("Power_Spray_Can_Play_$self.owner.opposite", true)
+        bg.deterministicCurrentThreadPlayerType = self.owner.opposite
+        bg.em().run(new PlayTrainer(self.owner.opposite.pbg.hand.findAll { it.name == "Team Galactic's Invention G-103 Power Spray" }.first()))
+        bg.clearDeterministicCurrentThreadPlayerType()
+        if (bg.em().retrieveObject("Power_Spray_Played_$self.owner.opposite")) {
+          bc "Power Spray blocks $thisAbility!"
+          throw new EffectRequirementException("Power Spray blocked $thisAbility")
+        }
+        bg.em().storeObject("Power_Spray_Can_Play_$self.owner.opposite", false)
+        bg.em().storeObject("Power_Spray_Played_$self.owner.opposite", false)
+      } else if (choice == 3) {
+        tempIgnoreList.add(thisAbility.name)
+        ignoreList.add(thisAbility.name)
+        bg.em().storeObject("This_Turn_Ignore_List_$self.owner.opposite", [bg.turnCount, tempIgnoreList])
+      } else if (choice == 4) {
+        permIgnoreList.add(thisAbility.name)
+        ignoreList.add(thisAbility.name)
+        bg.em().storeObject("Always_Ignore_List_$self.owner.opposite", permIgnoreList)
+      } else if (choice == 5) {
+        bluffing = false
+        bg.em().storeObject("Dont_Bluff_This_Turn_$self.owner.opposite", bg.turnCount)
+      } else if (choice == 6) {
+        bluffing = false
+        bg.em().storeObject("Dont_Bluff_Ever_$self.owner.opposite", true)
+      }
+    }
   }
 
 }
