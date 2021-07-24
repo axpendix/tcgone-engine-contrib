@@ -2010,30 +2010,36 @@ class TcgStatics {
     if(bg.em().retrieveObject("Dont_Bluff_Ever_$self.owner.opposite")) {
       bluffing = false
     }
+
+    def hasPowerSprayInHand = self.owner.opposite.pbg.hand.find { it.name == "Team Galactic's Invention G-103 Power Spray" }
     if(
     (!ignoreList.contains(thisAbility.name) &&
-      (self.owner.opposite.pbg.hand.find{it.name == "Team Galactic's Invention G-103 Power Spray"} || bluffing)) &&
+      (hasPowerSprayInHand || bluffing)) &&
       (self.owner.opposite.pbg.all.findAll{it.topPokemonCard.cardTypes.is(POKEMON_SP)}.size() >= 3) &&
       (thisAbility instanceof PokePower) &&
       (bg.currentThreadPlayerType == self.owner)
     ) {
       def options = []
       def text = []
-      if (self.owner.opposite.pbg.hand.find { it.name == "Team Galactic's Invention G-103 Power Spray" }) {
+      if (hasPowerSprayInHand) {
         options += [1]
         text += ["Play Power Spray"]
       }
       options += [2]
       text += ["Skip"]
       if (!ignoreList.contains(thisAbility.name)) {
-        options += [3, 4]
-        text += ["Skip until end of turn for $thisAbility", "Skip until end of game for $thisAbility"]
+        // commented out option 4 because if user misclicks then they won't be able to use Power Spray on that ability.
+        options += [3/*, 4*/]
+        text += ["Skip & ignore \"$thisAbility\" this turn"/*, "Skip & ignore \"$thisAbility\" this game"*/]
       }
-      if (bluffing) {
+      if (bluffing && !hasPowerSprayInHand) {
         options += [5, 6]
-        text += ["Skip until end of turn unless I have Power Spray in hand", "Skip until end of game unless I have Power Spray in hand"]
+        text += ["Skip & don't bluff this turn", "Skip & don't bluff this game"]
       }
-      def choice = oppChoose(options, text, "Opponent's ${self.name} is about to use {thisAbility.name}. You may use a Power Spray in hand if you have. Game will ask you each time to allow bluffing with options to control the behavior.", options.get(0))
+      def message = (hasPowerSprayInHand ?
+        "Power Spray option: Opponent's ${self.name} is about to use $thisAbility. You HAVE a Power Spray in hand. What would you like to do?" :
+        "Power Spray bluffing: Opponent's ${self.name} is about to use $thisAbility. You DON'T have a Power Spray in hand but the game allows bluffing. You may either skip this instance (and continue bluffing) or disable bluffing for this turn or this game.")
+      def choice = oppChoose(options, text, message, options.get(0))
       //oppChoose works since this only triggers if the active player thread is the opponent's
       if (choice == 1) {
         bg.em().storeObject("Power_Spray_Can_Play_$self.owner.opposite", true)
