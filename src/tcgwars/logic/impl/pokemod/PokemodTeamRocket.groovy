@@ -35,6 +35,7 @@ import tcgwars.logic.effect.special.*;
 import tcgwars.logic.util.*;
 
 /**
+ * @author TheAquaPiplup
  * @author axpendix@hotmail.com
  */
 public enum PokemodTeamRocket implements LogicCardInfo {
@@ -122,32 +123,32 @@ public enum PokemodTeamRocket implements LogicCardInfo {
   RAINBOW_ENERGY_80 ("Rainbow Energy", "80", Rarity.RARE, [SPECIAL_ENERGY, ENERGY]),
   FULL_HEAL_ENERGY_81 ("Full Heal Energy", "81", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   POTION_ENERGY_82 ("Potion Energy", "82", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
-  DARK_RAICHU_83 ("Dark Raichu", "83", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]);
-  BOOST_ENERGY_84 ("Boost Energy", "84", Rarity.RARE, [SPECIAL_ENERGY, ENERGY]);
-  SCRAMBLE_ENERGY_85 ("Scramble Energy", "85", Rarity.RARE, [SPECIAL_ENERGY, ENERGY]);
-  ROCKETS_ENERGY_RF_86 ("Rocket's Energy RF", "86", Rarity.RARE, [SPECIAL_ENERGY, ENERGY]);
-  ROCKETS_ENERGY_GL_87 ("Rocket's Energy GL", "87", Rarity.RARE, [SPECIAL_ENERGY, ENERGY]);
-  ROCKETS_ENERGY_WP_88 ("Rocket's Energy WP", "88", Rarity.RARE, [SPECIAL_ENERGY, ENERGY]);
-  ROCKET_BALL_89 ("Rocket Ball ", "89", Rarity.UNCOMMON, [TRAINER]);
-  POKEMON_RETRIVER_90 ("Pokémon Retriver", "90", Rarity.RARE, [TRAINER]);
-  POW_HAND_EXTENTION_91 ("Pow! Hand Extention", "91", Rarity.RARE, [TRAINER]);
-  SURPRISE_TIME_MACHINE_92 ("Surprise! Time Machine", "92", Rarity.RARE, [TRAINER]);
-  SWOOP_TELEPORTER_93 ("Swoop! Teleporter", "93", Rarity.RARE, [TRAINER]);
-  ROCKETS_DUNGEON_94 ("Rocket's Dungeon", "94", Rarity.UNCOMMON, [TRAINER, STADIUM]);
-  ROCKETS_HIDEOUT_95 ("Rocket's Hideout", "95", Rarity.UNCOMMON, [TRAINER, STADIUM]);
-  ROCKETS_ACE_IN_THE_HOLE_96 ("Rocket's Ace in the Hole", "96", Rarity.RARE, [TRAINER]);
-  SUPER_ENERGY_CHARGE_97 ("Super Energy Charge", "97", Rarity.SECRET, [TRAINER, G_SPEC]);
-  IMPOSTER_OAKS_MADNESS_98 ("Imposter Oak's Revenge", "98", Rarity.SECRET, [TRAINER, G_SPEC]);
-  CELEBI_99 ("Celebi", "99", Rarity.SECRET, [BASIC, POKEMON, G_SPEC, _GRASS_]);
-  MIRACLE_ENERGY_100 ("Miracle Energy", "100", Rarity.SECRET, [SPECIAL_ENERGY, ENERGY, G_SPEC]);
-  DARK_CHARIZARD_101 ("Dark Charizard", "101", Rarity.SECRET, [STAGE2, POKEMON, EVOLUTION, _FIRE_]);
-  DARK_DRAGONITE_102 ("Dark Dragonite", "102", Rarity.SECRET, [STAGE2, POKEMON, EVOLUTION, _COLORLESS_]);
-  ROCKETS_ARTICUNO_EX_103 ("Rocket's Articuno ex", "103", Rarity.ULTRARARE, [BASIC, ]);
-  ROCKETS_MOLTRES_EX_104 ("Rocket's Moltres ex", "104", Rarity.ULTRARARE, [BASIC, ]);
-  ROCKETS_ZAPDOS_EX_105 ("Rocket's Zapdos ex", "105", Rarity.ULTRARARE, [BASIC, ]);
-  ROCKETS_MEWTWO_EX_106 ("Rocket's Mewtwo ex", "106", Rarity.ULTRARARE, [BASIC, ]);
-  ROCKETS_HITMONCHAN_EX_107 ("Rocket's Hitmonchan ex", "107", Rarity.ULTRARARE, [BASIC, ]);
-  ROCKETS_SCYTHER_EX_108 ("Rocket's Scyther ex", "108", Rarity.ULTRARARE, [BASIC, ]);
+  DARK_RAICHU_83 ("Dark Raichu", "83", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
+  BOOST_ENERGY_84 ("Boost Energy", "84", Rarity.RARE, [SPECIAL_ENERGY, ENERGY]),
+  SCRAMBLE_ENERGY_85 ("Scramble Energy", "85", Rarity.RARE, [SPECIAL_ENERGY, ENERGY]),
+  ROCKETS_ENERGY_RF_86 ("Rocket's Energy RF", "86", Rarity.RARE, [SPECIAL_ENERGY, ENERGY]),
+  ROCKETS_ENERGY_GL_87 ("Rocket's Energy GL", "87", Rarity.RARE, [SPECIAL_ENERGY, ENERGY]),
+  ROCKETS_ENERGY_WP_88 ("Rocket's Energy WP", "88", Rarity.RARE, [SPECIAL_ENERGY, ENERGY]),
+  ROCKET_BALL_89 ("Rocket Ball ", "89", Rarity.UNCOMMON, [TRAINER]),
+  POKEMON_RETRIVER_90 ("Pokémon Retriver", "90", Rarity.RARE, [TRAINER]),
+  POW_HAND_EXTENTION_91 ("Pow! Hand Extention", "91", Rarity.RARE, [TRAINER]),
+  SURPRISE_TIME_MACHINE_92 ("Surprise! Time Machine", "92", Rarity.RARE, [TRAINER]),
+  SWOOP_TELEPORTER_93 ("Swoop! Teleporter", "93", Rarity.RARE, [TRAINER]),
+  ROCKETS_DUNGEON_94 ("Rocket's Dungeon", "94", Rarity.UNCOMMON, [TRAINER, STADIUM]),
+  ROCKETS_HIDEOUT_95 ("Rocket's Hideout", "95", Rarity.UNCOMMON, [TRAINER, STADIUM]),
+  ROCKETS_ACE_IN_THE_HOLE_96 ("Rocket's Ace in the Hole", "96", Rarity.RARE, [TRAINER]),
+  SUPER_ENERGY_CHARGE_97 ("Super Energy Charge", "97", Rarity.SECRET, [TRAINER, G_SPEC]),
+  IMPOSTER_OAKS_MADNESS_98 ("Imposter Oak's Revenge", "98", Rarity.SECRET, [TRAINER, G_SPEC]),
+  CELEBI_99 ("Celebi", "99", Rarity.SECRET, [BASIC, POKEMON, G_SPEC, _GRASS_]),
+  MIRACLE_ENERGY_100 ("Miracle Energy", "100", Rarity.SECRET, [SPECIAL_ENERGY, ENERGY, G_SPEC]),
+  DARK_CHARIZARD_101 ("Dark Charizard", "101", Rarity.SECRET, [STAGE2, POKEMON, EVOLUTION, _FIRE_]),
+  DARK_DRAGONITE_102 ("Dark Dragonite", "102", Rarity.SECRET, [STAGE2, POKEMON, EVOLUTION, _COLORLESS_]),
+  ROCKETS_ARTICUNO_EX_103 ("Rocket's Articuno ex", "103", Rarity.ULTRARARE, [BASIC, ]),
+  ROCKETS_MOLTRES_EX_104 ("Rocket's Moltres ex", "104", Rarity.ULTRARARE, [BASIC, ]),
+  ROCKETS_ZAPDOS_EX_105 ("Rocket's Zapdos ex", "105", Rarity.ULTRARARE, [BASIC, ]),
+  ROCKETS_MEWTWO_EX_106 ("Rocket's Mewtwo ex", "106", Rarity.ULTRARARE, [BASIC, ]),
+  ROCKETS_HITMONCHAN_EX_107 ("Rocket's Hitmonchan ex", "107", Rarity.ULTRARARE, [BASIC, ]),
+  ROCKETS_SCYTHER_EX_108 ("Rocket's Scyther ex", "108", Rarity.ULTRARARE, [BASIC, ]),
   ROCKETS_SNORLAX_EX_109 ("Rocket's Snorlax ex", "109", Rarity.ULTRARARE, [BASIC, ]);
 
     static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
@@ -292,7 +293,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
 
         };
       case DARK_CHARIZARD_4:
-        return copy (Rocket.DARK_CHARIZARD_4, this);
+        return copy (TeamRocket.DARK_CHARIZARD_4, this);
       case DARK_DRAGONITE_5:
         return evolution (this, from:"Dark Dragonair", hp:HP080, type:COLORLESS, retreatCost:2) {
           resistance FIGHTING, MINUS30
@@ -325,7 +326,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
         return evolution (this, from:"Diglett", hp:HP060, type:FIGHTING, retreatCost:2) {
           weakness GRASS
           resistance LIGHTNING, MINUS30
-          pokemonBody "Sinkhole", {
+          pokeBody "Sinkhole", {
             text "Whenever your opponent’s Active Pokémon retreats, your opponent flips a coin. If tails, this power does 20 damage to that Pokémon. (Don’t apply Weakness and Resistance.) This power stops working while Dark Dugtrio is Asleep, Confused, or Paralyzed."
             delayedA {
               before RETREAT, {
@@ -348,12 +349,12 @@ public enum PokemodTeamRocket implements LogicCardInfo {
 
         };
       case DARK_GOLBAT_7:
-        return copy (Rocket.DARK_GOLBAT_7, this);
+        return copy (TeamRocket.DARK_GOLBAT_7, this);
       case DARK_GYARADOS_8:
         return evolution (this, from:"Magikarp", hp:HP070, type:WATER, retreatCost:2) {
           weakness LIGHTNING
           resistance FIGHTING, MINUS30
-          pokemonBody "Final Beam", {
+          pokeBody "Final Beam", {
             text "When Dark Gyarados is Knocked Out by an attack, flip a coin. If heads, this power does 20 damage for each [W] Energy attached to Dark Gyarados to the Pokémon that Knocked Out Dark Gyarados. Apply Weakness and Resistance. This power doesn’t work if Dark Gyarados is Asleep, Confused, or Paralyzed."
             delayedA {
               before KNOCKOUT, self, {
@@ -474,7 +475,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
       case DARK_VILEPLUME_13:
         return evolution (this, from:"Dark Gloom", hp:HP060, type:GRASS, retreatCost:2) {
           weakness FIRE
-          pokemonBody "Hay Fever", {
+          pokeBody "Hay Fever", {
             text "No Trainer cards can be played. This power stops working while Dark Vileplume is Asleep, Confused, or Paralyzed."
             delayedA {
               before PLAY_TRAINER, {
@@ -566,7 +567,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
       case DARK_DUGTRIO_23:
         return copy (DARK_DUGTRIO_6, this);
       case DARK_GOLBAT_24:
-        return copy (Rocket.DARK_GOLBAT_7, this);
+        return copy (TeamRocket.DARK_GOLBAT_7, this);
       case DARK_GYARADOS_25:
         return copy (DARK_GYARADOS_8, this);
       case DARK_HYPNO_26:
@@ -608,7 +609,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
 
         };
       case DARK_DRAGONAIR_33:
-        return copy (Rocket.DARK_DRAGONAIR_33, this);
+        return copy (TeamRocket.DARK_DRAGONAIR, this);
       case DARK_ELECTRODE_34:
         return evolution (this, from:"Voltorb", hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -667,9 +668,9 @@ public enum PokemodTeamRocket implements LogicCardInfo {
 
         };
       case DARK_GLOOM_36:
-        return copy (Rocket.DARK_GLOOM_36, this);
+        return copy (TeamRocket.DARK_GLOOM, this);
       case DARK_GOLDUCK_37:
-        return copy (Rocket.DARK_GOLDUCK_37, this);
+        return copy (TeamRocket.DARK_GOLDUCK, this);
       case DARK_JOLTEON_38:
         return evolution (this, from:"Eevee", hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -751,7 +752,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
       case DARK_MUK_41:
         return evolution (this, from:"Grimer", hp:HP060, type:GRASS, retreatCost:2) {
           weakness PSYCHIC
-          pokemonBody "Sticky Goo", {
+          pokeBody "Sticky Goo", {
             text "As long as Dark Muk is your Active Pokémon, your opponent pays [C][C] more to retreat his or her Active Pokémon. This power stops working while Dark Muk is Asleep, Confused, or Paralyzed."
             getterA (GET_RETREAT_COST) { h->
               if(h.effect.target.owner == self.owner.opposite && self.active) {
@@ -801,7 +802,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
       case DARK_PRIMEAPE_43:
         return evolution (this, from:"Mankey", hp:HP060, type:FIGHTING, retreatCost:1) {
           weakness PSYCHIC
-          pokemonBody "Frenzy", {
+          pokeBody "Frenzy", {
             text "If Dark Primeape does any damage while it’s Confused (even to itself), it does 30 more damage."
             delayedA {
               before APPLY_DAMAGES, {
@@ -833,7 +834,6 @@ public enum PokemodTeamRocket implements LogicCardInfo {
           move "Rear Kick", {
             text "20 damage."
             energyCost R
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -858,8 +858,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
           weakness LIGHTNING
           move "Bite", {
             text "30 damage."
-            energyCost W, C,
-            attackRequirement {}
+            energyCost W, C
             onAttack {
               damage 30
             }
@@ -993,19 +992,19 @@ public enum PokemodTeamRocket implements LogicCardInfo {
 
         };
       case ABRA_49:
-        return copy (TeamRocket.ABRA_49, this);
+        return copy (TeamRocket.ABRA, this);
       case CHARMANDER_50:
-        return copy (TeamRocket.CHARMANDER_50, this);
+        return copy (TeamRocket.CHARMANDER, this);
       case DARK_RATICATE_51:
-        return copy (TeamRocket.DARK_RATICATE_51, this);
+        return copy (TeamRocket.DARK_RATICATE, this);
       case DIGLETT_52:
-        return copy (TeamRocket.DIGLETT_52, this);
+        return copy (TeamRocket.DIGLETT, this);
       case DRATINI_53:
-        return copy (TeamRocket.DRATINI_53, this);
+        return copy (TeamRocket.DRATINI, this);
       case DROWZEE_54:
-        return copy (TeamRocket.DROWZEE_54, this);
+        return copy (TeamRocket.DROWZEE, this);
       case EEVEE_55:
-        return copy (TeamRocket.EEVEE_55, this);
+        return copy (TeamRocket.EEVEE, this);
       case EKANS_56:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
@@ -1054,9 +1053,9 @@ public enum PokemodTeamRocket implements LogicCardInfo {
 
         };
       case KOFFING_58:
-        return copy (TeamRocket.KOFFING_58, this);
+        return copy (TeamRocket.KOFFING, this);
       case MACHOP_59:
-        return copy (TeamRocket.MACHOP_59, this);
+        return copy (TeamRocket.MACHOP, this);
       case MAGNEMITE_60:
         return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1079,19 +1078,19 @@ public enum PokemodTeamRocket implements LogicCardInfo {
 
         };
       case MANKEY_61:
-        return copy (TeamRocket.MANKEY_61, this);
+        return copy (TeamRocket.MANKEY, this);
       case MEOWTH_62:
-        return copy (TeamRocket.MEOWTH_62, this);
+        return copy (TeamRocket.MEOWTH, this);
       case ODDISH_63:
-        return copy (TeamRocket.ODDISH_63, this);
+        return copy (TeamRocket.ODDISH, this);
       case PONYTA_64:
-        return copy (TeamRocket.PONYTA_64, this);
+        return copy (TeamRocket.PONYTA, this);
       case PSYDUCK_65:
-        return copy (TeamRocket.PSYDUCK_65, this);
+        return copy (TeamRocket.PSYDUCK, this);
       case RATTATA_66:
-        return copy (TeamRocket.RATTATA_66, this);
+        return copy (TeamRocket.RATTATA, this);
       case SLOWPOKE_67:
-        return copy (TeamRocket.SLOWPOKE_67, this);
+        return copy (TeamRocket.SLOWPOKE, this);
       case SQUIRTLE_68:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -1106,36 +1105,36 @@ public enum PokemodTeamRocket implements LogicCardInfo {
 
         };
       case VOLTORB_69:
-        return copy (TeamRocket.VOLTORB_69, this);
+        return copy (TeamRocket.VOLTORB, this);
       case ZUBAT_70:
-        return copy (TeamRocket.ZUBAT_70, this);
+        return copy (TeamRocket.ZUBAT, this);
       case HERE_COMES_TEAM_ROCKET_71:
         return copy (TeamRocket.HERE_COMES_TEAM_ROCKET_15, this);
       case ROCKETS_SNEAK_ATTACK_72:
         return copy (ROCKETS_SNEAK_ATTACK_16, this);
       case THE_BOSSS_WAY_73:
-        return copy (TeamRocket.THE_BOSSS_WAY_73, this);
+        return copy (TeamRocket.THE_BOSSS_WAY, this);
       case CHALLENGE_74:
         break
       case DIGGER_75:
-        return copy (TeamRocket.DIGGER_75, this);
+        return copy (TeamRocket.DIGGER, this);
       case IMPOSTER_OAKS_REVENGE_76:
         break
       case NIGHTLY_GARBAGE_RUN_77:
-        return copy (TeamRocket.NIGHTLY_GARBAGE_RUN_77, this);
+        return copy (TeamRocket.NIGHTLY_GARBAGE_RUN, this);
       case GOOP_GAS_ATTACK_78:
         break
       case SLEEP_79:
-        return copy (Rocket.SLEEP_79, this);
+        return copy (TeamRocket.SLEEP, this);
       case RAINBOW_ENERGY_80:
-        return copy (Rocket.RAINBOW_ENERGY_17, this);
+        return copy (TeamRocket.RAINBOW_ENERGY_17, this);
       case FULL_HEAL_ENERGY_81:
-        return copy (Rocket.FULL_HEAL_ENERGY_81, this);
+        return copy (TeamRocket.FULL_HEAL_ENERGY, this);
       case POTION_ENERGY_82:
-        return copy (Rocket.POTION_ENERGY_82, this);
+        return copy (TeamRocket.POTION_ENERGY, this);
       case DARK_RAICHU_83:
-        return copy (Rocket.DARK_RAICHU_83, this);
-      case BOOST_ENERGY_84
+        return copy (TeamRocket.DARK_RAICHU, this);
+      case BOOST_ENERGY_84:
         break
       case SCRAMBLE_ENERGY_85:
         break
