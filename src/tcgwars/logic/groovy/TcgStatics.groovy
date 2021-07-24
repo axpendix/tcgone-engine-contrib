@@ -800,6 +800,10 @@ class TcgStatics {
       after FALL_BACK, self, {unregister()}
     }
   }
+  static usingThisAbilityEndsTurn(Object delegate) {
+    bc "${delegate.self.owner.getPlayerUsername(bg)}'s turn ends due to using ${delegate.thisAbility}."
+    bg.gm().betweenTurns()
+  }
 
   static preventAllEffectsFromCustomPokemonNextTurn(Move thisMove, PokemonCardSet self, Predicate<PokemonCardSet> predicate){
     delayed {

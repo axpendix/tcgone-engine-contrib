@@ -270,7 +270,7 @@ public enum SecretWonders implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               assert my.hand.filterByBasicEnergyType(W) : "There are no basic [W] Energys in your hand."
-              powerUsed()
+              powerUsed({ usingThisAbilityEndsTurn delegate })
               while(true){
                 if(!my.hand.filterByBasicEnergyType(W)) break
                 def tar = my.all.select("Attach energy to which Pokémon? (Cancel to stop)", false)
@@ -279,8 +279,8 @@ public enum SecretWonders implements LogicCardInfo {
                 energy.each{
                   attachEnergy(tar,it)
                 }
-                bg.gm().betweenTurns()
               }
+              usingThisAbilityEndsTurn delegate
             }
           }
           move "Hydro Pump", {

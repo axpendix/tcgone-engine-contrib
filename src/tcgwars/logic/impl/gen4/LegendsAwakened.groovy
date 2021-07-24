@@ -2689,11 +2689,11 @@ public enum LegendsAwakened implements LogicCardInfo {
             actionA {
               checkNoSPC()
               checkLastTurn()
-              powerUsed()
+              powerUsed({ usingThisAbilityEndsTurn delegate })
               my.all.each {
                 heal 20, it
               }
-              bg.gm().betweenTurns()
+              usingThisAbilityEndsTurn delegate
             }
           }
           move "Hidden Power", {
