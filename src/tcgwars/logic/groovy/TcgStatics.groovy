@@ -1911,11 +1911,11 @@ class TcgStatics {
           applyEffect = bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({ it.to == self && it.dmg.value })
         }
         after APPLY_ATTACK_DAMAGES, {
-          if (applyEffect) {
+          if (applyEffect && ef.attacker.inPlay) {
             eff.delegate=delegate
-            eff.call()
-            applyEffect = false
+            eff.call(ef)
           }
+          applyEffect = false
         }
       }
     }
@@ -1939,11 +1939,11 @@ class TcgStatics {
             }
           }
           after APPLY_ATTACK_DAMAGES, {
-            if (applyEffect && self.cards.contains(thisCard)) {
+            if (applyEffect && self.cards.contains(thisCard) && ef.attacker.inPlay) {
               c2.delegate=delegate
-              c2.call() // card didn't get discarded by an attack effect
-              applyEffect = false
+              c2.call(ef) // card didn't get discarded by an attack effect
             }
+            applyEffect = false
           }
         }
       }
@@ -1965,11 +1965,11 @@ class TcgStatics {
           applyEffect = bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})
         }
         after APPLY_ATTACK_DAMAGES, {
-          if (applyEffect && ef.attacker.inPlay) {
+          if (applyEffect && ef.attacker && ef.attacker.inPlay) {
             eff.delegate=delegate
-            eff.call()
-            applyEffect = false
+            eff.call(ef)
           }
+          applyEffect = false
         }
         unregisterAfter 2
         after FALL_BACK, self, {unregister()}
