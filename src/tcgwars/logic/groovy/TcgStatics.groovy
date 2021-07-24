@@ -800,6 +800,10 @@ class TcgStatics {
       after FALL_BACK, self, {unregister()}
     }
   }
+  static usingThisAbilityEndsTurn(Object delegate) {
+    bc "${delegate.self.owner.getPlayerUsername(bg)}'s turn ends due to using ${delegate.thisAbility}."
+    bg.gm().betweenTurns()
+  }
 
   static preventAllEffectsFromCustomPokemonNextTurn(Move thisMove, PokemonCardSet self, Predicate<PokemonCardSet> predicate){
     delayed {
@@ -852,8 +856,8 @@ class TcgStatics {
       if(params.name){
         pkmnName = params.name
       }
-      if(params.type){
-        deck.search (max: maxSpace,{it.name.contains(pkmnName) && it.cardTypes.is(basicFilter) && it.asPokemonCard().types.contains(params.type)}).each {
+      if(params.types){
+        deck.search (max: maxSpace,{it.name.contains(pkmnName) && it.cardTypes.is(basicFilter) && params.types.any{ty -> it.asPokemonCard().types.contains(ty)}}).each {
           benchPCS(it)
         }
       }
@@ -899,23 +903,8 @@ class TcgStatics {
       }
     } } }
   }
-  /**
-   * Attaches a tool to a pcs. Callers MUST remove card manually from source, else it will be duplicated. Vastly taken from {@link tcgwars.logic.effect.gm.PlayPokemonTool}
-   */
   static attachPokemonTool (PokemonToolCard card, PokemonCardSet pcs) {
-    // attach to selected pokemon
-    pcs.cards().add(card);
-    //play
-    card.play(bg, pcs);
-    //register for remove from play
-    delayed {
-      after REMOVE_FROM_PLAY, pcs, null, {
-        if(LUtils.isRemoveFromPlayAndContainsCard(e, card)){
-          card.removeFromPlay(bg, pcs)
-          unregister()
-        }
-      }
-    }
+    new AttachPokemonTool(pcs, card, OTHER).run(bg)
     bc("$card is attached to $pcs")
     bg.gm().woosh();
   }
@@ -1059,7 +1048,7 @@ class TcgStatics {
               def energyEquivalent = []
               def typeImages = []
               def energyImage = (colorless) ? COLORLESS : RAINBOW
-              def energyTypes = (colorless) ? [C] : [R, D, F, G, W, L, M, P, Y]
+              def energyTypes = (colorless) ? [C] : valuesBasicEnergy()
 
               energyCount.times {
                 energyEquivalent.add(energyTypes)
@@ -1612,6 +1601,12 @@ class TcgStatics {
     } */
   }
 
+  /**
+   * Allows you to place damage counters without triggering knockouts. No longer needed for attacks, but still needed for abilities.
+   * @param counters The number of damage counters to place
+   * @param selectArea A PcsList of targets to choose from - Can be for either side of the field regardless of method name
+   * @param src The Source of the damage counters
+   */
   static putDamageCountersOnOpponentsPokemon(int counters, def selectArea = opp.all, def src = Source.ATTACK){
     if (selectArea.notEmpty) {
       def eff = delayed {
@@ -1872,13 +1867,15 @@ class TcgStatics {
   /**
    * Copies an attack from another PokemonCardSet as an Ability Attack
    * @param params Optional map of parameters
-   * @param params.checkSpecialConditions
+   * @param params checkSpecialConditions Check for any Special Conditions before adding moves
+   * @param params checkClassicSpecialConditions Check for any Pokemon Power Special Conditions before adding moves
    * @param delegate onAttack delegate
    * @param target A Closure with a call to return the current targets (ex: { all() } or { bench() }
    */
   static metronomeA(params=[:], Object delegate, Closure target) {
     delegate.getterA GET_MOVE_LIST, delegate.self, {holder->
       if (params.checkSpecialConditions && !(delegate.self as PokemonCardSet).noSPC()) return
+      if (params.checkClassicSpecialConditions && !(delegate.self as PokemonCardSet).checkSpecialConditionsForClassic()) return
       if (!holder.effect.target.active) return
       def moves = [] as Set
       moves.addAll holder.object

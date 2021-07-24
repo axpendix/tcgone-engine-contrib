@@ -1513,7 +1513,6 @@ public enum LostThunder implements LogicCardInfo {
               if(tar){
                 tar.each {pcs->
                   my.deck.search("Select a Pokémon Tool to attach to $pcs",cardTypeFilter(POKEMON_TOOL)).each{
-                    deck.remove(it)
                     attachPokemonTool(it, pcs)
                   }
                 }
@@ -2315,11 +2314,10 @@ public enum LostThunder implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert my.bench.notEmpty : "$self is your last Pokémon."
-              assert my.all.findAll {it!=self && it.cards.filterByType(POKEMON_TOOL).empty} : "No place to attach"
+              assert my.all.findAll {it!=self && canAttachPokemonTool(it)} : "No place to attach"
               powerUsed()
               def top = self.topPokemonCard
               self.cards.getExcludedList(top).discard()
-              removePCS(self)
               def trcard
               trcard = pokemonTool(new CustomCardInfo(top.staticInfo).setCardTypes(TRAINER, ITEM, POKEMON_TOOL)) {
                 def eff
@@ -2335,10 +2333,16 @@ public enum LostThunder implements LogicCardInfo {
                   eff.unregister()
                   bg.em().run(new ChangeImplementation(top, trcard))
                 }
+                onDisable {
+                  eff.unregister()
+                }
               }
               trcard.player = top.player
-              def pcs = my.all.findAll {it!=self && it.cards.filterByType(POKEMON_TOOL).empty}.select("Attach to?")
-              attachPokemonTool(trcard,pcs)
+              def pcs = my.all.findAll {it!=self && canAttachPokemonTool(it)}.select("Attach to?")
+              removeFromPlay(self, [top] as CardList)
+              bg.em().run(new ChangeImplementation(trcard, top))
+              attachPokemonTool(trcard, pcs)
+              removePCS(self)
             }
           }
           move "Haunt" , {

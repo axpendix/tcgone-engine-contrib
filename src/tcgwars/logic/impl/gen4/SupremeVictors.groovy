@@ -1124,7 +1124,7 @@ public enum SupremeVictors implements LogicCardInfo {
             delayedA {
               after ATTACH_ENERGY, self, {
                 if (ef.reason == PLAY_FROM_HAND) {
-                  clearSpecialCondition(self, SRC_ABILITY)
+                  clearSpecialCondition(self, Source.POKEBODY)
                 }
               }
             }
@@ -3168,6 +3168,7 @@ public enum SupremeVictors implements LogicCardInfo {
           resistance M, MINUS20
           pokePower "Energy Recycle", {
             text "Once during your turn , you may use this power. If you do, your turn ends. Search your discard pile for up to 3 Energy cards and attach them to your Pokémon in any way you like. This power can’t be used if Electivire is affected by a Special Condition."
+            //TODO: Use "usingThisAbilityEndsTurn delegate" when implementing this card.
             actionA {
             }
           }

@@ -200,7 +200,7 @@ public enum MajesticDawn implements LogicCardInfo {
   public Card getImplementation() {
     switch (this) {
       case ARTICUNO_1:
-        return basic (this, hp:HP100, type:WATER, retreatCost:3) {
+        return basic (this, hp:HP100, type:WATER, retreatCost:2) {
           weakness M
           resistance F, MINUS20
           pokePower "Freezing Screech", {
@@ -208,7 +208,7 @@ public enum MajesticDawn implements LogicCardInfo {
             onActivate {
               if(it==PLAY_FROM_HAND && confirm("Use Freezing Screech?")) {
                 powerUsed()
-                flip {apply PARALYZED}
+                flip {apply PARALYZED, opp.active, Source.POKEPOWER}
               }
             }
           }
@@ -617,7 +617,7 @@ public enum MajesticDawn implements LogicCardInfo {
                 powerUsed()
                 flip {
                   opp.all.each {
-                    directDamage 10, it, SRC_ABILITY
+                    directDamage 10, it, Source.POKEPOWER
                   }
                 }
               }
@@ -651,7 +651,7 @@ public enum MajesticDawn implements LogicCardInfo {
               after POKEPOWER, {
                 if (pcs && pcs.cards && pcsTPC == pcs.topPokemonCard) {
                   bc "$thisAbility activates"
-                  directDamage(20, pcs, Source.SRC_ABILITY)
+                  directDamage(20, pcs, Source.POKEBODY)
                   pcs = null
                   pcsTPC = null
                 }
@@ -659,7 +659,7 @@ public enum MajesticDawn implements LogicCardInfo {
               after ACTIVATE_ABILITY, {
                 if (pcs && pcs.cards && pcsTPC == pcs.topPokemonCard) {
                   bc "$thisAbility activates"
-                  directDamage(20, pcs, Source.SRC_ABILITY)
+                  directDamage(20, pcs, Source.POKEBODY)
                   pcs = null
                   pcsTPC = null
                 }
@@ -699,7 +699,7 @@ public enum MajesticDawn implements LogicCardInfo {
                         bc "Cursed Alloy"
                         once = false
                       }
-                      directDamage(10, it, SRC_ABILITY)
+                      directDamage(10, it, Source.POKEBODY)
                       hasPokePower = false
                     }
                   }
@@ -986,11 +986,10 @@ public enum MajesticDawn implements LogicCardInfo {
           pokePower "Primal Swirl", {
             text "Once during your turn, when you play Omastar from your hand to evolve 1 of your Pokémon, you may remove the highest Stage Evolution card from each of your opponent’s Benched Evolved Pokémon and put those cards back into his or her hand. You can’t use more than 1 Primal Swirl Poké-Power each turn."
             onActivate {r ->
-              bc "$r"
-              if(r == PLAY_FROM_HAND && bg.em().retrieveObject("Primal_Swirl") != bg.turnCount && opp.all.find{it.evolution} && confirm("Use $thisAbility?")){
+              if(r == PLAY_FROM_HAND && bg.em().retrieveObject("Primal_Swirl") != bg.turnCount && opp.bench.find{it.evolution} && confirm("Use $thisAbility?")){
                 bg.em().storeObject("Primal_Swirl",bg.turnCount)
                 powerUsed()
-                opp.all.findAll{it.evolution}.each {
+                opp.bench.findAll{it.evolution}.each {
                   def top = it.topPokemonCard
                   devolve(it, top, opp.hand)
                 }
@@ -1164,7 +1163,7 @@ public enum MajesticDawn implements LogicCardInfo {
               assert self.benched : "$self is not you your Bench"
               assert my.all.find{!it.name.contains("Unown")} : "All of your Pokémon are Unown"
               powerUsed()
-              directDamage 10, my.all.findAll{!it.name.contains("Unown")}.select("Put 1 damage counter on 1 of your Pokémon"), SRC_ABILITY
+              directDamage 10, my.all.findAll{!it.name.contains("Unown")}.select("Put 1 damage counter on 1 of your Pokémon"), Source.POKEPOWER
             }
           }
           move "Hidden Power", {
@@ -1236,7 +1235,7 @@ public enum MajesticDawn implements LogicCardInfo {
         };
       case FEAROW_36:
         return evolution (this, from:"Spearow", hp:HP080, type:COLORLESS, retreatCost:0) {
-          weakness L
+          weakness L, PLUS20
           resistance F, MINUS20
           move "Fury Attack", {
             text "20× damage. Flip 3 coins. This attack does 20 damage times the number of heads."
@@ -1356,7 +1355,7 @@ public enum MajesticDawn implements LogicCardInfo {
         };
       case MONFERNO_41:
         return evolution (this, from:"Chimchar", hp:HP070, type:FIRE, retreatCost:0) {
-          weakness W
+          weakness W, PLUS20
           move "Fire Fang", {
             text "30 damage. The Defending Pokémon is now Burned."
             energyCost R
@@ -1380,14 +1379,18 @@ public enum MajesticDawn implements LogicCardInfo {
       case MOTHIM_42:
         return evolution (this, from:["Burmy","Burmy Plant Cloak","Burmy Sandy Cloak","Burmy Trash Cloak"], hp:HP080, type:GRASS, retreatCost:0) {
           weakness R, PLUS20
-          resistance F, MINUS30
+          resistance F, MINUS20
           pokeBody "Disturbance Scales", {
             text "Any damage done by attacks from your Pokémon to the Defending Pokémon isn’t affected by Resistance."
             delayedA {
               before APPLY_RESISTANCE, {
-                bg.dm().each {
-                  if (it.from.owner == self.owner && it.to.owner == self.owner.opposite && it.to.active) {
-                    prevent()
+                if (ef.attacker.owner == self.owner) {
+                  bg.dm().each {
+                    if (it.to.owner == self.owner.opposite && it.to.active) {
+                      // TODO: For below line, add Additional if? " && it.from.types.any{ty -> it.to.resistances.contains(ty)}"
+                      // bc "$thisAbility ignores resistance" // This shouldn't always print.
+                      prevent()
+                    }
                   }
                 }
               }
@@ -1397,18 +1400,21 @@ public enum MajesticDawn implements LogicCardInfo {
             text "30× damage. Does 30 damage times the number of different types of Wormadam on your Bench."
             energyCost G
             attackRequirement {
-              assert my.bench.find{it.name.contains("Wormadam")}
+              assertMyBench(info: "with Wormadam in their name", {it.name.contains("Wormadam")})
             }
             onAttack {
-              def worms = []
-              def count = 0
+              def wormTypes = []
               my.bench.each {
-                if(it.name.contains("Wormadam") && !worms.contains(it.name)) {
-                  worms.add(it.name)
-                  count ++
+                if(it.name.contains("Wormadam")) {
+                  for (Type ty : it.getTypes()) {
+                    if (!wormTypes.contains(ty)) {
+                      wormTypes.add(ty)
+                      break
+                    }
+                  }
                 }
               }
-              damage 30 * count
+              damage 30 * wormTypes.size()
             }
           }
           move "Quick Touch", {
@@ -1584,7 +1590,6 @@ public enum MajesticDawn implements LogicCardInfo {
               powerUsed()
               def top = self.topPokemonCard
               self.cards.getExcludedList(top).discard()
-              removePCS(self)
               def trcard
               trcard = pokemonTool(new CustomCardInfo(top.staticInfo).setCardTypes(TRAINER, ITEM, POKEMON_TOOL)) {
                 def eff
@@ -1597,10 +1602,16 @@ public enum MajesticDawn implements LogicCardInfo {
                   eff.unregister()
                   bg.em().run(new ChangeImplementation(top, trcard))
                 }
+                onDisable {
+                  eff.unregister()
+                }
               }
               trcard.player = top.player
               def pcs = my.all.findAll {it!=self && canAttachPokemonTool(it)}.select("Attach to?")
-              attachPokemonTool(trcard,pcs)
+              removeFromPlay(self, [top] as CardList)
+              bg.em().run(new ChangeImplementation(trcard, top))
+              attachPokemonTool(trcard, pcs)
+              removePCS(self)
             }
           }
           move "Hidden Power", {
@@ -1787,8 +1798,7 @@ public enum MajesticDawn implements LogicCardInfo {
               before BETWEEN_TURNS, {
                 if(self.isSPC(PARALYZED)){
                   bc "Cheri Berry removes paralysis"
-                  //TODO: find or make a better source.
-                  clearSpecialCondition(self, SRC_ABILITY, [PARALYZED])
+                  clearSpecialCondition(self, SRC_OTHER, [PARALYZED])
                 }
               }
             }
@@ -1917,6 +1927,7 @@ public enum MajesticDawn implements LogicCardInfo {
               my.deck.search(max:my.bench.freeBenchCount,"Search your deck for as many Eevee as you like and put them onto your Bench",{it.name.contains("Eevee")}).each {
                 benchPCS(it)
               }
+              shuffleDeck()
             }
           }
           move "Lunge", {
@@ -1932,8 +1943,7 @@ public enum MajesticDawn implements LogicCardInfo {
         };
       case EEVEE_63:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
-          weakness F
-          resistance F
+          weakness F, PLUS10
           move "Gnaw", {
             text "10 damage. "
             energyCost ()
@@ -2097,8 +2107,7 @@ public enum MajesticDawn implements LogicCardInfo {
             onAttack {
               damage 20
               if(opp.bench) {
-                multiSelect(opp.bench,2,"Does 10 damage to 2 of your opponent's benched Pokémon").each {}
-                damage 10, it
+                multiSelect(opp.bench,2,"Does 10 damage to 2 of your opponent's benched Pokémon").each{damage 10, it}
               }
             }
           }
@@ -2159,8 +2168,7 @@ public enum MajesticDawn implements LogicCardInfo {
               before BETWEEN_TURNS, {
                 if(self.isSPC(POISONED)){
                   bc "Pecha Berry removes poisoned"
-                  //TODO: find or make a better source
-                  clearSpecialCondition(self, SRC_ABILITY, [POISONED])
+                  clearSpecialCondition(self, SRC_OTHER, [POISONED])
                 }
               }
             }
@@ -2291,8 +2299,7 @@ public enum MajesticDawn implements LogicCardInfo {
               before BETWEEN_TURNS, {
                 if(self.isSPC(CONFUSED)){
                   bc "Pecha Berry removes confused"
-                  //TODO: find or make a better source.
-                  clearSpecialCondition(self, SRC_ABILITY, [CONFUSED])
+                  clearSpecialCondition(self, SRC_OTHER, [CONFUSED])
                 }
               }
             }
@@ -2429,7 +2436,7 @@ public enum MajesticDawn implements LogicCardInfo {
               pokeBody "Rock Reaction", {
                 delayedA{
                   after ATTACH_ENERGY, self, {
-                    if(ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(F) && self.owner.pbg.deck && confirm("Use Rock Reaction?")){
+                    if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(F) && self.owner.pbg.deck) {
                       def sel=my.deck.search("Search your deck for a card that evolved from $self",{it.cardTypes.is(EVOLUTION) && it.predecessor==self.name})
                       if(sel){
                         evolve(self, sel.first(), OTHER)
@@ -2500,7 +2507,7 @@ public enum MajesticDawn implements LogicCardInfo {
               pokeBody "Aqua Reaction", {
                 delayedA{
                   after ATTACH_ENERGY, self, {
-                    if(ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(W) && self.owner.pbg.deck && confirm("Use Rock Reaction?")){
+                    if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(W) && self.owner.pbg.deck) {
                       def sel=my.deck.search("Search your deck for a card that evolved from $self",{it.cardTypes.is(EVOLUTION) && it.predecessor==self.name})
                       if(sel){
                         evolve(self, sel.first(), OTHER)
@@ -2576,6 +2583,7 @@ public enum MajesticDawn implements LogicCardInfo {
                   benchPCS(it)
                 }
                 shuffleDeck()
+                bc "${self.owner.getPlayerUsername(bg)}'s turn ends due to using $thisCard's effect."
                 bg.gm().betweenTurns()
               }
             }
@@ -2613,11 +2621,10 @@ public enum MajesticDawn implements LogicCardInfo {
           pokePower "Dragon Pulse", {
             text "Once during your turn , when you put Garchomp LV.X from your hand onto your Active Garchomp, you may flip 3 coins. For each heads, put 1 damage counter on each of your opponent’s Benched Pokémon."
             onActivate {r->
-              bc "$r"
               if (r==PLAY_FROM_HAND && opp.bench && confirm('Use Dragon Pulse?')) {
                 flip 3, {
                   opp.bench.each {
-                    directDamage 10, it, SRC_ABILITY
+                    directDamage 10, it, Source.POKEPOWER
                   }
                 }
               }
@@ -2632,7 +2639,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
             onAttack {
               def pcs = benchPCS(my.discard.select("Choose a Pokémon to put on your bench", cardTypeFilter(POKEMON)).first())
-              if(my.discard.filterByType(BASIC_ENERGY)) {
+              if(pcs != null && my.discard.filterByType(BASIC_ENERGY)) {
                 my.discard.select(min:0, max:3, "Attach up to 3 basic Energy cards to $pcs",cardTypeFilter(BASIC_ENERGY)).each {
                   attachEnergy(pcs, it)
                 }
@@ -2726,10 +2733,11 @@ public enum MajesticDawn implements LogicCardInfo {
               checkNoSPC()
               assert my.deck : "Your deck is empty"
               powerUsed()
-              def min = Math.min(2, my.deck.size())
-              def cards = my.deck.search(min:min, max:2, "Search your deck for any 2 cards")
+              def list = my.deck.select(count:2)
+              list = rearrange(list)
+              my.deck.removeAll(list)
               shuffleDeck()
-              cards.moveTo(addToTop:true,suppressLog: true, my.deck)
+              my.deck.addAll(0, list)
             }
           }
         };

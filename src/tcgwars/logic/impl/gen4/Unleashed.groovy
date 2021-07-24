@@ -616,9 +616,7 @@ public enum Unleashed implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 30
-              delayed {
-                doMoreDamageNextTurn(thisMove, 30, self)
-              }
+              doMoreDamageNextTurn(thisMove, 30, self)
             }
           }
           move "Magnum Punch", {
@@ -1341,7 +1339,7 @@ public enum Unleashed implements LogicCardInfo {
             delayedA{
               after ATTACH_ENERGY, self, {
                 if (ef.reason == PLAY_FROM_HAND && ef.card.cardTypes.is(ENERGY)) {
-                  heal 10, self, SRC_ABILITY
+                  heal 10, self, Source.POKEBODY
                 }
               }
             }
@@ -1843,7 +1841,7 @@ public enum Unleashed implements LogicCardInfo {
             onActivate {
               if(self.specialConditions){
                 bc "Perfect Metal clears special conditions"
-                clearSpecialCondition(self, SRC_ABILITY)
+                clearSpecialCondition(self, Source.POKEBODY)
               }
             }
           }

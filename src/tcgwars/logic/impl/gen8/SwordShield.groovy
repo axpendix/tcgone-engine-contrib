@@ -3110,10 +3110,11 @@ public enum SwordShield implements LogicCardInfo {
           }
           onAttack {
             def tar = opp.bench.select("Choose a Benched Pokémon to shuffle back into the deck.")
-            tar.cards.moveTo(opp.deck)
-            removePCS(tar)
-            shuffleDeck(null, TargetPlayer.OPPONENT)
-
+            targeted (tar) {
+              tar.cards.moveTo(opp.deck)
+              removePCS(tar)
+              shuffleDeck(null, TargetPlayer.OPPONENT)
+            }
             self.cards.moveTo(my.deck)
             shuffleDeck()
             removePCS(self)
@@ -3614,7 +3615,7 @@ public enum SwordShield implements LogicCardInfo {
           }
         }
         getEnergyTypesOverride {
-          if (self) return [[R, D, F, G, W, Y, L, M, P] as Set]
+          if (self) return [valuesBasicEnergy() as Set]
           else return [[] as Set]
         }
         allowAttach {to->

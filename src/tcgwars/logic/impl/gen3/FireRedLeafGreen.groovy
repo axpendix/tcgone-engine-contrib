@@ -808,14 +808,13 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             text "Search your deck for up to 2 Pokémon Tool cards and attach them to any of your Pokémon (excluding Pokémon that already have a Pokémon Tool attached to them). Shuffle your deck afterward."
             energyCost C
             attackRequirement {
-              assert my.all.findAll({!(it.cards.filterByType(POKEMON_TOOL))})
+              assert my.all.findAll({canAttachPokemonTool(it)})
             }
             onAttack {
               def tar = my.all.findAll({!(it.cards.filterByType(POKEMON_TOOL))})
               if(tar){
                 my.deck.search(max : Math.min(2,tar.size()),"Search for up to 2 Pokémon tool",cardTypeFilter(POKEMON_TOOL)).each{
-                  def pcs = my.all.findAll({!(it.cards.filterByType(POKEMON_TOOL))}).select()
-                  my.deck.remove(it)
+                  def pcs = my.all.findAll({canAttachPokemonTool(it)}).select()
                   attachPokemonTool(it,pcs)
                 }
               }
@@ -2240,7 +2239,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           onPlay {reason->
             eff = delayed {
               before KNOCKOUT, {
-                if (!self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.bench.notEmpty && self.owner.pbg.active.cards.filterByType(BASIC_ENERGY)) {
+                if (!self.active && bg.currentTurn==self.owner.opposite && (ef as Knockout).byDamageFromAttack && (ef as Knockout).pokemonToBeKnockedOut == self.owner.pbg.active && self.owner.pbg.active.cards.filterByType(BASIC_ENERGY)) {
                   bc "EXP.ALL activates"
                   if (oppConfirm("EXP.ALL: Move an Energy from ${self.owner.pbg.active} to $self ?")) {
                     def energy = self.owner.pbg.active.cards.filterByType(BASIC_ENERGY).oppSelect("Select an Energy from the Active Pokémon to move to the holder of EXP.ALL").first()
@@ -2430,7 +2429,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               return [[C] as Set]
             }
             else {
-              return [[R, D, F, G, W, Y, L, M, P] as Set]
+              return [valuesBasicEnergy() as Set]
             }
           }
         };
