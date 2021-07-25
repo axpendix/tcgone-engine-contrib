@@ -616,9 +616,7 @@ public enum Unleashed implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 30
-              delayed {
-                doMoreDamageNextTurn(thisMove, 30, self)
-              }
+              doMoreDamageNextTurn(thisMove, 30, self)
             }
           }
           move "Magnum Punch", {

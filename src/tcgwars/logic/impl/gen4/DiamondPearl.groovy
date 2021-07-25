@@ -521,9 +521,11 @@ public enum DiamondPearl implements LogicCardInfo {
                 if(confirm ("You may flip a coin. If heads, discard all Energy attached to Palkia and put the Defending Pokémon and all cards attached to it on top of your opponent’s deck. Your opponent shuffles his or her deck afterward.")) {
                   flip {
                     discardAllSelfEnergy()
-                    defending.cards.moveTo(opp.deck)
-                    removePCS(defending)
-                    shuffleDeck(null, TargetPlayer.OPPONENT)
+                    targeted (defending) {
+                      defending.cards.moveTo(opp.deck)
+                      removePCS(defending)
+                      shuffleDeck(null, TargetPlayer.OPPONENT)
+                    }
                   }
                 }
               }
@@ -3073,9 +3075,8 @@ public enum DiamondPearl implements LogicCardInfo {
               assert my.deck : "Your deck is empty."
               powerUsed()
               def cards = my.deck.subList(0,3)
-              def moved = cards.select(count:1,"Choose a card to put in your hand. The rest will be discarded.").moveTo(my.hand)
-              cards.removeAll(moved)
-              cards.discard()
+              def moved = cards.select(count:1,"Choose a card to put in your hand. The rest will be discarded.").moveTo(hidden: true, my.hand)
+              cards.getExcludedList(moved).discard()
             }
           }
           move "Flare Up", {

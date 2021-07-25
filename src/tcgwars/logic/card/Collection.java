@@ -26,6 +26,7 @@ public enum Collection {
   VENDING_MACHINE(131, "VM", "gen1.VendingMachine"),
   SOUTHERN_ISLANDS(132, "SI", "gen2.SouthernIslands"),
   LEGENDARY_COLLECTION(133, "LC", "gen1.LegendaryCollection"),
+  BEST_OF_GAME(134, "BEST", "gen1.BestOfGame"),
 
   //NEO
   NEO_GENESIS(161, "N1", "gen2.NeoGenesis"),
@@ -155,6 +156,7 @@ public enum Collection {
   VIVID_VOLTAGE(434, "VIV", "gen8.VividVoltage"),
   SHINING_FATES(435, "SHF", "gen8.ShiningFates"),
   BATTLE_STYLES(436, "BST", "gen8.BattleStyles"),
+  CHILLING_REIGN(437, "CRE", "gen8.ChillingReign"),
 
   //POKEMOD
   POKEMOD_BASE_SET(910, "MODBS", "pokemod.PokemodBaseSet"),
@@ -180,6 +182,8 @@ public enum Collection {
   AMAZING_VOLT_TACKLE(1011, "JS4", "gen8.AmazingVoltTackle"),
   WIZARDS_BLACK_STAR_PROMOS_NG(111, "WBSP", "gen1.WizardsBlackStarPromosNG"),
   SHINY_STAR_V(1012, "JS4A", "gen8.ShinyStarV"),
+
+  RUBY_SAPPHIRE_NG(1301, "Ruby & Sapphire", "RS", "gen3.RubySapphireNG"),
 
   ;
 

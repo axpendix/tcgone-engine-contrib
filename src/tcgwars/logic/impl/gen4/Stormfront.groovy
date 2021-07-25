@@ -3213,8 +3213,10 @@ public enum Stormfront implements LogicCardInfo {
               powerUsed()
               def pcs = my.all.select("Choose one of your Pokémon to knock out")
               new Knockout(pcs).run(bg)
-              attachEnergyFrom(basic:true, max:2, my.discard, self)
-              heal 80, self
+              if (pcs != self) { //Cannot attach to or heal from Regigigas if Regigigas was chosen to be knocked out.
+                attachEnergyFrom(basic:true, max:2, my.discard, self)
+                heal 80, self
+              }
             }
           }
           move "Giga Blaster", {

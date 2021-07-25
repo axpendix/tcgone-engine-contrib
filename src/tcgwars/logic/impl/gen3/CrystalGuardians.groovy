@@ -662,12 +662,10 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Cursed Glare", {
           text "As long as Dusclops is your Active Pokémon, your opponent can't attach any Special Energy cards (except for [D] and [M] Energy cards) from his or her hand to his or her Active Pokémon."
           delayedA {
-            before PLAY_ENERGY, {
-              if (self.active && ef.cardToPlay.cardTypes.is(SPECIAL_ENERGY) && bg.currentTurn == self.owner.opposite) {
-                if ( !( ["Metal Energy", "Darkness Energy"].contains(ef.cardToPlay.name) ) ) {
-                  wcu "Cursed Glare prevents playing this card"
-                  prevent()
-                }
+            before ATTACH_ENERGY, self.owner.opposite.pbg.active, {
+              if(ef.reason == PLAY_FROM_HAND && self.active && (ef.card.cardTypes.is(SPECIAL_ENERGY) && ef.card.name != "Darkness Energy" && ef.card.name != "Metal Energy")) {
+                wcu "$thisAbility: Can't attach special energies to your Active Pokémon"
+                prevent()
               }
             }
           }
@@ -2183,10 +2181,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         weakness R
         resistance W, MINUS30
         pokeBody "Extra Liquid", {
-          def target = []
-          def source = []
-          bg.em().storeObject("Extra_Liquid_target", target)
-          bg.em().storeObject("Extra_Liquid_source", source)
+          def eff, source, target
           text "Each player's Pokémon-ex can't use any Poké-Powers and pays [C] more Energy to use its attacks. Each Pokémon can't be affected by more than 1 Extra Liquid Poké-Body."
           getterA (IS_ABILITY_BLOCKED) { Holder h ->
             if (h.effect.target.EX) {
@@ -2195,31 +2190,38 @@ public enum CrystalGuardians implements LogicCardInfo {
               }
             }
           }
-          getterA GET_MOVE_LIST, { h ->
-            if (h.effect.target.EX) {
-              def list = []
-              for (move in h.object) {
-                def copy = move.shallowCopy()
-                target = bg.em().retrieveObject("Extra_Liquid_target")
-                source = bg.em().retrieveObject("Extra_Liquid_source")
-                if(!target.contains(h.effect.target)){
-                  copy.energyCost.add(C)
-                  target.add(h.effect.target)
-                  bg.em().storeObject("Extra_Liquid_target", target)
-                  source.add(self)
-                  bg.em().storeObject("Extra_Liquid_source", source)
-                } else if(source.get(target.indexOf(h.effect.target)) == self){
-                  copy.energyCost.add(C)
-                }
-                list.add(copy)
-              }
-              h.object=list
-            }
-          }
           onActivate {
+            eff = getter GET_MOVE_LIST, { h ->
+              if (h.effect.target.EX) {
+                def list = []
+                for (move in h.object) {
+                  def copy = move.shallowCopy()
+                  target = bg.em().retrieveObject("Extra_Liquid_target")
+                  target = target ? target : []
+                  source = bg.em().retrieveObject("Extra_Liquid_source")
+                  source = source ? source : []
+                  if(!target.contains(h.effect.target)){
+                    copy.energyCost.add(C)
+                    target.add(h.effect.target)
+                    bg.em().storeObject("Extra_Liquid_target", target)
+                    source.add(self)
+                    bg.em().storeObject("Extra_Liquid_source", source)
+                  } else if(source.get(target.indexOf(h.effect.target)) == self){
+                    copy.energyCost.add(C)
+                  }
+                  list.add(copy)
+                }
+                h.object=list
+              }
+            }
             new CheckAbilities().run(bg)
           }
           onDeactivate {
+            eff.unregister()
+            target = []
+            source = []
+            bg.em().storeObject("Extra_Liquid_target", target)
+            bg.em().storeObject("Extra_Liquid_source", source)
             new CheckAbilities().run(bg)
           }
         }
@@ -2295,9 +2297,9 @@ public enum CrystalGuardians implements LogicCardInfo {
             checkLastTurn()
             checkNoSPC()
             assert my.discard.filterByType(ENERGY) : "No Energies in discard"
-            powerUsed()
+            powerUsed({ usingThisAbilityEndsTurn delegate })
             3.times{attachEnergyFrom(my.discard, my.all)}
-            bg.gm().betweenTurns()
+            usingThisAbilityEndsTurn delegate
           }
         }
         move "Ultra Pump", {

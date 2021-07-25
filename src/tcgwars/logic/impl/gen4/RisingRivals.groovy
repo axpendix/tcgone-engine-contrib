@@ -270,9 +270,11 @@ public enum RisingRivals implements LogicCardInfo {
           resistance P, MINUS20
           pokeBody "Eerie Aura", {
             text "Put 1 damage counter on each of your opponent’s Pokémon that remains Asleep between turns."
-            before BEGIN_TURN, {
-              if(self.owner.opposite.pbg.active.isSPC(ASLEEP)){
-                directDamage 10, opp.active, Source.POKEBODY
+            delayedA {
+              before BEGIN_TURN, {
+                if (self.owner.opposite.pbg.active.isSPC(ASLEEP)) {
+                  directDamage 10, opp.active, Source.POKEBODY
+                }
               }
             }
           }
@@ -306,7 +308,7 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost W, W
             onAttack {
               damage 50
-              cantuseAttack thisMove, self
+              cantUseAttack(thisMove, self)
             }
           }
 
@@ -317,8 +319,10 @@ public enum RisingRivals implements LogicCardInfo {
           resistance L, MINUS20
           pokeBody "Rainbow Float", {
             text "If any basic Energy card attached to Flygon is the same type as any of your Pokémon, the Retreat Cost for those Pokémon is 0."
-            getterA (GET_RETREAT_COST) { h->
-              if (!self.active && h.effect.target.owner == self.owner && h.effect.target.active && self.cards.filterByType(BASIC_ENERGY).find{h.effect.target.types.contains(it.basicType.first())}) {
+            getterA (GET_RETREAT_COST) { h ->
+              if (!self.active && h.effect.target.owner == self.owner && h.effect.target.active && self.cards.filterByType(BASIC_ENERGY).any {
+                h.effect.target.types.contains(it.asEnergyCard().energyTypes.first().first())
+              }) {
                 h.object = 0
               }
             }
@@ -327,7 +331,9 @@ public enum RisingRivals implements LogicCardInfo {
             text "40 damage. Discard a Stadium card your opponent has in play. If you do, prevent all effects of an attack, including damage, done to Flygon during your opponent’s next turn."
             energyCost C, C
             onAttack {
-              if(bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player == self.owner.opposite){
+              damage 40
+
+              if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player == self.owner.opposite) {
                 preventAllEffectsNextTurn()
                 afterDamage {
                   discard bg.stadiumInfoStruct.stadiumCard
@@ -382,6 +388,7 @@ public enum RisingRivals implements LogicCardInfo {
                 if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.deck && confirm("Use Final Wish?", self.owner)) {
                   powerUsed()
                   self.owner.pbg.deck.select("Search your deck for a card",{true},self.owner)
+                  shuffleDeck()
                 }
               }
             }
@@ -594,7 +601,7 @@ public enum RisingRivals implements LogicCardInfo {
                   def eff
                   register{
                     eff = getter (IS_ABILITY_BLOCKED) { Holder h ->
-                      if (h.effect.target.owner == self.owner.opposite && (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody)) {
+                      if (h.effect.target == defending && h.effect.target.owner == self.owner.opposite && (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody)) {
                         h.object=true
                       }
                     }
@@ -615,12 +622,14 @@ public enum RisingRivals implements LogicCardInfo {
         return evolution (this, from:"Lairon", hp:HP130, type:METAL, retreatCost:3) {
           weakness R, PLUS30
           resistance P, MINUS20
+          def lastDamage = null
+          def turnCount = null
           customAbility {
             delayed (priority: LAST) {
               before APPLY_ATTACK_DAMAGES, {
-                if(bg().currentTurn==self.owner.opposite) {
-                  turnCount=bg.turnCount
-                  lastDamage=bg().dm().find({it.to==self && it.dmg.value>=0})?.dmg
+                if (bg().currentTurn==self.owner.opposite) {
+                  turnCount = bg.turnCount
+                  lastDamage = bg().dm().find({it.to==self && it.dmg.value>=0})?.dmg
                 }
               }
             }
@@ -640,7 +649,7 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost M, C, C
             onAttack {
               damage 40
-              if(my.deck && confirm("Discard the top card of your deck?")) {
+              if (my.deck && confirm("Discard the top card of your deck?")) {
                 afterDamage {
                   discard my.deck.first()
                   heal 20, self
@@ -759,7 +768,7 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost P, C
             attackRequirement {}
             onAttack {
-              damage 20+20*defending.cards.energyCount(C)
+              damage 20+10*defending.cards.energyCount(C)
             }
           }
 
@@ -827,7 +836,7 @@ public enum RisingRivals implements LogicCardInfo {
         };
       case GASTRODON_EAST_SEA_21:
         return evolution (this, from:"Shellos East Sea", hp:HP090, type:WATER, retreatCost:1) {
-          weakness G
+          weakness G, PLUS30
           resistance L, MINUS20
           pokeBody "Sticky Hold", {
             text "If Gastrodon East Sea is switched or retreats to your Bench, move as many Energy cards attached to Gastrodon East Sea as you like to the new Active Pokémon."
@@ -856,6 +865,7 @@ public enum RisingRivals implements LogicCardInfo {
                 def pcs = benchPCS(it)
                 directDamage 20, pcs
               }
+              shuffleDeck()
             }
           }
           move "Wave Splash", {
@@ -870,7 +880,7 @@ public enum RisingRivals implements LogicCardInfo {
         };
       case GASTRODON_WEST_SEA_22:
         return evolution (this, from:"Shellos West Sea", hp:HP110, type:FIGHTING, retreatCost:3) {
-          weakness G
+          weakness G, PLUS30
           resistance L, MINUS20
           move "Tackle", {
             text "50 damage. "
@@ -1038,23 +1048,23 @@ public enum RisingRivals implements LogicCardInfo {
 
         };
       case MAMOSWINE_GL_27:
-        return basic (this, hp:HP100, type:WATER, retreatCost:2) {
+        return basic (this, hp:HP100, type:WATER, retreatCost:4) {
           weakness M
           resistance L, MINUS20
           pokeBody "Icy Aura", {
             text "As long as Mamoswine GL is your Active Pokémon, put 1 damage counter on each Active Pokémon (excluding W Pokémon) between turns."
             delayedA {
               before BEGIN_TURN, {
-                if(self.active) {
+                if (self.active) {
                   def selfWaterType = self.types.contains(W)
                   def oppWaterType = self.owner.opposite.pbg.active.types.contains(W)
-                  if(!selfWaterType||!oppWaterType) {
+                  if (!selfWaterType||!oppWaterType) {
                     bc "$thisAbility Activates"
                   }
-                  if(!oppWaterType) {
+                  if (!oppWaterType) {
                     directDamage(10, self.owner.opposite.pbg.active, Source.POKEBODY)
                   }
-                  if(!selfWaterType) {
+                  if (!selfWaterType) {
                     directDamage(10, self, Source.POKEBODY)
                   }
                 }
@@ -1083,13 +1093,19 @@ public enum RisingRivals implements LogicCardInfo {
             text "Flip 3 coins. Remove a number of damage counters equal to the number of heads from your Pokémon in any way you like."
             energyCost ()
             attackRequirement {
-              assert my.all.find{it.numberOfDamageCounters} : "Your Pokémon are healthy"
+              assert my.all.find {it.numberOfDamageCounters} : "Your Pokémon are healthy"
             }
             onAttack {
-              flip 3, {
-                def damaged = my.all.findAll{it.numberOfDamageCounters}
-                if(damaged) {
-                  heal 10, damaged
+              def countersToRemove = 0
+              flip 3, { countersToRemove += 1 }
+              countersToRemove.times {
+                if (my.all.findAll { it.numberOfDamageCounters }) {
+                  if (my.bench) {
+                    def pcs = my.all.findAll { it.numberOfDamageCounters }.select("Which Pokémon to remove 1 damage counter from?")
+                    heal 10, pcs
+                  } else {
+                    heal 10, self
+                  }
                 }
               }
             }
@@ -1142,7 +1158,7 @@ public enum RisingRivals implements LogicCardInfo {
             text "100 damage. Flip 2 coins. If both of them are tails, this attack does nothing."
             energyCost F, C, C, C
             onAttack {
-              flip 2, {}{},[2:{damage 100},1:{damage 100}]
+              flip 2, {}, {}, [2:{ damage 100 }, 1:{ damage 100 }]
             }
           }
 
@@ -1235,7 +1251,7 @@ public enum RisingRivals implements LogicCardInfo {
         };
       case SNORLAX_33:
         return basic (this, hp:HP100, type:COLORLESS, retreatCost:4) {
-          weakness F
+          weakness F, PLUS20
           move "Pick and Collect", {
             text "Search your discard pile for up to 4 basic Energy cards, show them to your opponent, and put them into your hand."
             energyCost ()
@@ -1289,15 +1305,13 @@ public enum RisingRivals implements LogicCardInfo {
             text "Choose 1 of your opponent's Pokémon that has any damage counters on it. This attack does 40 damage to that Pokémon. If Vaporeon evolved from Eevee during this turn, this attack does 60 damage instead."
             energyCost W, C
             attackRequirement {
-              assert opp.all.find{it.numberOfDamageCounters} : "All of your opponent's Pokémon are healthy"
+              assert opp.all.find {it.numberOfDamageCounters } : "All of your opponent's Pokémon are healthy"
             }
             onAttack {
-              def tar = opp.all.findAll{it.numberOfDamageCounters}.select("Choose 1 of your opponent's  Pokémonthat has any damage counters on it")
+              def tar = opp.all.findAll {it.numberOfDamageCounters }.select("Choose 1 of your opponent's  Pokémonthat has any damage counters on it")
               damage 40, tar
-              if (self.lastEvolved == bg.turnCount && self.cards.any{it.name.contains("Eevee")}) {
-                opp.bench.each {
-                  damage 20, tar
-                }
+              if (self.lastEvolved == bg.turnCount && self.cards.any {it.name.contains("Eevee") }) {
+                damage 20, tar
               }
             }
           }
@@ -1507,11 +1521,11 @@ public enum RisingRivals implements LogicCardInfo {
           weakness W
           resistance L, MINUS20
           pokeBody "Sand Armor", {
-            text "If Hippowdon E4 has any Energy attached to it, any damage done to Hippowdon 4 by attacks is reduced by 10 ."
+            text "If Hippowdon E4 has any [F] Energy attached to it, any damage done to Hippowdon 4 by attacks is reduced by 10 ."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if(it.to == self && it.notNoEffect && it.dmg.value){
+                  if (it.to == self && it.notNoEffect && it.dmg.value && self.cards.energyCount(F)) {
                     bc "$thisAbility -10"
                     it.dmg -= hp(10)
                   }
@@ -1589,7 +1603,7 @@ public enum RisingRivals implements LogicCardInfo {
             text "As long as Leafeon is your Active Pokémon, whenever you attach an Energy card from your hand to 1 of your Pokémon, remove 2 damage counters from that Pokémon."
             delayedA {
               after ATTACH_ENERGY, {
-                if (ef.reason == PLAY_FROM_HAND && bg.currentTurn == self.owner.opposite && self.active) {
+                if (ef.reason == PLAY_FROM_HAND && self.active) {
                   bc "$thisAbility activates."
                   heal 20, ef.resolvedTarget, Source.POKEBODY
                 }
@@ -1668,9 +1682,9 @@ public enum RisingRivals implements LogicCardInfo {
               flip 3, {
                 count ++
               }
-              count = Math.min(count,my.discard.filterByType(BASIC_ENERGY).size())
-              if(count) {
-                my.discard.select(count:count,"Search your discar pile for $count basic Energy cards to put into your hand").showToOpponent("Pickup Power: Selected Cards").moveTo(my.hand)
+              count = Math.min(count, my.discard.filterByType(BASIC_ENERGY).size())
+              if (count) {
+                my.discard.filterByType(BASIC_ENERGY).select(count:count,"Search your discard pile for $count basic Energy cards to put into your hand").showToOpponent("Pickup Power: Selected Cards").moveTo(my.hand)
               }
             }
           }
@@ -1729,7 +1743,9 @@ public enum RisingRivals implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              increasedDamageDoneToDefending(self,defending,40,thisMove.name)
+              afterDamage {
+                increasedDamageDoneToDefending(self, defending, 40, thisMove.name)
+              }
             }
           }
           move "Sharp Fang", {
@@ -1778,7 +1794,7 @@ public enum RisingRivals implements LogicCardInfo {
 
         };
       case STEELIX_GL_51:
-        return basic (this, hp:HP110, type:METAL, retreatCost:2) {
+        return basic (this, hp:HP110, type:METAL, retreatCost:4) {
           weakness R
           resistance P, MINUS20
           move "Mend", {
@@ -1789,7 +1805,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
             onAttack {
               def energy = my.discard.select("Search your discard pile for a [M] Energy card",energyFilter(M)).first()
-              attachEnergy(self,energy)
+              attachEnergy(self, energy)
               heal 10, self
             }
           }
@@ -1826,10 +1842,10 @@ public enum RisingRivals implements LogicCardInfo {
             text "Remove all damage counters from one of your benched [G] Pokémon."
             energyCost G, G
             attackRequirement {
-              assert my.all.find{it.types.contains(G) && it.numberOfDamageCounters} : "All of your benched [G] Pokémon are healthy"
+              assert my.bench.find {it.types.contains(G) && it.numberOfDamageCounters } : "All of your benched [G] Pokémon are healthy"
             }
             onAttack {
-              def pcs = my.all.findAll{it.types.contains(G) && it.numberOfDamageCounters}.select(text)
+              def pcs = my.bench.findAll {it.types.contains(G) && it.numberOfDamageCounters }.select(text)
               healAll(pcs)
             }
           }
@@ -1857,7 +1873,7 @@ public enum RisingRivals implements LogicCardInfo {
               damage 20 * opp.discard.filterByType(ENERGY).size()
               afterDamage {
                 opp.discard.filterByType(ENERGY).moveTo(opp.deck)
-                shuffleDeck()
+                shuffleDeck(null, TargetPlayer.OPPONENT)
               }
             }
           }
@@ -1969,11 +1985,11 @@ public enum RisingRivals implements LogicCardInfo {
             text "Move an Energy card attached to the Defending Pokémon to another of your opponent’s Pokémon."
             energyCost C
             attackRequirement {
-              assert opp.bench : "Your opponent has no other Pokémon"
+              assert opp.bench : "Opponent has no Benched Pokémon"
             }
             onAttack {
               if (opp.active.cards.filterByType(ENERGY) && opp.bench) {
-                def energy = opp.active.findAll{it.cards.filterByType(ENERGY)}.select("Select energy to move to benched Pokémon").first()
+                def energy = opp.active.cards.filterByType(ENERGY).select("Select energy to move to benched Pokémon").first()
                 def tar = opp.bench.select("Select the Pokémon to move energy to")
                 energySwitch(opp.active, tar, energy)
               }
@@ -2054,6 +2070,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
             onAttack {
               my.deck.search(max:2,"Search your deck for up to 2 cards that evolve from Eevee",{it.cardTypes.is(EVOLUTION) && it.predecessor.contains("Eevee")}).showToOpponent("Signs of Evolution: Selected cards").moveTo(my.hand)
+              shuffleDeck()
             }
           }
           move "Bounce", {
@@ -2251,10 +2268,12 @@ public enum RisingRivals implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               apply POISONED
-              def nam=self.name
-              def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-              if(tar) evolve(self, tar.first(), OTHER)
-              shuffleDeck()
+              flip {
+                def name = self.name
+                def tar = my.deck.search("Evolves from $name", { it.cardTypes.is(EVOLUTION) && name == it.predecessor })
+                if (tar) evolve(self, tar.first(), OTHER)
+                shuffleDeck()
+              }
             }
           }
 
@@ -2321,7 +2340,7 @@ public enum RisingRivals implements LogicCardInfo {
         };
       case MUNCHLAX_69:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:2) {
-          weakness F
+          weakness F, PLUS10
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Snorlax from your hand onto Munchlax (this counts as evolving Munchlax) and remove all damage counters from Munchlax."
             actionA {
@@ -2351,7 +2370,7 @@ public enum RisingRivals implements LogicCardInfo {
         };
       case MUNCHLAX_70:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:2) {
-          weakness F
+          weakness F, PLUS20
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Snorlax from your hand onto Munchlax (this counts as evolving Munchlax) and remove all damage counters from Munchlax."
             actionA {
@@ -2380,7 +2399,7 @@ public enum RisingRivals implements LogicCardInfo {
         };
       case NIDORAN_FEMALE_71:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
-          weakness P
+          weakness P, PLUS10
           move "Scratch", {
             text "10 damage. "
             energyCost P
@@ -2404,7 +2423,7 @@ public enum RisingRivals implements LogicCardInfo {
         };
       case NIDORAN_MALE_72:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
-          weakness P
+          weakness P, PLUS10
           move "Leer", {
             text "Flip a coin. If heads, the Defending Pokémon can’t attack during your opponent’s next turn."
             energyCost C
@@ -2479,7 +2498,7 @@ public enum RisingRivals implements LogicCardInfo {
         };
       case NUZLEAF_75:
         return evolution (this, from:"Seedot", hp:HP080, type:DARKNESS, retreatCost:1) {
-          weakness F, PLUS20
+          weakness R, PLUS20
           resistance P, MINUS20
           move "Blind", {
             text "10 damage. If the Defending Pokémon tries to attack during your opponent’s next turn, your opponent flips a coin. If tails, that attack does nothing."
@@ -2644,11 +2663,11 @@ public enum RisingRivals implements LogicCardInfo {
         };
       case SNORLAX_81:
         return basic (this, hp:HP100, type:COLORLESS, retreatCost:4) {
-          weakness F
+          weakness F, PLUS20
           customAbility {
             delayedA {
               before ASLEEP_SPC, self, null, CHECK_ATTACK_REQUIREMENTS, {
-                if(e.parentEvent.effect.move.name=="Toss and Turn")
+                if (e.parentEvent.effect.move.name=="Toss and Turn")
                   prevent()
               }
             }
@@ -2657,7 +2676,7 @@ public enum RisingRivals implements LogicCardInfo {
             text "As long as Snorlax is Asleep, your opponent’s Active Pokémon can’t retreat."
             delayedA {
               before RETREAT, opp.active, {
-                if(self.isSPC(ASLEEP)) {
+                if (self.isSPC(ASLEEP)) {
                   wcu "$thisAbility prevents retreating"
                   prevent()
                 }
@@ -2670,7 +2689,7 @@ public enum RisingRivals implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              if(self.isSPC(ASLEEP)) {
+              if (self.isSPC(ASLEEP)) {
                 damage 30
               }
             }
@@ -2746,6 +2765,7 @@ public enum RisingRivals implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert my.discard.filterByEnergyType(F) : "You have no basic [F] Energy cards in your discard pile"
+              assert self.active : "$self is not your Active Pokémon"
               powerUsed()
               attachEnergyFrom(basic:true,type:F,my.discard,self)
             }
@@ -2843,7 +2863,7 @@ public enum RisingRivals implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              applyAfterDamage POISNED
+              applyAfterDamage POISONED
             }
           }
 
@@ -2852,7 +2872,7 @@ public enum RisingRivals implements LogicCardInfo {
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your discard pile for up to 2 in any combination of Pokémon SP and basic Energy cards, show them to your opponent, and put them into your hand."
           onPlay {
-            my.discard.search(max:2,"Search your deck for up to 2 in any combination of Pokémon SP and basic Energy cards",{it.cardTypes.is(POKEMON_SP) || it.cardTypes.is(BASIC_ENERGY)}).showToOpponent("Aaron's Collection: Selected cards").moveTo(my.hand)
+            my.discard.select(max:2, "Search your deck for up to 2 in any combination of Pokémon SP and basic Energy cards", { it.cardTypes.is(POKEMON_SP) || it.cardTypes.is(BASIC_ENERGY) }).showToOpponent("Aaron's Collection: Selected cards").moveTo(my.hand)
             shuffleDeck()
           }
           playRequirement{
@@ -2887,7 +2907,7 @@ public enum RisingRivals implements LogicCardInfo {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nMove as many Energy cards attached to 1 of your Pokémon as you like to another of your Pokémon."
           onPlay {
             def src = my.all.findAll{it.cards.filterByType(ENERGY)}.select("Select Pokémon to move energy from")
-            def energyList = src.cards.filterByType(ENERGY).select(min:1, "Choose energy cards to move")
+            def energyList = src.cards.filterByType(ENERGY).select(min:1, max:src.cards.filterByType(ENERGY).size(), "Choose energy cards to move")
             def tar = my.all.findAll{it != src}.select("Choose Pokémon to move energy cards to")
             energyList.each {
               energySwitch(src, tar, it)
@@ -3008,8 +3028,10 @@ public enum RisingRivals implements LogicCardInfo {
       case UPPER_ENERGY_102:
         return specialEnergy (this, [[C]]) {
           text "Upper Energy provides [C] Energy. If you have more Prize cards left than your opponent and this card is attached to a Pokémon (excluding Pokémon LV.X), Upper Energy provides [C][C]."
+          onPlay { reason ->
+          }
           getEnergyTypesOverride{
-            if(self && !self.pokemonLevelUp && self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size()) {
+            if (self && !self.pokemonLevelUp && self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size()) {
               return [[C] as Set,[C] as Set]
             }
             else {
@@ -3018,20 +3040,22 @@ public enum RisingRivals implements LogicCardInfo {
           }
         };
       case ALAKAZAM_E4_LV_X_103:
-        return levelUp (this, from:"Alakazam 4", hp:HP100, type:PSYCHIC, retreatCost:2) {
+        return levelUp (this, from:"Alakazam E4", hp:HP100, type:PSYCHIC, retreatCost:2) {
           weakness P
           pokePower "Damage Switch", {
-            text "As often as you like during your turn , you may move 1 damage counter from 1 of your Pokémon to another of your Pokémon . This power can’t be used if Alakazam 4 is affected by a Special Condition."
+            text "As often as you like during your turn (before your attack), you may move 1 damage counter from 1 of your SP Pokémon to another of your SP Pokémon . This power can’t be used if Alakazam 4 is affected by a Special Condition."
             actionA {
               checkNoSPC()
-              assert my.all.find({it.numberOfDamageCounters>0}) : "None of your Pokémon have any damage counters"
-              assert my.all.size()>=2 : "You only have 1 Pokémon in play"
+
+              assert my.all.findAll { it.pokemonSP }.size() >= 2 : "You only have 1 SP Pokémon in play"
+              assert my.all.any {it.numberOfDamageCounters > 0 && it.pokemonSP } : "None of your SP Pokémon have any damage counters"
+
               powerUsed()
-              def src=my.all.findAll {it.numberOfDamageCounters>0}.select("Source for damage counter")
-              def tar=my.all
+              def src = my.all.findAll {it.numberOfDamageCounters > 0 && it.pokemonSP }.select("Source for damage counter")
+              def tar = my.all
               tar.remove(src)
-              tar=tar.select("Target for damage counter")
-              src.damage-=hp(10)
+              tar = tar.select("Target for damage counter")
+              src.damage -= hp(10)
               directDamage 10, tar, Source.POKEPOWER
               bc "Swapped a damage counter from $src to $tar"
               checkFaint()
@@ -3042,7 +3066,7 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost P, P, C
             attackRequirement {}
             onAttack {
-              noWrDamage 50
+              noWrDamage 50, defending
             }
           }
         };
@@ -3095,9 +3119,9 @@ public enum RisingRivals implements LogicCardInfo {
             text "As long as Flygon is your Active Pokémon, discard the top card from your opponent’s deck between turns."
             delayedA {
               before BEGIN_TURN, {
-                if(self.active && self.owner.opposite.pbg.deck) {
+                if (self.active && self.owner.opposite.pbg.deck) {
                   bc"Wind Erosion activates"
-                  self.owner.opposite.pbg.deck.sublist(0,1).discard()
+                  self.owner.opposite.pbg.deck.subList(0, 1).discard()
                 }
               }
             }
@@ -3114,7 +3138,7 @@ public enum RisingRivals implements LogicCardInfo {
           }
         };
       case GALLADE_E4_LV_X_106:
-        return levelUp (this, from:"Gallade 4", hp:HP100, type:PSYCHIC, retreatCost:1) {
+        return levelUp (this, from:"Gallade E4", hp:HP100, type:PSYCHIC, retreatCost:1) {
           weakness P
           pokePower "Blade Storm", {
             text "Once during your turn , when you put Gallade LV.X from your hand onto your Active Gallade , you may put 1 damage counter on each of your opponent’s Pokémon."
@@ -3163,23 +3187,23 @@ public enum RisingRivals implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               discardSelfEnergyAfterDamage F, F
-              multiSelect(opp.all,2,"Choose 2 of your opponent's Pokémon").each {
+              multiSelect(opp.bench,2,"Choose 2 of your opponent's Pokémon").each {
                 damage 40, it
               }
             }
           }
         };
       case INFERNAPE_E4_LV_X_108:
-        return levelUp (this, from:"Infernape 4", hp:HP110, type:FIRE, retreatCost:0) {
+        return levelUp (this, from:"Infernape E4", hp:HP110, type:FIRE, retreatCost:0) {
           weakness W
           pokePower "Intimidating Roar", {
             text "Once during your turn , you may have your opponent switch his or her Active Pokémon with one of his or her Benched Pokémon. This power can’t be used if Infernape E4 is affected by a Special Condition."
             actionA {
               checkLastTurn()
               checkNoSPC()
-              assert opp.bench : "Your opponent only has 1  Pokémonin play"
+              assert opp.bench : "Your opponent only has 1  Pokémon in play"
               powerUsed()
-              whirlwind()
+              sw opp.active, opp.bench.oppSelect("Choose your new Active Pokémon.")
             }
           }
           move "Fire Spin", {
@@ -3223,10 +3247,24 @@ public enum RisingRivals implements LogicCardInfo {
             text "As often as you like during your turn , you may return a Pokémon Tool or Technical Machine card attached to your Pokémon to your hand. This power can’t be used if Mismagius is affected by a Special Condition."
             actionA {
               checkNoSPC()
-              assert my.all.find{it.cards.find{it.cardTypes.contains(POKEMON_TOOL)||it.cardTypes.contains(TECHNICAL_MACHINE)}} : "You have no Pokémon Tool or Technical Machine cards in play"
+              assert my.all.find {pcs ->
+                pcs.cards.find {
+                  it.cardTypes.contains(POKEMON_TOOL) || it.cardTypes.contains(TECHNICAL_MACHINE)
+                }
+              } : "You have no Pokémon Tool or Technical Machine cards in play"
+
               powerUsed()
-              def tar = my.all.findAll{it.cards.find{it.cardTypes.contains(POKEMON_TOOL)||it.cardTypes.contains(TECHNICAL_MACHINE)}}.select("Choose 1 of your Pokémon with a Pokémon Tool or Technical Machine card attached")
-              def card = tar.cards.select("Choose a Pokémon Tool or Technical Machine card to return to your hand",{it.types.contains(POKEMON_TOOL) || it.types.contains(TECHNICAL_MACHINE)}).moveTo(my.hand)
+              def tar = my.all.findAll {pcs ->
+                pcs.cards.find {
+                  it.cardTypes.contains(POKEMON_TOOL) || it.cardTypes.contains(TECHNICAL_MACHINE)
+                }
+              }.select("Choose 1 of your Pokémon with a Pokémon Tool or Technical Machine card attached")
+
+              def card = tar.cards.select("Choose a Pokémon Tool or Technical Machine card to return to your hand",{
+                it.cardTypes.contains(POKEMON_TOOL) || it.cardTypes.contains(TECHNICAL_MACHINE)
+              })
+
+              card.moveTo(my.hand)
             }
           }
           move "Darkness Magic", {
@@ -3236,8 +3274,8 @@ public enum RisingRivals implements LogicCardInfo {
               assert my.hand : "Your hand is empty"
             }
             onAttack {
-              def count = Math.min(my.hand.size(),8)
-              directDamage count, defending
+              def count = Math.min(my.hand.size(), 8)
+              directDamage count * 10, defending
             }
           }
         };
@@ -3262,7 +3300,7 @@ public enum RisingRivals implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 80
-              def energyList = my.hand.select(min:0,max:my.hand.fitlerByType(ENERGY).size(),"You many discard as many Energy cards as you like from you hand to remove that many damage counters from $self")
+              def energyList = my.hand.select(min:0,max:my.hand.filterByType(ENERGY).size(),"You many discard as many Energy cards as you like from you hand to remove that many damage counters from $self")
               afterDamage {
                 heal 10 * energyList.size(), self
                 energyList.discard()
@@ -3375,7 +3413,7 @@ public enum RisingRivals implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 60
-              flip {
+              flip 1, {}, {
                 discardSelfEnergyAfterDamage C
               }
             }
@@ -3572,11 +3610,13 @@ public enum RisingRivals implements LogicCardInfo {
             onAttack {
               damage 30
               def count = 0
-              flipUntilTails{
+              flipUntilTails {
                 count ++
               }
-              count = Math.min(opp.hand.size(),count)
-              opp.hand.select(count:count,hidden:true,"Choose $count cards to discard from your opponent's hand").discard()
+              count = Math.min(opp.hand.size(), count)
+              if (count > 0) {
+                opp.hand.select(count:count, hidden:true,"Choose $count cards to discard from your opponent's hand").discard()
+              }
             }
           }
 
