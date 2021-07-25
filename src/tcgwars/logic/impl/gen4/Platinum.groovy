@@ -861,7 +861,7 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
             energyCost C, C
             attackRequirement {
               assert defending.isSPC(ASLEEP) : "The defending Pokémon is not asleep"
-              assert bg.em().retrieveObject("Altaria_Platinum_Midnight_Eyes_${defending.hashCode()}") == bg.turnCount : "The defending Pokémon was not damaged or affected by Midnight Eyes during your last turn"
+              assert bg.em().retrieveObject("Altaria_Platinum_Midnight_Eyes_${defending.hashCode()}") == bg.turnCount-2 : "The defending Pokémon was not damaged or affected by Midnight Eyes during your last turn"
             }
             onAttack {
               targeted (defending) {
