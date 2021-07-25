@@ -252,7 +252,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               if (selected) {
                 def tpc = self.topPokemonCard
                 selected.moveTo(suppressLog: true, self.cards)
-                tpc.moveCard(suppressLog: true, my.deck)
+                tpc.moveTo(suppressLog: true, my.deck)
                 bc "${tpc.name} was swapped with ${selected.name}."
                 new CheckAbilities().run(bg)
                 checkFaint()
