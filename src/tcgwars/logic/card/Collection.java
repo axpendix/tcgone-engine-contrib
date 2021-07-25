@@ -26,6 +26,7 @@ public enum Collection {
   VENDING_MACHINE(131, "VM", "gen1.VendingMachine"),
   SOUTHERN_ISLANDS(132, "SI", "gen2.SouthernIslands"),
   LEGENDARY_COLLECTION(133, "LC", "gen1.LegendaryCollection"),
+  BEST_OF_GAME(134, "BEST", "gen1.BestOfGame"),
 
   //NEO
   NEO_GENESIS(161, "N1", "gen2.NeoGenesis"),
