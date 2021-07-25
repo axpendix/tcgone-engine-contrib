@@ -822,28 +822,36 @@ public enum Platinum implements LogicCardInfo {
         return evolution (this, from:"Swablu", hp:HP090, type:COLORLESS, retreatCost:1) {
           weakness L, PLUS20
           resistance F, MINUS20
-          def pokeFlag = false
-          def turnFlag = -1
+          /*
+           Q. An Altaria that used the move "Midnight Eyes" on its previous turn is now knocked out on the opponent's next turn (or Pokémon Check). If another Altaria uses the "Perish Song" move on my turn, can I knockout the opponent's Active Pokémon that was hit by the "Midnight Eyes" move?
+           A. Yes, you can. Even if Altaria gets knocked out after using its "Midnight Eyes" move, the fact that the opponent's Active Pokémon was hit by the move does not change, so you can use Altaria's "Perish Song" to knock it out if it is asleep.
+
+           Q. When an opponent's Pokémon who was hit by Altaria's move "Midnight Eyes" on my turn is replaced by an opponent's Bench Pokémon by the Trainer "Switch" or other effect, and then appears on the Active spot again, can I make that opponent sleep and use Altaria's move "Perish Song" on my next turn to end it?
+A. Yes, you can.
+Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your previous turn goes back to the Bench, the fact that it was hit by the move "Midnight Eyes" does not change, so when you use Altaria's move "Perish Song" on your next turn, as long as the Pokémon is asleep, you can knock it out.
+           */
           move "Midnight Eyes", {
             text "20 damage. The Defending Pokémon is now Asleep."
             energyCost C
             onAttack {
               damage 20
-              turn flag = bg.turnCount + 2
-              pokeFlag = true
-              delayed {
-                unregisterAfter 3
-                after FALL_BACK, pcs, {
-                  pokeFlag = false
-                  unregister()
-                }
-                after EVOLVE, pcs, {
-                  pokeFlag = false
-                  unregister()
-                }
-                after DEVOLVE, pcs, {
-                  pokeFlag = false
-                  unregister()
+              afterDamage {
+                apply ASLEEP
+
+                def pcs = defending
+                targeted (pcs, ATTACK) {
+                  delayed {
+                    unregisterAfter 3
+                    register {
+                      bg.em().storeObject("Altaria_Platinum_Midnight_Eyes_${pcs.hashCode()}", bg.turnCount)
+                    }
+                    unregister {
+                      bg.em().storeObject("Altaria_Platinum_Midnight_Eyes_${pcs.hashCode()}", null)
+                    }
+                    after EVOLVE, pcs, {unregister()}
+                    after DEVOLVE, pcs, {unregister()}
+                    after LEVEL_UP, pcs, {unregister()}
+                  }
                 }
               }
             }
@@ -853,7 +861,7 @@ public enum Platinum implements LogicCardInfo {
             energyCost C, C
             attackRequirement {
               assert defending.isSPC(ASLEEP) : "The defending Pokémon is not asleep"
-              assert pokeFlag && turnFlag == bg.turnCount : "The defending Pokémon was not damaged or affected by Midnight Eyes during your last turn"
+              assert bg.em().retrieveObject("Altaria_Platinum_Midnight_Eyes_${defending.hashCode()}") == bg.turnCount-2 : "The defending Pokémon was not damaged or affected by Midnight Eyes during your last turn"
             }
             onAttack {
               targeted (defending) {
