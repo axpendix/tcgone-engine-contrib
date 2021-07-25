@@ -291,8 +291,8 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost C, C, C, C
             attackRequirement {}
             onAttack {
-              opp.all.each {
-                flip 1, { damage 50, it }
+              opp.all.each {pcs->
+                flip { damage 50, pcs }
               }
             }
           }
@@ -305,13 +305,12 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost P
             attackRequirement {}
             onAttack {
-              self.cards.filterByEnergyType(P).select("Discard a [P] Energy to use this attack").discard()
+              discardSelfEnergy(P)
               delayed {
                 def atk_pkm = null
                 before PROCESS_ATTACK_EFFECTS, {
-                  if (bg.currentTurn == self.owner.opposite) {
-                    atk_pkm = self.owner.opposite.pbg.active //needed to make ensure attacking pokemon is the target of Destiny Bond.
-                  }
+                  //needed to make ensure attacking pokemon is the target of Destiny Bond.
+                  atk_pkm = (bg.currentTurn == self.owner.opposite) ? self.owner.opposite.pbg.active : null
                 }
                 before KNOCKOUT, self, {
                   if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && atk_pkm && atk_pkm.inPlay){
@@ -418,7 +417,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               if (atchEnergy.size() != 0 && confirm("Would you like to discard basic energy cards attached to Heatran?")) {
                 def lostEnergy = atchEnergy.select(max: atchEnergy.size(), "Choose basic energies to discard.")
                 damage 20 * lostEnergy.size()
-                lostEnergy.discard()
+                afterDamage {lostEnergy.discard()}
               }
             }
           }
@@ -721,14 +720,16 @@ public enum LegendsAwakened implements LogicCardInfo {
           move "Transfer Pain", {
             text "Move 1 damage counter from 1 of your Pokémon to 1 of your opponent's Pokémon."
             energyCost P
-            attackRequirement {}
+            attackRequirement {
+              assert my.all.find{it.numberOfDamageCounters}
+            }
             onAttack {
-              def src = my.all.findAll{it.numberOfDamageCounters}.select()
-              if (src) {
-                def tar = opp.all.select()
-                src.damage -= hp(10)
-                directDamage 10, tar
-              }
+              def src = my.all.findAll{it.numberOfDamageCounters}.select("Source")
+              def tar = opp.all.select("Target")
+              src.damage -= hp(10)
+              tar.damage += hp(10)
+              bc "Moved a damage counter from $src to $tar"
+              checkFaint()
             }
           }
         };
@@ -807,7 +808,7 @@ public enum LegendsAwakened implements LogicCardInfo {
                   tar.moveTo(my.hand).showToOpponent("Your opponent has swapped this prize card with a card from their hand.")
                   my.hand.select("Card to put back into Prizes").moveTo(hidden:true, my.prizeCardSet)
                 }
-                rearrange(my.prizeCardSet)
+                my.prizeCardSet.shuffle()
               }
             }
           }
@@ -1044,22 +1045,16 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness F, '+20'
           pokeBody "Ditto DNA", {
             text "As long as Ditto is your Active Pokémon, its maximum HP is the same as your opponent's Active Pokémon. Ditto can use the attacks of that Pokémon as its own. (You still need the necessary Energy to use each attack.) If that Pokémon is no longer your opponent's Active Pokémon, choose 1 of your opponent's Active Pokémon for Ditto to copy."
-            delayedA {
-              def recur = false
-              before GET_FULL_HP, self, {
-                if (recur) {
-                  recur = false
-                  prevent()
-                }
-                def tar = self.owner.opposite.pbg.active
-                if (tar.fullName == 'Ditto (LA 27)' || tar.fullName == 'Ditto (FO 3)' || tar.fullName == 'Ditto (FO 18)') {
-                  recur = true
-                }
-              }
-            }
+            def recur = false
             getterA (GET_FULL_HP, self) { Holder h->
               if (self.active) {
-                h.object = self.owner.opposite.pbg.active.getFullHP()
+                if (recur) { // if Ditto faces another Ditto, this prevents infinite loops
+                  h.object = self.owner.opposite.pbg.active.getLastFullHP() ?: h.object
+                } else {
+                  recur = true
+                  h.object = self.owner.opposite.pbg.active.getFullHP()
+                  recur = false
+                }
               }
             }
             metronomeA delegate, { self.owner.opposite.pbg.active }
