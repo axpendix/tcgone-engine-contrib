@@ -567,7 +567,6 @@ public enum GreatEncounters implements LogicCardInfo {
                 before APPLY_ATTACK_DAMAGES, {
                   if (ef.attacker == self && my.all.find{ it.numberOfDamageCounters }) {
                     bg.dm().each {
-                      bc "$it.dmg.value"
                       if (it.to == defending && it.dmg.value) {
                         heal it.dmg.value, my.all.findAll { it.numberOfDamageCounters }.select("Heal which Pokémon")
                       }
@@ -918,16 +917,11 @@ public enum GreatEncounters implements LogicCardInfo {
               flip 2, {}, {}, [
                 2: {
                   damage 50
-                  afterDamage {
-                    discardDefendingEnergy()
-                    discardDefendingEnergy()
-                  }
+                  discardDefendingEnergyAfterDamage C, C
                 },
                 1: {
                   damage 50
-                  afterDamage {
-                    discardDefendingEnergy()
-                  }
+                  discardDefendingEnergyAfterDamage C
                 }]
             }
           }
@@ -1021,11 +1015,10 @@ public enum GreatEncounters implements LogicCardInfo {
               assert my.hand : "You can't discard a card"
             }
             onAttack {
-              if (my.hand) {
-                damage 30
-                afterDamage{
-                  my.hand.select("Discard a card").discard()
-                }
+              def sel = my.hand.select("Discard a card")
+              damage 30
+              afterDamage {
+                sel.discard()
               }
             }
           }
@@ -2571,16 +2564,8 @@ public enum GreatEncounters implements LogicCardInfo {
           pokeBody "LINK", {
             text "Unown L can use any attack from any Unown in play."
             getterA (GET_MOVE_LIST, self) { holder->
-              def cardList = []
-              self.owner.pbg.bench.findAll { it.name.contains("Unown") }.each {
-                if (!cardList.contains("${it.topPokemonCard}") && it.topPokemonCard.name != "Unown L") {
-                  cardList.add("${it.topPokemonCard}")
-                  holder.object.addAll(it.topPokemonCard.moves)
-                }
-              }
-              self.owner.opposite.pbg.all.findAll { it.name.contains("Unown") }.each {
-                if (!cardList.contains("${it.topPokemonCard}") && it.topPokemonCard.name != "Unown L") {
-                  cardList.add("${it.topPokemonCard}")
+              all.each {
+                if (it.name.contains("Unown") && it != self) {
                   holder.object.addAll(it.topPokemonCard.moves)
                 }
               }
@@ -2895,33 +2880,37 @@ public enum GreatEncounters implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
-              apply ASLEEP
-              def pcs = defending
-              targeted(pcs) {
-                if (pcs.isSPC(ASLEEP)) {// Is !bg.em().run(new ApplySpecialCondition(POISONED, pcs, SOURCE.ATTACK)) better here
-                  delayed {
-                    before ASLEEP_SPC, null, null, BEGIN_TURN, {
-                      flip "Asleep (Endless Darkness)", 2, {}, {}, [2: {
-                        ef.unregisterItself(bg.em());
-                      }, 1:{
-                        bc "$ef.target is still asleep."
-                      }, 0:{
-                        bc "$pcs is knocked out by $thisMove."
-                        new Knockout(pcs).run(bg)
-                      }]
-                      prevent()
-                    }
-                    after CLEAR_SPECIAL_CONDITION, pcs, {
-                      if (ef.types.contains(ASLEEP)) {
-                        unregister()
+              afterDamage {
+                apply ASLEEP
+                def pcs = defending
+                targeted(pcs) {
+                  if (pcs.isSPC(ASLEEP)) {// Is !bg.em().run(new ApplySpecialCondition(POISONED, pcs, SOURCE.ATTACK)) better here
+                    delayed {
+                      before ASLEEP_SPC, null, null, BEGIN_TURN, {
+                        flip "Asleep (Endless Darkness)", 2, {}, {}, [2: {
+                          ef.unregisterItself(bg.em());
+                        }, 1:{
+                          bc "$pcs is still asleep."
+                        }, 0:{
+                          bc "$pcs is knocked out by $thisMove."
+                          new Knockout(pcs).run(bg)
+                        }]
+                        prevent()
                       }
+                      after CLEAR_SPECIAL_CONDITION, pcs, {
+                        if (ef.types.contains(ASLEEP)) {
+                          unregister()
+                        }
+                      }
+                      after FALL_BACK, pcs, { unregister() }
+                      after KNOCKOUT, pcs, { unregister() }
+                      after EVOLVE, pcs, { unregister() }
+                      after DEVOLVE, pcs, { unregister() }
+                      after LEVEL_UP, pcs, { unregister() }
                     }
-                    after FALL_BACK, pcs, { unregister() }
-                    after KNOCKOUT, pcs, { unregister() }
                   }
                 }
               }
-
             }
           }
         };

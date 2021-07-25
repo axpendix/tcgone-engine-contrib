@@ -992,7 +992,7 @@ public enum Platinum implements LogicCardInfo {
               assert bg.em().retrieveObject("Nurse_Call") != bg.turnCount : "You cannot use Nurse Call more than once per turn"
               powerUsed()
               my.hand.select("Choose a card to discard").discard()
-              if (my.all.any{it.numberOfDamageCounters}) 
+              if (my.all.any{it.numberOfDamageCounters})
                 heal 20, my.all.findAll{it.numberOfDamageCounters}.select("Heal which Pokémon"), Source.POKEPOWER
             }
           }
@@ -2921,12 +2921,12 @@ public enum Platinum implements LogicCardInfo {
               checkNoSPC()
               assert bg.stadiumInfoStruct : "There is no Stadium in play"
               assert bg.stadiumInfoStruct.stadiumCard.player == self.owner : "You don't have a Stadium card in play"
-              assert !opp.active.topPokemonCard.cardTypes.is(POKEMON_SP) || !my.active.pokemonSP : "Both active Pokémon are Pokémon SP"
+              assert !opp.active.pokemonSP || !my.active.pokemonSP : "Both active Pokémon are Pokémon SP"
               powerUsed()
               if(!opp.active.pokemonSP) {
                 apply POISONED, opp.active, Source.POKEPOWER
               }
-              if(!my.active.topPokemonCard.cardTypes.is(POKEMON_SP)) {
+              if(!my.active.pokemonSP) {
                 apply POISONED, my.active, Source.POKEPOWER
               }
             }
@@ -3468,17 +3468,15 @@ public enum Platinum implements LogicCardInfo {
           pokeBody "Thankfulness", {
             text "Each of your [G] Pokémon (excluding any Shaymin) gets +40 HP. You can’t use more than 1 Thankfulness Poké-Body each turn."
             delayedA {
-              def target = []
-              def source = []
-              bg.em().storeObject("Thankfulness_target", target)
-              bg.em().storeObject("Thankfulness_source", source)
-              def eff
+              def eff, source, target
               onActivate {
                 eff = getter (GET_FULL_HP) {h->
                   def pcs = h.effect.target
                   if (pcs.owner == self.owner && pcs.name != "Shaymin" && pcs.types.contains(G)) {
                     target = bg.em().retrieveObject("Thankfulness_target")
+                    target = target ? target : []
                     source = bg.em().retrieveObject("Thankfulness_source")
+                    source = source ? source : []
                     if (!target.contains(pcs)) {
                       h.object += hp(40)
                       target.add(pcs)
