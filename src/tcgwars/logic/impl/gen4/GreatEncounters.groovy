@@ -2890,7 +2890,7 @@ public enum GreatEncounters implements LogicCardInfo {
                         flip "Asleep (Endless Darkness)", 2, {}, {}, [2: {
                           ef.unregisterItself(bg.em());
                         }, 1:{
-                          bc "$ef.target is still asleep."
+                          bc "$pcs is still asleep."
                         }, 0:{
                           bc "$pcs is knocked out by $thisMove."
                           new Knockout(pcs).run(bg)
