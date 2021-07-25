@@ -1,8 +1,14 @@
-package tcgwars.logic.impl.gen4;
+package tcgwars.logic.impl.gen4
+
+import tcgwars.logic.impl.gen8.SwordShield;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.effect.EffectType.BEGIN_TURN
+import static tcgwars.logic.effect.EffectType.BETWEEN_TURNS
+import static tcgwars.logic.effect.EffectType.EVOLVE_STANDARD
+import static tcgwars.logic.effect.EffectType.PREVENT_EVOLVE;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
@@ -87,138 +93,29 @@ public enum PopSeries6 implements LogicCardInfo {
   public Card getImplementation() {
     switch (this) {
       case BASTIODON_1:
-        return evolution (this, from:"Shieldon", hp:HP130, type:METAL, retreatCost:3) {
-          weakness R
-          resistance P, MINUS20
-          pokeBody "Protective Wall", {
-            text "Prevent all damage done to your Benched Pokémon by your opponent’s attacks."
-            delayedA {
-            }
-          }
-          move "Anger Revenge", {
-            text "60 damage. If Bastiodon was damaged by an attack during your opponent’s last turn, this attack does 40 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon."
-            energyCost M, M, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (MysteriousTreasures.BASTIODON_21, this);
       case LUCARIO_2:
-        return evolution (this, from:"Riolu", hp:HP090, type:FIGHTING, retreatCost:1) {
-          weakness P, PLUS20
-          move "Feint", {
-            text "30 damage. This attack’s damage isn’t affected by Resistance."
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 30
-              dontApplyResistance()
-            }
-          }
-          move "Aura Sphere", {
-            text "40 damage. Does 20 damage to 1 of your opponent’s Benched Pokémon."
-            energyCost F, F
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (DiamondPearl.LUCARIO_6, this);
       case MANAPHY_3:
-        return basic (this, hp:HP070, type:WATER, retreatCost:1) {
-          weakness L, PLUS20
-          move "Call for Family", {
-            text "Search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward."
-            energyCost C
-            callForFamily(basic:true, 1, delegate)
-          }
-          move "Aqua Ring", {
-            text "30 damage. Switch Manaphy with 1 of your Benched Pokémon."
-            energyCost W, W
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (DiamondPearl.MANAPHY_9, this);
       case PACHIRISU_4:
-        return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
-          weakness F, PLUS20
-          resistance M, MINUS20
-          move "Minor Errand-Running", {
-            text "Search your deck for a basic Energy card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Thunder Jolt", {
-            text "20 damage. Flip a coin. If tails, Pachirisu does 10 damage to itself."
-            energyCost L
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (DiamondPearl.PACHIRISU_35, this);
       case RAMPARDOS_5:
-        return evolution (this, from:"Cranidos", hp:HP120, type:FIGHTING, retreatCost:1) {
-          weakness G, PLUS30
-          move "Assurance", {
-            text "30 damage. As long as the Defending Pokémon’s remaining HP is 60 or less, this attack’s base damage is 60 instead of 30."
-            energyCost F, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Hasty Headbutt", {
-            text "100 damage. Rampardos does 20 damage to itself. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
-            energyCost F, F, F
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (MysteriousTreasures.RAMPARDOS_33, this);
       case DRIFLOON_6:
-        return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
-          weakness D, PLUS10
-          resistance C, MINUS20
-          move "Blowing Wind", {
-            text "Flip a coin. If heads, put 1 of your Benched Pokémon and all cards attached to it on top of your deck. Shuffle your deck afterward."
-            energyCost P
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Ominous Wind", {
-            text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Confused and can’t retreat during your opponent’s next turn."
-            energyCost P, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (DiamondPearl.DRIFLOON_46, this);
       case GIBLE_7:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness C, PLUS10
-          move "", {
-            text "Oran Berry. Remove 1 damage counter from Gible at the end of your turn."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
+          customAbility {
+            // Oran Berry: Remove 1 damage counter from Gible at the end of your turn.
+            delayedA {
+              before BETWEEN_TURNS,{
+                if (bg.currentTurn == self.owner && self.numberOfDamageCounters >= 1) {
+                  bc "Oran Berry activates"
+                  heal 10, self
+                }
+              }
             }
           }
           move "Surprise Attack", {
@@ -226,34 +123,25 @@ public enum PopSeries6 implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { damage 30 }
             }
           }
-
         };
       case RIOLU_8:
-        return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
-          weakness P, PLUS10
-          move "Wild Kick", {
-            text "30 damage. Flip a coin. If tails, this attack does nothing."
-            energyCost F
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (DiamondPearl.RIOLU_61, this);
       case PIKACHU_9:
         return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
           resistance M, MINUS20
-          move "", {
-            text "Oran Berry. Remove 1 damage counter from Pikachu at the end of your turn."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
+          customAbility {
+            // Oran Berry: Remove 1 damage counter from Gible at the end of your turn.
+            delayedA {
+              before BETWEEN_TURNS,{
+                if (bg.currentTurn == self.owner && self.numberOfDamageCounters >= 1) {
+                  bc "Oran Berry activates"
+                  heal 10, self
+                }
+              }
             }
           }
           move "Spark", {
@@ -261,184 +149,31 @@ public enum PopSeries6 implements LogicCardInfo {
             energyCost L, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              if (opp.bench) {
+                multiSelect(opp.bench, 2, text).each {
+                  damage 10, it
+                }
+              }
             }
           }
-
         };
       case STARAVIA_10:
-        return evolution (this, from:"Starly", hp:HP070, type:COLORLESS, retreatCost:0) {
-          weakness L, PLUS20
-          resistance F, MINUS20
-          move "Whirlwind", {
-            text "20 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
-            energyCost C, C
-            attackRequirement {}
-            onAttack {
-              damage 20
-              whirlwind()
-            }
-          }
-          move "Clutch", {
-            text "20 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
-            energyCost C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (DiamondPearl.STARAVIA_64, this);
       case BIDOOF_11:
-        return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
-          weakness F, PLUS10
-          move "Amnesia", {
-            text "Choose 1 of the Defending Pokémon’s attack’s. That Pokémon can’t use that attack during your opponent’s next turn."
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              amnesia delegate
-            }
-          }
-          move "Scavenge", {
-            text "Search your discard pile for a Trainer card, show it to your opponent, an put it into your hand."
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (DiamondPearl.BIDOOF_70, this);
       case BUNEARY_12:
-        return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
-          weakness F, PLUS10
-          move "Splash", {
-            text "10 damage. "
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Jump Kick", {
-            text "10 damage. Does 10 damage to 1 of your opponent’s Benched Pokémon. Don’t apply Weakness and Resistance for Benched Pokémon.)"
-            energyCost C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (DiamondPearl.BUNEARY_73, this);
       case CHERUBI_13:
-        return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
-          weakness R, PLUS10
-          resistance W, MINUS20
-          move "Sleep Powder", {
-            text "The Defending Pokémon is now Asleep."
-            energyCost G
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Leech Seed", {
-            text "20 damage. , remove 1 damage counter from Cherubi."
-            energyCost G, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (DiamondPearl.CHERUBI_75, this);
       case CHIMCHAR_14:
-        return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
-          weakness W, PLUS10
-          move "Scratch", {
-            text "10 damage. "
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Ember", {
-            text "30 damage. Energy attached to Chimchar."
-            energyCost R, C, R
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (DiamondPearl.CHIMCHAR_76, this);
       case PIPLUP_15:
-        return basic (this, hp:HP060, type:WATER, retreatCost:1) {
-          weakness L, PLUS10
-          move "Peck", {
-            text "10 damage. "
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Water Spash", {
-            text "20+ damage. Flip a coin. If heads, this, attack does 20 damage plus 10 more damage."
-            energyCost W, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (DiamondPearl.PIPLUP_93, this);
       case STARLY_16:
-        return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
-          weakness L, PLUS10
-          resistance F, MINUS20
-          move "Gust", {
-            text "10 damage. "
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Quick Attack", {
-            text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 20 more damage."
-            energyCost C, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (DiamondPearl.STARLY_101, this);
       case TURTWIG_17:
-        return basic (this, hp:HP060, type:GRASS, retreatCost:2) {
-          weakness R, PLUS10
-          resistance W, MINUS20
-          move "Tackle", {
-            text "10 damage. "
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Razor Leaf", {
-            text "20 damage. "
-            energyCost G
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (DiamondPearl.TURTWIG_103, this);
       default:
         return null;
     }

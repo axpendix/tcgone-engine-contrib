@@ -850,7 +850,7 @@ public enum Deoxys implements LogicCardInfo {
             text "As long as Rayquaza has any basic [R] Energy cards and any basic [L] Energy cards attached to it, prevent all effects, except damage, by an opponent’s attack done to Rayquaza."
             delayedA {
               before null, self, Source.ATTACK, {
-                if(ef.attacker.owner != self && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages) && self.cards.energyCount(L) && self.cards.energyCount(R)){
+                if (bg.currentTurn == self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages) && self.cards.basicEnergyCardCount(L) && self.cards.basicEnergyCardCount(R)) {
                   bc "Dragon Aura prevents effect"
                   prevent()
                 }
@@ -2549,7 +2549,7 @@ public enum Deoxys implements LogicCardInfo {
           }
           getEnergyTypesOverride{
             if(self && self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size()) {
-              return [[R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set]
+              return [valuesBasicEnergy() as Set, valuesBasicEnergy() as Set, valuesBasicEnergy() as Set]
             }
             else {
               return [[C] as Set]

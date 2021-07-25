@@ -2,11 +2,13 @@ package tcgwars.logic.impl.gen4;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.effect.EffectType.GET_POKEMON_TYPE;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
+import static tcgwars.logic.effect.special.SpecialConditionType.*
 
 import tcgwars.logic.card.*
 import tcgwars.logic.util.*;
@@ -94,18 +96,22 @@ public enum PopSeries9 implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 2, {}, {}, [2:{ damage 80 }]
             }
           }
           move "Jet Sword", {
-            text "100 damage. Discard 2 Energy attached to Garchomp and this attack does 10 damage to each of your opponent’s Benched Pokémon."
+            text "100 damage. Discard 2 Energy attached to Garchomp and this attack does 10 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 100
+
+              opp.bench.each {
+                damage 10, it
+              }
+              discardSelfEnergyAfterDamage(C, C)
             }
           }
-
         };
       case MANAPHY_2:
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
@@ -113,20 +119,23 @@ public enum PopSeries9 implements LogicCardInfo {
           move "Dive", {
             text "Look at the top 7 cards of your deck, choose 1 of them, and put it into your hand. Put the other cards back on top of your deck. Shuffle your deck afterward."
             energyCost W
-            attackRequirement {}
+            attackRequirement {
+              assert my.deck : "Deck is empty"
+            }
             onAttack {
-              damage 0
+              my.deck.subList(0, 7).select(text).moveTo(hidden:true, hand)
+              shuffleDeck()
             }
           }
           move "Water Glow", {
-            text "Remove from Manaphy the number of damage counters equal to the damage you did to that Pokémon."
+            text "Choose 1 of your opponent's Pokémon. This attack does 20 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.) Remove from Manaphy the number of damage counters equal to the damage you did to that Pokémon."
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20, opp.all.select()
+              removeDamageCounterEqualToDamageDone()
             }
           }
-
         };
       case RAICHU_3:
         return evolution (this, from:"Pikachu", hp:HP090, type:LIGHTNING, retreatCost:1) {
@@ -137,7 +146,7 @@ public enum PopSeries9 implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 2, { damage 30 }
             }
           }
           move "High Volt", {
@@ -145,10 +154,12 @@ public enum PopSeries9 implements LogicCardInfo {
             energyCost L, L, L
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 60
+              if (self.lastEvolved == bg.turnCount && self.cards.find { it.name == "Pikachu" }) {
+                damage 40
+              }
             }
           }
-
         };
       case REGIGIGAS_4:
         return basic (this, hp:HP100, type:COLORLESS, retreatCost:4) {
@@ -159,7 +170,7 @@ public enum PopSeries9 implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              flip { apply PARALYZED }
+              flipThenApplySC(PARALYZED)
             }
           }
           move "Double Stomp", {
@@ -167,10 +178,10 @@ public enum PopSeries9 implements LogicCardInfo {
             energyCost C, C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              flip 2, { damage 20 }
             }
           }
-
         };
       case ROTOM_5:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
@@ -181,6 +192,7 @@ public enum PopSeries9 implements LogicCardInfo {
             actionA {
               checkLastTurn()
               powerUsed()
+              bc "$self's type is now Psychic until the end of this turn."
               delayed {
                 def eff
                 register {
@@ -201,10 +213,10 @@ public enum PopSeries9 implements LogicCardInfo {
             energyCost P, C
             attackRequirement {}
             onAttack {
-              damage 0
+              def filteredHand = opp.hand.showToMe("Opponent's hand").filterByType(ITEM, SUPPORTER, STADIUM)
+              damage 30 + (10 * filteredHand.size())
             }
           }
-
         };
       case BUIZEL_6:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
@@ -214,7 +226,7 @@ public enum PopSeries9 implements LogicCardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { discardDefendingEnergy() }
             }
           }
           move "Super Fast", {
@@ -222,10 +234,12 @@ public enum PopSeries9 implements LogicCardInfo {
             energyCost W, W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              if (my.all.any {it.name == "Pachirisu" }) {
+                flip { preventAllEffectsNextTurn() }
+              }
             }
           }
-
         };
       case CROAGUNK_7:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:2) {
@@ -233,9 +247,13 @@ public enum PopSeries9 implements LogicCardInfo {
           move "Knock Off", {
             text "Flip a coin. If heads, choose 1 card from your opponent’s hand without looking and discard it."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert opp.hand : "Opponent's hand is empty"
+            }
             onAttack {
-              damage 0
+              flip {
+                discardRandomCardFromOpponentsHand()
+              }
             }
           }
           move "Nimble", {
@@ -243,10 +261,13 @@ public enum PopSeries9 implements LogicCardInfo {
             energyCost P, P
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+
+              if (my.all.any {it.name == "Turtwig" }) {
+                removeDamageCounterEqualToDamageDone()
+              }
             }
           }
-
         };
       case GABITE_8:
         return evolution (this, from:"Gible", hp:HP080, type:COLORLESS, retreatCost:1) {
@@ -256,7 +277,7 @@ public enum PopSeries9 implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { preventAllDamageNextTurn() }
             }
           }
           move "Distored Wave", {
@@ -264,20 +285,23 @@ public enum PopSeries9 implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              heal(20, defending)
+              damage 60
             }
           }
-
         };
       case LOPUNNY_9:
         return evolution (this, from:"Buneary", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS20
           move "Jump Kick", {
-            text "20 damage. Does 20 damage to 1 of your opponent’s Benched Pokémon."
+            text "20 damage. Does 20 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+              if (opp.bench) {
+                damage 20, opp.bench.select(text)
+              }
             }
           }
           move "Jazzed", {
@@ -285,10 +309,13 @@ public enum PopSeries9 implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+
+              if (self.lastEvolved == bg.turnCount && self.cards.find { it.name == "Buneary" }) {
+                healAll(self)
+              }
             }
           }
-
         };
       case PACHIRISU_10:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
@@ -300,7 +327,7 @@ public enum PopSeries9 implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              flip { apply PARALYZED }
+              flip { applyAfterDamage(PARALYZED) }
             }
           }
           move "Poison Berry", {
@@ -308,10 +335,14 @@ public enum PopSeries9 implements LogicCardInfo {
             energyCost L, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 20
+
+              if (my.all.any {it.name == "Croagunk" }) {
+                damage 20
+                applyAfterDamage(POISONED)
+              }
             }
           }
-
         };
       case PICHU_11:
         return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
@@ -320,25 +351,25 @@ public enum PopSeries9 implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Pikachu from your hand onto Pichu (this counts as evolving Pichu) and remove all damage counters from Pichu."
             actionA {
-              assert my.hand.findAll{it.name.contains("Pikachu")} : "There is no pokémon in your hand to evolve ${self}."
+              checkCanBabyEvolve("Pikachu", self)
               checkLastTurn()
               powerUsed()
-              def tar = my.hand.findAll { it.name.contains("Pikachu") }.select()
-              if (tar) {
-                evolve(self, tar.first(), OTHER)
-                heal self.numberOfDamageCounters*10, self
-              }
+              babyEvolution("Pikachu", self)
             }
           }
           move "Find a Friend", {
             text "Flip a coin. If heads, search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
             energyCost ()
-            attackRequirement {}
+            attackRequirement {
+              assert deck.notEmpty : "Deck is empty"
+            }
             onAttack {
-              damage 0
+              flip {
+                my.deck.search(max: 1, cardTypeFilter(POKEMON)).showToOpponent(text).moveTo(my.hand)
+                shuffleDeck()
+              }
             }
           }
-
         };
       case BUNEARY_12:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
@@ -348,7 +379,7 @@ public enum PopSeries9 implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 2, { damage 10 }
             }
           }
           move "Defense Curl", {
@@ -356,10 +387,9 @@ public enum PopSeries9 implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              flip { preventAllDamageNextTurn() }
             }
           }
-
         };
       case CHIMCHAR_13:
         return basic (this, hp:HP040, type:FIRE, retreatCost:1) {
@@ -369,42 +399,35 @@ public enum PopSeries9 implements LogicCardInfo {
             energyCost R
             attackRequirement {}
             onAttack {
-              damage 0
+              flip 4, { damage 10 }
             }
           }
           move "Sleepy", {
-            text "40+ damage. "
+            text "40+ damage. If you have Piplup in play, this attack does 40 damage plus 20 more damage and the Defending Pokémon is now Asleep."
             energyCost R, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+
+              if (my.all.any { it.name == "Piplup" }) {
+                damage 20
+                applyAfterDamage(ASLEEP)
+              }
             }
           }
-
         };
       case GIBLE_14:
-        return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
-          weakness C, PLUS10
-          move "Push Down", {
-            text "10 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (MysteriousTreasures.GIBLE_85, this);
       case PIKACHU_15:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
           resistance M, MINUS20
           move "Growl", {
-            text "."
+            text "During your opponent's next turn, any damage done by the attack from the Defending Pokémon is reduced by 20 (before applying Weakness and Resistance)."
             energyCost C
             attackRequirement {}
             onAttack {
-              damage 0
+              reduceDamageFromDefendingNextTurn(hp(20), thisMove, defending)
             }
           }
           move "Numb", {
@@ -412,10 +435,12 @@ public enum PopSeries9 implements LogicCardInfo {
             energyCost L, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 30
+              if (self.lastEvolved == bg.turnCount && self.cards.any {it.name == "Pichu" }) {
+                applyAfterDamage PARALYZED
+              }
             }
           }
-
         };
       case PIPLUP_16:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
@@ -425,7 +450,10 @@ public enum PopSeries9 implements LogicCardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              if (self.cards.energyCount(C) < defending.cards.energyCount(C)) {
+                damage 10
+              }
             }
           }
           move "Wavelet", {
@@ -433,10 +461,15 @@ public enum PopSeries9 implements LogicCardInfo {
             energyCost W, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+
+              if (my.all.any {it.name == "Buizel" }) {
+                opp.bench.each {
+                  damage 10, it
+                }
+              }
             }
           }
-
         };
       case TURTWIG_17:
         return basic (this, hp:HP060, type:GRASS, retreatCost:2) {
@@ -447,7 +480,8 @@ public enum PopSeries9 implements LogicCardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              heal 10, self
             }
           }
           move "Parboil", {
@@ -455,14 +489,17 @@ public enum PopSeries9 implements LogicCardInfo {
             energyCost G, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+
+              if (my.all.any {it.name == "Chimchar" }) {
+                damage 20
+                applyAfterDamage(BURNED)
+              }
             }
           }
-
         };
       default:
         return null;
     }
   }
-
 }

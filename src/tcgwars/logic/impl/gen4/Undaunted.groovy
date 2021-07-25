@@ -187,7 +187,7 @@ public enum Undaunted implements LogicCardInfo {
               checkNoSPC()
               assert my.all.findAll{it.numberOfDamageCounters} : "No damage on your Pokémon"
               powerUsed()
-              my.all.each{ heal 10, it, SRC_ABILITY }
+              my.all.each{ heal 10, it, Source.POKEPOWER }
             }
           }
           move "Dance ’til Dawn", {
@@ -910,8 +910,10 @@ public enum Undaunted implements LogicCardInfo {
             energyCost M
             onAttack {
               damage 20
-              afterDamage{
-                attachEnergyFrom(type:M,my.discard,self)
+              afterDamage {
+                flip {
+                  attachEnergyFrom(type:M,my.discard,self)
+                }
               }
             }
           }
@@ -1075,16 +1077,21 @@ public enum Undaunted implements LogicCardInfo {
             energyCost C, C
             onAttack {
               damage 20
-              afterDamage{
+
+              afterDamage {
                 delayed (priority: BEFORE_LAST) {
                   before APPLY_ATTACK_DAMAGES, {
-                    def entry=bg.dm().find({it.to==self && it.dmg.value && it.notNoEffect})
+                    def entry = bg.dm().find {it.to == self && it.dmg.value && it.notNoEffect}
                     if (entry) {
                       flip "Afterimage Strike", self.owner, {
-                        entry.dmg=hp(0)
+                        entry.dmg = hp(0)
                       }
                     }
                   }
+                  unregisterAfter 2
+                  after EVOLVE, self, { unregister() }
+                  after DEVOLVE, self, { unregister() }
+                  after FALL_BACK, self, { unregister() }
                 }
               }
             }
@@ -1191,7 +1198,7 @@ public enum Undaunted implements LogicCardInfo {
             text "10 damage. "
             energyCost P
             onAttack {
-              damage 0
+              damage 10
             }
           }
 
@@ -1698,14 +1705,19 @@ public enum Undaunted implements LogicCardInfo {
             energyCost C
             attackRequirement {
               assert my.deck : "Your deck is empty"
-              assert my.bench.notFull
             }
             onAttack {
-              def top = my.deck.subList(0,5)
-              def max = Math.min(my.bench.freeBenchCount, top.filterByType(BASIC).size())
-              top.select(min:0,max:max,"Choose any number of Basic Pokémon to put on your bench",cardTypeFilter(BASIC)).each{
-                benchPCS(it)
+              def top = my.deck.subList(0, 5)
+
+              if (my.bench.notFull) {
+                def max = Math.min(my.bench.freeBenchCount, top.filterByType(BASIC).size())
+                top.select(min:0,max:max,"Choose any number of Basic Pokémon to put on your bench",cardTypeFilter(BASIC)).each{
+                  benchPCS(it)
+                }
+              } else {
+                top.showToMe("Top cards of your deck")
               }
+
               shuffleDeck()
             }
           }
@@ -2092,7 +2104,7 @@ public enum Undaunted implements LogicCardInfo {
               checkNoSPC()
               powerUsed()
               flip ({
-                scoopUpPokemon([:], self, delegate, POKEPOWER)
+                scoopUpPokemon([:], self, delegate, Source.POKEPOWER)
               })
             }
           }
