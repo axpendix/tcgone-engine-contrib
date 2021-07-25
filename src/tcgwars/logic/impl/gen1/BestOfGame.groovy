@@ -51,7 +51,7 @@ public enum BestOfGame implements LogicCardInfo {
   DARK_IVYSAUR_6 ("Dark Ivysaur", "6", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
   DARK_VENUSAUR_7  ("Dark Venusaur", "7", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
   ROCKETS_MEWTWO_8 ("Rocket's Mewtwo", "8", Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
-  ROCKETS_HITMONCHAN_9 ("Rocket's Hitmonchan", "9", Rarity.PROMO, [POKEMON, BASIC, _FIGHTING_]),
+  ROCKETS_HITMONCHAN_9 ("Rocket's Hitmonchan", "9", Rarity.PROMO, [POKEMON, BASIC, _FIGHTING_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -165,7 +165,7 @@ public enum BestOfGame implements LogicCardInfo {
               }
             }
           }
-          move "Fury Strikes ", {
+          move "Fury Strikes", {
             text "Your opponent puts 3 markers onto his or her Pokémon (divided as he or she chooses). (More than 1 marker can be put on the same Pokémon.) Then, this attack does 10 damage to each Pokémon for each marker on it. Don't apply Weakness and Resistance. Remove the markers at the end of the turn."
             energyCost G, G
             onAttack {
@@ -178,8 +178,8 @@ public enum BestOfGame implements LogicCardInfo {
       case DARK_VENUSAUR_7:
         return evolution (this, from: "Dark Ivysaur", hp:HP070, type:GRASS, retreatCost:2) {
           weakness FIRE
-          move "Horrid Pollen ", {
-            text "Flip 2 coins. If 1 is heads, the Defending Pokémon is now Asleep and Poisoned. If both are heads, the Defending Pokémon is now Confused and Poisoned. If both are tails, the Defending Pokémon is now Paralyzed and Poisoned. "
+          move "Horrid Pollen", {
+            text "30 damage. Flip 2 coins. If 1 is heads, the Defending Pokémon is now Asleep and Poisoned. If both are heads, the Defending Pokémon is now Confused and Poisoned. If both are tails, the Defending Pokémon is now Paralyzed and Poisoned. "
             energyCost G, G, G
             onAttack {
               damage 30
