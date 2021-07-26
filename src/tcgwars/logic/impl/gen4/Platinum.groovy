@@ -841,7 +841,6 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
                 def pcs = defending
                 targeted (pcs, ATTACK) {
                   delayed {
-                    unregisterAfter 3
                     register {
                       bg.em().storeObject("Altaria_Platinum_Midnight_Eyes_${pcs.hashCode()}", bg.turnCount)
                     }
