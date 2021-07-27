@@ -1518,7 +1518,7 @@ public enum MajesticDawn implements LogicCardInfo {
           resistance F, MINUS20
           move "Slash", {
             text "10 damage. "
-            energyCost G
+            energyCost C
             onAttack {
               damage 10
             }
