@@ -766,7 +766,7 @@ public enum MajesticDawn implements LogicCardInfo {
             onActivate {
               eff = getter (GET_FULL_HP,BEFORE_LAST) {h->
                 def pcs = h.effect.target
-                if (pcs.owner == self.owner && pcs.realEvolution && pcs.topPokemonCard.predecessor == "Eevee"){
+                if (pcs.owner == self.owner && pcs.realEvolution && pcs.topNonLevelUpPokemonCard.predecessor == "Eevee"){
                   target = bg.em().retrieveObject("Sunlight_Veil_target")
                   target = target?target:[]
                   source = bg.em().retrieveObject("Sunlight_Veil_source")
