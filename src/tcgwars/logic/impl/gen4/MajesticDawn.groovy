@@ -2697,7 +2697,7 @@ public enum MajesticDawn implements LogicCardInfo {
               powerUsed()
               def energy = my.hand.filterByType(ENERGY).select("Energy to attach").first()
               def pcs = my.all.select("Attach $energy to...")
-              attachEnergy(pcs, energy)
+              attachEnergy(pcs, energy, PLAY_FROM_HAND)
             }
           }
           move "Verdant Force", {
@@ -2706,7 +2706,7 @@ public enum MajesticDawn implements LogicCardInfo {
             onAttack {
               damage 30
               my.all.each {
-                damage 10 * self.cards.energyCount(C)
+                damage 10 * it.cards.energyCount(C)
               }
             }
           }
