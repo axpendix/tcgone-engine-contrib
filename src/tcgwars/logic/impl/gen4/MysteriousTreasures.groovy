@@ -541,8 +541,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             text "If an Active Pokémon has Weakness to any of the types of Energy attached to Garchomp, Garchomp’s attacks do 40 more damage to that Pokémon (before applying Weakness and Resistance). Rainbow Scale Poké-Body can’t be used if Garchomp has any Special Energy cards attached to it."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                def typesOfBasicEn = Type.values().toList().findAll{self.cards.filterByEnergyType(it)}
                 if(ef.attacker == self && !self.cards.filterByType(SPECIAL_ENERGY)){
+                  def typesOfBasicEn = Type.values().toList().findAll{self.cards.filterByEnergyType(it)}
                   bg.dm().each {
                     if (it.to.active && it.to.getWeaknesses().any{we -> typesOfBasicEn.contains(we.type)} && it.dmg.value) {
                       bc "Rainbow Scale +40"
