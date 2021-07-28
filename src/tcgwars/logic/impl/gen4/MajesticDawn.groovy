@@ -766,7 +766,7 @@ public enum MajesticDawn implements LogicCardInfo {
             onActivate {
               eff = getter (GET_FULL_HP,BEFORE_LAST) {h->
                 def pcs = h.effect.target
-                if (pcs.owner == self.owner && pcs.realEvolution && pcs.topPokemonCard.predecessor == "Eevee"){
+                if (pcs.owner == self.owner && pcs.realEvolution && pcs.topNonLevelUpPokemonCard.predecessor == "Eevee"){
                   target = bg.em().retrieveObject("Sunlight_Veil_target")
                   target = target?target:[]
                   source = bg.em().retrieveObject("Sunlight_Veil_source")
@@ -1518,7 +1518,7 @@ public enum MajesticDawn implements LogicCardInfo {
           resistance F, MINUS20
           move "Slash", {
             text "10 damage. "
-            energyCost G
+            energyCost C
             onAttack {
               damage 10
             }
@@ -2697,7 +2697,7 @@ public enum MajesticDawn implements LogicCardInfo {
               powerUsed()
               def energy = my.hand.filterByType(ENERGY).select("Energy to attach").first()
               def pcs = my.all.select("Attach $energy to...")
-              attachEnergy(pcs, energy)
+              attachEnergy(pcs, energy, PLAY_FROM_HAND)
             }
           }
           move "Verdant Force", {
@@ -2706,7 +2706,7 @@ public enum MajesticDawn implements LogicCardInfo {
             onAttack {
               damage 30
               my.all.each {
-                damage 10 * self.cards.energyCount(C)
+                damage 10 * it.cards.energyCount(C)
               }
             }
           }

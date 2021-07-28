@@ -2204,8 +2204,10 @@ public enum FireRedLeafGreen implements LogicCardInfo {
       case CELIO_S_NETWORK_88:
         return supporter (this) {
           text "Search your deck for a Basic Pokémon or Evolution card (excluding Pokémon-ex), show it to your opponent, and put it into your hand. Shuffle your deck afterward.\nYou may play only 1 Supporter card during your turn (before your attack)."
+          // Q. Can I use Celio's Network to search my deck for a Pokémon LV.X?
+          // A. Yes, you can. Earlier card references of "Basic Pokémon or Evolution card" refers to Pokémon in general, which includes Pokémon LV.X. (May 10, 2007 PUI Rules Team)
           onPlay {
-            my.deck.search(count: 1,"Search your deck for a Basic Pokémon or Evolution card",{(it.cardTypes.is(BASIC) || it.cardTypes.is(EVOLUTION)) && !(it.cardTypes.is(EX))}).showToOpponent("Selected card").moveTo(my.hand)
+            my.deck.search(count: 1,"Search your deck for a Basic Pokémon or Evolution card",{(it.cardTypes.is(POKEMON)) && !(it.cardTypes.is(EX))}).showToOpponent("Selected card").moveTo(my.hand)
             shuffleDeck()
           }
           playRequirement{
