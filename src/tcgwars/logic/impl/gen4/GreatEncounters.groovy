@@ -623,37 +623,30 @@ public enum GreatEncounters implements LogicCardInfo {
             text "Flip 2 coins. If the first coin is heads, this attack does 50 damage to the Defending Pokémon. If the first coin is tails, this attack does 20 damage to each of your opponent's Benched Pokémon. If the second coin is heads, the Defending Pokémon is now Confused. If the second coin is tails, your opponent can't play any Trainer, Supporter, or Stadium cards from his or her hand during your opponent's next turn."
             energyCost C, C
             onAttack {
-              def coin = 1
-              flip 2, {
-                if(coin == 1) {
-                  damage 50
-                  coin ++
-                } else {
-                  applyAfterDamage CONFUSED
-                }
+              flip 1, {
+                damage 50
               }, {
-                if(coin == 1) {
-                  opp.bench.each{
-                    damage 20, it
+                opp.bench.each{ damage 20, it }
+              }
+              flip 1, {
+                applyAfterDamage CONFUSED
+              }, {
+                bc "${self.owner.opposite.getPlayerUsername(bg)} can't play any Trainer (Item, Supporter, or Stadium) cards from their hand during their next turn."
+                delayed {
+                  def flag = false
+                  before PROCESS_ATTACK_EFFECTS, {
+                    flag = true
                   }
-                  coin ++
-                } else {
-                  delayed{
-                    def flag = false
-                    before PROCESS_ATTACK_EFFECTS, {
-                      flag = true
-                    }
-                    before BETWEEN_TURNS, {
-                      flag = false
-                    }
-                    before PLAY_TRAINER, {
-                      if (bg.currentTurn == self.owner.opposite && (ef.cardToPlay.cardTypes.is(ITEM) || ef.cardToPlay.cardTypes.is(SUPPORTER) || ef.cardToPlay.cardTypes.is(STADIUM)) && !flag) {
-                        wcu "Ambient Noise prevents you from playing Trainer cards."
-                        prevent()
-                      }
-                    }
-                    unregisterAfter 2
+                  before BETWEEN_TURNS, {
+                    flag = false
                   }
+                  before PLAY_TRAINER, {
+                    if (bg.currentTurn == self.owner.opposite && (ef.cardToPlay.cardTypes.is(TRAINER)) && !flag) {
+                      wcu "Ambient Noise prevents you from playing any Trainer (Item, Supporter, or Stadium) cards."
+                      prevent()
+                    }
+                  }
+                  unregisterAfter 2
                 }
               }
             }
