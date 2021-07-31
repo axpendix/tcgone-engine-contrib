@@ -583,16 +583,16 @@ class TcgStatics {
     }
 
     if (all.contains(pcs)) { //not dead yet.
-      bc "$card Devolved"
       bg().em().run(new RemoveFromPlay(pcs, new CardList(card)));
       bg().em().run(new CantEvolve(pcs, bg().getTurnCount()));
 
       // Remove the highest stage non-level up card if devolved from level-up
-      if (card.cardTypes.is(LEVEL_UP) && pcs.cards.filterByType(POKEMON).size() > 1) {
+      if (card.cardTypes.is(LVL_X) && pcs.cards.filterByType(POKEMON).size() > 1) {
         bg().em().run(new MoveCard(pcs.topNonLevelUpPokemonCard, newLocation));
         bg().em().run(new RemoveFromPlay(pcs, new CardList(pcs.topNonLevelUpPokemonCard)));
       }
 
+      bc "$card Devolved"
       bg().em().run(new Devolve(pcs));
     }
   }

@@ -1743,7 +1743,8 @@ public enum GreatEncounters implements LogicCardInfo {
               def top = self.topPokemonCard
               self.cards.getExcludedList(top).discard()
 
-              def toolCard = pokemonTool(new CustomCardInfo(top.staticInfo).setCardTypes(TRAINER, POKEMON_TOOL)) {
+              def toolCard
+              toolCard = pokemonTool(new CustomCardInfo(top.staticInfo).setCardTypes(TRAINER, POKEMON_TOOL)) {
                 def eff
                 onPlay {
                   eff = delayed {
