@@ -420,14 +420,14 @@ public enum Undaunted implements LogicCardInfo {
               damage 30
               delayed {
                 before null, self, Source.ATTACK, {
-                  if ((opp.active.hasPokePower() || opp.active.hasPokeBody()) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                  if ((opp.active.hasPokePower() || opp.active.hasPokeBody() || opp.active.hasPokemonPower()) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
                     bc "Moonlight Fang prevents effect"
                     prevent()
                   }
                 }
                 before APPLY_ATTACK_DAMAGES, {
                   bg.dm().each {
-                    if(it.to == self && it.notNoEffect && (it.from.hasPokePower() || it.from.hasPokeBody())){
+                    if(it.to == self && it.notNoEffect && (it.from.hasPokePower() || it.from.hasPokeBody() || it.from.hasPokemonPower())){
                       it.dmg = hp(0)
                       bc "Moonlight Fang prevents damage"
                     }
@@ -910,8 +910,10 @@ public enum Undaunted implements LogicCardInfo {
             energyCost M
             onAttack {
               damage 20
-              afterDamage{
-                attachEnergyFrom(type:M,my.discard,self)
+              afterDamage {
+                flip {
+                  attachEnergyFrom(type:M,my.discard,self)
+                }
               }
             }
           }
@@ -1075,16 +1077,21 @@ public enum Undaunted implements LogicCardInfo {
             energyCost C, C
             onAttack {
               damage 20
-              afterDamage{
+
+              afterDamage {
                 delayed (priority: BEFORE_LAST) {
                   before APPLY_ATTACK_DAMAGES, {
-                    def entry=bg.dm().find({it.to==self && it.dmg.value && it.notNoEffect})
+                    def entry = bg.dm().find {it.to == self && it.dmg.value && it.notNoEffect}
                     if (entry) {
                       flip "Afterimage Strike", self.owner, {
-                        entry.dmg=hp(0)
+                        entry.dmg = hp(0)
                       }
                     }
                   }
+                  unregisterAfter 2
+                  after EVOLVE, self, { unregister() }
+                  after DEVOLVE, self, { unregister() }
+                  after FALL_BACK, self, { unregister() }
                 }
               }
             }
@@ -1191,7 +1198,7 @@ public enum Undaunted implements LogicCardInfo {
             text "10 damage. "
             energyCost P
             onAttack {
-              damage 0
+              damage 10
             }
           }
 
@@ -1698,14 +1705,19 @@ public enum Undaunted implements LogicCardInfo {
             energyCost C
             attackRequirement {
               assert my.deck : "Your deck is empty"
-              assert my.bench.notFull
             }
             onAttack {
-              def top = my.deck.subList(0,5)
-              def max = Math.min(my.bench.freeBenchCount, top.filterByType(BASIC).size())
-              top.select(min:0,max:max,"Choose any number of Basic Pokémon to put on your bench",cardTypeFilter(BASIC)).each{
-                benchPCS(it)
+              def top = my.deck.subList(0, 5)
+
+              if (my.bench.notFull) {
+                def max = Math.min(my.bench.freeBenchCount, top.filterByType(BASIC).size())
+                top.select(min:0,max:max,"Choose any number of Basic Pokémon to put on your bench",cardTypeFilter(BASIC)).each{
+                  benchPCS(it)
+                }
+              } else {
+                top.showToMe("Top cards of your deck")
               }
+
               shuffleDeck()
             }
           }

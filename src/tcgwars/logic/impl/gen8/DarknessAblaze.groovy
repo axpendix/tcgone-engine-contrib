@@ -3749,8 +3749,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         def eff
         onPlay {reason->
           eff = getter (GET_FULL_HP, self) {h->
-            def selfTopCardTypes = self.topPokemonCard.cardTypes
-            if(selfTopCardTypes.is(BASIC) && !(selfTopCardTypes.is(POKEMON_GX))) {
+            if (self.basic && !self.pokemonGX) {
               h.object += hp(50)
             }
           }

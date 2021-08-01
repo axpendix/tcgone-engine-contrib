@@ -2703,7 +2703,7 @@ public enum ForbiddenLight implements LogicCardInfo {
                   dset.add(card)
                 }
               }
-              after ATTACH_POKEMON_TOOL, {disable(ef.card,ef.target)}
+              after ATTACH_POKEMON_TOOL, {disable(ef.card,ef.resolvedTarget)}
             }
 
             def count = (bg.em().retrieveObject("Tool Concealment count") ?: 0) + 1

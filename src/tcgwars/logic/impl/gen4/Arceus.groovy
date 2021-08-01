@@ -231,7 +231,7 @@ public enum Arceus implements LogicCardInfo {
           }
           move "Burning Tail", {
             text "80 damage. Discard a Fire Energy attached to Charizard."
-            energyCost R, R, C, R
+            energyCost R, R, C
             onAttack {
               damage 80
               discardSelfEnergyAfterDamage R
@@ -248,6 +248,7 @@ public enum Arceus implements LogicCardInfo {
               if (r==PLAY_FROM_HAND && my.deck && confirm("Use Snow Gift")) {
                 powerUsed()
                 my.deck.search(min:1,"Search your deck for a card",{true}).moveTo(hidden:true,my.hand)
+                shuffleDeck()
               }
             }
           }
@@ -569,6 +570,7 @@ public enum Arceus implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
               powerUsed()
               my.deck.search("Unearth",{ ["Helix Fossil", "Dome Fossil", "Old Amber"].contains(it.name) }).moveTo(my.hand)
+              shuffleDeck()
             }
           }
           move "Hyper Beam", {
@@ -914,7 +916,7 @@ public enum Arceus implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
             }
             onAttack {
-              my.deck.subList(0,5).select("Choose a card to put into your hand").moveTo(my.hand)
+              my.deck.subList(0,5).select("Choose a card to put into your hand").moveTo(hidden:true, my.hand)
               shuffleDeck()
             }
           }
@@ -1233,7 +1235,7 @@ public enum Arceus implements LogicCardInfo {
         };
       case GASTLY_36:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
-          weakness D
+          weakness D, PLUS10
           resistance C, MINUS20
           move "Lick", {
             text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
@@ -1467,7 +1469,7 @@ public enum Arceus implements LogicCardInfo {
         };
       case PONYTA_46:
         return basic (this, hp:HP040, type:FIRE, retreatCost:1) {
-          weakness W
+          weakness W, PLUS10
           move "Ascension", {
             text "Search your deck for a card that evolves from Ponyta and put it onto Ponyta. (This counts as evolving Ponyta.) Shuffle your deck afterward."
             energyCost C
@@ -1827,7 +1829,7 @@ public enum Arceus implements LogicCardInfo {
         };
       case ELECTRIKE_62:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
-          weakness F
+          weakness F, PLUS10
           resistance M, MINUS20
           move "Zap Kick", {
             text "10 damage. "
@@ -1850,7 +1852,7 @@ public enum Arceus implements LogicCardInfo {
         };
       case ELECTRIKE_63:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
-          weakness F
+          weakness F, PLUS10
           resistance M, MINUS20
           move "Bite", {
             text "10 damage. "
@@ -1863,7 +1865,7 @@ public enum Arceus implements LogicCardInfo {
         };
       case GASTLY_64:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
-          weakness D
+          weakness D, PLUS10
           resistance C, MINUS20
           move "Gnaw", {
             text "10 damage. "
@@ -2032,10 +2034,12 @@ public enum Arceus implements LogicCardInfo {
             }
           }
           move "Mega Shot", {
-            text "Energy attached to Pikachu and then choose 1 of your opponent’s Pokémon. This attack does 40 damage to that Pokémon."
+            text "Discard all [L] Energy attached to Pikachu and then choose 1 of your opponent’s Pokémon. This attack does 40 damage to that Pokémon."
             energyCost L, C, C
             onAttack {
-              discardAllSelfEnergy L
+              afterDamage {
+                discardAllSelfEnergy L
+              }
               damage 40, opp.all.select()
             }
           }
@@ -2245,7 +2249,7 @@ public enum Arceus implements LogicCardInfo {
         return basicTrainer (this) {
           text "Search your deck for Arceus, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
           onPlay {
-            my.deck.search("Search your deck for Arceus",{it.name == "Arceus"}).showToOpponent("Arceus").moveTo(my.hand)
+            my.deck.search("Search your deck for Arceus",{it.name == "Arceus" || it.name == "Arceus Lv.X"}).showToOpponent("Arceus").moveTo(my.hand)
             shuffleDeck()
           }
           playRequirement{
@@ -2279,6 +2283,7 @@ public enum Arceus implements LogicCardInfo {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck for up to 3 Pokémon Tool cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
           onPlay {
             my.deck.search(max:3,"Search your deck for up to 3 Pokémon Tool cards",cardTypeFilter(POKEMON_TOOL)).showToOpponent("Selected cards").moveTo(my.hand)
+            shuffleDeck()
           }
           playRequirement{
             assert my.deck : "Your deck is empty"
@@ -2510,7 +2515,7 @@ public enum Arceus implements LogicCardInfo {
         };
       case BAGON_SH10:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
-          weakness C
+          weakness C, PLUS10
           pokeBody "Star Barrier", {
             text "As long as Bagon has any Energy attached to it, Bagon has no Weakness."
             getterA GET_WEAKNESSES, self, { h ->
@@ -2553,7 +2558,7 @@ public enum Arceus implements LogicCardInfo {
         };
       case SHINX_SH12:
         return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
-          weakness F
+          weakness F, PLUS10
           resistance M, MINUS20
           pokeBody "Star Barrier", {
             text "As long as Shinx has any Energy attached to it, Shinx has no Weakness."
@@ -2631,7 +2636,7 @@ public enum Arceus implements LogicCardInfo {
             text "50 damage. This attack’s damage isn’t affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             energyCost W, C, C
             onAttack {
-              swiftDamage 50, defending
+              noResistanceOrAnyEffectDamage(50, defending)
             }
           }
 

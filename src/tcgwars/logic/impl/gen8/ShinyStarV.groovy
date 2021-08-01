@@ -232,7 +232,7 @@ public enum ShinyStarV implements LogicCardInfo {
       case DITTO_V_9:
       return basic (this, hp:HP170, type:C, retreatCost:2) {
         weakness F
-        bwAbility "V TransformationV", {
+        bwAbility "V Transformation", {
           text "Once during your turn, you may switch this Pokémon with a Basic Pokémon V in your discard pile. Any attached cards, damage counters, Special Conditions, turns in play, and any other effects remain on the new Pokémon."
           actionA {
             assert my.discard.any { it.cardTypes.isAll(BASIC, POKEMON_V) } : "No Basic Pokémon V in your discard pile"

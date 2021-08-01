@@ -2124,10 +2124,10 @@ public enum DragonFrontiers implements LogicCardInfo {
             checkNoSPC()
             assert my.hand.filterByType(BASIC_ENERGY) : "No Basic Energy in hand"
             assert my.all.any{ ["Latias", "Latias ex", "Latios", "Latios ex"].contains(it.name) }
-            powerUsed()
+            powerUsed({ usingThisAbilityEndsTurn delegate })
             def eligible = my.all.findAll { ["Latias", "Latias ex", "Latios", "Latios ex"].contains(it.name) }
             attachEnergyFrom(basic:true, my.hand, eligible.select("Attach to"))
-            bg.gm().betweenTurns()
+            usingThisAbilityEndsTurn delegate
           }
         }
         move "Power Crush", {

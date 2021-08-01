@@ -2204,8 +2204,10 @@ public enum FireRedLeafGreen implements LogicCardInfo {
       case CELIO_S_NETWORK_88:
         return supporter (this) {
           text "Search your deck for a Basic Pokémon or Evolution card (excluding Pokémon-ex), show it to your opponent, and put it into your hand. Shuffle your deck afterward.\nYou may play only 1 Supporter card during your turn (before your attack)."
+          // Q. Can I use Celio's Network to search my deck for a Pokémon LV.X?
+          // A. Yes, you can. Earlier card references of "Basic Pokémon or Evolution card" refers to Pokémon in general, which includes Pokémon LV.X. (May 10, 2007 PUI Rules Team)
           onPlay {
-            my.deck.search(count: 1,"Search your deck for a Basic Pokémon or Evolution card",{(it.cardTypes.is(BASIC) || it.cardTypes.is(EVOLUTION)) && !(it.cardTypes.is(EX))}).showToOpponent("Selected card").moveTo(my.hand)
+            my.deck.search(count: 1,"Search your deck for a Basic Pokémon or Evolution card",{(it.cardTypes.is(POKEMON)) && !(it.cardTypes.is(EX))}).showToOpponent("Selected card").moveTo(my.hand)
             shuffleDeck()
           }
           playRequirement{
@@ -2239,7 +2241,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           onPlay {reason->
             eff = delayed {
               before KNOCKOUT, {
-                if (!self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.bench.notEmpty && self.owner.pbg.active.cards.filterByType(BASIC_ENERGY)) {
+                if (!self.active && bg.currentTurn==self.owner.opposite && (ef as Knockout).byDamageFromAttack && (ef as Knockout).pokemonToBeKnockedOut == self.owner.pbg.active && self.owner.pbg.active.cards.filterByType(BASIC_ENERGY)) {
                   bc "EXP.ALL activates"
                   if (oppConfirm("EXP.ALL: Move an Energy from ${self.owner.pbg.active} to $self ?")) {
                     def energy = self.owner.pbg.active.cards.filterByType(BASIC_ENERGY).oppSelect("Select an Energy from the Active Pokémon to move to the holder of EXP.ALL").first()

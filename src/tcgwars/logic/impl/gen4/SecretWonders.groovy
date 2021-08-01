@@ -228,7 +228,7 @@ public enum SecretWonders implements LogicCardInfo {
   public Card getImplementation() {
     switch (this) {
       case AMPHAROS_1:
-        return evolution (this, from:"Flaffy", hp:HP130, type:LIGHTNING, retreatCost:3) {
+        return evolution (this, from:"Flaaffy", hp:HP130, type:LIGHTNING, retreatCost:3) {
           weakness F, PLUS30
           resistance M, MINUS20
           pokeBody "Jamming", {
@@ -238,7 +238,7 @@ public enum SecretWonders implements LogicCardInfo {
                 if(ef.cardToPlay.cardTypes.is(SUPPORTER) && bg.em().retrieveObject("Jamming")!=bg.turnCount && bg.currentThreadPlayerType == self.owner.opposite){
                   bg.em().storeObject("Jamming",bg.turnCount)
                   self.owner.opposite.pbg.all.each {
-                    directDamage(10, it, Source.POKBODY)
+                    directDamage(10, it, Source.POKEBODY)
                   }
                 }
               }
@@ -270,7 +270,7 @@ public enum SecretWonders implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               assert my.hand.filterByBasicEnergyType(W) : "There are no basic [W] Energys in your hand."
-              powerUsed()
+              powerUsed({ usingThisAbilityEndsTurn delegate })
               while(true){
                 if(!my.hand.filterByBasicEnergyType(W)) break
                 def tar = my.all.select("Attach energy to which Pokémon? (Cancel to stop)", false)
@@ -279,8 +279,8 @@ public enum SecretWonders implements LogicCardInfo {
                 energy.each{
                   attachEnergy(tar,it)
                 }
-                bg.gm().betweenTurns()
               }
+              usingThisAbilityEndsTurn delegate
             }
           }
           move "Hydro Pump", {
@@ -295,7 +295,7 @@ public enum SecretWonders implements LogicCardInfo {
         };
       case CHARIZARD_3:
         return evolution (this, from:"Charmeleon", hp:HP130, type:FIRE, retreatCost:3) {
-          weakness W
+          weakness W, PLUS40
           resistance F, MINUS20
           pokeBody "Fury Blaze", {
             text "If your opponent has 3 or less Prize cards left, each of Charizard’s attacks does 50 more damage to the Active Pokémon ."
@@ -359,7 +359,9 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
           move "Blaze Roar", {
-            text "60 damage. Does 20 damage to 1 of your opponent's Benched Pokémon. Filp a coin. If tails, discard 2 [R] Energy attached to Entei."
+            text "60 damage. Does 20 damage to 1 of your opponent's Benched Pokémon. Filp a coin. If tails, discard 2 [R] Energy cards attached to Entei."
+            //Original Text: "Filp a coin. If tails, discard 2 [R] Energy attached to Entei."
+            //Errata: Entei's "Blaze Roar" attack should say "discard 2 Fire Energy CARDS" rather than just "discard 2 Fire Energy". (Nov 16, 2007 Pokemon Organized Play News)
             energyCost R, R, R
             onAttack {
               damage 60
@@ -393,7 +395,7 @@ public enum SecretWonders implements LogicCardInfo {
               before BEGIN_TURN, {
                 if(self.active && !self.owner.opposite.pbg.active.types.contains(F)) {
                   bc "Irritating Buzz Activates"
-                  directDamage(10, self.owner.opposite.pbg.active, Source.POKBODY)
+                  directDamage(10, self.owner.opposite.pbg.active, Source.POKEBODY)
                 }
               }
             }
@@ -412,7 +414,7 @@ public enum SecretWonders implements LogicCardInfo {
         };
       case GALLADE_6:
         return evolution (this, from:"Kirlia", hp:HP130, type:FIGHTING, retreatCost:2) {
-          weakness P
+          weakness P, PLUS30
           move "Sonic Blade", {
             text "Put damage counters on the Defending Pokémon until it is 50 HP away from being Knocked Out. If you do, your opponent switchs the Defending Pokémon with 1 of this or her Benched Pokémon."
             energyCost F, C
@@ -631,7 +633,7 @@ public enum SecretWonders implements LogicCardInfo {
                 before BEGIN_TURN, {
                   if (self.numberOfDamageCounters) {
                     bc "$thisAbility activates"
-                    heal 10, self, Source.POKBODY
+                    heal 10, self, Source.POKEBODY
                   }
                 }
               }
@@ -915,10 +917,15 @@ public enum SecretWonders implements LogicCardInfo {
           weakness D, PLUS20
           resistance C, MINUS20
           move "Ghost Head", {
-            text "Put as many damage counters as you like on Banette. (You can’t put more than Banette’s remaining HP.) Put that many damage counters on the Defending Pokémon."
+            text "Put as many damage counters as you like on Banette. (You can't Knock Out Banette.) Put that many damage counters on the Defending Pokémon."
+            //Old text: "Put as many damage counters as you like on Banette. (You can’t put more than Banette’s remaining HP.) Put that many damage counters on the Defending Pokémon."
+            //Errata: Ghost Head can't cause Banette to Knock Out itself ... the attack has to leave Banette with at least 10 HP. "Put as many damage counters as you like on Banette. (You can't Knock Out Banette.) Put that many damage counters on the Defending Pokémon." (Jan 29, 2008 Pokemon Organized Play News)
             energyCost ()
+            attackRequirement {
+              assert self.remainingHP.value == 10  : "You can't place any more damage counters in $self"
+            }
             onAttack {
-              def count = choose(1..self.remainingHP.value / 10, "Put as many damage counters as you like on Banette")
+              def count = choose(1..((self.remainingHP.value / 10) - 1), "Put as many damage counters as you like on Banette")
               directDamage 10 * count, self
               directDamage 10 * count, defending
             }
@@ -1129,7 +1136,7 @@ public enum SecretWonders implements LogicCardInfo {
         };
       case GOLEM_29:
         return evolution (this, from:"Graveler", hp:HP130, type:FIGHTING, retreatCost:4) {
-          weakness G
+          weakness G, PLUS30
           resistance L, MINUS20
           move "Double Throw", {
             text "Choose 2 of your opponent’s Pokémon. This attack does 30 damage to each of them."
@@ -1203,7 +1210,7 @@ public enum SecretWonders implements LogicCardInfo {
             after ATTACH_ENERGY, self, {
               if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(R)) {
                 bc "Flame Body removes 2 damage counters from $self"
-                heal 20, self, Source.POKBODY
+                heal 20, self, Source.POKEBODY
               }
             }
           }
@@ -1396,15 +1403,15 @@ f
           pokeBody "Rough Skin", {
             text "If Sharpedo is your Active Pokémon and is damaged by an opponent’s attack , put 2 damage counter on the Attacking Pokémon."
             ifActiveAndDamagedByAttackBody(delegate) {
-              bc "Rough Skin activates"
-              directDamage(20, ef.attacker)
+              bc "$thisAbility activates"
+              directDamage(20, ef.attacker, Source.POKEBODY)
             }
           }
           move "Strike Wound", {
             text "60+ damage. If the Defending Pokémon has 2 or more damage counters on it, this attack does 60 damage plus 20 more damage. This attack damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects of that Pokémon."
             energyCost W, C, C
             onAttack {
-              swiftDamage (60 + (defending.numberOfDamageCounters > 2 ? 20 : 0), defending)
+              swiftDamage (60 + (defending.numberOfDamageCounters >= 2 ? 20 : 0), defending)
             }
           }
 
@@ -1552,7 +1559,8 @@ f
           weakness R, PLUS20
           resistance L, MINUS20
           pokeBody "Sandy Cloak", {
-            text "Prevent all effects of attacks, excluding damage, done to Wormadam Sandy Cloak."
+            text "Prevent all effects of attacks, excluding damage, done to Wormadam Sandy Cloak by your opponent's Pokemon."
+            //Errata'd. Original text: "Prevent all effects of attacks, excluding damage, done to Wormadam Sandy Cloak."
             delayedA {
               before null, self, Source.ATTACK, {
                 if(bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages)){
@@ -1626,7 +1634,7 @@ f
         };
       case BRELOOM_45:
         return evolution (this, from:"Shroomish", hp:HP100, type:GRASS, retreatCost:2) {
-          weakness R
+          weakness R, PLUS30
           move "Darin Punch", {
             text "40 damage. Remove from Breloom a number of damage counters equal to the amount of Energy attached to the Defending Pokémon."
             energyCost F, C
@@ -2021,7 +2029,7 @@ f
         };
       case QUAGSIRE_60:
         return evolution (this, from:"Wooper", hp:HP090, type:WATER, retreatCost:3) {
-          weakness G
+          weakness G, PLUS30
           resistance L, MINUS20
           pokePower "Aqua Healing", {
             text "Once during your turn , if Quagsire is your Active Pokémon and the Defending Pokémon has any Energy attached to it, you may remove 3 damage counters from Quagsire."
@@ -2300,7 +2308,7 @@ f
         };
       case UNOWN_X_71:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
-          weakness P
+          weakness P, PLUS10
           pokePower "X-RAY", {
             text "Once during your turn , if you have Unown X on your Bench, you may look at the top card of your opponent’s deck and put it back on top of his or her deck."
             actionA {
@@ -2945,7 +2953,7 @@ f
         };
       case PHANPY_98:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
-          weakness W
+          weakness W, PLUS10
           resistance L, MINUS20
           move "Flail", {
             text "10× damage. Does 10 damage times the number of damage counters on Phanpy."
@@ -2975,7 +2983,7 @@ f
             text "During your opponent's next turn, any damage done by attacks from the Defending Pokémon is reduced by 20."
             energyCost C
             onAttack {
-              reduceDamageFromDefendingNextTurn(hp(50), thisMove, defending)
+              reduceDamageFromDefendingNextTurn(hp(20), thisMove, defending)
             }
           }
           move "Peck", {
@@ -3098,8 +3106,8 @@ f
             }
             onAttack {
               def top = my.deck.subList(0,2)
-              def choice = top.select("Choose a card to put into your hand").moveTo(my.hand)
-              top.getExcludedList(choice).moveTo(my.deck)
+              def choice = top.select("Choose a card to put into your hand").moveTo(hidden: true, my.hand)
+              top.getExcludedList(choice).moveTo(hidden: true, my.deck)
             }
           }
           move "Scratch", {
@@ -3522,10 +3530,10 @@ f
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDraw 2 cards. Then, choose a card from your opponent’s hand without looking and put it on the bottom of his or her deck."
           onPlay {
             draw 2
-            opp.hand.select(hidden: true, "Choose a card from your opponent's hand without looking").showToOpponent("Team Galactic's Mars: This card will be put on the bottom of your deck").moveTo(hidden: true, opp.deck)
+            if (opp.hand) opp.hand.select(hidden: true, "Choose a card from your opponent's hand without looking").showToOpponent("Team Galactic's Mars: This card will be put on the bottom of your deck.").moveTo(hidden: true, opp.deck)
           }
           playRequirement{
-            assert my.deck || opp.hand : "Your deck and your opponent's hand are both empty"
+            assert my.deck : "There are no cards left in your deck."
           }
         };
       case POTION_127:
