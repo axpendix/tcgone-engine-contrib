@@ -182,6 +182,9 @@ public enum Collection {
   AMAZING_VOLT_TACKLE(1011, "JS4", "gen8.AmazingVoltTackle"),
   WIZARDS_BLACK_STAR_PROMOS_NG(111, "WBSP", "gen1.WizardsBlackStarPromosNG"),
   SHINY_STAR_V(1012, "JS4A", "gen8.ShinyStarV"),
+  SKYSCRAPING_PERFECTION(1013, "7sD", "gen8.SkyscrapingPerfection"),
+  BLUE_SKY_STREAM(1014, "s7R", "gen8.BlueSkyStream"),
+  EEVEE_HEROES(1015, "6sa", "gen8.EeveeHeroes"),
 
   RUBY_SAPPHIRE_NG(1301, "Ruby & Sapphire", "RS", "gen3.RubySapphireNG"),
 
