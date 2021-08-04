@@ -2050,7 +2050,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
 
         };
       case QUILAVA_60:
-        return evolution (this, from:"Cydnaquil", hp:HP080, type:FIRE, retreatCost:1) {
+        return evolution (this, from:"Cyndaquil", hp:HP080, type:FIRE, retreatCost:1) {
           weakness W, PLUS20
           move "Fireworks", {
             text "40 damage. Flip a coin. If tails, discard a [R] Energy attached to Quilava."
