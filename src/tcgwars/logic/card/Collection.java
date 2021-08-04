@@ -185,6 +185,7 @@ public enum Collection {
   SKYSCRAPING_PERFECTION(1013, "7sD", "gen8.SkyscrapingPerfection"),
   BLUE_SKY_STREAM(1014, "s7R", "gen8.BlueSkyStream"),
   EEVEE_HEROES(1015, "6sa", "gen8.EeveeHeroes"),
+  EEVEE_HEROES_VMAX_SPECIAL_SET(1016, "sp4", "gen8.EeveeHeroesVmaxSpecialSet"),
 
   RUBY_SAPPHIRE_NG(1301, "Ruby & Sapphire", "RS", "gen3.RubySapphireNG"),
 
