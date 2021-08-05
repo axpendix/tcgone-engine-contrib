@@ -1,6 +1,7 @@
 package tcgwars.logic.impl.gen4;
 
-import tcgwars.logic.impl.gen2.Expedition;
+import tcgwars.logic.impl.gen2.Expedition
+import tcgwars.logic.impl.gen3.DragonFrontiers;
 import tcgwars.logic.impl.gen8.SwordShield;
 
 import tcgwars.logic.effect.gm.PlayTrainer;
@@ -230,7 +231,7 @@ public enum Arceus implements LogicCardInfo {
           }
           move "Burning Tail", {
             text "80 damage. Discard a Fire Energy attached to Charizard."
-            energyCost R, R, C, R
+            energyCost R, R, C
             onAttack {
               damage 80
               discardSelfEnergyAfterDamage R
@@ -247,6 +248,7 @@ public enum Arceus implements LogicCardInfo {
               if (r==PLAY_FROM_HAND && my.deck && confirm("Use Snow Gift")) {
                 powerUsed()
                 my.deck.search(min:1,"Search your deck for a card",{true}).moveTo(hidden:true,my.hand)
+                shuffleDeck()
               }
             }
           }
@@ -348,7 +350,7 @@ public enum Arceus implements LogicCardInfo {
 
         };
       case MOTHIM_6:
-        return evolution (this, from:"Burmy", hp:HP090, type:GRASS, retreatCost:0) {
+        return evolution (this, from:["Burmy","Burmy Plant Cloak","Burmy Sandy Cloak","Burmy Trash Cloak"], hp:HP090, type:GRASS, retreatCost:0) {
           weakness R, PLUS20
           resistance F, MINUS20
           move "Cloak Party", {
@@ -359,6 +361,7 @@ public enum Arceus implements LogicCardInfo {
             }
             onAttack {
               my.deck.search(max:3, {it.name.contains("Burmy") || it.name.contains("Wormadam")}).showToOpponent("Cloak Party : Selected cards").moveTo(my.hand)
+              shuffleDeck()
             }
           }
           move "Energy Assist", {
@@ -567,6 +570,7 @@ public enum Arceus implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
               powerUsed()
               my.deck.search("Unearth",{ ["Helix Fossil", "Dome Fossil", "Old Amber"].contains(it.name) }).moveTo(my.hand)
+              shuffleDeck()
             }
           }
           move "Hyper Beam", {
@@ -662,7 +666,7 @@ public enum Arceus implements LogicCardInfo {
               def pcs = opp.all.findAll{it.numberOfDamageCounters}.select("Choose the pokémon to move the damage counter from")
               def tar = opp.all.findAll{it != pcs}.select("Select the pokémon to recieve the damage counter")
               pcs.damage-=hp(10)
-              directDamage 10, tar, SRC_ABILITY
+              directDamage 10, tar, Source.POKEPOWER
               bc "Moved 1 damage counter from $pcs to $tar"
             }
           }
@@ -912,7 +916,7 @@ public enum Arceus implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
             }
             onAttack {
-              my.deck.subList(0,5).select("Choose a card to put into your hand").moveTo(my.hand)
+              my.deck.subList(0,5).select("Choose a card to put into your hand").moveTo(hidden:true, my.hand)
               shuffleDeck()
             }
           }
@@ -1231,7 +1235,7 @@ public enum Arceus implements LogicCardInfo {
         };
       case GASTLY_36:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
-          weakness D
+          weakness D, PLUS10
           resistance C, MINUS20
           move "Lick", {
             text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
@@ -1360,13 +1364,9 @@ public enum Arceus implements LogicCardInfo {
           resistance C, MINUS20
           pokeBody "Hidden Poison", {
             text "If Haunter is your Active Pokémon and is damaged by an opponent’s attack (even if Haunter is Knocked Out), the Attacking Pokémon is now Poisoned."
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if(self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                  bc "$thisAbility"
-                  apply POISONED, (ef.attacker as PokemonCardSet), SRC_ABILITY
-                }
-              }
+            ifActiveAndDamagedByAttackBody(delegate) {
+              bc "$thisAbility"
+              apply POISONED, (ef.attacker as PokemonCardSet), Source.POKEBODY
             }
           }
           move "Tongue Spring", {
@@ -1469,7 +1469,7 @@ public enum Arceus implements LogicCardInfo {
         };
       case PONYTA_46:
         return basic (this, hp:HP040, type:FIRE, retreatCost:1) {
-          weakness W
+          weakness W, PLUS10
           move "Ascension", {
             text "Search your deck for a card that evolves from Ponyta and put it onto Ponyta. (This counts as evolving Ponyta.) Shuffle your deck afterward."
             energyCost C
@@ -1829,7 +1829,7 @@ public enum Arceus implements LogicCardInfo {
         };
       case ELECTRIKE_62:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
-          weakness F
+          weakness F, PLUS10
           resistance M, MINUS20
           move "Zap Kick", {
             text "10 damage. "
@@ -1852,7 +1852,7 @@ public enum Arceus implements LogicCardInfo {
         };
       case ELECTRIKE_63:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
-          weakness F
+          weakness F, PLUS10
           resistance M, MINUS20
           move "Bite", {
             text "10 damage. "
@@ -1865,7 +1865,7 @@ public enum Arceus implements LogicCardInfo {
         };
       case GASTLY_64:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
-          weakness D
+          weakness D, PLUS10
           resistance C, MINUS20
           move "Gnaw", {
             text "10 damage. "
@@ -2034,10 +2034,12 @@ public enum Arceus implements LogicCardInfo {
             }
           }
           move "Mega Shot", {
-            text "Energy attached to Pikachu and then choose 1 of your opponent’s Pokémon. This attack does 40 damage to that Pokémon."
+            text "Discard all [L] Energy attached to Pikachu and then choose 1 of your opponent’s Pokémon. This attack does 40 damage to that Pokémon."
             energyCost L, C, C
             onAttack {
-              discardAllSelfEnergy L
+              afterDamage {
+                discardAllSelfEnergy L
+              }
               damage 40, opp.all.select()
             }
           }
@@ -2247,7 +2249,7 @@ public enum Arceus implements LogicCardInfo {
         return basicTrainer (this) {
           text "Search your deck for Arceus, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
           onPlay {
-            my.deck.search("Search your deck for Arceus",{it.name == "Arceus"}).showToOpponent("Arceus").moveTo(my.hand)
+            my.deck.search("Search your deck for Arceus",{it.name == "Arceus" || it.name == "Arceus Lv.X"}).showToOpponent("Arceus").moveTo(my.hand)
             shuffleDeck()
           }
           playRequirement{
@@ -2262,7 +2264,7 @@ public enum Arceus implements LogicCardInfo {
             eff = delayed {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if(!self.active && it.to == self){
+                  if(!self.active && it.to == self && it.dmg.value && it.notNoEffect){
                     bc "Bench Shield prevents all damage"
                     it.dmg=hp(0)
                   }
@@ -2275,40 +2277,13 @@ public enum Arceus implements LogicCardInfo {
           }
         };
       case BUFFER_PIECE_84:
-        return pokemonTool (this) {
-          text "Attach Buffer Piece to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nAny damage done to the Pokémon this card is attached to by an opponent’s attack is reduced by 20 (after applying Weakness and Resistance). At the end of your opponent’s turn after you played Buffer Piece, discard Buffer Piece."
-          def eff1, eff2
-          onPlay {
-            eff1 = delayed {
-              before APPLY_ATTACK_DAMAGES,{
-                if(ef.attacker.owner != self.owner && bg.currentTurn!=self.owner){
-                  bg.dm().each{
-                    if(it.to==self && it.notZero && it.notNoEffect){
-                      bc "Buffer Piece -20"
-                      it.dmg -= hp(20)
-                    }
-                  }
-                }
-              }
-            }
-            eff2 = delayed {
-              before BETWEEN_TURNS, {
-                if(bg.currentTurn != self.owner){
-                  discard thisCard
-                }
-              }
-            }
-          }
-          onRemoveFromPlay {
-            eff1.unregister()
-            eff2.unregister()
-          }
-        };
+        return copy (DragonFrontiers.BUFFER_PIECE_72, this);
       case DEPARTMENT_STORE_GIRL_85:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck for up to 3 Pokémon Tool cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
           onPlay {
             my.deck.search(max:3,"Search your deck for up to 3 Pokémon Tool cards",cardTypeFilter(POKEMON_TOOL)).showToOpponent("Selected cards").moveTo(my.hand)
+            shuffleDeck()
           }
           playRequirement{
             assert my.deck : "Your deck is empty"
@@ -2385,17 +2360,7 @@ public enum Arceus implements LogicCardInfo {
           }
           pokeBody "Omniscient", {
             text "Arceus can use the attacks of all Arceus you have in play as its own."
-            getterA (GET_MOVE_LIST, self) {holder->
-              def omniscientMoves = []
-              def cardList = []
-              self.owner.pbg.bench.findAll {it.name == "Arceus"}.each {
-                if(self.active && !cardList.contains("${it.topPokemonCard}")){
-                  cardList.add("${it.topPokemonCard}")
-                  omniscientMoves.addAll(it.topPokemonCard.moves)
-                }
-              }
-              holder.object.addAll(omniscientMoves)
-            }
+            metronomeA delegate, { self.owner.pbg.bench.findAll { it.name == "Arceus" } }
           }
           // text "You may have as many of this card in your deck as you like."
         };
@@ -2483,7 +2448,7 @@ public enum Arceus implements LogicCardInfo {
           pokePower "Double Fall", {
             text "Once during your turn , when you put Salamence LV. X from your hand onto your Active Salamence, you may use this power. For each of your opponent’s Pokémon that is Knocked Out by damage from Salamence’s attacks this turn, take 1 more Prize card."
             onActivate{r->
-              if(r==OTHER && confirm("Use Double Fall?")){// TODO: Fix this once level up is fixed
+              if(r==PLAY_FROM_HAND && confirm("Use Double Fall?")){
                 powerUsed()
                 delayed {
                   def flag = false
@@ -2550,7 +2515,7 @@ public enum Arceus implements LogicCardInfo {
         };
       case BAGON_SH10:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
-          weakness C
+          weakness C, PLUS10
           pokeBody "Star Barrier", {
             text "As long as Bagon has any Energy attached to it, Bagon has no Weakness."
             getterA GET_WEAKNESSES, self, { h ->
@@ -2593,7 +2558,7 @@ public enum Arceus implements LogicCardInfo {
         };
       case SHINX_SH12:
         return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
-          weakness F
+          weakness F, PLUS10
           resistance M, MINUS20
           pokeBody "Star Barrier", {
             text "As long as Shinx has any Energy attached to it, Shinx has no Weakness."
@@ -2671,7 +2636,7 @@ public enum Arceus implements LogicCardInfo {
             text "50 damage. This attack’s damage isn’t affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             energyCost W, C, C
             onAttack {
-              swiftDamage 50, defending
+              noResistanceOrAnyEffectDamage(50, defending)
             }
           }
 

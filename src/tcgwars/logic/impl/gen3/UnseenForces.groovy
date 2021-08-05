@@ -1049,12 +1049,10 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokeBody "Stages of Evolution", {
           text "As long as Hitmontop is an Evolved Pokémon, is your Active Pokémon, and is damaged by an opponent's attack (even if Hitmontop is Knocked Out), put 2 damage counters on the Attacking Pokémon."
-          delayedA (priority: LAST) {
-            before APPLY_ATTACK_DAMAGES, {
-              if(bg.currentTurn == self.owner.opposite && self.evolution && self.active && bg.dm().find({it.to==self && it.dmg.value})){
-                bc "Stages of Evolution Activates"
-                directDamage 20, (ef.attacker as PokemonCardSet)
-              }
+          ifActiveAndDamagedByAttackBody(delegate) {
+            if (self.evolution) {
+              bc "Stages of Evolution Activates"
+              directDamage 20, (ef.attacker as PokemonCardSet)
             }
           }
         }
@@ -2457,7 +2455,7 @@ public enum UnseenForces implements LogicCardInfo {
       case WARP_ENERGY_100:
       return copy (Aquapolis.WARP_ENERGY_147, this)
       case BLISSEY_EX_101:
-      return evolution (this, from:"Chansey", hp:HP160, type:C, retreatCost:1) {
+      return evolution (this, from:["Chansey", "Chansey ex"], hp:HP160, type:C, retreatCost:1) {
         weakness F
         pokePower "Blissful Support", {
           text "Once during your turn, when you play Blissey ex from your hand to evolve 1 of your Pokémon, you may discard all Energy cards attached to any number of your Pokémon and remove all damage counters from those Pokémon."
@@ -2625,15 +2623,11 @@ public enum UnseenForces implements LogicCardInfo {
         resistance F, MINUS30
         pokeBody "Silver Sparkle", {
           text "If Lugia ex is your Active Pokémon and is damaged by an opponent's attack (even if Lugia ex is Knocked Out), flip a coin. If heads, choose an Energy card attached to the Attacking Pokémon and return it to your opponent's hand."
-          delayedA (priority: LAST) {
-            before APPLY_ATTACK_DAMAGES, {
-              if (bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({ it.to==self && it.dmg.value})) {
-                if (ef.attacker.cards.filterByType(ENERGY)) {
-                  bc "Silver Sparkle Activates"
-                  flip {
-                    ef.attacker.cards.filterByType(ENERGY).select("Select an Energy to move to the Opponent's hand", {true}, self.owner).moveTo(ef.attacker.owner.pbg.hand)
-                  }
-                }
+          ifActiveAndDamagedByAttackBody(delegate) {
+            if (ef.attacker.cards.filterByType(ENERGY)) {
+              bc "Silver Sparkle Activates"
+              flip {
+                ef.attacker.cards.filterByType(ENERGY).select("Select an Energy to move to the Opponent's hand", {true}, self.owner).moveTo(ef.attacker.owner.pbg.hand)
               }
             }
           }
@@ -2820,7 +2814,7 @@ public enum UnseenForces implements LogicCardInfo {
         }
       };
       case SCIZOR_EX_108:
-      return evolution (this, from:"Scyther", hp:HP120, type:M, retreatCost:1) {
+      return evolution (this, from:["Scyther", "Scyther ex"], hp:HP120, type:M, retreatCost:1) {
         weakness R
         resistance G, MINUS30
         pokeBody "Danger Perception", {
@@ -3535,15 +3529,14 @@ public enum UnseenForces implements LogicCardInfo {
           text "Search your deck for up to 2 Pokémon Tool cards and attach them to any of your Pokémon (excluding Pokémon that already have a Pokémon Tool attached to them). Shuffle your deck afterward."
           energyCost C
           attackRequirement {
-            assert my.all.findAll({!(it.cards.filterByType(POKEMON_TOOL))}) : "Your Pokémon already have tools attached to them."
+            assert my.all.findAll({canAttachPokemonTool(it)}) : "Your Pokémon already have tools attached to them."
             assert my.deck : "Deck is empty."
           }
           onAttack {
             def tar = my.all.findAll({!(it.cards.filterByType(POKEMON_TOOL))})
             if(tar){
               my.deck.search(max : Math.min(2,tar.size()),"Search for up to 2 Pokémon tool",cardTypeFilter(POKEMON_TOOL)).each{
-                def pcs = my.all.findAll({!(it.cards.filterByType(POKEMON_TOOL))}).select()
-                my.deck.remove(it)
+                def pcs = my.all.findAll({canAttachPokemonTool(it)}).select()
                 attachPokemonTool(it,pcs)
               }
             }
@@ -3981,7 +3974,7 @@ public enum UnseenForces implements LogicCardInfo {
           text "If the Defending Pokémon has a Poké-Power or a Poké-Body, choose up to 2 basic Energy cards attached to 1 of your opponent's Pokémon and attach them to the Defending Pokémon."
           energyCost P, P
           onAttack {
-            if (defending.hasPokePower() || defending.hasPokeBody()) {
+            if (defending.hasPokePower() || defending.hasPokeBody() || defending.hasPokemonPower()) {
               if (opp.bench.findAll { it.cards.filterByType(BASIC_ENERGY) }) {
                 def tar = opp.bench.findAll{ it.cards.filterByType(BASIC_ENERGY) }.select("Choose a Pokémon to move energy from")
                 if(tar){

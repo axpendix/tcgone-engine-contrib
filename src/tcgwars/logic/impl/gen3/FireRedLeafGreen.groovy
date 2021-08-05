@@ -808,14 +808,13 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             text "Search your deck for up to 2 Pokémon Tool cards and attach them to any of your Pokémon (excluding Pokémon that already have a Pokémon Tool attached to them). Shuffle your deck afterward."
             energyCost C
             attackRequirement {
-              assert my.all.findAll({!(it.cards.filterByType(POKEMON_TOOL))})
+              assert my.all.findAll({canAttachPokemonTool(it)})
             }
             onAttack {
               def tar = my.all.findAll({!(it.cards.filterByType(POKEMON_TOOL))})
               if(tar){
                 my.deck.search(max : Math.min(2,tar.size()),"Search for up to 2 Pokémon tool",cardTypeFilter(POKEMON_TOOL)).each{
-                  def pcs = my.all.findAll({!(it.cards.filterByType(POKEMON_TOOL))}).select()
-                  my.deck.remove(it)
+                  def pcs = my.all.findAll({canAttachPokemonTool(it)}).select()
                   attachPokemonTool(it,pcs)
                 }
               }
@@ -1104,17 +1103,9 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           weakness FIRE
           pokeBody "Poison Payback", {
             text "If Kakuna is your Active Pokémon and is damaged by an opponent’s attack (even if Kakuna is Knocked Out), the Attacking Pokémon is now Poisoned."
-            delayedA {
-              before APPLY_ATTACK_DAMAGES, {
-                if(ef.attacker.owner != self.owner) {
-                  bg.dm().each{
-                    if(it.to == self && self.active && it.notNoEffect && it.dmg.value) {
-                      bc "Kakuna's Poison Payback poison your Pokémon!"
-                      apply POISONED,ef.attacker
-                    }
-                  }
-                }
-              }
+            ifActiveAndDamagedByAttackBody(delegate) {
+              bc "Kakuna's Poison Payback poison your Pokémon!"
+              apply POISONED, ef.attacker
             }
           }
           move "Headbutt", {
@@ -1274,7 +1265,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
             onAttack {
               my.deck.search(max : 2, "Search your deck for up to 2 basic Energy cards", cardTypeFilter(BASIC_ENERGY)).each{
-                def pcs = my.all.findAll{!(it.pokemonEX)}.select("Attach $it to one of thos Pokémon")
+                def pcs = my.all.findAll{!(it.EX)}.select("Attach $it to one of thos Pokémon")
                 attachEnergy(pcs, it)
               }
             }
@@ -2213,8 +2204,10 @@ public enum FireRedLeafGreen implements LogicCardInfo {
       case CELIO_S_NETWORK_88:
         return supporter (this) {
           text "Search your deck for a Basic Pokémon or Evolution card (excluding Pokémon-ex), show it to your opponent, and put it into your hand. Shuffle your deck afterward.\nYou may play only 1 Supporter card during your turn (before your attack)."
+          // Q. Can I use Celio's Network to search my deck for a Pokémon LV.X?
+          // A. Yes, you can. Earlier card references of "Basic Pokémon or Evolution card" refers to Pokémon in general, which includes Pokémon LV.X. (May 10, 2007 PUI Rules Team)
           onPlay {
-            my.deck.search(count: 1,"Search your deck for a Basic Pokémon or Evolution card",{(it.cardTypes.is(BASIC) || it.cardTypes.is(EVOLUTION)) && !(it.cardTypes.is(EX))}).showToOpponent("Selected card").moveTo(my.hand)
+            my.deck.search(count: 1,"Search your deck for a Basic Pokémon or Evolution card",{(it.cardTypes.is(POKEMON)) && !(it.cardTypes.is(EX))}).showToOpponent("Selected card").moveTo(my.hand)
             shuffleDeck()
           }
           playRequirement{
@@ -2248,7 +2241,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           onPlay {reason->
             eff = delayed {
               before KNOCKOUT, {
-                if (!self.active && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.bench.notEmpty && self.owner.pbg.active.cards.filterByType(BASIC_ENERGY)) {
+                if (!self.active && bg.currentTurn==self.owner.opposite && (ef as Knockout).byDamageFromAttack && (ef as Knockout).pokemonToBeKnockedOut == self.owner.pbg.active && self.owner.pbg.active.cards.filterByType(BASIC_ENERGY)) {
                   bc "EXP.ALL activates"
                   if (oppConfirm("EXP.ALL: Move an Energy from ${self.owner.pbg.active} to $self ?")) {
                     def energy = self.owner.pbg.active.cards.filterByType(BASIC_ENERGY).oppSelect("Select an Energy from the Active Pokémon to move to the holder of EXP.ALL").first()
@@ -2438,7 +2431,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               return [[C] as Set]
             }
             else {
-              return [[R, D, F, G, W, Y, L, M, P] as Set]
+              return [valuesBasicEnergy() as Set]
             }
           }
         };
@@ -2453,7 +2446,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             powerUsed()
             def card = my.hand.filterByBasicEnergyType(W).first()
             def tar = my.all.select("To?")
-            attachEnergy(tar, card)
+            attachEnergy(tar, card, PLAY_FROM_HAND)
             directDamage 10, tar, SRC_ABILITY
           }
           }

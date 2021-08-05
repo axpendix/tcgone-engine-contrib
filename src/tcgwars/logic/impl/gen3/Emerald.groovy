@@ -212,7 +212,7 @@ public enum Emerald implements LogicCardInfo {
           }
           move "Damage Burn", {
             text "50+ damage. If the Defending Pokémon already has any damage counters on it, this attack does 50 damage plus 20 more damage."
-            energyCost F, F, C
+            energyCost R, R, C
             onAttack {
               damage 50
               if(defending.numberOfDamageCounters) damage 20
@@ -455,7 +455,7 @@ public enum Emerald implements LogicCardInfo {
             onActivate {
               if(my.active.cards.energyCount(G) && my.active.specialConditions){
                 bc "Green Essence clears existing Special Conditions in the Active ${my.active}."
-                clearSpecialCondition(my.active, SRC_ABILITY)
+                clearSpecialCondition(my.active, Source.POKEBODY)
               }
             }
           }
@@ -1252,7 +1252,7 @@ public enum Emerald implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if(!self.active && it.to == self){
+                  if(!self.active && it.to == self && it.dmg.value && it.notNoEffect){
                     bc "Submerge prevent all damage"
                     it.dmg=hp(0)
                   }
@@ -1553,7 +1553,7 @@ public enum Emerald implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if(!self.active && it.to == self && it.from.owner == self.owner.opposite){
+                  if(!self.active && it.to == self && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect){
                     bc "Feathery prevent all damage"
                     it.dmg=hp(0)
                   }
@@ -1883,7 +1883,7 @@ public enum Emerald implements LogicCardInfo {
             to.evolution && !to.EX
           }
           getEnergyTypesOverride{
-            if (self) return [[R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set]
+            if (self) return [valuesBasicEnergy() as Set, valuesBasicEnergy() as Set]
             else return [[] as Set]
           }
 
@@ -1930,8 +1930,8 @@ public enum Emerald implements LogicCardInfo {
             text "As long as Cacturne ex is your Active Pokémon, your opponent can’t attach any Special Energy cards (except for [D] and [M] Energy cards) from his or her hand to his or her Active Pokémon."
             delayedA {
               before ATTACH_ENERGY, self.owner.opposite.pbg.active, {
-                if(ef.reason == PLAY_FROM_HAND && ef.resolvedTarget.owner == self.owner.opposite && ef.resolvedTarget.active && self.active && (ef.card instanceof SpecialEnergyCard && ef.card.name != "Darkness Energy" && ef.card.name != "Metal Energy")) {
-                  wcu "Cursed Glare: Can't attach energy"
+                if(ef.reason == PLAY_FROM_HAND && self.active && (ef.card.cardTypes.is(SPECIAL_ENERGY) && ef.card.name != "Darkness Energy" && ef.card.name != "Metal Energy")) {
+                  wcu "$thisAbility: Can't attach special energies to your Active Pokémon"
                   prevent()
                 }
               }

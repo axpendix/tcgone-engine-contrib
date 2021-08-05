@@ -320,6 +320,8 @@ public class PokemonCardSet implements PokemonStack, Serializable {
     return getTopPokemonCard().getCardTypes().is(CardType.LVL_X);
   }
 
+  public boolean isPokemonSP() { return getTopPokemonCard().getCardTypes().is(CardType.POKEMON_SP); }
+
   public boolean isPokemonBreak() {
     return getTopPokemonCard().getCardTypes().is(CardType.BREAK);
   }
@@ -338,6 +340,19 @@ public class PokemonCardSet implements PokemonStack, Serializable {
 
   public boolean isPokemonVMAX() {
     return getTopPokemonCard().getCardTypes().is(CardType.VMAX);
+  }
+
+  public boolean isRapidStrike() {
+    return getTopPokemonCard().getCardTypes().is(CardType.RAPID_STRIKE);
+  }
+
+  public boolean isSingleStrike() {
+    return getTopPokemonCard().getCardTypes().is(CardType.SINGLE_STRIKE);
+  }
+
+  public boolean isRuleBox() {
+    return getTopPokemonCard().getCardTypes().isIn(CardType.POKEMON_EX, CardType.BREAK, CardType.MEGA_POKEMON,
+      CardType.PRISM_STAR, CardType.POKEMON_GX, CardType.TAG_TEAM, CardType.POKEMON_V, CardType.VMAX);
   }
 
   public List<Weakness> getWeaknesses(Battleground bg) {
@@ -430,6 +445,13 @@ public class PokemonCardSet implements PokemonStack, Serializable {
   public boolean hasPokeBody() {
     for (Ability ability : getAbilities().keySet()) {
       if (ability instanceof PokeBody) return true;
+    }
+    return false;
+  }
+
+  public boolean hasPokemonPower() {
+    for (Ability ability : getAbilities().keySet()) {
+      if (ability instanceof PokemonPower) return true;
     }
     return false;
   }

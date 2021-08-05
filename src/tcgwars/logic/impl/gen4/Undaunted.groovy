@@ -187,7 +187,7 @@ public enum Undaunted implements LogicCardInfo {
               checkNoSPC()
               assert my.all.findAll{it.numberOfDamageCounters} : "No damage on your Pokémon"
               powerUsed()
-              my.all.each{ heal 10, it, SRC_ABILITY }
+              my.all.each{ heal 10, it, Source.POKEPOWER }
             }
           }
           move "Dance ’til Dawn", {
@@ -420,14 +420,14 @@ public enum Undaunted implements LogicCardInfo {
               damage 30
               delayed {
                 before null, self, Source.ATTACK, {
-                  if ((opp.active.hasPokePower() || opp.active.hasPokeBody()) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                  if ((opp.active.hasPokePower() || opp.active.hasPokeBody() || opp.active.hasPokemonPower()) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
                     bc "Moonlight Fang prevents effect"
                     prevent()
                   }
                 }
                 before APPLY_ATTACK_DAMAGES, {
                   bg.dm().each {
-                    if(it.to == self && it.notNoEffect && (it.from.hasPokePower() || it.from.hasPokeBody())){
+                    if(it.to == self && it.notNoEffect && (it.from.hasPokePower() || it.from.hasPokeBody() || it.from.hasPokemonPower())){
                       it.dmg = hp(0)
                       bc "Moonlight Fang prevents damage"
                     }
@@ -910,8 +910,10 @@ public enum Undaunted implements LogicCardInfo {
             energyCost M
             onAttack {
               damage 20
-              afterDamage{
-                attachEnergyFrom(type:M,my.discard,self)
+              afterDamage {
+                flip {
+                  attachEnergyFrom(type:M,my.discard,self)
+                }
               }
             }
           }
@@ -1075,16 +1077,21 @@ public enum Undaunted implements LogicCardInfo {
             energyCost C, C
             onAttack {
               damage 20
-              afterDamage{
+
+              afterDamage {
                 delayed (priority: BEFORE_LAST) {
                   before APPLY_ATTACK_DAMAGES, {
-                    def entry=bg.dm().find({it.to==self && it.dmg.value && it.notNoEffect})
+                    def entry = bg.dm().find {it.to == self && it.dmg.value && it.notNoEffect}
                     if (entry) {
                       flip "Afterimage Strike", self.owner, {
-                        entry.dmg=hp(0)
+                        entry.dmg = hp(0)
                       }
                     }
                   }
+                  unregisterAfter 2
+                  after EVOLVE, self, { unregister() }
+                  after DEVOLVE, self, { unregister() }
+                  after FALL_BACK, self, { unregister() }
                 }
               }
             }
@@ -1191,7 +1198,7 @@ public enum Undaunted implements LogicCardInfo {
             text "10 damage. "
             energyCost P
             onAttack {
-              damage 0
+              damage 10
             }
           }
 
@@ -1698,14 +1705,19 @@ public enum Undaunted implements LogicCardInfo {
             energyCost C
             attackRequirement {
               assert my.deck : "Your deck is empty"
-              assert my.bench.notFull
             }
             onAttack {
-              def top = my.deck.subList(0,5)
-              def max = Math.min(my.bench.freeBenchCount, top.filterByType(BASIC).size())
-              top.select(min:0,max:max,"Choose any number of Basic Pokémon to put on your bench",cardTypeFilter(BASIC)).each{
-                benchPCS(it)
+              def top = my.deck.subList(0, 5)
+
+              if (my.bench.notFull) {
+                def max = Math.min(my.bench.freeBenchCount, top.filterByType(BASIC).size())
+                top.select(min:0,max:max,"Choose any number of Basic Pokémon to put on your bench",cardTypeFilter(BASIC)).each{
+                  benchPCS(it)
+                }
+              } else {
+                top.showToMe("Top cards of your deck")
               }
+
               shuffleDeck()
             }
           }
@@ -1835,7 +1847,7 @@ public enum Undaunted implements LogicCardInfo {
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each {
-                  if (it.to == pcs && it.dmg.value) {
+                  if (it.to == pcs && it.dmg.value && it.notNoEffect) {
                     bc "Defender -20"
                     it.dmg -= hp(20)
                   }
@@ -1962,13 +1974,9 @@ public enum Undaunted implements LogicCardInfo {
           weakness P
           pokeBody "Evolution Memories", {
             text "Espeon can use the attacks of all Pokémon you have in play that evolve from Eevee as its own."
-            getterA (GET_MOVE_LIST, self) {holder->
-              my.all.each {
-                if(it!=self && it.realEvolution && it.topPokemonCard.predecessor == "Eevee") {
-                  holder.object.addAll(it.topPokemonCard.moves)
-                }
-              }
-            }
+            metronomeA delegate, { my.all.findAll {
+              it.realEvolution && it.topPokemonCard.predecessor == "Eevee"
+            } }
           }
           move "Solar Ray", {
             text "30 damage. Remove 1 damage counter from each of your Pokémon."
@@ -2015,11 +2023,11 @@ public enum Undaunted implements LogicCardInfo {
             text "As often as you like during your turn , you may move a [L] Energy attached to 1 of your Pokémon to Raichu. This power can’t be used if Raichu is affected by a Special Condition."
             actionA {
               checkNoSPC()
-              assert my.all.find {it.cards.filterByEnergyType(L) && it!=self} : "No energy to move."
+              assert my.all.find {it.cards.filterByEnergyType(L) && it!=self} : "No energy to move"
               powerUsed()
               def pl=my.all.findAll {it.cards.filterByEnergyType(L) && it!=self}
               def src=pl.select("Source for [L] Energy.")
-              def card=src.cards.filterByEnergyType(R).select("Select a [L] Energy to move.").first()
+              def card=src.cards.filterByEnergyType(L).select("Select a [L] Energy to move.").first()
               energySwitch(src, self, card)
             }
           }
@@ -2096,7 +2104,7 @@ public enum Undaunted implements LogicCardInfo {
               checkNoSPC()
               powerUsed()
               flip ({
-                scoopUpPokemon([:], self, delegate, POKEPOWER)
+                scoopUpPokemon([:], self, delegate, Source.POKEPOWER)
               })
             }
           }
@@ -2104,7 +2112,7 @@ public enum Undaunted implements LogicCardInfo {
             text "Does 50 damage plus 10 more damage for each of your Pokémon in play that evolves from Eevee."
             energyCost D, C, C
             onAttack {
-              damage 50 + 10 * my.all.findAll{it.topPokemonCard.predecessor == "Eevee"}.size()
+              damage 50 + 10 * my.all.findAll{it.realEvolution && it.topPokemonCard.predecessor == "Eevee"}.size()
             }
           }
 
@@ -2136,7 +2144,7 @@ public enum Undaunted implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
             }
             onAttack {
-              def top = my.deck.sublist(0,5)
+              def top = my.deck.subList(0,5)
               damage 100 * top.filterByType(ENERGY).size()
               top.discard()
             }

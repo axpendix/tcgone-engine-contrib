@@ -829,13 +829,9 @@ public enum HolonPhantoms implements LogicCardInfo {
         resistance W, MINUS30
         pokeBody "Fellowship", {
           text "Bellossom can use the attacks of all Oddish, Gloom, Vileplume, Vileplume ex, or other Bellossom you have in play as its own. (You still need the necessary Energy to use each attack.)"
-          getterA (GET_MOVE_LIST, self) {holder->
-            my.all.findAll{ ["Oddish", "Gloom", "Vileplume", "Vileplume ex", "Bellossom"].contains(it.topPokemonCard.name) }.each {
-              if(it!=self) {
-                holder.object.addAll(it.topPokemonCard.moves)
-              }
-            }
-          }
+          metronomeA delegate, { my.all.findAll {
+            ["Oddish", "Gloom", "Vileplume", "Vileplume ex", "Bellossom"].contains(it.topPokemonCard.name)
+          } }
         }
         move "Aqua Flower", {
           text "40 damage. During your opponent's next turn, Bellossom has no Weakness."
@@ -844,11 +840,14 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 40
             afterDamage{
               delayed {
-                getter (GET_WEAKNESSES) { h->
+                def eff = getter (GET_WEAKNESSES) { h->
                   if (h.effect.target == self) {
                     def list = h.object as List<Weakness>
                     list.clear()
                   }
+                }
+                unregister {
+                  eff.unregister()
                 }
                 after FALL_BACK, self, {unregister()}
                 after EVOLVE, self, {unregister()}
@@ -2297,7 +2296,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             return [[C] as Set]
           boolean cond1 = self.topPokemonCard.cardTypes.is(DELTA)
           if (cond1) {
-            return [[R, D, F, G, W, Y, L, M, P, N] as Set]
+            return [valuesBasicEnergy() as Set]
           }
           else {
             return [[C] as Set]

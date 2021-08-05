@@ -905,13 +905,9 @@ public enum DarknessAblaze implements LogicCardInfo {
         resistance F, MINUS30
         bwAbility "Scorching Feathers", {
           text "If this Pokémon is in the Active Spot and is damaged by an attack from your opponent’s Pokémon (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Burned."
-          delayedA {
-            before APPLY_ATTACK_DAMAGES, {
-              if (self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})) {
-                bc "$thisAbility activates"
-                apply BURNED, ef.attacker, SRC_ABILITY
-              }
-            }
+          ifActiveAndDamagedByAttackBody(delegate) {
+            bc "$thisAbility activates"
+            apply BURNED, ef.attacker, SRC_ABILITY
           }
         }
         move "Mach Flight", {
@@ -2139,7 +2135,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-        move "Desert Geizer", {
+        move "Desert Geyser", {
           text "130 damage. If your opponent has a Stadium in play, discard it. If you discarded a Stadium in this way, during your opponent’s next turn, prevent all damage from and effects of attacks done to this Pokémon."
           energyCost F, C, C
           attackRequirement {}
@@ -3048,17 +3044,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 60
-            delayed (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                  bc "Trap Bite activates"
-                  directDamage(120, ef.attacker as PokemonCardSet)
-                }
-              }
-              unregisterAfter 2
-              after FALL_BACK, self, {unregister()}
-              after EVOLVE, self, {unregister()}
-              after DEVOLVE, self, {unregister()}
+            ifDamagedByAttackNextTurn(delegate) {
+              bc "Trap Bite activates"
+              directDamage(120, ef.attacker as PokemonCardSet)
             }
           }
         }
@@ -3761,8 +3749,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         def eff
         onPlay {reason->
           eff = getter (GET_FULL_HP, self) {h->
-            def selfTopCardTypes = self.topPokemonCard.cardTypes
-            if(selfTopCardTypes.is(BASIC) && !(selfTopCardTypes.is(POKEMON_GX))) {
+            if (self.basic && !self.pokemonGX) {
               h.object += hp(50)
             }
           }

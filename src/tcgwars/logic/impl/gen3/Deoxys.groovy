@@ -613,7 +613,7 @@ public enum Deoxys implements LogicCardInfo {
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each{
-                  if(it.to == self && it.notNoEffect && it.dmg.value && it.from.EX) {
+                  if(it.to == self && it.notNoEffect && it.dmg.value && it.from.EX && self.active) {
                     bc "Lazy Aura -30"
                     it.dmg -= hp(30)
                   }
@@ -850,7 +850,7 @@ public enum Deoxys implements LogicCardInfo {
             text "As long as Rayquaza has any basic [R] Energy cards and any basic [L] Energy cards attached to it, prevent all effects, except damage, by an opponent’s attack done to Rayquaza."
             delayedA {
               before null, self, Source.ATTACK, {
-                if(ef.attacker.owner != self && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages) && self.cards.energyCount(L) && self.cards.energyCount(R)){
+                if (bg.currentTurn == self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages) && self.cards.basicEnergyCardCount(L) && self.cards.basicEnergyCardCount(R)) {
                   bc "Dragon Aura prevents effect"
                   prevent()
                 }
@@ -2321,25 +2321,7 @@ public enum Deoxys implements LogicCardInfo {
 
         };
       case BALLOON_BERRY_84:
-        return pokemonTool (this) {
-          text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nAs long as Balloon Berry is attached to a Pokémon, that Pokémon’s Retreat Cost is 0. When this Pokémon retreats, discard Balloon Berry."
-          def eff1
-          def eff2
-          onPlay {reason->
-            eff1=getter (GET_RETREAT_COST, BEFORE_LAST,self) {h->
-              h.object = 0
-            }
-            eff2 = delayed{
-              after RETREAT, self, {
-                discard thisCard
-              }
-            }
-          }
-          onRemoveFromPlay {
-            eff1.unregister()
-            eff2.unregister()
-          }
-        };
+        return copy(Dragon.BALLOON_BERRY_82, BALLOON_BERRY_84);
       case CRYSTAL_SHARD_85:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nAs long as this card is attached to a Pokémon, that Pokémon’s type is [C]. If that Pokémon attacks, discard this card at the end of the turn."
@@ -2567,7 +2549,7 @@ public enum Deoxys implements LogicCardInfo {
           }
           getEnergyTypesOverride{
             if(self && self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size()) {
-              return [[R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set]
+              return [valuesBasicEnergy() as Set, valuesBasicEnergy() as Set, valuesBasicEnergy() as Set]
             }
             else {
               return [[C] as Set]

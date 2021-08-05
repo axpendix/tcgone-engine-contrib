@@ -6,6 +6,7 @@ import tcgwars.logic.effect.blocking.*
 import tcgwars.logic.effect.getter.*
 import tcgwars.logic.effect.gm.*
 import tcgwars.logic.client.*
+import tcgwars.logic.exception.EffectRequirementException
 import tcgwars.logic.util.*
 
 import java.util.function.Predicate
@@ -195,7 +196,7 @@ class TcgStatics {
    */
   static CardList selectEnergy(PokemonCardSet pcs, Type...types=C) {
     def ef = new SelectEnergy(pcs.cards, types)
-    ef.playerType = pcs.owner
+    ef.playerType = bg.currentThreadPlayerType
     bg.em().activateEffect(ef)
     return ef.selectedCards ?: []
   }
@@ -215,7 +216,7 @@ class TcgStatics {
   }
   /**
    * Selects Energy of specified Type from the attacking {@link PokemonCardSet} before damage, then moves it to a new
-   * location after damage. Should only be used for {@link Move}s
+   * location after damage. Should only be used for {@link Move}s and should not be moved to another PokemonCardSet
    * @param types {@link Type}s of energy to be moved. Default: C
    */
   static moveSelfEnergyAfterDamage(CardList newLocation, Type...types=C) {
@@ -490,8 +491,8 @@ class TcgStatics {
   static healAll(PokemonCardSet target, Source source=Source.ATTACK){
     bg().em().run(new RemoveDamageCounter(target,source,target.damage))
   }
-  static reduceDamageNextTurn (HP reduce, Move thisMove){
-    new ReduceDamageNextTurn(reduce, thisMove.name).run(bg())
+  static reduceDamageNextTurn (HP reduce, Move thisMove, boolean either=false, boolean beforeWR=false){
+    new ReduceDamageNextTurn(reduce, thisMove.name).setEither(either).setBeforeWR(beforeWR).run(bg())
   }
   static reduceDamageFromDefendingNextTurn (HP reduce, Move thisMove, PokemonCardSet defending){
     afterDamage { targeted (defending) {
@@ -582,16 +583,16 @@ class TcgStatics {
     }
 
     if (all.contains(pcs)) { //not dead yet.
-      bc "$card Devolved"
       bg().em().run(new RemoveFromPlay(pcs, new CardList(card)));
       bg().em().run(new CantEvolve(pcs, bg().getTurnCount()));
 
       // Remove the highest stage non-level up card if devolved from level-up
-      if (card.cardTypes.is(LEVEL_UP) && pcs.cards.filterByType(POKEMON).size() > 1) {
+      if (card.cardTypes.is(LVL_X) && pcs.cards.filterByType(POKEMON).size() > 1) {
         bg().em().run(new MoveCard(pcs.topNonLevelUpPokemonCard, newLocation));
         bg().em().run(new RemoveFromPlay(pcs, new CardList(pcs.topNonLevelUpPokemonCard)));
       }
 
+      bc "$card Devolved"
       bg().em().run(new Devolve(pcs));
     }
   }
@@ -800,6 +801,10 @@ class TcgStatics {
       after FALL_BACK, self, {unregister()}
     }
   }
+  static usingThisAbilityEndsTurn(Object delegate) {
+    bc "${delegate.self.owner.getPlayerUsername(bg)}'s turn ends due to using ${delegate.thisAbility}."
+    bg.gm().betweenTurns()
+  }
 
   static preventAllEffectsFromCustomPokemonNextTurn(Move thisMove, PokemonCardSet self, Predicate<PokemonCardSet> predicate){
     delayed {
@@ -852,8 +857,8 @@ class TcgStatics {
       if(params.name){
         pkmnName = params.name
       }
-      if(params.type){
-        deck.search (max: maxSpace,{it.name.contains(pkmnName) && it.cardTypes.is(basicFilter) && it.asPokemonCard().types.contains(params.type)}).each {
+      if(params.types){
+        deck.search (max: maxSpace,{it.name.contains(pkmnName) && it.cardTypes.is(basicFilter) && params.types.any{ty -> it.asPokemonCard().types.contains(ty)}}).each {
           benchPCS(it)
         }
       }
@@ -899,23 +904,8 @@ class TcgStatics {
       }
     } } }
   }
-  /**
-   * Attaches a tool to a pcs. Callers MUST remove card manually from source, else it will be duplicated. Vastly taken from {@link tcgwars.logic.effect.gm.PlayPokemonTool}
-   */
   static attachPokemonTool (PokemonToolCard card, PokemonCardSet pcs) {
-    // attach to selected pokemon
-    pcs.cards().add(card);
-    //play
-    card.play(bg, pcs);
-    //register for remove from play
-    delayed {
-      after REMOVE_FROM_PLAY, pcs, null, {
-        if(LUtils.isRemoveFromPlayAndContainsCard(e, card)){
-          card.removeFromPlay(bg, pcs)
-          unregister()
-        }
-      }
-    }
+    new AttachPokemonTool(pcs, card, OTHER).run(bg)
     bc("$card is attached to $pcs")
     bg.gm().woosh();
   }
@@ -1059,7 +1049,7 @@ class TcgStatics {
               def energyEquivalent = []
               def typeImages = []
               def energyImage = (colorless) ? COLORLESS : RAINBOW
-              def energyTypes = (colorless) ? [C] : [R, D, F, G, W, L, M, P, Y]
+              def energyTypes = (colorless) ? [C] : valuesBasicEnergy()
 
               energyCount.times {
                 energyEquivalent.add(energyTypes)
@@ -1612,6 +1602,12 @@ class TcgStatics {
     } */
   }
 
+  /**
+   * Allows you to place damage counters without triggering knockouts. No longer needed for attacks, but still needed for abilities.
+   * @param counters The number of damage counters to place
+   * @param selectArea A PcsList of targets to choose from - Can be for either side of the field regardless of method name
+   * @param src The Source of the damage counters
+   */
   static putDamageCountersOnOpponentsPokemon(int counters, def selectArea = opp.all, def src = Source.ATTACK){
     if (selectArea.notEmpty) {
       def eff = delayed {
@@ -1833,7 +1829,10 @@ class TcgStatics {
   }
 
   /**
-   * Copies an attack from another PokemonCardSet
+   * Copies an attack from another PokemonCardSet as a Subattack
+   * @param params Optional settings map
+   * @param params.keepEnergyRequirement Should the move retain the original energy cost
+   * @param params.unblockEndTurn Should blocking between turns be disabled (set to true for Abilities. Do not set to true for Attacks)
    * @param target A PokemonCardSet or PcsList to choose a move from
    * @param delegate onAttack delegate
    */
@@ -1844,16 +1843,231 @@ class TcgStatics {
     def moveList = []
     def labelList = []
     target.each {pcs ->
-      moveList.addAll pcs.topPokemonCard.moves
-      labelList.addAll pcs.topPokemonCard.moves.collect {"$pcs.name - $it.name" }
+      if (pcs == delegate.self) return
+      def newMoves = []
+      newMoves.addAll bg.em().activateGetter(new GetMoveList(pcs))
+      newMoves.removeAll newMoves.findAll { it.name == delegate.thisMove.name }
+      moveList.addAll newMoves
+      labelList.addAll newMoves.collect {"$pcs.name - $it.name" }
     }
-    Move move = (choose(moveList, labelList, "Choose an attack to use as this attack.") as Move).shallowCopy()
-    move.energyCost = delegate.thisMove.energyCost
-    // TODO: Why can't we just skip BetweenTurns if it is a sub attack?
-    def bef = blockingEffect(BETWEEN_TURNS)
-    attack(move)
+    moveList.add "Skip"
+    labelList.add "End Turn (Skip)"
+    def choice = choose moveList, labelList, "Choose an attack to use as this attack."
+    if (choice instanceof String) return
+    Move move = (choice as Move).shallowCopy()
     bc "$delegate.self copied $move.name"
-    bef.unregisterItself bg.em()
+    if (!params.keepEnergyRequirement) move.energyCost = delegate.thisMove.energyCost
+    // TODO: Why can't we just skip BetweenTurns if it is a sub attack?
+    def bef = null
+    if (!params.unblockEndTurn)
+      bef = blockingEffect(BETWEEN_TURNS)
+    attack(move)
+    bef?.unregisterItself bg.em()
+  }
+
+  /**
+   * Copies an attack from another PokemonCardSet as an Ability Attack
+   * @param params Optional map of parameters
+   * @param params checkSpecialConditions Check for any Special Conditions before adding moves
+   * @param params checkClassicSpecialConditions Check for any Pokemon Power Special Conditions before adding moves
+   * @param delegate onAttack delegate
+   * @param target A Closure with a call to return the current targets (ex: { all() } or { bench() }
+   */
+  static metronomeA(params=[:], Object delegate, Closure target) {
+    delegate.getterA GET_MOVE_LIST, delegate.self, {holder->
+      if (params.checkSpecialConditions && !(delegate.self as PokemonCardSet).noSPC()) return
+      if (params.checkClassicSpecialConditions && !(delegate.self as PokemonCardSet).checkSpecialConditionsForClassic()) return
+      if (!holder.effect.target.active) return
+      def moves = [] as Set
+      moves.addAll holder.object
+      def resp = target.call()
+      def fun = {
+        if (!it) return
+        if (it == holder.effect.target) return
+        if (it instanceof PokemonCard) {
+          moves.addAll it.moves
+        }
+        if (it instanceof PokemonCardSet) {
+          moves.addAll bg.em().activateGetter(new GetMoveList(it))
+        }
+      }
+      if (resp instanceof Iterable) {
+        resp.each(fun)
+      } else {
+        fun(resp)
+      }
+      holder.object = moves as List
+    }
+  }
+
+  /* Effects that trigger when a Pokémon is active and damaged by an opposing attack, can be called by either a Poké-Body / Ability, an attack, or a card attached to the Pokémon. */
+
+  // poke bodies and abilities
+  static ifActiveAndDamagedByAttackBody (Object delegate1, Closure eff) {
+    def c1 = {
+      delayedA(priority: BEFORE_LAST, inline: true) {
+        def applyEffect = false
+        before APPLY_ATTACK_DAMAGES, {
+          applyEffect = bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({ it.to == self && it.dmg.value })
+        }
+        after APPLY_ATTACK_DAMAGES, {
+          if (applyEffect && ef.attacker.inPlay) {
+            eff.delegate=delegate
+            eff.call(ef)
+          }
+          applyEffect = false
+        }
+      }
+    }
+    c1.resolveStrategy=Closure.DELEGATE_FIRST
+    c1.delegate=delegate1
+    c1.call()
+  }
+
+  // tools and special energy
+  static ifActiveAndDamagedByAttackAttached (Object delegate1, Closure c2) {
+    def c1 = {
+      def eff
+      onPlay {reason->
+        eff = delayed(priority: BEFORE_LAST, inline: true) {
+          def applyEffect = false
+          before APPLY_ATTACK_DAMAGES, {
+            bg().dm().each {
+              if (it.to == self && it.dmg.value && bg.currentTurn == self.owner.opposite && self.active) {
+                applyEffect = true
+              }
+            }
+          }
+          after APPLY_ATTACK_DAMAGES, {
+            if (applyEffect && self.cards.contains(thisCard) && ef.attacker.inPlay) {
+              c2.delegate=delegate
+              c2.call(ef) // card didn't get discarded by an attack effect
+            }
+            applyEffect = false
+          }
+        }
+      }
+      onRemoveFromPlay {
+        eff.unregister()
+      }
+    }
+    c1.resolveStrategy=Closure.DELEGATE_FIRST
+    c1.delegate=delegate1
+    c1.call()
+  }
+
+  // attacks that put the effect on itself for one turn
+  static ifDamagedByAttackNextTurn (Object delegate1, Closure eff) {
+    def c1 = {
+      delayed(priority: BEFORE_LAST, inline: true) {
+        def applyEffect = false
+        before APPLY_ATTACK_DAMAGES, {
+          applyEffect = bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})
+        }
+        after APPLY_ATTACK_DAMAGES, {
+          if (applyEffect && ef.attacker && ef.attacker.inPlay) {
+            eff.delegate=delegate
+            eff.call(ef)
+          }
+          applyEffect = false
+        }
+        unregisterAfter 2
+        after FALL_BACK, self, {unregister()}
+        after EVOLVE, self, {unregister()}
+        after DEVOLVE, self, {unregister()}
+      }
+    }
+    c1.resolveStrategy=Closure.DELEGATE_FIRST
+    c1.delegate=delegate1
+    c1.call()
+  }
+
+  /**
+   * If there are at least 3 Pokemon SP in play then a Power Spray might be used by opponent to block this ability.
+   * This method is called in every UseAbility, thus it should throw a EffectRequirementException if ability is blocked.
+   *
+   * @param self the pokemon with thisAbility
+   * @param thisAbility the ability performed
+   * @throws EffectRequirementException when Power Spray needs to block the ability
+   * @author ufodynasty
+   */
+  static triggerPowerSpray(PokemonCardSet self, Ability thisAbility) {
+    def bluffing = true
+    def tempIgnoreList = []
+    def permIgnoreList = []
+    def ignoreList = []
+    if(bg.em().retrieveObject("This_Turn_Ignore_List_$self.owner.opposite") && bg.em().retrieveObject("This_Turn_Ignore_List_$self.owner.opposite").get(0) == bg.turnCount) {
+      ignoreList.addAll(bg.em().retrieveObject("This_Turn_Ignore_List_$self.owner.opposite").get(1))
+      tempIgnoreList.addAll(bg.em().retrieveObject("This_Turn_Ignore_List_$self.owner.opposite").get(1))
+    }
+    if(bg.em().retrieveObject("Always_Ignore_List_$self.owner.opposite")) {
+      ignoreList.addAll(bg.em().retrieveObject("Always_Ignore_List_$self.owner.opposite"))
+      permIgnoreList.addAll(bg.em().retrieveObject("Always_Ignore_List_$self.owner.opposite"))
+    }
+    if(bg.em().retrieveObject("Dont_Bluff_This_Turn_$self.owner.opposite") == bg.turnCount) {
+      bluffing = false
+    }
+    if(bg.em().retrieveObject("Dont_Bluff_Ever_$self.owner.opposite")) {
+      bluffing = false
+    }
+
+    def hasPowerSprayInHand = self.owner.opposite.pbg.hand.find { it.name == "Team Galactic's Invention G-103 Power Spray" }
+    if(
+    (!ignoreList.contains(thisAbility.name) &&
+      (hasPowerSprayInHand || bluffing)) &&
+      (self.owner.opposite.pbg.all.findAll{it.topPokemonCard.cardTypes.is(POKEMON_SP)}.size() >= 3) &&
+      (thisAbility instanceof PokePower) &&
+      (bg.currentThreadPlayerType == self.owner)
+    ) {
+      def options = []
+      def text = []
+      if (hasPowerSprayInHand) {
+        options += [1]
+        text += ["Play Power Spray"]
+      }
+      options += [2]
+      text += ["Skip"]
+      if (!ignoreList.contains(thisAbility.name)) {
+        // commented out option 4 because if user misclicks then they won't be able to use Power Spray on that ability.
+        options += [3/*, 4*/]
+        text += ["Skip & ignore \"$thisAbility\" this turn"/*, "Skip & ignore \"$thisAbility\" this game"*/]
+      }
+      if (bluffing && !hasPowerSprayInHand) {
+        options += [5, 6]
+        text += ["Skip & don't bluff this turn", "Skip & don't bluff this game"]
+      }
+      def message = (hasPowerSprayInHand ?
+        "Power Spray option: Opponent's ${self.name} is about to use $thisAbility. You HAVE a Power Spray in hand. What would you like to do?" :
+        "Power Spray bluffing: Opponent's ${self.name} is about to use $thisAbility. You DON'T have a Power Spray in hand but the game allows bluffing. You may either skip this instance (and continue bluffing) or disable bluffing for this turn or this game.")
+      def choice = oppChoose(options, text, message, options.get(0))
+      //oppChoose works since this only triggers if the active player thread is the opponent's
+      if (choice == 1) {
+        bg.em().storeObject("Power_Spray_Can_Play_$self.owner.opposite", true)
+        bg.deterministicCurrentThreadPlayerType = self.owner.opposite
+        bg.em().run(new PlayTrainer(self.owner.opposite.pbg.hand.findAll { it.name == "Team Galactic's Invention G-103 Power Spray" }.first()))
+        bg.clearDeterministicCurrentThreadPlayerType()
+        if (bg.em().retrieveObject("Power_Spray_Played_$self.owner.opposite")) {
+          bc "Power Spray blocks $thisAbility!"
+          throw new EffectRequirementException("Power Spray blocked $thisAbility")
+        }
+        bg.em().storeObject("Power_Spray_Can_Play_$self.owner.opposite", false)
+        bg.em().storeObject("Power_Spray_Played_$self.owner.opposite", false)
+      } else if (choice == 3) {
+        tempIgnoreList.add(thisAbility.name)
+        ignoreList.add(thisAbility.name)
+        bg.em().storeObject("This_Turn_Ignore_List_$self.owner.opposite", [bg.turnCount, tempIgnoreList])
+      } else if (choice == 4) {
+        permIgnoreList.add(thisAbility.name)
+        ignoreList.add(thisAbility.name)
+        bg.em().storeObject("Always_Ignore_List_$self.owner.opposite", permIgnoreList)
+      } else if (choice == 5) {
+        bluffing = false
+        bg.em().storeObject("Dont_Bluff_This_Turn_$self.owner.opposite", bg.turnCount)
+      } else if (choice == 6) {
+        bluffing = false
+        bg.em().storeObject("Dont_Bluff_Ever_$self.owner.opposite", true)
+      }
+    }
   }
 
 }

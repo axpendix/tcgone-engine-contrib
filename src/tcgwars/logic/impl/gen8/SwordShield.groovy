@@ -2830,22 +2830,14 @@ public enum SwordShield implements LogicCardInfo {
         resistance G, MINUS30
         bwAbility "Snap Trap", {
           text "If this Pokémon is in the Active Spot and is damaged by an opponent’s attack (even if it is Knocked Out), discard an Energy from the Attacking Pokémon."
-          delayedA (priority: LAST) {
-            before APPLY_ATTACK_DAMAGES, {
+          ifActiveAndDamagedByAttackBody(delegate) {
               PokemonCardSet pcs = ef.attacker
-              if (pcs.owner != self.owner) {
-                bg.dm().each{
-                  if (it.to == self && self.active && it.dmg.value) {
-                    targeted (pcs, SRC_ABILITY) {
-                      if(pcs.cards.filterByType(ENERGY)){
-                        bc "Galarian Stunfisk's Snap Trap activates."
-                        pcs.cards.filterByType(ENERGY).select("Discard",{true},self.owner).discard()
-                      }
-                    }
-                  }
+              targeted (pcs, SRC_ABILITY) {
+                if (pcs.cards.filterByType(ENERGY)){
+                  bc "Galarian Stunfisk's Snap Trap activates."
+                  pcs.cards.filterByType(ENERGY).select("Discard",{true},self.owner).discard()
                 }
               }
-            }
           }
         }
         move "Damage Rush", {
@@ -2979,21 +2971,15 @@ public enum SwordShield implements LogicCardInfo {
           text "Once during your turn, you may look at the top 3 cards of your deck and attach any number of [M] Energy cards you find there to this Pokémon. Put the other cards into your hand. If you use this Ability, your turn ends."
           actionA {
             if (my.deck && confirm("Use Intrepid Sword?")) {
-              def maxSize = Math.min(my.deck.size(),3)
-              def topCards = my.deck.subList(0, maxSize).showToMe("Top 3 cards of your deck.")
-              def metalEnergies = topCards.filterByBasicEnergyType(M)
-
-              if (metalEnergies) {
-                def selectedEnergies = metalEnergies.select(min:0, max:metalEnergies.size(), "Attach any [M] Energy to $self?")
-                selectedEnergies.each {
-                  attachEnergy(self, it)
-                }
-                def nonSelectedSize = 3 - selectedEnergies.size()
-                if (nonSelectedSize) {
-                  my.deck.subList(0, nonSelectedSize).getExcludedList(selectedEnergies).moveTo(hidden: true, my.hand)
-                }
-              } else {
-                my.deck.subList(0,3).moveTo(hidden: true, my.hand)
+              def maxSize = Math.min(my.deck.size(), 3)
+              def topCards = my.deck.subList(0, maxSize)
+              def selectedEnergies = topCards.select(min: 0, max: topCards.filterByBasicEnergyType(M).size(), "Attach any [M] Energy to $self?", basicEnergyFilter(M))
+              selectedEnergies.each {
+                attachEnergy(self, it)
+              }
+              def nonSelectedSize = 3 - selectedEnergies.size()
+              if (nonSelectedSize) {
+                my.deck.subList(0, nonSelectedSize).getExcludedList(selectedEnergies).moveTo(hidden: true, my.hand)
               }
               bg.gm().betweenTurns()
             }
@@ -3124,10 +3110,11 @@ public enum SwordShield implements LogicCardInfo {
           }
           onAttack {
             def tar = opp.bench.select("Choose a Benched Pokémon to shuffle back into the deck.")
-            tar.cards.moveTo(opp.deck)
-            removePCS(tar)
-            shuffleDeck(null, TargetPlayer.OPPONENT)
-
+            targeted (tar) {
+              tar.cards.moveTo(opp.deck)
+              removePCS(tar)
+              shuffleDeck(null, TargetPlayer.OPPONENT)
+            }
             self.cards.moveTo(my.deck)
             shuffleDeck()
             removePCS(self)
@@ -3628,7 +3615,7 @@ public enum SwordShield implements LogicCardInfo {
           }
         }
         getEnergyTypesOverride {
-          if (self) return [[R, D, F, G, W, Y, L, M, P] as Set]
+          if (self) return [valuesBasicEnergy() as Set]
           else return [[] as Set]
         }
         allowAttach {to->

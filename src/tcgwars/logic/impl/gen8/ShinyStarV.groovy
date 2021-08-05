@@ -189,7 +189,9 @@ public enum ShinyStarV implements LogicCardInfo {
           }
           onAttack {
             def evolution = deck.search { it.cardTypes.is(EVOLUTION) && (it as EvolutionPokemonCard).predecessor == self.name }
-            evolve self, evolution.first(), OTHER
+            if (evolution) {
+              evolve self, evolution.first(), OTHER
+            }
           }
         }
       };
@@ -217,7 +219,7 @@ public enum ShinyStarV implements LogicCardInfo {
       return basic (this, hp:HP110, type:D, retreatCost:2) {
         weakness L
         resistance F, MINUS30
-        move "Amazing Death", {
+        move "Amazing Destruction", {
           text "Your opponent's Active Pokémon is Knocked Out."
           energyCost R, P, D, C, C
           onAttack {
@@ -230,7 +232,7 @@ public enum ShinyStarV implements LogicCardInfo {
       case DITTO_V_9:
       return basic (this, hp:HP170, type:C, retreatCost:2) {
         weakness F
-        bwAbility "V TransformationV", {
+        bwAbility "V Transformation", {
           text "Once during your turn, you may switch this Pokémon with a Basic Pokémon V in your discard pile. Any attached cards, damage counters, Special Conditions, turns in play, and any other effects remain on the new Pokémon."
           actionA {
             assert my.discard.any { it.cardTypes.isAll(BASIC, POKEMON_V) } : "No Basic Pokémon V in your discard pile"
@@ -282,13 +284,13 @@ public enum ShinyStarV implements LogicCardInfo {
         def eff
         onPlay {reason->
           eff = delayed {
-            before PROCESS_ATTACK_EFFECTS, {
+            after PROCESS_ATTACK_EFFECTS, {
               if (self.name != "Zacian V") return
               bg.dm().each {
                 def conditions = it.from == self && it.to == opp.active
                 if (!conditions) return
                 bc "$thisCard +30"
-                it.dmg += hp 30
+                it.dmg += hp(30)
               }
             }
           }
@@ -304,7 +306,7 @@ public enum ShinyStarV implements LogicCardInfo {
         onPlay {reason->
           eff = getter GET_FULL_HP, self, { holder->
             if (self.name == "Zamazenta V")
-              holder.object += hp 70
+              holder.object += hp(70)
           }
         }
         onRemoveFromPlay {

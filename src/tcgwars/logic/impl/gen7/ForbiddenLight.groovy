@@ -1358,13 +1358,9 @@ public enum ForbiddenLight implements LogicCardInfo {
           weakness PSYCHIC
           bwAbility "Poison Point", {
             text "If this Pokémon is your Active Pokémon and is damaged by an opponent’s attack (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Poisoned."
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if(self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                  bc "Poison Point"
-                  apply POISONED, (ef.attacker as PokemonCardSet), SRC_ABILITY
-                }
-              }
+            ifActiveAndDamagedByAttackBody(delegate) {
+              bc "Poison Point"
+              apply POISONED, (ef.attacker as PokemonCardSet), SRC_ABILITY
             }
           }
           move "Twister", {
@@ -2703,12 +2699,11 @@ public enum ForbiddenLight implements LogicCardInfo {
               def disable={card,pcs->
                 def dset = bg.em().retrieveObject("Tool Concealment dset") as Set
                 if(!dset.contains(card)){
-                  card.removeFromPlay(bg, pcs)
+                  card.disable(bg, pcs)
                   dset.add(card)
                 }
               }
-              after PLAY_POKEMON_TOOL, {disable(ef.cardToPlay,ef.target)}
-              after PLAY_POKEMON_TOOL_FLARE, {disable(ef.cardToPlay,ef.target)}
+              after ATTACH_POKEMON_TOOL, {disable(ef.card,ef.resolvedTarget)}
             }
 
             def count = (bg.em().retrieveObject("Tool Concealment count") ?: 0) + 1
@@ -2718,7 +2713,7 @@ public enum ForbiddenLight implements LogicCardInfo {
                 def pcs = it
                 it.cards.filterByType(POKEMON_TOOL).each {
                   if(!dset.contains(it)){
-                    it.removeFromPlay(bg, pcs)
+                    it.disable(bg, pcs)
                     dset.add(it)
                   }
                 }
@@ -2845,7 +2840,7 @@ public enum ForbiddenLight implements LogicCardInfo {
           }
           getEnergyTypesOverride{
             if(self != null && self.topPokemonCard.cardTypes.is(ULTRA_BEAST)) {
-              return [[R, D, F, G, W, Y, L, M, P] as Set]
+              return [valuesBasicEnergy() as Set]
             }
             else {
               return [[C] as Set]

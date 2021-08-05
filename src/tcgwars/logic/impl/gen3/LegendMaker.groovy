@@ -743,7 +743,7 @@ public enum LegendMaker implements LogicCardInfo {
           getterA GET_ENERGY_TYPES, { holder->
             def pcs = holder.effect.target
             if(pcs.owner == self.owner && ["Huntail", "Gorebyss"].contains(pcs.name) && holder.effect.card.name == "React Energy") {
-              holder.object = [[R, D, F, G, W, Y, L, M, P] as Set,[R, D, F, G, W, Y, L, M, P] as Set]
+              holder.object = [valuesBasicEnergy() as Set,valuesBasicEnergy() as Set]
             }
           }
         }
@@ -2112,13 +2112,9 @@ public enum LegendMaker implements LogicCardInfo {
         weakness R
         pokeBody "Poison Payback", {
           text "If Wurmple is your Active Pokémon and is damaged by an opponent's attack (even if Wurmple is Knocked Out), the Attacking Pokémon is now Poisoned."
-          delayedA (priority: LAST) {
-            before APPLY_ATTACK_DAMAGES, {
-              if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                bc "Poison Payback"
-                apply POISONED, (ef.attacker as PokemonCardSet), SRC_ABILITY
-              }
-            }
+          ifActiveAndDamagedByAttackBody(delegate) {
+            bc "Poison Payback"
+            apply POISONED, (ef.attacker as PokemonCardSet), SRC_ABILITY
           }
         }
         move "String Pull", {
@@ -2292,12 +2288,8 @@ public enum LegendMaker implements LogicCardInfo {
           Card pokemonCard, trainerCard = thisCard
           pokemonCard = basic (new CustomCardInfo(CLAW_FOSSIL_78).setCardTypes(BASIC, POKEMON), hp:HP040, type:COLORLESS, retreatCost:0) {
             pokeBody "Jagged Stone", {
-              delayedA{
-                before APPLY_ATTACK_DAMAGES, {
-                  if (bg.currentTurn == self.owner.opposite && bg.dm().find({ it.to==self && it.dmg.value }) && self.active) {
-                    directDamage(10, ef.attacker, Source.SRC_ABILITY)
-                  }
-                }
+              ifActiveAndDamagedByAttackBody(delegate) {
+                directDamage(10, ef.attacker, Source.SRC_ABILITY)
               }
             }
             customAbility {
@@ -2657,13 +2649,7 @@ public enum LegendMaker implements LogicCardInfo {
         weakness P
         pokeBody "Versatile", {
           text "Mew ex can use the attacks of all Pokémon in play as its own. (You still need the necessary Energy to use each attack.)"
-          getterA (GET_MOVE_LIST, self) {holder->
-            all.each {
-              if(it!=self) {
-                holder.object.addAll(it.topPokemonCard.moves)
-              }
-            }
-          }
+          metronomeA delegate, { all }
         }
         move "Power Move", {
           text "Search your deck for an Energy card and attach it to Mew ex. Shuffle your deck afterward. Then, you may switch Mew ex with 1 of your Benched Pokémon."

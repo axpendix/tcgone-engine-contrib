@@ -848,7 +848,7 @@ public enum LostThunder implements LogicCardInfo {
             text "30 damage. If your opponent's Pokémon is Knocked Out by damage from this attack, prevent all effects of attacks, including damage, done to this Pokémon during your opponent's next turn."
             energyCost G
             onAttack{
-              damage 100
+              damage 30
               delayed {
                 def pcs = defending
                 after KNOCKOUT, pcs, {
@@ -1513,7 +1513,6 @@ public enum LostThunder implements LogicCardInfo {
               if(tar){
                 tar.each {pcs->
                   my.deck.search("Select a Pokémon Tool to attach to $pcs",cardTypeFilter(POKEMON_TOOL)).each{
-                    deck.remove(it)
                     attachPokemonTool(it, pcs)
                   }
                 }
@@ -2315,11 +2314,10 @@ public enum LostThunder implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert my.bench.notEmpty : "$self is your last Pokémon."
-              assert my.all.findAll {it!=self && it.cards.filterByType(POKEMON_TOOL).empty} : "No place to attach"
+              assert my.all.findAll {it!=self && canAttachPokemonTool(it)} : "No place to attach"
               powerUsed()
               def top = self.topPokemonCard
               self.cards.getExcludedList(top).discard()
-              removePCS(self)
               def trcard
               trcard = pokemonTool(new CustomCardInfo(top.staticInfo).setCardTypes(TRAINER, ITEM, POKEMON_TOOL)) {
                 def eff
@@ -2335,10 +2333,16 @@ public enum LostThunder implements LogicCardInfo {
                   eff.unregister()
                   bg.em().run(new ChangeImplementation(top, trcard))
                 }
+                onDisable {
+                  eff.unregister()
+                }
               }
               trcard.player = top.player
-              def pcs = my.all.findAll {it!=self && it.cards.filterByType(POKEMON_TOOL).empty}.select("Attach to?")
-              attachPokemonTool(trcard,pcs)
+              def pcs = my.all.findAll {it!=self && canAttachPokemonTool(it)}.select("Attach to?")
+              removeFromPlay(self, [top] as CardList)
+              bg.em().run(new ChangeImplementation(trcard, top))
+              attachPokemonTool(trcard, pcs)
+              removePCS(self)
             }
           }
           move "Haunt" , {
@@ -2406,15 +2410,24 @@ public enum LostThunder implements LogicCardInfo {
           resistance FIGHTING, MINUS20
           bwAbility "Mirror Counter" , {
             text "If this Pokémon is your Active Pokémon and is damaged by an attack from your opponent's Pokémon-GX or Pokémon-EX (even if this Pokémon is Knocked Out), put damage counters on the Attacking Pokémon equal to the damage done to this Pokémon."
+
+
             delayedA (priority:LAST) {
+              def counterDmg = 0
               before APPLY_ATTACK_DAMAGES, {
                 if(self.active && ef.attacker.owner != self.owner && (ef.attacker.pokemonGX || ef.attacker.pokemonEX)) {
                   bg.dm().each{
                     if(it.to == self && it.dmg.value) {
-                      bc "Mirror Counter countered ${ef.attacker}'s attack"
-                      directDamage(it.dmg.value, ef.attacker, Source.SRC_ABILITY)
+                      counterDmg = it.dmg.value
                     }
                   }
+                }
+              }
+              after APPLY_ATTACK_DAMAGES, {
+                if (counterDmg) {
+                  bc "Mirror Counter countered ${ef.attacker}'s attack"
+                  directDamage(counterDmg, ef.attacker, Source.SRC_ABILITY)
+                  counterDmg = 0
                 }
               }
             }
@@ -2774,7 +2787,7 @@ public enum LostThunder implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if(!self.active && it.to == self){
+                  if(!self.active && it.to == self && it.dmg.value && it.notNoEffect){
                     bc "Submerge prevent all damage"
                     it.dmg=hp(0)
                   }
@@ -3552,18 +3565,14 @@ public enum LostThunder implements LogicCardInfo {
           }
         };
       case SHIINOTIC_148:
-        return 	evolution (this, from:"Morelull", hp:HP100, type:FAIRY, retreatCost:2) {
+        return evolution (this, from:"Morelull", hp:HP100, type:FAIRY, retreatCost:2) {
           weakness METAL
           resistance DARKNESS, MINUS20
           bwAbility "Effect Spore" , {
             text "If this Pokémon is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Asleep."
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if(bg.currentTurn == self.owner.opposite &&  self.active && bg.dm().find({it.to==self && it.dmg.value})){
-                  bc "Effect Spore"
-                  apply ASLEEP, (ef.attacker as PokemonCardSet)
-                }
-              }
+            ifActiveAndDamagedByAttackBody(delegate) {
+              bc "Effect Spore"
+              apply ASLEEP, (ef.attacker as PokemonCardSet)
             }
           }
           move "Dream's Touch" , {

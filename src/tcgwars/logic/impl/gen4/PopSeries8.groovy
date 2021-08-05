@@ -1,12 +1,17 @@
-package tcgwars.logic.impl.gen4;
+package tcgwars.logic.impl.gen4
+
+import tcgwars.logic.impl.gen3.Sandstorm
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.effect.Source.*;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.special.SpecialConditionType.*
 
 import tcgwars.logic.card.*
 import tcgwars.logic.util.*;
@@ -95,18 +100,24 @@ public enum PopSeries8 implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              flip { apply PARALYZED }
+              flip { applyAfterDamage(PARALYZED) }
             }
           }
           move "Fire Spin", {
             text "90 damage. Discard 2 Basic Energy cards attached to Heatran. (If you can’t discard cards, this attack does nothing."
             energyCost R, R, R, C
-            attackRequirement {}
+            attackRequirement {
+              assert self.cards.filterByType(BASIC_ENERGY).size() >= 2 : "Needs at least 2 Basic Energy cards attached"
+            }
             onAttack {
-              damage 0
+              def cards = self.cards.filterByType(BASIC_ENERGY).select(count: 2, "Discard 2 Basic energy cards from $self.")
+              damage 90
+
+              afterDamage {
+                cards.discard()
+              }
             }
           }
-
         };
       case LUCARIO_2:
         return evolution (this, from:"Riolu", hp:HP090, type:FIGHTING, retreatCost:1) {
@@ -116,7 +127,8 @@ public enum PopSeries8 implements LogicCardInfo {
             energyCost M, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 40
+              reduceDamageNextTurn(hp(20),thisMove)
             }
           }
           move "Striking Kick", {
@@ -124,18 +136,25 @@ public enum PopSeries8 implements LogicCardInfo {
             energyCost F, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              noResistanceOrAnyEffectDamage(60, defending)
             }
           }
-
         };
       case LUXRAY_3:
         return evolution (this, from:"Luxio", hp:HP120, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS30
           resistance M, MINUS20
           pokeBody "Intimidating Fang", {
-            text "As long as Luxray is your Active Pokémon, any damage done by an opponent’s attack is reduced by 10 ."
+            text "As long as Luxray is your Active Pokémon, any damage done by an opponent’s attack is reduced by 10."
             delayedA {
+              after PROCESS_ATTACK_EFFECTS, {
+                bg.dm().each {
+                  if (self.active && it.from.owner == self.owner && it.dmg.value && it.notNoEffect) {
+                    bc "Intimidating Fang -10"
+                    it.dmg -= hp(10)
+                  }
+                }
+              }
             }
           }
           move "Thunder", {
@@ -143,10 +162,10 @@ public enum PopSeries8 implements LogicCardInfo {
             energyCost L, L, L, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 120
+              flip 1, {}, { damage 40, self }
             }
           }
-
         };
       case PROBOPASS_4:
         return evolution (this, from:"Nosepass", hp:HP090, type:METAL, retreatCost:3) {
@@ -172,10 +191,10 @@ public enum PopSeries8 implements LogicCardInfo {
             energyCost M, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 50
+              flip 3, { damage 20 }
             }
           }
-
         };
       case YANMEGA_5:
         return evolution (this, from:"Yanma", hp:HP090, type:GRASS, retreatCost:0) {
@@ -186,7 +205,7 @@ public enum PopSeries8 implements LogicCardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
-              flip { apply CONFUSED }
+              flipThenApplySC(CONFUSED)
             }
           }
           move "Air Slash", {
@@ -194,199 +213,46 @@ public enum PopSeries8 implements LogicCardInfo {
             energyCost C, C, C, C
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 70
+              flip { discardSelfEnergyAfterDamage() }
             }
           }
-
         };
       case CHERRIM_6:
-        return evolution (this, from:"Cherubi", hp:HP080, type:GRASS, retreatCost:2) {
-          weakness R, PLUS20
-          resistance W, MINUS20
-          move "Worry Seed", {
-            text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
-            energyCost G
-            attackRequirement {}
-            onAttack {
-              damage 20
-              flip { apply CONFUSED }
-            }
-          }
-          move "Magical Leaf", {
-            text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 20 more damage and remove 3 damage counters from Cherrim."
-            energyCost G, G
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (DiamondPearl.CHERRIM_45, this);
       case CARNIVINE_7:
-        return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
-          weakness R, PLUS20
-          resistance W, MINUS20
-          move "Swallow Up", {
-            text "30 damage. Before doing damage, count the remaining HP of the Defending Pokémon and Carnivine. If the Defending Pokémon has fewer remaining HP than Carnivine’s, this attack does 60 damage instead."
-            energyCost G, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Wring Out", {
-            text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed and discard an Energy card attached to the Defending Pokémon."
-            energyCost G, G
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (DiamondPearl.CARNIVINE_21, this);
       case LUXIO_8:
-        return evolution (this, from:"Shinx", hp:HP080, type:LIGHTNING, retreatCost:0) {
-          weakness F, PLUS20
-          resistance M, MINUS20
-          move "Fasten Claw", {
-            text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 30 more damage."
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Thunder Fang", {
-            text "30 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-            energyCost L, L
-            attackRequirement {}
-            onAttack {
-              damage 30
-              flip { apply PARALYZED }
-            }
-          }
-
-        };
+        return copy (DiamondPearl.LUXIO_52, this);
       case NIGHT_MAINTENANCE_9:
-        return basicTrainer (this) {
-          text "Search your discard pile for up to 3 in any combination of Pokémon and basic Energy cards. Show them to your opponent and shuffle them into your deck."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy (MysteriousTreasures.NIGHT_MAINTENANCE_113, this);
       case RARE_CANDY_10:
-        return basicTrainer (this) {
-          text "Choose 1 of your Basic Pokémon in play. If you have a Stage 1 or Stage 2 card that evolves from that Pokémon in your hand, put that card on the Basic Pokémon. (This counts as evolving that Pokémon.)"
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy (Sandstorm.RARE_CANDY_88, this);
       case ROSEANNE_S_RESEARCH_11:
-        return basicTrainer (this) {
-          text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck for up to 2 in any combination of Basic Pokémon and basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
-          onPlay {
-          }
-          playRequirement{
-          }
-        };
+        return copy (SecretWonders.ROSEANNE_S_RESEARCH_125, this);
       case CHIMCHAR_12:
-        return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
-          weakness W, PLUS10
-          move "Scratch", {
-            text "10 damage. "
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Ember", {
-            text "30 damage. Energy attached to Chimchar."
-            energyCost R, C, R
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (DiamondPearl.CHIMCHAR_76, this);
       case CROAGUNK_13:
-        return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
-          weakness P, PLUS10
-          move "Ghastly Sound", {
-            text "Flip a coin. If heads, your opponent can’t play any Supporter cards from his or her hand during his or her next turn."
-            energyCost C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Finger Poke", {
-            text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Poisoned."
-            energyCost P, P
-            attackRequirement {}
-            onAttack {
-              damage 20
-              flip { apply POISONED }
-            }
-          }
-
-        };
+        return copy (MysteriousTreasures.CROAGUNK_78, this);
       case HAPPINY_14:
-        return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
-          weakness F, PLUS10
-          pokePower "Baby Evolution", {
-            text "Once during your turn , you may put Chansey from your hand onto Happiny (this counts as evolving Happiny) and remove all damage counters from Happiny."
-            actionA {
-              assert my.hand.findAll{it.name.contains("Chansey")} : "There is no pokémon in your hand to evolve ${self}."
-              checkLastTurn()
-              powerUsed()
-              def tar = my.hand.findAll { it.name.contains("Chansey") }.select()
-              if (tar) {
-                evolve(self, tar.first(), OTHER)
-                heal self.numberOfDamageCounters*10, self
-              }
-            }
-          }
-          move "Lively", {
-            text "Remove 2 damage counters from 1 of your Pokémon."
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (MysteriousTreasures.HAPPINY_52, this);
       case PIPLUP_15:
-        return basic (this, hp:HP060, type:WATER, retreatCost:1) {
-          weakness L, PLUS10
-          move "Peck", {
-            text "10 damage. "
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Water Splash", {
-            text "20+ damage. Flip a coin. If heads, this attack does 20 damage plus 10 more damage."
-            energyCost W, C
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (DiamondPearl.PIPLUP_93, this);
       case RIOLU_16:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness P, PLUS10
           pokeBody "Inner Focus", {
             text "Riolu can’t be Paralyzed."
-            delayedA {
+            delayedA{
+              before APPLY_SPECIAL_CONDITION, self, {
+                if (ef.type == PARALYZED) {
+                  bc "$self's $thisAbility prevents it from being Paralyzed"
+                  prevent()
+                }
+              }
+            }
+            onActivate {
+              clearSpecialCondition(self, POKEBODY, [PARALYZED])
             }
           }
           move "Quick Attack", {
@@ -394,36 +260,15 @@ public enum PopSeries8 implements LogicCardInfo {
             energyCost F
             attackRequirement {}
             onAttack {
-              damage 0
+              damage 10
+              flip { damage 10 }
             }
           }
-
         };
       case TURTWIG_17:
-        return basic (this, hp:HP060, type:GRASS, retreatCost:2) {
-          weakness R, PLUS10
-          resistance W, MINUS20
-          move "Tackle", {
-            text "10 damage. "
-            energyCost ()
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-          move "Razor Leaf", {
-            text "20 damage. "
-            energyCost G
-            attackRequirement {}
-            onAttack {
-              damage 0
-            }
-          }
-
-        };
+        return copy (DiamondPearl.TURTWIG_103, this);
       default:
         return null;
     }
   }
-
 }

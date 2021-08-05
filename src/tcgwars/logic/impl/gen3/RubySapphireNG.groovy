@@ -1,4 +1,6 @@
-package tcgwars.logic.impl.gen3;
+package tcgwars.logic.impl.gen3
+
+import tcgwars.logic.effect.gm.Attack;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -181,7 +183,7 @@ public enum RubySapphireNG implements LogicCardInfo {
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.RUBY_SAPPHIRE;
+    return tcgwars.logic.card.Collection.RUBY_SAPPHIRE_NG;
   }
 
   @Override
@@ -204,15 +206,15 @@ public enum RubySapphireNG implements LogicCardInfo {
         move "Retaliate", {
           text "10x damage. Flip a coin. If heads, this attack does 10 damage times the number of damage counters on Aggron."
           energyCost C
-          attackRequirement {}
           onAttack {
-            damage 10
+            flip {
+              damage 10 * self.numberOfDamageCounters
+            }
           }
         }
         move "Mega Punch", {
           text "40 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -220,9 +222,8 @@ public enum RubySapphireNG implements LogicCardInfo {
         move "Double Lariat", {
           text "70x damage. Flip 2 coins. This attack does 70 damage times the number of heads."
           energyCost M, M, C, C, C
-          attackRequirement {}
           onAttack {
-            damage 70
+            flip 2, {damage 70}
           }
         }
       };
@@ -232,22 +233,30 @@ public enum RubySapphireNG implements LogicCardInfo {
         pokeBody "Withering Dust", {
           text "As long as Beautifly is in play, do not apply Resistance for all Active Pokémon."
           delayedA {
+            before APPLY_RESISTANCE, {
+              bg.dm().each{
+                if(it.to.active){
+                  bc "Resistance isn't applied due to $thisAbility"
+                  prevent()
+                }
+              }
+            }
           }
         }
         move "Stun Spore", {
           text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 20
+            flipThenApplySC PARALYZED
           }
         }
         move "Parallel Gain", {
           text "50 damage. Remove 1 damage counter from each of your Pokémon, including Beautifly."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 50
+            my.all.each {heal 10, it}
           }
         }
       };
@@ -257,14 +266,25 @@ public enum RubySapphireNG implements LogicCardInfo {
         pokePower "Firestarter", {
           text "Once during your turn (before your attack), you may attach a [R] Energy card from your discard pile to 1 of your Benched Pokémon. This power can't be used if Blaziken is affected by a Special Condition."
           actionA {
+            checkLastTurn()
+            checkNoSPC()
+            assert my.bench : "No benched Pokémon"
+            assert my.discard.filterByEnergyType(R) : "You have no [R] Energy cards in your discard pile"
+            powerUsed()
+
+            attachEnergyFrom(type: R, my.discard, my.bench)
           }
         }
         move "Fire Stream", {
           text "50 damage. Discard a [R] Energy card attached to Blaziken. If you do, this attack does 10 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+          // Compendium Ruling: no "If you do", the discard is mandatory. PK print corrects this.
           energyCost R, C, C
-          attackRequirement {}
           onAttack {
             damage 50
+            opp.bench.each {
+              damage 10, it
+            }
+            discardSelfEnergyAfterDamage R
           }
         }
       };
@@ -277,14 +297,20 @@ public enum RubySapphireNG implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
+            if (opp.bench) damage 10, opp.bench.select()
           }
         }
         move "Fire Spin", {
           text "100 damage. Discard 2 basic Energy cards attached to Camerupt or this attack does nothing."
           energyCost R, R, C, C
-          attackRequirement {}
+          attackRequirement {
+            assert self.cards.filterByType(BASIC_ENERGY).size() >= 2 : "$self needs 2 or more Basic Energies attached"
+          }
           onAttack {
             damage 100
+            afterDamage {
+              self.cards.filterByType(BASIC_ENERGY).select(count: 2, "Select 2 Basic Energies to discard.").discard()
+            }
           }
         }
       };
@@ -294,14 +320,24 @@ public enum RubySapphireNG implements LogicCardInfo {
         pokePower "Energy Draw", {
           text "Once during your turn (before your attack), you may discard 1 Energy card from your hand. Then draw up to 3 cards from your deck. This power can't be used if Delcatty is affected by a Special Condition."
           actionA {
+            checkNoSPC()
+            checkLastTurn()
+            assert my.hand.filterByType(ENERGY) : "No Energy in hand"
+            //Using LV.X Compendium Ruling instead of the EX: You can discard even if you don't have cards in deck.
+            powerUsed()
+
+            my.hand.filterByType(ENERGY).select("Discard").discard()
+            if (my.deck){
+              def maxDraw = Math.min(3, my.deck.size())
+              draw choose(1..maxDraw, "Draw how many cards?")
+            }
           }
         }
         move "Max Energy Source", {
           text "10x damage. Does 10 damage times the amount of Energy attached to all of your Active Pokémon."
           energyCost C
-          attackRequirement {}
           onAttack {
-            damage 10
+            damage 10*self.cards.energyCount(C)
           }
         }
       };
@@ -311,20 +347,25 @@ public enum RubySapphireNG implements LogicCardInfo {
         pokeBody "Protective Dust", {
           text "Prevent all effects of attacks, except damage, done to Dustox by the Attacking Pokémon."
           delayedA {
+            before null, null, ATTACK, {
+              if (ef instanceof TargetedEffect && ef.effectType != DAMAGE && (ef as TargetedEffect).getResolvedTarget(bg, e) == self) {
+                bc "$thisAbility prevents all effects done to $self."
+                prevent()
+              }
+            }
           }
         }
         move "Toxic", {
           text "The Defending Pokémon is now Poisoned. Put 2 damage counters instead of 1 on the Defending Pokémon between turns."
           energyCost G, C
-          attackRequirement {}
           onAttack {
-
+            apply POISONED
+            extraPoison 1
           }
         }
         move "Gust", {
           text "50 damage."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -336,14 +377,24 @@ public enum RubySapphireNG implements LogicCardInfo {
         pokePower "Psy Shadow", {
           text "Once during your turn (before your attack), you may search your deck for a [P] Energy card and attach it to 1 of your Pokémon. Put 2 damage counters on that Pokémon. Shuffle your deck afterward. This power can't be used if Gardevoir is affected by a Special Condition."
           actionA {
+            checkLastTurn()
+            checkNoSPC()
+            assert my.deck : "Deck is empty"
+            powerUsed()
+
+            my.deck.search("Search for a [P] Energy card to attach to one of your Pokémon.", energyFilter(P)).each {
+              def tar = my.all.select("Attach $it to? That Pokémon will receive 2 damage counters.")
+              attachEnergy(tar, it)
+              directDamage 20, tar, Source.POKEPOWER
+            }
+            shuffleDeck()
           }
         }
         move "Energy Burst", {
           text "10x damage. Does 10 damage times the total amount of Energy attached to Gardevoir and the Defending Pokémon."
           energyCost P
-          attackRequirement {}
           onAttack {
-            damage 10
+            damage 10 * (self.cards.energyCount(C) + defending.cards.energyCount(C))
           }
         }
       };
@@ -353,17 +404,16 @@ public enum RubySapphireNG implements LogicCardInfo {
         move "Super Slap Push", {
           text "Does 20 damage to each Defending Pokémon."
           energyCost F
-          attackRequirement {}
           onAttack {
-
+            damage 20
           }
         }
         move "Mega Throw", {
           text "40+ damage. If the Defending Pokémon is a Pokémon-ex, this attack does 40 damage plus 40 more damage."
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             damage 40
+            if (defending.EX) damage 40
           }
         }
       };
@@ -374,17 +424,17 @@ public enum RubySapphireNG implements LogicCardInfo {
         move "Attract Current", {
           text "10 damage. Search your deck for a [L] Energy card and attach it to 1 of your Pokémon. Shuffle your deck afterward."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
+            attachEnergyFrom(type:L, my.deck, my.all)
           }
         }
         move "Thunder Jolt", {
           text "50 damage. Flip a coin. If tails, Manectric does 10 damage to itself."
           energyCost L, L, C
-          attackRequirement {}
           onAttack {
             damage 50
+            flip 1, {}, {damage 10, self}
           }
         }
       };
@@ -395,14 +445,26 @@ public enum RubySapphireNG implements LogicCardInfo {
         pokeBody "Intimidating Fang", {
           text "As long as Mightyena is your Active Pokémon, any damage done to your Pokémon done by an opponent's attack is reduced by 10 (before applying Weakness and Resistance)."
           delayedA {
+            after PROCESS_ATTACK_EFFECTS, {
+              if (self.active && ef.attacker.owner != self.owner) {
+                bg.dm().each {
+                  if(it.to.owner==self.owner && it.notZero) {
+                    bc "$thisPower -10"
+                    it.dmg-=hp(10)
+                  }
+                }
+              }
+            }
           }
         }
         move "Shakedown", {
           text "40 damage. Flip a coin. If heads, choose 1 card from your opponent's hand without looking and discard it."
           energyCost D, C, C
-          attackRequirement {}
           onAttack {
             damage 40
+            afterDamage {
+              flip {discardRandomCardFromOpponentsHand()}
+            }
           }
         }
       };
@@ -413,15 +475,18 @@ public enum RubySapphireNG implements LogicCardInfo {
         move "Lizard Poison", {
           text "20 damage. If 1 Energy is attached to Sceptile, the Defending Pokémon is now Asleep. If 2 Energy is attached to Sceptile, the Defending Pokémon is now Poisoned. If 3 Energy is attached to Sceptile, the Defending Pokémon is now Asleep and Poisoned. If 4 or more Energy is attached to Sceptile, the Defending Pokémon is now Asleep, Burned, and Poisoned."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
+            def energyAttached = self.cards.energyCount()
+            if (energyAttached >= 3 || energyAttached == 1) applyAfterDamage(ASLEEP)
+            if (energyAttached >= 2) applyAfterDamage(POISONED)
+            if (energyAttached >= 4) applyAfterDamage(BURNED)
+
           }
         }
         move "Solarbeam", {
           text "70 damage."
           energyCost G, G, C, C, C
-          attackRequirement {}
           onAttack {
             damage 70
           }
@@ -432,15 +497,38 @@ public enum RubySapphireNG implements LogicCardInfo {
         weakness F
         pokeBody "Lazy", {
           text "As long as Slaking is your Active Pokémon, your opponent's Pokémon can't use any Poké-Powers."
-          delayedA {
+          getterA IS_ABILITY_BLOCKED, { Holder h->
+            if (self.active && h.effect.target.owner == self.owner.opposite && h.effect.ability instanceof PokePower) {
+              h.object=true
+            }
+          }
+          //TODO: Is this needed here?
+          getterA IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
+            if (self.active && h.effect.target.owner == self.owner.opposite) {
+              h.object=true
+            }
+          }
+          onActivate {
+            new CheckAbilities().run(bg)
+          }
+          onDeactivate {
+            new CheckAbilities().run(bg)
           }
         }
         move "Critical Move", {
           text "100 damage. Discard a basic Energy card attached to Slaking or this attack does nothing. Slaking can't attack during your next turn."
           energyCost C, C, C, C
-          attackRequirement {}
+          attackRequirement {
+            assert self.cards.filterByType(BASIC_ENERGY) : "$self has no Basic Energy attached"
+          }
           onAttack {
-            damage 100
+            if(self.cards.filterByType(BASIC_ENERGY)){
+              damage 100
+              afterDamage {
+                self.cards.filterByType(BASIC_ENERGY).select("Discard a basic energy from $self.").discard()
+                cantAttackNextTurn(self)
+              }
+            }
           }
         }
       };
@@ -450,14 +538,21 @@ public enum RubySapphireNG implements LogicCardInfo {
         pokePower "Water Call", {
           text "Once during your turn (before your attack), you may attach a [W] Energy card from your hand to your Active Pokémon. This power can't be used if Swampert is affected by a Special Condition."
           actionA {
+            checkNoSPC()
+            checkLastTurn()
+            assert my.hand.filterByEnergyType(W) : "You have no [W] Energy cards in your hand"
+
+            powerUsed()
+            def pcs = my.all.select()
+            attachEnergyFrom(type:W, my.hand, pcs)
           }
         }
         move "Hypno Splash", {
           text "50 damage. The Defending Pokémon is now Asleep."
           energyCost W, W, C, C
-          attackRequirement {}
           onAttack {
             damage 50
+            applyAfterDamage(ASLEEP)
           }
         }
       };
@@ -467,15 +562,14 @@ public enum RubySapphireNG implements LogicCardInfo {
         move "Take Down", {
           text "50 damage. Wailord does 20 damage to itself."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 50
+            damage 20, self
           }
         }
         move "Surf", {
           text "70 damage."
           energyCost W, W, W, C, C
-          attackRequirement {}
           onAttack {
             damage 70
           }
@@ -487,17 +581,17 @@ public enum RubySapphireNG implements LogicCardInfo {
         move "Clutch", {
           text "20 damage. The Defending Pokémon can't retreat until the end of your opponent's next turn."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
+            cantRetreat defending
           }
         }
         move "Flamethrower", {
           text "80 damage. Discard a [R] Energy card attached to Blaziken."
           energyCost R, C, C, C
-          attackRequirement {}
           onAttack {
             damage 80
+            discardSelfEnergyAfterDamage R
           }
         }
       };
@@ -507,7 +601,6 @@ public enum RubySapphireNG implements LogicCardInfo {
         move "Headbutt", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -515,9 +608,8 @@ public enum RubySapphireNG implements LogicCardInfo {
         move "Battle Blast", {
           text "40+ damage. Does 40 damage plus 10 more damage for each [F] Energy attached to Breloom."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
-            damage 40
+            damage 40 + 10 * self.cards.energyCount(F)
           }
         }
       };
@@ -527,17 +619,18 @@ public enum RubySapphireNG implements LogicCardInfo {
         move "Rend", {
           text "20+ damage. If the Defending Pokémon has any damage counters on it, this attack does 20 damage plus 20 more damage."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 20
+            if(defending.numberOfDamageCounters) {
+              damage 20
+            }
           }
         }
         move "Double Spin", {
           text "60x damage. Flip 2 coins. This attack does 60 damage times the number of heads."
           energyCost F, C, C, C
-          attackRequirement {}
           onAttack {
-            damage 60
+            flip 2, {damage 60}
           }
         }
       };
@@ -547,17 +640,23 @@ public enum RubySapphireNG implements LogicCardInfo {
         move "Invisible Hand", {
           text "If any of your opponent's Active Pokémon are Evolved Pokémon, search your deck for any 1 card and put it into your hand. Shuffle your deck afterward."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "There are no more cards in your deck."
+            assert opp.active.evolution : "Your opponent's Active Pokémon isn't an Evolved Pokémon"
+          }
           onAttack {
-
+            my.deck.select().moveTo(hidden: true, my.hand)
+            shuffleDeck()
           }
         }
         move "Repulsion", {
           text "Flip a coin. If heads, your opponent returns the Defending Pokémon and all cards attached to it to his or her hand. (If your opponent doesn't have any Benched Pokémon or other Active Pokémon, this attack does nothing.)"
           energyCost C, C
-          attackRequirement {}
+          attackRequirement { assert opp.bench: "Opponent's bench is empty" }
           onAttack {
-
+            flip {
+              scoopUpPokemon(defending, delegate)
+            }
           }
         }
       };
@@ -568,15 +667,14 @@ public enum RubySapphireNG implements LogicCardInfo {
         move "Stockpile", {
           text "During your next turn, Spit Up's base damage is 70 instead of 30, and Swallow's base damage is 60 instead of 20."
           energyCost C
-          attackRequirement {}
           onAttack {
-
+            increasedBaseDamageNextTurn("Spit Up", hp(40))
+            increasedBaseDamageNextTurn("Swallow", hp(40))
           }
         }
         move "Spit Up", {
           text "30 damage."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -584,9 +682,9 @@ public enum RubySapphireNG implements LogicCardInfo {
         move "Swallow", {
           text "20 damage. After your attack, remove from Pelipper the number of damage counters equal to the damage you did to the Defending Pokémon. If Pelipper has fewer damage counters than that, remove all of them."
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 20
+            removeDamageCounterEqualToDamageDone()
           }
         }
       };
@@ -597,14 +695,24 @@ public enum RubySapphireNG implements LogicCardInfo {
         pokePower "Energy Trans", {
           text "As often as you like during your turn (before your attack), move a [G] Energy card attached to 1 of your Pokémon to another of your Pokémon. This power can't be used if Sceptile is affected by a Special Condition."
           actionA {
+            checkNoSPC()
+            assert my.all.find{it.cards.energyCount(G)>0} : "There are no Pokémon with [G] Energy cards"
+            assert my.all.size()>=2 : "There is only one Pokémon on the field"
+
+            powerUsed()
+            def src=my.all.findAll {it.cards.energyCount(G)>0}.select("Source for [G]")
+            def card=src.cards.filterByEnergyType(G).select("Card to move").first()
+            def tar=my.all
+            tar.remove(src)
+            tar=tar.select("Target for [G]")
+            energySwitch(src, tar, card)
           }
         }
         move "Tail Rap", {
           text "50x damage. Flip 2 coins. This attack does 50 damage times the number of heads."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
-            damage 50
+            flip 2, { damage 50 }
           }
         }
       };
@@ -614,9 +722,8 @@ public enum RubySapphireNG implements LogicCardInfo {
         move "Water Arrow", {
           text "Choose 1 of your opponent's Pokémon. This attack does 20 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W
-          attackRequirement {}
           onAttack {
-
+            damage 20, opp.all.select()
           }
         }
         move "Fast Stream", {
@@ -625,6 +732,7 @@ public enum RubySapphireNG implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            // Only one defending Pokémon in single battles, so the effect is ignored.
           }
         }
       };
@@ -633,7 +741,9 @@ public enum RubySapphireNG implements LogicCardInfo {
         weakness L
         pokeBody "Rough Skin", {
           text "If Sharpedo is your Active Pokémon and is damaged by an opponent's attack (even if Sharpedo is Knocked Out), put 2 damage counters on the Attacking Pokémon."
-          delayedA {
+          ifActiveAndDamagedByAttackBody(delegate) {
+            bc "$thisAbility activates"
+            directDamage(10, ef.attacker, Source.POKEBODY)
           }
         }
         move "Dark Slash", {
@@ -642,6 +752,10 @@ public enum RubySapphireNG implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
+            if(self.cards.energyCardCount(D) && confirm("Discard a [D] Energy attached to $self?")) {
+              damage 30
+              discardSelfEnergyAfterDamage D
+            }
           }
         }
       };

@@ -625,13 +625,9 @@ public enum CelestialStorm implements LogicCardInfo {
           weakness FIRE
           bwAbility "Poison Payback" , {
             text "If this Pokémon is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Poisoned."
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                  bc "Poison Point"
-                  apply POISONED, (ef.attacker as PokemonCardSet), SRC_ABILITY
-                }
-              }
+            ifActiveAndDamagedByAttackBody(delegate) {
+              bc "Poison Payback"
+              apply POISONED, (ef.attacker as PokemonCardSet), SRC_ABILITY
             }
           }
           move "Light Punch" , {
@@ -647,13 +643,9 @@ public enum CelestialStorm implements LogicCardInfo {
           weakness FIRE
           bwAbility "Poison Payback" , {
             text "If this Pokémon is your Active Pokémon and is damaged by an opponent's attack (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Poisoned."
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                  bc "Poison Point"
-                  apply POISONED, (ef.attacker as PokemonCardSet), SRC_ABILITY
-                }
-              }
+            ifActiveAndDamagedByAttackBody(delegate) {
+              bc "Poison Payback"
+              apply POISONED, (ef.attacker as PokemonCardSet), SRC_ABILITY
             }
           }
           move "Feint Attack" , {
@@ -2714,10 +2706,10 @@ public enum CelestialStorm implements LogicCardInfo {
           }
           move "Dragon Break" , {
             text "30× damage. This attack does 30 damage times the amount of basic [G] and basic [L] Energy attached to your Pokémon."
-            energyCost G,L,C
+            energyCost G, L, C
             onAttack {
-              my.all.each{
-                damage 30*(it.cards.filterByType(BASIC_ENERGY).filterByEnergyType(G).size() + it.cards.filterByType(BASIC_ENERGY).filterByEnergyType(L).size())
+              my.all.each {
+                damage 30 * (it.cards.filterByType(BASIC_ENERGY).energyCount(G) + it.cards.filterByType(BASIC_ENERGY).energyCount(L))
               }
             }
           }
@@ -3335,7 +3327,7 @@ public enum CelestialStorm implements LogicCardInfo {
             }
           }
           getEnergyTypesOverride {
-            self != null ? [[R, D, F, G, W, Y, L, M, P] as Set] : [[C] as Set]
+            self != null ? [valuesBasicEnergy() as Set] : [[C] as Set]
           }
         };
       case SHIFTRY_GX_152:

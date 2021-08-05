@@ -624,17 +624,9 @@ public enum GuardiansRising implements LogicCardInfo {
             energyCost C, C
             onAttack {
               damage 20
-              delayed (priority: LAST) {
-                before APPLY_ATTACK_DAMAGES, {
-                  if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                    bc "Counter Head activates"
-                    directDamage(80, ef.attacker as PokemonCardSet)
-                  }
-                }
-                unregisterAfter 2
-                after FALL_BACK, self, {unregister()}
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
+              ifDamagedByAttackNextTurn(delegate) {
+                bc "Shell Trap activates"
+                directDamage(80, ef.attacker as PokemonCardSet)
               }
             }
           }
@@ -1298,17 +1290,19 @@ public enum GuardiansRising implements LogicCardInfo {
           bwAbility "Aero Trail", {
             text "When you play this Pokémon from your hand onto your Bench during your turn, you may move any number of [L] Energy from your other Pokémon to this Pokémon. If you do, switch this Pokémon with your Active Pokémon."
             onActivate {reason ->
-              if(reason == PLAY_FROM_HAND && self.benched && confirm("Use Aero Trail?")){
+              if(reason == PLAY_FROM_HAND && self.benched && my.all.any { it.cards.energyCount(L) } && confirm("Use Aero Trail?")){
                 powerUsed()
+                def card = null
                 while(1){
                   def pl=(my.all.findAll {it.cards.filterByEnergyType(L) && it!=self})
                   if(!pl) break;
                   def src=pl.select("Source for energy (cancel to stop)", false)
                   if(!src) break;
-                  def card=src.cards.filterByEnergyType(L).select("Card to move").first()
+                  card=src.cards.filterByEnergyType(L).select("Card to move").first()
                   energySwitch(src, self, card)
                 }
-                sw my.active, self
+                if (card != null)
+                  sw my.active, self
               }
             }
           }
@@ -1629,7 +1623,7 @@ public enum GuardiansRising implements LogicCardInfo {
             onActivate {reason ->
               if(reason == PLAY_FROM_HAND && self.benched && my.deck.notEmpty && confirm("Use Wonder Tag?")){
                 powerUsed()
-                deck.search (cardTypeFilter(SUPPORTER)).moveTo(my.hand)
+                deck.search (cardTypeFilter(SUPPORTER)).showToOpponent("Choosen Supporter card.").moveTo(my.hand)
                 shuffleDeck()
               }
             }

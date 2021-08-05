@@ -336,9 +336,17 @@ public enum TeamRocketReturns implements LogicCardInfo {
             energyCost R, C, C
             onAttack {
               damage 40
-              if(confirm("discard a [R] Energy or [D] Energy attached to Dark Houndoom for 20 more damage?")){
-                self.cards.filterByType(BASIC_ENERGY).findAll{it.asEnergyCard().containsTypePlain(D) || it.asEnergyCard().containsTypePlain(R)}.select().discard()
-                damage 20
+              def list = self.cards.filterByType(ENERGY).findAll{it.containsType(D) || it.containsType(R)}
+              if (list) {
+                list = list.select(min:0, "Discard a [R] or [D] Energy attached to $self for 20 more damage?")
+                if (list) {
+                  damage 20
+                  afterDamage {
+                    def de = new DiscardEnergy(list)
+                    de.source = ATTACK
+                    bg.em().activateEffect(de)
+                  }
+                }
               }
             }
           }
@@ -628,7 +636,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               assert my.all.size()>=2
 
               powerUsed()
-              def src=my.all.findAll {it.cards.energyCount(D)>0}.select("Source for [G]")
+              def src=my.all.findAll {it.cards.energyCount(D)>0}.select("Source for [D]")
               def card=src.cards.filterByEnergyType(D).select("Card to move").first()
               def tar=my.all
               tar.remove(src)
@@ -725,13 +733,9 @@ public enum TeamRocketReturns implements LogicCardInfo {
           weakness GRASS
           pokeBody "Poison Payback", {
             text "If Dark Sandslash is your Active Pokémon and is damaged by an opponent’s attack (even if Dark Sandslash is Knocked Out), the Attacking Pokémon is now Poisoned."
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if(self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                  bc "Poison Payback"
-                  apply POISONED, (ef.attacker as PokemonCardSet)
-                }
-              }
+            ifActiveAndDamagedByAttackBody(delegate) {
+              bc "Poison Payback"
+              apply POISONED, (ef.attacker as PokemonCardSet)
             }
           }
           move "Swift", {
@@ -963,21 +967,11 @@ public enum TeamRocketReturns implements LogicCardInfo {
           weakness LIGHTNING
           pokeBody "Spiny", {
             text "If Qwilfish is your Active Pokémon and is damaged by an opponent’s attack (even if Qwilfish is Knocked Out), flip a coin until you get tails. For each heads, put 1 damage counter on the Attacking Pokémon."
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if (self.active) {
-                  def pcs = self.owner.opposite.pbg.active
-                  def counterDmg = 0
-                  bg.dm().each{
-                    if(it.to == self && it.notNoEffect && it.dmg.value) {
-                      bc "Spiny"
-                      pcs = it.from
-                      flipUntilTails {counterDmg += 10}
-                    }
-                  }
-                  directDamage counterDmg, pcs
-                }
-              }
+            ifActiveAndDamagedByAttackBody(delegate) {
+              bc "Spiny"
+              def counterDmg = 0
+              flipUntilTails {counterDmg += 10}
+              directDamage(counterDmg, ef.attacker, Source.SRC_ABILITY)
             }
           }
           move "Stun Poison", {
@@ -1554,16 +1548,18 @@ public enum TeamRocketReturns implements LogicCardInfo {
             text "Flip a coin. If heads, choose 1 of the Defending Pokémon’s attacks. Mini-Metronome copies that attack except for its Energy cost. (You must still do anything else required for that attack.) (No matter what type that Pokémon is, Togepi’s type is still [C].) Togepi performs that attack."
             energyCost C, C
             onAttack {
-              def moveList = []
-              def labelList = []
+              flip {
+                def moveList = []
+                def labelList = []
 
-              moveList.addAll(defending.topPokemonCard.moves);
-              labelList.addAll(defending.topPokemonCard.moves.collect{it.name})
+                moveList.addAll(defending.topPokemonCard.moves);
+                labelList.addAll(defending.topPokemonCard.moves.collect{it.name})
 
-              def move=choose(moveList, labelList, "Which move do you want to use")
-              def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
-              attack (move as Move)
-              bef.unregisterItself(bg().em())
+                def move=choose(moveList, labelList, "Which move do you want to use")
+                def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
+                attack (move as Move)
+                bef.unregisterItself(bg().em())
+              }
             }
           }
 
@@ -2589,13 +2585,9 @@ public enum TeamRocketReturns implements LogicCardInfo {
           weakness PSYCHIC
           pokeBody "Strikes Back", {
             text "If Rocket’s Hitmonchan ex is your Active Pokémon and is damaged by an opponent’s attack (even if Rocket’s Hitmonchan ex is Knocked Out), put 2 damage counters on the Attacking Pokémon."
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if(self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                  bc "$self Strikes Back!"
-                  directDamage 20, (ef.attacker as PokemonCardSet)
-                }
-              }
+            ifActiveAndDamagedByAttackBody(delegate) {
+              bc "$self Strikes Back!"
+              directDamage 20, (ef.attacker as PokemonCardSet)
             }
           }
           move "Mach Punch", {

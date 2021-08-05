@@ -664,14 +664,9 @@ public enum UltraPrism implements LogicCardInfo {
           weakness WATER
           bwAbility "Incandescent Body", {
             text "If this Pokémon is your Active Pokémon and is damaged by an opponent’s attack (even if this Pokémon is Knocked Out), the Attacking Pokémon is now Burned."
-            damage 20
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if(self.active && bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                  bc "Incandescent Body burns attacker"
-                  bg.dm().each{apply BURNED, it.from}
-                }
-              }
+            ifActiveAndDamagedByAttackBody(delegate) {
+              bc "Incandescent Body burns attacker"
+              apply BURNED, ef.attacker, SRC_ABILITY
             }
           }
           move "Fire Blaster", {
@@ -856,17 +851,9 @@ public enum UltraPrism implements LogicCardInfo {
             text "30 damage. During your opponent’s next turn, if this Pokémon is damaged by an attack (even if this Pokémon is Knocked Out), put 6 damage counters on the Attacking Pokémon."
             onAttack {
               damage 30
-              delayed (priority: LAST) {
-                before APPLY_ATTACK_DAMAGES, {
-                  if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})){
-                    bc "Spike Armor activates"
-                    directDamage(60, ef.attacker as PokemonCardSet)
-                  }
-                }
-                unregisterAfter 2
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
-                after FALL_BACK, self, {unregister()}
+              ifDamagedByAttackNextTurn(delegate) {
+                bc "Spike Armor activates"
+                directDamage(60, ef.attacker as PokemonCardSet)
               }
             }
           }
@@ -1996,7 +1983,7 @@ public enum UltraPrism implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if(!self.active && it.to == self){
+                  if(!self.active && it.to == self && it.dmg.value && it.notNoEffect){
                     bc "Solid Unit prevent all damage"
                     it.dmg=hp(0)
                   }
@@ -2185,7 +2172,9 @@ public enum UltraPrism implements LogicCardInfo {
             }
             onAttack {
               opp.all.each{
-                attachEnergyFrom(type:M,my.discard,my.all.select())
+                if (my.discard.filterByEnergyType(METAL)) {
+                  attachEnergyFrom type: M, my.discard, my.all.select()
+                }
               }
             }
           }
@@ -3000,10 +2989,12 @@ public enum UltraPrism implements LogicCardInfo {
         return supporter (this) {
           text "Heal 80 damage from 1 of your Pokémon that has any [G] Energy attached to it.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
-            heal 80, my.all.findAll({it.cards.energyCount(G)}).select()
+            def targets = my.all.findAll { it.cards.energyCount(G) && it.numberOfDamageCounters }
+            def tar = targets.select()
+            heal 80, tar
           }
           playRequirement{
-            assert my.all.findAll({it.cards.energyCount(G)})
+            assert my.all.any {it.cards.energyCount(G) && it.numberOfDamageCounters }
           }
         };
       case LILLIE_125:
@@ -3179,10 +3170,10 @@ public enum UltraPrism implements LogicCardInfo {
             boolean cond1 = self.stage2
             boolean cond2 = self.owner.pbg.all.findAll{it.stage2}.size() >= 3
             if(cond1 && cond2) {
-              return [[R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set]
+              return [valuesBasicEnergy() as Set, valuesBasicEnergy() as Set, valuesBasicEnergy() as Set, valuesBasicEnergy() as Set]
             }
             else if(cond1) {
-              return [[R, D, F, G, W, Y, L, M, P] as Set]
+              return [[R, D, F, G, W, Y, L, M, P, C] as Set]
             }
             else {
               return [[C] as Set]
