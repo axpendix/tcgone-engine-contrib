@@ -1772,7 +1772,7 @@ public enum MajesticDawn implements LogicCardInfo {
           weakness W, PLUS10
           move "Flare", {
             text "20 damage. "
-            energyCost F
+            energyCost R
             onAttack {
               damage 20
             }
