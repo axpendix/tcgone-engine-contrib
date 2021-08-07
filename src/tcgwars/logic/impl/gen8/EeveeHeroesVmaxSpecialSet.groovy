@@ -98,12 +98,16 @@ public enum EeveeHeroesVmaxSpecialSet implements LogicCardInfo {
         move "Max Explosion", {
           text "100× damage. Discard the top 5 cards of your deck. This attack does 100 damage for each Energy card you discarded in this way."
           energyCost R, C, C
-          attackRequirement {}
-          onAttack {
-            damage 100
+            attackRequirement {
+              assert my.deck
+            }
+            onAttack {
+              def list = my.deck.subList(0, 5).discard()
+              damage 100 * list.filterByType(ENERGY).size()
+            }
           }
-        }
-      };
+
+        };
       case VAPOREON_VMAX_2:
       return evolution (this, from:"Vaporeon V", hp:HP320, type:W, retreatCost:2) {
         weakness L
