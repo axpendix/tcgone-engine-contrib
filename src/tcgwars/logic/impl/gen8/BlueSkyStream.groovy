@@ -184,9 +184,10 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Continuous Spin", {
           text "20× damage. Flip a coin until you get tails. This attack does 20 damage for each heads."
           energyCost G
-          attackRequirement {}
           onAttack {
-            damage 20
+            flipUntilTails {
+              damage 20
+            }
           }
         }
       };
@@ -195,13 +196,29 @@ public enum BlueSkyStream implements LogicCardInfo {
         weakness R
         bwAbility "Solar Evolution", {
           text "When you attach an Energy from your hand to this Pokémon during your turn, you may use this Ability. Search your deck for a card that evolves from this Pokémon and put it onto this Pokémon to evolve it. Then, shuffle your deck."
-          actionA {
+          delayedA {
+            after ATTACH_ENERGY, self, {
+              if (ef.reason == PLAY_FROM_HAND
+                && bg.currentTurn == self.owner
+                && self.owner.pbg.deck
+                && lastUsedTurn != bg.turnCount
+                && confirm("Use $thisAbility?")) {
+                powerUsed()
+                def list = deck.search text, {
+                  it.cardTypes.is(EVOLUTION) && it.predecessor == self.name
+                }
+                if (list) {
+                  def card = list.first()
+                  evolve self, card, OTHER
+                }
+                shuffleDeck()
+              }
+            }
           }
         }
         move "Spinning Attack", {
           text "20 damage."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -212,13 +229,11 @@ public enum BlueSkyStream implements LogicCardInfo {
         weakness R
         bwAbility "Fluff Barrage", {
           text "This Pokémon may attack twice a turn. (If the first attack Knocks Out your opponent's Active Pokémon, you may attack again after your opponent chooses a new Active Pokémon.)"
-          actionA {
-          }
+          barrage self, delegate
         }
         move "Spinning Attack", {
           text "60 damage."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -230,15 +245,15 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Rally Back", {
           text "30+ damage. If any of your Pokémon were Knocked Out by damage from an attack from your opponent's Pokémon during their last turn, this attack does 90 more damage."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 30
+            if (my.lastKnockoutByOpponentDamageTurn == bg.turnCount - 1)
+              damage 50
           }
         }
         move "Solar Beam", {
           text "100 damage."
           energyCost G, G, C
-          attackRequirement {}
           onAttack {
             damage 100
           }
@@ -250,7 +265,6 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Scratch", {
           text "20 damage."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -262,15 +276,18 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Return", {
           text "30 damage. You may draw cards until you have 6 cards in your hand."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 30
+            def count = 6 - my.hand.size()
+            if (count > 0
+              && confirm("Draw until you have 6 cards in your hand?")) {
+              draw count
+            }
           }
         }
         move "Whip Smash", {
           text "70 damage."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 70
           }
@@ -282,17 +299,17 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Absorb Life", {
           text "30 damage. Heal 30 damage from this Pokémon."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 30
+            heal 30, self
           }
         }
         move "Shadow Claw", {
           text "120 damage. Discard a random card from your opponent's hand."
           energyCost G, G, C
-          attackRequirement {}
           onAttack {
             damage 120
+            discardRandomCardFromOpponentsHand()
           }
         }
       };
@@ -302,15 +319,16 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Missing Forest", {
           text "40× damage. This attack does 40 damage for each Supporter card in your opponent's discard pile."
           energyCost G, C
-          attackRequirement {}
+          attackRequirement {
+            assert opp.discard.any { it.cardTypes.is(SUPPORTER) } : "No Supporter cards in your opponent's discard pile"
+          }
           onAttack {
-            damage 40
+            damage 40 * opp.discard.findAll({ it.cardTypes.is(SUPPORTER) }).size()
           }
         }
         move "Max Tree", {
           text "180 damage."
           energyCost G, G, C
-          attackRequirement {}
           onAttack {
             damage 180
           }
@@ -322,7 +340,6 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Rollout", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -334,7 +351,6 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Live Coal", {
           text "30 damage."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
