@@ -488,7 +488,6 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Tongue Slap", {
           text "10 damage."
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -496,7 +495,6 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Wave Splash", {
           text "20 damage."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -507,33 +505,33 @@ public enum BlueSkyStream implements LogicCardInfo {
         weakness L
         bwAbility "Shell Armor", {
           text "This Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
-          actionA {
-          }
+          reducedDamageFromAttacksAbility self, 30, delegate
         }
         move "Aqua Split", {
           text "60 damage. This attack also does 30 damage to 2 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 60
+            multiDamage opp.bench, 2, 30, text
           }
         }
       };
       case GYARADOS_V_20:
       return basic (this, hp:HP220, type:W, retreatCost:3) {
         weakness L
-        move "Lose Temper", {
+        move "Get Angry", {
           text "20× damage. This attack does 20 damage for each damage counter on this Pokémon."
           energyCost W, W, C
-          attackRequirement {}
+          attackRequirement {
+            assert self.numberOfDamageCounters : "No damage counters on $self"
+          }
           onAttack {
-            damage 20
+            damage 20 * self.numberOfDamageCounters
           }
         }
         move "Heavy Storm", {
           text "180 damage."
           energyCost W, W, W, C
-          attackRequirement {}
           onAttack {
             damage 180
           }
@@ -545,15 +543,14 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Hyper Beam", {
           text "120 damage. Discard an Energy from your opponent's Active Pokémon."
           energyCost W, W, C
-          attackRequirement {}
           onAttack {
             damage 120
+            discardDefendingEnergyAfterDamage()
           }
         }
         move "Max Tyrant", {
           text "240 damage."
           energyCost W, W, W, C
-          attackRequirement {}
           onAttack {
             damage 240
           }
@@ -565,9 +562,9 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Reckless Charge", {
           text "20 damage. Flip a coin. If tails, this Pokémon also does 10 damage to itself."
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 20
+            flipTails { damage 10, self }
           }
         }
       };
@@ -577,15 +574,20 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Powder Snow", {
           text "30 damage. Your opponent's Active Pokémon is now Asleep."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 30
+            applyAfterDamage ASLEEP
           }
         }
         move "Daruma Headbutt", {
           text "130 damage. If this Pokemon has any damage counters on it, this attack can be used for [W]."
-          energyCost W, W, C
-          attackRequirement {}
+          energyCost W
+          // TODO: How does this work with metronome/foul play?
+          attackRequirement {
+            if (!self.numberOfDamageCounters)  {
+              assert self.cards.energySufficient(W, W, C) : "Not enough Energy"
+            }
+          }
           onAttack {
             damage 130
           }
@@ -597,15 +599,20 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Element Chain", {
           text " Look at the top 6 cards of your deck and attach any number of Energy cards you find there to your Pokémon in any way you like. Shuffle the other cards back into your deck."
           energyCost W
-          attackRequirement {}
+          attackRequirement {
+            assert my.deck : "Your deck is empty"
+          }
           onAttack {
-
+            def top6List = my.deck.subList 0, 6
+            def selectedEnergyList = top6List.select text, { ENERGY in it.cardTypes }
+            selectedEnergyList.each {
+              attachEnergy my.all.select("Attach $it.name to?"), it
+            }
           }
         }
         move "Icy Snow", {
           text "30 damage."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -614,17 +621,20 @@ public enum BlueSkyStream implements LogicCardInfo {
       case WISHIWASHI_25:
       return basic (this, hp:HP030, type:W, retreatCost:1) {
         weakness L
-        bwAbility "School Strength", {
+        bwAbility "Group Power", {
           text "If this Pokémon has at least 3 [W] Energy attached, it gets +150 HP."
-          actionA {
+          getterA GET_FULL_HP, self, { holder ->
+            if (self.cards.energyCount(W) >= 3) {
+              holder.object += hp 150
+            }
           }
         }
-        move "School Blast", {
+        move "Schooling Shot", {
           text "30+ damage. This attack does 30 more damage for each basic Energy attached to this Pokémon."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
+            damage 30 * self.cards.basicEnergyCardCount()
           }
         }
       };
