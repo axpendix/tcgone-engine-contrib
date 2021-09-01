@@ -316,7 +316,7 @@ public enum BlueSkyStream implements LogicCardInfo {
       case TREVENANT_VMAX_8:
       return evolution (this, from:"Trevenant V", hp:HP320, type:G, retreatCost:3) {
         weakness R
-        move "Missing Forest", {
+        move "Missing in the Forest", {
           text "40× damage. This attack does 40 damage for each Supporter card in your opponent's discard pile."
           energyCost G, C
           attackRequirement {
