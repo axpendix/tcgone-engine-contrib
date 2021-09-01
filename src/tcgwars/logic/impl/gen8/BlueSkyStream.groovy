@@ -360,14 +360,16 @@ public enum BlueSkyStream implements LogicCardInfo {
       return evolution (this, from:"Vulpix", hp:HP120, type:R, retreatCost:2) {
         weakness W
         bwAbility "Nine-Tailed Secret Path", {
-          text "The Retreat Cost of each of your Pokémon that has any [R] Energy attached is less."
-          actionA {
+          text "The Retreat Cost of each of your Pokémon that has any [R] Energy attached is 2 less."
+          getterA GET_RETREAT_COST, BEFORE_LAST, { holder ->
+            if ((holder.effect.target as PokemonCardSet).cards.energyCount(R)) {
+              holder.object -= 2
+            }
           }
         }
         move "Flame Tail", {
           text "60 damage."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -379,9 +381,13 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Victory Dive", {
           text "30 damage. You may search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
+            if (my.deck && confirm(text)) {
+              def list = deck.search min:1, max:2, { true }
+              list.moveTo hidden:true, my.hand
+              shuffleDeck()
+            }
           }
         }
       };
@@ -391,9 +397,10 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Surprise Attack", {
           text "30 damage. Flip a coin. If tails, this attack does nothing."
           energyCost R
-          attackRequirement {}
           onAttack {
-            damage 30
+            flip {
+              damage 30
+            }
           }
         }
       };
@@ -403,7 +410,6 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Light Punch", {
           text "20 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -411,29 +417,34 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Fire Throw", {
           text "60× damage. Discard up to 2 basic Energy cards from your hand. This attack does 60 damage for each card you discarded in this way."
           energyCost R
-          attackRequirement {}
+          attackRequirement {
+            assert my.hand.basicEnergyCardCount() : "No basic Energy cards in your hand"
+          }
           onAttack {
-            damage 60
+            def list = my.hand.select min:1, max:2, text, { BASIC_ENERGY in it.cardTypes }
+            damage 60 * list.size()
           }
         }
       };
       case VOLCARONA_V_15:
       return basic (this, hp:HP210, type:R, retreatCost:2) {
         weakness W
-        move "Surging Flame", {
+        move "Surging Flames", {
           text "20+ damage. This attack does 20 more damage for each basic Energy card in your discard pile. Then, shuffle those cards into your deck."
           energyCost R
-          attackRequirement {}
           onAttack {
-            damage 20
+            def list = my.discard.findAll { BASIC_ENERGY in it.cardTypes }
+            damage 20 * list.size()
+            list.moveTo my.deck
+            if (list.notEmpty()) shuffleDeck()
           }
         }
         move "Fire Blast", {
           text "160 damage. Discard an Energy from this Pokémon."
           energyCost R, R, C
-          attackRequirement {}
           onAttack {
             damage 160
+            discardSelfEnergyAfterDamage()
           }
         }
       };
@@ -443,9 +454,12 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Singe", {
           text " Your opponent's Active Pokémon is now Burned."
           energyCost R
-          attackRequirement {}
+          attackRequirement {
+            def defendingAlreadyBurned = BURNED in defending.specialConditions
+            assert !defendingAlreadyBurned : "Opponent's Active Pokemon is already Burned"
+          }
           onAttack {
-
+            apply BURNED
           }
         }
       };
@@ -455,15 +469,14 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Coil", {
           text "30 damage. During your next turn, this Pokémon's attacks do 90 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 30
+            increasedDamageDoneToDefending self, defending, 90, thisMove.name
           }
         }
         move "Burning Train", {
           text "120 damage."
           energyCost R, R, C
-          attackRequirement {}
           onAttack {
             damage 120
           }
