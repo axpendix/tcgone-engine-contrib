@@ -922,7 +922,7 @@ public enum SecretWonders implements LogicCardInfo {
             //Errata: Ghost Head can't cause Banette to Knock Out itself ... the attack has to leave Banette with at least 10 HP. "Put as many damage counters as you like on Banette. (You can't Knock Out Banette.) Put that many damage counters on the Defending Pokémon." (Jan 29, 2008 Pokemon Organized Play News)
             energyCost ()
             attackRequirement {
-              assert self.remainingHP.value == 10  : "You can't place any more damage counters in $self"
+              assert self.remainingHP.value != 10  : "You can't place any more damage counters on $self"
             }
             onAttack {
               def count = choose(1..((self.remainingHP.value / 10) - 1), "Put as many damage counters as you like on Banette")
