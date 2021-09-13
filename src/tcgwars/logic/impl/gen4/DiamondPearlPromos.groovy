@@ -3,6 +3,7 @@ package tcgwars.logic.impl.gen4
 import tcgwars.logic.TargetPlayer
 import tcgwars.logic.card.pokemon.EvolutionPokemonCard
 import tcgwars.logic.card.pokemon.LevelUpPokemonCard
+import tcgwars.logic.effect.Source
 import tcgwars.logic.effect.ability.Ability
 import tcgwars.logic.effect.ability.PokeBody
 import tcgwars.logic.effect.basic.LevelUp
@@ -14,11 +15,13 @@ import static tcgwars.logic.card.CardType.*
 import static tcgwars.logic.effect.EffectPriority.BEFORE_LAST
 import static tcgwars.logic.effect.EffectType.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.OTHER
+import static tcgwars.logic.effect.Source.*;
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
+
 
 import tcgwars.logic.card.*
 import tcgwars.logic.util.*;
@@ -651,7 +654,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             delayedA {
               before BEGIN_TURN, {
                 if (my.all.find {it.name == "Darkrai" }) {
-                  heal 10, self, POKEBODY
+                  heal 10, self, Source.POKEBODY
                 }
               }
             }
