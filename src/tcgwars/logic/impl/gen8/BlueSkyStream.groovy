@@ -201,15 +201,13 @@ public enum BlueSkyStream implements LogicCardInfo {
               if (ef.reason == PLAY_FROM_HAND
                 && bg.currentTurn == self.owner
                 && self.owner.pbg.deck
-                && lastUsedTurn != bg.turnCount
                 && confirm("Use $thisAbility?")) {
                 powerUsed()
                 def list = deck.search text, {
                   it.cardTypes.is(EVOLUTION) && it.predecessor == self.name
                 }
-                if (list) {
-                  def card = list.first()
-                  evolve self, card, OTHER
+                list.each {
+                  evolve self, it, OTHER
                 }
                 shuffleDeck()
               }
@@ -423,6 +421,9 @@ public enum BlueSkyStream implements LogicCardInfo {
           onAttack {
             def list = my.hand.select min:1, max:2, text, { BASIC_ENERGY in it.cardTypes }
             damage 60 * list.size()
+            afterDamage {
+              list.discard()
+            }
           }
         }
       };
@@ -435,8 +436,10 @@ public enum BlueSkyStream implements LogicCardInfo {
           onAttack {
             def list = my.discard.findAll { BASIC_ENERGY in it.cardTypes }
             damage 20 * list.size()
-            list.moveTo my.deck
-            if (list.notEmpty()) shuffleDeck()
+            afterDamage {
+              list.moveTo my.deck
+              if (list.notEmpty()) shuffleDeck()
+            }
           }
         }
         move "Fire Blast", {
@@ -608,6 +611,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             selectedEnergyList.each {
               attachEnergy my.all.select("Attach $it.name to?"), it
             }
+            shuffleDeck()
           }
         }
         move "Icy Snow", {
