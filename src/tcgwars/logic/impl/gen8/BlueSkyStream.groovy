@@ -381,7 +381,7 @@ public enum BlueSkyStream implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 30
-            if (my.deck && confirm(text)) {
+            if (my.deck && confirm("Search your deck for up to 2 cards?")) {
               def list = deck.search min:1, max:2, { true }
               list.moveTo hidden:true, my.hand
               shuffleDeck()
