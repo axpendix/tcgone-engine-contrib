@@ -648,7 +648,6 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Rear Kick", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -656,7 +655,6 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Electro Ball", {
           text "30 damage."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -668,12 +666,16 @@ public enum BlueSkyStream implements LogicCardInfo {
         bwAbility "Dynamotor", {
           text "Once during your turn, you may attach a [L] Energy card from your discard pile to 1 of your Benched Pokémon."
           actionA {
+            checkLastTurn()
+            assert my.discard.filterByEnergyType(L)
+            powerUsed()
+            def list = my.discard.filterByEnergyType(L).select("Choose a [L] Energy Card to attach")
+            attachEnergy(my.bench.select(), list.first())
           }
         }
         move "Electro Ball", {
           text "50 damage."
           energyCost L, L, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -685,29 +687,47 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Thunder Shock", {
           text "40 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
           energyCost L
-          attackRequirement {}
           onAttack {
             damage 40
+            flip {
+              applyAfterDamage PARALYZED
+            }
           }
         }
         move "Electron Crush", {
           text "100+ damage. You may discard 3 [L] Energy from this Pokémon. If you do, this attack does 120 more damage."
           energyCost L, L, L, C
-          attackRequirement {}
           onAttack {
             damage 100
+            if(self.cards.energyCount(L) >= 3 && confirm ("Discard 3 [L] Energy from $self to deal 120 more damage?")) {
+              damage 120
+              discardSelfEnergyAfterDamage L, L, L
+            }
           }
         }
       };
       case PLUSLE_29:
       return basic (this, hp:HP070, type:L, retreatCost:1) {
         weakness F
+        globalAbility { Card thisCard ->
+          delayed (priority: LAST) {
+            after PROCESS_ATTACK_EFFECTS, {
+              if (ef.attacker.owner == thisCard.player && ef.attacker.name.contains("Minun")) {
+                bg.em().storeObject("Twins_Spark_${thisCard.player}", bg.turnCount)
+              }
+            }
+          }
+        }
         move "Twins Spark", {
           text "20+ damage. If your Minun used an attack during your last turn, this attack does 100 more damage."
           energyCost C
           attackRequirement {}
           onAttack {
             damage 20
+            def tc = bg.em().retrieveObject("Twins_Spark_${thisCard.player}") ?: -1
+            if (tc == bg.turnCount - 2) {
+              damage 100
+            }
           }
         }
       };
@@ -717,15 +737,11 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Call for Family", {
           text " Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Then, shuffle your deck."
           energyCost C
-          attackRequirement {}
-          onAttack {
-
-          }
+          callForFamily(basic:true, 2, delegate)
         }
         move "Static Shock", {
           text "20 damage."
           energyCost L
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -737,7 +753,6 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Ram", {
           text "20 damage."
           energyCost L
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -749,9 +764,12 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Punk Shock", {
           text "70 damage. You may leave your opponent's Active Pokémon Paralyzed . If you do, this Pokémon also does 70 damage to itself."
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 70
+            if(confirm("Deal 70 damage to $self in order to paralyze $defending ?")) {
+              damage 70, self
+              applyAfterDamage PARALYZED
+            }
           }
         }
       };
@@ -761,7 +779,6 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Static Shock", {
           text "20 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -772,6 +789,10 @@ public enum BlueSkyStream implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 120
+            multiDamage(opp.bench, 2, 40)
+            afterDamage {
+              discardAllSelfEnergy(L)
+            }
           }
         }
       };
