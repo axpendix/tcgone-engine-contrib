@@ -13,7 +13,7 @@ import static tcgwars.logic.groovy.TcgBuilders.copy
  * @author axpendix@hotmail.com
  * @author wertercatt@wertercatt.com
  */
-public enum DPTrainerKit implements LogicCardInfo {
+public enum DiamondPearlTrainerKit implements LogicCardInfo {
 
   BUIZEL_MANAPHY_1 ("Buizel", "1", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
   FLOATZEL_MANAPHY_2 ("Floatzel", "2", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
@@ -47,7 +47,7 @@ public enum DPTrainerKit implements LogicCardInfo {
   protected Rarity rarity;
   protected String collectionLineNo;
 
-  WorldCollection(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+  DiamondPearlTrainerKit(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
     this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
     this.name = name;
     this.rarity = rarity;
@@ -76,7 +76,7 @@ public enum DPTrainerKit implements LogicCardInfo {
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.DP_Trainer_KIT;
+    return tcgwars.logic.card.Collection.Diamond_Pearl_Trainer_Kit;
   }
 
   @Override
