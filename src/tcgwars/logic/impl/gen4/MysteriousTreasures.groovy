@@ -3598,10 +3598,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost R, R, R, R
             attackRequirement {}
             onAttack {
+              discardSelfEnergy R,R
               damage 100, opp.all.select()
               cantUseAttack(thisMove, self)
-              afterDamage {
-                discardSelfEnergy R,R
               }
             }
           }
