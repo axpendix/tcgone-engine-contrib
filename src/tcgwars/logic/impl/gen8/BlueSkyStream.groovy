@@ -1,4 +1,8 @@
-package tcgwars.logic.impl.gen8;
+package tcgwars.logic.impl.gen8
+
+import tcgwars.logic.impl.gen5.BlackWhite
+import tcgwars.logic.impl.gen5.EmergingPowers
+import tcgwars.logic.impl.gen6.Xy;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -802,17 +806,25 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Dig Up", {
           text " Look at the top card of your deck. You may discard that card."
           energyCost F
-          attackRequirement {}
+          attackRequirement {
+            assert deck : "Deck is empty"
+          }
           onAttack {
-
+            def topCard = deck.subList 0, 1
+            topCard.showToMe(bg, text)
+            if(confirm("Discard $topCard from top of your deck?"))
+              topCard.discard()
           }
         }
         move "Everyone Rollout", {
           text "20× damage. This attack does 20 damage for each of your Benched Pokémon that has the Everyone Rollout attack."
           energyCost C, C
-          attackRequirement {}
+          attackRequirement {
+            assert my.bench.any { it.getTopPokemonCard().moves.any { it.name == "Everyone Rollout" } } :
+              "No benched Pokemon with the $thisMove.name move"
+          }
           onAttack {
-            damage 20
+            damage 20 * my.bench.findAll { it.getTopPokemonCard().moves.any { it.name == "Everyone Rollout" } }.size()
           }
         }
       };
@@ -822,9 +834,13 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Dig Uppercut", {
           text "60 damage. Put a card from your discard pile into your hand."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 60
+            afterDamage {
+              def card = my.discard.select text
+              card.showToOpponent bg, "Card moved from Opponent's discard pile to their hand."
+              card.moveTo my.hand
+            }
           }
         }
       };
@@ -834,17 +850,33 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Yoga Loop", {
           text " Put 2 damage counters on 1 of your opponent's Pokémon. If that Pokémon is Knocked Out by the effect of this attack, take another turn after this one. (Skip Pokémon Checkup.) If 1 of your Pokémon used Yoga Loop during your last turn, this attack can't be used."
           energyCost C, C
-          attackRequirement {}
+          attackRequirement {
+            // TODO: lastTurnMove doesn't clear if End Turn is selected
+            assert self.owner.pbg.lastTurnMove != thisMove.name : "If 1 of your Pokémon used $thisMove.name during your last turn, this attack can't be used"
+          }
           onAttack {
-
+            def tar = opp.all.select "Put 2 damage counters on 1 of your opponent's Pokemon"
+            directDamage 20, tar
+            afterDamage {
+              if (tar.slatedToKO) {
+                delayed(priority: BEFORE_LAST) {
+                  before BETWEEN_TURNS, {
+                    prevent()
+                    bg.turnCount += 1
+                    draw 1
+                    bc "$thisMove.name started a new turn!"
+                    unregister()
+                  }
+                }
+              }
+            }
           }
         }
         move "Smash Uppercut", {
           text "100 damage. This attack's damage isn't affected by Resistance."
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
-            damage 100
+            noResistanceDamage 100, defending
           }
         }
       };
@@ -854,7 +886,6 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Smack", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -869,14 +900,18 @@ public enum BlueSkyStream implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
+            if (opp.bench) sw defending, opp.bench.oppSelect("Select new active.")
+            switchYourActive()
           }
         }
         move "Ancient Seal", {
           text " Put damage counters on your opponent's Active Pokémon until its remaining HP is 60."
           energyCost F, F
-          attackRequirement {}
+          attackRequirement {
+            assert defending.getRemainingHP(bg) > 60 : "Opponent's Active Pokémon's HP is already 60 or lower"
+          }
           onAttack {
-
+            directDamage defending.remainingHP.value - 60, defending
           }
         }
       };
@@ -886,17 +921,23 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Strafe", {
           text "20 damage. You may switch this Pokémon with 1 of your Benched Pokémon."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
+            switchYourActive may:true
           }
         }
         move "Earthen Roar", {
           text "120 damage. Move all Energy from this Pokémon to your Benched Pokémon in any way you like."
           energyCost F, F, C
-          attackRequirement {}
           onAttack {
             damage 120
+            afterDamage {
+              if(my.bench.notEmpty) {
+                self.cards.filterByType(ENERGY).each {
+                  energySwitch(self, my.bench.select("Move $it to?"), it)
+                }
+              }
+            }
           }
         }
       };
@@ -906,7 +947,6 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Beat", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -914,7 +954,6 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Rollout", {
           text "30 damage."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -926,15 +965,14 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Split Spiral Punch", {
           text "40 damage. Your opponent's Active Pokémon is now Confused."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 40
+            applyAfterDamage CONFUSED
           }
         }
         move "Strength", {
           text "130 damage."
           energyCost F, F, C
-          attackRequirement {}
           onAttack {
             damage 130
           }
@@ -945,17 +983,18 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Shred", {
           text "50 damage. This attack's damage isn't affected by any effects on your opponent's Active Pokémon."
           energyCost C, C
-          attackRequirement {}
           onAttack {
-            damage 50
+            shredDamage 50
           }
         }
         move "Dragon Gale", {
           text "250 damage. This attack also does 20 damage to each of your Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W, W, L
-          attackRequirement {}
           onAttack {
             damage 250
+            my.bench.each {
+              damage 20, it
+            }
           }
         }
       };
@@ -964,7 +1003,6 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Gnaw", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -972,7 +1010,6 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Headbutt", {
           text "30 damage."
           energyCost R, W
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -983,9 +1020,11 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Hard Roll", {
           text "50 damage. Flip a coin. If heads, during your opponent's next turn, prevent all damage from and effects of attacks done to this Pokémon."
           energyCost R, W
-          attackRequirement {}
           onAttack {
             damage 50
+            flip {
+              preventAllEffectsNextTurn()
+            }
           }
         }
       };
@@ -994,14 +1033,18 @@ public enum BlueSkyStream implements LogicCardInfo {
         bwAbility "Intimidating Roar", {
           text "Once during your turn, you may have your opponent switch their Active Pokémon with 1 of their Benched Pokémon."
           actionA {
+            checkLastTurn()
+            assert opp.bench
+            powerUsed()
+            sw opp.active, opp.bench.oppSelect("Select new Active Pokémon."), SRC_ABILITY
           }
         }
         move "Dragon Savage", {
           text "100+ damage. If your opponent's Active Pokémon already has any damage counters on it, this attack does 120 more damage."
           energyCost R, W
-          attackRequirement {}
           onAttack {
             damage 100
+            if (defending.numberOfDamageCounters) damage 120
           }
         }
       };
@@ -1010,17 +1053,34 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Dragon Pulse", {
           text "40 damage. Discard the top 2 cards of your deck."
           energyCost L
-          attackRequirement {}
           onAttack {
             damage 40
+            deck.subList(0, 2).discard()
           }
         }
         move "Spiral Burst", {
           text "20+ damage. You may discard up to 2 basic [R] Energy or up to 2 basic [L] Energy from this Pokémon. This attack does 80 more damage for each card you discarded in this way."
           energyCost R, L
-          attackRequirement {}
           onAttack {
             damage 20
+            def selectedEnergy = self.cards.select(min:0, max:2, "You may discard up to 2 basic [R] Energy or up to 2 basic [L] Energy from this Pokémon", { Card card ->
+              card instanceof BasicEnergyCard && (card.asEnergyCard().containsType(R) || card.asEnergyCard().containsType(L))
+            }, bg.currentTurn, { CardList list ->
+              def typeMap = ["R": 0, "L": 0]
+              list.each {
+                if(it.asEnergyCard().containsType(R)) typeMap.R += 1
+                else if (it.asEnergyCard().containsType(L)) typeMap.L += 1
+              }
+              // Cannot discard both R and L Energy https://compendium.pokegym.net/ruling/1596/
+              (!typeMap.R && !typeMap.L) || (typeMap.R && !typeMap.L) || (!typeMap.R && typeMap.L)
+            })
+
+            if (selectedEnergy) {
+              damage 80 * selectedEnergy.size()
+              afterDamage {
+                selectedEnergy.discard()
+              }
+            }
           }
         }
       };
@@ -1029,14 +1089,37 @@ public enum BlueSkyStream implements LogicCardInfo {
         bwAbility "Blue Sky Wave", {
           text "Once during your turn, you may discard your hand and draw 3 cards."
           actionA {
+            checkLastTurn()
+            powerUsed()
+            my.hand.discard()
+            draw 3
           }
         }
         move "Max Burst", {
           text "20+ damage. Discard any amount of basic [R] Energy or any amount of basic [L] Energy from this Pokémon. This attack does 80 more damage for each card you discarded in this way."
           energyCost R, L
-          attackRequirement {}
           onAttack {
             damage 20
+            def selectedEnergy = self.cards.select(min:0, max:self.cards.filterByType(BASIC_ENERGY).size(),
+              "You may discard up to 2 basic [R] Energy or up to 2 basic [L] Energy from this Pokémon",
+              { Card card ->
+              card instanceof BasicEnergyCard && (card.asEnergyCard().containsType(R) || card.asEnergyCard().containsType(L))
+            }, bg.currentTurn, { CardList list ->
+              def typeMap = ["R": 0, "L": 0]
+              list.each {
+                if(it.asEnergyCard().containsType(R)) typeMap.R += 1
+                else if (it.asEnergyCard().containsType(L)) typeMap.L += 1
+              }
+              // Cannot discard both R and L Energy https://compendium.pokegym.net/ruling/1596/
+              (!typeMap.R && !typeMap.L) || (typeMap.R && !typeMap.L) || (!typeMap.R && typeMap.L)
+            })
+
+            if (selectedEnergy) {
+              damage 80 * selectedEnergy.size()
+              afterDamage {
+                selectedEnergy.discard()
+              }
+            }
           }
         }
       };
@@ -1045,7 +1128,6 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Bite", {
           text "30 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -1053,9 +1135,12 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Judgment Surge", {
           text " This attack does 40 damage to 1 of your opponent's Pokémon for each Prize card your opponent has taken. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost G, F, C
-          attackRequirement {}
+          attackRequirement {
+            assert opp.prizeCardSet.takenCount : "Opponent has not taken any Prize cards yet"
+          }
           onAttack {
-
+            def tar = opp.all.select text
+            damage 40 * opp.prizeCardSet.takenCount, tar
           }
         }
       };
@@ -1064,15 +1149,17 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Shell Trap", {
           text "30 damage. During your opponent's next turn, if this Pokémon is damaged by an attack (even if this Pokémon is Knocked Out) , put 8 damage counters on the Attacking Pokémon."
           energyCost R, F
-          attackRequirement {}
           onAttack {
             damage 30
+            ifDamagedByAttackNextTurn(delegate) {
+              bc "$thisMove.name activates"
+              directDamage 80, ef.attacker as PokemonCardSet
+            }
           }
         }
         move "Heat Crash", {
           text "80 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 80
           }
@@ -1083,17 +1170,21 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Acidic Mucus", {
           text "50× damage. This attack does 50 damage for each of your opponent's Pokémon that has an Ability."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert opp.all.any { it.abilities } : "None of your opponent's Pokémon has an Ability"
+          }
           onAttack {
-            damage 50
+            opp.all.findAll { it.abilities }.each {
+              damage 50, it
+            }
           }
         }
         move "Fighting Tackle", {
           text "80+ damage. If your opponent's Active Pokémon is a Pokémon V , this attack does 80 more damage."
           energyCost G, R
-          attackRequirement {}
           onAttack {
             damage 80
+            if (defending.pokemonV) damage 80
           }
         }
       };
@@ -1102,17 +1193,20 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Sticky Mucus", {
           text "70× damage. This attack does 70 damage for each Special Energy attached to each of your opponent's Pokémon."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert opp.all.any { it.cards.filterByType(SPECIAL_ENERGY) } : "None of your opponent's Pokémon has Special Energy attached"
+          }
           onAttack {
-            damage 70
+            def pokemonWithSpecialEnergy = opp.all.findAll { it.cards.filterByType(SPECIAL_ENERGY) }
+            damage 70 * pokemonWithSpecialEnergy.size()
           }
         }
         move "Fighting Tackle", {
           text "80+ damage. If your opponent's Active Pokémon is a Pokémon V , this attack does 80 more damage."
           energyCost G, R
-          attackRequirement {}
           onAttack {
             damage 80
+            if (defending.pokemonV) damage 80
           }
         }
       };
@@ -1121,7 +1215,6 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Hammer In", {
           text "30 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -1129,9 +1222,8 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Dragon Energy", {
           text "240- damage. This attack does 20 less damage for each damage counter on this Pokémon."
           energyCost G, G, R
-          attackRequirement {}
           onAttack {
-            damage 240
+            damage 240 - 20 * self.numberOfDamageCounters
           }
         }
       };
@@ -1141,15 +1233,14 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Drain Slap", {
           text "30 damage. Heal 30 damage from this Pokémon."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
+            heal 30, self
           }
         }
         move "Gentle Slap", {
           text "70 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 70
           }
@@ -1160,15 +1251,29 @@ public enum BlueSkyStream implements LogicCardInfo {
         weakness F
         bwAbility "Oval Adept", {
           text "Prevent all damage done to each of your Pokémon that has the Everyone Rollout attack by attacks from Pokémon VMAX."
-          actionA {
+          delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if (it.to.owner == self.owner
+                  && it.from.owner == self.owner.opposite
+                  && it.from.pokemonVMAX
+                  && it.dmg.value && it.notNoEffect) {
+                  bc "$name reduces damage"
+                  it.dmg = hp(0)
+                }
+              }
+            }
           }
         }
         move "Everyone Rollout", {
           text "20× damage. This attack does 20 damage for each of your Benched Pokémon that has the Everyone Rollout attack."
           energyCost C, C, C
-          attackRequirement {}
+          attackRequirement {
+            assert my.bench.any { it.getTopPokemonCard().moves.any { it.name == "Everyone Rollout" } } :
+              "No benched Pokemon with the $thisMove.name move"
+          }
           onAttack {
-            damage 20
+            damage 20 * my.bench.findAll { it.getTopPokemonCard().moves.any { it.name == "Everyone Rollout" } }.size()
           }
         }
       };
@@ -1178,7 +1283,6 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Rear Kick", {
           text "20 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -1186,9 +1290,11 @@ public enum BlueSkyStream implements LogicCardInfo {
         move "Wild Dive", {
           text "30× damage. This attack does 30 damage for each Energy attached to your opponent's Active Pokémon."
           energyCost C, C
-          attackRequirement {}
+          attackRequirement {
+            assert defending.energyCards : "Opponent's Active Pokémon has no Energy attached"
+          }
           onAttack {
-            damage 30
+            damage 30 * defending.energyCards.size()
           }
         }
       };
@@ -1199,34 +1305,37 @@ public enum BlueSkyStream implements LogicCardInfo {
           "if you played this Lucky Ice Pop from your hand" +
           "put this card into your hand instead of the discard pile."
         onPlay {
+          heal 20, active
+          flip {
+            delayed {
+              before DISCARD, {
+                if (ef.card == thisCard) {
+                  prevent()
+                  moveCard thisCard, my.hand
+                  unregister()
+                }
+              }
+            }
+          }
         }
-        playRequirement{
+        playRequirement {
+          assert my.active.numberOfDamageCounters : "Active Pokémon has no damage counters on it"
         }
       };
       case GREAT_BALL_57:
-      return itemCard (this) {
-        text "Look at the top 7 cards of your deck. You may reveal a Pokémon you find there and put it into your hand. Shuffle the other cards back into your deck."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy (EmergingPowers.GREAT_BALL_93, this);
       case TOY_CATCHER_58:
       return itemCard (this) {
         text "Choose 1 of your opponent's Benched Pokémon with 50 HP or less and switch it with their Active Pokémon."
         onPlay {
+          sw opp.active, opp.bench.select(thisCard.cardText)
         }
-        playRequirement{
+        playRequirement {
+          assert opp.bench.any { it.remainingHP.value <= 50 } : "Opponent has no Benched Pokémon with 50 HP or less remaining"
         }
       };
       case SWITCH_59:
-      return itemCard (this) {
-        text "Switch your Active Pokémon with 1 of your Benched Pokémon."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy(BlackWhite.SWITCH_104, this)
       case RUBBERY_GLOVES_60:
       return pokemonTool (this) {
         text "The attacks of the Pokémon this card is attached to do 30 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
@@ -1259,14 +1368,7 @@ public enum BlueSkyStream implements LogicCardInfo {
         }
       };
       case SHAUNA_63:
-      return supporter (this) {
-        text "Shuffle your hand into your deck. Then" +
-          "draw 5 cards."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy(Xy.SHAUNA_127, this)
       case SCHOOLBOY_64:
       return supporter (this) {
         text "Draw 2 cards. If your opponent has exactly 1" +
@@ -1274,8 +1376,13 @@ public enum BlueSkyStream implements LogicCardInfo {
           "or 5 Prize cards remaining" +
           "draw 2 more cards."
         onPlay {
+          draw 2
+          def count = opp.prizeCardSet.remainingCount
+          if (count == 1 || count == 3 || count == 5)
+            draw 2
         }
-        playRequirement{
+        playRequirement {
+          assert deck : "Deck is empty"
         }
       };
       case ZINNIA_S_RESOLVE_65:
@@ -1298,18 +1405,7 @@ public enum BlueSkyStream implements LogicCardInfo {
         }
       };
       case AURORA_ENERGY_67:
-      return specialEnergy (this, [[C]]) {
-        text "You can attach this card to 1 of your Pokémon only if you discard another card from your hand. As long as this card is attached to a Pokémon" +
-          "it provides every type of Energy but provides only 1 Energy at a time."
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      };
+      return copy (SwordShield.AURORA_ENERGY_186, this);
       case TREVENANT_V_68:
       return copy (TREVENANT_V_7, this);
       case VOLCARONA_V_69:
@@ -1349,22 +1445,7 @@ public enum BlueSkyStream implements LogicCardInfo {
       case ZINNIA_S_RESOLVE_86:
       return copy (ZINNIA_S_RESOLVE_65, this);
       case FROSLASS_87:
-      return evolution (this, from:"Snorunt", hp:HP090, type:W, retreatCost:1) {
-        weakness M
-        bwAbility "Frost Over", {
-          text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may attach a [W] Energy card from your discard pile to 1 of your Pokémon."
-          actionA {
-          }
-        }
-        move "Crystal Breath", {
-          text "90 damage. During your next turn, this Pokémon can't attack."
-          energyCost W, C
-          attackRequirement {}
-          onAttack {
-            damage 90
-          }
-        }
-      };
+      return copy (ChillingReign.FROSLASS_36, this);
       case TOY_CATCHER_88:
       return copy (TOY_CATCHER_58, this);
       case STORMY_MOUNTAIN_RANGE_89:
