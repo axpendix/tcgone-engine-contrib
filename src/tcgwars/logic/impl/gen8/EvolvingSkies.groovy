@@ -291,7 +291,7 @@ enum EvolvingSkies implements LogicCardInfo {
 
   @Override
   tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.EvolvingSkies;
+    return tcgwars.logic.card.Collection.EVOLVING_SKIES;
   }
 
   @Override
