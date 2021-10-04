@@ -252,8 +252,7 @@ enum EvolvingSkies implements LogicCardInfo {
   TURFFIELD_STADIUM_234("Turffield Stadium", "234", Rarity.SECRET, [TRAINER, STADIUM]),
   LIGHTNING_ENERGY_235("Lightning Energy", "235", Rarity.SECRET, [ENERGY, BASIC_ENERGY]),
   DARKNESS_ENERGY_236("Darkness Energy", "236", Rarity.SECRET, [ENERGY, BASIC_ENERGY]),
-  METAL_ENERGY_237("Metal Energy", "237", Rarity.SECRET, [ENERGY, BASIC_ENERGY]),
-  ;
+  METAL_ENERGY_237("Metal Energy", "237", Rarity.SECRET, [ENERGY, BASIC_ENERGY]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
