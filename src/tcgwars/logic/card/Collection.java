@@ -157,6 +157,7 @@ public enum Collection {
   SHINING_FATES(435, "SHF", "gen8.ShiningFates"),
   BATTLE_STYLES(436, "BST", "gen8.BattleStyles"),
   CHILLING_REIGN(437, "CRE", "gen8.ChillingReign"),
+  EVOLVING_SKIES(438, "EVS", "gen8.EvolvingSkies"),
 
   //POKEMOD
   POKEMOD_BASE_SET(910, "MODBS", "pokemod.PokemodBaseSet"),
