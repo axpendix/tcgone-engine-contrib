@@ -226,6 +226,16 @@ class TcgStatics {
       cards.moveTo newLocation
     }
   }
+  static moveSelfEnergyAfterDamage(PokemonCardSet newPcs, Type...types=C) {
+    def pcs = Target.YOUR_ACTIVE.getSingleTarget(bg)
+    def cards = selectEnergy(pcs, types)
+    afterDamage {
+      cards.each {
+        energySwitch pcs, newPcs, it, true
+      }
+      bc "$cards moved from $pcs to $newPcs"
+    }
+  }
   /**
    * Selects Energy of specified Type from the opponent's active {@link PokemonCardSet} before damage, then discards it
    * after damage. Should only be used for {@link Move}s

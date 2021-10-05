@@ -1,4 +1,6 @@
-package tcgwars.logic.impl.gen8;
+package tcgwars.logic.impl.gen8
+
+import tcgwars.logic.effect.gm.Attack;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -28,7 +30,9 @@ import tcgwars.logic.effect.blocking.*;
 import tcgwars.logic.effect.event.*;
 import tcgwars.logic.effect.getter.*;
 import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import tcgwars.logic.util.*
+
+import static tcgwars.logic.groovy.TcgStatics.reduceDamageNextTurn;
 
 /**
  * @author lithogenn@gmail.com
@@ -191,13 +195,18 @@ public enum EeveeHeroes implements LogicCardInfo {
         weakness R
         bwAbility "Vise Coach", {
           text "Damage from the attacks of your Single Strike Pokémon isn't affected by Resistance on your opponent's Active Pokémon."
-          actionA {
+          delayedA {
+            before APPLY_RESISTANCE, { Attack ef ->
+              if (ef.attacker.owner == self.owner && ef.attacker.singleStrike && ef.getResolvedTarget(bg, e).owner == ef.attacker.owner.opposite) {
+                bc text
+                prevent()
+              }
+            }
           }
         }
         move "Seismic Toss", {
           text "110 damage."
           energyCost G, G, C
-          attackRequirement {}
           onAttack {
             damage 110
           }
@@ -209,14 +218,19 @@ public enum EeveeHeroes implements LogicCardInfo {
         bwAbility "Greening Cells", {
           text "Once during your turn, you may search your deck for a [G] Energy card and attach it to 1 of your Pokémon. Then, shuffle your deck. If you use this Ability, your turn ends."
           actionA {
+            checkLastTurn()
+            assert deck : "Your deck is empty"
+            powerUsed()
+            attachEnergyFrom type:G, deck, my.all
+            usingThisAbilityEndsTurn delegate
           }
         }
         move "Leaf Blade", {
           text "90+ damage. Flip a coin. If heads, this attack does 60 more damage."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 90
+            flip { damage 60 }
           }
         }
       };
@@ -226,17 +240,19 @@ public enum EeveeHeroes implements LogicCardInfo {
         move "Grass Knot", {
           text "60× damage. This attack does 60 damage for each in your opponent's Active Pokémon's Retreat Cost."
           energyCost G, C
-          attackRequirement {}
+          attackRequirement {
+            assert defending.retreatCost : "Opponent's Active Pokémon has no Retreat Cost"
+          }
           onAttack {
-            damage 60
+            damage 60 * defending.retreatCost
           }
         }
         move "Max Leaf", {
           text "170 damage. Heal 30 damage from this Pokémon."
           energyCost G, G, C
-          attackRequirement {}
           onAttack {
             damage 170
+            heal 30, self
           }
         }
       };
@@ -246,9 +262,9 @@ public enum EeveeHeroes implements LogicCardInfo {
         move "Grass Nibble", {
           text "10 damage. Discard a [G] Energy from your opponent's Active Pokémon."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 10
+            discardDefendingEnergyAfterDamage G
           }
         }
       };
@@ -258,15 +274,14 @@ public enum EeveeHeroes implements LogicCardInfo {
         move "Trip Over", {
           text "10+ damage. Flip a coin. If heads, this attack does 20 more damage."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 10
+            flip { damage 20 }
           }
         }
         move "Seed Bomb", {
           text "60 damage."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -278,15 +293,17 @@ public enum EeveeHeroes implements LogicCardInfo {
         move "Healing Circle", {
           text " Heal all damage from each of your Benched Pokémon. Then, shuffle this Pokémon and all cards attached to it into your deck."
           energyCost C, C
-          attackRequirement {}
           onAttack {
-
+            my.bench.each {
+              healAll it
+            }
+            self.cards.moveTo deck
+            removePCS self
           }
         }
         move "Razor Leaf", {
           text "120 damage."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 120
           }
@@ -298,7 +315,6 @@ public enum EeveeHeroes implements LogicCardInfo {
         move "Bug Bite", {
           text "20 damage."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -310,7 +326,6 @@ public enum EeveeHeroes implements LogicCardInfo {
         move "Bug Bite", {
           text "30 damage."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -318,9 +333,9 @@ public enum EeveeHeroes implements LogicCardInfo {
         move "Bubble Ball Hurl", {
           text "110 damage. Move an Energy from this Pokémon to 1 of your Benched Pokémon."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 110
+            moveSelfEnergyAfterDamage my.bench.select("Move an Energy from $self to which Benched Pokémon?")
           }
         }
       };
@@ -330,9 +345,9 @@ public enum EeveeHeroes implements LogicCardInfo {
         move "Blot", {
           text "10 damage. Heal 10 damage from this Pokémon."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 10
+            heal 10, self
           }
         }
       };
@@ -342,14 +357,19 @@ public enum EeveeHeroes implements LogicCardInfo {
         bwAbility "Cotton Transport", {
           text "Once during your turn, you may search your deck for up to 2 basic Energy cards, reveal them, and put them into your hand. Then, shuffle your deck."
           actionA {
+            checkLastTurn()
+            assert deck : "Your deck is empty"
+            powerUsed()
+            def cards = deck.search max:2, cardTypeFilter(ENERGY)
+            cards.moveTo hand
           }
         }
         move "Cotton Guard", {
           text "30 damage. During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
           energyCost G
-          attackRequirement {}
           onAttack {
             damage 30
+            reduceDamageNextTurn hp(30), thisMove
           }
         }
       };
@@ -359,17 +379,19 @@ public enum EeveeHeroes implements LogicCardInfo {
         move "Burning Breath", {
           text "20 damage. Search your deck for a [R] Energy card and attach it to this Pokémon. Then, shuffle your deck."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
+            afterDamage {
+              attachEnergyFrom type:R, deck, self
+            }
           }
         }
         move "Scorching Column", {
           text "120 damage. Your opponent's Active Pokémon is now Burned."
           energyCost R, R, C
-          attackRequirement {}
           onAttack {
             damage 120
+            applyAfterDamage BURNED
           }
         }
       };
@@ -379,7 +401,6 @@ public enum EeveeHeroes implements LogicCardInfo {
         move "Live Coal", {
           text "10 damage."
           energyCost R
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -387,7 +408,6 @@ public enum EeveeHeroes implements LogicCardInfo {
         move "Flare", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -399,7 +419,6 @@ public enum EeveeHeroes implements LogicCardInfo {
         move "Rock Throw", {
           text "40 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -407,9 +426,12 @@ public enum EeveeHeroes implements LogicCardInfo {
         move "Body Splash", {
           text "150 damage. Flip 3 coins. For each tails, discard an Energy from this Pokémon."
           energyCost R, R, C
-          attackRequirement {}
           onAttack {
             damage 150
+            def count = 0
+            flip 3, {}, { count++  }
+            def types = (0..count).collect{C} as Type[]
+            discardSelfEnergyAfterDamage types
           }
         }
       };
@@ -419,17 +441,19 @@ public enum EeveeHeroes implements LogicCardInfo {
         move "Raging Fang", {
           text "10× damage. This attack does 10 damage for each damage counter on your Benched Single Strike Pokémon."
           energyCost R, C
-          attackRequirement {}
+          attackRequirement {
+            assert my.bench.any { it.singleStrike && it.numberOfDamageCounters } : "No Single Striek Pokémon on your Bench have damage counters on them"
+          }
           onAttack {
-            damage 10
+            damage 10 * my.bench.count { it.singleStrike && it.numberOfDamageCounters }.toInteger()
           }
         }
         move "Heat Tackle", {
           text "120 damage. This Pokémon also does 30 damage to itself."
           energyCost R, R, C
-          attackRequirement {}
           onAttack {
             damage 120
+            damage 30, self
           }
         }
       };
@@ -439,17 +463,19 @@ public enum EeveeHeroes implements LogicCardInfo {
         move "Triple Draw", {
           text " Draw 3 cards."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert deck : "Your deck is empty"
+          }
           onAttack {
-
+            draw 3
           }
         }
         move "Splash Jump", {
           text "90 damage. Switch this Pokémon with 1 of your Benched Pokémon."
           energyCost W, W, C
-          attackRequirement {}
           onAttack {
             damage 90
+            switchYourActive()
           }
         }
       };
@@ -459,17 +485,22 @@ public enum EeveeHeroes implements LogicCardInfo {
         move "Aqua Liner", {
           text " This attack does 20 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W
-          attackRequirement {}
+          attackRequirement {
+            assert opp.bench : "Opponent's Bench is empty"
+          }
           onAttack {
-
+            damage 20, opp.bench.select(text)
           }
         }
         move "Everyone Rollout", {
           text "20× damage. This attack does 20 damage for each of your Benched Pokémon that has the Everyone Rollout attack."
           energyCost C, C
-          attackRequirement {}
+          attackRequirement {
+            assert my.bench.any { it.getTopPokemonCard().moves.any { it.name == "Everyone Rollout" } } :
+              "No benched Pokemon with the $thisMove.name move"
+          }
           onAttack {
-            damage 20
+            damage 20 * my.bench.findAll { it.getTopPokemonCard().moves.any { it.name == "Everyone Rollout" } }.size()
           }
         }
       };
@@ -479,15 +510,18 @@ public enum EeveeHeroes implements LogicCardInfo {
         move "Diving Rescue", {
           text " Put 3 in any combination of Pokémon and Supporter cards from your discard pile into your hand."
           energyCost W
-          attackRequirement {}
+          attackRequirement {
+            assert my.discard.any { it.cardTypes.is(POKEMON) || it.cardTypes.is(SUPPORTER) } : "No Pokémon or Supporter cards in your discard pile"
+          }
           onAttack {
-
+            def cards = my.discard.select count:3, text, { it.cardTypes.is(POKEMON) || it.cardTypes.is(SUPPORTER) }
+            cards.showToOpponent bg, "Pokémon and/or Supporter cards opponent moved from discard pile to their hand."
+            cards.moveTo hand
           }
         }
         move "Surf", {
           text "90 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 90
           }
@@ -499,15 +533,14 @@ public enum EeveeHeroes implements LogicCardInfo {
         move "Bounce", {
           text "20 damage. Switch this Pokémon with 1 of your Benched Pokémon."
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 20
+            switchYourActive()
           }
         }
         move "Wave Splash", {
           text "80 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 80
           }
@@ -519,7 +552,6 @@ public enum EeveeHeroes implements LogicCardInfo {
         move "Mud-Slap", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -527,7 +559,6 @@ public enum EeveeHeroes implements LogicCardInfo {
         move "Playful Kick", {
           text "30 damage."
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -539,7 +570,6 @@ public enum EeveeHeroes implements LogicCardInfo {
         move "Mud-Slap", {
           text "30 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -547,9 +577,9 @@ public enum EeveeHeroes implements LogicCardInfo {
         move "Energy Loop", {
           text "80 damage. Put an Energy attached to this Pokémon into your hand."
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 80
+            moveSelfEnergyAfterDamage hand
           }
         }
       };
@@ -559,14 +589,20 @@ public enum EeveeHeroes implements LogicCardInfo {
         bwAbility "Muddy Maker", {
           text "Once during your turn, you may attach a [W] or a [F] Energy card from your hand to 1 of your Pokémon."
           actionA {
+            checkLastTurn()
+            assert hand.energyCount(W) || hand.energyCount(F) : "No [W] or [F] Energy in your hand"
+            powerUsed()
+            attachEnergyFrom hand, my.all
           }
         }
         move "Earthquake", {
           text "180 damage. This attack also does 20 damage to each of your Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 180
+            bench.each {
+              damage 20, it
+            }
           }
         }
       };
@@ -576,9 +612,8 @@ public enum EeveeHeroes implements LogicCardInfo {
         move "Flail Around", {
           text "10× damage. Flip 3 coins. This attack does 10 damage for each heads."
           energyCost W
-          attackRequirement {}
           onAttack {
-            damage 10
+            flip 3, { damage 10 }
           }
         }
       };
@@ -587,15 +622,19 @@ public enum EeveeHeroes implements LogicCardInfo {
         weakness L
         bwAbility "Droplet Protection", {
           text "Whenever your opponent plays a Supporter card from their hand, prevent all effects of that card done to you or your hand."
-          actionA {
+          def messageDisplayed = false
+          onActivate {
+            if (!messageDisplayed) {
+              bc "$thisAbility is not impelmented."
+              messageDisplayed = true
+            }
           }
         }
         move "Double Smash", {
           text "70× damage. Flip 2 coins. This attack does 70 damage for each heads."
           energyCost W, C
-          attackRequirement {}
           onAttack {
-            damage 70
+            flip 2, { damage 70 }
           }
         }
       };
@@ -605,10 +644,7 @@ public enum EeveeHeroes implements LogicCardInfo {
         move "Freezing Ascension", {
           text " Search your deck for a card that evolves from this Pokémon and put it onto this Pokémon to evolve it. Then, shuffle your deck."
           energyCost W
-          attackRequirement {}
-          onAttack {
-
-          }
+          ascension delegate
         }
         move "Whiteout", {
           text "120 damage. Discard any Stadium in play."
