@@ -2070,4 +2070,17 @@ class TcgStatics {
     }
   }
 
+  static ascension(Object delegate) {
+    delegate.attackRequirement {
+      assert deck : "Your deck is empty"
+      assert bg.gm().hasEvolution(delegate.self.name) : "This Pokémon does not evolve"
+    }
+    delegate.onAttack {
+      def evolution = deck.search { it.cardTypes.is(EVOLUTION) && (it as EvolutionPokemonCard).predecessor == delegate.self.name }
+      if (evolution) {
+        evolve delegate.self, evolution.first(), OTHER
+      }
+    }
+  }
+
 }

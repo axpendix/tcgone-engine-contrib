@@ -1799,15 +1799,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           move "Ascension", {
             text "Search your deck for a card that evolves from Magikarp and put it on Magikarp. (This counts as evolving Magikarp.) Shuffle your deck afterward."
             energyCost W, C
-            attackRequirement {
-              assert my.deck
-            }
-            onAttack {
-              def nam=self.name
-              def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-              if(tar) evolve(self, tar.first(), OTHER)
-              shuffleDeck()
-            }
+            ascension delegate
           }
 
         };

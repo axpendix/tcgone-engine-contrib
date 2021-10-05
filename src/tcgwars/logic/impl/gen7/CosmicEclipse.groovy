@@ -2547,15 +2547,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Ascension", {
             text "Search your deck for a card that evolves from this Pokémon and put it onto this Pokémon to evolve it. Then, shuffle your deck."
             energyCost P
-            attackRequirement {
-              assert my.deck : "Your deck is empty."
-            }
-            onAttack {
-              def nam=self.name
-              def tar = my.deck.search("Choose a card that evolves from $nam.", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-              if(tar) evolve(self, tar.first(), OTHER)
-              shuffleDeck()
-            }
+            ascension delegate
           }
         };
       case COSMOG_100:

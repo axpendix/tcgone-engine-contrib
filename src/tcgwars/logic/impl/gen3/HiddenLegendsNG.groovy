@@ -1420,10 +1420,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         move "Ascension", {
           text "Search your deck for a card that evolves from Feebas and put it on Feebas. (This counts as evolving Feebas.) Shuffle your deck afterward."
           energyCost W
-          attackRequirement {}
-          onAttack {
-
-          }
+          ascension delegate
         }
       };
       case GULPIN_62:
@@ -1784,11 +1781,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         }
         move "Ascension", {
           text "Search your deck for a card that evolves from Vulpix and put it on Vulpix. (This counts as evolving Vulpix.) Shuffle your deck afterward."
-          energyCost
-          attackRequirement {}
-          onAttack {
-
-          }
+          ascension delegate
         }
       };
       case WHISMUR_82:

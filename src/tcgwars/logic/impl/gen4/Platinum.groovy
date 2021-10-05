@@ -1685,16 +1685,7 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
           weakness R
           move "Ascension", {
             text "Search your deck for a card that evolves from Cascoon and put it onto Cascoon. (This counts as evolving Cascoon.) Shuffle your deck afterward."
-            energyCost ()
-            attackRequirement {
-              assert my.deck : "Your deck is empty"
-            }
-            onAttack {
-              def nam=self.name
-              def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-              if(tar) evolve(self, tar.first(), OTHER)
-              shuffleDeck()
-            }
+            ascension delegate
           }
           move "Poison Thread", {
             text "20 damage. The Defending Pokémon is now Poisoned."
@@ -2189,16 +2180,7 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
           weakness R, PLUS20
           move "Ascension", {
             text "Search your deck for a card that evolves from Silcoon and put it onto Silcoon. (This counts as evolving Silcoon.) Shuffle your deck afterward."
-            energyCost ()
-            attackRequirement {
-              assert my.deck : "Your deck is empty"
-            }
-            onAttack {
-              def nam=self.name
-              def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-              if(tar) evolve(self, tar.first(), OTHER)
-              shuffleDeck()
-            }
+            ascension delegate
           }
           move "Sticky String", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
