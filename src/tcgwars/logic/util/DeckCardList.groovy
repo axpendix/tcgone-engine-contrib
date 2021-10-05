@@ -39,7 +39,7 @@ class DeckCardList extends CardList {
     CardList cards = TcgStatics.bg().ownClient().selectCard(new CardSelectUIRequestBuilder()
       .setMinMax(min, max).setInfo(info).setCards(this).setCustomCardFilter(filter as CustomCardFilter))
       .setType(CardList.CardListType.TEMPORARY)
-    this.shuffle()
+    TcgStatics.shuffleDeck()
     return cards
   }
 
@@ -50,7 +50,7 @@ class DeckCardList extends CardList {
       .setMinMax(min, max).setInfo(info).setCards(this).setCustomCardFilter(filter as CustomCardFilter)
       .setCustomPassFilter(passFilter as CardSelectUIRequestBuilder.CustomPassFilter))
       .setType(CardList.CardListType.TEMPORARY)
-    this.shuffle()
+    TcgStatics.shuffleDeck()
     return cards
   }
 
