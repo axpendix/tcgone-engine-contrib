@@ -9,30 +9,13 @@ import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
 import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
-import static tcgwars.logic.effect.EffectPriority.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
+import tcgwars.logic.card.*
+import tcgwars.logic.effect.basic.*
 import tcgwars.logic.util.*
-
-import static tcgwars.logic.groovy.TcgStatics.reduceDamageNextTurn;
 
 /**
  * @author lithogenn@gmail.com
@@ -360,7 +343,8 @@ public enum EeveeHeroes implements LogicCardInfo {
             checkLastTurn()
             assert deck : "Your deck is empty"
             powerUsed()
-            def cards = deck.search max:2, cardTypeFilter(ENERGY)
+            def cards = deck.search max:2, cardTypeFilter(BASIC_ENERGY)
+            cards.showToOpponent bg, text
             cards.moveTo hand
           }
         }
@@ -442,7 +426,7 @@ public enum EeveeHeroes implements LogicCardInfo {
           text "10× damage. This attack does 10 damage for each damage counter on your Benched Single Strike Pokémon."
           energyCost R, C
           attackRequirement {
-            assert my.bench.any { it.singleStrike && it.numberOfDamageCounters } : "No Single Striek Pokémon on your Bench have damage counters on them"
+            assert my.bench.any { it.singleStrike && it.numberOfDamageCounters } : "No Single Strike Pokémon on your Bench have damage counters on them"
           }
           onAttack {
             damage 10 * my.bench.count { it.singleStrike && it.numberOfDamageCounters }.toInteger()
@@ -495,13 +479,7 @@ public enum EeveeHeroes implements LogicCardInfo {
         move "Everyone Rollout", {
           text "20× damage. This attack does 20 damage for each of your Benched Pokémon that has the Everyone Rollout attack."
           energyCost C, C
-          attackRequirement {
-            assert my.bench.any { it.getTopPokemonCard().moves.any { it.name == "Everyone Rollout" } } :
-              "No benched Pokemon with the $thisMove.name move"
-          }
-          onAttack {
-            damage 20 * my.bench.findAll { it.getTopPokemonCard().moves.any { it.name == "Everyone Rollout" } }.size()
-          }
+          damageForEachCardWithMove thisMove.name, 20, my.bench, delegate
         }
       };
       case AZUMARILL_17:
@@ -592,7 +570,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             checkLastTurn()
             assert hand.energyCount(W) || hand.energyCount(F) : "No [W] or [F] Energy in your hand"
             powerUsed()
-            attachEnergyFrom hand, my.all
+            attachEnergyFrom type:[W, F], hand, my.all
           }
         }
         move "Earthquake", {
@@ -895,8 +873,8 @@ public enum EeveeHeroes implements LogicCardInfo {
           energyCost P
           onAttack {
             damage 30
-            defendingAttacksCostsMore(defending, [C])
-            defendingRetreatsCostsMore(defending, [C])
+            defendingAttacksCostsMore defending, [C]
+            defendingRetreatsCostsMore defending, [C]
           }
         }
       };
@@ -982,9 +960,12 @@ public enum EeveeHeroes implements LogicCardInfo {
         move "Precious Touch", {
           text " Attach an Energy from your hand to 1 of your Benched Pokémon. Then, heal 120 damage from that Pokémon."
           energyCost P
-          attackRequirement {}
+          attackRequirement {
+            assert hand.any { it.cardTypes.is ENERGY } : "No Energy in hand"
+          }
           onAttack {
-
+            def tarTuple = attachEnergyFrom hand, my.bench
+            heal 120, tarTuple.get(1) as PokemonCardSet
           }
         }
         move "Max Harmony", {
@@ -1065,24 +1046,7 @@ public enum EeveeHeroes implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 10
-
-            // Tried to make a static for this, failed, used in quite a few places though
-            def count = 1
-            def pcs = defending
-            def effTurn = bg.turnCount + 2
-            bc "If the Defending ${defending} is Knocked Out during ${self.owner}'s next turn, they'll take $count more Prize cards. (This effect can be removed by benching/evolving ${defending})"
-            delayed {
-              getter GET_GIVEN_PRIZES, BEFORE_LAST, pcs, {Holder holder ->
-                if (holder.object > 0 && effTurn == bg().turnCount) {
-                  bc "$thisMove gives the player $count more Prize cards."
-                  holder.object += count
-                }
-              }
-              after FALL_BACK, pcs, {unregister()}
-              after EVOLVE, pcs, {unregister()}
-              after DEVOLVE, pcs, {unregister()}
-              unregisterAfter 3
-            }
+            additionalPrizesIfDefendingKnockedOutNextTurn 1, delegate
           }
         }
       };

@@ -33,6 +33,8 @@ import tcgwars.logic.effect.basic.*
 import tcgwars.logic.effect.event.*
 import tcgwars.logic.effect.special.*
 
+import static tcgwars.logic.groovy.TcgStatics.damage
+
 /**
  * @author axpendix@hotmail.com
  */
@@ -1340,7 +1342,7 @@ class TcgStatics {
     }
     def info = "Attach ${params.type ?: ''} ${params.basic ? 'Basic' : ''} Energy to ${tostr}."
     def filter = { Card card ->
-      card.cardTypes.is(ENERGY) && (!params.basic || card.cardTypes.is(BASIC_ENERGY)) && (!params.type || card.asEnergyCard().containsTypePlain(params.type))
+      card.cardTypes.is(ENERGY) && (!params.basic || card.cardTypes.is(BASIC_ENERGY)) && (!params.type || params.type.each { card.asEnergyCard().containsTypePlain(it) })
     }
     if(from instanceof DeckCardList){
       list = from.search (max: count?:max, info, filter)
@@ -2077,6 +2079,44 @@ class TcgStatics {
         bluffing = false
         bg.em().storeObject("Dont_Bluff_Ever_$self.owner.opposite", true)
       }
+    }
+  }
+
+  static damageForEachCardWithMove(String moveName, Integer dmg, CardList cardList, Object attackDelegate) {
+    attackDelegate.attackRequirement {
+      assert cardList.any { it.cardTypes.is(POKEMON) && it.asPokemonCard().moves.any { it.name == moveName } } :
+        "No Pokémon with $moveName in the necessary location"
+    }
+    attackDelegate.onAttack {
+      damage dmg * cardList.findAll { it.cardTypes.is(POKEMON) && it.asPokemonCard().moves.any { it.name == moveName } }.size()
+    }
+  }
+
+  static damageForEachCardWithMove(String moveName, Integer dmg, PcsList pcsList, Object attackDelegate) {
+    attackDelegate.attackRequirement {
+      assert pcsList.any { it.getTopPokemonCard().moves.any { it.name == moveName } } :
+        "No Pokémon with $moveName in the necessary location"
+    }
+    attackDelegate.onAttack {
+      damage dmg * pcsList.findAll { it.getTopPokemonCard().moves.any { it.name == moveName } }.size()
+    }
+  }
+
+  static additionalPrizesIfDefendingKnockedOutNextTurn(Integer count, Object attackDelegate) {
+    PokemonCardSet pcs = attackDelegate.defending
+    def effTurn = bg.turnCount + 2
+    bc "If the Defending ${pcs} is Knocked Out during ${attackDelegate.self.owner}'s next turn, they'll take $count more Prize cards. (This effect can be removed by benching/evolving ${pcs})"
+    delayed {
+      getter GET_GIVEN_PRIZES, BEFORE_LAST, pcs, {Holder holder ->
+        if (holder.object > 0 && effTurn == bg().turnCount) {
+          bc "$attackDelegate.thisMove gives the player $count more Prize cards."
+          holder.object += count
+        }
+      }
+      after FALL_BACK, pcs, {unregister()}
+      after EVOLVE, pcs, {unregister()}
+      after DEVOLVE, pcs, {unregister()}
+      unregisterAfter 3
     }
   }
 
