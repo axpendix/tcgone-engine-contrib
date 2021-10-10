@@ -4552,8 +4552,10 @@ public enum CosmicEclipse implements LogicCardInfo {
           def eff
           onPlay {
             eff = delayed {
-              after PLAY_STADIUM, {
+              before ACTIVATE_STADIUM, {
                 if (!ef.cardToPlay.name.contains("Chaotic Swell")) {
+                  bc "$thisCard.name prevents $ef.cardToPlay.name from activating."
+                  prevent()
                   discard ef.cardToPlay
                   unregister() // this ensures self effect to be correctly unregistered
                 }

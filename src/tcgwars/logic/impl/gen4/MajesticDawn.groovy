@@ -1268,7 +1268,7 @@ public enum MajesticDawn implements LogicCardInfo {
           }
           move "Body Slam", {
             text "40 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-            energyCost G, G, G
+            energyCost G, G, C
             attackRequirement {}
             onAttack {
               damage 40
@@ -1772,7 +1772,7 @@ public enum MajesticDawn implements LogicCardInfo {
           weakness W, PLUS10
           move "Flare", {
             text "20 damage. "
-            energyCost F
+            energyCost R
             onAttack {
               damage 20
             }
