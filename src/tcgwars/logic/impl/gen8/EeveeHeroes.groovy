@@ -1180,7 +1180,9 @@ public enum EeveeHeroes implements LogicCardInfo {
           energyCost D, D, D, C
           onAttack {
             damage 150
-            opp.hand.shuffledCopy().subList(0, 1).discard()
+            if (opp.hand) {
+              opp.hand.shuffledCopy().subList(0, 1).discard()
+            }
           }
         }
       };

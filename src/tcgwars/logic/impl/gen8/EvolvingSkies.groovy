@@ -1,15 +1,21 @@
 package tcgwars.logic.impl.gen8
 
-import tcgwars.logic.card.*
-import tcgwars.logic.impl.gen3.TeamRocketReturns
-import tcgwars.logic.util.CardTypeSet
+import tcgwars.logic.effect.gm.Attack;
 
-import static tcgwars.logic.card.CardType.*
-import static tcgwars.logic.card.HP.*
-import static tcgwars.logic.card.Resistance.ResistanceType.MINUS30
-import static tcgwars.logic.card.Type.*
-import static tcgwars.logic.groovy.TcgBuilders.*
-import static tcgwars.logic.groovy.TcgStatics.damage;
+import static tcgwars.logic.card.HP.*;
+import static tcgwars.logic.card.Type.*;
+import static tcgwars.logic.card.CardType.*;
+import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.groovy.TcgStatics.*
+import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
+import static tcgwars.logic.effect.EffectType.*;
+import static tcgwars.logic.effect.Source.*
+import static tcgwars.logic.effect.special.SpecialConditionType.*
+import static tcgwars.logic.card.Resistance.ResistanceType.*
+
+import tcgwars.logic.card.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.util.*
 
 /**
  * @author
@@ -320,10 +326,7 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Astonish", {
             text "10 damage. Choose a random card from your opponent's hand. Your opponent reveals that card and shuffles it into their deck."
             energyCost COLORLESS, COLORLESS
-            attackRequirement {}
-            onAttack {
-              damage 10
-            }
+            astonish()
           }
         };
       case TROPIUS_6:
@@ -338,7 +341,6 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Seed Bomb", {
             text "20 damage. "
             energyCost GRASS, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -350,9 +352,9 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Dizzying Flower", {
             text "70 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Asleep. If tails, your opponent's Active Pokémon is now Confused."
             energyCost GRASS, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 70
+              flip 1, { applyAfterDamage ASLEEP }, { applyAfterDamage CONFUSED }
             }
           }
         };
@@ -362,7 +364,6 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Ram", {
             text "10 damage. "
             energyCost GRASS
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -370,9 +371,9 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Sharp Claws", {
             text "10+ damage. Flip a coin. If heads, this attack does 30 more damage."
             energyCost GRASS, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 10
+              flip { damage 30 }
             }
           }
         };
@@ -382,15 +383,14 @@ enum EvolvingSkies implements LogicCardInfo {
           move "X-Scissor", {
             text "30+ damage. Flip a coin. If heads, this attack does 60 more damage."
             energyCost GRASS, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 30
+              flip { damage 60 }
             }
           }
           move "Hammer In", {
             text "130 damage. "
             energyCost GRASS, GRASS, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 130
             }
@@ -420,7 +420,6 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Live Coal", {
             text "10 damage. "
             energyCost COLORLESS
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -432,7 +431,6 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Combustion", {
             text "30 damage. "
             energyCost COLORLESS
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -440,9 +438,9 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Rip Claw", {
             text "70 damage. Discard an Energy from your opponent's Active Pokémon."
             energyCost FIRE, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 70
+              discardDefendingEnergyAfterDamage()
             }
           }
         };
@@ -452,7 +450,6 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Rain Splash", {
             text "10 damage. "
             energyCost COLORLESS
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -464,15 +461,14 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Psybeam", {
             text "20 damage. Your opponent's Active Pokémon is now Confused."
             energyCost COLORLESS
-            attackRequirement {}
             onAttack {
               damage 20
+              applyAfterDamage CONFUSED
             }
           }
           move "Surf", {
             text "70 damage. "
             energyCost WATER, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 70
             }
@@ -484,7 +480,6 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Gentle Slap", {
             text "30 damage. "
             energyCost WATER, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -496,7 +491,6 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Wave Splash", {
             text "50 damage. "
             energyCost WATER, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -504,9 +498,10 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Poisonous Prison", {
             text "100 damage. Your opponent's Active Pokémon is now Poisoned. During your opponent's next turn, that Pokémon can't retreat."
             energyCost WATER, WATER, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 100
+              applyAfterDamage POISONED
+              cantRetreat defending
             }
           }
         };
@@ -530,7 +525,6 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Ram", {
             text "10 damage. "
             energyCost COLORLESS
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -538,7 +532,6 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Razor Fin", {
             text "20 damage. "
             energyCost WATER, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -548,19 +541,21 @@ enum EvolvingSkies implements LogicCardInfo {
         return evolution(this, from: "Carvanha", hp: HP120, type: W, retreatCost: 1) {
           weakness LIGHTNING
           move "Taunt", {
-            text " damage. Switch 1 of your opponent's Benched Pokémon with their Active Pokémon."
+            text "Switch 1 of your opponent's Benched Pokémon with their Active Pokémon."
             energyCost COLORLESS
-            attackRequirement {}
+            attackRequirement {
+              assert opp.bench : "Opponent has no Benched Pokémon"
+            }
             onAttack {
-              damage
+              switchYourOpponentsBenchedWithActive()
             }
           }
           move "Jet Bite", {
             text "120 damage. During your next turn, this Pokémon can't attack."
             energyCost WATER, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 120
+              cantAttackNextTurn self
             }
           }
         };
@@ -572,17 +567,20 @@ enum EvolvingSkies implements LogicCardInfo {
         return basic(this, hp: HP070, type: W, retreatCost: 1) {
           weakness LIGHTNING
           move "Synchrodraw", {
-            text " damage. Shuffle your hand into your deck. Then, draw a card for each card in your opponent's hand."
+            text "Shuffle your hand into your deck. Then, draw a card for each card in your opponent's hand."
             energyCost COLORLESS
-            attackRequirement {}
+            attackRequirement {
+              assert my.hand.getExcludedList(thisCard) || my.deck : "Hand and deck are empty"
+            }
             onAttack {
-              damage
+              hand.moveTo hidden:true,my.deck
+              shuffleDeck()
+              draw opp.hand.size()
             }
           }
           move "Water Gun", {
             text "20 damage. "
             energyCost COLORLESS
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -598,7 +596,6 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Mud-Slap", {
             text "10 damage. "
             energyCost COLORLESS
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -612,7 +609,6 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Tackle", {
             text "10 damage. "
             energyCost COLORLESS
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -620,7 +616,6 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Spinning Attack", {
             text "20 damage. "
             energyCost WATER, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -632,15 +627,14 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Frost Barrier", {
             text "80 damage. During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
             energyCost WATER, COLORLESS, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 80
+              reduceDamageNextTurn hp(30), thisMove
             }
           }
           move "Hammer In", {
             text "140 damage. "
             energyCost WATER, WATER, COLORLESS, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 140
             }
@@ -656,17 +650,19 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Ancient Freeze", {
             text "80 damage. If the Defending Pokémon is a Pokémon V or a Pokémon-GX, it can't attack during your opponent's next turn."
             energyCost WATER, COLORLESS, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 80
+              if (defending.pokemonV || defending.pokemonGX) {
+                cantAttackNextTurn defending
+              }
             }
           }
           move "Giga Impact", {
             text "220 damage. During your next turn, this Pokémon can't attack."
             energyCost WATER, WATER, COLORLESS, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 220
+              cantAttackNextTurn self
             }
           }
         };
@@ -682,7 +678,6 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Electro Ball", {
             text "10 damage. "
             energyCost LIGHTNING
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -694,15 +689,14 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Blinding Beam", {
             text "40 damage. During your opponent's next turn, if the Defending Pokémon tries to attack, your opponent flips a coin. If tails, that attack doesn't happen."
             energyCost LIGHTNING, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 40
+              sandAttack thisMove
             }
           }
           move "Electro Ball", {
             text "120 damage. "
             energyCost LIGHTNING, LIGHTNING, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 120
             }
@@ -720,9 +714,11 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Thunder Shock", {
             text "30 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
             energyCost LIGHTNING
-            attackRequirement {}
             onAttack {
               damage 30
+              afterDamage {
+                flipThenApplySC PARALYZED
+              }
             }
           }
         };
@@ -732,17 +728,37 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Primeval Beak", {
             text "30 damage. During your opponent's next turn, Energy cards can't be attached from your opponent's hand to the Defending Pokémon."
             energyCost LIGHTNING
-            attackRequirement {}
             onAttack {
               damage 30
+              targeted (defending) {
+                bc "During ${opp.owner.getPlayerUsername(bg)}'s next turn, Energy can't be attached from their hand to the Defending $defending. (This effect can be removed by evolving or benching ${defending}.)"
+                def pcs = defending
+                delayed {
+                  before ATTACH_ENERGY, pcs, {
+                    if (ef.reason == PLAY_FROM_HAND) {
+                      wcu "$thisMove: Can't attach energy to $pcs"
+                      prevent()
+                    }
+                  }
+                  unregisterAfter 2
+                  after FALL_BACK, pcs, {unregister()}
+                  after EVOLVE, pcs, {unregister()}
+                  after DEVOLVE, pcs, {unregister()}
+                }
+              }
             }
           }
           move "Mountain Swing", {
             text "180 damage. Discard the top 3 cards of your deck."
             energyCost LIGHTNING, LIGHTNING, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 180
+              afterDamage {
+                if (my.deck) {
+                  def discardCount = Math.min 3, my.deck.size()
+                  my.deck.subList(0, discardCount).discard()
+                }
+              }
             }
           }
         };
@@ -752,15 +768,16 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Spark Trap", {
             text "60 damage. During your opponent's next turn, if this Pokémon is damaged by an attack (even if it is Knocked Out), put 12 damage counters on the Attacking Pokémon."
             energyCost LIGHTNING
-            attackRequirement {}
             onAttack {
               damage 60
+              ifDamagedByAttackNextTurn delegate, {
+                directDamage 120, ef.attacker
+              }
             }
           }
           move "Max Impact", {
             text "200 damage. "
             energyCost LIGHTNING, COLORLESS, COLORLESS, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 200
             }
@@ -775,7 +792,6 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Pound", {
             text "10 damage. "
             energyCost COLORLESS
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -786,19 +802,21 @@ enum EvolvingSkies implements LogicCardInfo {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           move "Hypnosis", {
-            text " damage. Your opponent's Active Pokémon is now Asleep."
+            text "Your opponent's Active Pokémon is now Asleep."
             energyCost PSYCHIC
-            attackRequirement {}
             onAttack {
-              damage
+              apply ASLEEP
             }
           }
           move "Wake-Up Slap", {
             text "30+ damage. If your opponent's Active Pokémon is affected by a Special Condition, this attack does 90 more damage. Then, that Pokémon recovers from all Special Conditions."
             energyCost PSYCHIC
-            attackRequirement {}
             onAttack {
-              damage 3090
+              damage 30
+              if (defending.specialConditions) {
+                damage 90
+                clearSpecialCondition defending
+              }
             }
           }
         };
@@ -815,19 +833,22 @@ enum EvolvingSkies implements LogicCardInfo {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           move "Go and Collect", {
-            text " damage. Search your deck for a Trainer card, reveal it, and put it into your hand. Then, shuffle your deck."
+            text "Search your deck for a Trainer card, reveal it, and put it into your hand. Then, shuffle your deck."
             energyCost COLORLESS
-            attackRequirement {}
+            attackRequirement {
+              assert deck : "Your deck is empty"
+            }
             onAttack {
-              damage
+              def card = my.deck.search "Choose a Trainer card.", cardTypeFilter(TRAINER)
+              card.moveTo(my.hand)
             }
           }
           move "Corner", {
             text "40 damage. During your opponent's next turn, the Defending Pokémon can't retreat."
             energyCost PSYCHIC, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 40
+              cantRetreat defending
             }
           }
         };
@@ -836,17 +857,18 @@ enum EvolvingSkies implements LogicCardInfo {
           weakness LIGHTNING
           resistance FIGHTING, MINUS30
           move "Collect", {
-            text " damage. Draw a card."
+            text "Draw a card."
             energyCost COLORLESS
-            attackRequirement {}
+            attackRequirement {
+              assert deck : "Your deck is empty"
+            }
             onAttack {
-              damage
+              draw 1
             }
           }
           move "Gnaw", {
             text "10 damage. "
             energyCost PSYCHIC
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -859,9 +881,9 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Synchro Woofer", {
             text "30+ damage. If you have the same number of cards in your hand as your opponent, this attack does 80 more damage."
             energyCost PSYCHIC
-            attackRequirement {}
             onAttack {
               damage 30
+              if (opp.hand.size() == hand.size()) damage 80
             }
           }
         };
@@ -887,7 +909,6 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Flap", {
             text "10 damage. "
             energyCost COLORLESS
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -899,9 +920,9 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Tricky Steps", {
             text "30 damage. You may move an Energy from your opponent's Active Pokémon to 1 of their Benched Pokémon."
             energyCost COLORLESS
-            attackRequirement {}
             onAttack {
               damage 30
+              moveDefendingEnergyAfterDamage opp.bench
             }
           }
         };
@@ -919,7 +940,6 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Tackle", {
             text "30 damage. "
             energyCost FIGHTING, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -927,7 +947,6 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Mud Shot", {
             text "50 damage. "
             energyCost FIGHTING, FIGHTING, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -939,7 +958,6 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Hammer In", {
             text "120 damage. "
             energyCost FIGHTING, FIGHTING, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 120
             }
@@ -947,9 +965,9 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Sand Press", {
             text "220 damage. Discard 2 Energy from this Pokémon."
             energyCost FIGHTING, FIGHTING, FIGHTING, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 220
+              discardSelfEnergyAfterDamage C, C
             }
           }
         };
@@ -959,7 +977,6 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Mud-Slap", {
             text "10 damage. "
             energyCost FIGHTING
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -967,7 +984,6 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Rolling Tackle", {
             text "20 damage. "
             energyCost FIGHTING, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -977,17 +993,16 @@ enum EvolvingSkies implements LogicCardInfo {
         return evolution(this, from: "Roggenrola", hp: HP110, type: F, retreatCost: 4) {
           weakness GRASS
           move "Protect", {
-            text " damage. Flip a coin. If heads, during your opponent's next turn, prevent all damage from and effects of attacks done to this Pokémon."
+            text "Flip a coin. If heads, during your opponent's next turn, prevent all damage from and effects of attacks done to this Pokémon."
             energyCost FIGHTING
             attackRequirement {}
             onAttack {
-              damage
+              flip { preventAllEffectsNextTurn() }
             }
           }
           move "Boulder Crush", {
             text "60 damage. "
             energyCost FIGHTING, COLORLESS, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 60
             }
@@ -999,17 +1014,17 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Guard Press", {
             text "50 damage. During your opponent's next turn, this Pokémon takes 50 less damage from attacks (after applying Weakness and Resistance)."
             energyCost FIGHTING
-            attackRequirement {}
             onAttack {
               damage 50
+              reduceDamageNextTurn hp(50), thisMove
             }
           }
           move "Pressure Shot", {
             text "180 damage. This Pokémon also does 10 damage to itself for each damage counter on it."
             energyCost FIGHTING, COLORLESS, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 180
+              damage 10 * self.numberOfDamageCounters, self
             }
           }
         };
@@ -1019,7 +1034,6 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Stampede", {
             text "20 damage. "
             energyCost FIGHTING
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1027,7 +1041,6 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Tongue Slap", {
             text "50 damage. "
             energyCost FIGHTING, COLORLESS, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 50
             }
@@ -1039,15 +1052,15 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Shaky Wave", {
             text "60 damage. During your opponent's next turn, the Defending Pokémon's attacks cost [C] more, and its Retreat Cost is [C] more."
             energyCost FIGHTING
-            attackRequirement {}
             onAttack {
               damage 60
+              defendingAttacksCostsMore defending, [C]
+              defendingRetreatsCostsMore defending, [C]
             }
           }
           move "Hyper Voice", {
             text "160 damage. "
             energyCost FIGHTING, COLORLESS, COLORLESS, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 160
             }
@@ -1069,9 +1082,11 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Fake Out", {
             text "20 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
             energyCost DARKNESS
-            attackRequirement {}
             onAttack {
               damage 20
+              afterDamage {
+                flipThenApplySC PARALYZED
+              }
             }
           }
         };
@@ -1079,19 +1094,23 @@ enum EvolvingSkies implements LogicCardInfo {
         return evolution(this, from: "Nuzleaf", hp: HP150, type: D, retreatCost: 3) {
           weakness GRASS
           move "Shiftadieu", {
-            text " damage. If your opponent's Active Pokémon has any damage counters on it, put it and all attached cards into your opponent's hand."
+            text "If your opponent's Active Pokémon has any damage counters on it, put it and all attached cards into your opponent's hand."
             energyCost DARKNESS
-            attackRequirement {}
+            attackRequirement {
+              assert defending.numberOfDamageCounters : "Opponent's Active Pokémon has no damage counters on it"
+            }
             onAttack {
-              damage
+              defending.cards.moveTo opp.hand
             }
           }
           move "Nipping Cyclone", {
             text "130 damage. Discard a random card from your opponent's hand."
             energyCost DARKNESS, COLORLESS, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 130
+              if (opp.hand) {
+                opp.hand.shuffledCopy().subList(0, 1).discard()
+              }
             }
           }
         };
@@ -1101,9 +1120,9 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Hard Head", {
             text "10 damage. During your opponent's next turn, this Pokémon takes 10 less damage from attacks (after applying Weakness and Resistance)."
             energyCost DARKNESS
-            attackRequirement {}
             onAttack {
               damage 10
+              reduceDamageNextTurn hp(10), thisMove
             }
           }
         };
@@ -1113,7 +1132,6 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Headbutt", {
             text "40 damage. "
             energyCost COLORLESS, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -1121,9 +1139,11 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Shakedown", {
             text "90 damage. Discard a random card from your opponent's hand."
             energyCost DARKNESS, COLORLESS, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 90
+              if (opp.hand) {
+                opp.hand.shuffledCopy().subList(0, 1).discard()
+              }
             }
           }
         };
@@ -1185,7 +1205,6 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Scratch", {
             text "10 damage. "
             energyCost COLORLESS
-            attackRequirement {}
             onAttack {
               damage 10
             }
@@ -1197,7 +1216,6 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Slash", {
             text "40 damage. "
             energyCost COLORLESS
-            attackRequirement {}
             onAttack {
               damage 40
             }
@@ -1205,7 +1223,6 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Whap Down", {
             text "110 damage. "
             energyCost COLORLESS, COLORLESS, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 110
             }
@@ -1225,17 +1242,20 @@ enum EvolvingSkies implements LogicCardInfo {
         return basic(this, hp: HP060, type: C, retreatCost: 1) {
           weakness FIGHTING
           move "Lead", {
-            text " damage. Search your deck for a Supporter card, reveal it, and put it into your hand. Then, shuffle your deck."
+            text "Search your deck for a Supporter card, reveal it, and put it into your hand. Then, shuffle your deck."
             energyCost COLORLESS
-            attackRequirement {}
+            attackRequirement {
+              assert deck : "Your deck is empty"
+            }
             onAttack {
-              damage
+              def card = my.deck.search"Choose a Supporter card", cardTypeFilter(SUPPORTER)
+              card.showToOpponent bg, text
+              card.moveTo hand
             }
           }
           move "Tackle", {
             text "20 damage. "
             energyCost COLORLESS, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 20
             }
@@ -1247,7 +1267,6 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Tackle", {
             text "30 damage. "
             energyCost COLORLESS, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -1255,9 +1274,9 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Take Down", {
             text "80 damage. This Pokémon also does 20 damage to itself."
             energyCost COLORLESS, COLORLESS, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 80
+              damage 20, self
             }
           }
         };
@@ -1267,14 +1286,24 @@ enum EvolvingSkies implements LogicCardInfo {
           bwAbility "Intimidating Fang", {
             text "As long as this Pokémon is in the Active Spot, your opponent's Active Pokémon's attacks do 30 less damage (before applying Weakness and Resistance)."
             actionA {
+              delayed {
+                  after PROCESS_ATTACK_EFFECTS, {
+                    bg.dm().each {
+                      if (self.active && it.from.active && it.from.owner != self.owner && it.dmg.value && it.notNoEffect) {
+                        bc "$thisAbility -30"
+                        it.dmg -= hp(30)
+                      }
+                    }
+                  }
+                }
             }
           }
           move "Knock Away", {
             text "120+ damage. Flip a coin. If heads, this attack does 100 more damage."
             energyCost COLORLESS, COLORLESS, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 120
+              flip { damage 100 }
             }
           }
         };
@@ -1285,9 +1314,9 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Whirlwind", {
             text "10 damage. Your opponent switches their Active Pokémon with 1 of their Benched Pokémon."
             energyCost COLORLESS
-            attackRequirement {}
             onAttack {
               damage 10
+              switchYourOpponentsBenchedWithActive()
             }
           }
         };
@@ -1298,17 +1327,19 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Valiant Talons", {
             text "30+ damage. If your opponent's Active Pokémon is an Evolution Pokémon, this attack does 60 more damage."
             energyCost COLORLESS
-            attackRequirement {}
             onAttack {
               damage 30
+              if (defending.realEvolution) {
+                damage 60
+              }
             }
           }
           move "Brave Bird", {
             text "150 damage. This Pokémon also does 50 damage to itself."
             energyCost COLORLESS, COLORLESS, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 150
+              damage 50, self
             }
           }
         };
@@ -1317,19 +1348,23 @@ enum EvolvingSkies implements LogicCardInfo {
           weakness LIGHTNING
           resistance FIGHTING, MINUS30
           move "Tailwind Draw", {
-            text " damage. Draw a card. If you go second and it's your first turn, draw 3 more cards."
+            text "Draw a card. If you go second and it's your first turn, draw 3 more cards."
             energyCost COLORLESS
-            attackRequirement {}
+            attackRequirement {
+              assert deck : "Your deck is empty"
+            }
             onAttack {
-              damage
+              draw 1
+              if (bg.turnCount == 2) {
+                draw 3
+              }
             }
           }
           move "Surprise Attack", {
             text "20 damage. Flip a coin. If tails, this attack does nothing."
             energyCost COLORLESS
-            attackRequirement {}
             onAttack {
-              damage 20
+              flip { damage 20 }
             }
           }
         };
@@ -1340,9 +1375,9 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Quick Attack", {
             text "20+ damage. Flip a coin. If heads, this attack does 20 more damage."
             energyCost COLORLESS
-            attackRequirement {}
             onAttack {
               damage 20
+              flip { damage 20 }
             }
           }
         };
@@ -1353,17 +1388,17 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Clutch", {
             text "40 damage. During your opponent's next turn, the Defending Pokémon can't retreat."
             energyCost COLORLESS
-            attackRequirement {}
             onAttack {
               damage 40
+              cantRetreat defending
             }
           }
           move "Nitro Dive", {
             text "80+ damage. If this Pokémon has any [R] Energy attached, this attack does 80 more damage."
             energyCost COLORLESS, COLORLESS
-            attackRequirement {}
             onAttack {
               damage 80
+              if (self.cards.energyCount(R)) damage 80
             }
           }
         };

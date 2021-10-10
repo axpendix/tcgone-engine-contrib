@@ -523,7 +523,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
           energyCost F
           onAttack {
             damage 20
-            if (defending.evolution) damage 50
+            if (defending.realEvolution) damage 50
           }
         }
         move "Bullet Straight", {

@@ -225,7 +225,7 @@ class TcgStatics {
     def pcs = Target.YOUR_ACTIVE.getSingleTarget(bg)
     def cards = selectEnergy(pcs, types)
     afterDamage {
-      cards.moveTo newLocation
+
     }
   }
   static moveSelfEnergyAfterDamage(PokemonCardSet newPcs, Type...types=C) {
@@ -236,6 +236,31 @@ class TcgStatics {
         energySwitch pcs, newPcs, it, true
       }
       bc "$cards moved from $pcs to $newPcs"
+    }
+  }
+  static moveDefendingEnergyAfterDamage(def newLocation, Type...types=C) {
+    def pcs = Target.OPP_ACTIVE.getSingleTarget(bg)
+    def cards = selectEnergy(pcs, types)
+    def newPcs = null
+    if (newLocation instanceof PokemonCardSet) {
+      newPcs = newLocation
+    }
+    else if (newLocation instanceof PcsList) {
+      newPcs = newLocation.select "Move $cards to?"
+    }
+    else if (!(newLocation instanceof CardList)) {
+      throw new IllegalArgumentException("moveDefendingEnergyAfterDamage() newLocation=${newLocation} type not supported")
+    }
+    afterDamage {
+      if (newLocation instanceof CardList) {
+        cards.moveTo newLocation
+      }
+      else {
+        cards.each {
+          energySwitch pcs, newPcs as PokemonCardSet, it, true
+        }
+        bc "$cards moved from $pcs to $newPcs"
+      }
     }
   }
   /**
