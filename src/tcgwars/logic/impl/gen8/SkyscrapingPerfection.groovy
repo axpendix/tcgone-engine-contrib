@@ -6,6 +6,7 @@ import tcgwars.logic.effect.basic.Knockout
 import tcgwars.logic.impl.gen3.TeamRocketReturns
 import tcgwars.logic.impl.gen5.PlasmaStorm
 import tcgwars.logic.util.CardTypeSet
+import tcgwars.logic.util.TypeSet
 
 import static tcgwars.logic.card.CardType.*
 import static tcgwars.logic.card.HP.*
@@ -1288,11 +1289,21 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
       case DIGGING_GLOVES_60:
       return pokemonTool (this) {
         text "The attacks of the Pokémon this card is attached to do 30 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
+        def eff
         onPlay {reason->
+          eff = delayed {
+            after PROCESS_ATTACK_EFFECTS, {
+              bg.dm().each {
+                if (it.from == self && it.to.active && it.to.owner == self.owner.opposite && it.dmg.value) {
+                  it.dmg += hp(30)
+                  bc "$thisCard +30"
+                }
+              }
+            }
+          }
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          eff.unregister()
         }
       };
       case SINGLE_STRIKE_SCROLL_OF_THE_DRAGON_FANG_61:
@@ -1309,11 +1320,23 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
       return pokemonTool (this) {
         text "If the Pokémon this card is attached to has no Abilities" +
           "it takes 20 less damage from attacks from your opponent's Pokémon (after applying Weakness and Resistance)."
+        def eff
         onPlay {reason->
+          eff = delayed {
+            before APPLY_ATTACK_DAMAGES, {
+              if(self.abilities.isEmpty()) {
+                bg.dm().each{
+                  if(it.to == self && it.from.owner == self.owner.opposite && it.notNoEffect && it.dmg.value) {
+                    bc "$thisCard -20"
+                    it.dmg -= hp(20)
+                  }
+                }
+              }
+            }
+          }
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          eff.unregister()
         }
       };
       case RAIHAN_63:
@@ -1342,10 +1365,23 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
       case CRYSTAL_CAVE_66:
       return stadium (this) {
         text "Once during each player's turn" +
-          "that player may heal 30 damage from each of their Pokémon and Pokémon."
+          "that player may heal 30 damage from each of their [M] Pokémon and [N] Pokémon."
+        def lastTurn = 0
+        def actions = []
         onPlay {
+          actions.add(action("Stadium: $thisCard") {
+            assert lastTurn != bg.turnCount : "You have already used $thisCard this turn"
+            def targets = my.all.findAll { it.types.containsAny([M, N] as TypeSet) && it.numberOfDamageCounters }
+            assert targets : "You have no [M] or [N] Pokémon with damage counters"
+            bc "Used $thisCard"
+            lastTurn = bg.turnCount
+            targets.each {
+              heal 30, it
+            }
+          })
         }
         onRemoveFromPlay{
+          actions.each { bg.gm().unregisterAction(it) }
         }
       };
       case TWIN_ENERGY_67:

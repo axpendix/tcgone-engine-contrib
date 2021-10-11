@@ -1,10 +1,12 @@
 package tcgwars.logic.impl.gen8
 
+import tcgwars.logic.effect.EffectPriority
 import tcgwars.logic.effect.gm.Attack;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.effect.EffectPriority.*;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
@@ -1336,7 +1338,7 @@ public enum EeveeHeroes implements LogicCardInfo {
         text "Search your deck for a card that evolves from 1 of your Pokémon and put it onto that Pokémon to evolve it. Then" +
           "shuffle your deck. You can use this card during your first turn or on a Pokémon that was put into play this turn. Your turn ends."
         onPlay {
-          def nameList = my.all.findAll { bg.em().hasEvolution(it.name) }.collect { it.name }
+          def nameList = my.all.findAll { bg.gm().hasEvolution(it.name) }.collect { it.name }
           def card = deck.search "Select card that evolves from any of $nameList", { it.cardTypes.is(EVOLUTION) && nameList.contains(it.predecessor) }
           if(card) {
             def list = my.all.findAll { it.name == card.first().predecessor }
@@ -1356,9 +1358,21 @@ public enum EeveeHeroes implements LogicCardInfo {
         text "You can play this card only if you took it as a face-down Prize card" +
           "before you put it into your hand. Search your deck for a Pokémon and put it onto your Bench. Then" +
           "shuffle your deck."
-        onPlay {
-        }
-        playRequirement{
+        globalAbility {
+          delayed {
+            after TAKE_PRIZE, {
+              if(thisCard.player.pbg.prizeCardSet.notEmpty
+              && !thisCard.player.pbg.prizeCardSet.allVisible
+              && ef.card != null && ef.card == thisCard
+              && thisCard.player.pbg.bench.notFull
+              && thisCard.player.pbg.hand.contains(thisCard)
+              && confirm("Would you like to use $thisCard? $cardText")) {
+                bc "${thisCard.player.getPlayerUsername(bg)}"
+                def card = deck.search cardTypeFilter(POKEMON)
+                benchPCS card.first(), OTHER
+              }
+            }
+          }
         }
       };
       case ELEMENTAL_BADGE_62:
@@ -1366,12 +1380,23 @@ public enum EeveeHeroes implements LogicCardInfo {
         text "If the Pokémon this card is attached to has 'Flareon V'" +
           "Vaporeon V" +
           "or 'Jolteon V' in its name" +
-          "its attacks cost less."
+          "its attacks cost [C] less."
+        def eff
         onPlay {reason->
+          eff = getter GET_MOVE_LIST, BEFORE_LAST, self, { h ->
+            if (["Flareon V", "Vaporeon V", "Jolteon V"].contains(self.name)) {
+              def list = []
+              for (move in h.object) {
+                def copy = move.shallowCopy()
+                copy.energyCost.remove C
+                list.add copy
+              }
+              h.object = list
+            }
+          }
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          eff.unregister()
         }
       };
       case SNOW_LEAF_BADGE_63:
@@ -1413,8 +1438,11 @@ public enum EeveeHeroes implements LogicCardInfo {
         text "Draw 2 cards. Then" +
           "your Active Pokémon recovers from all Special Conditions."
         onPlay {
+          draw 2
+          clearSpecialCondition active
         }
         playRequirement{
+          assert deck : "Your deck is empty"
         }
       };
       case GORDIE_67:
@@ -1423,8 +1451,14 @@ public enum EeveeHeroes implements LogicCardInfo {
           "reveal as many Energy cards you find there as you like" +
           "and put them into your hand. Shuffle the other cards back into your deck."
         onPlay {
+          def cardList = deck.subList 0, 7
+          def selectedEnergies = cardList.select cardTypeFilter(ENERGY)
+          selectedEnergies.showToOpponent bg, cardText
+          selectedEnergies.moveTo hand
+          shuffleDeck()
         }
         playRequirement{
+          assert deck : "Your deck is empty"
         }
       };
       case FASHION_MALL_68:

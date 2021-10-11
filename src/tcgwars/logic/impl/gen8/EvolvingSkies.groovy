@@ -1,6 +1,7 @@
 package tcgwars.logic.impl.gen8
 
-import tcgwars.logic.effect.gm.Attack;
+import tcgwars.logic.effect.gm.Attack
+import tcgwars.logic.impl.gen3.TeamRocketReturns;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
