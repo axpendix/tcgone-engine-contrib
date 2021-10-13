@@ -1377,14 +1377,15 @@ public enum EeveeHeroes implements LogicCardInfo {
       };
       case ELEMENTAL_BADGE_62:
       return pokemonTool (this) {
-        text "If the Pokémon this card is attached to has 'Flareon V'" +
-          "Vaporeon V" +
-          "or 'Jolteon V' in its name" +
+        text "If the Pokémon V this card is attached to has 'Flareon'" +
+          "Vaporeon" +
+          "or 'Jolteon' in its name" +
           "its attacks cost [C] less."
         def eff
         onPlay {reason->
           eff = getter GET_MOVE_LIST, BEFORE_LAST, self, { h ->
-            if (["Flareon V", "Vaporeon V", "Jolteon V"].contains(self.name)) {
+            if ( (self.name.contains("Flareon") || self.name.contains("Vaporeon") || self.name.contains("Jolteon"))
+            && self.pokemonV) {
               def list = []
               for (move in h.object) {
                 def copy = move.shallowCopy()
@@ -1412,25 +1413,60 @@ public enum EeveeHeroes implements LogicCardInfo {
       };
       case MOON_AND_SUN_BADGE_64:
       return pokemonTool (this) {
-        text "If the Pokémon this card is attached to has 'Espeon V' or 'Umbreon V' in its name" +
+        text "If the Pokémon V this card is attached to has 'Espeon' or 'Umbreon' in its name" +
           "whenever your opponent plays a Supporter card from their hand" +
           "prevent all effects of that card done to the Pokémon this card is attached to."
+        def eff
         onPlay {reason->
+          eff = delayed {
+            def flag = false
+            before PROCESS_ATTACK_EFFECTS, {
+              flag = true
+            }
+            before BETWEEN_TURNS, {
+              flag = false
+            }
+            def power = false
+            before PLAY_TRAINER, {
+              if (ef.supporter
+              && bg.currentTurn == self.owner.opposite
+              && bg.currentTurn.pbg.hand.contains(ef.cardToPlay)
+              && (self.name.contains("Espeon") || self.name.contains("Umbreon"))
+              && self.pokemonV) {
+                power = true
+              }
+            }
+            after PLAY_TRAINER, {
+              power = false
+            }
+            before null, self, TRAINER_CARD, {
+              if (power && !flag) {
+                bc "$thisCard.name prevents effects from Supporter cards done to $self"
+              }
+            }
+          }
         }
         onRemoveFromPlay {
+          eff.unregister()
         }
         allowAttach {to->
         }
       };
       case RIBBON_BADGE_65:
       return pokemonTool (this) {
-        text "If the Pokémon this card is attached to has 'Sylveon V' in its name and is Knocked Out by damage from an opponent's attack" +
+        text "If the Pokémon V this card is attached to has 'Sylveon' in its name and is Knocked Out by damage from an opponent's attack" +
           "that player takes 1 fewer Prize card."
+        def eff
         onPlay {reason->
+          eff = getter GET_GIVEN_PRIZES, self, {holder->
+            if (self.name.contains("Sylveon") && self.pokemonV && self.KOBYDMG == bg.turnCount && holder.object > 0) {
+              bc "$thisCard.name reduces prizes taken from KOing ${self} by one."
+              holder.object -= 1
+            }
+          }
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          eff.unregister()
         }
       };
       case AROMA_LADY_66:
@@ -1465,15 +1501,34 @@ public enum EeveeHeroes implements LogicCardInfo {
       return stadium (this) {
         text "Once during each player's turn" +
           "that player may put a Pokémon Tool attached to 1 of their Pokémon into their hand."
+        def lastTurn
+        def actions = []
         onPlay {
+          actions = action ("Stadium: $thisCard.name") {
+            assert lastTurn != bg.turnCount : "You have already used $thisCard this turn"
+            assert my.all.any { it.cards.filterByType POKEMON_TOOL } : "You have no Pokémon with a Pokémon Tool attached"
+            bc "Used $thisCard"
+            lastTurn = bg.turnCount
+            def tar = my.all.findAll { it.cards.filterByType POKEMON_TOOL }.select thisCard.cardText
+            assert !bg.em().retrieveObject("ScoopUpBlock_Count$thisCard.player.opposite") || !tar.numberOfDamageCounters : "Scoop-Up Block prevents $thisCard's effect."
+            def toolCard
+            if (tar.cards.filterByType(POKEMON_TOOL).size() > 1) {
+              def card = tar.cards.filterByType(POKEMON_TOOL).select "Return which Pokémon Tool to your hand?"
+              toolCard = card
+            } else {
+              toolCard = tar.cards.filterByType(POKEMON_TOOL)
+            }
+            toolCard.moveTo hand
+          }
         }
         onRemoveFromPlay{
+          actions.each { bg.gm().unregisterAction it }
         }
       };
       case TREASURE_ENERGY_69:
-      return specialEnergy (this, [[C]]) {
+      return specialEnergy (this, [[]]) {
         text "As long as this card is attached to a Pokémon" +
-          "it provides Energy. If you took this card as a face-down Prize card during your turn" +
+          "it provides [C] Energy. If you took this card as a face-down Prize card during your turn" +
           "before you put it into your hand" +
           "you may attach it to 1 of your Pokémon."
         onPlay {reason->

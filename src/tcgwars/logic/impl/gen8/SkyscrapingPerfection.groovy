@@ -1282,19 +1282,22 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
       return itemCard (this) {
         text "Put up to 2 Pokémon with 90 HP or less from your discard pile into your hand."
         onPlay {
+          def cards = my.discard.select thisCard.cardText, { it.cardTypes.is(POKEMON) && it.asPokemonCard().hp <= 90 }
+          cards.moveTo hand
         }
         playRequirement{
+          assert my.discard.any { it.cardTypes.is(POKEMON) && it.asPokemonCard().hp <= 90 } : "No Pokémon with 90 HP or less in your discard pile"
         }
       };
       case DIGGING_GLOVES_60:
       return pokemonTool (this) {
-        text "The attacks of the Pokémon this card is attached to do 30 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
+        text "The attacks of the Pokémon this card is attached to do 30 more damage to your opponent's Active [F] Pokémon (before applying Weakness and Resistance)."
         def eff
         onPlay {reason->
           eff = delayed {
             after PROCESS_ATTACK_EFFECTS, {
               bg.dm().each {
-                if (it.from == self && it.to.active && it.to.owner == self.owner.opposite && it.dmg.value) {
+                if (it.from == self && it.to.active && it.to.owner == self.owner.opposite && it.dmg.value && it.to.types.contains(F)) {
                   it.dmg += hp(30)
                   bc "$thisCard +30"
                 }
@@ -1344,9 +1347,22 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         text "You can play this card only if 1 of your Pokémon was Knocked Out during your opponent's last turn. Attach a basic Energy card from your discard pile to 1 of your Pokémon. If you do" +
           "search your deck for a card and put it into your hand. Then" +
           "shuffle your deck."
+        globalAbility {Card thisCard->
+          delayed {
+            before KNOCKOUT, {
+              if(ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite){
+                keyStore("Raihan_KO", thisCard, bg.turnCount)
+              }
+            }
+          }
+        }
         onPlay {
+          def card = deck.search count:1, { true }
+          card.moveTo hidden:true, hand
         }
         playRequirement{
+          assert keyStore("Rosa_KO", thisCard, null) == bg.turnCount - 1: "No Pokémon was Knocked Out during your opponent’s last turn"
+          assert my.discard.any { it.cardTypes.is(BASIC_ENERGY) } : "No basic Energy cards in your discard pile"
         }
       };
       case SCHOOLGIRL_64:

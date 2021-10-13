@@ -1338,12 +1338,22 @@ public enum BlueSkyStream implements LogicCardInfo {
         return copy(BlackWhite.SWITCH_104, this)
       case RUBBERY_GLOVES_60:
       return pokemonTool (this) {
-        text "The attacks of the Pokémon this card is attached to do 30 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
+        text "The attacks of the Pokémon this card is attached to do 30 more damage to your opponent's Active [L] Pokémon (before applying Weakness and Resistance)."
+        def eff
         onPlay {reason->
+          eff = delayed {
+            after PROCESS_ATTACK_EFFECTS, {
+              bg.dm().each {
+                if (it.from == self && it.to.active && it.to.owner == self.owner.opposite && it.dmg.value && it.to.types.contains(L)) {
+                  it.dmg += hp(30)
+                  bc "$thisCard +30"
+                }
+              }
+            }
+          }
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          eff.unregister()
         }
       };
       case NETHER_MASK_61:
@@ -1360,11 +1370,31 @@ public enum BlueSkyStream implements LogicCardInfo {
       case RAPID_STRIKE_SCROLL_OF_THE_FLYING_DRAGON_62:
       return pokemonTool (this) {
         text "The Rapid Strike Pokémon this card is attached to can use the attack on this card. (You still need the necessary Energy to use this attack.)"
+        def newMove
         onPlay {reason->
+          def moveBody = {
+            text "Discard 2 Energy from this Pokémon. This attack does 90 damage to 1 of your " +
+              "opponent's Pokémon. (Don't apply Weakness or Resistance for Benched Pokémon.)"
+            energyCost R, L
+            onAttack {
+              discardSelfEnergyAfterDamage C, C
+              damage 90, opp.all.select text
+            }
+          }
+          Move move = new Move("Meteor")
+          moveBody.delegate = new MoveBuilder(thisMove: move)
+          moveBody.call()
+          newMove = getter GET_MOVE_LIST, self, {h->
+            if (h.effect.target.rapidStrike) {
+              def moveList = []
+              moveList.addAll h.object
+              moveList.add move
+              h.object = moveList
+            }
+          }
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          newMove.unregister()
         }
       };
       case SHAUNA_63:
