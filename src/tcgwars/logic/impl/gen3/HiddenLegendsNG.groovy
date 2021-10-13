@@ -1781,6 +1781,9 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         }
         move "Ascension", {
           text "Search your deck for a card that evolves from Vulpix and put it on Vulpix. (This counts as evolving Vulpix.) Shuffle your deck afterward."
+          // errata: https://compendium.pokegym.net/ruling/705/
+          // EX Hidden Legends Feebas is receiving errata for its "Ascension" attack to bring it in line with the Japanese version of the card. It should read, "Flip a coin. If heads, search your deck for a card that evolves from Feebas and put it on Feebas. (This counts as evolving Feebas.) Shuffle your deck afterward." Please note that this only affects Feebas; Vulpix's "Ascension" attack does not require a coin flip.
+          // TODO: Handle the coin flip mentioned in the errata
           ascension delegate
         }
       };
