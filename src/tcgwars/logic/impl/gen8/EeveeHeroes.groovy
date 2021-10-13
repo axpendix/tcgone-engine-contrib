@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen8
 
+import tcgwars.logic.card.pokemon.PokemonCard
 import tcgwars.logic.effect.EffectPriority
 import tcgwars.logic.effect.gm.Attack;
 
@@ -1384,8 +1385,7 @@ public enum EeveeHeroes implements LogicCardInfo {
         def eff
         onPlay {reason->
           eff = getter GET_MOVE_LIST, BEFORE_LAST, self, { h ->
-            if ( (self.name.contains("Flareon") || self.name.contains("Vaporeon") || self.name.contains("Jolteon"))
-            && self.pokemonV) {
+            if ( self.pokemonV && ["Flareon", "Vaporeon", "Jolteon"].any{self.name.contains(it)} ) {
               def list = []
               for (move in h.object) {
                 def copy = move.shallowCopy()
@@ -1402,13 +1402,25 @@ public enum EeveeHeroes implements LogicCardInfo {
       };
       case SNOW_LEAF_BADGE_63:
       return pokemonTool (this) {
-        text "If the Pokémon this card is attached to has 'Leafeon V' or 'Glaceon V' in its name" +
-          "it has no Weakness or Retreat Cost."
+        text "If the Pokémon V this card is attached to has 'Leafeon' or 'Glaceon' in its name," +
+          "it has no Retreat Cost and no Weakness."
+        def eff1, eff2
+        def snowLeafBadgeCond = { PokemonCardSet target -> target.pokemonV && ["Leafeon", "Glaceon"].any{target.name.contains(it)} }
         onPlay {reason->
+          eff1 = getter(GET_WEAKNESSES, self){h->
+            if ( snowLeafBadgeCond.call(self) ) {
+              h.object.clear()
+            }
+          }
+          eff2 =getter(GET_RETREAT_COST, LAST, self){h->
+            if ( snowLeafBadgeCond.call(self) ) {
+              h.object=0
+            }
+          }
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          eff1.unregister()
+          eff2.unregister()
         }
       };
       case MOON_AND_SUN_BADGE_64:
