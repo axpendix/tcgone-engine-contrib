@@ -1459,7 +1459,9 @@ public enum BlueSkyStream implements LogicCardInfo {
             def card = deck.search {Card c->
               c.cardTypes.is(BASIC) && (c.asPokemonCard().types.contains(L) || c.asPokemonCard().types.contains(N))
             }
-            benchPCS(card.first())
+            card.each {
+              benchPCS it
+            }
           }
         }
         onRemoveFromPlay{

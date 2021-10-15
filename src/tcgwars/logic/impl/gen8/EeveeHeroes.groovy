@@ -183,7 +183,7 @@ public enum EeveeHeroes implements LogicCardInfo {
           text "Damage from the attacks of your Single Strike Pokémon isn't affected by Resistance on your opponent's Active Pokémon."
           delayedA {
             before APPLY_RESISTANCE, { Attack ef ->
-              if (ef.attacker.owner == self.owner && ef.attacker.singleStrike && ef.getResolvedTarget(bg, e).owner == ef.attacker.owner.opposite) {
+              if (ef.attacker.owner == self.owner && ef.attacker.singleStrike && ef.getResolvedTarget(bg, e).owner == ef.attacker.owner.opposite && ef.getResolvedTarget(bg, e).active) {
                 bc text
                 prevent()
               }
@@ -432,7 +432,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             assert my.bench.any { it.singleStrike && it.numberOfDamageCounters } : "No Single Strike Pokémon on your Bench have damage counters on them"
           }
           onAttack {
-            damage 10 * my.bench.count { it.singleStrike && it.numberOfDamageCounters }.toInteger()
+            damage 10 * my.bench.sum { it.singleStrike ? it.numberOfDamageCounters : 0 }
           }
         }
         move "Heat Tackle", {
