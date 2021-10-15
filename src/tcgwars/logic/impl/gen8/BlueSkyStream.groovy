@@ -1434,6 +1434,7 @@ public enum BlueSkyStream implements LogicCardInfo {
       return supporter (this) {
         text "You can play this card only if you discard 2 other cards from your hand. Draw a card for each of your opponent's Pokémon in play."
         onPlay {
+          my.hand.getExcludedList(thisCard).select(min:2,max:2,"To discard").discard()
           draw opp.all.size()
         }
         playRequirement{
