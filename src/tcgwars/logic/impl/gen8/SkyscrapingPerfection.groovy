@@ -3,6 +3,7 @@ package tcgwars.logic.impl.gen8
 import tcgwars.logic.TargetPlayer
 import tcgwars.logic.card.*
 import tcgwars.logic.effect.basic.Knockout
+import tcgwars.logic.effect.basic.Move
 import tcgwars.logic.impl.gen3.TeamRocketReturns
 import tcgwars.logic.impl.gen5.PlasmaStorm
 import tcgwars.logic.util.CardTypeSet
@@ -13,6 +14,7 @@ import static tcgwars.logic.card.HP.*
 import static tcgwars.logic.card.Resistance.ResistanceType.MINUS30
 import static tcgwars.logic.card.Type.*
 import static tcgwars.logic.effect.EffectType.APPLY_ATTACK_DAMAGES
+import static tcgwars.logic.effect.EffectType.GET_MOVE_LIST
 import static tcgwars.logic.effect.EffectType.KNOCKOUT
 import static tcgwars.logic.effect.EffectType.PROCESS_ATTACK_EFFECTS
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.PLAY_FROM_HAND
@@ -1274,8 +1276,12 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
       return itemCard (this) {
         text "Switch a card from your hand with the top card of your deck."
         onPlay {
+          hand.getExcludedList(thisCard).select().moveTo(addToTop: true, hidden: true, my.deck)
+          deck.subList(1,2).moveTo(hidden: true, my.hand) // Card placed on top, get the one underneath
         }
         playRequirement{
+          assert hand.getExcludedList(thisCard) : "You have no other cards in your hand"
+          assert deck : "Your deck is empty"
         }
       };
       case RESCUE_TROLLEY_59:
@@ -1312,11 +1318,37 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
       case SINGLE_STRIKE_SCROLL_OF_THE_DRAGON_FANG_61:
       return pokemonTool (this) {
         text "The Single Strike Pokémon this card is attached to can use the attack on this card. (You still need the necessary Energy to use this attack.)"
+        def newMove
         onPlay {reason->
+          def moveBody = {
+            text "Discard all Energy from this Pokémon"
+            attackRequirement {
+              // self is not set properly creating a move like this, use bg.ownActive() instead
+              assert bg.ownActive().singleStrike : "${bg.ownActive()} is not a $SINGLE_STRIKE Pokémon"
+            }
+            energyCost F, M, M, C, C
+            onAttakc {
+              damage 300
+              afterDamage {
+                discardAllSelfEnergy()
+              }
+            }
+          }
+
+          Move move = new Move("Superstrong Slash")
+          moveBody.delegate = new MoveBuilder(thisMove: move)
+          moveBody.call()
+          newMove = getter GET_MOVE_LIST, self, {h->
+            if (h.effect.target.singleStrike) {
+              def moveList = []
+              moveList.addAll h.object
+              moveList.add move
+              h.object = moveList
+            }
+          }
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          newMove.unregister()
         }
       };
       case FULL_FACE_GUARD_62:

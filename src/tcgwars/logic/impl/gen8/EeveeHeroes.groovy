@@ -1361,17 +1361,22 @@ public enum EeveeHeroes implements LogicCardInfo {
           "shuffle your deck."
         globalAbility {
           delayed {
+            def flag = false
+            before TAKE_PRIZE, {
+              flag = !thisCard.player.pbg.prizeCardSet.isVisible(ef.card)
+            }
             after TAKE_PRIZE, {
-              if(thisCard.player.pbg.prizeCardSet.notEmpty
-              && !thisCard.player.pbg.prizeCardSet.allVisible
-              && ef.card != null && ef.card == thisCard
-              && thisCard.player.pbg.bench.notFull
-              && thisCard.player.pbg.hand.contains(thisCard)
-              && confirm("Would you like to use $thisCard? $cardText")) {
-                bc "${thisCard.player.getPlayerUsername(bg)}"
+              if(flag
+                && thisCard.player.pbg.prizeCardSet.notEmpty
+                && ef.card != null && ef.card == thisCard
+                && thisCard.player.pbg.bench.notFull
+                && thisCard.player.pbg.hand.contains(thisCard)
+                && confirm("Would you like to use $thisCard? $cardText")) {
+                bc "${thisCard.player.getPlayerUsername(bg)} used $thisCard"
                 def card = deck.search cardTypeFilter(POKEMON)
                 benchPCS card.first(), OTHER
               }
+              flag = false
             }
           }
         }
@@ -1543,13 +1548,28 @@ public enum EeveeHeroes implements LogicCardInfo {
           "it provides [C] Energy. If you took this card as a face-down Prize card during your turn" +
           "before you put it into your hand" +
           "you may attach it to 1 of your Pokémon."
-        onPlay {reason->
+        globalAbility {
+          delayed {
+            def flag = false
+            before TAKE_PRIZE, {
+              flag = !thisCard.player.pbg.prizeCardSet.isVisible(ef.card)
+            }
+            after TAKE_PRIZE, {
+              if(flag
+                && bg.currentTurn == thisCard.player
+                && thisCard.player.pbg.prizeCardSet.notEmpty
+                && ef.card != null && ef.card == thisCard
+                && thisCard.player.pbg.hand.contains(thisCard)
+                && confirm("Would you like to use $thisCard? $cardText")) {
+                bc "${thisCard.player.getPlayerUsername(bg)} used $thisCard"
+                attachEnergy my.all.select("Attach to?"), ef.card
+              }
+              flag = false
+            }
+          }
         }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
+        getEnergyTypesOverride {
+          self != null ? [C] : []
         }
       };
       case LEAFEON_V_70:

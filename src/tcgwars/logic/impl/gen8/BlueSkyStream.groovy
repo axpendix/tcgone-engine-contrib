@@ -1360,11 +1360,22 @@ public enum BlueSkyStream implements LogicCardInfo {
       return pokemonTool (this) {
         text "If the Pokémon this card is attached to is in the Active Spot and is damaged by an attack from your opponent's Pokémon (even if it is Knocked Out)" +
           "your opponent discards a card from their hand."
+        def eff
         onPlay {reason->
+          eff = delayed {
+            def applyEffect
+            before APPLY_ATTACK_DAMAGES, {
+              applyEffect = bg.currentTurn == self.owner.opposite && self.active && bg.dm().find { it.to == self && it.dmg.value }
+            }
+            after APPLY_ATTACK_DAMAGES, {
+              if (applyEffect && self.owner.opposite.pbg.hand) {
+                self.owner.opposite.pbg.hand.select({ true }, self.owner.opposite).discard()
+              }
+            }
+          }
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          eff.unregister()
         }
       };
       case RAPID_STRIKE_SCROLL_OF_THE_FLYING_DRAGON_62:
@@ -1375,6 +1386,10 @@ public enum BlueSkyStream implements LogicCardInfo {
           def moveBody = {
             text "Discard 2 Energy from this Pokémon. This attack does 90 damage to 1 of your " +
               "opponent's Pokémon. (Don't apply Weakness or Resistance for Benched Pokémon.)"
+            attackRequirement {
+              // self is not set properly creating a move like this, use bg.ownActive() instead
+              assert bg.ownActive().rapidStrike : "${bg.ownActive()} is not a $RAPID_STRIKE Pokémon"
+            }
             energyCost R, L
             onAttack {
               discardSelfEnergyAfterDamage C, C
@@ -1419,19 +1434,36 @@ public enum BlueSkyStream implements LogicCardInfo {
       return supporter (this) {
         text "You can play this card only if you discard 2 other cards from your hand. Draw a card for each of your opponent's Pokémon in play."
         onPlay {
+          draw opp.all.size()
         }
         playRequirement{
+          assert hand.getExcludedList(thisCard).size() >= 2 : "You do not have 2 other cards to discard from your hand"
+          assert deck : "Your deck is empty"
         }
       };
       case STORMY_MOUNTAIN_RANGE_66:
       return stadium (this) {
         text "Once during each player's turn" +
-          "that player may search their deck for a Basic Pokémon or Basic Pokémon" +
+          "that player may search their deck for a Basic [L] Pokémon or Basic [N] Pokémon" +
           "put it onto their Bench" +
           "and shuffle their deck."
+        def lastTurn
+        def actions = []
         onPlay {
+          actions = action("Stadium: $thisCard") {
+            assert lastTurn != bg.turnCount : "You have already used $thisCard this turn"
+            assert my.bench.notFull : "You do not have any room on your bench"
+            assert deck : "Your deck is empty"
+            bc "Used $thisCard"
+            lastTurn = bg.turnCount
+            def card = deck.search {Card c->
+              c.cardTypes.is(BASIC) && (c.asPokemonCard().types.contains(L) || c.asPokemonCard().types.contains(N))
+            }
+            benchPCS(card.first())
+          }
         }
         onRemoveFromPlay{
+          actions.each { bg.gm().unregisterAction it }
         }
       };
       case AURORA_ENERGY_67:
