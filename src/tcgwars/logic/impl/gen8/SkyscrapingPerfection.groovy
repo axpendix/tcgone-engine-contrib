@@ -12,6 +12,7 @@ import static tcgwars.logic.card.HP.*
 import static tcgwars.logic.card.Resistance.ResistanceType.MINUS30
 import static tcgwars.logic.card.Type.*
 import static tcgwars.logic.effect.EffectType.APPLY_ATTACK_DAMAGES
+import static tcgwars.logic.effect.EffectType.CHECK_ATTACK_REQUIREMENTS
 import static tcgwars.logic.effect.EffectType.KNOCKOUT
 import static tcgwars.logic.effect.EffectType.PROCESS_ATTACK_EFFECTS
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.PLAY_FROM_HAND
@@ -1190,19 +1191,18 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         weakness F
         bwAbility "Self-Important", {
           text "If there is a Stadium in play, this Pokémon can't attack."
-          onActivate {
-            keyStore("Self-Important", self.hashCode(), 1)
-          }
-          onDeactivate {
-            keyStore("Self-Important", self.hashCode(), 0)
+          delayedA {
+            before CHECK_ATTACK_REQUIREMENTS, {
+              if (self.active && bg.currentTurn == self.owner && bg.stadiumInfoStruct) {
+                wcu "Self-Important prevents attacking."
+                prevent()
+              }
+            }
           }
         }
         move "Rout", {
           text "120+ damage. This attack does 30 more damage for each of your opponent's Benched Pokémon."
           energyCost C, C, C
-          attackRequirement {
-            assert !keyStore("Self-Important", self.hashCode(), null) : "Self-Important prevents Slacking from attacking while a Stadium is in play"
-          }
           onAttack {
             damage 120
             damage 30 * opp.bench.size()
