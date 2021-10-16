@@ -571,10 +571,10 @@ enum EvolvingSkies implements LogicCardInfo {
             text "Shuffle your hand into your deck. Then, draw a card for each card in your opponent's hand."
             energyCost COLORLESS
             attackRequirement {
-              assert my.hand.getExcludedList(thisCard) || my.deck : "Hand and deck are empty"
+              assert hand || deck : "Hand and deck are empty"
             }
             onAttack {
-              hand.moveTo hidden:true,my.deck
+              hand.moveTo hidden:true, deck
               shuffleDeck()
               draw opp.hand.size()
             }
