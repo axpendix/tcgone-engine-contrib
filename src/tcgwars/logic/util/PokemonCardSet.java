@@ -4,7 +4,6 @@ package tcgwars.logic.util;
 import com.google.common.collect.ImmutableList;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
-import tcgwars.common.TWCommon;
 import tcgwars.logic.Battleground;
 import tcgwars.logic.GameFormat;
 import tcgwars.logic.PlayerType;
@@ -12,7 +11,6 @@ import tcgwars.logic.card.*;
 import tcgwars.logic.card.energy.EnergyCard;
 import tcgwars.logic.card.pokemon.PokemonCard;
 import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.ability.Ability.*;
 import tcgwars.logic.effect.advanced.ExtraEnergyCalculator;
 import tcgwars.logic.effect.getter.*;
 import tcgwars.logic.effect.special.SpecialConditionType;
@@ -171,7 +169,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
         continue;
       }
       List<Set<Type>> energyTypes = card.getEffectiveEnergyTypes();
-      listBuilder.addAll(TWCommon.generateTypeImages(energyTypes));
+      listBuilder.addAll(LUtils.generateTypeImages(energyTypes));
     }
     energyTypeImages = listBuilder.build();
   }
