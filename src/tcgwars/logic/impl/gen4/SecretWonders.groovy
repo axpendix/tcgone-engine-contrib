@@ -453,11 +453,19 @@ public enum SecretWonders implements LogicCardInfo {
               assert bg.em().retrieveObject("Telepass") != bg.turnCount : "You can't use more than 1 Telepass Poke-Power each turn."
               assert opp.discard.hasType(SUPPORTER) : "Your opponent has no supporters discarded."
               powerUsed()
+              def bef = delayed {
+                before PREVENT_PLAY_SUPPORTER, null, null, PLAY_TRAINER, {
+                  prevent()
+                }
+              }
               def card = opp.discard.select("Opponent's discard. Select a supporter.", cardTypeFilter(SUPPORTER)).first()
               bg.deterministicCurrentThreadPlayerType=bg.currentTurn
               bg.em().run(new PlayTrainer(card).setDontDiscard(true))
               bg.clearDeterministicCurrentThreadPlayerType()
-              bg.em().storeObject("Telepass",bg.turnCount)
+              def used_supporter_count = bg.em().retrieveObject("used_supporter_count");
+              bg.em().storeObject("used_supporter_count", used_supporter_count - 1);
+              bg.em().storeObject("Telepass",bg.turnCount );
+              bef.unregister();
             }
           }
           move "Psychic Lock", {
@@ -922,7 +930,7 @@ public enum SecretWonders implements LogicCardInfo {
             //Errata: Ghost Head can't cause Banette to Knock Out itself ... the attack has to leave Banette with at least 10 HP. "Put as many damage counters as you like on Banette. (You can't Knock Out Banette.) Put that many damage counters on the Defending Pokémon." (Jan 29, 2008 Pokemon Organized Play News)
             energyCost ()
             attackRequirement {
-              assert self.remainingHP.value == 10  : "You can't place any more damage counters in $self"
+              assert self.remainingHP.value != 10  : "You can't place any more damage counters on $self"
             }
             onAttack {
               def count = choose(1..((self.remainingHP.value / 10) - 1), "Put as many damage counters as you like on Banette")

@@ -344,7 +344,7 @@ public enum MajesticDawn implements LogicCardInfo {
             text "60 damage. This attack’s damage isn’t affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             energyCost W, C, C
             onAttack {
-              swiftDamage(60, defending)
+              noResistanceOrAnyEffectDamage(60, defending)
             }
           }
 

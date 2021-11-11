@@ -182,17 +182,7 @@ public enum ShinyStarV implements LogicCardInfo {
         move "Ascension", {
           text "Search your deck for a card that evolves from this Pokémon and put it onto this Pokémon to evolve it. Then, shuffle your deck."
           energyCost D
-          attackRequirement {
-            assert my.deck : "Deck is empty"
-            // If copied, check that evolution exists
-            assert bg.gm().hasEvolution(self.name) : "This Pokémon does not evolve"
-          }
-          onAttack {
-            def evolution = deck.search { it.cardTypes.is(EVOLUTION) && (it as EvolutionPokemonCard).predecessor == self.name }
-            if (evolution) {
-              evolve self, evolution.first(), OTHER
-            }
-          }
+          ascension delegate
         }
       };
       case CROBAT_VMAX_7:
