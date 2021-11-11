@@ -1473,15 +1473,7 @@ public enum Arceus implements LogicCardInfo {
           move "Ascension", {
             text "Search your deck for a card that evolves from Ponyta and put it onto Ponyta. (This counts as evolving Ponyta.) Shuffle your deck afterward."
             energyCost C
-            attackRequirement {
-              assert my.deck : "Your deck is empty"
-            }
-            onAttack {
-              def nam=self.name
-              def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-              if(tar) evolve(self, tar.first(), OTHER)
-              shuffleDeck()
-            }
+            ascension delegate
           }
           move "Combustion", {
             text "20 damage. "
