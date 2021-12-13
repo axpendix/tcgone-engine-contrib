@@ -2371,15 +2371,7 @@ public enum UltraPrism implements LogicCardInfo {
           move "Ascension", {
             text "Search your deck for a card that evolves from this Pokémon and put it onto this Pokémon to evolve it. Then, shuffle your deck."
             energyCost F
-            attackRequirement {
-              assert my.deck
-            }
-            onAttack {
-              def nam=self.name
-              def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-              if(tar) evolve(self, tar.first(), OTHER)
-              shuffleDeck()
-            }
+            ascension delegate
           }
 
         };
@@ -2409,15 +2401,7 @@ public enum UltraPrism implements LogicCardInfo {
           move "Ascension", {
             text "Search your deck for a card that evolves from this Pokémon and put it onto this Pokémon to evolve it. Then, shuffle your deck."
             energyCost F
-            attackRequirement {
-              assert my.deck
-            }
-            onAttack {
-              def nam=self.name
-              def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-              if(tar) evolve(self, tar.first(), OTHER)
-              shuffleDeck()
-            }
+            ascension delegate
           }
           move "Slash", {
             text "40 damage."

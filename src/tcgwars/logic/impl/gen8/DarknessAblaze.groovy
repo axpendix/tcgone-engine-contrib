@@ -32,7 +32,7 @@ import tcgwars.logic.util.*;
 public enum DarknessAblaze implements LogicCardInfo {
 
   BUTTERFREE_V_1 ("Butterfree V", "1", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _GRASS_]),
-  BUTTERFREE_VMAX_2 ("Butterfree VMAX", "2", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _GRASS_]),
+  BUTTERFREE_VMAX_2 ("Butterfree VMAX", "2", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _GRASS_]),
   PARAS_3 ("Paras", "3", Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
   PARASECT_4 ("Parasect", "4", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
   CARNIVINE_5 ("Carnivine", "5", Rarity.UNCOMMON, [POKEMON, BASIC, _GRASS_]),
@@ -50,7 +50,7 @@ public enum DarknessAblaze implements LogicCardInfo {
   WIMPOD_17 ("Wimpod", "17", Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
   GOLISOPOD_18 ("Golisopod", "18", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
   CHARIZARD_V_19 ("Charizard V", "19", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _FIRE_]),
-  CHARIZARD_VMAX_20 ("Charizard VMAX", "20", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _FIRE_]),
+  CHARIZARD_VMAX_20 ("Charizard VMAX", "20", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _FIRE_]),
   HOUNDOOM_V_21 ("Houndoom V", "21", Rarity.ULTRARARE, [POKEMON, POKEMON_V, BASIC, _FIRE_]),
   TORCHIC_22 ("Torchic", "22", Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
   COMBUSKEN_23 ("Combusken", "23", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
@@ -64,7 +64,7 @@ public enum DarknessAblaze implements LogicCardInfo {
   FLETCHINDER_31 ("Fletchinder", "31", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
   TALONFLAME_32 ("Talonflame", "32", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _FIRE_]),
   CENTISKORCH_V_33 ("Centiskorch V", "33", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _FIRE_]),
-  CENTISKORCH_VMAX_34 ("Centiskorch VMAX", "34", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _FIRE_]),
+  CENTISKORCH_VMAX_34 ("Centiskorch VMAX", "34", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _FIRE_]),
   GALARIAN_MR_MIME_35 ("Galarian Mr. Mime", "35", Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
   GALARIAN_MR_RIME_36 ("Galarian Mr. Rime", "36", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
   SUICUNE_37 ("Suicune", "37", Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
@@ -145,11 +145,11 @@ public enum DarknessAblaze implements LogicCardInfo {
   NICKIT_112 ("Nickit", "112", Rarity.COMMON, [POKEMON, BASIC, _DARKNESS_]),
   THIEVUL_113 ("Thievul", "113", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
   GRIMMSNARL_V_114 ("Grimmsnarl V", "114", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _DARKNESS_]),
-  GRIMMSNARL_VMAX_115 ("Grimmsnarl VMAX", "115", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _DARKNESS_]),
+  GRIMMSNARL_VMAX_115 ("Grimmsnarl VMAX", "115", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _DARKNESS_]),
   ETERNATUS_V_116 ("Eternatus V", "116", Rarity.ULTRARARE, [POKEMON, POKEMON_V, BASIC, _DARKNESS_]),
-  ETERNATUS_VMAX_117 ("Eternatus VMAX", "117", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _DARKNESS_]),
+  ETERNATUS_VMAX_117 ("Eternatus VMAX", "117", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _DARKNESS_]),
   SCIZOR_V_118 ("Scizor V", "118", Rarity.ULTRARARE, [POKEMON, POKEMON_V, BASIC, _METAL_]),
-  SCIZOR_VMAX_119 ("Scizor VMAX", "119", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _METAL_]),
+  SCIZOR_VMAX_119 ("Scizor VMAX", "119", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _METAL_]),
   SKARMORY_120 ("Skarmory", "120", Rarity.COMMON, [POKEMON, BASIC, _METAL_]),
   ARON_121 ("Aron", "121", Rarity.COMMON, [POKEMON, BASIC, _METAL_]),
   LAIRON_122 ("Lairon", "122", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
@@ -174,7 +174,7 @@ public enum DarknessAblaze implements LogicCardInfo {
   SKITTY_141 ("Skitty", "141", Rarity.COMMON, [POKEMON, BASIC, _COLORLESS_]),
   DELCATTY_142 ("Delcatty", "142", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
   SALAMENCE_V_143 ("Salamence V", "143", Rarity.ULTRARARE, [POKEMON, POKEMON_V, BASIC, _COLORLESS_]),
-  SALAMENCE_VMAX_144 ("Salamence VMAX", "144", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _COLORLESS_]),
+  SALAMENCE_VMAX_144 ("Salamence VMAX", "144", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _COLORLESS_]),
   STARLY_145 ("Starly", "145", Rarity.COMMON, [POKEMON, BASIC, _COLORLESS_]),
   STARAVIA_146 ("Staravia", "146", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
   STARAPTOR_147 ("Staraptor", "147", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]),
@@ -220,11 +220,11 @@ public enum DarknessAblaze implements LogicCardInfo {
   PIERS_187 ("Piers", "187", Rarity.ULTRARARE, [TRAINER, SUPPORTER]),
   POKEMON_BREEDER_S_NURTURING_188 ("Pokémon Breeder's Nurturing", "188", Rarity.ULTRARARE, [TRAINER, SUPPORTER]),
   ROSE_189 ("Rose", "189", Rarity.ULTRARARE, [TRAINER, SUPPORTER]),
-  BUTTERFREE_VMAX_190 ("Butterfree VMAX", "190", Rarity.SECRET, [POKEMON, EVOLUTION, VMAX, _GRASS_]),
-  CENTISKORCH_VMAX_191 ("Centiskorch VMAX", "191", Rarity.SECRET, [POKEMON, EVOLUTION, VMAX, _FIRE_]),
-  ETERNATUS_VMAX_192 ("Eternatus VMAX", "192", Rarity.SECRET, [POKEMON, EVOLUTION, VMAX, _DARKNESS_]),
-  SCIZOR_VMAX_193 ("Scizor VMAX", "193", Rarity.SECRET, [POKEMON, EVOLUTION, VMAX, _METAL_]),
-  SALAMENCE_VMAX_194 ("Salamence VMAX", "194", Rarity.SECRET, [POKEMON, EVOLUTION, VMAX, _COLORLESS_]),
+  BUTTERFREE_VMAX_190 ("Butterfree VMAX", "190", Rarity.SECRET, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _GRASS_]),
+  CENTISKORCH_VMAX_191 ("Centiskorch VMAX", "191", Rarity.SECRET, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _FIRE_]),
+  ETERNATUS_VMAX_192 ("Eternatus VMAX", "192", Rarity.SECRET, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _DARKNESS_]),
+  SCIZOR_VMAX_193 ("Scizor VMAX", "193", Rarity.SECRET, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _METAL_]),
+  SALAMENCE_VMAX_194 ("Salamence VMAX", "194", Rarity.SECRET, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _COLORLESS_]),
   POKEMON_BREEDER_S_NURTURING_195 ("Pokémon Breeder's Nurturing", "195", Rarity.SECRET, [TRAINER, SUPPORTER]),
   ROSE_196 ("Rose", "196", Rarity.SECRET, [TRAINER, SUPPORTER]),
   RILLABOOM_197 ("Rillaboom", "197", Rarity.SECRET, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
@@ -3749,8 +3749,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         def eff
         onPlay {reason->
           eff = getter (GET_FULL_HP, self) {h->
-            def selfTopCardTypes = self.topPokemonCard.cardTypes
-            if(selfTopCardTypes.is(BASIC) && !(selfTopCardTypes.is(POKEMON_GX))) {
+            if (self.basic && !self.pokemonGX) {
               h.object += hp(50)
             }
           }

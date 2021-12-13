@@ -228,7 +228,7 @@ public enum SecretWonders implements LogicCardInfo {
   public Card getImplementation() {
     switch (this) {
       case AMPHAROS_1:
-        return evolution (this, from:"Flaffy", hp:HP130, type:LIGHTNING, retreatCost:3) {
+        return evolution (this, from:"Flaaffy", hp:HP130, type:LIGHTNING, retreatCost:3) {
           weakness F, PLUS30
           resistance M, MINUS20
           pokeBody "Jamming", {
@@ -270,7 +270,7 @@ public enum SecretWonders implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               assert my.hand.filterByBasicEnergyType(W) : "There are no basic [W] Energys in your hand."
-              powerUsed()
+              powerUsed({ usingThisAbilityEndsTurn delegate })
               while(true){
                 if(!my.hand.filterByBasicEnergyType(W)) break
                 def tar = my.all.select("Attach energy to which Pokémon? (Cancel to stop)", false)
@@ -279,8 +279,8 @@ public enum SecretWonders implements LogicCardInfo {
                 energy.each{
                   attachEnergy(tar,it)
                 }
-                bg.gm().betweenTurns()
               }
+              usingThisAbilityEndsTurn delegate
             }
           }
           move "Hydro Pump", {
@@ -359,7 +359,9 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
           move "Blaze Roar", {
-            text "60 damage. Does 20 damage to 1 of your opponent's Benched Pokémon. Filp a coin. If tails, discard 2 [R] Energy attached to Entei."
+            text "60 damage. Does 20 damage to 1 of your opponent's Benched Pokémon. Filp a coin. If tails, discard 2 [R] Energy cards attached to Entei."
+            //Original Text: "Filp a coin. If tails, discard 2 [R] Energy attached to Entei."
+            //Errata: Entei's "Blaze Roar" attack should say "discard 2 Fire Energy CARDS" rather than just "discard 2 Fire Energy". (Nov 16, 2007 Pokemon Organized Play News)
             energyCost R, R, R
             onAttack {
               damage 60
@@ -451,11 +453,19 @@ public enum SecretWonders implements LogicCardInfo {
               assert bg.em().retrieveObject("Telepass") != bg.turnCount : "You can't use more than 1 Telepass Poke-Power each turn."
               assert opp.discard.hasType(SUPPORTER) : "Your opponent has no supporters discarded."
               powerUsed()
+              def bef = delayed {
+                before PREVENT_PLAY_SUPPORTER, null, null, PLAY_TRAINER, {
+                  prevent()
+                }
+              }
               def card = opp.discard.select("Opponent's discard. Select a supporter.", cardTypeFilter(SUPPORTER)).first()
               bg.deterministicCurrentThreadPlayerType=bg.currentTurn
               bg.em().run(new PlayTrainer(card).setDontDiscard(true))
               bg.clearDeterministicCurrentThreadPlayerType()
-              bg.em().storeObject("Telepass",bg.turnCount)
+              def used_supporter_count = bg.em().retrieveObject("used_supporter_count");
+              bg.em().storeObject("used_supporter_count", used_supporter_count - 1);
+              bg.em().storeObject("Telepass",bg.turnCount );
+              bef.unregister();
             }
           }
           move "Psychic Lock", {
@@ -915,10 +925,15 @@ public enum SecretWonders implements LogicCardInfo {
           weakness D, PLUS20
           resistance C, MINUS20
           move "Ghost Head", {
-            text "Put as many damage counters as you like on Banette. (You can’t put more than Banette’s remaining HP.) Put that many damage counters on the Defending Pokémon."
+            text "Put as many damage counters as you like on Banette. (You can't Knock Out Banette.) Put that many damage counters on the Defending Pokémon."
+            //Old text: "Put as many damage counters as you like on Banette. (You can’t put more than Banette’s remaining HP.) Put that many damage counters on the Defending Pokémon."
+            //Errata: Ghost Head can't cause Banette to Knock Out itself ... the attack has to leave Banette with at least 10 HP. "Put as many damage counters as you like on Banette. (You can't Knock Out Banette.) Put that many damage counters on the Defending Pokémon." (Jan 29, 2008 Pokemon Organized Play News)
             energyCost ()
+            attackRequirement {
+              assert self.remainingHP.value != 10  : "You can't place any more damage counters on $self"
+            }
             onAttack {
-              def count = choose(1..self.remainingHP.value / 10, "Put as many damage counters as you like on Banette")
+              def count = choose(1..((self.remainingHP.value / 10) - 1), "Put as many damage counters as you like on Banette")
               directDamage 10 * count, self
               directDamage 10 * count, defending
             }
@@ -1396,15 +1411,15 @@ f
           pokeBody "Rough Skin", {
             text "If Sharpedo is your Active Pokémon and is damaged by an opponent’s attack , put 2 damage counter on the Attacking Pokémon."
             ifActiveAndDamagedByAttackBody(delegate) {
-              bc "Rough Skin activates"
-              directDamage(20, ef.attacker)
+              bc "$thisAbility activates"
+              directDamage(20, ef.attacker, Source.POKEBODY)
             }
           }
           move "Strike Wound", {
             text "60+ damage. If the Defending Pokémon has 2 or more damage counters on it, this attack does 60 damage plus 20 more damage. This attack damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects of that Pokémon."
             energyCost W, C, C
             onAttack {
-              swiftDamage (60 + (defending.numberOfDamageCounters > 2 ? 20 : 0), defending)
+              swiftDamage (60 + (defending.numberOfDamageCounters >= 2 ? 20 : 0), defending)
             }
           }
 
@@ -1552,7 +1567,8 @@ f
           weakness R, PLUS20
           resistance L, MINUS20
           pokeBody "Sandy Cloak", {
-            text "Prevent all effects of attacks, excluding damage, done to Wormadam Sandy Cloak."
+            text "Prevent all effects of attacks, excluding damage, done to Wormadam Sandy Cloak by your opponent's Pokemon."
+            //Errata'd. Original text: "Prevent all effects of attacks, excluding damage, done to Wormadam Sandy Cloak."
             delayedA {
               before null, self, Source.ATTACK, {
                 if(bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages)){
@@ -2975,7 +2991,7 @@ f
             text "During your opponent's next turn, any damage done by attacks from the Defending Pokémon is reduced by 20."
             energyCost C
             onAttack {
-              reduceDamageFromDefendingNextTurn(hp(50), thisMove, defending)
+              reduceDamageFromDefendingNextTurn(hp(20), thisMove, defending)
             }
           }
           move "Peck", {
@@ -3098,8 +3114,8 @@ f
             }
             onAttack {
               def top = my.deck.subList(0,2)
-              def choice = top.select("Choose a card to put into your hand").moveTo(my.hand)
-              top.getExcludedList(choice).moveTo(my.deck)
+              def choice = top.select("Choose a card to put into your hand").moveTo(hidden: true, my.hand)
+              top.getExcludedList(choice).moveTo(hidden: true, my.deck)
             }
           }
           move "Scratch", {

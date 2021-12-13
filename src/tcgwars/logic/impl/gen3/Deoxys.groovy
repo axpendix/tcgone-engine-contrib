@@ -2278,14 +2278,7 @@ public enum Deoxys implements LogicCardInfo {
           move "Ascension", {
             text "Search your deck for a card that evolves from Wurmple and put it on Wurmple. (This counts as evolving Wurmple.) Shuffle your deck afterward."
             energyCost C
-            attackRequirement {
-              assert my.deck
-            }
-            onAttack {
-              def tar = my.deck.search("Evolves from $self", {it.cardTypes.is(EVOLUTION) && self.name == it.predecessor})
-              if(tar) evolve(self, tar.first(), OTHER)
-              shuffleDeck()
-            }
+            ascension delegate
           }
           move "Miracle Essence", {
             text "Flip a coin. If heads, choose 1 Special Condition. Each Defending Pokémon is now affected by that Special Condition."

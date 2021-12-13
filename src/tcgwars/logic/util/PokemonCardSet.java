@@ -454,6 +454,13 @@ public class PokemonCardSet implements PokemonStack, Serializable {
     return false;
   }
 
+  public boolean hasPokemonPower() {
+    for (Ability ability : getAbilities().keySet()) {
+      if (ability instanceof PokemonPower) return true;
+    }
+    return false;
+  }
+
   public boolean isMegaEvolution() {
     return getTopPokemonCard().getCardTypes().is(CardType.MEGA_POKEMON);
   }

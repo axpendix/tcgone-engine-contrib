@@ -822,28 +822,35 @@ public enum Platinum implements LogicCardInfo {
         return evolution (this, from:"Swablu", hp:HP090, type:COLORLESS, retreatCost:1) {
           weakness L, PLUS20
           resistance F, MINUS20
-          def pokeFlag = false
-          def turnFlag = -1
+          /*
+           Q. An Altaria that used the move "Midnight Eyes" on its previous turn is now knocked out on the opponent's next turn (or Pokémon Check). If another Altaria uses the "Perish Song" move on my turn, can I knockout the opponent's Active Pokémon that was hit by the "Midnight Eyes" move?
+           A. Yes, you can. Even if Altaria gets knocked out after using its "Midnight Eyes" move, the fact that the opponent's Active Pokémon was hit by the move does not change, so you can use Altaria's "Perish Song" to knock it out if it is asleep.
+
+           Q. When an opponent's Pokémon who was hit by Altaria's move "Midnight Eyes" on my turn is replaced by an opponent's Bench Pokémon by the Trainer "Switch" or other effect, and then appears on the Active spot again, can I make that opponent sleep and use Altaria's move "Perish Song" on my next turn to end it?
+A. Yes, you can.
+Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your previous turn goes back to the Bench, the fact that it was hit by the move "Midnight Eyes" does not change, so when you use Altaria's move "Perish Song" on your next turn, as long as the Pokémon is asleep, you can knock it out.
+           */
           move "Midnight Eyes", {
             text "20 damage. The Defending Pokémon is now Asleep."
             energyCost C
             onAttack {
               damage 20
-              turn flag = bg.turnCount + 2
-              pokeFlag = true
-              delayed {
-                unregisterAfter 3
-                after FALL_BACK, pcs, {
-                  pokeFlag = false
-                  unregister()
-                }
-                after EVOLVE, pcs, {
-                  pokeFlag = false
-                  unregister()
-                }
-                after DEVOLVE, pcs, {
-                  pokeFlag = false
-                  unregister()
+              afterDamage {
+                apply ASLEEP
+
+                def pcs = defending
+                targeted (pcs, ATTACK) {
+                  delayed {
+                    register {
+                      bg.em().storeObject("Altaria_Platinum_Midnight_Eyes_${pcs.hashCode()}", bg.turnCount)
+                    }
+                    unregister {
+                      bg.em().storeObject("Altaria_Platinum_Midnight_Eyes_${pcs.hashCode()}", null)
+                    }
+                    after EVOLVE, pcs, {unregister()}
+                    after DEVOLVE, pcs, {unregister()}
+                    after LEVEL_UP, pcs, {unregister()}
+                  }
                 }
               }
             }
@@ -853,7 +860,7 @@ public enum Platinum implements LogicCardInfo {
             energyCost C, C
             attackRequirement {
               assert defending.isSPC(ASLEEP) : "The defending Pokémon is not asleep"
-              assert pokeFlag && turnFlag == bg.turnCount : "The defending Pokémon was not damaged or affected by Midnight Eyes during your last turn"
+              assert bg.em().retrieveObject("Altaria_Platinum_Midnight_Eyes_${defending.hashCode()}") == bg.turnCount-2 : "The defending Pokémon was not damaged or affected by Midnight Eyes during your last turn"
             }
             onAttack {
               targeted (defending) {
@@ -989,11 +996,11 @@ public enum Platinum implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               assert my.hand : "Your hand is empty"
-              assert my.all.find{it.numberOfDamageCounters} : "Your Pokémon are healthy"
               assert bg.em().retrieveObject("Nurse_Call") != bg.turnCount : "You cannot use Nurse Call more than once per turn"
               powerUsed()
               my.hand.select("Choose a card to discard").discard()
-              heal 20, my.all.findAll(it.numberOfDamageCounters).select("Heal which Pokémon"), Source.POKEPOWER
+              if (my.all.any{it.numberOfDamageCounters})
+                heal 20, my.all.findAll{it.numberOfDamageCounters}.select("Heal which Pokémon"), Source.POKEPOWER
             }
           }
           move "Return", {
@@ -1350,12 +1357,12 @@ public enum Platinum implements LogicCardInfo {
       case LUDICOLO_34:
         return evolution (this, from:"Lombre", hp:HP120, type:GRASS, retreatCost:2) {
           weakness L, PLUS30
-          pokePower "Cheerful Voice", {// TODO: Use a stored object to end the turn if the effect is blocked https://compendium.pokegym.net/compendium-bw.html#4
+          pokePower "Cheerful Voice", {
             text "Once during your turn , you may use this power. If you do, your turn ends. During your next turn, each of Ludicolo’s attacks does 60 more damage to the Defending Pokémon . This power can’t be used if Ludicolo is affected by a Special Condition."
             actionA {
               checkLastTurn()
               checkNoSPC()
-              powerUsed()
+              powerUsed({ usingThisAbilityEndsTurn delegate })
               delayed {
                 def registeredOn=0
                 after PROCESS_ATTACK_EFFECTS, {
@@ -1372,6 +1379,7 @@ public enum Platinum implements LogicCardInfo {
                 after DEVOLVE, self, {unregister()}
                 register{registeredOn=bg.turnCount}
               }
+              usingThisAbilityEndsTurn delegate
             }
           }
           move "Mad Dance", {
@@ -1677,16 +1685,7 @@ public enum Platinum implements LogicCardInfo {
           weakness R
           move "Ascension", {
             text "Search your deck for a card that evolves from Cascoon and put it onto Cascoon. (This counts as evolving Cascoon.) Shuffle your deck afterward."
-            energyCost ()
-            attackRequirement {
-              assert my.deck : "Your deck is empty"
-            }
-            onAttack {
-              def nam=self.name
-              def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-              if(tar) evolve(self, tar.first(), OTHER)
-              shuffleDeck()
-            }
+            ascension delegate
           }
           move "Poison Thread", {
             text "20 damage. The Defending Pokémon is now Poisoned."
@@ -1762,7 +1761,7 @@ public enum Platinum implements LogicCardInfo {
           }
         };
       case FLAAFFY_48:
-        return evolution (this, from:"Flaaffy", hp:HP080, type:LIGHTNING, retreatCost:1) {
+        return evolution (this, from:"Mareep", hp:HP080, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS20
           resistance M, MINUS20
           move "Spark", {
@@ -1846,7 +1845,7 @@ public enum Platinum implements LogicCardInfo {
             energyCost D, C, C
             onAttack {
               damage 40
-              if(confirm("Discard a [D] Energy attached to Houndoom G?")) {
+              if(self.cards.energyCardCount(D) && confirm("Discard a [D] Energy attached to $self?")) {
                 damage 20
                 discardSelfEnergyAfterDamage D
               }
@@ -1982,7 +1981,7 @@ public enum Platinum implements LogicCardInfo {
           weakness W, PLUS20
           move "Fire Tail Slap", {
             text "40 damage. Flip a coin. If tails, discard a [R] Energy attached to Monferno."
-            energyCost R, R
+            energyCost R
             onAttack {
               damage 40
               flip 1, {}, { discardSelfEnergyAfterDamage R }
@@ -2181,16 +2180,7 @@ public enum Platinum implements LogicCardInfo {
           weakness R, PLUS20
           move "Ascension", {
             text "Search your deck for a card that evolves from Silcoon and put it onto Silcoon. (This counts as evolving Silcoon.) Shuffle your deck afterward."
-            energyCost ()
-            attackRequirement {
-              assert my.deck : "Your deck is empty"
-            }
-            onAttack {
-              def nam=self.name
-              def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-              if(tar) evolve(self, tar.first(), OTHER)
-              shuffleDeck()
-            }
+            ascension delegate
           }
           move "Sticky String", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
@@ -2920,12 +2910,12 @@ public enum Platinum implements LogicCardInfo {
               checkNoSPC()
               assert bg.stadiumInfoStruct : "There is no Stadium in play"
               assert bg.stadiumInfoStruct.stadiumCard.player == self.owner : "You don't have a Stadium card in play"
-              assert !opp.active.topPokemonCard.cardTypes.is(POKEMON_SP) || !my.active.pokemonSP : "Both active Pokémon are Pokémon SP"
+              assert !opp.active.pokemonSP || !my.active.pokemonSP : "Both active Pokémon are Pokémon SP"
               powerUsed()
               if(!opp.active.pokemonSP) {
                 apply POISONED, opp.active, Source.POKEPOWER
               }
-              if(!my.active.topPokemonCard.cardTypes.is(POKEMON_SP)) {
+              if(!my.active.pokemonSP) {
                 apply POISONED, my.active, Source.POKEPOWER
               }
             }
@@ -3294,100 +3284,6 @@ public enum Platinum implements LogicCardInfo {
       case POWER_SPRAY_117:
         return itemCard (this) {
           text "You may play this card during your opponent’s turn when your opponent’s Pokémon uses any Poké-Power. Prevent all effects of that Poké-Power. (This counts as that Pokémon using its Poké-Power.) If you have 2 or less Pokémon SP in play, you can’t play this card."
-          def once
-          globalAbility {
-            delayed {
-              once = false
-              before USE_ABILITY, {
-                PokemonCardSet pcs = ef.getResolvedTarget(bg, e)
-                Ability ability = ef.ability
-                if(!(bg.em().retrieveObject("Power_Spray_Once_$thisCard.player"))) {
-                  bg.em().storeObject("Power_Spray_Once_$thisCard.player", true)
-                  once = true
-                }
-                def bluffing = true
-                def tempIgnoreList = []
-                def permIgnoreList = []
-                def ignoreList = []
-                if(bg.em().retrieveObject("This_Turn_Ignore_List_$thisCard.player") && bg.em().retrieveObject("This_Turn_Ignore_List_$thisCard.player").get(0) == bg.turnCount) {
-                  ignoreList.addAll(bg.em().retrieveObject("This_Turn_Ignore_List_$thisCard.player").get(1))
-                  tempIgnoreList.addAll(bg.em().retrieveObject("This_Turn_Ignore_List_$thisCard.player").get(1))
-                }
-                if(bg.em().retrieveObject("Always_Ignore_List_$thisCard.player")) {
-                  ignoreList.addAll(bg.em().retrieveObject("Always_Ignore_List_$thisCard.player"))
-                  permIgnoreList.addAll(bg.em().retrieveObject("Always_Ignore_List_$thisCard.player"))
-                }
-                if(bg.em().retrieveObject("Dont_Bluff_This_Turn_$thisCard.player") == bg.turnCount) {
-                  bluffing = false
-                }
-                if(bg.em().retrieveObject("Dont_Bluff_Ever_$thisCard.player")) {
-                  bluffing = false
-                }
-                if(
-                  (once) &&
-                  (!ignoreList.contains(ability.name) &&
-                  (thisCard.player.pbg.hand.find{it.name == "Team Galactic's Invention G-103 Power Spray"} || bluffing)) &&
-                  (thisCard.player.pbg.all.findAll{it.topPokemonCard.cardTypes.is(POKEMON_SP)}.size() >= 3) &&
-                  (ability instanceof PokePower) &&
-                  (bg.currentThreadPlayerType != thisCard.player) &&
-                  (pcs.owner != thisCard.player)
-                ) {// Display allow for selection
-                  while(1) {
-                    def options = []
-                    def text = []
-                    if(thisCard.player.pbg.hand.find{it.name == "Team Galactic's Invention G-103 Power Spray"}) {
-                      options += [1]
-                      text += ["Play Power Spray"]
-                    }
-                    options += [2]
-                    text += ["Don't play Power Spray"]
-                    if(!ignoreList.contains(ability.name)) {
-                      options += [3,4]
-                      text += ["Allow ${ability.name} for the remainder of the turn", "Allow ${ability.name} for the remainder of the game"]
-                    }
-                    if(bluffing) {
-                      options += [5,6]
-                      text += ["Only ask if Power Spray is in my hand this turn", "Only ask if Power Spray is in my hand this game"]
-                    }
-                    def choice = oppChoose(options, text, "Play power spray to block ${pcs.name}'s ${ability.name}?", options.get(0)) //oppChoose works since this only triggers if the active player thread is the opponent's
-                    if(choice == 1) {
-                      bg.em().storeObject("Power_Spray_Can_Play_$thisCard.player", true)
-                      bg.deterministicCurrentThreadPlayerType=thisCard.player
-                      bg.em().run(new PlayTrainer(thisCard.player.pbg.hand.findAll{it.name == "Team Galactic's Invention G-103 Power Spray"}.first()))
-                      bg.clearDeterministicCurrentThreadPlayerType()
-                      if(bg.em().retrieveObject("Power_Spray_Played_$thisCard.player")) {
-                        bc "Power Spray blocks ${ability.name}!"
-                        prevent()
-                      }
-                      bg.em().storeObject("Power_Spray_Can_Play_$thisCard.player", false)
-                      bg.em().storeObject("Power_Spray_Played_$thisCard.player", false)
-                      break
-                    } else if(choice == 3) {
-                      tempIgnoreList.add(ability.name)
-                      ignoreList.add(ability.name)
-                      bg.em().storeObject("This_Turn_Ignore_List_$thisCard.player",[bg.turnCount,tempIgnoreList])
-                    } else if(choice == 4) {
-                      permIgnoreList.add(ability.name)
-                      ignoreList.add(ability.name)
-                      bg.em().storeObject("Always_Ignore_List_$thisCard.player",permIgnoreList)
-                    } else if(choice == 5) {
-                      bluffing = false
-                      bg.em().storeObject("Dont_Bluff_This_Turn_$thisCard.player",bg.turnCount)
-                    } else if(choice == 5) {
-                      bluffing = false
-                      bg.em().storeObject("Dont_Bluff_Ever_$thisCard.player",true)
-                    } else {
-                      break
-                    }
-                  }
-                }
-              }
-              after USE_ABILITY, {
-                bg.em().storeObject("Power_Spray_Once_$thisCard.player", false)
-                once = false
-              }
-            }
-          }
           onPlay {
             bg.em().storeObject("Power_Spray_Played_$thisCard.player", true)
           }
@@ -3561,17 +3457,15 @@ public enum Platinum implements LogicCardInfo {
           pokeBody "Thankfulness", {
             text "Each of your [G] Pokémon (excluding any Shaymin) gets +40 HP. You can’t use more than 1 Thankfulness Poké-Body each turn."
             delayedA {
-              def target = []
-              def source = []
-              bg.em().storeObject("Thankfulness_target", target)
-              bg.em().storeObject("Thankfulness_source", source)
-              def eff
+              def eff, source, target
               onActivate {
                 eff = getter (GET_FULL_HP) {h->
                   def pcs = h.effect.target
                   if (pcs.owner == self.owner && pcs.name != "Shaymin" && pcs.types.contains(G)) {
                     target = bg.em().retrieveObject("Thankfulness_target")
+                    target = target ? target : []
                     source = bg.em().retrieveObject("Thankfulness_source")
+                    source = source ? source : []
                     if (!target.contains(pcs)) {
                       h.object += hp(40)
                       target.add(pcs)

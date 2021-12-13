@@ -23,7 +23,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
   SCORBUNNY_SWSH02 ("Scorbunny", "SWSH002", Rarity.PROMO, [POKEMON, BASIC, _FIRE_]),
   SOBBLE_SWSH03 ("Sobble", "SWSH003", Rarity.PROMO, [POKEMON, BASIC, _WATER_]),
   MEOWTH_V_SWSH04 ("Meowth V", "SWSH004", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _COLORLESS_]),
-  MEOWTH_VMAX_SWSH05 ("Meowth VMAX", "SWSH005", Rarity.PROMO, [POKEMON, EVOLUTION, VMAX, _COLORLESS_]),
+  MEOWTH_VMAX_SWSH05 ("Meowth VMAX", "SWSH005", Rarity.PROMO, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _COLORLESS_]),
   RILLABOOM_SWSH06 ("Rillaboom", "SWSH006", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
   FROSMOTH_SWSH07 ("Frosmoth", "SWSH007", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
   GALARIAN_PERRSERKER_SWSH08 ("Galarian Perrserker", "SWSH008", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
@@ -63,7 +63,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
   EEVEE_SWSH42 ("Eevee", "SWSH042", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
   GALARIAN_SIRFETCH_D_V_SWSH43 ("Galarian Sirfetch'd V", "SWSH043", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _FIGHTING_]),
   ETERNATUS_V_SWSH44 ("Eternatus V", "SWSH044", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _DARKNESS_]),
-  ETERNATUS_VMAX_SWSH45 ("Eternatus VMAX", "SWSH045", Rarity.PROMO, [POKEMON, EVOLUTION, VMAX, _DARKNESS_]),
+  ETERNATUS_VMAX_SWSH45 ("Eternatus VMAX", "SWSH045", Rarity.PROMO, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _DARKNESS_]),
   ELDEGOSS_SWSH46 ("Eldegoss", "SWSH046", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
   DREDNAW_SWSH47 ("Drednaw", "SWSH047", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
   CENTISKORCH_SWSH48 ("Centiskorch", "SWSH048", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
@@ -95,6 +95,46 @@ public enum SwordShieldPromos implements LogicCardInfo {
   ZACIAN_V_SWSH76 ("Zacian V", "SWSH076", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _METAL_]),
   ZAMAZENTA_V_SWSH77 ("Zamazenta V", "SWSH077", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _METAL_]),
   ORBEETLE_V_SWSH78 ("Orbeetle V", "SWSH078", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _GRASS_]),
+  GALARIAN_MR_RIME_SWSH79 ("Galarian Mr. Rime", "SWSH079", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
+  DEDENNE_SWSH80 ("Dedenne", "SWSH080", Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
+  POLTEAGEIST_SWSH81 ("Polteageist", "SWSH081", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
+  BUNNELBY_SWSH82 ("Bunnelby", "SWSH082", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
+  ALAKAZAM_V_SWSH83 ("Alakazam V", "SWSH083", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _PSYCHIC_]),
+  ELDEGOSS_V_SWSH84 ("Eldegoss V", "SWSH084", Rarity.PROMO, [POKEMON, POKEMON_V, BASIC, _GRASS_]),
+  BOLTUND_V_SWSH85 ("Boltund V", "SWSH085", Rarity.PROMO, [POKEMON, POKEMON_V, BASIC, _LIGHTNING_]),
+  CRAMORANT_V_SWSH86 ("Cramorant V", "SWSH086", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _COLORLESS_]),
+  EEVEE_VMAX_SWSH87 ("Eevee VMAX", "SWSH087", Rarity.PROMO, [POKEMON, EVOLUTION, POKEMON_V, VMAX, NOT_IMPLEMENTED, _COLORLESS_]),
+  CHERRIM_SWSH88 ("Cherrim", "SWSH088", Rarity.PROMO, [POKEMON, STAGE1, EVOLUTION, _GRASS_]),
+  OCTILLERY_SWSH89 ("Octillery", "SWSH089", Rarity.PROMO, [POKEMON, STAGE1, EVOLUTION, RAPID_STRIKE, _WATER_]),
+  HOUNDOOM_SWSH90 ("Houndoom", "SWSH090", Rarity.PROMO, [POKEMON, STAGE1, EVOLUTION, SINGLE_STRIKE, _DARKNESS_]),
+  BRONZONG_SWSH91 ("Bronzong", "SWSH091", Rarity.PROMO, [POKEMON, STAGE1, EVOLUTION, _METAL_]),
+  CHARMANDER_SWSH92 ("Charmander", "SWSH092", Rarity.PROMO, [POKEMON, BASIC, _FIRE_]),
+  ARROKUDA_SWSH93 ("Arrokuda", "SWSH093", Rarity.PROMO, [POKEMON, BASIC, _WATER_]),
+  JOLTEON_SWSH94 ("Jolteon", "SWSH094", Rarity.PROMO, [POKEMON, STAGE1, EVOLUTION, _LIGHTNING_]),
+  EEVEE_SWSH95 ("Eevee", "SWSH095", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
+  DRAGAPULT_V_SWSH96 ("Dragapult V", "SWSH096", Rarity.PROMO, [POKEMON, POKEMON_V, BASIC, _PSYCHIC_]),
+  DRAGAPULT_VMAX_SWSH97 ("Dragapult VMAX", "SWSH097", Rarity.PROMO, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _PSYCHIC_]),
+  CROBAT_V_SWSH98 ("Crobat V", "SWSH098", Rarity.PROMO, [POKEMON, POKEMON_V, BASIC, _DARKNESS_]),
+  CROBAT_VMAX_SWSH99 ("Crobat VMAX", "SWSH099", Rarity.PROMO, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _DARKNESS_]),
+  VENUSAUR_V_SWSH100 ("Venusaur V", "SWSH100", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _GRASS_]),
+  BLASTOISE_V_SWSH101 ("Blastoise V", "SWSH101", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _WATER_]),
+  VENUSAUR_VMAX_SWSH102 ("Venusaur VMAX", "SWSH102", Rarity.PROMO, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _GRASS_]),
+  BLASTOISE_VMAX_SWSH103 ("Blastoise VMAX", "SWSH103", Rarity.PROMO, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _WATER_]),
+  VICTINI_V_SWSH104 ("Victini V", "SWSH104", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _FIRE_]),
+  GARDEVOIR_V_SWSH105 ("Gardevoir V", "SWSH105", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _PSYCHIC_]),
+  SINGLE_STRIKE_URSHIFU_V_SWSH106 ("Single Strike Urshifu V", "SWSH106", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, SINGLE_STRIKE, _FIGHTING_]),
+  RAPID_STRIKE_URSHIFU_V_SWSH107 ("Rapid Strike Urshifu V", "SWSH107", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, RAPID_STRIKE, _FIGHTING_]),
+  EMPOLEON_V_SWSH108 ("Empoleon V", "SWSH108", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, RAPID_STRIKE, _WATER_]),
+  TYRANITAR_V_SWSH109 ("Tyranitar V", "SWSH109", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, SINGLE_STRIKE, _DARKNESS_]),
+  GALARIAN_RAPIDASH_V_SWSH111 ("Galarian Rapidash V", "SWSH111", Rarity.PROMO, [POKEMON, POKEMON_V, BASIC, POKEMON_V, _PSYCHIC_]),
+  CINDERACE_SWSH112 ("Cinderace", "SWSH112", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, SINGLE_STRIKE, _FIRE_]),
+  INTELEON_SWSH113 ("Inteleon", "SWSH113", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, RAPID_STRIKE, _WATER_]),
+  CRESSELIA_SWSH114 ("Cresselia", "SWSH114", Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]),
+  PASSIMIAN_SWSH115 ("Passimian", "SWSH115", Rarity.PROMO, [POKEMON, BASIC, RAPID_STRIKE, _FIGHTING_]),
+  MORPEKO_SWSH116 ("Morpeko", "SWSH116", Rarity.PROMO, [POKEMON, BASIC, _LIGHTNING_]),
+  PHANPY_SWSH117 ("Phanpy", "SWSH117", Rarity.PROMO, [POKEMON, BASIC, _FIGHTING_]),
+  EEVEE_SWSH118 ("Eevee", "SWSH118", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
+  SNORLAX_SWSH119 ("Snorlax", "SWSH119", Rarity.PROMO, [POKEMON, BASIC, SINGLE_STRIKE, _COLORLESS_]),
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -167,7 +207,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           energyCost R
           onAttack {
             damage 10
-            flip { apply BURNED }
+            flip { applyAfterDamage BURNED }
           }
         }
       };
@@ -179,7 +219,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           energyCost W, C
           onAttack {
             damage 20
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -258,7 +298,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           energyCost L, C, C
           onAttack {
             damage 60
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -305,7 +345,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           energyCost L, L, C
           onAttack {
             damage 120
-            apply POISONED
+            applyAfterDamage POISONED
           }
         }
       };
@@ -350,7 +390,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           energyCost P, C, C
           onAttack {
             damage 100
-            apply CONFUSED
+            applyAfterDamage CONFUSED
           }
         }
       };
@@ -424,7 +464,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           energyCost L, C
           onAttack {
             damage 40
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -835,6 +875,301 @@ public enum SwordShieldPromos implements LogicCardInfo {
       return copy (SwordShield.ZAMAZENTA_V_139, this)
       case ORBEETLE_V_SWSH78:
       return copy (AmazingVoltTackle.ORBEETLE_V_8, this)
+      case GALARIAN_MR_RIME_SWSH79:
+      return copy (DarknessAblaze.GALARIAN_MR_RIME_36, this)
+      case DEDENNE_SWSH80:
+      return copy (DarknessAblaze.DEDENNE_78, this)
+      case POLTEAGEIST_SWSH81:
+      return copy (DarknessAblaze.POLTEAGEIST_83, this)
+      case BUNNELBY_SWSH82:
+      return copy (DarknessAblaze.BUNNELBY_150, this)
+      case ALAKAZAM_V_SWSH83:
+      return copy (AmazingVoltTackle.ALAKAZAM_V_41, this)
+      case ELDEGOSS_V_SWSH84:
+      return copy (RebelClash.ELDEGOSS_V_19, this)
+      case BOLTUND_V_SWSH85:
+      return copy (RebelClash.BOLTUND_V_67, this)
+      case CRAMORANT_V_SWSH86:
+      return copy (SwordShield.CRAMORANT_V_155, this)
+      case EEVEE_VMAX_SWSH87:
+      return evolution (this, from: "Eevee V", hp:HP300, type:C, retreatCost:2) {
+        weakness F
+        move "G-Max Cuddle", {
+          text "During your opponent’s next turn, if the Defending Pokémon tries to attack, your opponent flips a coin. If tails, that attack doesn’t happen."
+          energyCost C, C, C
+          attackRequirement {}
+          onAttack {
+            // TODO
+          }
+        }
+      }
+      case CHERRIM_SWSH88:
+      return copy (BattleStyles.CHERRIM_8, this)
+      case OCTILLERY_SWSH89:
+      return copy (BattleStyles.OCTILLERY_37, this)
+      case HOUNDOOM_SWSH90:
+      return copy (BattleStyles.HOUNDOOM_96, this)
+      case BRONZONG_SWSH91:
+      return copy (BattleStyles.BRONZONG_102, this)
+      case CHARMANDER_SWSH92:
+      return copy (VividVoltage.CHARMANDER_23, this)
+      case ARROKUDA_SWSH93:
+      return copy (VividVoltage.ARROKUDA_41, this)
+      case JOLTEON_SWSH94:
+      return evolution (this, from: "Eevee", hp:HP100, type:L, retreatCost:0) {
+        weakness F
+        move "Energize", {
+            text "Attach a [L] Energy card from your discard pile to this Pokémon."
+            energyCost L
+            attackRequirement {
+              assert my.discard.filterByEnergyType(L) : "No [L] Energy in your discard pile."
+            }
+            onAttack {
+              afterDamage {
+                attachEnergyFrom(type: L, my.discard, self)
+              }
+            }
+          }
+        move "Thunder", {
+          text "160 damage. This Pokémon also does 30 damage to itself."
+          energyCost L, L, C
+          attackRequirement {}
+          onAttack {
+            damage 160
+            damage 30, self
+          }
+        }
+      }
+      case EEVEE_SWSH95:
+      return basic (this, hp:HP060, type:C, retreatCost:1) {
+        weakness F
+        move "First Step", {
+          text "Draw a card."
+          energyCost C
+          attackRequirement {
+            assert my.deck : "There are no cards in your deck."
+          }
+          onAttack {
+            draw 1
+          }
+        }
+        move "Tail Whap", {
+          text "30 damage."
+          energyCost C, C, C
+          attackRequirement {}
+          onAttack {
+            damage 30
+          }
+        }
+      }
+      case DRAGAPULT_V_SWSH96:
+      return copy (RebelClash.DRAGAPULT_V_92, this)
+      case DRAGAPULT_VMAX_SWSH97:
+      return copy (RebelClash.DRAGAPULT_VMAX_93, this)
+      case CROBAT_V_SWSH98:
+      return copy (DarknessAblaze.CROBAT_V_104, this)
+      case CROBAT_VMAX_SWSH99:
+      return copy (ShinyStarV.CROBAT_VMAX_7, this)
+      case VENUSAUR_V_SWSH100:
+      return basic (this, hp:HP220, type:G, retreatCost:3) {
+        weakness R
+        move "Leaf Drain", {
+          text "50 damage. Heal 30 damage from this Pokemon."
+          energyCost G, C
+          attackRequirement {}
+          onAttack {
+            damage 50
+            heal 30, self
+          }
+        }
+        move "Double-Edge", {
+          text "190 damage. This Pokemon also does 30 damage to itself."
+          energyCost G, G, C
+          attackRequirement {}
+          onAttack {
+            damage 190
+            damage 30, self
+          }
+        }
+      }
+      case BLASTOISE_V_SWSH101:
+      return basic (this, hp:HP220, type:W, retreatCost:3) {
+        weakness L
+        move "Water Gun", {
+          text "30 damage."
+          energyCost W
+          attackRequirement {}
+          onAttack {
+            damage 30
+          }
+        }
+        move "Torrential Cannon", {
+          text "200 damage. During your next turn, this Pokémon can’t use Torrential Cannon."
+          energyCost W, W, W
+          attackRequirement {}
+          onAttack {
+            damage 200
+            cantUseAttack(thisMove, self)
+          }
+        }
+      }
+      case VENUSAUR_VMAX_SWSH102:
+      return evolution (this, from: "Venusaur V", hp:HP330, type:G, retreatCost:4) {
+        weakness R
+        move "Forest Storm", {
+          text "30x damage. This attack does 30 damage for each [G] Energy attached to all of your Pokémon."
+          energyCost C, C
+          attackRequirement {}
+          onAttack {
+            my.all.each { damage 30*it.cards.energyCount(G) }
+          }
+        }
+        move "G-Max Bloom", {
+          text "210 damage. Heal 30 damage from this Pokemon."
+          energyCost G, G, C, C
+          attackRequirement {}
+          onAttack {
+            damage 210
+            heal 30, self
+          }
+        }
+      }
+      case BLASTOISE_VMAX_SWSH103:
+      return evolution (this, from: "Blastoise V", hp:HP330, type:W, retreatCost:3) {
+        weakness L
+        move "Grand Falls", {
+          text "120 damage. Search your deck for up to 3 [W] Energy cards and attach them to your Benched Pokémon in any way you like. Then, shuffle your deck."
+          energyCost W, W, W
+          attackRequirement {
+            assert my.bench : "You have no Benched Pokémon."
+            assert my.deck : "You have no cards in deck."
+          }
+          onAttack {
+            damage 120
+            deck.search (max:3,basicEnergyFilter(W)).each {
+              attachEnergy(my.bench.select("Attach $it to"), it)
+            }
+            shuffleDeck()
+          }
+        }
+        move "G-Max Bombard", {
+          text "220 damage. This attack also does 30 damage to 2 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+          energyCost W, W, W, W
+          attackRequirement {}
+          onAttack {
+            damage 220
+            multiDamage(opp.bench, 2, 30)
+          }
+        }
+      }
+      case VICTINI_V_SWSH104:
+      return copy (SwordShield.VICTINI_V_25, this)
+      case GARDEVOIR_V_SWSH105:
+      return copy (ChampionsPath.GARDEVOIR_V_16, this)
+      case SINGLE_STRIKE_URSHIFU_V_SWSH106:
+      return basic (this, hp:HP220, type:F, retreatCost:2) {
+        weakness P
+        move "Low Kick", {
+          text "30 damage."
+          energyCost F
+          attackRequirement {}
+          onAttack {
+            damage 30
+          }
+        }
+        move "Brawny Knuckle", {
+          text "180 damage. This attack’s damage isn’t affected by Resistance."
+          energyCost F, F, F, F
+          attackRequirement {}
+          onAttack {
+            damage 180
+            dontApplyResistance()
+          }
+        }
+      }
+      case RAPID_STRIKE_URSHIFU_V_SWSH107:
+      return basic (this, hp:HP220, type:F, retreatCost:2) {
+        weakness P
+        move "Spiral Kick", {
+          text "40 damage."
+          energyCost F, C
+          attackRequirement {}
+          onAttack {
+            damage 40
+          }
+        }
+        move "Sonic Legs", {
+          text "90 damage. This attack also does 20 damage to 2 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+          energyCost F, F, C
+          attackRequirement {}
+          onAttack {
+            damage 90
+            multiDamage(opp.bench, 2, 20)
+          }
+        }
+      }
+      case EMPOLEON_V_SWSH108:
+      return copy (BattleStyles.EMPOLEON_V_40, this)
+      case TYRANITAR_V_SWSH109:
+      return copy (BattleStyles.TYRANITAR_V_97, this)
+      case GALARIAN_RAPIDASH_V_SWSH111:
+      return copy (ChillingReign.GALARIAN_RAPIDASH_V_167, this)
+      case CINDERACE_SWSH112:
+      return copy (ChillingReign.CINDERACE_28, this)
+      case INTELEON_SWSH113:
+      return copy (ChillingReign.INTELEON_43, this)
+      case CRESSELIA_SWSH114:
+      return copy (ChillingReign.CRESSELIA_64, this)
+      case PASSIMIAN_SWSH115:
+      return copy (ChillingReign.PASSIMIAN_88, this)
+      case MORPEKO_SWSH116:
+      return basic (this, hp:HP080, type:L, retreatCost:1) {
+        weakness F
+        move "Famished", {
+          text "Draw a card."
+          energyCost C
+          attackRequirement {
+            assert my.deck : "You have no cards in deck."
+          }
+          onAttack {
+            draw 1
+          }
+        }
+        move "Thunder Shock", {
+          text "40 damage. Flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
+          energyCost L, C
+          attackRequirement {}
+          onAttack {
+            damage 40
+            flip { applyAfterDamage PARALYZED }
+          }
+        }
+      }
+      case PHANPY_SWSH117:
+      return copy (AmazingVoltTackle.PHANPY_56, this)
+      case EEVEE_SWSH118:
+      return copy (EEVEE_SWSH42, this)
+      case SNORLAX_SWSH119:
+      return basic (this, hp:HP140, type:C, retreatCost:4) {
+        weakness F
+        move "Slap Push", {
+          text "30 damage."
+          energyCost C, C
+          attackRequirement {}
+          onAttack {
+            damage 30
+          }
+        }
+        move "Single Strike Tackle", {
+          text "This Pokémon also does 30 damage to itself."
+          energyCost C, C, C
+          attackRequirement {}
+          onAttack {
+            damage 130
+            damage 30, self
+          }
+        }
+      }
       default:
       return null;
     }

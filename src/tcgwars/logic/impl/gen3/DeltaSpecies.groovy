@@ -1174,8 +1174,10 @@ public enum DeltaSpecies implements LogicCardInfo {
           onAttack {
             def toAttach = my.deck.search(max: 1, "Select a Special Energy card", {
               it.cardTypes.is(SPECIAL_ENERGY) && it.name.contains("Holon Energy")
-            })
-            attachEnergy(my.all.select("Attach to"), toAttach)
+            }).first()
+            if(toAttach) {
+              attachEnergy(my.all.select("Attach to"), toAttach)
+            }
           }
         }
       };

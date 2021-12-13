@@ -10,7 +10,8 @@ import tcgwars.logic.impl.gen5.BlackWhite;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.effect.EffectPriority.BEFORE_LAST;
 import static tcgwars.logic.effect.EffectType.*;
 import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
@@ -343,7 +344,7 @@ public enum MajesticDawn implements LogicCardInfo {
             text "60 damage. This attack’s damage isn’t affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             energyCost W, C, C
             onAttack {
-              swiftDamage(60, defending)
+              noResistanceOrAnyEffectDamage(60, defending)
             }
           }
 
@@ -761,17 +762,15 @@ public enum MajesticDawn implements LogicCardInfo {
           pokeBody "Sunlight Veil", {
             text "Each of your Pokémon that evolves from Eevee gets +20 HP. You can’t use more than 1 Sunlight Veil Poké-Body each turn."
 
-            def target = []
-            def source = []
-            bg.em().storeObject("Sunlight_Veil_target", target)
-            bg.em().storeObject("Sunlight_Veil_source", source)
-            def eff
+            def eff, source, target
             onActivate {
-              eff = getter (GET_FULL_HP) {h->
+              eff = getter (GET_FULL_HP,BEFORE_LAST) {h->
                 def pcs = h.effect.target
-                if (pcs.owner == self.owner && pcs.realEvolution && pcs.topPokemonCard.predecessor == "Eevee"){
+                if (pcs.owner == self.owner && pcs.realEvolution && pcs.topNonLevelUpPokemonCard.predecessor == "Eevee"){
                   target = bg.em().retrieveObject("Sunlight_Veil_target")
+                  target = target?target:[]
                   source = bg.em().retrieveObject("Sunlight_Veil_source")
+                  source = source?source:[]
                   if(!target.contains(pcs)){
                     h.object += hp(20)
                     target.add(pcs)
@@ -1269,7 +1268,7 @@ public enum MajesticDawn implements LogicCardInfo {
           }
           move "Body Slam", {
             text "40 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
-            energyCost G, G, G
+            energyCost G, G, C
             attackRequirement {}
             onAttack {
               damage 40
@@ -1384,9 +1383,13 @@ public enum MajesticDawn implements LogicCardInfo {
             text "Any damage done by attacks from your Pokémon to the Defending Pokémon isn’t affected by Resistance."
             delayedA {
               before APPLY_RESISTANCE, {
-                bg.dm().each {
-                  if (it.from.owner == self.owner && it.to.owner == self.owner.opposite && it.to.active) {
-                    prevent()
+                if (ef.attacker.owner == self.owner) {
+                  bg.dm().each {
+                    if (it.to.owner == self.owner.opposite && it.to.active) {
+                      // TODO: For below line, add Additional if? " && it.from.types.any{ty -> it.to.resistances.contains(ty)}"
+                      // bc "$thisAbility ignores resistance" // This shouldn't always print.
+                      prevent()
+                    }
                   }
                 }
               }
@@ -1396,18 +1399,21 @@ public enum MajesticDawn implements LogicCardInfo {
             text "30× damage. Does 30 damage times the number of different types of Wormadam on your Bench."
             energyCost G
             attackRequirement {
-              assert my.bench.find{it.name.contains("Wormadam")} : "You have no Wormadam on your Bench"
+              assertMyBench(info: "with Wormadam in their name", {it.name.contains("Wormadam")})
             }
             onAttack {
-              def worms = []
-              def count = 0
+              def wormTypes = []
               my.bench.each {
-                if(it.name.contains("Wormadam") && !worms.contains(it.name)) {
-                  worms.add(it.name)
-                  count ++
+                if(it.name.contains("Wormadam")) {
+                  for (Type ty : it.getTypes()) {
+                    if (!wormTypes.contains(ty)) {
+                      wormTypes.add(ty)
+                      break
+                    }
+                  }
                 }
               }
-              damage 30 * count
+              damage 30 * wormTypes.size()
             }
           }
           move "Quick Touch", {
@@ -1512,7 +1518,7 @@ public enum MajesticDawn implements LogicCardInfo {
           resistance F, MINUS20
           move "Slash", {
             text "10 damage. "
-            energyCost G
+            energyCost C
             onAttack {
               damage 10
             }
@@ -1766,7 +1772,7 @@ public enum MajesticDawn implements LogicCardInfo {
           weakness W, PLUS10
           move "Flare", {
             text "20 damage. "
-            energyCost F
+            energyCost R
             onAttack {
               damage 20
             }
@@ -2429,7 +2435,7 @@ public enum MajesticDawn implements LogicCardInfo {
               pokeBody "Rock Reaction", {
                 delayedA{
                   after ATTACH_ENERGY, self, {
-                    if(ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(F) && self.owner.pbg.deck && confirm("Use Rock Reaction?")){
+                    if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(F) && self.owner.pbg.deck) {
                       def sel=my.deck.search("Search your deck for a card that evolved from $self",{it.cardTypes.is(EVOLUTION) && it.predecessor==self.name})
                       if(sel){
                         evolve(self, sel.first(), OTHER)
@@ -2500,7 +2506,7 @@ public enum MajesticDawn implements LogicCardInfo {
               pokeBody "Aqua Reaction", {
                 delayedA{
                   after ATTACH_ENERGY, self, {
-                    if(ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(W) && self.owner.pbg.deck && confirm("Use Rock Reaction?")){
+                    if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(W) && self.owner.pbg.deck) {
                       def sel=my.deck.search("Search your deck for a card that evolved from $self",{it.cardTypes.is(EVOLUTION) && it.predecessor==self.name})
                       if(sel){
                         evolve(self, sel.first(), OTHER)
@@ -2576,6 +2582,7 @@ public enum MajesticDawn implements LogicCardInfo {
                   benchPCS(it)
                 }
                 shuffleDeck()
+                bc "${self.owner.getPlayerUsername(bg)}'s turn ends due to using $thisCard's effect."
                 bg.gm().betweenTurns()
               }
             }
@@ -2690,7 +2697,7 @@ public enum MajesticDawn implements LogicCardInfo {
               powerUsed()
               def energy = my.hand.filterByType(ENERGY).select("Energy to attach").first()
               def pcs = my.all.select("Attach $energy to...")
-              attachEnergy(pcs, energy)
+              attachEnergy(pcs, energy, PLAY_FROM_HAND)
             }
           }
           move "Verdant Force", {
@@ -2699,7 +2706,7 @@ public enum MajesticDawn implements LogicCardInfo {
             onAttack {
               damage 30
               my.all.each {
-                damage 10 * self.cards.energyCount(C)
+                damage 10 * it.cards.energyCount(C)
               }
             }
           }

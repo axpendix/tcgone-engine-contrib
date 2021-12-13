@@ -111,7 +111,7 @@ public enum PopSeries6 implements LogicCardInfo {
             // Oran Berry: Remove 1 damage counter from Gible at the end of your turn.
             delayedA {
               before BETWEEN_TURNS,{
-                if (self.numberOfDamageCounters >= 1) {
+                if (bg.currentTurn == self.owner && self.numberOfDamageCounters >= 1) {
                   bc "Oran Berry activates"
                   heal 10, self
                 }
@@ -137,7 +137,7 @@ public enum PopSeries6 implements LogicCardInfo {
             // Oran Berry: Remove 1 damage counter from Gible at the end of your turn.
             delayedA {
               before BETWEEN_TURNS,{
-                if (self.numberOfDamageCounters >= 1) {
+                if (bg.currentTurn == self.owner && self.numberOfDamageCounters >= 1) {
                   bc "Oran Berry activates"
                   heal 10, self
                 }
