@@ -14,6 +14,7 @@ import static tcgwars.logic.card.HP.*
 import static tcgwars.logic.card.Resistance.ResistanceType.MINUS30
 import static tcgwars.logic.card.Type.*
 import static tcgwars.logic.effect.EffectType.APPLY_ATTACK_DAMAGES
+import static tcgwars.logic.effect.EffectType.CHECK_ATTACK_REQUIREMENTS
 import static tcgwars.logic.effect.EffectType.GET_MOVE_LIST
 import static tcgwars.logic.effect.EffectType.KNOCKOUT
 import static tcgwars.logic.effect.EffectType.PROCESS_ATTACK_EFFECTS
@@ -51,13 +52,13 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
   MAKUHITA_22 ("Makuhita", "22", Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
   HARIYAMA_23 ("Hariyama", "23", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
   LYCANROC_V_24 ("Lycanroc V", "24", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _FIGHTING_]),
-  LYCANROC_VMAX_25 ("Lycanroc VMAX", "25", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _FIGHTING_]),
+  LYCANROC_VMAX_25 ("Lycanroc VMAX", "25", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _FIGHTING_]),
   GALARIAN_MOLTRES_26 ("Galarian Moltres", "26", Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
   ABSOL_27 ("Absol", "27", Rarity.UNCOMMON, [POKEMON, BASIC, _DARKNESS_]),
   CROAGUNK_28 ("Croagunk", "28", Rarity.COMMON, [POKEMON, BASIC, _DARKNESS_]),
   TOXICROAK_29 ("Toxicroak", "29", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
   GARBODOR_V_30 ("Garbodor V", "30", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _DARKNESS_]),
-  GARBODOR_VMAX_31 ("Garbodor VMAX", "31", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _DARKNESS_]),
+  GARBODOR_VMAX_31 ("Garbodor VMAX", "31", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _DARKNESS_]),
   NICKIT_32 ("Nickit", "32", Rarity.COMMON, [POKEMON, BASIC, _DARKNESS_]),
   THIEVUL_33 ("Thievul", "33", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
   GALARIAN_MEOWTH_34 ("Galarian Meowth", "34", Rarity.COMMON, [POKEMON, BASIC, _METAL_]),
@@ -75,7 +76,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
   NOIVERN_V_46 ("Noivern V", "46", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _DRAGON_]),
   DRAMPA_47 ("Drampa", "47", Rarity.UNCOMMON, [POKEMON, BASIC, _DRAGON_]),
   DURALUDON_V_48 ("Duraludon V", "48", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _DRAGON_]),
-  DURALUDON_VMAX_49 ("Duraludon VMAX", "49", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _DRAGON_]),
+  DURALUDON_VMAX_49 ("Duraludon VMAX", "49", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _DRAGON_]),
   SLAKOTH_50 ("Slakoth", "50", Rarity.COMMON, [POKEMON, BASIC, _COLORLESS_]),
   VIGOROTH_51 ("Vigoroth", "51", Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
   SLAKING_52 ("Slaking", "52", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]),
@@ -106,10 +107,10 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
   RAIHAN_77 ("Raihan", "77", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   SCHOOLGIRL_78 ("Schoolgirl", "78", Rarity.COMMON, [TRAINER, SUPPORTER]),
   COPYCAT_79 ("Copycat", "79", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-  LYCANROC_VMAX_80 ("Lycanroc VMAX", "80", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _FIGHTING_]),
-  GARBODOR_VMAX_81 ("Garbodor VMAX", "81", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _DARKNESS_]),
-  DURALUDON_VMAX_82 ("Duraludon VMAX", "82", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _DRAGON_]),
-  DURALUDON_VMAX_83 ("Duraludon VMAX", "83", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _DRAGON_]),
+  LYCANROC_VMAX_80 ("Lycanroc VMAX", "80", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _FIGHTING_]),
+  GARBODOR_VMAX_81 ("Garbodor VMAX", "81", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _DARKNESS_]),
+  DURALUDON_VMAX_82 ("Duraludon VMAX", "82", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _DRAGON_]),
+  DURALUDON_VMAX_83 ("Duraludon VMAX", "83", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _DRAGON_]),
   RAIHAN_84 ("Raihan", "84", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   SCHOOLGIRL_85 ("Schoolgirl", "85", Rarity.COMMON, [TRAINER, SUPPORTER]),
   COPYCAT_86 ("Copycat", "86", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
@@ -1193,19 +1194,18 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         weakness F
         bwAbility "Self-Important", {
           text "If there is a Stadium in play, this Pokémon can't attack."
-          onActivate {
-            keyStore("Self-Important", self.hashCode(), 1)
-          }
-          onDeactivate {
-            keyStore("Self-Important", self.hashCode(), 0)
+          delayedA {
+            before CHECK_ATTACK_REQUIREMENTS, {
+              if (self.active && bg.currentTurn == self.owner && bg.stadiumInfoStruct) {
+                wcu "Self-Important prevents attacking."
+                prevent()
+              }
+            }
           }
         }
         move "Rout", {
           text "120+ damage. This attack does 30 more damage for each of your opponent's Benched Pokémon."
           energyCost C, C, C
-          attackRequirement {
-            assert !keyStore("Self-Important", self.hashCode(), null) : "Self-Important prevents Slacking from attacking while a Stadium is in play"
-          }
           onAttack {
             damage 120
             damage 30 * opp.bench.size()
