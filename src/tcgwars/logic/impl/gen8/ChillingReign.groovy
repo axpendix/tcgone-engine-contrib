@@ -1243,7 +1243,7 @@ public enum ChillingReign implements LogicCardInfo {
             text "Once during your turn, you may place 2 damage counters on 1 of your opponent's Pokémon."
             actionA {
               checkLastTurn()
-              if (confirm("Use Quick Shooter?")) {
+              if (confirm("Use Quick Shooting?")) {
                 powerUsed()
                 def pcs = opp.all.select("Place 2 damage counters on which Pokémon?")
                 directDamage 20, pcs, SRC_ABILITY
