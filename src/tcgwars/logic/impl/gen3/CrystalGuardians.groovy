@@ -1178,15 +1178,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Ascension", {
           text "Search your deck for a card that evolves from Shuppet and put it onto Shuppet. (This counts as evolving Shuppet.) Shuffle your deck afterward."
           energyCost C
-          attackRequirement {
-            assert my.deck
-          }
-          onAttack {
-            def nam=self.name
-            def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-            if(tar) evolve(self, tar.first(), OTHER)
-            shuffleDeck()
-          }
+          ascension delegate
         }
         move "Tackle", {
           text "20 damage."

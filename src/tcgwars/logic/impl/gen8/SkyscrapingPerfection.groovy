@@ -3,9 +3,11 @@ package tcgwars.logic.impl.gen8
 import tcgwars.logic.TargetPlayer
 import tcgwars.logic.card.*
 import tcgwars.logic.effect.basic.Knockout
+import tcgwars.logic.effect.basic.Move
 import tcgwars.logic.impl.gen3.TeamRocketReturns
 import tcgwars.logic.impl.gen5.PlasmaStorm
 import tcgwars.logic.util.CardTypeSet
+import tcgwars.logic.util.TypeSet
 
 import static tcgwars.logic.card.CardType.*
 import static tcgwars.logic.card.HP.*
@@ -13,6 +15,7 @@ import static tcgwars.logic.card.Resistance.ResistanceType.MINUS30
 import static tcgwars.logic.card.Type.*
 import static tcgwars.logic.effect.EffectType.APPLY_ATTACK_DAMAGES
 import static tcgwars.logic.effect.EffectType.CHECK_ATTACK_REQUIREMENTS
+import static tcgwars.logic.effect.EffectType.GET_MOVE_LIST
 import static tcgwars.logic.effect.EffectType.KNOCKOUT
 import static tcgwars.logic.effect.EffectType.PROCESS_ATTACK_EFFECTS
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.PLAY_FROM_HAND
@@ -524,7 +527,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
           energyCost F
           onAttack {
             damage 20
-            if (defending.evolution) damage 50
+            if (defending.realEvolution) damage 50
           }
         }
         move "Bullet Straight", {
@@ -1273,47 +1276,102 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
       return itemCard (this) {
         text "Switch a card from your hand with the top card of your deck."
         onPlay {
+          hand.getExcludedList(thisCard).select().moveTo(addToTop: true, hidden: true, my.deck)
+          deck.subList(1,2).moveTo(hidden: true, my.hand) // Card placed on top, get the one underneath
         }
         playRequirement{
+          assert hand.getExcludedList(thisCard) : "You have no other cards in your hand"
+          assert deck : "Your deck is empty"
         }
       };
       case RESCUE_TROLLEY_59:
       return itemCard (this) {
         text "Put up to 2 Pokémon with 90 HP or less from your discard pile into your hand."
         onPlay {
+          def cards = my.discard.select thisCard.cardText, { it.cardTypes.is(POKEMON) && it.asPokemonCard().hp <= 90 }
+          cards.moveTo hand
         }
         playRequirement{
+          assert my.discard.any { it.cardTypes.is(POKEMON) && it.asPokemonCard().hp <= 90 } : "No Pokémon with 90 HP or less in your discard pile"
         }
       };
       case DIGGING_GLOVES_60:
       return pokemonTool (this) {
-        text "The attacks of the Pokémon this card is attached to do 30 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
+        text "The attacks of the Pokémon this card is attached to do 30 more damage to your opponent's Active [F] Pokémon (before applying Weakness and Resistance)."
+        def eff
         onPlay {reason->
+          eff = delayed {
+            after PROCESS_ATTACK_EFFECTS, {
+              bg.dm().each {
+                if (it.from == self && it.to.active && it.to.owner == self.owner.opposite && it.dmg.value && it.to.types.contains(F)) {
+                  it.dmg += hp(30)
+                  bc "$thisCard +30"
+                }
+              }
+            }
+          }
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          eff.unregister()
         }
       };
       case SINGLE_STRIKE_SCROLL_OF_THE_DRAGON_FANG_61:
       return pokemonTool (this) {
         text "The Single Strike Pokémon this card is attached to can use the attack on this card. (You still need the necessary Energy to use this attack.)"
+        def newMove
         onPlay {reason->
+          def moveBody = {
+            text "Discard all Energy from this Pokémon"
+            attackRequirement {
+              // self is not set properly creating a move like this, use bg.ownActive() instead
+              assert bg.ownActive().singleStrike : "${bg.ownActive()} is not a $SINGLE_STRIKE Pokémon"
+            }
+            energyCost F, M, M, C, C
+            onAttakc {
+              damage 300
+              afterDamage {
+                discardAllSelfEnergy()
+              }
+            }
+          }
+
+          Move move = new Move("Superstrong Slash")
+          moveBody.delegate = new MoveBuilder(thisMove: move)
+          moveBody.call()
+          newMove = getter GET_MOVE_LIST, self, {h->
+            if (h.effect.target.singleStrike) {
+              def moveList = []
+              moveList.addAll h.object
+              moveList.add move
+              h.object = moveList
+            }
+          }
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          newMove.unregister()
         }
       };
       case FULL_FACE_GUARD_62:
       return pokemonTool (this) {
         text "If the Pokémon this card is attached to has no Abilities" +
           "it takes 20 less damage from attacks from your opponent's Pokémon (after applying Weakness and Resistance)."
+        def eff
         onPlay {reason->
+          eff = delayed {
+            before APPLY_ATTACK_DAMAGES, {
+              if(self.abilities.isEmpty()) {
+                bg.dm().each{
+                  if(it.to == self && it.from.owner == self.owner.opposite && it.notNoEffect && it.dmg.value) {
+                    bc "$thisCard -20"
+                    it.dmg -= hp(20)
+                  }
+                }
+              }
+            }
+          }
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          eff.unregister()
         }
       };
       case RAIHAN_63:
@@ -1321,9 +1379,22 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         text "You can play this card only if 1 of your Pokémon was Knocked Out during your opponent's last turn. Attach a basic Energy card from your discard pile to 1 of your Pokémon. If you do" +
           "search your deck for a card and put it into your hand. Then" +
           "shuffle your deck."
+        globalAbility {Card thisCard->
+          delayed {
+            before KNOCKOUT, {
+              if(ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite){
+                keyStore("Raihan_KO", thisCard, bg.turnCount)
+              }
+            }
+          }
+        }
         onPlay {
+          def card = deck.search count:1, { true }
+          card.moveTo hidden:true, hand
         }
         playRequirement{
+          assert keyStore("Rosa_KO", thisCard, null) == bg.turnCount - 1: "No Pokémon was Knocked Out during your opponent’s last turn"
+          assert my.discard.any { it.cardTypes.is(BASIC_ENERGY) } : "No basic Energy cards in your discard pile"
         }
       };
       case SCHOOLGIRL_64:
@@ -1342,10 +1413,23 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
       case CRYSTAL_CAVE_66:
       return stadium (this) {
         text "Once during each player's turn" +
-          "that player may heal 30 damage from each of their Pokémon and Pokémon."
+          "that player may heal 30 damage from each of their [M] Pokémon and [N] Pokémon."
+        def lastTurn = 0
+        def actions = []
         onPlay {
+          actions.add(action("Stadium: $thisCard") {
+            assert lastTurn != bg.turnCount : "You have already used $thisCard this turn"
+            def targets = my.all.findAll { it.types.containsAny([M, N] as TypeSet) && it.numberOfDamageCounters }
+            assert targets : "You have no [M] or [N] Pokémon with damage counters"
+            bc "Used $thisCard"
+            lastTurn = bg.turnCount
+            targets.each {
+              heal 30, it
+            }
+          })
         }
         onRemoveFromPlay{
+          actions.each { bg.gm().unregisterAction(it) }
         }
       };
       case TWIN_ENERGY_67:

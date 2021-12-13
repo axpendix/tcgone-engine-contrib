@@ -1428,7 +1428,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               assert my.deck
             }
             onAttack {
-              if(my.deck.search(max : 1,"Select a Pokémon Tool card or Rocket’s Secret Machine.",cardTypeFilter(POKEMON_TOOL)).showToOpponent("Selected card.").moveTo(my.hand)){
+              if(my.deck.search(max : 1,"Select a Pokémon Tool card or Rocket’s Secret Machine.",{it.cardTypes.is(POKEMON_TOOL)||it.cardTypes.is(ROCKETS_SECRET_MACHINE)}).showToOpponent("Selected card.").moveTo(my.hand)){
                 if(my.bench){
                   if(confirm("switch $self ?")) sw self, my.bench.select()
                 }

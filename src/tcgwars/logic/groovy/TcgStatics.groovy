@@ -33,6 +33,8 @@ import tcgwars.logic.effect.basic.*
 import tcgwars.logic.effect.event.*
 import tcgwars.logic.effect.special.*
 
+import static tcgwars.logic.groovy.TcgStatics.damage
+
 /**
  * @author axpendix@hotmail.com
  */
@@ -223,7 +225,42 @@ class TcgStatics {
     def pcs = Target.YOUR_ACTIVE.getSingleTarget(bg)
     def cards = selectEnergy(pcs, types)
     afterDamage {
-      cards.moveTo newLocation
+
+    }
+  }
+  static moveSelfEnergyAfterDamage(PokemonCardSet newPcs, Type...types=C) {
+    def pcs = Target.YOUR_ACTIVE.getSingleTarget(bg)
+    def cards = selectEnergy(pcs, types)
+    afterDamage {
+      cards.each {
+        energySwitch pcs, newPcs, it, true
+      }
+      bc "$cards moved from $pcs to $newPcs"
+    }
+  }
+  static moveDefendingEnergyAfterDamage(def newLocation, Type...types=C) {
+    def pcs = Target.OPP_ACTIVE.getSingleTarget(bg)
+    def cards = selectEnergy(pcs, types)
+    def newPcs = null
+    if (newLocation instanceof PokemonCardSet) {
+      newPcs = newLocation
+    }
+    else if (newLocation instanceof PcsList) {
+      newPcs = newLocation.select "Move $cards to?"
+    }
+    else if (!(newLocation instanceof CardList)) {
+      throw new IllegalArgumentException("moveDefendingEnergyAfterDamage() newLocation=${newLocation} type not supported")
+    }
+    afterDamage {
+      if (newLocation instanceof CardList) {
+        cards.moveTo newLocation
+      }
+      else {
+        cards.each {
+          energySwitch pcs, newPcs as PokemonCardSet, it, true
+        }
+        bc "$cards moved from $pcs to $newPcs"
+      }
     }
   }
   /**
@@ -1330,7 +1367,7 @@ class TcgStatics {
     }
     def info = "Attach ${params.type ?: ''} ${params.basic ? 'Basic' : ''} Energy to ${tostr}."
     def filter = { Card card ->
-      card.cardTypes.is(ENERGY) && (!params.basic || card.cardTypes.is(BASIC_ENERGY)) && (!params.type || card.asEnergyCard().containsTypePlain(params.type))
+      card.cardTypes.is(ENERGY) && (!params.basic || card.cardTypes.is(BASIC_ENERGY)) && (!params.type || params.type.each { card.asEnergyCard().containsTypePlain(it) })
     }
     if(from instanceof DeckCardList){
       list = from.search (max: count?:max, info, filter)
@@ -2066,6 +2103,56 @@ class TcgStatics {
       } else if (choice == 6) {
         bluffing = false
         bg.em().storeObject("Dont_Bluff_Ever_$self.owner.opposite", true)
+      }
+    }
+  }
+
+  static damageForEachCardWithMove(String moveName, Integer dmg, CardList cardList, Object attackDelegate) {
+    attackDelegate.attackRequirement {
+      assert cardList.any { it.cardTypes.is(POKEMON) && it.asPokemonCard().moves.any { it.name == moveName } } :
+        "No Pokémon with $moveName in the necessary location"
+    }
+    attackDelegate.onAttack {
+      damage dmg * cardList.findAll { it.cardTypes.is(POKEMON) && it.asPokemonCard().moves.any { it.name == moveName } }.size()
+    }
+  }
+
+  static damageForEachCardWithMove(String moveName, Integer dmg, PcsList pcsList, Object attackDelegate) {
+    attackDelegate.attackRequirement {
+      assert pcsList.any { it.getTopPokemonCard().moves.any { it.name == moveName } } :
+        "No Pokémon with $moveName in the necessary location"
+    }
+    attackDelegate.onAttack {
+      damage dmg * pcsList.findAll { it.getTopPokemonCard().moves.any { it.name == moveName } }.size()
+    }
+  }
+
+  static additionalPrizesIfDefendingKnockedOutNextTurn(Integer count, Object attackDelegate) {
+    PokemonCardSet pcs = attackDelegate.defending
+    def effTurn = bg.turnCount + 2
+    bc "If the Defending ${pcs} is Knocked Out during ${attackDelegate.self.owner}'s next turn, they'll take $count more Prize cards. (This effect can be removed by benching/evolving ${pcs})"
+    delayed {
+      getter GET_GIVEN_PRIZES, BEFORE_LAST, pcs, {Holder holder ->
+        if (holder.object > 0 && effTurn == bg().turnCount) {
+          bc "$attackDelegate.thisMove gives the player $count more Prize cards."
+          holder.object += count
+        }
+      }
+      after FALL_BACK, pcs, {unregister()}
+      after EVOLVE, pcs, {unregister()}
+      after DEVOLVE, pcs, {unregister()}
+      unregisterAfter 3
+    }
+  }
+  static ascension(Object delegate) {
+    delegate.attackRequirement {
+      assert deck : "Your deck is empty"
+      assert bg.gm().hasEvolution(delegate.self.name) : "This Pokémon does not evolve"
+    }
+    delegate.onAttack {
+      def evolution = deck.search { it.cardTypes.is(EVOLUTION) && (it as EvolutionPokemonCard).predecessor == delegate.self.name }
+      if (evolution) {
+        evolve delegate.self, evolution.first(), OTHER
       }
     }
   }
