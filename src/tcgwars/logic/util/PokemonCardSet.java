@@ -42,6 +42,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
   private PlayerType owner;
 
   private Set<SpecialConditionType> specialConditions;
+  private List<PcsStatus> currentStatus;
 
   //to, from. ex: <charizard, charmeleon> and <charmeleon, charmander>
 //	private Map<PokemonCard, PokemonCard> evolutionChain;
@@ -71,6 +72,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
     damage = HP.HP000;
     this.owner = owner;
     this.specialConditions = new THashSet<>();
+    this.currentStatus = new ArrayList<>();
     this.id = UUID.randomUUID().toString();
 //		this.evolutionChain = new HashMap<PokemonCard, PokemonCard>();
   }
@@ -262,7 +264,19 @@ public class PokemonCardSet implements PokemonStack, Serializable {
     return specialConditions;
   }
 
-//	public void addEvolutionChain(PokemonCard evolution) {
+  public void addStatus(PcsStatus status) {
+    currentStatus.add(status);
+  }
+
+  public List<PcsStatus> getCurrentStatus() {
+    return currentStatus;
+  }
+
+  public void removeStatus(PcsStatus status) {
+    currentStatus.remove(status);
+  }
+
+  //	public void addEvolutionChain(PokemonCard evolution) {
 //		evolutionChain.put(getTopPokemonCard(), evolution);
 //		set.add(evolution);
 //	}
