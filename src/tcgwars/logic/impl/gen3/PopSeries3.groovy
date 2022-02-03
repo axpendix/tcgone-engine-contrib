@@ -101,7 +101,7 @@ public enum PopSeries3 implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override

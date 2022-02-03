@@ -219,7 +219,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override

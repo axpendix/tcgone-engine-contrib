@@ -127,7 +127,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override

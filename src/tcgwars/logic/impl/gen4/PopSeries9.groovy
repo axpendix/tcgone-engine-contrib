@@ -82,7 +82,7 @@ public enum PopSeries9 implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override

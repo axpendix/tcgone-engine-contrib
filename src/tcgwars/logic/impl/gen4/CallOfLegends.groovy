@@ -178,7 +178,7 @@ public enum CallOfLegends implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -487,7 +487,7 @@ public enum CallOfLegends implements LogicCardInfo {
                 }, {
                   if(defending.cards.filterByType(ENERGY)) {
                     defending.cards.select("Choose an energy to put into the Lost Zone",cardTypeFilter(ENERGY)).moveTo(opp.lostZone)
-                  }  
+                  }
                 }
               }
             }
@@ -798,7 +798,7 @@ public enum CallOfLegends implements LogicCardInfo {
               damage 30
               flip self.cards.energyCount(W), {
                 damage 20
-              } 
+              }
             }
           }
 

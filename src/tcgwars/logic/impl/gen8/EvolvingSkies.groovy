@@ -300,7 +300,7 @@ enum EvolvingSkies implements LogicCardInfo {
 
   @Override
   String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override

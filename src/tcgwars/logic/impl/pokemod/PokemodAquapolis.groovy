@@ -34,7 +34,7 @@ import tcgwars.logic.util.*;
  * @author lithogenn@gmail.com
  */
 public enum PokemodAquapolis implements LogicCardInfo {
-    
+
   AMPHAROS_1 ("Ampharos", "1", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _LIGHTNING_]),
   ARCANINE_2 ("Arcanine", "2", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
   ARIADOS_3 ("Ariados", "3", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
@@ -233,9 +233,9 @@ public enum PokemodAquapolis implements LogicCardInfo {
   AERODACTYL_EX_196 ("Aerodactyl ex", "196", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, EX, _COLORLESS_]),
   TYPHLOSION_EX_197 ("Typhlosion ex", "197", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, EX, _FIRE_]),
   MACHAMP_EX_198 ("Machamp ex", "198", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, EX, _FIGHTING_]);
-    
+
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
-  
+
   protected CardTypeSet cardTypes;
   protected String name;
   protected Rarity rarity;
@@ -280,7 +280,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -438,7 +438,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost L
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -764,7 +764,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost G
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Rapture Pollen", {
@@ -945,7 +945,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Energy Draw", {
@@ -953,7 +953,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost F
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -1005,7 +1005,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -1018,7 +1018,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost D
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Tail Slap", {
@@ -1146,7 +1146,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -1246,7 +1246,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost M
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Tackle", {
@@ -1287,7 +1287,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Bone Rush", {
@@ -1479,7 +1479,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Double Razor Leaf", {
@@ -1507,7 +1507,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost W
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -1520,7 +1520,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Skedaddle", {
@@ -1540,7 +1540,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Sharp Leaf", {
@@ -1581,7 +1581,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Headbutt", {
@@ -1601,7 +1601,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Confuse Ray", {
@@ -1622,7 +1622,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Tackle", {
@@ -1643,7 +1643,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Rear Kick", {
@@ -1663,7 +1663,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Tackle", {
@@ -1684,7 +1684,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Lunge", {
@@ -1704,7 +1704,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Sleep Powder", {
@@ -1732,7 +1732,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -1756,7 +1756,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -1768,7 +1768,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Firebreathing", {
@@ -1870,7 +1870,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Flare", {
@@ -1904,7 +1904,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Mega Punch", {
@@ -1924,7 +1924,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Rising Lunge", {
@@ -1945,7 +1945,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Body Slam", {
@@ -2002,7 +2002,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Tail Slap", {
@@ -2060,7 +2060,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost G
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Scratch", {
@@ -2080,7 +2080,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost G
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Ram", {
@@ -2112,7 +2112,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Spore Evolution", {
@@ -2120,7 +2120,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost G, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -2194,7 +2194,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Peck", {
@@ -2268,7 +2268,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Double Scratch", {
@@ -2288,7 +2288,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Bite", {
@@ -2309,7 +2309,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Doubleslap", {
@@ -2330,7 +2330,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost D
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Claw", {
@@ -2350,7 +2350,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost G
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -2383,7 +2383,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Recover", {
@@ -2391,7 +2391,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost W
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -2404,7 +2404,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Pound", {
@@ -3009,7 +3009,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
           energyCost W
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Reverse Stream", {
