@@ -2194,7 +2194,7 @@ public enum LostThunder implements LogicCardInfo {
               assert count >= 66 : "You need ${66 - count} more damage counters on your Benched Pokémon."
               assert self.active : "Counters OK but $self must be active"
               powerUsed()
-              bg.getGame().endGame(self.owner, WinCondition.OTHER);
+              bg.getGameManager().endGame(self.owner, WinCondition.OTHER);
             }
           }
           move "Hidden Power" , {
@@ -2215,7 +2215,7 @@ public enum LostThunder implements LogicCardInfo {
               assert my.hand.size() >= 35 : "You need ${35 - my.hand.size()} more cards in your hand."
               assert self.active : "Cards OK but $self must be active"
               powerUsed()
-              bg.getGame().endGame(self.owner, WinCondition.OTHER);
+              bg.getGameManager().endGame(self.owner, WinCondition.OTHER);
             }
           }
           move "Hidden Power" , {
@@ -2236,7 +2236,7 @@ public enum LostThunder implements LogicCardInfo {
               assert opp.lostZone.filterByType(SUPPORTER).size() >= 12 : "Your opponent needs to have ${12 - opp.lostZone.filterByType(SUPPORTER).size()} more supporters in their Lost Zone."
               assert self.active : "Cards OK but $self must be be active"
               powerUsed()
-              bg.getGame().endGame(self.owner, WinCondition.OTHER);
+              bg.getGameManager().endGame(self.owner, WinCondition.OTHER);
             }
           }
           move "Hidden Power" , {

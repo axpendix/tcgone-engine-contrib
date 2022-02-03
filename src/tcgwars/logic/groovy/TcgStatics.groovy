@@ -536,7 +536,7 @@ class TcgStatics {
       r.run(bg)
       if (my.bench.isEmpty()){
         my.active=null
-        bg.game.endGame(opp.owner, WinCondition.NOPOKEMON)
+        bg.gameManager.endGame(opp.owner, WinCondition.NOPOKEMON)
         return
       }
       sw ( null, my.bench.select("New active Pokémon."))
@@ -552,7 +552,7 @@ class TcgStatics {
       r.run(bg)
       if (opp.bench.isEmpty()){
         opp.active=null
-        bg.game.endGame(my.owner, WinCondition.NOPOKEMON)
+        bg.gameManager.endGame(my.owner, WinCondition.NOPOKEMON)
         return
       }
       sw ( null, opp.bench.oppSelect("New active Pokémon."))

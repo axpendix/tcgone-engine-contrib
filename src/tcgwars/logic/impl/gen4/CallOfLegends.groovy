@@ -835,7 +835,7 @@ public enum CallOfLegends implements LogicCardInfo {
               assert opp.lostZone.filterByType(POKEMON).size() >= 6 : "Your opponent has fewer than 6 Pokémon in the Lost Zone"
               bc "Used Lost World."
               lastTurn = bg().turnCount
-              bg.getGame().endGame(bg.currentTurn, WinCondition.OTHER);
+              bg.getGameManager().endGame(bg.currentTurn, WinCondition.OTHER);
             }
           }
           onRemoveFromPlay{
