@@ -279,7 +279,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -3944,7 +3944,7 @@ public enum DarknessAblaze implements LogicCardInfo {
               }
             }
           }
-          pokemonCard.player = trainerCard.player
+          pokemonCard.initializeFrom trainerCard
           bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
           hand.remove(pokemonCard)
           benchPCS(pokemonCard)

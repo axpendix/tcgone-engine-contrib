@@ -206,7 +206,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -261,9 +261,9 @@ public enum AmazingVoltTackle implements LogicCardInfo {
                 onPlay { draw 3 }
                 playRequirement { assert my.deck : "Deck is empty" }
               }
-              bg.em().run(new ChangeImplementation(newImpl, oldImpl))
               // FIXME
-              newImpl.player = oldImpl.player
+              newImpl.initializeFrom oldImpl
+              bg.em().run(new ChangeImplementation(newImpl, oldImpl))
               ef.cardToPlay = newImpl
             }
             after PLAY_TRAINER, {

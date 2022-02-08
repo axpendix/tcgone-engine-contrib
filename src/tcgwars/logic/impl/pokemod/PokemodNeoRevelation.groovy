@@ -34,7 +34,7 @@ import tcgwars.logic.util.*;
  * @author lithogenn@gmail.com
  */
 public enum PokemodNeoRevelation implements LogicCardInfo {
-    
+
   AMPHAROS_1 ("Ampharos", "1", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _LIGHTNING_]),
   BLISSEY_2 ("Blissey", "2", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
   CELEBI_3 ("Celebi", "3", Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
@@ -105,9 +105,9 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
   HO_OH_EX_68 ("Ho-Oh ex", "68", Rarity.HOLORARE, [POKEMON, BASIC, EX, _FIRE_]),
   LUGIA_EX_69 ("Lugia ex", "69", Rarity.HOLORARE, [POKEMON, BASIC, EX, _COLORLESS_]),
   SCIZOR_EX ("Scizor ex", "70", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, EX, _COLORLESS_]);
-    
+
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
-  
+
   protected CardTypeSet cardTypes;
   protected String name;
   protected Rarity rarity;
@@ -152,7 +152,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -209,7 +209,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -243,7 +243,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -273,7 +273,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost R
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Sacred Fire", {
@@ -281,7 +281,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost R, R, R
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Dive Bomb", {
@@ -323,7 +323,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost G
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Solarbeam", {
@@ -362,7 +362,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Perish Song", {
@@ -370,7 +370,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost P, P, P
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -494,7 +494,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Twister", {
@@ -586,7 +586,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost D
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Quick Attack", {
@@ -681,7 +681,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Poison Bite", {
@@ -721,7 +721,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost W
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Strange Dance", {
@@ -813,7 +813,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "High-Speed Charge", {
@@ -854,7 +854,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Overhead Toss", {
@@ -909,7 +909,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Tail Punch", {
@@ -995,7 +995,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Flock Attack", {
@@ -1076,7 +1076,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost W
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -1093,7 +1093,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost G, G
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -1145,7 +1145,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -1318,7 +1318,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost W
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Dragon Bond", {
@@ -1326,7 +1326,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -1338,7 +1338,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost G
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Time Trap", {

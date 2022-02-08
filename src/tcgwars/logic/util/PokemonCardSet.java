@@ -4,7 +4,6 @@ package tcgwars.logic.util;
 import com.google.common.collect.ImmutableList;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
-import tcgwars.common.TWCommon;
 import tcgwars.logic.Battleground;
 import tcgwars.logic.GameFormat;
 import tcgwars.logic.PlayerType;
@@ -12,7 +11,6 @@ import tcgwars.logic.card.*;
 import tcgwars.logic.card.energy.EnergyCard;
 import tcgwars.logic.card.pokemon.PokemonCard;
 import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.ability.Ability.*;
 import tcgwars.logic.effect.advanced.ExtraEnergyCalculator;
 import tcgwars.logic.effect.getter.*;
 import tcgwars.logic.effect.special.SpecialConditionType;
@@ -48,6 +46,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
 //	private Map<PokemonCard, PokemonCard> evolutionChain;
 
   public final String id;
+  public final String ref;
 
   //turn played
   public final int turnCount = Battleground.getInstance().getTurnCount();
@@ -67,12 +66,13 @@ public class PokemonCardSet implements PokemonStack, Serializable {
   Map<Ability, PokemonCard> lastAbilities;
 
   public PokemonCardSet(PlayerType owner) {
-    set = new CardList("PCS");
+    set = new CardList(Collections.emptyList(), CardList.ZoneType.PCS, owner);
     set.setAutosort(true);
     damage = HP.HP000;
     this.owner = owner;
     this.specialConditions = new THashSet<>();
     this.id = UUID.randomUUID().toString();
+    this.ref = owner.getPbg().nextRef();
 //		this.evolutionChain = new HashMap<PokemonCard, PokemonCard>();
   }
 
@@ -169,7 +169,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
         continue;
       }
       List<Set<Type>> energyTypes = card.getEffectiveEnergyTypes();
-      listBuilder.addAll(TWCommon.generateTypeImages(energyTypes));
+      listBuilder.addAll(LUtils.generateTypeImages(energyTypes));
     }
     energyTypeImages = listBuilder.build();
   }
@@ -477,7 +477,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
     return getName() + " (" + getShortId() + ")";
   }
 
-//	public void setCards(CardList set) {
+  //	public void setCards(CardList set) {
 //		this.set = set;
 //	}
 

@@ -208,7 +208,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -697,7 +697,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
                 bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
               }
             }
-            energyCard.player = thisCard.player
+            energyCard.initializeFrom pkmnCard
             bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
             attachEnergy(pcs, energyCard)
             bc "$energyCard is now a Special Energy Card that provides 2 [$type] energy attached to $pcs"
@@ -1587,7 +1587,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
               }
             }
           }
-          pokemonCard.player = trainerCard.player
+          pokemonCard.initializeFrom trainerCard
           bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
           benchPCS(pokemonCard)
         }

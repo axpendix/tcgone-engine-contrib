@@ -573,7 +573,7 @@ class TcgStatics {
       r.run(bg)
       if (my.bench.isEmpty()){
         my.active=null
-        bg.game.endGame(opp.owner, WinCondition.NOPOKEMON)
+        bg.gameManager.endGame(opp.owner, WinCondition.NOPOKEMON)
         return
       }
       sw ( null, my.bench.select("New active Pokémon."))
@@ -589,7 +589,7 @@ class TcgStatics {
       r.run(bg)
       if (opp.bench.isEmpty()){
         opp.active=null
-        bg.game.endGame(my.owner, WinCondition.NOPOKEMON)
+        bg.gameManager.endGame(my.owner, WinCondition.NOPOKEMON)
         return
       }
       sw ( null, opp.bench.oppSelect("New active Pokémon."))
@@ -685,6 +685,19 @@ class TcgStatics {
     def ef=new BlockingEffect(effectTypes)
     ef.run(bg())
     ef
+  }
+  static boolean wrapperEffect (EffectType effectType, Runnable runnable){
+    def effect = new DirectEffect() {
+      @Override
+      void process(Battleground bg, Event event) {
+        runnable.run()
+      }
+      @Override
+      EffectType getEffectType() {
+        return effectType
+      }
+    }
+    !bg().em().run(effect)
   }
   static cantPlayEnergy (){
     new CantPlayEnergy().run(bg())
@@ -1108,7 +1121,7 @@ class TcgStatics {
                   }
                 }
               }
-              energyCard.player = thisCard.player
+              energyCard.initializeFrom(thisCard)
 
               bg.em().run(new ChangeImplementation(energyCard, thisCard))
               def playEnergy = new PlayEnergy(energyCard)
@@ -1380,7 +1393,7 @@ class TcgStatics {
         to = to.select("To?")
       }
       def reason = OTHER
-      if(from.persistentName == "Hand"){
+      if(from.zoneType == CardList.ZoneType.HAND){
         reason = PLAY_FROM_HAND
       }
       list.each{

@@ -30,39 +30,64 @@ public class CardList extends ArrayList<Card> {
     PERSISTENT, TEMPORARY;
   }
 
+  enum ZoneType {
+    HAND,
+    DISCARD,
+    DECK,
+    PRIZE,
+    LOST_ZONE,
+    SUPPORTER,
+    STADIUM,
+    PCS;
+
+    String getName() {
+      org.apache.commons.lang.WordUtils.capitalizeFully(this.name(), "_".toCharArray()).replaceAll("_", " ");
+    }
+    String getRef(PlayerType playerType) {
+      String.format("Z:%s:%s", playerType, this.name())
+    }
+  }
+
   private boolean autosort = false;
   protected CardListType type = CardListType.TEMPORARY;
   protected String persistentName;
+  protected String ref
+  protected ZoneType zoneType
 
   @PersistenceConstructor
   public CardList() {
     super();
   }
 
-  public CardList(Collection<? extends Card> c) {
-    super(c);
+  CardList(Collection<? extends Card> contents) {
+    super(contents)
   }
 
-  public CardList(Card... cards) {
-    this(Arrays.asList(cards));
+  CardList(Card... cards) {
+    this(Arrays.asList(cards))
   }
 
-  public CardList(String persistentName) {
-    this.persistentName = persistentName
+  CardList(Collection<? extends Card> contents, ZoneType zoneType, PlayerType playerType) {
+    super(contents)
     this.type = CardListType.PERSISTENT
+    this.zoneType = zoneType
+    this.persistentName = zoneType.name
+    this.ref = zoneType.getRef(playerType)
   }
 
-  public CardList(String persistentName, int initialSize) {
+  CardList(int initialSize, ZoneType zoneType, PlayerType playerType) {
     super(initialSize)
-    this.persistentName = persistentName
     this.type = CardListType.PERSISTENT
+    this.zoneType = zoneType
+    this.persistentName = zoneType.name
+    this.ref = zoneType.getRef(playerType)
   }
 
-  public CardList copy() {
+  CardList copy() {
     return new CardList(this);
   }
 
-  public CardList shuffledCopy() {
+  CardList shuffledCopy() {
     def shCopy = this.copy()
     shCopy.shuffle()
     return shCopy
@@ -72,12 +97,20 @@ public class CardList extends ArrayList<Card> {
     this.collect { it.fullName }
   }
 
+  String getRef() {
+    return ref
+  }
+
   String getPersistentName() {
     return persistentName
   }
 
   boolean isPersistent() {
     type == CardListType.PERSISTENT
+  }
+
+  ZoneType getZoneType() {
+    return zoneType
   }
 
   public CardList setAutosort(boolean autosort) {
@@ -143,7 +176,7 @@ public class CardList extends ArrayList<Card> {
   }
 
   public CardList filterByEnergyType(Type type) {
-    CardList newlist = new CardList().setType(CardListType.TEMPORARY)
+    CardList newlist = new CardList()
     for (Card c : this.filterByType(CardType.BASIC_ENERGY, CardType.SPECIAL_ENERGY)) {
       if (((EnergyCard) c).containsType(type)) {
         newlist.add(c);
@@ -153,7 +186,7 @@ public class CardList extends ArrayList<Card> {
   }
 
   public CardList filterByBasicEnergyType(Type type) {
-    CardList newlist = new CardList().setType(CardListType.TEMPORARY)
+    CardList newlist = new CardList()
     for (Card c : this.filterByType(CardType.BASIC_ENERGY)) {
       if (((BasicEnergyCard) c).containsTypePlain(type)) {
         newlist.add(c);
@@ -163,7 +196,7 @@ public class CardList extends ArrayList<Card> {
   }
 
   public CardList filterByType(CardType... type) {
-    CardList newlist = new CardList().setType(CardListType.TEMPORARY)
+    CardList newlist = new CardList()
     for (Card card : this) {
       if (card.getCardTypes().isIn(type)) {
         newlist.add(card);
@@ -173,7 +206,7 @@ public class CardList extends ArrayList<Card> {
   }
 
   public CardList filterByAllType(CardType... type) {
-    CardList newlist = new CardList().setType(CardListType.TEMPORARY)
+    CardList newlist = new CardList()
     for (Card card : this) {
       if (card.getCardTypes().isAll(type)) {
         newlist.add(card);
@@ -184,7 +217,7 @@ public class CardList extends ArrayList<Card> {
 
   public CardList filterByNameEquals(String... names) {
     List<String> namess = Arrays.asList(names);
-    CardList newlist = new CardList().setType(CardListType.TEMPORARY)
+    CardList newlist = new CardList()
     for (Card card : this) {
       if (namess.contains(card.getName())) {
         newlist.add(card);
@@ -195,7 +228,7 @@ public class CardList extends ArrayList<Card> {
 
   public CardList filterByNameLike(String... names) {
     List<String> namess = Arrays.asList(names);
-    CardList newlist = new CardList().setType(CardListType.TEMPORARY)
+    CardList newlist = new CardList()
     for (Card card : this) {
       for (String string : namess) {
         if (card.getName().contains(string)) {
@@ -211,7 +244,7 @@ public class CardList extends ArrayList<Card> {
   }
 
   public CardList getExcludedList(CardList exclusion) {
-    CardList newlist = new CardList(this).setType(CardListType.TEMPORARY)
+    CardList newlist = new CardList(this)
     for (Card card : exclusion) {
       newlist.remove(card);
     }
@@ -301,7 +334,7 @@ public class CardList extends ArrayList<Card> {
     select([:], info, filter, playerType)
   }
 
-  def CardList select(Map params, String info, Closure filter = { true }, PlayerType playerType = TcgStatics.bg().currentThreadPlayerType, Closure passFilter = { true }) {
+  def CardList select(Map params, String info, Closure filter = { true }, PlayerType playerType = TcgStatics.bg().currentThreadPlayerType, Closure passFilter = null) {
     int min = params.get("min") != null ? params.get("min") : 1
     int max = params.get("max") != null ? params.get("max") : 1
     int count = params.get("count") ?: 0
@@ -312,16 +345,19 @@ public class CardList extends ArrayList<Card> {
     }
     CardList cards = this;
     boolean hidden = params.hidden ?: false
-    if (hidden && this.persistent && this.persistentName == "Hand") {
+    if (hidden && this.zoneType == ZoneType.HAND) {
       cards = this.shuffledCopy();
     }
     if (playerType != TcgStatics.bg().currentThreadPlayerType) {
       TcgStatics.block()
     }
     def ret = TcgStatics.bg().getClient(playerType).selectCard(new CardSelectUIRequestBuilder()
-      .setMinMax(min, max).setInfo(info).setCards(cards).setCustomCardFilter(filter as CardSelectUIRequestBuilder.CustomCardFilter).setCustomPassFilter(passFilter as CardSelectUIRequestBuilder.CustomPassFilter)
+      .setMinMax(min, max)
+      .setInfo(info)
+      .setCards(cards)
+      .setCustomCardFilter(filter != null ? filter as CardSelectUIRequestBuilder.CustomCardFilter : null)
+      .setCustomPassFilter(passFilter != null ?  passFilter as CardSelectUIRequestBuilder.CustomPassFilter : null)
       .setShowAsHidden(hidden))
-      .setType(CardListType.TEMPORARY)
     if (playerType != TcgStatics.bg().currentThreadPlayerType) {
       TcgStatics.unblock()
     }
@@ -349,12 +385,10 @@ public class CardList extends ArrayList<Card> {
 
   public CardList ownSelect(Battleground bg, String info, int min, int max, CardType... filters) {
     return bg.ownClient().selectCard(new CardSelectUIRequestBuilder().setCards(this).setMinMax(min, max).setInfo(info).addCardType(filters))
-      .setType(CardListType.TEMPORARY)
   }
 
   public CardList oppSelect(Battleground bg, String info, int min, int max, CardType... filters) {
     return bg.oppClient().selectCard(new CardSelectUIRequestBuilder().setCards(this).setMinMax(min, max).setInfo(info).addCardType(filters))
-      .setType(CardListType.TEMPORARY)
   }
 
   public CardList showToMe(Battleground bg = TcgStatics.bg(), String info) {

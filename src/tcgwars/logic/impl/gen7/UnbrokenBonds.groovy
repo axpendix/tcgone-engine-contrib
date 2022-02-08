@@ -308,7 +308,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -1322,7 +1322,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             text "100x damage. Flip 3 coins. This attack does 100 damage for each heads. If all of them are tails, you lose this game."
             energyCost W, C, C
             onAttack {
-              flip 3,{},{},[0:{bg.getGame().endGame(opp.active.owner, WinCondition.OTHER)},1:{damage 100},2:{damage 200},3:{damage 300}]
+              flip 3,{},{},[0:{bg.getGameManager().endGame(opp.active.owner, WinCondition.OTHER)},1:{damage 100},2:{damage 200},3:{damage 300}]
             }
           }
 
@@ -1635,7 +1635,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
                   bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
                 }
               }
-              energyCard.player = thisCard.player
+              energyCard.initializeFrom thisCard
               bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
               attachEnergy(pcs, energyCard)
               bc "$energyCard is now a Special Energy Card that provides 2 [L] energy attached to $pcs"
