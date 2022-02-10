@@ -3503,7 +3503,7 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
         return levelUp (this, from:"Shaymin", hp:HP110, type:GRASS, retreatCost:0) {
           weakness R
           resistance F, MINUS20
-          globalAbility {Card thisCard->
+          initHook {Card thisCard->
             delayed {
               before KNOCKOUT, {
                 if(ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite){

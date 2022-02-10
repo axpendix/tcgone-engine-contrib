@@ -1982,7 +1982,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
           }
         }
-        globalAbility {Card thisCard ->
+        initHook {Card thisCard ->
           def temp
           delayed {
             after EVOLVE, {
@@ -2274,7 +2274,7 @@ public enum DragonFrontiers implements LogicCardInfo {
 
           loadMarkerCheckerAction(delegate, actions)
         }
-        globalAbility {Card thisCard ->
+        initHook {Card thisCard ->
           def temp
           delayed {
             after EVOLVE, {

@@ -1359,7 +1359,7 @@ public enum EeveeHeroes implements LogicCardInfo {
         text "You can play this card only if you took it as a face-down Prize card" +
           "before you put it into your hand. Search your deck for a Pokémon and put it onto your Bench. Then" +
           "shuffle your deck."
-        globalAbility {
+        initHook {
           delayed {
             def flag = false
             before TAKE_PRIZE, {
@@ -1548,7 +1548,7 @@ public enum EeveeHeroes implements LogicCardInfo {
           "it provides [C] Energy. If you took this card as a face-down Prize card during your turn" +
           "before you put it into your hand" +
           "you may attach it to 1 of your Pokémon."
-        globalAbility {
+        initHook {
           delayed {
             def flag = false
             before TAKE_PRIZE, {

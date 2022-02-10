@@ -3913,7 +3913,7 @@ public enum LegendsAwakened implements LogicCardInfo {
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card."+
             "Shuffle your hand into your deck. Then, draw 4 cards. If any of your Pokémon were Knocked Out during your opponent's last turn, draw 4 more cards."
-          globalAbility { Card thisCard->
+          initHook { Card thisCard->
             delayed {
               before KNOCKOUT, {
                 if (ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite) {

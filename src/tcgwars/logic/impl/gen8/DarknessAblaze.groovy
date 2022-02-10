@@ -3726,7 +3726,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         playRequirement{
           assert my.bench : "You have no benched Pokémon"
         }
-        globalAbility {Card thisCard->
+        initHook {Card thisCard->
           def flag
           delayed {
             before PLAY_TRAINER, {

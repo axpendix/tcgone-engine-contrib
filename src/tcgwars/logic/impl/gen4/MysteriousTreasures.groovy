@@ -2272,7 +2272,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return evolution (this, from:"Slakoth", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS20
           def asleepBeforeEvolve = false
-          globalAbility {Card thisCard->
+          initHook {Card thisCard->
             delayed {
               before EVOLVE_STANDARD, {
                 if ( (ef as EvolveStandard).evolutionCard == thisCard) {
