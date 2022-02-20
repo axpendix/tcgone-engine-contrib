@@ -1547,7 +1547,7 @@ public enum GuardiansRising implements LogicCardInfo {
         };
       case MIMIKYU_58:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
-          globalAbility {Card thisCard->
+          initHook {Card thisCard->
             delayed (priority: LAST) {
               after PROCESS_ATTACK_EFFECTS, {
                 //TODO: Refactor, make these checks be stored somewhere globally as to fix opponent copying Copycat and similar (e.g. with Trickster GX)

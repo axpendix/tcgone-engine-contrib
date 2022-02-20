@@ -1400,7 +1400,7 @@ public enum ChillingReign implements LogicCardInfo {
       case ZEBSTRIKA_51:
         return evolution (this, from:"Blitzle", hp:HP120, type:L, retreatCost:1) {
           weakness FIGHTING
-          globalAbility { Card thisCard ->
+          initHook { Card thisCard ->
             delayed (priority: LAST) {
               after PROCESS_ATTACK_EFFECTS, {
                 if (ef.attacker.owner == thisCard.player && ef.attacker.rapidStrike) {
@@ -1459,7 +1459,7 @@ public enum ChillingReign implements LogicCardInfo {
       case ZERAORA_V_53:
         return basic (this, hp:HP210, type:L, retreatCost:2) {
           weakness FIGHTING
-          globalAbility { Card thisCard ->
+          initHook { Card thisCard ->
             delayed (priority: LAST) {
               after PROCESS_ATTACK_EFFECTS, {
                 if (ef.attacker.owner == thisCard.player && ef.attacker.rapidStrike) {
@@ -2562,7 +2562,7 @@ public enum ChillingReign implements LogicCardInfo {
                 damage 90
               }
             }
-            globalAbility {
+            initHook {
               def flag
               delayed {
                 before PLAY_TRAINER, {
@@ -2976,7 +2976,7 @@ public enum ChillingReign implements LogicCardInfo {
                 }
               }
             }
-            globalAbility {
+            initHook {
               def flag
               delayed {
                 before PLAY_TRAINER, {

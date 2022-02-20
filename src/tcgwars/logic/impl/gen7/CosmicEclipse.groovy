@@ -2414,7 +2414,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               draw 3
             }
           }
-          globalAbility {Card thisCard->
+          initHook {Card thisCard->
             delayed {
               before KNOCKOUT, {
                 if(ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite){
@@ -3807,7 +3807,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-          globalAbility {
+          initHook {
             def flag
             delayed {
               before PLAY_TRAINER, {
@@ -4967,7 +4967,7 @@ public enum CosmicEclipse implements LogicCardInfo {
         return supporter (this) {
           text "You can play this card only if 1 of your Pokémon was Knocked Out during your opponent's last turn." +
             "Search your deck for a Pokémon, a Trainer card, and a basic Energy card, reveal them, and put them into your hand. Then, shuffle your deck."
-          globalAbility {Card thisCard->
+          initHook {Card thisCard->
             delayed {
               before KNOCKOUT, {
                 if(ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite){

@@ -3549,7 +3549,7 @@ public enum RebelClash implements LogicCardInfo {
       case NUGGET_162:
       return itemCard (this) {
         text "Play this card only when you draw it from your deck at the start of your turn (before putting it into your hand). Draw 3 cards. You may play as many Item cards as you like during your turn (before your attack)."
-        globalAbility {Card thisCard->
+        initHook {Card thisCard->
           delayed {
             before DRAW_CARD, {
               if (thisCard.player.pbg.deck && bg.em().retrieveObject("Nugget") != bg.turnCount && bg.em().currentEffectStack.find{it instanceof BeginTurn} && thisCard.player.pbg.deck.get(0) == thisCard && bg.currentTurn == thisCard.player && confirm("Play Nugget?",thisCard.player)) {

@@ -1680,6 +1680,9 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
+          bwAbility "Electric Swamp", {
+            text "Once during your turn (before your attack), if this Pokémon is in your hand and you have at least 4 {L} Energy cards in play, you may play this Pokémon onto your Bench. If you do, move any number of {L} Energy from your other Pokémon to this Pokémon."
+          }
           move "Hover Over", {
             text "130 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
             energyCost L, C, C, C

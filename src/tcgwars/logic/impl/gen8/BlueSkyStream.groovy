@@ -713,7 +713,7 @@ public enum BlueSkyStream implements LogicCardInfo {
       case PLUSLE_29:
       return basic (this, hp:HP070, type:L, retreatCost:1) {
         weakness F
-        globalAbility { Card thisCard ->
+        initHook { Card thisCard ->
           delayed (priority: LAST) {
             after PROCESS_ATTACK_EFFECTS, {
               if (ef.attacker.owner == thisCard.player && ef.attacker.name.contains("Minun")) {

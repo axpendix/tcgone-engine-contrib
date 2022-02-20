@@ -2809,7 +2809,7 @@ public enum TeamUp implements LogicCardInfo {
         };
       case MIMIKYU_112:
         return basic (this, hp:HP070, type:FAIRY, retreatCost:1) {
-          globalAbility {Card thisCard->
+          initHook {Card thisCard->
             delayed (priority: LAST) {
               after PROCESS_ATTACK_EFFECTS, {
                 //TODO: Refactor, make these checks be stored somewhere globally as to fix opponent copying Copycat and similar (e.g. with Trickster GX)

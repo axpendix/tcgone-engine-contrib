@@ -927,7 +927,7 @@ public enum ForbiddenLight implements LogicCardInfo {
       case ARAQUANID_33:
         return evolution (this, from:"Dewpider", hp:HP100, type:WATER, retreatCost:1) {
           weakness GRASS
-          globalAbility {Card thisCard->
+          initHook {Card thisCard->
             delayed (priority: LAST) {
               after PROCESS_ATTACK_EFFECTS, {
                 if(ef.attacker.owner==thisCard.player && (ef as Attack).move.name == "Bubble"){
@@ -2586,7 +2586,7 @@ public enum ForbiddenLight implements LogicCardInfo {
       case DIANTHA_105:
         return supporter (this) {
           text "You can play this card only if 1 of your [Y] Pokémon was Knocked Out during your opponent’s last turn.\nPut 2 cards from your discard pile into your hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
-          globalAbility {Card thisCard->
+          initHook {Card thisCard->
             delayed {
               before KNOCKOUT, {
                 if(ef.pokemonToBeKnockedOut.types.contains(Y) && ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite){

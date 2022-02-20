@@ -1244,7 +1244,7 @@ public enum HolonPhantoms implements LogicCardInfo {
       case CHIMECHO_DELTA_37:
       return basic (this, hp:HP060, type:M, retreatCost:1) {
         weakness P
-        globalAbility {Card thisCard->
+        initHook {Card thisCard->
           delayed {
             def flag = false
             before USE_ABILITY, {
