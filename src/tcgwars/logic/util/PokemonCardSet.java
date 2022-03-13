@@ -151,15 +151,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
     return set;
   }
 
-  private List<Type> energyTypeImages = Collections.emptyList();
-
-  // can be called from UI
-  public List<Type> getEnergyTypeImages() {
-    return energyTypeImages;
-  }
-
-  // can be ONLY called inside Future thus no concurrent modification can occur
-  public void generateEnergyTypeImages() {
+  public List<Type> generateEnergyTypeImages() {
     List<EnergyCard> energyCards = getEnergyCards();
     ImmutableList.Builder<Type> listBuilder = ImmutableList.builder();
     for (EnergyCard card : energyCards) {
@@ -171,7 +163,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
       List<Set<Type>> energyTypes = card.getEffectiveEnergyTypes();
       listBuilder.addAll(LUtils.generateTypeImages(energyTypes));
     }
-    energyTypeImages = listBuilder.build();
+    return listBuilder.build();
   }
 
   public List<EnergyCard> getEnergyCards() {
