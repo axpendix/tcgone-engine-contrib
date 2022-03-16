@@ -14,9 +14,7 @@ import tcgwars.logic.card.Type;
 import tcgwars.logic.card.energy.EnergyCard;
 import tcgwars.logic.effect.advanced.ExtraEnergyCalculator;
 import tcgwars.logic.effect.basic.Discard;
-import tcgwars.logic.client.requestbuilder.CardSelectUIRequestBuilder;
-import tcgwars.logic.client.requestbuilder.CustomCardFilter;
-import tcgwars.logic.client.requestbuilder.CustomPassFilter
+import tcgwars.logic.client.requestbuilder.*;
 
 /**
  * @author axpendix@hotmail.com
@@ -346,17 +344,16 @@ public class CardList extends ArrayList<Card> {
     if (hidden && this.zoneType == ZoneType.HAND) {
       cards = this.shuffledCopy();
     }
-    CardList ret = new CardList()
     if (playerType != TcgStatics.bg().currentThreadPlayerType) {
       TcgStatics.block()
-      ret = TcgStatics.bg().getClient(playerType).selectCard(new CardSelectUIRequestBuilder()
-        .setMinMax(min, max)
-        .setInfo(info)
-        .setCards(cards)
-        .setCustomCardFilter(filter != null ? filter as CustomCardFilter : null)
-        .setCustomPassFilter(passFilter != null ?  passFilter as CustomPassFilter : null)
-        .setShowAsHidden(hidden))
     }
+    def ret = TcgStatics.bg().getClient(playerType).selectCard(new CardSelectUIRequestBuilder()
+      .setMinMax(min, max)
+      .setInfo(info)
+      .setCards(cards)
+      .setCustomCardFilter(filter != null ? filter as CustomCardFilter : null)
+      .setCustomPassFilter(passFilter != null ?  passFilter as CustomPassFilter : null)
+      .setShowAsHidden(hidden))
     if (playerType != TcgStatics.bg().currentThreadPlayerType) {
       TcgStatics.unblock()
     }

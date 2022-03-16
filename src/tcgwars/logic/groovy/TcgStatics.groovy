@@ -1,5 +1,17 @@
 package tcgwars.logic.groovy
 
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.Resistance.ResistanceType
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.special.*
+
 import tcgwars.logic.card.energy.*
 import tcgwars.logic.effect.ability.Ability.ActivationReason
 import tcgwars.logic.effect.blocking.*
@@ -18,23 +30,8 @@ import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.EffectType.*
 import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.groovy.TcgBuilders.delayed
-import static tcgwars.logic.groovy.TcgBuilders.getter
-import static tcgwars.logic.groovy.TcgBuilders.specialEnergy
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
-import tcgwars.logic.*
-import tcgwars.logic.card.*
-import tcgwars.logic.card.Resistance.ResistanceType
-import tcgwars.logic.card.pokemon.*
-import tcgwars.logic.card.trainer.*
-import tcgwars.logic.effect.*
-import tcgwars.logic.effect.ability.*
-import tcgwars.logic.effect.advanced.*
-import tcgwars.logic.effect.basic.*
-import tcgwars.logic.effect.event.*
-import tcgwars.logic.effect.special.*
-
-import static tcgwars.logic.groovy.TcgStatics.damage
 
 /**
  * @author axpendix@hotmail.com

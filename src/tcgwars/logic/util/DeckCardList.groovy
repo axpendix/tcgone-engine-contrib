@@ -3,10 +3,7 @@ package tcgwars.logic.util
 import tcgwars.logic.PlayerType
 import tcgwars.logic.card.Card
 import tcgwars.logic.groovy.TcgStatics
-import tcgwars.logic.client.requestbuilder.CardSelectUIRequestBuilder
-import tcgwars.logic.client.requestbuilder.CustomCardFilter
-import tcgwars.logic.client.requestbuilder.CustomPassFilter
-import tcgwars.logic.util.CardList
+import tcgwars.logic.client.requestbuilder.*
 
 /**
  * @author axpendix@hotmail.com
