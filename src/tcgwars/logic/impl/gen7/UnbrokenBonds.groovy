@@ -3636,7 +3636,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           weakness F
           bwAbility "Gathering of Cats", {
             text "Ignore all Energy in the attack costs of each of your Pokémon in play that has the Caturday attack."
-            getterA GET_MOVE_LIST, {h->
+            getterA (GET_MOVE_LIST, BEFORE_LAST) {h->
               PokemonCardSet pcs = h.effect.target
               if(pcs.owner==self.owner && h.object.find{it.name=='Caturday'}){
                 def list=[]
