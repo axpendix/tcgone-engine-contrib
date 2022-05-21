@@ -3,8 +3,9 @@ package tcgwars.logic.util
 import tcgwars.logic.PlayerType
 import tcgwars.logic.card.Card
 import tcgwars.logic.groovy.TcgStatics
-import tcgwars.logic.client.CardSelectUIRequestBuilder
-import tcgwars.logic.client.CardSelectUIRequestBuilder.CustomCardFilter
+import tcgwars.logic.client.requestbuilder.CardSelectUIRequestBuilder
+import tcgwars.logic.client.requestbuilder.CustomCardFilter
+import tcgwars.logic.client.requestbuilder.CustomPassFilter
 import tcgwars.logic.util.CardList
 
 /**
@@ -46,7 +47,7 @@ class DeckCardList extends CardList {
     int max = params.get("max") != null ? params.get("max") : 1
     CardList cards = TcgStatics.bg().ownClient().selectCard(new CardSelectUIRequestBuilder()
       .setMinMax(min, max).setInfo(info).setCards(this).setCustomCardFilter(filter as CustomCardFilter)
-      .setCustomPassFilter(passFilter as CardSelectUIRequestBuilder.CustomPassFilter))
+      .setCustomPassFilter(passFilter as CustomPassFilter))
     TcgStatics.shuffleDeck()
     return cards
   }
