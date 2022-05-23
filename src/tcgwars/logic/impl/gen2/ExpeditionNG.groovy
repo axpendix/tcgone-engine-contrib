@@ -2424,33 +2424,21 @@ public enum ExpeditionNG implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case FIGHTING_ENERGY_160:
-      return basic (this, hp:null, type:null, retreatCost:null) {
-
-      };
+        return basicEnergy (this, FIGHTING)
       case FIRE_ENERGY_161:
-      return basic (this, hp:null, type:null, retreatCost:null) {
-
-      };
+        return basicEnergy (this, FIRE)
       case GRASS_ENERGY_162:
-      return basic (this, hp:null, type:null, retreatCost:null) {
-
-      };
+        return basicEnergy (this, GRASS)
       case LIGHTNING_ENERGY_163:
-      return basic (this, hp:null, type:null, retreatCost:null) {
-
-      };
+        return basicEnergy (this, LIGHTNING)
       case PSYCHIC_ENERGY_164:
-      return basic (this, hp:null, type:null, retreatCost:null) {
-
-      };
+        return basicEnergy (this, PSYCHIC)
       case WATER_ENERGY_165:
-      return basic (this, hp:null, type:null, retreatCost:null) {
-
-      };
+        return basicEnergy (this, WATER)
       default:
-      return null;
+      return null
     }
   }
 }
