@@ -346,9 +346,10 @@ public class CardList extends ArrayList<Card> {
     if (hidden && this.zoneType == ZoneType.HAND) {
       cards = this.shuffledCopy();
     }
+    CardList ret = new CardList()
     if (playerType != TcgStatics.bg().currentThreadPlayerType) {
       TcgStatics.block()
-      def ret = TcgStatics.bg().getClient(playerType).selectCard(new CardSelectUIRequestBuilder()
+      ret = TcgStatics.bg().getClient(playerType).selectCard(new CardSelectUIRequestBuilder()
         .setMinMax(min, max)
         .setInfo(info)
         .setCards(cards)
