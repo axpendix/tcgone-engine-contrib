@@ -3,7 +3,7 @@ package tcgwars.logic.util
 import tcgwars.logic.groovy.TcgStatics
 import tcgwars.logic.Battleground;
 import tcgwars.logic.PlayerType
-import tcgwars.logic.client.PokemonSelectUIRequestBuilder
+import tcgwars.logic.client.requestbuilder.PokemonSelectUIRequestBuilder
 
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
