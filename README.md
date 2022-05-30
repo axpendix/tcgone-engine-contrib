@@ -1,4 +1,4 @@
-# TCG ONE Engine Contrib 
+# TCG ONE Engine Contrib
 
 This is TCG ONE's engine contribution repository.
 It is mainly used for storing open source card implementations. 
