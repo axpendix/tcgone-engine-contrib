@@ -3430,7 +3430,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
       case DARKNESS_ENERGY_119:
         //This version of "Darkness Energy (Special Energy)" doesn't work on "Dark ____" cards, only on [D] Type Pokémon.
         return specialEnergy (this, [[D]]) {
-          text: "If the Pokémon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). Ignore this effect if the Pokémon that Darkness Energy is attached to isn’t [D]. Darkness Energy provides [D] Energy. (Doesn’t count as a basic Energy card.)"
+          text "If the Pokémon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). Ignore this effect if the Pokémon that Darkness Energy is attached to isn’t [D]. Darkness Energy provides [D] Energy. (Doesn’t count as a basic Energy card.)"
           def eff
           onPlay {reason->
             eff = delayed {

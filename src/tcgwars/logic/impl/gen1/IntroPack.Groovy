@@ -37,7 +37,7 @@ public enum IntroPack implements LogicCardInfo {
 	VENUSAUR_3 ("Venusaur", "3", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
 	ARCANINE_4 ("Arcanine", "4", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
 	ELECTABUZZ_5 ("Electabuzz", "5", Rarity.RARE, [BASIC, POKEMON, _LIGHTNING_]),
-	RAICHU_6 ("Raichu", "6", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]);
+	RAICHU_6 ("Raichu", "6", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
 	BULBASAUR_7 ("Bulbasaur", "7", Rarity.UNCOMMON, [BASIC, POKEMON, _GRASS_]),
 	GROWLITHE_8 ("Growlithe", "8", Rarity.UNCOMMON, [BASIC, POKEMON, _FIRE_]),
 	GROWLITHE_9 ("Growlithe", "9", Rarity.UNCOMMON, [BASIC, POKEMON, _FIRE_]),
@@ -62,7 +62,7 @@ public enum IntroPack implements LogicCardInfo {
 	FULL_HEAL_28 ("Full Heal", "28", Rarity.UNCOMMON, [TRAINER]),
 	SUPER_SCOOP_UP_29 ("Super Scoop Up", "29", Rarity.UNCOMMON, [TRAINER]),
 	ENERGY_REMOVAL_30 ("Energy Removal", "30", Rarity.COMMON, [TRAINER]),
-	GUST_OF_WIND_31 ("Gust of Wind", "31", Rarity.COMMON, [TRAINER]);
+	GUST_OF_WIND_31 ("Gust of Wind", "31", Rarity.COMMON, [TRAINER]),
 	POTION_32 ("Potion", "32", Rarity.COMMON, [TRAINER]),
 	SWITCH_33 ("Switch", "33", Rarity.COMMON, [TRAINER]),
 
@@ -236,6 +236,7 @@ static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSY
 							}
 						}
 					}
+				}
 			case JYNX_11:
 				return basic (this, hp:HP070, type:PSYCHIC, retreatCost:2) {
 					weakness PSYCHIC
@@ -391,7 +392,6 @@ static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSY
 							flip 3, {damage 10}
 						}
 					}
-				}
 					move "Vine Whip", {
 						text "40 damage."
 						energyCost G, G, C
@@ -462,7 +462,7 @@ static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSY
 					playRequirement{
 						confirmScoopLastPokemon()
 					}
-				};
+				}
 			case ENERGY_REMOVAL_30:
 				return copy(BaseSetNG.ENERGY_REMOVAL, this);
 			case GUST_OF_WIND_31:
