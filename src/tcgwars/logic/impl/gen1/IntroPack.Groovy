@@ -64,7 +64,7 @@ public enum IntroPack implements LogicCardInfo {
 	ENERGY_REMOVAL_30 ("Energy Removal", "30", Rarity.COMMON, [TRAINER]),
 	GUST_OF_WIND_31 ("Gust of Wind", "31", Rarity.COMMON, [TRAINER]),
 	POTION_32 ("Potion", "32", Rarity.COMMON, [TRAINER]),
-	SWITCH_33 ("Switch", "33", Rarity.COMMON, [TRAINER]),
+	SWITCH_33 ("Switch", "33", Rarity.COMMON, [TRAINER]);
 
 
 static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
