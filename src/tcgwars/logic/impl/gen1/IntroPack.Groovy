@@ -392,14 +392,6 @@ static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSY
 							flip 3, {damage 10}
 						}
 					}
-					move "Vine Whip", {
-						text "40 damage."
-						energyCost G, G, C
-						attackRequirement {}
-						onAttack {
-							damage 40
-						}
-					}
 				}
 			case PIKACHU_23:
 				return copy(BaseSetNG.PIKACHU, this);
