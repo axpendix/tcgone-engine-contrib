@@ -102,32 +102,32 @@ public enum BaseSetNG implements LogicCardInfo {
   VOLTORB ("Voltorb", "67", Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
   VULPIX ("Vulpix", "68", Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
   WEEDLE ("Weedle", "69", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  CLEFAIRY_DOLL ("Clefairy Doll", "70", Rarity.RARE, [TRAINER]),
-  COMPUTER_SEARCH ("Computer Search", "71", Rarity.RARE, [TRAINER]),
-  DEVOLUTION_SPRAY ("Devolution Spray", "72", Rarity.RARE, [TRAINER]),
-  IMPOSTOR_PROFESSOR_OAK ("Impostor Professor Oak", "73", Rarity.RARE, [TRAINER]),
-  ITEM_FINDER ("Item Finder", "74", Rarity.RARE, [TRAINER]),
-  LASS ("Lass", "75", Rarity.RARE, [TRAINER]),
-  POKEMON_BREEDER ("Pokémon Breeder", "76", Rarity.RARE, [TRAINER]),
-  POKEMON_TRADER ("Pokémon Trader", "77", Rarity.RARE, [TRAINER]),
-  SCOOP_UP ("Scoop Up", "78", Rarity.RARE, [TRAINER]),
-  SUPER_ENERGY_REMOVAL ("Super Energy Removal", "79", Rarity.RARE, [TRAINER]),
-  DEFENDER ("Defender", "80", Rarity.UNCOMMON, [TRAINER]),
-  ENERGY_RETRIEVAL ("Energy Retrieval", "81", Rarity.UNCOMMON, [TRAINER]),
-  FULL_HEAL ("Full Heal", "82", Rarity.UNCOMMON, [TRAINER]),
-  MAINTENANCE ("Maintenance", "83", Rarity.UNCOMMON, [TRAINER]),
-  PLUSPOWER ("PlusPower", "84", Rarity.UNCOMMON, [TRAINER]),
-  POKEMON_CENTER ("Pokémon Center", "85", Rarity.UNCOMMON, [TRAINER]),
-  POKEMON_FLUTE ("Pokémon Flute", "86", Rarity.UNCOMMON, [TRAINER]),
-  POKEDEX ("Pokédex", "87", Rarity.UNCOMMON, [TRAINER]),
-  PROFESSOR_OAK ("Professor Oak", "88", Rarity.UNCOMMON, [TRAINER]),
-  REVIVE ("Revive", "89", Rarity.UNCOMMON, [TRAINER]),
-  SUPER_POTION ("Super Potion", "90", Rarity.UNCOMMON, [TRAINER]),
-  BILL ("Bill", "91", Rarity.COMMON, [TRAINER]),
-  ENERGY_REMOVAL ("Energy Removal", "92", Rarity.COMMON, [TRAINER]),
-  GUST_OF_WIND ("Gust of Wind", "93", Rarity.COMMON, [TRAINER]),
-  POTION ("Potion", "94", Rarity.COMMON, [TRAINER]),
-  SWITCH ("Switch", "95", Rarity.COMMON, [TRAINER]),
+  CLEFAIRY_DOLL ("Clefairy Doll", "70", Rarity.RARE, [TRAINER, ITEM]),
+  COMPUTER_SEARCH ("Computer Search", "71", Rarity.RARE, [TRAINER, ITEM]),
+  DEVOLUTION_SPRAY ("Devolution Spray", "72", Rarity.RARE, [TRAINER, ITEM]),
+  IMPOSTOR_PROFESSOR_OAK ("Impostor Professor Oak", "73", Rarity.RARE, [TRAINER, ITEM]),
+  ITEM_FINDER ("Item Finder", "74", Rarity.RARE, [TRAINER, ITEM]),
+  LASS ("Lass", "75", Rarity.RARE, [TRAINER, ITEM]),
+  POKEMON_BREEDER ("Pokémon Breeder", "76", Rarity.RARE, [TRAINER, ITEM]),
+  POKEMON_TRADER ("Pokémon Trader", "77", Rarity.RARE, [TRAINER, ITEM]),
+  SCOOP_UP ("Scoop Up", "78", Rarity.RARE, [TRAINER, ITEM]),
+  SUPER_ENERGY_REMOVAL ("Super Energy Removal", "79", Rarity.RARE, [TRAINER, ITEM]),
+  DEFENDER ("Defender", "80", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  ENERGY_RETRIEVAL ("Energy Retrieval", "81", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  FULL_HEAL ("Full Heal", "82", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  MAINTENANCE ("Maintenance", "83", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  PLUSPOWER ("PlusPower", "84", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  POKEMON_CENTER ("Pokémon Center", "85", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  POKEMON_FLUTE ("Pokémon Flute", "86", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  POKEDEX ("Pokédex", "87", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  PROFESSOR_OAK ("Professor Oak", "88", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  REVIVE ("Revive", "89", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  SUPER_POTION ("Super Potion", "90", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  BILL ("Bill", "91", Rarity.COMMON, [TRAINER, ITEM]),
+  ENERGY_REMOVAL ("Energy Removal", "92", Rarity.COMMON, [TRAINER, ITEM]),
+  GUST_OF_WIND ("Gust of Wind", "93", Rarity.COMMON, [TRAINER, ITEM]),
+  POTION ("Potion", "94", Rarity.COMMON, [TRAINER, ITEM]),
+  SWITCH ("Switch", "95", Rarity.COMMON, [TRAINER, ITEM]),
   DOUBLE_COLORLESS_ENERGY ("Double Colorless Energy", "96", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   FIGHTING_ENERGY ("Fighting Energy", "97", Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
   FIRE_ENERGY ("Fire Energy", "98", Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
@@ -1819,14 +1819,19 @@ public enum BaseSetNG implements LogicCardInfo {
         return basicTrainer (this) {
           text "You and your opponent show each other your hands, then shuffle all the Trainer cards from your hands into your decks."
           onPlay {
-            opp.hand.shuffledCopy().showToMe("Opponent's hand")
-            my.hand.getExcludedList(thisCard).shuffledCopy().showToOpponent("Opponent's hand")
+            def handMsg = "Opponent's hand - Trainer cards will be shuffled back into their deck"
+            opp.hand.showToMe(handMsg)
+            my.hand.getExcludedList(thisCard).showToOpponent(handMsg)
             def tarOpp = opp.hand.filterByType(TRAINER)
             def tarMy = my.hand.getExcludedList(thisCard).filterByType(TRAINER)
-            opp.hand.removeAll(tarOpp)
-            my.hand.removeAll(tarMy)
-            shuffleDeck(tarOpp, TargetPlayer.OPPONENT)
-            shuffleDeck(tarMy)
+            if (tarOpp) {
+              tarOpp.moveTo(opp.deck)
+              shuffleDeck(null, TargetPlayer.OPPONENT)
+            }
+            if (tarMy) {
+              tarMy.moveTo(my.deck)
+              shuffleDeck()
+            }
           }
           playRequirement{
             assert (opp.hand || my.hand) : "Neither player has any cards in hand"
