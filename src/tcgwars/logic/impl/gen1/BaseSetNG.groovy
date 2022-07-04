@@ -1819,14 +1819,19 @@ public enum BaseSetNG implements LogicCardInfo {
         return basicTrainer (this) {
           text "You and your opponent show each other your hands, then shuffle all the Trainer cards from your hands into your decks."
           onPlay {
-            opp.hand.shuffledCopy().showToMe("Opponent's hand")
-            my.hand.getExcludedList(thisCard).shuffledCopy().showToOpponent("Opponent's hand")
+            def handMsg = "Opponent's hand - Trainer cards will be shuffled back into their deck"
+            opp.hand.showToMe(handMsg)
+            my.hand.getExcludedList(thisCard).showToOpponent(handMsg)
             def tarOpp = opp.hand.filterByType(TRAINER)
             def tarMy = my.hand.getExcludedList(thisCard).filterByType(TRAINER)
-            opp.hand.removeAll(tarOpp)
-            my.hand.removeAll(tarMy)
-            shuffleDeck(tarOpp, TargetPlayer.OPPONENT)
-            shuffleDeck(tarMy)
+            if (tarOpp) {
+              tarOpp.moveTo(opp.deck)
+              shuffleDeck(null, TargetPlayer.OPPONENT)
+            }
+            if (tarMy) {
+              tarMy.moveTo(my.deck)
+              shuffleDeck()
+            }
           }
           playRequirement{
             assert (opp.hand || my.hand) : "Neither player has any cards in hand"
