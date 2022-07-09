@@ -315,10 +315,11 @@ public class CardList extends ArrayList<Card> {
     if (hidden && this.persistent && this.persistentName == "Hand") {
       cards = this.shuffledCopy();
     }
+    CardList ret = new CardList()
     if (playerType != TcgStatics.bg().currentThreadPlayerType) {
       TcgStatics.block()
     }
-    def ret = TcgStatics.bg().getClient(playerType).selectCard(new CardSelectUIRequestBuilder()
+    ret = TcgStatics.bg().getClient(playerType).selectCard(new CardSelectUIRequestBuilder()
       .setMinMax(min, max).setInfo(info).setCards(cards).setCustomCardFilter(filter as CardSelectUIRequestBuilder.CustomCardFilter).setCustomPassFilter(passFilter as CardSelectUIRequestBuilder.CustomPassFilter)
       .setShowAsHidden(hidden))
       .setType(CardListType.TEMPORARY)
