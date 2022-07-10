@@ -423,11 +423,10 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           def eff
           pokeBody "Family Bonds", {
             text "As long as Nidoqueen is in play, the Retreat Cost for Nidoran♀, Nidorina, Nidoran♂, Nidorino and Nidoking is 0."
-            delayedA {
-              eff = getter (GET_RETREAT_COST, BEFORE_LAST) {
-                if (it.effect.target.name == "Nidoran♂" || it.effect.target.name == "Nidoran♀" || it.effect.target.name == "Nidorino" || it.effect.target.name == "Nidorina" || it.effect.target.name == "Nidoking") {
-                  it.object = 0
-                }
+            getterA (GET_RETREAT_COST, BEFORE_LAST) { holder ->
+              def pcs = holder.effect.target
+              if (["Nidoran♂", "Nidoran♀", "Nidorino", "Nidorina", "Nidoking"].contains(pcs.name)) {
+                holder.object = 0
               }
             }
           }
