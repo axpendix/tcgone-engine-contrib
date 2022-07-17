@@ -1411,6 +1411,13 @@ class TcgStatics {
     bg.em().retrieveObject("gx_"+my.owner)
   }
 
+  static void vStarPerform(){
+    bg.em().storeObject("vstar_"+my.owner, 1)
+  }
+  static void vStarCheck(){
+    assert !bg.em().retrieveObject("vstar_"+my.owner) : "Already used a VSTAR Power"
+  }
+
   /* General checks for attacks and abilities */
   //TODO: assertFullBench, assertDeck, assertMorePrizes
 
