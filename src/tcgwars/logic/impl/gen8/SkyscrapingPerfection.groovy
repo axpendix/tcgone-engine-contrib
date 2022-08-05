@@ -188,7 +188,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
           text "20+ damage. This attack does 20 more damage for each Benched Pokémon (both yours and your opponent's)."
           energyCost W, C
           onAttack {
-            damage 20 * all.findAll { it.benched }.size()
+            damage 20 + 20 * all.findAll { it.benched }.size()
           }
         }
       };
