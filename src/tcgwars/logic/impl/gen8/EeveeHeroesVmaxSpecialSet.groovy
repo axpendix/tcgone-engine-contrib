@@ -136,7 +136,7 @@ public enum EeveeHeroesVmaxSpecialSet implements LogicCardInfo {
           energyCost L, C
           attackRequirement {}
           onAttack {
-            damage 100
+            damage 100, opp.bench.findAll{ it.numberOfDamageCounters }.select("Deal 100 damage to which Pokémon?")
           }
         }
       };
