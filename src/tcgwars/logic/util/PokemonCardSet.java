@@ -380,7 +380,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
   }
 
   public boolean checkSpecialConditionsForClassic() {
-    if (Battleground.getInstance().getGame().getFormat() == GameFormat.MODIFIED_2002_2003) {
+    if (Battleground.getInstance().gameFormat == GameFormat.MODIFIED_2002_2003) {
       return specialConditions.isEmpty();
     } else {
       for (SpecialConditionType sct : specialConditions) {
