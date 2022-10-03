@@ -473,4 +473,13 @@ public class PokemonCardSet implements PokemonStack, Serializable {
 //		this.set = set;
 //	}
 
+  public String toDebugString() {
+    return "Pokemon{" +
+        ", name='" + toString() + '\'' +
+        ", ref='" + ref + '\'' +
+        ", owner=" + owner +
+        ", id='" + getShortId() + '\'' +
+        "cards=" + set +
+        '}';
+  }
 }
