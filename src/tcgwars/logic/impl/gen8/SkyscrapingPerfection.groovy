@@ -514,8 +514,9 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             revealedCards.showToOpponent("Top 6 cards of your opponent's Deck.").showToMe("Top 6 cards of your Deck")
             def pokemonCards = revealedCards.filterByAllType POKEMON, _PSYCHIC_
             damage 60 * pokemonCards.size()
-            pokemonCards.moveTo deck
             revealedCards.getExcludedList(pokemonCards).discard()
+            pokemonCards.moveTo deck
+            shuffleDeck()
           }
         }
       };
@@ -671,10 +672,10 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
           text " Choose 1 of your opponent's Pokémon that has 60 HP or less remaining. That Pokémon is now Knocked Out."
           energyCost F
           attackRequirement {
-            assert opp.all.any { it.remainingHP <= 60 } : "No opponent Pokémon with 60 HP or less remaining"
+            assert opp.all.any { it.remainingHP.value <= 60 } : "No opponent Pokémon with 60 HP or less remaining"
           }
           onAttack {
-            def target = opp.all.findAll { it.remainingHP <= 60 }.select text
+            def target = opp.all.findAll { it.remainingHP.value <= 60 }.select text
             new Knockout(target).run(bg)
           }
         }
@@ -823,7 +824,8 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         bwAbility "Fumble Hand", {
           text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, each player shuffles their hand and puts it on the bottom of their deck. Then, each player draws 4 cards."
           onActivate { reason ->
-            if (reason == PLAY_FROM_HAND && self.evolution && bg.currentTurn == self.owner && my.bench.notFull && confirm("Use $thisAbility?")) {
+            def handWithoutThisCard = my.hand.getExcludedList(thisCard)
+            if (reason == PLAY_FROM_HAND && self.evolution && bg.currentTurn == self.owner && my.bench.notFull && (handWithoutThisCard.notEmpty || opp.hand.notEmpty) && confirm("Use $thisAbility?")) {
               if (opp.hand){
                 bc "${opp.owner.getPlayerUsername(bg)} shuffled their hand of ${opp.hand.size()} cards, and put it at the bottom of their deck."
                 opp.hand.shuffledCopy().moveTo(suppressLog: true, opp.deck)
@@ -832,7 +834,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
               }
               draw 4, TargetPlayer.OPPONENT
 
-              if (my.hand.getExcludedList(thisCard).size()) {
+              if (handWithoutThisCard) {
                 bc "${my.owner.getPlayerUsername(bg)} shuffled their hand of ${my.hand.size() - 1} cards, and put it at the bottom of their deck."
                 my.hand.getExcludedList(thisCard).shuffledCopy().moveTo(suppressLog: true, my.deck)
               } else {
@@ -1091,7 +1093,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
           energyCost P, D
           onAttack {
             damage 60
-            if (my.hand.size == opp.hand.size) damage 120
+            if (my.hand.size() == opp.hand.size()) damage 120
           }
         }
       };
