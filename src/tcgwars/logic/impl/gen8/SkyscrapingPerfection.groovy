@@ -1092,7 +1092,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
           energyCost P, D
           onAttack {
             damage 60
-            if (my.hand.size == opp.hand.size) damage 120
+            if (my.hand.size() == opp.hand.size()) damage 120
           }
         }
       };
