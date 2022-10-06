@@ -608,14 +608,15 @@ public enum BlueSkyStream implements LogicCardInfo {
       return basic (this, hp:HP090, type:W, retreatCost:1) {
         weakness M
         move "Element Chain", {
-          text " Look at the top 6 cards of your deck and attach any number of Energy cards you find there to your Pokémon in any way you like. Shuffle the other cards back into your deck."
+          text " Look at the top 6 cards of your deck and attach any number of basic Energy cards you find there to your Pokémon in any way you like. Shuffle the other cards back into your deck."
           energyCost W
           attackRequirement {
             assert my.deck : "Your deck is empty"
           }
           onAttack {
             def top6List = my.deck.subList 0, 6
-            def selectedEnergyList = top6List.select text, { ENERGY in it.cardTypes }
+            def numberOfBasicEnergy = top6List.findAll { BASIC_ENERGY in it.cardTypes }.size()
+            def selectedEnergyList = top6List.select text, 0, numberOfBasicEnergy, null, { BASIC_ENERGY in it.cardTypes }, { true}
             selectedEnergyList.each {
               attachEnergy my.all.select("Attach $it.name to?"), it
             }
