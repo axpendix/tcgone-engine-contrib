@@ -441,10 +441,12 @@ public enum BlueSkyStream implements LogicCardInfo {
           energyCost R
           onAttack {
             def list = my.discard.findAll { BASIC_ENERGY in it.cardTypes }
-            damage 20 * list.size()
+            damage 20 + 20 * list.size()
             afterDamage {
-              list.moveTo my.deck
-              if (list.notEmpty()) shuffleDeck()
+              if (list.notEmpty()) {
+                list.moveTo my.deck
+                shuffleDeck()
+              }
             }
           }
         }
