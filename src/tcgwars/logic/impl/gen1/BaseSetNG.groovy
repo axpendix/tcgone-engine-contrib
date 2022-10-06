@@ -292,7 +292,7 @@ public enum BaseSetNG implements LogicCardInfo {
           pokemonPower "Damage Swap", {
             text "As often as you like during your turn (before your attack), you may move 1 damage counter from 1 of your Pokémon to another as long as you don’t Knock Out that Pokémon. This power can’t be used if Alakazam is Asleep, Confused, or Paralyzed."
             actionA {
-              checkNoSPC()
+              checkNoSPCForClassic()
               assert my.all.find({it.numberOfDamageCounters>0})
               assert my.all.find{it.numberOfDamageCounters < (it.fullHP.value - 10)/10}
               assert my.all.size() > 1
@@ -324,7 +324,7 @@ public enum BaseSetNG implements LogicCardInfo {
           pokemonPower "Rain Dance", {
             text "As often as you like during your turn (before your attack), you may attach 1 [W] Energy card to 1 of your [W] Pokémon. (This doesn’t use up your 1 Energy card attachment for the turn.) This power can’t be used if Blastoise is Asleep, Confused, or Paralyzed."
             actionA {
-              checkNoSPC()
+              checkNoSPCForClassic()
               assert my.hand.filterByBasicEnergyType(W) : "No [W] in hand"
               assert my.all.find{it.types.contains(W)} : "No [W] Pokémon."
 
@@ -389,7 +389,7 @@ public enum BaseSetNG implements LogicCardInfo {
               }
             }
             actionA {
-              checkNoSPC()
+              checkNoSPCForClassic()
               def newSet = [] as Set
               newSet.addAll(self.cards.filterByType(ENERGY))
               if(newSet != set){
@@ -628,7 +628,7 @@ public enum BaseSetNG implements LogicCardInfo {
           pokemonPower "Energy Trans", {
             text "As often as you like during your turn (before you attack), you may take 1 [G] Energy card attached to 1 of your Pokémon and attach it to a different one. This power can’t be used if Venusaur is Asleep, Confused, or Paralyzed."
             actionA {
-              assert !self.isSPC(ASLEEP) || !self.isSPC(CONFUSED) || !self.isSPC(PARALYZED)
+              checkNoSPCForClassic()
               assert my.all.findAll {it.cards.energyCount(G)>0}
               assert my.all.size()>=2
 
@@ -756,10 +756,8 @@ public enum BaseSetNG implements LogicCardInfo {
           pokemonPower "Buzzap", {
             text "At any time during your turn (before your attack), you may Knock Out Electrode and attach it to 1 of your other Pokémon. If you do, choose a type of Energy. Electrode is now an Energy card (instead of a Pokémon) that provides 2 energy of that type. You can’t use this power if Electrode is Asleep, Confused, or Paralyzed."
             actionA {
-              checkNoSPC()
+              checkNoSPCForClassic()
               powerUsed()
-
-
             }
           }
           move "Electric Shock", {
