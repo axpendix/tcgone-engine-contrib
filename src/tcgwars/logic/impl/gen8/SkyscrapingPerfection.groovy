@@ -671,10 +671,10 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
           text " Choose 1 of your opponent's Pokémon that has 60 HP or less remaining. That Pokémon is now Knocked Out."
           energyCost F
           attackRequirement {
-            assert opp.all.any { it.remainingHP <= 60 } : "No opponent Pokémon with 60 HP or less remaining"
+            assert opp.all.any { it.remainingHP.value <= 60 } : "No opponent Pokémon with 60 HP or less remaining"
           }
           onAttack {
-            def target = opp.all.findAll { it.remainingHP <= 60 }.select text
+            def target = opp.all.findAll { it.remainingHP.value <= 60 }.select text
             new Knockout(target).run(bg)
           }
         }
