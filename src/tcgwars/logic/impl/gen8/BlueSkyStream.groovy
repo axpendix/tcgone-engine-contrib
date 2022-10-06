@@ -250,7 +250,7 @@ public enum BlueSkyStream implements LogicCardInfo {
           onAttack {
             damage 30
             if (my.lastKnockoutByOpponentDamageTurn == bg.turnCount - 1)
-              damage 50
+              damage 90
           }
         }
         move "Solar Beam", {
