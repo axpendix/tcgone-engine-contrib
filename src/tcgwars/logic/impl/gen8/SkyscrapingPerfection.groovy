@@ -823,7 +823,8 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         bwAbility "Fumble Hand", {
           text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, each player shuffles their hand and puts it on the bottom of their deck. Then, each player draws 4 cards."
           onActivate { reason ->
-            if (reason == PLAY_FROM_HAND && self.evolution && bg.currentTurn == self.owner && my.bench.notFull && confirm("Use $thisAbility?")) {
+            def handWithoutThisCard = my.hand.getExcludedList(thisCard)
+            if (reason == PLAY_FROM_HAND && self.evolution && bg.currentTurn == self.owner && my.bench.notFull && (handWithoutThisCard.notEmpty || opp.hand.notEmpty) && confirm("Use $thisAbility?")) {
               if (opp.hand){
                 bc "${opp.owner.getPlayerUsername(bg)} shuffled their hand of ${opp.hand.size()} cards, and put it at the bottom of their deck."
                 opp.hand.shuffledCopy().moveTo(suppressLog: true, opp.deck)
@@ -832,7 +833,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
               }
               draw 4, TargetPlayer.OPPONENT
 
-              if (my.hand.getExcludedList(thisCard).size()) {
+              if (handWithoutThisCard) {
                 bc "${my.owner.getPlayerUsername(bg)} shuffled their hand of ${my.hand.size() - 1} cards, and put it at the bottom of their deck."
                 my.hand.getExcludedList(thisCard).shuffledCopy().moveTo(suppressLog: true, my.deck)
               } else {
