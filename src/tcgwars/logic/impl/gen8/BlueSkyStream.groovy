@@ -311,7 +311,9 @@ public enum BlueSkyStream implements LogicCardInfo {
           energyCost G, G, C
           onAttack {
             damage 120
-            discardRandomCardFromOpponentsHand()
+            afterDamage {
+              discardRandomCardFromOpponentsHand()
+            }
           }
         }
       };
