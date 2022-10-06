@@ -514,8 +514,9 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             revealedCards.showToOpponent("Top 6 cards of your opponent's Deck.").showToMe("Top 6 cards of your Deck")
             def pokemonCards = revealedCards.filterByAllType POKEMON, _PSYCHIC_
             damage 60 * pokemonCards.size()
-            pokemonCards.moveTo deck
             revealedCards.getExcludedList(pokemonCards).discard()
+            pokemonCards.moveTo deck
+            shuffleDeck()
           }
         }
       };
