@@ -851,7 +851,6 @@ public enum BlueSkyStream implements LogicCardInfo {
           text " Put 2 damage counters on 1 of your opponent's Pokémon. If that Pokémon is Knocked Out by the effect of this attack, take another turn after this one. (Skip Pokémon Checkup.) If 1 of your Pokémon used Yoga Loop during your last turn, this attack can't be used."
           energyCost C, C
           attackRequirement {
-            // TODO: lastTurnMove doesn't clear if End Turn is selected
             assert self.owner.pbg.lastTurnMove != thisMove.name : "If 1 of your Pokémon used $thisMove.name during your last turn, this attack can't be used"
           }
           onAttack {
