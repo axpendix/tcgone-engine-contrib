@@ -423,11 +423,10 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           def eff
           pokeBody "Family Bonds", {
             text "As long as Nidoqueen is in play, the Retreat Cost for Nidoran♀, Nidorina, Nidoran♂, Nidorino and Nidoking is 0."
-            delayedA {
-              eff = getter (GET_RETREAT_COST, BEFORE_LAST) {
-                if (it.effect.target.name == "Nidoran♂" || it.effect.target.name == "Nidoran♀" || it.effect.target.name == "Nidorino" || it.effect.target.name == "Nidorina" || it.effect.target.name == "Nidoking") {
-                  it.object = 0
-                }
+            getterA (GET_RETREAT_COST, BEFORE_LAST) { holder ->
+              def pcs = holder.effect.target
+              if (["Nidoran♂", "Nidoran♀", "Nidorino", "Nidorina", "Nidoking"].contains(pcs.name)) {
+                holder.object = 0
               }
             }
           }
@@ -1856,20 +1855,26 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
             onAttack {
               def revealCard = new CardList();
+              def foundBasic = false
               def ind = 0
               def curCard
               while(ind < my.deck.size()){
                 curCard = my.deck.get(ind)
                 ind+=1
                 revealCard.add(curCard)
-                if(curCard.cardTypes.is(BASIC))
+                if(curCard.cardTypes.is(BASIC)) {
+                  foundBasic = true
                   break
+                }
               }
+              bc "${self.owner.getPlayerUsername(bg)} revealed $ind cards from the top of the deck " + (foundBasic ? "and found $curCard" : "without finding any Basic Pokémon")
               revealCard.showToMe("Drawn cards")
-              revealCard.showToOpponent("revealed cards")
+              revealCard.showToOpponent("Revealed cards")
               revealCard.clear()
-              revealCard.add(curCard)
-              revealCard.moveTo(my.hand)
+              if (foundBasic) {
+                revealCard.add(curCard)
+                revealCard.moveTo(my.hand)
+              }
               shuffleDeck()
             }
           }

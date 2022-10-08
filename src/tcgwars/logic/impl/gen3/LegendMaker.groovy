@@ -227,6 +227,7 @@ public enum LegendMaker implements LogicCardInfo {
                   prevent()
                 }
               }
+              unregisterAfter 2
             }
             afterDamage{
               preventAllEffectsFromCustomPokemonNextTurn(thisMove, self, {it.EX})
