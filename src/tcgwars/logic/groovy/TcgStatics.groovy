@@ -530,8 +530,8 @@ class TcgStatics {
     new ReduceDamageNextTurn(reduce, thisMove.name).setEither(either).setBeforeWR(beforeWR).run(bg())
   }
   static reduceDamageFromDefendingNextTurn (HP reduce, Move thisMove, PokemonCardSet defending){
-    afterDamage { targeted (defending) {
-      delayed {
+    afterDamage {
+      delayed target:defending, {
         after PROCESS_ATTACK_EFFECTS, {
           bg.dm().each {
             if(it.from==defending && ef.attacker==defending && it.dmg.value){
@@ -545,7 +545,7 @@ class TcgStatics {
         after EVOLVE, defending, {unregister()}
         after DEVOLVE, defending, {unregister()}
       }
-    } }
+    }
   }
   static cantRetreat(PokemonCardSet target, Source source=Source.ATTACK, boolean benchingEitherEndsEffect=false){
     new CantRetreat(target, source, benchingEitherEndsEffect).run(bg())
@@ -666,7 +666,7 @@ class TcgStatics {
     new IncreasedBaseDamageNextTurn(atkname, extra).run(bg())
   }
   static decreasedBaseDamageNextTurn (PokemonCardSet pcs, String atkname, HP minus){
-    delayed {
+    delayed target:pcs, {
       after PROCESS_ATTACK_EFFECTS, {
         if(ef.attacker == pcs && ef.move.name == atkname) {
           bg.dm().findAll{it.from == pcs && it.to.owner != pcs.owner && it.dmg.value}.each{
@@ -749,7 +749,7 @@ class TcgStatics {
     return bg().getClient(targetPlayer.getPlayerType(bg())).rearrangeCards(new RearrangeCardsUIRequestBuilder().setCards(cards).setInfo(info))
   }
   static doMoreDamageNextTurn(Move thisMove, int inc, PokemonCardSet self){
-    delayed {
+    delayed target:self, {
       def registeredOn=0
       after PROCESS_ATTACK_EFFECTS, {
         if(bg.turnCount!=registeredOn){
@@ -767,7 +767,7 @@ class TcgStatics {
     }
   }
   static safeguard(PokemonCardSet self, Object delegate){
-    delegate.delayedA {
+    delegate.delayedA target:self, source:SRC_ABILITY, {
       before null, self, Source.ATTACK, {
         if (self.owner.opposite.pbg.active.pokemonEX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
           bc "Safeguard prevents effect"
@@ -791,7 +791,7 @@ class TcgStatics {
     }
   }
   static safeguardForExAndGx(String name, PokemonCardSet self, Object delegate){
-    delegate.delayedA {
+    delegate.delayedA target:self, source:SRC_ABILITY, {
       before null, self, Source.ATTACK, {
         if ((self.owner.opposite.pbg.active.pokemonEX || self.owner.opposite.pbg.active.pokemonGX) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
           bc "$name prevents effect"
@@ -816,7 +816,7 @@ class TcgStatics {
   }
   static reducedDamageFromAttacksAbility(PokemonCardSet self, int amount, Object abilityDelegate) {
     // TODO: Add additional params for similar abilities if it makes sense to
-    abilityDelegate.delayedA {
+    abilityDelegate.delayedA target:self, source:SRC_ABILITY, {
       before APPLY_ATTACK_DAMAGES, {
         bg.dm().each {
           if (it.to == self && it.dmg.value && it.notNoEffect) {
@@ -828,7 +828,7 @@ class TcgStatics {
     }
   }
   static preventAllEffectsFromPokemonExNextTurn(Move thisMove, PokemonCardSet self){
-    delayed {
+    delayed target:self, {
       before null, self, Source.ATTACK, {
         if (self.owner.opposite.pbg.active.pokemonEX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
           bc "$thisMove prevents effect"
@@ -855,7 +855,7 @@ class TcgStatics {
   }
 
   static preventAllEffectsFromCustomPokemonNextTurn(Move thisMove, PokemonCardSet self, Predicate<PokemonCardSet> predicate){
-    delayed {
+    delayed target:self, {
       before null, self, Source.ATTACK, {
         if (bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && predicate.test(self.owner.opposite.pbg.active)){
           bc "$thisMove prevents effect"
@@ -878,7 +878,7 @@ class TcgStatics {
   }
 
   static void preventAllDamageFromCustomPokemonNextTurn(Move thisMove, PokemonCardSet self, Predicate<PokemonCardSet> predicate){
-    delayed (priority: LAST) {
+    delayed priority:LAST, target:self, {
       before APPLY_ATTACK_DAMAGES, {
         bg.dm().each {
           if(it.to == self && it.notNoEffect && it.from != it.to && predicate.test(it.from) && bg.currentTurn==self.owner.opposite ){
@@ -936,8 +936,8 @@ class TcgStatics {
     }.run(bg)
   }
   static jawClamp (Move thisMove, PokemonCardSet self, PokemonCardSet defending, boolean asLongAsSelfIsActive=false) {
-    afterDamage { if (defending.active) { targeted(defending) {
-      delayed {
+    afterDamage { if (defending.active) {
+      delayed target:defending, {
         before RETREAT, defending, { wcu "${thisMove.name} prevents retreat."; prevent()}
         before FALL_BACK, defending, { bc "${thisMove.name} prevents switch."; prevent()}
         if(asLongAsSelfIsActive){
@@ -950,7 +950,7 @@ class TcgStatics {
         after DEVOLVE, defending, {unregister()}
         unregisterAfter 2
       }
-    } } }
+    } }
   }
   static attachPokemonTool (PokemonToolCard card, PokemonCardSet pcs) {
     new AttachPokemonTool(pcs, card, OTHER).run(bg)
@@ -981,7 +981,7 @@ class TcgStatics {
   }
 
   static barrier(PokemonCardSet self, Object delegate){
-    delegate.delayedA {
+    delegate.delayedA target:self, {
       //TODO make sure all trainers have correct source definitions and add extra source types
       def flag = false
       def power=false
@@ -1013,7 +1013,7 @@ class TcgStatics {
     delegate.onDeactivate {bg.em().storeObject("BARRAGE_"+self.hashCode(), null)}
   }
   static growth(PokemonCardSet self, Object delegate){
-    delegate.delayedA {
+    delegate.delayedA target:self, source:SRC_ANCIENT_TRAIT, {
       after ATTACH_ENERGY, self, {
         if((ef as AttachEnergy).reason==PLAY_FROM_HAND && self.owner.pbg.hand.filterByType(ENERGY)){
           self.owner.pbg.hand.filterByType(ENERGY).select(min: 0, "Growth: You may attach 1 more energy card to $self", {
@@ -1025,7 +1025,7 @@ class TcgStatics {
 
   }
   static recovery(PokemonCardSet self, Object delegate){
-    delegate.delayedA {
+    delegate.delayedA target:self, source:SRC_ANCIENT_TRAIT, {
       before REMOVE_DAMAGE_COUNTER, self, {
         bc "Recovery: doubled healing"
         (ef as RemoveDamageCounter).hp *= 2
@@ -1035,7 +1035,7 @@ class TcgStatics {
 
   static delta_plus(PokemonCardSet self, Object delegate){
     def power = false
-    delegate.delayedA (priority: LAST) {
+    delegate.delayedA target:self, source:SRC_ANCIENT_TRAIT, priority:LAST, {
       after APPLY_ATTACK_DAMAGES, {
         power = (ef.attacker==self)
       }
@@ -1056,7 +1056,7 @@ class TcgStatics {
   static omega_stop(Object delegate){
     delegate.ancientTrait "θ Stop", {
       text "Prevent all effects of your opponent's Pokémon's Abilities done to this Pokémon."
-      delayedA {
+      delayedA target:self, source:SRC_ANCIENT_TRAIT, {
         before null, self, Source.SRC_ABILITY, {
           //FIXME this will also block own pokemon abilities. to fix this, "Source refactoring" must be done.
           bc "θ Stop prevents opponent's Pokémon's Abilities"
@@ -1144,7 +1144,7 @@ class TcgStatics {
   }
 
   static duringYourOpponentsNextTurnThisPokemonHasNoWeakness(PokemonCardSet self) {
-    delayed {
+    delayed target:self, {
       def eff=null
       register {
         eff=getter(GET_WEAKNESSES, BEFORE_LAST, self) {holder->
@@ -1223,7 +1223,7 @@ class TcgStatics {
   static void spiritLink(delegate1, name){
     def eff
     delegate1.onPlay {
-      eff = delayed {
+      eff = delayed target:delegate1.self, source:TRAINER_CARD, {
         before MEGA_EVOLUTION_RULE, delegate1.self, {
           if(delegate1.self.name==name) prevent()
         }
@@ -1235,67 +1235,61 @@ class TcgStatics {
   }
 
   static void defendingAttacksCostsMore (PokemonCardSet pcs, List<Type> energies) {
-    targeted(pcs) {
-      delayed {
-        def eff
-        register {
-          eff = getter (GET_MOVE_LIST, NORMAL, pcs) {h->
-            def list=[]
-            for(move in h.object){
-              def copy=move.shallowCopy()
-              copy.energyCost.addAll(energies)
-              list.add(copy)
-            }
-            h.object=list
+    delayed target:pcs, {
+      def eff
+      register {
+        eff = getter (GET_MOVE_LIST, NORMAL, pcs) {h->
+          def list=[]
+          for(move in h.object){
+            def copy=move.shallowCopy()
+            copy.energyCost.addAll(energies)
+            list.add(copy)
           }
-          bc "Attacks of $pcs will cost $energies more during next turn"
+          h.object=list
         }
-        unregister {
-          eff.unregister()
-        }
-        unregisterAfter 2
-        after FALL_BACK, pcs, {unregister()}
-        after EVOLVE, pcs, {unregister()}
-        after DEVOLVE, pcs, {unregister()}
+        bc "Attacks of $pcs will cost $energies more during next turn"
       }
+      unregister {
+        eff.unregister()
+      }
+      unregisterAfter 2
+      after FALL_BACK, pcs, {unregister()}
+      after EVOLVE, pcs, {unregister()}
+      after DEVOLVE, pcs, {unregister()}
     }
   }
 
   static void defendingRetreatsCostsMore (PokemonCardSet pcs, List<Type> energies) {
-    targeted(pcs) {
-      delayed {
-        def eff
-        register {
-          eff = getter (GET_RETREAT_COST, NORMAL, pcs) {h->
-            h.object += 1
-          }
-          bc "Retreat cost of $pcs will cost 1 more energy during the next turn."
+    delayed target:pcs, {
+      def eff
+      register {
+        eff = getter (GET_RETREAT_COST, NORMAL, pcs) {h->
+          h.object += 1
         }
-        unregister {
-          eff.unregister()
-        }
-        unregisterAfter 2
-        after FALL_BACK, pcs, {unregister()}
-        after EVOLVE, pcs, {unregister()}
-        after DEVOLVE, pcs, {unregister()}
+        bc "Retreat cost of $pcs will cost 1 more energy during the next turn."
       }
+      unregister {
+        eff.unregister()
+      }
+      unregisterAfter 2
+      after FALL_BACK, pcs, {unregister()}
+      after EVOLVE, pcs, {unregister()}
+      after DEVOLVE, pcs, {unregister()}
     }
   }
 
   static void increasedDamageDoneToDefending (PokemonCardSet self, PokemonCardSet pcs, int value, String atkName=""){
-    targeted(pcs){
-      delayed {
-        before APPLY_ATTACK_DAMAGES, {
-          bg.dm().each {if(it.to==pcs && it.from.owner==self.owner && it.dmg.value>0 && it.notNoEffect){
-            bc "$atkName increases damage"
-            it.dmg+=hp(value)
-          }}
-        }
-        unregisterAfter 3
-        after FALL_BACK, pcs, {unregister()}
-        after EVOLVE, pcs, {unregister()}
-        after DEVOLVE, pcs, {unregister()}
+    delayed target:self, {
+      before APPLY_ATTACK_DAMAGES, {
+        bg.dm().each {if(it.to==pcs && it.from.owner==self.owner && it.dmg.value>0 && it.notNoEffect){
+          bc "$atkName increases damage"
+          it.dmg+=hp(value)
+        }}
       }
+      unregisterAfter 3
+      after FALL_BACK, pcs, {unregister()}
+      after EVOLVE, pcs, {unregister()}
+      after DEVOLVE, pcs, {unregister()}
     }
   }
 
@@ -1549,7 +1543,7 @@ class TcgStatics {
   }
 
   static void cantBeHealed(PokemonCardSet defending){
-    delayed {
+    delayed target:defending, {
       after EVOLVE, defending, {unregister()}
       after DEVOLVE, defending, {unregister()}
       after FALL_BACK, defending, {unregister()}
@@ -1958,9 +1952,9 @@ class TcgStatics {
   /* Effects that trigger when a Pokémon is active and damaged by an opposing attack, can be called by either a Poké-Body / Ability, an attack, or a card attached to the Pokémon. */
 
   // poke bodies and abilities
-  static ifActiveAndDamagedByAttackBody (Object delegate1, Closure eff) {
+  static ifActiveAndDamagedByAttackBody (Object delegate1, Source source=ATTACK, Closure eff) {
     def c1 = {
-      delayedA(priority: BEFORE_LAST, inline: true) {
+      delayedA target:self, source:source, priority:BEFORE_LAST, inline: true, {
         def applyEffect = false
         before APPLY_ATTACK_DAMAGES, {
           applyEffect = bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({ it.to == self && it.dmg.value })
@@ -1980,11 +1974,11 @@ class TcgStatics {
   }
 
   // tools and special energy
-  static ifActiveAndDamagedByAttackAttached (Object delegate1, Closure c2) {
+  static ifActiveAndDamagedByAttackAttached (Object delegate1, Source source=ATTACK, Closure c2) {
     def c1 = {
       def eff
       onPlay {reason->
-        eff = delayed(priority: BEFORE_LAST, inline: true) {
+        eff = delayed target:self, source:source, priority: BEFORE_LAST, inline: true, {
           def applyEffect = false
           before APPLY_ATTACK_DAMAGES, {
             bg().dm().each {
@@ -2012,9 +2006,9 @@ class TcgStatics {
   }
 
   // attacks that put the effect on itself for one turn
-  static ifDamagedByAttackNextTurn (Object delegate1, Closure eff) {
+  static ifDamagedByAttackNextTurn (Object delegate1, Source source=ATTACK, Closure eff) {
     def c1 = {
-      delayed(priority: BEFORE_LAST, inline: true) {
+      delayed target:self, source:source, priority: BEFORE_LAST, inline: true, {
         def applyEffect = false
         before APPLY_ATTACK_DAMAGES, {
           applyEffect = bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})
@@ -2149,7 +2143,7 @@ class TcgStatics {
     PokemonCardSet pcs = attackDelegate.defending
     def effTurn = bg.turnCount + 2
     bc "If the Defending ${pcs} is Knocked Out during ${attackDelegate.self.owner}'s next turn, they'll take $count more Prize cards. (This effect can be removed by benching/evolving ${pcs})"
-    delayed {
+    delayed target:pcs, {
       getter GET_GIVEN_PRIZES, BEFORE_LAST, pcs, {Holder holder ->
         if (holder.object > 0 && effTurn == bg().turnCount) {
           bc "$attackDelegate.thisMove gives the player $count more Prize cards."

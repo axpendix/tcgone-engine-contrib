@@ -1,4 +1,6 @@
-package tcgwars.logic.impl.gen7;
+package tcgwars.logic.impl.gen7
+
+import tcgwars.logic.groovy.TcgStatics;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -4415,11 +4417,17 @@ public enum UnbrokenBonds implements LogicCardInfo {
           text "Prevent all effects of your opponent's Abilities done to the Pokémon this card is attached to. Remove any such existing effects."
           def eff
           onPlay {reason->
-            // TODO implement properly after source refactoring and/or RichSource captivation
-            eff = delayed {
+            eff = delayed target:self, source:TRAINER_CARD, {
               before null, self, SRC_ABILITY, {
-                bc "Stealthy Hood prevents effect"
-                prevent()
+                def abilityEffect = bg.em().getNearestEffectType(USE_ABILITY)
+                def abilityUser = abilityEffect.getResolvedTarget(bg, e)
+                if (abilityUser == null) {
+                  abilityUser = abilityEffect.thisPokemon
+                }
+                if (abilityUser.owner == self.owner.opposite) {
+                  bc "Stealthy Hood prevents effect"
+                  prevent()
+                }
               }
             }
             new CheckAbilities().run(bg)
