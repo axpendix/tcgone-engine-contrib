@@ -724,9 +724,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           onActivate { reason ->
             if (reason == PLAY_FROM_HAND && self.evolution && bg.currentTurn == self.owner && opp.bench.any { it.evolution } && confirm("Use $thisAbility?")) {
               def pcs = opp.bench.findAll { it.evolution }.select("Pokémon to devolve?")
-              targeted pcs, SRC_ABILITY, {
-                devolve pcs, pcs.topPokemonCard as Card, opp.hand
-              }
+              devolve pcs, pcs.topPokemonCard as Card, opp.hand, SRC_ABILITY
             }
           }
         }

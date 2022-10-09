@@ -24,6 +24,7 @@ import static tcgwars.logic.card.Weakness.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.EffectType.*
 import static tcgwars.logic.effect.Source.*
+import static tcgwars.logic.effect.Source.POKEPOWER
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.groovy.TcgBuilders.*
@@ -782,7 +783,7 @@ public enum RisingRivals implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               powerUsed()
-              devolve(self,self.topPokemonCard,my.hand)
+              devolve(self,self.topPokemonCard,my.hand, POKEPOWER)
             }
           }
           move "Tail Slap", {
@@ -1018,7 +1019,7 @@ public enum RisingRivals implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               powerUsed()
-              devolve(self,self.topPokemonCard,my.hand)
+              devolve(self,self.topPokemonCard,my.hand, POKEPOWER)
             }
           }
           move "Quick Attack", {
@@ -1287,7 +1288,7 @@ public enum RisingRivals implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               powerUsed()
-              devolve(self,self.topPokemonCard,my.hand)
+              devolve(self,self.topPokemonCard,my.hand, POKEPOWER)
             }
           }
           move "Muddy Water", {

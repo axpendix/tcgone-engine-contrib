@@ -1619,7 +1619,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
           def stage = pkmn.size()>1 ? pkmn.select("Choose stage to devolve to").first() : pkmn.first()
           for(PokemonCard t7:pcs.pokemonCards){
             if (t7 == stage) break
-            devolve(pcs, t7, my.discard)
+            devolve(pcs, t7, my.discard, TRAINER_CARD)
           }
         }
         playRequirement{

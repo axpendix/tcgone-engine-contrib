@@ -14,6 +14,7 @@ import static tcgwars.logic.card.CardType.*
 import static tcgwars.logic.effect.EffectPriority.BEFORE_LAST;
 import static tcgwars.logic.effect.EffectType.*;
 import static tcgwars.logic.effect.Source.*
+import static tcgwars.logic.effect.Source.POKEPOWER
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
 import tcgwars.logic.effect.gm.PlayTrainer
@@ -990,7 +991,7 @@ public enum MajesticDawn implements LogicCardInfo {
                 powerUsed()
                 opp.bench.findAll{it.evolution}.each {
                   def top = it.topPokemonCard
-                  devolve(it, top, opp.hand)
+                  devolve(it, top, opp.hand, POKEPOWER)
                 }
               }
             }

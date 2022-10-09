@@ -12,7 +12,8 @@ import tcgwars.logic.impl.gen7.CelestialStorm;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.effect.Source.POKEPOWER;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
@@ -431,7 +432,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             heal 40, self
 
             def top=self.topPokemonCard
-            devolve(self, top, my.discard)
+            devolve(self, top, my.discard, POKEPOWER)
 
             if (my.deck) {
               def tar = my.deck.search("Evolves from Vulpix", {it.cardTypes.is(EVOLUTION) && (it.name == "Ninetales" || it.name == "Ninetales ex")})

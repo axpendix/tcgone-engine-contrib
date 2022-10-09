@@ -15,7 +15,8 @@ import tcgwars.logic.effect.gm.Attack
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.effect.Source.POKEPOWER;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
@@ -2509,7 +2510,7 @@ public enum UnseenForces implements LogicCardInfo {
               def list = opp.bench.findAll { it.evolution }
               def pcs = list.select("Devolve one of your opponent's evolved Pokémon")
               def top = pcs.topPokemonCard
-              devolve(pcs, top, opp.hand)
+              devolve(pcs, top, opp.hand, POKEPOWER)
             }
           }
         }

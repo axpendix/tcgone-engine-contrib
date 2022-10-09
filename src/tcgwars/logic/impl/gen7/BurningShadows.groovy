@@ -2489,7 +2489,7 @@ public enum BurningShadows implements LogicCardInfo {
                     if(pcs.evolution) {
                       targeted (pcs, SRC_ABILITY) {
                         def top=pcs.topPokemonCard
-                        devolve(pcs, top, opp.hand)
+                        devolve(pcs, top, opp.hand, SRC_ABILITY)
                       }
                     }
                   }

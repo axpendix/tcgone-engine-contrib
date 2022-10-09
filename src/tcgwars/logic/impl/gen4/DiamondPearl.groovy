@@ -9,7 +9,8 @@ import tcgwars.logic.impl.gen5.BlackWhite;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.effect.Source.POKEPOWER;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
@@ -598,7 +599,7 @@ public enum DiamondPearl implements LogicCardInfo {
               flip {
                 def pcs = list.select("Devolve one of your opponent's evolved Benched Pokémon.")
                 def top = pcs.topPokemonCard
-                devolve(pcs, top, opp.hand)
+                devolve(pcs, top, opp.hand, POKEPOWER)
               }
             }
           }

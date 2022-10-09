@@ -611,10 +611,14 @@ class TcgStatics {
     bg().em().run(new CantEvolve(pcs, bg().getTurnCount()));
     bg().em().run(new ActivateAbilities((PokemonCard) card, pcs, reason));
   }
-  static devolve (PokemonCardSet pcs, Card card, CardList newLocation){
-    def blocked = bg().em().run(new MoveCard(card, newLocation));
-    if (blocked) {
-      return;
+  static devolve (PokemonCardSet pcs, Card card, CardList newLocation, Source source=ATTACK){
+    def blockedDevolve = bg().em().run(new Devolve(pcs, source))
+    if (blockedDevolve) {
+      return
+    }
+    def blockedToHand = bg().em().run(new MoveCard(card, newLocation));
+    if (blockedToHand) {
+      return
     }
 
     if (all.contains(pcs)) { //not dead yet.
@@ -628,7 +632,6 @@ class TcgStatics {
       }
 
       bc "$card Devolved"
-      bg().em().run(new Devolve(pcs));
     }
   }
   static babyEvolution(String evolName, PokemonCardSet baby){
