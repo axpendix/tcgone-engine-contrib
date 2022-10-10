@@ -3412,6 +3412,9 @@ f
             onAttack {
               sw opp.active, opp.bench.select()
             }
+            attackRequirement {
+              assert opp.bench
+            }
           }
           move "Sand Tomb", {
             text "10 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
