@@ -1945,10 +1945,8 @@ public enum DeltaSpecies implements LogicCardInfo {
         pokeBody "Conductive Body", {
           text "As long as Beldum is your active Pokémon, you pay [C] less to retreat Beldum for each Beldum on your Bench."
           getterA GET_RETREAT_COST, self, {h ->
-            if (self.active) {
-              my.bench.findAll { it.name == "Beldum" }.each {
-                h.object -= 1
-              }
+            if(self.active) {
+              h.object -= self.owner.pbg.bench.count{it.name == "Beldum"}
             }
           }
         }
