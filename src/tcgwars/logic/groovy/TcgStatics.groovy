@@ -1680,12 +1680,9 @@ class TcgStatics {
 
   static bringDown (Object delegate) {
     delegate.onAttack {
-      def list = all.findAll{it!=delegate.self}.sort(false) {p1,p2 -> p1.remainingHP.value <=> p2.remainingHP.value} as PcsList
-      def tar = new PcsList()
-      int min = list.get(0).remainingHP.value
-      while (list.notEmpty && list.get(0).remainingHP.value==min) {
-        tar.add(list.remove(0))
-      }
+      def list = all.findAll{it!=delegate.self}.sort(false) {p1,p2 -> p1.remainingHP.value <=> p2.remainingHP.value}
+      def min = list.get(0).remainingHP
+      def tar = list.findAll{it.remainingHP==min} as PcsList
       //TODO: Heavily improve this selection, in case both players have tied Pokémon. Make it clearer to pick.
       def pcs = tar.select("Choose which of these Pokémon will be knocked out.")
       bc "${pcs.owner}'s $pcs was selected for Knock Out"
