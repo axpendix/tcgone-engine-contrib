@@ -2329,7 +2329,7 @@ public enum CelestialStorm implements LogicCardInfo {
             text "As long as this Pokémon is your Active Pokémon, its Retreat Cost is [C] less for each Beldum on your Bench."
             getterA (GET_RETREAT_COST, self) {h->
               if(self.active) {
-                h.object -= self.owner.pbg.bench.count{it.name == "Beldum"}
+                h.object -= self.owner.pbg.bench.findAll{it.name == "Beldum"}.size()
               }
             }
           }
