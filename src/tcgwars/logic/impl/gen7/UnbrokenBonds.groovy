@@ -2940,20 +2940,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           move "Bring Down", {
             text "The Pokémon that has the least HP remaining, except for this Pokémon, is Knocked Out. (If multiple Pokémon are tied, choose one.)"
             energyCost C, C
-            onAttack {
-              def list = all.findAll{it!=self}.sort(false) {p1,p2 -> p1.remainingHP.value <=> p2.remainingHP.value} as PcsList
-              def tar = new PcsList()
-              int min = list.get(0).remainingHP.value
-              while (list.notEmpty && list.get(0).remainingHP.value==min) {
-                tar.add(list.remove(0))
-              }
-              //TODO: Heavily improve this selection, in case both players have tied Pokémon. Make it clearer to pick.
-              def pcs = tar.select("Choose which of these Pokémon will be knocked out.")
-              bc "${pcs.owner}'s $pcs was selected for Knock Out"
-              targeted (pcs) {
-                new Knockout(pcs).run(bg)
-              }
-            }
+            bringDown(delegate)
           }
           move "Mist Slash", {
             text "70 damage. This attack's damage isn't affected by Weakness, Resistance, or any other effects on your opponent's Active Pokémon."

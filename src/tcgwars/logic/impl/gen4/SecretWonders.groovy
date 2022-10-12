@@ -3412,6 +3412,9 @@ f
             onAttack {
               sw opp.active, opp.bench.select()
             }
+            attackRequirement {
+              assert opp.bench
+            }
           }
           move "Sand Tomb", {
             text "10 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
@@ -3572,15 +3575,7 @@ f
           move "Bring Down", {
             text "Choose 1 Pokémon (your or your opponent’s) with the fewest remaining HP (excluding Gardevoir) and that Pokémon is now Knocked Out."
             energyCost P, P
-            onAttack {
-              def list = all.findAll{it!=self}.sort(false) {p1,p2 -> p1.remainingHP.value <=> p2.remainingHP.value}
-              def tar = new PcsList()
-              int min = list.get(0).remainingHP.value
-              while(list.get(0).remainingHP.value==min){
-                tar.add(list.remove(0))
-              }
-              new Knockout(tar.select("Knock Out")).run(bg)
-            }
+            bringDown(delegate)
           }
         };
       case HONCHKROW_LV_X_132:

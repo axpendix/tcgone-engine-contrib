@@ -2167,7 +2167,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         def eff
         onPlay {reason->
           eff = getter GET_WEAKNESSES, self, { holder ->
-            if (self.types.contains(M)) {
+            if (self && self.types.contains(M)) {
               targeted self, SRC_SPENERGY, {
                 holder.object.clear()
               }
