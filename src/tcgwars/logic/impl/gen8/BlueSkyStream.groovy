@@ -868,6 +868,8 @@ public enum BlueSkyStream implements LogicCardInfo {
                     prevent()
                     bg.turnCount += 1
                     draw 1
+                    // TODO: Preventing between turns doesn't update last used move, starting a new turn for the same player should be its own effect
+                    my.lastTurnMove = thisMove.name
                     bc "$thisMove.name started a new turn!"
                     unregister()
                   }
