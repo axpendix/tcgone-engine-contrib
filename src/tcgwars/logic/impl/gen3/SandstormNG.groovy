@@ -1825,9 +1825,22 @@ public enum SandstormNG implements LogicCardInfo {
       case RARE_CANDY_88:
       return itemCard (this) {
         text "Choose 1 of your Basic Pokémon in play. If you have a Stage 1 or Stage 2 card that evolves from that Pokémon in your hand, put that card on the Basic Pokémon. (This counts as evolving that Pokémon.)"
+        PokemonCardSet pcs = null
+        CardList sel = null
         onPlay {
+          evolve(pcs, sel.first(), PLAY_FROM_HAND)
         }
         playRequirement{
+          assert my.all.findAll {it.basic} : "You have no basic Pokémon."
+          assert my.hand.filterByType(STAGE1, STAGE2) : "You have no Stage 1 or Stage 2 card in hand"
+          pcs = my.all.findAll {it.basic}.select("Choose the pokemon to be evolved")
+          def possibleEvolutions = my.hand.filterByType(STAGE1, STAGE2).findAll{ EvolutionPokemonCard evoCard ->
+            ( evoCard.predecessor == pcs.name ) ||
+            ( bg.gm().getBasicsFromStage2(evoCard.name).contains(pcs.name) )
+          }
+          assert possibleEvolutions : "There is no Stage 1/2 in hand for $pcs to evolve into"
+          sel = possibleEvolutions.select(min: 0)
+          assert sel : "Cancelled"
         }
       };
       case WALLY_S_TRAINING_89:
