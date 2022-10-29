@@ -1793,8 +1793,10 @@ public enum SandstormNG implements LogicCardInfo {
       return itemCard (this) {
         text "Remove all Special Conditions from each of your Active Pokémon."
         onPlay {
+          clearSpecialCondition(my.active, TRAINER_CARD)
         }
         playRequirement{
+          assert !my.active.specialConditions.isEmpty() : "Your Active Pokémon needs to have some Special Condition applied to it"
         }
       };
       case LANETTE_S_NET_SEARCH_87:
