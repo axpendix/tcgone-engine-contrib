@@ -1844,46 +1844,15 @@ public enum SandstormNG implements LogicCardInfo {
         }
       };
       case WALLY_S_TRAINING_89:
-      return supporter (this) {
-        text "Search your deck for a card that evolves from your Active Pokémon (choose 1 if there are 2) and put it on your Active Pokémon. (This counts as evolving that Pokémon.) Shuffle your deck afterward." +
-          "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy(Emerald.WALLY_S_TRAINING_85, this);
       case CLAW_FOSSIL_90:
-      return itemCard (this) {
-        text "Play Claw Fossil as if it were a Basic Pokémon. While in play, Claw Fossil counts as a [C] Pokémon (instead of a Trainer card). Claw Fossil has no attacks of its own can't retreat and can't be affected by any Special Conditions. If Claw Fossil is Knocked Out it doesn't count as a Knocked Out Pokémon. (Discard it anyway.) At any time during your turn before your attack you may discard Claw Fossil from play." +
-          "If Claw Fossil is your Active Pokémon and is damaged by an opponent's attack (even if Claw Fossil is Knocked Out), put 1 damage counter on the Attacking Pokémon."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy(LegendMaker.CLAW_FOSSIL_78, this);
       case MYSTERIOUS_FOSSIL_91:
-      return copy(LegendMaker.MYSTERIOUS_FOSSIL_79, this);
+        return copy(LegendMaker.MYSTERIOUS_FOSSIL_79, this);
       case ROOT_FOSSIL_92:
-      return itemCard (this) {
-        text "Play Root Fossil as if it were a Basic Pokémon. While in play, Root Fossil counts as a [C] Pokémon (instead of a Trainer card). Root Fossil has no attacks of its own can't retreat and can't be affected by any Special Conditions. If Root Fossil is Knocked Out it doesn't count as a Knocked Out Pokémon. (Discard it anyway.) At any time during your turn before your attack you may discard Root Fossil from play." +
-          "At any time between turns, remove 1 damage counter from Root Fossil."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy(LegendMaker.ROOT_FOSSIL_80, this);
       case MULTI_ENERGY_93:
-      return specialEnergy (this, [[C]]) {
-        text "Attach Multi Energy to 1 of your Pokémon. While in play, Multi Energy provides every type of Energy but provides only 1 Energy at a time. (Doesn't count as a basic Energy card when not in play.) Multi Energy provides [C] Energy when attached to a Pokémon that already has Special Energy cards attached to it."
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      };
+        return copy (FireRedLeafGreen.MULTI_ENERGY_103, this);
       case AERODACTYL_EX_94:
       return evolution (this, from:"Mysterious Fossil", hp:HP100, type:C, retreatCost:1) {
         weakness L
