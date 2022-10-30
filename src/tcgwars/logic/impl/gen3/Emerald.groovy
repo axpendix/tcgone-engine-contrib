@@ -1777,12 +1777,14 @@ public enum Emerald implements LogicCardInfo {
       case PROFESSOR_BIRCH_82:
         return supporter (this) {
           text "Draw cards from your deck until you have 6 cards in your hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
-          onPlay {
-            draw (7-my.hand.size())
-          }
+          CardList myRealHand = null
           playRequirement {
-            assert my.deck
-            assert my.hand.size()<7 : "You have already more than 6 cards in your hand."
+            assert my.deck : "You have no cards in your deck"
+            myRealHand = my.hand.getExcludedList(thisCard)
+            assert myRealHand.size() < 6 : "You already have 6 or more cards in your hand."
+          }
+          onPlay {
+            draw ( 6 - myRealHand.size() )
           }
         };
       case RARE_CANDY_83:
