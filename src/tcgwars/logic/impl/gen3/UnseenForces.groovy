@@ -3891,6 +3891,7 @@ public enum UnseenForces implements LogicCardInfo {
         move "Hidden Power", {
           text "Search your deck for up to 3 different types of basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
           energyCost C
+          attackRequirement { assert my.deck : "You have no cards in your deck"}
           onAttack {
             my.deck.select(min:0, max:3, "Select up to 3 different types of basic Energy cards", cardTypeFilter(BASIC_ENERGY), self.owner,
               {
@@ -3901,7 +3902,8 @@ public enum UnseenForces implements LogicCardInfo {
                     }
                   }
                   return true
-              }).moveTo(my.hand)
+              }).showToOpponent("Selected Basic Energy cards").moveTo(my.hand)
+            shuffleDeck()
           }
         }
       };
