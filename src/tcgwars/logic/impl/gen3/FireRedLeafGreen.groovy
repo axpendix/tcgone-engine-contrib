@@ -2217,11 +2217,11 @@ public enum FireRedLeafGreen implements LogicCardInfo {
         return basicTrainer (this) {
           text "Move a basic Energy card attached to 1 of your Pokémon to another of your Pokémon."
           onPlay {
-            if(my.bench && my.all.findAll{it.cards.filterByType(BASIC_ENERGY)}){
-              def pcs = my.all.findAll{it.cards.filterByType(BASIC_ENERGY)}.select("Move energy from")
-              def tar = my.all.findAll{it != pcs}.select("Move energy to")
-              moveEnergy(basic: true, pcs, tar)
-            }
+            def pcs = my.all.findAll{it.cards.filterByType(BASIC_ENERGY)}.select("Move energy from")
+
+            def tar = my.all.findAll{it != pcs}.select("Move energy to")
+
+            moveEnergy(basic: true, pcs, tar)
           }
           playRequirement{
             assertMyBench()

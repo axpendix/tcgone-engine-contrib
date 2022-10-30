@@ -1,4 +1,6 @@
-package tcgwars.logic.impl.gen2;
+package tcgwars.logic.impl.gen2
+
+import tcgwars.logic.impl.gen3.FireRedLeafGreen
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -2445,13 +2447,7 @@ public enum AquapolisNG implements LogicCardInfo {
         }
       };
       case ENERGY_SWITCH_120:
-      return basicTrainer (this) {
-        text "Move a basic Energy card attached to 1 of your Pokémon to another of your Pokémon."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this)
       case FIGHTING_CUBE_01_121:
       return basicTrainer (this) {
         text "Flip a number of coins equal to the number of damage counters on this Pokémon. This attack does 10 damage times the number of heads."

@@ -2848,7 +2848,7 @@ public enum Stormfront implements LogicCardInfo {
           }
         };
       case ENERGY_SWITCH_84:
-        return copy(BlackWhite.ENERGY_SWITCH_94, this);
+        return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this)
       case GREAT_BALL_85:
         return copy(FireRedLeafGreen.GREAT_BALL_92, this);
       case LUXURY_BALL_86:

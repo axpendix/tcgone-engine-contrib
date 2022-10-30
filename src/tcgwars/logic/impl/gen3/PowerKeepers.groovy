@@ -1693,7 +1693,7 @@ public enum PowerKeepers implements LogicCardInfo {
       case ENERGY_REMOVAL_2_74:
       return copy(Expedition.ENERGY_REMOVAL_2_140, this);
       case ENERGY_SWITCH_75:
-      return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this);
+      return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this)
       case GLACIA_S_STADIUM_76:
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +

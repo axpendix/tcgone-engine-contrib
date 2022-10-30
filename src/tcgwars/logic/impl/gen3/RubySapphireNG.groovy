@@ -1,6 +1,6 @@
 package tcgwars.logic.impl.gen3
 
-import tcgwars.logic.effect.gm.Attack;
+import tcgwars.logic.effect.gm.Attack
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -1800,6 +1800,7 @@ public enum RubySapphireNG implements LogicCardInfo {
           }
         }
       };
+      //TODO: Reimplement
       case ENERGY_REMOVAL_2_80:
       return itemCard (this) {
         text "Flip a coin. If heads, choose 1 Energy card attached to 1 of your opponent's Pokémon and discard it."
@@ -1808,6 +1809,7 @@ public enum RubySapphireNG implements LogicCardInfo {
         playRequirement{
         }
       };
+      //TODO: Reimplement
       case ENERGY_RESTORE_81:
       return itemCard (this) {
         text "Flip 3 coins. For each heads, put a basic Energy card from your discard pile into your hand. If you don't have that many basic Energy cards in your discard pile, put all of them into your hand."
@@ -1817,13 +1819,7 @@ public enum RubySapphireNG implements LogicCardInfo {
         }
       };
       case ENERGY_SWITCH_82:
-      return itemCard (this) {
-        text "Move a basic Energy card attached to 1 of your Pokémon to another of your Pokémon."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this)
       case LADY_OUTING_83:
       return supporter (this) {
         text "Search your deck for up to 3 different types of basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward." +

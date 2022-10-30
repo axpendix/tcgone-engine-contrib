@@ -2258,7 +2258,7 @@ public enum UnseenForces implements LogicCardInfo {
         }
       };
       case ENERGY_SWITCH_84:
-      return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this);
+        return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this)
       case FLUFFY_BERRY_85:
       return pokemonTool (this) {
         text "Attach Fluffy Berry to 1 of your Pokémon (excluding Pokémon-ex and Pokémon that has Dark or an owner in its name) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Fluffy Berry is attached to is Pokémon-ex or has Dark or an owner in its name, discard Fluffy Berry." +
