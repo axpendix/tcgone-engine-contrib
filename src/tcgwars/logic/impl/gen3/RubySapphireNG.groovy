@@ -1853,9 +1853,23 @@ public enum RubySapphireNG implements LogicCardInfo {
       case POKENAV_88:
       return itemCard (this) {
         text "Look at the top 3 cards of your deck, and choose a Basic Pokémon, Evolution card, or Energy card. Show it to your opponent and put it into your hand. Put the 2 other cards back on top of your deck in any order."
-        onPlay {
-        }
+        CardList topThree
         playRequirement{
+          topThree = my.deck.take(3)
+          assert topThree : "You have no remaining cards in your deck"
+        }
+        onPlay {
+          bc "$topThree"
+          CardList sel = topThree.select(min:0, "Top 7 cards of your deck. You may choose to reveal a Basic Pokémon, Evolution card or Energy Card and put it into your hand.\nThe cards that were not revealed (or all three if skipping selection) will go back on top of your deck in any order of your choice.", {it.cardTypes.is(POKEMON) || it.cardTypes.is(ENERGY)})
+          if (sel)
+            sel.showToOpponent("Your opponent used PokéNav. They're putting this card in their hand.").moveTo(my.hand)
+          bc "$topThree"
+          def rearrangeSize = Math.min(sel ? 2 : 3, deck.size())
+          if (rearrangeSize > 1) {
+            def list = rearrange(deck.take(rearrangeSize) as CardList, "Rearrange top $rearrangeSize cards in your deck")
+            deck.setSubList(0, list)
+            bc "${thisCard.player} rearranged the top $rearrangeSize cards of their deck."
+          }
         }
       };
       case PROFESSOR_BIRCH_89:
