@@ -1445,7 +1445,7 @@ public enum JungleNG implements LogicCardInfo {
           text "Flip a coin. If heads, you may search your deck for any Basic Pokémon or Evolution card. Show that card to your opponent, then put it into your hand. Shuffle your deck afterward."
           onPlay {
             flip{
-              my.deck.search(count : 1, "search for a Basic Pokémon or Evolution card", {it.cardTypes.is(BASIC) || it.cardTypes.is(EVOLUTION)}).moveTo(my.hand)
+              my.deck.search(count : 1, "search for a Basic Pokémon or Evolution card", {it.cardTypes.is(BASIC) || it.cardTypes.is(EVOLUTION)}).showToOpponent().moveTo(my.hand)
             }
           }
           playRequirement{

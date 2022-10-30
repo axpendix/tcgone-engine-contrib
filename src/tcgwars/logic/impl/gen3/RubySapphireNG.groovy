@@ -1,6 +1,7 @@
 package tcgwars.logic.impl.gen3
 
 import tcgwars.logic.effect.gm.Attack
+import tcgwars.logic.impl.gen1.Jungle
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -1842,43 +1843,13 @@ public enum RubySapphireNG implements LogicCardInfo {
         }
       };
       case LUM_BERRY_84:
-      return pokemonTool (this) {
-        text "At any time between turns, if the Pokémon this card is attached to is affected by any Special Conditions, remove all of them. Then discard Lum Berry." +
-          "Attach Lum Berry to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card."
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        allowAttach {to->
-        }
-      };
+        return copy(Emerald.LUM_BERRY_78, this)
       case ORAN_BERRY_85:
-      return pokemonTool (this) {
-        text "At any time between turns, if the Pokémon this card is attached to has at least 2 damage counters on it, remove 2 damage counters from it. Then, discard Oran Berry." +
-          "Attach Oran Berry to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card."
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        allowAttach {to->
-        }
-      };
+        return copy(Emerald.ORAN_BERRY_80, this)
       case POKE_BALL_86:
-      return itemCard (this) {
-        text "Flip a coin. If heads, search your deck for a Basic Pokémon or Evolution card, show it to your opponent and put it into your hand. Shuffle your deck afterward."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy(Jungle.POKE_BALL, this)
       case POKEMON_REVERSAL_87:
-      return itemCard (this) {
-        text "Flip a coin. If heads, your opponent switches 1 of his or her Active Pokémon with 1 of his or her Benched Pokémon."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy(FireRedLeafGreen.POKEMON_REVERSAL_97, this)
       case POKENAV_88:
       return itemCard (this) {
         text "Look at the top 3 cards of your deck, and choose a Basic Pokémon, Evolution card, or Energy card. Show it to your opponent and put it into your hand. Put the 2 other cards back on top of your deck in any order."
