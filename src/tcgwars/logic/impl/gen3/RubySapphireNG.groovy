@@ -2,6 +2,8 @@ package tcgwars.logic.impl.gen3
 
 import tcgwars.logic.effect.gm.Attack
 import tcgwars.logic.impl.gen1.Jungle
+import tcgwars.logic.impl.gen5.BlackWhite
+import tcgwars.logic.impl.gen7.CelestialStorm
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -1873,50 +1875,15 @@ public enum RubySapphireNG implements LogicCardInfo {
         }
       };
       case PROFESSOR_BIRCH_89:
-      return supporter (this) {
-        text "Draw cards from your deck until you have 6 cards in your hand." +
-          "You can play only 1 Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy(Emerald.PROFESSOR_BIRCH_82, this)
       case ENERGY_SEARCH_90:
-      return itemCard (this) {
-        text "Search your deck for a basic Energy card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy(BlackWhite.ENERGY_SEARCH_93, this)
       case POTION_91:
-      return itemCard (this) {
-        text "Remove 2 damage counters from 1 of your Pokémon (remove 1 damage counter if that Pokémon has only 1)."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy(FireRedLeafGreen.POTION_101, this)
       case SWITCH_92:
-      return itemCard (this) {
-        text "Switch 1 of your Active Pokémon with 1 of your Benched Pokémon."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy(FireRedLeafGreen.SWITCH_102, this)
       case DARKNESS_ENERGY_93:
-      return specialEnergy (this, [[C]]) {
-        text "If the Pokémon [D] Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). Ignore this effect unless the Attacking Pokémon is Darkness or has Dark in its name. [D] Energy provides [D] Energy. (Doesn't count as a basic Energy card.)"
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      };
+        return copy(Emerald.DARKNESS_ENERGY_86, this)
       case METAL_ENERGY_94:
       return specialEnergy (this, [[C]]) {
         text "Damage done by attacks to the Pokémon that [M] Energy is attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the Pokémon that [M] Energy is attached to isn't Metal. [M] Energy provides Metal. (Doesn't count as a basic Energy card)"
@@ -1928,19 +1895,8 @@ public enum RubySapphireNG implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
       case RAINBOW_ENERGY_95:
-      return specialEnergy (this, [[C]]) {
-        text "Attach Rainbow Energy to 1 of your Pokémon. While in play, Rainbow Energy provides every type of Energy but provides only 1 Energy at a time. (Doesn't count as a basic Energy card when not in play.) When you attach this card from your hand to 1 of your Pokémon, put 1 damage counter on that Pokémon."
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      };
+        return copy(CelestialStorm.RAINBOW_ENERGY_151,this)
       case CHANSEY_EX_96:
       return basic (this, hp:HP120, type:C, retreatCost:3) {
         weakness F
