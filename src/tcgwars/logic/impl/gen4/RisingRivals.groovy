@@ -1948,22 +1948,12 @@ public enum RisingRivals implements LogicCardInfo {
                       }
                     }
                     before LEVEL_UP, pcs, {
-                      if((ef as LevelUp).levelUpCard.player.pbg.hand.contains(ef.levelUpCard)) {
-                        warnAndPrevent()
-                      }
-                    }
-                    before LEVEL_UP_STANDARD, pcs, {
-                      if((ef as LevelUpStandard).levelUpCard.player.pbg.hand.contains(ef.levelUpCard)) {
+                      if(ef.activationReason == PLAY_FROM_HAND) {
                         warnAndPrevent()
                       }
                     }
                     before EVOLVE, pcs, {
-                      if ((ef as Evolve).evolutionCard.player.pbg.hand.contains(ef.evolutionCard)) {
-                        warnAndPrevent()
-                      }
-                    }
-                    before EVOLVE_STANDARD, pcs, {
-                      if ((ef as EvolveStandard).evolutionCard.player.pbg.hand.contains(ef.evolutionCard)) {
+                      if(ef.activationReason == PLAY_FROM_HAND) {
                         warnAndPrevent()
                       }
                     }
@@ -2271,7 +2261,7 @@ public enum RisingRivals implements LogicCardInfo {
               flip {
                 def name = self.name
                 def tar = my.deck.search("Evolves from $name", { it.cardTypes.is(EVOLUTION) && name == it.predecessor })
-                if (tar) evolve(self, tar.first(), OTHER)
+                if (tar) evolve(self, tar.first())
                 shuffleDeck()
               }
             }
@@ -2349,7 +2339,7 @@ public enum RisingRivals implements LogicCardInfo {
               powerUsed()
               def tar = my.hand.findAll { it.name.contains("Snorlax") }.select()
               if (tar) {
-                evolve(self, tar.first(), OTHER)
+                evolve(self, tar.first())
                 heal self.numberOfDamageCounters*10, self
               }
             }
@@ -2379,7 +2369,7 @@ public enum RisingRivals implements LogicCardInfo {
               powerUsed()
               def tar = my.hand.findAll { it.name.contains("Snorlax") }.select()
               if (tar) {
-                evolve(self, tar.first(), OTHER)
+                evolve(self, tar.first())
                 heal self.numberOfDamageCounters*10, self
               }
             }

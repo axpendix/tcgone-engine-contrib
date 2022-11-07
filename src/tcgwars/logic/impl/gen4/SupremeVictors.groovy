@@ -2961,7 +2961,7 @@ public enum SupremeVictors implements LogicCardInfo {
               powerUsed()
               def tar = my.hand.findAll { it.name.contains("Chimecho") }.select()
               if (tar) {
-                evolve(self, tar.first(), OTHER)
+                evolve(self, tar.first())
                 heal self.numberOfDamageCounters*10, self
               }
             }
@@ -3326,7 +3326,7 @@ public enum SupremeVictors implements LogicCardInfo {
               powerUsed()
               def tar = my.hand.findAll { it.name.contains("Mr. Mime") }.select()
               if (tar) {
-                evolve(self, tar.first(), OTHER)
+                evolve(self, tar.first())
                 heal self.numberOfDamageCounters*10, self
               }
             }
@@ -3730,18 +3730,16 @@ public enum SupremeVictors implements LogicCardInfo {
           def eff
           onPlay {
             eff = delayed {
-              boolean flag = false
-              before LEVEL_UP, {
-                flag = (ef.levelUpCard as Card).player.pbg.hand.contains(ef.levelUpCard)
+              after LEVEL_UP, {
+                if(ef.activationReason == PLAY_FROM_HAND) {
+                  bc "Battle Tower activates"
+                  heal(40, ef.pokemonToLevelUp, TRAINER_CARD)
+                }
               }
-              after LEVEL_UP, { if(flag) {
-                bc "Battle Tower activates"
-                heal(40, ef.pokemonToLevelUp, TRAINER_CARD)
-              } }
             }
           }
           onRemoveFromPlay{
-            eff.unregister
+            eff.unregister()
           }
         };
       case CHAMPION_S_ROOM_135:

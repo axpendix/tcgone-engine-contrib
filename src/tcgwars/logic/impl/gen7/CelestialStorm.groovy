@@ -1079,7 +1079,7 @@ public enum CelestialStorm implements LogicCardInfo {
           bwAbility "Evolutionary Advantage" , {
             text "If you go second, this Pokémon can evolve during your first turn."
             delayedA {
-              before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+              before PREVENT_EVOLVE, self, null, EVOLVE, {
                 if(bg.turnCount == 2 && bg.currentTurn == self.owner){
                   powerUsed()
                   prevent()

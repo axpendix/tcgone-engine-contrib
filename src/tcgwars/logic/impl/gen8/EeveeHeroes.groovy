@@ -1344,7 +1344,7 @@ public enum EeveeHeroes implements LogicCardInfo {
           if(card) {
             def list = my.all.findAll { it.name == card.first().predecessor }
             def pcs = (list.size() == 1) ? list.first() : list.select("Evolve which Pokeémon?")
-            evolve pcs, card.first(), OTHER
+            evolve pcs, card.first()
           }
           bc "${thisCard.player.getPlayerUsername(bg)}'s turn ends due to using ${thisCard}."
           bg.gm().betweenTurns()

@@ -611,7 +611,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
                     it.name == (evolutionCard as EvolutionPokemonCard).predecessor
                   })
                   def cardToEvolve = eligibleToEvolve.select("Evolve which one?")
-                  evolve(cardToEvolve, evolutionCard, OTHER)
+                  evolve(cardToEvolve, evolutionCard)
                 }
                 shuffleDeck()
               }

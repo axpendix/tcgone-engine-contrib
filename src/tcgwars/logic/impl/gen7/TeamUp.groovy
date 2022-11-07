@@ -881,7 +881,7 @@ public enum TeamUp implements LogicCardInfo {
             onAttack{
               flip{
                 def tar = my.discard.findAll{it.cardTypes.is(EVOLUTION) && self.name == it.predecessor}.select("Choose the card that will evolve from $self")
-                evolve(self, tar.first(), OTHER)
+                evolve(self, tar.first())
               }
             }
           }
@@ -1477,12 +1477,7 @@ public enum TeamUp implements LogicCardInfo {
                   }
                 }
                 before EVOLVE, {
-                  if ((ef as Evolve).evolutionCard.player.pbg.hand.contains(ef.evolutionCard)) {
-                    warnAndPrevent()
-                  }
-                }
-                before EVOLVE_STANDARD, {
-                  if ((ef as EvolveStandard).evolutionCard.player.pbg.hand.contains(ef.evolutionCard)) {
+                  if ((ef as Evolve).activationReason == PLAY_FROM_HAND) {
                     warnAndPrevent()
                   }
                 }
@@ -2534,7 +2529,7 @@ public enum TeamUp implements LogicCardInfo {
           bwAbility "Evolutionary Advantage" , {
             text "If you go second, this Pokémon can evolve during your first turn."
             delayedA {
-              before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+              before PREVENT_EVOLVE, self, null, EVOLVE, {
                 if(bg.turnCount == 2 && bg.currentTurn == self.owner){
                   powerUsed()
                   prevent()

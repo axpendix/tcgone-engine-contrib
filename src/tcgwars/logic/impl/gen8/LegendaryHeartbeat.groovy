@@ -373,7 +373,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
                 (card as EvolutionPokemonCard).predecessor == pcs.name
               }).first()
               if (!evolution) return
-              evolve(pcs, evolution, OTHER)
+              evolve(pcs, evolution)
             }
             shuffleDeck()
           }

@@ -2169,7 +2169,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                 deck.search ("Choose a card that evolves from ${self.name}.", {
                   it.cardTypes.is(EVOLUTION) && self.name==it.predecessor
                 }).each {
-                  evolve(self, it, OTHER)
+                  evolve(self, it)
                 }
                 shuffleDeck()
               }
@@ -4019,7 +4019,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           bwAbility "Fighter’s Roar", {
             text "If your opponent’s Active Pokémon is a Pokémon-GX or Pokémon-EX, this Pokémon can evolve during the turn you play it."
             delayedA {
-              before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+              before PREVENT_EVOLVE, self, null, EVOLVE, {
                 if (bg.currentTurn == self.owner && (self.owner.opposite.pbg.active.pokemonGX || self.owner.opposite.pbg.active.pokemonEX) ) {
                   powerUsed()
                   prevent()
@@ -4930,7 +4930,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                 it.name==sel.first().predecessor && it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount
               })
               def pcs = (opts.size() == 1) ? opts.first() : opts.select("Evolve which Pokémon?")
-              evolve(pcs, sel.first(), OTHER)
+              evolve(pcs, sel.first())
               if (toDiscard && my.deck) {
                 attachEnergyFrom(min: 0, max: 2, basic:true, my.deck, pcs)
               }

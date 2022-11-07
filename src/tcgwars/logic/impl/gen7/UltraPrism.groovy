@@ -524,7 +524,7 @@ public enum UltraPrism implements LogicCardInfo {
                 def sel=self.owner.pbg.deck.search(count:1, "Search for a card that evolve from $nam",
                   {it.cardTypes.is(EVOLUTION) && it.predecessor==pcs.name})
                 if(sel){
-                  evolve(pcs, sel.first(), OTHER)
+                  evolve(pcs, sel.first())
                 }
               }
               shuffleDeck()
@@ -1199,7 +1199,7 @@ public enum UltraPrism implements LogicCardInfo {
           bwAbility "Evolutionary Advantage", {
             text "If you go second, this Pokémon can evolve during your first turn."
             delayedA {
-              before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+              before PREVENT_EVOLVE, self, null, EVOLVE, {
                 if(bg.turnCount == 2 && bg.currentTurn == self.owner){
                   powerUsed()
                   prevent()
@@ -2350,7 +2350,7 @@ public enum UltraPrism implements LogicCardInfo {
                 if(it.name=="Exeggcute"){
                   def nam=it.name
                   def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-                  if(tar) evolve(it, tar.first(), OTHER)
+                  if(tar) evolve(it, tar.first())
                 }
               }
               shuffleDeck()

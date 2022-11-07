@@ -1276,7 +1276,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
                 afterDamage{
                   if(my.deck) {
                     def tar = my.deck.search(max:1, "Search for a card that evolves from Dark Pupitar", {it.cardTypes.is(EVOLUTION) && self.name == it.predecessor})
-                    if(tar) evolve(self, tar.first(), OTHER)
+                    if(tar) evolve(self, tar.first())
                     shuffleDeck()
                   }
                 }
@@ -2410,7 +2410,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
                 if(pcs) {
                   def tar = my.deck.search(max:1,"Search for an Evolution card that evolves from that Pokémon",{it.cardTypes.is(EVOLUTION) && it.predecessor==pcs.name})
                   if(tar) {
-                    evolve(pcs,tar.first(),OTHER)
+                    evolve(pcs,tar.first())
                   }
                 }
                 shuffleDeck()

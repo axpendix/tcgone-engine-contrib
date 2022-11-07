@@ -2422,7 +2422,7 @@ public enum SunMoon implements LogicCardInfo {
                   def sel=self.owner.pbg.deck.select(min:0, "Energy Evolution ${basicEnType}",
                     {it.cardTypes.is(EVOLUTION) && it.types.contains(basicEnType) && it.predecessor==self.name}, self.owner)
                   if(sel){
-                    evolve(self, sel.first(), OTHER)
+                    evolve(self, sel.first())
                   }
                   shuffleDeck(null, self.owner.toTargetPlayer())
                 } else {

@@ -884,7 +884,7 @@ public enum Unleashed implements LogicCardInfo {
             text "Search your deck for a card that evolves from Kakuna and put it onto Kakuna. (This counts as evolving Kakuna.) Shuffle your deck afterward."
             energyCost C
             onAttack {
-              deck.search ("Evolves from ${self.name}", {it.cardTypes.is(EVOLUTION) && self.name==it.predecessor}).each { evolve(self, it, OTHER) }
+              deck.search ("Evolves from ${self.name}", {it.cardTypes.is(EVOLUTION) && self.name==it.predecessor}).each { evolve(self, it) }
               shuffleDeck()
             }
           }
@@ -1578,7 +1578,7 @@ public enum Unleashed implements LogicCardInfo {
             onAttack {
               def nam=self.name
               def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-              if(tar) evolve(self, tar.first(), OTHER)
+              if(tar) evolve(self, tar.first())
               shuffleDeck()
             }
           }

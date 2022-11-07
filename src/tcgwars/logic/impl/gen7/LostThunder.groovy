@@ -3721,7 +3721,7 @@ public enum LostThunder implements LogicCardInfo {
               powerUsed()
               def tar = my.hand.filterByType(STAGE1).select("Evolve To")
 
-              evolve(self, tar.first(), PLAY_FROM_HAND)
+              evolve(self, tar.first())
             }
           }
         };

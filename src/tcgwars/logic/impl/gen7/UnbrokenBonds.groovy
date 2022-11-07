@@ -376,7 +376,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               checkLastTurn()
               powerUsed()
               flip {
-                deck.search ("Evolves from ${self.name}", {it.cardTypes.is(EVOLUTION) && self.name==it.predecessor}).each { evolve(self, it, OTHER) }
+                deck.search ("Evolves from ${self.name}", {it.cardTypes.is(EVOLUTION) && self.name==it.predecessor}).each { evolve(self, it) }
                 shuffleDeck()
               }
             }
@@ -400,7 +400,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               checkLastTurn()
               powerUsed()
               flip {
-                deck.search ("Evolves from ${self.name}", {it.cardTypes.is(EVOLUTION) && self.name==it.predecessor}).each { evolve(self, it, OTHER) }
+                deck.search ("Evolves from ${self.name}", {it.cardTypes.is(EVOLUTION) && self.name==it.predecessor}).each { evolve(self, it) }
                 shuffleDeck()
               }
             }
@@ -4067,7 +4067,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           onPlay {
             deck.search{['Mismagius','Mismagius-GX','Honchkrow','Honchkrow-GX','Chandelure','Chandelure-GX','Aegislash','Aegislash-GX'].contains(it.name) && it.cardTypes.is(EVOLUTION)}.each{card->
               def pcs = my.all.findAll{card.predecessor == it.name}.select("To Evolve")
-              evolve(pcs, card, OTHER)
+              evolve(pcs, card)
             }
             shuffleDeck()
           }

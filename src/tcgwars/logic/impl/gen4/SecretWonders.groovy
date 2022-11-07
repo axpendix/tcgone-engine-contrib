@@ -2615,7 +2615,7 @@ f
             //Moon Stone: Clefairy can evolve the turn you play it
             //TODO This is a rule box.
             delayedA {
-              before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+              before PREVENT_EVOLVE, self, null, EVOLVE, {
                 if (bg.currentTurn == self.owner){
                   prevent()
                 }
@@ -2698,7 +2698,7 @@ f
             //Reaper Cloth: Clefairy can evolve the turn you play it
             //TODO This is a rule box.
             delayedA {
-              before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+              before PREVENT_EVOLVE, self, null, EVOLVE, {
                 if (bg.currentTurn == self.owner){
                   prevent()
                 }
@@ -2899,7 +2899,7 @@ f
           resistance F, MINUS20
           customAbility{
             delayedA {
-              before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+              before PREVENT_EVOLVE, self, null, EVOLVE, {
                 if(bg.currentTurn == self.owner){
                   prevent()
                 }
@@ -3387,7 +3387,7 @@ f
                 if(my.deck) {
                   def sel = deck.search ("Select a Pokémon that evolves from $self.", {it.cardTypes.is(EVOLUTION) && self.name == it.predecessor}).first()
                   if (sel) {
-                    evolve(self, sel, OTHER)
+                    evolve(self, sel)
                   }
                 }
               }
