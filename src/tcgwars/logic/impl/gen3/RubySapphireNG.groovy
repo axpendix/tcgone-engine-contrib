@@ -1886,14 +1886,27 @@ public enum RubySapphireNG implements LogicCardInfo {
         return copy(Emerald.DARKNESS_ENERGY_86, this)
       case METAL_ENERGY_94:
       return specialEnergy (this, [[C]]) {
-        text "Damage done by attacks to the Pokémon that [M] Energy is attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the Pokémon that [M] Energy is attached to isn't Metal. [M] Energy provides Metal. (Doesn't count as a basic Energy card)"
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
+          text: "Damage done by attacks to the Pokémon that [M] Energy is attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the Pokémon that [M] Energy is attached to isn't Metal. [M] Energy provides Metal. (Doesn't count as a basic Energy card)"
+          def eff
+          onPlay {reason->
+            eff = delayed {
+              before APPLY_ATTACK_DAMAGES, {
+                if (self.types.contains(M)) {
+                  targeted self, Source.SRC_SPENERGY, {
+                    bg.dm().each {
+                      if( it.to == self && it.dmg.value && it.notNoEffect){
+                        it.dmg -= hp(10)
+                        bc "Metal Energy -10 damage"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          onRemoveFromPlay {
+            eff.unregister()
+          }
         }
       case RAINBOW_ENERGY_95:
         return copy(CelestialStorm.RAINBOW_ENERGY_151,this)
