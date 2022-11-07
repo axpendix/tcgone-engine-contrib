@@ -2385,7 +2385,7 @@ public enum BattleStyles implements LogicCardInfo {
             pcs.cards.add(card)
 
             bc "Switched with $card"
-            bg.em().run new CheckAbilities(OTHER, new PcsList(self))
+            bg.em().run new CheckAbilities(self)
             checkFaint()
           }
         }
@@ -2422,7 +2422,7 @@ public enum BattleStyles implements LogicCardInfo {
             pcs.cards.add(card)
 
             bc "Switched with $card"
-            bg.em().run new CheckAbilities(OTHER, new PcsList(self))
+            bg.em().run(new CheckAbilities(self))
             checkFaint()
           }
         }

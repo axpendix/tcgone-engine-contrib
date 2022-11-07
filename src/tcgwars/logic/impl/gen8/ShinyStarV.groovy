@@ -232,7 +232,7 @@ public enum ShinyStarV implements LogicCardInfo {
             discard self.topPokemonCard
             card.moveTo suppressLog:true, self.cards
             bc "Switched with $card"
-            bg.em().run new CheckAbilities(OTHER, new PcsList(self))
+            bg.em().run new CheckAbilities(self)
           }
         }
         move "Stick On", {

@@ -1051,7 +1051,7 @@ public enum GuardiansRising implements LogicCardInfo {
               pcs.cards.add(card)
               bc "$top was switched with $card"
               checkFaint()
-              bg.em().run(new CheckAbilities(OTHER, new PcsList(pcs))) //need to remove existing abilities?
+              bg.em().run(new CheckAbilities(pcs))
             }
           }
           move "Sharpshooting", {

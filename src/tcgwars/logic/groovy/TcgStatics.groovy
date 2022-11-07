@@ -609,7 +609,7 @@ class TcgStatics {
   static evolve (PokemonCardSet pcs, Card card, ActivationReason reason=PLAY_FROM_HAND) {
     bg().em().run(new Evolve(pcs, card));
     bg().em().run(new CantEvolve(pcs, bg().getTurnCount()));
-    bg().em().run(new ActivateAbilities((PokemonCard) card, pcs, reason));
+    bg().em().run(new CheckAbilities(reason, pcs));
   }
   static devolve (PokemonCardSet pcs, Card card, CardList newLocation){
     def blocked = bg().em().run(new MoveCard(card, newLocation));
