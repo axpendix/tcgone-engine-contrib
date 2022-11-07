@@ -1095,7 +1095,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             onAttack {
               def nam=self.name
               def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor && (it.name == "Gyarados" || it.name == "Dark Gyarados")})
-              if(tar) evolve(self, tar.first(), OTHER)
+              if(tar) evolve(self, tar.first())
               shuffleDeck()
             }
           }

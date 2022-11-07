@@ -2274,9 +2274,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
           def asleepBeforeEvolve = false
           initHook {Card thisCard->
             delayed {
-              before EVOLVE_STANDARD, {
-                if ( (ef as EvolveStandard).evolutionCard == thisCard) {
-                  def preEvo = (ef as EvolveStandard).pokemonToBeEvolved
+              before EVOLVE, {
+                if ( (ef as Evolve).evolutionCard == thisCard) {
+                  def preEvo = (ef as Evolve).pokemonToBeEvolved
                   asleepBeforeEvolve = ( preEvo.name == "Slakoth" && preEvo.isSPC(ASLEEP) )
                 }
               }
@@ -2325,7 +2325,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
             onAttack {
               def tar = my.deck.search("Searching for an Alakazam", {it.cardTypes.is(EVOLUTION) && it.name == "Alakazam"})
-              if(tar) evolve(self, tar.first(), OTHER)
+              if(tar) evolve(self, tar.first())
               shuffleDeck()
             }
           }

@@ -1766,7 +1766,7 @@ public enum UnseenForces implements LogicCardInfo {
                     { card -> card.cardTypes.is(EVOLUTION) && typesAllowed.any{enType -> card.types.contains(enType)} && card.predecessor==self.name }, self.owner)
 
                   if (sel) {
-                    evolve(self, sel.first(), OTHER)
+                    evolve(self, sel.first())
                   }
                   shuffleDeck(null, self.owner.toTargetPlayer())
                 }
@@ -3743,7 +3743,7 @@ public enum UnseenForces implements LogicCardInfo {
             if(sel){
               def opts=my.all.findAll({it.name==sel.first().predecessor})
               def pcs=opts.select("Evolve which one?")
-              evolve(pcs, sel.first(), OTHER)
+              evolve(pcs, sel.first())
               directDamage 10, self
             }
             shuffleDeck()

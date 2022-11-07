@@ -671,7 +671,7 @@ public enum Stormfront implements LogicCardInfo {
                 multiSelect(my.all,0,my.all.findAll{it.types.contains(G)}.size(),"Select as many of you [G] Pokémon in play as you like.").each {pcs->
                   def evolution = deck.search ("Select a Pokémon that evolves from $pcs.", {it.cardTypes.is(EVOLUTION) && it.predecessor == pcs.name}).first()
                   if(evolution) {
-                    evolve(pcs, evolution, OTHER)
+                    evolve(pcs, evolution)
                   }
                 }
               }
@@ -1540,7 +1540,7 @@ public enum Stormfront implements LogicCardInfo {
               powerUsed()
               def tar = my.hand.findAll { it.name.contains("Roselia") }.select()
               if (tar) {
-                evolve(self, tar.first(), OTHER)
+                evolve(self, tar.first())
                 heal self.numberOfDamageCounters*10, self
               }
             }
@@ -1882,7 +1882,7 @@ public enum Stormfront implements LogicCardInfo {
               powerUsed()
               def tar = my.hand.findAll { it.name.contains("Pikachu") }.select()
               if (tar) {
-                evolve(self, tar.first(), OTHER)
+                evolve(self, tar.first())
                 heal self.numberOfDamageCounters*10, self
               }
             }

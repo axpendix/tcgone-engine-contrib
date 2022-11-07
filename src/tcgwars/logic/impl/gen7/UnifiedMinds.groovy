@@ -351,11 +351,11 @@ public enum UnifiedMinds implements LogicCardInfo {
               def sel_1 = deck.search ("Select a Pokémon that evolves from $names.", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)}).first()
               if (sel_1) {
                 def pcs = my.all.findAll { it.name==sel_1.predecessor }.select("Evolve which Pokémon?")
-                evolve(pcs, sel_1, OTHER)
+                evolve(pcs, sel_1)
                 if (sel_1.cardTypes.is(STAGE1)) {
                   def sel_2 = deck.search ("Select a Pokémon that evolves from ${sel_1.name}.", {it.cardTypes.is(EVOLUTION) && it.predecessor == sel_1.name}).first()
                   if(sel_2){
-                    evolve(pcs, sel_2, OTHER)
+                    evolve(pcs, sel_2)
                   }
                 }
               }
@@ -625,14 +625,16 @@ public enum UnifiedMinds implements LogicCardInfo {
           bwAbility "Bursting Spores", {
             text "Whenever you play a Pokémon that has the Spore attack from your hand during your turn, you may leave your opponent's Active Pokémon Asleep and Poisoned."
             delayedA {
-              before PLAY_BASIC_POKEMON, {
-                if(ef.cardToPlay.moves.find{ it.name == "Spore" }) {
+              after PLAY_BASIC_POKEMON, {
+                if(ef.cardToPlay.player == self.owner && ef.cardToPlay.moves.find{ it.name == "Spore" }) {
+                  powerUsed()
                   apply POISONED, opp.active
                   apply ASLEEP, opp.active
                 }
               }
-              before PLAY_EVOLUTION, {
-                if(ef.cardToPlay.moves.find{ it.name == "Spore" }) {
+              after EVOLVE, {
+                if(ef.pokemonToBeEvolved.owner == self.owner && ef.activationReason == PLAY_FROM_HAND && ef.cardToPlay.moves.find{ it.name == "Spore" }) {
+                  powerUsed()
                   apply POISONED, opp.active
                   apply ASLEEP, opp.active
                 }

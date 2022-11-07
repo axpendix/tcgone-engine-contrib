@@ -332,7 +332,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
               def sel=self.owner.pbg.deck.search(count:1, "Shell On : search a pokemon evolving from Karrablast",
                 {it.cardTypes.is(EVOLUTION) && it.predecessor==self.name})
               if(sel){
-                evolve(self, sel.first(), OTHER)
+                evolve(self, sel.first())
               }
               shuffleDeck(null, self.owner.toTargetPlayer())
             }
@@ -534,7 +534,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
               def sel=self.owner.pbg.deck.select(min:0, "Waterfall Evolution",
                 {it.cardTypes.is(EVOLUTION) && it.predecessor==self.name}, self.owner)
               if(sel){
-                evolve(self, sel.first(), OTHER)
+                evolve(self, sel.first())
               }
               shuffleDeck(null, self.owner.toTargetPlayer())
             }
@@ -931,8 +931,8 @@ public enum CrimsonInvasion implements LogicCardInfo {
                     prevent()
                   }
                 }
-                before EVOLVE_STANDARD, {
-                  if(bg.currentTurn == self.owner.opposite){
+                before EVOLVE, {
+                  if(ef.activationReason == PLAY_FROM_HAND && bg.currentTurn == self.owner.opposite){
                     wcu "Heavy Rock GX prevent you playing this card"
                     prevent()
                   }
@@ -1131,16 +1131,6 @@ public enum CrimsonInvasion implements LogicCardInfo {
                 }
                 before EVOLVE, {
                   if ((ef as Evolve).evolutionCard.player.pbg.hand.contains(ef.evolutionCard) && ef.evolutionCard.abilities) {
-                    warnAndPrevent()
-                  }
-                }
-                before EVOLVE_STANDARD, {
-                  if ((ef as EvolveStandard).evolutionCard.player.pbg.hand.contains(ef.evolutionCard) && ef.evolutionCard.abilities) {
-                    warnAndPrevent()
-                  }
-                }
-                before PLAY_EVOLUTION, {
-                  if ((ef as PlayEvolution).cardToPlay.player.pbg.hand.contains(ef.cardToPlay) && ef.evolutionCard.abilities) {
                     warnAndPrevent()
                   }
                 }

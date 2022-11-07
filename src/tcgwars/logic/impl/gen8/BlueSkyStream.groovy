@@ -211,7 +211,7 @@ public enum BlueSkyStream implements LogicCardInfo {
                   it.cardTypes.is(EVOLUTION) && it.predecessor == self.name
                 }
                 list.each {
-                  evolve self, it, OTHER
+                  evolve self, it
                 }
                 shuffleDeck()
               }

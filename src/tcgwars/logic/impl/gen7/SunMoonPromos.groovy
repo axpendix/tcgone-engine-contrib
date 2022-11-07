@@ -2386,7 +2386,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               powerUsed()
               def pcs = my.hand.findAll{it.cardTypes.is(EVOLUTION) && it.predecessor == "Eevee"}.select("Evolve To")
               healAll self, Source.SRC_ABILITY
-              evolve(self, pcs.first(), PLAY_FROM_HAND)
+              evolve(self, pcs.first())
             }
           }
           move "Boost Dash" , {

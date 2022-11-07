@@ -3795,7 +3795,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               powerUsed()
               def tar = eligible.select()
               if (tar) {
-                evolve(self, tar.first(), OTHER)
+                evolve(self, tar.first())
                 heal self.numberOfDamageCounters*10, self
               }
             }

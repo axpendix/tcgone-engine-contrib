@@ -294,7 +294,7 @@ public enum RebelClash implements LogicCardInfo {
         bwAbility "Adaptive Evolution", {
           text "This Pokémon can evolve during your first turn or the turn you play it."
           delayedA {
-            before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+            before PREVENT_EVOLVE, self, null, EVOLVE, {
               if (bg.currentTurn == self.owner){
                 powerUsed()
                 prevent()
@@ -316,7 +316,7 @@ public enum RebelClash implements LogicCardInfo {
         bwAbility "Adaptive Evolution", {
           text "This Pokémon can evolve during your first turn or the turn you play it."
           delayedA {
-            before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+            before PREVENT_EVOLVE, self, null, EVOLVE, {
               if (bg.currentTurn == self.owner){
                 powerUsed()
                 prevent()

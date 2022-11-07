@@ -1807,7 +1807,7 @@ public enum Emerald implements LogicCardInfo {
               it.cardTypes.is(EVOLUTION) && it.predecessor == activeName
             })
             if (sel) {
-              evolve(my.active, sel.first(), OTHER)
+              evolve(my.active, sel.first())
             }
 
             shuffleDeck()

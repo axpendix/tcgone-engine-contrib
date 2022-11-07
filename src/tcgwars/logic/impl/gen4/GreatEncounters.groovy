@@ -1462,7 +1462,7 @@ public enum GreatEncounters implements LogicCardInfo {
               flip {
                 def name = self.name
                 def tar = my.deck.search("Evolves from $name", { it.cardTypes.is(EVOLUTION) && name == it.predecessor })
-                if (tar) evolve(self, tar.first(), OTHER)
+                if (tar) evolve(self, tar.first())
                 shuffleDeck()
               }
             }
@@ -1906,7 +1906,7 @@ public enum GreatEncounters implements LogicCardInfo {
               checkLastTurn()
               powerUsed()
               flip {
-                deck.search ("Evolves from ${self.name}", {it.cardTypes.is(EVOLUTION) && self.name==it.predecessor}).each { evolve(self, it, OTHER) }
+                deck.search ("Evolves from ${self.name}", {it.cardTypes.is(EVOLUTION) && self.name==it.predecessor}).each { evolve(self, it) }
                 shuffleDeck()
               }
             }
@@ -2061,7 +2061,7 @@ public enum GreatEncounters implements LogicCardInfo {
               powerUsed()
               def tar = my.hand.findAll { it.name.contains("Jigglypuff") }.select()
               if (tar) {
-                evolve(self, tar.first(), OTHER)
+                evolve(self, tar.first())
                 heal self.numberOfDamageCounters*10, self
               }
             }

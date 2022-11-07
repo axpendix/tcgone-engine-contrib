@@ -904,7 +904,7 @@ public enum Arceus implements LogicCardInfo {
               powerUsed()
               def tar = my.hand.findAll { it.name.contains("Pikachu") }.select()
               if (tar) {
-                evolve(self, tar.first(), OTHER)
+                evolve(self, tar.first())
                 heal self.numberOfDamageCounters*10, self
               }
             }
@@ -1149,7 +1149,7 @@ public enum Arceus implements LogicCardInfo {
               def sel = deck.search ("Select a Pokémon that evolves from 1 of your Pokémon.", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)}).first()
               if(sel) {
                 def pcs = my.all.findAll{it.name == sel.predecessor}.select("Put $sel onto...")
-                evolve(pcs, sel, OTHER)
+                evolve(pcs, sel)
                 directDamage 10, self
               }
               shuffleDeck()
@@ -1694,7 +1694,7 @@ public enum Arceus implements LogicCardInfo {
           pokeBody "Cloak Evolution", {
             text "Burmy Trash Cloak can evolve during the turn you play it."
             delayedA {
-              before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+              before PREVENT_EVOLVE, self, null, EVOLVE, {
                 if (bg.currentTurn == self.owner){
                   powerUsed()
                   prevent()
@@ -1717,7 +1717,7 @@ public enum Arceus implements LogicCardInfo {
           pokeBody "Cloak Evolution", {
             text "Burmy Sandy Cloak can evolve during the turn you play it."
             delayedA {
-              before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+              before PREVENT_EVOLVE, self, null, EVOLVE, {
                 if (bg.currentTurn == self.owner){
                   powerUsed()
                   prevent()
@@ -1740,7 +1740,7 @@ public enum Arceus implements LogicCardInfo {
           pokeBody "Cloak Evolution", {
             text "Burmy Trash Cloak can evolve during the turn you play it."
             delayedA {
-              before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+              before PREVENT_EVOLVE, self, null, EVOLVE, {
                 if (bg.currentTurn == self.owner){
                   powerUsed()
                   prevent()

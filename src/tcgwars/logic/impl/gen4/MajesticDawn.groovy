@@ -561,7 +561,7 @@ public enum MajesticDawn implements LogicCardInfo {
               def sel = deck.search ("Select a Pokémon that evolves from 1 of your Pokémon.", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)}).first()
               if(sel) {
                 def pcs = my.all.findAll{it.name == sel.predecessor}.select("Put $sel onto...")
-                evolve(pcs, sel, OTHER)
+                evolve(pcs, sel)
                 directDamage 10, self
               }
               shuffleDeck()
@@ -1824,7 +1824,7 @@ public enum MajesticDawn implements LogicCardInfo {
               powerUsed()
               def tar = my.hand.findAll { it.name.contains("Chimecho") }.select()
               if (tar) {
-                evolve(self, tar.first(), OTHER)
+                evolve(self, tar.first())
                 heal self.numberOfDamageCounters*10, self
               }
             }
@@ -2064,7 +2064,7 @@ public enum MajesticDawn implements LogicCardInfo {
               powerUsed()
               def tar = my.hand.findAll { it.name.contains("Snorlax") }.select()
               if (tar) {
-                evolve(self, tar.first(), OTHER)
+                evolve(self, tar.first())
                 heal self.numberOfDamageCounters*10, self
               }
             }
@@ -2438,7 +2438,7 @@ public enum MajesticDawn implements LogicCardInfo {
                     if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(F) && self.owner.pbg.deck) {
                       def sel=my.deck.search("Search your deck for a card that evolved from $self",{it.cardTypes.is(EVOLUTION) && it.predecessor==self.name})
                       if(sel){
-                        evolve(self, sel.first(), OTHER)
+                        evolve(self, sel.first())
                       }
                       shuffleDeck()
                     }
@@ -2509,7 +2509,7 @@ public enum MajesticDawn implements LogicCardInfo {
                     if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(W) && self.owner.pbg.deck) {
                       def sel=my.deck.search("Search your deck for a card that evolved from $self",{it.cardTypes.is(EVOLUTION) && it.predecessor==self.name})
                       if(sel){
-                        evolve(self, sel.first(), OTHER)
+                        evolve(self, sel.first())
                       }
                       shuffleDeck()
                     }

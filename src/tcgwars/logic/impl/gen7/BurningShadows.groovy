@@ -2262,7 +2262,7 @@ public enum BurningShadows implements LogicCardInfo {
               if(sel){
                 def opts=my.all.findAll({it.name==sel.first().predecessor})
                 def pcs=opts.select("Evolve which one?")
-                evolve(pcs, sel.first(), OTHER)
+                evolve(pcs, sel.first())
               }
               shuffleDeck()
             }

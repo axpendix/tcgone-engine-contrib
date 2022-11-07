@@ -606,10 +606,8 @@ class TcgStatics {
     }
     return null;
   }
-  static evolve (PokemonCardSet pcs, Card card, ActivationReason reason=PLAY_FROM_HAND) {
-    bg().em().run(new Evolve(pcs, card));
-    bg().em().run(new CantEvolve(pcs, bg().getTurnCount()));
-    bg().em().run(new CheckAbilities(reason, pcs));
+  static evolve (PokemonCardSet pcs, Card card) {
+    bg().em().run(new Evolve(pcs, card))
   }
   static devolve (PokemonCardSet pcs, Card card, CardList newLocation){
     def blocked = bg().em().run(new MoveCard(card, newLocation));
@@ -639,7 +637,7 @@ class TcgStatics {
       aCard -> evolNames.any{ aCard.name.contains(it) }
     }.select("Choose which Pokémon will $baby evolve to:")
     healAll baby, Source.SRC_ABILITY
-    evolve(baby, pcs.first(), PLAY_FROM_HAND)
+    evolve(baby, pcs.first())
   }
   static checkCanBabyEvolve(String evolName, PokemonCardSet baby){
     checkCanBabyEvolve([evolName], baby)
@@ -1049,6 +1047,7 @@ class TcgStatics {
     }
   }
 
+  // Δ Evolution: You may play this card from your hand to evolve a Pokémon during your first turn or the turn you play that Pokémon.
   static delta_evolution(PokemonCard thisCard){
     thisCard.asEvolution().ancientTraitDeltaEvolution = true
   }
@@ -2184,7 +2183,7 @@ class TcgStatics {
     delegate.onAttack {
       def evolution = deck.search { it.cardTypes.is(EVOLUTION) && (it as EvolutionPokemonCard).predecessor == delegate.self.name }
       if (evolution) {
-        evolve delegate.self, evolution.first(), OTHER
+        evolve delegate.self, evolution.first()
       }
     }
   }

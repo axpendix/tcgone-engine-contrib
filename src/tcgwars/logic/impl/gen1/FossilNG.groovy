@@ -5,7 +5,10 @@ import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
-import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
+import static tcgwars.logic.effect.EffectType.*;
+import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
@@ -194,8 +197,8 @@ public enum FossilNG implements LogicCardInfo {
           pokemonPower "Prehistoric Power", {
             text "No more Evolution cards can be played. This power stops working while Aerodactyl is Asleep, Confused, or Paralyzed."
             delayedA {
-              before PLAY_EVOLUTION, {
-                if(!self.specialConditions){
+              before EVOLVE, {
+                if(!self.specialConditions && ef.activationReason == PLAY_FROM_HAND){
                   wcu "Prehistoric Power prevents you from playing Evolution cards!"
                   prevent()
                 }

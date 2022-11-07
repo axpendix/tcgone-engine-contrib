@@ -417,17 +417,7 @@ public enum Platinum implements LogicCardInfo {
                 }
               }
               before EVOLVE, {
-                if ((ef as Evolve).evolutionCard.player.pbg.hand.contains(ef.evolutionCard)) {
-                  warnAndPrevent()
-                }
-              }
-              before EVOLVE_STANDARD, {
-                if ((ef as EvolveStandard).evolutionCard.player.pbg.hand.contains(ef.evolutionCard)) {
-                  warnAndPrevent()
-                }
-              }
-              before PLAY_EVOLUTION, {
-                if ((ef as PlayEvolution).cardToPlay.player.pbg.hand.contains(ef.cardToPlay)) {
+                if ((ef as Evolve).activationReason == PLAY_FROM_HAND) {
                   warnAndPrevent()
                 }
               }
@@ -2494,7 +2484,7 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
               powerUsed()
               def tar = my.hand.findAll { it.name.contains("Chansey") }.select()
               if (tar) {
-                evolve(self, tar.first(), OTHER)
+                evolve(self, tar.first())
                 heal self.numberOfDamageCounters*10, self
               }
             }
@@ -3133,7 +3123,7 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
           def eff
           onPlay {
             eff = delayed {
-              before PREVENT_EVOLVE, null, null, EVOLVE_STANDARD, {
+              before PREVENT_EVOLVE, null, null, EVOLVE, {
                 prevent()
               }
             }

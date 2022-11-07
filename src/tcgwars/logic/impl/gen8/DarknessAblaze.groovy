@@ -1329,17 +1329,7 @@ public enum DarknessAblaze implements LogicCardInfo {
               }
             }
             before EVOLVE, {
-              if ((ef as Evolve).evolutionCard.player.pbg.hand.contains(ef.evolutionCard)) {
-                warnAndPrevent()
-              }
-            }
-            before EVOLVE_STANDARD, {
-              if ((ef as EvolveStandard).evolutionCard.player.pbg.hand.contains(ef.evolutionCard)) {
-                warnAndPrevent()
-              }
-            }
-            before PLAY_EVOLUTION, {
-              if ((ef as PlayEvolution).cardToPlay.player.pbg.hand.contains(ef.cardToPlay)) {
+              if ((ef as Evolve).activationReason == PLAY_FROM_HAND) {
                 warnAndPrevent()
               }
             }
@@ -2053,7 +2043,7 @@ public enum DarknessAblaze implements LogicCardInfo {
               if (my.deck) {
                 def tar = my.deck.search("Evolves from ${self.name}", { it.cardTypes.is(EVOLUTION) && it.predecessor == self.name })
                 if (tar) {
-                  evolve(self, tar.first(), OTHER)
+                  evolve(self, tar.first())
                 }
                 shuffleDeck()
               }
@@ -2684,8 +2674,9 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
           def checkNewAbilities = { Effect ef ->
-            if (ef.cardToPlay != thisCard && ef.cardToPlay.player == self.owner &&
-              self.owner.pbg.all.find { !it.types.contains(D) }
+            if (ef.cardToPlay != thisCard
+                    && ef.cardToPlay.player == self.owner
+                    && self.owner.pbg.all.find { !it.types.contains(D) }
             ) {
               self.owner.pbg.triggerBenchSizeCheck()
               new CheckAbilities().run(bg)
@@ -2724,10 +2715,10 @@ public enum DarknessAblaze implements LogicCardInfo {
 
           delayedA (priority: BEFORE_LAST) {
             after PLAY_BASIC_POKEMON, {
-              checkNewAbilities(ef)
-            }
-            after PLAY_EVOLUTION, {
-              checkNewAbilities(ef)
+              if (ef.cardToPlay != thisCard && ef.cardToPlay.player == self.owner && self.owner.pbg.all.find { !it.types.contains(D) }) {
+                self.owner.pbg.triggerBenchSizeCheck()
+                new CheckAbilities().run(bg)
+              }
             }
             after SWITCH, {
               if (ef.switchedOut && ef.switchedOut.owner == self.owner || ef.fallenBack && ef.fallenBack.owner == self.owner) {
@@ -2749,26 +2740,25 @@ public enum DarknessAblaze implements LogicCardInfo {
                 self.owner.pbg.triggerBenchSizeCheck()
               }
             }
+            after LEVEL_UP, {
+              if (ef.pokemonToLevelUp.owner == self.owner) {
+                self.owner.pbg.triggerBenchSizeCheck()
+              }
+            }
             before PLAY_BASIC_POKEMON, {
               if (!isPokemonPlayable(ef)) {
                 wcu "Cannot play non-Darkness Pokémon"
                 prevent()
               }
             }
-            before PLAY_EVOLUTION, {
-              if (!isPokemonPlayable(ef)) {
-                wcu "Cannot play non-Darkness Pokémon"
-                prevent()
-              }
-            }
-            before EVOLVE_STANDARD, {
-              if (bg.em().retrieveObject("Infinity_Zone_" + self.hashCode()) && ef.evolutionCard.player == self.owner && !ef.evolutionCard.types.contains(D)) {
-                wcu "Cannot play non-Darkness Pokémon"
-                prevent()
-              }
-            }
             before EVOLVE, {
-              if (bg.em().retrieveObject("Infinity_Zone_" + self.hashCode()) && ef.evolutionCard.player == self.owner  && !ef.evolutionCard.types.contains(D)) {
+              if (bg.em().retrieveObject("Infinity_Zone_" + self.hashCode()) && ef.activationReason == PLAY_FROM_HAND && ef.evolutionCard.player == self.owner  && !ef.evolutionCard.types.contains(D)) {
+                wcu "Cannot play non-Darkness Pokémon"
+                prevent()
+              }
+            }
+            before LEVEL_UP, {
+              if (bg.em().retrieveObject("Infinity_Zone_" + self.hashCode()) && ef.activationReason == PLAY_FROM_HAND && ef.levelUpCard.player == self.owner  && !ef.levelUpCard.types.contains(D)) {
                 wcu "Cannot play non-Darkness Pokémon"
                 prevent()
               }
@@ -3883,7 +3873,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             } else {
               toEvolve = pl.find{it.name == evoCard.predecessor}
             }
-            evolve(toEvolve, evoCard, OTHER)
+            evolve(toEvolve, evoCard)
             pl.remove(toEvolve)
           }
 
