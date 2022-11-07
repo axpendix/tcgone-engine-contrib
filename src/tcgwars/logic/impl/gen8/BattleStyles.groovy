@@ -888,22 +888,12 @@ public enum BattleStyles implements LogicCardInfo {
           text "When your Active Pokémon is Knocked Out by damage from an attack from your opponent's Pokémon, you may move any amount of [W] Energy from that Pokémon to this Pokémon."
           delayedA {
             before KNOCKOUT, {
-              def energies = self.owner.pbg.active.cards.filterByEnergyType(W)
-              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && !self.active && ef.pokemonToBeKnockedOut.owner == self.owner && ef.pokemonToBeKnockedOut.active && energies && confirm("Use $thisAbility?", self.owner)) {
+              def pokemon = ef.pokemonToBeKnockedOut as PokemonCardSet
+              def energies = pokemon.cards.filterByEnergyType(W)
+              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && pokemon.owner == self.owner && pokemon.active && energies && confirm("Use $thisAbility?", self.owner)) {
                 powerUsed()
-                def energiesToMove = energies.select(max: energies.size(), "Which Energies to move to Kingdra?", {true}, self.owner)
-
-                def pcsMap = [:]
-
-                energiesToMove.each {
-                  def pcs = it.findPCS()
-                  if (pcsMap.containsKey(pcs)) (pcsMap[pcs] as CardList).add(it)
-                  else pcsMap.put(pcs, new CardList(it))
-                  energySwitch pcs, self, it, true
-                }
-
-                pcsMap.each { key, val ->
-                  bc "$val moved from $key to $self"
+                energies.select(max: energies.size(), "Which Energies to move to $self?", {true}, self.owner).each {
+                  energySwitch it.findPCS(), self, it
                 }
               }
             }
