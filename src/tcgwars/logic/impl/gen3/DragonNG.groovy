@@ -1,4 +1,6 @@
-package tcgwars.logic.impl.gen3;
+package tcgwars.logic.impl.gen3
+
+import tcgwars.logic.impl.gen7.CelestialStorm;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -1746,13 +1748,7 @@ public enum DragonNG implements LogicCardInfo {
         }
       };
       case ENERGY_RECYCLE_SYSTEM_84:
-      return itemCard (this) {
-        text "Search your discard pile for basic Energy cards. You may either show 1 basic Energy card to your opponent and put it into your hand, or show 3 basic Energy cards to your opponent and shuffle them into your deck."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy (CelestialStorm.ENERGY_RECYCLE_SYSTEM_128, this)
       case HIGH_PRESSURE_SYSTEM_85:
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play." +
