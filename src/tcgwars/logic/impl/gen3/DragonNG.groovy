@@ -1715,11 +1715,23 @@ public enum DragonNG implements LogicCardInfo {
       return pokemonTool (this) {
         text "When the Pokémon Balloon Berry is attached to retreats, discard Balloon Berry instead of discarding Energy cards." +
           "Attach Balloon Berry to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card."
+        def eff1 = null
+        def eff2 = null
         onPlay {reason->
+          eff1 = getter (GET_RETREAT_COST, LAST, self){h->
+            h.object=0
+          }
+          eff2 = delayed {
+            after RETREAT, self, {
+              // FIXME: Only discard if retreat was successful, currently discards even if it fails/is canceled.
+              bc "$thisCard has been used"
+              discard thisCard
+            }
+          }
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          eff1.unregister()
+          eff2.unregister()
         }
       };
       case BUFFER_PIECE_83:
