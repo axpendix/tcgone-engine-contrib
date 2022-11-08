@@ -1737,54 +1737,17 @@ public enum DragonNG implements LogicCardInfo {
         }
       };
       case BUFFER_PIECE_83:
-      return pokemonTool (this) {
-        text "Attach Buffer Piece to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card." +
-          "Damage done to the Pokémon Buffer Piece is attached to by an opponent's attack is reduced by 20 (after applying Weakness and Resistance). At the end of your opponent's turn after you played Buffer Piece, discard Buffer Piece."
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        allowAttach {to->
-        }
-      };
+        return copy (DragonFrontiers.BUFFER_PIECE_72, this)
       case ENERGY_RECYCLE_SYSTEM_84:
         return copy (CelestialStorm.ENERGY_RECYCLE_SYSTEM_128, this)
       case HIGH_PRESSURE_SYSTEM_85:
-      return stadium (this) {
-        text "This card stays in play when you play it. Discard this card if another Stadium card comes into play." +
-          "Each player pays [C] less to retreat his or her Fire and [W] Pokémon."
-        onPlay {
-        }
-        onRemoveFromPlay{
-        }
-      };
+      return copy (PopSeries3.HIGH_PRESSURE_SYSTEM_10, this)
       case LOW_PRESSURE_SYSTEM_86:
-      return stadium (this) {
-        text "This card stays in play when you play it. Discard this card if another Stadium card comes into play." +
-          "Each Grass and [L] Pokémon in play (both yours and your opponent's) gets +10 HP."
-        onPlay {
-        }
-        onRemoveFromPlay{
-        }
-      };
+        return copy (PopSeries3.LOW_PRESSURE_SYSTEM_11, this)
       case MR_BRINEY_S_COMPASSION_87:
-      return supporter (this) {
-        text "Choose 1 of your Pokémon in play (excluding Pokémon-ex). Return that Pokémon and all cards attached to it to your hand." +
-          "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy(PopSeries2.MR__BRINEY_S_COMPASSION_8, this)
       case TV_REPORTER_88:
-      return supporter (this) {
-        text "Draw 3 cards. Then discard any 1 card from your hand." +
-          "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy(CelestialStorm.TV_REPORTER_149, this)
       case AMPHAROS_EX_89:
       return evolution (this, from:"Flaaffy", hp:HP150, type:L, retreatCost:3) {
         weakness F
