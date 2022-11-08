@@ -1913,30 +1913,25 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         }
       };
       case LIFE_HERB_90:
-      return itemCard (this) {
-        text "Flip a coin. If heads, choose 1 of your Pokémon (excluding Pokémon-ex). Remove all Special Conditions and 6 damage counters from that Pokémon (all if it has less than 6)."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy(FireRedLeafGreen.LIFE_HERB_93, this)
       case MAGNETIC_STORM_91:
       return stadium (this) {
         text "Any damage done by attacks from [P] Pokémon and [F] Pokémon (both yours and your opponent's) is not affected by Resistance." +
           "This card stays in play when you play it. Discard this card if another Stadium card comes into play."
+        def eff = null
         onPlay {
+          eff = getter(GET_RESISTANCES, LAST) {holder->
+            if (holder.effect.target.types.contains(P) || holder.effect.target.types.contains(F)) {
+              holder.object.clear()
+            }
+          }
         }
         onRemoveFromPlay{
+          eff.unregister()
         }
       };
       case STEVEN_S_ADVICE_92:
-      return supporter (this) {
-        text "Draw a number of cards up to the number of your opponent's Pokémon in play. If you have more than 7 cards (including this one) in your hand you can't play this card."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy(PowerKeepers.STEVEN_S_ADVICE_83, this)
       case GROUDON_EX_93:
       return basic (this, hp:HP100, type:F, retreatCost:3) {
         weakness W
