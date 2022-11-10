@@ -625,15 +625,15 @@ public enum UnifiedMinds implements LogicCardInfo {
           bwAbility "Bursting Spores", {
             text "Whenever you play a Pokémon that has the Spore attack from your hand during your turn, you may leave your opponent's Active Pokémon Asleep and Poisoned."
             delayedA {
-              after PLAY_BASIC_POKEMON, {
-                if(ef.cardToPlay.player == self.owner && ef.cardToPlay.moves.find{ it.name == "Spore" }) {
+              after PUT_ON_BENCH, {
+                if(ef.fromHand && ef.pokemonCard.player == self.owner && ef.pokemonCard.moves.find{ it.name == "Spore" }) {
                   powerUsed()
                   apply POISONED, opp.active
                   apply ASLEEP, opp.active
                 }
               }
               after EVOLVE, {
-                if(ef.pokemonToBeEvolved.owner == self.owner && ef.activationReason == PLAY_FROM_HAND && ef.cardToPlay.moves.find{ it.name == "Spore" }) {
+                if(ef.fromHand && ef.pokemonToBeEvolved.owner == self.owner && ef.cardToPlay.moves.find{ it.name == "Spore" }) {
                   powerUsed()
                   apply POISONED, opp.active
                   apply ASLEEP, opp.active

@@ -228,26 +228,19 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         weakness R
         globalAbility {
           delayed {
-            def abilityUsed = false
             before PLAY_CARD, {
               if (ef.cardToPlay == thisCard && my.hand.getExcludedList(thisCard).empty && my.bench.freeBenchCount) {
-                def abilityName = " Elusive Master"
-                abilityUsed = confirm("Use $abilityName?")
-                if(abilityUsed && !checkGlobalAbility(thisCard)) {
-                  wcu "$abilityName was blocked."
-                  return
-                }
-                if (abilityUsed && benchPCS(thisCard, PLAY_FROM_HAND)) {
-                  bc("$thisCard.name has used $abilityName")
-                  draw 3
+                def abilityName = "Elusive Master"
+                if (confirm("Do you want to use $abilityName: if this Pokémon is the last card in your hand, you may play it onto your Bench. If you do, draw 3 cards. ")) {
+                  if (!checkGlobalAbility(thisCard)) {
+                    wcu "$abilityName was blocked."
+                  } else if (benchPCS(thisCard, PLAY_FROM_HAND)) {
+                    bc("$thisCard.name has used $abilityName")
+                    draw 3
+                  }
+                  prevent()
                 }
               }
-            }
-            before PLAY_EVOLUTION, {
-              if (abilityUsed) prevent()
-            }
-            after PLAY_CARD, {
-              abilityUsed = false
             }
           }
         }

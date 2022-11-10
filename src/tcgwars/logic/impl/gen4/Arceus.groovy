@@ -2413,7 +2413,7 @@ public enum Arceus implements LogicCardInfo {
                 if (all.contains(pcs)) {
                   bc "$card Leveled Down"
                   bg.em().run(new RemoveFromPlay(pcs, new CardList(card)));
-                  bg.em().run(new CantEvolve(pcs, bg().getTurnCount()));
+                  bg.em().run(new PreventEvolve(pcs, bg().getTurnCount()));
                   bg.em().run(new Devolve(pcs));
                 }
                 shuffleDeck()

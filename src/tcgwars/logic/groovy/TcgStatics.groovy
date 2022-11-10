@@ -602,7 +602,7 @@ class TcgStatics {
   static PokemonCardSet benchPCS (Card card, ActivationReason reason=OTHER){
     def effect = new PutOnBench(card, reason);
     if (!bg().em().run(effect)) {
-      return effect.getBench();
+      return effect.getPlace();
     }
     return null;
   }
@@ -617,7 +617,7 @@ class TcgStatics {
 
     if (all.contains(pcs)) { //not dead yet.
       bg().em().run(new RemoveFromPlay(pcs, new CardList(card)));
-      bg().em().run(new CantEvolve(pcs, bg().getTurnCount()));
+      bg().em().run(new PreventEvolve(pcs, bg().getTurnCount()));
 
       // Remove the highest stage non-level up card if devolved from level-up
       if (card.cardTypes.is(LVL_X) && pcs.cards.filterByType(POKEMON).size() > 1) {
@@ -696,7 +696,7 @@ class TcgStatics {
     !bg().em().run(effect)
   }
   static cantPlayEnergy (){
-    new CantPlayEnergy().run(bg())
+    new PreventPlayEnergy().run(bg())
   }
   static attachEnergyFromDiscardPile (Type type, boolean flipcoin=false){
     new AttachEnergyFromDiscardPile(type, flipcoin).run(bg())

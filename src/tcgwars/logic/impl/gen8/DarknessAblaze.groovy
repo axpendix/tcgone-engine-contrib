@@ -1,6 +1,6 @@
 package tcgwars.logic.impl.gen8
 
-import tcgwars.logic.effect.gm.PlayEvolution
+import tcgwars.logic.effect.advanced.PutOnBench
 import tcgwars.logic.effect.gm.PlayTrainer
 
 import static tcgwars.logic.card.HP.*;
@@ -20,7 +20,6 @@ import tcgwars.logic.card.*
 import tcgwars.logic.effect.*;
 import tcgwars.logic.effect.ability.*
 import tcgwars.logic.effect.basic.*
-import tcgwars.logic.effect.special.*;
 import tcgwars.logic.util.*;
 
 /**
@@ -2694,11 +2693,11 @@ public enum DarknessAblaze implements LogicCardInfo {
             bg.em().retrieveObject("Infinity_Zone_" + self.hashCode())
           }
 
-          def isPokemonPlayable = { Effect ef ->
+          def isPokemonPlayable = { PutOnBench ef ->
             def isInfinityZoneActive = bg.em().retrieveObject("Infinity_Zone_" + self.hashCode())
 
-            if (ef.cardToPlay.player == self.owner &&
-              isInfinityZoneActive && !ef.cardToPlay.types.contains(D)) {
+            if (ef.pokemonCard.player == self.owner &&
+              isInfinityZoneActive && !ef.pokemonCard.types.contains(D)) {
               return false
             }
             return true
@@ -2714,8 +2713,8 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
 
           delayedA (priority: BEFORE_LAST) {
-            after PLAY_BASIC_POKEMON, {
-              if (ef.cardToPlay != thisCard && ef.cardToPlay.player == self.owner && self.owner.pbg.all.find { !it.types.contains(D) }) {
+            after PUT_ON_BENCH, {
+              if (ef.pokemonCard != thisCard && ef.pokemonCard.player == self.owner && self.owner.pbg.all.find { !it.types.contains(D) }) {
                 self.owner.pbg.triggerBenchSizeCheck()
                 new CheckAbilities().run(bg)
               }
@@ -2745,7 +2744,7 @@ public enum DarknessAblaze implements LogicCardInfo {
                 self.owner.pbg.triggerBenchSizeCheck()
               }
             }
-            before PLAY_BASIC_POKEMON, {
+            before PUT_ON_BENCH, {
               if (!isPokemonPlayable(ef)) {
                 wcu "Cannot play non-Darkness Pokémon"
                 prevent()

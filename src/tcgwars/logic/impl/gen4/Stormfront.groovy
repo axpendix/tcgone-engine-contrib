@@ -692,8 +692,8 @@ public enum Stormfront implements LogicCardInfo {
             onAttack {
               damage 80
               delayed {
-                after PLAY_BASIC_POKEMON, {
-                  if(bg.currentTurn == self.owner.opposite){
+                after PUT_ON_BENCH, {
+                  if(ef.basicFromHand && bg.currentTurn == self.owner.opposite){
                     ef.place.damage += 20
                   }
                 }

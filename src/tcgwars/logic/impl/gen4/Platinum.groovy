@@ -3221,8 +3221,8 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
           def eff
           onPlay {
             eff = delayed {
-              after PLAY_BASIC_POKEMON, {
-                if(!(ef.cardToPlay.types.contains(G) || ef.cardToPlay.types.contains(P))){
+              after PUT_ON_BENCH, {
+                if(ef.basicFromHand && !(ef.pokemonCard.types.contains(G) || ef.pokemonCard.types.contains(P))){
                   bc "Miasma Valley activates"
                   ef.place.damage += 20
                 }

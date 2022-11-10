@@ -2291,8 +2291,8 @@ public enum Triumphant implements LogicCardInfo {
           pokeBody "Eye of Disaster", {
             text "As long as Absol is your Active Pokémon, whenever your opponent puts a Basic Pokémon from his or her hand onto his or her Bench, put 2 damage counters on that Pokémon."
             delayedA {
-              after PLAY_BASIC_POKEMON, {
-                if(self.active && bg.currentTurn == self.owner.opposite){
+              after PUT_ON_BENCH, {
+                if(ef.basicFromHand && self.active && bg.currentTurn == self.owner.opposite){
                   ef.place.damage += 20
                 }
               }

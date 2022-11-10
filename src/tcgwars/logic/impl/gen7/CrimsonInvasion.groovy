@@ -1,6 +1,6 @@
 package tcgwars.logic.impl.gen7
 
-import tcgwars.logic.effect.gm.PlayEvolution;
+
 import tcgwars.logic.impl.gen2.Aquapolis
 
 import static tcgwars.logic.card.HP.*;
@@ -932,13 +932,13 @@ public enum CrimsonInvasion implements LogicCardInfo {
                   }
                 }
                 before EVOLVE, {
-                  if(ef.activationReason == PLAY_FROM_HAND && bg.currentTurn == self.owner.opposite){
+                  if(ef.fromHand && bg.currentTurn == self.owner.opposite){
                     wcu "Heavy Rock GX prevent you playing this card"
                     prevent()
                   }
                 }
-                before PLAY_BASIC_POKEMON, {
-                  if(bg.currentTurn == self.owner.opposite){
+                before PUT_ON_BENCH, {
+                  if(ef.fromHand && bg.currentTurn == self.owner.opposite){
                     wcu "Heavy Rock GX prevent you playing this card"
                     prevent()
                   }
@@ -1130,12 +1130,12 @@ public enum CrimsonInvasion implements LogicCardInfo {
                   prevent()
                 }
                 before EVOLVE, {
-                  if ((ef as Evolve).evolutionCard.player.pbg.hand.contains(ef.evolutionCard) && ef.evolutionCard.abilities) {
+                  if (ef.fromHand && (ef as Evolve).evolutionCard.player.pbg.hand.contains(ef.evolutionCard) && ef.evolutionCard.abilities) {
                     warnAndPrevent()
                   }
                 }
-                before PLAY_BASIC_POKEMON, {
-                  if(ef.cardToPlay.abilities) {
+                before PUT_ON_BENCH, {
+                  if(ef.fromHand && ef.pokemonCard.abilities) {
                     warnAndPrevent()
                   }
                 }
