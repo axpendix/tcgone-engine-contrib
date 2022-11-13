@@ -2105,7 +2105,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
       case COPYCAT_90:
         return copy(TeamRocketReturns.COPYCAT_83, this);
       case ENERGY_SWITCH_91:
-        return copy(BlackWhite.ENERGY_SWITCH_94, this);
+        return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this)
       case FISHERMAN_92:
         return supporter (this) {
           text "Search your discard pile for 4 basic Energy cards, show them to your opponent, and put them into your hand."

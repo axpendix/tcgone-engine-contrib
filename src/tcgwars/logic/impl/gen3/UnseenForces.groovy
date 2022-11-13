@@ -2258,7 +2258,7 @@ public enum UnseenForces implements LogicCardInfo {
         }
       };
       case ENERGY_SWITCH_84:
-      return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this);
+        return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this)
       case FLUFFY_BERRY_85:
       return pokemonTool (this) {
         text "Attach Fluffy Berry to 1 of your Pokémon (excluding Pokémon-ex and Pokémon that has Dark or an owner in its name) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Fluffy Berry is attached to is Pokémon-ex or has Dark or an owner in its name, discard Fluffy Berry." +
@@ -3891,6 +3891,7 @@ public enum UnseenForces implements LogicCardInfo {
         move "Hidden Power", {
           text "Search your deck for up to 3 different types of basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
           energyCost C
+          attackRequirement { assert my.deck : "You have no cards in your deck"}
           onAttack {
             my.deck.select(min:0, max:3, "Select up to 3 different types of basic Energy cards", cardTypeFilter(BASIC_ENERGY), self.owner,
               {
@@ -3901,7 +3902,8 @@ public enum UnseenForces implements LogicCardInfo {
                     }
                   }
                   return true
-              }).moveTo(my.hand)
+              }).showToOpponent("Selected Basic Energy cards").moveTo(my.hand)
+            shuffleDeck()
           }
         }
       };

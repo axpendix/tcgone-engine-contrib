@@ -2881,7 +2881,7 @@ public enum DiamondPearl implements LogicCardInfo {
       case ENERGY_RESTORE_106:
         return copy (Expedition.ENERGY_RESTORE_141, this);
       case ENERGY_SWITCH_107:
-        return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this);
+        return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this)
       case NIGHT_POKEMON_CENTER_108:
         return itemCard (this) {
           text "Choose 1 of your Pokémon. Flip 2 coins. If both are heads, remove all damage counters from that Pokémon. If both are tails, discard all Energy cards attached to that Pokémon."

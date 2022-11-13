@@ -1793,8 +1793,10 @@ public enum SandstormNG implements LogicCardInfo {
       return itemCard (this) {
         text "Remove all Special Conditions from each of your Active Pokémon."
         onPlay {
+          clearSpecialCondition(my.active, TRAINER_CARD)
         }
         playRequirement{
+          assert !my.active.specialConditions.isEmpty() : "Your Active Pokémon needs to have some Special Condition applied to it"
         }
       };
       case LANETTE_S_NET_SEARCH_87:
@@ -1802,59 +1804,55 @@ public enum SandstormNG implements LogicCardInfo {
         text "Search your deck for up to 3 different types of Basic Pokémon cards (excluding Baby Pokémon), show them to your opponent, and put them into your hand. Shuffle your deck afterward." +
           "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card."
         onPlay {
+          my.deck.select(min:0, max:3, "Select up to 3 Basic Pokémon (excluding Baby Pokémon) of different types.", cardTypeFilter(BASIC), thisCard.player, { CardList list ->
+            if (list.filterByType(BABY).size())
+              return false
+            TypeSet typeSet = new TypeSet()
+            for (card in list) {
+              if (typeSet.containsAny(card.asPokemonCard().types)) {
+                return false
+              }
+              typeSet.addAll(card.asPokemonCard().types)
+            }
+            return true
+          }).showToOpponent("Cards moved to hand").moveTo(hand)
+          shuffleDeck()
         }
         playRequirement{
+          assert my.deck
         }
       };
       case RARE_CANDY_88:
       return itemCard (this) {
         text "Choose 1 of your Basic Pokémon in play. If you have a Stage 1 or Stage 2 card that evolves from that Pokémon in your hand, put that card on the Basic Pokémon. (This counts as evolving that Pokémon.)"
+        PokemonCardSet pcs = null
+        CardList sel = null
         onPlay {
+          evolve(pcs, sel.first(), PLAY_FROM_HAND)
         }
         playRequirement{
+          assert my.all.findAll {it.basic} : "You have no basic Pokémon."
+          assert my.hand.filterByType(STAGE1, STAGE2) : "You have no Stage 1 or Stage 2 card in hand"
+          pcs = my.all.findAll {it.basic}.select("Choose the pokemon to be evolved")
+          def possibleEvolutions = my.hand.filterByType(STAGE1, STAGE2).findAll{ EvolutionPokemonCard evoCard ->
+            ( evoCard.predecessor == pcs.name ) ||
+            ( bg.gm().getBasicsFromStage2(evoCard.name).contains(pcs.name) )
+          }
+          assert possibleEvolutions : "There is no Stage 1/2 in hand for $pcs to evolve into"
+          sel = possibleEvolutions.select(min: 0)
+          assert sel : "Cancelled"
         }
       };
       case WALLY_S_TRAINING_89:
-      return supporter (this) {
-        text "Search your deck for a card that evolves from your Active Pokémon (choose 1 if there are 2) and put it on your Active Pokémon. (This counts as evolving that Pokémon.) Shuffle your deck afterward." +
-          "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy(Emerald.WALLY_S_TRAINING_85, this);
       case CLAW_FOSSIL_90:
-      return itemCard (this) {
-        text "Play Claw Fossil as if it were a Basic Pokémon. While in play, Claw Fossil counts as a [C] Pokémon (instead of a Trainer card). Claw Fossil has no attacks of its own can't retreat and can't be affected by any Special Conditions. If Claw Fossil is Knocked Out it doesn't count as a Knocked Out Pokémon. (Discard it anyway.) At any time during your turn before your attack you may discard Claw Fossil from play." +
-          "If Claw Fossil is your Active Pokémon and is damaged by an opponent's attack (even if Claw Fossil is Knocked Out), put 1 damage counter on the Attacking Pokémon."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy(LegendMaker.CLAW_FOSSIL_78, this);
       case MYSTERIOUS_FOSSIL_91:
-      return copy(LegendMaker.MYSTERIOUS_FOSSIL_79, this);
+        return copy(LegendMaker.MYSTERIOUS_FOSSIL_79, this);
       case ROOT_FOSSIL_92:
-      return itemCard (this) {
-        text "Play Root Fossil as if it were a Basic Pokémon. While in play, Root Fossil counts as a [C] Pokémon (instead of a Trainer card). Root Fossil has no attacks of its own can't retreat and can't be affected by any Special Conditions. If Root Fossil is Knocked Out it doesn't count as a Knocked Out Pokémon. (Discard it anyway.) At any time during your turn before your attack you may discard Root Fossil from play." +
-          "At any time between turns, remove 1 damage counter from Root Fossil."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy(LegendMaker.ROOT_FOSSIL_80, this);
       case MULTI_ENERGY_93:
-      return specialEnergy (this, [[C]]) {
-        text "Attach Multi Energy to 1 of your Pokémon. While in play, Multi Energy provides every type of Energy but provides only 1 Energy at a time. (Doesn't count as a basic Energy card when not in play.) Multi Energy provides [C] Energy when attached to a Pokémon that already has Special Energy cards attached to it."
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      };
+        return copy (FireRedLeafGreen.MULTI_ENERGY_103, this);
       case AERODACTYL_EX_94:
       return evolution (this, from:"Mysterious Fossil", hp:HP100, type:C, retreatCost:1) {
         weakness L

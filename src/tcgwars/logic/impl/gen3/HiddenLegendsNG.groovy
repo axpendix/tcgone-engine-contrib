@@ -1853,54 +1853,85 @@ public enum HiddenLegendsNG implements LogicCardInfo {
       return stadium (this) {
         text "Don't apply Weakness for all Pokémon in play (excluding Pokémon-ex and Pokémon that has an owner in its name)." +
           "This card stays in play when you play it. Discard this card if another Stadium card comes into play."
+        def eff
         onPlay {
+          eff = getter (GET_WEAKNESSES) {h->
+            if(!h.effect.target.EX && !h.effect.target.topPokemonCard.cardTypes.is(OWNERS_POKEMON)){
+              h.object = []
+            }
+          }
         }
         onRemoveFromPlay{
+          eff.unregister()
         }
       };
       case DESERT_RUINS_88:
       return stadium (this) {
         text "At any time between turns, each player puts 1 damage counter on his or her Pokémon-ex with maximum HP of at least 100." +
           "This card stays in play when you play it. Discard this card if another Stadium card comes into play."
+        def eff
         onPlay {
+          eff = delayed {
+            before BEGIN_TURN, {
+              def once = true
+              all.each {
+                if(it.EX && it.fullHP.value >= 100){
+                  if(once) {
+                    bc "[Desert Ruins]"
+                    once = false
+                  }
+                  directDamage(10, it, TRAINER_CARD)
+                }
+              }
+            }
+          }
         }
         onRemoveFromPlay{
+          eff.unregister()
         }
       };
       case ISLAND_CAVE_89:
       return stadium (this) {
         text "Whenever any player attaches an Energy card from his or her hand to [W] Pokémon, [F] Pokémon, or [M] Pokémon, remove any Special Conditions from that Pokémon." +
           "This card stays in play when you play it. Discard this card if another Stadium card comes into play."
+        def eff
         onPlay {
+          eff = delayed {
+            after ATTACH_ENERGY, {
+              def pcs = ef.resolvedTarget
+              if (ef.reason==PLAY_FROM_HAND && (pcs.types.contains(W) || pcs.types.contains(F) || pcs.types.contains(M))) {
+                bc "Island Cave removes all Special Conditions from $pcs"
+                if (pcs.specialConditions) {
+                  clearSpecialCondition(pcs, TRAINER_CARD)
+                }
+              }
+            }
+          }
         }
         onRemoveFromPlay{
+          eff.unregister()
         }
       };
       case LIFE_HERB_90:
-      return itemCard (this) {
-        text "Flip a coin. If heads, choose 1 of your Pokémon (excluding Pokémon-ex). Remove all Special Conditions and 6 damage counters from that Pokémon (all if it has less than 6)."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy(FireRedLeafGreen.LIFE_HERB_93, this)
       case MAGNETIC_STORM_91:
       return stadium (this) {
         text "Any damage done by attacks from [P] Pokémon and [F] Pokémon (both yours and your opponent's) is not affected by Resistance." +
           "This card stays in play when you play it. Discard this card if another Stadium card comes into play."
+        def eff = null
         onPlay {
+          eff = getter(GET_RESISTANCES, LAST) {holder->
+            if (holder.effect.target.types.contains(P) || holder.effect.target.types.contains(F)) {
+              holder.object.clear()
+            }
+          }
         }
         onRemoveFromPlay{
+          eff.unregister()
         }
       };
       case STEVEN_S_ADVICE_92:
-      return supporter (this) {
-        text "Draw a number of cards up to the number of your opponent's Pokémon in play. If you have more than 7 cards (including this one) in your hand you can't play this card."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy(PowerKeepers.STEVEN_S_ADVICE_83, this)
       case GROUDON_EX_93:
       return basic (this, hp:HP100, type:F, retreatCost:3) {
         weakness W

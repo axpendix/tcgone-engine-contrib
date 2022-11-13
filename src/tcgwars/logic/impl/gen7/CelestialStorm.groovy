@@ -3037,7 +3037,24 @@ public enum CelestialStorm implements LogicCardInfo {
       case COPYCAT_127:
         return copy(TeamRocketReturns.COPYCAT_83, this);
       case ENERGY_RECYCLE_SYSTEM_128:
-        return copy(Dragon.ENERGY_RECYCLE_SYSTEM_84, this);
+        return itemCard (this) {
+          text "Choose 1:\n" +
+            "Put a basic Energy card from your discard pile into your hand.\n" +
+            "Shuffle 3 basic Energy cards from your discard pile into your deck.\n" +
+            "You may play as many Item cards as you like during your turn (before your attack)."
+          onPlay {
+            def choice = choose([1,2],['Put a basic Energy card from your discard pile into your hand', 'Shuffle 3 basic Energy cards from your discard pile into your deck'], "Choose 1")
+            if (choice == 1) {
+              my.discard.filterByType(BASIC_ENERGY).select("Put to hand").moveTo(my.hand)
+            } else {
+              my.discard.filterByType(BASIC_ENERGY).select(count: 3, "Shuffle 3 to deck").moveTo(my.deck)
+              shuffleDeck()
+            }
+          }
+          playRequirement{
+            assert my.discard.filterByType(BASIC_ENERGY)
+          }
+        }
       case ENERGY_SWITCH_129:
         return copy(BlackWhite.ENERGY_SWITCH_94, this);
       case FISHERMAN_130:
