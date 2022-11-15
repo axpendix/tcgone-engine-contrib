@@ -1708,8 +1708,9 @@ public enum DragonFrontiers implements LogicCardInfo {
                 }
               }
             }
-            unregister {discard thisCard}
-            unregisterAfter 2
+            unregisterAfter 2, {
+              discard thisCard
+            }
           }
         }
         onRemoveFromPlay {

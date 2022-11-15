@@ -4375,8 +4375,9 @@ public enum UnifiedMinds implements LogicCardInfo {
                   applyEffect = false
                 }
               }
-              unregister {discard thisCard}
-              unregisterAfter 2
+              unregisterAfter 2, {
+                discard thisCard
+              }
             }
           }
           onRemoveFromPlay {
