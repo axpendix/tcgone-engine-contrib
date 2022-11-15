@@ -1317,7 +1317,7 @@ class TcgStatics {
     if(from instanceof PcsList){
       from = from.findAll {it.cards.filterByType(filterType)}
       if(from.empty) return
-      from = from.select("From?")
+      from = from.select("Move $filterType from?")
     }
     def list = from.cards.filterByType(filterType)
     if(params.type) {
@@ -1327,11 +1327,16 @@ class TcgStatics {
       return
     }
     def playerType = params.playerType ?: bg.currentThreadPlayerType
-    list = list.select(min: (params.may ? 0 : 1), max: (params.count ?: 1), (params.info ? params.info+". " : "") + "Move energy", {true}, playerType)
+    list = list.select(
+            min: (params.may ? 0 : 1),
+            max: (params.count ?: 1),
+            (params.info ? params.info+". " : "") + "Which $filterType to move?",
+            {true},
+            playerType)
     if(!list) return
     if(to instanceof PcsList){
       if(to.empty) return;
-      to = to.select("To?", true, playerType)
+      to = to.select("Move $list to?", true, playerType)
     }
     if(to.owner != playerType){
       targeted (from, src) {
