@@ -72,9 +72,10 @@ public enum CardType {
   G_SPEC(113, "G-SPEC"),
   DELTA(114, "Delta Species"),
   POKEMON_SP(115, "Pokémon SP"),
-  SINGLE_STRIKE(116, "SINGLE STRIKE"),
-  RAPID_STRIKE(117, "RAPID STRIKE"),
-  POKEMON_VSTAR(118, "Pokémon VSTAR"),
+  POKEMON_VSTAR(116, "Pokémon VSTAR"),
+  FUSION_STRIKE(117, "Fusion Strike"),
+  SINGLE_STRIKE(118, "Single Strike"),
+  RAPID_STRIKE(119, "Rapid Strike"),
 
 
   NOT_IMPLEMENTED(201),
