@@ -1828,16 +1828,23 @@ public enum RubySapphireNG implements LogicCardInfo {
         text "Search your deck for up to 3 different types of basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward." +
           "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card."
         onPlay {
-          my.deck.select(min:0, max:3, "Select up to 3 different types of basic Energy cards", cardTypeFilter(BASIC_ENERGY), self.owner,
-            {
-              CardList list->
-                for (Type t1:Type.values()) {
-                  if (list.findAll{it.asEnergyCard().containsTypePlain(t1)}.size() >= 2) {
-                    return false
-                  }
-                }
-                return true
-            }).showToOpponent("Selected Basic Energy cards").moveTo(my.hand)
+          my.deck.select2(
+                  min: 0, max: 3,
+                  text: "Select up to 3 different types of basic Energy cards",
+                  player: self.owner,
+                  filter: cardTypeFilter(BASIC_ENERGY),
+                  passFilter: { CardList cardList ->
+                    for (Card card : cardList) {
+                      for (Card card2 : cardList) {
+                        if (card != card2 && ((BasicEnergyCard)card).getBasicType() == ((BasicEnergyCard)card2).getBasicType()) {
+                          return false
+                        }
+                      }
+                    }
+                    return true
+                  })
+                  .showToOpponent("Selected Basic Energy cards")
+                  .moveTo(my.hand)
           shuffleDeck()
         }
         playRequirement{
