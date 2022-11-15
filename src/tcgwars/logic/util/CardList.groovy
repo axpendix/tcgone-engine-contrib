@@ -318,6 +318,36 @@ public class CardList extends ArrayList<Card> {
     return !isEmpty();
   }
 
+  /**
+   * this version accepts all parameters as named params and should be preferred onward.
+   * the previous version "select" has been overloaded too many times until it creates confusion / uncertainty.
+   */
+  def CardList select2 (Map params) {
+    int min = params.get("min") ?: 1 as int
+    int max = params.get("max") ?: 1 as int
+    int count = params.get("count") ?: 0 as int
+    if (count) {
+      count = Math.min(this.size(), count)
+      min = count
+      max = count
+    }
+    CardList cards = this;
+    boolean hidden = params.hidden ?: false
+    if (hidden && this.zoneType == ZoneType.HAND) {
+      cards = this.shuffledCopy()
+    }
+    def ret = TcgStatics.bg()
+            .getClient(params.player as PlayerType ?: TcgStatics.bg().currentThreadPlayerType)
+            .selectCard(new CardSelectUIRequestBuilder()
+                    .setMinMax(min, max)
+                    .setInfo(params.text ?: "Select cards" as String)
+                    .setCards(cards)
+                    .setCustomCardFilter(params.filter != null ? params.filter as CustomCardFilter : null)
+                    .setCustomPassFilter(params.passFilter != null ? params.passFilter as CustomPassFilter : null)
+                    .setShowAsHidden(hidden))
+    return ret
+  }
+
   def CardList select(Closure filter = { true }, PlayerType playerType = TcgStatics.bg().currentThreadPlayerType) {
     select([:], "Select", filter, playerType)
   }
