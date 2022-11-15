@@ -1920,9 +1920,11 @@ public enum HiddenLegendsNG implements LogicCardInfo {
           "This card stays in play when you play it. Discard this card if another Stadium card comes into play."
         def eff = null
         onPlay {
-          eff = getter(GET_RESISTANCES, LAST) {holder->
-            if (holder.effect.target.types.contains(P) || holder.effect.target.types.contains(F)) {
-              holder.object.clear()
+          eff = delayed {
+            before APPLY_RESISTANCE, {
+              if (ef.attacker.types.containsAny(new TypeSet(F, P))) {
+                prevent()
+              }
             }
           }
         }
