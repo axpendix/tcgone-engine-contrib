@@ -131,7 +131,7 @@ public enum RebelClash implements LogicCardInfo {
   BINACLE_103 ("Binacle", "103", Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
   BARBARACLE_104 ("Barbaracle", "104", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
   ROLYCOLY_105 ("Rolycoly", "105", Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
-  CARKOAL_106 ("Carkoal", "106", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
+  CARKOL_106 ("Carkol", "106", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
   COALOSSAL_107 ("Coalossal", "107", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_]),
   SANDACONDA_V_108 ("Sandaconda V", "108", Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _FIGHTING_]),
   FALINKS_109 ("Falinks", "109", Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
@@ -2452,7 +2452,7 @@ public enum RebelClash implements LogicCardInfo {
         }
       };
       case COALOSSAL_107:
-      return evolution (this, from:"Carkoal", hp:HP160, type:F, retreatCost:4) {
+      return evolution (this, from:"Carkol", hp:HP160, type:F, retreatCost:4) {
         weakness G
         bwAbility "Tar Generator", {
           text "Once during your turn, you may search your discard pile for up to 1 [R] Energy and 1 [F] Energy and attach them to your Pokémon in any way you like."
