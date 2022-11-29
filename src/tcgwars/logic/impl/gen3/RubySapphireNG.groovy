@@ -1862,20 +1862,17 @@ public enum RubySapphireNG implements LogicCardInfo {
       case POKENAV_88:
       return itemCard (this) {
         text "Look at the top 3 cards of your deck, and choose a Basic Pokémon, Evolution card, or Energy card. Show it to your opponent and put it into your hand. Put the 2 other cards back on top of your deck in any order."
-        CardList topThree
         playRequirement{
-          topThree = my.deck.take(3)
-          assert topThree : "You have no remaining cards in your deck"
+          assert my.deck.notEmpty : "You have no remaining cards in your deck"
         }
         onPlay {
-          bc "$topThree"
-          CardList sel = topThree.select(min:0, "Top 7 cards of your deck. You may choose to reveal a Basic Pokémon, Evolution card or Energy Card and put it into your hand.\nThe cards that were not revealed (or all three if skipping selection) will go back on top of your deck in any order of your choice.", {it.cardTypes.is(POKEMON) || it.cardTypes.is(ENERGY)})
-          if (sel)
-            sel.showToOpponent("Your opponent used PokéNav. They're putting this card in their hand.").moveTo(my.hand)
-          bc "$topThree"
+          CardList topThree = my.deck.subList(0, 3)
+          CardList sel = topThree.select2(min:0, text:"Top 3 cards of your deck. You may choose to reveal a Basic Pokémon, Evolution card or Energy Card and put it into your hand.\nRemaining cards will be put on top of your deck in order of your choice.", filter:{it.cardTypes.isIn(BASIC, EVOLUTION, ENERGY)})
+                  .showToOpponent("Your opponent used PokéNav. They're putting this card in their hand.")
+                  .moveTo(my.hand)
           def rearrangeSize = Math.min(sel ? 2 : 3, deck.size())
           if (rearrangeSize > 1) {
-            def list = rearrange(deck.take(rearrangeSize) as CardList, "Rearrange top $rearrangeSize cards in your deck")
+            def list = rearrange(deck.subList(0,rearrangeSize), "Rearrange top $rearrangeSize cards in your deck")
             deck.setSubList(0, list)
             bc "${thisCard.player} rearranged the top $rearrangeSize cards of their deck."
           }
@@ -1892,19 +1889,17 @@ public enum RubySapphireNG implements LogicCardInfo {
       case DARKNESS_ENERGY_93:
         return copy(Emerald.DARKNESS_ENERGY_86, this)
       case METAL_ENERGY_94:
-      return specialEnergy (this, [[C]]) {
+      return specialEnergy (this, [[M]]) {
           text: "Damage done by attacks to the Pokémon that [M] Energy is attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the Pokémon that [M] Energy is attached to isn't Metal. [M] Energy provides Metal. (Doesn't count as a basic Energy card)"
           def eff
           onPlay {reason->
             eff = delayed {
               before APPLY_ATTACK_DAMAGES, {
-                if (self.types.contains(M)) {
-                  targeted self, Source.SRC_SPENERGY, {
-                    bg.dm().each {
-                      if( it.to == self && it.dmg.value && it.notNoEffect){
-                        it.dmg -= hp(10)
-                        bc "Metal Energy -10 damage"
-                      }
+                bg.dm().each {
+                  if(it.to == self && it.dmg.value && it.notNoEffect && self.types.contains(M)){
+                    targeted self, Source.SRC_SPENERGY, {
+                      it.dmg -= hp(10)
+                      bc "Metal Energy -10 damage"
                     }
                   }
                 }
