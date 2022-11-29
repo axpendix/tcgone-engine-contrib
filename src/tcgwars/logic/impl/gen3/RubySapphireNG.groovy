@@ -1829,22 +1829,22 @@ public enum RubySapphireNG implements LogicCardInfo {
           "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card."
         onPlay {
           my.deck.select2(
-                  min: 0, max: 3,
-                  text: "Select up to 3 different types of basic Energy cards",
-                  player: self.owner,
-                  filter: cardTypeFilter(BASIC_ENERGY),
-                  passFilter: { CardList cardList ->
-                    for (Card card : cardList) {
-                      for (Card card2 : cardList) {
-                        if (card != card2 && ((BasicEnergyCard)card).getBasicType() == ((BasicEnergyCard)card2).getBasicType()) {
-                          return false
-                        }
-                      }
-                    }
-                    return true
-                  })
-                  .showToOpponent("Selected Basic Energy cards")
-                  .moveTo(my.hand)
+            min: 0, max: 3,
+            text: "Select up to 3 different types of basic Energy cards",
+            player: self.owner,
+            filter: cardTypeFilter(BASIC_ENERGY),
+            passFilter: { CardList cardList ->
+              for (Card card : cardList) {
+                for (Card card2 : cardList) {
+                  if (card != card2 && ((BasicEnergyCard)card).getBasicType() == ((BasicEnergyCard)card2).getBasicType()) {
+                    return false
+                  }
+                }
+              }
+              return true
+            })
+            .showToOpponent("Selected Basic Energy cards")
+            .moveTo(my.hand)
           shuffleDeck()
         }
         playRequirement{
