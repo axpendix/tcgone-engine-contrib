@@ -3338,9 +3338,7 @@ public enum CelestialStorm implements LogicCardInfo {
           typeImagesOverride = [RAINBOW]
           onPlay {reason->
             if (reason == PLAY_FROM_HAND) {
-              targeted null, SRC_SPENERGY, {
-                directDamage(10, self, SRC_SPENERGY)
-              }
+              directDamage(10, self, SRC_SPENERGY)
             }
           }
           getEnergyTypesOverride {

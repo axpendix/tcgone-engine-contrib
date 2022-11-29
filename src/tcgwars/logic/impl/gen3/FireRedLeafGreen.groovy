@@ -2283,11 +2283,11 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           text "Flip a coin. If heads, choose 1 of your Pokémon (excluding Pokémon-ex), and remove all Special Conditions and 6 damage counters from that Pokémon (all if there are less than 6)."
           onPlay {
             flip {
-              def tar = my.all.findAll{(it.numberOfDamageCounters || !(it.noSPC())) && it.topPokemonCard.cardTypes.isNot(EX)}
+              def tar = my.all.findAll{(it.numberOfDamageCounters || it.specialConditions) && it.topPokemonCard.cardTypes.isNot(EX)}
               if(tar){
                 def pcs = tar.select("select 1 of your Pokémon (excluding Pokémon-ex) to remove all Special Conditions and 6 damage counters")
-                clearSpecialCondition(pcs,Source.TRAINER_CARD)
-                heal 60, pcs
+                clearSpecialCondition pcs, Source.TRAINER_CARD
+                heal 60, pcs, Source.TRAINER_CARD
               }
             }
           }
@@ -2412,7 +2412,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
         return basicTrainer (this) {
           text "Switch 1 of your Active Pokémon with 1 of your Benched Pokémon."
           onPlay {
-            sw my.active, my.bench.select()
+            sw my.active, my.bench.select("New Active Pokemon")
           }
           playRequirement{
             assert my.bench : "No benched Pokémon"

@@ -1762,7 +1762,7 @@ public enum Emerald implements LogicCardInfo {
               before BEGIN_TURN,{
                 if(self.numberOfDamageCounters >= 2) {
                   bc "Oran Berry activates"
-                  heal 20, self
+                  heal 20, self, Source.TRAINER_CARD
                   discard thisCard
                 }
               }
@@ -1777,14 +1777,13 @@ public enum Emerald implements LogicCardInfo {
       case PROFESSOR_BIRCH_82:
         return supporter (this) {
           text "Draw cards from your deck until you have 6 cards in your hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
-          CardList myRealHand = null
           playRequirement {
             assert my.deck : "You have no cards in your deck"
-            myRealHand = my.hand.getExcludedList(thisCard)
+            CardList myRealHand = my.hand.getExcludedList(thisCard)
             assert myRealHand.size() < 6 : "You already have 6 or more cards in your hand."
           }
           onPlay {
-            draw ( 6 - myRealHand.size() )
+            draw ( 6 - my.hand.getExcludedList(thisCard).size() )
           }
         };
       case RARE_CANDY_83:

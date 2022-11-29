@@ -1899,11 +1899,9 @@ public enum HiddenLegendsNG implements LogicCardInfo {
           eff = delayed {
             after ATTACH_ENERGY, {
               def pcs = ef.resolvedTarget
-              if (ef.reason==PLAY_FROM_HAND && (pcs.types.contains(W) || pcs.types.contains(F) || pcs.types.contains(M))) {
+              if (pcs.specialConditions && ef.fromHand && (pcs.types.contains(W) || pcs.types.contains(F) || pcs.types.contains(M))) {
                 bc "Island Cave removes all Special Conditions from $pcs"
-                if (pcs.specialConditions) {
-                  clearSpecialCondition(pcs, TRAINER_CARD)
-                }
+                clearSpecialCondition(pcs, TRAINER_CARD)
               }
             }
           }

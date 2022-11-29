@@ -1796,7 +1796,7 @@ public enum SandstormNG implements LogicCardInfo {
           clearSpecialCondition(my.active, TRAINER_CARD)
         }
         playRequirement{
-          assert !my.active.specialConditions.isEmpty() : "Your Active Pokémon needs to have some Special Condition applied to it"
+          assert my.active.specialConditions : "Your Active Pokémon needs to have some Special Condition applied to it"
         }
       };
       case LANETTE_S_NET_SEARCH_87:
@@ -1828,7 +1828,7 @@ public enum SandstormNG implements LogicCardInfo {
         PokemonCardSet pcs = null
         CardList sel = null
         onPlay {
-          evolve(pcs, sel.first(), PLAY_FROM_HAND)
+          evolve(pcs, sel.first())
         }
         playRequirement{
           assert my.all.findAll {it.basic} : "You have no basic Pokémon."
