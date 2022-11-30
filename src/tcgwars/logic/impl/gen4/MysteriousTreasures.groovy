@@ -407,7 +407,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             actionA {
               checkNoSPC()
               checkLastTurn()
-              assert self.getPokemonCards().findAll {it.name.contains("Happiny")} : "Happiny is not found under $self, you can't use this Poké-Power"
+              assert self.getPokemonCards().find {it.name == "Happiny"} : "Happiny is not found under $self, you can't use this Poké-Power"
               assert my.hand : "You don't have any cards in your hand"
               def energyCount = self.cards.energyCount(C)
               assert energyCount : "You have no Energy attached to $self"
@@ -626,12 +626,12 @@ public enum MysteriousTreasures implements LogicCardInfo {
             text "80 damage. If Magby isn’t anywhere under Magmortar, discard 2 Energy cards from your hand. (If you can’t discard 2 Energy cards from your hand, this attack does nothing.)"
             energyCost R, R, C
             attackRequirement {
-              def condition1 = (self.getPokemonCards().any{it.name.contains("Magby")})
+              def condition1 = (self.getPokemonCards().any{it.name == "Magby"})
               def condition2 = (my.hand.filterByType(ENERGY).size() >= 2)
               assert (condition1 || condition2) : "Magby isn't anywhere under Magmortar, and you can't discard 2 Energy cards from your hand"
             }
             onAttack {
-              if (!self.getPokemonCards().any{it.name.contains("Magby")}) {
+              if (!self.getPokemonCards().any{it.name == "Magby"}) {
                 def tar = my.hand.filterByType(ENERGY).select(count:2, "Discard 2 Energies.")
                 afterDamage{
                   tar.discard()
@@ -920,7 +920,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               draw 1
-              if (self.getPokemonCards().any{it.name.contains("Chingling")}) { draw 2 }
+              if (self.getPokemonCards().any{it.name == "Chingling"}) { draw 2 }
             }
           }
           move "Strange Bell", {
@@ -1144,7 +1144,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
           pokeBody "Jumbo Fin", {
             text "If Mantyke is anywhere under Mantine, the Retreat Cost for each of your [W] Pokémon is [C][C] less."
             getterA (GET_RETREAT_COST) { h->
-              if (self.getPokemonCards().any{it.name.contains("Mantyke")} && h.effect.target.owner == self.owner && h.effect.target.types.contains(W)) {
+              if (self.getPokemonCards().any{it.name == "Mantyke"} && h.effect.target.owner == self.owner && h.effect.target.types.contains(W)) {
                 h.object -= 2
               }
             }
@@ -1167,7 +1167,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             text "If your opponent’s Pokémon that has 2 or less Energy cards attached to it attacks Mr. Mime, prevent all damage done to Mr. Mime from that attack. If Mime Jr. is anywhere under Mr. Mime, prevent all effects of that attack, including damage, done to Mr. Mime."
             delayedA {
               before null, self, Source.ATTACK, {
-                if (self.getPokemonCards().any{it.name.contains("Mime Jr.")} && ((self.owner.opposite.pbg.active as PokemonCardSet).cards.energyCount(C) <= 2) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                if (self.getPokemonCards().any{it.name == "Mime Jr."} && ((self.owner.opposite.pbg.active as PokemonCardSet).cards.energyCount(C) <= 2) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
                   bc "$thisAbility prevents effect"
                   prevent()
                 }
@@ -1359,7 +1359,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              if (self.getPokemonCards().findAll {it.name.contains("Bonsly")}){
+              if (self.getPokemonCards().any {it.name == "Bonsly"}){
                 flip { preventAllEffectsNextTurn() }
               }
             }
@@ -2851,7 +2851,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             actionA {
               checkNoSPC()
               checkLastTurn()
-              assert self.getPokemonCards().findAll {it.name.contains("Pichu")} : "Pichu is not found under $self, you can't use this Poké-Power"
+              assert self.getPokemonCards().any {it.name == "Pichu"} : "Pichu is not found under $self, you can't use this Poké-Power"
               assert my.discard.filterByEnergyType(L) : "There are no [L] Energy cards in your discard pile."
               powerUsed()
               my.discard.filterByEnergyType(L).select().moveTo(my.hand)

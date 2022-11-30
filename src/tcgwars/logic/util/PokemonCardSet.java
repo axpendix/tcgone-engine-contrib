@@ -19,15 +19,14 @@ import tcgwars.logic.groovy.TcgStatics;
 import java.io.Serializable;
 import java.util.*;
 
-import static tcgwars.logic.card.CardType.EVOLUTION;
-import static tcgwars.logic.card.CardType.LVL_X;
+import static tcgwars.logic.card.CardType.*;
 
 /**
- * Models an in-game pokemon
+ * Models an in-game Pokemon
  *
  * @author axpendix@hotmail.com
  */
-public class PokemonCardSet implements PokemonStack, Serializable {
+public class PokemonCardSet implements Serializable {
 
   /**
    * This list is automatically sorted (see {@link CardList#setAutosort(boolean)}).
@@ -88,7 +87,6 @@ public class PokemonCardSet implements PokemonStack, Serializable {
    */
   public boolean isEvolution() {
     return getPokemonCards().size() > 1;
-//		return getTopPokemonCard().getCardTypes().is(CardType.EVOLUTION);
   }
 
   /**
@@ -128,7 +126,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
   }
 
   public PokemonCard getTopNonBreakPokemonCard() {
-    for (Card card : cards().filterByType(CardType.POKEMON)) {
+    for (Card card : cards().filterByType(POKEMON)) {
       if (card.getStaticCardTypes().is(CardType.BREAK)) continue;
       return card.asPokemonCard();
     }
@@ -136,7 +134,7 @@ public class PokemonCardSet implements PokemonStack, Serializable {
   }
 
   public PokemonCard getTopNonLevelUpPokemonCard() {
-    for (Card card : cards().filterByType(CardType.POKEMON)) {
+    for (Card card : cards().filterByType(POKEMON)) {
       if (card.getStaticCardTypes().is(CardType.LVL_X)) continue;
       return card.asPokemonCard();
     }
@@ -186,6 +184,17 @@ public class PokemonCardSet implements PokemonStack, Serializable {
       }
     }
     return Collections.unmodifiableList(list);
+  }
+
+  public CardList getPokemonCardsExceptTop() {
+    Card topCard = cards().first();
+    CardList list = new CardList();
+    for (Card card : cards()) {
+      if (card.getCardTypes().isPokemon() && card != topCard) {
+        list.add(card);
+      }
+    }
+    return list;
   }
 
   public HP getFullHP(Battleground bg) {

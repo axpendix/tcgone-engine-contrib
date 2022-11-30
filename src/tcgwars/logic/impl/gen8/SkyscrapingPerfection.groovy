@@ -472,7 +472,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 180
             afterDamage {
               if (defending.evolution) {
-                devolve defending, defending.topPokemonCard, defending.owner.pbg.hand
+                devolve defending, defending.owner.pbg.hand
               }
             }
           }

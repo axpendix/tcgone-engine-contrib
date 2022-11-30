@@ -989,8 +989,7 @@ public enum MajesticDawn implements LogicCardInfo {
                 bg.em().storeObject("Primal_Swirl",bg.turnCount)
                 powerUsed()
                 opp.bench.findAll{it.evolution}.each {
-                  def top = it.topPokemonCard
-                  devolve(it, top, opp.hand)
+                  devolve(it, opp.hand)
                 }
               }
             }

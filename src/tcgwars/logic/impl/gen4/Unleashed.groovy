@@ -210,7 +210,7 @@ public enum Unleashed implements LogicCardInfo {
               int max = self.cards.energyCount(C)
               def tar = opp.all.findAll{ it.evolution }
               multiSelect (tar, 0, max).each {
-                devolve(it, it.topPokemonCard, opp.hand)
+                devolve(it, opp.hand)
               }
             }
           }

@@ -426,17 +426,16 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "Once during your turn (before your attack), you may remove 4 damage counters from Ninetales and discard Ninetales from Vulpix. If you do, search your deck for Ninetales or Ninetales ex and put it onto Vulpix (this counts as evolving Vulpix). Shuffle your deck afterward."
           actionA {
             checkLastTurn()
-            assert self.cards.any {it.name == "Vulpix"} : "You must be able to leave a Vulpix in play"
+            assert self.evolution && self.cards.any {it.name == "Vulpix"} : "You must be able to leave a Vulpix in play"
             powerUsed()
             heal 40, self
-
-            def top=self.topPokemonCard
-            devolve(self, top, my.discard)
-
-            if (my.deck) {
-              def tar = my.deck.search("Evolves from Vulpix", {it.cardTypes.is(EVOLUTION) && (it.name == "Ninetales" || it.name == "Ninetales ex")})
-              if (tar) evolve(self, tar.first())
-              shuffleDeck()
+            devolve(self, my.discard)
+            if (my.all.contains(self)) { // still alive
+              if (my.deck) {
+                def tar = my.deck.search("Evolves from Vulpix", {it.cardTypes.is(EVOLUTION) && (it.name == "Ninetales" || it.name == "Ninetales ex")})
+                if (tar) evolve(self, tar.first())
+                shuffleDeck()
+              }
             }
           }
         }

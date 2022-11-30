@@ -11,7 +11,7 @@ import java.util.stream.StreamSupport;
 /**
  * @author axpendix@hotmail.com
  */
-public class PcsList extends ArrayList<PokemonCardSet> implements PokemonStack {
+public class PcsList extends ArrayList<PokemonCardSet> {
 
   public PcsList() {
   }

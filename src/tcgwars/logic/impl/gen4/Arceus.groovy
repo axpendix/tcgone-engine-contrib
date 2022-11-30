@@ -855,7 +855,7 @@ public enum Arceus implements LogicCardInfo {
             }
             onAttack {
               def pcs = opp.all.findAll{it.evolution}.select("Choose 1 of your opponent's Evolved Pokémon")
-              devolve(pcs, pcs.topPokemonCard, opp.deck)
+              devolve(pcs, opp.deck)
               shuffleDeck(null, TargetPlayer.OPPONENT)
             }
           }
@@ -2407,17 +2407,8 @@ public enum Arceus implements LogicCardInfo {
               assert opp.all.find{it.topPokemonCard.cardTypes.is(LVL_X)} : "Your opponent has no Pokémon LV.X in play"
               powerUsed()
               def pcs = opp.all.findAll{it.topPokemonCard.cardTypes.is(LVL_X)}.select("Choose a Pokémon LV.X")
-              def card = pcs.topPokemonCard
-              def blocked = bg.em().run(new MoveCard(card, opp.deck));
-              if (!blocked) {
-                if (all.contains(pcs)) {
-                  bc "$card Leveled Down"
-                  bg.em().run(new RemoveFromPlay(pcs, new CardList(card)));
-                  bg.em().run(new PreventEvolve(pcs, bg().getTurnCount()));
-                  bg.em().run(new Devolve(pcs));
-                }
-                shuffleDeck()
-              }
+              bg.em().run(new Devolve(pcs, pcs.topPokemonCard, opp.deck).setSource(Source.POKEPOWER))
+              shuffleDeck(null, TargetPlayer.OPPONENT)
             }
           }
           move "Compound Pain", {

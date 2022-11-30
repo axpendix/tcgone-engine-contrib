@@ -251,8 +251,7 @@ public enum DiamondPearl implements LogicCardInfo {
                 if (defending.evolution && confirm ("You may return all Energy cards attached to Dialga to your hand. If you do, remove the highest Stage Evolution card from the Defending Pokémon and shuffle that card into your opponent’s deck.")) {
                   def moved = self.cards.filterByType(ENERGY).moveTo(my.hand)
                   if(moved.stream().anyMatch(self.cards.&contains)) return
-                  def top=defending.topPokemonCard
-                  devolve(defending, top, opp.deck)
+                  devolve(defending, opp.deck)
                   shuffleDeck(null, TargetPlayer.OPPONENT)
                 }
               }
@@ -297,7 +296,7 @@ public enum DiamondPearl implements LogicCardInfo {
             text "As often as you like during your turn (before your attack), if Elekid is anywhere under Electivire, you may move a [L] Energy attached to your Pokémon to Electivire. This power can’t be used if Electivire is affected by a Special Condition."
             actionA {
               checkNoSPC()
-              assert self.getPokemonCards().findAll {it.name.contains("Elekid")} : "Elekid is not found under $self, you can't use this Poké-Power"
+              assert self.getPokemonCards().find {it.name == "Elekid"} : "Elekid is not found under $self, you can't use this Poké-Power"
               def pl=(my.all.findAll {it.cards.filterByEnergyType(L) && it!=self})
               assert pl : "There are no Pokémon other than $self with [L] energy attached."
               powerUsed()
@@ -575,7 +574,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 50
-              if (self.getPokemonCards().findAll {it.name.contains("Budew")}){
+              if (self.getPokemonCards().find {it.name == "Budew"}){
                 damage 30, opp.bench.select()
               }
             }
@@ -597,8 +596,7 @@ public enum DiamondPearl implements LogicCardInfo {
               powerUsed()
               flip {
                 def pcs = list.select("Devolve one of your opponent's evolved Benched Pokémon.")
-                def top = pcs.topPokemonCard
-                devolve(pcs, top, opp.hand)
+                devolve(pcs, opp.hand)
               }
             }
           }
@@ -711,7 +709,7 @@ public enum DiamondPearl implements LogicCardInfo {
               if(self.cards.energyCount(W) >= 3){
                 damage 20
               }
-              if (self.getPokemonCards().findAll {it.name.contains("Azurill")})
+              if (self.getPokemonCards().find {it.name == "Azurill"})
                 flip { apply PARALYZED }
             }
           }
@@ -1232,7 +1230,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
-              if (self.getPokemonCards().findAll {it.name.contains("Munchlax")}) damage 30
+              if (self.getPokemonCards().find {it.name == "Munchlax"}) damage 30
               apply ASLEEP, self
             }
           }
@@ -2254,7 +2252,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              if (self.getPokemonCards().findAll {it.name.contains("Cleffa")}){
+              if (self.getPokemonCards().find {it.name == "Cleffa"}){
                 damage 20
               }
             }
@@ -2352,7 +2350,7 @@ public enum DiamondPearl implements LogicCardInfo {
             onAttack {
               damage 20
               flip {apply PARALYZED}
-              if (self.getPokemonCards().findAll {it.name.contains("Elekid")} && opp.bench){
+              if (self.getPokemonCards().find {it.name == "Elekid"} && opp.bench){
                 damage 20, opp.bench.select()
               }
             }
@@ -2487,7 +2485,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              if (self.getPokemonCards().findAll {it.name.contains("Azurill")})
+              if (self.getPokemonCards().find {it.name == "Azurill"})
                 damage 20
             }
           }
@@ -2673,7 +2671,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               apply POISONED
-              if (self.getPokemonCards().findAll{it.name.contains("Budew")})
+              if (self.getPokemonCards().find{it.name == "Budew"})
                 damage 10
             }
           }

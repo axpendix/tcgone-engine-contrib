@@ -4050,10 +4050,10 @@ public enum UnbrokenBonds implements LogicCardInfo {
           onPlay {
             def pcs = my.all.findAll{it.evolution}.select("Pokémon to devolve")
             def top = pcs.topPokemonCard
-            devolve(pcs, top, my.deck)
-            while(pcs.evolution && confirm("$top was devolved. Devolve the next evolution?")){
+            devolve(pcs, my.deck)
+            while(pcs.evolution && confirm("$top has devolved into $pcs. Devolve once more?")){
               top = pcs.topPokemonCard
-              devolve(pcs, top, my.deck)
+              devolve(pcs, my.deck)
             }
             shuffleDeck()
           }

@@ -782,7 +782,7 @@ public enum RisingRivals implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               powerUsed()
-              devolve(self,self.topPokemonCard,my.hand)
+              devolve(self, my.hand)
             }
           }
           move "Tail Slap", {
@@ -1018,7 +1018,7 @@ public enum RisingRivals implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               powerUsed()
-              devolve(self,self.topPokemonCard,my.hand)
+              devolve(self, my.hand)
             }
           }
           move "Quick Attack", {
@@ -1287,7 +1287,7 @@ public enum RisingRivals implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               powerUsed()
-              devolve(self,self.topPokemonCard,my.hand)
+              devolve(self, my.hand)
             }
           }
           move "Muddy Water", {

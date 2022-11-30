@@ -2354,8 +2354,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             afterDamage {
               if (defending.evolution && !defending.slatedToKO && confirm("Discard 2 Energy to devolve the Defending Pokémon?")) {
                 discardSelfEnergy(C, C)
-                def top=defending.topPokemonCard
-                devolve(defending, top, opp.deck)
+                devolve(defending, opp.deck)
                 shuffleDeck(null, TargetPlayer.OPPONENT)
               }
             }

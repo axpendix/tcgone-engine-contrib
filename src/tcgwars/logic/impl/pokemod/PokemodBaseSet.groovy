@@ -3,6 +3,7 @@ package tcgwars.logic.impl.pokemod
 import tcgwars.logic.effect.gm.PlayCard
 import tcgwars.logic.effect.gm.PlayStadium
 import tcgwars.logic.effect.gm.PlayTrainer
+import tcgwars.logic.impl.gen1.BaseSetNG
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -1609,23 +1610,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         }
       };
       case DEVOLUTION_SPRAY_72:
-      return basicTrainer (this) {
-        text "Choose 1 of your own Pokémon in play and a Stage of Evolution. Discard all Evolution cards of that Stage or higher attached to that Pokémon. That Pokémon is no longer Asleep, Confused, Paralyzed, Poisoned, or anything else that might be the result of an attack (just as if you had evolved it)."
-        onPlay {
-          def pcs = my.all.findAll{it.evolution}.select("Pokémon to devolve")
-          def pkmn = []
-          pkmn.addAll(pcs.pokemonCards)
-          pkmn.remove(pcs.topPokemonCard)
-          def stage = pkmn.size()>1 ? pkmn.select("Choose stage to devolve to").first() : pkmn.first()
-          for(PokemonCard t7:pcs.pokemonCards){
-            if (t7 == stage) break
-            devolve(pcs, t7, my.discard)
-          }
-        }
-        playRequirement{
-          assert my.all.findAll{it.evolution} : "You have no evolved pokemon in play"
-        }
-      };
+        return copy(BaseSetNG.DEVOLUTION_SPRAY, this);
       case IMPOSTER_PROFESSOR_OAK_73:
       return basicTrainer (this) {
         text "Your opponent shuffles his or her hand into his or her deck, then draws 7 cards."

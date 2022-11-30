@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen2
 
+import tcgwars.logic.impl.gen3.CrystalGuardians
 import tcgwars.logic.impl.gen3.FireRedLeafGreen
 
 import static tcgwars.logic.card.HP.*;
@@ -2507,15 +2508,8 @@ public enum AquapolisNG implements LogicCardInfo {
         }
       };
       case MEMORY_BERRY_128:
-      return pokemonTool (this) {
-        text "The Pokémon this card is attached to can use any attack from its Basic Pokémon card or any Evolution card from which the Pokémon evolved. (You still have to pay for that attack's Energy cost.) Discard this card at the end of any turn the Pokémon attacks."
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        allowAttach {to->
-        }
-      };
+        // "The Pokémon this card is attached to can use any attack from its Basic Pokémon card or any Evolution card from which the Pokémon evolved. (You still have to pay for that attack's Energy cost.) Discard this card at the end of any turn the Pokémon attacks."
+        return copy(CrystalGuardians.MEMORY_BERRY_80, this);
       case METAL_CUBE_01_129:
       return basicTrainer (this) {
         text "Before doing damage, you may choose 1 of your opponent's Benched Pokémon and switch it with the Defending Pokémon."

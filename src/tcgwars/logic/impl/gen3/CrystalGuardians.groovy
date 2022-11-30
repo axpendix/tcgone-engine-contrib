@@ -1811,16 +1811,14 @@ public enum CrystalGuardians implements LogicCardInfo {
         def flag = false
         onPlay { reason ->
           eff = getter (GET_MOVE_LIST, self) { holder->
-            if(holder.effect.target.active && holder.effect.target.evolution) {
-              for(card in holder.effect.target.cards.filterByType(STAGE1, BASIC)) {
-                if(card!=holder.effect.target.topPokemonCard){
-                  holder.object.addAll(card.moves)
-                }
+            if(self.active && self.evolution) {
+              for(card in self.pokemonCardsExceptTop) {
+                holder.object.addAll(card.moves)
               }
             }
           }
           eff2 = delayed {
-            before ATTACK_MAIN, {
+            before PROCESS_ATTACK_EFFECTS, {
               flag = (ef.attacker == self)
             }
             before BETWEEN_TURNS, {

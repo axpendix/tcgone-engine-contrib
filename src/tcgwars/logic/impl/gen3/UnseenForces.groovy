@@ -2508,8 +2508,7 @@ public enum UnseenForces implements LogicCardInfo {
 
               def list = opp.bench.findAll { it.evolution }
               def pcs = list.select("Devolve one of your opponent's evolved Pokémon")
-              def top = pcs.topPokemonCard
-              devolve(pcs, top, opp.hand)
+              devolve(pcs, opp.hand)
             }
           }
         }
@@ -3365,8 +3364,7 @@ public enum UnseenForces implements LogicCardInfo {
               if (all.findAll { it.evolution }) {
                 def list = all.findAll { it.evolution }
                 def pcs = list.select("Devolve one Evolved Pokémon")
-                def top = pcs.topPokemonCard
-                devolve(pcs, top, pcs.owner.pbg.hand)
+                devolve(pcs, pcs.owner.pbg.hand)
               }
             }
           }

@@ -1082,9 +1082,7 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost C, C
             onAttack {
               damage 40
-              if (self.getPokemonCards().find {
-                it.name.contains("Igglybuff")
-              }) {
+              if (self.getPokemonCards().find {it.name == "Igglybuff"}) {
                 damage 20
               }
             }
