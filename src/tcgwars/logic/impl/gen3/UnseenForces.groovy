@@ -430,8 +430,7 @@ public enum UnseenForces implements LogicCardInfo {
                   }
                 }
                 after FALL_BACK, pcs, {unregister()}
-                after EVOLVE, pcs, {unregister()}
-                after DEVOLVE, pcs, {unregister()}
+                after CHANGE_STAGE, pcs, {unregister()}
                 unregisterAfter 2
               }
             }
@@ -2188,8 +2187,7 @@ public enum UnseenForces implements LogicCardInfo {
                 directDamage 30, self.owner.opposite.pbg.active//, Source.POKEMON_TOOL or something similar
               }
             }
-            after EVOLVE, self, {check(self)}
-            after DEVOLVE, self, {check(self)}
+            after CHANGE_STAGE, self, {check(self)}
             //TODO: onMove() instead of this
             after PROCESS_ATTACK_EFFECTS, {
               if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
@@ -2232,8 +2230,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
           eff3 = delayed {
-            after EVOLVE, self, {check(self)}
-            after DEVOLVE, self, {check(self)}
+            after CHANGE_STAGE, self, {check(self)}
             //TODO: onMove() instead of this
             after PROCESS_ATTACK_EFFECTS, {
               if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
@@ -2272,8 +2269,7 @@ public enum UnseenForces implements LogicCardInfo {
             h.object = 0
           }
           eff2 = delayed {
-            after EVOLVE, self, {check(self)}
-            after DEVOLVE, self, {check(self)}
+            after CHANGE_STAGE, self, {check(self)}
             //TODO: onMove() instead of this
             after PROCESS_ATTACK_EFFECTS, {
               if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
@@ -2336,8 +2332,7 @@ public enum UnseenForces implements LogicCardInfo {
             h.object.clear()
           }
           eff2 = delayed {
-            after EVOLVE, self, {check(self)}
-            after DEVOLVE, self, {check(self)}
+            after CHANGE_STAGE, self, {check(self)}
             //TODO: onMove() instead of this
             after PROCESS_ATTACK_EFFECTS, {
               if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
@@ -2374,8 +2369,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
           eff2 = delayed {
-            after EVOLVE, self, {check(self)}
-            after DEVOLVE, self, {check(self)}
+            after CHANGE_STAGE, self, {check(self)}
             //TODO: onMove() instead of this
             after PROCESS_ATTACK_EFFECTS, {
               if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
@@ -2409,8 +2403,7 @@ public enum UnseenForces implements LogicCardInfo {
                 it.dmg += hp(20)
               }}
             }
-            after EVOLVE, self, {check(self)}
-            after DEVOLVE, self, {check(self)}
+            after CHANGE_STAGE, self, {check(self)}
             //TODO: onMove() instead of this
             after PROCESS_ATTACK_EFFECTS, {
               if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
@@ -3001,8 +2994,7 @@ public enum UnseenForces implements LogicCardInfo {
                 }
                 unregisterAfter 2
                 after FALL_BACK, pcs, {unregister()}
-                after EVOLVE, pcs, {unregister()}
-                after DEVOLVE, pcs, {unregister()}
+                after CHANGE_STAGE, pcs, {unregister()}
               }
             }
           }

@@ -255,8 +255,7 @@ public enum HolonPhantoms implements LogicCardInfo {
                   }
                 }
                 after FALL_BACK, pcs, {unregister()}
-                after EVOLVE, pcs, {unregister()}
-                after DEVOLVE, pcs, {unregister()}
+                after CHANGE_STAGE, pcs, {unregister()}
                 unregisterAfter 2
               }
             }
@@ -350,8 +349,7 @@ public enum HolonPhantoms implements LogicCardInfo {
                   }
                 }
                 after FALL_BACK, self, {unregister()}
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
+                after CHANGE_STAGE, self, {unregister()}
                 unregisterAfter 2
               }
             }
@@ -850,8 +848,7 @@ public enum HolonPhantoms implements LogicCardInfo {
                   eff.unregister()
                 }
                 after FALL_BACK, self, {unregister()}
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
+                after CHANGE_STAGE, self, {unregister()}
                 unregisterAfter 2
               }
             }

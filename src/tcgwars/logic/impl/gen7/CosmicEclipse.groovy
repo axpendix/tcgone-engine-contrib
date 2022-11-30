@@ -1771,8 +1771,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                 }
                 unregisterAfter 3
                 after FALL_BACK,defending, {unregister()}
-                after EVOLVE,defending, {unregister()}
-                after DEVOLVE,defending, {unregister()}
+                after CHANGE_STAGE,defending, {unregister()}
               }
             }
           }
@@ -3791,8 +3790,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                   }
                   unregisterAfter 2
                   after FALL_BACK, pcs, {unregister()}
-                  after EVOLVE, pcs, {unregister()}
-                  after DEVOLVE, pcs, {unregister()}
+                  after CHANGE_STAGE, pcs, {unregister()}
                 }
               } }
             }

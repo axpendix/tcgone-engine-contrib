@@ -1161,11 +1161,7 @@ public enum BaseSetNG implements LogicCardInfo {
                     eff.unregister()
                     unregister()
                   }
-                  after EVOLVE, defending, {
-                    eff.unregister()
-                    unregister()
-                  }
-                  after DEVOLVE, defending, {
+                  after CHANGE_STAGE, defending, {
                     eff.unregister()
                     unregister()
                   }
@@ -1192,11 +1188,7 @@ public enum BaseSetNG implements LogicCardInfo {
                   eff.unregister()
                   unregister()
                 }
-                after EVOLVE, self, {
-                  eff.unregister()
-                  unregister()
-                }
-                after DEVOLVE, self, {
+                after CHANGE_STAGE, self, {
                   eff.unregister()
                   unregister()
                 }
@@ -1403,8 +1395,7 @@ public enum BaseSetNG implements LogicCardInfo {
                     new Knockout(self.owner.opposite.pbg.active).run(bg)
                   }
                 }
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
+                after CHANGE_STAGE, self, {unregister()}
                 after FALL_BACK, self, {unregister()}
                 unregisterAfter 2
               }

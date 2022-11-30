@@ -2484,8 +2484,7 @@ public enum Deoxys implements LogicCardInfo {
                   }
                 }
               }
-              after EVOLVE, self, { check(self) }
-              after DEVOLVE, self, { check(self) }
+              after CHANGE_STAGE, self, { check(self) }
               after ATTACH_ENERGY, self, { check(self) }
               after CHECK_ABILITIES, { check(self) }
             }
@@ -2525,8 +2524,7 @@ public enum Deoxys implements LogicCardInfo {
           }
           onPlay {reason->
             eff = delayed {
-              after EVOLVE, self, { check(self) }
-              after DEVOLVE, self, { check(self) }
+              after CHANGE_STAGE, self, { check(self) }
               after ATTACH_ENERGY, self, { check(self) }
               after CHECK_ABILITIES, { check(self) }
             }
@@ -2719,8 +2717,7 @@ public enum Deoxys implements LogicCardInfo {
                   }
                 }
                 after FALL_BACK, self, {unregister()}
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
+                after CHANGE_STAGE, self, {unregister()}
                 unregisterAfter 2
               }
             }
@@ -2766,8 +2763,7 @@ public enum Deoxys implements LogicCardInfo {
                   }
                 }
                 unregisterAfter 2
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
+                after CHANGE_STAGE, self, {unregister()}
                 after FALL_BACK, self, {unregister()}
               }
             }

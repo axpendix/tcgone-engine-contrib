@@ -516,8 +516,7 @@ public enum RebelClash implements LogicCardInfo {
                   }
                   unregisterAfter 2
                   after FALL_BACK, pcs, {unregister()}
-                  after EVOLVE, pcs, {unregister()}
-                  after DEVOLVE, pcs, {unregister()}
+                  after CHANGE_STAGE, pcs, {unregister()}
                 }
               }
             }
@@ -2260,8 +2259,7 @@ public enum RebelClash implements LogicCardInfo {
                 }
 
                 after FALL_BACK, self, { unregister() }
-                after EVOLVE, self, { unregister() }
-                after DEVOLVE, self, { unregister() }
+                after CHANGE_STAGE, self, { unregister() }
               }
             }
           }

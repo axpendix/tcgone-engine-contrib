@@ -1711,8 +1711,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                     }
                   }
                   after FALL_BACK, pcs, {unregister()}
-                  after EVOLVE, pcs, {unregister()}
-                  after DEVOLVE, pcs, {unregister()}
+                  after CHANGE_STAGE, pcs, {unregister()}
                   unregisterAfter 2
                 }
               }
@@ -2247,8 +2246,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                   }
                 }
               }
-              after EVOLVE, self, {check(self)}
-              after DEVOLVE, self, {check(self)}
+              after CHANGE_STAGE, self, {check(self)}
               //TODO: onMove() instead of this
               after PROCESS_ATTACK_EFFECTS, {
                 if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){

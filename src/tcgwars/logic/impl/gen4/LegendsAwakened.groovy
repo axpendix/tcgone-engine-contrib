@@ -318,8 +318,7 @@ public enum LegendsAwakened implements LogicCardInfo {
                     new Knockout(atk_pkm).run(bg)
                   }
                 }
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
+                after CHANGE_STAGE, self, {unregister()}
                 after FALL_BACK, self, {unregister()}
                 unregisterAfter 2
               }
@@ -1186,8 +1185,8 @@ public enum LegendsAwakened implements LogicCardInfo {
                       unregister()
                     }
                   }
-                  after SWITCH, defending, { unregister() }
-                  after EVOLVE, defending, { unregister() }
+                  after FALL_BACK, defending, { unregister() }
+                  after CHANGE_STAGE, defending, { unregister() }
                   after REMOVE_FROM_PLAY, defending, {
                     if (ef.removedCards.contains(card)) {
                       unregister()
@@ -1628,8 +1627,7 @@ public enum LegendsAwakened implements LogicCardInfo {
                     }
                   }
                   after FALL_BACK, pcs, { unregister() }
-                  after EVOLVE, pcs, { unregister() }
-                  after DEVOLVE, pcs, { unregister() }
+                  after CHANGE_STAGE, pcs, { unregister() }
                   unregisterAfter 2
                 }
               }
@@ -2312,8 +2310,7 @@ public enum LegendsAwakened implements LogicCardInfo {
                     }
                     unregisterAfter 2
                     after FALL_BACK, pcs, {unregister()}
-                    after EVOLVE, pcs, {unregister()}
-                    after DEVOLVE, pcs, {unregister()}
+                    after CHANGE_STAGE, pcs, {unregister()}
                   }
                 }
               }
@@ -2876,8 +2873,7 @@ public enum LegendsAwakened implements LogicCardInfo {
                   }
                   unregisterAfter 2
                   after SWITCH, defending, {unregister()}
-                  after EVOLVE, defending, {unregister()}
-                  after DEVOLVE, defending, {unregister()}
+                  after CHANGE_STAGE, defending, {unregister()}
                 }
               }
             }

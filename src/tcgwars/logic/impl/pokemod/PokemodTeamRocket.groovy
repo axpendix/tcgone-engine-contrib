@@ -910,8 +910,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
                   }
                 }
                 after FALL_BACK, self, {unregister()}
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
+                after CHANGE_STAGE, self, {unregister()}
 
                 unregisterAfter 2
               }
@@ -973,8 +972,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
                       eff.unregister()
                     }
                     after FALL_BACK, defending, {unregister()}
-                    after EVOLVE, defending, {unregister()}
-                    after DEVOLVE, defending, {unregister()}
+                    after CHANGE_STAGE, defending, {unregister()}
                   }
                 }
               }

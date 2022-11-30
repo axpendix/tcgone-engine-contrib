@@ -485,8 +485,7 @@ public enum CelestialStorm implements LogicCardInfo {
                   }
                 }
                 unregisterAfter 2
-                after EVOLVE,self, {unregister()}
-                after DEVOLVE,self, {unregister()}
+                after CHANGE_STAGE,self, {unregister()}
                 after FALL_BACK,self, {unregister()}
               }
             }
@@ -1136,8 +1135,7 @@ public enum CelestialStorm implements LogicCardInfo {
                   }
                 }
                 unregisterAfter 2
-                after EVOLVE,self, {unregister()}
-                after DEVOLVE,self, {unregister()}
+                after CHANGE_STAGE,self, {unregister()}
                 after FALL_BACK,self, {unregister()}
               }
             }
@@ -1807,8 +1805,7 @@ public enum CelestialStorm implements LogicCardInfo {
                 }
                 unregisterAfter 3
                 after FALL_BACK,defending, {unregister()}
-                after EVOLVE,defending, {unregister()}
-                after DEVOLVE,defending, {unregister()}
+                after CHANGE_STAGE,defending, {unregister()}
               }
             }
           }
@@ -1844,8 +1841,7 @@ public enum CelestialStorm implements LogicCardInfo {
                     }
                   }
                   unregisterAfter 2
-                  after EVOLVE, self, {unregister()}
-                  after DEVOLVE, self, {unregister()}
+                  after CHANGE_STAGE, self, {unregister()}
                   after FALL_BACK, self, {unregister()}
                 }
               }
@@ -1941,8 +1937,7 @@ public enum CelestialStorm implements LogicCardInfo {
                     }
                   }
                   unregisterAfter 2
-                  after EVOLVE, self, {unregister()}
-                  after DEVOLVE, self, {unregister()}
+                  after CHANGE_STAGE, self, {unregister()}
                   after FALL_BACK, self, {unregister()}
                 }
               }
@@ -2461,8 +2456,7 @@ public enum CelestialStorm implements LogicCardInfo {
                       }
                     }
                     after FALL_BACK, pcs, {unregister()}
-                    after EVOLVE, pcs, {unregister()}
-                    after DEVOLVE, pcs, {unregister()}
+                    after CHANGE_STAGE, pcs, {unregister()}
                     unregisterAfter 2
                   }
                 }

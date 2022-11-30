@@ -1985,38 +1985,17 @@ public enum DragonFrontiers implements LogicCardInfo {
         initHook {Card thisCard ->
           def temp
           delayed {
-            after EVOLVE, {
-              if(bg.em().retrieveObject("Imprison") != null){
-                Imprison = bg.em().retrieveObject("Imprison")
-              }
-              if (Imprison.contains(ef.pokemonToBeEvolved)) {
-                bc "${ef.pokemonToBeEvolved} loses its Imprison marker when evolved!"
-                Imprison.remove(ef.pokemonToBeEvolved)
-                bg.em().storeObject("Imprison",Imprison)
-              }
-            }
-            after DEVOLVE, {
+            after CHANGE_STAGE, {
               if(bg.em().retrieveObject("Imprison") != null){
                 Imprison = bg.em().retrieveObject("Imprison")
               }
               def pcs = ef.resolvedTarget
               if (Imprison.contains(pcs)) {
-                bc "${pcs} loses its Imprison marker when devolved!"
+                bc "${pcs} loses its Imprison marker when stage changes!"
                 Imprison.remove(pcs)
                 bg.em().storeObject("Imprison",Imprison)
               }
             }
-            //TODO: Find correct replacement for "pokemonToBeDevolved", to remove above code and use the one below.
-            /* after DEVOLVE, {
-              if(bg.em().retrieveObject("Imprison") != null){
-                Imprison = bg.em().retrieveObject("Imprison")
-              }
-              if (Imprison.contains(ef.pokemonToBeDevolved)) {
-                bc "${ef.pokemonToBeDevolved} loses its Imprison marker when devolved!"
-                Imprison.remove(ef.pokemonToBeDevolved)
-                bg.em().storeObject("Imprison", Imprison)
-              }
-            } */
           }
         }
         pokePower "Imprison", {
@@ -2108,8 +2087,7 @@ public enum DragonFrontiers implements LogicCardInfo {
               }
               unregisterAfter 2
               after FALL_BACK, self, { unregister() }
-              after EVOLVE, self, { unregister() }
-              after DEVOLVE, self, { unregister() }
+              after CHANGE_STAGE, self, { unregister() }
             }
           }
         }
@@ -2277,38 +2255,17 @@ public enum DragonFrontiers implements LogicCardInfo {
         initHook {Card thisCard ->
           def temp
           delayed {
-            after EVOLVE, {
-              if(bg.em().retrieveObject("Shock_Wave") != null){
-                Shock_Wave = bg.em().retrieveObject("Shock_Wave")
-              }
-              if (Shock_Wave.contains(ef.pokemonToBeEvolved)) {
-                bc "${ef.pokemonToBeEvolved} loses its Shock-wave marker when evolved!"
-                Shock_Wave.remove(ef.pokemonToBeEvolved)
-                bg.em().storeObject("Shock_Wave",Shock_Wave)
-              }
-            }
-            after DEVOLVE, {
+            after CHANGE_STAGE, {
               if(bg.em().retrieveObject("Shock_Wave") != null){
                 Shock_Wave = bg.em().retrieveObject("Shock_Wave")
               }
               def pcs = ef.resolvedTarget
               if (Shock_Wave.contains(pcs)) {
-                bc "${pcs} loses its Shock-wave marker when devolved!"
+                bc "${pcs} loses its Shock-wave marker when changed stage!"
                 Shock_Wave.remove(pcs)
                 bg.em().storeObject("Shock_Wave",Shock_Wave)
               }
             }
-            //TODO: Find correct term, to replace pokemonToBeDevolved
-            /* after DEVOLVE, {
-              if(bg.em().retrieveObject("Shock_Wave") != null){
-                Shock_Wave = bg.em().retrieveObject("Shock_Wave")
-              }
-              if (Shock_Wave.contains(ef.pokemonToBeDevolved)) {
-                bc "${ef.pokemonToBeDevolved} loses its Shock-wave marker when devolved!"
-                Shock_Wave.remove(ef.pokemonToBeDevolved)
-                bg.em().storeObject("Shock_Wave",Shock_Wave)
-              }
-            } */
           }
         }
         move "Electromark", {

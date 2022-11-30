@@ -544,9 +544,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
                     eff.unregister()
                   }
                   unregisterAfter 3
-                  after EVOLVE, self, { unregister() }
-                  after DEVOLVE, self, { unregister() }
-                  after LEVEL_UP, self, { unregister() }
+                  after CHANGE_STAGE, self, { unregister() }
                 }
               }
             }

@@ -1248,8 +1248,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
                   new Knockout(self.owner.opposite.pbg.active).run(bg)
                 }
               }
-              after EVOLVE, self, {unregister()}
-              after DEVOLVE, self, {unregister()}
+              after CHANGE_STAGE, self, {unregister()}
               after FALL_BACK, self, {unregister()}
               unregisterAfter 2
             }
@@ -2190,8 +2189,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
                 prev = true
               }
             }
-            after EVOLVE, self, {check(self)}
-            after DEVOLVE, self, {check(self)}
+            after CHANGE_STAGE, self, {check(self)}
             after ATTACH_ENERGY, self, {check(self)}
           }
         }
@@ -2237,8 +2235,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
                 prev = true
               }
             }
-            after EVOLVE, self, {check(self)}
-            after DEVOLVE, self, {check(self)}
+            after CHANGE_STAGE, self, {check(self)}
             after ATTACH_ENERGY, self, {check(self)}
           }
         }

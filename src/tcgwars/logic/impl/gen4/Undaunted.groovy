@@ -434,8 +434,7 @@ public enum Undaunted implements LogicCardInfo {
                   }
                 }
                 after FALL_BACK, self, {unregister()}
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
+                after CHANGE_STAGE, self, {unregister()}
                 unregisterAfter 2
               }
             }
@@ -783,8 +782,7 @@ public enum Undaunted implements LogicCardInfo {
                   }
                   unregisterAfter 3
                   after FALL_BACK, self, {unregister()}
-                  after EVOLVE, self, {unregister()}
-                  after DEVOLVE, self, {unregister()}
+                  after CHANGE_STAGE, self, {unregister()}
                 }
               }
             }
@@ -1089,8 +1087,7 @@ public enum Undaunted implements LogicCardInfo {
                     }
                   }
                   unregisterAfter 2
-                  after EVOLVE, self, { unregister() }
-                  after DEVOLVE, self, { unregister() }
+                  after CHANGE_STAGE, self, { unregister() }
                   after FALL_BACK, self, { unregister() }
                 }
               }

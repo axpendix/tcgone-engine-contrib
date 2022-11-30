@@ -678,8 +678,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
                 }
                 unregisterAfter 3
                 after FALL_BACK, pcs, {unregister()}
-                after EVOLVE, pcs, {unregister()}
-                after DEVOLVE, pcs, {unregister()}
+                after CHANGE_STAGE, pcs, {unregister()}
               }
               bg.em().run(new CheckAbilities())
             }
@@ -1482,8 +1481,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
                     }
                   }
                 }
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
+                after CHANGE_STAGE, self, {unregister()}
                 after FALL_BACK, self, {unregister()}
                 unregisterAfter 2
               }
@@ -2153,8 +2151,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
                         h.object = h.object.collect { it = it.copy(); it.type = PSYCHIC; it }
                       }
                     }
-                    after EVOLVE, pcs, {unregister()}
-                    after DEVOLVE, pcs, {unregister()}
+                    after CHANGE_STAGE, pcs, {unregister()}
                     after FALL_BACK, pcs, {unregister()}
                     unregister {
                       ef.unregister()
@@ -2229,8 +2226,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
                     }
                   }
                   unregisterAfter 2
-                  after EVOLVE, self, {unregister()}
-                  after DEVOLVE, self, {unregister()} //Could be copied by an evolution.
+                  after CHANGE_STAGE, self, {unregister()}
                   after FALL_BACK, self, {unregister()}
                 }
               }
@@ -4487,8 +4483,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
                   }
                 }
               }
-              after EVOLVE, self, { check(self) }
-              after DEVOLVE, self, { check(self) }
+              after CHANGE_STAGE, self, { check(self) }
               after ATTACH_ENERGY, self, { check(self) }
               after CHECK_ABILITIES, { check(self) } // Miraculous Wind (LIGHT_DRAGONITE_14) and Spectral Breach (DUSKNOIR_45)
             }

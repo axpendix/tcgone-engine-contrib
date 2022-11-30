@@ -1342,8 +1342,7 @@ public enum Arceus implements LogicCardInfo {
                     }
                   }
                   unregisterAfter 2
-                  after EVOLVE, self, {unregister()}
-                  after DEVOLVE, self, {unregister()}
+                  after CHANGE_STAGE, self, {unregister()}
                   after FALL_BACK, self, {unregister()}
                 }
               }
@@ -1971,8 +1970,7 @@ public enum Arceus implements LogicCardInfo {
                   }
                 }
                 unregisterAfter 2
-                after EVOLVE,self, {unregister()}
-                after DEVOLVE,self, {unregister()}
+                after CHANGE_STAGE,self, {unregister()}
                 after FALL_BACK,self, {unregister()}
               }
             }

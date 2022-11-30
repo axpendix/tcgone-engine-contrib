@@ -3090,8 +3090,7 @@ public enum BattleStyles implements LogicCardInfo {
         def checkEff
         onPlay {reason->
           checkEff = delayed {
-            after EVOLVE, { check self }
-            after DEVOLVE, { check self }
+            after CHANGE_STAGE, { check self }
             after ATTACH_ENERGY, self, { check self }
           }
         }
@@ -3132,8 +3131,7 @@ public enum BattleStyles implements LogicCardInfo {
                 }
               }
             }
-            after EVOLVE, { check self }
-            after DEVOLVE, { check self }
+            after CHANGE_STAGE, { check self }
             after ATTACH_ENERGY, self, { check self }
           }
         }

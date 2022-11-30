@@ -278,9 +278,7 @@ public enum SupremeVictors implements LogicCardInfo {
                   }
                   unregisterAfter 2
                   after FALL_BACK, pcs, {unregister()}
-                  after EVOLVE, pcs, {unregister()}
-                  after DEVOLVE, pcs, {unregister()}
-                  after LEVEL_UP, pcs, {unregister()}
+                  after CHANGE_STAGE, pcs, {unregister()}
                 }
               }
             }
@@ -1409,9 +1407,7 @@ public enum SupremeVictors implements LogicCardInfo {
                       }
                       after FALL_BACK, pcs, { unregister() }
                       after KNOCKOUT, pcs, { unregister() }
-                      after EVOLVE, pcs, { unregister() }
-                      after DEVOLVE, pcs, { unregister() }
-                      after LEVEL_UP, pcs, { unregister() }
+                      after CHANGE_STAGE, pcs, { unregister() }
                     }
                   }
                 }
@@ -1552,10 +1548,8 @@ public enum SupremeVictors implements LogicCardInfo {
                     }
                   }
                   unregisterAfter 2
-                  after EVOLVE, self, {unregister()}
-                  after DEVOLVE, self, {unregister()}
+                  after CHANGE_STAGE, self, {unregister()}
                   after FALL_BACK, self, {unregister()}
-                  after LEVEL_UP, self, { unregister() }
                 }
               }
             }
@@ -1810,10 +1804,8 @@ public enum SupremeVictors implements LogicCardInfo {
                     eff.unregister()
                   }
                   unregisterAfter 2
-                  after SWITCH, defending, {unregister()}
-                  after EVOLVE, defending, {unregister()}
-                  after DEVOLVE, defending, {unregister()}
-                  after LEVEL_UP, defending, {unregister()}
+                  after FALL_BACK, defending, {unregister()}
+                  after CHANGE_STAGE, defending, {unregister()}
                 }
               }
             }
@@ -3350,9 +3342,7 @@ public enum SupremeVictors implements LogicCardInfo {
                 }
                 unregisterAfter 2
                 after FALL_BACK, pcs, {unregister()}
-                after EVOLVE, pcs, {unregister()}
-                after DEVOLVE, pcs, {unregister()}
-                after LEVEL_UP, pcs, {unregister()}
+                after CHANGE_STAGE, pcs, {unregister()}
               }
             }
           }
@@ -3884,10 +3874,8 @@ public enum SupremeVictors implements LogicCardInfo {
                     }
                   }
                   unregisterAfter 2
-                  after EVOLVE, self, {unregister()}
-                  after DEVOLVE, self, {unregister()}
+                  after CHANGE_STAGE, self, {unregister()}
                   after FALL_BACK, self, {unregister()}
-                  after LEVEL_UP, self, {unregister()}
                 }
               }
             }

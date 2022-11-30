@@ -542,8 +542,7 @@ class TcgStatics {
         }
         unregisterAfter 2
         after FALL_BACK, defending, {unregister()}
-        after EVOLVE, defending, {unregister()}
-        after DEVOLVE, defending, {unregister()}
+        after CHANGE_STAGE, defending, {unregister()}
       }
     } }
   }
@@ -835,8 +834,7 @@ class TcgStatics {
         }
       }
       unregisterAfter(2)
-      after EVOLVE, self, {unregister()}
-      after DEVOLVE, self, {unregister()}
+      after CHANGE_STAGE, self, {unregister()}
       after FALL_BACK, self, {unregister()}
     }
   }
@@ -862,8 +860,7 @@ class TcgStatics {
         }
       }
       unregisterAfter(2)
-      after EVOLVE, self, {unregister()}
-      after DEVOLVE, self, {unregister()}
+      after CHANGE_STAGE, self, {unregister()}
       after FALL_BACK, self, {unregister()}
     }
   }
@@ -879,8 +876,7 @@ class TcgStatics {
         }
       }
       unregisterAfter(2)
-      after EVOLVE, self, {unregister()}
-      after DEVOLVE, self, {unregister()}
+      after CHANGE_STAGE, self, {unregister()}
       after FALL_BACK, self, {unregister()}
     }
   }
@@ -933,12 +929,10 @@ class TcgStatics {
         before FALL_BACK, defending, { bc "${thisMove.name} prevents switch."; prevent()}
         if(asLongAsSelfIsActive){
           after FALL_BACK, self, {unregister()}
-          after EVOLVE, self, {unregister()}
-          after DEVOLVE, self, {unregister()}
+          after CHANGE_STAGE, self, {unregister()}
         }
         after FALL_BACK, defending, {unregister()}
-        after EVOLVE, defending, {unregister()}
-        after DEVOLVE, defending, {unregister()}
+        after CHANGE_STAGE, defending, {unregister()}
         unregisterAfter 2
       }
     } } }
@@ -1148,8 +1142,7 @@ class TcgStatics {
       }
       unregisterAfter 2
       after FALL_BACK, self, {unregister()}
-      after EVOLVE, self, {unregister()}
-      after DEVOLVE, self, {unregister()}
+      after CHANGE_STAGE, self, {unregister()}
     }
   }
 
@@ -1247,8 +1240,7 @@ class TcgStatics {
         }
         unregisterAfter 2
         after FALL_BACK, pcs, {unregister()}
-        after EVOLVE, pcs, {unregister()}
-        after DEVOLVE, pcs, {unregister()}
+        after CHANGE_STAGE, pcs, {unregister()}
       }
     }
   }
@@ -1268,8 +1260,7 @@ class TcgStatics {
         }
         unregisterAfter 2
         after FALL_BACK, pcs, {unregister()}
-        after EVOLVE, pcs, {unregister()}
-        after DEVOLVE, pcs, {unregister()}
+        after CHANGE_STAGE, pcs, {unregister()}
       }
     }
   }
@@ -1285,8 +1276,7 @@ class TcgStatics {
         }
         unregisterAfter 3
         after FALL_BACK, pcs, {unregister()}
-        after EVOLVE, pcs, {unregister()}
-        after DEVOLVE, pcs, {unregister()}
+        after CHANGE_STAGE, pcs, {unregister()}
       }
     }
   }
@@ -1547,8 +1537,7 @@ class TcgStatics {
 
   static void cantBeHealed(PokemonCardSet defending){
     delayed {
-      after EVOLVE, defending, {unregister()}
-      after DEVOLVE, defending, {unregister()}
+      after CHANGE_STAGE, defending, {unregister()}
       after FALL_BACK, defending, {unregister()}
 
       before REMOVE_DAMAGE_COUNTER, defending, {
@@ -2039,8 +2028,7 @@ class TcgStatics {
         }
         unregisterAfter 2
         after FALL_BACK, self, {unregister()}
-        after EVOLVE, self, {unregister()}
-        after DEVOLVE, self, {unregister()}
+        after CHANGE_STAGE, self, {unregister()}
       }
     }
     c1.resolveStrategy=Closure.DELEGATE_FIRST
@@ -2168,8 +2156,7 @@ class TcgStatics {
         }
       }
       after FALL_BACK, pcs, {unregister()}
-      after EVOLVE, pcs, {unregister()}
-      after DEVOLVE, pcs, {unregister()}
+      after CHANGE_STAGE, pcs, {unregister()}
       unregisterAfter 3
     }
   }

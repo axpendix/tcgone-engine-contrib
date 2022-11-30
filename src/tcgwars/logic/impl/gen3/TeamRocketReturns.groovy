@@ -710,8 +710,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
                     }
                   }
                   after FALL_BACK, pcs, {unregister()}
-                  after EVOLVE, pcs, {unregister()}
-                  after DEVOLVE, pcs, {unregister()}
+                  after CHANGE_STAGE, pcs, {unregister()}
                   unregisterAfter 2
                 }
               }
@@ -2497,8 +2496,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
                   }
                 }
               }
-              after EVOLVE, self, { check(self) }
-              after DEVOLVE, self, { check(self) }
+              after CHANGE_STAGE, self, { check(self) }
               after ATTACH_ENERGY, self, { check(self) }
               after CHECK_ABILITIES, { check(self) }
             }
