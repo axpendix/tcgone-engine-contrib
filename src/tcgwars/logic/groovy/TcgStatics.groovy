@@ -608,6 +608,9 @@ class TcgStatics {
   static evolve (PokemonCardSet pcs, Card card) {
     bg().em().run(new Evolve(pcs, card))
   }
+  static evolveDirect (PokemonCardSet pcs, Card card) {
+    bg().em().run(new Evolve(pcs, card).setDirect(true))
+  }
   static devolve (PokemonCardSet pcs, Card card, CardList newLocation){
     bg().em().run(new Devolve(pcs, card, newLocation))
   }

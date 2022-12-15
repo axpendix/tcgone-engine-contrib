@@ -1,4 +1,4 @@
-package tcgwars.logic.impl.gen3;
+package tcgwars.logic.impl.gen3
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -1828,13 +1828,23 @@ public enum SandstormNG implements LogicCardInfo {
         PokemonCardSet pcs = null
         CardList sel = null
         onPlay {
-          evolve(pcs, sel.first())
+//          def eff = delayed {
+//            before PREVENT_EVOLVE, pcs, null, EVOLVE, {prevent()}
+//          }
+//          try {
+//            bg().em().activateInnerEffect(new Evolve(pcs, sel.first()))
+//          } finally {
+//            eff.unregister()
+//          }
+          bg().em().activateInnerEffect(new Evolve(pcs, sel.first()).setDirect(true))
         }
         playRequirement{
-          assert my.all.findAll {it.basic} : "You have no basic Pokémon."
-          assert my.hand.filterByType(STAGE1, STAGE2) : "You have no Stage 1 or Stage 2 card in hand"
-          pcs = my.all.findAll {it.basic}.select("Choose the pokemon to be evolved")
-          def possibleEvolutions = my.hand.filterByType(STAGE1, STAGE2).findAll{ EvolutionPokemonCard evoCard ->
+          def targets = my.all.findAll { it.basic }
+          def evolutions = my.hand.filterByType(STAGE1, STAGE2)
+          assert targets : "You have no basic Pokémon."
+          assert evolutions : "You have no Stage 1 or Stage 2 card in hand"
+          pcs = targets.select("Choose the pokemon to be evolved")
+          def possibleEvolutions = evolutions.findAll{ EvolutionPokemonCard evoCard ->
             ( evoCard.predecessor == pcs.name ) ||
             ( bg.gm().getBasicsFromStage2(evoCard.name).contains(pcs.name) )
           }
