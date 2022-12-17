@@ -1061,21 +1061,26 @@ public enum AquapolisNG implements LogicCardInfo {
       };
       case VILEPLUME_43:
       return evolution (this, from:"Gloom", hp:HP100, type:G, retreatCost:2) {
-        weakness P
+        weakness FIRE
         move "Poison Scent", {
-          text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Poisoned and Confused. If tails, the Defending Pokémon is now Poisoned and Asleep."
+          text "Flip a coin. If heads, the Defending Pokémon is now Poisoned and Confused. If tails, the Defending Pokémon is now Poisoned and Asleep."
           energyCost G
-          attackRequirement {}
           onAttack {
-            damage 10
+            flip 1, {
+              apply POISONED
+              apply CONFUSED
+            }, {
+              apply POISONED
+              apply ASLEEP
+            }
           }
         }
         move "Addictive Pollen", {
           text "40 damage. Flip a coin. If heads, your opponent can't play Supporter cards during his or her next turn."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 40
+            flip {opponentCantPlaySupporterNextTurn(delegate)}
           }
         }
       };
