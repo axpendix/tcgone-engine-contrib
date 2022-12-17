@@ -325,12 +325,6 @@ public class CardList extends ArrayList<Card> {
   def CardList select2 (Map params) {
     int min = params.get("min") ?: 1 as int
     int max = params.get("max") ?: 1 as int
-    int count = params.get("count") ?: 0 as int
-    if (count) {
-      count = Math.min(this.size(), count)
-      min = count
-      max = count
-    }
     CardList cards = this;
     boolean hidden = params.hidden ?: false
     if (hidden && this.zoneType == ZoneType.HAND) {
