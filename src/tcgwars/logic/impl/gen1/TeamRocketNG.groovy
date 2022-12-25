@@ -1705,17 +1705,19 @@ public enum TeamRocketNG implements LogicCardInfo {
             delayed{
               register{
                 effect1 = getter IS_ABILITY_BLOCKED, {h->
-                  if (h.effect.ability instanceof BwAbility) {
+                  if (h.effect.ability instanceof PokemonPower) {
                     h.object=true
                   }
                 }
                 effect2 = getter IS_GLOBAL_ABILITY_BLOCKED, {h->
                   h.object=true
                 }
+                bc "Goop Gas Attack will block All Pokémon Powers until the end of next turn."
               }
               unregister{
                 effect1.unregister()
                 effect2.unregister()
+                bc "Goop Gas Attack fades away"
               }
               unregisterAfter 2
             }
