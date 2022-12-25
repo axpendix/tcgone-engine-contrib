@@ -449,14 +449,15 @@ public enum LostThunder implements LogicCardInfo {
               checkLastTurn()
               assert my.all.findAll {it.basic} : "You have no basic Pokémon."
               assert my.hand.filterByType(STAGE2) : "You have no Stage 2 in hand"
-              def tar = my.all.findAll {it.basic}.select("Choose the pokemon to be evolved")
+              def tar = my.all.findAll {it.basic}.select("Choose the pokemon to be evolved", false)
+              assert tar : "Cancelled"
               def possibleEvolutions = my.hand.filterByType(STAGE2).findAll{
                 bg.gm().getBasicsFromStage2(it.name).contains(tar.name)
               }
               assert possibleEvolutions : "There is no Stage 2 in hand $tar can evolve to"
               powerUsed()
               def stage2 = possibleEvolutions.select("Choose a pokémon to evolve $tar").first()
-              evolve(tar, stage2)
+              bg().em().activateInnerEffect(new Evolve(tar, stage2).setDirect(true))
             }
           }
           move "Solar Beam" , {
