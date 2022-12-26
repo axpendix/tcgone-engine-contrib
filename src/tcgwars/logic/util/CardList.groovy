@@ -323,8 +323,8 @@ public class CardList extends ArrayList<Card> {
    * the previous version "select" has been overloaded too many times until it creates confusion / uncertainty.
    */
   def CardList select2 (Map params) {
-    int min = params.get("min") ?: 1 as int
-    int max = params.get("max") ?: 1 as int
+    int min = params.get("min") != null ? params.get("min") as int : 1
+    int max = params.get("max") != null ? params.get("max") as int : 1
     CardList cards = this;
     boolean hidden = params.hidden ?: false
     if (hidden && this.zoneType == ZoneType.HAND) {
@@ -334,7 +334,7 @@ public class CardList extends ArrayList<Card> {
             .getClient(params.player as PlayerType ?: TcgStatics.bg().currentThreadPlayerType)
             .selectCard(new CardSelectUIRequestBuilder()
                     .setMinMax(min, max)
-                    .setInfo(params.text ?: "Select cards" as String)
+                    .setInfo(params.text as String ?: "Select cards")
                     .setCards(cards)
                     .setCustomCardFilter(params.filter != null ? params.filter as CustomCardFilter : null)
                     .setCustomPassFilter(params.passFilter != null ? params.passFilter as CustomPassFilter : null)
