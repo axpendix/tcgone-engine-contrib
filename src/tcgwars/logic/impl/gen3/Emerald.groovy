@@ -84,7 +84,7 @@ public enum Emerald implements LogicCardInfo {
   MUDKIP_56 ("Mudkip", "56", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
   NUMEL_57 ("Numel", "57", Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
   NUMEL_58 ("Numel", "58", Rarity.UNCOMMON, [BASIC, POKEMON, _FIRE_]),
-  PICHU_59 ("Pichu", "59", Rarity.COMMON, [BASIC, BABY, POKEMON, _LIGHTNING_]),
+  PICHU_59 ("Pichu", "59", Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
   PIKACHU_60 ("Pikachu", "60", Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
   RALTS_61 ("Ralts", "61", Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
   RHYHORN_62 ("Rhyhorn", "62", Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
