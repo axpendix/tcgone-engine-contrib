@@ -2320,8 +2320,8 @@ public enum TeamRocketReturns implements LogicCardInfo {
             opp.hand.moveTo(hidden:true, opp.deck)
             shuffleDeck()
             shuffleDeck(null,TargetPlayer.OPPONENT)
-            draw choose(1..my.prizeCardSet.size(),"How many cards would you like to draw?")
-            draw(oppChoose(1..opp.prizeCardSet.size(),"How many cards would you like to draw?"),TargetPlayer.OPPONENT)
+            draw choose(1..my.prizeCardSet.size(),"How many cards would you like to draw?",my.prizeCardSet.size())
+            draw(oppChoose(1..opp.prizeCardSet.size(),"How many cards would you like to draw?",opp.prizeCardSet.size()),TargetPlayer.OPPONENT)
           }
           playRequirement{
           }
