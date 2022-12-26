@@ -867,7 +867,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             delayedA {
               before BEGIN_TURN, {
                 if(my.active.isSPC(ASLEEP)){
-                  directDamage 20, self, SRC_ABILITY
+                  directDamage 20, my.active, SRC_ABILITY
                 }
                 if(opp.active.isSPC(ASLEEP)){
                   directDamage 20, opp.active, SRC_ABILITY
