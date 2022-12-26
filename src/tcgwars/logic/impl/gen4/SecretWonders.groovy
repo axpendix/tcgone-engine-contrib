@@ -1427,15 +1427,15 @@ f
           weakness R, PLUS20
           resistance W, MINUS20
           pokePower "Grass Whistle", {
-            text "Once during your turn , you may remove 1 damage counter from each of your Pokémon. You can’t use more than 1 Grass Whistle Poké-Power each turn. This power can’t be used if Sunflora is affected by a Special Condition."
+            text "Once during your turn , you may remove 1 damage counter from each of your [G] Pokémon. You can’t use more than 1 Grass Whistle Poké-Power each turn. This power can’t be used if Sunflora is affected by a Special Condition."
             actionA {
               checkLastTurn()
               checkNoSPC()
-              assert my.all.find{it.numberOfDamageCounters} : "Your Pokémon are healthy"
+              assert my.all.find{it.types.contains(G) && it.numberOfDamageCounters} : "Your [G] Pokémon are healthy"
               assert bg.em().retrieveObject("Grass Whistle") != bg.turnCount : "You cannot use Grass Whistle more than once per turn!"
               bg.em().storeObject("Grass Whistle", bg.turnCount)
               powerUsed()
-              my.all.each{
+              my.all.findAll{it.types.contains(G) && it.numberOfDamageCounters}.each{
                 heal 10, it, Source.POKEPOWER
               }
             }
