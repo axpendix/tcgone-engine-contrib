@@ -1,7 +1,7 @@
 package tcgwars.logic.impl.gen4
 
 import tcgwars.logic.DamageManager
-import tcgwars.logic.effect.ability.CheckAbilities
+import tcgwars.logic.card.trainer.PokemonToolCard
 import tcgwars.logic.impl.gen3.Sandstorm
 
 import tcgwars.logic.Battleground
@@ -1339,21 +1339,12 @@ public enum GreatEncounters implements LogicCardInfo {
               assert opp.all.find{it.cards.filterByType(POKEMON_TOOL)} : "Your opponent has no Pokémon Tools attached"
             }
             onAttack {
-              def src = opp.all.findAll{it.cards.filterByType(POKEMON_TOOL)}.select("Pokémon that has a Tool to move")
-              def tool = src.cards.filterByType(POKEMON_TOOL).select("Pokémon Tool to move").first()
-              def tar = opp.all.findAll{it.cards.filterByType(POKEMON_TOOL).empty}.select("Move $tool to which Pokémon")
-              targeted(src) {
-                def moved = false
-                targeted(tar) {
-                  moved = true
-                  tar.cards.add(tool)
-                  src.cards.remove(tool)
-                }
-                if(!moved) {
-                  discard(tool)
-                }
-
-              }
+              def pcs = opp.all.findAll { it.cards.filterByType(POKEMON_TOOL) }.select("Source Pokémon that has a Tool to move")
+              def card = pcs.cards.filterByType(POKEMON_TOOL).select("Pokémon Tool to move").first() as PokemonToolCard
+              def pl = opp.all.findAll { canAttachPokemonTool(it, card) && it!=pcs}
+              if(!pl){wcu "No available Pokemon to move this card"; return}
+              def tar = pl.select("Move $tool to which Pokémon?")
+              attachPokemonTool(card, tar)
             }
           }
           move "Overrun", {

@@ -1739,12 +1739,6 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
           eff2 = delayed {
             after CHANGE_STAGE, self, {check(self)}
-            //TODO: onMove() instead of this
-            after PROCESS_ATTACK_EFFECTS, {
-              if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
-                check(self)
-              }
-            }
           }
           check(self)
           new CheckAbilities().run(bg)
@@ -1863,12 +1857,6 @@ public enum CrystalGuardians implements LogicCardInfo {
               }
             }
             after CHANGE_STAGE, self, {check(self)}
-            //TODO: onMove() instead of this
-            after PROCESS_ATTACK_EFFECTS, {
-              if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
-                check(self)
-              }
-            }
           }
           check(self)
         }

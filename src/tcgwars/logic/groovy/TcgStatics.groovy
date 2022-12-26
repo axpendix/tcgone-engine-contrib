@@ -940,9 +940,9 @@ class TcgStatics {
       }
     } } }
   }
-  static attachPokemonTool (PokemonToolCard card, PokemonCardSet pcs) {
-    new AttachPokemonTool(pcs, card, OTHER).run(bg)
-    bc("$card is attached to $pcs")
+  static attachPokemonTool (Card pokemonToolCard, PokemonCardSet pcs) {
+    new AttachPokemonTool(pcs, pokemonToolCard as PokemonToolCard, OTHER).run(bg)
+    bc("$pokemonToolCard is attached to $pcs")
     bg.gm().woosh();
   }
   static boolean canAttachPokemonTool (PokemonCardSet pcs) {
@@ -953,6 +953,9 @@ class TcgStatics {
         tool_limit = 2;
     }
     return pcs.cards.filterByType(POKEMON_TOOL).size() < tool_limit
+  }
+  static boolean canAttachPokemonTool (PokemonCardSet pcs, Card pokemonToolCard) {
+    return canAttachPokemonTool(pcs) && (pokemonToolCard as PokemonToolCard).allowAttach(bg(), pcs)
   }
   static boolean checkGlobalAbility (Card thisCard) {
     return !bg.em().get(new IsGlobalAbilityBlocked(thisCard));

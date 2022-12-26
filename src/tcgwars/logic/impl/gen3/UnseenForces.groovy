@@ -2188,12 +2188,6 @@ public enum UnseenForces implements LogicCardInfo {
               }
             }
             after CHANGE_STAGE, self, {check(self)}
-            //TODO: onMove() instead of this
-            after PROCESS_ATTACK_EFFECTS, {
-              if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
-                check(self)
-              }
-            }
           }
           check(self)
         }
@@ -2231,12 +2225,6 @@ public enum UnseenForces implements LogicCardInfo {
           }
           eff3 = delayed {
             after CHANGE_STAGE, self, {check(self)}
-            //TODO: onMove() instead of this
-            after PROCESS_ATTACK_EFFECTS, {
-              if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
-                check(self)
-              }
-            }
           }
           check(self)
           new CheckAbilities().run(bg)
@@ -2270,12 +2258,6 @@ public enum UnseenForces implements LogicCardInfo {
           }
           eff2 = delayed {
             after CHANGE_STAGE, self, {check(self)}
-            //TODO: onMove() instead of this
-            after PROCESS_ATTACK_EFFECTS, {
-              if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
-                check(self)
-              }
-            }
           }
           check(self)
         }
@@ -2333,12 +2315,6 @@ public enum UnseenForces implements LogicCardInfo {
           }
           eff2 = delayed {
             after CHANGE_STAGE, self, {check(self)}
-            //TODO: onMove() instead of this
-            after PROCESS_ATTACK_EFFECTS, {
-              if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
-                check(self)
-              }
-            }
           }
           check(self)
         }
@@ -2370,12 +2346,6 @@ public enum UnseenForces implements LogicCardInfo {
           }
           eff2 = delayed {
             after CHANGE_STAGE, self, {check(self)}
-            //TODO: onMove() instead of this
-            after PROCESS_ATTACK_EFFECTS, {
-              if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
-                check(self)
-              }
-            }
           }
           check(self)
         }
@@ -2404,12 +2374,6 @@ public enum UnseenForces implements LogicCardInfo {
               }}
             }
             after CHANGE_STAGE, self, {check(self)}
-            //TODO: onMove() instead of this
-            after PROCESS_ATTACK_EFFECTS, {
-              if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
-                check(self)
-              }
-            }
           }
           check(self)
         }
@@ -3519,15 +3483,15 @@ public enum UnseenForces implements LogicCardInfo {
           text "Search your deck for up to 2 Pokémon Tool cards and attach them to any of your Pokémon (excluding Pokémon that already have a Pokémon Tool attached to them). Shuffle your deck afterward."
           energyCost C
           attackRequirement {
-            assert my.all.findAll({canAttachPokemonTool(it)}) : "Your Pokémon already have tools attached to them."
+            assert my.all.findAll{canAttachPokemonTool(it)} : "Your Pokémon already have tools attached to them."
             assert my.deck : "Deck is empty."
           }
           onAttack {
-            def tar = my.all.findAll({!(it.cards.filterByType(POKEMON_TOOL))})
-            if(tar){
-              my.deck.search(max : Math.min(2,tar.size()),"Search for up to 2 Pokémon tool",cardTypeFilter(POKEMON_TOOL)).each{
-                def pcs = my.all.findAll({canAttachPokemonTool(it)}).select()
-                attachPokemonTool(it,pcs)
+            def tar = my.all.findAll{canAttachPokemonTool(it)}
+            my.deck.search(max: Math.min(2,tar.size()),"Search for up to 2 Pokémon tool",cardTypeFilter(POKEMON_TOOL)).each{Card card ->
+              def pcs = my.all.findAll{canAttachPokemonTool(it, card)}.select("Attach $card to?", false)
+              if (pcs) {
+                attachPokemonTool(card, pcs)
               }
             }
             shuffleDeck()
