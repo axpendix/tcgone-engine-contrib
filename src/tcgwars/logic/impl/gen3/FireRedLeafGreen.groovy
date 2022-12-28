@@ -1,6 +1,7 @@
 package tcgwars.logic.impl.gen3
 
-import tcgwars.logic.effect.ability.custom.Safeguard;
+import tcgwars.logic.effect.ability.custom.Safeguard
+import tcgwars.logic.exception.EffectRequirementException;
 import tcgwars.logic.impl.gen2.Expedition;
 
 import tcgwars.logic.effect.gm.Attack
@@ -2404,7 +2405,9 @@ public enum FireRedLeafGreen implements LogicCardInfo {
         return basicTrainer (this) {
           text "Switch 1 of your Active Pokémon with 1 of your Benched Pokémon."
           onPlay {
-            sw my.active, my.bench.select("New Active Pokemon")
+            if (sw(my.active, my.bench.select("New Active Pokemon"), Source.TRAINER_CARD)) {
+              throw new EffectRequirementException("No effect")
+            }
           }
           playRequirement{
             assert my.bench : "No benched Pokémon"

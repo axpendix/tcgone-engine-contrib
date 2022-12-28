@@ -4,6 +4,7 @@ import tcgwars.logic.effect.gm.PlayCard
 import tcgwars.logic.effect.gm.PlayStadium
 import tcgwars.logic.effect.gm.PlayTrainer
 import tcgwars.logic.impl.gen1.BaseSetNG
+import tcgwars.logic.impl.gen3.FireRedLeafGreen
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -1899,18 +1900,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         }
       };
       case SWITCH_95:
-      return basicTrainer (this) {
-        text "Switch 1 of your Benched Pokémon with your Active Pokémon."
-        return basicTrainer (this) {
-          text "Switch your Active Pokémon with 1 of your Benched Pokémon."
-          onPlay {
-            sw my.active, my.bench.select()
-          }
-          playRequirement{
-            assert bench.notEmpty
-          }
-        };
-      };
+      return copy(FireRedLeafGreen.SWITCH_102, this);
       case DOUBLE_COLORLESS_ENERGY_96:
       return specialEnergy (this, [[C],[C]]) {
         text "Double Colorless Energy provides [C][C] Energy."

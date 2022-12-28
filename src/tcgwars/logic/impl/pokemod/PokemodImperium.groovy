@@ -1,5 +1,7 @@
 package tcgwars.logic.impl.pokemod
 
+import tcgwars.logic.impl.gen3.FireRedLeafGreen
+
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
@@ -3669,13 +3671,7 @@ public enum PokemodImperium implements LogicCardInfo {
         }
       };
       case SWITCH_215:
-      return basicTrainer (this) {
-        text "Switch 1 of your Benched Pokémon with your Active Pokémon."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy(FireRedLeafGreen.SWITCH_102, this);
       case SUPER_SCOOP_UP_216:
       return basicTrainer (this) {
         text "Flip a coin. If heads, return 1 of your Pokémon in play and all cards attached to it to your hand."
