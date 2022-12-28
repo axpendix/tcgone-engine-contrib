@@ -929,7 +929,7 @@ class TcgStatics {
     afterDamage { if (defending.active) { targeted(defending) {
       delayed {
         before RETREAT, defending, { wcu "${thisMove.name} prevents retreat."; prevent()}
-        before FALL_BACK, defending, { bc "${thisMove.name} prevents switch."; prevent()}
+        before SWITCH, defending, { bc "${thisMove.name} prevents switch."; prevent()}
         if(asLongAsSelfIsActive){
           after FALL_BACK, self, {unregister()}
           after CHANGE_STAGE, self, {unregister()}
