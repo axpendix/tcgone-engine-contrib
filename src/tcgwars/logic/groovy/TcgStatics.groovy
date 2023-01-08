@@ -677,6 +677,21 @@ class TcgStatics {
     ef.run(bg())
     ef
   }
+  static Effect wrapForEffect(Closure closure) {
+    new DirectEffect() {
+      @Override
+      void process(Battleground bg, Event event) {
+        closure.call()
+      }
+      @Override
+      EffectType getEffectType() {
+        return CUSTOM_EFFECT
+      }
+    }
+  }
+  static inOrderTo(Closure closure) {
+    bg.em().run(new InOrderTo(wrapForEffect(closure)))
+  }
   static boolean wrapperEffect (EffectType effectType, Runnable runnable){
     def effect = new DirectEffect() {
       @Override
@@ -906,6 +921,11 @@ class TcgStatics {
         }
       }
       shuffleDeck()
+    }
+  }
+  static require(boolean failed) {
+    if (failed) {
+      throw new EffectRequirementException()
     }
   }
 

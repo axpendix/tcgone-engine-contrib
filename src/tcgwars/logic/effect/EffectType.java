@@ -81,6 +81,7 @@ public enum EffectType {
   CUSTOM_EFFECT,
   CUSTOM_ATTACK_EFFECT,
   BLOCKING_EFFECT,
+  IN_ORDER_TO,
 
   /*
    * attack effects
