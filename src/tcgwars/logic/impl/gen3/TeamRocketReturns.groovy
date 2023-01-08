@@ -225,11 +225,13 @@ public enum TeamRocketReturns implements LogicCardInfo {
                 flag = (ef.evolutionCard as Card).player.pbg.hand.contains(ef.evolutionCard)
               }
               after EVOLVE, {
+                // Q. Dark Ampharos’ “Darkest Impulse” says that you can’t use more than 1 Darkest Impulse Poké-BODY each turn. Does that mean that this power goes off every time they evolve a Pokémon, or does it only go off the first time they evolve that turn?
+                // A. Darkest Impulse applies whenever the opponent evolves a Pokémon, but you cannot combine multiple Dark Ampharoses to do additional damage. The intent of the “can’t use more than one” phrase is to prevent it from being cumulative (i.e. 4 Dark Ampharos cannot be combined to place 8 damage counters). (Dec 2, 2004 PUI Rules Team)
                 if (flag) {
                   PokemonCardSet pcs = ef.pokemonToBeEvolved
-                  if(pcs.owner != self.owner && bg.em().retrieveObject("Darkest Impulse") != bg.turnCount){
+                  if(pcs.owner != self.owner && bg.em().retrieveObject("Darkest Impulse") != (pcs.id+bg.turnCount)){
                     powerUsed()
-                    bg.em().storeObject("Darkest Impulse", bg.turnCount)
+                    bg.em().storeObject("Darkest Impulse", pcs.id+bg.turnCount)
                     directDamage(20, pcs, SRC_ABILITY)
                   }
                 }
