@@ -2198,5 +2198,57 @@ class TcgStatics {
       }
     }
   }
+  static legendaryBody(Object delegate){
+    callWithDelegate(delegate) {
+      def discardTrainers={
+        self.cards.filterByType(TRAINER).each {
+          bc "Legendary Body activates"
+          discard(it);
+        }
+      }
+      delayedA {
+        after PLAY_TRAINER, {
+          discardTrainers()
+        }
+      }
+      onActivate {
+        discardTrainers()
+      }
+    }
+  }
+  static legendaryBodyWIP(Object delegate){ // WIP
+    callWithDelegate(delegate) {
+      def check={
+        if (self.active) {
+          self.cards.filterByType(TRAINER).each {
+            bc "Legendary Body discards $it"
+            discard(it)
+          }
+        }
+      }
+      delayedA {
+        after PLAY_TRAINER, {
+          check()
+        }
+        after SWITCH_OUT, self, {
+          check()
+        }
+        before null, self, Source.TRAINER_CARD, {
+          if (self.active) {
+            // TODO: doesn't exclude stadium cards
+            bc "Legendary Body prevents effect"
+            prevent()
+          }
+        }
+      }
+      onActivate {
+        check()
+      }
+    }
+  }
+  static callWithDelegate(Object delegate, Closure closure) {
+    closure.delegate = delegate
+    closure.call()
+  }
 
 }

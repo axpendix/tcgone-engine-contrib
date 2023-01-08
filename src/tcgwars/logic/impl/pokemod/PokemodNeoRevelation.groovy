@@ -461,8 +461,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
         weakness W
         pokeBody "Legendary Body", {
           text "As long as Entei is your Active Pokémon, Entei and Energy cards attached to it aren't affected by effects from Trainer cards other than Stadium cards. As long as this power is active, discard any Trainer cards attached to Entei. (This power works even if Entei is affected by a Special Condition.)"
-          delayedA {
-          }
+          legendaryBody(delegate)
         }
         move "Mega Flame", {
           text "50 damage. Flip 2 coins. For each tails, discard 1 [R] Energy card from Entei, if it has any."
@@ -544,8 +543,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
         weakness F
         pokeBody "Legendary Body", {
           text "As long as Raikou is your Active Pokémon, Raikou and Energy cards attached to it aren't affected by effects from Trainer cards other than Stadium cards. As long as this power is active, discard any Trainer cards attached to Raikou. (This power works even if Raikou is affected by a Special Condition.)"
-          delayedA {
-          }
+          legendaryBody(delegate)
         }
         move "Lightning Spark", {
           text "30 damage. If your opponent has any Benched Pokémon, flip a coin. If heads, choose 1 of them and this attack does 20 damage to it. (Don't apply Weakness and Resistance for Benched Pokémon.)"
@@ -640,8 +638,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
         weakness L
         pokeBody "Legendary Body", {
           text "As long as Suicune is your Active Pokémon, Suicune and Energy cards attached to it aren't affected by effects from Trainer cards other than Stadium cards. As long as this power is active, discard any Trainer cards attached to Suicune. (This power works even if Suicune is affected by a Special Condition.)"
-          delayedA {
-          }
+          legendaryBody(delegate)
         }
         move "Crystal Wave", {
           text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 10 more damage. If tails, this attack does 30 damage and, if your opponent has any Benched Pokémon, he or she chooses 1 of them and switches it with the Defending Pokémon. (Do the damage before switching the Pokémon.)"
