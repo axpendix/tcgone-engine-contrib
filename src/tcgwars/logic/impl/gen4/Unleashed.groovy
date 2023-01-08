@@ -1943,14 +1943,16 @@ public enum Unleashed implements LogicCardInfo {
             energyCost R, C
             onAttack {
               damage 90
-              discardSelfEnergy(R)
+              discardSelfEnergyAfterDamage(R)
             }
           }
           move "Thunder Fall", {
             text "Discard all Energy attached to Entei & Raikou LEGEND. This attack does 80 damage to each Pokémon that has any Poké-Powers (both yours and your opponent's). This attack's damage isn't affected by Weakness or Resistance."
             energyCost L, C
             onAttack {
-              discardAllSelfEnergy(null)
+              afterDamage {
+                discardAllSelfEnergy(null)
+              }
               all.each{
                 if (it.abilities.keySet().find{it instanceof PokePower})
                   noWrDamage 80, it
