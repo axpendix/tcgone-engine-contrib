@@ -1,5 +1,6 @@
-package tcgwars.logic.impl.gen1;
+package tcgwars.logic.impl.gen1
 
+import tcgwars.logic.exception.EffectRequirementException;
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen4.Unleashed;
 
@@ -1873,26 +1874,22 @@ public enum BaseSetNG implements LogicCardInfo {
         return basicTrainer (this) {
           text "Discard 1 Energy card attached to 1 of your Pokémon in order to choose 1 of your opponent’s Pokémon and up to 2 Energy cards attached to it. Discard those Energy cards."
           onPlay {
-            def tar1 = my.all.findAll {it.cards.energyCount(C)}
-            if(tar1) {
-              def pcs = tar1.select("Discard energy from")
-              targeted (pcs, TRAINER_CARD) {
-                pcs.cards.filterByType(ENERGY).select("Discard").discard()
-              }
-            }
-            def tar2 = opp.all.findAll {it.cards.energyCount(C)}
-            if(tar2) {
-              def pcs = tar2.select("Discard energy from")
-              targeted (pcs, TRAINER_CARD) {
-                pcs.cards.filterByType(ENERGY).select("Discard").discard()
-                pcs.cards.filterByType(ENERGY).search("Discard").discard()
-
-              }
-            }
+            // TODO test interaction vs Legendary Body & Brock's Protection
+            def tar1 = my.all.findAll {it.cards.filterByType(ENERGY)}
+            def pcs = tar1.select("Discard energy from")
+            // this should prevent the rest of the card to resolve.
+            require(targeted (pcs, TRAINER_CARD, {
+              pcs.cards.filterByType(ENERGY).select("Discard").discard()
+            }))
+            def tar2 = opp.all.findAll {it.cards.filterByType(ENERGY)}
+            def pcs2 = tar2.select("Discard energy from")
+            targeted (pcs2, TRAINER_CARD, {
+              pcs2.cards.filterByType(ENERGY).select(max: 2, "Discard").discard()
+            })
           }
           playRequirement{
-            assert opp.all.findAll {it.cards.energyCount(C)}
-            assert my.all.findAll {it.cards.energyCount(C)}
+            assert opp.all.findAll {it.cards.filterByType(ENERGY)} : "Opponent have no Pokemon with energy"
+            assert my.all.findAll {it.cards.filterByType(ENERGY)} : "You have no Pokemon with energy"
           }
         };
       case DEFENDER: //TODO
@@ -2059,16 +2056,15 @@ public enum BaseSetNG implements LogicCardInfo {
         return basicTrainer (this) {
           text "Choose 1 Energy card attached to 1 of your opponent’s Pokémon and discard it."
           onPlay {
-            def tar = opp.all.findAll {it.cards.energyCount(C)}
-            if(tar) {
-              def pcs = tar.select("Discard energy from")
-              targeted (pcs, TRAINER_CARD) {
-                pcs.cards.filterByType(ENERGY).select("Discard").discard()
-              }
+            // TODO test interaction vs Legendary Body & Brock's Protection
+            def tar = opp.all.findAll {it.cards.filterByType(ENERGY)}
+            def pcs = tar.select("Discard energy from?")
+            targeted (pcs, TRAINER_CARD) {
+              pcs.cards.filterByType(ENERGY).select("Energy card to discard").discard()
             }
           }
-          playRequirement{
-            assert opp.all.findAll {it.cards.energyCount(C)}
+          playRequirement {
+            assert opp.all.findAll {it.cards.filterByType(ENERGY)}
           }
         };
       case GUST_OF_WIND:
