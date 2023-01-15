@@ -1831,7 +1831,6 @@ public enum RubySapphireNG implements LogicCardInfo {
           my.deck.select2(
             min: 0, max: 3,
             text: "Select up to 3 different types of basic Energy cards",
-            player: self.owner,
             filter: cardTypeFilter(BASIC_ENERGY),
             passFilter: { CardList cardList ->
               for (Card card : cardList) {
