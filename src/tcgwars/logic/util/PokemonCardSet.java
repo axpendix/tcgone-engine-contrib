@@ -119,8 +119,8 @@ public class PokemonCardSet implements Serializable {
     if (card == null) {
       throw new NullPointerException("topPokemonCard. lastName:" + lastName);
     }
-    if (!card.getStaticCardTypes().isPokemon()) {
-      throw new IllegalStateException("Top card is not a pokemon card. lastName:" + lastName);
+    if (!(card instanceof PokemonCard)) { // (!card.getStaticCardTypes().isPokemon())
+      throw new IllegalStateException("Top card is not a PokemonCard. lastName:" + lastName);
     }
     return (PokemonCard) card;
   }

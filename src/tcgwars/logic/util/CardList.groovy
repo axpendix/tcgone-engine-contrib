@@ -51,8 +51,8 @@ public class CardList extends ArrayList<Card> {
   protected String ref
   protected ZoneType zoneType
 
-  public CardList() {
-    super();
+  CardList() {
+    super()
   }
 
   CardList(Collection<? extends Card> contents) {
@@ -111,9 +111,7 @@ public class CardList extends ArrayList<Card> {
 
   public CardList setAutosort(boolean autosort) {
     this.autosort = autosort;
-    if (autosort) {
-      Collections.sort(this);
-    }
+    triggerSort()
     return this;
   }
 
@@ -447,23 +445,19 @@ public class CardList extends ArrayList<Card> {
     else return get(0);
   }
 
-  public void add(int index, Card element) {
+  public void add(int index, Card e) {
     if (autosort) {
       throw new IllegalStateException("Autosort is active, use add(element) instead.");
     }
-    element.containerAddTime = System.currentTimeMillis()
-    super.add(index, element);
-    if (autosort) {
-      Collections.sort(this);
-    }
+    setContainerOrderFor(e)
+    super.add(index, e)
+    triggerSort()
   }
 
   public boolean add(Card e) {
-    if (e) e.containerAddTime = System.currentTimeMillis()
-    boolean ret = super.add(e);
-    if (autosort) {
-      Collections.sort(this);
-    }
+    setContainerOrderFor(e)
+    boolean ret = super.add(e)
+    triggerSort()
     return ret;
   }
 
@@ -472,23 +466,19 @@ public class CardList extends ArrayList<Card> {
       throw new IllegalStateException("Autosort is active, use addAll(c) instead.");
     }
     for (e in c) {
-      if (e) e.containerAddTime = System.currentTimeMillis()
+      setContainerOrderFor(e)
     }
     boolean ret = super.addAll(index, c);
-    if (autosort) {
-      Collections.sort(this);
-    }
+    triggerSort()
     return ret;
   }
 
   public boolean addAll(Collection<? extends Card> c) {
     boolean ret = super.addAll(c);
     for (e in c) {
-      if (e) e.containerAddTime = System.currentTimeMillis()
+      setContainerOrderFor(e)
     }
-    if (autosort) {
-      Collections.sort(this);
-    }
+    triggerSort()
     return ret;
   }
 
@@ -568,5 +558,25 @@ public class CardList extends ArrayList<Card> {
 
   public CardList reverse() {
     return new CardList(DefaultGroovyMethods.reverse(this));
+  }
+
+  private void setContainerOrderFor(Card card){
+    if (card && persistent) { // container order only set for PERSISTENT CardLists
+      card.containerOrder = Battleground.instance.incrementAndGetContainerOrderCounter()
+    }
+  }
+  private void triggerSort() {
+    if (autosort) {
+      Collections.sort(this)
+//      // ordering validation (deemed as unnecessary)
+//      if (this.notEmpty) {
+//        def top = this.get(0)
+//        for (Card card : this) {
+//          if (top != card && card.cardTypes.lowestWeight == top.cardTypes.lowestWeight) {
+//            Battleground.instance.gameManager.reportWarning(new IllegalStateException("undeterministic_pokemon_top_card_ordering. top_card=[$top, $top.cardTypes] offending_card=[$card, $card.cardTypes]"))
+//          }
+//        }
+//      }
+    }
   }
 }

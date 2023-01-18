@@ -68,11 +68,11 @@ public class CardTypeSet extends TreeSet<CardType> {
     return false;
   }
 
-  public int getHighestPriority() {
+  public int getLowestWeight() {
     int min = Integer.MAX_VALUE;
     for (CardType ct : this) {
-      if (ct.getPriority() < min) {
-        min = ct.getPriority();
+      if (ct.getWeight() < min) {
+        min = ct.getWeight();
       }
     }
     return min;
@@ -85,9 +85,9 @@ public class CardTypeSet extends TreeSet<CardType> {
   }
 
   public CardType getSignificantType() {
-    int highestPriority = getHighestPriority();
+    int lowestWeight = getLowestWeight();
     for (CardType ct : this) {
-      if (ct.getPriority() == highestPriority) {
+      if (ct.getWeight() == lowestWeight) {
         return ct;
       }
     }

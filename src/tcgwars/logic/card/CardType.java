@@ -87,27 +87,26 @@ public enum CardType {
 
   ;
 
-  private String label;
-  private int priority;
+  private final String label;
+  private final int weight; // determines ordering for cards in PokemonCardSet (ascending)
 
-  CardType(int priority) {
-    this.priority = priority;
+  CardType(int weight) {
+    this.weight = weight;
+    this.label = WordUtils.capitalizeFully(this.name().toLowerCase(Locale.ENGLISH), "_".toCharArray()).replaceAll("_", " ");
   }
 
-  CardType(int priority, String label) {
-    this.priority = priority;
+  CardType(int weight, String label) {
+    this.weight = weight;
     this.label = label;
   }
 
-  public int getPriority() {
-    return priority;
+  public int getWeight() {
+    return weight;
   }
 
   @Override
   public String toString() {
-    if (label != null) return label;
-    else
-      return WordUtils.capitalizeFully(this.name().toLowerCase(Locale.ENGLISH), "_".toCharArray()).replaceAll("_", " ");
+    return label;
   }
 
   public Type toElementalType() {
@@ -143,8 +142,7 @@ public enum CardType {
 
     @Override
     public int compare(CardType o1, CardType o2) {
-      Integer i1 = o1.getPriority(), i2 = o2.getPriority();
-      return i1.compareTo(i2);
+      return Integer.compare(o1.getWeight(), o2.getWeight());
     }
 
   }
