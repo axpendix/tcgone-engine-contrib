@@ -3621,8 +3621,7 @@ public enum RisingRivals implements LogicCardInfo {
               new CardList(tpc).moveTo(my.deck)
               new CheckAbilities().run(bg)
               clearSpecialCondition(pcs)
-              //Todo Find a way to remove "effects". This effect seems similar to Channeler/Pokémon Ranger
-              checkFaint()
+              //TODO Find a way to remove "effects". This effect seems similar to Channeler/Pokémon Ranger
             }
             shuffleDeck()
             delayed {

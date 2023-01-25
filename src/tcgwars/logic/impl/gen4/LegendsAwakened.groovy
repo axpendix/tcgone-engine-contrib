@@ -241,24 +241,9 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness P
           pokePower "Form Change", {
             text "Once during your turn (before your attack), you may search your deck for any Deoxys and switch it with Deoxys Normal Forme. (Any cards attached to Deoxys Normal Forme, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys Normal Forme on top of your deck. Shuffle your deck afterward. You can't use more than 1 Form Change Poké-Power each turn."
-            actionA {
-              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
-              checkLastTurn()
-              assert my.deck : "Deck is empty"
-              bg.em().storeObject("Form_Change",bg.turnCount)
-              powerUsed()
-
-              def selected = my.deck.search(max:1,"Select a Deoxys",{it.name == "Deoxys" || (it.name.contains("Deoxys") && it.name.contains("Forme"))}) //Deoxys cannot Form Change into Deoxys ex.
-              if (selected) {
-                def tpc = self.topPokemonCard
-                selected.moveTo(suppressLog: true, self.cards)
-                tpc.moveTo(suppressLog: true, my.deck)
-                bc "${tpc.name} was swapped with ${selected.name}."
-                new CheckAbilities().run(bg)
-                checkFaint()
-              }
-              shuffleDeck()
-            }
+            formChange(delegate, "Form Change", {
+              it.name == "Deoxys" || (it.name.contains("Deoxys") && it.name.contains("Forme")) //Deoxys cannot Form Change into Deoxys ex.
+            })
           }
           move "Energy Crush", {
             text "20+ damage. Does 20 damage plus 10 more damage for each Energy attached to all of your opponent's Pokémon."
@@ -940,24 +925,9 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness P
           pokePower "Form Change", {
             text "Once during your turn (before your attack), you may search your deck for any Deoxys and switch it with Deoxys Attack Forme. (Any cards attached to Deoxys Attack Forme, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys Attack Forme on top of your deck. Shuffle your deck afterward. You can't use more than 1 Form Change Poké-Power each turn."
-            actionA {
-              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
-              checkLastTurn()
-              assert my.deck : "Deck is empty"
-              bg.em().storeObject("Form_Change",bg.turnCount)
-              powerUsed()
-
-              def selected = my.deck.search(max:1,"Select a Deoxys",{it.name == "Deoxys" || (it.name.contains("Deoxys") && it.name.contains("Forme"))}) //Deoxys cannot Form Change into Deoxys ex.
-              if (selected) {
-                def tpc = self.topPokemonCard
-                selected.moveTo(suppressLog: true, self.cards)
-                tpc.moveTo(suppressLog: true, my.deck)
-                bc "${tpc.name} was swapped with ${selected.name}."
-                new CheckAbilities().run(bg)
-                checkFaint()
-              }
-              shuffleDeck()
-            }
+            formChange(delegate, "Form Change", {
+              it.name == "Deoxys" || (it.name.contains("Deoxys") && it.name.contains("Forme")) //Deoxys cannot Form Change into Deoxys ex.
+            })
           }
           move "Psychic Boost", {
             text "80 damage. During your next turn, Deoxys's Psychic Boost attack's base damage is 20."
@@ -976,24 +946,9 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness P
           pokePower "Form Change", {
             text "Once during your turn (before your attack), you may search your deck for any Deoxys and switch it with Deoxys Defense Forme. (Any cards attached to Deoxys Defense Forme, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys Defense Forme on top of your deck. Shuffle your deck afterward. You can't use more than 1 Form Change Poké-Power each turn."
-            actionA {
-              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
-              checkLastTurn()
-              assert my.deck : "Deck is empty"
-              bg.em().storeObject("Form_Change",bg.turnCount)
-              powerUsed()
-
-              def selected = my.deck.search(max:1,"Select a Deoxys",{it.name == "Deoxys" || (it.name.contains("Deoxys") && it.name.contains("Forme"))}) //Deoxys cannot Form Change into Deoxys ex.
-              if (selected) {
-                def tpc = self.topPokemonCard
-                selected.moveTo(suppressLog: true, self.cards)
-                tpc.moveTo(suppressLog: true, my.deck)
-                bc "${tpc.name} was swapped with ${selected.name}."
-                new CheckAbilities().run(bg)
-                checkFaint()
-              }
-              shuffleDeck()
-            }
+            formChange(delegate, "Form Change", {
+              it.name == "Deoxys" || (it.name.contains("Deoxys") && it.name.contains("Forme")) //Deoxys cannot Form Change into Deoxys ex.
+            })
           }
           move "Psychic Defense", {
             text "40 damage. During your opponent's next turn, prevent all effects of an attack, and any damage done to Deoxys by attacks is reduced by 20 (after applying Weakness and Resistance)."
@@ -1011,24 +966,9 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness P
           pokePower "Form Change", {
             text "Once during your turn (before your attack), you may search your deck for any Deoxys and switch it with Deoxys Speed Forme. (Any cards attached to Deoxys Speed Forme, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys Speed Forme on top of your deck. Shuffle your deck afterward. You can't use more than 1 Form Change Poké-Power each turn."
-            actionA {
-              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
-              checkLastTurn()
-              assert my.deck : "Deck is empty"
-              bg.em().storeObject("Form_Change",bg.turnCount)
-              powerUsed()
-
-              def selected = my.deck.search(max:1,"Select a Deoxys",{it.name == "Deoxys" || (it.name.contains("Deoxys") && it.name.contains("Forme"))}) //Deoxys cannot Form Change into Deoxys ex.
-              if (selected) {
-                def tpc = self.topPokemonCard
-                selected.moveTo(suppressLog: true, self.cards)
-                tpc.moveTo(suppressLog: true, my.deck)
-                bc "${tpc.name} was swapped with ${selected.name}."
-                new CheckAbilities().run(bg)
-                checkFaint()
-              }
-              shuffleDeck()
-            }
+            formChange(delegate, "Form Change", {
+              it.name == "Deoxys" || (it.name.contains("Deoxys") && it.name.contains("Forme")) //Deoxys cannot Form Change into Deoxys ex.
+            })
           }
           move "Speed Shot", {
             text "Choose 1 of your opponent's Pokémon. This attack does 30 damage to that Pokémon. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
@@ -1736,24 +1676,9 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness F, '+10'
           pokePower "Temperament", {
             text "Once during your turn (before your attack), you may search your deck for any Castform and switch it with Castform. (Any cards attached to Castform, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Castform on top of your deck. Shuffle your deck afterward. You can't use more than 1 Temperament Poké-Power each turn."
-            actionA {
-              assert bg.em().retrieveObject("Temperament") != bg.turnCount : "You can’t use more than 1 Temperament Poké-Power each turn"
-              checkLastTurn()
-              assert my.deck : "Deck is empty"
-              bg.em().storeObject("Temperament", bg.turnCount)
-              powerUsed()
-
-              def selected = my.deck.search(max:1,"Select a Castform",{it.name.contains("Castform")})
-              if (selected) {
-                def tpc = self.topPokemonCard
-                selected.moveTo(suppressLog: true, self.cards)
-                tpc.moveTo(suppressLog: true, my.deck)
-                bc "${tpc.name} was swapped with ${selected.name}."
-                new CheckAbilities().run(bg)
-                checkFaint()
-              }
-              shuffleDeck()
-            }
+            formChange(delegate, "Temperament", {
+              it.name.contains("Castform")
+            })
           }
           move "Weather Ball", {
             text "30+ damage. If you have a Stadium card in play, remove 3 damage counters from Castform. If your opponent has a Stadium card in play, this attack does 30 damage plus 30 more damage."
@@ -1776,24 +1701,9 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness L, '+10'
           pokePower "Temperament", {
             text "Once during your turn (before your attack), you may search your deck for any Castform and switch it with Castform Rain Form. (Any cards attached to Castform Rain Form, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Shuffle Castform Rain Form back into your deck. You can't use more than 1 Temperament Poké-Power each turn."
-            actionA {
-              assert bg.em().retrieveObject("Temperament") != bg.turnCount : "You can’t use more than 1 Temperament Poké-Power each turn"
-              checkLastTurn()
-              assert my.deck : "Deck is empty"
-              bg.em().storeObject("Temperament", bg.turnCount)
-              powerUsed()
-
-              def selected = my.deck.search(max:1,"Select a Castform",{it.name.contains("Castform")})
-              if (selected) {
-                def tpc = self.topPokemonCard
-                selected.moveTo(suppressLog: true, self.cards)
-                tpc.moveTo(suppressLog: true, my.deck)
-                bc "${tpc.name} was swapped with ${selected.name}."
-                new CheckAbilities().run(bg)
-                checkFaint()
-              }
-              shuffleDeck()
-            }
+            formChange(delegate, "Temperament", {
+              it.name.contains("Castform")
+            })
           }
           move "Water Pulse", {
             text "30 damage. The Defending Pokémon is now Asleep."
@@ -1810,24 +1720,9 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness M, '+10'
           pokePower "Temperament", {
             text "Once during your turn (before your attack), you may search your deck for any Castform and switch it with Castform Snow-cloud Form. (Any cards attached to Castform Snow-cloud Form, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Shuffle Castform Snow-cloud Form back into your deck. You can't use more than 1 Temperament Poké-Power each turn."
-            actionA {
-              assert bg.em().retrieveObject("Temperament") != bg.turnCount : "You can’t use more than 1 Temperament Poké-Power each turn"
-              checkLastTurn()
-              assert my.deck : "Deck is empty"
-              bg.em().storeObject("Temperament", bg.turnCount)
-              powerUsed()
-
-              def selected = my.deck.search(max:1,"Select a Castform",{it.name.contains("Castform")})
-              if (selected) {
-                def tpc = self.topPokemonCard
-                selected.moveTo(suppressLog: true, self.cards)
-                tpc.moveTo(suppressLog: true, my.deck)
-                bc "${tpc.name} was swapped with ${selected.name}."
-                new CheckAbilities().run(bg)
-                checkFaint()
-              }
-              shuffleDeck()
-            }
+            formChange(delegate, "Temperament", {
+              it.name.contains("Castform")
+            })
           }
           move "Hail", {
             text "This attack does 10 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
@@ -1845,24 +1740,9 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness W, '+10'
           pokePower "Temperament", {
             text "Once during your turn (before your attack), you may search your deck for any Castform and switch it with Castform Sunny Form. (Any cards attached to Castform Sunny Form, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Shuffle Castform Sunny Form back into your deck. You can't use more than 1 Temperament Poké-Power each turn."
-            actionA {
-              assert bg.em().retrieveObject("Temperament") != bg.turnCount : "You can’t use more than 1 Temperament Poké-Power each turn"
-              checkLastTurn()
-              assert my.deck : "Deck is empty"
-              bg.em().storeObject("Temperament", bg.turnCount)
-              powerUsed()
-
-              def selected = my.deck.search(max:1,"Select a Castform",{it.name.contains("Castform")})
-              if (selected) {
-                def tpc = self.topPokemonCard
-                selected.moveTo(suppressLog: true, self.cards)
-                tpc.moveTo(suppressLog: true, my.deck)
-                bc "${tpc.name} was swapped with ${selected.name}."
-                new CheckAbilities().run(bg)
-                checkFaint()
-              }
-              shuffleDeck()
-            }
+            formChange(delegate, "Temperament", {
+              it.name.contains("Castform")
+            })
           }
           move "Ember", {
             text "40 damage. Discard a [R] Energy attached to Castform Sunny Form."

@@ -665,8 +665,9 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         weakness L
         pokePower "Temperamental Weather", {
           text "Once during your turn (before your attack), you may search your deck for Castform, Sunny Castform, or Snow-cloud Castform and switch it with Rain Castform. (Any cards attached to Rain Castform, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Shuffle Rain Castform back into your deck. You can't use more than 1 Temperamental Weather Poké-Power each turn."
-          actionA {
-          }
+          formChange(delegate, "Temperamental Weather", {
+            it.name == "Sunny Castform" || it.name == "Castform" || it.name == "Snow-cloud Castform"
+          })
         }
         move "Scattered Shower", {
           text "Shuffle your hand into your deck. Draw up to 5 cards."
@@ -707,8 +708,9 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         weakness M
         pokePower "Temperamental Weather", {
           text "Once during your turn (before your attack), you may search your deck for Castform, Rain Castform, or Sunny Castform and switch it with Snow-cloud Castform. (Any cards attached to Snow-cloud Castform, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Shuffle Snow-cloud Castform back into your deck. You can't use more than 1 Temperamental Weather Poké-Power each turn."
-          actionA {
-          }
+          formChange(delegate, "Temperamental Weather", {
+            it.name == "Sunny Castform" || it.name == "Castform" || it.name == "Rain Castform"
+          })
         }
         move "Flurries", {
           text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed. If tails, the Defending Pokémon is now Asleep."
@@ -732,8 +734,9 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         weakness W
         pokePower "Temperamental Weather", {
           text "Once during your turn (before your attack), you may search your deck for Castform, Rain Castform, or Snow-cloud Castform and switch it with Sunny Castform. (Any cards attached to Sunny Castform, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Shuffle Sunny Castform back into your deck. You can't use more than 1 Temperamental Weather Poké-Power each turn."
-          actionA {
-          }
+          formChange(delegate, "Temperamental Weather", {
+            it.name == "Rain Castform" || it.name == "Castform" || it.name == "Snow-cloud Castform"
+          })
         }
         move "Sunshine", {
           text "Search your discard pile for a Stadium card, show it to your opponent, and put it into your hand."
@@ -813,8 +816,9 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         weakness F
         pokePower "Temperamental Weather", {
           text "Once during your turn (before your attack), you may search your deck for Sunny Castform, Rain Castform, or Snow-cloud Castform and switch it with Castform. (Any cards attached to Castform, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Shuffle Castform back into your deck. You can't use more than 1 Temperamental Weather Poké-Power each turn."
-          actionA {
-          }
+          formChange(delegate, "Temperamental Weather", {
+            it.name == "Sunny Castform" || it.name == "Rain Castform" || it.name == "Snow-cloud Castform"
+          })
         }
         move "Forecast", {
           text "Search your deck for a Stadium card and play it. Shuffle your deck afterward."

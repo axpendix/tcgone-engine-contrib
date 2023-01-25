@@ -2250,5 +2250,31 @@ class TcgStatics {
     closure.delegate = delegate
     closure.call()
   }
+  static formChange(Object delegate, String powerName, Closure searchPredicate) {
+    callWithDelegate(delegate) {
+      actionA {
+        def key = "formChange($powerName)"
+        assert bg.em().retrieveObject(key) != bg.turnCount : "You can’t use more than 1 $powerName each turn"
+        checkLastTurn()
+        assert my.deck : "Deck is empty"
+        bg.em().storeObject(key, bg.turnCount)
+        powerUsed()
+
+        def selected = my.deck.search("Select a Pokemon to swap in", searchPredicate)
+        if (selected) {
+          def tpc = self.topPokemonCard
+          selected.moveTo(suppressLog: true, self.cards)
+
+//          moveCard(suppressLog: true, tpc, my.deck)
+          my.deck.add(tpc)
+          self.cards.remove(tpc)
+
+          bc "${tpc.name} was swapped with ${selected.name}."
+          new CheckAbilities().run(bg)
+        }
+        shuffleDeck()
+      }
+    }
+  }
 
 }

@@ -972,29 +972,9 @@ public enum DeltaSpecies implements LogicCardInfo {
         weakness L
         pokePower "Temperamental Weather", {
           text "Once during your turn (before your attack), you may search your deck for Castform, Sunny Castform, or Snow-cloud Castform and switch it with Rain Castform. (Any cards attached to Rain Castform, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Shuffle Rain Castform back into your deck. You can't use more than 1 Temperamental Weather Poké-Power each turn."
-          actionA {
-            assert bg.em().retrieveObject("Temperamental_Weather") != bg.turnCount : "You can’t use more than 1 Temperamental Weather Poké-Power each turn"
-            checkLastTurn()
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Temperamental_Weather",bg.turnCount)
-            powerUsed()
-
-            def oldCastform = self.topPokemonCard
-            def newCastform = my.deck.search(min:0, max: 1, {
-              it.name == "Sunny Castform" ||
-              it.name == "Castform" ||
-              it.name == "Snow-cloud Castform"
-            })
-
-            if (newCastform) {
-              newCastform.moveTo(self.cards)
-              my.deck.add(oldCastform)
-              self.cards.remove(oldCastform)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Temperamental Weather", {
+            it.name == "Sunny Castform" || it.name == "Castform" || it.name == "Snow-cloud Castform"
+          })
         }
         move "Holon Splash", {
           text "30+ damage. Does 30 damage plus 10 more damage for each Holon Energy card attached to Rain Castform."
@@ -1079,29 +1059,9 @@ public enum DeltaSpecies implements LogicCardInfo {
         weakness M
         pokePower "Temperamental Weather", {
           text "Once during your turn (before your attack), you may search your deck for Castform, Rain Castform, or Sunny Castform and switch it with Snow-cloud Castform. (Any cards attached to Snow-cloud Castform, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Shuffle Snow-cloud Castform back into your deck. You can't use more than 1 Temperamental Weather Poké-Power each turn."
-          actionA {
-            assert bg.em().retrieveObject("Temperamental_Weather") != bg.turnCount : "You can’t use more than 1 Temperamental Weather Poké-Power each turn"
-            checkLastTurn()
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Temperamental_Weather",bg.turnCount)
-            powerUsed()
-
-            def oldCastform = self.topPokemonCard
-            def newCastform = my.deck.search(min:0, max: 1, {
-              it.name == "Sunny Castform" ||
-              it.name == "Rain Castform" ||
-              it.name == "Castform"
-            })
-
-            if (newCastform) {
-              newCastform.moveTo(self.cards)
-              my.deck.add(oldCastform)
-              self.cards.remove(oldCastform)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Temperamental Weather", {
+            it.name == "Sunny Castform" || it.name == "Castform" || it.name == "Rain Castform"
+          })
         }
         move "Holon Blizzard", {
           text "20 damage. If Snow-cloud Castform has any Holon Energy cards attached to it, this attack does 10 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
@@ -1140,29 +1100,9 @@ public enum DeltaSpecies implements LogicCardInfo {
         weakness W
         pokePower "Temperamental Weather", {
           text "Once during your turn (before your attack), you may search your deck for Castform, Rain Castform, or Snow-cloud Castform and switch it with Sunny Castform. (Any cards attached to Sunny Castform, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Shuffle Sunny Castform back into your deck. You can't use more than 1 Temperamental Weather Poké-Power each turn."
-          actionA {
-            assert bg.em().retrieveObject("Temperamental_Weather") != bg.turnCount : "You can’t use more than 1 Temperamental Weather Poké-Power each turn"
-            checkLastTurn()
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Temperamental_Weather",bg.turnCount)
-            powerUsed()
-
-            def oldCastform = self.topPokemonCard
-            def newCastform = my.deck.search(min:0, max: 1, {
-              it.name == "Castform" ||
-              it.name == "Rain Castform" ||
-              it.name == "Snow-cloud Castform"
-            })
-
-            if (newCastform) {
-              newCastform.moveTo(self.cards)
-              my.deck.add(oldCastform)
-              self.cards.remove(oldCastform)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Temperamental Weather", {
+            it.name == "Rain Castform" || it.name == "Castform" || it.name == "Snow-cloud Castform"
+          })
         }
         move "Holon Search", {
           text "Search your deck for a Holon Energy card and attach it to 1 of your Pokémon. Shuffle your deck afterward."
@@ -1253,29 +1193,9 @@ public enum DeltaSpecies implements LogicCardInfo {
         weakness F
         pokePower "Temperamental Weather", {
           text "Once during your turn (before your attack), you may search your deck for Sunny Castform, Rain Castform, or Snow-cloud Castform and switch it with Castform. (Any cards attached to Castform, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Shuffle Castform back into your deck. You can't use more than 1 Temperamental Weather Poké-Power each turn."
-          actionA {
-            assert bg.em().retrieveObject("Temperamental_Weather") != bg.turnCount : "You can’t use more than 1 Temperamental Weather Poké-Power each turn"
-            checkLastTurn()
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Temperamental_Weather",bg.turnCount)
-            powerUsed()
-
-            def oldCastform = self.topPokemonCard
-            def newCastform = my.deck.search(min:0, max: 1, {
-              it.name == "Sunny Castform" ||
-              it.name == "Rain Castform" ||
-              it.name == "Snow-cloud Castform"
-            })
-
-            if (newCastform) {
-              newCastform.moveTo(self.cards)
-              my.deck.add(oldCastform)
-              self.cards.remove(oldCastform)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Temperamental Weather", {
+            it.name == "Sunny Castform" || it.name == "Rain Castform" || it.name == "Snow-cloud Castform"
+          })
         }
         move "Holon Draw", {
           text "Draw a card. If Castform has any Holon Energy cards attached to it, draw 2 more cards."
@@ -1294,27 +1214,9 @@ public enum DeltaSpecies implements LogicCardInfo {
         weakness F
         pokePower "Duplicate", {
           text "Once during your turn (before your attack), you may search your deck for another Ditto and switch it with Ditto. (Any cards attached to Ditto, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Ditto on top of your deck. Shuffle your deck afterward. You can't use more than 1 Duplicate Poké-Power each turn."
-          actionA {
-            assert bg.em().retrieveObject("Duplicate") != bg.turnCount : "You can’t use more than 1 Duplicate Poké-Power each turn"
-            checkLastTurn()
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Duplicate",bg.turnCount)
-            powerUsed()
-
-            def oldDitto = self.topPokemonCard
-            def newDitto = my.deck.search(min:0, max: 1, {
-              it.name == "Ditto"
-            })
-
-            if (newDitto) {
-              newDitto.moveTo(self.cards)
-              my.deck.add(oldDitto)
-              self.cards.remove(oldDitto)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Duplicate", {
+            it.name == "Ditto"
+          })
         }
         move "Energy Link", {
           text "10 damage. Search your discard pile for an Energy card and attach it to Ditto."
@@ -1333,27 +1235,9 @@ public enum DeltaSpecies implements LogicCardInfo {
         weakness R
         pokePower "Duplicate", {
           text "Once during your turn (before your attack), you may search your deck for another Ditto and switch it with Ditto. (Any cards attached to Ditto, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Ditto on top of your deck. Shuffle your deck afterward. You can't use more than 1 Duplicate Poké-Power each turn."
-          actionA {
-            assert bg.em().retrieveObject("Duplicate") != bg.turnCount : "You can’t use more than 1 Duplicate Poké-Power each turn"
-            checkLastTurn()
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Duplicate",bg.turnCount)
-            powerUsed()
-
-            def oldDitto = self.topPokemonCard
-            def newDitto = my.deck.search(min:0, max: 1, {
-              it.name == "Ditto"
-            })
-
-            if (newDitto) {
-              newDitto.moveTo(self.cards)
-              my.deck.add(oldDitto)
-              self.cards.remove(oldDitto)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Duplicate", {
+            it.name == "Ditto"
+          })
         }
         move "Toxic", {
           text "The Defending Pokémon is now Poisoned. Put 2 damage counters instead of 1 on the Defending Pokémon between turns."
@@ -1369,27 +1253,9 @@ public enum DeltaSpecies implements LogicCardInfo {
         weakness W
         pokePower "Duplicate", {
           text "Once during your turn (before your attack), you may search your deck for another Ditto and switch it with Ditto. (Any cards attached to Ditto, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Ditto on top of your deck. Shuffle your deck afterward. You can't use more than 1 Duplicate Poké-Power each turn."
-          actionA {
-            assert bg.em().retrieveObject("Duplicate") != bg.turnCount : "You can’t use more than 1 Duplicate Poké-Power each turn"
-            checkLastTurn()
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Duplicate",bg.turnCount)
-            powerUsed()
-
-            def oldDitto = self.topPokemonCard
-            def newDitto = my.deck.search(min:0, max: 1, {
-              it.name == "Ditto"
-            })
-
-            if (newDitto) {
-              newDitto.moveTo(self.cards)
-              my.deck.add(oldDitto)
-              self.cards.remove(oldDitto)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Duplicate", {
+            it.name == "Ditto"
+          })
         }
         move "Rage", {
           text "10+ damage. Does 10 damage plus 10 more damage for each damage counter on Ditto."
@@ -1404,27 +1270,9 @@ public enum DeltaSpecies implements LogicCardInfo {
         weakness P
         pokePower "Duplicate", {
           text "Once during your turn (before your attack), you may search your deck for another Ditto and switch it with Ditto. (Any cards attached to Ditto, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Ditto on top of your deck. Shuffle your deck afterward. You can't use more than 1 Duplicate Poké-Power each turn."
-          actionA {
-            assert bg.em().retrieveObject("Duplicate") != bg.turnCount : "You can’t use more than 1 Duplicate Poké-Power each turn"
-            checkLastTurn()
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Duplicate",bg.turnCount)
-            powerUsed()
-
-            def oldDitto = self.topPokemonCard
-            def newDitto = my.deck.search(min:0, max: 1, {
-              it.name == "Ditto"
-            })
-
-            if (newDitto) {
-              newDitto.moveTo(self.cards)
-              my.deck.add(oldDitto)
-              self.cards.remove(oldDitto)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Duplicate", {
+            it.name == "Ditto"
+          })
         }
         move "Copy", {
           text "Choose 1 of the Defending Pokémon's attacks. Copy copies that attack. This attack does nothing if Ditto doesn't have the Energy necessary to use that attack. (You must still do anything else required for that attack.) Ditto performs that attack."
@@ -1447,27 +1295,9 @@ public enum DeltaSpecies implements LogicCardInfo {
         weakness F
         pokePower "Duplicate", {
           text "Once during your turn (before your attack), you may search your deck for another Ditto and switch it with Ditto. (Any cards attached to Ditto, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Ditto on top of your deck. Shuffle your deck afterward. You can't use more than 1 Duplicate Poké-Power each turn."
-          actionA {
-            assert bg.em().retrieveObject("Duplicate") != bg.turnCount : "You can’t use more than 1 Duplicate Poké-Power each turn"
-            checkLastTurn()
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Duplicate",bg.turnCount)
-            powerUsed()
-
-            def oldDitto = self.topPokemonCard
-            def newDitto = my.deck.search(min:0, max: 1, {
-              it.name == "Ditto"
-            })
-
-            if (newDitto) {
-              newDitto.moveTo(self.cards)
-              my.deck.add(oldDitto)
-              self.cards.remove(oldDitto)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Duplicate", {
+            it.name == "Ditto"
+          })
         }
         move "Thunderbolt", {
           text "40 damage. Discard all Energy cards attached to Ditto."
@@ -1483,27 +1313,9 @@ public enum DeltaSpecies implements LogicCardInfo {
         weakness L
         pokePower "Duplicate", {
           text "Once during your turn (before your attack), you may search your deck for another Ditto and switch it with Ditto. (Any cards attached to Ditto, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Ditto on top of your deck. Shuffle your deck afterward. You can't use more than 1 Duplicate Poké-Power each turn."
-         actionA {
-            assert bg.em().retrieveObject("Duplicate") != bg.turnCount : "You can’t use more than 1 Duplicate Poké-Power each turn"
-            checkLastTurn()
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Duplicate",bg.turnCount)
-            powerUsed()
-
-            def oldDitto = self.topPokemonCard
-            def newDitto = my.deck.search(min:0, max: 1, {
-              it.name == "Ditto"
-            })
-
-            if (newDitto) {
-              newDitto.moveTo(self.cards)
-              my.deck.add(oldDitto)
-              self.cards.remove(oldDitto)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Duplicate", {
+            it.name == "Ditto"
+          })
         }
         move "Smash Turn", {
           text "20 damage. After your attack, you may switch Ditto with 1 of your Benched Pokémon."
@@ -1981,27 +1793,9 @@ public enum DeltaSpecies implements LogicCardInfo {
         weakness W
         pokePower "Duplicate", {
           text "Once during your turn (before your attack), you may search your deck for another Ditto and switch it with Ditto. (Any cards attached to Ditto, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Ditto on top of your deck. Shuffle your deck afterward. You can't use more than 1 Duplicate Poké-Power each turn."
-          actionA {
-            assert bg.em().retrieveObject("Duplicate") != bg.turnCount : "You can’t use more than 1 Duplicate Poké-Power each turn"
-            checkLastTurn()
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Duplicate",bg.turnCount)
-            powerUsed()
-
-            def oldDitto = self.topPokemonCard
-            def newDitto = my.deck.search(min:0, max: 1, {
-              it.name == "Ditto"
-            })
-
-            if (newDitto) {
-              newDitto.moveTo(self.cards)
-              my.deck.add(oldDitto)
-              self.cards.remove(oldDitto)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Duplicate", {
+            it.name == "Ditto"
+          })
         }
         move "Fireworks", {
           text "30 damage. Flip a coin. If tails, discard a [R] Energy card attached to Ditto."
@@ -2017,27 +1811,9 @@ public enum DeltaSpecies implements LogicCardInfo {
         weakness W
         pokePower "Duplicate", {
           text "Once during your turn (before your attack), you may search your deck for another Ditto and switch it with Ditto. (Any cards attached to Ditto, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Ditto on top of your deck. Shuffle your deck afterward. You can't use more than 1 Duplicate Poké-Power each turn."
-          actionA {
-            assert bg.em().retrieveObject("Duplicate") != bg.turnCount : "You can’t use more than 1 Duplicate Poké-Power each turn"
-            checkLastTurn()
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Duplicate",bg.turnCount)
-            powerUsed()
-
-            def oldDitto = self.topPokemonCard
-            def newDitto = my.deck.search(min:0, max: 1, {
-              it.name == "Ditto"
-            })
-
-            if (newDitto) {
-              newDitto.moveTo(self.cards)
-              my.deck.add(oldDitto)
-              self.cards.remove(oldDitto)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Duplicate", {
+            it.name == "Ditto"
+          })
         }
         move "Linear Attack", {
           text "Choose 1 of your opponent's Pokémon. This attack does 20 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
@@ -2052,27 +1828,9 @@ public enum DeltaSpecies implements LogicCardInfo {
         weakness F
         pokePower "Duplicate", {
           text "Once during your turn (before your attack), you may search your deck for another Ditto and switch it with Ditto. (Any cards attached to Ditto, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Ditto on top of your deck. Shuffle your deck afterward. You can't use more than 1 Duplicate Poké-Power each turn."
-          actionA {
-            assert bg.em().retrieveObject("Duplicate") != bg.turnCount : "You can’t use more than 1 Duplicate Poké-Power each turn"
-            checkLastTurn()
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Duplicate",bg.turnCount)
-            powerUsed()
-
-            def oldDitto = self.topPokemonCard
-            def newDitto = my.deck.search(min:0, max: 1, {
-              it.name == "Ditto"
-            })
-
-            if (newDitto) {
-              newDitto.moveTo(self.cards)
-              my.deck.add(oldDitto)
-              self.cards.remove(oldDitto)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Duplicate", {
+            it.name == "Ditto"
+          })
         }
         move "Thundershock", {
           text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
@@ -2088,27 +1846,9 @@ public enum DeltaSpecies implements LogicCardInfo {
         weakness L
         pokePower "Duplicate", {
           text "Once during your turn (before your attack), you may search your deck for another Ditto and switch it with Ditto. (Any cards attached to Ditto, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Ditto on top of your deck. Shuffle your deck afterward. You can't use more than 1 Duplicate Poké-Power each turn."
-          actionA {
-            assert bg.em().retrieveObject("Duplicate") != bg.turnCount : "You can’t use more than 1 Duplicate Poké-Power each turn"
-            checkLastTurn()
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Duplicate",bg.turnCount)
-            powerUsed()
-
-            def oldDitto = self.topPokemonCard
-            def newDitto = my.deck.search(min:0, max: 1, {
-              it.name == "Ditto"
-            })
-
-            if (newDitto) {
-              newDitto.moveTo(self.cards)
-              my.deck.add(oldDitto)
-              self.cards.remove(oldDitto)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Duplicate", {
+            it.name == "Ditto"
+          })
         }
         move "Spiral Drain", {
           text "20 damage. Remove 3 damage counters from Ditto (all if there are less than 3)."

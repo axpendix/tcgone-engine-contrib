@@ -295,9 +295,8 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               def dittoReplacement = my.discard.findAll{it.cardTypes.is(BASIC) && !it.cardTypes.is(EX) && it.name != "Ditto"}.select("Form Variation - Choose which Pokémon will replace Ditto.")
 
               dittoReplacement.moveTo(self.cards)
-              my.discard.add(ditto)
               self.cards.remove(ditto)
-              checkFaint()
+              my.discard.add(ditto)
               new CheckAbilities().run(bg)
             }
           }
