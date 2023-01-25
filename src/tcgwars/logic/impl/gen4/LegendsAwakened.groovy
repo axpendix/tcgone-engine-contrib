@@ -770,7 +770,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness G, '+30'
           pokeBody "Fossil Armor", {
             text "If Armaldo would be damaged by an attack, prevent that attack's damage done to Armaldo if that damage is 60 or less."
-            delayedA {
+            delayedA (priority: BEFORE_LAST) {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
                   if (it.to == self && it.notNoEffect && (it.dmg.value <= 60)) {
