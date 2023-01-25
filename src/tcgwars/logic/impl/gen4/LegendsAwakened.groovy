@@ -785,14 +785,20 @@ public enum LegendsAwakened implements LogicCardInfo {
             text "Once during your turn, when you put Azelf from your hand onto your Bench, you may look at all of your face-down Prize cards. If you do, you may choose 1 Pokémon you find there, show it to your opponent, and put it into your hand. Then, choose 1 card in your hand and put it as a Prize card face down."
             onActivate { reason ->
               if (reason == PLAY_FROM_HAND && self.benched && confirm("Use Time Walk?")) {
-                assert my.prizeCardSet.faceDownCards.size() != 0 : "You cannot use Time Walk if all of your prizes are face-up."
+                assert my.prizeCardSet.faceDownCards.size() > 0 : "You cannot use Time Walk if all of your prizes are face-up."
                 powerUsed()
                 def tar = my.prizeCardSet.faceDownCards.select(hidden: false, min: 0, "Choose a Pokemon card from your prizes.", cardTypeFilter(POKEMON))
                 if (tar) {
-                  tar.moveTo(my.hand).showToOpponent("Your opponent has swapped this prize card with a card from their hand.")
+                  tar.showToOpponent("Your opponent has swapped this prize card with a card from their hand.").moveTo(my.hand)
                   my.hand.select("Card to put back into Prizes").moveTo(hidden:true, my.prizeCardSet)
                 }
-                my.prizeCardSet.shuffle()
+                if (confirm("Do you wish to rearrange your prize cards? ")) {
+                  def list = rearrange(my.prizeCardSet, "Rearrange your prize cards")
+                  my.prizeCardSet.clear()
+                  my.prizeCardSet.addAll(list)
+                  bc "Prize cards were rearranged"
+                }
+//                my.prizeCardSet.shuffle()
               }
             }
           }
