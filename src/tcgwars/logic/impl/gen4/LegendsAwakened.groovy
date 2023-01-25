@@ -1493,9 +1493,9 @@ public enum LegendsAwakened implements LogicCardInfo {
               if (it == PLAY_FROM_HAND && confirm("Use ! PokePower?")) {
                 powerUsed()
                 flip 1, {
-                  directDamage 20, opp.all.select("Put 2 damage counters on which?")
+                  directDamage 20, opp.all.select("Put 2 damage counters on which?"), SRC_ABILITY
                 }, {
-                  directDamage 20, my.all.select("Put 2 damage counters on which?")
+                  directDamage 20, my.all.select("Put 2 damage counters on which?"), SRC_ABILITY
                 }
               }
             }
