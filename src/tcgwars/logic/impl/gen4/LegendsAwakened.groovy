@@ -2589,7 +2589,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokeBody "WALL", {
             text "As long as Unown W is your Active Pokémon, any damage done to your Pokémon by an opponent's attack is reduced by 10 (after applying Weakness and Resistance)."
             delayedA {
-              after PROCESS_ATTACK_EFFECTS, {
+              before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
                   if (self.active && it.to.owner == self.owner && it.dmg.value && it.notNoEffect) {
                     bc "Wall -10"
