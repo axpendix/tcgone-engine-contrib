@@ -520,7 +520,6 @@ public enum LegendsAwakened implements LogicCardInfo {
             actionA {
               checkLastTurn()
               checkNoSPC()
-              assert self.active : "$self is not your active Pokémon."
               assert opp.bench : "There are no benched Pokémon to switch to"
               powerUsed()
               flip {
