@@ -1262,7 +1262,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             text "60 damage. If Poliwrath was damaged by an attack during your opponent's last turn, this attack does nothing."
             energyCost F
             attackRequirement {
-              assert turnCount + 1 == bg.turnCount && lastDamage > hp(0) : "Was not damaged last turn"
+              assert turnCount + 1 == bg.turnCount && (lastDamage == null || lastDamage == hp(0)) : "Was damaged last turn"
             }
             onAttack {
               damage 60
