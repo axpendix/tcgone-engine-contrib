@@ -4026,7 +4026,7 @@ public enum LegendsAwakened implements LogicCardInfo {
                 }
               }
               before APPLY_ATTACK_DAMAGES, {
-                if (ef.attacker.owner != self.owner && ef.attacker.evolution) {
+                if (ef.attacker.owner != self.owner && !ef.attacker.evolution) {
                   bg.dm().each {
                     if (it.to == self && it.dmg.value && it.notNoEffect) {
                       it.dmg = hp(0)
@@ -4043,7 +4043,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 120
-              discardAllSelfEnergy()
+              afterDamage {discardAllSelfEnergy()}
             }
           }
         };
