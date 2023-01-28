@@ -1762,10 +1762,9 @@ public enum LegendsAwakened implements LogicCardInfo {
           move "Wrap", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
-              flip { apply PARALYZED }
+              flip { applyAfterDamage PARALYZED }
             }
           }
           move "Rising Lunge", {
