@@ -1209,6 +1209,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             actionA {
               checkLastTurn()
               checkNoSPC()
+              assert self.active : "Must be Active Pokemon"
               powerUsed()
               flip{apply BURNED}
             }
