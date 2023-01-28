@@ -993,12 +993,9 @@ public enum LegendsAwakened implements LogicCardInfo {
             def recur = false
             getterA (GET_FULL_HP, self) { Holder h->
               if (self.active) {
-                if (recur) { // if Ditto faces another Ditto, this prevents infinite loops
-                  h.object = self.owner.opposite.pbg.active.getLastFullHP() ?: h.object
-                } else {
-                  recur = true
-                  h.object = self.owner.opposite.pbg.active.getFullHP()
-                  recur = false
+                def pcs = self.owner.opposite.pbg.active
+                if (pcs) {
+                  h.object = pcs.topPokemonCard.getHp()
                 }
               }
             }
@@ -1520,7 +1517,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokePower "Set Up", {
             text "Once during your turn, when you put Uxie from your hand onto your Bench, you may draw cards until you have 7 cards in your hand."
             onActivate { reason ->
-              if (reason == PLAY_FROM_HAND && self.benched && my.deck.notEmpty && my.hand.size() < 7 && confirm("Use Set Up?")) {
+              if (reason == PLAY_FROM_HAND && my.deck.notEmpty && my.hand.size() < 7 && confirm("Use Set Up?")) {
                 powerUsed()
                 draw 7 - my.hand.size()
               }
