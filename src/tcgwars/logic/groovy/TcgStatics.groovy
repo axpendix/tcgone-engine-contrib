@@ -1391,7 +1391,9 @@ class TcgStatics {
     }
     def info = "Attach ${params.type ?: ''} ${params.basic ? 'Basic' : ''} Energy to ${tostr}."
     def filter = { Card card ->
-      card.cardTypes.is(ENERGY) && (!params.basic || card.cardTypes.is(BASIC_ENERGY)) && (!params.type || params.type.each { card.asEnergyCard().containsTypePlain(it) })
+      card.cardTypes.is(ENERGY)
+        && (!params.basic || card.cardTypes.is(BASIC_ENERGY))
+        && (!params.type || card.asEnergyCard().containsType(params.type))
     }
     if(from instanceof DeckCardList){
       list = from.search (max: count?:max, info, filter)

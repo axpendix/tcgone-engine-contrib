@@ -1951,8 +1951,7 @@ public enum ChillingReign implements LogicCardInfo {
               assert my.hand.hasEnergyType(P) : "You have no [P] Energy cards in your hand"
               assertMyBench(hasType: P)
               powerUsed()
-              def pcs = my.bench.findAll { it.types.contains(P) }.select("Attach energy to?")
-              attachEnergyFrom(type:P, my.hand, pcs)
+              attachEnergyFrom(type:P, my.hand, my.bench.findAll { it.types.contains(P) })
               draw 2
             }
           }

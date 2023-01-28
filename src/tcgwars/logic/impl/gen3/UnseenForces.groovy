@@ -2441,7 +2441,7 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             def count = 0
             while (count < 3 && my.discard.filterByType(ENERGY)) {
-              attachEnergyFrom(basic: false, my.discard, self)
+              attachEnergyFrom(my.discard, self)
               count++
             }
           }

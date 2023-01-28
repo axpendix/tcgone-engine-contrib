@@ -2173,7 +2173,7 @@ public enum UltraPrism implements LogicCardInfo {
             onAttack {
               opp.all.each{
                 if (my.discard.filterByEnergyType(METAL)) {
-                  attachEnergyFrom type: M, my.discard, my.all.select()
+                  attachEnergyFrom(type: M, my.discard, my.all)
                 }
               }
             }
