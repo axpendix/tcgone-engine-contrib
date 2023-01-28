@@ -1043,8 +1043,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               assert my.hand.filterByBasicEnergyType(F) : "No [F] Energy cards in your hand"
             }
             onAttack {
-              def tar = my.all.select("Attach to which Pokemon?")
-              attachEnergyFrom(max: 2, type: F, basic: true, my.hand, tar)
+              attachEnergyFrom(max: 2, type: F, basic: true, my.hand, my.all)
             }
           }
           move "Major Earthquake", {
