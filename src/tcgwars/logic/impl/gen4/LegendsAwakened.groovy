@@ -1010,11 +1010,11 @@ public enum LegendsAwakened implements LogicCardInfo {
             //Errata: https://compendium.pokegym.net/compendium-lvx.html#280
             delayedA {
               after ATTACH_ENERGY, self, {
-                if (ef.reason == PLAY_FROM_HAND && (ef.card as EnergyCard).cardTypes.is(BASIC_ENERGY)) {
-                  flip 1, { }, {
+                if (ef.fromHand && ef.card.cardTypes.is(BASIC_ENERGY)) {
+                  flip "Iron Shell", 1, { }, {
                     all.each {
                       if (it.name != "Forretress") {
-                        directDamage 20, it
+                        directDamage(20, it, SRC_ABILITY)
                       }
                     }
                   }

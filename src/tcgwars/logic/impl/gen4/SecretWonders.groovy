@@ -277,7 +277,7 @@ public enum SecretWonders implements LogicCardInfo {
                 if(!tar) break
                 def energy = my.hand.select(min:0,max:my.hand.filterByBasicEnergyType(W).size(),"Attach any number of basic [W] Energys to $tar",basicEnergyFilter(W))
                 energy.each{
-                  attachEnergy(tar,it)
+                  attachEnergy(tar,it,PLAY_FROM_HAND)
                 }
               }
               usingThisAbilityEndsTurn delegate
