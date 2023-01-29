@@ -3899,7 +3899,67 @@ public enum LegendsAwakened implements LogicCardInfo {
           }
         };
       case CLAW_FOSSIL_138:
-        return copy(LegendMaker.CLAW_FOSSIL_78, this);
+        return itemCard (this) {
+          text "Play Claw Fossil as if it were a [C] Basic Pokémon. (Claw Fossil counts as a Trainer card as well, but if Claw Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Claw Fossil can't be affected by any Special Conditions and can't retreat. At any time during your turn before your attack, you may discard Claw Fossil from play. (This doesn't count as a Knocked Out Pokémon.)" +
+            "Jagged Stone: If Claw Fossil is your Active Pokémon and is damaged by an opponent's attack (even if Claw Fossil is Knocked Out), put 1 damage counter on the Attacking Pokémon."
+          onPlay {
+            Card pokemonCard, trainerCard = thisCard
+            pokemonCard = basic (new CustomCardInfo(CLAW_FOSSIL_138).setCardTypes(BASIC, POKEMON), hp:HP040, type:COLORLESS, retreatCost:0) {
+              pokeBody "Jagged Stone", {
+                ifActiveAndDamagedByAttackBody(delegate) {
+                  directDamage(10, ef.attacker, Source.SRC_ABILITY)
+                }
+              }
+              customAbility {
+                def eff, acl
+                delayedA {
+                  before RETREAT, self, {
+                    if(self.topPokemonCard == thisCard){
+                      wcu "$self can't retreat"
+                      prevent()
+                    }
+                  }
+                  before APPLY_SPECIAL_CONDITION, self, {
+                    bc "$self can't be affected by any Special Conditions"
+                    prevent()
+                  }
+                }
+                onActivate{
+                  if (!eff) {
+                    eff = delayed {
+                      after REMOVE_FROM_PLAY, {
+                        if(ef.removedCards.contains(pokemonCard)) {
+                          bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
+                          unregister()
+                          eff = null
+                        }
+                      }
+                    }
+                  }
+                  acl = action("Discard $self", [TargetPlayer.SELF]) {
+                    delayed {
+                      before TAKE_PRIZE, {
+                        if (ef.pcs==self) {
+                          prevent()
+                        }
+                      }
+                    }
+                    new Knockout(self).run(bg)
+                  }
+                }
+                onDeactivate {
+                  acl.each{bg.gm().unregisterAction(it)}
+                }
+              }
+            }
+            pokemonCard.initializeFrom(trainerCard)
+            bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
+            benchPCS(pokemonCard)
+          }
+          playRequirement{
+            assert bench.notFull
+          }
+        };
       case ROOT_FOSSIL_139:
         return itemCard (this) {
           text "Play Root Fossil as if it were a [C] Basic Pokémon. (Root Fossil counts as a Trainer card as well, but if Root Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Root Fossil can't be affected by any Special Conditions and can't retreat. At any time during your turn before your attack, you may discard Root Fossil from play. (This doesn't count as a Knocked Out Pokémon.)" +
