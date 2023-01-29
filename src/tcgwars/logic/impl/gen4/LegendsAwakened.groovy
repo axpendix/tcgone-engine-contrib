@@ -2528,7 +2528,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 if (ef.attacker.owner != self.owner && self.benched) {
                   bg.dm().each {
-                    if (it.to.owner==self.owner && it.to.benched && it.to.name.contains("Unown") && it.dmg.value && it.notNoEffect) {
+                    if (it.to.owner==self.owner && it.to.benched && it.to.name.startsWith("Unown") && it.dmg.value && it.notNoEffect) {
                       bc "UNSEEN prevents damage"
                       it.dmg = hp(0)
                     }
@@ -2536,10 +2536,12 @@ public enum LegendsAwakened implements LogicCardInfo {
                 }
               }
               before null, null, Source.ATTACK, {
-                def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
-                if (bg.currentTurn == self.owner.opposite && ef.effectType != DAMAGE && pcs && pcs.owner == self.owner && self.benched && pcs.topPokemonCard.name == "Unown") {
-                  bc "UNSEEN prevents effect"
-                  prevent()
+                if (ef instanceof TargetedEffect) {
+                  def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
+                  if (bg.currentTurn == self.owner.opposite && ef.effectType != DAMAGE && pcs && pcs.owner == self.owner && self.benched && pcs.name.startsWith("Unown")) {
+                    bc "UNSEEN prevents effect"
+                    prevent()
+                  }
                 }
               }
             }
