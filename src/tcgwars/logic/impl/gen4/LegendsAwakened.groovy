@@ -1249,9 +1249,9 @@ public enum LegendsAwakened implements LogicCardInfo {
           customAbility {
             delayed (priority: LAST) {
               before APPLY_ATTACK_DAMAGES, {
-                if (bg().currentTurn == self.owner.opposite) {
+                if (bg.currentTurn == self.owner.opposite) {
                   turnCount = bg.turnCount
-                  lastDamage = bg().dm().find({ it.to == self && it.dmg.value >= 0 })?.dmg
+                  lastDamage = bg.dm().find({ it.to == self && it.dmg.value >= 0 })?.dmg
                 }
               }
             }
@@ -1260,7 +1260,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             text "60 damage. If Poliwrath was damaged by an attack during your opponent's last turn, this attack does nothing."
             energyCost F
             attackRequirement {
-              assert turnCount + 1 == bg.turnCount && (lastDamage == null || lastDamage == hp(0)) : "Was damaged last turn"
+              assert turnCount + 1 != bg.turnCount || lastDamage == null || lastDamage == hp(0) : "Was damaged last turn"
             }
             onAttack {
               damage 60
