@@ -3901,7 +3901,72 @@ public enum LegendsAwakened implements LogicCardInfo {
       case CLAW_FOSSIL_138:
         return copy(LegendMaker.CLAW_FOSSIL_78, this);
       case ROOT_FOSSIL_139:
-        return copy(LegendMaker.ROOT_FOSSIL_80, this);
+        return itemCard (this) {
+          text "Play Root Fossil as if it were a [C] Basic Pokémon. (Root Fossil counts as a Trainer card as well, but if Root Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Root Fossil can't be affected by any Special Conditions and can't retreat. At any time during your turn before your attack, you may discard Root Fossil from play. (This doesn't count as a Knocked Out Pokémon.)" +
+            "Spongy Stone: At any time between turns, remove 1 damage counter from Root Fossil."
+          onPlay {
+            Card pokemonCard, trainerCard = thisCard
+            pokemonCard = basic (new CustomCardInfo(ROOT_FOSSIL_139).setCardTypes(BASIC, POKEMON), hp:HP040, type:COLORLESS, retreatCost:0) {
+              pokeBody "Spongy Stone", {
+                delayedA{
+                  before BEGIN_TURN, {
+                    if (self.numberOfDamageCounters) {
+                      bc "Spongy Stone activates"
+                      heal 10, self
+                    }
+                  }
+                }
+              }
+              customAbility {
+                def eff, acl
+                delayedA {
+                  before RETREAT, self, {
+                    if(self.topPokemonCard == thisCard){
+                      wcu "$self can't retreat"
+                      prevent()
+                    }
+                  }
+                  before APPLY_SPECIAL_CONDITION, self, {
+                    bc "$self can't be affected by any Special Conditions"
+                    prevent()
+                  }
+                }
+                onActivate{
+                  if (!eff) {
+                    eff = delayed {
+                      after REMOVE_FROM_PLAY, {
+                        if(ef.removedCards.contains(pokemonCard)) {
+                          bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
+                          unregister()
+                          eff = null
+                        }
+                      }
+                    }
+                  }
+                  acl = action("Discard $self", [TargetPlayer.SELF]) {
+                    delayed{
+                      before TAKE_PRIZE, {
+                        if(ef.pcs==self){
+                          prevent()
+                        }
+                      }
+                    }
+                    new Knockout(self).run(bg)
+                  }
+                }
+                onDeactivate {
+                  acl.each{bg.gm().unregisterAction(it)}
+                }
+              }
+            }
+            pokemonCard.initializeFrom(trainerCard)
+            bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
+            benchPCS(pokemonCard)
+          }
+          playRequirement{
+            assert bench.notFull
+          }
+        };
       case AZELF_LV_X_140:
         return levelUp (this, from:"Azelf", hp:HP090, type:PSYCHIC, retreatCost:1) {
           weakness P
