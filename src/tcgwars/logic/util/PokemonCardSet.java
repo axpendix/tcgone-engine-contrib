@@ -41,11 +41,11 @@ public class PokemonCardSet implements Serializable {
 
   private Set<SpecialConditionType> specialConditions;
 
-  //to, from. ex: <charizard, charmeleon> and <charmeleon, charmander>
-//	private Map<PokemonCard, PokemonCard> evolutionChain;
-
   public final String id;
   public final String ref;
+
+  private String lastName = "{?}";
+  private PokemonCard lastTopPokemonCard = null;
 
   //turn played
   public final int turnCount = Battleground.getInstance().getTurnCount();
@@ -72,7 +72,6 @@ public class PokemonCardSet implements Serializable {
     this.specialConditions = new THashSet<>();
     this.id = UUID.randomUUID().toString();
     this.ref = owner.getPbg().nextRef();
-//		this.evolutionChain = new HashMap<PokemonCard, PokemonCard>();
   }
 
   /**
@@ -117,12 +116,19 @@ public class PokemonCardSet implements Serializable {
   public PokemonCard getTopPokemonCard() {
     Card card = cards().first();
     if (card == null) {
-      throw new NullPointerException("topPokemonCard. lastName:" + lastName);
+      RuntimeException exception = new IllegalStateException(String.format("topPokemonCard() called on empty Pokemon. lastName:%s", lastName));
+      if (lastTopPokemonCard == null) { // only throw the exception if there were no topCard at all.
+        throw exception;
+      } else { // otherwise, just report a warning.
+        Battleground.getInstance().getGameManager().reportWarning(exception);
+        return lastTopPokemonCard;
+      }
     }
     if (!(card instanceof PokemonCard)) { // (!card.getStaticCardTypes().isPokemon())
       throw new IllegalStateException("Top card is not a PokemonCard. lastName:" + lastName);
     }
-    return (PokemonCard) card;
+    lastTopPokemonCard = (PokemonCard) card;
+    return lastTopPokemonCard;
   }
 
   public PokemonCard getTopNonBreakPokemonCard() {
@@ -260,24 +266,6 @@ public class PokemonCardSet implements Serializable {
   public Set<SpecialConditionType> getSpecialConditions() {
     return specialConditions;
   }
-
-//	public void addEvolutionChain(PokemonCard evolution) {
-//		evolutionChain.put(getTopPokemonCard(), evolution);
-//		set.add(evolution);
-//	}
-//
-//	public PokemonCard removeTopEvolutionChain(){
-//		PokemonCard pokemonCard = getTopPokemonCard();
-//		evolutionChain.remove(pokemonCard);
-//		set.remove(pokemonCard);
-//		return pokemonCard;
-//	}
-//
-//	public Map<PokemonCard, PokemonCard> getEvolutionChain() {
-//		return evolutionChain;
-//	}
-
-  private String lastName = "?";
 
   public String getName() {
     try {
@@ -433,7 +421,6 @@ public class PokemonCardSet implements Serializable {
     }
     return false;
     // even global abilities need to be defined as regular ability with no effect
-//		return getTopPokemonCard().getGlobalAbilities().size() > 0;
   }
 
   public boolean hasPokePower() {
@@ -467,27 +454,17 @@ public class PokemonCardSet implements Serializable {
       return getName() + " Lv.X";
     }
     return getName();
-//		return "\n\tPokemonCardSet [set=" + cards() + ", damage=" + damage + "]" ;
   }
 
-  public String getShortId() {
-    return id.substring(0, 6);
+  public String getNameWithRef() {
+    return getName() + " {" + ref + "}";
   }
-
-  public String getNameWithShortId() {
-    return getName() + " (" + getShortId() + ")";
-  }
-
-  //	public void setCards(CardList set) {
-//		this.set = set;
-//	}
 
   public String toDebugString() {
     return "Pokemon{" +
         ", name='" + toString() + '\'' +
         ", ref='" + ref + '\'' +
         ", owner=" + owner +
-        ", id='" + getShortId() + '\'' +
         "cards=" + set +
         '}';
   }
