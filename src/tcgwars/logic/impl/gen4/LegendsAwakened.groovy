@@ -1579,17 +1579,19 @@ public enum LegendsAwakened implements LogicCardInfo {
         return evolution (this, from:"Gloom", hp:HP120, type:G, retreatCost:2) {
           weakness P, '+30'
           pokePower "Energy Reaction", {
-            text "Once during your turn (before your attack), when you attach a Grass or [P] Energy card from your hand to Vileplume (excluding effects of attacks or Poké-Powers), you may use this power. If you attach a [G] Energy card, the Defending Pokémon is now Asleep. If you attach a [P] Energy card, the Defending Pokémon is now Poisoned. This power can't be used if Vileplume is affected by a Special Condition."
+            text "Once during your turn (before your attack), when you attach a [G] or [P] Energy card from your hand to Vileplume (excluding effects of attacks or Poké-Powers), you may use this power. If you attach a [G] Energy card, the Defending Pokémon is now Asleep. If you attach a [P] Energy card, the Defending Pokémon is now Poisoned. This power can't be used if Vileplume is affected by a Special Condition."
             delayedA {
-              after ATTACH_ENERGY, self, {
-                if (ef.reason == PLAY_FROM_HAND && (ef.card.asEnergyCard().containsType(G) || ef.card.asEnergyCard().containsType(P)) && !self.specialConditions && confirm("Use Energy Reaction?")) {
-                  if (ef.card.asEnergyCard().containsType(G)) {
+              // can't use ATTACH_ENERGY here because of clause "(excluding effects of attacks or Poké-Powers)"
+              // this is also not perfect as it doesn't work with trainers. source refactoring needed
+              after PLAY_ENERGY, {
+                if (ef.attached == self && (ef.cardToPlay.containsType(G) || ef.cardToPlay.containsType(P)) && !self.specialConditions && confirm("Use Energy Reaction?")) {
+                  if (ef.cardToPlay.containsType(G)) {
                     bc "Energy Reaction inflicts Confusion"
-                    apply ASLEEP, opp.active
+                    apply ASLEEP, opp.active, SRC_ABILITY
                   }
-                  if (ef.card.asEnergyCard().containsType(P)) {
+                  if (ef.cardToPlay.containsType(P)) {
                     bc "Energy Reaction inflicts Poison"
-                    apply POISONED, opp.active
+                    apply POISONED, opp.active, SRC_ABILITY
                   }
                 }
               }
