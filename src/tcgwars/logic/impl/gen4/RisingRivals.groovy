@@ -1617,11 +1617,11 @@ public enum RisingRivals implements LogicCardInfo {
             onAttack {
               damage 40
               afterDamage {
-                if(my.hand.filterByType(BASIC_ENERGY)) {
-                  def card = my.hand.select(min:0,"You may attack a basic Energy card from your hand to 1 of your Pokémon",cardTypeFilter(BASIC_ENERGY)).first()
-                  if(card) {
+                if (my.hand.filterByType(BASIC_ENERGY)) {
+                  def card = my.hand.select("Attach a basic Energy card from your hand to 1 of your Pokémon.", cardTypeFilter(BASIC_ENERGY)).first()
+                  if (card) {
                     def tar = my.all.select("Attach $card to which Pokémon?")
-                    attachEnergy(tar,card,PLAY_FROM_HAND)
+                    attachEnergy(tar, card, PLAY_FROM_HAND)
                   }
                 }
               }
