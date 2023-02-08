@@ -3160,14 +3160,26 @@ public enum RisingRivals implements LogicCardInfo {
               checkLastTurn()//This should never fail
               bg.em().storeObject("Sand_Reset_"+thisCard.player,1)
               powerUsed()
-              all.each{
+              def selfShuffle = self.owner.pbg.all.find {
+                it.cards.getExcludedList(it.cards.filterByType(POKEMON))
+              }
+              def oppShuffle = opp().all.find {
+                it.cards.getExcludedList(it.cards.filterByType(POKEMON))
+              }
+              all.each {
                 it.cards.getExcludedList(it.cards.filterByType(POKEMON)).moveTo(it.owner.pbg.deck)
               }
-              if(bg.stadiumInfoStruct) {
+              if (bg.stadiumInfoStruct) {
                 new CardList(bg.stadiumInfoStruct.stadiumCard).moveTo(bg.stadiumInfoStruct.stadiumCard.player.pbg.deck)
               }
-              shuffleDeck()
-              shuffleDeck null, TargetPlayer.OPPONENT
+
+              if (selfShuffle) {
+                shuffleDeck()
+              }
+
+              if (oppShuffle) {
+                shuffleDeck null, TargetPlayer.OPPONENT
+              }
             }
           }
           move "Double Shoot", {
