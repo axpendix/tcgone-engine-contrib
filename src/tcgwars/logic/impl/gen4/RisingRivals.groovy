@@ -1440,12 +1440,13 @@ public enum RisingRivals implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              if(my.bench && self.cards.filterByType(ENERGY)) {
-                moveEnergy(self,my.bench)
+              afterDamage {
+                if (my.bench && self.cards.filterByType(ENERGY)) {
+                  moveEnergy(self, my.bench)
+                }
               }
             }
           }
-
         };
       case GENGAR_GL_40:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
