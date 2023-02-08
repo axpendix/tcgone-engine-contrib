@@ -369,9 +369,11 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost P, C
             onAttack {
               damage 30
-              if(defending.specialConditions) {
+              if (defending.specialConditions) {
                 damage 20
-                clearSpecialCondition defending
+                afterDamage {
+                  clearSpecialCondition defending
+                }
               }
             }
           }
