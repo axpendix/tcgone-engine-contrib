@@ -387,10 +387,10 @@ public enum RisingRivals implements LogicCardInfo {
             text "Once during your opponent’s turn, if Jirachi would be Knocked Out by damage from an attack, you may search your deck for any 1 card and put it into your hand. Shuffle your deck afterward."
             delayedA {
               before (KNOCKOUT,self) {
-                if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.deck && confirm("Use Final Wish?", self.owner)) {
+                if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.deck && confirm("Use Final Wish?", self.owner)) {
                   powerUsed()
-                  self.owner.pbg.deck.select("Search your deck for a card",{true},self.owner)
-                  shuffleDeck()
+                  self.owner.pbg.deck.select("Search your deck for a card",{true}, self.owner).moveTo(self.owner.pbg.hand)
+                  shuffleDeck(null, TargetPlayer.SELF)
                 }
               }
             }
