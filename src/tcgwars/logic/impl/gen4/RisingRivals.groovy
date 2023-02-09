@@ -624,14 +624,16 @@ public enum RisingRivals implements LogicCardInfo {
         return evolution (this, from:"Lairon", hp:HP130, type:METAL, retreatCost:3) {
           weakness R, PLUS30
           resistance P, MINUS20
-          def lastDamage = null
-          def turnCount = null
+          def lastDamage = hp(0)
+          def turnCount = 0
           customAbility {
             delayed (priority: LAST) {
               before APPLY_ATTACK_DAMAGES, {
-                if (bg().currentTurn==self.owner.opposite) {
+                if (bg().currentTurn == self.owner.opposite) {
                   turnCount = bg.turnCount
-                  lastDamage = bg().dm().find({it.to==self && it.dmg.value>=0})?.dmg
+                  lastDamage = bg().dm().find({
+                    it.to == self && it.dmg.value >= 0
+                  })?.dmg
                 }
               }
             }
@@ -640,7 +642,7 @@ public enum RisingRivals implements LogicCardInfo {
             text "If Aggron was damaged by an attack during your opponent’s last turn, this attack does the same amount of damage done to Aggron to the Defending Pokémon."
             energyCost C, C
             attackRequirement {
-              assert bg.turnCount == turnCount + 1 : "$self was not damaged by an attack last turn"
+              assert bg().turnCount == turnCount + 1 && lastDamage > hp(0): "$self was not damaged by an attack last turn"
             }
             onAttack {
               damage lastDamage.value
