@@ -3043,12 +3043,12 @@ public enum RisingRivals implements LogicCardInfo {
 
               powerUsed()
               def src = my.all.findAll {it.numberOfDamageCounters > 0 && it.pokemonSP }.select("Source for damage counter")
-              def tar = my.all
-              tar.remove(src)
-              tar = tar.select("Target for damage counter")
+              def validTargets = my.all.findAll { it.pokemonSP }
+              validTargets.remove(src)
+              def target = validTargets.select("Target for damage counter")
               src.damage -= hp(10)
-              directDamage 10, tar, Source.POKEPOWER
-              bc "Swapped a damage counter from $src to $tar"
+              directDamage 10, target, Source.POKEPOWER
+              bc "Swapped a damage counter from $src to $target"
               checkFaint()
             }
           }
