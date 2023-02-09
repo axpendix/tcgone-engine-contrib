@@ -2670,8 +2670,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
-              apply POISONED
-              if (self.getPokemonCards().find{it.name == "Budew"})
+              applyAfterDamage POISONED
+              if (self.getPokemonCards().find {it.name == "Budew"})
                 damage 10
             }
           }
@@ -2681,7 +2681,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              apply ASLEEP
+              applyAfterDamage ASLEEP
               heal 20, my.all.select()
             }
           }
