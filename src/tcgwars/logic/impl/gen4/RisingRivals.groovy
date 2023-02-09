@@ -3077,16 +3077,19 @@ public enum RisingRivals implements LogicCardInfo {
             text "Whenever any of your [W] Pokémon (excluding any Floatzel) is Knocked Out by damage from your opponent’s attack, you may put that Pokémon and all cards that were attached to it from your discard pile into your hand."
             delayedA (priority: BEFORE_LAST) {
               before KNOCKOUT, {
-                def pcs=ef.pokemonToBeKnockedOut
-                if((ef as Knockout).byDamageFromAttack && pcs != self && pcs.owner == self.owner && pcs.types.contains(W)) {
+                def pcs = ef.pokemonToBeKnockedOut
+                if ((ef as Knockout).byDamageFromAttack && pcs != self && pcs.owner == self.owner && pcs.types.contains(W) && !pcs.topPokemonCard.name.contains("Floatzel")) {
                   def tpc = pcs.topPokemonCard
-                  CardList dscrd = []
-                  dscrd.addAll(self.owner.pbg.discard)
-                  delayed(inline: true,priority: BEFORE_LAST){
+                  CardList lostZone = []
+                  CardList discarded = []
+                  discarded.addAll(self.owner.pbg.discard)
+                  lostZone.addAll(self.owner.pbg.lostZone)
+
+                  delayed(inline: true, priority: BEFORE_LAST) {
                     after KNOCKOUT, pcs, {
-                      if(self.owner.pbg.discard.contains(tpc) && confirm("Use Water Rescue?",self.owner)) {
+                      if (self.owner.pbg.discard.contains(tpc) && !self.owner.pbg.lostZone.contains(tpc) && confirm("Use Water Rescue?", self.owner)) {
                         bc "$thisAbility activates"
-                        self.owner.pbg.discard.getExcludedList(dscrd).moveTo(self.owner.pbg.hand)//This feels naive, but I haven't been able to break it yet
+                        self.owner.pbg.discard.getExcludedList(discarded).moveTo(self.owner.pbg.hand)
                       }
                       owner.delegate.unregister()
                     }
