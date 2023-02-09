@@ -1750,6 +1750,7 @@ public enum RisingRivals implements LogicCardInfo {
               damage 20
               afterDamage {
                 increasedDamageDoneToDefending(self, defending, 40, thisMove.name)
+                increasedDamageDoneToDefending(defending, defending, 40, thisMove.name)
               }
             }
           }
