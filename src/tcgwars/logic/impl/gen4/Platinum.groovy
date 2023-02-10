@@ -1629,12 +1629,15 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
             energyCost G, D
             onAttack {
               damage 20
-              if(self.cards.filterByEnergyType(G) || self.cards.filterByEnergyType(G) && confirm("Discard a [G] or [D] Energy attached to Cacturne?")) {
-                def energy = self.cards.select("Choose an Energy to discard", {it.cardTypes.is(ENERGY) && (it.asEnergyCard().containsType(G) || it.asEnergyCard().containsType(D))}).first()
-                if(energy.asEnergyCard().containsType(G)) {
+
+              if ((self.cards.filterByEnergyType(G) || self.cards.filterByEnergyType(D)) && confirm("Discard a [G] or [D] Energy attached to Cacturne?")) {
+                def energy = self.cards.select("Choose an Energy to discard.  If you discard a [G] Energy, the Defending Pokémon is now Poisoned. If you discard a [D] Energy, the Defending Pokémon is now Paralyzed.", {
+                  it.cardTypes.is(ENERGY) && (it.asEnergyCard().containsType(G) || it.asEnergyCard().containsType(D))
+                }).first()
+                if (energy.asEnergyCard().containsType(G)) {
                   applyAfterDamage POISONED
                 }
-                if(energy.asEnergyCard().containsType(D)) {
+                if (energy.asEnergyCard().containsType(D)) {
                   applyAfterDamage PARALYZED
                 }
                 afterDamage {
