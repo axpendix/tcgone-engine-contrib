@@ -1668,7 +1668,7 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
         };
       case CASCOON_44:
         return evolution (this, from:"Wurmple", hp:HP080, type:GRASS, retreatCost:2) {
-          weakness R
+          weakness R, PLUS20
           move "Ascension", {
             text "Search your deck for a card that evolves from Cascoon and put it onto Cascoon. (This counts as evolving Cascoon.) Shuffle your deck afterward."
             ascension delegate
