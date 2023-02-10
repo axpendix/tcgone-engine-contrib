@@ -715,7 +715,6 @@ public enum Platinum implements LogicCardInfo {
           resistance F, MINUS20
           move "Growth", {
             text "Attach a [G] Energy card from your hand to Shaymin."
-            energyCost G
             attackRequirement {
               assert my.hand.filterByEnergyType(G) : "You have no [G] Energy cards in your hand"
             }
