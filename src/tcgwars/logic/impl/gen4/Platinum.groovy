@@ -234,7 +234,7 @@ public enum Platinum implements LogicCardInfo {
               }
             }
             getterA IS_ABILITY_BLOCKED, { Holder h ->
-              if (h.effect.target.numberOfDamageCounters && h.effect.target.pokemonGX && h.effect.ability instanceof PokePower) {
+              if (h.effect.target.numberOfDamageCounters && h.effect.ability instanceof PokePower) {
                 targeted(h.effect.target, Source.POKEBODY) {
                   h.object = true
                 }
