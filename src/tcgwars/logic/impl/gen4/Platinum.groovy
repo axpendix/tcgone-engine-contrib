@@ -3584,9 +3584,9 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness L, PLUS10
           pokeBody "Swift Swim", {
-            text "If Lotad has any Energy attached to it, Lotad’s Retreat Cost is 0."
-            getterA (GET_RETREAT_COST, BEFORE_LAST, self) { h->
-              if (self.cards.filterByType(ENERGY)) {
+            text "If Lotad has any [W] Energy attached to it, Lotad’s Retreat Cost is 0."
+            getterA (GET_RETREAT_COST, BEFORE_LAST, self) { h ->
+              if (self.cards.filterByType(ENERGY) && self.cards.filterByEnergyType(W)) {
                 h.object = 0
               }
             }
