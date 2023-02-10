@@ -280,12 +280,12 @@ public enum Platinum implements LogicCardInfo {
               checkNoSPC()
               assert my.deck : "Your deck is empty"
               powerUsed()
-              def top = my.deck.subList(0,3)
-              if(top.filterByEnergyType(W)) {
-                def max = top.filterByEnergyType(w).size()
-                top.select(max:max, "Choose any number of [W] Energy cards", energyFilter(W)).each {
+              def top = my.deck.subList(0, 3)
+              if (top.filterByEnergyType(W)) {
+                def max = top.filterByEnergyType(W).size()
+                top.select(min:0, max:max, "Choose any number of [W] Energy cards", energyFilter(W)).each {
                   def tar = my.all.select("Attach $it to")
-                  attachEnergy(tar,it)
+                  attachEnergy(tar, it)
                   top.remove(it)
                 }
               }
