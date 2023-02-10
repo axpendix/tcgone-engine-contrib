@@ -3210,7 +3210,22 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
           }
         };
       case MEMORY_BERRY_110:
-        return copy(CrystalGuardians.MEMORY_BERRY_80, this);
+        return pokemonTool (this) {
+          text "The Pokémon this card is attached to can use any attack from its Basic Pokémon or its Stage 1  Evolution card. (You still have to pay for that attack’s Energy cost.)"
+          def eff
+          onPlay { reason ->
+            eff = getter (GET_MOVE_LIST, self) { holder ->
+              if (self.active && self.evolution) {
+                for (card in self.pokemonCardsExceptTop) {
+                  holder.object.addAll(card.moves)
+                }
+              }
+            }
+          }
+          onRemoveFromPlay {
+            eff.unregister()
+          }
+        };
       case MIASMA_VALLEY_111:
         return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nWhenever any player puts a Basic Pokémon (excluding [G] or [P] Pokémon) from his or hand onto his or her Bench, put 2 damage counters on that Pokémon."
