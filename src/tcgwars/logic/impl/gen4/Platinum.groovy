@@ -358,8 +358,12 @@ public enum Platinum implements LogicCardInfo {
               checkNoSPC()
               assert my.discard.filterByType(BASIC_ENERGY) : "You have no basic Energy cards in your discard"
               powerUsed()
-              def list = rearrange(my.discard.select(max:2, cardTypeFilter(BASIC_ENERGY)))
-              list.moveTo(addToTop : true, my.deck)
+
+              def list = my.discard.select(max:2, cardTypeFilter(BASIC_ENERGY))
+              list = rearrange(list)
+              my.discard.removeAll(list)
+              my.deck.addAll(0, list)
+
               directDamage 20, self, Source.POKEPOWER
             }
           }
