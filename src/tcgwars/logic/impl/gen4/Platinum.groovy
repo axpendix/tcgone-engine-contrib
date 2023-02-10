@@ -1179,7 +1179,7 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
         };
       case GIRATINA_28:
         return basic (this, hp:HP110, type:PSYCHIC, retreatCost:2) {
-          weakness D
+          weakness D, PLUS30
           resistance C, MINUS20
           move "Dragon Claw", {
             text "30 damage. "
