@@ -651,10 +651,23 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
+              damage 30
+
               flip {
-                damage 30
-                //TODO: preventAllDamageNextTurn() won't cut it here sadly.
-                preventAllDamageNextTurn()
+                delayed(priority: BEFORE_LAST) {
+                  before APPLY_ATTACK_DAMAGES, {
+                    def damageEntry = bg().dm().find({ it.to == self && it.dmg.value > 0 })
+                    if (damageEntry) {
+                      damageEntry.dmg = hp(0)
+                      bc "Accelerative Dive prevents damage!"
+                    }
+                  }
+                  after FALL_BACK, defending, { unregister() }
+                  after CHANGE_STAGE, defending, { unregister() }
+                  unregisterAfter 3
+                  unregister { bc "Accelerative Dive fades" }
+                  register { bc "Accelerative Dive activated" }
+                }
               }
             }
           }
@@ -664,10 +677,9 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 100
-              flip 1, {}, {damage 100, self}
+              flip 1, {}, { damage 100, self }
             }
           }
-
         };
       case TORTERRA_17:
         return evolution (this, from:"Grotle", hp:HP140, type:GRASS, retreatCost:4) {
