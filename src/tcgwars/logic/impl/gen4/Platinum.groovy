@@ -483,9 +483,10 @@ public enum Platinum implements LogicCardInfo {
           pokePower "Psychic Connect", {
             text "As often as you like during your turn , you may move a [P] Energy attached to 1 of your Benched Pokémon to your Active Pokémon. This power can’t be used if Gardevoir is affected by a Special Condition."
             actionA {
-              checkLastTurn()
               checkNoSPC()
-              assert my.bench.find{it.cards.filterByEnergyType(P)} : "You have no [P] Energy attached to your Benched Pokémon"
+              assert my.bench.find {
+                it.cards.filterByEnergyType(P)
+              } : "You have no [P] Energy attached to your Benched Pokémon"
               powerUsed()
               moveEnergy(type: P, my.bench, my.active)
             }
