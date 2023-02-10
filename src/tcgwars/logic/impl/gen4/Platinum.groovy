@@ -986,8 +986,11 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
               assert bg.em().retrieveObject("Nurse_Call") != bg.turnCount : "You cannot use Nurse Call more than once per turn"
               powerUsed()
               my.hand.select("Choose a card to discard").discard()
-              if (my.all.any{it.numberOfDamageCounters})
-                heal 20, my.all.findAll{it.numberOfDamageCounters}.select("Heal which Pokémon"), Source.POKEPOWER
+              if (my.all.any { it.numberOfDamageCounters })
+                heal 20, my.all.findAll {
+                  it.numberOfDamageCounters
+                }.select("Heal which Pokémon"), Source.POKEPOWER
+              bg.em().storeObject("Nurse_Call", bg.turnCount)
             }
           }
           move "Return", {
