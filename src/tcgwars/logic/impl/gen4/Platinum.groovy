@@ -412,8 +412,8 @@ public enum Platinum implements LogicCardInfo {
             text "As long as Dialga is your Active Pokémon, your opponent can’t play any Pokémon from his or her hand to evolve his or her Active Pokémon."
             delayedA {
               def warnAndPrevent = {
-                if (self.active && bg.currentTurn == self.owner.opposite) {
-                  wcu "$self's Time Aura prevents playing Pokémon from your hand to evolve your Pokémon"
+                if (self.active && bg.currentTurn == self.owner.opposite && ef.pokemonToBeEvolved.active) {
+                  wcu "$self's Time Aura prevents playing Pokémon from your hand to evolve your Active Pokémon"
                   prevent()
                 }
               }
