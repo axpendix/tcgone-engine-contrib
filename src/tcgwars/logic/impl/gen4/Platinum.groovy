@@ -389,11 +389,18 @@ public enum Platinum implements LogicCardInfo {
           resistance P, MINUS20
           pokePower "Reverse Time", {
             text "Once during your turn, when you put Dialga from your hand onto your Bench, you may search your discard pile for up to 3 in any combination of Pokémon (excluding Pokémon LV.X) and basic Energy cards. Show them to your opponent and put them on top of your deck in any order."
-            onActivate {r->
-              if (r==PLAY_FROM_HAND && my.discard.find{(it.cardTypes.is(POKEMON) && !it.cardTypes.is(LVL_X)) || it.cardTypes.is(BASIC_ENERGY)} && confirm("Use Reverse Time?")) {
+            onActivate { r ->
+              if (r == PLAY_FROM_HAND && my.discard.find {
+                (it.cardTypes.is(POKEMON) && !it.cardTypes.is(LVL_X)) || it.cardTypes.is(BASIC_ENERGY)
+              } && confirm("Use Reverse Time?")) {
                 powerUsed()
-                def list = rearrange(my.discard.select(max:3, "Search your discard pile for up to 3 in any combination of Pokémon (excluding Pokémon LV.X) and basic Energy cards", {(it.cardTypes.is(POKEMON) && !it.cardTypes.is(LVL_X)) || it.cardTypes.is(BASIC_ENERGY)}))
-                list.showToOpponent("Selected Cards").moveTo(addToTop : true, my.deck)
+                def list = my.discard.select(max:3, "Search your discard pile for up to 3 in any combination of Pokémon (excluding Pokémon LV.X) and basic Energy cards", {
+                  (it.cardTypes.is(POKEMON) && !it.cardTypes.is(LVL_X)) || it.cardTypes.is(BASIC_ENERGY)
+                })
+                list = rearrange(list)
+                list.showToOpponent("Selected Cards")
+                my.discard.removeAll(list)
+                my.deck.addAll(0, list)
               }
             }
           }
