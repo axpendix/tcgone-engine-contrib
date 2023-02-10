@@ -1632,7 +1632,7 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
         };
       case CARNIVINE_43:
         return basic (this, hp:HP080, type:GRASS, retreatCost:2) {
-          weakness R
+          weakness R, PLUS20
           resistance W, MINUS20
           move "Stretch Vine", {
             text "Choose 2 of your opponent’s Benched Pokémon. This attack does 10 damage to each of them."
