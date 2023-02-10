@@ -1360,25 +1360,25 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
         return evolution (this, from:"Lombre", hp:HP120, type:GRASS, retreatCost:2) {
           weakness L, PLUS30
           pokePower "Cheerful Voice", {
-            text "Once during your turn , you may use this power. If you do, your turn ends. During your next turn, each of Ludicolo’s attacks does 60 more damage to the Defending Pokémon . This power can’t be used if Ludicolo is affected by a Special Condition."
+            text "Once during your turn, you may use this power. If you do, your turn ends. During your next turn, each of Ludicolo’s attacks does 60 more damage to the Defending Pokémon. This power can’t be used if Ludicolo is affected by a Special Condition."
             actionA {
               checkLastTurn()
               checkNoSPC()
               powerUsed({ usingThisAbilityEndsTurn delegate })
               delayed {
-                def registeredOn=0
+                def registeredOn = 0
                 after PROCESS_ATTACK_EFFECTS, {
-                  if(bg.turnCount!=registeredOn){
-                    bg.dm().each {if(it.from==self && it.dmg.value){
-                      bc "Cheerfull Voice does +60 to ${it.to}"
-                      it.dmg+=hp(60)
-                    }}
+                  if (bg.turnCount != registeredOn) {
+                    bg.dm().each {if (it.from == self && it.dmg.value) {
+                        bc "Cheerfull Voice does +60 to ${it.to}"
+                        it.dmg += hp(60)
+                      }
+                    }
                   }
                 }
                 unregisterAfter 3
-                after FALL_BACK, self, {unregister()}
                 after CHANGE_STAGE, self, {unregister()}
-                register{registeredOn=bg.turnCount}
+                register { registeredOn = bg.turnCount }
               }
               usingThisAbilityEndsTurn delegate
             }
