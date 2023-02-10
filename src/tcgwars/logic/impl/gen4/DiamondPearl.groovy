@@ -396,11 +396,11 @@ public enum DiamondPearl implements LogicCardInfo {
           resistance M, MINUS20
           pokePower "Gleam Eyes", {
             text "Once during your turn, when you play Luxray from your hand to evolve 1 of your Pokémon, you may look at your opponent’s hand. If your opponent’s Bench isn’t full, choose 1 Basic Pokémon from your opponent’s hand, and put it onto his or her Bench. Then, switch it with the Defending Pokémon."
-            onActivate {reason ->
-              if(reason==PLAY_FROM_HAND && opp.hand && opp.bench.notFull && confirm('Use Gleam Eyes?')){
+            onActivate { reason ->
+              if (reason==PLAY_FROM_HAND && opp.hand && opp.bench.notFull && confirm('Use Gleam Eyes?')) {
                 powerUsed()
                 def list = opp.hand.shuffledCopy().showToMe("Opponent's hand").filterByType(BASIC)
-                if(list){
+                if (list) {
                   def card = list.select("Put a Basic Pokémon you find there onto your opponent's Bench").first()
                   def pcs = benchPCS(card, OTHER)
                   if (pcs) {
@@ -416,13 +416,16 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 80
-              if (my.bench.notEmpty) {
-                def pcs = my.bench.select()
-                self.cards.filterByEnergyType(L).each{energySwitch(self,pcs,it)}
+              afterDamage {
+                if (my.bench.notEmpty) {
+                  def pcs = my.bench.select("Move all [L] Energy attached to Luxray to 1 of your Benched Pokémon.")
+                  self.cards.filterByEnergyType(L).each {
+                    energySwitch(self, pcs, it)
+                  }
+                }
               }
             }
           }
-
         };
       case MAGNEZONE_8:
         return evolution (this, from:"Magneton", hp:HP120, type:METAL, retreatCost:4) {
@@ -648,10 +651,23 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
+              damage 30
+
               flip {
-                damage 30
-                //TODO: preventAllDamageNextTurn() won't cut it here sadly.
-                preventAllDamageNextTurn()
+                delayed(priority: BEFORE_LAST) {
+                  before APPLY_ATTACK_DAMAGES, {
+                    def damageEntry = bg().dm().find({ it.to == self && it.dmg.value > 0 })
+                    if (damageEntry) {
+                      damageEntry.dmg = hp(0)
+                      bc "Accelerative Dive prevents damage!"
+                    }
+                  }
+                  after FALL_BACK, defending, { unregister() }
+                  after CHANGE_STAGE, defending, { unregister() }
+                  unregisterAfter 3
+                  unregister { bc "Accelerative Dive fades" }
+                  register { bc "Accelerative Dive activated" }
+                }
               }
             }
           }
@@ -661,10 +677,9 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 100
-              flip 1, {}, {damage 100, self}
+              flip 1, {}, { damage 100, self }
             }
           }
-
         };
       case TORTERRA_17:
         return evolution (this, from:"Grotle", hp:HP140, type:GRASS, retreatCost:4) {
@@ -2667,8 +2682,8 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost G
             attackRequirement {}
             onAttack {
-              apply POISONED
-              if (self.getPokemonCards().find{it.name == "Budew"})
+              applyAfterDamage POISONED
+              if (self.getPokemonCards().find {it.name == "Budew"})
                 damage 10
             }
           }
@@ -2678,7 +2693,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              apply ASLEEP
+              applyAfterDamage ASLEEP
               heal 20, my.all.select()
             }
           }
