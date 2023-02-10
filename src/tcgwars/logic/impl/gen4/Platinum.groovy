@@ -3477,18 +3477,18 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
           initHook {Card thisCard->
             delayed {
               before KNOCKOUT, {
-                if(ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite){
+                if ((ef as Knockout).byDamageFromAttack && ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite) {
                   bg.em().storeObject("Revenge_Seed", bg.turnCount)
                 }
               }
             }
           }
           pokeBody "Revenge Seed", {
-            text "If any of your Pokémon were Knocked Out by damage from an opponent’s attack during his or her last turn, each of Shaymin’s attacks does 60 more damage to the Active Pokémon ."
+            text "If any of your [G] Pokémon were Knocked Out by damage from an opponent’s attack during his or her last turn, each of Shaymin’s attacks does 60 more damage to the Active Pokémon ."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                if(ef.attacker==self && bg.em().retrieveObject("Revenge_Seed") == bg.turnCount-1) bg.dm().each {
-                  if(it.from==self && it.to.active && it.to.owner!=self.owner && it.dmg.value){
+                if (ef.attacker==self && bg.em().retrieveObject("Revenge_Seed") == bg.turnCount-1) bg.dm().each {
+                  if (it.from == self && it.to.active && it.to.owner != self.owner && it.dmg.value && it.to.types.contains(G)) {
                     bc "Revenge seed +60"
                     it.dmg += hp(60)
                   }
