@@ -3656,10 +3656,9 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
         };
       case VULPIX_SH6:
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
-          weakness W
+          weakness W, PLUS10
           move "Find Wildfire", {
             text "Search your deck for up to 2 [R] Energy cards, show them to your opponent, and put them in your hand. Shuffle your deck afterward."
-            energyCost R
             attackRequirement {
               assert my.deck : "Your deck is empty"
             }
@@ -3670,11 +3669,11 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
           }
           move "Brushfire", {
             text "10 damage. Does 10 damage to each of your opponent's [G] Benched Pokémon."
-            energyCost R, G
+            energyCost R
             onAttack {
               damage 10
               opp.bench.each {
-                if(it.types.contains(G)) {
+                if (it.types.contains(G)) {
                   damage 10, it
                 }
               }
@@ -3689,7 +3688,7 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
             onAttack {
               damage 30
               afterDamage {
-                my.hand.select("Discard a [R] Energy card from your hand")
+                discardSelfEnergy(R)
               }
             }
           }
