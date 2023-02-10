@@ -2294,7 +2294,7 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
         };
       case CARNIVINE_68:
         return basic (this, hp:HP080, type:GRASS, retreatCost:2) {
-          weakness R
+          weakness R, PLUS20
           resistance W, MINUS20
           move "Poison Breath", {
             text "Flip a coin. If heads, the Defending Pokémon is now Poisoned."
