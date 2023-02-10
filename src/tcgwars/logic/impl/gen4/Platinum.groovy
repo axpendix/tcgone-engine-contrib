@@ -1011,7 +1011,7 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
         };
       case DIALGA_23:
         return basic (this, hp:HP100, type:METAL, retreatCost:3) {
-          weakness R
+          weakness R, PLUS30
           resistance P, MINUS20
           move "Energy Stream", {
             text "20 damage. Flip a coin. If heads, search your discard pile for a basic Energy card and attach it to Dialga."
