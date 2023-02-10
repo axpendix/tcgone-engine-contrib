@@ -700,9 +700,11 @@ public enum Platinum implements LogicCardInfo {
             energyCost G, C
             onAttack {
               damage 30
-              if(defending.specialConditions) {
+              if (defending.specialConditions) {
                 damage 50
-                clearSpecialCondition defending
+                afterDamage {
+                  clearSpecialCondition defending
+                }
               }
             }
           }
