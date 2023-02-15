@@ -2784,7 +2784,7 @@ public enum ForbiddenLight implements LogicCardInfo {
           def lastTurn=0
           def actions=[]
           onPlay {
-            actions=action("Stadium: Ultra Space") {
+            actions=action(thisCard, "Stadium: Ultra Space") {
               assert my.deck
               assert lastTurn != bg().turnCount : "Already used"
               bc "Used Ultra Space effect"

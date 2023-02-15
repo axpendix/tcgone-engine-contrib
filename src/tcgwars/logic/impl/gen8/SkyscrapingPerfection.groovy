@@ -1419,7 +1419,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         def lastTurn = 0
         def actions = []
         onPlay {
-          actions.add(action("Stadium: $thisCard") {
+          actions = action(thisCard, "Stadium: $thisCard") {
             assert lastTurn != bg.turnCount : "You have already used $thisCard this turn"
             def targets = my.all.findAll { it.types.containsAny([M, N] as TypeSet) && it.numberOfDamageCounters }
             assert targets : "You have no [M] or [N] Pokémon with damage counters"
@@ -1428,7 +1428,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             targets.each {
               heal 30, it
             }
-          })
+          }
         }
         onRemoveFromPlay{
           actions.each { bg.gm().unregisterAction(it) }

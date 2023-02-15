@@ -2322,7 +2322,7 @@ public enum Arceus implements LogicCardInfo {
           def lastTurn=0
           def actions=[]
           onPlay {
-            actions=action("Stadium: Ultimate Zone") {
+            actions=action(thisCard, "Stadium: Ultimate Zone") {
               assert my.active.name == "Arceus" : "Arceus is not active"
               assert my.bench.find{it.cards.filterByType(ENERGY)}: "No energy to move"
               bc "Used Ultimate Zone"

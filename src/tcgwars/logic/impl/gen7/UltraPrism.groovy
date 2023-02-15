@@ -3039,7 +3039,7 @@ public enum UltraPrism implements LogicCardInfo {
           def lastTurn=0
           def actions=[]
           onPlay {
-            actions=action("Stadium: Mt Coronet"){
+            actions=action(thisCard, "Stadium: Mt Coronet"){
               assert my.discard.filterByType(BASIC_ENERGY).filterByEnergyType(METAL)
               assert lastTurn != bg().turnCount : "Already used"
               bc "Used Mt. Coronet effect"
@@ -3105,7 +3105,7 @@ public enum UltraPrism implements LogicCardInfo {
                       }
                     }
                   }
-                  acl = action("Discard unidentified fossil", [TargetPlayer.SELF]){
+                  acl = action(trainerCard, "Discard unidentified fossil", [TargetPlayer.SELF]){
                     delayed{
                       before TAKE_PRIZE, {
                         if(ef.pcs==self){

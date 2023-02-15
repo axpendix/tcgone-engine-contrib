@@ -1964,10 +1964,11 @@ public enum DragonFrontiers implements LogicCardInfo {
         weakness P
         def Imprison = []
         def actions = []
+        def _delegate = delegate
         def imprisonLoader = {
           bg.em().storeObject("Imprison_Loaded",true)
 
-          loadMarkerCheckerAction(delegate, actions)
+          loadMarkerCheckerAction(_delegate, actions)
 
           delayed {
             getter (IS_ABILITY_BLOCKED) { Holder h ->

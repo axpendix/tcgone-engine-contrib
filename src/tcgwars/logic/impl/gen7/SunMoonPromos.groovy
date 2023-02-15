@@ -2767,7 +2767,7 @@ public enum SunMoonPromos implements LogicCardInfo {
         weakness G
         globalAbility {Card thisCard->
           def lastTurn=0
-          action("Elusive Master", [TargetPlayer.fromPlayerType(thisCard.player)]) {
+          action(thisCard, "Elusive Master", [TargetPlayer.fromPlayerType(thisCard.player)]) {
             def text="Once during your turn (before your attack), if this Pokémon is the last card in your hand, you may play it onto your Bench. If you do, draw 3 cards."
             assert thisCard.player.pbg.hand.size() == 1 : "Hand size is not 1"
             assert thisCard.player.pbg.hand.contains(thisCard) : "Not in hand"

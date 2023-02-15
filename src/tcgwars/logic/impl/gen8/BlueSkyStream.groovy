@@ -1457,7 +1457,7 @@ public enum BlueSkyStream implements LogicCardInfo {
         def lastTurn
         def actions = []
         onPlay {
-          actions = action("Stadium: $thisCard") {
+          actions = action(thisCard, "Stadium: $thisCard") {
             assert lastTurn != bg.turnCount : "You have already used $thisCard this turn"
             assert my.bench.notFull : "You do not have any room on your bench"
             assert deck : "Your deck is empty"

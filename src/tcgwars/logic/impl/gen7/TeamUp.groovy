@@ -3536,7 +3536,7 @@ public enum TeamUp implements LogicCardInfo {
           def lastTurn=0
           def actions=[]
           onPlay {
-            actions=action("Stadium: Lavender Town") {
+            actions=action(thisCard, "Stadium: Lavender Town") {
               assert lastTurn != bg().turnCount : "Already used"
               bc "Used Lavender Town effect"
               lastTurn = bg().turnCount
@@ -3679,7 +3679,7 @@ public enum TeamUp implements LogicCardInfo {
           def lastTurn=0
           def actions=[]
           onPlay {
-            actions=action("Stadium: Viridian Forest") {
+            actions=action(thisCard, "Stadium: Viridian Forest") {
               assert my.deck : "There are no more cards in your deck."
               assert my.hand : "You don't have cards in your hand"
               assert lastTurn != bg().turnCount : "Already used"

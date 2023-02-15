@@ -2802,7 +2802,7 @@ public enum Stormfront implements LogicCardInfo {
           def lastTurn=0
           def actions=[]
           onPlay {
-            actions=action("Stadium: Conductive Quarry") {
+            actions=action(thisCard, "Stadium: Conductive Quarry") {
               assert my.discard.find{it.cardTypes.is(ENERGY) && (it.asEnergyCard().containsType(L)||it.asEnergyCard().containsType(M))} : "There are no [L] or [M] Energy cards in your discard pile"
               assert lastTurn != bg().turnCount : "You've already used Conductive Quarry this turn."
               bc "Used Conductive Quarry"
@@ -2822,7 +2822,7 @@ public enum Stormfront implements LogicCardInfo {
           def actions=[]
           onPlay {reason->
             if(!bg.em().retrieveObject("Energy_Link+$thisCard.player")) {
-              actions = action("Energy Link",[TargetPlayer.SELF]) {
+              actions = action(thisCard, "Energy Link",[TargetPlayer.SELF]) {
                 assert my.all.findAll{it.cards.find{it.name == "Energy Link"}}.size() >= 2 : "You don't have 2 Energy Link in play"
                 assert my.all.find{it.cards.find{it.name == "Energy Link"} && it.cards.filterByType(ENERGY)} : "You don't have any Energy attached to your Pokémon with Energy Link attached"
                 def src=my.all.findAll {it.cards.find{it.name == "Energy Link"} && it.cards.filterByType(ENERGY)}.select("Source for Energy")

@@ -1732,7 +1732,7 @@ public enum BaseSetNG implements LogicCardInfo {
                       }
                     }
                   }
-                  acl = action("Discard Clefairy Doll", [TargetPlayer.SELF]){
+                  acl = action(trainerCard, "Discard Clefairy Doll", [TargetPlayer.SELF]){
                     new Knockout(self).run(bg)
                   }
                 }

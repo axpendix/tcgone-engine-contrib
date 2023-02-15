@@ -3680,7 +3680,7 @@ public enum RebelClash implements LogicCardInfo {
         def lastTurn=0
         def actions=[]
         onPlay {
-          actions=action("Stadium: Training Court") {
+          actions=action(thisCard, "Stadium: Training Court") {
             assert my.discard.find(cardTypeFilter(BASIC_ENERGY)) : "No Basic Energies in your discard pile."
             assert lastTurn != bg().turnCount : "Already used this turn."
             bc "Used Training Court effect."
@@ -3698,7 +3698,7 @@ public enum RebelClash implements LogicCardInfo {
         def lastTurn=0
         def actions=[]
         onPlay {
-          actions=action("Stadium: Turffield Stadium") {
+          actions=action(thisCard, "Stadium: Turffield Stadium") {
             assert my.deck : "Your deck is empty!."
             assert lastTurn != bg().turnCount : "Already used this turn."
             bc "Used Turffield Stadium effect."

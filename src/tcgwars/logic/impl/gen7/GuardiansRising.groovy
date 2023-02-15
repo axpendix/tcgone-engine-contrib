@@ -2996,7 +2996,7 @@ public enum GuardiansRising implements LogicCardInfo {
           def lastTurn=0
           def actions=[]
           onPlay {
-            actions=action("Stadium: Brooklet Hill") {
+            actions=action(thisCard, "Stadium: Brooklet Hill") {
               assert my.deck
               assert my.bench.notFull
               assert lastTurn != bg().turnCount : "Already used"

@@ -2392,7 +2392,7 @@ public enum MajesticDawn implements LogicCardInfo {
                       }
                     }
                   }
-                  acl = action("Discard $self", [TargetPlayer.SELF]) {
+                  acl = action(trainerCard, "Discard $self", [TargetPlayer.SELF]) {
                     delayed {
                       before TAKE_PRIZE, {
                         if (ef.pcs==self) {
@@ -2469,7 +2469,7 @@ public enum MajesticDawn implements LogicCardInfo {
                       }
                     }
                   }
-                  acl = action("Discard $self", [TargetPlayer.SELF]) {
+                  acl = action(trainerCard, "Discard $self", [TargetPlayer.SELF]) {
                     delayed {
                       before TAKE_PRIZE, {
                         if (ef.pcs==self) {
@@ -2540,7 +2540,7 @@ public enum MajesticDawn implements LogicCardInfo {
                       }
                     }
                   }
-                  acl = action("Discard $self", [TargetPlayer.SELF]) {
+                  acl = action(trainerCard, "Discard $self", [TargetPlayer.SELF]) {
                     delayed {
                       before TAKE_PRIZE, {
                         if (ef.pcs==self) {
@@ -2569,7 +2569,7 @@ public enum MajesticDawn implements LogicCardInfo {
           text "Call Energy provides [C] Energy. Once during your turn, if the Pokémon Call Energy is attached to is your Active Pokémon, you may search your deck for up to 2 Basic Pokémon and put them onto your Bench. If you do, shuffle your deck and your turn ends."
           def actions=[]
           onPlay {
-            actions = action("Call Energy", [TargetPlayer.SELF]) {
+            actions = action(thisCard, "Call Energy", [TargetPlayer.SELF]) {
               assert self.active : "Not active"
               assert my.bench.notFull : "Bench full"
               assert my.deck : "Your deck is empty!"

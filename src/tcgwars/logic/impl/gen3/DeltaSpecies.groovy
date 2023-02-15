@@ -2377,7 +2377,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         def lastTurn=0
         def actions=[]
         onPlay {
-          actions=action("Stadium: Holon Ruins") {
+          actions=action(thisCard, "Stadium: Holon Ruins") {
             assert lastTurn != bg().turnCount : "Already used Holon Ruins"
             assert my.deck : "Deck is empty."
             assert my.all.any{it.topPokemonCard.cardTypes.is(DELTA)} : "No Delta Pokémon in play."

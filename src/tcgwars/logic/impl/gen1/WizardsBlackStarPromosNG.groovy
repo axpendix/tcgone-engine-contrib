@@ -880,7 +880,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
         def currentTurnCount=0
         def actions=[]
         onPlay {
-          actions=action("Stadium: Lucky Stadium") {
+          actions=action(thisCard, "Stadium: Lucky Stadium") {
             assert my.deck : "There are no more cards in your deck."
             assert currentTurnCount != bg().turnCount : "Already used Stadium"
             bc "Used Lucky Stadium"

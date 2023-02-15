@@ -1657,7 +1657,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           resistance M, MINUS20
           globalAbility {Card thisCard->
             def lastTurn=0
-            action("Electric Swamp", [TargetPlayer.fromPlayerType(thisCard.player)]) {
+            action(thisCard, "Electric Swamp", [TargetPlayer.fromPlayerType(thisCard.player)]) {
               def text="If this Pokémon is in your hand and you have 4 or more Lightning Energy in play, you may use this Ability. Put this Pokémon onto your Bench. Then, you may move as many Lightning Energy from your other Pokémon to this Pokémon in any way you like."
               def lightningCount=0
               thisCard.player.pbg.all.findAll{it.cards.energyCount(L)}.each{
@@ -4386,7 +4386,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           def lastTurn=0
           def actions=[]
           onPlay {
-            actions=action("Stadium: Giant Hearth") {
+            actions=action(thisCard, "Stadium: Giant Hearth") {
               assert my.deck : "Your deck is empty."
               assert my.hand : "Your hand is empty."
               assert lastTurn != bg().turnCount : "You've already used Giant Hearth this turn."
@@ -4528,7 +4528,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           def lastTurn=0
           def actions=[]
           onPlay {
-            actions=action("Stadium: Pokémon Research Lab") {
+            actions=action(thisCard, "Stadium: Pokémon Research Lab") {
               assert my.deck : "Your deck is empty."
               assert my.bench.notFull : "You have no space in your bench"
               assert lastTurn != bg().turnCount : "You've already used Pokémon Research Lab this turn."

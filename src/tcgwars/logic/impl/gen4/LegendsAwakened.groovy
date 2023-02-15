@@ -1566,7 +1566,7 @@ public enum LegendsAwakened implements LogicCardInfo {
                   before BETWEEN_TURNS, {
                     if (bg.currentTurn == self.owner.opposite) {
                       bc "Energy Dissolve activates"
-                      discardSelfEnergy C
+                      discardDefendingEnergy()
                     }
                   }
                   after FALL_BACK, pcs, { unregister() }
@@ -3861,7 +3861,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           def lastTurn = 0
           def actions = []
           onPlay {
-            actions = action("Stadium: Stark Mountain") {
+            actions = action(thisCard, "Stadium: Stark Mountain") {
               assert my.all.find { it.cards.energyCount(R) || it.cards.energyCount(F) } : "There are no [R] or [F] Energy cards attached to your Pokémon"
               assert my.all.findAll { it.types.contains(R) || it.types.contains(F) } : "No [R] or [F] Pokémon to attach to"
               assert lastTurn != bg().turnCount : "Already used"
@@ -3936,7 +3936,7 @@ public enum LegendsAwakened implements LogicCardInfo {
                       }
                     }
                   }
-                  acl = action("Discard $self", [TargetPlayer.SELF]) {
+                  acl = action(trainerCard, "Discard $self", [TargetPlayer.SELF]) {
                     delayed {
                       before TAKE_PRIZE, {
                         if (ef.pcs==self) {
@@ -4003,7 +4003,7 @@ public enum LegendsAwakened implements LogicCardInfo {
                       }
                     }
                   }
-                  acl = action("Discard $self", [TargetPlayer.SELF]) {
+                  acl = action(trainerCard, "Discard $self", [TargetPlayer.SELF]) {
                     delayed{
                       before TAKE_PRIZE, {
                         if(ef.pcs==self){

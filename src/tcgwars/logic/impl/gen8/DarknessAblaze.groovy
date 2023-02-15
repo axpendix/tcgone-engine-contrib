@@ -3917,7 +3917,7 @@ public enum DarknessAblaze implements LogicCardInfo {
                     }
                   }
                 }
-                acl = action("Discard Rare Fossil", [TargetPlayer.SELF]){
+                acl = action(trainerCard, "Discard Rare Fossil", [TargetPlayer.SELF]){
                   delayed{
                     before TAKE_PRIZE, {
                       if(ef.pcs==self){
@@ -3960,7 +3960,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         def lastTurn=0
         def actions=[]
         onPlay {
-          actions = action("Stadium: Rose Tower") {
+          actions = action(thisCard, "Stadium: Rose Tower") {
             assert lastTurn != bg().turnCount : "Already used"
             assert my.deck : "You don't have any cards left in your deck"
             assert (my.hand.size() < 3) : "You have 3 or more cards in your hand"

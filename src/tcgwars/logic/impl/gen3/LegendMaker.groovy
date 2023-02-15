@@ -2233,7 +2233,7 @@ public enum LegendMaker implements LogicCardInfo {
         def lastTurn=0
         def actions=[]
         onPlay {
-          actions=action("Stadium: Power Tree") {
+          actions=action(thisCard, "Stadium: Power Tree") {
             assert lastTurn != bg().turnCount : "You've already used Power Tree this turn"
             assert my.discard.filterByType(BASIC_ENERGY) : "There are no basic Energy cards in your discard Pile"
             assert !my.discard.filterByType(SPECIAL_ENERGY) : "You cannot use Power Tree, there are Special Energy cards in your discard pile"
@@ -2254,7 +2254,7 @@ public enum LegendMaker implements LogicCardInfo {
         def lastTurn=0
         def actions=[]
         onPlay {
-          actions=action("Stadium: Strange Cave") {
+          actions=action(thisCard, "Stadium: Strange Cave") {
             assert lastTurn != bg().turnCount : "Already used"
             assert my.bench.notFull : "Bench is full"
             def elegible = my.hand.findAll{["Omanyte", "Kabuto", "Aerodactyl", "Aerodactyl ex", "Lileep", "Anorith"].contains(it.name)}
@@ -2312,7 +2312,7 @@ public enum LegendMaker implements LogicCardInfo {
                     }
                   }
                 }
-                acl = action("Discard Claw Fossil", [TargetPlayer.SELF]) {
+                acl = action(trainerCard, "Discard Claw Fossil", [TargetPlayer.SELF]) {
                   delayed {
                     before TAKE_PRIZE, {
                       if (ef.pcs==self) {
@@ -2370,7 +2370,7 @@ public enum LegendMaker implements LogicCardInfo {
                     }
                   }
                 }
-                acl = action("Discard Mysterious Fossil", [TargetPlayer.SELF]){
+                acl = action(trainerCard, "Discard Mysterious Fossil", [TargetPlayer.SELF]){
                   new Knockout(self).run(bg)
                 }
               }
@@ -2434,7 +2434,7 @@ public enum LegendMaker implements LogicCardInfo {
                     }
                   }
                 }
-                acl = action("Discard Root Fossil", [TargetPlayer.SELF]) {
+                acl = action(trainerCard, "Discard Root Fossil", [TargetPlayer.SELF]) {
                   delayed{
                     before TAKE_PRIZE, {
                       if(ef.pcs==self){

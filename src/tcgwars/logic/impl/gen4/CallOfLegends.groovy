@@ -830,7 +830,7 @@ public enum CallOfLegends implements LogicCardInfo {
           def lastTurn=0
           def actions=[]
           onPlay {
-            actions=action("Stadium: Lost World") {
+            actions=action(thisCard, "Stadium: Lost World") {
               assert lastTurn != bg().turnCount : "You've already used Lost World this turn."
               assert opp.lostZone.filterByType(POKEMON).size() >= 6 : "Your opponent has fewer than 6 Pokémon in the Lost Zone"
               bc "Used Lost World."

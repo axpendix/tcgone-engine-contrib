@@ -3318,7 +3318,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                       }
                     }
                   }
-                  acl = action("Discard Armor Fossil", [TargetPlayer.SELF]) {
+                  acl = action(trainerCard, "Discard Armor Fossil", [TargetPlayer.SELF]) {
                     delayed {
                       before TAKE_PRIZE, {
                         if (ef.pcs==self) {
@@ -3387,7 +3387,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                       }
                     }
                   }
-                  acl = action("Discard Skull Fossil", [TargetPlayer.SELF]) {
+                  acl = action(trainerCard, "Discard Skull Fossil", [TargetPlayer.SELF]) {
                     delayed {
                       before TAKE_PRIZE, {
                         if (ef.pcs==self) {

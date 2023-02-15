@@ -2925,7 +2925,7 @@ public enum RisingRivals implements LogicCardInfo {
           def lastTurn=0
           def actions=[]
           onPlay {
-            actions=action("Stadium: Pokemon Contest Hall") {
+            actions=action(thisCard, "Stadium: Pokemon Contest Hall") {
               assert my.deck
               assert my.bench.notFull
               assert lastTurn != bg().turnCount : "Already used"

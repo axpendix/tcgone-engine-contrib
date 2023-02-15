@@ -1521,7 +1521,7 @@ public enum EeveeHeroes implements LogicCardInfo {
         def lastTurn
         def actions = []
         onPlay {
-          actions = action ("Stadium: $thisCard.name") {
+          actions = action (thisCard, "Stadium: $thisCard.name") {
             assert lastTurn != bg.turnCount : "You have already used $thisCard this turn"
             assert my.all.any { it.cards.filterByType POKEMON_TOOL } : "You have no Pokémon with a Pokémon Tool attached"
             bc "Used $thisCard"

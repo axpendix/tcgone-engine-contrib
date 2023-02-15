@@ -3035,7 +3035,7 @@ public enum BattleStyles implements LogicCardInfo {
         def lastTurn = 0
         def actions = []
         onPlay {
-          actions = action("Stadium: Tower of Darkness") {
+          actions = action(thisCard, "Stadium: Tower of Darkness") {
             assert my.deck : "Deck is empty"
             assert my.hand.filterByType(SINGLE_STRIKE) : "No Single Strike cards in hand"
             assert lastTurn != bg().turnCount : "Already used"

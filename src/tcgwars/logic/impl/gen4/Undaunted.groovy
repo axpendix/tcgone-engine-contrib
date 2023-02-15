@@ -1816,7 +1816,7 @@ public enum Undaunted implements LogicCardInfo {
           def lastTurn=0
           def actions=[]
           onPlay {
-            actions=action("Stadium: Burned Tower") {
+            actions=action(thisCard, "Stadium: Burned Tower") {
               assert my.discard.find(cardTypeFilter(BASIC_ENERGY)) : "No Basic Energies in your discard pile."
               assert lastTurn != bg().turnCount : "Already used this turn."
               bc "Used Training Court effect."

@@ -2376,7 +2376,7 @@ public enum LostThunder implements LogicCardInfo {
           resistance FIGHTING, MINUS20
           globalAbility {Card thisCard->
             def lastTurn=0
-            action("$thisCard: Distortion Door", [TargetPlayer.fromPlayerType(thisCard.player)]) {
+            action(thisCard, "$thisCard: Distortion Door", [TargetPlayer.fromPlayerType(thisCard.player)]) {
               def text="Once during your turn (before your attack), if this Pokémon is in your discard pile, you may put it onto your Bench. If you do, put 1 damage counter on 2 of your opponent's Benched Pokémon."
               assert thisCard.player.pbg.discard.contains(thisCard) : "Not in discard"
               assert thisCard.player.pbg.bench.notFull : "Bench full"
@@ -3934,7 +3934,7 @@ public enum LostThunder implements LogicCardInfo {
           resistance FIGHTING, MINUS20
           globalAbility {Card thisCard->
             def lastTurn=0
-            action("$thisCard: Mountain Migration", [TargetPlayer.fromPlayerType(thisCard.player)]) {
+            action(thisCard, "$thisCard: Mountain Migration", [TargetPlayer.fromPlayerType(thisCard.player)]) {
               def text="Once during your turn (before your attack), if this Pokémon is in your hand, you may reveal it. If you do, look at the top card of your opponent's deck and put this Pokémon in the Lost Zone. If that card is a Supporter card, you may put it in the Lost Zone. If your opponent has no cards in their deck, you can't use this Ability."
               assert thisCard.player.pbg.hand.contains(thisCard) : "Not in hand"
               assert thisCard.player.opposite.pbg.deck : "Your opponent have no cards in their deck."
@@ -4218,7 +4218,7 @@ public enum LostThunder implements LogicCardInfo {
           def lastTurn=0
           def actions=[]
           onPlay {
-            actions=action("Stadium: Heat Factory P.S.") {
+            actions=action(thisCard, "Stadium: Heat Factory P.S.") {
               assert my.hand.filterByBasicEnergyType(R)
               assert lastTurn != bg().turnCount : "Already used"
               bc "Used Heat Factory Prism Star"
@@ -4259,7 +4259,7 @@ public enum LostThunder implements LogicCardInfo {
           def lastTurn=0
           def actions=[]
           onPlay {
-            actions=action("Stadium: Life Forest P.S.") {
+            actions=action(thisCard, "Stadium: Life Forest P.S.") {
               def list = my.all.findAll{it.types.contains(G) && (it.numberOfDamageCounters || it.specialConditions)}
               assert list : "There is no grass pokémon to be healed."
               assert lastTurn != bg().turnCount : "Already used"
