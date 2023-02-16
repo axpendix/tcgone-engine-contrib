@@ -1657,7 +1657,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           resistance M, MINUS20
           globalAbility {Card thisCard->
             def lastTurn=0
-            action(thisCard, "Electric Swamp", [TargetPlayer.fromPlayerType(thisCard.player)]) {
+            action(thisCard, "Electric Swamp", [TargetPlayer.fromPlayerType(thisCard.player)], false) {
               def text="If this Pokémon is in your hand and you have 4 or more Lightning Energy in play, you may use this Ability. Put this Pokémon onto your Bench. Then, you may move as many Lightning Energy from your other Pokémon to this Pokémon in any way you like."
               def lightningCount=0
               thisCard.player.pbg.all.findAll{it.cards.energyCount(L)}.each{

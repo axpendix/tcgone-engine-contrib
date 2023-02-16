@@ -2090,7 +2090,7 @@ public enum BurningShadows implements LogicCardInfo {
           resistance PSYCHIC, MINUS20
           globalAbility {Card thisCard->
             def lastTurn=0
-            action(thisCard, "$thisCard: Restoration", [TargetPlayer.fromPlayerType(thisCard.player)]) {
+            action(thisCard, "$thisCard: Restoration", [TargetPlayer.fromPlayerType(thisCard.player)], false) {
               def text="Once during your turn (before your attack), if this Pokémon is in your discard pile, you may put it onto your Bench. Then, attach a [D] Energy card from your discard pile to this Pokémon."
               assert thisCard.player.pbg.discard.contains(thisCard) : "Not in discard"
               assert thisCard.player.pbg.bench.notFull : "Bench full"
