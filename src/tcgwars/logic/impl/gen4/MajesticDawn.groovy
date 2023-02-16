@@ -2392,7 +2392,7 @@ public enum MajesticDawn implements LogicCardInfo {
                       }
                     }
                   }
-                  acl = action(trainerCard, "Discard $self", [TargetPlayer.SELF]) {
+                  acl = action(pokemonCard, "Discard $self", [TargetPlayer.SELF]) {
                     delayed {
                       before TAKE_PRIZE, {
                         if (ef.pcs==self) {
@@ -2469,7 +2469,7 @@ public enum MajesticDawn implements LogicCardInfo {
                       }
                     }
                   }
-                  acl = action(trainerCard, "Discard $self", [TargetPlayer.SELF]) {
+                  acl = action(pokemonCard, "Discard $self", [TargetPlayer.SELF]) {
                     delayed {
                       before TAKE_PRIZE, {
                         if (ef.pcs==self) {
@@ -2540,7 +2540,7 @@ public enum MajesticDawn implements LogicCardInfo {
                       }
                     }
                   }
-                  acl = action(trainerCard, "Discard $self", [TargetPlayer.SELF]) {
+                  acl = action(pokemonCard, "Discard $self", [TargetPlayer.SELF]) {
                     delayed {
                       before TAKE_PRIZE, {
                         if (ef.pcs==self) {

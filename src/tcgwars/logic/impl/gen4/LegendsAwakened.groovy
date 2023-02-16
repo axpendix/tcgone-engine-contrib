@@ -3936,7 +3936,7 @@ public enum LegendsAwakened implements LogicCardInfo {
                       }
                     }
                   }
-                  acl = action(trainerCard, "Discard $self", [TargetPlayer.SELF]) {
+                  acl = action(pokemonCard, "Discard $self", [TargetPlayer.SELF]) {
                     delayed {
                       before TAKE_PRIZE, {
                         if (ef.pcs==self) {
@@ -4003,7 +4003,7 @@ public enum LegendsAwakened implements LogicCardInfo {
                       }
                     }
                   }
-                  acl = action(trainerCard, "Discard $self", [TargetPlayer.SELF]) {
+                  acl = action(pokemonCard, "Discard $self", [TargetPlayer.SELF]) {
                     delayed{
                       before TAKE_PRIZE, {
                         if(ef.pcs==self){

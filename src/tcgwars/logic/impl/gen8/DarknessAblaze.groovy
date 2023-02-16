@@ -3917,7 +3917,7 @@ public enum DarknessAblaze implements LogicCardInfo {
                     }
                   }
                 }
-                acl = action(trainerCard, "Discard Rare Fossil", [TargetPlayer.SELF]){
+                acl = action(pokemonCard, "Discard Rare Fossil", [TargetPlayer.SELF]){
                   delayed{
                     before TAKE_PRIZE, {
                       if(ef.pcs==self){

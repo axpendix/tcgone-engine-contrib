@@ -1579,7 +1579,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
                     }
                   }
                 }
-                acl = action(trainerCard, "Discard Clefairy Doll", [TargetPlayer.SELF]){
+                acl = action(pokemonCard, "Discard Clefairy Doll", [TargetPlayer.SELF]){
                   new Knockout(self).run(bg)
                 }
               }
