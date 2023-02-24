@@ -1547,7 +1547,7 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
             text "Prevent all effects of attacks, excluding damage, done to Toxicroak ."
             delayedA {
               before null, null, ATTACK, {
-                if (ef instanceof TargetedEffect && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && (ef as TargetedEffect).getResolvedTarget(bg, e) == self) {
+                if (ef instanceof TargetedEffect && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && (ef as TargetedEffect).getTargetPokemon() == self) {
                   bc "Anticipation prevents all effects done to $self."
                   prevent()
                 }

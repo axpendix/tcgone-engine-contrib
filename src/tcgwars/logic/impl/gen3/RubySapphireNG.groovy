@@ -351,7 +351,7 @@ public enum RubySapphireNG implements LogicCardInfo {
           text "Prevent all effects of attacks, except damage, done to Dustox by the Attacking Pokémon."
           delayedA {
             before null, null, ATTACK, {
-              if (ef instanceof TargetedEffect && ef.effectType != DAMAGE && (ef as TargetedEffect).getResolvedTarget(bg, e) == self) {
+              if (ef instanceof TargetedEffect && ef.effectType != DAMAGE && (ef as TargetedEffect).getTargetPokemon() == self) {
                 bc "$thisAbility prevents all effects done to $self."
                 prevent()
               }

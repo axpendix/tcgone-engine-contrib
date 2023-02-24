@@ -1358,7 +1358,7 @@ public enum SunMoonPromos implements LogicCardInfo {
           customAbility {
             delayedA {
               before REMOVE_DAMAGE_COUNTER, {
-                if(ef.lastTarget.owner == self.owner && ef.lastTarget.types.contains(W)){
+                if(ef.targetPokemon.owner == self.owner && ef.targetPokemon.types.contains(W)){
                   keyStore('Shining_Current',self,bg.turnCount)
                 }
               }

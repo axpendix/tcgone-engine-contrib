@@ -1620,7 +1620,7 @@ public enum LegendMaker implements LogicCardInfo {
           //TODO: Make this apply only once?
           delayedA {
             before null, null, Source.ATTACK, {
-              def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
+              def pcs = (ef as TargetedEffect).getTargetPokemon()
               if (pcs && self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs.topPokemonCard.name == "Tentacruel" && self.cards.any{it.name == "React Energy"}) {
                 bc "Fast Protection prevents effect"
                 prevent()

@@ -3494,7 +3494,7 @@ public enum ChillingReign implements LogicCardInfo {
           onPlay {
             eff = delayed {
               after ATTACH_ENERGY, {
-                def target = e.getTarget(bg)
+                def target = e.getTargetPokemon()
                 if (target && ef.reason==PLAY_FROM_HAND && !target.types.contains(P)) {
                   bc "Old Cemetery activates"
                   directDamage(20, target, TRAINER_CARD)

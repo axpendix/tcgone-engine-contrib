@@ -3533,7 +3533,7 @@ public enum LostThunder implements LogicCardInfo {
               }
               before null, null, Source.TRAINER_CARD, {
                 if (ef instanceof TargetedEffect){
-                  def target = ef.getResolvedTarget(bg, e)
+                  def target = ef.getTargetPokemon()
                   if (power && target && self.benched && target.owner==self.owner && target.types.contains(Y)){
                     bc "Mysterious Buzz prevents effect"
                     prevent()

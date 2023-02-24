@@ -614,7 +614,7 @@ public enum DragonFrontiers implements LogicCardInfo {
               }
             }
             before null, null, Source.ATTACK, {
-              def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
+              def pcs = (ef as TargetedEffect).getTargetPokemon()
               if (bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs && pcs.owner == self.owner && pcs.benched && pcs.topPokemonCard.cardTypes.is(DELTA)) {
                 bc "Solid Shell prevents effect"
                 prevent()

@@ -1913,7 +1913,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Your opponent’s Benched Pokémon can’t be healed."
           delayedA {
             before REMOVE_DAMAGE_COUNTER, {
-              if(ef.lastTarget.owner == self.owner.opposite && ef.lastTarget.benched){
+              if(ef.targetPokemon.owner == self.owner.opposite && ef.targetPokemon.benched){
                 prevent()
                 bc "Heal Jamming prevents healing"
               }
@@ -3626,7 +3626,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           eff = delayed {
             before null, null, Source.ATTACK, {
               if (self.active) {
-                def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
+                def pcs = (ef as TargetedEffect).getTargetPokemon()
                 if (pcs && pcs.owner == self.owner && bg.currentTurn == self.owner.opposite) {
                   if (ef.effectType != DAMAGE) {
                     bc "Big Parasol prevents effect"

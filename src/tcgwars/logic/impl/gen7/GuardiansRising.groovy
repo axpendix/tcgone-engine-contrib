@@ -1716,14 +1716,14 @@ public enum GuardiansRising implements LogicCardInfo {
                 }}
               }
               before DIRECT_DAMAGE, null, ATTACK, {
-                def pcs = ef.getResolvedTarget(bg, e)
+                def pcs = ef.getTargetPokemon()
                 if(bg.currentTurn == self.owner.opposite && pcs.owner == self.owner && !pcs.active) {
                   bc "Daunting Pose prevents damage counters from being placed on $self.name"
                   prevent()
                 }
               }
               before DIRECT_DAMAGE, null, SRC_ABILITY, {
-                def pcs = ef.getResolvedTarget(bg, e)
+                def pcs = ef.getTargetPokemon()
                 //FIXME this will also block own pokemon abilities. to fix this, "Source refactoring" must be done. (See omega stop)
                 if(/*bg.currentTurn == self.owner.opposite &&*/ pcs.owner == self.owner && !pcs.active) {
                   bc "Daunting Pose prevents damage counters from being placed on $self.name"
@@ -2398,7 +2398,7 @@ public enum GuardiansRising implements LogicCardInfo {
                 verdantWind()
               }
               before APPLY_SPECIAL_CONDITION, {
-                def pcs = ef.getResolvedTarget(bg, e)
+                def pcs = ef.getTargetPokemon()
                 if(pcs.owner==self.owner && pcs.cards.energyCount(Y)){
                   bc "Flower Shield prevents special conditions"
                   prevent()
