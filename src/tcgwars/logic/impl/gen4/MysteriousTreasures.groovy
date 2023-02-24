@@ -259,7 +259,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             delayedA {
               //Yeah this is gonna be a fun one. axpendix: it was fun, USE_ABILITY is new
               before USE_ABILITY, {
-                PokemonCardSet pcs = ef.getResolvedTarget(bg, e)
+                PokemonCardSet pcs = ef.getTargetPokemon()
                 Ability ability = ef.ability
                 if(
                   ability instanceof PokePower &&

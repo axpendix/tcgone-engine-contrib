@@ -3227,7 +3227,7 @@ public enum CelestialStorm implements LogicCardInfo {
             eff = delayed (priority: BEFORE_LAST) {
               before null, null, Source.ATTACK, {
                 if (ef.effectType != DAMAGE){
-                  def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
+                  def pcs = (ef as TargetedEffect).getTargetPokemon()
                   if(pcs != null && pcs.benched && bg.currentTurn == pcs.owner.opposite){
                     bc "Sky Pillar prevents effect to Benched Pokémon"
                     prevent()

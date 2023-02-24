@@ -18,7 +18,6 @@ import tcgwars.logic.effect.blocking.*
 import tcgwars.logic.effect.getter.*
 import tcgwars.logic.effect.gm.*
 import tcgwars.logic.client.requestbuilder.*
-import tcgwars.logic.client.*
 import tcgwars.logic.exception.EffectRequirementException
 import tcgwars.logic.util.*
 
@@ -930,7 +929,7 @@ class TcgStatics {
   }
 
   static targeted (PokemonCardSet pcs, Source source, Closure c){
-    new AbstractDirectTargetedEffect(pcs, source) {
+    new AbstractDirectTargetedEffect(pcs) {
       @Override
       void process(Battleground bg, Event event) {
         c.call(pcs)
@@ -938,7 +937,7 @@ class TcgStatics {
     }.run(bg)
   }
   static targeted (PokemonCardSet pcs, Closure c){
-    new AbstractDirectTargetedEffect(pcs, Source.ATTACK) {
+    new AbstractDirectTargetedEffect(pcs) {
       @Override
       void process(Battleground bg, Event event) {
         c.call(pcs)

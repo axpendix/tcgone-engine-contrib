@@ -961,7 +961,7 @@ public enum TeamUp implements LogicCardInfo {
                 }
               }
               before null, null, Source.TRAINER_CARD, {
-                def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
+                def pcs = (ef as TargetedEffect).getTargetPokemon()
                 if (flag && self.active && pcs.owner == selfOwner && pcs.benched && pcs.types.contains(W)){
                   bc "Blizzard Veil prevent effect of Supporter cards done to $pcs."
                   prevent()
@@ -2670,7 +2670,7 @@ public enum TeamUp implements LogicCardInfo {
                 verdantWind()
               }
               before APPLY_SPECIAL_CONDITION, {
-                def pcs = ef.getResolvedTarget(bg, e)
+                def pcs = ef.getTargetPokemon()
                 if (pcs.owner==self.owner && pcs.cards.energyCount(M)) {
                   bc "Metal Symbol prevents special conditions"
                   prevent()
@@ -2938,7 +2938,7 @@ public enum TeamUp implements LogicCardInfo {
             delayedA {
               before null, null, ATTACK, {
                 if(ef instanceof TargetedEffect && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
-                  def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
+                  def pcs = (ef as TargetedEffect).getTargetPokemon()
                   if(pcs != null && pcs.owner == self.owner){
                     bc "Defensive Scales prevents all effects done to $self"
                     prevent()

@@ -643,8 +643,8 @@ public enum MajesticDawn implements LogicCardInfo {
               def pcs = null
               def pcsTPC = null
               before USE_ABILITY, {
-                if ((ef.getResolvedTarget(bg, e) as PokemonCardSet).owner == self.owner.opposite && ef.ability instanceof PokePower){
-                  pcs = ef.getResolvedTarget(bg, e)
+                if ((ef.getTargetPokemon() as PokemonCardSet).owner == self.owner.opposite && ef.ability instanceof PokePower){
+                  pcs = ef.getTargetPokemon()
                   pcsTPC = pcs.topPokemonCard
                 }
               }

@@ -1741,7 +1741,7 @@ public enum PowerKeepers implements LogicCardInfo {
         onPlay {
           eff = delayed {
             before APPLY_SPECIAL_CONDITION, {
-              def pcs = ef.getResolvedTarget(bg, e)
+              def pcs = ef.getTargetPokemon()
               if ( pcs.types.contains(D) && [ASLEEP, CONFUSED, PARALYZED].contains(ef.type) ) {
                 bc "Sidney's Stadium - [D] Pokémon can't be Asleep, Confused or Paralyzed."
                 prevent()

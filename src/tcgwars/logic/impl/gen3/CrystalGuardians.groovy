@@ -1843,7 +1843,7 @@ public enum CrystalGuardians implements LogicCardInfo {
               }
             }
             before null, self, Source.ATTACK, {
-              def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
+              def pcs = (ef as TargetedEffect).getTargetPokemon()
               if (self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs == self) {
                 bc "$name prevents effect"
                 prevent()
@@ -2220,8 +2220,8 @@ public enum CrystalGuardians implements LogicCardInfo {
             def pcs = null
             def pcsTPC = null
             before USE_ABILITY, {
-              if ((ef.getResolvedTarget(bg, e) as PokemonCardSet).owner == self.owner.opposite && ef.ability instanceof PokePower){
-                pcs = ef.getResolvedTarget(bg, e)
+              if ((ef.getTargetPokemon() as PokemonCardSet).owner == self.owner.opposite && ef.ability instanceof PokePower){
+                pcs = ef.getTargetPokemon()
                 pcsTPC = pcs.topPokemonCard
               }
             }

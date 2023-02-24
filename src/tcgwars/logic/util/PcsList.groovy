@@ -1,5 +1,6 @@
 package tcgwars.logic.util
 
+import org.codehaus.groovy.runtime.DefaultGroovyMethods
 import tcgwars.logic.groovy.TcgStatics
 import tcgwars.logic.Battleground;
 import tcgwars.logic.PlayerType
@@ -84,6 +85,10 @@ public class PcsList extends ArrayList<PokemonCardSet> {
   @Override
   Stream<PokemonCardSet> stream() {
     return StreamSupport.stream(this.spliterator(), false).filter{it != null}
+  }
+
+  public PokemonCardSet getFirst() {
+    return first()
   }
 
 }

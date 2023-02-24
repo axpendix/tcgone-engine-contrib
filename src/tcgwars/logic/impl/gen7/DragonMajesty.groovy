@@ -738,7 +738,7 @@ public enum DragonMajesty implements LogicCardInfo {
             }
             delayedA {
               before APPLY_SPECIAL_CONDITION, {
-                def pcs = ef.getResolvedTarget(bg, e)
+                def pcs = ef.getTargetPokemon()
                 if(pcs.owner==self.owner && ef.type == CONFUSED && pcs.types.contains(W)){
                   bc "Murmurs of the Sea prevents special conditions"
                   prevent()
@@ -908,7 +908,7 @@ public enum DragonMajesty implements LogicCardInfo {
             delayedA {
               before null, null, ATTACK, {
                 if(ef instanceof TargetedEffect && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
-                  def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
+                  def pcs = (ef as TargetedEffect).getTargetPokemon()
                   if(pcs != null && pcs.types.contains(N) && pcs.owner == self.owner){
                     bc "Dragon Guard prevents effect to Dragon Pokémon"
                     prevent()
