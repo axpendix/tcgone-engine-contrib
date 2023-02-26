@@ -346,32 +346,10 @@ class TcgStatics {
     bg().ownClient().confirm(new ConfirmUIRequestBuilder().setInfo(info))
   }
   static boolean confirm(String info, PlayerType playerType){
-    if(bg().currentThreadPlayerType!=playerType){
-      block(bg().currentThreadPlayerType)
-    }
-    def r=bg().getClient(playerType).confirm(new ConfirmUIRequestBuilder().setInfo(info))
-    if(bg().currentThreadPlayerType!=playerType){
-      unblock(bg().currentThreadPlayerType)
-    }
-    r
+    bg().getClient(playerType).confirm(new ConfirmUIRequestBuilder().setInfo(info))
   }
   static boolean oppConfirm (String info){
-    block()
-    def r=bg().oppClient().confirm(new ConfirmUIRequestBuilder().setInfo(info))
-    unblock()
-    r
-  }
-  static block (){
-    bg().ownClient().block()
-  }
-  static block (PlayerType playerType){
-    bg().getClient(playerType).block()
-  }
-  static unblock (){
-    bg().ownClient().unblock()
-  }
-  static unblock (PlayerType playerType){
-    bg().getClient(playerType).unblock()
+    bg().oppClient().confirm(new ConfirmUIRequestBuilder().setInfo(info))
   }
   static choose (List choices, List<String> labels, String info="", defaultChoice=null){
     assert choices.size() == labels.size()
@@ -395,7 +373,6 @@ class TcgStatics {
     bg().ownClient().makeChoice(new MakeChoiceUIRequestBuilder().setInfo(info).setChoices(cs).setDefaultChoice(dc))
   }
   static oppChoose (List choices, List<String> labels, String info="", defaultChoice=null){
-    block()
     if(labels != null){
       assert choices.size() == labels.size()
     }
@@ -406,9 +383,7 @@ class TcgStatics {
       cs.add(choice)
       if(c==defaultChoice) dc=choice
     }
-    def coo=bg().oppClient().makeChoice(new MakeChoiceUIRequestBuilder().setInfo(info).setChoices(cs).setDefaultChoice(dc))
-    unblock()
-    coo
+    bg().oppClient().makeChoice(new MakeChoiceUIRequestBuilder().setInfo(info).setChoices(cs).setDefaultChoice(dc))
   }
   static oppChoose (List choices, String info="", defaultChoice=null){
     oppChoose(choices, null, info, defaultChoice)
