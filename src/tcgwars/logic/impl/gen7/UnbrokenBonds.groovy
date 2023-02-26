@@ -4398,13 +4398,15 @@ public enum UnbrokenBonds implements LogicCardInfo {
           text "Prevent all effects of your opponent's Abilities done to the Pokémon this card is attached to. Remove any such existing effects."
           def eff
           onPlay {reason->
-            // TODO implement properly after source refactoring and/or RichSource captivation
             eff = delayed {
               before null, self, SRC_ABILITY, {
-                bc "Stealthy Hood prevents effect"
-                prevent()
+                if (e.sourceAbility.owner.owner != self.owner) {
+                  bc "Stealthy Hood prevents effect ${e.type}"
+                  prevent()
+                }
               }
             }
+            // TODO implement "removal of existing effects"
             new CheckAbilities().run(bg)
           }
           onRemoveFromPlay {

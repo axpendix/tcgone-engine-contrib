@@ -1169,33 +1169,12 @@ public enum HolonPhantoms implements LogicCardInfo {
       case CHIMECHO_DELTA_37:
       return basic (this, hp:HP060, type:M, retreatCost:1) {
         weakness P
-        initHook {Card thisCard->
-          delayed {
-            def flag = false
-            before USE_ABILITY, {
-              if (ef.ability instanceof PokePower){
-                flag = true
-              }
-            }
-            after POKEPOWER, {
-              flag = false
-            }
-            after ACTIVATE_ABILITY, {
-              flag = false
-            }
-            before PLAY_TRAINER, {
-              if(!flag && ef.cardToPlay.cardTypes.is(SUPPORTER) && ef.cardToPlay.name.contains("Holon") && bg.currentTurn == thisCard.player){
-                bg.em().storeObject("Holon_Supporter", bg.turnCount)
-              }
-            }
-          }
-        }
         pokePower "Delta Support", {
           text "Once during your turn (before your attack), if you have a Supporter card with Holon in its name in play, you may search your discard pile for a basic Energy card or a δ Rainbow Energy card, show it to your opponent, and put it into your hand. This power can't be used if Chimecho is affected by a Special Condition."
           actionA {
             checkLastTurn()
             checkNoSPC()
-            assert bg.em().retrieveObject("Holon_Supporter") == bg.turnCount : "You haven't played a Supporter with Holon in its name this turn"
+            assert bg.ownPBG.playedSupporter.find {it.name.contains("Holon")} : "You don't have a Holon Supporter in play"
             assert my.discard.findAll({it.cardTypes.is(BASIC_ENERGY) || it.name == "δ Rainbow Energy"}) : "You dont't have the required energy in your discard"
             powerUsed()
             my.discard.findAll({it.cardTypes.is(BASIC_ENERGY) || it.name == "δ Rainbow Energy"}).select("Choose an energy to put into your hand").showToOpponent("Energy card to be put to hand").moveTo(my.hand)

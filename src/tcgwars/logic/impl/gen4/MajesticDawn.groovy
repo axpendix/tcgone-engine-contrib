@@ -640,28 +640,10 @@ public enum MajesticDawn implements LogicCardInfo {
           pokeBody "Primal Claw", {
             text "After your opponent’s Pokémon uses a Poké-Power, put 2 damage counters on that Pokémon."
             delayedA {
-              def pcs = null
-              def pcsTPC = null
-              before USE_ABILITY, {
-                if ((ef.getTargetPokemon() as PokemonCardSet).owner == self.owner.opposite && ef.ability instanceof PokePower){
-                  pcs = ef.getTargetPokemon()
-                  pcsTPC = pcs.topPokemonCard
-                }
-              }
-              after POKEPOWER, {
-                if (pcs && pcs.cards && pcsTPC == pcs.topPokemonCard) {
-                  bc "$thisAbility activates"
-                  directDamage(20, pcs, Source.POKEBODY)
-                  pcs = null
-                  pcsTPC = null
-                }
-              }
-              after ACTIVATE_ABILITY, {
-                if (pcs && pcs.cards && pcsTPC == pcs.topPokemonCard) {
-                  bc "$thisAbility activates"
-                  directDamage(20, pcs, Source.POKEBODY)
-                  pcs = null
-                  pcsTPC = null
+              after USE_ABILITY_OUTER, {
+                if (ef.targetPokemon.owner != self.owner && ef.ability instanceof PokePower) {
+                  bc "Primal Claw activates"
+                  directDamage(20, ef.targetPokemon)
                 }
               }
             }

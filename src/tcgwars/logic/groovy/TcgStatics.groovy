@@ -1578,15 +1578,11 @@ class TcgStatics {
     bc "${_delegate.thisMove} - Supporters can't be played from ${opp.owner.getPlayerUsername(bg)}'s hand during their next turn"
     _delegate.delayed {
       def flag = false
-      before USE_ABILITY, {
-        flag = true
-      }
-      after POKEPOWER, {
-        flag = false
-      }
-      after ACTIVATE_ABILITY, {
-        flag = false
-      }
+      // TODO remove after PlayTrainer refactoring
+      before USE_ABILITY_OUTER, { flag = true }
+      after USE_ABILITY_OUTER, { flag = false }
+      before ACTIVATE_ABILITY, { flag = true }
+      after ACTIVATE_ABILITY, { flag = false }
       before PROCESS_ATTACK_EFFECTS, {
         flag = true
       }
@@ -2065,7 +2061,7 @@ class TcgStatics {
 
   /**
    * If there are at least 3 Pokemon SP in play then a Power Spray might be used by opponent to block this ability.
-   * This method is called in every UseAbility, thus it should throw a EffectRequirementException if ability is blocked.
+   * This method is called in every UseAbilityInner, thus it should throw a EffectRequirementException if ability is blocked.
    *
    * @param self the pokemon with thisAbility
    * @param thisAbility the ability performed
