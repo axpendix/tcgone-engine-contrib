@@ -466,7 +466,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               checkNoSPC()
               powerUsed()
               flip ({
-                scoopUpPokemon([:], self, delegate, POKEPOWER)
+                scoopUpPokemon([:], self, delegate)
               })
             }
           }

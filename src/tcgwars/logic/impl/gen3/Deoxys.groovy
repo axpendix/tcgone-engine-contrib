@@ -1734,15 +1734,11 @@ public enum Deoxys implements LogicCardInfo {
                   before BETWEEN_TURNS, {
                     flag = false
                   }
-                  before USE_ABILITY, {
-                    flag = true
-                  }
-                  after POKEPOWER, {
-                    flag = false
-                  }
-                  after ACTIVATE_ABILITY, {
-                    flag = false
-                  }
+                  // TODO remove after PlayTrainer refactoring
+                  before USE_ABILITY_OUTER, { flag = true }
+                  after USE_ABILITY_OUTER, { flag = false }
+                  before ACTIVATE_ABILITY, { flag = true }
+                  after ACTIVATE_ABILITY, { flag = false }
                   before PLAY_TRAINER, {
                     if (bg.currentTurn == self.owner.opposite && !flag) {
                       wcu "High Voltage prevents playing this card"

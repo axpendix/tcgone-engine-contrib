@@ -1400,8 +1400,8 @@ public enum Stormfront implements LogicCardInfo {
           pokeBody "Darkness Drive", {
             text "After your opponent’s Pokémon uses a Poké-Power, you may search your discard pile for a basic [D] Energy and attach it to Tyranitar."
             delayedA {
-              after POKEPOWER, {
-                if (self.owner.pbg.discard.filterByBasicEnergyType(D) && confirm("Use Darkness Drive?",self.owner)) {
+              after USE_ABILITY_OUTER, {
+                if (ef.targetPokemon.owner != self.owner && ef.ability instanceof PokePower && self.owner.pbg.discard.filterByBasicEnergyType(D) && confirm("Use Darkness Drive?",self.owner)) {
                   bc "Darkness Drive activates"
                   def card = self.owner.pbg.discard.select("Select a basic [D] Energy to attach to $self",basicEnergyFilter(D),self.owner).first()
                   attachEnergy(self,card)

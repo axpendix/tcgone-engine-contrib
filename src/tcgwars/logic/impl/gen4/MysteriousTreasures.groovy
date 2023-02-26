@@ -257,8 +257,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
           pokePower "Power Cancel", {
             text "Once during your opponent’s turn, when your opponent’s Pokémon uses any Poké-Power, you may discard 2 cards from your hand and prevent all effects of that Poké-Power. (This counts as that Pokémon using its Poké-Power.) This power can’t be used if Alakazam is affected by a Special Condition."
             delayedA {
-              //Yeah this is gonna be a fun one. axpendix: it was fun, USE_ABILITY is new
-              before USE_ABILITY, {
+              before USE_ABILITY_INNER, {
                 PokemonCardSet pcs = ef.getTargetPokemon()
                 Ability ability = ef.ability
                 if(
