@@ -366,9 +366,6 @@ public class CardList extends ArrayList<Card> {
     if (hidden && this.zoneType == ZoneType.HAND) {
       cards = this.shuffledCopy();
     }
-    if (playerType != TcgStatics.bg().currentThreadPlayerType) {
-      TcgStatics.block()
-    }
     def ret = TcgStatics.bg().getClient(playerType).selectCard(new CardSelectUIRequestBuilder()
       .setMinMax(min, max)
       .setInfo(info)
@@ -376,9 +373,6 @@ public class CardList extends ArrayList<Card> {
       .setCustomCardFilter(filter != null ? filter as CustomCardFilter : null)
       .setCustomPassFilter(passFilter != null ?  passFilter as CustomPassFilter : null)
       .setShowAsHidden(hidden))
-    if (playerType != TcgStatics.bg().currentThreadPlayerType) {
-      TcgStatics.unblock()
-    }
     return ret
   }
 
@@ -411,18 +405,14 @@ public class CardList extends ArrayList<Card> {
 
   public CardList showToMe(Battleground bg = TcgStatics.bg(), String info) {
     if (this.notEmpty()) {
-      bg.oppClient().block();
       bg.ownClient().selectCard(new CardSelectUIRequestBuilder().setCards(this).setMinMax(0, 0).setInfo(info));
-      bg.oppClient().unblock();
     }
     return this;
   }
 
   public CardList showToOpponent(Battleground bg = TcgStatics.bg(), String info) {
     if (this.notEmpty()) {
-      bg.ownClient().block();
       bg.oppClient().selectCard(new CardSelectUIRequestBuilder().setCards(this).setMinMax(0, 0).setInfo(info));
-      bg.ownClient().unblock();
     }
     return this;
   }

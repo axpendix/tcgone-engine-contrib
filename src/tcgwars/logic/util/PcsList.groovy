@@ -30,21 +30,11 @@ public class PcsList extends ArrayList<PokemonCardSet> {
   }
 
   public PokemonCardSet select(String info = "Select", boolean required = true, PlayerType playerType = TcgStatics.bg().currentThreadPlayerType) {
-    if (playerType != TcgStatics.bg().currentThreadPlayerType) {
-      TcgStatics.block()
-    }
-    def ret = TcgStatics.bg().getClient(playerType).selectPokemon(new PokemonSelectUIRequestBuilder().setInfo(info).setTargets(this).setRequired(required));
-    if (playerType != TcgStatics.bg().currentThreadPlayerType) {
-      TcgStatics.unblock()
-    }
-    return ret
+    return TcgStatics.bg().getClient(playerType).selectPokemon(new PokemonSelectUIRequestBuilder().setInfo(info).setTargets(this).setRequired(required));
   }
 
   public PokemonCardSet oppSelect(String info = "Select") {
-    TcgStatics.block()
-    def ret = TcgStatics.bg().oppClient().selectPokemon(new PokemonSelectUIRequestBuilder().setInfo(info).setTargets(this));
-    TcgStatics.unblock()
-    return ret
+    return TcgStatics.bg().oppClient().selectPokemon(new PokemonSelectUIRequestBuilder().setInfo(info).setTargets(this));
   }
 
   public PokemonCardSet ownSelect(Battleground bg, String info) {
@@ -52,10 +42,7 @@ public class PcsList extends ArrayList<PokemonCardSet> {
   }
 
   public PokemonCardSet oppSelect(Battleground bg, String info) {
-    TcgStatics.block()
-    def ret = bg.oppClient().selectPokemon(new PokemonSelectUIRequestBuilder().setInfo(info).setTargets(this));
-    TcgStatics.unblock()
-    return ret
+    return bg.oppClient().selectPokemon(new PokemonSelectUIRequestBuilder().setInfo(info).setTargets(this));
   }
 
   public boolean isNotEmpty() {
