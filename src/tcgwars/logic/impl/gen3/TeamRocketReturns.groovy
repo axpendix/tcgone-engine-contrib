@@ -2469,16 +2469,14 @@ public enum TeamRocketReturns implements LogicCardInfo {
           def turnCount
           def check = {
             if (!(it.name.contains("Dark ") || it.name.contains("Rocket's "))) {
-              targeted null, SRC_SPENERGY, {
-                discard thisCard
-              }
+              discard thisCard
             }
           }
           onPlay { reason ->
             turnCount = bg.turnCount
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
-                targeted self, SRC_SPENERGY, {
+                targeted self, {
                   bg.dm().each {
                     if (it.from == self && it.to.active && it.notNoEffect && it.dmg.value) {
                       bc "R Energy +10"
@@ -2489,9 +2487,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               }
               before BETWEEN_TURNS, {
                 if (bg.turnCount == turnCount) {
-                  targeted null, SRC_SPENERGY, {
-                    discard thisCard
-                  }
+                  discard thisCard
                 }
               }
               after CHANGE_STAGE, self, { check(self) }

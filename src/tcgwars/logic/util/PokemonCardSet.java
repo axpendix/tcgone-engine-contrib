@@ -160,12 +160,15 @@ public class PokemonCardSet implements Serializable {
     ImmutableList.Builder<Type> listBuilder = ImmutableList.builder();
     for (EnergyCard card : energyCards) {
       List<Type> typeImagesOverride = card.getTypeImagesOverride();
-      if (typeImagesOverride != null) {
+      List<Set<Type>> effectiveEnergyTypes = card.getEffectiveEnergyTypes();
+      List<Set<Type>> nonModifiedEnergyTypes = card.getEnergyTypes();
+      if (effectiveEnergyTypes.equals(nonModifiedEnergyTypes) && typeImagesOverride != null) {
+        // only use the override when energy types are not altered
         listBuilder.addAll(typeImagesOverride);
-        continue;
+      } else {
+        // otherwise disregard the override and always generate the images
+        listBuilder.addAll(LUtils.generateTypeImages(effectiveEnergyTypes));
       }
-      List<Set<Type>> energyTypes = card.getEffectiveEnergyTypes();
-      listBuilder.addAll(LUtils.generateTypeImages(energyTypes));
     }
     return listBuilder.build();
   }

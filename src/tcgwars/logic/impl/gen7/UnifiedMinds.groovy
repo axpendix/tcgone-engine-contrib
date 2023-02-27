@@ -4647,13 +4647,11 @@ public enum UnifiedMinds implements LogicCardInfo {
               def newLocationChanged = false
               before MOVE_CARD, {
                 if (ef.cards.contains(thisCard) && ef.newLocation == self.owner.pbg.discard && !newLocationChanged) {
-                  targeted null, SRC_SPENERGY, {
-                    newLocationChanged = true
-                    def res = moveCard(supresssLog: true, thisCard, thisCard.player.pbg.hand)
-                    if (!res) {
-                      prevent()
-                      bc "Recycle Energy was recycled into its owner's hand."
-                    }
+                  newLocationChanged = true
+                  def res = moveCard(supresssLog: true, thisCard, thisCard.player.pbg.hand)
+                  if (!res) {
+                    prevent()
+                    bc "Recycle Energy was recycled into its owner's hand."
                   }
                 }
               }
@@ -4670,9 +4668,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           def eff
           onPlay {reason->
             eff = getter (GET_WEAKNESSES, self) { h->
-              targeted self, SRC_SPENERGY, {
-                h.object.clear()
-              }
+              h.object.clear()
             }
           }
           onRemoveFromPlay {

@@ -3072,9 +3072,7 @@ public enum BattleStyles implements LogicCardInfo {
           "As long as this card is attached to a Pokémon, it provides 2 in any combination of [W] Energy and [F] Energy."
         def check = { PokemonCardSet pcs->
           if (!pcs.rapidStrike) {
-            targeted null, SRC_SPENERGY, {
-              discard thisCard
-            }
+            discard thisCard
           }
         }
         def checkEff
@@ -3103,16 +3101,14 @@ public enum BattleStyles implements LogicCardInfo {
           "As long as this card is attached to a Pokémon, it provides Fighting and [D] Energy but provides only 1 Energy at a time, and the attacks of the Pokémon this card is attached to do 20 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
         def check = { PokemonCardSet pcs->
           if (!pcs.singleStrike) {
-            targeted null, SRC_SPENERGY, {
-              discard thisCard
-            }
+            discard thisCard
           }
         }
         def damageInc
         onPlay {reason->
           damageInc = delayed {
             after PROCESS_ATTACK_EFFECTS, {
-              targeted self, SRC_SPENERGY, {
+              targeted self, {
                 bg.dm().each {
                   if (ef.attacker == self && it.dmg.value && it.from == self && it.to.active && it.to.owner != self.owner) {
                     bc "Single Strike Energy +20"

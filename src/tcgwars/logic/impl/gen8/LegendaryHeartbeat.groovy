@@ -1543,18 +1543,18 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           spcEff = delayed {
             before APPLY_SPECIAL_CONDITION, self, {
               if (!self.types.contains(G)) return
-              targeted self, SRC_SPENERGY, {
+              targeted self, {
                 bc "$thisCard.name prevents ${(ef as ApplySpecialCondition).type} on $self"
                 prevent()
               }
             }
             after ATTACH_ENERGY, {
               if (self == null || !self.types.contains(G)) return
-              clearSpecialCondition self, SRC_SPENERGY
+              clearSpecialCondition self
             }
             after ENERGY_SWITCH, {
               if (self == null || !self.types.contains(G)) return
-              clearSpecialCondition self, SRC_SPENERGY
+              clearSpecialCondition self
             }
           }
         }
@@ -1574,7 +1574,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           dmgRedEff = delayed {
             before APPLY_ATTACK_DAMAGES, {
               if (!(ef.attacker.owner != self.owner && self.types.contains(F))) return
-              targeted self, SRC_SPENERGY, {
+              targeted self, {
                 bg.dm().each {
                   if (it.to == self && it.dmg.value && it.notNoEffect) {
                     bc "$thisCard.name -20"

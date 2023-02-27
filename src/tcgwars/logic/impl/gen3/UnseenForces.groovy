@@ -2402,8 +2402,8 @@ public enum UnseenForces implements LogicCardInfo {
         onPlay { reason ->
           if (reason == PLAY_FROM_HAND && self.active) {
             if (opp.bench) {
-              targeted null, SRC_SPENERGY, { // Don't force player choose a Pokémon when it will have no effect
-                sw(opp.active, opp.bench.oppSelect("Cyclone Energy was played, which Pokémon to switch with the Active?"), SRC_SPENERGY)
+              targeted opp.active, {
+                sw(opp.active, opp.bench.oppSelect("Cyclone Energy was played, which Pokémon to switch with the Active?"))
               }
             }
           }

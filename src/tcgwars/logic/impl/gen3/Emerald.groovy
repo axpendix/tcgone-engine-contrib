@@ -1807,7 +1807,7 @@ public enum Emerald implements LogicCardInfo {
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
                 if (self.types.contains(D) || self.topPokemonCard.name.contains("Dark ")) {
-                  targeted self, Source.SRC_SPENERGY, {
+                  targeted self, {
                     bg.dm().each() {
                       if (it.from == self && it.to.active && it.to.owner != self.owner && it.dmg.value) {
                         bc "Darkness Energy +10"
@@ -1831,16 +1831,14 @@ public enum Emerald implements LogicCardInfo {
           def eff
           def check = {
             if (!it.evolution || it.EX) {
-              targeted null, Source.SRC_SPENERGY, {
-                discard thisCard
-              }
+              discard thisCard
             }
           }
           typeImagesOverride = [RAINBOW, RAINBOW]
           onPlay { reason ->
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
-                targeted self, Source.SRC_SPENERGY, {
+                targeted self, {
                   if (ef.attacker == self) bg.dm().each {
                     if (it.to.owner != self.owner && it.dmg.value) {
                       bc "Double Rainbow Energy -10"
