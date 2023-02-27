@@ -4467,22 +4467,16 @@ public enum UnbrokenBonds implements LogicCardInfo {
             "This card provides [C][C][C] Energy only while it is attached to an Evolution Pokémon." +
             "If this card is attached to anything other than an Evolution Pokémon, discard this card."
           def eff
-          def turnCount
           def check = {
             if (!it.realEvolution) {
-              targeted null, SRC_SPENERGY, {
-                discard thisCard
-              }
+              discard thisCard
             }
           }
           onPlay {reason->
-            turnCount = bg.turnCount
             eff = delayed (priority: BEFORE_LAST) {
               before BETWEEN_TURNS, {
-                if (bg.turnCount == turnCount) {
-                  targeted null, SRC_SPENERGY, {
-                    discard thisCard
-                  }
+                if (bg.currentTurn == thisCard.player) {
+                  discard thisCard
                 }
               }
               after CHANGE_STAGE, self, { check(self) }

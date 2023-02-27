@@ -2461,16 +2461,14 @@ public enum DeltaSpecies implements LogicCardInfo {
         onPlay { reason ->
           eff = getter(GET_WEAKNESSES, self) { h ->
             if (self != null && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(R)) {
-              targeted self, SRC_SPENERGY, {
-                h.object.clear()
-              }
+              h.object.clear()
             }
           }
           eff2 = delayed {
             before APPLY_RESISTANCE, {
               bg.dm().each {
                 if (self != null && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(F) && it.from == self) {
-                  targeted self, SRC_SPENERGY, {
+                  targeted self, {
                     prevent()
                   }
                 }
@@ -2490,12 +2488,12 @@ public enum DeltaSpecies implements LogicCardInfo {
         def eff2
         onPlay { reason ->
           if (self != null && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(G)) {
-            clearSpecialCondition(self, SRC_SPENERGY)
+            clearSpecialCondition(self)
           }
           eff = delayed {
             before APPLY_SPECIAL_CONDITION, self, {
               if (!self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(G)) {
-                targeted self, SRC_SPENERGY, {
+                targeted self, {
                   bc "Holon Energy GL prevents special conditions"
                   prevent()
                 }
@@ -2503,19 +2501,19 @@ public enum DeltaSpecies implements LogicCardInfo {
             }
             after ATTACH_ENERGY, {
               if (self != null && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(G)) {
-                clearSpecialCondition(self, SRC_SPENERGY)
+                clearSpecialCondition(self)
               }
             }
             after ENERGY_SWITCH, {
               if (self != null && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(G)) {
-                clearSpecialCondition(self, SRC_SPENERGY)
+                clearSpecialCondition(self)
               }
             }
           }
           eff2 = delayed {
             before APPLY_ATTACK_DAMAGES, {
               if (self != null && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(L)) {
-                targeted self, SRC_SPENERGY, {
+                targeted self, {
                   bg.dm().each {
                     if (it.to == self && it.from.owner != self.owner && it.from.EX && it.dmg.value && it.notNoEffect) {
                       it.dmg -= hp(10)
@@ -2533,7 +2531,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         }
         onMove {to->
           if (self != null && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(G)) {
-            clearSpecialCondition(self, SRC_SPENERGY)
+            clearSpecialCondition(self)
           }
         }
       };
@@ -2545,15 +2543,13 @@ public enum DeltaSpecies implements LogicCardInfo {
         onPlay { reason ->
           eff = getter(GET_RETREAT_COST, self) { h ->
             if (self != null && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(P)) {
-              targeted self, SRC_SPENERGY, {
-                h.object = 0
-              }
+              h.object = 0
             }
           }
           eff2 = delayed {
             before null, self, Source.ATTACK, {
               if (self != null && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(W) && bg.currentTurn == self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages)) {
-                targeted self, SRC_SPENERGY, {
+                targeted self, {
                   bc "Holon Energy WP prevented effect"
                   prevent()
                 }

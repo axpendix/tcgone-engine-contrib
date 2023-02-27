@@ -5049,9 +5049,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             "When you attach this card from your hand to a Pokémon, draw a card."
           onPlay {reason->
             if(reason == PLAY_FROM_HAND) {
-              targeted null, SRC_SPENERGY, {
-                draw 1
-              }
+              draw 1
             }
           }
         };

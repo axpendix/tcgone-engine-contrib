@@ -3718,12 +3718,10 @@ public enum RebelClash implements LogicCardInfo {
         text "This card provides [C] Energy only while attached to a Pokémon. When attaching this card from your hand to 1 of your Pokémon, search your deck for a Basic Pokémon and put it on your Bench. Then, shuffle your deck."
         onPlay {reason->
           if (reason == PLAY_FROM_HAND && my.deck && my.bench.notFull) {
-            targeted null, SRC_SPENERGY, {
-              my.deck.search(count: 1, { it.cardTypes.is(BASIC) }).each {
-                benchPCS(it)
-              }
-              shuffleDeck()
+            my.deck.search(count: 1, { it.cardTypes.is(BASIC) }).each {
+              benchPCS(it)
             }
+            shuffleDeck()
           }
         }
         getEnergyTypesOverride {
@@ -3748,9 +3746,9 @@ public enum RebelClash implements LogicCardInfo {
             }
             after APPLY_ATTACK_DAMAGES, {
               if(attackDidDamage && self.cards.contains(thisCard) && ef.attacker.inPlay) { // this energy card is still attached
-                targeted ef.attacker as PokemonCardSet, SRC_SPENERGY, {
+                targeted ef.attacker as PokemonCardSet, {
                   bc "Horror [P] Energy activates."
-                  directDamage(20, ef.attacker as PokemonCardSet, SRC_SPENERGY)
+                  directDamage(20, ef.attacker as PokemonCardSet)
                 }
                 attackDidDamage = false
               }
@@ -3770,9 +3768,7 @@ public enum RebelClash implements LogicCardInfo {
         text "This card provides 1 [L] Energy while it’s attached to a Pokémon. When you attach this card from your hand to an [L] Pokémon, draw 2 cards"
         onPlay {reason->
           if (reason == PLAY_FROM_HAND && self.types.contains(L)) {
-            targeted null, SRC_SPENERGY, {
-              draw 2
-            }
+            draw 2
           }
         }
         getEnergyTypesOverride {

@@ -1896,10 +1896,10 @@ public enum RubySapphireNG implements LogicCardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
                   if(it.to == self && it.dmg.value && it.notNoEffect && self.types.contains(M)){
-//                    targeted self, Source.SRC_SPENERGY, {
+                    targeted self, {
                       it.dmg -= hp(10)
                       bc "Metal Energy -10 damage"
-//                    }
+                    }
                   }
                 }
               }

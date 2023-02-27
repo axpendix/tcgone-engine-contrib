@@ -3690,7 +3690,7 @@ public enum ChillingReign implements LogicCardInfo {
           def eff
           onPlay { reason->
             if (self.isSPC(POISONED)) {
-              clearSpecialCondition(self, SRC_SPENERGY, [POISONED])
+              clearSpecialCondition(self, [POISONED])
             }
             eff = delayed {
               before APPLY_SPECIAL_CONDITION, self, {
@@ -3748,7 +3748,7 @@ public enum ChillingReign implements LogicCardInfo {
           def eff
           onPlay { reason->
             if (self.isSPC(PARALYZED)) {
-              clearSpecialCondition(self, SRC_SPENERGY, [PARALYZED])
+              clearSpecialCondition(self, [PARALYZED])
             }
             eff = delayed {
               before APPLY_SPECIAL_CONDITION, self, {

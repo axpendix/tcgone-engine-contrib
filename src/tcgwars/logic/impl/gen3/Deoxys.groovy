@@ -2402,28 +2402,22 @@ public enum Deoxys implements LogicCardInfo {
         return specialEnergy (this, [[C],[C],[C]]) {
           text "Boost Energy can be attached only to an Evolved Pokémon. Discard Boost Energy at the end of the turn it was attached. Boost Energy provides [C][C][C] Energy. The Pokémon Boost Energy is attached to can’t retreat. If the Pokémon Boost Energy is attached to isn’t an Evolved Pokémon, discard Boost Energy."
           def eff
-          def turnCount
           def check = {
             if (!it.evolution) {
-              targeted null, SRC_SPENERGY, {
-                discard thisCard
-              }
+              discard thisCard
             }
           }
           onPlay { reason ->
-            turnCount = bg.turnCount
             eff = delayed {
               before RETREAT, self, {
-                targeted self, SRC_SPENERGY, {
+                targeted self, {
                   wcu "$self can't retreat due to having Boost Energy attached."
                   prevent()
                 }
               }
               before BETWEEN_TURNS, {
-                if (turnCount == bg.turnCount) {
-                  targeted null, SRC_SPENERGY, {
-                    discard thisCard
-                  }
+                if (bg.currentTurn == thisCard.player) {
+                  discard thisCard
                 }
               }
               after CHANGE_STAGE, self, { check(self) }
@@ -2446,8 +2440,8 @@ public enum Deoxys implements LogicCardInfo {
           text "Heal Energy provides [C] Energy. When you attach this card from your hand to 1 of your Pokémon, remove 1 damage counter and all Special Conditions from that Pokémon. If heal Energy is attached to Pokémon-ex, Heal Energy has no effect other than providing Energy."
           onPlay { reason ->
             if (!self.EX && reason == PLAY_FROM_HAND) {
-              heal(10, self, SRC_SPENERGY)
-              clearSpecialCondition(self, SRC_SPENERGY)
+              heal(10, self)
+              clearSpecialCondition(self)
             }
           }
           onRemoveFromPlay {
@@ -2459,9 +2453,7 @@ public enum Deoxys implements LogicCardInfo {
           def eff
           def check = {
             if (!it.evolution || it.EX) {
-              targeted null, SRC_SPENERGY, {
-                discard thisCard
-              }
+              discard thisCard
             }
           }
           onPlay {reason->

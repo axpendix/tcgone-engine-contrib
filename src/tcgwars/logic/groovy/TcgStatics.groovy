@@ -919,6 +919,44 @@ class TcgStatics {
       }
     }.run(bg)
   }
+  static sourced (params, Closure c) {
+    bg.em().run(new AbstractDirectSourceEffect() {
+      @Override
+      Source getSource() {
+        return params.source
+      }
+
+      @Override
+      Attack getSourceAttack() {
+        return params.sourceAttack
+      }
+
+      @Override
+      Ability getSourceAbility() {
+        return params.sourceAbility
+      }
+
+      @Override
+      Card getSourceCard() {
+        return params.sourceCard
+      }
+
+      @Override
+      TrainerCard getSourceTrainer() {
+        return params.sourceTrainer
+      }
+
+      @Override
+      SpecialEnergyCard getSourceEnergy() {
+        return params.sourceEnergy
+      }
+
+      @Override
+      void process(Battleground bg, Event event) {
+        c.call()
+      }
+    })
+  }
   static jawClamp (Move thisMove, PokemonCardSet self, PokemonCardSet defending, boolean asLongAsSelfIsActive=false) {
     afterDamage { if (defending.active) { targeted(defending) {
       delayed {
@@ -937,7 +975,6 @@ class TcgStatics {
   static attachPokemonTool (Card pokemonToolCard, PokemonCardSet pcs) {
     new AttachPokemonTool(pcs, pokemonToolCard as PokemonToolCard, OTHER).run(bg)
     bc("$pokemonToolCard is attached to $pcs")
-    bg.gm().woosh();
   }
   static boolean canAttachPokemonTool (PokemonCardSet pcs) {
     int tool_limit = 1;
@@ -1069,7 +1106,7 @@ class TcgStatics {
       text "When 1 of your Pokémon becomes this Pokémon, heal all damage from it."
       onActivate {
         bc "$self: θ Max"
-        healAll(self, SRC_ANCIENT_TRAIT)
+        healAll(self)
       }
     }
   }
@@ -1758,7 +1795,6 @@ class TcgStatics {
     if (source == null) {
       if (delegate.thisObject.cardTypes.is(TRAINER)) source = TRAINER_CARD
       if (delegate.thisObject.cardTypes.is(POKEMON)) source = ATTACK
-      if (delegate.thisObject.cardTypes.is(ENERGY)) source = SRC_SPENERGY
     }
     if (bg.em().retrieveObject("ScoopUpBlock_Count$target.owner.opposite") && target.numberOfDamageCounters && !hasThetaStop(target)) {
       bc "Scoop-Up Block prevents $delegate.thisObject.name's effect."

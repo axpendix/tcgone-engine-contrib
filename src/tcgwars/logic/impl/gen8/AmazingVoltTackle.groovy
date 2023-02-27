@@ -1176,9 +1176,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         bwAbility "Spectral Breach", {
           text "Special Energy cards attached to each player's Pokémon have no effect and only provide [C] Energy instead."
           delayedA {
-            // FIXME: Figure out the best way to deal with unsourced effects from Special Energy
-            //  also applicable to LIGHT_DRAGONITE NeoDestiny Miraculous Wind
-            before null, null, SRC_SPENERGY, {
+            before null, null, SRC_SPECIAL_ENERGY, {
               prevent()
             }
           }
@@ -2143,7 +2141,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           eff = delayed {
             before null, self, ATTACK, {
               if (self.types.contains(W) && ef.effectType != DAMAGE && bg.currentTurn == self.owner.opposite) {
-                targeted self, SRC_SPENERGY, {
+                targeted self, {
                   bc "$thisCard prevents effect"
                   prevent()
                 }
@@ -2167,9 +2165,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         onPlay {reason->
           eff = getter GET_WEAKNESSES, self, { holder ->
             if (self && self.types.contains(M)) {
-              targeted self, SRC_SPENERGY, {
-                holder.object.clear()
-              }
+              holder.object.clear()
             }
           }
         }

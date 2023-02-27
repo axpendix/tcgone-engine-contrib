@@ -2555,8 +2555,8 @@ public enum MajesticDawn implements LogicCardInfo {
               assert self.active : "Not active"
               assert my.bench.notFull : "Bench full"
               assert my.deck : "Your deck is empty!"
-              bc "Used Call Energy effect"
-              targeted null, Source.SRC_SPENERGY, {
+              sourced (source: SRC_SPECIAL_ENERGY, sourceEnergy: thisCard) {
+                bc "Used Call Energy effect"
                 int count = bench.freeBenchCount >= 2 ? 2 : 1
                 my.deck.search(max: count, "Search your deck for up to 2 Basic Pokémon and put them onto your Bench", cardTypeFilter(BASIC)).each {
                   benchPCS(it)
@@ -2578,19 +2578,18 @@ public enum MajesticDawn implements LogicCardInfo {
           text "Health Energy provides [C] Energy. When you attach this card from your hand to 1 of your Pokémon, remove 1 damage counter from that Pokémon."
           onPlay {reason->
             if (reason == PLAY_FROM_HAND) {
-              heal 10, self, SRC_SPENERGY
+              heal 10, self
             }
           }
         };
       case METAL_ENERGY_95:
         return copy (RubySapphire.METAL_ENERGY_94, this)
       case RECOVER_ENERGY_96:
-        // TODO: Is this just Full Heal Energy?
         return specialEnergy (this, [[C]]) {
           text "Recover Energy provides [C] Energy. When you attach this card from your hand to 1 of your Pokémon, remove all Special Conditions from that Pokémon."
           onPlay {reason->
             if (reason == PLAY_FROM_HAND) {
-              clearSpecialCondition(my.active, SRC_SPENERGY)
+              clearSpecialCondition(self)
             }
           }
         };
