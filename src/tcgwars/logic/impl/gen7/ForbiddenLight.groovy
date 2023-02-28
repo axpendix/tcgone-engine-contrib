@@ -1,5 +1,6 @@
-package tcgwars.logic.impl.gen7;
+package tcgwars.logic.impl.gen7
 
+import tcgwars.logic.effect.gm.ActivateSimpleTrainer;
 import tcgwars.logic.effect.gm.Attack
 import tcgwars.logic.effect.gm.PlayTrainer
 
@@ -573,13 +574,6 @@ public enum ForbiddenLight implements LogicCardInfo {
           bwAbility "Unnerve", {
             text "Whenever your opponent plays an Item or Supporter card from their hand, prevent all effects of that card done to this Pokémon."
             delayedA {
-              def flag = false
-              before PROCESS_ATTACK_EFFECTS, {
-                flag = true
-              }
-              before BETWEEN_TURNS, {
-                flag = false
-              }
               def power=false
               before PLAY_TRAINER, {
                 if ((ef.item || ef.supporter) && bg.currentTurn==self.owner.opposite && bg.currentTurn.pbg.hand.contains(ef.cardToPlay)) {
@@ -590,7 +584,7 @@ public enum ForbiddenLight implements LogicCardInfo {
                 power=false
               }
               before null, self, Source.TRAINER_CARD, {
-                if (power && !flag) {
+                if (power) {
                   bc "Unnerve prevents effects from Supporter or Item cards done to $self."
                   prevent()
                 }
@@ -2043,7 +2037,7 @@ public enum ForbiddenLight implements LogicCardInfo {
               afterDamage {
                 delayed (priority: BEFORE_LAST) {
                   before BETWEEN_TURNS, {
-                    prevent()
+                    prevent() // FIXME BETWEEN_TURNS shouldn't be prevented in order to not disrupt its AFTER triggers
                     bg.turnCount += 1
                     draw 1
                     bc "Timeless GX started a new turn!"
@@ -2053,9 +2047,8 @@ public enum ForbiddenLight implements LogicCardInfo {
                   // Enable the use of a 2nd Supporter
                   def eff
                   register {
-                    //TODO: This may not work properly against other extra supporter effects (mainly Lt. Surge's Strategy)
                     eff = getter (GET_MAX_SUPPORTER_PER_TURN) {h->
-                      if(h.effect.playerType == thisCard.player && h.object < 2) h.object = 2
+                      if(h.effect.playerType == thisCard.player) h.object = h.object + 1
                     }
                   }
                   unregister {
@@ -2178,9 +2171,7 @@ public enum ForbiddenLight implements LogicCardInfo {
                   def support = randomOppHand.select(min: 0, "Your opponent's hand. You may discard a Supporter card you find there and use the effect of that card as the effect of this attack.", cardTypeFilter(SUPPORTER))
                   if (support){
                     discard support.first()
-                    bg.deterministicCurrentThreadPlayerType=self.owner
-                    bg.em().run(new PlayTrainer(support.first()))
-                    bg.clearDeterministicCurrentThreadPlayerType()
+                    bg.em().run(new ActivateSimpleTrainer(support.first()))
                   }
                 } else {
                   randomOppHand.showToMe("Your opponent's hand. No supporter in there.")

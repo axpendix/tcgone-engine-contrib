@@ -1,4 +1,6 @@
-package tcgwars.logic.impl.gen7;
+package tcgwars.logic.impl.gen7
+
+import tcgwars.logic.effect.getter.GetterEffect;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -4400,8 +4402,10 @@ public enum UnbrokenBonds implements LogicCardInfo {
           onPlay {reason->
             eff = delayed {
               before null, self, SRC_ABILITY, {
-                if (e.sourceAbility.owner.owner != self.owner) {
-                  bc "Stealthy Hood prevents effect ${e.type}"
+                if (e.sourceAbility?.owner?.owner == self.owner.opposite) {
+                  if (!ef instanceof GetterEffect) { // no log should be printed during getter effect execution to prevent log spam
+                    bc "Stealthy Hood prevents effect ${e.type}"
+                  }
                   prevent()
                 }
               }

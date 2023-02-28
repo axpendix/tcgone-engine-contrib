@@ -2468,7 +2468,7 @@ public enum UltraPrism implements LogicCardInfo {
               afterDamage {
                 delayed (priority: BEFORE_LAST) {
                   before BETWEEN_TURNS, {
-                    prevent()
+                    prevent() // FIXME BETWEEN_TURNS shouldn't be prevented in order to not disrupt its AFTER triggers
                     bg.turnCount += 1
                     draw 1
                     bc "Timeless GX started a new turn!"
@@ -2478,9 +2478,8 @@ public enum UltraPrism implements LogicCardInfo {
                   // Enable the use of a 2nd Supporter
                   def eff
                   register {
-                    //TODO: This may not work properly against other extra supporter effects (mainly Lt. Surge's Strategy)
                     eff = getter (GET_MAX_SUPPORTER_PER_TURN) {h->
-                      if(h.effect.playerType == thisCard.player && h.object < 2) h.object = 2
+                      if(h.effect.playerType == thisCard.player) h.object = h.object + 1
                     }
                   }
                   unregister {

@@ -1,5 +1,6 @@
-package tcgwars.logic.impl.gen4;
+package tcgwars.logic.impl.gen4
 
+import tcgwars.logic.effect.gm.ActivateSimpleTrainer;
 import tcgwars.logic.impl.gen2.Expedition
 import tcgwars.logic.impl.gen3.DragonFrontiers;
 import tcgwars.logic.impl.gen8.SwordShield;
@@ -1030,24 +1031,10 @@ public enum Arceus implements LogicCardInfo {
               assert opp.hand : "Your opponent's hand is"
             }
             onAttack {
-              delayed {
-                def eff
-                register {
-                  eff = getter (GET_MAX_SUPPORTER_PER_TURN) {h->
-                    h.object = h.object + 1
-                  }
-                }
-                unregister {
-                  eff.unregister()
-                }
-                unregisterAfter 1
-              }
               def oppHand = opp.hand.shuffledCopy()
               def card = oppHand.select(min:0, "Select a Supporter to copy its effect as this attack.",cardTypeFilter(SUPPORTER)).discard().first()
               if(card) {
-                bg.deterministicCurrentThreadPlayerType=self.owner
-                bg.em().run(new PlayTrainer(card))
-                bg.clearDeterministicCurrentThreadPlayerType()
+                bg.em().run(new ActivateSimpleTrainer(card))
               }
             }
           }

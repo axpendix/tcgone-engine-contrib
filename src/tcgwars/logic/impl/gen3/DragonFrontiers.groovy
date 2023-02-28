@@ -1,5 +1,6 @@
-package tcgwars.logic.impl.gen3;
+package tcgwars.logic.impl.gen3
 
+import tcgwars.logic.effect.gm.ActivateSimpleTrainer;
 import tcgwars.logic.effect.gm.PlayTrainer;
 
 import tcgwars.logic.impl.gen3.Deoxys;
@@ -340,22 +341,8 @@ public enum DragonFrontiers implements LogicCardInfo {
             if (randomOppHand.hasType(SUPPORTER)) {
               def sel = randomOppHand.select(min: 0, "Opponent's hand. You may select a Supporter and use it as the effect of this power.", cardTypeFilter(SUPPORTER))
               if (sel){
-                delayed {
-                  def eff
-                  register {
-                    eff = getter (GET_MAX_SUPPORTER_PER_TURN) {h->
-                      h.object = h.object + 1
-                    }
-                  }
-                  unregister {
-                    eff.unregister()
-                  }
-                  unregisterAfter 1
-                }
                 def card = sel.first()
-                bg.deterministicCurrentThreadPlayerType=bg.currentTurn
-                bg.em().run(new PlayTrainer(card).setDontDiscard(true))
-                bg.clearDeterministicCurrentThreadPlayerType()
+                bg.em().run(new ActivateSimpleTrainer(card))
               }
             } else {
               randomOppHand.showToMe("Opponent's hand. No supporter in there.")

@@ -483,7 +483,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             }
           }
           delayedA {
-            after PLAY_POKEMON_TOOL, {
+            after ATTACH_POKEMON_TOOL, {
               bg.em().run(new CheckAbilities())
             }
             after DISCARD, {
@@ -581,7 +581,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             }
           }
           delayedA {
-            after PLAY_POKEMON_TOOL, {
+            after ATTACH_POKEMON_TOOL, {
               bg.em().run(new CheckAbilities())
             }
             after DISCARD, {
@@ -925,7 +925,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             }
           }
           delayedA {
-            after PLAY_POKEMON_TOOL, {
+            after ATTACH_POKEMON_TOOL, {
               bg.em().run(new CheckAbilities())
             }
             after DISCARD, {

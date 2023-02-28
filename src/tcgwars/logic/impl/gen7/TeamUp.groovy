@@ -2016,15 +2016,8 @@ public enum TeamUp implements LogicCardInfo {
           bwAbility "Fossilized Memories" , {
             text "As long as this Pokémon is your Active Pokémon, your opponent can't play any Supporter cards from their hand."
             delayedA {
-              def flag = false
-              before PROCESS_ATTACK_EFFECTS, {
-                flag = true
-              }
-              before BETWEEN_TURNS, {
-                flag = false
-              }
               before PLAY_TRAINER, {
-                if (ef.supporter && bg.currentTurn == self.owner.opposite && self.active && !flag) {
+                if (ef.supporter && bg.currentTurn == self.owner.opposite && self.active) {
                   wcu "Fossilized Memories prevents playing supporters"
                   prevent()
                 }
@@ -3661,7 +3654,7 @@ public enum TeamUp implements LogicCardInfo {
             if(randomOppHand.hasType(SUPPORTER)){
               def card = randomOppHand.select("Opponent's hand. Select a supporter.", cardTypeFilter(SUPPORTER)).first()
               bg.deterministicCurrentThreadPlayerType=bg.currentTurn
-              bg.em().run(new PlayTrainer(card).setDontDiscard(true))
+              bg.em().run(new ActivateSimpleTrainer(card))
               bg.clearDeterministicCurrentThreadPlayerType()
             } else {
               randomOppHand.showToMe("Opponent's hand. No supporter in there.")

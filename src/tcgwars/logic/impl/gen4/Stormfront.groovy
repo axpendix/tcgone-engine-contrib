@@ -1965,20 +1965,12 @@ public enum Stormfront implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
             }
             onAttack {
-              def bef = delayed {
-                before PREVENT_PLAY_SUPPORTER, null, null, PLAY_TRAINER, {
-                  prevent()
-                }
-              }
               def card = my.deck.search("Search your deck for a Supporter and copy its effect as this attack.",cardTypeFilter(SUPPORTER)).first()
               if(card) {
-                bg.deterministicCurrentThreadPlayerType=self.owner
-                bg.em().run(new PlayTrainer(card))
-                bg.clearDeterministicCurrentThreadPlayerType()
                 discard card
+                bg.em().run(new ActivateSimpleTrainer(card))
               }
               shuffleDeck()
-              bef.unregister()
             }
           }
           move "Overconfident", {

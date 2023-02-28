@@ -1,6 +1,7 @@
 package tcgwars.logic.impl.gen7
 
 import tcgwars.logic.card.pokemon.PokemonCard
+import tcgwars.logic.effect.gm.ActivateSimpleTrainer
 import tcgwars.logic.effect.gm.PlayCard
 import tcgwars.logic.effect.gm.PlayStadium
 import tcgwars.logic.effect.gm.PlayTrainer
@@ -1453,15 +1454,8 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 60
               bg.em().storeObject("Cold_Snap" + self.owner, bg.turnCount)
               delayed {
-                def flag = false
-                before PROCESS_ATTACK_EFFECTS, {
-                  flag = true
-                }
-                before BETWEEN_TURNS, {
-                  flag = false
-                }
                 before PLAY_TRAINER, {
-                  if (bg.currentTurn == self.owner.opposite && !flag) {
+                  if (bg.currentTurn == self.owner.opposite) {
                     wcu "Cold Snap prevents you from playing Trainer cards."
                     prevent()
                   }
@@ -2451,24 +2445,10 @@ public enum CosmicEclipse implements LogicCardInfo {
               assert my.hand.hasType(SUPPORTER) : "No Supporter cards in your hand."
             }
             onAttack {
-              delayed {
-                def eff
-                register {
-                  eff = getter (GET_MAX_SUPPORTER_PER_TURN) {h->
-                    h.object = h.object + 1
-                  }
-                }
-                unregister {
-                  eff.unregister()
-                }
-                unregisterAfter 1
-              }
               if (my.hand.hasType(SUPPORTER)) {
                 def card = my.hand.findAll(cardTypeFilter(SUPPORTER)).select("Select a Supporter to copy its effect as this attack.").first()
                 discard card
-                bg.deterministicCurrentThreadPlayerType=self.owner
-                bg.em().run(new PlayTrainer(card))
-                bg.clearDeterministicCurrentThreadPlayerType()
+                bg.em().run(new ActivateSimpleTrainer(card))
               }
             }
           }
@@ -2730,13 +2710,6 @@ public enum CosmicEclipse implements LogicCardInfo {
           bwAbility "Obnoxious Whirring", {
             text "Whenever your opponent plays a Supporter card from their hand, prevent all effects of that card done to this Pokémon."
             delayedA {
-              def flag = false
-              before PROCESS_ATTACK_EFFECTS, {
-                flag = true
-              }
-              before BETWEEN_TURNS, {
-                flag = false
-              }
               def power=false
               before PLAY_TRAINER, {
                 if (ef.supporter && bg.currentTurn==self.owner.opposite && bg.currentTurn.pbg.hand.contains(ef.cardToPlay)) {
@@ -2747,7 +2720,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                 power=false
               }
               before null, self, Source.TRAINER_CARD, {
-                if (power && !flag) {
+                if (power) {
                   bc "Obnoxious Whirring prevents effects from Supporter cards done to $self."
                   prevent()
                 }
@@ -4995,9 +4968,11 @@ public enum CosmicEclipse implements LogicCardInfo {
               if (discarded instanceof PokemonCard) {
                 discarded.abilities.each {
                   if (it.name == "Blow-Away Bomb" && checkGlobalAbility(discarded) && confirm("Use Blow-Away Bomb?")) {
-                    bc "Blow-Away Bomb activates."
-                    opp.all.each { target ->
-                      directDamage 10, target, SRC_ABILITY
+                    sourced(source: SRC_ABILITY, sourceAbility: it) {
+                      bc "Blow-Away Bomb activates."
+                      opp.all.each { target ->
+                        directDamage 10, target
+                      }
                     }
                   }
                 }

@@ -1436,13 +1436,6 @@ public enum EeveeHeroes implements LogicCardInfo {
         def eff
         onPlay {reason->
           eff = delayed {
-            def flag = false
-            before PROCESS_ATTACK_EFFECTS, {
-              flag = true
-            }
-            before BETWEEN_TURNS, {
-              flag = false
-            }
             def power = false
             before PLAY_TRAINER, {
               if (ef.supporter
@@ -1457,7 +1450,7 @@ public enum EeveeHeroes implements LogicCardInfo {
               power = false
             }
             before null, self, TRAINER_CARD, {
-              if (power && !flag) {
+              if (power) {
                 bc "$thisCard.name prevents effects from Supporter cards done to $self"
               }
             }

@@ -1004,16 +1004,7 @@ class TcgStatics {
 
   static barrier(PokemonCardSet self, Object delegate){
     delegate.delayedA {
-      //TODO make sure all trainers have correct source definitions and add extra source types
-      def flag = false
-      def power=false
-
-      before PROCESS_ATTACK_EFFECTS, {
-        flag = true
-      }
-      before BETWEEN_TURNS, {
-        flag = false
-      }
+      def power= false
       before PLAY_TRAINER, {
         if (!(ef.stadium || ef.pokemonTool) && bg.currentThreadPlayerType != self.owner && bg.currentTurn.pbg.hand.contains(ef.cardToPlay)) {
           power=true
@@ -1023,7 +1014,7 @@ class TcgStatics {
         power=false
       }
       before (null, self, Source.TRAINER_CARD) {
-        if (power && !flag && bg.currentThreadPlayerType != self.owner){ //only opponent's trainer cards
+        if (power && bg.currentThreadPlayerType != self.owner){ //only opponent's trainer cards
           bc "Barrier prevents effect"
           prevent()
         }
@@ -1589,20 +1580,8 @@ class TcgStatics {
   static void opponentCantPlaySupporterNextTurn(def _delegate){
     bc "${_delegate.thisMove} - Supporters can't be played from ${opp.owner.getPlayerUsername(bg)}'s hand during their next turn"
     _delegate.delayed {
-      def flag = false
-      // TODO remove after PlayTrainer refactoring
-      before USE_ABILITY_OUTER, { flag = true }
-      after USE_ABILITY_OUTER, { flag = false }
-      before ACTIVATE_ABILITY, { flag = true }
-      after ACTIVATE_ABILITY, { flag = false }
-      before PROCESS_ATTACK_EFFECTS, {
-        flag = true
-      }
-      before BETWEEN_TURNS, {
-        flag = false
-      }
       before PLAY_TRAINER, {
-        if(ef.supporter && bg.currentTurn==_delegate.self.owner.opposite && !flag) {
+        if(ef.supporter && bg.currentTurn==_delegate.self.owner.opposite) {
           wcu "${_delegate.thisMove} prevents playing supporters"
           prevent()
         }

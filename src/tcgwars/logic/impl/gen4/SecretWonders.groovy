@@ -1,5 +1,6 @@
-package tcgwars.logic.impl.gen4;
+package tcgwars.logic.impl.gen4
 
+import tcgwars.logic.effect.gm.ActivateSimpleTrainer;
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen3.RubySapphire
 
@@ -453,19 +454,13 @@ public enum SecretWonders implements LogicCardInfo {
               assert bg.em().retrieveObject("Telepass") != bg.turnCount : "You can't use more than 1 Telepass Poke-Power each turn."
               assert opp.discard.hasType(SUPPORTER) : "Your opponent has no supporters discarded."
               powerUsed()
-              def bef = delayed {
-                before PREVENT_PLAY_SUPPORTER, null, null, PLAY_TRAINER, {
-                  prevent()
-                }
-              }
               def card = opp.discard.select("Opponent's discard. Select a supporter.", cardTypeFilter(SUPPORTER)).first()
               bg.deterministicCurrentThreadPlayerType=bg.currentTurn
-              bg.em().run(new PlayTrainer(card).setDontDiscard(true))
+              bg.em().run(new ActivateSimpleTrainer(card))
               bg.clearDeterministicCurrentThreadPlayerType()
               def used_supporter_count = bg.em().retrieveObject("used_supporter_count");
               bg.em().storeObject("used_supporter_count", used_supporter_count - 1);
               bg.em().storeObject("Telepass",bg.turnCount );
-              bef.unregister();
             }
           }
           move "Psychic Lock", {
@@ -1847,22 +1842,8 @@ f
               assert my.discard.filterByType(SUPPORTER) : "There are no supporters in your discard pile"
             }
             onAttack {
-              delayed {
-                def eff
-                register {
-                  eff = getter (GET_MAX_SUPPORTER_PER_TURN) {h->
-                    h.object = h.object + 1
-                  }
-                }
-                unregister {
-                  eff.unregister()
-                }
-                unregisterAfter 1
-              }
               def card = my.discard.select("Select a Supporter to copy its effect as this attack.",cardTypeFilter(SUPPORTER)).first()
-              bg.deterministicCurrentThreadPlayerType=self.owner
-              bg.em().run(new PlayTrainer(card))
-              bg.clearDeterministicCurrentThreadPlayerType()
+              bg.em().run(new ActivateSimpleTrainer(card))
             }
           }
           move "Telekinesis", {
