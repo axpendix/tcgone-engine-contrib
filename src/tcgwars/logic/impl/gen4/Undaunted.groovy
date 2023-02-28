@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen4
 
+import tcgwars.logic.effect.gm.ActivateSimpleTrainer
 import tcgwars.logic.effect.special.SpecialConditionType
 import tcgwars.logic.impl.gen3.RubySapphire;
 
@@ -365,9 +366,7 @@ public enum Undaunted implements LogicCardInfo {
               def randomOppHand = opp.hand.shuffledCopy()
               if(randomOppHand.hasType(SUPPORTER)){
                 def card = randomOppHand.select(min:1, "Opponent's hand. Select a Supporter.", cardTypeFilter(SUPPORTER)).first()
-                bg.deterministicCurrentThreadPlayerType=self.owner
-                bg.em().run(new PlayTrainer(card))
-                bg.clearDeterministicCurrentThreadPlayerType()
+                bg.em().run(new ActivateSimpleTrainer(card))
               } else {
                 randomOppHand.showToMe("Opponent's hand. No supporter there.")
               }

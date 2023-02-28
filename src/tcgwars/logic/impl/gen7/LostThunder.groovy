@@ -1,6 +1,6 @@
 package tcgwars.logic.impl.gen7
 
-
+import tcgwars.logic.effect.gm.ActivateSimpleTrainer
 import tcgwars.logic.effect.gm.PlayTrainer
 import tcgwars.logic.groovy.TcgStatics
 
@@ -1511,8 +1511,10 @@ public enum LostThunder implements LogicCardInfo {
               def tar = my.all.findAll{it.cards.filterByType(POKEMON_TOOL).size() == 0}
               if(tar){
                 tar.each {pcs->
-                  my.deck.search("Select a Pokémon Tool to attach to $pcs",cardTypeFilter(POKEMON_TOOL)).each{
-                    attachPokemonTool(it, pcs)
+                  targeted (pcs) {
+                    my.deck.search("Select a Pokémon Tool to attach to $pcs",cardTypeFilter(POKEMON_TOOL)).each{
+                      attachPokemonTool(it, pcs)
+                    }
                   }
                 }
                 shuffleDeck()
@@ -3515,16 +3517,9 @@ public enum LostThunder implements LogicCardInfo {
           bwAbility "Mysterious Buzz" , {
             text "As long as this Pokémon is on your Bench, whenever your opponent plays a Supporter card from their hand, prevent all effects of that card done to your [Y] Pokémon in play."
             delayedA {
-              def flag = false
-              before PROCESS_ATTACK_EFFECTS, {
-                flag = true
-              }
-              before BETWEEN_TURNS, {
-                flag = false
-              }
               def power=false
               before PLAY_TRAINER, {
-                if(self.benched && ef.supporter && bg.currentTurn==self.owner.opposite && !flag){
+                if(self.benched && ef.supporter && bg.currentTurn==self.owner.opposite){
                   power=true
                 }
               }
@@ -3532,12 +3527,10 @@ public enum LostThunder implements LogicCardInfo {
                 power=false
               }
               before null, null, Source.TRAINER_CARD, {
-                if (ef instanceof TargetedEffect){
-                  def target = ef.getTargetPokemon()
-                  if (power && target && self.benched && target.owner==self.owner && target.types.contains(Y)){
-                    bc "Mysterious Buzz prevents effect"
-                    prevent()
-                  }
+                def target = e.getTargetPokemon()
+                if (power && target && self.benched && target.owner==self.owner && target.types.contains(Y)){
+                  bc "Mysterious Buzz prevents effect"
+                  prevent()
                 }
               }
             }
@@ -3767,9 +3760,7 @@ public enum LostThunder implements LogicCardInfo {
                 if(randomOppHand.hasType(SUPPORTER)){
                   def support = randomOppHand.select(max: 0, "Your opponent's hand. You may use the effect of a Supporter card you find there as the effect of this attack.", cardTypeFilter(SUPPORTER))
                   if (support){
-                    bg.deterministicCurrentThreadPlayerType=self.owner
-                    bg.em().run(new PlayTrainer(support.first()))
-                    bg.clearDeterministicCurrentThreadPlayerType()
+                    bg.em().run(new ActivateSimpleTrainer(support.first()))
                   }
                 } else {
                   randomOppHand.showToMe("Your opponent's hand. No supporter in there.")
@@ -4416,7 +4407,7 @@ public enum LostThunder implements LogicCardInfo {
                 if(self.types.contains(P) && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
                   bc "Spell Tag activates"
                   4.times{
-                    directDamage (10, self.owner.opposite.pbg.all.select("Put 1 damage counter on which pokémon? ${it}/4 counters placed", self.owner), GAME) //TODO add Tool Source?
+                    directDamage (10, self.owner.opposite.pbg.all.select("Put 1 damage counter on which pokémon? ${it}/4 counters placed", self.owner))
                   }
                 }
               }

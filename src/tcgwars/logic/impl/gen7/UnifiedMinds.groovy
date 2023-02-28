@@ -1222,8 +1222,7 @@ public enum UnifiedMinds implements LogicCardInfo {
                     dset.add(card)
                   }
                 }
-                after PLAY_POKEMON_TOOL, {disable(ef.cardToPlay,ef.target)}
-                after PLAY_POKEMON_TOOL_FLARE, {disable(ef.cardToPlay,ef.target)}
+                after ATTACH_POKEMON_TOOL, {disable(ef.card,ef.target)}
               }
 
               def count = (bg.em().retrieveObject("Tool Concealment count") ?: 0) + 1
@@ -2879,15 +2878,8 @@ public enum UnifiedMinds implements LogicCardInfo {
               gxPerform()
 
               delayed{
-                def flag = false
-                before PROCESS_ATTACK_EFFECTS, {
-                  flag = true
-                }
-                before BETWEEN_TURNS, {
-                  flag = false
-                }
                 before PLAY_TRAINER, {
-                  if (bg.currentTurn == self.owner.opposite && !flag) {
+                  if (bg.currentTurn == self.owner.opposite) {
                     wcu "Dark Moon GX prevents you from playing Trainer cards."
                     prevent()
                   }
@@ -3536,15 +3528,8 @@ public enum UnifiedMinds implements LogicCardInfo {
           bwAbility "Unnerve", {
             text "Whenever your opponent plays an Item or Supporter card from their hand, prevent all effects of that card done to this Pokémon."
             delayedA {
-              def flag = false
-              before PROCESS_ATTACK_EFFECTS, {
-                flag = true
-              }
-              before BETWEEN_TURNS, {
-                flag = false
-              }
               before null, self, Source.TRAINER_CARD, {
-                if (bg.currentThreadPlayerType != self.owner && !flag){
+                if (e.sourceTrainer.player != self.owner && e.sourceTrainer.cardTypes.isIn(ITEM, SUPPORTER)){
                   bc "Unnerve prevents effects of Items and Supporters done to $self."
                   prevent()
                 }

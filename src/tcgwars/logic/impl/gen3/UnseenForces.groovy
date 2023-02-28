@@ -1,5 +1,6 @@
-package tcgwars.logic.impl.gen3;
+package tcgwars.logic.impl.gen3
 
+import tcgwars.logic.effect.gm.ActivateSimpleTrainer;
 import tcgwars.logic.impl.gen2.Expedition;
 import tcgwars.logic.impl.gen2.Aquapolis;
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
@@ -3207,9 +3208,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
           onAttack {
             def card = opp.discard.select("Select a Supporter to use", cardTypeFilter(SUPPORTER)).first()
-            bg.deterministicCurrentThreadPlayerType=self.owner
-            bg.em().run(new PlayTrainer(card))
-            bg.clearDeterministicCurrentThreadPlayerType()
+            bg.em().run(new ActivateSimpleTrainer(card))
           }
         }
       };

@@ -10,6 +10,7 @@ import tcgwars.logic.effect.advanced.EnergySwitch
 import tcgwars.logic.effect.basic.DirectDamage
 import tcgwars.logic.effect.basic.Move
 import tcgwars.logic.effect.basic.ResolvedDamage
+import tcgwars.logic.effect.gm.ActivateSimpleTrainer
 import tcgwars.logic.effect.gm.PlayPokemonTool
 import tcgwars.logic.effect.gm.PlayPokemonToolFlare
 import tcgwars.logic.effect.gm.PlayTrainer
@@ -2299,11 +2300,15 @@ public enum SupremeVictors implements LogicCardInfo {
             }
             onAttack {
               def pcs = opp.all.findAll { it.cards.filterByType(POKEMON_TOOL) }.select("Source Pokémon that has a Tool to move")
-              def card = pcs.cards.filterByType(POKEMON_TOOL).select("Pokémon Tool to move").first() as PokemonToolCard
-              def pl = opp.all.findAll { canAttachPokemonTool(it, card) && it!=pcs }
-              if(!pl){wcu "No available Pokemon to move this card"; return}
-              def tar = pl.select("Move $tool to which Pokémon?")
-              attachPokemonTool(card, tar)
+              targeted (pcs) {
+                def card = pcs.cards.filterByType(POKEMON_TOOL).select("Pokémon Tool to move").first() as PokemonToolCard
+                def pl = opp.all.findAll { canAttachPokemonTool(it, card) && it!=pcs }
+                if(!pl){wcu "No available Pokemon to move this card"; return}
+                def tar = pl.select("Move $tool to which Pokémon?")
+                targeted (tar) {
+                  attachPokemonTool(card, tar)
+                }
+              }
             }
           }
           move "Flap", {
@@ -2950,9 +2955,7 @@ public enum SupremeVictors implements LogicCardInfo {
             }
             onAttack {
               def card = opp.discard.select(min:0, "Opponent's hand. Select a Supporter.", cardTypeFilter(SUPPORTER)).first()
-              bg.deterministicCurrentThreadPlayerType=self.owner
-              bg.em().run(new PlayTrainer(card))
-              bg.clearDeterministicCurrentThreadPlayerType()
+              bg.em().run(new ActivateSimpleTrainer(card))
             }
           }
         };

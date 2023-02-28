@@ -2059,19 +2059,8 @@ public enum PowerKeepers implements LogicCardInfo {
             if (r==PLAY_FROM_HAND && confirm("Use Chilling Breath?")) {
               bc "Chlling Breath activates"
               delayed {
-                def flag = false
-                before PROCESS_ATTACK_EFFECTS, {
-                  flag = true
-                }
-                before BETWEEN_TURNS, {
-                  flag = false
-                }
-                before USE_ABILITY_OUTER, { flag = true }
-                after USE_ABILITY_OUTER, { flag = false }
-                before ACTIVATE_ABILITY, { flag = true }
-                after ACTIVATE_ABILITY, { flag = false }
                 before PLAY_TRAINER, {
-                  if (bg.currentTurn == self.owner.opposite && !flag) {
+                  if (bg.currentTurn == self.owner.opposite) {
                     wcu "Chilling Breath prevents playing Trainer cards"
                     prevent()
                   }

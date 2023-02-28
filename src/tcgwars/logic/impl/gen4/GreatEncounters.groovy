@@ -2,6 +2,7 @@ package tcgwars.logic.impl.gen4
 
 import tcgwars.logic.DamageManager
 import tcgwars.logic.card.trainer.PokemonToolCard
+import tcgwars.logic.effect.gm.ActivateSimpleTrainer
 import tcgwars.logic.impl.gen3.Sandstorm
 
 import tcgwars.logic.Battleground
@@ -631,15 +632,8 @@ public enum GreatEncounters implements LogicCardInfo {
               }, {
                 bc "${self.owner.opposite.getPlayerUsername(bg)} can't play any Trainer (Item, Supporter, or Stadium) cards from their hand during their next turn."
                 delayed {
-                  def flag = false
-                  before PROCESS_ATTACK_EFFECTS, {
-                    flag = true
-                  }
-                  before BETWEEN_TURNS, {
-                    flag = false
-                  }
                   before PLAY_TRAINER, {
-                    if (bg.currentTurn == self.owner.opposite && (ef.cardToPlay.cardTypes.is(TRAINER)) && !flag) {
+                    if (bg.currentTurn == self.owner.opposite && (ef.cardToPlay.cardTypes.isIn(TRAINER, ITEM, SUPPORTER, STADIUM))) {
                       wcu "Ambient Noise prevents you from playing any Trainer (Item, Supporter, or Stadium) cards."
                       prevent()
                     }
@@ -829,18 +823,6 @@ public enum GreatEncounters implements LogicCardInfo {
               assert my.prizeCardSet.faceDownCards || opp.prizeCardSet.faceDownCards : "There are no face down prizes"
             }
             onAttack {
-              delayed {
-                def eff
-                register {
-                  eff = getter (GET_MAX_SUPPORTER_PER_TURN) { h->
-                    h.object = h.object + 1
-                  }
-                }
-                unregister {
-                  eff.unregister()
-                }
-                unregisterAfter 1
-              }
               def options = []
               def text = []
               if (my.prizeCardSet.faceDownCards) {
@@ -855,9 +837,7 @@ public enum GreatEncounters implements LogicCardInfo {
               def card = choice.faceDownCards.select(hidden:true, "Reveal a Prize card").first()
               choice.setVisible(card,true)
               if (card.cardTypes.is(SUPPORTER)) {
-                bg.deterministicCurrentThreadPlayerType=self.owner
-                bg.em().run(new PlayTrainer(card))
-                bg.clearDeterministicCurrentThreadPlayerType()
+                bg.em().run(new ActivateSimpleTrainer(card))
               }
 
             }
@@ -1340,11 +1320,15 @@ public enum GreatEncounters implements LogicCardInfo {
             }
             onAttack {
               def pcs = opp.all.findAll { it.cards.filterByType(POKEMON_TOOL) }.select("Source Pokémon that has a Tool to move")
-              def card = pcs.cards.filterByType(POKEMON_TOOL).select("Pokémon Tool to move").first() as PokemonToolCard
-              def pl = opp.all.findAll { canAttachPokemonTool(it, card) && it!=pcs}
-              if(!pl){wcu "No available Pokemon to move this card"; return}
-              def tar = pl.select("Move $tool to which Pokémon?")
-              attachPokemonTool(card, tar)
+              targeted (pcs) {
+                def card = pcs.cards.filterByType(POKEMON_TOOL).select("Pokémon Tool to move").first() as PokemonToolCard
+                def pl = opp.all.findAll { canAttachPokemonTool(it, card) && it!=pcs}
+                if(!pl){wcu "No available Pokemon to move this card"; return}
+                def tar = pl.select("Move $tool to which Pokémon?")
+                targeted (tar) {
+                  attachPokemonTool(card, tar)
+                }
+              }
             }
           }
           move "Overrun", {
@@ -1504,24 +1488,9 @@ public enum GreatEncounters implements LogicCardInfo {
               assert my.hand.filterByType(SUPPORTER) : "No Supporter cards in your hand"
               powerUsed()
 
-              delayed {
-                def eff
-                register {
-                  eff = getter (GET_MAX_SUPPORTER_PER_TURN) {h->
-                    h.object = h.object + 1
-                  }
-                }
-                unregister {
-                  eff.unregister()
-                }
-                unregisterAfter 1
-              }
-
               def card = my.hand.findAll(cardTypeFilter(SUPPORTER)).select("Select a Supporter to copy its effect as this attack.").first()
               discard card
-              bg.deterministicCurrentThreadPlayerType = self.owner
-              bg.em().run(new PlayTrainer(card))
-              bg.clearDeterministicCurrentThreadPlayerType()
+              bg.em().run(new ActivateSimpleTrainer(card))
             }
           }
           move "Speed Attack", {
