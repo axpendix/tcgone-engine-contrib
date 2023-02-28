@@ -727,7 +727,6 @@ public enum SwordShieldPromos implements LogicCardInfo {
           energyCost C, C, C
           onAttack {
             damage 80
-            // TODO: Handle supporters not played from hand
             if (bg.em().retrieveObject("last_supporter_play_turn") == bg.turnCount) {
               damage 80
             }

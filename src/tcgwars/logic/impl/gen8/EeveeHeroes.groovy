@@ -877,7 +877,7 @@ public enum EeveeHeroes implements LogicCardInfo {
           onAttack {
             damage 30
             defendingAttacksCostsMore defending, [C]
-            defendingRetreatsCostsMore defending, [C]
+            defendingRetreatsCostsMore defending, 1
           }
         }
       };

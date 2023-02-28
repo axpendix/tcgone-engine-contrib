@@ -1711,21 +1711,18 @@ public enum GuardiansRising implements LogicCardInfo {
                 bg.dm().each {if(it.from.owner != self.owner && it.to.owner==self.owner && it.to.benched && it.dmg.value && it.notNoEffect){
                   bc "Daunting Pose reduces damage"
                   it.dmg=hp(0)
-                  // TODO needs source refactoring to work correctly
-                  // TODO Fix it not blocking damage counters.
                 }}
               }
               before DIRECT_DAMAGE, null, ATTACK, {
-                def pcs = ef.getTargetPokemon()
-                if(bg.currentTurn == self.owner.opposite && pcs.owner == self.owner && !pcs.active) {
+                def pcs = e.targetPokemon
+                if(e.sourceAttack.attacker.owner == self.owner.opposite && pcs.owner == self.owner && pcs.benched) {
                   bc "Daunting Pose prevents damage counters from being placed on $self.name"
                   prevent()
                 }
               }
               before DIRECT_DAMAGE, null, SRC_ABILITY, {
-                def pcs = ef.getTargetPokemon()
-                //FIXME this will also block own pokemon abilities. to fix this, "Source refactoring" must be done. (See omega stop)
-                if(/*bg.currentTurn == self.owner.opposite &&*/ pcs.owner == self.owner && !pcs.active) {
+                def pcs = e.targetPokemon
+                if(e.sourceAbility?.owner?.owner == self.owner.opposite && pcs.owner == self.owner && pcs.benched) {
                   bc "Daunting Pose prevents damage counters from being placed on $self.name"
                   prevent()
                 }
