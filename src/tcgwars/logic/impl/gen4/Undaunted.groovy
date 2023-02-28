@@ -1388,7 +1388,7 @@ public enum Undaunted implements LogicCardInfo {
             text "more."
             energyCost P
             onAttack {
-              defendingRetreatsCostsMore (defending, [C])
+              defendingRetreatsCostsMore (defending,1)
             }
           }
           move "Sludge Toss", {

@@ -1055,7 +1055,7 @@ enum EvolvingSkies implements LogicCardInfo {
             onAttack {
               damage 60
               defendingAttacksCostsMore defending, [C]
-              defendingRetreatsCostsMore defending, [C]
+              defendingRetreatsCostsMore defending, 1
             }
           }
           move "Hyper Voice", {

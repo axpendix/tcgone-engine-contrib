@@ -1,6 +1,7 @@
 package tcgwars.logic.impl.gen7
 
 import tcgwars.logic.effect.gm.ActivateSimpleTrainer
+import tcgwars.logic.effect.gm.PlayCard
 import tcgwars.logic.effect.gm.PlayTrainer
 import tcgwars.logic.groovy.TcgStatics
 
@@ -502,7 +503,7 @@ public enum LostThunder implements LogicCardInfo {
                 def pcs = defending
                 delayed {
                   before null, pcs, Source.TRAINER_CARD, {
-                    if (bg.currentThreadPlayerType != self.owner){
+                    if (bg.currentThreadPlayerType != self.owner && e.sourceTrainer.cardTypes.isIn(ITEM, SUPPORTER)){
                       bc "Trap Thread prevents effect"
                       prevent()
                     }

@@ -4109,7 +4109,7 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              defendingRetreatsCostsMore(defending,[C,C])
+              defendingRetreatsCostsMore(defending,2)
             }
           }
           move "Aqua Wave", {

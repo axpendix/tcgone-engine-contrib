@@ -1351,7 +1351,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 80
               afterDamage{
                 defendingAttacksCostsMore (defending, [C])
-                defendingRetreatsCostsMore (defending, [C])
+                defendingRetreatsCostsMore (defending, 1)
               }
             }
           }

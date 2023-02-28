@@ -943,27 +943,20 @@ public enum TeamUp implements LogicCardInfo {
           bwAbility "Blizzard Veil" , {
             text "As long as this Pokémon is your Active Pokémon, whenever your opponent plays a Supporter card from their hand, prevent all effects of that card done to your Benched [W] Pokémon."
             delayedA{
-              // TODO
               def flag = false
               def selfOwner = self.owner
-              //Workaround for "Supporters used as attack effect"
-              def flag2 = false
-              before PROCESS_ATTACK_EFFECTS, {
-                flag2 = true
-              }
-              before BETWEEN_TURNS, {
-                flag2 = false
-              }
               before PLAY_TRAINER, {
-                flag = false
-                if(self.active && ef.supporter && bg.currentTurn != selfOwner && !flag2){
+                if(self.active && ef.supporter && bg.currentTurn != selfOwner){
                   flag = true
                 }
               }
+              after PLAY_TRAINER, {
+                flag = false
+              }
               before null, null, Source.TRAINER_CARD, {
-                def pcs = (ef as TargetedEffect).getTargetPokemon()
-                if (flag && self.active && pcs.owner == selfOwner && pcs.benched && pcs.types.contains(W)){
-                  bc "Blizzard Veil prevent effect of Supporter cards done to $pcs."
+                def pcs = e.getTargetPokemon()
+                if (flag && pcs && self.active && pcs.owner == selfOwner && pcs.benched && pcs.types.contains(W)){
+                  bc "Blizzard Veil prevents effect of Supporter cards done to $pcs."
                   prevent()
                 }
               }
@@ -1318,16 +1311,9 @@ public enum TeamUp implements LogicCardInfo {
           bwAbility "Unnerve" , {
             text "Whenever your opponent plays an Item or Supporter card from their hand, prevent all effects of that card done to this Pokémon."
             delayedA {
-              def flag = false
-              before PROCESS_ATTACK_EFFECTS, {
-                flag = true
-              }
-              before BETWEEN_TURNS, {
-                flag = false
-              }
               before null, self, Source.TRAINER_CARD, {
-                if (bg.currentThreadPlayerType != self.owner && !flag){
-                  bc "Unnerve prevent effect of item"
+                if (bg.currentThreadPlayerType != self.owner && e.sourceTrainer.cardTypes.isIn(ITEM, SUPPORTER)){
+                  bc "Unnerve prevent effect"
                   prevent()
                 }
               }
@@ -3555,14 +3541,13 @@ public enum TeamUp implements LogicCardInfo {
                 }
               }
               before DIRECT_DAMAGE, self, Source.SRC_ABILITY, {
-                //FIXME this will also block own pokemon abilities. to fix this, "Source refactoring" must be done. (See omega stop)
-                if(self.types.contains(M)) {
+                if(e.sourceAbility?.owner?.owner == self.owner.opposite && self.types.contains(M)) {
                   bc "Metal Goggles prevents damage counters from being placed on $self.name"
                   prevent()
                 }
               }
               before DIRECT_DAMAGE, self, Source.ATTACK, {
-                if(bg.currentTurn == self.owner.opposite && self.types.contains(M)) {
+                if(e.sourceAttack.attacker.owner == self.owner.opposite && self.types.contains(M)) {
                   bc "Metal Goggles prevents damage counters from being placed on $self.name"
                   prevent()
                 }
