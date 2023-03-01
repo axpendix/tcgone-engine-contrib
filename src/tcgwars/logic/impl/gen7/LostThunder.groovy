@@ -1221,7 +1221,11 @@ public enum LostThunder implements LogicCardInfo {
             text "50+ damage. Discard any amount of basic Energy from this Pokémon. This attack does 50 more damage for each card you discarded in this way.\n"
             energyCost R,R,C
             onAttack{
-              damage 50+50*self.cards.filterByType(BASIC_ENERGY).select(min:0,max:60,"Add 50 damage for each Energy discarded.").discard().size()
+              def list = self.cards.filterByType(BASIC_ENERGY).select(min:0,max:60,"Add 50 damage for each Energy discarded.")
+              damage 50+50*list.size()
+              afterDamage {
+                list.discard()
+              }
             }
           }
           move "Burning Magma GX" , {
