@@ -1576,7 +1576,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               assert self.benched
               assertOppBench()
               powerUsed()
-              if(sw2(opp.active, opp.bench.oppSelect("Choose a new Active Pokémon"), SRC_ABILITY)){
+              if(sw2(opp.active, opp.bench.oppSelect("Choose a new Active Pokémon"))){
                 self.cards.getExcludedList(self.topPokemonCard).discard()
                 self.cards.moveTo(my.deck)
                 removePCS(self)

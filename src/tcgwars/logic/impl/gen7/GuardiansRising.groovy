@@ -1722,7 +1722,7 @@ public enum GuardiansRising implements LogicCardInfo {
               }
               before DIRECT_DAMAGE, null, SRC_ABILITY, {
                 def pcs = e.targetPokemon
-                if(e.sourceAbility?.owner?.owner == self.owner.opposite && pcs.owner == self.owner && pcs.benched) {
+                if(e.sourceAbility.owner.owner == self.owner.opposite && pcs.owner == self.owner && pcs.benched) {
                   bc "Daunting Pose prevents damage counters from being placed on $self.name"
                   prevent()
                 }

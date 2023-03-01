@@ -3541,7 +3541,7 @@ public enum TeamUp implements LogicCardInfo {
                 }
               }
               before DIRECT_DAMAGE, self, Source.SRC_ABILITY, {
-                if(e.sourceAbility?.owner?.owner == self.owner.opposite && self.types.contains(M)) {
+                if(e.sourceAbility.owner.owner == self.owner.opposite && self.types.contains(M)) {
                   bc "Metal Goggles prevents damage counters from being placed on $self.name"
                   prevent()
                 }

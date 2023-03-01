@@ -4402,7 +4402,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           onPlay {reason->
             eff = delayed {
               before null, self, SRC_ABILITY, {
-                if (e.sourceAbility?.owner?.owner == self.owner.opposite) {
+                if (e.sourceAbility.owner.owner == self.owner.opposite) {
                   if (!ef instanceof GetterEffect) { // no log should be printed during getter effect execution to prevent log spam
                     bc "Stealthy Hood prevents effect ${e.type}"
                   }
