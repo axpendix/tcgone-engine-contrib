@@ -2393,9 +2393,9 @@ public enum LostThunder implements LogicCardInfo {
               bc "$thisCard used Distortion Door"
               def pcs = benchPCS(thisCard)
               if (pcs && thisCard.player.opposite.pbg.bench) {
-                multiSelect(thisCard.player.opposite.pbg.bench, 2, text).each {
+                multiSelect(thisCard.player.opposite.pbg.bench, 2, text).each {tar->
                   sourced (source: SRC_ABILITY, sourceAbility: ability) {
-                    directDamage 10, it
+                    directDamage 10, tar
                   }
                 }
               }
