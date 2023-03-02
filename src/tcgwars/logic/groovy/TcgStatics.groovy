@@ -1071,7 +1071,7 @@ class TcgStatics {
       text "Prevent all effects of your opponent's Pokémon's Abilities done to this Pokémon."
       delayedA {
         before null, self, Source.SRC_ABILITY, {
-          if (e.sourceAbility.owner.owner == self.owner.opposite) {
+          if (e.sourceAbility.ownerCard.player == self.owner.opposite) {
             if (!ef instanceof GetterEffect) { // no log should be printed during getter effect execution to prevent log spam
               bc "θ Stop prevents effect ${e.type}"
             }

@@ -2464,7 +2464,7 @@ public enum BattleStyles implements LogicCardInfo {
           text "Prevent all effects of your opponent's Pokémon's Abilities done to this Pokémon."
           delayedA {
             before null, self, SRC_ABILITY, {
-              if (e.sourceAbility.owner.owner == self.owner.opposite) {
+              if (e.sourceAbility.ownerCard.player == self.owner.opposite) {
                 bc "Lustrous Body prevents effect ${e.type}"
                 prevent()
               }
