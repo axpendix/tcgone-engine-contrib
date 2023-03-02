@@ -499,10 +499,14 @@ public enum GuardiansRising implements LogicCardInfo {
               def tar=all
               all.remove(src)
               tar=tar.select("Target for damage counter")
-              src.damage-=hp(10)
-              directDamage 10, tar, SRC_ABILITY
-              bc "Moved 1 damage counter from $src to $tar"
-              checkFaint()
+              targeted (src) {
+                targeted (tar) {
+                  src.damage-=hp(10)
+                  directDamage 10, tar, SRC_ABILITY
+                  bc "Moved 1 damage counter from $src to $tar"
+                  checkFaint()
+                }
+              }
             }
           }
           move "Super Singe", {

@@ -546,10 +546,14 @@ public enum DragonFrontiers implements LogicCardInfo {
             def target = all
             target.remove(source)
             target = target.select("Target for damage counter")
-            source.damage-=hp(10)
-            directDamage 10, target, SRC_ABILITY
-            bc "Moved 1 damage counter from $source to $target"
-            checkFaint()
+            targeted (source) {
+              targeted (target) {
+                source.damage -= hp(10)
+                directDamage 10, target
+                bc "Moved 1 damage counter from $source to $target"
+                checkFaint()
+              }
+            }
           }
         }
         move "Burning Ball", {
