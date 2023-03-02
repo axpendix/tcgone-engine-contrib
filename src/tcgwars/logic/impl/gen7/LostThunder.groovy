@@ -2389,11 +2389,14 @@ public enum LostThunder implements LogicCardInfo {
               assert thisCard.player.pbg.bench.notFull : "Bench full"
               assert bg.turnCount!=lastTurn : "Already used"
               assert checkGlobalAbility(thisCard) : "Blocked"
+              def ability = thisCard.asPokemonCard().abilities.find {it.name == "Distortion Door"}
               bc "$thisCard used Distortion Door"
               def pcs = benchPCS(thisCard)
               if (pcs && thisCard.player.opposite.pbg.bench) {
                 multiSelect(thisCard.player.opposite.pbg.bench, 2, text).each {
-                  directDamage 10, it, SRC_ABILITY
+                  sourced (source: SRC_ABILITY, sourceAbility: ability) {
+                    directDamage 10, it
+                  }
                 }
               }
             }
