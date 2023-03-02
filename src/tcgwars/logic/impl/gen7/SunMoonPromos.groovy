@@ -270,7 +270,8 @@ public enum SunMoonPromos implements LogicCardInfo {
   UMBREON_DARKRAI_GX_SM241 ("Umbreon & Darkrai-GX", "SM241", Rarity.PROMO, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _DARKNESS_]),
   EEVEE_GX_SM242 ("Eevee-GX", "SM242", Rarity.PROMO, [POKEMON, BASIC, POKEMON_GX, _COLORLESS_]),
   REGIGIGAS_SM243 ("Regigigas", "SM243", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
-  AIPOM_SM244 ("Aipom", "SM244", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]);
+  AIPOM_SM244 ("Aipom", "SM244", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
+  SABRINA_BRYCEN_SM246 ("Sabrina & Brycen", "SM246", Rarity.PROMO, [TRAINER, SUPPORTER, TAG_TEAM]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -3350,6 +3351,42 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
         };
+      case SABRINA_BRYCEN_SM246:
+        return supporter(this) {
+          text "Search your deck for up to 2 basic Energy cards, reveal them, and put them into your hand. Then, shuffle your deck." +
+            "When you play this card, you may discard 5 other cards from your hand. If you do, you may also search for up to 3 Pokémon of different types in this way."
+          onPlay {
+            if (my.hand.getExcludedList(thisCard).size() >= 5
+              && confirm("Activate additional clause? When you play this card, you may discard 5 other cards from your hand. If you do, you may also search for up to 3 Pokémon of different types in this way.")) {
+              my.hand.getExcludedList(thisCard)
+                .select(count: 5, "Discard 5 cards from hand to search for up to 3 Pokémon of different types")
+                .discard()
+              my.deck.select(min:0, max:5, "Select up to 2 basic Energy cards & up to 3 Pokémon of different types.",
+                {it.cardTypes.isIn(POKEMON, BASIC_ENERGY)}, thisCard.player,
+                {CardList list ->
+                  if (list.filterByType(BASIC_ENERGY).size() <= 2 && list.filterByType(POKEMON).size() <= 3) {
+                    TypeSet typeSet = new TypeSet()
+                    for (card in list) {
+                      if (card.cardTypes.isPokemon()) {
+                        if (typeSet.containsAny(card.asPokemonCard().types)) {
+                          return false
+                        }
+                        typeSet.addAll(card.asPokemonCard().types)
+                      }
+                    }
+                    return true
+                  }
+                  return false
+                }).moveTo(hand)
+            } else {
+              deck.search(max:2, cardTypeFilter(BASIC_ENERGY)).moveTo(hand)
+            }
+            shuffleDeck()
+          }
+          playRequirement{
+            assert my.deck : "Your deck is empty."
+          }
+        }
       default:
         return null;
     }
