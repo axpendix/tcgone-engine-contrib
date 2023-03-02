@@ -1124,8 +1124,10 @@ public enum ShiningLegends implements LogicCardInfo {
             delayedA {
               before RETREAT, {
                 if(ef.retreater.owner==self.owner.opposite && self.active){
-                  wcu "Cursed Whirlpool prevents retreating"
-                  prevent()
+                  targeted (ef.retreater) {
+                    wcu "Cursed Whirlpool prevents retreating"
+                    prevent()
+                  }
                 }
               }
             }
