@@ -632,7 +632,7 @@ public enum UnifiedMinds implements LogicCardInfo {
                 }
               }
               after EVOLVE, {
-                if(ef.fromHand && ef.pokemonToBeEvolved.owner == self.owner && ef.cardToPlay.moves.find{ it.name == "Spore" }) {
+                if(ef.fromHand && ef.pokemonToBeEvolved.owner == self.owner && ef.evolutionCard.moves.find{ it.name == "Spore" }) {
                   powerUsed()
                   apply POISONED, opp.active
                   apply ASLEEP, opp.active
