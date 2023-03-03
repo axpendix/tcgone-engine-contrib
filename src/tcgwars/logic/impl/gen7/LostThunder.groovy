@@ -4327,17 +4327,19 @@ public enum LostThunder implements LogicCardInfo {
                 "If you play 2 cards, heal 90 damage and remove all Special Conditions from your Active Pokémon.") == 2) {
               my.hand.findAll({it.name=="Mixed Herbs" && it!= thisCard}).subList(0,1).discard()
               heal 90, my.active
-              clearSpecialCondition(my.active, Source.TRAINER_CARD)
-            } else {
+              clearSpecialCondition(my.active)
+            } else if (my.active.specialConditions.size()) {
               SpecialConditionType spc = choose(my.active.specialConditions.asList(), "Which special condition you want to remove");
               clearSpecialCondition(my.active, TRAINER_CARD, [spc])
+            } else {
+              assert false : "Your Pokemon is fine"
             }
           }
           playRequirement{
             if(my.hand.filterByNameEquals("Mixed Herbs").size()>=2) {
-              assert my.active.numberOfDamageCounters || my.active.specialConditions : "Your pokemon is fine"
+              assert my.active.numberOfDamageCounters || my.active.specialConditions : "Your Pokemon is fine"
             } else {
-              assert my.active.specialConditions : "Your pokemon is fine"
+              assert my.active.specialConditions : "Your Pokemon is fine"
             }
           }
         };
