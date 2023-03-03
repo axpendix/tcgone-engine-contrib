@@ -1894,10 +1894,10 @@ public enum RubySapphireNG implements LogicCardInfo {
           onPlay {reason->
             eff = delayed {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {
-                  if(it.to == self && it.dmg.value && it.notNoEffect && self.types.contains(M)){
+                bg.dm().each { DamageEntry entry ->
+                  if(entry.to == self && entry.dmg.value && entry.notNoEffect && self.types.contains(M)){
                     targeted self, {
-                      it.dmg -= hp(10)
+                      entry.dmg -= hp(10)
                       bc "Metal Energy -10 damage"
                     }
                   }
