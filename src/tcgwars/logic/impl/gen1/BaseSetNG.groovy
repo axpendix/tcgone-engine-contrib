@@ -1176,23 +1176,19 @@ public enum BaseSetNG implements LogicCardInfo {
             onAttack {
               def newResistance = choose([R,F,G,W,P,L,M,D,Y,N],"Select the new Resistance for $self") as Type
               bc "$self's Resistance is now ${newResistance}"
-              def eff
               delayed {
-                eff = getter GET_RESISTANCES, self, { h ->
-                  def list = [] as List<Resistance>
-                  def resistanceType = (h.object.get(0) as Resistance).resistanceType
-                  list.add(new Resistance(newResistance, resistanceType))
-                  h.object = list
+                def eff
+                register {
+                  eff = getter GET_RESISTANCES, self, { h ->
+                    List<Resistance> list = [new Resistance(newResistance, Resistance.ResistanceType.MINUS30)]
+                    h.object = list
+                  }
                 }
-
-                after FALL_BACK, self, {
+                unregister {
                   eff.unregister()
-                  unregister()
                 }
-                after CHANGE_STAGE, self, {
-                  eff.unregister()
-                  unregister()
-                }
+                after FALL_BACK, self, {unregister()}
+                after CHANGE_STAGE, self, {unregister()}
               }
             }
           }
