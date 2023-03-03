@@ -1476,7 +1476,7 @@ public enum Stormfront implements LogicCardInfo {
             text "Prevent all effects of attacks, excluding damage, done to Bibarel."
             delayedA {
               before null, null, ATTACK, {
-                if (ef instanceof TargetedEffect && bg.currentTurn == self.owner.opposite && ef.effectType != DAMAGE && (ef as TargetedEffect).getTargetPokemon() == self) {
+                if (ef instanceof TargetedEffect && bg.currentTurn == self.owner.opposite && ef.effectType != DAMAGE && e.getTargetPokemon() == self) {
                   bc "$thisAbility prevents all effects done to $self."
                   prevent()
                 }

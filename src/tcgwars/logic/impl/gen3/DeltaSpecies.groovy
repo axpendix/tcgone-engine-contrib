@@ -892,7 +892,7 @@ public enum DeltaSpecies implements LogicCardInfo {
               }
             }
             before ATTACH_ENERGY, {
-              def pcs = (ef as TargetedEffect).getTargetPokemon()
+              def pcs = e.getTargetPokemon()
               if (ef.reason == PLAY_FROM_HAND && bg.currentTurn == self.owner.opposite && pcs.isSPC(ASLEEP)) {
                 wcu "Binding Aura prevents you from attaching energies to an Asleep Pokémon"
                 prevent()

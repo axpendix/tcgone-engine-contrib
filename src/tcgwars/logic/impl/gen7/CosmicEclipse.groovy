@@ -2001,7 +2001,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                 if (bg.em().retrieveObject("LILLIE_S_FULL_FORCE_TURN") == bg.turnCount) {
                   delayed {
                     before null, null, Source.ATTACK, {
-                      def pcs = (ef as TargetedEffect).getTargetPokemon()
+                      def pcs = e.getTargetPokemon()
                       if (pcs && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs.owner==self.owner) {
                         bc "$thisMove prevents all effects of attacks."
                         prevent()
@@ -2536,7 +2536,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Prevent all effects of your opponent's attacks, except damage, done to this Pokémon."
             delayedA {
               before null, null, ATTACK, {
-                if (ef instanceof TargetedEffect && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && (ef as TargetedEffect).getTargetPokemon() == self) {
+                if (ef instanceof TargetedEffect && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && e.getTargetPokemon() == self) {
                   bc "Unaware prevents all effects done to $self."
                   prevent()
 

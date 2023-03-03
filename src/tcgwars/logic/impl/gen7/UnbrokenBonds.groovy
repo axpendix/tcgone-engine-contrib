@@ -3965,7 +3965,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
                 flag = ef.move.name.contains('GX')
               }
               before null, null, Source.ATTACK, {
-                def pcs = (ef as TargetedEffect).getTargetPokemon()
+                def pcs = e.getTargetPokemon()
                 if (flag && self.active && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs && pcs.owner==self.owner){
                   bc "Force Canceler prevents effect"
                   prevent()

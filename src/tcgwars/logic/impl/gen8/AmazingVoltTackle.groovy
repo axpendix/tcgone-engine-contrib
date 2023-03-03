@@ -1245,7 +1245,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           text "Prevent all effects of your opponent's attacks, except damage, done to this Pokémon."
           delayedA {
             before null, null, ATTACK, {
-              if (ef instanceof TargetedEffect && bg.currentTurn == self.owner.opposite && ef.effectType != DAMAGE && (ef as TargetedEffect).getTargetPokemon() == self) {
+              if (ef instanceof TargetedEffect && bg.currentTurn == self.owner.opposite && ef.effectType != DAMAGE && e.getTargetPokemon() == self) {
                 bc "$thisAbility prevents all effects done to $self."
                 prevent()
               }

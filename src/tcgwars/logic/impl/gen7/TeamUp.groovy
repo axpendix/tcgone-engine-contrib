@@ -2917,7 +2917,7 @@ public enum TeamUp implements LogicCardInfo {
             delayedA {
               before null, null, ATTACK, {
                 if(ef instanceof TargetedEffect && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
-                  def pcs = (ef as TargetedEffect).getTargetPokemon()
+                  def pcs = e.getTargetPokemon()
                   if(pcs != null && pcs.owner == self.owner){
                     bc "Defensive Scales prevents all effects done to $self"
                     prevent()

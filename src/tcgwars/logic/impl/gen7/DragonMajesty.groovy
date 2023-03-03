@@ -908,7 +908,7 @@ public enum DragonMajesty implements LogicCardInfo {
             delayedA {
               before null, null, ATTACK, {
                 if(ef instanceof TargetedEffect && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
-                  def pcs = (ef as TargetedEffect).getTargetPokemon()
+                  def pcs = e.getTargetPokemon()
                   if(pcs != null && pcs.types.contains(N) && pcs.owner == self.owner){
                     bc "Dragon Guard prevents effect to Dragon Pokémon"
                     prevent()

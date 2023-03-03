@@ -1449,7 +1449,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             delayedA {
               before null, null, ATTACK, {
                 if (self.active && ef instanceof TargetedEffect && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
-                  def pcs = (ef as TargetedEffect).getTargetPokemon()
+                  def pcs = e.getTargetPokemon()
                   if (pcs != null && pcs.benched && pcs.owner == self.owner) {
                     bc "White Smoke prevents effect"
                     prevent()
@@ -2539,7 +2539,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
               before null, null, Source.ATTACK, {
                 if (ef instanceof TargetedEffect) {
-                  def pcs = (ef as TargetedEffect).getTargetPokemon()
+                  def pcs = e.getTargetPokemon()
                   if (bg.currentTurn == self.owner.opposite && ef.effectType != DAMAGE && pcs && pcs.owner == self.owner && self.benched && pcs.name.startsWith("Unown")) {
                     bc "UNSEEN prevents effect"
                     prevent()

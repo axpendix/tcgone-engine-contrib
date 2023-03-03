@@ -1087,7 +1087,7 @@ public enum RebelClash implements LogicCardInfo {
           text "As long as this Pokémon is in play, prevent effects of opponent’s attacks done to all of your Pokémon with Energy attached to them. (This does not remove existing effects.)"
           delayedA {
             before null, null, Source.ATTACK, {
-              def pcs = (ef as TargetedEffect).getTargetPokemon()
+              def pcs = e.getTargetPokemon()
               if (pcs && pcs.cards.energyCount(C) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs.owner==self.owner) {
                 bc "Galarian Mr. Rime's Screen Cleaner prevents effect."
                 prevent()
