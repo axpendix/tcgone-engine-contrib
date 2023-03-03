@@ -1033,6 +1033,9 @@ public enum UnifiedMinds implements LogicCardInfo {
           move "Ditch and Splash", {
             text "40x damage. Discard any number of Supporter cards from your hand. This attack does 40 damage for each card you discarded in this way."
             energyCost W, W
+            attackRequirement {
+              assert my.hand.filterByType(SUPPORTER) : "No supporter in hand"
+            }
             onAttack {
               def supporterCount = my.hand.filterByType(SUPPORTER).size()
               damage 40*my.hand.filterByType(SUPPORTER).select(max: supporterCount).discard().size()
