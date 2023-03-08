@@ -4063,7 +4063,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
         return itemCard (this) {
           text "Search your deck for a Mismagius, Honchkrow, Chandelure, or Aegislash, including Pokémon-GX, that evolves from 1 of your Pokémon in play, and put it onto that Pokémon to evolve it. Then, shuffle your deck. You can use this card during your first turn or on a Pokémon that was put into play this turn."
           onPlay {
-            deck.search{['Mismagius','Mismagius-GX','Honchkrow','Honchkrow-GX','Chandelure','Chandelure-GX','Aegislash','Aegislash-GX'].contains(it.name) && it.cardTypes.is(EVOLUTION)}.each{card->
+            deck.search{card-> ['Mismagius','Mismagius-GX','Honchkrow','Honchkrow-GX','Chandelure','Chandelure-GX','Aegislash','Aegislash-GX'].contains(card.name) && card.cardTypes.is(EVOLUTION) && my.all.find{card.predecessor == it.name}}.each{card->
               def pcs = my.all.findAll{card.predecessor == it.name}.select("To Evolve")
               evolve(pcs, card)
             }
