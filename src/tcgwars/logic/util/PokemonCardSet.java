@@ -85,7 +85,13 @@ public class PokemonCardSet implements Serializable {
    * literally: evolved
    */
   public boolean isEvolution() {
-    return getPokemonCards().size() > 1;
+    int count = 0;
+    for (Card card : set) {
+      if (card.getCardTypes().isPokemon() && card.getCardTypes().isNot(LVL_X)) { // do not count LVL_X here
+        count++;
+      }
+    }
+    return count > 1;
   }
 
   /**
