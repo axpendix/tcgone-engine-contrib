@@ -3565,10 +3565,10 @@ f
             text "60 damage. If the Defending Pokémon would be Knocked Out by damage from this attack, you may search your discard pile for any 1 card, show it to your opponent, and put it into your hand."
             energyCost D, D, C
             onAttack {
-              delayed {
+              delayed (priority: LAST) {
                 def pcs = defending
-                after KNOCKOUT, pcs, {
-                  if(my.discard) {
+                before KNOCKOUT, pcs, {
+                  if(ef.byDamageFromAttack && my.discard) {
                     my.discard.select(min:0,"Darkness Wing: Search your discard pile for a card").showToOpponent("Darkness Wing: Selected Cards").moveTo(my.hand)
                   }
                 }
