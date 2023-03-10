@@ -1300,12 +1300,14 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
           move "Tag Play —", {
-            text "20 damage. If you have Plusle on your Bench, you may move an Energy card attached to Minum to 1 of your Benched Pokémon."
+            text "20 damage. If you have Plusle on your Bench, you may move an Energy card attached to Minun to 1 of your Benched Pokémon."
             energyCost L
             onAttack {
               damage 20
               if(my.bench.find{it.name == "Plusle"} && confirm("Move an energy attached to $self to 1 of your Benched Pokémon?")) {
-                moveEnergy(self,my.bench)
+                afterDamage {
+                  moveEnergy(self,my.bench)
+                }
               }
             }
           }
