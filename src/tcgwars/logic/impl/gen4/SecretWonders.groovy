@@ -555,8 +555,28 @@ public enum SecretWonders implements LogicCardInfo {
           resistance F, MINUS20
           pokePower "Phoenix Turn", {
             text "Once during your opponent’s turn, if Ho-Oh would be Knocked Out by damage from an attack, you may flip a coin. If heads, Ho-Oh isn’t discarded. Instead, remove all damage counter, Special Conditions, and other effects from Ho-Oh. Then, discard all cards attached to Ho-Oh (except for Energy cards). This counts as Ho-Oh being Knocked Out and your opponent takes a Prize card."
-            delayedA {
-              //TODO
+            delayedA priority:LAST, {
+              before KNOCKOUT, self, {
+                if((ef as Knockout).byDamageFromAttack && confirm("Activate Phoenix Turn?", self.owner)) {
+                  tryWithDeterministicCurrentThreadPlayerType(self.owner) {
+                    powerUsed()
+                    flip {
+                      def pcs = self
+                      def pkmnCard = thisCard
+                      def energyCards = pcs.energyCards
+                      delayed(inline: true){
+                        after KNOCKOUT, pcs, {
+                          def newpcs = benchPCS(pkmnCard, OTHER)
+                          energyCards.each {attachEnergy(newpcs, it)}
+                          bc "$newpcs REKINDLED!"
+                          unregister()
+                        }
+                        unregisterAfter 1
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
           move "Rainbow Wing", {
@@ -1027,32 +1047,33 @@ public enum SecretWonders implements LogicCardInfo {
           resistance M, MINUS20
           pokePower "Energy Shift", {
             text "Once during your turn, if Electrode would be Knocked Out by damage from an attack, you may use this power. Electrode isn’t discarded. Instead, attach it as an Energy card to 1 of your Pokémon. While attached, this card is a Special Energy card and provides every type of Energy but provides on 1 Energy at a time."
-            delayedA priority:EffectPriority.BEFORE_LAST, {
+            delayedA priority:LAST, {
               before KNOCKOUT, self, {
                 if((ef as Knockout).byDamageFromAttack && self.owner.pbg.all.find{it != self} && confirm("Use Energy Shift?", self.owner)){
-                  bg.deterministicCurrentThreadPlayerType = self.owner
-                  powerUsed()
-                  def pcs=self
-                  def pkmnCard = thisCard
-                  delayed(inline: true){
-                    after KNOCKOUT, pcs, {
-                      def tar = pcs.owner.pbg.all.findAll{it != self}.select("Choose a Pokemon to attach $self to",pcs.owner)
-                      def energyCard
-                      energyCard = specialEnergy(new CustomCardInfo(ELECTRODE_26).setCardTypes(ENERGY, SPECIAL_ENERGY), [valuesBasicEnergy()]) {
-                        typeImagesOverride = [RAINBOW]
-                        onPlay {}
-                        onRemoveFromPlay {
-                          bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
+                  tryWithDeterministicCurrentThreadPlayerType(self.owner) {
+                    powerUsed()
+                    def pcs=self
+                    def pkmnCard = thisCard
+                    delayed(inline: true){
+                      after KNOCKOUT, pcs, {
+                        def tar = pcs.owner.pbg.all.findAll{it != self}.select("Choose a Pokemon to attach $self to",pcs.owner)
+                        def energyCard
+                        energyCard = specialEnergy(new CustomCardInfo(ELECTRODE_26).setCardTypes(ENERGY, SPECIAL_ENERGY), [valuesBasicEnergy()]) {
+                          typeImagesOverride = [RAINBOW]
+                          onPlay {}
+                          onRemoveFromPlay {
+                            bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
+                          }
                         }
+                        energyCard.initializeFrom thisCard
+                        bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
+                        attachEnergy(tar, energyCard)
+                        bc "$energyCard is now a Special Energy Card attached to $tar"
+                        unregister()
                       }
-                      energyCard.initializeFrom thisCard
-                      bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
-                      attachEnergy(tar, energyCard)
-                      bc "$energyCard is now a Special Energy Card attached to $tar"
-                      unregister()
+                      unregisterAfter 1
                     }
                   }
-                  bg.clearDeterministicCurrentThreadPlayerType()
                 }
               }
             }

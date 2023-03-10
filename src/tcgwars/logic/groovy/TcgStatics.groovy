@@ -2201,6 +2201,14 @@ class TcgStatics {
     closure.delegate = delegate
     closure.call()
   }
+  static tryWithDeterministicCurrentThreadPlayerType(PlayerType playerType, Runnable lambda) {
+    try {
+      bg.setDeterministicCurrentThreadPlayerType(playerType)
+      lambda.run()
+    } finally {
+      bg.clearDeterministicCurrentThreadPlayerType()
+    }
+  }
   static formChange(Object delegate, String powerName, Closure searchPredicate) {
     callWithDelegate(delegate) {
       actionA {
