@@ -2406,7 +2406,7 @@ f
             onAttack {
               damage 40
               flip {
-                discardDefendingEnergy()
+                discardDefendingEnergyAfterDamage()
               }
             }
           }
