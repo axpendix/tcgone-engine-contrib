@@ -2772,9 +2772,9 @@ f
           weakness R, PLUS10
           resistance F, MINUS20
           pokeBody "Cottonweed", {
-            text "If Hoppip has any Energy attached to it, the Retreat Cost for Hoppip is 0."
+            text "If Hoppip has any [G] Energy attached to it, the Retreat Cost for Hoppip is 0."
             getterA (GET_RETREAT_COST, self) {h->
-              if(self.cards.energyCount(C)) {
+              if(self.cards.energyCount(G)) {
                 h.object = 0
               }
             }
@@ -2784,7 +2784,7 @@ f
             energyCost G
             onAttack {
               damage 10
-              clearSpecialCondition self
+              afterDamage {clearSpecialCondition self}
             }
           }
 
