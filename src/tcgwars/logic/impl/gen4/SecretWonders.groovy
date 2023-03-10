@@ -1,6 +1,7 @@
 package tcgwars.logic.impl.gen4
 
-import tcgwars.logic.effect.gm.ActivateSimpleTrainer;
+import tcgwars.logic.effect.gm.ActivateSimpleTrainer
+import tcgwars.logic.effect.gm.Attack;
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen3.RubySapphire
 
