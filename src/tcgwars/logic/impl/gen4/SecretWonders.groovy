@@ -2235,8 +2235,10 @@ f
             onAttack {
               flip {
                 def tar = opp.all.findAll{it.cards.filterByType(SPECIAL_ENERGY)}.select()
-                tar.cards.select("Shuffle a Special Energy card attached to $tar into your opponent's deck").moveTo(opp.deck)
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                targeted (tar) {
+                  tar.cards.filterByType(SPECIAL_ENERGY).select("Shuffle a Special Energy card attached to $tar into your opponent's deck").moveTo(opp.deck)
+                  shuffleDeck(null, TargetPlayer.OPPONENT)
+                }
               }
             }
           }
