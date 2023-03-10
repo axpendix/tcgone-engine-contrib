@@ -828,11 +828,14 @@ public enum SecretWonders implements LogicCardInfo {
               assert self.cards.filterByBasicEnergyType(R).size() >=2 || self.cards.filterByBasicEnergyType(W).size() >=2 : "$self doesn't have enough Basic [R] or [W] Energy cards to discard"
             }
             onAttack {
-              def energys = self.cards.select(count:2,"Select 2 basic [R] or [W] Energy cards to discard", {it.cardTypes.is(BASIC_ENERGY) && (it.asEnergyCard().containsType(R) || it.asEnergyCard().containsType(W))}, self.owner, {it[0].basicType == it[1].basicType}).discard()
-              if(energys.first().asEnergyCard().containsType(R)) {
+              def energies = self.cards.select(count:2,"Select 2 basic [R] or [W] Energy cards to discard", {it.cardTypes.is(BASIC_ENERGY) && (it.asEnergyCard().containsType(R) || it.asEnergyCard().containsType(W))}, self.owner, {it[0].basicType == it[1].basicType})
+              if(energies.first().asEnergyCard().containsType(R)) {
                 damage 100
-              }else if(energys.first().asEnergyCard().containsType(W) && opp.bench) {
+              }else if(energies.first().asEnergyCard().containsType(W) && opp.bench) {
                 damage 100, opp.bench.select("$thisMove does 100 damage to 1 of your opponent's Benched Pokémon")
+              }
+              afterDamage {
+                energies.discard()
               }
             }
           }
