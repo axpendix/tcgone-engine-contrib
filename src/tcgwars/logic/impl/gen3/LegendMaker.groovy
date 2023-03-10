@@ -2195,9 +2195,11 @@ public enum LegendMaker implements LogicCardInfo {
             h.object = hp(40)
           }
           eff2 = delayed {
-            before BURNED_SPC, null, null, EVOLVE, {
-              bc "Full Flame prevents removing the Special Condition Burned by evolving or devolving"
-              prevent()
+            before BURNED_SPC, null, null, CHANGE_STAGE, {
+              if (bg.em().currentEffectStack.find{it.effectType == EVOLVE || it.effectType == DEVOLVE}) {
+                bc "Full Flame prevents removing the Special Condition Burned by evolving or devolving"
+                prevent()
+              }
             }
           }
         }

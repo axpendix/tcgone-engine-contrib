@@ -3020,24 +3020,14 @@ public enum Stormfront implements LogicCardInfo {
           }
           pokeBody "Heat Metal", {
             text "Your opponent can’t remove the Special Condition Burned by evolving or devolving his or her Burned Pokémon. (This also includes putting a Pokémon Level-Up card onto the Burned Pokémon.) Whenever your opponent flips a coin for the Special Condition Burned between turns, treat it as tails."
-            def eff1, eff2, eff3, eff4, eff5
+            def eff1, eff4, eff5
             onActivate {
-              eff1 = delayed {//This was tripple triggering when put into a single delayed effect. This works but I don't know why.
-                before BURNED_SPC, null, null, EVOLVE, {
-                  bc "Heat Metal prevents removing the Special Condition Burned by evolving or devolving"
-                  prevent()
-                }
-              }
-              eff2 = delayed {
-                before BURNED_SPC, null, null, DEVOLVE, {//TODO: This doesn't work. REMOVE_FROM_PLAY is what actually clears the special condition and I don't know how to tell the difference.
-                  bc "Heat Metal prevents removing the Special Condition Burned by evolving or devolving"
-                  prevent()
-                }
-              }
-              eff3 = delayed {
-                before BURNED_SPC, null, null, LEVEL_UP, {
-                  bc "Heat Metal prevents removing the Special Condition Burned by evolving or devolving"
-                  prevent()
+              eff1 = delayed {
+                before BURNED_SPC, null, null, CHANGE_STAGE, {
+                  if (bg.em().currentEffectStack.find{it.effectType == EVOLVE || it.effectType == DEVOLVE || it.effectType == LEVEL_UP}) {
+                    bc "Heat Metal prevents removing the Special Condition Burned by evolving or devolving or levelling up"
+                    prevent()
+                  }
                 }
               }
               def heatMetalFlag
@@ -3060,8 +3050,6 @@ public enum Stormfront implements LogicCardInfo {
             }
             onDeactivate {
               eff1.unregister()
-              eff2.unregister()
-              eff3.unregister()
               eff4.unregister()
               eff5.unregister()
             }

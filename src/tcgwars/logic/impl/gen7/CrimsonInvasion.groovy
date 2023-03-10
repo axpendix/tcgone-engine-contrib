@@ -2401,22 +2401,31 @@ public enum CrimsonInvasion implements LogicCardInfo {
           text "Special Conditions are not removed when Pokémon (both yours and your opponent's) evolve or devolve.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card."
           def eff
           onPlay {
-            //TODO : implement this stadium
             eff = delayed {
-              before ASLEEP_SPC, null, null, EVOLVE, {
-                prevent()
+              before ASLEEP_SPC, null, null, CHANGE_STAGE, {
+                if (bg.em().currentEffectStack.find{it.effectType == EVOLVE || it.effectType == DEVOLVE}) {
+                  prevent()
+                }
               }
-              before CONFUSED_SPC, null, null, EVOLVE, {
-                prevent()
+              before CONFUSED_SPC, null, null, CHANGE_STAGE, {
+                if (bg.em().currentEffectStack.find{it.effectType == EVOLVE || it.effectType == DEVOLVE}) {
+                  prevent()
+                }
               }
-              before PARALYZED_SPC, null, null, EVOLVE, {
-                prevent()
+              before PARALYZED_SPC, null, null, CHANGE_STAGE, {
+                if (bg.em().currentEffectStack.find{it.effectType == EVOLVE || it.effectType == DEVOLVE}) {
+                  prevent()
+                }
               }
-              before BURNED_SPC, null, null, EVOLVE, {
-                prevent()
+              before BURNED_SPC, null, null, CHANGE_STAGE, {
+                if (bg.em().currentEffectStack.find{it.effectType == EVOLVE || it.effectType == DEVOLVE}) {
+                  prevent()
+                }
               }
-              before POISONED_SPC, null, null, EVOLVE, {
-                prevent()
+              before POISONED_SPC, null, null, CHANGE_STAGE, {
+                if (bg.em().currentEffectStack.find{it.effectType == EVOLVE || it.effectType == DEVOLVE}) {
+                  prevent()
+                }
               }
             }
           }
