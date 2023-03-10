@@ -3304,7 +3304,7 @@ f
             energyCost C
             onAttack {
               damage 10
-              if(self.cards.filterByType(BASIC_ENERGY).find{card->defending.cards.filterByType(BASIC_ENERGY).find{it.basicType == card.basicType}}) {
+              if(self.cards.filterByType(BASIC_ENERGY).find{card->defending.cards.energyCount(card.basicType)}) {
                 damage 30
               }
             }
