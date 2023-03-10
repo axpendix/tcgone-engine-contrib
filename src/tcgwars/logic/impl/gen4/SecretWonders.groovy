@@ -636,14 +636,16 @@ public enum SecretWonders implements LogicCardInfo {
           weakness L, PLUS30
           pokeBody "Rain Dish", {
             text "At any time between turns, remove 1 damage counter from Ludicolo."
-            delayedA{
-                before BEGIN_TURN, {
-                  if (self.numberOfDamageCounters) {
-                    bc "$thisAbility activates"
-                    heal 10, self, Source.POKEBODY
-                  }
+            delayedA (anytime:true) {
+              def lastExecId = null
+              before BEGIN_TURN, {
+                if (lastExecId != e.executionId && self.numberOfDamageCounters) {
+                  bc "$thisAbility activates"
+                  heal 10, self
+                  lastExecId = e.executionId
                 }
               }
+            }
           }
           move "Nature Power", {
             text "60+ damage. If you have a Stadium Card in play, this attack does 60 damage plus 20 more damage. If your opponent has a Stadium card in play, the Defending Pokémon is now Confused."
