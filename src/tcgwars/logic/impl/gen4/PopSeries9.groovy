@@ -1,8 +1,11 @@
-package tcgwars.logic.impl.gen4;
+package tcgwars.logic.impl.gen4
+
+import tcgwars.logic.effect.EffectPriority;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.effect.EffectType.APPLY_ATTACK_DAMAGES
 import static tcgwars.logic.effect.EffectType.GET_POKEMON_TYPE;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
@@ -132,8 +135,15 @@ public enum PopSeries9 implements LogicCardInfo {
             energyCost W
             attackRequirement {}
             onAttack {
-              damage 20, opp.all.select()
-              removeDamageCounterEqualToDamageDone()
+              def pcs = opp.all.select()
+              damage 20, pcs
+              delayed (priority: EffectPriority.LAST) {
+                before APPLY_ATTACK_DAMAGES, {
+                  def dmg = bg.dm().getTotalDamageTo(pcs).value
+                  if (dmg > 0) healAfterDamage(dmg, self)
+                }
+                unregisterAfter 1
+              }
             }
           }
         };
