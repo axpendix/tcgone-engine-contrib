@@ -651,33 +651,20 @@ class TcgStatics {
     ef.run(bg())
     ef
   }
-  static Effect wrapForEffect(Closure closure) {
+  static Effect wrapForEffect(EffectType _effectType = CUSTOM_EFFECT, Runnable runnable) {
     new DirectEffect() {
-      @Override
-      void process(Battleground bg, Event event) {
-        closure.call()
-      }
-      @Override
-      EffectType getEffectType() {
-        return CUSTOM_EFFECT
-      }
-    }
-  }
-  static inOrderTo(Closure closure) {
-    bg.em().run(new InOrderTo(wrapForEffect(closure)))
-  }
-  static boolean wrapperEffect (EffectType effectType, Runnable runnable){
-    def effect = new DirectEffect() {
       @Override
       void process(Battleground bg, Event event) {
         runnable.run()
       }
       @Override
       EffectType getEffectType() {
-        return effectType
+        return _effectType
       }
     }
-    !bg().em().run(effect)
+  }
+  static inOrderTo(Runnable runnable) {
+    bg.em().run(new InOrderTo(wrapForEffect(runnable)))
   }
   static cantPlayEnergy (){
     new PreventPlayEnergy().run(bg())
@@ -910,8 +897,8 @@ class TcgStatics {
       }
     }.run(bg)
   }
-  static targeted (PokemonCardSet pcs, Closure c){
-    new AbstractDirectTargetedEffect(pcs) {
+  static targeted (EffectType _effectType = CUSTOM_EFFECT, PokemonCardSet pcs, Closure c){
+    new AbstractDirectTargetedEffect(_effectType, pcs) {
       @Override
       void process(Battleground bg, Event event) {
         c.call(pcs)
