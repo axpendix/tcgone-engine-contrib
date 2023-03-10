@@ -1005,6 +1005,7 @@ public enum SecretWonders implements LogicCardInfo {
           }
           move "Discharge", {
             text "50× damage. Discard all [L] Energy attached to Electivire. Flip a coin for each [L] Energy you discarded. This attack does 50 damage times the number of heads."
+            // Errata: * Electivire's "Discharge" attack should say "for each Electric Energy CARD" rather than just "for each Electric Energy". (Nov 16, 2007 Pokemon Organized Play News)
             energyCost L, C, C
             attackRequirement {
               assert self.cards.energyCount(L) : "You ave no [L] Energy attached to Electivire"
@@ -1028,13 +1029,14 @@ public enum SecretWonders implements LogicCardInfo {
             text "Once during your turn, if Electrode would be Knocked Out by damage from an attack, you may use this power. Electrode isn’t discarded. Instead, attach it as an Energy card to 1 of your Pokémon. While attached, this card is a Special Energy card and provides every type of Energy but provides on 1 Energy at a time."
             delayedA priority:EffectPriority.BEFORE_LAST, {
               before KNOCKOUT, self, {
-                if((ef as Knockout).byDamageFromAttack && self.owner.pbg.all.find{it != self} && confirm("Use Energy Shift?")){
+                if((ef as Knockout).byDamageFromAttack && self.owner.pbg.all.find{it != self} && confirm("Use Energy Shift?", self.owner)){
+                  bg.deterministicCurrentThreadPlayerType = self.owner
                   powerUsed()
                   def pcs=self
+                  def pkmnCard = thisCard
                   delayed(inline: true){
                     after KNOCKOUT, pcs, {
-                      def pkmnCard = pcs.topPokemonCard
-                      def tar = pcs.owner.pbg.all.findAll{it != self}.select("Choose a pokemon to attach $self to",pcs.owner)
+                      def tar = pcs.owner.pbg.all.findAll{it != self}.select("Choose a Pokemon to attach $self to",pcs.owner)
                       def energyCard
                       energyCard = specialEnergy(new CustomCardInfo(ELECTRODE_26).setCardTypes(ENERGY, SPECIAL_ENERGY), [valuesBasicEnergy()]) {
                         typeImagesOverride = [RAINBOW]
@@ -1047,8 +1049,10 @@ public enum SecretWonders implements LogicCardInfo {
                       bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
                       attachEnergy(tar, energyCard)
                       bc "$energyCard is now a Special Energy Card attached to $tar"
+                      unregister()
                     }
                   }
+                  bg.clearDeterministicCurrentThreadPlayerType()
                 }
               }
             }
