@@ -146,7 +146,7 @@ public enum PopSeries8 implements LogicCardInfo {
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each {
-                  if (self.active && it.from.owner == self.owner && it.dmg.value && it.notNoEffect) {
+                  if (self.active && it.from.owner != self.owner && it.dmg.value && it.notNoEffect) {
                     bc "Intimidating Fang -10"
                     it.dmg -= hp(10)
                   }
