@@ -2392,8 +2392,15 @@ public enum Arceus implements LogicCardInfo {
               assert opp.all.find{it.topPokemonCard.cardTypes.is(LVL_X)} : "Your opponent has no Pokémon LV.X in play"
               powerUsed()
               def pcs = opp.all.findAll{it.topPokemonCard.cardTypes.is(LVL_X)}.select("Choose a Pokémon LV.X")
-              bg.em().run(new Devolve(pcs, pcs.topPokemonCard, opp.deck).setSource(Source.POKEPOWER))
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              bg.em().activateInnerEffect(new AbstractDirectTargetedEffect(CHANGE_STAGE, pcs) {
+                void process(Battleground bg, Event event) {
+                  def previousName = pcs.topPokemonCard.fullName
+                  bg.em().activateInnerEffect(new MoveCard(pcs.topPokemonCard, opp.deck))
+                  bg.bc(String.format("%s has Leveled-Down into %s", previousName, resolvedTarget))
+                  pcs.lastEvolved = bg.getTurnCount()
+                  shuffleDeck(null, TargetPlayer.OPPONENT)
+                }
+              })
             }
           }
           move "Compound Pain", {
