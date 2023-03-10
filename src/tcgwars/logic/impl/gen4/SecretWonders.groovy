@@ -756,10 +756,10 @@ public enum SecretWonders implements LogicCardInfo {
             text "Once during your turn , when you attach a [L] Energy card from your hand to Raikou, you may put 1 damage counter on 1 of your opponent’s Benched Pokémon."
             delayedA {
               after ATTACH_ENERGY, self, {
-                if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(L) && opp.bench && keyStore("Thunder Rumble",self,null) != bg.turnCount && confirm("Use Thunder Rumble?")) {
+                if (bg.currentThreadPlayerType == self.owner && !bg.em().currentEffectStack.find{it instanceof Attack} && ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(L) && opp.bench && keyStore("Thunder Rumble",self,null) != bg.turnCount && confirm("Use Thunder Rumble?")) {
                   keyStore("Thunder Rumble",self,bg.turnCount)
                   powerUsed()
-                  directDamage 10, opp.bench.select("put 1 damage counter on 1 of your opponent's Benched Pokémon"), Source.POKEPOWER
+                  directDamage 10, opp.bench.select("put 1 damage counter on 1 of your opponent's Benched Pokémon")
                 }
               }
             }
@@ -773,9 +773,11 @@ public enum SecretWonders implements LogicCardInfo {
                 def energy = my.deck.subList(0,3).discard().filterByBasicEnergyType(L)
                 if(energy) {
                   damage 10 * energy.size()
-                  def tar = my.all.select("Attach those [L] Energy cards to one of your Pokémon")
-                  energy.each {
-                    attachEnergy tar, it
+                  afterDamage {
+                    def tar = my.all.select("Attach those [L] Energy cards to one of your Pokémon")
+                    energy.each {
+                      attachEnergy tar, it
+                    }
                   }
                 }
               }
