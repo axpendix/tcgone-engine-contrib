@@ -372,7 +372,13 @@ public enum SecretWonders implements LogicCardInfo {
                 damage 20, opp.bench.select("Does 20 damage to 1 of your opponent's Benched Pokémon.")
               }
               flip 1, {}, {
-                discardSelfEnergyAfterDamage R, R
+                def cards = self.cards.filterByEnergyType(R)
+                if (cards) {
+                  cards = cards.select(count: 2, "Discard")
+                }
+                afterDamage {
+                  cards.discard()
+                }
               }
             }
           }
