@@ -272,14 +272,16 @@ public enum SecretWonders implements LogicCardInfo {
               checkNoSPC()
               assert my.hand.filterByBasicEnergyType(W) : "There are no basic [W] Energys in your hand."
               powerUsed({ usingThisAbilityEndsTurn delegate })
+              def first = true
               while(true){
                 if(!my.hand.filterByBasicEnergyType(W)) break
-                def tar = my.all.select("Attach energy to which Pokémon? (Cancel to stop)", false)
+                def tar = my.all.select("Attach [W] energy to which Pokémon? ${first?"":"(Cancel to stop)"}", first)
                 if(!tar) break
                 def energy = my.hand.select(min:0,max:my.hand.filterByBasicEnergyType(W).size(),"Attach any number of basic [W] Energys to $tar",basicEnergyFilter(W))
                 energy.each{
                   attachEnergy(tar,it,PLAY_FROM_HAND)
                 }
+                first = false
               }
               usingThisAbilityEndsTurn delegate
             }
