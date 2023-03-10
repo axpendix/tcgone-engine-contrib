@@ -2664,7 +2664,7 @@ f
             energyCost C
             attackRequirement { assert my.deck : "Deck is empty"}
             onAttack {
-              my.deck.subList(my.deck.size() - 1, my.deck.size()).moveTo(my.hand)
+              my.deck.subList(my.deck.size() - 1, my.deck.size()).moveTo(hidden: true, my.hand)
             }
           }
           move "Mud Spatter", {
