@@ -97,7 +97,6 @@ public enum PopSeries8 implements LogicCardInfo {
           move "Body Slam", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
               flip { applyAfterDamage(PARALYZED) }
@@ -125,7 +124,6 @@ public enum PopSeries8 implements LogicCardInfo {
           move "Blocking Punch", {
             text "40 damage. During your opponent’s next turn, any damage done to Lucario by attacks is reduced by 20 (after Weakness and Resistance)."
             energyCost M, C
-            attackRequirement {}
             onAttack {
               damage 40
               reduceDamageNextTurn(hp(20),thisMove)
@@ -134,7 +132,6 @@ public enum PopSeries8 implements LogicCardInfo {
           move "Striking Kick", {
             text "60 damage. This attack’s damage isn’t affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon"
             energyCost F, C, C
-            attackRequirement {}
             onAttack {
               noResistanceOrAnyEffectDamage(60, defending)
             }
@@ -160,7 +157,6 @@ public enum PopSeries8 implements LogicCardInfo {
           move "Thunder", {
             text "120 damage. Flip a coin. If tails, Luxray does 40 damage to itself."
             energyCost L, L, L, C
-            attackRequirement {}
             onAttack {
               damage 120
               flip 1, {}, { damage 40, self }
@@ -174,7 +170,6 @@ public enum PopSeries8 implements LogicCardInfo {
           move "Rock Slide", {
             text "20 damage. Does 10 damage to 2 of your opponent’s Benched Pokémon."
             energyCost F, C
-            attackRequirement {}
             onAttack {
               damage 20
               if (opp.bench) {
@@ -189,7 +184,6 @@ public enum PopSeries8 implements LogicCardInfo {
           move "Triple Nose", {
             text "50+ damage. Flip 3 coins. This attack does 50 damage plus 20 more damage for each heads."
             energyCost M, C, C
-            attackRequirement {}
             onAttack {
               damage 50
               flip 3, { damage 20 }
@@ -203,7 +197,6 @@ public enum PopSeries8 implements LogicCardInfo {
           move "Supersonic", {
             text "Flip a coin. If heads, the Defending Pokémon is now Confused."
             energyCost G
-            attackRequirement {}
             onAttack {
               flipThenApplySC(CONFUSED)
             }
@@ -211,10 +204,9 @@ public enum PopSeries8 implements LogicCardInfo {
           move "Air Slash", {
             text "70 damage. Flip a coin. If tails, discard an Energy attached to Yanmega."
             energyCost C, C, C, C
-            attackRequirement {}
             onAttack {
               damage 70
-              flip { discardSelfEnergyAfterDamage() }
+              flip 1, {}, { discardSelfEnergyAfterDamage() }
             }
           }
         };
@@ -258,7 +250,6 @@ public enum PopSeries8 implements LogicCardInfo {
           move "Quick Attack", {
             text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
             energyCost F
-            attackRequirement {}
             onAttack {
               damage 10
               flip { damage 10 }
