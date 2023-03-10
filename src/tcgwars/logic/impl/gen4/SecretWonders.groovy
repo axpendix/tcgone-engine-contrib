@@ -2910,16 +2910,14 @@ f
             onAttack {
               flip {
                 damage 20
-                discardDefendingEnergy()
+                discardDefendingEnergyAfterDamage()
               }
             }
           }
           move "Future Sight", {
             text "Look at the top 5 cards of either player’s deck and put them back on top of that player’s deck in any order."
             energyCost P
-            onAttack {
-              foresight(5, delegate)
-            }
+            foresight(5, delegate)
           }
 
         };
