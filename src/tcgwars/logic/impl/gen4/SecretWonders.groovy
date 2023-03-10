@@ -455,12 +455,8 @@ public enum SecretWonders implements LogicCardInfo {
               assert opp.discard.hasType(SUPPORTER) : "Your opponent has no supporters discarded."
               powerUsed()
               def card = opp.discard.select("Opponent's discard. Select a supporter.", cardTypeFilter(SUPPORTER)).first()
-              bg.deterministicCurrentThreadPlayerType=bg.currentTurn
               bg.em().run(new ActivateSimpleTrainer(card))
-              bg.clearDeterministicCurrentThreadPlayerType()
-              def used_supporter_count = bg.em().retrieveObject("used_supporter_count");
-              bg.em().storeObject("used_supporter_count", used_supporter_count - 1);
-              bg.em().storeObject("Telepass",bg.turnCount );
+              bg.em().storeObject("Telepass", bg.turnCount);
             }
           }
           move "Psychic Lock", {
