@@ -638,7 +638,7 @@ public enum SecretWonders implements LogicCardInfo {
                 sw2(tar) // The way I read this, even if the benched Pokémon is not successfully pulled into the active, 20 damage is still done to the selected Pokémon, then the defending Pokémon might be paralyzed.
               }
               damage 20, tar
-              applyAfterDamage PARALYZED
+              flip {applyAfterDamage PARALYZED}
             }
           }
           move "Boundless Power", {
@@ -1115,10 +1115,12 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost C, C
             onAttack {
               damage 40
-              if(my.bench && confirm("Switch Furret with 1 of your Benched Pokémon?")) {
-                if(sw2(my.bench.select("New Active Pokémon"))) {
-                  self.cards.select(min:0,max:self.cards.filterByType(ENERGY).size(),"Move any number of Energy cards to ${my.active}",cardTypeFilter(ENERGY)).each{
-                    energySwitch(self,my.active,it)
+              afterDamage {
+                if(my.bench && confirm("Switch Furret with 1 of your Benched Pokémon?")) {
+                  if(sw2(my.bench.select("New Active Pokémon"))) {
+                    self.cards.select(min:0,max:self.cards.filterByType(ENERGY).size(),"Move any number of Energy cards to ${my.active}",cardTypeFilter(ENERGY)).each{
+                      energySwitch(self,my.active,it)
+                    }
                   }
                 }
               }
@@ -1562,9 +1564,11 @@ f
             energyCost D, D
             onAttack {
               damage 40
-              if(opp.hand.size() > 5) {
-                def count = opp.hand.size() - 5
-                opp.hand.shuffledCopy().select(hidden: true, count: count, "Choose ${count==1?'a':count} random ${count==1?'card':'cards'} from your opponent's hand to discard").discard()
+              afterDamage {
+                if(opp.hand.size() > 5) {
+                  def count = opp.hand.size() - 5
+                  opp.hand.shuffledCopy().select(hidden: true, count: count, "Choose ${count==1?'a':count} random ${count==1?'card':'cards'} from your opponent's hand to discard").discard()
+                }
               }
             }
           }
@@ -1780,7 +1784,7 @@ f
             text "During your next turn, Farfetch’d’s Leek Slap attack’s base damage is 60."
             energyCost C
             onAttack {
-              increasedBaseDamageNextTurn("Leek SLap", hp(30))
+              increasedBaseDamageNextTurn("Leek Slap", hp(30))
             }
           }
           move "Leek Slap", {
@@ -2058,11 +2062,10 @@ f
             text "Once during your turn , if Quagsire is your Active Pokémon and the Defending Pokémon has any Energy attached to it, you may remove 3 damage counters from Quagsire."
             actionA {
               checkLastTurn()
-              checkNoSPC()
               assert self.active : "$self is not active"
               assert opp.active.cards.energyCount(C) : "$opp.active has no Energy attached to it"
               powerUsed()
-              heal 30, self, Source.POKEPOWER
+              heal 30, self
             }
           }
           move "Muddy Water", {
@@ -2174,11 +2177,11 @@ f
           weakness R, PLUS20
           resistance F, MINUS20
           pokeBody "Cotton Balloon", {
-            text "If Skiploom has any Energy attached to it, any damage done to Skiploom by attacks from your opponent’s Evolved Pokémon is reduced by 20 ."
+            text "If Skiploom has any [G] Energy attached to it, any damage done to Skiploom by attacks from your opponent’s Evolved Pokémon is reduced by 20 ."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if (self.cards.energyCount(C) && it.to == self && it.from.owner != self.owner && it.from.evolution && it.notNoEffect && it.dmg.value) {
+                  if (self.cards.energyCount(G) && it.to == self && it.from.owner != self.owner && it.from.evolution && it.notNoEffect && it.dmg.value) {
                     bc "Cotton Balloon -20"
                     it.dmg=hp(0)
                   }
