@@ -278,7 +278,7 @@ public enum SecretWonders implements LogicCardInfo {
                 if(!my.hand.filterByBasicEnergyType(W)) break
                 def tar = my.all.select("Attach [W] energy to which Pokémon? ${first?"":"(Cancel to stop)"}", first)
                 if(!tar) break
-                def energy = my.hand.select(min:0,max:my.hand.filterByBasicEnergyType(W).size(),"Attach any number of basic [W] Energys to $tar",basicEnergyFilter(W))
+                def energy = my.hand.select(min:first?1:0,max:my.hand.filterByBasicEnergyType(W).size(),"Attach any number of basic [W] Energys to $tar",basicEnergyFilter(W))
                 energy.each{
                   attachEnergy(tar,it,PLAY_FROM_HAND)
                 }
