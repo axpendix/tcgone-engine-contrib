@@ -106,7 +106,7 @@ public enum BaseSetNG implements LogicCardInfo {
   CLEFAIRY_DOLL ("Clefairy Doll", "70", Rarity.RARE, [TRAINER, ITEM]),
   COMPUTER_SEARCH ("Computer Search", "71", Rarity.RARE, [TRAINER, ITEM]),
   DEVOLUTION_SPRAY ("Devolution Spray", "72", Rarity.RARE, [TRAINER, ITEM]),
-  IMPOSTOR_PROFESSOR_OAK ("Impostor Professor Oak", "73", Rarity.RARE, [TRAINER, ITEM]),
+  IMPOSTER_PROFESSOR_OAK ("Impostor Professor Oak", "73", Rarity.RARE, [TRAINER, ITEM]),
   ITEM_FINDER ("Item Finder", "74", Rarity.RARE, [TRAINER, ITEM]),
   LASS ("Lass", "75", Rarity.RARE, [TRAINER, ITEM]),
   POKEMON_BREEDER ("Pokémon Breeder", "76", Rarity.RARE, [TRAINER, ITEM]),
@@ -1773,7 +1773,7 @@ public enum BaseSetNG implements LogicCardInfo {
             assert my.all.findAll{it.evolution} : "You have no evolved pokemon in play"
           }
         };
-      case IMPOSTOR_PROFESSOR_OAK:
+      case IMPOSTER_PROFESSOR_OAK:
         return basicTrainer (this) {
           text "Your opponent shuffles his or her hand into his or her deck, then draws 7 cards."
           onPlay {
@@ -1924,7 +1924,6 @@ public enum BaseSetNG implements LogicCardInfo {
           text "Shuffle 2 of the other cards from your hand into your deck in order to draw a card."
           onPlay {
             def list = hand.getExcludedList(thisCard).select(count:2, "Shuffle to deck")
-            hand.removeAll(list)
             shuffleDeck(list)
             draw 1
           }
