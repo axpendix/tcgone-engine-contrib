@@ -900,11 +900,13 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
         text "If the effect of a Pokémon Power, attack, Energy card, or Trainer card would put a card in a discard pile into its owner's hand, that card stays in that discard pile instead."
         def eff
         onPlay {
-          // This needs testing, idk how MOVE_CARD would behave
           eff = delayed {
-            before MOVE_CARD, {
-              if (ef.cards.contains(card) && ef.newLocation?.is(card.player.pbg.hand) && ef.oldLocation?.is(card.player.pbg.discard)) {
-                prevent()
+            before MOVE_CARD_INNER, {
+              if (e.source == ATTACK || e.source == TRAINER_CARD || e.source == SRC_SPECIAL_ENERGY || (e.source == SRC_ABILITY && e.sourceAbility instanceof PokemonPower)) {
+                if (ef.sourceList.zoneType == CardList.ZoneType.DISCARD && ef.targetList.zoneType == CardList.ZoneType.HAND) {
+                  bc "Pokemon Tower prevents moving ${ef.card} from discard to hand"
+                  prevent()
+                }
               }
             }
           }
