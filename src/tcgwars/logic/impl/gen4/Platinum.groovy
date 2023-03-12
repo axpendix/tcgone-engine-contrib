@@ -923,11 +923,13 @@ public enum Platinum implements LogicCardInfo {
           resistance P, MINUS20
           pokeBody "Metal Trait", {
             text "As long as Bastiodon has a Pokémon Tool card attached to it, remove 1 damage counter from Bastiodon between turns."
-            delayedA{
+            delayedA (anytime:true) {
+              def lastExecId = null
               before BEGIN_TURN, {
-                if (self.numberOfDamageCounters && self.cards.filterByType(POKEMON_TOOL)) {
-                  bc "Metal Trait activates"
+                if (lastExecId != e.executionId && self.numberOfDamageCounters && self.cards.hasType(POKEMON_TOOL)) {
+                  bc "$thisAbility activates"
                   heal 10, self
+                  lastExecId = e.executionId
                 }
               }
             }
