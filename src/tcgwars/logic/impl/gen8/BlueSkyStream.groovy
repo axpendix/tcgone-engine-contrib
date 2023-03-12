@@ -914,7 +914,7 @@ public enum BlueSkyStream implements LogicCardInfo {
           text " Put damage counters on your opponent's Active Pokémon until its remaining HP is 60."
           energyCost F, F
           attackRequirement {
-            assert defending.getRemainingHP(bg) > 60 : "Opponent's Active Pokémon's HP is already 60 or lower"
+            assert defending.remainingHP.value > 60 : "Opponent's Active Pokémon's HP is already 60 or lower"
           }
           onAttack {
             directDamage defending.remainingHP.value - 60, defending
