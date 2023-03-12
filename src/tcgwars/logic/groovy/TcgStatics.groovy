@@ -605,8 +605,8 @@ class TcgStatics {
     def pcs = my.hand.findAll{
       aCard -> evolNames.any{ aCard.name.contains(it) }
     }.select("Choose which Pokémon will $baby evolve to:")
-    healAll baby, Source.SRC_ABILITY
-    evolve(baby, pcs.first())
+    healAll baby
+    evolveDirect(baby, pcs.first())
   }
   static checkCanBabyEvolve(String evolName, PokemonCardSet baby){
     checkCanBabyEvolve([evolName], baby)
