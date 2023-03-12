@@ -419,7 +419,7 @@ public enum Undaunted implements LogicCardInfo {
               damage 30
               delayed {
                 before null, self, Source.ATTACK, {
-                  if ((opp.active.hasPokePower() || opp.active.hasPokeBody() || opp.active.hasPokemonPower()) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                  if ((e.sourceAttack.attacker.hasPokePower() || e.sourceAttack.attacker.hasPokeBody() || e.sourceAttack.attacker.hasPokemonPower()) && e.sourceAttack.attacker.owner != self.owner && ef.effectType != DAMAGE){
                     bc "Moonlight Fang prevents effect"
                     prevent()
                   }
