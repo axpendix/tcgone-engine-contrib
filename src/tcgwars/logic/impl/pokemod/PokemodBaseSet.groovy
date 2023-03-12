@@ -1753,7 +1753,6 @@ public enum PokemodBaseSet implements LogicCardInfo {
         text "Shuffle 2 of the other cards from your hand into your deck in order to draw 2 cards."
         onPlay {
           def list = hand.getExcludedList(thisCard).select(count:2, "Shuffle to deck")
-          hand.removeAll(list)
           shuffleDeck(list)
           draw 2
         }

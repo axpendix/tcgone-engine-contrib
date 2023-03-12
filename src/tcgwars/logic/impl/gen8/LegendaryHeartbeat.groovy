@@ -690,7 +690,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 30
             if (confirm("Have your opponent shuffle their hand into their deck and draw 4 cards?")) {
               opp.hand.moveTo hidden:true, opp.deck
-              shuffleDeck null, TargetPlayer.OPPONENT
+              shuffleOppDeck()
               draw 4, TargetPlayer.OPPONENT
             }
           }

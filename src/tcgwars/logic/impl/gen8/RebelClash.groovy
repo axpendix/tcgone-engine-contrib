@@ -3323,7 +3323,6 @@ public enum RebelClash implements LogicCardInfo {
           energyCost C
           onAttack {
             shuffleDeck(hand)
-            hand.clear()
             draw 5
           }
         }

@@ -3089,7 +3089,6 @@ public enum GuardiansRising implements LogicCardInfo {
           text "Shuffle your hand into your deck. If you have used your GX attack, draw 7 cards. If not, draw 4 cards.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
             shuffleDeck(hand.getExcludedList(thisCard))
-            hand.removeAll(hand.getExcludedList(thisCard))
             draw(isGxPerformed() ? 7 : 4)
           }
           playRequirement{

@@ -1657,7 +1657,7 @@ public enum RisingRivals implements LogicCardInfo {
             onAttack {
               targeted(defending) {
                 defending.cards.moveTo(opp.deck)
-                shuffleDeck null, TargetPlayer.OPPONENT
+                shuffleOppDeck()
                 removePCS(defending)
               }
             }
@@ -3180,7 +3180,7 @@ public enum RisingRivals implements LogicCardInfo {
               }
 
               if (oppShuffle) {
-                shuffleDeck null, TargetPlayer.OPPONENT
+                shuffleOppDeck()
               }
             }
           }

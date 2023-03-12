@@ -1679,7 +1679,7 @@ public enum TeamRocketNG implements LogicCardInfo {
           onPlay {
             my.hand.findAll({it != thisCard}).select().discard()
             opp.hand.moveTo(hidden:true, opp.deck)
-            shuffleDeck(null,TargetPlayer.OPPONENT)
+            shuffleOppDeck()
             draw(4, TargetPlayer.OPPONENT)
           }
           playRequirement{

@@ -295,7 +295,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
                 def card = opp.hand.select(min:0, max: 1,"Look at your opponent's hand, choose a Pokémon you find there, and put it on the bottom of his or her deck", cardTypeFilter(POKEMON))
                 if (card.notEmpty()) {
                   card.moveTo(opp.deck)
-                  shuffleDeck(card, TargetPlayer.OPPONENT)
+                  shuffleOppDeck()
                   bc "$thisAbility shuffled $card into deck"
                 }
               }

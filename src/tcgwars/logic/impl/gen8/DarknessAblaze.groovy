@@ -3800,7 +3800,6 @@ public enum DarknessAblaze implements LogicCardInfo {
         text "Shuffle your hand into your deck. Then, draw 4 cards. If your Active Pokémon if your only Pokémon in play, draw 8 cards instead."
         onPlay {
           shuffleDeck(my.hand.getExcludedList(thisCard))
-          my.hand.removeAll(my.hand.getExcludedList(thisCard))
           draw(my.bench ? 4 : 8)
         }
         playRequirement{

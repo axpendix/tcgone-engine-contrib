@@ -301,7 +301,6 @@ public enum ShiningLegends implements LogicCardInfo {
             energyCost G
             onAttack {
               shuffleDeck(hand)
-              hand.clear()
               draw 6
             }
           }

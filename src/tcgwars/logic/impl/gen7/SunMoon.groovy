@@ -2343,7 +2343,6 @@ public enum SunMoon implements LogicCardInfo {
             energyCost C
             onAttack {
               shuffleDeck(opp.hand, TargetPlayer.OPPONENT)
-              opp.hand.clear()
               draw(3, TargetPlayer.OPPONENT)
             }
           }
@@ -2733,10 +2732,8 @@ public enum SunMoon implements LogicCardInfo {
           text "Each player shuffles their hand into their deck and flips a coin. If heads, that player draws 6 cards. If tails, they draw 3 cards.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
             shuffleDeck(hand.getExcludedList(thisCard))
-            hand.removeAll(hand.getExcludedList(thisCard))
             flip 1,{draw 6},{draw 3}
             shuffleDeck(opp.hand, TargetPlayer.OPPONENT)
-            opp.hand.clear()
             flip 1,{draw 6, TargetPlayer.OPPONENT},{draw 3, TargetPlayer.OPPONENT}
           }
           playRequirement{

@@ -612,7 +612,6 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             energyCost ()
             onAttack {
               shuffleDeck(hand)
-              hand.clear()
               draw 6
               apply ASLEEP, self
             }
@@ -1716,7 +1715,6 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             energyCost C
             onAttack {
               shuffleDeck(hand)
-              hand.clear()
               draw opp.hand.size()
             }
           }

@@ -1880,7 +1880,7 @@ public enum Platinum implements LogicCardInfo {
               damage 20
               flip {
                 opp.hand.shuffledCopy().select("Choose a card to shuffle into your opponent's deck").moveTo(opp.deck)
-                shuffleDeck null, TargetPlayer.OPPONENT
+                shuffleOppDeck()
               }
             }
           }
