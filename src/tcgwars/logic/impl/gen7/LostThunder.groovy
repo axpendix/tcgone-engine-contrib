@@ -3581,7 +3581,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 50
               if(defending.isSPC(ASLEEP)) {
                 defending.cards.filterByType(ENERGY).moveTo(opp.deck)
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
               }
             }
           }
@@ -3614,7 +3614,7 @@ public enum LostThunder implements LogicCardInfo {
               def pcs = opp.bench.select()
               pcs.cards.moveTo(opp.deck)
               removePCS(pcs)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
             }
           }
         };
@@ -3652,7 +3652,7 @@ public enum LostThunder implements LogicCardInfo {
               flip{
                 defending.cards.moveTo(opp.deck)
                 removePCS(defending)
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
               }
             }
           }
@@ -4362,7 +4362,7 @@ public enum LostThunder implements LogicCardInfo {
           text "You can play this card only if 1 of your [P] Pokémon was Knocked Out during your opponent's last turn.\nYour opponent reveals their hand. Choose 2 cards you find there. Your opponent shuffles those cards into their deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
             opp.hand.shuffledCopy().select(count : Math.min(2,opp.hand.size()), "Your opponent's hand. Choose 2 cards you find there, and your opponent will shuffle those cards into their deck.").showToOpponent("Your opponent used Morty. These two cards will be shuffled into your deck.").moveTo(opp.deck)
-            shuffleDeck(null, TargetPlayer.OPPONENT)
+            shuffleOppDeck()
           }
           playRequirement{
             assert bg.turnCount

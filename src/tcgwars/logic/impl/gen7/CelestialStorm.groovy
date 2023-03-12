@@ -523,7 +523,7 @@ public enum CelestialStorm implements LogicCardInfo {
                 def supportersToShuffle = opp.hand.shuffledCopy().showToMe("Opponent's hand.").filterByType(SUPPORTER)
                 if(supportersToShuffle){
                   supportersToShuffle.select("Select a supporter to put back into your opponent's deck.").moveTo(opp.deck)
-                  shuffleDeck(null, TargetPlayer.OPPONENT)
+                  shuffleOppDeck()
                 }
               }
             }
@@ -559,7 +559,7 @@ public enum CelestialStorm implements LogicCardInfo {
               def pcs = opp.all.select("Choose the Pokémon to put back in deck.")
               pcs.cards.moveTo(opp.deck)
               removePCS(pcs)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
             }
           }
         };
@@ -3069,7 +3069,7 @@ public enum CelestialStorm implements LogicCardInfo {
             if(!my.deck){
               def card = opp.deck.subList(0,5).select("Choose a card to put on top of your opponent's deck.").first()
               opp.deck.remove(card)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
               opp.deck.add(0, card)
             }
             else if(!opp.deck){
@@ -3089,7 +3089,7 @@ public enum CelestialStorm implements LogicCardInfo {
               if (choice == 2) {
                 def card = opp.deck.subList(0,5).select("Choose a card to put on top of your opponent's deck").first()
                 opp.deck.remove(card)
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
                 opp.deck.add(0, card)
               }
             }

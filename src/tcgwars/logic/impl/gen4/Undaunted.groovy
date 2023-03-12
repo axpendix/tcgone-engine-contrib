@@ -495,7 +495,7 @@ public enum Undaunted implements LogicCardInfo {
               shuffleDeck()
               opp.active.cards.moveTo(opp.deck)
               removePCS(opp.active)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
             }
           }
 

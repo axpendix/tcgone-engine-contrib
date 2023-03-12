@@ -1143,7 +1143,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             text "Shuffle your opponent’s deck."
             energyCost C
             onAttack {
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
             }
           }
           move "Light Punch", {

@@ -421,7 +421,7 @@ public enum SwordShield implements LogicCardInfo {
             flip {
               defending.cards.moveTo(opp.deck)
               removePCS(defending)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
             }
           }
         }
@@ -3110,7 +3110,7 @@ public enum SwordShield implements LogicCardInfo {
             targeted (tar) {
               tar.cards.moveTo(opp.deck)
               removePCS(tar)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
             }
             self.cards.moveTo(my.deck)
             shuffleDeck()

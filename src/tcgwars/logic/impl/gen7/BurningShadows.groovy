@@ -2797,7 +2797,7 @@ public enum BurningShadows implements LogicCardInfo {
             draw c1
             int c2 = opp.hand.size()
             opp.hand.moveTo(hidden:true, opp.deck)
-            shuffleDeck(null, TargetPlayer.OPPONENT)
+            shuffleOppDeck()
             draw c2, TargetPlayer.OPPONENT
           }
           playRequirement{

@@ -1616,7 +1616,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         text "Your opponent shuffles his or her hand into his or her deck, then draws 7 cards."
         onPlay {
           opp.hand.moveTo(hidden:true, opp.deck)
-          shuffleDeck(null, TargetPlayer.OPPONENT)
+          shuffleOppDeck()
           draw 7, TargetPlayer.OPPONENT
         }
         playRequirement{

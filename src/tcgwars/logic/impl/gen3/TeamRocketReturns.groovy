@@ -444,7 +444,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               checkLastTurn()
               powerUsed()
               opp.deck.subList(0,1).showToMe("Opponent's top Deck")
-              if(confirm("Shuffle opponent's deck?")) shuffleDeck(null, TargetPlayer.OPPONENT)
+              if(confirm("Shuffle opponent's deck?")) shuffleOppDeck()
             }
           }
           move "Litter", {

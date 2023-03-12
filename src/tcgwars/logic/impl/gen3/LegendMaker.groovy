@@ -285,7 +285,7 @@ public enum LegendMaker implements LogicCardInfo {
             toBeDevolved.each{
               devolve(it, opp.deck)
             }
-            if (toBeDevolved) { shuffleDeck(null, TargetPlayer.OPPONENT) }
+            if (toBeDevolved) { shuffleOppDeck() }
           }
         }
         move "Linear Attack", {
@@ -1331,7 +1331,7 @@ public enum LegendMaker implements LogicCardInfo {
             def pcs = list.select("Choose one of your opponent's evolved Pokémon.")
             flip {
               devolve(pcs, opp.deck)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
             }
           }
         }

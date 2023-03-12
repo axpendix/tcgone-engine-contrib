@@ -532,7 +532,7 @@ public enum Platinum implements LogicCardInfo {
                 my.hand.moveTo(hidden: true, my.deck)
                 opp.hand.moveTo(hidden: true, opp.deck)
                 shuffleDeck()
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
                 draw choose(1..4,"Let Loose: Draw how many cards?", 4)
                 draw oppChoose(1..4,"Let Loose: Draw how many cards?", 4), TargetPlayer.OPPONENT
               }
@@ -3195,7 +3195,7 @@ public enum Platinum implements LogicCardInfo {
             def choice = choose([0,1],["${thisCard.player.getPlayerUsername(bg)}","${thisCard.player.opposite.getPlayerUsername(bg)}"],"Choose a player")
             if(choice) {
               opp.hand.moveTo(hidden:true, opp.deck)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
               draw oppChoose(1..5,"Looker's Investigation: Draw how many cards?", 5), TargetPlayer.OPPONENT
             } else {
               my.hand.getExcludedList(thisCard).moveTo(my.deck)

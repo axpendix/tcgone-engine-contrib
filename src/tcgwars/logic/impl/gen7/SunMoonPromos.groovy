@@ -2961,7 +2961,7 @@ public enum SunMoonPromos implements LogicCardInfo {
                 def number = Math.min(2, opp.hand.size())
                 if (number > 0) {
                   opp.hand.shuffledCopy().select(hidden: true, count:number).showToMe("Chosen cards").moveTo(opp.deck)
-                  shuffleDeck(null, TargetPlayer.OPPONENT)
+                  shuffleOppDeck()
                 }
               }
             }

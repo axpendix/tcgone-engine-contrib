@@ -391,7 +391,7 @@ public enum RisingRivals implements LogicCardInfo {
                 if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && self.owner.pbg.deck && confirm("Use Final Wish?", self.owner)) {
                   powerUsed()
                   self.owner.pbg.deck.select("Search your deck for a card",{true}, self.owner).moveTo(self.owner.pbg.hand)
-                  shuffleDeck(null, TargetPlayer.OPPONENT)
+                  shuffleOppDeck()
                 }
               }
             }
@@ -705,7 +705,7 @@ public enum RisingRivals implements LogicCardInfo {
               my.hand.moveTo(hidden:true,my.deck)
               shuffleDeck()
               opp.hand.moveTo(hidden:true,opp.deck)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
               draw choose((1..4),"Draw how many cards?")
               draw oppChoose((1..4),"Draw how many cards?"), TargetPlayer.OPPONENT
             }
@@ -1870,7 +1870,7 @@ public enum RisingRivals implements LogicCardInfo {
               damage 20 * opp.discard.filterByType(ENERGY).size()
               afterDamage {
                 opp.discard.filterByType(ENERGY).moveTo(opp.deck)
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
               }
             }
           }

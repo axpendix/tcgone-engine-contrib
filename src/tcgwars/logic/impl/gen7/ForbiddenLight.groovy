@@ -1157,7 +1157,7 @@ public enum ForbiddenLight implements LogicCardInfo {
               def pcs = opp.bench.select()
               pcs.cards.moveTo(opp.deck)
               removePCS(pcs)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
             }
           }
           move "Hypnoblast", {
@@ -1453,7 +1453,7 @@ public enum ForbiddenLight implements LogicCardInfo {
               my.prizeCardSet.moveTo(hidden:true, my.deck)
               opp.prizeCardSet.moveTo(hidden:true, opp.deck)
               shuffleDeck()
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
               for(int i=0;i<3;i++){
                 my.prizeCardSet.add(my.deck.remove(0))
                 opp.prizeCardSet.add(opp.deck.remove(0))
@@ -2633,7 +2633,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             my.hand.getExcludedList(thisCard).moveTo(hidden:true,my.deck)
             opp.hand.moveTo(hidden:true,opp.deck)
             shuffleDeck()
-            shuffleDeck(null, TargetPlayer.OPPONENT)
+            shuffleOppDeck()
             draw 4
             draw(4, TargetPlayer.OPPONENT)
           }

@@ -2242,7 +2242,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               if (opp.hand && !checkBodyguard()) {
                 def oppCard = opp.hand.shuffledCopy().select(count: 1, "Choose a random card from your opponent's hand to be shuffled into his or her deck").showToOpponent("Hidden Power: this card will be shuffled from your hand to your deck")
                 oppCard.moveTo(opp.deck)
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
               }
               if (my.hand) {
                 def myCard = my.hand.shuffledCopy().oppSelect(count: 1, "Choose 1 random card from your opponent's hand to be shuffled into his or her deck").showToMe("Hidden Power: this card will be shuffled from your hand to your deck")
@@ -3254,7 +3254,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               my.hand.getExcludedList(thisCard).moveTo(hidden:true,my.deck)
               opp.hand.moveTo(hidden:true,opp.deck)
               shuffleDeck()
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
 
               def myMaxDraw = 3
               def oppMaxDraw = 3

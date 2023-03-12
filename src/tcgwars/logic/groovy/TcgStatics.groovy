@@ -451,6 +451,9 @@ class TcgStatics {
       }
     }).run(bg())
   }
+  static shuffleOppDeck(){
+    bg().em().run(new ShuffleToDeck(null, TargetPlayer.OPPONENT))
+  }
   static shuffleDeck(CardList shuffled=null, TargetPlayer targetPlayer=TargetPlayer.SELF){
     if(shuffled==null){
       bg().em().run(new ShuffleDeck(targetPlayer))
@@ -1183,7 +1186,7 @@ class TcgStatics {
     if(checkBodyguard() || !opp.hand) return
     def sel = opp.hand.shuffledCopy().select(hidden: true, count: count, "Choose ${count==1?'a':count} random ${count==1?'card':'cards'} from your opponent's hand to be shuffled into his or her deck").showToMe("Selected card(s)").showToOpponent("These cards will be shuffled from your hand to your deck")
     sel.moveTo(opp.deck)
-    shuffleDeck(null, TargetPlayer.OPPONENT)
+    shuffleOppDeck()
 //		opp.hand.removeAll(sel)
 //		shuffleDeck(sel, TargetPlayer.OPPONENT)
 //		bc "Shuffled $sel to deck"

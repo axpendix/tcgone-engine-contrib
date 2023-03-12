@@ -623,7 +623,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             list = list.filterByType(TRAINER)
             if(list) {
               list.select(count: 1, "Shuffle to deck?").showToOpponent("Opponent played Rocket's Sneak Attack and this card from your hand will be shuffled into your deck").moveTo(opp.deck)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
             }
           }
           playRequirement{
@@ -1423,7 +1423,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
             }
           }
           move "Anger", {

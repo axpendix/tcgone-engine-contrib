@@ -2907,7 +2907,7 @@ public enum UltraPrism implements LogicCardInfo {
               it.cards.moveTo(opp.deck)
               removePCS(it)
             }
-            shuffleDeck(null, TargetPlayer.OPPONENT)
+            shuffleOppDeck()
           }
           playRequirement{
             assert my.active.types.contains(W) || my.active.types.contains(M) : "Your Active Pokémon needs to be [W] or [M]. (The card text was officially changed)"

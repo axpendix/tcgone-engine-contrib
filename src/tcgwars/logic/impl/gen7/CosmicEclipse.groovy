@@ -1941,7 +1941,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             onAttack {
               damage 50
               if (confirm("Force the opponent to shuffle their deck?")) {
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
               }
             }
           }
@@ -3515,7 +3515,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                   it.cards.moveTo(opp.deck)
                   removePCS(it)
                 }
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
               }
 
               afterDamage {
@@ -3668,7 +3668,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               if (r == PLAY_FROM_HAND && my.deck && confirm("Use Flower Picking?")) {
                 powerUsed()
                 opp.hand.shuffledCopy().select(hidden: true, count:1).showToMe("Opponent's card being shuffled into their deck.").moveTo(hidden: false, opp.deck)
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
               }
             }
           }
@@ -3690,7 +3690,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               if (r == PLAY_FROM_HAND && my.deck && confirm("Use Flower Picking?")) {
                 powerUsed()
                 opp.hand.shuffledCopy().select(hidden: true, count:2).showToMe("Opponent's cards being shuffled into their deck.").moveTo(hidden: false, opp.deck)
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
               }
             }
           }

@@ -2249,7 +2249,7 @@ f
                 def tar = opp.all.findAll{it.cards.filterByType(SPECIAL_ENERGY)}.select()
                 targeted (tar) {
                   tar.cards.filterByType(SPECIAL_ENERGY).select("Shuffle a Special Energy card attached to $tar into your opponent's deck").moveTo(opp.deck)
-                  shuffleDeck(null, TargetPlayer.OPPONENT)
+                  shuffleOppDeck()
                 }
               }
             }

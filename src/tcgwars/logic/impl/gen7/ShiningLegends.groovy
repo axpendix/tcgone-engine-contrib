@@ -1081,7 +1081,7 @@ public enum ShiningLegends implements LogicCardInfo {
                 my.hand.moveTo(hidden: true, my.deck)
                 opp.hand.moveTo(hidden: true, opp.deck)
                 shuffleDeck()
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
                 draw 4
                 draw 4, TargetPlayer.OPPONENT
               }

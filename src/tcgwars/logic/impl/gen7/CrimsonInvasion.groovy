@@ -726,7 +726,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             onAttack {
               def tar = opp.bench.findAll {it.numberOfDamageCounters}.select()
               tar.cards.moveTo(opp.deck)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
               removePCS(tar)
             }
           }
@@ -2371,7 +2371,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             if(confirm("Replace opponent hand?")){
               def nbc = opp.hand.size()
               opp.hand.moveTo(hidden:true,opp.deck)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
               draw nbc, TargetPlayer.OPPONENT
             }
           }

@@ -1778,7 +1778,7 @@ public enum BaseSetNG implements LogicCardInfo {
           text "Your opponent shuffles his or her hand into his or her deck, then draws 7 cards."
           onPlay {
             opp.hand.moveTo(hidden:true, opp.deck)
-            shuffleDeck(null, TargetPlayer.OPPONENT)
+            shuffleOppDeck()
             draw 7, TargetPlayer.OPPONENT
           }
           playRequirement{
@@ -1809,7 +1809,7 @@ public enum BaseSetNG implements LogicCardInfo {
             def tarMy = my.hand.getExcludedList(thisCard).filterByType(TRAINER)
             if (tarOpp) {
               tarOpp.moveTo(opp.deck)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
             }
             if (tarMy) {
               tarMy.moveTo(my.deck)

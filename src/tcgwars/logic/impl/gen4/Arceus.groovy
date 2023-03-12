@@ -857,7 +857,7 @@ public enum Arceus implements LogicCardInfo {
             onAttack {
               def pcs = opp.all.findAll{it.evolution}.select("Choose 1 of your opponent's Evolved Pokémon")
               devolve(pcs, opp.deck)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
             }
           }
           move "Primal Tentacles", {
@@ -2397,7 +2397,7 @@ public enum Arceus implements LogicCardInfo {
                 bg.em().activateInnerEffect(new MoveCard(pcs.topPokemonCard, opp.deck))
                 bg.bc(String.format("%s has Leveled-Down into %s", previousName, pcs))
                 pcs.lastEvolved = bg.getTurnCount()
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
               }
             }
           }

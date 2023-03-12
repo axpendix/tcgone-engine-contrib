@@ -1760,7 +1760,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           onAttack {
             if (opp.hand) {
               opp.hand.shuffledCopy().select(hidden: true, count: 1, "Choose a random card from your opponent's hand").showToMe("Selected card").showToOpponent("this card will be shuffled into your deck").moveTo(opp.deck)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
             }
           }
         }
@@ -1799,7 +1799,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             afterDamage{
               if (opp.hand){
                 opp.hand.shuffledCopy().select(hidden: true, count: 2, "Choose 2 random cards from your opponent's hand").showToMe("Selected cards").showToOpponent("These cards will be shuffled into your deck").moveTo(opp.deck)
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
               }
             }
           }

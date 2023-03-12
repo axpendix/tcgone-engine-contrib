@@ -545,7 +545,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             def list = opp.hand.shuffledCopy().showToMe("Opponent's hand").{it.cardTypes.is(TRAINER) && !it.cardTypes.is(SUPPORTER)}
             if(list){
               list.select(count: 1, "Discard").moveTo(opp.deck)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
             }
           }
           playRequirement{

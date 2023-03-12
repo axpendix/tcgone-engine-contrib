@@ -382,7 +382,7 @@ public enum UnifiedMinds implements LogicCardInfo {
                   opp.all.each {
                     it.cards.filterByType(ENERGY).moveTo(opp.deck)
                   }
-                  shuffleDeck(null, TargetPlayer.OPPONENT)
+                  shuffleOppDeck()
                 }
               }
             }
@@ -439,7 +439,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               assert list
               def pcs = list.select("Devolve one of your opponent's evolved Pokémon.")
               devolve(pcs, opp.deck)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
             }
           }
           move "Mind Bend", {
@@ -2530,7 +2530,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             onAttack {
               defending.cards.moveTo(opp.deck)
               removePCS(defending)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
             }
           }
           move "Tackle", {
@@ -4023,7 +4023,7 @@ public enum UnifiedMinds implements LogicCardInfo {
                   my.active.cards.findAll{ !it.cardTypes.is(POKEMON) }.moveTo(my.deck)
                   shuffleDeck()
                   opp.active.cards.findAll{ !it.cardTypes.is(POKEMON) }.moveTo(opp.deck)
-                  shuffleDeck(null, TargetPlayer.OPPONENT)
+                  shuffleOppDeck()
                 }
               }
             }
@@ -4542,7 +4542,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           text "Your opponent shuffles their hand into their deck and draws a card for each of their remaining Prize cards."
           onPlay {
             opp.hand.moveTo(hidden:true, opp.deck)
-            shuffleDeck(null, TargetPlayer.OPPONENT)
+            shuffleOppDeck()
             draw opp.prizeCardSet.size(), TargetPlayer.OPPONENT
           }
           playRequirement{

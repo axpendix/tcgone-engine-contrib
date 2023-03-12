@@ -3278,7 +3278,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               afterDamage{
                 if(self.cards.energySufficient(thisMove.energyCost + Y+Y+Y)){
                   opp.hand.moveTo(hidden:true, opp.deck)
-                  shuffleDeck(null, TargetPlayer.OPPONENT)
+                  shuffleOppDeck()
                 }
               }
             }
@@ -3513,7 +3513,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               flip 2,{
                 if (opp.hand) {
                   opp.hand.shuffledCopy().select("Opponent's hand. Shuffle a card into their deck.").moveTo(opp.deck)
-                  shuffleDeck(null, TargetPlayer.OPPONENT)
+                  shuffleOppDeck()
                 }
               }
             }
@@ -4035,7 +4035,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           onPlay {
             def card = opp.deck.subList(0,3).select("Look at the top 3 cards of your opponent's deck and choose 1 of them. Your opponent shuffles the other cards back into their deck. Then, put the card you chose on top of their deck.").first()
             opp.deck.remove(card)
-            shuffleDeck(null, TargetPlayer.OPPONENT)
+            shuffleOppDeck()
             opp.deck.add(0, card)
           }
           playRequirement{

@@ -1313,7 +1313,7 @@ public enum Stormfront implements LogicCardInfo {
                 def tar = opp.bench.select()
                 targeted(tar) {
                   tar.cards.moveTo(opp.deck)
-                  shuffleDeck(null, TargetPlayer.OPPONENT)
+                  shuffleOppDeck()
                   removePCS(tar)
                 }
               }

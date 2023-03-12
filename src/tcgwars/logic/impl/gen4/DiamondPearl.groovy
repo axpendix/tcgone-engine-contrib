@@ -252,7 +252,7 @@ public enum DiamondPearl implements LogicCardInfo {
                   def moved = self.cards.filterByType(ENERGY).moveTo(my.hand)
                   if(moved.stream().anyMatch(self.cards.&contains)) return
                   devolve(defending, opp.deck)
-                  shuffleDeck(null, TargetPlayer.OPPONENT)
+                  shuffleOppDeck()
                 }
               }
             }
@@ -271,7 +271,7 @@ public enum DiamondPearl implements LogicCardInfo {
               powerUsed()
               def tar = opp.bench.select("Choose a Pokémon to return to your opponent's deck.")
               tar.cards.moveTo(opp.deck)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
               removePCS(tar)
             }
           }
@@ -526,7 +526,7 @@ public enum DiamondPearl implements LogicCardInfo {
                     targeted (defending) {
                       defending.cards.moveTo(opp.deck)
                       removePCS(defending)
-                      shuffleDeck(null, TargetPlayer.OPPONENT)
+                      shuffleOppDeck()
                     }
                   }
                 }

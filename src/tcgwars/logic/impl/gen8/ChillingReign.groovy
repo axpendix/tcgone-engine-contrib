@@ -2593,7 +2593,7 @@ public enum ChillingReign implements LogicCardInfo {
 
               if (totalCountersBefore != opp.all.sum { it.numberOfDamageCounters }) {
                 discardedPokemon.moveTo(opp.deck)
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
               }
             }
           }

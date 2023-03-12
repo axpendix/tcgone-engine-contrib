@@ -1821,7 +1821,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
               if (opp.hand) {
                 opp.hand.moveTo(hidden:true, my.deck)
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
               }
 
               if (toDraw) draw( choose(1..toDraw,"How many cards would you like to draw?") as int )
@@ -3538,7 +3538,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               opp.hand.showToMe("Opponent's hand")
               if (opp.hand.filterByType(POKEMON_TOOL, TECHNICAL_MACHINE)) {
                 opp.hand.filterByType(POKEMON_TOOL, TECHNICAL_MACHINE).moveTo(opp.deck)
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
               }
             }
           }
