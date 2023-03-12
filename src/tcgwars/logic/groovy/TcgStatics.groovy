@@ -452,7 +452,7 @@ class TcgStatics {
     }).run(bg())
   }
   static shuffleOppDeck(){
-    bg().em().run(new ShuffleToDeck(null, TargetPlayer.OPPONENT))
+    bg().em().run(new ShuffleDeck(TargetPlayer.OPPONENT))
   }
   static shuffleDeck(CardList shuffled=null, TargetPlayer targetPlayer=TargetPlayer.SELF){
     if(shuffled==null){
