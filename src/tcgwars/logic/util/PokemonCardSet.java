@@ -142,7 +142,7 @@ public class PokemonCardSet implements Serializable {
       if (card.getStaticCardTypes().is(CardType.BREAK)) continue;
       return card.asPokemonCard();
     }
-    return null; //Should an IllegalStateException be thrown here, same as above?
+    return getTopPokemonCard();
   }
 
   public PokemonCard getTopNonLevelUpPokemonCard() {
@@ -150,7 +150,7 @@ public class PokemonCardSet implements Serializable {
       if (card.getStaticCardTypes().is(CardType.LVL_X)) continue;
       return card.asPokemonCard();
     }
-    return null;
+    return getTopPokemonCard();
   }
 
   public CardList getCards() {
