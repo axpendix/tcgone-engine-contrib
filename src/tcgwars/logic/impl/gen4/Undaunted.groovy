@@ -755,7 +755,7 @@ public enum Undaunted implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if(it.from.owner != self.owner && it.to.owner==self.owner && it.to.benched && it.to.types.contains(G) && it.dmg.value && it.notNoEffect){
+                  if(it.to.owner==self.owner && it.to.benched && it.to.types.contains(G) && it.dmg.value && it.notNoEffect){
                     bc "$thisAbility prevents damage"
                     it.dmg=hp(0)
                   }
