@@ -6,6 +6,7 @@ package tcgwars.logic.effect;
 public enum EffectType {
 
   MOVE_CARD,
+  MOVE_CARD_INNER,
   EFFECT_LIST,
   COIN_FLIP,
   COIN_FLIP_BETWEEN_EXECUTION,
