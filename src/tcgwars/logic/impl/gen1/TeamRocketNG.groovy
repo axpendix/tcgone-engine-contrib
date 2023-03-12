@@ -474,7 +474,6 @@ public enum TeamRocketNG implements LogicCardInfo {
           move "Mega Punch", {
             text "30 damage."
             energyCost F, F
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -486,8 +485,10 @@ public enum TeamRocketNG implements LogicCardInfo {
               assert opp.bench
             }
             onAttack {
-              shuffleDeck(opp.active.cards)
-              removePCS(opp.active)
+              targeted (defending) {
+                shuffleDeck(defending.cards, TargetPlayer.OPPONENT)
+                removePCS(defending)
+              }
             }
           }
 
@@ -1156,9 +1157,10 @@ public enum TeamRocketNG implements LogicCardInfo {
               assert my.bench
             }
             onAttack {
-              self.cards.getExcludedList(self.topPokemonCard).discard()
+              def abra = self.topPokemonCard
+              self.cards.getExcludedList(abra).discard()
+              moveCard(abra, my.deck)
               removePCS(self)
-              moveCard(self.topPokemonCard, my.deck)
               shuffleDeck()
             }
           }
