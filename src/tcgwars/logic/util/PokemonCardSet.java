@@ -35,7 +35,6 @@ public class PokemonCardSet implements Serializable {
   private CardList set;
 
   private HP damage;
-  private HP lastFullHP = null;
 
   private PlayerType owner;
 
@@ -212,27 +211,12 @@ public class PokemonCardSet implements Serializable {
     return list;
   }
 
-  public HP getFullHP(Battleground bg) {
-    lastFullHP = bg.em().activateGetter(new GetFullHP(this));
-    return lastFullHP;
-  }
-
   public HP getFullHP() {
-    lastFullHP = TcgStatics.bg().em().activateGetter(new GetFullHP(this));
-    return lastFullHP;
-  }
-  public HP getLastFullHP() {
-    return lastFullHP;
-  }
-
-  public HP getRemainingHP(Battleground bg) {
-    HP fullHP = getFullHP(bg);
-    return (HP.valueOf(fullHP.getValue() - damage.getValue()));
+    return Battleground.getInstance().em().activateGetter(new GetFullHP(this));
   }
 
   public HP getRemainingHP() {
-    HP fullHP = getFullHP(TcgStatics.bg());
-    return (HP.valueOf(fullHP.getValue() - damage.getValue()));
+    return HP.valueOf(getFullHP().getValue() - damage.getValue());
   }
 
   public HP getDamage() {

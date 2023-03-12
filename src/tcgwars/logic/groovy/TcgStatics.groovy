@@ -60,7 +60,7 @@ class TcgStatics {
     return Battleground.getInstance()
   }
   static Battleground getBg(){
-    bg()
+    return Battleground.getInstance()
   }
   static damage (int dmg, Target target=Target.OPP_ACTIVE){
     new Damage(hp(dmg), target).run(bg())
