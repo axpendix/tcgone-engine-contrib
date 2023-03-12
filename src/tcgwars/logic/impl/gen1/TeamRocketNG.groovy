@@ -442,7 +442,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              afterDamage {flipThenApplySC PARALYZED}
+              flipThenApplySC PARALYZED
             }
           }
 
@@ -949,7 +949,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              afterDamage {flipThenApplySC POISONED}
+              flipThenApplySC POISONED
             }
           }
 
@@ -1142,7 +1142,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              afterDamage {flipThenApplySC CONFUSED}
+              flipThenApplySC CONFUSED
             }
           }
 
@@ -1170,7 +1170,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              afterDamage {flipThenApplySC PARALYZED}
+              flipThenApplySC PARALYZED
             }
           }
 
@@ -1252,7 +1252,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              afterDamage {flipThenApplySC PARALYZED}
+              flipThenApplySC PARALYZED
             }
           }
 
@@ -1320,7 +1320,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              afterDamage {flipThenApplySC POISONED}
+              flipThenApplySC POISONED
             }
           }
 
@@ -1367,7 +1367,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              afterDamage {flipThenApplySC POISONED}
+              flipThenApplySC POISONED
             }
           }
 

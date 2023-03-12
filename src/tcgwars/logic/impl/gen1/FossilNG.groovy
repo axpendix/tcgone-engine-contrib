@@ -442,7 +442,7 @@ public enum FossilNG implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              afterDamage{flipThenApplySC CONFUSED}
+              flipThenApplySC CONFUSED
             }
           }
 
@@ -527,7 +527,7 @@ public enum FossilNG implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              afterDamage {flipThenApplySC POISONED}
+              flipThenApplySC POISONED
             }
           }
 
@@ -664,7 +664,7 @@ public enum FossilNG implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              afterDamage {flipThenApplySC PARALYZED}
+              flipThenApplySC PARALYZED
             }
           }
           move "Energy Conversion", {
@@ -711,7 +711,7 @@ public enum FossilNG implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              afterDamage {flipThenApplySC PARALYZED}
+              flipThenApplySC PARALYZED
             }
           }
           move "Hyper Beam", {
@@ -822,7 +822,7 @@ public enum FossilNG implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              afterDamage {flipThenApplySC POISONED}
+              flipThenApplySC POISONED
             }
           }
 
@@ -916,7 +916,7 @@ public enum FossilNG implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              afterDamage {flipThenApplySC PARALYZED}
+              flipThenApplySC PARALYZED
             }
           }
 
@@ -952,7 +952,7 @@ public enum FossilNG implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              afterDamage {flipThenApplySC POISONED}
+              flipThenApplySC POISONED
             }
           }
           move "Selfdestruct", {
@@ -985,7 +985,7 @@ public enum FossilNG implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              afterDamage {flipThenApplySC PARALYZED}
+              flipThenApplySC PARALYZED
             }
           }
 
@@ -1012,7 +1012,7 @@ public enum FossilNG implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              afterDamage {flipThenApplySC PARALYZED}
+              flipThenApplySC PARALYZED
             }
           }
           move "Minimize", {

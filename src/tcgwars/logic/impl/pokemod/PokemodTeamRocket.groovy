@@ -376,7 +376,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              afterDamage {flipThenApplySC PARALYZED}
+              flipThenApplySC PARALYZED
             }
           }
 
@@ -794,7 +794,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              afterDamage {flipThenApplySC POISONED}
+              flipThenApplySC POISONED
             }
           }
 
@@ -984,7 +984,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              afterDamage {flipThenApplySC CONFUSED}
+              flipThenApplySC CONFUSED
             }
           }
 
@@ -1020,7 +1020,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              afterDamage {flipThenApplySC POISONED}
+              flipThenApplySC POISONED
             }
           }
 

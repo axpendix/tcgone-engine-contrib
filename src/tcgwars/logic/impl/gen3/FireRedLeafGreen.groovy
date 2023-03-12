@@ -587,7 +587,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost P, C
             onAttack {
               damage 30
-              afterDamage {flipThenApplySC PARALYZED}
+              flipThenApplySC PARALYZED
             }
           }
 
@@ -916,7 +916,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost L, C
             onAttack {
               damage 20
-              afterDamage {flipThenApplySC PARALYZED}
+              flipThenApplySC PARALYZED
             }
           }
           move "Speed Shot", {
@@ -1043,7 +1043,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost P
             onAttack {
               damage 10
-              afterDamage {flipThenApplySC CONFUSED}
+              flipThenApplySC CONFUSED
             }
           }
           move "Double Spin", {
@@ -1073,7 +1073,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost P, C
             onAttack {
               damage 20
-              afterDamage {flipThenApplySC CONFUSED}
+              flipThenApplySC CONFUSED
             }
           }
 
@@ -1124,7 +1124,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 10
-              afterDamage {flipThenApplySC PARALYZED}
+              flipThenApplySC PARALYZED
             }
           }
           move "Tongue Whip", {
@@ -1348,7 +1348,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost W, C
             onAttack {
               damage 20
-              afterDamage {flipThenApplySC PARALYZED}
+              flipThenApplySC PARALYZED
             }
           }
 
@@ -1925,7 +1925,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost G
             onAttack {
               damage 10
-              afterDamage {flipThenApplySC POISONED}
+              flipThenApplySC POISONED
             }
           }
 
@@ -2091,7 +2091,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost W
             onAttack {
               damage 10
-              afterDamage {flipThenApplySC ASLEEP}
+              flipThenApplySC ASLEEP
             }
           }
 
@@ -2152,7 +2152,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost L, C
             onAttack {
               damage 20
-              afterDamage {flipThenApplySC PARALYZED}
+              flipThenApplySC PARALYZED
             }
           }
 

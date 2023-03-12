@@ -403,7 +403,7 @@ public enum JungleNG implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              afterDamage {flipThenApplySC PARALYZED}
+              flipThenApplySC PARALYZED
             }
           }
           move "Guillotine", {
@@ -459,7 +459,7 @@ public enum JungleNG implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              afterDamage {flipThenApplySC PARALYZED}
+              flipThenApplySC PARALYZED
             }
           }
 
