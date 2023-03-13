@@ -542,37 +542,39 @@ class TcgStatics {
     }
   }
   static removePCS(PokemonCardSet pcs){
-    if(my.active==pcs){
-      def r=new RemoveFromPlay(pcs,null)
-      r.run(bg)
-      if (my.bench.isEmpty()){
-        my.active=null
-        bg.gameManager.endGame(opp.owner, WinCondition.NOPOKEMON)
-        return
+    targeted (pcs) {
+      if(my.active==pcs){
+        def r=new RemoveFromPlay(pcs,null)
+        r.run(bg)
+        if (my.bench.isEmpty()){
+          my.active=null
+          bg.gameManager.endGame(opp.owner, WinCondition.NOPOKEMON)
+          return
+        }
+        sw ( null, my.bench.select("New active Pokémon."))
+        //my.bench.remove(pcs)
       }
-      sw ( null, my.bench.select("New active Pokémon."))
-      //my.bench.remove(pcs)
-    }
-    else if (my.bench.contains(pcs)){
-      def r=new RemoveFromPlay(pcs,null)
-      my.bench.remove(pcs)
-      r.run(bg)
-    }
-    else if(opp.active==pcs){
-      def r=new RemoveFromPlay(pcs,null)
-      r.run(bg)
-      if (opp.bench.isEmpty()){
-        opp.active=null
-        bg.gameManager.endGame(my.owner, WinCondition.NOPOKEMON)
-        return
+      else if (my.bench.contains(pcs)){
+        def r=new RemoveFromPlay(pcs,null)
+        my.bench.remove(pcs)
+        r.run(bg)
       }
-      sw ( null, opp.bench.oppSelect("New active Pokémon."))
-      //opp.bench.remove(pcs)
-    }
-    else if (opp.bench.contains(pcs)){
-      def r=new RemoveFromPlay(pcs,null)
-      opp.bench.remove(pcs)
-      r.run(bg)
+      else if(opp.active==pcs){
+        def r=new RemoveFromPlay(pcs,null)
+        r.run(bg)
+        if (opp.bench.isEmpty()){
+          opp.active=null
+          bg.gameManager.endGame(my.owner, WinCondition.NOPOKEMON)
+          return
+        }
+        sw ( null, opp.bench.oppSelect("New active Pokémon."))
+        //opp.bench.remove(pcs)
+      }
+      else if (opp.bench.contains(pcs)){
+        def r=new RemoveFromPlay(pcs,null)
+        opp.bench.remove(pcs)
+        r.run(bg)
+      }
     }
   }
   static PokemonCardSet benchPCS (Card card, ActivationReason reason=OTHER){
