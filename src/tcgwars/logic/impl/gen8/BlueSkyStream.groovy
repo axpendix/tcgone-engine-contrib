@@ -231,7 +231,7 @@ public enum BlueSkyStream implements LogicCardInfo {
         weakness R
         bwAbility "Fluff Barrage", {
           text "This Pokémon may attack twice a turn. (If the first attack Knocks Out your opponent's Active Pokémon, you may attack again after your opponent chooses a new Active Pokémon.)"
-          barrage self, delegate
+          ancient_trait_omega_barrage self, delegate
         }
         move "Spinning Attack", {
           text "60 damage."

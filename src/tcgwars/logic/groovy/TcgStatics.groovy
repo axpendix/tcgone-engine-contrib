@@ -991,34 +991,34 @@ class TcgStatics {
     else return bg.em().retrieveObject(key+"_"+self.hashCode())
   }
 
-  static barrier(PokemonCardSet self, Object delegate){
+  static ancient_trait_omega_barrier(PokemonCardSet self, Object delegate){
     delegate.delayedA target:self, {
       def power= false
       before PLAY_TRAINER, {
-        if (!(ef.stadium || ef.pokemonTool) && bg.currentThreadPlayerType != self.owner && bg.currentTurn.pbg.hand.contains(ef.cardToPlay)) {
-          power=true
-        }
+        power = (!(ef.stadium || ef.pokemonTool) && bg.currentThreadPlayerType != self.owner && bg.currentTurn.pbg.hand.contains(ef.cardToPlay))
       }
       after PLAY_TRAINER, {
-        power=false
+        power = false
       }
       before (null, self, Source.TRAINER_CARD) {
         if (power && bg.currentThreadPlayerType != self.owner){ //only opponent's trainer cards
-          bc "Barrier prevents effect"
+          if (!ef instanceof GetterEffect) { // no log should be printed during getter effect execution to prevent log spam
+            bc "$self: Ω Barrier prevents effect ${e.type}"
+          }
           prevent()
         }
       }
     }
   }
-  static barrage(PokemonCardSet self, Object delegate){
+  static ancient_trait_omega_barrage(PokemonCardSet self, Object delegate){
     delegate.onActivate {bg.em().storeObject("BARRAGE_"+self.hashCode(), 1)}
     delegate.onDeactivate {bg.em().storeObject("BARRAGE_"+self.hashCode(), null)}
   }
-  static growth(PokemonCardSet self, Object delegate){
+  static ancient_trait_alpha_growth(PokemonCardSet self, Object delegate){
     delegate.delayedA target:self, {
       after ATTACH_ENERGY, self, {
         if((ef as AttachEnergy).reason==PLAY_FROM_HAND && self.owner.pbg.hand.filterByType(ENERGY)){
-          self.owner.pbg.hand.filterByType(ENERGY).select(min: 0, "Growth: You may attach 1 more energy card to $self", {
+          self.owner.pbg.hand.filterByType(ENERGY).select(min: 0, "α Growth: You may attach 1 more energy card to $self", {
             (it.cardTypes.is(CardType.SPECIAL_ENERGY)) ? ((it as SpecialEnergyCard).allowAttach(bg, self)) : true
           }, self.owner).each {attachEnergy(self, it)}
         }
@@ -1026,7 +1026,7 @@ class TcgStatics {
     }
 
   }
-  static recovery(PokemonCardSet self, Object delegate){
+  static ancient_trait_alpha_recovery(PokemonCardSet self, Object delegate){
     delegate.delayedA target:self, {
       before REMOVE_DAMAGE_COUNTER, self, {
         bc "Recovery: doubled healing"
@@ -1035,7 +1035,7 @@ class TcgStatics {
     }
   }
 
-  static delta_plus(PokemonCardSet self, Object delegate){
+  static ancient_trait_delta_plus(PokemonCardSet self, Object delegate){
     def power = false
     delegate.delayedA target:self, priority:LAST, {
       after APPLY_ATTACK_DAMAGES, {
@@ -1052,20 +1052,22 @@ class TcgStatics {
   }
 
   // Δ Evolution: You may play this card from your hand to evolve a Pokémon during your first turn or the turn you play that Pokémon.
-  static delta_evolution(PokemonCard thisCard){
+  static ancient_trait_delta_evolution(PokemonCard thisCard){
     thisCard.asEvolution().ancientTraitDeltaEvolution = true
   }
 
-  static omega_stop(Object delegate){
-    delegate.ancientTrait "θ Stop", {
-      text "Prevent all effects of your opponent's Pokémon's Abilities done to this Pokémon."
-      delayedA {
-        before null, self, Source.SRC_ABILITY, {
-          if (e.sourceAbility.ownerCard.player == self.owner.opposite) {
-            if (!ef instanceof GetterEffect) { // no log should be printed during getter effect execution to prevent log spam
-              bc "θ Stop prevents effect ${e.type}"
+  static ancient_trait_theta_stop(Object delegate){
+    callWithDelegate(delegate) {
+      ancientTrait "θ Stop", {
+        text "Prevent all effects of your opponent's Pokémon's Abilities done to this Pokémon."
+        delayedA {
+          before null, self, SRC_ABILITY, {
+            if (e.sourceAbility.ownerCard.player == self.owner.opposite) {
+              if (!ef instanceof GetterEffect) { // no log should be printed during getter effect execution to prevent log spam
+                bc "$self: θ Stop prevents effect ${e.type}"
+              }
+              prevent()
             }
-            prevent()
           }
         }
       }
@@ -1076,7 +1078,7 @@ class TcgStatics {
     return pcs.lastAbilities.find {it.key instanceof AncientTrait && it.key.name.contains("Stop")}
   }
 
-  static omega_double(Object delegate){
+  static ancient_trait_theta_double(Object delegate){
     delegate.ancientTrait "θ Double", {
       text "This Pokémon may have up to 2 Pokémon Tool cards attached to it."
       onActivate {bg.em().storeObject("OMEGA_DOUBLE_"+self.hashCode(), 1)}
@@ -1084,7 +1086,7 @@ class TcgStatics {
     }
   }
 
-  static omega_max(Object delegate){
+  static ancient_trait_theta_max(Object delegate){
     delegate.ancientTrait "θ Max", {
       text "When 1 of your Pokémon becomes this Pokémon, heal all damage from it."
       onActivate {
