@@ -120,17 +120,19 @@ public class PokemonCardSet implements Serializable {
 
   public PokemonCard getTopPokemonCard() {
     Card card = cards().first();
-    if (card == null) {
-      RuntimeException exception = new IllegalStateException(String.format("topPokemonCard() called on empty Pokemon. lastName:%s", lastName));
+    if (!(card instanceof PokemonCard)) {
+      RuntimeException exception;
+      if (card == null) {
+        exception = new IllegalStateException(String.format("topPokemonCard() is null. lastName=%s", lastName));
+      } else {
+        exception = new IllegalStateException(String.format("topPokemonCard() is not a PokemonCard. card=%s, lastName:%s", card, lastName));
+      }
       if (lastTopPokemonCard == null) { // only throw the exception if there were no topCard at all.
         throw exception;
       } else { // otherwise, just report a warning.
         Battleground.getInstance().getGameManager().reportWarning(exception);
         return lastTopPokemonCard;
       }
-    }
-    if (!(card instanceof PokemonCard)) { // (!card.getStaticCardTypes().isPokemon())
-      throw new IllegalStateException("Top card is not a PokemonCard. lastName:" + lastName);
     }
     lastTopPokemonCard = (PokemonCard) card;
     return lastTopPokemonCard;
