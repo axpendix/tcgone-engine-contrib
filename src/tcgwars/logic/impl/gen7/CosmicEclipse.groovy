@@ -3138,16 +3138,14 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Prevent all effects of attacks, including damage, done to this Pokémon by your opponent's TAG TEAM Pokémon and Ultra Beasts, and by your opponent's Pokémon that have any Special Energy attached to them."
             delayedA {
               before null, self, Source.ATTACK, {
-                def oppActive = self.owner.opposite.pbg.active
-                if ((oppActive.topPokemonCard.cardTypes.isIn(TAG_TEAM, ULTRA_BEAST) || oppActive.cards.hasType(SPECIAL_ENERGY)) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
+                if ((e.sourceAttack.attacker.topPokemonCard.cardTypes.isIn(TAG_TEAM, ULTRA_BEAST) || e.sourceAttack.attacker.cards.hasType(SPECIAL_ENERGY)) && ef.effectType != DAMAGE) {
                   bc "Smug Face prevents effects to $self."
                   prevent()
                 }
               }
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  def valid = it.from.topPokemonCard.cardTypes.is(TAG_TEAM) || it.from.topPokemonCard.cardTypes.is(ULTRA_BEAST) || it.from.cards.hasType(SPECIAL_ENERGY)
-                  if (it.to == self && it.dmg.value && it.notNoEffect && it.from.owner != self.owner && valid) {
+                  if (it.to == self && it.dmg.value && it.notNoEffect && it.from.owner != self.owner && (it.from.topPokemonCard.cardTypes.is(TAG_TEAM) || it.from.topPokemonCard.cardTypes.is(ULTRA_BEAST) || it.from.cards.hasType(SPECIAL_ENERGY))) {
                     it.dmg = hp(0)
                     bc "Smug Face prevents damage dealt to $self."
                   }
