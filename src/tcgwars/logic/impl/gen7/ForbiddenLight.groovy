@@ -1455,8 +1455,8 @@ public enum ForbiddenLight implements LogicCardInfo {
               shuffleDeck()
               shuffleOppDeck()
               for(int i=0;i<3;i++){
-                my.prizeCardSet.add(my.deck.remove(0))
-                opp.prizeCardSet.add(opp.deck.remove(0))
+                if(my.deck.notEmpty) my.prizeCardSet.add(my.deck.remove(0))
+                if(opp.deck.notEmpty) opp.prizeCardSet.add(opp.deck.remove(0))
               }
             }
           }
