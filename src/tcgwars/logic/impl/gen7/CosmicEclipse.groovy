@@ -3138,7 +3138,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Prevent all effects of attacks, including damage, done to this Pokémon by your opponent's TAG TEAM Pokémon and Ultra Beasts, and by your opponent's Pokémon that have any Special Energy attached to them."
             delayedA {
               before null, self, Source.ATTACK, {
-                if ((e.sourceAttack.attacker.topPokemonCard.cardTypes.isIn(TAG_TEAM, ULTRA_BEAST) || e.sourceAttack.attacker.cards.hasType(SPECIAL_ENERGY)) && ef.effectType != DAMAGE) {
+                if (e.sourceAttack.attacker.owner != self.owner && (e.sourceAttack.attacker.topPokemonCard.cardTypes.isIn(TAG_TEAM, ULTRA_BEAST) || e.sourceAttack.attacker.cards.hasType(SPECIAL_ENERGY)) && ef.effectType != DAMAGE) {
                   bc "Smug Face prevents effects to $self."
                   prevent()
                 }
