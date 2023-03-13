@@ -491,7 +491,7 @@ public class CardList extends ArrayList<Card> {
    * then the CardList should be empty. If it is a temporary CardList, it will still contain it's Cards.
    */
   public CardList moveTo(params = [:], CardList newLocation) {
-    MoveCard effect = new MoveCard(this.copyWithoutNulls(), newLocation)
+    MoveCard effect = new MoveCard(this, newLocation)
     if (params.hidden)
       effect.hidden = params.hidden
     if (params.suppressLog)
