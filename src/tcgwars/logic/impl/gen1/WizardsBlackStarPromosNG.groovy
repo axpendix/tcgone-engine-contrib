@@ -903,7 +903,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
           eff = delayed {
             before MOVE_CARD_INNER, {
               if (e.source == ATTACK || e.source == TRAINER_CARD || e.source == SRC_SPECIAL_ENERGY || (e.source == SRC_ABILITY && e.sourceAbility instanceof PokemonPower)) {
-                if (ef.sourceList.zoneType == CardList.ZoneType.DISCARD && ef.targetList.zoneType == CardList.ZoneType.HAND) {
+                if (ef.fromList.zoneType == CardList.ZoneType.DISCARD && ef.toList.zoneType == CardList.ZoneType.HAND) {
                   bc "Pokemon Tower prevents moving ${ef.card} from discard to hand"
                   prevent()
                 }
