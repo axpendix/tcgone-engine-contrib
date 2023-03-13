@@ -574,7 +574,7 @@ public enum LegendMaker implements LogicCardInfo {
               if (my.all.any{ it.evolution && it.name != "Shiftry" } && confirm("Evolutionary Fan - Return 1 of your evolved Pokémon, and all cards attached to it, back to your hand?")){
                 powerUsed()
                 def pcs = my.all.findAll{ it.evolution && it.name != "Shiftry" }.select("Which Pokémon, and all cards attached to it, will you bring back to your hand?")
-                scoopUpPokemon([:], pcs, delegate, POKEPOWER)
+                scoopUpPokemon([:], pcs, delegate)
               }
             }
           }

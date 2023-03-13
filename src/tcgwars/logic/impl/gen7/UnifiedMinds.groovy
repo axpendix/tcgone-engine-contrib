@@ -2288,7 +2288,7 @@ public enum UnifiedMinds implements LogicCardInfo {
                   delayed(inline: true){
                     after KNOCKOUT, pcs, {
                       bc "Durable Blade activates."
-                      scoopUpPokemon([:], pcs, delegate, SRC_ABILITY)
+                      scoopUpPokemon([:], pcs, delegate)
                       owner.delegate.unregister()
                     }
                   }
