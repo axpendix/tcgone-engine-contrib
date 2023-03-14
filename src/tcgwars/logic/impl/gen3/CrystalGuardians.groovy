@@ -2288,27 +2288,18 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Skill Copy", {
           text "Discard a Basic Pokémon or Evolution card from your hand. Choose 1 of that card's attacks. Skill Copy copies that attack. This attack does nothing if Alakazam Star doesn't have the Energy necessary to use that attack. (You must still do anything else required for that attack.) Alakazam Star performs that attack."
           energyCost C, C, C
-          def flag
+          def filter = {my.hand.findAll{(it.cardTypes.is(BASIC) || it.cardTypes.is(EVOLUTION)) && it instanceof PokemonCard && it.moves}}
           attackRequirement {
-            assert (flag || my.hand.filterByType(POKEMON)) : "No Pokémon in hand" //TODO: Ignore BREAKs and LEGENDs.
+            assert filter() : "No Basic or Evolution Pokémon with attacks in hand"
           }
           onAttack {
-            flag = true
-            def tmp = my.hand.filterByType(POKEMON).select(min:0, max:1, "Discard a Pokémon and use one of that Pokémon’s attacks as this attack.")
-            if (tmp) {
-              def card = tmp.first()
-              bc "$card was chosen"
-              discard card
-              def moves = card.asPokemonCard().moves
-              if (moves) {
-                def move = choose(moves, "Choose attack")
-                bc "$move was chosen"
-                def bef=blockingEffect(BETWEEN_TURNS)
-                attack (move as Move)
-                bef.unregisterItself(bg().em())
-                flag = false
-              }
-            }
+            def card = filter().select("Discard a Pokémon and use one of that Pokémon’s attacks as this attack.").first()
+            discard card
+            def move = choose(card.asPokemonCard().moves, "Choose attack to perform")
+            bc "$move was chosen"
+            def bef=blockingEffect(BETWEEN_TURNS)
+            attack (move.shallowCopy())
+            bef.unregisterItself(bg().em())
           }
         }
       };
