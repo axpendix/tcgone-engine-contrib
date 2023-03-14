@@ -8,6 +8,7 @@ import tcgwars.logic.Battleground;
 import tcgwars.logic.GameFormat;
 import tcgwars.logic.PlayerType;
 import tcgwars.logic.card.*;
+import tcgwars.logic.card.Collection;
 import tcgwars.logic.card.energy.EnergyCard;
 import tcgwars.logic.card.pokemon.PokemonCard;
 import tcgwars.logic.effect.ability.*;
@@ -118,6 +119,10 @@ public class PokemonCardSet implements Serializable {
     return getTopNonLevelUpPokemonCard().getCardTypes().is(CardType.STAGE2);
   }
 
+  private boolean isTopPokemonCardAvailable() {
+    return (cards().first() instanceof PokemonCard) || lastTopPokemonCard != null;
+  }
+
   public PokemonCard getTopPokemonCard() {
     Card card = cards().first();
     if (!(card instanceof PokemonCard)) {
@@ -127,11 +132,11 @@ public class PokemonCardSet implements Serializable {
       } else {
         exception = new IllegalStateException(String.format("topPokemonCard() is not a PokemonCard. card=%s, lastName:%s", card, lastName));
       }
-      if (lastTopPokemonCard == null) { // only throw the exception if there were no topCard at all.
-        throw exception;
-      } else { // otherwise, just report a warning.
-        Battleground.getInstance().getGameManager().reportWarning(exception);
+      Battleground.getInstance().getGameManager().reportWarning(exception);
+      if (lastTopPokemonCard != null) {
         return lastTopPokemonCard;
+      } else {
+        return getEmptyPokemonCard();
       }
     }
     lastTopPokemonCard = (PokemonCard) card;
@@ -263,10 +268,11 @@ public class PokemonCardSet implements Serializable {
   }
 
   public String getName() {
-    try {
-      lastName = getTopPokemonCard().getName();
+    //TODO also implement an auto cleanup mechanism in GM to recover from empty Pokemon instances at the end of every move
+    if (!isTopPokemonCardAvailable()) {
       return lastName;
-    } catch (Exception e) {
+    } else {
+      lastName = getTopPokemonCard().getName();
       return lastName;
     }
   }
@@ -463,4 +469,37 @@ public class PokemonCardSet implements Serializable {
         "cards=" + set +
         '}';
   }
+
+  private PokemonCard getEmptyPokemonCard() {
+    return new PokemonCard(new CardInfo() {
+      public CardTypeSet getCardTypes() {
+        return new CardTypeSet();
+      }
+      public String getName() {
+        return "?";
+      }
+      public Rarity getRarity() {
+        return null;
+      }
+      public String getNumber() {
+        return "?";
+      }
+      public Collection getCollection() {
+        return null;
+      }
+      public String getEnumName() {
+        return "?";
+      }
+    }) {
+      @Override
+      public String getFullName() {
+        return "{?}";
+      }
+      @Override
+      public String getRef() {
+        return "?";
+      }
+    };
+  }
+
 }
