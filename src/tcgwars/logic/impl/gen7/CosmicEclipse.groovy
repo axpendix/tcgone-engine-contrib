@@ -4,7 +4,6 @@ import tcgwars.logic.card.pokemon.PokemonCard
 import tcgwars.logic.effect.gm.ActivateSimpleTrainer
 import tcgwars.logic.effect.gm.PlayCard
 import tcgwars.logic.effect.gm.PlayStadium
-import tcgwars.logic.effect.gm.PlayTrainer
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -3540,23 +3539,30 @@ public enum CosmicEclipse implements LogicCardInfo {
             onAttack {
               damage 60
               afterDamage {
-                if (bg.em().retrieveObject("ScoopUpBlock_Count$self.owner.opposite") && self.numberOfDamageCounters) {
-                  return
-                }
-                def doll = my.hand.find{it.name=="Lillie's Poké Doll"}
-                if(doll && confirm("Play Lillie's Poké Doll from your hand as your new Active Pokémon?")) {
-                  def eff = getter (GET_BENCH_SIZE, BEFORE_LAST) { h->
-                    h.object += 1
+                // confirming here prevents opponent to learn the contents of the hand (due to confirmation delay)
+                def confirmed = confirm("Play Lillie's Poké Doll from your hand as your new Active Pokémon? (if you have it)")
+                self.cards.moveTo(my.hand)
+                if (self.cards.empty) {
+                  def doll = my.hand.find{it.name=="Lillie's Poké Doll"}
+                  if(doll && confirmed) {
+                    delayed {
+                      before PUT_ON_BENCH, {
+                        PokemonCard card = ef.pokemonCard
+                        if (card.name == "Lillie's Poké Doll") {
+                          prevent() // PUT_ON_BENCH is replaced with following
+                          def newPokemon = new PokemonCardSet(self.owner)
+                          newPokemon.cards.add(card)
+                          my.hand.remove(card)
+                          sw (null, newPokemon)
+                          unregister()
+                        }
+                      }
+                      unregisterAfter 1
+                    }
+                    bg.em().run(new PlayCard(doll))
+                  } else {
+                    removePCS(self)
                   }
-                  self.owner.pbg.triggerBenchSizeCheck()
-
-                  def tmp = self.owner.pbg.all.findAll{it.name=="Lillie's Poké Doll"}
-                  bg.em().run(new PlayCard(doll))
-                  def pcs = self.owner.pbg.all.find{it.name=="Lillie's Poké Doll" && !tmp.contains(it)}
-                  sw(self, pcs)
-                  scoopUpPokemon(self, delegate)
-                  eff.unregister()
-                  self.owner.pbg.triggerBenchSizeCheck()
                 }
               }
             }

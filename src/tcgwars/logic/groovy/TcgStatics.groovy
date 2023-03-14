@@ -541,6 +541,19 @@ class TcgStatics {
       discard(bg().stadiumInfoStruct?.stadiumCard)
     }
   }
+//  static removeThenReplacePokemon(PokemonCardSet oldPokemon, PokemonCardSet newPokemon) {
+//    targeted (oldPokemon) {
+//      if(my.active==oldPokemon){
+//        my.setActive(newPokemon)
+//      } else if (my.bench.contains(oldPokemon)){
+//        my.bench.set(my.bench.indexOf(oldPokemon),newPokemon)
+//      } else if (opp.active==oldPokemon){
+//        opp.setActive(newPokemon)
+//      } else if (opp.bench.contains(oldPokemon)){
+//        opp.bench.set(opp.bench.indexOf(oldPokemon),newPokemon)
+//      }
+//    }
+//  }
   static removePCS(PokemonCardSet pcs){
     targeted (pcs) {
       if(my.active==pcs){
@@ -1746,35 +1759,22 @@ class TcgStatics {
   }
 
   /**
-   * Scoop up PokemonCardSets if not blocked by Scoop-Up Block
+   * Scoop up PokemonCardSets
    *
    * @param params Optional settings map
    * @param params.pokemonOnly: boolean - if true, scoops up all pokemon cards and discards the rest.
    * @param params.only: CardList - only scoops up them, discards the rest.
+   * @param params.replacePokemon: PokemonCardSet
    *
    * @param target PokemonCardSet to work on
    * @param delegate Effect delegate used to determine most sources automatically, and to get the card name for the Scoop-Up Block message
-   * @param source Allows you to specify the source of the scoop up. Use intended manually setting SRC_ABILITY.
    *
    * @return boolean successful scoop up
    *
    * @throws IllegalArgumentException If params.only was an unsupported type
    */
-  static boolean scoopUpPokemon(params=[:], PokemonCardSet target, Object delegate, Source source=null) {
-    if (source == null) {
-      if (delegate.thisObject.cardTypes.is(TRAINER)) source = TRAINER_CARD
-      if (delegate.thisObject.cardTypes.is(POKEMON)) source = ATTACK
-    }
-    if (bg.em().retrieveObject("ScoopUpBlock_Count$target.owner.opposite") && target.numberOfDamageCounters && !hasThetaStop(target)) {
-      bc "Scoop-Up Block prevents $delegate.thisObject.name's effect."
-      return false
-    }
-    return !targeted(target, source) {
-      def eff = delayed {
-        before KNOCKOUT, {
-          prevent()
-        }
-      }
+  static boolean scoopUpPokemon(params = [:], PokemonCardSet target, Object delegate) {
+    return !targeted(target) {
       CardList toHand
       if(params.only) {
         if (params.only instanceof Card) toHand = new CardList(params.only)
@@ -1788,28 +1788,10 @@ class TcgStatics {
       CardList toDiscard = target.cards.getExcludedList(toHand)
 
       bc "Scooped up ${toHand}"
-
-      // Only add true POKEMON cards to hand, let moveTo handle removing changed implementations from play
-      CardList toHand2 = toHand.filterByType(POKEMON).findAll { it.staticInfo.cardTypes.contains(POKEMON) }
-
-      // Special handling for knocked out Pokémon
-      if (target.slatedToKO) {
-        toHand2.moveTo(target.owner.pbg.hand)
-        // Move any cards that changed implementation from POKEMON when removed from play to hand as well
-        CardList toCleanup = []
-        toHand.getExcludedList(toHand2).each { pcsCard -> toCleanup.add(target.owner.pbg.discard.find { it.staticInfo == pcsCard.staticInfo })}
-        toCleanup.moveTo(target.owner.pbg.hand)
-      }
-      else {
-        target.owner.pbg.hand.addAll(toHand2)
-        toHand.getExcludedList(toHand2).moveTo(target.owner.pbg.hand)
-      }
-
-      CardList toDiscard2 = toDiscard.filterByType(POKEMON).findAll { it.staticInfo.cardTypes.contains(POKEMON) }
-      target.owner.pbg.discard.addAll(toDiscard2)
-      toDiscard.getExcludedList(toDiscard2).discard()
+      // simplified implementation (experimental)
+      bg.em().activateInnerEffect(new MoveCard(toHand, target.owner.pbg.hand))
+      bg.em().activateInnerEffect(new MoveCard(toDiscard, target.owner.pbg.discard))
       removePCS(target)
-      eff.unregister()
     }
   }
 

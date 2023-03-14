@@ -2369,7 +2369,6 @@ public enum BattleStyles implements LogicCardInfo {
           text "Once during your turn (before your attack), you may switch this Pokémon with an Aegislash in your hand. (Any cards attached to this Pokémon, damage counters, Special Conditions, turns in play, and any other effects remain on the new Pokémon.)"
           actionA {
             checkLastTurn()
-            assert !bg.em().retrieveObject("ScoopUpBlock_Count$self.owner.opposite") || !self.numberOfDamageCounters : "Scoop-Up Block prevents $thisAbility's effect"
             assert bg.em().retrieveObject("Stance_Change_" + self.hashCode()) != (bg.turnCount) : "Already used Stance Change"
             assert my.hand.filterByNameEquals("Aegislash") : "No Aegislash in hand"
 
@@ -2379,14 +2378,9 @@ public enum BattleStyles implements LogicCardInfo {
             def card = my.hand.filterByNameEquals("Aegislash").select("Stance Change").first()
             def pcs = self
             def top = pcs.topPokemonCard
-            pcs.cards.remove(top)
-            my.hand.add(top)
-            my.hand.remove(card)
-            pcs.cards.add(card)
-
+            bg.em().activateInnerEffect(new MoveCard(top, my.hand))
+            bg.em().activateInnerEffect(new MoveCard(card, pcs))
             bc "Switched with $card"
-            bg.em().run new CheckAbilities(self)
-            checkFaint()
           }
         }
         move "Full Metal Blade", {
@@ -2406,7 +2400,6 @@ public enum BattleStyles implements LogicCardInfo {
           text "Once during your turn (before your attack), you may switch this Pokémon with an Aegislash in your hand. (Any cards attached to this Pokémon, damage counters, Special Conditions, turns in play, and any other effects remain on the new Pokémon.)"
           actionA {
             checkLastTurn()
-            assert !bg.em().retrieveObject("ScoopUpBlock_Count$self.owner.opposite") || !self.numberOfDamageCounters : "Scoop-Up Block prevents $thisAbility's effect"
             assert bg.em().retrieveObject("Stance_Change_" + self.hashCode()) != (bg.turnCount) : "Already used Stance Change"
             assert my.hand.filterByNameEquals("Aegislash") : "No Aegislash in hand"
 
@@ -2416,14 +2409,9 @@ public enum BattleStyles implements LogicCardInfo {
             def card = my.hand.filterByNameEquals("Aegislash").select("Stance Change").first()
             def pcs = self
             def top = pcs.topPokemonCard
-            pcs.cards.remove(top)
-            my.hand.add(top)
-            my.hand.remove(card)
-            pcs.cards.add(card)
-
+            bg.em().activateInnerEffect(new MoveCard(top, my.hand))
+            bg.em().activateInnerEffect(new MoveCard(card, pcs))
             bc "Switched with $card"
-            bg.em().run(new CheckAbilities(self))
-            checkFaint()
           }
         }
         move "Gigaton Bash", {

@@ -1520,7 +1520,6 @@ public enum EeveeHeroes implements LogicCardInfo {
             bc "Used $thisCard"
             lastTurn = bg.turnCount
             def tar = my.all.findAll { it.cards.filterByType POKEMON_TOOL }.select thisCard.cardText
-            assert !bg.em().retrieveObject("ScoopUpBlock_Count$thisCard.player.opposite") || !tar.numberOfDamageCounters : "Scoop-Up Block prevents $thisCard's effect."
             def toolCard
             if (tar.cards.filterByType(POKEMON_TOOL).size() > 1) {
               def card = tar.cards.filterByType(POKEMON_TOOL).select "Return which Pokémon Tool to your hand?"

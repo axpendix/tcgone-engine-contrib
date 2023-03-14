@@ -1043,19 +1043,14 @@ public enum GuardiansRising implements LogicCardInfo {
             text "Once during your turn (before your attack), you may switch this Pokémon with a Wishiwashi-GX in your hand. Any attached cards, damage counters, Special Conditions, turns in play, and any other effects remain on the new Pokémon."
             actionA {
               assert my.hand.find{it.name=='Wishiwashi-GX'}
-              assert !bg.em().retrieveObject("ScoopUpBlock_Count$self.owner.opposite") || !self.numberOfDamageCounters : "Scoop-Up Block prevents $thisAbility's effect."
               checkLastTurn()
               powerUsed()
               def card = my.hand.findAll{it.name=='Wishiwashi-GX'}.select().first()
               def pcs = self
               def top = pcs.topPokemonCard
-              pcs.cards.remove(top)
-              my.hand.add(top)
-              my.hand.remove(card)
-              pcs.cards.add(card)
+              bg.em().activateInnerEffect(new MoveCard(top, my.hand))
+              bg.em().activateInnerEffect(new MoveCard(card, pcs))
               bc "$top was switched with $card"
-              checkFaint()
-              bg.em().run(new CheckAbilities(pcs))
             }
           }
           move "Sharpshooting", {
@@ -1771,7 +1766,6 @@ public enum GuardiansRising implements LogicCardInfo {
             text "Your opponent can't have more than 4 Benched Pokémon. If they have 5 or more Benched Pokémon, they discard Benched Pokémon until they have 4 Pokémon on the Bench. If more than one effect changes the number of Benched Pokémon allowed, use the smaller number."
             getterA (GET_BENCH_SIZE, BEFORE_LAST) {h->
               if(h.effect.playerType == self.owner.opposite) {
-                //TODO: Check this working with CLEFAIRY_144 (CEC) placing Lillie's Poké Doll
                 h.object = Math.min(h.object, 4)
               }
             }

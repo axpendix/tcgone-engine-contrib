@@ -1736,23 +1736,14 @@ public enum TeamUp implements LogicCardInfo {
           bwAbility "Scoop-Up Block" , {
             text "Your opponent's Pokémon that have any damage counters on them, and any cards attached to those Pokémon, can't be put into your opponent's hand."
             delayedA {
-              before MOVE_CARD, {
-                if (ef.newLocation == self.owner.opposite.pbg.hand) {
-                  def pcs = self.owner.opposite.pbg.all.find { it.cards.contains(ef.cards.first()) }
-                  if (pcs && pcs.numberOfDamageCounters && !hasThetaStop(pcs)) {
+              before MOVE_CARD_INNER, {
+                if (ef.toList == self.owner.opposite.pbg.hand && ef.fromPokemon?.owner == self.owner.opposite && ef.fromPokemon?.numberOfDamageCounters) {
+                  targeted (ef.fromPokemon) {
                     bc "Scoop-Up Block stopped cards from returning to the owner's hand."
                     prevent()
                   }
                 }
               }
-            }
-            onActivate {
-              bg.em().storeObject("ScoopUpBlock_LastTurn"+self.owner, bg.turnCount)
-              bg.em().storeObject("ScoopUpBlock_Count"+self.owner, bg.em().retrieveObject("ScoopUpBlock_Count"+self.owner) ? bg.em().retrieveObject("ScoopUpBlock_Count"+self.owner)+1 : 1)
-            }
-            onDeactivate {
-              bg.em().storeObject("ScoopUpBlock_LastTurn"+self.owner, bg.turnCount)
-              bg.em().storeObject("ScoopUpBlock_Count"+self.owner, bg.em().retrieveObject("ScoopUpBlock_Count"+self.owner)-1)
             }
           }
           move "Psy Bolt" , {
