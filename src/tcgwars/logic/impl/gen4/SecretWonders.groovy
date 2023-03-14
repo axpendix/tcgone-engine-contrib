@@ -1,7 +1,8 @@
 package tcgwars.logic.impl.gen4
 
 import tcgwars.logic.effect.gm.ActivateSimpleTrainer
-import tcgwars.logic.effect.gm.Attack;
+import tcgwars.logic.effect.gm.Attack
+import tcgwars.logic.exception.EffectRequirementException;
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen3.RubySapphire
 
@@ -564,12 +565,17 @@ public enum SecretWonders implements LogicCardInfo {
                     flip {
                       def pcs = self
                       def pkmnCard = thisCard
-                      def energyCards = pcs.energyCards
+                      def newPokemon = new PokemonCardSet(self.owner)
+                      (ef as Knockout).setNextActive(newPokemon)
                       delayed(inline: true){
+                        before MOVE_CARD_INNER, {
+                          if (ef.fromPokemon == pcs && ef.card.cardTypes.isIn(POKEMON, ENERGY) && ef.toList?.zoneType == CardList.ZoneType.DISCARD) {
+                            bg.em().run(new MoveCard(ef.card, newPokemon).setSuppressLog(true))
+                            throw new EffectRequirementException() //cant use prevent() here bc it prevents above new MoveCard
+                          }
+                        }
                         after KNOCKOUT, pcs, {
-                          def newpcs = benchPCS(pkmnCard, OTHER)
-                          energyCards.each {attachEnergy(newpcs, it)}
-                          bc "$newpcs REKINDLED!"
+                          bc "$newPokemon REKINDLED!"
                           unregister()
                         }
                         unregisterAfter 1
