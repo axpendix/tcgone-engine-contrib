@@ -2911,15 +2911,17 @@ public enum DarknessAblaze implements LogicCardInfo {
         bwAbility "Sturdy", {
           text "If this Pokémon has full HP and would be Knocked Out by damage from an attack, it is not Knocked Out, and its remaining HP becomes 10."
             delayedA {
-              // Taken from Donphan LOT
+              def fullhpturn=0
               before APPLY_ATTACK_DAMAGES, {
-                if(ef.attacker.owner != self.owner) {
-                  bg.dm().each{
-                    if(it.to == self && it.notNoEffect && self.damage == hp(0) && it.dmg.value >= self.fullHP.value) {
-                      bc "Sturdy saved $self!"
-                      it.dmg = self.fullHP - hp(10)
-                    }
-                  }
+                if (bg.currentTurn==self.owner.opposite && self.numberOfDamageCounters==0)
+                  fullhpturn=bg.turnCount
+              }
+              before KNOCKOUT, self, {
+                if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && bg.turnCount==fullhpturn){
+                  bc "Sturdy is activated"
+                  self.damage = self.fullHP - hp(10)
+                  bc "Sturdy saved $self!"
+                  prevent()
                 }
               }
             }
