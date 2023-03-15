@@ -566,7 +566,11 @@ public enum SecretWonders implements LogicCardInfo {
                       def pcs = self
                       def pkmnCard = thisCard
                       def newPokemon = new PokemonCardSet(self.owner)
-                      (ef as Knockout).setNextActive(newPokemon)
+                      def active = pcs.active
+                      def index = !active ? pcs.owner.pbg.bench.indexOf(pcs) : -1
+                      if (active) {
+                        (ef as Knockout).setNextActive(newPokemon)
+                      }
                       delayed(inline: true){
                         before MOVE_CARD_INNER, {
                           if (ef.fromPokemon == pcs && ef.card.cardTypes.isIn(POKEMON, ENERGY) && ef.toList?.zoneType == CardList.ZoneType.DISCARD) {
@@ -575,6 +579,9 @@ public enum SecretWonders implements LogicCardInfo {
                           }
                         }
                         after KNOCKOUT, pcs, {
+                          if (!active) {
+                            pcs.owner.pbg.bench.set(index, newPokemon)
+                          }
                           bc "$newPokemon REKINDLED!"
                           unregister()
                         }
