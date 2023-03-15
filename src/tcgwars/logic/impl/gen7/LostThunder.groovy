@@ -2705,52 +2705,20 @@ public enum LostThunder implements LogicCardInfo {
           weakness GRASS
           bwAbility "Sturdy" , {
             text "If this Pokémon has full HP and would be Knocked Out by damage from an attack, this Pokémon is not Knocked Out, and its remaining HP becomes 10."
-            /* impl in Crustle BCR
-					delayedA {
-						def fullhpturn=0
-						before PROCESS_ATTACK_EFFECTS, {
-							if (bg.currentTurn==self.owner.opposite && self.numberOfDamageCounters==0)
-								fullhpturn=bg.turnCount
-						}
-						before KNOCKOUT, self, {
-							if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && bg.turnCount==fullhpturn){
-								bc "Sturdy is activated"
-								self.damage = self.fullHP - hp(10)
-								bc "Sturdy saved $self!"
-								prevent()
-							}
-						}
-					}
-					 */
             delayedA {
-              // @mtgufo
-              after PROCESS_ATTACK_EFFECTS, {
-                if(ef.attacker.owner != self.owner) {
-                  bg.dm().each{
-                    if(it.to == self && self.damage == hp(0) && it.dmg.value >= self.fullHP.value) {
-                      bc "Sturdy saved $self!"
-                      it.dmg = self.fullHP - hp(10)
-                    }
-                  }
+              def fullhpturn=0
+              before APPLY_ATTACK_DAMAGES, {
+                if (bg.currentTurn==self.owner.opposite && self.numberOfDamageCounters==0)
+                  fullhpturn=bg.turnCount
+              }
+              before KNOCKOUT, self, {
+                if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && bg.turnCount==fullhpturn){
+                  bc "Sturdy is activated"
+                  self.damage = self.fullHP - hp(10)
+                  bc "Sturdy saved $self!"
+                  prevent()
                 }
               }
-              /* @itresad
-						def flag = null
-						before APPLY_ATTACK_DAMAGES, {
-							if(self.fullHP == self.remainingHP) {
-								flag = 1
-							}
-							else{
-								flag = null
-							}
-						}
-						before KNOCKOUT, {
-							if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && ef.pokemonToBeKnockedOut!=self && flag){
-								self.damage = self.fullHP - hp(10)
-								bc "Sturdy saved $self!"
-								prevent()
-							}
-						} */
             }
           }
           move "Rolling Spin" , {
