@@ -811,7 +811,6 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
         move "Repeating Kick", {
           text "20x damage. Flip a coin until you get tails. This attack does 20 damage times the number of heads."
           energyCost F, F
-          attackRequirement {}
           onAttack {
             flipUntilTails { damage 20 }
           }
@@ -819,14 +818,14 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
         move "Rapid Spin", {
           text "30 damage. If your opponent has any Benched Pokémon, he or she chooses 1 of them and switches it with his or her Active Pokémon, then, if you have any Benched Pokémon, you switch 1 of them with your Active Pokémon. (Do the damage before switching the Pokémon.)"
           energyCost F, F, C
-          attackRequirement {}
           onAttack {
             damage 30
             afterDamage {
-              if (my.bench) {
-                sw self, my.bench.select("New active")
-                if (opp.bench) {
-                  sw defending, opp.bench.oppSelect("New active")
+              if (opp.bench) {
+                if (sw2(opp.bench.oppSelect("Select new active Pokemon"))) {
+                  if (my.bench) {
+                    sw2(my.bench.select("Select new active Pokemon"))
+                  }
                 }
               }
             }
