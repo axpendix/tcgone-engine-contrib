@@ -146,9 +146,12 @@ public class BenchSet extends PcsList {
   @Override
   public boolean remove(Object o) {
     if (o instanceof PokemonCardSet) {
-      PokemonCardSet pcs = (PokemonCardSet) o;
-      set(this.indexOf(pcs), null);
-      return true;
+      int index = this.indexOf(o);
+      if (index >= 0) {
+        set(index, null);
+        return true;
+      }
+      return false;
     } else {
       throw new IllegalArgumentException();
     }
