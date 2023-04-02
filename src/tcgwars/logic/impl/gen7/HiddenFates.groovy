@@ -600,10 +600,7 @@ public enum HiddenFates implements LogicCardInfo {
               // TODO: Make TcgStatics.astonish more flexible so that it actually works for this?
               if(!checkBodyguard() && (ef as Knockout).byDamageFromAttack) {
                 bc "Last Pattern activates"
-                bg.deterministicCurrentThreadPlayerType = self.owner
-                def sel=opp.hand.shuffledCopy().select(hidden: true, count: 2, "Choose 2 random cards from your opponent's hand to be discarded.")
-                sel.discard()
-                bg.clearDeterministicCurrentThreadPlayerType()
+                self.owner.opposite.pbg.hand.shuffledCopy().select(hidden: true, count: 2, "Choose 2 random cards from your opponent's hand to be discarded.", {true}, self.owner).discard()
               }
               eff.unregister()
             }

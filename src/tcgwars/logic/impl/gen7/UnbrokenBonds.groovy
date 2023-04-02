@@ -1,6 +1,7 @@
 package tcgwars.logic.impl.gen7
 
-import tcgwars.logic.effect.getter.GetterEffect;
+import tcgwars.logic.effect.getter.GetterEffect
+import tcgwars.logic.groovy.TcgStatics;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -1850,14 +1851,14 @@ public enum UnbrokenBonds implements LogicCardInfo {
               before (KNOCKOUT,self) {
                 if(self.owner.pbg.deck.notEmpty) {
                   bc "Swelling Spite activates"
-                  bg.deterministicCurrentThreadPlayerType = self.owner
-                  def count = Math.min(my.bench.freeBenchCount, 2)
-                  my.deck.search(max:count, "When this Pokémon is Knocked Out, search your deck for up to 2 Haunter and put them onto your Bench. Then, shuffle your deck.", {it.name=="Haunter"}).each {
-                    my.deck.remove(it);
-                    benchPCS(it)
+                  tryWithDeterministicCurrentThreadPlayerType(self.owner) {
+                    def count = Math.min(my.bench.freeBenchCount, 2)
+                    my.deck.search(max:count, "When this Pokémon is Knocked Out, search your deck for up to 2 Haunter and put them onto your Bench. Then, shuffle your deck.", {it.name=="Haunter"}).each {
+                      my.deck.remove(it);
+                      benchPCS(it)
+                    }
+                    shuffleDeck()
                   }
-                  shuffleDeck()
-                  bg.clearDeterministicCurrentThreadPlayerType()
                 }
               }
             }

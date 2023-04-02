@@ -2,6 +2,7 @@ package tcgwars.logic.impl.gen7
 
 import tcgwars.logic.effect.advanced.Devolve
 import tcgwars.logic.effect.special.Poisoned
+import tcgwars.logic.groovy.TcgStatics
 import tcgwars.logic.impl.gen5.BlackWhite
 
 import static tcgwars.logic.card.HP.*;
@@ -3624,9 +3625,10 @@ public enum TeamUp implements LogicCardInfo {
             def randomOppHand = opp.hand.shuffledCopy()
             if(randomOppHand.hasType(SUPPORTER)){
               def card = randomOppHand.select("Opponent's hand. Select a supporter.", cardTypeFilter(SUPPORTER)).first()
-              bg.deterministicCurrentThreadPlayerType=bg.currentTurn
-              bg.em().run(new ActivateSimpleTrainer(card))
-              bg.clearDeterministicCurrentThreadPlayerType()
+              bc "Selected $card"
+              tryWithDeterministicCurrentThreadPlayerType (bg.currentTurn) {
+                bg.em().run(new ActivateSimpleTrainer(card))
+              }
             } else {
               randomOppHand.showToMe("Opponent's hand. No supporter in there.")
             }
