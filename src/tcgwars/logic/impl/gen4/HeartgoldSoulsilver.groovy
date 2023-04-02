@@ -611,7 +611,8 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             text "Shuffle your hand into your deck, then draw 6 cards. Cleffa is now Asleep."
             energyCost ()
             onAttack {
-              shuffleDeck(hand)
+              hand.moveTo(hidden:true, deck)
+              shuffleDeck()
               draw 6
               apply ASLEEP, self
             }

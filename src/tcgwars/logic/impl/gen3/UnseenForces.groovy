@@ -908,7 +908,8 @@ public enum UnseenForces implements LogicCardInfo {
           text "Shuffle your hand into your deck, then draw 6 cards."
           energyCost C
           onAttack {
-            shuffleDeck(hand)
+            hand.moveTo(hidden:true, deck)
+            shuffleDeck()
             draw 6
           }
         }
