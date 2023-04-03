@@ -453,9 +453,8 @@ public enum CrystalGuardians implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            def trainer = my.deck.search(count:1, "Select an Trainer card",cardTypeFilter(TRAINER)).showToOpponent("Mining - This is the Trainer card your opponent picked.")
-            trainer.moveTo(my.hand)
-            if (trainer.first().cardTypes.is(POKEMON_TOOL)) {
+            def trainer = my.deck.search("Select an Trainer card",cardTypeFilter(TRAINER)).showToOpponent("Mining - This is the Trainer card your opponent picked.").moveTo(my.hand)
+            if (trainer && confirm("Do you wish to attach $trainer too?")) {
               bg.em().run(new PlayCard(trainer.first()))
             }
             shuffleDeck()
