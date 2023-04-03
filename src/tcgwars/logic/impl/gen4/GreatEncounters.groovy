@@ -305,19 +305,20 @@ public enum GreatEncounters implements LogicCardInfo {
             callForFamily(basic:true, 3, delegate)
           }
           move "Smash Short", {
-            text "10+ damage. If the Defending Pokémon has a Pokémon Tool card attached to it, this attack does 10 damage plus 20 more damage. Discard that Pokémon Tool card, look at your opponent's hand, and discard any Pokémon Tool cards of the same name you find there."
+            text "10+ damage. If the Defending Pokémon has a Pokémon Tool card attached to it, this attack does 10 damage plus 30 more damage. Discard that Pokémon Tool card, look at your opponent's hand, and discard any Pokémon Tool cards of the same name you find there."
             energyCost C
             onAttack {
               damage 10
               def tools = defending.cards.filterByType(POKEMON_TOOL)
               if(tools) {
                 damage 30
-                def tool
-                targeted(defending) {
-                  tool = tools.select("Discard a Pokémon Tool attached to $defending").discard().first()
-                }
-                if(opp.hand) {
-                  opp.hand.showToMe("Opponent's hand").findAll{it.name == tool.name}.discard()
+                afterDamage {
+                  targeted(defending) {
+                    def tool = tools.select("Discard a Pokémon Tool attached to $defending").discard().first()
+                    if(opp.hand) {
+                      opp.hand.showToMe("Opponent's hand").findAll{it.name == tool.name}.discard()
+                    }
+                  }
                 }
               }
             }
