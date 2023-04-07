@@ -619,10 +619,10 @@ public enum TeamRocketNG implements LogicCardInfo {
         return basicTrainer (this) {
           text "Look at your opponent’s hand. If he or she has any Trainer cards, choose 1 of them. Your opponent shuffles that card into his or her deck."
           onPlay {
-            def list = opp.hand.shuffledCopy().showToMe("Opponent's hand")
-            list = list.filterByType(TRAINER)
+            def list = opp.hand.shuffledCopy()
+            list = list.select(count: list.hasTrainer() ? 1 : 0, "Opponent's hand. If there is a Trainer card, choose 1 of them to have your opponent shuffle that card into their deck", cardTypeFilter(TRAINER))
             if(list) {
-              list.select(count: 1, "Shuffle to deck?").showToOpponent("Opponent played Rocket's Sneak Attack and this card from your hand will be shuffled into your deck").moveTo(opp.deck)
+              list.showToOpponent("Opponent played Rocket's Sneak Attack and this card from your hand will be shuffled into your deck").moveTo(opp.deck)
               shuffleOppDeck()
             }
           }
