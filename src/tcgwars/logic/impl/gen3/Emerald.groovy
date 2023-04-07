@@ -1836,7 +1836,7 @@ public enum Emerald implements LogicCardInfo {
           }
           typeImagesOverride = [RAINBOW, RAINBOW]
           onPlay { reason ->
-            eff = delayed {
+            eff = delayed (priority: BEFORE_LAST) {
               after PROCESS_ATTACK_EFFECTS, {
                 targeted self, {
                   if (ef.attacker == self) bg.dm().each {
