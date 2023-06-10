@@ -2312,10 +2312,10 @@ public enum CrystalGuardians implements LogicCardInfo {
               if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
                 bc "$self - Time Travel activated"
                 flip 1, {
-                  bc "$self is not knocked out and moved to the deck"
+                  bc "$self is not knocked out and is moved to bottom of deck."
                   prevent()
                   self.cards.getExcludedList(self.topPokemonCard).discard()
-                  self.cards.moveTo(my.deck)
+                  moveCard(self.topPokemonCard, my.deck)
                   removePCS(self)
                 }
               }
