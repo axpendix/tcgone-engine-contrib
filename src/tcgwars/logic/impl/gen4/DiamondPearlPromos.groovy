@@ -3,6 +3,7 @@ package tcgwars.logic.impl.gen4
 import tcgwars.logic.TargetPlayer
 import tcgwars.logic.card.pokemon.EvolutionPokemonCard
 import tcgwars.logic.card.pokemon.LevelUpPokemonCard
+import tcgwars.logic.effect.Source
 import tcgwars.logic.effect.ability.Ability
 import tcgwars.logic.effect.ability.PokeBody
 import tcgwars.logic.effect.basic.LevelUp
@@ -13,12 +14,15 @@ import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*
 import static tcgwars.logic.effect.EffectPriority.BEFORE_LAST
 import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.POKEBODY
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.OTHER
+import static tcgwars.logic.effect.Source.*;
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
+
 
 import tcgwars.logic.card.*
 import tcgwars.logic.util.*;
@@ -131,7 +135,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -291,7 +295,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
                 def card = opp.hand.select(min:0, max: 1,"Look at your opponent's hand, choose a Pokémon you find there, and put it on the bottom of his or her deck", cardTypeFilter(POKEMON))
                 if (card.notEmpty()) {
                   card.moveTo(opp.deck)
-                  shuffleDeck(card, TargetPlayer.OPPONENT)
+                  shuffleOppDeck()
                   bc "$thisAbility shuffled $card into deck"
                 }
               }
@@ -462,7 +466,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               checkNoSPC()
               powerUsed()
               flip ({
-                scoopUpPokemon([:], self, delegate, POKEPOWER)
+                scoopUpPokemon([:], self, delegate)
               })
             }
           }
@@ -540,9 +544,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
                     eff.unregister()
                   }
                   unregisterAfter 3
-                  after EVOLVE, self, { unregister() }
-                  after DEVOLVE, self, { unregister() }
-                  after LEVEL_UP, self, { unregister() }
+                  after CHANGE_STAGE, self, { unregister() }
                 }
               }
             }
@@ -607,7 +609,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
                     it.name == (evolutionCard as EvolutionPokemonCard).predecessor
                   })
                   def cardToEvolve = eligibleToEvolve.select("Evolve which one?")
-                  evolve(cardToEvolve, evolutionCard, OTHER)
+                  evolve(cardToEvolve, evolutionCard)
                 }
                 shuffleDeck()
               }

@@ -139,10 +139,10 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
   FERALIGATR_108 ("Feraligatr", "108", Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
   MEGANIUM_109 ("Meganium", "109", Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
   TYPHLOSION_110 ("Typhlosion", "110", Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _FIRE_]),
-  HO_OH_LEGEND_111 ("Ho-Oh LEGEND", "111", Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_, LEGEND]),
-  HO_OH_LEGEND_112 ("Ho-Oh LEGEND", "112", Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_, LEGEND]),
-  LUGIA_LEGEND_113 ("Lugia LEGEND", "113", Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
-  LUGIA_LEGEND_114 ("Lugia LEGEND", "114", Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
+  HO_OH_LEGEND_111 ("Ho-Oh LEGEND", "111", Rarity.HOLORARE, [POKEMON, _FIRE_, LEGEND]),
+  HO_OH_LEGEND_112 ("Ho-Oh LEGEND", "112", Rarity.HOLORARE, [POKEMON, _FIRE_, LEGEND]),
+  LUGIA_LEGEND_113 ("Lugia LEGEND", "113", Rarity.HOLORARE, [POKEMON, _WATER_, LEGEND]),
+  LUGIA_LEGEND_114 ("Lugia LEGEND", "114", Rarity.HOLORARE, [POKEMON, _WATER_, LEGEND]),
   GRASS_ENERGY_115 ("Grass Energy", "115", Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
   FIRE_ENERGY_116 ("Fire Energy", "116", Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
   WATER_ENERGY_117 ("Water Energy", "117", Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
@@ -219,7 +219,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -335,8 +335,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
                   }
                   unregisterAfter 2
                   after FALL_BACK, self, {unregister()}
-                  after EVOLVE, self, {unregister()}
-                  after DEVOLVE, self, {unregister()}
+                  after CHANGE_STAGE, self, {unregister()}
                 }
               }
             }
@@ -612,8 +611,8 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             text "Shuffle your hand into your deck, then draw 6 cards. Cleffa is now Asleep."
             energyCost ()
             onAttack {
-              shuffleDeck(hand)
-              hand.clear()
+              hand.moveTo(hidden:true, deck)
+              shuffleDeck()
               draw 6
               apply ASLEEP, self
             }
@@ -876,7 +875,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
                 opp.deck.oppSelect(min:0,max:opp.bench.getFreeBenchCount(),"Pichu used Playground: Each player may search his or her deck for as many Basic Pokémon as he or she likes, put them onto his or her Bench. Please search for Basic Pokémon to put on your bench.",cardTypeFilter(BASIC)).each{
                   benchPCS(it, OTHER)
                 }
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
               }
               apply ASLEEP, self
             }
@@ -1717,7 +1716,6 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             energyCost C
             onAttack {
               shuffleDeck(hand)
-              hand.clear()
               draw opp.hand.size()
             }
           }
@@ -2105,7 +2103,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
       case COPYCAT_90:
         return copy(TeamRocketReturns.COPYCAT_83, this);
       case ENERGY_SWITCH_91:
-        return copy(BlackWhite.ENERGY_SWITCH_94, this);
+        return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this)
       case FISHERMAN_92:
         return supporter (this) {
           text "Search your discard pile for 4 basic Energy cards, show them to your opponent, and put them into your hand."

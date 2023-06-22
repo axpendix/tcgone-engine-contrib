@@ -155,7 +155,7 @@ public enum ShiningLegends implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -301,7 +301,6 @@ public enum ShiningLegends implements LogicCardInfo {
             energyCost G
             onAttack {
               shuffleDeck(hand)
-              hand.clear()
               draw 6
             }
           }
@@ -1029,15 +1028,8 @@ public enum ShiningLegends implements LogicCardInfo {
             onAttack {
               damage 10
               afterDamage {
-                def top
-                while(defending.evolution) {
-                  def devolveFailed = false
-                  targeted (defending) {
-                    top=defending.topPokemonCard
-                    devolve(defending, top, opp.hand)
-                    devolveFailed = defending.cards.contains(top) //TODO: Make devolve() return a value depending on it working or not.
-                  }
-                  if (devolveFailed) break;
+                if (defending.evolution) {
+                  devolveUntilBasic(defending, opp.hand)
                 }
               }
             }
@@ -1088,7 +1080,7 @@ public enum ShiningLegends implements LogicCardInfo {
                 my.hand.moveTo(hidden: true, my.deck)
                 opp.hand.moveTo(hidden: true, opp.deck)
                 shuffleDeck()
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
                 draw 4
                 draw 4, TargetPlayer.OPPONENT
               }
@@ -1131,8 +1123,10 @@ public enum ShiningLegends implements LogicCardInfo {
             delayedA {
               before RETREAT, {
                 if(ef.retreater.owner==self.owner.opposite && self.active){
-                  wcu "Cursed Whirlpool prevents retreating"
-                  prevent()
+                  targeted (ef.retreater) {
+                    wcu "Cursed Whirlpool prevents retreating"
+                    prevent()
+                  }
                 }
               }
             }

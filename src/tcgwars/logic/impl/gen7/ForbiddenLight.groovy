@@ -1,5 +1,6 @@
-package tcgwars.logic.impl.gen7;
+package tcgwars.logic.impl.gen7
 
+import tcgwars.logic.effect.gm.ActivateSimpleTrainer;
 import tcgwars.logic.effect.gm.Attack
 import tcgwars.logic.effect.gm.PlayTrainer
 
@@ -219,7 +220,7 @@ public enum ForbiddenLight implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -332,7 +333,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             onAttack {
               flip {
                 my.deck.search("Select a Vivillon",{it.name == "Vivillon"}).each{
-                  evolve(self,it,OTHER)
+                  evolve(self,it)
                 }
               }
             }
@@ -573,13 +574,6 @@ public enum ForbiddenLight implements LogicCardInfo {
           bwAbility "Unnerve", {
             text "Whenever your opponent plays an Item or Supporter card from their hand, prevent all effects of that card done to this Pokémon."
             delayedA {
-              def flag = false
-              before PROCESS_ATTACK_EFFECTS, {
-                flag = true
-              }
-              before BETWEEN_TURNS, {
-                flag = false
-              }
               def power=false
               before PLAY_TRAINER, {
                 if ((ef.item || ef.supporter) && bg.currentTurn==self.owner.opposite && bg.currentTurn.pbg.hand.contains(ef.cardToPlay)) {
@@ -590,7 +584,7 @@ public enum ForbiddenLight implements LogicCardInfo {
                 power=false
               }
               before null, self, Source.TRAINER_CARD, {
-                if (power && !flag) {
+                if (power) {
                   bc "Unnerve prevents effects from Supporter or Item cards done to $self."
                   prevent()
                 }
@@ -927,7 +921,7 @@ public enum ForbiddenLight implements LogicCardInfo {
       case ARAQUANID_33:
         return evolution (this, from:"Dewpider", hp:HP100, type:WATER, retreatCost:1) {
           weakness GRASS
-          globalAbility {Card thisCard->
+          initHook {Card thisCard->
             delayed (priority: LAST) {
               after PROCESS_ATTACK_EFFECTS, {
                 if(ef.attacker.owner==thisCard.player && (ef as Attack).move.name == "Bubble"){
@@ -1163,7 +1157,7 @@ public enum ForbiddenLight implements LogicCardInfo {
               def pcs = opp.bench.select()
               pcs.cards.moveTo(opp.deck)
               removePCS(pcs)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
             }
           }
           move "Hypnoblast", {
@@ -1287,8 +1281,7 @@ public enum ForbiddenLight implements LogicCardInfo {
                       }
                     }
                   }
-                  after EVOLVE, defending, {unregister()}
-                  after DEVOLVE, defending, {unregister()}
+                  after CHANGE_STAGE, defending, {unregister()}
                   after FALL_BACK, defending, {unregister()}
                   unregisterAfter 3
                 }
@@ -1426,8 +1419,7 @@ public enum ForbiddenLight implements LogicCardInfo {
                 }
                 unregisterAfter 2
                 after FALL_BACK, self, { unregister() }
-                after EVOLVE, self, { unregister() }
-                after DEVOLVE, self, { unregister() }
+                after CHANGE_STAGE, self, { unregister() }
               }
             }
           }
@@ -1461,10 +1453,10 @@ public enum ForbiddenLight implements LogicCardInfo {
               my.prizeCardSet.moveTo(hidden:true, my.deck)
               opp.prizeCardSet.moveTo(hidden:true, opp.deck)
               shuffleDeck()
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
               for(int i=0;i<3;i++){
-                my.prizeCardSet.add(my.deck.remove(0))
-                opp.prizeCardSet.add(opp.deck.remove(0))
+                if(my.deck.notEmpty) my.prizeCardSet.add(my.deck.remove(0))
+                if(opp.deck.notEmpty) opp.prizeCardSet.add(opp.deck.remove(0))
               }
             }
           }
@@ -1533,15 +1525,7 @@ public enum ForbiddenLight implements LogicCardInfo {
           move "Ascension", {
             text "Search your deck for a card that evolves from this Pokémon and put it onto this Pokémon to evolve it. Then, shuffle your deck."
             energyCost F
-            attackRequirement {
-              assert my.deck
-            }
-            onAttack {
-              def nam=self.name
-              def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-              if(tar) evolve(self, tar.first(), OTHER)
-              shuffleDeck()
-            }
+            ascension delegate
           }
         };
       case GABITE_61:
@@ -1550,15 +1534,7 @@ public enum ForbiddenLight implements LogicCardInfo {
           move "Ascension", {
             text "Search your deck for a card that evolves from this Pokémon and put it onto this Pokémon to evolve it. Then, shuffle your deck."
             energyCost F
-            attackRequirement {
-              assert my.deck
-            }
-            onAttack {
-              def nam=self.name
-              def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-              if(tar) evolve(self, tar.first(), OTHER)
-              shuffleDeck()
-            }
+            ascension delegate
           }
           move "Slash", {
             text "40 damage."
@@ -2061,7 +2037,7 @@ public enum ForbiddenLight implements LogicCardInfo {
               afterDamage {
                 delayed (priority: BEFORE_LAST) {
                   before BETWEEN_TURNS, {
-                    prevent()
+                    prevent() // FIXME BETWEEN_TURNS shouldn't be prevented in order to not disrupt its AFTER triggers
                     bg.turnCount += 1
                     draw 1
                     bc "Timeless GX started a new turn!"
@@ -2071,9 +2047,8 @@ public enum ForbiddenLight implements LogicCardInfo {
                   // Enable the use of a 2nd Supporter
                   def eff
                   register {
-                    //TODO: This may not work properly against other extra supporter effects (mainly Lt. Surge's Strategy)
                     eff = getter (GET_MAX_SUPPORTER_PER_TURN) {h->
-                      if(h.effect.playerType == thisCard.player && h.object < 2) h.object = 2
+                      if(h.effect.playerType == thisCard.player) h.object = h.object + 1
                     }
                   }
                   unregister {
@@ -2093,7 +2068,7 @@ public enum ForbiddenLight implements LogicCardInfo {
           bwAbility "Evolutionary Advantage", {
             text "If you go second, this Pokémon can evolve during your first turn."
             delayedA {
-              before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+              before PREVENT_EVOLVE, self, null, EVOLVE, {
                 if(bg.turnCount == 2 && bg.currentTurn == self.owner){
                   powerUsed()
                   prevent()
@@ -2196,9 +2171,7 @@ public enum ForbiddenLight implements LogicCardInfo {
                   def support = randomOppHand.select(min: 0, "Your opponent's hand. You may discard a Supporter card you find there and use the effect of that card as the effect of this attack.", cardTypeFilter(SUPPORTER))
                   if (support){
                     discard support.first()
-                    bg.deterministicCurrentThreadPlayerType=self.owner
-                    bg.em().run(new PlayTrainer(support.first()))
-                    bg.clearDeterministicCurrentThreadPlayerType()
+                    bg.em().run(new ActivateSimpleTrainer(support.first()))
                   }
                 } else {
                   randomOppHand.showToMe("Your opponent's hand. No supporter in there.")
@@ -2602,7 +2575,7 @@ public enum ForbiddenLight implements LogicCardInfo {
       case DIANTHA_105:
         return supporter (this) {
           text "You can play this card only if 1 of your [Y] Pokémon was Knocked Out during your opponent’s last turn.\nPut 2 cards from your discard pile into your hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
-          globalAbility {Card thisCard->
+          initHook {Card thisCard->
             delayed {
               before KNOCKOUT, {
                 if(ef.pokemonToBeKnockedOut.types.contains(Y) && ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite){
@@ -2660,7 +2633,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             my.hand.getExcludedList(thisCard).moveTo(hidden:true,my.deck)
             opp.hand.moveTo(hidden:true,opp.deck)
             shuffleDeck()
-            shuffleDeck(null, TargetPlayer.OPPONENT)
+            shuffleOppDeck()
             draw 4
             draw(4, TargetPlayer.OPPONENT)
           }
@@ -2802,7 +2775,7 @@ public enum ForbiddenLight implements LogicCardInfo {
           def lastTurn=0
           def actions=[]
           onPlay {
-            actions=action("Stadium: Ultra Space") {
+            actions=action(thisCard, "Stadium: Ultra Space") {
               assert my.deck
               assert lastTurn != bg().turnCount : "Already used"
               bc "Used Ultra Space effect"
@@ -2824,7 +2797,7 @@ public enum ForbiddenLight implements LogicCardInfo {
           onPlay { reason ->
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
-                targeted self, SRC_SPENERGY, {
+                targeted self, {
                   bg.dm().each {
                     if (it.from == self && it.to.active && it.to.owner != self.owner && self.topPokemonCard.cardTypes.is(ULTRA_BEAST) && it.dmg.value) {
                       bc "Beast Energy +30"

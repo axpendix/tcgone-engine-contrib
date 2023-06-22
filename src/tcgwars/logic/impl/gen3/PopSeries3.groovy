@@ -101,7 +101,7 @@ public enum PopSeries3 implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -371,25 +371,9 @@ public enum PopSeries3 implements LogicCardInfo {
         weakness P
         pokePower "Duplicate", {
           text "Once during your turn (before your attack), you may search your deck for another Ditto and switch it with Ditto. (Any cards attached to Ditto, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Ditto on top of your deck. Shuffle your deck afterward. You can't use more than 1 Duplicate Poké-Power each turn."
-          actionA {
-            checkLastTurn()
-            assert my.deck : "Deck is empty"
-            powerUsed()
-
-            def oldDitto = self.topPokemonCard
-            def newDitto = my.deck.search(min:0, max: 1, {
-              it.name == "Ditto"
-            })
-
-            if (newDitto) {
-              newDitto.moveTo(self.cards)
-              my.deck.add(oldDitto)
-              self.cards.remove(oldDitto)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Duplicate", {
+            it.name == "Ditto"
+          })
         }
         move "Psybeam", {
           text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."

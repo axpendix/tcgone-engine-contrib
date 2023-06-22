@@ -136,10 +136,10 @@ public enum Triumphant implements LogicCardInfo {
   MAGNEZONE_96 ("Magnezone", "96", Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _LIGHTNING_]),
   MEW_97 ("Mew", "97", Rarity.ULTRARARE, [BASIC, POKEMON, _PSYCHIC_]),
   YANMEGA_98 ("Yanmega", "98", Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  DARKRAI_AND_CRESSELIA_LEGEND_99 ("Darkrai & Cresselia LEGEND", "99", Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_, LEGEND]),
-  DARKRAI_AND_CRESSELIA_LEGEND_100 ("Darkrai & Cresselia LEGEND", "100", Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_, LEGEND]),
-  PALKIA_AND_DIALGA_LEGEND_101 ("Palkia & Dialga LEGEND", "101", Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
-  PALKIA_AND_DIALGA_LEGEND_102 ("Palkia & Dialga LEGEND", "102", Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
+  DARKRAI_AND_CRESSELIA_LEGEND_99 ("Darkrai & Cresselia LEGEND", "99", Rarity.HOLORARE, [POKEMON, _PSYCHIC_, LEGEND]),
+  DARKRAI_AND_CRESSELIA_LEGEND_100 ("Darkrai & Cresselia LEGEND", "100", Rarity.HOLORARE, [POKEMON, _PSYCHIC_, LEGEND]),
+  PALKIA_AND_DIALGA_LEGEND_101 ("Palkia & Dialga LEGEND", "101", Rarity.HOLORARE, [POKEMON, _WATER_, LEGEND]),
+  PALKIA_AND_DIALGA_LEGEND_102 ("Palkia & Dialga LEGEND", "102", Rarity.HOLORARE, [POKEMON, _WATER_, LEGEND]),
   ALPH_LITHOGRAPH_FOUR ("Alph Lithograph", "FOUR", Rarity.HOLORARE, [TRAINER, ITEM]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
@@ -188,7 +188,7 @@ public enum Triumphant implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -443,7 +443,7 @@ public enum Triumphant implements LogicCardInfo {
               if(r==PLAY_FROM_HAND && (opp.hand||opp.deck) && confirm("Use Spooky Whirlpool")){
                 powerUsed()
                 opp.hand.moveTo(opp.deck)
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
                 draw 6, TargetPlayer.OPPONENT
               }
             }
@@ -2291,8 +2291,8 @@ public enum Triumphant implements LogicCardInfo {
           pokeBody "Eye of Disaster", {
             text "As long as Absol is your Active Pokémon, whenever your opponent puts a Basic Pokémon from his or her hand onto his or her Bench, put 2 damage counters on that Pokémon."
             delayedA {
-              after PLAY_BASIC_POKEMON, {
-                if(self.active && bg.currentTurn == self.owner.opposite){
+              after PUT_ON_BENCH, {
+                if(ef.basicFromHand && self.active && bg.currentTurn == self.owner.opposite){
                   ef.place.damage += 20
                 }
               }

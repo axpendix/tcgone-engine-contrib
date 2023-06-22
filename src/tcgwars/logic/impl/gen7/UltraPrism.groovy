@@ -248,7 +248,7 @@ public enum UltraPrism implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -524,7 +524,7 @@ public enum UltraPrism implements LogicCardInfo {
                 def sel=self.owner.pbg.deck.search(count:1, "Search for a card that evolve from $nam",
                   {it.cardTypes.is(EVOLUTION) && it.predecessor==pcs.name})
                 if(sel){
-                  evolve(pcs, sel.first(), OTHER)
+                  evolve(pcs, sel.first())
                 }
               }
               shuffleDeck()
@@ -1199,7 +1199,7 @@ public enum UltraPrism implements LogicCardInfo {
           bwAbility "Evolutionary Advantage", {
             text "If you go second, this Pokémon can evolve during your first turn."
             delayedA {
-              before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+              before PREVENT_EVOLVE, self, null, EVOLVE, {
                 if(bg.turnCount == 2 && bg.currentTurn == self.owner){
                   powerUsed()
                   prevent()
@@ -2173,7 +2173,7 @@ public enum UltraPrism implements LogicCardInfo {
             onAttack {
               opp.all.each{
                 if (my.discard.filterByEnergyType(METAL)) {
-                  attachEnergyFrom type: M, my.discard, my.all.select()
+                  attachEnergyFrom(type: M, my.discard, my.all)
                 }
               }
             }
@@ -2350,7 +2350,7 @@ public enum UltraPrism implements LogicCardInfo {
                 if(it.name=="Exeggcute"){
                   def nam=it.name
                   def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-                  if(tar) evolve(it, tar.first(), OTHER)
+                  if(tar) evolve(it, tar.first())
                 }
               }
               shuffleDeck()
@@ -2371,15 +2371,7 @@ public enum UltraPrism implements LogicCardInfo {
           move "Ascension", {
             text "Search your deck for a card that evolves from this Pokémon and put it onto this Pokémon to evolve it. Then, shuffle your deck."
             energyCost F
-            attackRequirement {
-              assert my.deck
-            }
-            onAttack {
-              def nam=self.name
-              def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-              if(tar) evolve(self, tar.first(), OTHER)
-              shuffleDeck()
-            }
+            ascension delegate
           }
 
         };
@@ -2409,15 +2401,7 @@ public enum UltraPrism implements LogicCardInfo {
           move "Ascension", {
             text "Search your deck for a card that evolves from this Pokémon and put it onto this Pokémon to evolve it. Then, shuffle your deck."
             energyCost F
-            attackRequirement {
-              assert my.deck
-            }
-            onAttack {
-              def nam=self.name
-              def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-              if(tar) evolve(self, tar.first(), OTHER)
-              shuffleDeck()
-            }
+            ascension delegate
           }
           move "Slash", {
             text "40 damage."
@@ -2484,7 +2468,7 @@ public enum UltraPrism implements LogicCardInfo {
               afterDamage {
                 delayed (priority: BEFORE_LAST) {
                   before BETWEEN_TURNS, {
-                    prevent()
+                    prevent() // FIXME BETWEEN_TURNS shouldn't be prevented in order to not disrupt its AFTER triggers
                     bg.turnCount += 1
                     draw 1
                     bc "Timeless GX started a new turn!"
@@ -2494,9 +2478,8 @@ public enum UltraPrism implements LogicCardInfo {
                   // Enable the use of a 2nd Supporter
                   def eff
                   register {
-                    //TODO: This may not work properly against other extra supporter effects (mainly Lt. Surge's Strategy)
                     eff = getter (GET_MAX_SUPPORTER_PER_TURN) {h->
-                      if(h.effect.playerType == thisCard.player && h.object < 2) h.object = 2
+                      if(h.effect.playerType == thisCard.player) h.object = h.object + 1
                     }
                   }
                   unregister {
@@ -2924,7 +2907,7 @@ public enum UltraPrism implements LogicCardInfo {
               it.cards.moveTo(opp.deck)
               removePCS(it)
             }
-            shuffleDeck(null, TargetPlayer.OPPONENT)
+            shuffleOppDeck()
           }
           playRequirement{
             assert my.active.types.contains(W) || my.active.types.contains(M) : "Your Active Pokémon needs to be [W] or [M]. (The card text was officially changed)"
@@ -3055,7 +3038,7 @@ public enum UltraPrism implements LogicCardInfo {
           def lastTurn=0
           def actions=[]
           onPlay {
-            actions=action("Stadium: Mt Coronet"){
+            actions=action(thisCard, "Stadium: Mt Coronet"){
               assert my.discard.filterByType(BASIC_ENERGY).filterByEnergyType(METAL)
               assert lastTurn != bg().turnCount : "Already used"
               bc "Used Mt. Coronet effect"
@@ -3121,7 +3104,7 @@ public enum UltraPrism implements LogicCardInfo {
                       }
                     }
                   }
-                  acl = action("Discard unidentified fossil", [TargetPlayer.SELF]){
+                  acl = action(pokemonCard, "Discard unidentified fossil", [TargetPlayer.SELF]){
                     delayed{
                       before TAKE_PRIZE, {
                         if(ef.pcs==self){
@@ -3137,7 +3120,7 @@ public enum UltraPrism implements LogicCardInfo {
                 }
               }
             }
-            pokemonCard.player = trainerCard.player
+            pokemonCard.initializeFrom trainerCard
             bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
             benchPCS(pokemonCard)
           }

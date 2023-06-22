@@ -244,7 +244,7 @@ public enum BurningShadows implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -527,8 +527,7 @@ public enum BurningShadows implements LogicCardInfo {
                     }
                     unregisterAfter 2
                     after FALL_BACK, pcs, {unregister()}
-                    after EVOLVE, pcs, {unregister()}
-                    after DEVOLVE, pcs, {unregister()}
+                    after CHANGE_STAGE, pcs, {unregister()}
                   }
                 }
               }
@@ -1454,8 +1453,7 @@ public enum BurningShadows implements LogicCardInfo {
                     eff.unregister()
                   }
                   after FALL_BACK, pcs, {unregister()}
-                  after EVOLVE, pcs, {unregister()}
-                  after DEVOLVE, pcs, {unregister()}
+                  after CHANGE_STAGE, pcs, {unregister()}
                   unregisterAfter 2
                 }
               }
@@ -2092,7 +2090,7 @@ public enum BurningShadows implements LogicCardInfo {
           resistance PSYCHIC, MINUS20
           globalAbility {Card thisCard->
             def lastTurn=0
-            action("$thisCard: Restoration", [TargetPlayer.fromPlayerType(thisCard.player)]) {
+            action(thisCard, "$thisCard: Restoration", [TargetPlayer.fromPlayerType(thisCard.player)], false) {
               def text="Once during your turn (before your attack), if this Pokémon is in your discard pile, you may put it onto your Bench. Then, attach a [D] Energy card from your discard pile to this Pokémon."
               assert thisCard.player.pbg.discard.contains(thisCard) : "Not in discard"
               assert thisCard.player.pbg.bench.notFull : "Bench full"
@@ -2262,7 +2260,7 @@ public enum BurningShadows implements LogicCardInfo {
               if(sel){
                 def opts=my.all.findAll({it.name==sel.first().predecessor})
                 def pcs=opts.select("Evolve which one?")
-                evolve(pcs, sel.first(), OTHER)
+                evolve(pcs, sel.first())
               }
               shuffleDeck()
             }
@@ -2488,8 +2486,7 @@ public enum BurningShadows implements LogicCardInfo {
                     def pcs = it
                     if(pcs.evolution) {
                       targeted (pcs, SRC_ABILITY) {
-                        def top=pcs.topPokemonCard
-                        devolve(pcs, top, opp.hand)
+                        devolve(pcs, opp.hand)
                       }
                     }
                   }
@@ -2654,7 +2651,7 @@ public enum BurningShadows implements LogicCardInfo {
           text "Switch 1 of your opponent's Benched Pokémon with their Active Pokémon. If you do, switch your Active Pokémon with 1 of your Benched Pokémon.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
             def target = opp.bench.select("Select the new Active Pokémon.")
-            if ( sw2(target, null, TRAINER_CARD) && my.bench) {
+            if ( sw2(target) && my.bench) {
               sw my.active, my.bench.select("Select your new Active Pokémon."), TRAINER_CARD
             }
           }
@@ -2800,7 +2797,7 @@ public enum BurningShadows implements LogicCardInfo {
             draw c1
             int c2 = opp.hand.size()
             opp.hand.moveTo(hidden:true, opp.deck)
-            shuffleDeck(null, TargetPlayer.OPPONENT)
+            shuffleOppDeck()
             draw c2, TargetPlayer.OPPONENT
           }
           playRequirement{

@@ -115,12 +115,12 @@ public enum Unleashed implements LogicCardInfo {
   STEELIX_87 ("Steelix", "87", Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _METAL_]),
   TYRANITAR_88 ("Tyranitar", "88", Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _DARKNESS_]),
   URSARING_89 ("Ursaring", "89", Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-  ENTEI_AND_RAIKOU_LEGEND_90 ("Entei & Raikou LEGEND", "90", Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_, LEGEND]),
-  ENTEI_AND_RAIKOU_LEGEND_91 ("Entei & Raikou LEGEND", "91", Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_, LEGEND]),
-  RAIKOU_AND_SUICUNE_LEGEND_92 ("Raikou & Suicune LEGEND", "92", Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
-  RAIKOU_AND_SUICUNE_LEGEND_93 ("Raikou & Suicune LEGEND", "93", Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
-  SUICUNE_AND_ENTEI_LEGEND_94 ("Suicune & Entei LEGEND", "94", Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
-  SUICUNE_AND_ENTEI_LEGEND_95 ("Suicune & Entei LEGEND", "95", Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
+  ENTEI_AND_RAIKOU_LEGEND_90 ("Entei & Raikou LEGEND", "90", Rarity.HOLORARE, [POKEMON, _FIRE_, LEGEND]),
+  ENTEI_AND_RAIKOU_LEGEND_91 ("Entei & Raikou LEGEND", "91", Rarity.HOLORARE, [POKEMON, _FIRE_, LEGEND]),
+  RAIKOU_AND_SUICUNE_LEGEND_92 ("Raikou & Suicune LEGEND", "92", Rarity.HOLORARE, [POKEMON, _WATER_, LEGEND]),
+  RAIKOU_AND_SUICUNE_LEGEND_93 ("Raikou & Suicune LEGEND", "93", Rarity.HOLORARE, [POKEMON, _WATER_, LEGEND]),
+  SUICUNE_AND_ENTEI_LEGEND_94 ("Suicune & Entei LEGEND", "94", Rarity.HOLORARE, [POKEMON, _WATER_, LEGEND]),
+  SUICUNE_AND_ENTEI_LEGEND_95 ("Suicune & Entei LEGEND", "95", Rarity.HOLORARE, [POKEMON, _WATER_, LEGEND]),
   ALPH_LITHOGRAPH_TWO ("Alph Lithograph", "TWO", Rarity.HOLORARE, [TRAINER, ITEM]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
@@ -182,7 +182,7 @@ public enum Unleashed implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -210,7 +210,7 @@ public enum Unleashed implements LogicCardInfo {
               int max = self.cards.energyCount(C)
               def tar = opp.all.findAll{ it.evolution }
               multiSelect (tar, 0, max).each {
-                devolve(it, it.topPokemonCard, opp.hand)
+                devolve(it, opp.hand)
               }
             }
           }
@@ -247,7 +247,6 @@ public enum Unleashed implements LogicCardInfo {
             energyCost C
             onAttack {
               shuffleDeck(hand)
-              hand.clear()
               draw 5
             }
           }
@@ -884,7 +883,7 @@ public enum Unleashed implements LogicCardInfo {
             text "Search your deck for a card that evolves from Kakuna and put it onto Kakuna. (This counts as evolving Kakuna.) Shuffle your deck afterward."
             energyCost C
             onAttack {
-              deck.search ("Evolves from ${self.name}", {it.cardTypes.is(EVOLUTION) && self.name==it.predecessor}).each { evolve(self, it, OTHER) }
+              deck.search ("Evolves from ${self.name}", {it.cardTypes.is(EVOLUTION) && self.name==it.predecessor}).each { evolve(self, it) }
               shuffleDeck()
             }
           }
@@ -1578,7 +1577,7 @@ public enum Unleashed implements LogicCardInfo {
             onAttack {
               def nam=self.name
               def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-              if(tar) evolve(self, tar.first(), OTHER)
+              if(tar) evolve(self, tar.first())
               shuffleDeck()
             }
           }
@@ -1943,14 +1942,16 @@ public enum Unleashed implements LogicCardInfo {
             energyCost R, C
             onAttack {
               damage 90
-              discardSelfEnergy(R)
+              discardSelfEnergyAfterDamage(R)
             }
           }
           move "Thunder Fall", {
             text "Discard all Energy attached to Entei & Raikou LEGEND. This attack does 80 damage to each Pokémon that has any Poké-Powers (both yours and your opponent's). This attack's damage isn't affected by Weakness or Resistance."
             energyCost L, C
             onAttack {
-              discardAllSelfEnergy(null)
+              afterDamage {
+                discardAllSelfEnergy(null)
+              }
               all.each{
                 if (it.abilities.keySet().find{it instanceof PokePower})
                   noWrDamage 80, it

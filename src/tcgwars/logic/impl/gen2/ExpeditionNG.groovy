@@ -1,4 +1,6 @@
-package tcgwars.logic.impl.gen2;
+package tcgwars.logic.impl.gen2
+
+import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -247,7 +249,7 @@ public enum ExpeditionNG implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -2394,13 +2396,7 @@ public enum ExpeditionNG implements LogicCardInfo {
         }
       };
       case SWITCH_157:
-      return basicTrainer (this) {
-        text "Switch your Active Pokémon with 1 of your Benched Pokémon."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy(FireRedLeafGreen.SWITCH_102, this);
       case DARKNESS_ENERGY_158:
       return specialEnergy (this, [[C]]) {
         text "If the Pokémon [D] Energy is attached to does damage with an attack (after applying Weakness and Resistance), the attack does 10 more damage. At the end of every turn, put 1 damage counter on the Pokémon [D] Energy is attached to, unless it's Darkness or has Dark in its name. [D] Energy provides [D] Energy. (Doesn't count as a basic Energy card.)"
@@ -2424,33 +2420,21 @@ public enum ExpeditionNG implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case FIGHTING_ENERGY_160:
-      return basic (this, hp:null, type:null, retreatCost:null) {
-
-      };
+        return basicEnergy (this, FIGHTING)
       case FIRE_ENERGY_161:
-      return basic (this, hp:null, type:null, retreatCost:null) {
-
-      };
+        return basicEnergy (this, FIRE)
       case GRASS_ENERGY_162:
-      return basic (this, hp:null, type:null, retreatCost:null) {
-
-      };
+        return basicEnergy (this, GRASS)
       case LIGHTNING_ENERGY_163:
-      return basic (this, hp:null, type:null, retreatCost:null) {
-
-      };
+        return basicEnergy (this, LIGHTNING)
       case PSYCHIC_ENERGY_164:
-      return basic (this, hp:null, type:null, retreatCost:null) {
-
-      };
+        return basicEnergy (this, PSYCHIC)
       case WATER_ENERGY_165:
-      return basic (this, hp:null, type:null, retreatCost:null) {
-
-      };
+        return basicEnergy (this, WATER)
       default:
-      return null;
+      return null
     }
   }
 }

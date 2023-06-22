@@ -331,7 +331,7 @@ public enum UnifiedMinds implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -351,11 +351,11 @@ public enum UnifiedMinds implements LogicCardInfo {
               def sel_1 = deck.search ("Select a Pokémon that evolves from $names.", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)}).first()
               if (sel_1) {
                 def pcs = my.all.findAll { it.name==sel_1.predecessor }.select("Evolve which Pokémon?")
-                evolve(pcs, sel_1, OTHER)
+                evolve(pcs, sel_1)
                 if (sel_1.cardTypes.is(STAGE1)) {
                   def sel_2 = deck.search ("Select a Pokémon that evolves from ${sel_1.name}.", {it.cardTypes.is(EVOLUTION) && it.predecessor == sel_1.name}).first()
                   if(sel_2){
-                    evolve(pcs, sel_2, OTHER)
+                    evolve(pcs, sel_2)
                   }
                 }
               }
@@ -382,7 +382,7 @@ public enum UnifiedMinds implements LogicCardInfo {
                   opp.all.each {
                     it.cards.filterByType(ENERGY).moveTo(opp.deck)
                   }
-                  shuffleDeck(null, TargetPlayer.OPPONENT)
+                  shuffleOppDeck()
                 }
               }
             }
@@ -438,9 +438,8 @@ public enum UnifiedMinds implements LogicCardInfo {
               def list = opp.all.findAll { it.evolution }
               assert list
               def pcs = list.select("Devolve one of your opponent's evolved Pokémon.")
-              def top=pcs.topPokemonCard
-              devolve(pcs, top, opp.deck)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              devolve(pcs, opp.deck)
+              shuffleOppDeck()
             }
           }
           move "Mind Bend", {
@@ -625,14 +624,16 @@ public enum UnifiedMinds implements LogicCardInfo {
           bwAbility "Bursting Spores", {
             text "Whenever you play a Pokémon that has the Spore attack from your hand during your turn, you may leave your opponent's Active Pokémon Asleep and Poisoned."
             delayedA {
-              before PLAY_BASIC_POKEMON, {
-                if(ef.cardToPlay.moves.find{ it.name == "Spore" }) {
+              after PUT_ON_BENCH, {
+                if(ef.fromHand && ef.pokemonCard.player == self.owner && ef.pokemonCard.moves.find{ it.name == "Spore" }) {
+                  powerUsed()
                   apply POISONED, opp.active
                   apply ASLEEP, opp.active
                 }
               }
-              before PLAY_EVOLUTION, {
-                if(ef.cardToPlay.moves.find{ it.name == "Spore" }) {
+              after EVOLVE, {
+                if(ef.fromHand && ef.pokemonToBeEvolved.owner == self.owner && ef.evolutionCard.moves.find{ it.name == "Spore" }) {
+                  powerUsed()
                   apply POISONED, opp.active
                   apply ASLEEP, opp.active
                 }
@@ -1032,6 +1033,9 @@ public enum UnifiedMinds implements LogicCardInfo {
           move "Ditch and Splash", {
             text "40x damage. Discard any number of Supporter cards from your hand. This attack does 40 damage for each card you discarded in this way."
             energyCost W, W
+            attackRequirement {
+              assert my.hand.filterByType(SUPPORTER) : "No supporter in hand"
+            }
             onAttack {
               def supporterCount = my.hand.filterByType(SUPPORTER).size()
               damage 40*my.hand.filterByType(SUPPORTER).select(max: supporterCount).discard().size()
@@ -1221,8 +1225,7 @@ public enum UnifiedMinds implements LogicCardInfo {
                     dset.add(card)
                   }
                 }
-                after PLAY_POKEMON_TOOL, {disable(ef.cardToPlay,ef.target)}
-                after PLAY_POKEMON_TOOL_FLARE, {disable(ef.cardToPlay,ef.target)}
+                after ATTACH_POKEMON_TOOL, {disable(ef.card,ef.target)}
               }
 
               def count = (bg.em().retrieveObject("Tool Concealment count") ?: 0) + 1
@@ -1351,7 +1354,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 80
               afterDamage{
                 defendingAttacksCostsMore (defending, [C])
-                defendingRetreatsCostsMore (defending, [C])
+                defendingRetreatsCostsMore (defending, 1)
               }
             }
           }
@@ -1656,7 +1659,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           resistance M, MINUS20
           globalAbility {Card thisCard->
             def lastTurn=0
-            action("Electric Swamp", [TargetPlayer.fromPlayerType(thisCard.player)]) {
+            action(thisCard, "Electric Swamp", [TargetPlayer.fromPlayerType(thisCard.player)], false) {
               def text="If this Pokémon is in your hand and you have 4 or more Lightning Energy in play, you may use this Ability. Put this Pokémon onto your Bench. Then, you may move as many Lightning Energy from your other Pokémon to this Pokémon in any way you like."
               def lightningCount=0
               thisCard.player.pbg.all.findAll{it.cards.energyCount(L)}.each{
@@ -1679,6 +1682,9 @@ public enum UnifiedMinds implements LogicCardInfo {
                 energySwitch(src, pcs, card)
               }
             }
+          }
+          bwAbility "Electric Swamp", {
+            text "Once during your turn (before your attack), if this Pokémon is in your hand and you have at least 4 {L} Energy cards in play, you may play this Pokémon onto your Bench. If you do, move any number of {L} Energy from your other Pokémon to this Pokémon."
           }
           move "Hover Over", {
             text "130 damage. The Defending Pokémon can’t retreat during your opponent’s next turn."
@@ -1938,8 +1944,7 @@ public enum UnifiedMinds implements LogicCardInfo {
                     }
                   }
                 }
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
+                after CHANGE_STAGE, self, {unregister()}
                 after FALL_BACK, self, {unregister()}
                 unregisterAfter 2
               }
@@ -2283,7 +2288,7 @@ public enum UnifiedMinds implements LogicCardInfo {
                   delayed(inline: true){
                     after KNOCKOUT, pcs, {
                       bc "Durable Blade activates."
-                      scoopUpPokemon([:], pcs, delegate, SRC_ABILITY)
+                      scoopUpPokemon([:], pcs, delegate)
                       owner.delegate.unregister()
                     }
                   }
@@ -2525,7 +2530,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             onAttack {
               defending.cards.moveTo(opp.deck)
               removePCS(defending)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
             }
           }
           move "Tackle", {
@@ -2876,15 +2881,8 @@ public enum UnifiedMinds implements LogicCardInfo {
               gxPerform()
 
               delayed{
-                def flag = false
-                before PROCESS_ATTACK_EFFECTS, {
-                  flag = true
-                }
-                before BETWEEN_TURNS, {
-                  flag = false
-                }
                 before PLAY_TRAINER, {
-                  if (bg.currentTurn == self.owner.opposite && !flag) {
+                  if (bg.currentTurn == self.owner.opposite) {
                     wcu "Dark Moon GX prevents you from playing Trainer cards."
                     prevent()
                   }
@@ -3533,15 +3531,8 @@ public enum UnifiedMinds implements LogicCardInfo {
           bwAbility "Unnerve", {
             text "Whenever your opponent plays an Item or Supporter card from their hand, prevent all effects of that card done to this Pokémon."
             delayedA {
-              def flag = false
-              before PROCESS_ATTACK_EFFECTS, {
-                flag = true
-              }
-              before BETWEEN_TURNS, {
-                flag = false
-              }
               before null, self, Source.TRAINER_CARD, {
-                if (bg.currentThreadPlayerType != self.owner && !flag){
+                if (e.sourceTrainer.player != self.owner && e.sourceTrainer.cardTypes.isIn(ITEM, SUPPORTER)){
                   bc "Unnerve prevents effects of Items and Supporters done to $self."
                   prevent()
                 }
@@ -3827,8 +3818,7 @@ public enum UnifiedMinds implements LogicCardInfo {
                   }
                   unregisterAfter 2
                   after FALL_BACK, pcs, {unregister()}
-                  after EVOLVE, pcs, {unregister()}
-                  after DEVOLVE, pcs, {unregister()}
+                  after CHANGE_STAGE, pcs, {unregister()}
                 }
               }
             }
@@ -3907,8 +3897,7 @@ public enum UnifiedMinds implements LogicCardInfo {
                     }
                     unregisterAfter 2
                     after FALL_BACK, self, { unregister() }
-                    after EVOLVE, self, { unregister() }
-                    after DEVOLVE, self, { unregister() }
+                    after CHANGE_STAGE, self, { unregister() }
                   }
                 }
               }
@@ -3940,7 +3929,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "Prevent all effects of your opponent's attacks, except damage, done to this Pokémon."
             delayedA {
               before null, null, ATTACK, {
-                if (ef instanceof TargetedEffect && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && (ef as TargetedEffect).getResolvedTarget(bg, e) == self) {
+                if (ef instanceof TargetedEffect && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && e.getTargetPokemon() == self) {
                   bc "Unaware prevents all effects done to $self."
                   prevent()
 
@@ -4034,7 +4023,7 @@ public enum UnifiedMinds implements LogicCardInfo {
                   my.active.cards.findAll{ !it.cardTypes.is(POKEMON) }.moveTo(my.deck)
                   shuffleDeck()
                   opp.active.cards.findAll{ !it.cardTypes.is(POKEMON) }.moveTo(opp.deck)
-                  shuffleDeck(null, TargetPlayer.OPPONENT)
+                  shuffleOppDeck()
                 }
               }
             }
@@ -4370,8 +4359,9 @@ public enum UnifiedMinds implements LogicCardInfo {
                   applyEffect = false
                 }
               }
-              unregister {discard thisCard}
-              unregisterAfter 2
+              unregisterAfter 2, {
+                discard thisCard
+              }
             }
           }
           onRemoveFromPlay {
@@ -4384,7 +4374,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           def lastTurn=0
           def actions=[]
           onPlay {
-            actions=action("Stadium: Giant Hearth") {
+            actions=action(thisCard, "Stadium: Giant Hearth") {
               assert my.deck : "Your deck is empty."
               assert my.hand : "Your hand is empty."
               assert lastTurn != bg().turnCount : "You've already used Giant Hearth this turn."
@@ -4526,7 +4516,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           def lastTurn=0
           def actions=[]
           onPlay {
-            actions=action("Stadium: Pokémon Research Lab") {
+            actions=action(thisCard, "Stadium: Pokémon Research Lab") {
               assert my.deck : "Your deck is empty."
               assert my.bench.notFull : "You have no space in your bench"
               assert lastTurn != bg().turnCount : "You've already used Pokémon Research Lab this turn."
@@ -4552,7 +4542,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           text "Your opponent shuffles their hand into their deck and draws a card for each of their remaining Prize cards."
           onPlay {
             opp.hand.moveTo(hidden:true, opp.deck)
-            shuffleDeck(null, TargetPlayer.OPPONENT)
+            shuffleOppDeck()
             draw opp.prizeCardSet.size(), TargetPlayer.OPPONENT
           }
           playRequirement{
@@ -4645,13 +4635,11 @@ public enum UnifiedMinds implements LogicCardInfo {
               def newLocationChanged = false
               before MOVE_CARD, {
                 if (ef.cards.contains(thisCard) && ef.newLocation == self.owner.pbg.discard && !newLocationChanged) {
-                  targeted null, SRC_SPENERGY, {
-                    newLocationChanged = true
-                    def res = moveCard(supresssLog: true, thisCard, thisCard.player.pbg.hand)
-                    if (!res) {
-                      prevent()
-                      bc "Recycle Energy was recycled into its owner's hand."
-                    }
+                  newLocationChanged = true
+                  def res = moveCard(supresssLog: true, thisCard, thisCard.player.pbg.hand)
+                  if (!res) {
+                    prevent()
+                    bc "Recycle Energy was recycled into its owner's hand."
                   }
                 }
               }
@@ -4668,9 +4656,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           def eff
           onPlay {reason->
             eff = getter (GET_WEAKNESSES, self) { h->
-              targeted self, SRC_SPENERGY, {
-                h.object.clear()
-              }
+              h.object.clear()
             }
           }
           onRemoveFromPlay {

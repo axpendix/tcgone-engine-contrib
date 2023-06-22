@@ -58,10 +58,10 @@ public enum BattleStyles implements LogicCardInfo {
   TAPU_BULU_16 ("Tapu Bulu", "16", Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
   BLIPBUG_17 ("Blipbug", "17", Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
   FLAPPLE_V_18 ("Flapple V", "18", Rarity.HOLORARE, [POKEMON, BASIC, POKEMON_V, _GRASS_]),
-  FLAPPLE_VMAX_19 ("Flapple VMAX", "19", Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _GRASS_]),
+  FLAPPLE_VMAX_19 ("Flapple VMAX", "19", Rarity.HOLORARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _GRASS_]),
   ENTEI_20 ("Entei", "20", Rarity.HOLORARE, [POKEMON, BASIC, _FIRE_]),
   VICTINI_V_21 ("Victini V", "21", Rarity.HOLORARE, [POKEMON, BASIC, POKEMON_V, _FIRE_]),
-  VICTINI_VMAX_22 ("Victini VMAX", "22", Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _FIRE_]),
+  VICTINI_VMAX_22 ("Victini VMAX", "22", Rarity.HOLORARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _FIRE_]),
   TEPIG_23 ("Tepig", "23", Rarity.COMMON, [POKEMON, BASIC, SINGLE_STRIKE, _FIRE_]),
   PIGNITE_24 ("Pignite", "24", Rarity.UNCOMMON, [POKEMON, STAGE1, EVOLUTION, SINGLE_STRIKE, _FIRE_]),
   EMBOAR_25 ("Emboar", "25", Rarity.HOLORARE, [POKEMON, STAGE2, EVOLUTION, SINGLE_STRIKE, _FIRE_]),
@@ -90,7 +90,7 @@ public enum BattleStyles implements LogicCardInfo {
   LUXRAY_48 ("Luxray", "48", Rarity.HOLORARE, [POKEMON, STAGE2, EVOLUTION, RAPID_STRIKE, _LIGHTNING_]),
   PACHIRISU_49 ("Pachirisu", "49", Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
   TAPU_KOKO_V_50 ("Tapu Koko V", "50", Rarity.HOLORARE, [POKEMON, BASIC, POKEMON_V, _LIGHTNING_]),
-  TAPU_KOKO_VMAX_51 ("Tapu Koko VMAX", "51", Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _LIGHTNING_]),
+  TAPU_KOKO_VMAX_51 ("Tapu Koko VMAX", "51", Rarity.HOLORARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _LIGHTNING_]),
   YAMPER_52 ("Yamper", "52", Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
   BOLTUND_53 ("Boltund", "53", Rarity.RARE, [POKEMON, STAGE1, EVOLUTION, _LIGHTNING_]),
   GALARIAN_SLOWPOKE_54 ("Galarian Slowpoke", "54", Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
@@ -125,9 +125,9 @@ public enum BattleStyles implements LogicCardInfo {
   FALINKS_83 ("Falinks", "83", Rarity.RARE, [POKEMON, BASIC, RAPID_STRIKE, _FIGHTING_]),
   STONJOURNER_84 ("Stonjourner", "84", Rarity.RARE, [POKEMON, BASIC, SINGLE_STRIKE, _FIGHTING_]),
   SINGLE_STRIKE_URSHIFU_V_85 ("Single Strike Urshifu V", "85", Rarity.HOLORARE, [POKEMON, BASIC, POKEMON_V, SINGLE_STRIKE, _FIGHTING_]),
-  SINGLE_STRIKE_URSHIFU_VMAX_86 ("Single Strike Urshifu VMAX", "86", Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, SINGLE_STRIKE, _FIGHTING_]),
+  SINGLE_STRIKE_URSHIFU_VMAX_86 ("Single Strike Urshifu VMAX", "86", Rarity.HOLORARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, SINGLE_STRIKE, _FIGHTING_]),
   RAPID_STRIKE_URSHIFU_V_87 ("Rapid Strike Urshifu V", "87", Rarity.HOLORARE, [POKEMON, BASIC, POKEMON_V, RAPID_STRIKE, _FIGHTING_]),
-  RAPID_STRIKE_URSHIFU_VMAX_88 ("Rapid Strike Urshifu VMAX", "88", Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, RAPID_STRIKE, _FIGHTING_]),
+  RAPID_STRIKE_URSHIFU_VMAX_88 ("Rapid Strike Urshifu VMAX", "88", Rarity.HOLORARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, RAPID_STRIKE, _FIGHTING_]),
   ZUBAT_89 ("Zubat", "89", Rarity.COMMON, [POKEMON, BASIC, _DARKNESS_]),
   GOLBAT_90 ("Golbat", "90", Rarity.UNCOMMON, [POKEMON, STAGE1, EVOLUTION, _DARKNESS_]),
   CROBAT_91 ("Crobat", "91", Rarity.HOLORARE, [POKEMON, STAGE2, EVOLUTION, _DARKNESS_]),
@@ -149,7 +149,7 @@ public enum BattleStyles implements LogicCardInfo {
   AEGISLASH_107 ("Aegislash", "107", Rarity.HOLORARE, [POKEMON, STAGE2, EVOLUTION, _METAL_]),
   AEGISLASH_108 ("Aegislash", "108", Rarity.RARE, [POKEMON, STAGE2, EVOLUTION, _METAL_]),
   CORVIKNIGHT_V_109 ("Corviknight V", "109", Rarity.HOLORARE, [POKEMON, BASIC, POKEMON_V, _METAL_]),
-  CORVIKNIGHT_VMAX_110 ("Corviknight VMAX", "110", Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _METAL_]),
+  CORVIKNIGHT_VMAX_110 ("Corviknight VMAX", "110", Rarity.HOLORARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _METAL_]),
   SPEAROW_111 ("Spearow", "111", Rarity.COMMON, [POKEMON, BASIC, _COLORLESS_]),
   FEAROW_112 ("Fearow", "112", Rarity.UNCOMMON, [POKEMON, STAGE1, EVOLUTION, _COLORLESS_]),
   LICKITUNG_113 ("Lickitung", "113", Rarity.COMMON, [POKEMON, BASIC, _COLORLESS_]),
@@ -203,14 +203,14 @@ public enum BattleStyles implements LogicCardInfo {
   PHOEBE_161 ("Phoebe", "161", Rarity.ULTRARARE, [TRAINER, SUPPORTER]),
   RAPID_STRIKE_STYLE_MUSTARD_162 ("Rapid Strike Style Mustard", "162", Rarity.ULTRARARE, [TRAINER, SUPPORTER, RAPID_STRIKE]),
   SINGLE_STRIKE_STYLE_MUSTARD_163 ("Single Strike Style Mustard", "163", Rarity.ULTRARARE, [TRAINER, SUPPORTER, SINGLE_STRIKE]),
-  FLAPPLE_VMAX_164 ("Flapple VMAX", "164", Rarity.SECRET, [POKEMON, EVOLUTION, VMAX, _GRASS_]),
-  VICTINI_VMAX_165 ("Victini VMAX", "165", Rarity.SECRET, [POKEMON, EVOLUTION, VMAX, _FIRE_]),
-  TAPU_KOKO_VMAX_166 ("Tapu Koko VMAX", "166", Rarity.SECRET, [POKEMON, EVOLUTION, VMAX, _LIGHTNING_]),
-  SINGLE_STRIKE_URSHIFU_VMAX_167 ("Single Strike Urshifu VMAX", "167", Rarity.SECRET, [POKEMON, EVOLUTION, VMAX, SINGLE_STRIKE, _FIGHTING_]),
-  SINGLE_STRIKE_URSHIFU_VMAX_168 ("Single Strike Urshifu VMAX", "168", Rarity.SECRET, [POKEMON, EVOLUTION, VMAX, SINGLE_STRIKE, _FIGHTING_]),
-  RAPID_STRIKE_URSHIFU_VMAX_169 ("Rapid Strike Urshifu VMAX", "169", Rarity.SECRET, [POKEMON, EVOLUTION, VMAX, RAPID_STRIKE, _FIGHTING_]),
-  RAPID_STRIKE_URSHIFU_VMAX_170 ("Rapid Strike Urshifu VMAX", "170", Rarity.SECRET, [POKEMON, EVOLUTION, VMAX, RAPID_STRIKE, _FIGHTING_]),
-  CORVIKNIGHT_VMAX_171 ("Corviknight VMAX", "171", Rarity.SECRET, [POKEMON, EVOLUTION, VMAX, _METAL_]),
+  FLAPPLE_VMAX_164 ("Flapple VMAX", "164", Rarity.SECRET, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _GRASS_]),
+  VICTINI_VMAX_165 ("Victini VMAX", "165", Rarity.SECRET, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _FIRE_]),
+  TAPU_KOKO_VMAX_166 ("Tapu Koko VMAX", "166", Rarity.SECRET, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _LIGHTNING_]),
+  SINGLE_STRIKE_URSHIFU_VMAX_167 ("Single Strike Urshifu VMAX", "167", Rarity.SECRET, [POKEMON, EVOLUTION, POKEMON_V, VMAX, SINGLE_STRIKE, _FIGHTING_]),
+  SINGLE_STRIKE_URSHIFU_VMAX_168 ("Single Strike Urshifu VMAX", "168", Rarity.SECRET, [POKEMON, EVOLUTION, POKEMON_V, VMAX, SINGLE_STRIKE, _FIGHTING_]),
+  RAPID_STRIKE_URSHIFU_VMAX_169 ("Rapid Strike Urshifu VMAX", "169", Rarity.SECRET, [POKEMON, EVOLUTION, POKEMON_V, VMAX, RAPID_STRIKE, _FIGHTING_]),
+  RAPID_STRIKE_URSHIFU_VMAX_170 ("Rapid Strike Urshifu VMAX", "170", Rarity.SECRET, [POKEMON, EVOLUTION, POKEMON_V, VMAX, RAPID_STRIKE, _FIGHTING_]),
+  CORVIKNIGHT_VMAX_171 ("Corviknight VMAX", "171", Rarity.SECRET, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _METAL_]),
   BRUNO_172 ("Bruno", "172", Rarity.SECRET, [TRAINER, SUPPORTER, SINGLE_STRIKE]),
   CHERYL_173 ("Cheryl", "173", Rarity.SECRET, [TRAINER, SUPPORTER]),
   KORRINA_S_FOCUS_174 ("Korrina's Focus", "174", Rarity.SECRET, [TRAINER, SUPPORTER, RAPID_STRIKE]),
@@ -270,7 +270,7 @@ public enum BattleStyles implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -888,22 +888,12 @@ public enum BattleStyles implements LogicCardInfo {
           text "When your Active Pokémon is Knocked Out by damage from an attack from your opponent's Pokémon, you may move any amount of [W] Energy from that Pokémon to this Pokémon."
           delayedA {
             before KNOCKOUT, {
-              def energies = self.owner.pbg.active.cards.filterByEnergyType(W)
-              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && !self.active && ef.pokemonToBeKnockedOut.owner == self.owner && ef.pokemonToBeKnockedOut.active && energies && confirm("Use $thisAbility?", self.owner)) {
+              def pokemon = ef.pokemonToBeKnockedOut as PokemonCardSet
+              def energies = pokemon.cards.filterByEnergyType(W)
+              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && pokemon.owner == self.owner && pokemon.active && energies && confirm("Use $thisAbility?", self.owner)) {
                 powerUsed()
-                def energiesToMove = energies.select(max: energies.size(), "Which Energies to move to Kingdra?", {true}, self.owner)
-
-                def pcsMap = [:]
-
-                energiesToMove.each {
-                  def pcs = it.findPCS()
-                  if (pcsMap.containsKey(pcs)) (pcsMap[pcs] as CardList).add(it)
-                  else pcsMap.put(pcs, new CardList(it))
-                  energySwitch pcs, self, it, true
-                }
-
-                pcsMap.each { key, val ->
-                  bc "$val moved from $key to $self"
+                energies.select(max: energies.size(), "Which Energies to move to $self?", {true}, self.owner).each {
+                  energySwitch it.findPCS(), self, it
                 }
               }
             }
@@ -2379,7 +2369,6 @@ public enum BattleStyles implements LogicCardInfo {
           text "Once during your turn (before your attack), you may switch this Pokémon with an Aegislash in your hand. (Any cards attached to this Pokémon, damage counters, Special Conditions, turns in play, and any other effects remain on the new Pokémon.)"
           actionA {
             checkLastTurn()
-            assert !bg.em().retrieveObject("ScoopUpBlock_Count$self.owner.opposite") || !self.numberOfDamageCounters : "Scoop-Up Block prevents $thisAbility's effect"
             assert bg.em().retrieveObject("Stance_Change_" + self.hashCode()) != (bg.turnCount) : "Already used Stance Change"
             assert my.hand.filterByNameEquals("Aegislash") : "No Aegislash in hand"
 
@@ -2389,14 +2378,9 @@ public enum BattleStyles implements LogicCardInfo {
             def card = my.hand.filterByNameEquals("Aegislash").select("Stance Change").first()
             def pcs = self
             def top = pcs.topPokemonCard
-            pcs.cards.remove(top)
-            my.hand.add(top)
-            my.hand.remove(card)
-            pcs.cards.add(card)
-
+            bg.em().activateInnerEffect(new MoveCard(top, my.hand))
+            bg.em().activateInnerEffect(new MoveCard(card, pcs))
             bc "Switched with $card"
-            bg.em().run new CheckAbilities(OTHER, new PcsList(self))
-            checkFaint()
           }
         }
         move "Full Metal Blade", {
@@ -2416,7 +2400,6 @@ public enum BattleStyles implements LogicCardInfo {
           text "Once during your turn (before your attack), you may switch this Pokémon with an Aegislash in your hand. (Any cards attached to this Pokémon, damage counters, Special Conditions, turns in play, and any other effects remain on the new Pokémon.)"
           actionA {
             checkLastTurn()
-            assert !bg.em().retrieveObject("ScoopUpBlock_Count$self.owner.opposite") || !self.numberOfDamageCounters : "Scoop-Up Block prevents $thisAbility's effect"
             assert bg.em().retrieveObject("Stance_Change_" + self.hashCode()) != (bg.turnCount) : "Already used Stance Change"
             assert my.hand.filterByNameEquals("Aegislash") : "No Aegislash in hand"
 
@@ -2426,14 +2409,9 @@ public enum BattleStyles implements LogicCardInfo {
             def card = my.hand.filterByNameEquals("Aegislash").select("Stance Change").first()
             def pcs = self
             def top = pcs.topPokemonCard
-            pcs.cards.remove(top)
-            my.hand.add(top)
-            my.hand.remove(card)
-            pcs.cards.add(card)
-
+            bg.em().activateInnerEffect(new MoveCard(top, my.hand))
+            bg.em().activateInnerEffect(new MoveCard(card, pcs))
             bc "Switched with $card"
-            bg.em().run new CheckAbilities(OTHER, new PcsList(self))
-            checkFaint()
           }
         }
         move "Gigaton Bash", {
@@ -2472,22 +2450,12 @@ public enum BattleStyles implements LogicCardInfo {
         resistance GRASS, MINUS30
         bwAbility "Lustrous Body", {
           text "Prevent all effects of your opponent's Pokémon's Abilities done to this Pokémon."
-          // Unsure of how this will work if Ability effects are chained
-          def fromSelf = false
           delayedA {
-            before BW_ABILITY, {
-              fromSelf = ef.self.owner == self.owner
-            }
             before null, self, SRC_ABILITY, {
-              if (fromSelf) {
-                fromSelf = false
-                return
+              if (e.sourceAbility.ownerCard.player == self.owner.opposite) {
+                bc "Lustrous Body prevents effect ${e.type}"
+                prevent()
               }
-              bc "$thisAbility prevents effect"
-              prevent()
-            }
-            after BW_ABILITY, {
-              fromSelf = false
             }
           }
         }
@@ -2717,7 +2685,7 @@ public enum BattleStyles implements LogicCardInfo {
       case BRUNO_121:
       return supporter (this) {
         text "Shuffle your hand into your deck. Then, draw 4 cards. If any of your Pokémon were Knocked Out during your opponent's last turn, draw 7 cards instead."
-        globalAbility { Card thisCard->
+        initHook { Card thisCard->
           delayed {
             before KNOCKOUT, {
               if (ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite) {
@@ -3045,7 +3013,7 @@ public enum BattleStyles implements LogicCardInfo {
         def lastTurn = 0
         def actions = []
         onPlay {
-          actions = action("Stadium: Tower of Darkness") {
+          actions = action(thisCard, "Stadium: Tower of Darkness") {
             assert my.deck : "Deck is empty"
             assert my.hand.filterByType(SINGLE_STRIKE) : "No Single Strike cards in hand"
             assert lastTurn != bg().turnCount : "Already used"
@@ -3092,16 +3060,13 @@ public enum BattleStyles implements LogicCardInfo {
           "As long as this card is attached to a Pokémon, it provides 2 in any combination of [W] Energy and [F] Energy."
         def check = { PokemonCardSet pcs->
           if (!pcs.rapidStrike) {
-            targeted null, SRC_SPENERGY, {
-              discard thisCard
-            }
+            discard thisCard
           }
         }
         def checkEff
         onPlay {reason->
           checkEff = delayed {
-            after EVOLVE, { check self }
-            after DEVOLVE, { check self }
+            after CHANGE_STAGE, { check self }
             after ATTACH_ENERGY, self, { check self }
           }
         }
@@ -3124,16 +3089,14 @@ public enum BattleStyles implements LogicCardInfo {
           "As long as this card is attached to a Pokémon, it provides Fighting and [D] Energy but provides only 1 Energy at a time, and the attacks of the Pokémon this card is attached to do 20 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
         def check = { PokemonCardSet pcs->
           if (!pcs.singleStrike) {
-            targeted null, SRC_SPENERGY, {
-              discard thisCard
-            }
+            discard thisCard
           }
         }
         def damageInc
         onPlay {reason->
           damageInc = delayed {
             after PROCESS_ATTACK_EFFECTS, {
-              targeted self, SRC_SPENERGY, {
+              targeted self, {
                 bg.dm().each {
                   if (ef.attacker == self && it.dmg.value && it.from == self && it.to.active && it.to.owner != self.owner) {
                     bc "Single Strike Energy +20"
@@ -3142,8 +3105,7 @@ public enum BattleStyles implements LogicCardInfo {
                 }
               }
             }
-            after EVOLVE, { check self }
-            after DEVOLVE, { check self }
+            after CHANGE_STAGE, { check self }
             after ATTACH_ENERGY, self, { check self }
           }
         }

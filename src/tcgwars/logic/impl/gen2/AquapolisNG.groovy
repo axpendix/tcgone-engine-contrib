@@ -1,4 +1,7 @@
-package tcgwars.logic.impl.gen2;
+package tcgwars.logic.impl.gen2
+
+import tcgwars.logic.impl.gen3.CrystalGuardians
+import tcgwars.logic.impl.gen3.FireRedLeafGreen
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -264,7 +267,7 @@ public enum AquapolisNG implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -1058,21 +1061,26 @@ public enum AquapolisNG implements LogicCardInfo {
       };
       case VILEPLUME_43:
       return evolution (this, from:"Gloom", hp:HP100, type:G, retreatCost:2) {
-        weakness P
+        weakness FIRE
         move "Poison Scent", {
-          text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Poisoned and Confused. If tails, the Defending Pokémon is now Poisoned and Asleep."
+          text "Flip a coin. If heads, the Defending Pokémon is now Poisoned and Confused. If tails, the Defending Pokémon is now Poisoned and Asleep."
           energyCost G
-          attackRequirement {}
           onAttack {
-            damage 10
+            flip 1, {
+              apply POISONED
+              apply CONFUSED
+            }, {
+              apply POISONED
+              apply ASLEEP
+            }
           }
         }
         move "Addictive Pollen", {
           text "40 damage. Flip a coin. If heads, your opponent can't play Supporter cards during his or her next turn."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 40
+            flip {opponentCantPlaySupporterNextTurn(delegate)}
           }
         }
       };
@@ -2445,13 +2453,7 @@ public enum AquapolisNG implements LogicCardInfo {
         }
       };
       case ENERGY_SWITCH_120:
-      return basicTrainer (this) {
-        text "Move a basic Energy card attached to 1 of your Pokémon to another of your Pokémon."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this)
       case FIGHTING_CUBE_01_121:
       return basicTrainer (this) {
         text "Flip a number of coins equal to the number of damage counters on this Pokémon. This attack does 10 damage times the number of heads."
@@ -2511,15 +2513,8 @@ public enum AquapolisNG implements LogicCardInfo {
         }
       };
       case MEMORY_BERRY_128:
-      return pokemonTool (this) {
-        text "The Pokémon this card is attached to can use any attack from its Basic Pokémon card or any Evolution card from which the Pokémon evolved. (You still have to pay for that attack's Energy cost.) Discard this card at the end of any turn the Pokémon attacks."
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        allowAttach {to->
-        }
-      };
+        // "The Pokémon this card is attached to can use any attack from its Basic Pokémon card or any Evolution card from which the Pokémon evolved. (You still have to pay for that attack's Energy cost.) Discard this card at the end of any turn the Pokémon attacks."
+        return copy(CrystalGuardians.MEMORY_BERRY_80, this);
       case METAL_CUBE_01_129:
       return basicTrainer (this) {
         text "Before doing damage, you may choose 1 of your opponent's Benched Pokémon and switch it with the Defending Pokémon."

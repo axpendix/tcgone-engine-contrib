@@ -181,7 +181,7 @@ public enum LegendMaker implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -227,6 +227,7 @@ public enum LegendMaker implements LogicCardInfo {
                   prevent()
                 }
               }
+              unregisterAfter 2
             }
             afterDamage{
               preventAllEffectsFromCustomPokemonNextTurn(thisMove, self, {it.EX})
@@ -282,10 +283,9 @@ public enum LegendMaker implements LogicCardInfo {
               remainingTargets--
             }
             toBeDevolved.each{
-              def top = it.topPokemonCard
-              devolve(it, top, opp.deck)
+              devolve(it, opp.deck)
             }
-            if (toBeDevolved) { shuffleDeck(null, TargetPlayer.OPPONENT) }
+            if (toBeDevolved) { shuffleOppDeck() }
           }
         }
         move "Linear Attack", {
@@ -574,7 +574,7 @@ public enum LegendMaker implements LogicCardInfo {
               if (my.all.any{ it.evolution && it.name != "Shiftry" } && confirm("Evolutionary Fan - Return 1 of your evolved Pokémon, and all cards attached to it, back to your hand?")){
                 powerUsed()
                 def pcs = my.all.findAll{ it.evolution && it.name != "Shiftry" }.select("Which Pokémon, and all cards attached to it, will you bring back to your hand?")
-                scoopUpPokemon([:], pcs, delegate, POKEPOWER)
+                scoopUpPokemon([:], pcs, delegate)
               }
             }
           }
@@ -1143,8 +1143,7 @@ public enum LegendMaker implements LogicCardInfo {
                   }
                 }
                 after FALL_BACK, pcs, {unregister()}
-                after EVOLVE, pcs, {unregister()}
-                after DEVOLVE, pcs, {unregister()}
+                after CHANGE_STAGE, pcs, {unregister()}
                 unregisterAfter 2
               }
             }
@@ -1197,7 +1196,7 @@ public enum LegendMaker implements LogicCardInfo {
             flip {
               def nam=self.name
               def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-              if(tar) evolve(self, tar.first(), OTHER)
+              if(tar) evolve(self, tar.first())
               shuffleDeck()
             }
           }
@@ -1331,9 +1330,8 @@ public enum LegendMaker implements LogicCardInfo {
             def list = opp.all.findAll { it.evolution }
             def pcs = list.select("Choose one of your opponent's evolved Pokémon.")
             flip {
-              def top = pcs.topPokemonCard
-              devolve(pcs, top, opp.deck)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              devolve(pcs, opp.deck)
+              shuffleOppDeck()
             }
           }
         }
@@ -1622,7 +1620,7 @@ public enum LegendMaker implements LogicCardInfo {
           //TODO: Make this apply only once?
           delayedA {
             before null, null, Source.ATTACK, {
-              def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
+              def pcs = e.getTargetPokemon()
               if (pcs && self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs.topPokemonCard.name == "Tentacruel" && self.cards.any{it.name == "React Energy"}) {
                 bc "Fast Protection prevents effect"
                 prevent()
@@ -1804,15 +1802,7 @@ public enum LegendMaker implements LogicCardInfo {
         move "Ascension", {
           text "Search your deck for a card that evolves from Grimer and put it onto Grimer. (This counts as evolving Grimer.) Shuffle your deck afterward."
           energyCost G
-          attackRequirement {
-            assert my.deck : "Deck is empty"
-          }
-          onAttack {
-            def nam=self.name
-            def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-            if(tar) evolve(self, tar.first(), OTHER)
-            shuffleDeck()
-          }
+          ascension delegate
         }
         move "Sludge Toss", {
           text "20 damage."
@@ -2205,9 +2195,11 @@ public enum LegendMaker implements LogicCardInfo {
             h.object = hp(40)
           }
           eff2 = delayed {
-            before BURNED_SPC, null, null, EVOLVE, {
-              bc "Full Flame prevents removing the Special Condition Burned by evolving or devolving"
-              prevent()
+            before BURNED_SPC, null, null, CHANGE_STAGE, {
+              if (bg.em().currentEffectStack.find{it.effectType == EVOLVE || it.effectType == DEVOLVE}) {
+                bc "Full Flame prevents removing the Special Condition Burned by evolving or devolving"
+                prevent()
+              }
             }
           }
         }
@@ -2243,7 +2235,7 @@ public enum LegendMaker implements LogicCardInfo {
         def lastTurn=0
         def actions=[]
         onPlay {
-          actions=action("Stadium: Power Tree") {
+          actions=action(thisCard, "Stadium: Power Tree") {
             assert lastTurn != bg().turnCount : "You've already used Power Tree this turn"
             assert my.discard.filterByType(BASIC_ENERGY) : "There are no basic Energy cards in your discard Pile"
             assert !my.discard.filterByType(SPECIAL_ENERGY) : "You cannot use Power Tree, there are Special Energy cards in your discard pile"
@@ -2264,7 +2256,7 @@ public enum LegendMaker implements LogicCardInfo {
         def lastTurn=0
         def actions=[]
         onPlay {
-          actions=action("Stadium: Strange Cave") {
+          actions=action(thisCard, "Stadium: Strange Cave") {
             assert lastTurn != bg().turnCount : "Already used"
             assert my.bench.notFull : "Bench is full"
             def elegible = my.hand.findAll{["Omanyte", "Kabuto", "Aerodactyl", "Aerodactyl ex", "Lileep", "Anorith"].contains(it.name)}
@@ -2322,7 +2314,7 @@ public enum LegendMaker implements LogicCardInfo {
                     }
                   }
                 }
-                acl = action("Discard Claw Fossil", [TargetPlayer.SELF]) {
+                acl = action(pokemonCard, "Discard Claw Fossil", [TargetPlayer.SELF]) {
                   delayed {
                     before TAKE_PRIZE, {
                       if (ef.pcs==self) {
@@ -2338,7 +2330,7 @@ public enum LegendMaker implements LogicCardInfo {
               }
             }
           }
-          pokemonCard.player = trainerCard.player
+          pokemonCard.initializeFrom(trainerCard)
           bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
           benchPCS(pokemonCard)
         }
@@ -2380,7 +2372,7 @@ public enum LegendMaker implements LogicCardInfo {
                     }
                   }
                 }
-                acl = action("Discard Mysterious Fossil", [TargetPlayer.SELF]){
+                acl = action(pokemonCard, "Discard Mysterious Fossil", [TargetPlayer.SELF]){
                   new Knockout(self).run(bg)
                 }
               }
@@ -2389,7 +2381,7 @@ public enum LegendMaker implements LogicCardInfo {
               }
             }
           }
-          pokemonCard.player = trainerCard.player
+          pokemonCard.initializeFrom(trainerCard)
           bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
           benchPCS(pokemonCard)
         }
@@ -2444,7 +2436,7 @@ public enum LegendMaker implements LogicCardInfo {
                     }
                   }
                 }
-                acl = action("Discard Root Fossil", [TargetPlayer.SELF]) {
+                acl = action(pokemonCard, "Discard Root Fossil", [TargetPlayer.SELF]) {
                   delayed{
                     before TAKE_PRIZE, {
                       if(ef.pcs==self){
@@ -2460,7 +2452,7 @@ public enum LegendMaker implements LogicCardInfo {
               }
             }
           }
-          pokemonCard.player = trainerCard.player
+          pokemonCard.initializeFrom(trainerCard)
           bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
           benchPCS(pokemonCard)
         }
@@ -2568,10 +2560,14 @@ public enum LegendMaker implements LogicCardInfo {
             def target = all
             target.remove(source)
             target = target.select("Target for damage counter")
-            source.damage-=hp(10)
-            directDamage 10, target, SRC_ABILITY
-            bc "Moved 1 damage counter from $source to $target"
-            checkFaint()
+            targeted (source) {
+              targeted (target) {
+                source.damage-=hp(10)
+                directDamage 10, target, SRC_ABILITY
+                bc "Moved 1 damage counter from $source to $target"
+                checkFaint()
+              }
+            }
           }
         }
         move "Shadow Chant", {

@@ -177,7 +177,7 @@ public enum PokemodFossil implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -190,8 +190,8 @@ public enum PokemodFossil implements LogicCardInfo {
           pokemonPower "Prehistoric Power", {
             text "As long as this Pokémon has a Pokémon Tool card attached to it, no more evolution cards can be played. This power stops working while Aerodactyl is affected by a Special Condition."
             delayedA {
-              before PLAY_EVOLUTION, {
-                if (!self.specialConditions && self.cards.filterByType(POKEMON_TOOL)) {
+              before EVOLVE, {
+                if (!self.specialConditions && self.cards.filterByType(POKEMON_TOOL) && ef.activationReason == PLAY_FROM_HAND) {
                   wcu "Prehistoric Power prevents you from playing Evolution cards!"
                   prevent()
                 }
@@ -697,8 +697,7 @@ public enum PokemodFossil implements LogicCardInfo {
                 }
                 unregisterAfter 2
                 after FALL_BACK, self, { unregister() }
-                after EVOLVE, self, { unregister() }
-                after DEVOLVE, self, { unregister() }
+                after CHANGE_STAGE, self, { unregister() }
 
               }
             }

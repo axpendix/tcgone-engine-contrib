@@ -210,7 +210,7 @@ public enum TeamRocketNG implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -442,7 +442,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              afterDamage {flipThenApplySC PARALYZED}
+              flipThenApplySC PARALYZED
             }
           }
 
@@ -474,7 +474,6 @@ public enum TeamRocketNG implements LogicCardInfo {
           move "Mega Punch", {
             text "30 damage."
             energyCost F, F
-            attackRequirement {}
             onAttack {
               damage 30
             }
@@ -486,8 +485,10 @@ public enum TeamRocketNG implements LogicCardInfo {
               assert opp.bench
             }
             onAttack {
-              shuffleDeck(opp.active.cards)
-              removePCS(opp.active)
+              targeted (defending) {
+                shuffleDeck(defending.cards, TargetPlayer.OPPONENT)
+                removePCS(defending)
+              }
             }
           }
 
@@ -618,10 +619,11 @@ public enum TeamRocketNG implements LogicCardInfo {
         return basicTrainer (this) {
           text "Look at your opponent’s hand. If he or she has any Trainer cards, choose 1 of them. Your opponent shuffles that card into his or her deck."
           onPlay {
-            def list = opp.hand.shuffledCopy().showToMe("Opponent's hand").filterByType(TRAINER)
-            if(list){
-              list.select(count: 1, "Discard").moveTo(opp.deck)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+            def list = opp.hand.shuffledCopy()
+            list = list.select(count: list.hasTrainer() ? 1 : 0, "Opponent's hand. If there is a Trainer card, choose 1 of them to have your opponent shuffle that card into their deck", cardTypeFilter(TRAINER))
+            if(list) {
+              list.showToOpponent("Opponent played Rocket's Sneak Attack and this card from your hand will be shuffled into your deck").moveTo(opp.deck)
+              shuffleOppDeck()
             }
           }
           playRequirement{
@@ -948,7 +950,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              afterDamage {flipThenApplySC POISONED}
+              flipThenApplySC POISONED
             }
           }
 
@@ -1066,8 +1068,7 @@ public enum TeamRocketNG implements LogicCardInfo {
                   }
                 }
                 after FALL_BACK, self, {unregister()}
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
+                after CHANGE_STAGE, self, {unregister()}
 
                 unregisterAfter 2
               }
@@ -1095,7 +1096,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             onAttack {
               def nam=self.name
               def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor && (it.name == "Gyarados" || it.name == "Dark Gyarados")})
-              if(tar) evolve(self, tar.first(), OTHER)
+              if(tar) evolve(self, tar.first())
               shuffleDeck()
             }
           }
@@ -1128,11 +1129,7 @@ public enum TeamRocketNG implements LogicCardInfo {
                     eff.unregister()
                     unregister()
                   }
-                  after EVOLVE, defending, {
-                    eff.unregister()
-                    unregister()
-                  }
-                  after DEVOLVE, defending, {
+                  after CHANGE_STAGE, defending, {
                     eff.unregister()
                     unregister()
                   }
@@ -1146,7 +1143,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              afterDamage {flipThenApplySC CONFUSED}
+              flipThenApplySC CONFUSED
             }
           }
 
@@ -1161,9 +1158,10 @@ public enum TeamRocketNG implements LogicCardInfo {
               assert my.bench
             }
             onAttack {
-              self.cards.getExcludedList(self.topPokemonCard).discard()
+              def abra = self.topPokemonCard
+              self.cards.getExcludedList(abra).discard()
+              moveCard(abra, my.deck)
               removePCS(self)
-              moveCard(self.topPokemonCard, my.deck)
               shuffleDeck()
             }
           }
@@ -1173,7 +1171,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              afterDamage {flipThenApplySC PARALYZED}
+              flipThenApplySC PARALYZED
             }
           }
 
@@ -1255,7 +1253,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              afterDamage {flipThenApplySC PARALYZED}
+              flipThenApplySC PARALYZED
             }
           }
 
@@ -1323,7 +1321,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              afterDamage {flipThenApplySC POISONED}
+              flipThenApplySC POISONED
             }
           }
 
@@ -1370,7 +1368,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              afterDamage {flipThenApplySC POISONED}
+              flipThenApplySC POISONED
             }
           }
 
@@ -1425,7 +1423,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
             }
           }
           move "Anger", {
@@ -1681,7 +1679,7 @@ public enum TeamRocketNG implements LogicCardInfo {
           onPlay {
             my.hand.findAll({it != thisCard}).select().discard()
             opp.hand.moveTo(hidden:true, opp.deck)
-            shuffleDeck(null,TargetPlayer.OPPONENT)
+            shuffleOppDeck()
             draw(4, TargetPlayer.OPPONENT)
           }
           playRequirement{
@@ -1710,17 +1708,19 @@ public enum TeamRocketNG implements LogicCardInfo {
             delayed{
               register{
                 effect1 = getter IS_ABILITY_BLOCKED, {h->
-                  if (h.effect.ability instanceof BwAbility) {
+                  if (h.effect.ability instanceof PokemonPower) {
                     h.object=true
                   }
                 }
                 effect2 = getter IS_GLOBAL_ABILITY_BLOCKED, {h->
                   h.object=true
                 }
+                bc "Goop Gas Attack will block All Pokémon Powers until the end of next turn."
               }
               unregister{
                 effect1.unregister()
                 effect2.unregister()
+                bc "Goop Gas Attack fades away"
               }
               unregisterAfter 2
             }

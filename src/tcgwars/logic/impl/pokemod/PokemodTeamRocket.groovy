@@ -197,7 +197,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -376,7 +376,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              afterDamage {flipThenApplySC PARALYZED}
+              flipThenApplySC PARALYZED
             }
           }
 
@@ -545,7 +545,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             def list = opp.hand.shuffledCopy().showToMe("Opponent's hand").{it.cardTypes.is(TRAINER) && !it.cardTypes.is(SUPPORTER)}
             if(list){
               list.select(count: 1, "Discard").moveTo(opp.deck)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
             }
           }
           playRequirement{
@@ -794,7 +794,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              afterDamage {flipThenApplySC POISONED}
+              flipThenApplySC POISONED
             }
           }
 
@@ -910,8 +910,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
                   }
                 }
                 after FALL_BACK, self, {unregister()}
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
+                after CHANGE_STAGE, self, {unregister()}
 
                 unregisterAfter 2
               }
@@ -939,7 +938,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             onAttack {
               def nam=self.name
               def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor && (it.name == "Gyarados" || it.name == "Dark Gyarados")})
-              if(tar) evolve(self, tar.first(), OTHER)
+              if(tar) evolve(self, tar.first())
               shuffleDeck()
             }
           }
@@ -973,8 +972,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
                       eff.unregister()
                     }
                     after FALL_BACK, defending, {unregister()}
-                    after EVOLVE, defending, {unregister()}
-                    after DEVOLVE, defending, {unregister()}
+                    after CHANGE_STAGE, defending, {unregister()}
                   }
                 }
               }
@@ -986,7 +984,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              afterDamage {flipThenApplySC CONFUSED}
+              flipThenApplySC CONFUSED
             }
           }
 
@@ -1022,7 +1020,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              afterDamage {flipThenApplySC POISONED}
+              flipThenApplySC POISONED
             }
           }
 

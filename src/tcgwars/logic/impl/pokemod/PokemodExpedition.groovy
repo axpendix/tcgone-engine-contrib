@@ -1,5 +1,7 @@
 package tcgwars.logic.impl.pokemod
 
+import tcgwars.logic.impl.gen3.FireRedLeafGreen
+
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
@@ -267,7 +269,7 @@ public enum PokemodExpedition implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -2378,13 +2380,7 @@ public enum PokemodExpedition implements LogicCardInfo {
         }
       };
       case SWITCH_157:
-      return basicTrainer (this) {
-        text "Switch your Active Pokémon with 1 of your Benched Pokémon."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy(FireRedLeafGreen.SWITCH_102, this);
       case DARKNESS_ENERGY_158:
       return specialEnergy (this, [[C]]) {
         text "If the Pokémon Darkness Energy is attached to does damage with an attack (after applying Weakness and Resistance), the attack does 10 more damage. At the end of every turn, put 1 damage counter on the Pokémon Darkness Energy is attached to, unless it's [D]. Darkness Energy provides [D] Energy. (Doesn't count as a basic Energy card.)"

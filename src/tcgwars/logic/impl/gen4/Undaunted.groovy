@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen4
 
+import tcgwars.logic.effect.gm.ActivateSimpleTrainer
 import tcgwars.logic.effect.special.SpecialConditionType
 import tcgwars.logic.impl.gen3.RubySapphire;
 
@@ -118,10 +119,10 @@ public enum Undaunted implements LogicCardInfo {
   SCIZOR_84 ("Scizor", "84", Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _METAL_]),
   SLOWKING_85 ("Slowking", "85", Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
   UMBREON_86 ("Umbreon", "86", Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  KYOGRE_AND_GROUDON_LEGEND_87 ("Kyogre & Groudon LEGEND", "87", Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
-  KYOGRE_AND_GROUDON_LEGEND_88 ("Kyogre & Groudon LEGEND", "88", Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
-  RAYQUAZA_AND_DEOXYS_LEGEND_89 ("Rayquaza & Deoxys LEGEND", "89", Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_, LEGEND]),
-  RAYQUAZA_AND_DEOXYS_LEGEND_90 ("Rayquaza & Deoxys LEGEND", "90", Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_, LEGEND]),
+  KYOGRE_AND_GROUDON_LEGEND_87 ("Kyogre & Groudon LEGEND", "87", Rarity.HOLORARE, [POKEMON, _WATER_, LEGEND]),
+  KYOGRE_AND_GROUDON_LEGEND_88 ("Kyogre & Groudon LEGEND", "88", Rarity.HOLORARE, [POKEMON, _WATER_, LEGEND]),
+  RAYQUAZA_AND_DEOXYS_LEGEND_89 ("Rayquaza & Deoxys LEGEND", "89", Rarity.HOLORARE, [POKEMON, _PSYCHIC_, LEGEND]),
+  RAYQUAZA_AND_DEOXYS_LEGEND_90 ("Rayquaza & Deoxys LEGEND", "90", Rarity.HOLORARE, [POKEMON, _PSYCHIC_, LEGEND]),
   ALPH_LITHOGRAPH_THREE ("Alph Lithograph", "THREE", Rarity.HOLORARE, [TRAINER, ITEM]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
@@ -170,7 +171,7 @@ public enum Undaunted implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -365,9 +366,7 @@ public enum Undaunted implements LogicCardInfo {
               def randomOppHand = opp.hand.shuffledCopy()
               if(randomOppHand.hasType(SUPPORTER)){
                 def card = randomOppHand.select(min:1, "Opponent's hand. Select a Supporter.", cardTypeFilter(SUPPORTER)).first()
-                bg.deterministicCurrentThreadPlayerType=self.owner
-                bg.em().run(new PlayTrainer(card))
-                bg.clearDeterministicCurrentThreadPlayerType()
+                bg.em().run(new ActivateSimpleTrainer(card))
               } else {
                 randomOppHand.showToMe("Opponent's hand. No supporter there.")
               }
@@ -420,7 +419,7 @@ public enum Undaunted implements LogicCardInfo {
               damage 30
               delayed {
                 before null, self, Source.ATTACK, {
-                  if ((opp.active.hasPokePower() || opp.active.hasPokeBody() || opp.active.hasPokemonPower()) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                  if ((e.sourceAttack.attacker.hasPokePower() || e.sourceAttack.attacker.hasPokeBody() || e.sourceAttack.attacker.hasPokemonPower()) && e.sourceAttack.attacker.owner != self.owner && ef.effectType != DAMAGE){
                     bc "Moonlight Fang prevents effect"
                     prevent()
                   }
@@ -434,8 +433,7 @@ public enum Undaunted implements LogicCardInfo {
                   }
                 }
                 after FALL_BACK, self, {unregister()}
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
+                after CHANGE_STAGE, self, {unregister()}
                 unregisterAfter 2
               }
             }
@@ -497,7 +495,7 @@ public enum Undaunted implements LogicCardInfo {
               shuffleDeck()
               opp.active.cards.moveTo(opp.deck)
               removePCS(opp.active)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
             }
           }
 
@@ -757,7 +755,7 @@ public enum Undaunted implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if(it.from.owner != self.owner && it.to.owner==self.owner && it.to.benched && it.to.types.contains(G) && it.dmg.value && it.notNoEffect){
+                  if(it.to.owner==self.owner && it.to.benched && it.to.types.contains(G) && it.dmg.value && it.notNoEffect){
                     bc "$thisAbility prevents damage"
                     it.dmg=hp(0)
                   }
@@ -783,8 +781,7 @@ public enum Undaunted implements LogicCardInfo {
                   }
                   unregisterAfter 3
                   after FALL_BACK, self, {unregister()}
-                  after EVOLVE, self, {unregister()}
-                  after DEVOLVE, self, {unregister()}
+                  after CHANGE_STAGE, self, {unregister()}
                 }
               }
             }
@@ -1089,8 +1086,7 @@ public enum Undaunted implements LogicCardInfo {
                     }
                   }
                   unregisterAfter 2
-                  after EVOLVE, self, { unregister() }
-                  after DEVOLVE, self, { unregister() }
+                  after CHANGE_STAGE, self, { unregister() }
                   after FALL_BACK, self, { unregister() }
                 }
               }
@@ -1392,7 +1388,7 @@ public enum Undaunted implements LogicCardInfo {
             text "more."
             energyCost P
             onAttack {
-              defendingRetreatsCostsMore (defending, [C])
+              defendingRetreatsCostsMore (defending,1)
             }
           }
           move "Sludge Toss", {
@@ -1819,7 +1815,7 @@ public enum Undaunted implements LogicCardInfo {
           def lastTurn=0
           def actions=[]
           onPlay {
-            actions=action("Stadium: Burned Tower") {
+            actions=action(thisCard, "Stadium: Burned Tower") {
               assert my.discard.find(cardTypeFilter(BASIC_ENERGY)) : "No Basic Energies in your discard pile."
               assert lastTurn != bg().turnCount : "Already used this turn."
               bc "Used Training Court effect."
@@ -2104,7 +2100,7 @@ public enum Undaunted implements LogicCardInfo {
               checkNoSPC()
               powerUsed()
               flip ({
-                scoopUpPokemon([:], self, delegate, Source.POKEPOWER)
+                scoopUpPokemon([:], self, delegate)
               })
             }
           }

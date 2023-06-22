@@ -245,7 +245,7 @@ public enum GuardiansRising implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -499,10 +499,14 @@ public enum GuardiansRising implements LogicCardInfo {
               def tar=all
               all.remove(src)
               tar=tar.select("Target for damage counter")
-              src.damage-=hp(10)
-              directDamage 10, tar, SRC_ABILITY
-              bc "Moved 1 damage counter from $src to $tar"
-              checkFaint()
+              targeted (src) {
+                targeted (tar) {
+                  src.damage-=hp(10)
+                  directDamage 10, tar, SRC_ABILITY
+                  bc "Moved 1 damage counter from $src to $tar"
+                  checkFaint()
+                }
+              }
             }
           }
           move "Super Singe", {
@@ -1039,19 +1043,14 @@ public enum GuardiansRising implements LogicCardInfo {
             text "Once during your turn (before your attack), you may switch this Pokémon with a Wishiwashi-GX in your hand. Any attached cards, damage counters, Special Conditions, turns in play, and any other effects remain on the new Pokémon."
             actionA {
               assert my.hand.find{it.name=='Wishiwashi-GX'}
-              assert !bg.em().retrieveObject("ScoopUpBlock_Count$self.owner.opposite") || !self.numberOfDamageCounters : "Scoop-Up Block prevents $thisAbility's effect."
               checkLastTurn()
               powerUsed()
               def card = my.hand.findAll{it.name=='Wishiwashi-GX'}.select().first()
               def pcs = self
               def top = pcs.topPokemonCard
-              pcs.cards.remove(top)
-              my.hand.add(top)
-              my.hand.remove(card)
-              pcs.cards.add(card)
+              bg.em().activateInnerEffect(new MoveCard(top, my.hand))
+              bg.em().activateInnerEffect(new MoveCard(card, pcs))
               bc "$top was switched with $card"
-              checkFaint()
-              bg.em().run(new CheckAbilities(OTHER, new PcsList(pcs))) //need to remove existing abilities?
             }
           }
           move "Sharpshooting", {
@@ -1547,7 +1546,7 @@ public enum GuardiansRising implements LogicCardInfo {
         };
       case MIMIKYU_58:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
-          globalAbility {Card thisCard->
+          initHook {Card thisCard->
             delayed (priority: LAST) {
               after PROCESS_ATTACK_EFFECTS, {
                 //TODO: Refactor, make these checks be stored somewhere globally as to fix opponent copying Copycat and similar (e.g. with Trickster GX)
@@ -1711,21 +1710,18 @@ public enum GuardiansRising implements LogicCardInfo {
                 bg.dm().each {if(it.from.owner != self.owner && it.to.owner==self.owner && it.to.benched && it.dmg.value && it.notNoEffect){
                   bc "Daunting Pose reduces damage"
                   it.dmg=hp(0)
-                  // TODO needs source refactoring to work correctly
-                  // TODO Fix it not blocking damage counters.
                 }}
               }
               before DIRECT_DAMAGE, null, ATTACK, {
-                def pcs = ef.getResolvedTarget(bg, e)
-                if(bg.currentTurn == self.owner.opposite && pcs.owner == self.owner && !pcs.active) {
+                def pcs = e.targetPokemon
+                if(e.sourceAttack.attacker.owner == self.owner.opposite && pcs.owner == self.owner && pcs.benched) {
                   bc "Daunting Pose prevents damage counters from being placed on $self.name"
                   prevent()
                 }
               }
               before DIRECT_DAMAGE, null, SRC_ABILITY, {
-                def pcs = ef.getResolvedTarget(bg, e)
-                //FIXME this will also block own pokemon abilities. to fix this, "Source refactoring" must be done. (See omega stop)
-                if(/*bg.currentTurn == self.owner.opposite &&*/ pcs.owner == self.owner && !pcs.active) {
+                def pcs = e.targetPokemon
+                if(e.sourceAbility.ownerCard.player == self.owner.opposite && pcs.owner == self.owner && pcs.benched) {
                   bc "Daunting Pose prevents damage counters from being placed on $self.name"
                   prevent()
                 }
@@ -1770,7 +1766,6 @@ public enum GuardiansRising implements LogicCardInfo {
             text "Your opponent can't have more than 4 Benched Pokémon. If they have 5 or more Benched Pokémon, they discard Benched Pokémon until they have 4 Pokémon on the Bench. If more than one effect changes the number of Benched Pokémon allowed, use the smaller number."
             getterA (GET_BENCH_SIZE, BEFORE_LAST) {h->
               if(h.effect.playerType == self.owner.opposite) {
-                //TODO: Check this working with CLEFAIRY_144 (CEC) placing Lillie's Poké Doll
                 h.object = Math.min(h.object, 4)
               }
             }
@@ -2090,8 +2085,7 @@ public enum GuardiansRising implements LogicCardInfo {
                   }
                   unregisterAfter 2
                   after FALL_BACK, pcs, {unregister()}
-                  after EVOLVE, pcs, {unregister()}
-                  after DEVOLVE, pcs, {unregister()}
+                  after CHANGE_STAGE, pcs, {unregister()}
                 }
               }
             }
@@ -2324,8 +2318,7 @@ public enum GuardiansRising implements LogicCardInfo {
                     eff.unregister()
                   }
                   after FALL_BACK, pcs, {unregister()}
-                  after EVOLVE, pcs, {unregister()}
-                  after DEVOLVE, pcs, {unregister()}
+                  after CHANGE_STAGE, pcs, {unregister()}
                   unregisterAfter 3
                 }
               }
@@ -2400,7 +2393,7 @@ public enum GuardiansRising implements LogicCardInfo {
                 verdantWind()
               }
               before APPLY_SPECIAL_CONDITION, {
-                def pcs = ef.getResolvedTarget(bg, e)
+                def pcs = ef.getTargetPokemon()
                 if(pcs.owner==self.owner && pcs.cards.energyCount(Y)){
                   bc "Flower Shield prevents special conditions"
                   prevent()
@@ -2998,7 +2991,7 @@ public enum GuardiansRising implements LogicCardInfo {
           def lastTurn=0
           def actions=[]
           onPlay {
-            actions=action("Stadium: Brooklet Hill") {
+            actions=action(thisCard, "Stadium: Brooklet Hill") {
               assert my.deck
               assert my.bench.notFull
               assert lastTurn != bg().turnCount : "Already used"
@@ -3090,7 +3083,6 @@ public enum GuardiansRising implements LogicCardInfo {
           text "Shuffle your hand into your deck. If you have used your GX attack, draw 7 cards. If not, draw 4 cards.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
             shuffleDeck(hand.getExcludedList(thisCard))
-            hand.removeAll(hand.getExcludedList(thisCard))
             draw(isGxPerformed() ? 7 : 4)
           }
           playRequirement{

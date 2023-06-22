@@ -137,7 +137,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -747,11 +747,9 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
 
                 unregisterAfter 2
                 after FALL_BACK,defending, {unregister()}
-                after EVOLVE,defending, {unregister()}
-                after DEVOLVE,defending, {unregister()}
+                after CHANGE_STAGE,defending, {unregister()}
                 after FALL_BACK,self, {unregister()}
-                after EVOLVE,self, {unregister()}
-                after DEVOLVE,self, {unregister()}
+                after CHANGE_STAGE,self, {unregister()}
               }
             }
           }
@@ -813,7 +811,6 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
         move "Repeating Kick", {
           text "20x damage. Flip a coin until you get tails. This attack does 20 damage times the number of heads."
           energyCost F, F
-          attackRequirement {}
           onAttack {
             flipUntilTails { damage 20 }
           }
@@ -821,14 +818,14 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
         move "Rapid Spin", {
           text "30 damage. If your opponent has any Benched Pokémon, he or she chooses 1 of them and switches it with his or her Active Pokémon, then, if you have any Benched Pokémon, you switch 1 of them with your Active Pokémon. (Do the damage before switching the Pokémon.)"
           energyCost F, F, C
-          attackRequirement {}
           onAttack {
             damage 30
             afterDamage {
-              if (my.bench) {
-                sw self, my.bench.select("New active")
-                if (opp.bench) {
-                  sw defending, opp.bench.oppSelect("New active")
+              if (opp.bench) {
+                if (sw2(opp.bench.oppSelect("Select new active Pokemon"))) {
+                  if (my.bench) {
+                    sw2(my.bench.select("Select new active Pokemon"))
+                  }
                 }
               }
             }
@@ -882,7 +879,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
         def currentTurnCount=0
         def actions=[]
         onPlay {
-          actions=action("Stadium: Lucky Stadium") {
+          actions=action(thisCard, "Stadium: Lucky Stadium") {
             assert my.deck : "There are no more cards in your deck."
             assert currentTurnCount != bg().turnCount : "Already used Stadium"
             bc "Used Lucky Stadium"
@@ -902,11 +899,13 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
         text "If the effect of a Pokémon Power, attack, Energy card, or Trainer card would put a card in a discard pile into its owner's hand, that card stays in that discard pile instead."
         def eff
         onPlay {
-          // This needs testing, idk how MOVE_CARD would behave
           eff = delayed {
-            before MOVE_CARD, {
-              if (ef.cards.contains(card) && ef.newLocation?.is(card.player.pbg.hand) && ef.oldLocation?.is(card.player.pbg.discard)) {
-                prevent()
+            before MOVE_CARD_INNER, {
+              if (e.source == ATTACK || e.source == TRAINER_CARD || e.source == SRC_SPECIAL_ENERGY || (e.source == SRC_ABILITY && e.sourceAbility instanceof PokemonPower)) {
+                if (ef.fromList.zoneType == CardList.ZoneType.DISCARD && ef.toList.zoneType == CardList.ZoneType.HAND) {
+                  bc "Pokemon Tower prevents moving ${ef.card} from discard to hand"
+                  prevent()
+                }
               }
             }
           }

@@ -183,7 +183,7 @@ public enum Deoxys implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -646,27 +646,9 @@ public enum Deoxys implements LogicCardInfo {
           weakness PSYCHIC
           pokePower "Form Change", {
             text "Once during your turn (before you attack), you may search your deck for another Deoxys and switch it with Deoxys. (Any cards attached to Deoxys, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
-            actionA {
-              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
-              checkLastTurn()
-              assert my.deck : "Deck is empty"
-              bg.em().storeObject("Form_Change",bg.turnCount)
-              powerUsed()
-
-              def oldDeoxys = self.topPokemonCard
-              def newDeoxys = my.deck.search(min:0, max: 1, {
-                it.name == "Deoxys"
-              })
-
-              if (newDeoxys) {
-                newDeoxys.moveTo(self.cards)
-                my.deck.add(oldDeoxys)
-                self.cards.remove(oldDeoxys)
-                checkFaint()
-              }
-
-              shuffleDeck()
-            }
+            formChange(delegate, "Form Change", {
+              it.name == "Deoxys" || (it.name.contains("Deoxys") && it.name.contains("Forme")) //Deoxys cannot Form Change into Deoxys ex.
+            })
           }
           move "Link Blast", {
             text "40 damage. If Deoxys and the Defending Pokémon have a different amount of Energy attached to them, this attack’s base damage is 20 instead of 40."
@@ -687,27 +669,9 @@ public enum Deoxys implements LogicCardInfo {
           weakness PSYCHIC
           pokePower "Form Change", {
             text "Once during your turn (before you attack), you may search your deck for another Deoxys and switch it with Deoxys. (Any cards attached to Deoxys, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
-            actionA {
-              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
-              checkLastTurn()
-              assert my.deck : "Deck is empty"
-              bg.em().storeObject("Form_Change",bg.turnCount)
-              powerUsed()
-
-              def oldDeoxys = self.topPokemonCard
-              def newDeoxys = my.deck.search(min:0, max: 1, {
-                it.name == "Deoxys"
-              })
-
-              if (newDeoxys) {
-                newDeoxys.moveTo(self.cards)
-                my.deck.add(oldDeoxys)
-                self.cards.remove(oldDeoxys)
-                checkFaint()
-              }
-
-              shuffleDeck()
-            }
+            formChange(delegate, "Form Change", {
+              it.name == "Deoxys" || (it.name.contains("Deoxys") && it.name.contains("Forme")) //Deoxys cannot Form Change into Deoxys ex.
+            })
           }
           move "Energy Crush", {
             text "10+ damage. Does 10 damage plus 10 more damage for each Energy attached to all of your opponent’s Pokémon."
@@ -727,27 +691,9 @@ public enum Deoxys implements LogicCardInfo {
           weakness PSYCHIC
           pokePower "Form Change", {
             text "Once during your turn (before you attack), you may search your deck for another Deoxys and switch it with Deoxys. (Any cards attached to Deoxys, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
-            actionA {
-              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
-              checkLastTurn()
-              assert my.deck : "Deck is empty"
-              bg.em().storeObject("Form_Change",bg.turnCount)
-              powerUsed()
-
-              def oldDeoxys = self.topPokemonCard
-              def newDeoxys = my.deck.search(min:0, max: 1, {
-                it.name == "Deoxys"
-              })
-
-              if (newDeoxys) {
-                newDeoxys.moveTo(self.cards)
-                my.deck.add(oldDeoxys)
-                self.cards.remove(oldDeoxys)
-                checkFaint()
-              }
-
-              shuffleDeck()
-            }
+            formChange(delegate, "Form Change", {
+              it.name == "Deoxys" || (it.name.contains("Deoxys") && it.name.contains("Forme")) //Deoxys cannot Form Change into Deoxys ex.
+            })
           }
           move "Barrier Attack", {
             text "20 damage. During your opponent’s next turn, any damage done to Deoxys by attacks is reduced by 30 (after applying Weakness and Resistance)."
@@ -1781,24 +1727,8 @@ public enum Deoxys implements LogicCardInfo {
             onAttack {
               flip {
                 delayed{
-                  def flag = false
-                  before PROCESS_ATTACK_EFFECTS, {
-                    flag = true
-                  }
-                  before BETWEEN_TURNS, {
-                    flag = false
-                  }
-                  before USE_ABILITY, {
-                    flag = true
-                  }
-                  after POKEPOWER, {
-                    flag = false
-                  }
-                  after ACTIVATE_ABILITY, {
-                    flag = false
-                  }
                   before PLAY_TRAINER, {
-                    if (bg.currentTurn == self.owner.opposite && !flag) {
+                    if (bg.currentTurn == self.owner.opposite) {
                       wcu "High Voltage prevents playing this card"
                       prevent()
                     }
@@ -2278,14 +2208,7 @@ public enum Deoxys implements LogicCardInfo {
           move "Ascension", {
             text "Search your deck for a card that evolves from Wurmple and put it on Wurmple. (This counts as evolving Wurmple.) Shuffle your deck afterward."
             energyCost C
-            attackRequirement {
-              assert my.deck
-            }
-            onAttack {
-              def tar = my.deck.search("Evolves from $self", {it.cardTypes.is(EVOLUTION) && self.name == it.predecessor})
-              if(tar) evolve(self, tar.first(), OTHER)
-              shuffleDeck()
-            }
+            ascension delegate
           }
           move "Miracle Essence", {
             text "Flip a coin. If heads, choose 1 Special Condition. Each Defending Pokémon is now affected by that Special Condition."
@@ -2467,32 +2390,25 @@ public enum Deoxys implements LogicCardInfo {
         return specialEnergy (this, [[C],[C],[C]]) {
           text "Boost Energy can be attached only to an Evolved Pokémon. Discard Boost Energy at the end of the turn it was attached. Boost Energy provides [C][C][C] Energy. The Pokémon Boost Energy is attached to can’t retreat. If the Pokémon Boost Energy is attached to isn’t an Evolved Pokémon, discard Boost Energy."
           def eff
-          def turnCount
           def check = {
             if (!it.evolution) {
-              targeted null, SRC_SPENERGY, {
-                discard thisCard
-              }
+              discard thisCard
             }
           }
           onPlay { reason ->
-            turnCount = bg.turnCount
             eff = delayed {
               before RETREAT, self, {
-                targeted self, SRC_SPENERGY, {
+                targeted self, {
                   wcu "$self can't retreat due to having Boost Energy attached."
                   prevent()
                 }
               }
               before BETWEEN_TURNS, {
-                if (turnCount == bg.turnCount) {
-                  targeted null, SRC_SPENERGY, {
-                    discard thisCard
-                  }
+                if (bg.currentTurn == thisCard.player) {
+                  discard thisCard
                 }
               }
-              after EVOLVE, self, { check(self) }
-              after DEVOLVE, self, { check(self) }
+              after CHANGE_STAGE, self, { check(self) }
               after ATTACH_ENERGY, self, { check(self) }
               after CHECK_ABILITIES, { check(self) }
             }
@@ -2512,8 +2428,8 @@ public enum Deoxys implements LogicCardInfo {
           text "Heal Energy provides [C] Energy. When you attach this card from your hand to 1 of your Pokémon, remove 1 damage counter and all Special Conditions from that Pokémon. If heal Energy is attached to Pokémon-ex, Heal Energy has no effect other than providing Energy."
           onPlay { reason ->
             if (!self.EX && reason == PLAY_FROM_HAND) {
-              heal(10, self, SRC_SPENERGY)
-              clearSpecialCondition(self, SRC_SPENERGY)
+              heal(10, self)
+              clearSpecialCondition(self)
             }
           }
           onRemoveFromPlay {
@@ -2525,15 +2441,12 @@ public enum Deoxys implements LogicCardInfo {
           def eff
           def check = {
             if (!it.evolution || it.EX) {
-              targeted null, SRC_SPENERGY, {
-                discard thisCard
-              }
+              discard thisCard
             }
           }
           onPlay {reason->
             eff = delayed {
-              after EVOLVE, self, { check(self) }
-              after DEVOLVE, self, { check(self) }
+              after CHANGE_STAGE, self, { check(self) }
               after ATTACH_ENERGY, self, { check(self) }
               after CHECK_ABILITIES, { check(self) }
             }
@@ -2598,27 +2511,9 @@ public enum Deoxys implements LogicCardInfo {
           weakness PSYCHIC
           pokePower "Form Change", {
             text "Once during your turn (before you attack), you may search your deck for another Deoxys ex and switch it with Deoxys ex. (Any cards attached to Deoxys ex, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys ex on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
-            actionA {
-              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
-              checkLastTurn()
-              assert my.deck : "Deck is empty"
-              bg.em().storeObject("Form_Change",bg.turnCount)
-              powerUsed()
-
-              def oldDeoxys = self.topPokemonCard
-              def newDeoxys = my.deck.search(min:0, max: 1, {
-                it.name == "Deoxys ex"
-              })
-
-              if (newDeoxys) {
-                newDeoxys.moveTo(self.cards)
-                my.deck.add(oldDeoxys)
-                self.cards.remove(oldDeoxys)
-                checkFaint()
-              }
-
-              shuffleDeck()
-            }
+            formChange(delegate, "Form Change", {
+              it.name == "Deoxys ex"
+            })
           }
           move "Energy Burst", {
             text "10+ damage. Does 10 damage plus 10 more damage for each Energy attached to Deoxys ex and the Defending Pokémon."
@@ -2634,27 +2529,9 @@ public enum Deoxys implements LogicCardInfo {
           weakness PSYCHIC
           pokePower "Form Change", {
             text "Once during your turn (before you attack), you may search your deck for another Deoxys ex and switch it with Deoxys ex. (Any cards attached to Deoxys ex, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys ex on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
-            actionA {
-              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
-              checkLastTurn()
-              assert my.deck : "Deck is empty"
-              bg.em().storeObject("Form_Change",bg.turnCount)
-              powerUsed()
-
-              def oldDeoxys = self.topPokemonCard
-              def newDeoxys = my.deck.search(min:0, max: 1, {
-                it.name == "Deoxys ex"
-              })
-
-              if (newDeoxys) {
-                newDeoxys.moveTo(self.cards)
-                my.deck.add(oldDeoxys)
-                self.cards.remove(oldDeoxys)
-                checkFaint()
-              }
-
-              shuffleDeck()
-            }
+            formChange(delegate, "Form Change", {
+              it.name == "Deoxys ex"
+            })
           }
           move "Psyburst", {
             text "50+ damage. You may discard 2 Energy attached to Deoxys ex. If you do, this attack does 50 damage plus 20 more damage for each Energy attached to the Defending Pokémon."
@@ -2676,27 +2553,9 @@ public enum Deoxys implements LogicCardInfo {
           weakness PSYCHIC
           pokePower "Form Change", {
             text "Once during your turn (before you attack), you may search your deck for another Deoxys ex and switch it with Deoxys ex. (Any cards attached to Deoxys ex, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys ex on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
-            actionA {
-              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
-              checkLastTurn()
-              assert my.deck : "Deck is empty"
-              bg.em().storeObject("Form_Change",bg.turnCount)
-              powerUsed()
-
-              def oldDeoxys = self.topPokemonCard
-              def newDeoxys = my.deck.search(min:0, max: 1, {
-                it.name == "Deoxys ex"
-              })
-
-              if (newDeoxys) {
-                newDeoxys.moveTo(self.cards)
-                my.deck.add(oldDeoxys)
-                self.cards.remove(oldDeoxys)
-                checkFaint()
-              }
-
-              shuffleDeck()
-            }
+            formChange(delegate, "Form Change", {
+              it.name == "Deoxys ex"
+            })
           }
           move "Psychic Shield", {
             text "50 damage. Prevent all effects of attacks, including damage, done to Deoxys ex by your opponent’s Pokémon-ex during your opponent’s next turn."
@@ -2726,8 +2585,7 @@ public enum Deoxys implements LogicCardInfo {
                   }
                 }
                 after FALL_BACK, self, {unregister()}
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
+                after CHANGE_STAGE, self, {unregister()}
                 unregisterAfter 2
               }
             }
@@ -2773,8 +2631,7 @@ public enum Deoxys implements LogicCardInfo {
                   }
                 }
                 unregisterAfter 2
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
+                after CHANGE_STAGE, self, {unregister()}
                 after FALL_BACK, self, {unregister()}
               }
             }

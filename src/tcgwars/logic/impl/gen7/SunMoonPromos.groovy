@@ -270,7 +270,8 @@ public enum SunMoonPromos implements LogicCardInfo {
   UMBREON_DARKRAI_GX_SM241 ("Umbreon & Darkrai-GX", "SM241", Rarity.PROMO, [POKEMON, BASIC, POKEMON_GX, TAG_TEAM, _DARKNESS_]),
   EEVEE_GX_SM242 ("Eevee-GX", "SM242", Rarity.PROMO, [POKEMON, BASIC, POKEMON_GX, _COLORLESS_]),
   REGIGIGAS_SM243 ("Regigigas", "SM243", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
-  AIPOM_SM244 ("Aipom", "SM244", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]);
+  AIPOM_SM244 ("Aipom", "SM244", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
+  SABRINA_BRYCEN_SM246 ("Sabrina & Brycen", "SM246", Rarity.PROMO, [TRAINER, SUPPORTER, TAG_TEAM]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -318,7 +319,7 @@ public enum SunMoonPromos implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -1358,7 +1359,7 @@ public enum SunMoonPromos implements LogicCardInfo {
           customAbility {
             delayedA {
               before REMOVE_DAMAGE_COUNTER, {
-                if(ef.lastTarget.owner == self.owner && ef.lastTarget.types.contains(W)){
+                if(ef.targetPokemon.owner == self.owner && ef.targetPokemon.types.contains(W)){
                   keyStore('Shining_Current',self,bg.turnCount)
                 }
               }
@@ -2386,7 +2387,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               powerUsed()
               def pcs = my.hand.findAll{it.cardTypes.is(EVOLUTION) && it.predecessor == "Eevee"}.select("Evolve To")
               healAll self, Source.SRC_ABILITY
-              evolve(self, pcs.first(), PLAY_FROM_HAND)
+              evolve(self, pcs.first())
             }
           }
           move "Boost Dash" , {
@@ -2767,7 +2768,7 @@ public enum SunMoonPromos implements LogicCardInfo {
         weakness G
         globalAbility {Card thisCard->
           def lastTurn=0
-          action("Elusive Master", [TargetPlayer.fromPlayerType(thisCard.player)]) {
+          action(thisCard, "Elusive Master", [TargetPlayer.fromPlayerType(thisCard.player)], false) {
             def text="Once during your turn (before your attack), if this Pokémon is the last card in your hand, you may play it onto your Bench. If you do, draw 3 cards."
             assert thisCard.player.pbg.hand.size() == 1 : "Hand size is not 1"
             assert thisCard.player.pbg.hand.contains(thisCard) : "Not in hand"
@@ -2960,7 +2961,7 @@ public enum SunMoonPromos implements LogicCardInfo {
                 def number = Math.min(2, opp.hand.size())
                 if (number > 0) {
                   opp.hand.shuffledCopy().select(hidden: true, count:number).showToMe("Chosen cards").moveTo(opp.deck)
-                  shuffleDeck(null, TargetPlayer.OPPONENT)
+                  shuffleOppDeck()
                 }
               }
             }
@@ -2990,8 +2991,7 @@ public enum SunMoonPromos implements LogicCardInfo {
                   }
                   unregisterAfter 2
                   after FALL_BACK, pcs, {unregister()}
-                  after EVOLVE, pcs, {unregister()}
-                  after DEVOLVE, pcs, {unregister()}
+                  after CHANGE_STAGE, pcs, {unregister()}
                 }
               }
             }
@@ -3351,6 +3351,42 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
         };
+      case SABRINA_BRYCEN_SM246:
+        return supporter(this) {
+          text "Search your deck for up to 2 basic Energy cards, reveal them, and put them into your hand. Then, shuffle your deck." +
+            "When you play this card, you may discard 5 other cards from your hand. If you do, you may also search for up to 3 Pokémon of different types in this way."
+          onPlay {
+            if (my.hand.getExcludedList(thisCard).size() >= 5
+              && confirm("Activate additional clause? When you play this card, you may discard 5 other cards from your hand. If you do, you may also search for up to 3 Pokémon of different types in this way.")) {
+              my.hand.getExcludedList(thisCard)
+                .select(count: 5, "Discard 5 cards from hand to search for up to 3 Pokémon of different types")
+                .discard()
+              my.deck.select(min:0, max:5, "Select up to 2 basic Energy cards & up to 3 Pokémon of different types.",
+                {it.cardTypes.isIn(POKEMON, BASIC_ENERGY)}, thisCard.player,
+                {CardList list ->
+                  if (list.filterByType(BASIC_ENERGY).size() <= 2 && list.filterByType(POKEMON).size() <= 3) {
+                    TypeSet typeSet = new TypeSet()
+                    for (card in list) {
+                      if (card.cardTypes.isPokemon()) {
+                        if (typeSet.containsAny(card.asPokemonCard().types)) {
+                          return false
+                        }
+                        typeSet.addAll(card.asPokemonCard().types)
+                      }
+                    }
+                    return true
+                  }
+                  return false
+                }).moveTo(hand)
+            } else {
+              deck.search(max:2, cardTypeFilter(BASIC_ENERGY)).moveTo(hand)
+            }
+            shuffleDeck()
+          }
+          playRequirement{
+            assert my.deck : "Your deck is empty."
+          }
+        }
       default:
         return null;
     }

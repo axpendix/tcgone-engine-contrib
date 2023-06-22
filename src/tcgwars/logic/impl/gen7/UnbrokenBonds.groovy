@@ -1,4 +1,7 @@
-package tcgwars.logic.impl.gen7;
+package tcgwars.logic.impl.gen7
+
+import tcgwars.logic.effect.getter.GetterEffect
+import tcgwars.logic.groovy.TcgStatics;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -308,7 +311,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -376,7 +379,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               checkLastTurn()
               powerUsed()
               flip {
-                deck.search ("Evolves from ${self.name}", {it.cardTypes.is(EVOLUTION) && self.name==it.predecessor}).each { evolve(self, it, OTHER) }
+                deck.search ("Evolves from ${self.name}", {it.cardTypes.is(EVOLUTION) && self.name==it.predecessor}).each { evolve(self, it) }
                 shuffleDeck()
               }
             }
@@ -400,7 +403,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               checkLastTurn()
               powerUsed()
               flip {
-                deck.search ("Evolves from ${self.name}", {it.cardTypes.is(EVOLUTION) && self.name==it.predecessor}).each { evolve(self, it, OTHER) }
+                deck.search ("Evolves from ${self.name}", {it.cardTypes.is(EVOLUTION) && self.name==it.predecessor}).each { evolve(self, it) }
                 shuffleDeck()
               }
             }
@@ -678,8 +681,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
                 }
                 unregisterAfter 3
                 after FALL_BACK, pcs, {unregister()}
-                after EVOLVE, pcs, {unregister()}
-                after DEVOLVE, pcs, {unregister()}
+                after CHANGE_STAGE, pcs, {unregister()}
               }
               bg.em().run(new CheckAbilities())
             }
@@ -1322,7 +1324,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             text "100x damage. Flip 3 coins. This attack does 100 damage for each heads. If all of them are tails, you lose this game."
             energyCost W, C, C
             onAttack {
-              flip 3,{},{},[0:{bg.getGame().endGame(opp.active.owner, WinCondition.OTHER)},1:{damage 100},2:{damage 200},3:{damage 300}]
+              flip 3,{},{},[0:{bg.getGameManager().endGame(opp.active.owner, WinCondition.OTHER)},1:{damage 100},2:{damage 200},3:{damage 300}]
             }
           }
 
@@ -1482,8 +1484,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
                     }
                   }
                 }
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
+                after CHANGE_STAGE, self, {unregister()}
                 after FALL_BACK, self, {unregister()}
                 unregisterAfter 2
               }
@@ -1618,7 +1619,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           }
           globalAbility {Card thisCard->
             def lastTurn=0
-            action("Battery", [TargetPlayer.fromPlayerType(thisCard.player)]) {
+            action(thisCard, "Battery", [TargetPlayer.fromPlayerType(thisCard.player)], false) {
               def text="Once during your turn (before your attack), you may attach this card from your hand to 1 of your Vikavolt or Vikavolt-GX as a Special Energy card. This card provides 2 [L] Energy only while it’s attached to a Pokémon."
               assert thisCard.player.pbg.hand.contains(thisCard) : "Not in hand (try other one)"
               assert bg.turnCount!=lastTurn : "Already used"
@@ -1635,7 +1636,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
                   bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
                 }
               }
-              energyCard.player = thisCard.player
+              energyCard.initializeFrom thisCard
               bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
               attachEnergy(pcs, energyCard)
               bc "$energyCard is now a Special Energy Card that provides 2 [L] energy attached to $pcs"
@@ -1850,14 +1851,14 @@ public enum UnbrokenBonds implements LogicCardInfo {
               before (KNOCKOUT,self) {
                 if(self.owner.pbg.deck.notEmpty) {
                   bc "Swelling Spite activates"
-                  bg.deterministicCurrentThreadPlayerType = self.owner
-                  def count = Math.min(my.bench.freeBenchCount, 2)
-                  my.deck.search(max:count, "When this Pokémon is Knocked Out, search your deck for up to 2 Haunter and put them onto your Bench. Then, shuffle your deck.", {it.name=="Haunter"}).each {
-                    my.deck.remove(it);
-                    benchPCS(it)
+                  tryWithDeterministicCurrentThreadPlayerType(self.owner) {
+                    def count = Math.min(my.bench.freeBenchCount, 2)
+                    my.deck.search(max:count, "When this Pokémon is Knocked Out, search your deck for up to 2 Haunter and put them onto your Bench. Then, shuffle your deck.", {it.name=="Haunter"}).each {
+                      my.deck.remove(it);
+                      benchPCS(it)
+                    }
+                    shuffleDeck()
                   }
-                  shuffleDeck()
-                  bg.clearDeterministicCurrentThreadPlayerType()
                 }
               }
             }
@@ -2153,8 +2154,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
                         h.object = h.object.collect { it = it.copy(); it.type = PSYCHIC; it }
                       }
                     }
-                    after EVOLVE, pcs, {unregister()}
-                    after DEVOLVE, pcs, {unregister()}
+                    after CHANGE_STAGE, pcs, {unregister()}
                     after FALL_BACK, pcs, {unregister()}
                     unregister {
                       ef.unregister()
@@ -2229,8 +2229,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
                     }
                   }
                   unregisterAfter 2
-                  after EVOLVE, self, {unregister()}
-                  after DEVOLVE, self, {unregister()} //Could be copied by an evolution.
+                  after CHANGE_STAGE, self, {unregister()}
                   after FALL_BACK, self, {unregister()}
                 }
               }
@@ -2940,20 +2939,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           move "Bring Down", {
             text "The Pokémon that has the least HP remaining, except for this Pokémon, is Knocked Out. (If multiple Pokémon are tied, choose one.)"
             energyCost C, C
-            onAttack {
-              def list = all.findAll{it!=self}.sort(false) {p1,p2 -> p1.remainingHP.value <=> p2.remainingHP.value} as PcsList
-              def tar = new PcsList()
-              int min = list.get(0).remainingHP.value
-              while (list.notEmpty && list.get(0).remainingHP.value==min) {
-                tar.add(list.remove(0))
-              }
-              //TODO: Heavily improve this selection, in case both players have tied Pokémon. Make it clearer to pick.
-              def pcs = tar.select("Choose which of these Pokémon will be knocked out.")
-              bc "${pcs.owner}'s $pcs was selected for Knock Out"
-              targeted (pcs) {
-                new Knockout(pcs).run(bg)
-              }
-            }
+            bringDown(delegate)
           }
           move "Mist Slash", {
             text "70 damage. This attack's damage isn't affected by Weakness, Resistance, or any other effects on your opponent's Active Pokémon."
@@ -3293,7 +3279,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               afterDamage{
                 if(self.cards.energySufficient(thisMove.energyCost + Y+Y+Y)){
                   opp.hand.moveTo(hidden:true, opp.deck)
-                  shuffleDeck(null, TargetPlayer.OPPONENT)
+                  shuffleOppDeck()
                 }
               }
             }
@@ -3528,7 +3514,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               flip 2,{
                 if (opp.hand) {
                   opp.hand.shuffledCopy().select("Opponent's hand. Shuffle a card into their deck.").moveTo(opp.deck)
-                  shuffleDeck(null, TargetPlayer.OPPONENT)
+                  shuffleOppDeck()
                 }
               }
             }
@@ -3636,7 +3622,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           weakness F
           bwAbility "Gathering of Cats", {
             text "Ignore all Energy in the attack costs of each of your Pokémon in play that has the Caturday attack."
-            getterA GET_MOVE_LIST, {h->
+            getterA (GET_MOVE_LIST, BEFORE_LAST) {h->
               PokemonCardSet pcs = h.effect.target
               if(pcs.owner==self.owner && h.object.find{it.name=='Caturday'}){
                 def list=[]
@@ -3980,7 +3966,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
                 flag = ef.move.name.contains('GX')
               }
               before null, null, Source.ATTACK, {
-                def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
+                def pcs = e.getTargetPokemon()
                 if (flag && self.active && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs && pcs.owner==self.owner){
                   bc "Force Canceler prevents effect"
                   prevent()
@@ -4050,7 +4036,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           onPlay {
             def card = opp.deck.subList(0,3).select("Look at the top 3 cards of your opponent's deck and choose 1 of them. Your opponent shuffles the other cards back into their deck. Then, put the card you chose on top of their deck.").first()
             opp.deck.remove(card)
-            shuffleDeck(null, TargetPlayer.OPPONENT)
+            shuffleOppDeck()
             opp.deck.add(0, card)
           }
           playRequirement{
@@ -4063,10 +4049,10 @@ public enum UnbrokenBonds implements LogicCardInfo {
           onPlay {
             def pcs = my.all.findAll{it.evolution}.select("Pokémon to devolve")
             def top = pcs.topPokemonCard
-            devolve(pcs, top, my.deck)
-            while(pcs.evolution && confirm("$top was devolved. Devolve the next evolution?")){
+            devolve(pcs, my.deck)
+            while(pcs.evolution && confirm("$top has devolved into $pcs. Devolve once more?")){
               top = pcs.topPokemonCard
-              devolve(pcs, top, my.deck)
+              devolve(pcs, my.deck)
             }
             shuffleDeck()
           }
@@ -4078,9 +4064,9 @@ public enum UnbrokenBonds implements LogicCardInfo {
         return itemCard (this) {
           text "Search your deck for a Mismagius, Honchkrow, Chandelure, or Aegislash, including Pokémon-GX, that evolves from 1 of your Pokémon in play, and put it onto that Pokémon to evolve it. Then, shuffle your deck. You can use this card during your first turn or on a Pokémon that was put into play this turn."
           onPlay {
-            deck.search{['Mismagius','Mismagius-GX','Honchkrow','Honchkrow-GX','Chandelure','Chandelure-GX','Aegislash','Aegislash-GX'].contains(it.name) && it.cardTypes.is(EVOLUTION)}.each{card->
+            deck.search{card-> ['Mismagius','Mismagius-GX','Honchkrow','Honchkrow-GX','Chandelure','Chandelure-GX','Aegislash','Aegislash-GX'].contains(card.name) && card.cardTypes.is(EVOLUTION) && my.all.find{card.predecessor == it.name}}.each{card->
               def pcs = my.all.findAll{card.predecessor == it.name}.select("To Evolve")
-              evolve(pcs, card, OTHER)
+              evolve(pcs, card)
             }
             shuffleDeck()
           }
@@ -4100,7 +4086,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               boolean flag = false
               int extraPoisonCount = 0
               before SWITCH, null, TRAINER_CARD, {
-                flag = ef.fallenBack.isSPC(POISONED)
+                flag = ef.fallenBack?.isSPC(POISONED)
                 if(flag) {
                   extraPoisonCount = bg.em().retrieveObject("extra_poison_counter_"+ef.fallenBack.hashCode()) ?: 0
                 }
@@ -4415,13 +4401,17 @@ public enum UnbrokenBonds implements LogicCardInfo {
           text "Prevent all effects of your opponent's Abilities done to the Pokémon this card is attached to. Remove any such existing effects."
           def eff
           onPlay {reason->
-            // TODO implement properly after source refactoring and/or RichSource captivation
             eff = delayed {
               before null, self, SRC_ABILITY, {
-                bc "Stealthy Hood prevents effect"
-                prevent()
+                if (e.sourceAbility.ownerCard.player == self.owner.opposite) {
+                  if (!ef instanceof GetterEffect) { // no log should be printed during getter effect execution to prevent log spam
+                    bc "Stealthy Hood prevents effect ${e.type}"
+                  }
+                  prevent()
+                }
               }
             }
+            // TODO implement "removal of existing effects"
             new CheckAbilities().run(bg)
           }
           onRemoveFromPlay {
@@ -4482,26 +4472,19 @@ public enum UnbrokenBonds implements LogicCardInfo {
             "This card provides [C][C][C] Energy only while it is attached to an Evolution Pokémon." +
             "If this card is attached to anything other than an Evolution Pokémon, discard this card."
           def eff
-          def turnCount
           def check = {
             if (!it.realEvolution) {
-              targeted null, SRC_SPENERGY, {
-                discard thisCard
-              }
+              discard thisCard
             }
           }
           onPlay {reason->
-            turnCount = bg.turnCount
             eff = delayed (priority: BEFORE_LAST) {
               before BETWEEN_TURNS, {
-                if (bg.turnCount == turnCount) {
-                  targeted null, SRC_SPENERGY, {
-                    discard thisCard
-                  }
+                if (bg.currentTurn == thisCard.player) {
+                  discard thisCard
                 }
               }
-              after EVOLVE, self, { check(self) }
-              after DEVOLVE, self, { check(self) }
+              after CHANGE_STAGE, self, { check(self) }
               after ATTACH_ENERGY, self, { check(self) }
               after CHECK_ABILITIES, { check(self) } // Miraculous Wind (LIGHT_DRAGONITE_14) and Spectral Breach (DUSKNOIR_45)
             }

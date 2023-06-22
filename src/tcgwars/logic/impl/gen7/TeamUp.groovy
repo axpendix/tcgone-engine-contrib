@@ -1,6 +1,8 @@
 package tcgwars.logic.impl.gen7
 
+import tcgwars.logic.effect.advanced.Devolve
 import tcgwars.logic.effect.special.Poisoned
+import tcgwars.logic.groovy.TcgStatics
 import tcgwars.logic.impl.gen5.BlackWhite
 
 import static tcgwars.logic.card.HP.*;
@@ -276,7 +278,7 @@ public enum TeamUp implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -881,7 +883,7 @@ public enum TeamUp implements LogicCardInfo {
             onAttack{
               flip{
                 def tar = my.discard.findAll{it.cardTypes.is(EVOLUTION) && self.name == it.predecessor}.select("Choose the card that will evolve from $self")
-                evolve(self, tar.first(), OTHER)
+                evolve(self, tar.first())
               }
             }
           }
@@ -943,27 +945,20 @@ public enum TeamUp implements LogicCardInfo {
           bwAbility "Blizzard Veil" , {
             text "As long as this Pokémon is your Active Pokémon, whenever your opponent plays a Supporter card from their hand, prevent all effects of that card done to your Benched [W] Pokémon."
             delayedA{
-              // TODO
               def flag = false
               def selfOwner = self.owner
-              //Workaround for "Supporters used as attack effect"
-              def flag2 = false
-              before PROCESS_ATTACK_EFFECTS, {
-                flag2 = true
-              }
-              before BETWEEN_TURNS, {
-                flag2 = false
-              }
               before PLAY_TRAINER, {
-                flag = false
-                if(self.active && ef.supporter && bg.currentTurn != selfOwner && !flag2){
+                if(self.active && ef.supporter && bg.currentTurn != selfOwner){
                   flag = true
                 }
               }
+              after PLAY_TRAINER, {
+                flag = false
+              }
               before null, null, Source.TRAINER_CARD, {
-                def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
-                if (flag && self.active && pcs.owner == selfOwner && pcs.benched && pcs.types.contains(W)){
-                  bc "Blizzard Veil prevent effect of Supporter cards done to $pcs."
+                def pcs = e.getTargetPokemon()
+                if (flag && pcs && self.active && pcs.owner == selfOwner && pcs.benched && pcs.types.contains(W)){
+                  bc "Blizzard Veil prevents effect of Supporter cards done to $pcs."
                   prevent()
                 }
               }
@@ -1318,16 +1313,9 @@ public enum TeamUp implements LogicCardInfo {
           bwAbility "Unnerve" , {
             text "Whenever your opponent plays an Item or Supporter card from their hand, prevent all effects of that card done to this Pokémon."
             delayedA {
-              def flag = false
-              before PROCESS_ATTACK_EFFECTS, {
-                flag = true
-              }
-              before BETWEEN_TURNS, {
-                flag = false
-              }
               before null, self, Source.TRAINER_CARD, {
-                if (bg.currentThreadPlayerType != self.owner && !flag){
-                  bc "Unnerve prevent effect of item"
+                if (bg.currentThreadPlayerType != self.owner && e.sourceTrainer.cardTypes.isIn(ITEM, SUPPORTER)){
+                  bc "Unnerve prevent effect"
                   prevent()
                 }
               }
@@ -1477,12 +1465,7 @@ public enum TeamUp implements LogicCardInfo {
                   }
                 }
                 before EVOLVE, {
-                  if ((ef as Evolve).evolutionCard.player.pbg.hand.contains(ef.evolutionCard)) {
-                    warnAndPrevent()
-                  }
-                }
-                before EVOLVE_STANDARD, {
-                  if ((ef as EvolveStandard).evolutionCard.player.pbg.hand.contains(ef.evolutionCard)) {
+                  if ((ef as Evolve).activationReason == PLAY_FROM_HAND) {
                     warnAndPrevent()
                   }
                 }
@@ -1683,15 +1666,9 @@ public enum TeamUp implements LogicCardInfo {
           bwAbility "Poison Sacs" , {
             text "The Special Condition Poisoned is not removed when your opponent's Pokémon evolve or devolve."
             delayedA{
-              before POISONED_SPC, null, null, EVOLVE, {
-                if ((ef as Poisoned).getTarget().owner != self.owner) {
-                  bc "$thisAbility prevents removing the Special Condition Poisoned by evolving"
-                  prevent()
-                }
-              }
-              before POISONED_SPC, null, null, DEVOLVE, {
-                if ((ef as Poisoned).getTarget().owner != self.owner) {
-                  bc "$thisAbility prevents removing the Special Condition Poisoned by devolving"
+              before POISONED_SPC, null, null, CHANGE_STAGE, {
+                if ((ef as Poisoned).getTarget().owner != self.owner && bg.em().currentEffectStack.find{it.effectType == EVOLVE || it.effectType == DEVOLVE}) {
+                  bc "$thisAbility prevents removing the Special Condition Poisoned by evolving or devolving"
                   prevent()
                 }
               }
@@ -1760,23 +1737,14 @@ public enum TeamUp implements LogicCardInfo {
           bwAbility "Scoop-Up Block" , {
             text "Your opponent's Pokémon that have any damage counters on them, and any cards attached to those Pokémon, can't be put into your opponent's hand."
             delayedA {
-              before MOVE_CARD, {
-                if (ef.newLocation == self.owner.opposite.pbg.hand) {
-                  def pcs = self.owner.opposite.pbg.all.find { it.cards.contains(ef.cards.first()) }
-                  if (pcs && pcs.numberOfDamageCounters && !hasThetaStop(pcs)) {
+              before MOVE_CARD_INNER, {
+                if (ef.toList == self.owner.opposite.pbg.hand && ef.fromPokemon?.owner == self.owner.opposite && ef.fromPokemon?.numberOfDamageCounters) {
+                  targeted (ef.fromPokemon) {
                     bc "Scoop-Up Block stopped cards from returning to the owner's hand."
                     prevent()
                   }
                 }
               }
-            }
-            onActivate {
-              bg.em().storeObject("ScoopUpBlock_LastTurn"+self.owner, bg.turnCount)
-              bg.em().storeObject("ScoopUpBlock_Count"+self.owner, bg.em().retrieveObject("ScoopUpBlock_Count"+self.owner) ? bg.em().retrieveObject("ScoopUpBlock_Count"+self.owner)+1 : 1)
-            }
-            onDeactivate {
-              bg.em().storeObject("ScoopUpBlock_LastTurn"+self.owner, bg.turnCount)
-              bg.em().storeObject("ScoopUpBlock_Count"+self.owner, bg.em().retrieveObject("ScoopUpBlock_Count"+self.owner)-1)
             }
           }
           move "Psy Bolt" , {
@@ -2021,15 +1989,8 @@ public enum TeamUp implements LogicCardInfo {
           bwAbility "Fossilized Memories" , {
             text "As long as this Pokémon is your Active Pokémon, your opponent can't play any Supporter cards from their hand."
             delayedA {
-              def flag = false
-              before PROCESS_ATTACK_EFFECTS, {
-                flag = true
-              }
-              before BETWEEN_TURNS, {
-                flag = false
-              }
               before PLAY_TRAINER, {
-                if (ef.supporter && bg.currentTurn == self.owner.opposite && self.active && !flag) {
+                if (ef.supporter && bg.currentTurn == self.owner.opposite && self.active) {
                   wcu "Fossilized Memories prevents playing supporters"
                   prevent()
                 }
@@ -2150,7 +2111,7 @@ public enum TeamUp implements LogicCardInfo {
                 if(tar){
                   tar.select(max:tar.size(),"Choose the item to discard").discard()
                 }
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
               }
             }
           }
@@ -2534,7 +2495,7 @@ public enum TeamUp implements LogicCardInfo {
           bwAbility "Evolutionary Advantage" , {
             text "If you go second, this Pokémon can evolve during your first turn."
             delayedA {
-              before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+              before PREVENT_EVOLVE, self, null, EVOLVE, {
                 if(bg.turnCount == 2 && bg.currentTurn == self.owner){
                   powerUsed()
                   prevent()
@@ -2675,7 +2636,7 @@ public enum TeamUp implements LogicCardInfo {
                 verdantWind()
               }
               before APPLY_SPECIAL_CONDITION, {
-                def pcs = ef.getResolvedTarget(bg, e)
+                def pcs = ef.getTargetPokemon()
                 if (pcs.owner==self.owner && pcs.cards.energyCount(M)) {
                   bc "Metal Symbol prevents special conditions"
                   prevent()
@@ -2809,7 +2770,7 @@ public enum TeamUp implements LogicCardInfo {
         };
       case MIMIKYU_112:
         return basic (this, hp:HP070, type:FAIRY, retreatCost:1) {
-          globalAbility {Card thisCard->
+          initHook {Card thisCard->
             delayed (priority: LAST) {
               after PROCESS_ATTACK_EFFECTS, {
                 //TODO: Refactor, make these checks be stored somewhere globally as to fix opponent copying Copycat and similar (e.g. with Trickster GX)
@@ -2943,7 +2904,7 @@ public enum TeamUp implements LogicCardInfo {
             delayedA {
               before null, null, ATTACK, {
                 if(ef instanceof TargetedEffect && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
-                  def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
+                  def pcs = e.getTargetPokemon()
                   if(pcs != null && pcs.owner == self.owner){
                     bc "Defensive Scales prevents all effects done to $self"
                     prevent()
@@ -3541,7 +3502,7 @@ public enum TeamUp implements LogicCardInfo {
           def lastTurn=0
           def actions=[]
           onPlay {
-            actions=action("Stadium: Lavender Town") {
+            actions=action(thisCard, "Stadium: Lavender Town") {
               assert lastTurn != bg().turnCount : "Already used"
               bc "Used Lavender Town effect"
               lastTurn = bg().turnCount
@@ -3567,14 +3528,13 @@ public enum TeamUp implements LogicCardInfo {
                 }
               }
               before DIRECT_DAMAGE, self, Source.SRC_ABILITY, {
-                //FIXME this will also block own pokemon abilities. to fix this, "Source refactoring" must be done. (See omega stop)
-                if(self.types.contains(M)) {
+                if(e.sourceAbility.ownerCard.player == self.owner.opposite && self.types.contains(M)) {
                   bc "Metal Goggles prevents damage counters from being placed on $self.name"
                   prevent()
                 }
               }
               before DIRECT_DAMAGE, self, Source.ATTACK, {
-                if(bg.currentTurn == self.owner.opposite && self.types.contains(M)) {
+                if(e.sourceAttack.attacker.owner == self.owner.opposite && self.types.contains(M)) {
                   bc "Metal Goggles prevents damage counters from being placed on $self.name"
                   prevent()
                 }
@@ -3665,9 +3625,10 @@ public enum TeamUp implements LogicCardInfo {
             def randomOppHand = opp.hand.shuffledCopy()
             if(randomOppHand.hasType(SUPPORTER)){
               def card = randomOppHand.select("Opponent's hand. Select a supporter.", cardTypeFilter(SUPPORTER)).first()
-              bg.deterministicCurrentThreadPlayerType=bg.currentTurn
-              bg.em().run(new PlayTrainer(card).setDontDiscard(true))
-              bg.clearDeterministicCurrentThreadPlayerType()
+              bc "Selected $card"
+              tryWithDeterministicCurrentThreadPlayerType (bg.currentTurn) {
+                bg.em().run(new ActivateSimpleTrainer(card))
+              }
             } else {
               randomOppHand.showToMe("Opponent's hand. No supporter in there.")
             }
@@ -3684,7 +3645,7 @@ public enum TeamUp implements LogicCardInfo {
           def lastTurn=0
           def actions=[]
           onPlay {
-            actions=action("Stadium: Viridian Forest") {
+            actions=action(thisCard, "Stadium: Viridian Forest") {
               assert my.deck : "There are no more cards in your deck."
               assert my.hand : "You don't have cards in your hand"
               assert lastTurn != bg().turnCount : "Already used"

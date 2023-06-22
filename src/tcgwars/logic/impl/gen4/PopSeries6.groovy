@@ -7,7 +7,6 @@ import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*
 import static tcgwars.logic.effect.EffectType.BEGIN_TURN
 import static tcgwars.logic.effect.EffectType.BETWEEN_TURNS
-import static tcgwars.logic.effect.EffectType.EVOLVE_STANDARD
 import static tcgwars.logic.effect.EffectType.PREVENT_EVOLVE;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
@@ -86,7 +85,7 @@ public enum PopSeries6 implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override

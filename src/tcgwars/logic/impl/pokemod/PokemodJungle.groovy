@@ -167,7 +167,7 @@ public enum PokemodJungle implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -364,7 +364,7 @@ public enum PokemodJungle implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              afterDamage {flipThenApplySC PARALYZED}
+              flipThenApplySC PARALYZED
             }
           }
           move "Guillotine", {
@@ -400,7 +400,7 @@ public enum PokemodJungle implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              afterDamage {flipThenApplySC PARALYZED}
+              flipThenApplySC PARALYZED
             }
           }
 
@@ -688,8 +688,7 @@ public enum PokemodJungle implements LogicCardInfo {
                   }
                 }
                 unregisterAfter 2
-                after EVOLVE,defending, {unregister()}
-                after DEVOLVE,defending, {unregister()}
+                after CHANGE_STAGE,defending, {unregister()}
                 after FALL_BACK,defending, {unregister()}
               }
             }
@@ -842,11 +841,9 @@ public enum PokemodJungle implements LogicCardInfo {
                 }
                 unregisterAfter 2
                 after FALL_BACK,defending, {unregister()}
-                after EVOLVE,defending, {unregister()}
-                after DEVOLVE,defending, {unregister()}
+                after CHANGE_STAGE,defending, {unregister()}
                 after FALL_BACK,self, {unregister()}
-                after EVOLVE,self, {unregister()}
-                after DEVOLVE,self, {unregister()}
+                after CHANGE_STAGE,self, {unregister()}
               }
             }
           }
@@ -1182,7 +1179,7 @@ public enum PokemodJungle implements LogicCardInfo {
             if (it==PLAY_FROM_HAND && (opp.hand || opp.deck) && confirm("Use Evolutionary Swirl?")) {
               powerUsed()
               opp.hand.moveTo(hidden:true, opp.deck)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
               draw(oppChoose(1..4,"Evolutionary Swirl - How many cards would you like to draw?"),TargetPlayer.OPPONENT)
             }
           }

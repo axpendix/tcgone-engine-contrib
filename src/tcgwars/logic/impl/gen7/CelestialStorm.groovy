@@ -267,7 +267,7 @@ public enum CelestialStorm implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -485,8 +485,7 @@ public enum CelestialStorm implements LogicCardInfo {
                   }
                 }
                 unregisterAfter 2
-                after EVOLVE,self, {unregister()}
-                after DEVOLVE,self, {unregister()}
+                after CHANGE_STAGE,self, {unregister()}
                 after FALL_BACK,self, {unregister()}
               }
             }
@@ -524,7 +523,7 @@ public enum CelestialStorm implements LogicCardInfo {
                 def supportersToShuffle = opp.hand.shuffledCopy().showToMe("Opponent's hand.").filterByType(SUPPORTER)
                 if(supportersToShuffle){
                   supportersToShuffle.select("Select a supporter to put back into your opponent's deck.").moveTo(opp.deck)
-                  shuffleDeck(null, TargetPlayer.OPPONENT)
+                  shuffleOppDeck()
                 }
               }
             }
@@ -560,7 +559,7 @@ public enum CelestialStorm implements LogicCardInfo {
               def pcs = opp.all.select("Choose the Pokémon to put back in deck.")
               pcs.cards.moveTo(opp.deck)
               removePCS(pcs)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
             }
           }
         };
@@ -1079,7 +1078,7 @@ public enum CelestialStorm implements LogicCardInfo {
           bwAbility "Evolutionary Advantage" , {
             text "If you go second, this Pokémon can evolve during your first turn."
             delayedA {
-              before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+              before PREVENT_EVOLVE, self, null, EVOLVE, {
                 if(bg.turnCount == 2 && bg.currentTurn == self.owner){
                   powerUsed()
                   prevent()
@@ -1136,8 +1135,7 @@ public enum CelestialStorm implements LogicCardInfo {
                   }
                 }
                 unregisterAfter 2
-                after EVOLVE,self, {unregister()}
-                after DEVOLVE,self, {unregister()}
+                after CHANGE_STAGE,self, {unregister()}
                 after FALL_BACK,self, {unregister()}
               }
             }
@@ -1679,9 +1677,13 @@ public enum CelestialStorm implements LogicCardInfo {
               }
               def pcs = bothAll.findAll{it.numberOfDamageCounters}.select("Choose the pokémon to move the damage counter from")
               def tar = bothAll.findAll{it != pcs}.select("Select the pokémon to recieve the damage counter")
-              pcs.damage-=hp(10)
-              directDamage 10, tar, SRC_ABILITY
-              bc "Moved 1 damage counter from $pcs to $tar"
+              targeted (pcs) {
+                targeted (tar) {
+                  pcs.damage-=hp(10)
+                  directDamage 10, tar, SRC_ABILITY
+                  bc "Moved 1 damage counter from $pcs to $tar"
+                }
+              }
             }
           }
           move "Shadow Chant" , {
@@ -1807,8 +1809,7 @@ public enum CelestialStorm implements LogicCardInfo {
                 }
                 unregisterAfter 3
                 after FALL_BACK,defending, {unregister()}
-                after EVOLVE,defending, {unregister()}
-                after DEVOLVE,defending, {unregister()}
+                after CHANGE_STAGE,defending, {unregister()}
               }
             }
           }
@@ -1844,8 +1845,7 @@ public enum CelestialStorm implements LogicCardInfo {
                     }
                   }
                   unregisterAfter 2
-                  after EVOLVE, self, {unregister()}
-                  after DEVOLVE, self, {unregister()}
+                  after CHANGE_STAGE, self, {unregister()}
                   after FALL_BACK, self, {unregister()}
                 }
               }
@@ -1941,8 +1941,7 @@ public enum CelestialStorm implements LogicCardInfo {
                     }
                   }
                   unregisterAfter 2
-                  after EVOLVE, self, {unregister()}
-                  after DEVOLVE, self, {unregister()}
+                  after CHANGE_STAGE, self, {unregister()}
                   after FALL_BACK, self, {unregister()}
                 }
               }
@@ -2329,7 +2328,7 @@ public enum CelestialStorm implements LogicCardInfo {
             text "As long as this Pokémon is your Active Pokémon, its Retreat Cost is [C] less for each Beldum on your Bench."
             getterA (GET_RETREAT_COST, self) {h->
               if(self.active) {
-                h.object -= self.owner.pbg.bench.findAll{it.name == "Beldum"}.size()
+                h.object -= self.owner.pbg.bench.count{it.name == "Beldum"}
               }
             }
           }
@@ -2461,8 +2460,7 @@ public enum CelestialStorm implements LogicCardInfo {
                       }
                     }
                     after FALL_BACK, pcs, {unregister()}
-                    after EVOLVE, pcs, {unregister()}
-                    after DEVOLVE, pcs, {unregister()}
+                    after CHANGE_STAGE, pcs, {unregister()}
                     unregisterAfter 2
                   }
                 }
@@ -2880,15 +2878,8 @@ public enum CelestialStorm implements LogicCardInfo {
             }
             onAttack {
               delayed{
-                def flag = false
-                before PROCESS_ATTACK_EFFECTS, {
-                  flag = true
-                }
-                before BETWEEN_TURNS, {
-                  flag = false
-                }
                 before PLAY_TRAINER, {
-                  if (bg.currentTurn == self.owner.opposite && !flag) {
+                  if (bg.currentTurn == self.owner.opposite) {
                     wcu "Bawl prevents playing trainer cards"
                     prevent()
                   }
@@ -3037,7 +3028,24 @@ public enum CelestialStorm implements LogicCardInfo {
       case COPYCAT_127:
         return copy(TeamRocketReturns.COPYCAT_83, this);
       case ENERGY_RECYCLE_SYSTEM_128:
-        return copy(Dragon.ENERGY_RECYCLE_SYSTEM_84, this);
+        return itemCard (this) {
+          text "Choose 1:\n" +
+            "Put a basic Energy card from your discard pile into your hand.\n" +
+            "Shuffle 3 basic Energy cards from your discard pile into your deck.\n" +
+            "You may play as many Item cards as you like during your turn (before your attack)."
+          onPlay {
+            def choice = choose([1,2],['Put a basic Energy card from your discard pile into your hand', 'Shuffle 3 basic Energy cards from your discard pile into your deck'], "Choose 1")
+            if (choice == 1) {
+              my.discard.filterByType(BASIC_ENERGY).select("Put to hand").moveTo(my.hand)
+            } else {
+              my.discard.filterByType(BASIC_ENERGY).select(count: 3, "Shuffle 3 to deck").moveTo(my.deck)
+              shuffleDeck()
+            }
+          }
+          playRequirement{
+            assert my.discard.filterByType(BASIC_ENERGY)
+          }
+        }
       case ENERGY_SWITCH_129:
         return copy(BlackWhite.ENERGY_SWITCH_94, this);
       case FISHERMAN_130:
@@ -3061,7 +3069,7 @@ public enum CelestialStorm implements LogicCardInfo {
             if(!my.deck){
               def card = opp.deck.subList(0,5).select("Choose a card to put on top of your opponent's deck.").first()
               opp.deck.remove(card)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
               opp.deck.add(0, card)
             }
             else if(!opp.deck){
@@ -3081,7 +3089,7 @@ public enum CelestialStorm implements LogicCardInfo {
               if (choice == 2) {
                 def card = opp.deck.subList(0,5).select("Choose a card to put on top of your opponent's deck").first()
                 opp.deck.remove(card)
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
                 opp.deck.add(0, card)
               }
             }
@@ -3216,7 +3224,7 @@ public enum CelestialStorm implements LogicCardInfo {
             eff = delayed (priority: BEFORE_LAST) {
               before null, null, Source.ATTACK, {
                 if (ef.effectType != DAMAGE){
-                  def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
+                  def pcs = e.getTargetPokemon()
                   if(pcs != null && pcs.benched && bg.currentTurn == pcs.owner.opposite){
                     bc "Sky Pillar prevents effect to Benched Pokémon"
                     prevent()
@@ -3321,9 +3329,7 @@ public enum CelestialStorm implements LogicCardInfo {
           typeImagesOverride = [RAINBOW]
           onPlay {reason->
             if (reason == PLAY_FROM_HAND) {
-              targeted null, SRC_SPENERGY, {
-                directDamage(10, self, SRC_SPENERGY)
-              }
+              directDamage(10, self)
             }
           }
           getEnergyTypesOverride {

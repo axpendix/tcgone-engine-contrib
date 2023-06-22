@@ -127,7 +127,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -737,8 +737,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
               if (all.findAll { it.evolution }) {
                 def list = all.findAll { it.evolution }
                 def pcs = list.select("Devolve one Evolved Pokémon")
-                def top = pcs.topPokemonCard
-                devolve(pcs, top, pcs.owner.pbg.hand)
+                devolve(pcs, pcs.owner.pbg.hand)
               }
             }
           }

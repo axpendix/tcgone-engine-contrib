@@ -1,5 +1,6 @@
-package tcgwars.logic.impl.gen4;
+package tcgwars.logic.impl.gen4
 
+import tcgwars.logic.effect.gm.ActivateSimpleTrainer;
 import tcgwars.logic.impl.gen2.Expedition
 import tcgwars.logic.impl.gen3.DragonFrontiers;
 import tcgwars.logic.impl.gen8.SwordShield;
@@ -200,7 +201,7 @@ public enum Arceus implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -855,8 +856,8 @@ public enum Arceus implements LogicCardInfo {
             }
             onAttack {
               def pcs = opp.all.findAll{it.evolution}.select("Choose 1 of your opponent's Evolved Pokémon")
-              devolve(pcs, pcs.topPokemonCard, opp.deck)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              devolve(pcs, opp.deck)
+              shuffleOppDeck()
             }
           }
           move "Primal Tentacles", {
@@ -904,7 +905,7 @@ public enum Arceus implements LogicCardInfo {
               powerUsed()
               def tar = my.hand.findAll { it.name.contains("Pikachu") }.select()
               if (tar) {
-                evolve(self, tar.first(), OTHER)
+                evolve(self, tar.first())
                 heal self.numberOfDamageCounters*10, self
               }
             }
@@ -1030,24 +1031,10 @@ public enum Arceus implements LogicCardInfo {
               assert opp.hand : "Your opponent's hand is"
             }
             onAttack {
-              delayed {
-                def eff
-                register {
-                  eff = getter (GET_MAX_SUPPORTER_PER_TURN) {h->
-                    h.object = h.object + 1
-                  }
-                }
-                unregister {
-                  eff.unregister()
-                }
-                unregisterAfter 1
-              }
               def oppHand = opp.hand.shuffledCopy()
               def card = oppHand.select(min:0, "Select a Supporter to copy its effect as this attack.",cardTypeFilter(SUPPORTER)).discard().first()
               if(card) {
-                bg.deterministicCurrentThreadPlayerType=self.owner
-                bg.em().run(new PlayTrainer(card))
-                bg.clearDeterministicCurrentThreadPlayerType()
+                bg.em().run(new ActivateSimpleTrainer(card))
               }
             }
           }
@@ -1149,7 +1136,7 @@ public enum Arceus implements LogicCardInfo {
               def sel = deck.search ("Select a Pokémon that evolves from 1 of your Pokémon.", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)}).first()
               if(sel) {
                 def pcs = my.all.findAll{it.name == sel.predecessor}.select("Put $sel onto...")
-                evolve(pcs, sel, OTHER)
+                evolve(pcs, sel)
                 directDamage 10, self
               }
               shuffleDeck()
@@ -1342,8 +1329,7 @@ public enum Arceus implements LogicCardInfo {
                     }
                   }
                   unregisterAfter 2
-                  after EVOLVE, self, {unregister()}
-                  after DEVOLVE, self, {unregister()}
+                  after CHANGE_STAGE, self, {unregister()}
                   after FALL_BACK, self, {unregister()}
                 }
               }
@@ -1473,15 +1459,7 @@ public enum Arceus implements LogicCardInfo {
           move "Ascension", {
             text "Search your deck for a card that evolves from Ponyta and put it onto Ponyta. (This counts as evolving Ponyta.) Shuffle your deck afterward."
             energyCost C
-            attackRequirement {
-              assert my.deck : "Your deck is empty"
-            }
-            onAttack {
-              def nam=self.name
-              def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-              if(tar) evolve(self, tar.first(), OTHER)
-              shuffleDeck()
-            }
+            ascension delegate
           }
           move "Combustion", {
             text "20 damage. "
@@ -1702,7 +1680,7 @@ public enum Arceus implements LogicCardInfo {
           pokeBody "Cloak Evolution", {
             text "Burmy Trash Cloak can evolve during the turn you play it."
             delayedA {
-              before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+              before PREVENT_EVOLVE, self, null, EVOLVE, {
                 if (bg.currentTurn == self.owner){
                   powerUsed()
                   prevent()
@@ -1725,7 +1703,7 @@ public enum Arceus implements LogicCardInfo {
           pokeBody "Cloak Evolution", {
             text "Burmy Sandy Cloak can evolve during the turn you play it."
             delayedA {
-              before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+              before PREVENT_EVOLVE, self, null, EVOLVE, {
                 if (bg.currentTurn == self.owner){
                   powerUsed()
                   prevent()
@@ -1748,7 +1726,7 @@ public enum Arceus implements LogicCardInfo {
           pokeBody "Cloak Evolution", {
             text "Burmy Trash Cloak can evolve during the turn you play it."
             delayedA {
-              before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+              before PREVENT_EVOLVE, self, null, EVOLVE, {
                 if (bg.currentTurn == self.owner){
                   powerUsed()
                   prevent()
@@ -1979,8 +1957,7 @@ public enum Arceus implements LogicCardInfo {
                   }
                 }
                 unregisterAfter 2
-                after EVOLVE,self, {unregister()}
-                after DEVOLVE,self, {unregister()}
+                after CHANGE_STAGE,self, {unregister()}
                 after FALL_BACK,self, {unregister()}
               }
             }
@@ -2332,7 +2309,7 @@ public enum Arceus implements LogicCardInfo {
           def lastTurn=0
           def actions=[]
           onPlay {
-            actions=action("Stadium: Ultimate Zone") {
+            actions=action(thisCard, "Stadium: Ultimate Zone") {
               assert my.active.name == "Arceus" : "Arceus is not active"
               assert my.bench.find{it.cards.filterByType(ENERGY)}: "No energy to move"
               bc "Used Ultimate Zone"
@@ -2415,16 +2392,12 @@ public enum Arceus implements LogicCardInfo {
               assert opp.all.find{it.topPokemonCard.cardTypes.is(LVL_X)} : "Your opponent has no Pokémon LV.X in play"
               powerUsed()
               def pcs = opp.all.findAll{it.topPokemonCard.cardTypes.is(LVL_X)}.select("Choose a Pokémon LV.X")
-              def card = pcs.topPokemonCard
-              def blocked = bg.em().run(new MoveCard(card, opp.deck));
-              if (!blocked) {
-                if (all.contains(pcs)) {
-                  bc "$card Leveled Down"
-                  bg.em().run(new RemoveFromPlay(pcs, new CardList(card)));
-                  bg.em().run(new CantEvolve(pcs, bg().getTurnCount()));
-                  bg.em().run(new Devolve(pcs));
-                }
-                shuffleDeck()
+              targeted (CHANGE_STAGE, pcs) {
+                def previousName = pcs.topPokemonCard.fullName
+                bg.em().activateInnerEffect(new MoveCard(pcs.topPokemonCard, opp.deck))
+                bg.bc(String.format("%s has Leveled-Down into %s", previousName, pcs))
+                pcs.lastEvolved = bg.getTurnCount()
+                shuffleOppDeck()
               }
             }
           }

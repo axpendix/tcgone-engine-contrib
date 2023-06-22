@@ -1,9 +1,9 @@
 package tcgwars.logic.impl.gen7
 
 import tcgwars.logic.card.pokemon.PokemonCard
+import tcgwars.logic.effect.gm.ActivateSimpleTrainer
 import tcgwars.logic.effect.gm.PlayCard
 import tcgwars.logic.effect.gm.PlayStadium
-import tcgwars.logic.effect.gm.PlayTrainer
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -349,7 +349,7 @@ public enum CosmicEclipse implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -1453,15 +1453,8 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 60
               bg.em().storeObject("Cold_Snap" + self.owner, bg.turnCount)
               delayed {
-                def flag = false
-                before PROCESS_ATTACK_EFFECTS, {
-                  flag = true
-                }
-                before BETWEEN_TURNS, {
-                  flag = false
-                }
                 before PLAY_TRAINER, {
-                  if (bg.currentTurn == self.owner.opposite && !flag) {
+                  if (bg.currentTurn == self.owner.opposite) {
                     wcu "Cold Snap prevents you from playing Trainer cards."
                     prevent()
                   }
@@ -1582,7 +1575,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               assert self.benched
               assertOppBench()
               powerUsed()
-              if(sw2(opp.active, opp.bench.oppSelect("Choose a new Active Pokémon"), SRC_ABILITY)){
+              if(sw2(opp.active, opp.bench.oppSelect("Choose a new Active Pokémon"))){
                 self.cards.getExcludedList(self.topPokemonCard).discard()
                 self.cards.moveTo(my.deck)
                 removePCS(self)
@@ -1771,8 +1764,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                 }
                 unregisterAfter 3
                 after FALL_BACK,defending, {unregister()}
-                after EVOLVE,defending, {unregister()}
-                after DEVOLVE,defending, {unregister()}
+                after CHANGE_STAGE,defending, {unregister()}
               }
             }
           }
@@ -1948,7 +1940,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             onAttack {
               damage 50
               if (confirm("Force the opponent to shuffle their deck?")) {
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
               }
             }
           }
@@ -2008,7 +2000,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                 if (bg.em().retrieveObject("LILLIE_S_FULL_FORCE_TURN") == bg.turnCount) {
                   delayed {
                     before null, null, Source.ATTACK, {
-                      def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
+                      def pcs = e.getTargetPokemon()
                       if (pcs && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs.owner==self.owner) {
                         bc "$thisMove prevents all effects of attacks."
                         prevent()
@@ -2169,7 +2161,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                 deck.search ("Choose a card that evolves from ${self.name}.", {
                   it.cardTypes.is(EVOLUTION) && self.name==it.predecessor
                 }).each {
-                  evolve(self, it, OTHER)
+                  evolve(self, it)
                 }
                 shuffleDeck()
               }
@@ -2414,7 +2406,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               draw 3
             }
           }
-          globalAbility {Card thisCard->
+          initHook {Card thisCard->
             delayed {
               before KNOCKOUT, {
                 if(ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite){
@@ -2452,24 +2444,10 @@ public enum CosmicEclipse implements LogicCardInfo {
               assert my.hand.hasType(SUPPORTER) : "No Supporter cards in your hand."
             }
             onAttack {
-              delayed {
-                def eff
-                register {
-                  eff = getter (GET_MAX_SUPPORTER_PER_TURN) {h->
-                    h.object = h.object + 1
-                  }
-                }
-                unregister {
-                  eff.unregister()
-                }
-                unregisterAfter 1
-              }
               if (my.hand.hasType(SUPPORTER)) {
                 def card = my.hand.findAll(cardTypeFilter(SUPPORTER)).select("Select a Supporter to copy its effect as this attack.").first()
                 discard card
-                bg.deterministicCurrentThreadPlayerType=self.owner
-                bg.em().run(new PlayTrainer(card))
-                bg.clearDeterministicCurrentThreadPlayerType()
+                bg.em().run(new ActivateSimpleTrainer(card))
               }
             }
           }
@@ -2547,15 +2525,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           move "Ascension", {
             text "Search your deck for a card that evolves from this Pokémon and put it onto this Pokémon to evolve it. Then, shuffle your deck."
             energyCost P
-            attackRequirement {
-              assert my.deck : "Your deck is empty."
-            }
-            onAttack {
-              def nam=self.name
-              def tar = my.deck.search("Choose a card that evolves from $nam.", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-              if(tar) evolve(self, tar.first(), OTHER)
-              shuffleDeck()
-            }
+            ascension delegate
           }
         };
       case COSMOG_100:
@@ -2565,7 +2535,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Prevent all effects of your opponent's attacks, except damage, done to this Pokémon."
             delayedA {
               before null, null, ATTACK, {
-                if (ef instanceof TargetedEffect && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && (ef as TargetedEffect).getResolvedTarget(bg, e) == self) {
+                if (ef instanceof TargetedEffect && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && e.getTargetPokemon() == self) {
                   bc "Unaware prevents all effects done to $self."
                   prevent()
 
@@ -2739,13 +2709,6 @@ public enum CosmicEclipse implements LogicCardInfo {
           bwAbility "Obnoxious Whirring", {
             text "Whenever your opponent plays a Supporter card from their hand, prevent all effects of that card done to this Pokémon."
             delayedA {
-              def flag = false
-              before PROCESS_ATTACK_EFFECTS, {
-                flag = true
-              }
-              before BETWEEN_TURNS, {
-                flag = false
-              }
               def power=false
               before PLAY_TRAINER, {
                 if (ef.supporter && bg.currentTurn==self.owner.opposite && bg.currentTurn.pbg.hand.contains(ef.cardToPlay)) {
@@ -2756,7 +2719,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                 power=false
               }
               before null, self, Source.TRAINER_CARD, {
-                if (power && !flag) {
+                if (power) {
                   bc "Obnoxious Whirring prevents effects from Supporter cards done to $self."
                   prevent()
                 }
@@ -3174,16 +3137,14 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Prevent all effects of attacks, including damage, done to this Pokémon by your opponent's TAG TEAM Pokémon and Ultra Beasts, and by your opponent's Pokémon that have any Special Energy attached to them."
             delayedA {
               before null, self, Source.ATTACK, {
-                def oppActive = self.owner.opposite.pbg.active
-                if ((oppActive.topPokemonCard.cardTypes.isIn(TAG_TEAM, ULTRA_BEAST) || oppActive.cards.hasType(SPECIAL_ENERGY)) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
+                if (e.sourceAttack.attacker.owner != self.owner && (e.sourceAttack.attacker.topPokemonCard.cardTypes.isIn(TAG_TEAM, ULTRA_BEAST) || e.sourceAttack.attacker.cards.hasType(SPECIAL_ENERGY)) && ef.effectType != DAMAGE) {
                   bc "Smug Face prevents effects to $self."
                   prevent()
                 }
               }
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  def valid = it.from.topPokemonCard.cardTypes.is(TAG_TEAM) || it.from.topPokemonCard.cardTypes.is(ULTRA_BEAST) || it.from.cards.hasType(SPECIAL_ENERGY)
-                  if (it.to == self && it.dmg.value && it.notNoEffect && it.from.owner != self.owner && valid) {
+                  if (it.to == self && it.dmg.value && it.notNoEffect && it.from.owner != self.owner && (it.from.topPokemonCard.cardTypes.is(TAG_TEAM) || it.from.topPokemonCard.cardTypes.is(ULTRA_BEAST) || it.from.cards.hasType(SPECIAL_ENERGY))) {
                     it.dmg = hp(0)
                     bc "Smug Face prevents damage dealt to $self."
                   }
@@ -3551,7 +3512,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                   it.cards.moveTo(opp.deck)
                   removePCS(it)
                 }
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
               }
 
               afterDamage {
@@ -3578,23 +3539,30 @@ public enum CosmicEclipse implements LogicCardInfo {
             onAttack {
               damage 60
               afterDamage {
-                if (bg.em().retrieveObject("ScoopUpBlock_Count$self.owner.opposite") && self.numberOfDamageCounters) {
-                  return
-                }
-                def doll = my.hand.find{it.name=="Lillie's Poké Doll"}
-                if(doll && confirm("Play Lillie's Poké Doll from your hand as your new Active Pokémon?")) {
-                  def eff = getter (GET_BENCH_SIZE, BEFORE_LAST) { h->
-                    h.object += 1
+                // confirming here prevents opponent to learn the contents of the hand (due to confirmation delay)
+                def confirmed = confirm("Play Lillie's Poké Doll from your hand as your new Active Pokémon? (if you have it)")
+                self.cards.moveTo(my.hand)
+                if (self.cards.empty) {
+                  def doll = my.hand.find{it.name=="Lillie's Poké Doll"}
+                  if(doll && confirmed) {
+                    delayed {
+                      before PUT_ON_BENCH, {
+                        PokemonCard card = ef.pokemonCard
+                        if (card.name == "Lillie's Poké Doll") {
+                          prevent() // PUT_ON_BENCH is replaced with following
+                          def newPokemon = new PokemonCardSet(self.owner)
+                          newPokemon.cards.add(card)
+                          my.hand.remove(card)
+                          sw (null, newPokemon)
+                          unregister()
+                        }
+                      }
+                      unregisterAfter 1
+                    }
+                    bg.em().run(new PlayCard(doll))
+                  } else {
+                    removePCS(self)
                   }
-                  self.owner.pbg.triggerBenchSizeCheck()
-
-                  def tmp = self.owner.pbg.all.findAll{it.name=="Lillie's Poké Doll"}
-                  bg.em().run(new PlayCard(doll))
-                  def pcs = self.owner.pbg.all.find{it.name=="Lillie's Poké Doll" && !tmp.contains(it)}
-                  sw(self, pcs)
-                  scoopUpPokemon(self, delegate)
-                  eff.unregister()
-                  self.owner.pbg.triggerBenchSizeCheck()
                 }
               }
             }
@@ -3704,7 +3672,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               if (r == PLAY_FROM_HAND && my.deck && confirm("Use Flower Picking?")) {
                 powerUsed()
                 opp.hand.shuffledCopy().select(hidden: true, count:1).showToMe("Opponent's card being shuffled into their deck.").moveTo(hidden: false, opp.deck)
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
               }
             }
           }
@@ -3726,7 +3694,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               if (r == PLAY_FROM_HAND && my.deck && confirm("Use Flower Picking?")) {
                 powerUsed()
                 opp.hand.shuffledCopy().select(hidden: true, count:2).showToMe("Opponent's cards being shuffled into their deck.").moveTo(hidden: false, opp.deck)
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
               }
             }
           }
@@ -3799,8 +3767,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                   }
                   unregisterAfter 2
                   after FALL_BACK, pcs, {unregister()}
-                  after EVOLVE, pcs, {unregister()}
-                  after DEVOLVE, pcs, {unregister()}
+                  after CHANGE_STAGE, pcs, {unregister()}
                 }
               } }
             }
@@ -3815,7 +3782,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-          globalAbility {
+          initHook {
             def flag
             delayed {
               before PLAY_TRAINER, {
@@ -4027,7 +3994,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           bwAbility "Fighter’s Roar", {
             text "If your opponent’s Active Pokémon is a Pokémon-GX or Pokémon-EX, this Pokémon can evolve during the turn you play it."
             delayedA {
-              before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+              before PREVENT_EVOLVE, self, null, EVOLVE, {
                 if (bg.currentTurn == self.owner && (self.owner.opposite.pbg.active.pokemonGX || self.owner.opposite.pbg.active.pokemonEX) ) {
                   powerUsed()
                   prevent()
@@ -4552,8 +4519,10 @@ public enum CosmicEclipse implements LogicCardInfo {
           def eff
           onPlay {
             eff = delayed {
-              after PLAY_STADIUM, {
+              before ACTIVATE_STADIUM, {
                 if (!ef.cardToPlay.name.contains("Chaotic Swell")) {
+                  bc "$thisCard.name prevents $ef.cardToPlay.name from activating."
+                  prevent()
                   discard ef.cardToPlay
                   unregister() // this ensures self effect to be correctly unregistered
                 }
@@ -4792,7 +4761,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                       }
                     }
                   }
-                  acl = action("Put Lillie's Poké Doll on Deck ↓", [TargetPlayer.SELF]) {
+                  acl = action(pokemonCard, "Put Lillie's Poké Doll on Deck ↓", [TargetPlayer.SELF]) {
                     assert self.active : "Lillie's Poké Doll must be the Active Pokémon."
                     self.cards.getExcludedList(self.topPokemonCard).discard()
                     self.cards.moveTo(my.deck)
@@ -4804,7 +4773,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                 }
               }
             }
-            pokemonCard.player = trainerCard.player
+            pokemonCard.initializeFrom trainerCard
             bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
             benchPCS(pokemonCard)
           }
@@ -4936,7 +4905,7 @@ public enum CosmicEclipse implements LogicCardInfo {
                 it.name==sel.first().predecessor && it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount
               })
               def pcs = (opts.size() == 1) ? opts.first() : opts.select("Evolve which Pokémon?")
-              evolve(pcs, sel.first(), OTHER)
+              evolve(pcs, sel.first())
               if (toDiscard && my.deck) {
                 attachEnergyFrom(min: 0, max: 2, basic:true, my.deck, pcs)
               }
@@ -4973,7 +4942,7 @@ public enum CosmicEclipse implements LogicCardInfo {
         return supporter (this) {
           text "You can play this card only if 1 of your Pokémon was Knocked Out during your opponent's last turn." +
             "Search your deck for a Pokémon, a Trainer card, and a basic Energy card, reveal them, and put them into your hand. Then, shuffle your deck."
-          globalAbility {Card thisCard->
+          initHook {Card thisCard->
             delayed {
               before KNOCKOUT, {
                 if(ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite){
@@ -5003,9 +4972,11 @@ public enum CosmicEclipse implements LogicCardInfo {
               if (discarded instanceof PokemonCard) {
                 discarded.abilities.each {
                   if (it.name == "Blow-Away Bomb" && checkGlobalAbility(discarded) && confirm("Use Blow-Away Bomb?")) {
-                    bc "Blow-Away Bomb activates."
-                    opp.all.each { target ->
-                      directDamage 10, target, SRC_ABILITY
+                    sourced(source: SRC_ABILITY, sourceAbility: it) {
+                      bc "Blow-Away Bomb activates."
+                      opp.all.each { target ->
+                        directDamage 10, target
+                      }
                     }
                   }
                 }
@@ -5057,9 +5028,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             "When you attach this card from your hand to a Pokémon, draw a card."
           onPlay {reason->
             if(reason == PLAY_FROM_HAND) {
-              targeted null, SRC_SPENERGY, {
-                draw 1
-              }
+              draw 1
             }
           }
         };

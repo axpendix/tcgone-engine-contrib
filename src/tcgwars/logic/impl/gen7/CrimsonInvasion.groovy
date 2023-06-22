@@ -1,6 +1,6 @@
 package tcgwars.logic.impl.gen7
 
-import tcgwars.logic.effect.gm.PlayEvolution;
+
 import tcgwars.logic.impl.gen2.Aquapolis
 
 import static tcgwars.logic.card.HP.*;
@@ -200,7 +200,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -332,7 +332,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
               def sel=self.owner.pbg.deck.search(count:1, "Shell On : search a pokemon evolving from Karrablast",
                 {it.cardTypes.is(EVOLUTION) && it.predecessor==self.name})
               if(sel){
-                evolve(self, sel.first(), OTHER)
+                evolve(self, sel.first())
               }
               shuffleDeck(null, self.owner.toTargetPlayer())
             }
@@ -534,7 +534,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
               def sel=self.owner.pbg.deck.select(min:0, "Waterfall Evolution",
                 {it.cardTypes.is(EVOLUTION) && it.predecessor==self.name}, self.owner)
               if(sel){
-                evolve(self, sel.first(), OTHER)
+                evolve(self, sel.first())
               }
               shuffleDeck(null, self.owner.toTargetPlayer())
             }
@@ -726,7 +726,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             onAttack {
               def tar = opp.bench.findAll {it.numberOfDamageCounters}.select()
               tar.cards.moveTo(opp.deck)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
               removePCS(tar)
             }
           }
@@ -911,16 +911,8 @@ public enum CrimsonInvasion implements LogicCardInfo {
               gxPerform()
               damage 100
               delayed {
-                def flag = false
-                before PROCESS_ATTACK_EFFECTS, {
-                  flag = true
-                }
-                before BETWEEN_TURNS, {
-                  flag = false
-                }
                 before PLAY_TRAINER, {
-                  if(bg.currentTurn == self.owner.opposite && !flag)
-                  {
+                  if(bg.currentTurn == self.owner.opposite) {
                     wcu "Heavy Rock GX prevent you playing this card"
                     prevent()
                   }
@@ -931,14 +923,14 @@ public enum CrimsonInvasion implements LogicCardInfo {
                     prevent()
                   }
                 }
-                before EVOLVE_STANDARD, {
-                  if(bg.currentTurn == self.owner.opposite){
+                before EVOLVE, {
+                  if(ef.fromHand && bg.currentTurn == self.owner.opposite){
                     wcu "Heavy Rock GX prevent you playing this card"
                     prevent()
                   }
                 }
-                before PLAY_BASIC_POKEMON, {
-                  if(bg.currentTurn == self.owner.opposite){
+                before PUT_ON_BENCH, {
+                  if(ef.fromHand && bg.currentTurn == self.owner.opposite){
                     wcu "Heavy Rock GX prevent you playing this card"
                     prevent()
                   }
@@ -1130,22 +1122,12 @@ public enum CrimsonInvasion implements LogicCardInfo {
                   prevent()
                 }
                 before EVOLVE, {
-                  if ((ef as Evolve).evolutionCard.player.pbg.hand.contains(ef.evolutionCard) && ef.evolutionCard.abilities) {
+                  if (ef.fromHand && (ef as Evolve).evolutionCard.player.pbg.hand.contains(ef.evolutionCard) && ef.evolutionCard.abilities) {
                     warnAndPrevent()
                   }
                 }
-                before EVOLVE_STANDARD, {
-                  if ((ef as EvolveStandard).evolutionCard.player.pbg.hand.contains(ef.evolutionCard) && ef.evolutionCard.abilities) {
-                    warnAndPrevent()
-                  }
-                }
-                before PLAY_EVOLUTION, {
-                  if ((ef as PlayEvolution).cardToPlay.player.pbg.hand.contains(ef.cardToPlay) && ef.evolutionCard.abilities) {
-                    warnAndPrevent()
-                  }
-                }
-                before PLAY_BASIC_POKEMON, {
-                  if(ef.cardToPlay.abilities) {
+                before PUT_ON_BENCH, {
+                  if(ef.fromHand && ef.pokemonCard.abilities) {
                     warnAndPrevent()
                   }
                 }
@@ -1338,8 +1320,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
                   }
                 }
                 unregisterAfter 2
-                after EVOLVE,defending, {unregister()}
-                after DEVOLVE,defending, {unregister()}
+                after CHANGE_STAGE,defending, {unregister()}
                 after FALL_BACK,defending, {unregister()}
               }
             }
@@ -2006,8 +1987,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
                   }
                   unregisterAfter 2
                   after FALL_BACK, self, {unregister()}
-                  after EVOLVE, self, {unregister()}
-                  after DEVOLVE, self, {unregister()}
+                  after CHANGE_STAGE, self, {unregister()}
                 }
               }
             }
@@ -2391,7 +2371,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             if(confirm("Replace opponent hand?")){
               def nbc = opp.hand.size()
               opp.hand.moveTo(hidden:true,opp.deck)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
               draw nbc, TargetPlayer.OPPONENT
             }
           }
@@ -2421,22 +2401,31 @@ public enum CrimsonInvasion implements LogicCardInfo {
           text "Special Conditions are not removed when Pokémon (both yours and your opponent's) evolve or devolve.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card."
           def eff
           onPlay {
-            //TODO : implement this stadium
             eff = delayed {
-              before ASLEEP_SPC, null, null, EVOLVE, {
-                prevent()
+              before ASLEEP_SPC, null, null, CHANGE_STAGE, {
+                if (bg.em().currentEffectStack.find{it.effectType == EVOLVE || it.effectType == DEVOLVE}) {
+                  prevent()
+                }
               }
-              before CONFUSED_SPC, null, null, EVOLVE, {
-                prevent()
+              before CONFUSED_SPC, null, null, CHANGE_STAGE, {
+                if (bg.em().currentEffectStack.find{it.effectType == EVOLVE || it.effectType == DEVOLVE}) {
+                  prevent()
+                }
               }
-              before PARALYZED_SPC, null, null, EVOLVE, {
-                prevent()
+              before PARALYZED_SPC, null, null, CHANGE_STAGE, {
+                if (bg.em().currentEffectStack.find{it.effectType == EVOLVE || it.effectType == DEVOLVE}) {
+                  prevent()
+                }
               }
-              before BURNED_SPC, null, null, EVOLVE, {
-                prevent()
+              before BURNED_SPC, null, null, CHANGE_STAGE, {
+                if (bg.em().currentEffectStack.find{it.effectType == EVOLVE || it.effectType == DEVOLVE}) {
+                  prevent()
+                }
               }
-              before POISONED_SPC, null, null, EVOLVE, {
-                prevent()
+              before POISONED_SPC, null, null, CHANGE_STAGE, {
+                if (bg.em().currentEffectStack.find{it.effectType == EVOLVE || it.effectType == DEVOLVE}) {
+                  prevent()
+                }
               }
             }
           }

@@ -35,10 +35,10 @@ import tcgwars.logic.util.*;
  */
 public enum EeveeHeroesVmaxSpecialSet implements LogicCardInfo {
 
-  FLAREON_VMAX_1 ("Flareon VMAX", "1", Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _FIRE_]),
-  VAPOREON_VMAX_2 ("Vaporeon VMAX", "2", Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _WATER_]),
-  JOLTEON_VMAX_3 ("Jolteon VMAX", "3", Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _LIGHTNING_]),
-  ESPEON_VMAX_4 ("Espeon VMAX", "4", Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _PSYCHIC_]);
+  FLAREON_VMAX_1 ("Flareon VMAX", "1", Rarity.HOLORARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _FIRE_]),
+  VAPOREON_VMAX_2 ("Vaporeon VMAX", "2", Rarity.HOLORARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _WATER_]),
+  JOLTEON_VMAX_3 ("Jolteon VMAX", "3", Rarity.HOLORARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _LIGHTNING_]),
+  ESPEON_VMAX_4 ("Espeon VMAX", "4", Rarity.HOLORARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _PSYCHIC_]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -86,7 +86,7 @@ public enum EeveeHeroesVmaxSpecialSet implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -98,12 +98,16 @@ public enum EeveeHeroesVmaxSpecialSet implements LogicCardInfo {
         move "Max Explosion", {
           text "100× damage. Discard the top 5 cards of your deck. This attack does 100 damage for each Energy card you discarded in this way."
           energyCost R, C, C
-          attackRequirement {}
-          onAttack {
-            damage 100
+            attackRequirement {
+              assert my.deck
+            }
+            onAttack {
+              def list = my.deck.subList(0, 5).discard()
+              damage 100 * list.filterByType(ENERGY).size()
+            }
           }
-        }
-      };
+
+        };
       case VAPOREON_VMAX_2:
       return evolution (this, from:"Vaporeon V", hp:HP320, type:W, retreatCost:2) {
         weakness L

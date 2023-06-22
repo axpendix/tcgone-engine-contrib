@@ -1,7 +1,8 @@
 package tcgwars.logic.impl.gen4
 
 import tcgwars.logic.DamageManager
-import tcgwars.logic.effect.ability.CheckAbilities
+import tcgwars.logic.card.trainer.PokemonToolCard
+import tcgwars.logic.effect.gm.ActivateSimpleTrainer
 import tcgwars.logic.impl.gen3.Sandstorm
 
 import tcgwars.logic.Battleground
@@ -191,7 +192,7 @@ public enum GreatEncounters implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -304,19 +305,20 @@ public enum GreatEncounters implements LogicCardInfo {
             callForFamily(basic:true, 3, delegate)
           }
           move "Smash Short", {
-            text "10+ damage. If the Defending Pokémon has a Pokémon Tool card attached to it, this attack does 10 damage plus 20 more damage. Discard that Pokémon Tool card, look at your opponent's hand, and discard any Pokémon Tool cards of the same name you find there."
+            text "10+ damage. If the Defending Pokémon has a Pokémon Tool card attached to it, this attack does 10 damage plus 30 more damage. Discard that Pokémon Tool card, look at your opponent's hand, and discard any Pokémon Tool cards of the same name you find there."
             energyCost C
             onAttack {
               damage 10
               def tools = defending.cards.filterByType(POKEMON_TOOL)
               if(tools) {
                 damage 30
-                def tool
-                targeted(defending) {
-                  tool = tools.select("Discard a Pokémon Tool attached to $defending").discard().first()
-                }
-                if(opp.hand) {
-                  opp.hand.showToMe("Opponent's hand").findAll{it.name == tool.name}.discard()
+                afterDamage {
+                  targeted(defending) {
+                    def tool = tools.select("Discard a Pokémon Tool attached to $defending").discard().first()
+                    if(opp.hand) {
+                      opp.hand.showToMe("Opponent's hand").findAll{it.name == tool.name}.discard()
+                    }
+                  }
                 }
               }
             }
@@ -346,8 +348,7 @@ public enum GreatEncounters implements LogicCardInfo {
                 }
                 unregisterAfter 1
                 after FALL_BACK, self, {unregister()}
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
+                after CHANGE_STAGE, self, {unregister()}
               }
             }
           }
@@ -525,8 +526,7 @@ public enum GreatEncounters implements LogicCardInfo {
                   }
                   unregisterAfter 2
                   after FALL_BACK, self, {unregister()}
-                  after EVOLVE, self, {unregister()}
-                  after DEVOLVE, self, {unregister()}
+                  after CHANGE_STAGE, self, {unregister()}
                 }
               }
             }
@@ -633,15 +633,8 @@ public enum GreatEncounters implements LogicCardInfo {
               }, {
                 bc "${self.owner.opposite.getPlayerUsername(bg)} can't play any Trainer (Item, Supporter, or Stadium) cards from their hand during their next turn."
                 delayed {
-                  def flag = false
-                  before PROCESS_ATTACK_EFFECTS, {
-                    flag = true
-                  }
-                  before BETWEEN_TURNS, {
-                    flag = false
-                  }
                   before PLAY_TRAINER, {
-                    if (bg.currentTurn == self.owner.opposite && (ef.cardToPlay.cardTypes.is(TRAINER)) && !flag) {
+                    if (bg.currentTurn == self.owner.opposite && (ef.cardToPlay.cardTypes.isIn(TRAINER, ITEM, SUPPORTER, STADIUM))) {
                       wcu "Ambient Noise prevents you from playing any Trainer (Item, Supporter, or Stadium) cards."
                       prevent()
                     }
@@ -831,18 +824,6 @@ public enum GreatEncounters implements LogicCardInfo {
               assert my.prizeCardSet.faceDownCards || opp.prizeCardSet.faceDownCards : "There are no face down prizes"
             }
             onAttack {
-              delayed {
-                def eff
-                register {
-                  eff = getter (GET_MAX_SUPPORTER_PER_TURN) { h->
-                    h.object = h.object + 1
-                  }
-                }
-                unregister {
-                  eff.unregister()
-                }
-                unregisterAfter 1
-              }
               def options = []
               def text = []
               if (my.prizeCardSet.faceDownCards) {
@@ -857,9 +838,7 @@ public enum GreatEncounters implements LogicCardInfo {
               def card = choice.faceDownCards.select(hidden:true, "Reveal a Prize card").first()
               choice.setVisible(card,true)
               if (card.cardTypes.is(SUPPORTER)) {
-                bg.deterministicCurrentThreadPlayerType=self.owner
-                bg.em().run(new PlayTrainer(card))
-                bg.clearDeterministicCurrentThreadPlayerType()
+                bg.em().run(new ActivateSimpleTrainer(card))
               }
 
             }
@@ -954,7 +933,7 @@ public enum GreatEncounters implements LogicCardInfo {
       case SLOWKING_28:
         return evolution (this, from:"Slowpoke", hp:HP080, type:PSYCHIC, retreatCost:2) {
           weakness P, PLUS20
-          globalAbility {Card thisCard->
+          initHook {Card thisCard->
             delayed {
               before KNOCKOUT, {
                 if (ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite) {
@@ -1082,9 +1061,7 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost C, C
             onAttack {
               damage 40
-              if (self.getPokemonCards().find {
-                it.name.contains("Igglybuff")
-              }) {
+              if (self.getPokemonCards().find {it.name == "Igglybuff"}) {
                 damage 20
               }
             }
@@ -1343,20 +1320,15 @@ public enum GreatEncounters implements LogicCardInfo {
               assert opp.all.find{it.cards.filterByType(POKEMON_TOOL)} : "Your opponent has no Pokémon Tools attached"
             }
             onAttack {
-              def src = opp.all.findAll{it.cards.filterByType(POKEMON_TOOL)}.select("Pokémon that has a Tool to move")
-              def tool = src.cards.filterByType(POKEMON_TOOL).select("Pokémon Tool to move").first()
-              def tar = opp.all.findAll{it.cards.filterByType(POKEMON_TOOL).empty}.select("Move $tool to which Pokémon")
-              targeted(src) {
-                def moved = false
-                targeted(tar) {
-                  moved = true
-                  tar.cards.add(tool)
-                  src.cards.remove(tool)
+              def pcs = opp.all.findAll { it.cards.filterByType(POKEMON_TOOL) }.select("Source Pokémon that has a Tool to move")
+              targeted (pcs) {
+                def card = pcs.cards.filterByType(POKEMON_TOOL).select("Pokémon Tool to move").first() as PokemonToolCard
+                def pl = opp.all.findAll { canAttachPokemonTool(it, card) && it!=pcs}
+                if(!pl){wcu "No available Pokemon to move this card"; return}
+                def tar = pl.select("Move $tool to which Pokémon?")
+                targeted (tar) {
+                  attachPokemonTool(card, tar)
                 }
-                if(!moved) {
-                  discard(tool)
-                }
-
               }
             }
           }
@@ -1462,7 +1434,7 @@ public enum GreatEncounters implements LogicCardInfo {
               flip {
                 def name = self.name
                 def tar = my.deck.search("Evolves from $name", { it.cardTypes.is(EVOLUTION) && name == it.predecessor })
-                if (tar) evolve(self, tar.first(), OTHER)
+                if (tar) evolve(self, tar.first())
                 shuffleDeck()
               }
             }
@@ -1517,24 +1489,9 @@ public enum GreatEncounters implements LogicCardInfo {
               assert my.hand.filterByType(SUPPORTER) : "No Supporter cards in your hand"
               powerUsed()
 
-              delayed {
-                def eff
-                register {
-                  eff = getter (GET_MAX_SUPPORTER_PER_TURN) {h->
-                    h.object = h.object + 1
-                  }
-                }
-                unregister {
-                  eff.unregister()
-                }
-                unregisterAfter 1
-              }
-
               def card = my.hand.findAll(cardTypeFilter(SUPPORTER)).select("Select a Supporter to copy its effect as this attack.").first()
               discard card
-              bg.deterministicCurrentThreadPlayerType = self.owner
-              bg.em().run(new PlayTrainer(card))
-              bg.clearDeterministicCurrentThreadPlayerType()
+              bg.em().run(new ActivateSimpleTrainer(card))
             }
           }
           move "Speed Attack", {
@@ -1765,7 +1722,7 @@ public enum GreatEncounters implements LogicCardInfo {
                 }
               }
               bg.em().run(new ChangeImplementation(toolCard, top))
-              toolCard.player = top.player
+              toolCard.initializeFrom(top)
               def pcs = my.all.findAll {it!=self && canAttachPokemonTool(it)}.select("Attach to?")
               removeFromPlay(self, [top] as CardList)
               bg.em().run(new ChangeImplementation(toolCard, top))
@@ -1906,7 +1863,7 @@ public enum GreatEncounters implements LogicCardInfo {
               checkLastTurn()
               powerUsed()
               flip {
-                deck.search ("Evolves from ${self.name}", {it.cardTypes.is(EVOLUTION) && self.name==it.predecessor}).each { evolve(self, it, OTHER) }
+                deck.search ("Evolves from ${self.name}", {it.cardTypes.is(EVOLUTION) && self.name==it.predecessor}).each { evolve(self, it) }
                 shuffleDeck()
               }
             }
@@ -2061,7 +2018,7 @@ public enum GreatEncounters implements LogicCardInfo {
               powerUsed()
               def tar = my.hand.findAll { it.name.contains("Jigglypuff") }.select()
               if (tar) {
-                evolve(self, tar.first(), OTHER)
+                evolve(self, tar.first())
                 heal self.numberOfDamageCounters*10, self
               }
             }
@@ -2898,9 +2855,7 @@ public enum GreatEncounters implements LogicCardInfo {
                       }
                       after FALL_BACK, pcs, { unregister() }
                       after KNOCKOUT, pcs, { unregister() }
-                      after EVOLVE, pcs, { unregister() }
-                      after DEVOLVE, pcs, { unregister() }
-                      after LEVEL_UP, pcs, { unregister() }
+                      after CHANGE_STAGE, pcs, { unregister() }
                     }
                   }
                 }

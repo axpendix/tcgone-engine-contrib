@@ -10,6 +10,7 @@ import tcgwars.logic.effect.advanced.EnergySwitch
 import tcgwars.logic.effect.basic.DirectDamage
 import tcgwars.logic.effect.basic.Move
 import tcgwars.logic.effect.basic.ResolvedDamage
+import tcgwars.logic.effect.gm.ActivateSimpleTrainer
 import tcgwars.logic.effect.gm.PlayPokemonTool
 import tcgwars.logic.effect.gm.PlayPokemonToolFlare
 import tcgwars.logic.effect.gm.PlayTrainer
@@ -240,7 +241,7 @@ public enum SupremeVictors implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -278,9 +279,7 @@ public enum SupremeVictors implements LogicCardInfo {
                   }
                   unregisterAfter 2
                   after FALL_BACK, pcs, {unregister()}
-                  after EVOLVE, pcs, {unregister()}
-                  after DEVOLVE, pcs, {unregister()}
-                  after LEVEL_UP, pcs, {unregister()}
+                  after CHANGE_STAGE, pcs, {unregister()}
                 }
               }
             }
@@ -1409,9 +1408,7 @@ public enum SupremeVictors implements LogicCardInfo {
                       }
                       after FALL_BACK, pcs, { unregister() }
                       after KNOCKOUT, pcs, { unregister() }
-                      after EVOLVE, pcs, { unregister() }
-                      after DEVOLVE, pcs, { unregister() }
-                      after LEVEL_UP, pcs, { unregister() }
+                      after CHANGE_STAGE, pcs, { unregister() }
                     }
                   }
                 }
@@ -1552,10 +1549,8 @@ public enum SupremeVictors implements LogicCardInfo {
                     }
                   }
                   unregisterAfter 2
-                  after EVOLVE, self, {unregister()}
-                  after DEVOLVE, self, {unregister()}
+                  after CHANGE_STAGE, self, {unregister()}
                   after FALL_BACK, self, {unregister()}
-                  after LEVEL_UP, self, { unregister() }
                 }
               }
             }
@@ -1810,10 +1805,8 @@ public enum SupremeVictors implements LogicCardInfo {
                     eff.unregister()
                   }
                   unregisterAfter 2
-                  after SWITCH, defending, {unregister()}
-                  after EVOLVE, defending, {unregister()}
-                  after DEVOLVE, defending, {unregister()}
-                  after LEVEL_UP, defending, {unregister()}
+                  after FALL_BACK, defending, {unregister()}
+                  after CHANGE_STAGE, defending, {unregister()}
                 }
               }
             }
@@ -2304,28 +2297,16 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost ()
             attackRequirement {
               assert opp.all.find{it.cards.filterByType(POKEMON_TOOL)} : "Your opponent has no Pokémon Tools attached"
-              assert opp.bench : "Your opponent only has 1 Pokémon in play"
-              assert opp.all.find{canAttachPokemonTool(it)} : "There are no eligable Pokémon to recieve a Pokémon Tool"
             }
             onAttack {
-              def pcs = opp.all.findAll { it.cards.filterByType(POKEMON_TOOL) }.select("Source")
-              def list = pcs.cards.filterByType(POKEMON_TOOL).select("Move")
-              def card = list.first() as PokemonToolCard
-              def pl = opp.all.findAll { canAttachPokemonTool(it) && it!=pcs && card.allowAttach(bg, it)}
-              if(!pl){wcu "No available Pokemon to move this card"; return}
-              def tar = pl.select("To?")
-              targeted(pcs) {
-                targeted(tar) {
-                  removeFromPlay(pcs, list)
-                  moveCard(card, tar)
-                  card.play(bg, tar)
-
-                  if(card.cardTypes.is(FLARE)){
-                    PlayPokemonToolFlare.registerListener(bg, card, tar)
-                  } else {
-                    PlayPokemonTool.registerListener(bg, card, tar)
-                  }
-                  bc "Moved $card from $pcs to $tar!"
+              def pcs = opp.all.findAll { it.cards.filterByType(POKEMON_TOOL) }.select("Source Pokémon that has a Tool to move")
+              targeted (pcs) {
+                def card = pcs.cards.filterByType(POKEMON_TOOL).select("Pokémon Tool to move").first() as PokemonToolCard
+                def pl = opp.all.findAll { canAttachPokemonTool(it, card) && it!=pcs }
+                if(!pl){wcu "No available Pokemon to move this card"; return}
+                def tar = pl.select("Move $tool to which Pokémon?")
+                targeted (tar) {
+                  attachPokemonTool(card, tar)
                 }
               }
             }
@@ -2616,8 +2597,8 @@ public enum SupremeVictors implements LogicCardInfo {
             onAttack {
               damage 20
               delayed {
-                after PLAY_BASIC_POKEMON, {
-                  if(bg.currentTurn == self.owner.opposite){
+                after PUT_ON_BENCH, {
+                  if(ef.basicFromHand && bg.currentTurn == self.owner.opposite){
                     ef.place.damage += 20
                   }
                 }
@@ -2961,7 +2942,7 @@ public enum SupremeVictors implements LogicCardInfo {
               powerUsed()
               def tar = my.hand.findAll { it.name.contains("Chimecho") }.select()
               if (tar) {
-                evolve(self, tar.first(), OTHER)
+                evolve(self, tar.first())
                 heal self.numberOfDamageCounters*10, self
               }
             }
@@ -2974,9 +2955,7 @@ public enum SupremeVictors implements LogicCardInfo {
             }
             onAttack {
               def card = opp.discard.select(min:0, "Opponent's hand. Select a Supporter.", cardTypeFilter(SUPPORTER)).first()
-              bg.deterministicCurrentThreadPlayerType=self.owner
-              bg.em().run(new PlayTrainer(card))
-              bg.clearDeterministicCurrentThreadPlayerType()
+              bg.em().run(new ActivateSimpleTrainer(card))
             }
           }
         };
@@ -3326,7 +3305,7 @@ public enum SupremeVictors implements LogicCardInfo {
               powerUsed()
               def tar = my.hand.findAll { it.name.contains("Mr. Mime") }.select()
               if (tar) {
-                evolve(self, tar.first(), OTHER)
+                evolve(self, tar.first())
                 heal self.numberOfDamageCounters*10, self
               }
             }
@@ -3350,9 +3329,7 @@ public enum SupremeVictors implements LogicCardInfo {
                 }
                 unregisterAfter 2
                 after FALL_BACK, pcs, {unregister()}
-                after EVOLVE, pcs, {unregister()}
-                after DEVOLVE, pcs, {unregister()}
-                after LEVEL_UP, pcs, {unregister()}
+                after CHANGE_STAGE, pcs, {unregister()}
               }
             }
           }
@@ -3730,18 +3707,16 @@ public enum SupremeVictors implements LogicCardInfo {
           def eff
           onPlay {
             eff = delayed {
-              boolean flag = false
-              before LEVEL_UP, {
-                flag = (ef.levelUpCard as Card).player.pbg.hand.contains(ef.levelUpCard)
+              after LEVEL_UP, {
+                if(ef.activationReason == PLAY_FROM_HAND) {
+                  bc "Battle Tower activates"
+                  heal(40, ef.pokemonToLevelUp, TRAINER_CARD)
+                }
               }
-              after LEVEL_UP, { if(flag) {
-                bc "Battle Tower activates"
-                heal(40, ef.pokemonToLevelUp, TRAINER_CARD)
-              } }
             }
           }
           onRemoveFromPlay{
-            eff.unregister
+            eff.unregister()
           }
         };
       case CHAMPION_S_ROOM_135:
@@ -3886,10 +3861,8 @@ public enum SupremeVictors implements LogicCardInfo {
                     }
                   }
                   unregisterAfter 2
-                  after EVOLVE, self, {unregister()}
-                  after DEVOLVE, self, {unregister()}
+                  after CHANGE_STAGE, self, {unregister()}
                   after FALL_BACK, self, {unregister()}
-                  after LEVEL_UP, self, {unregister()}
                 }
               }
             }
@@ -4136,7 +4109,7 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              defendingRetreatsCostsMore(defending,[C,C])
+              defendingRetreatsCostsMore(defending,2)
             }
           }
           move "Aqua Wave", {

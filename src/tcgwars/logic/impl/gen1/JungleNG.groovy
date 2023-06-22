@@ -183,7 +183,7 @@ public enum JungleNG implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -403,7 +403,7 @@ public enum JungleNG implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              afterDamage {flipThenApplySC PARALYZED}
+              flipThenApplySC PARALYZED
             }
           }
           move "Guillotine", {
@@ -459,7 +459,7 @@ public enum JungleNG implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              afterDamage {flipThenApplySC PARALYZED}
+              flipThenApplySC PARALYZED
             }
           }
 
@@ -883,8 +883,7 @@ public enum JungleNG implements LogicCardInfo {
                   }
                 }
                 unregisterAfter 2
-                after EVOLVE,defending, {unregister()}
-                after DEVOLVE,defending, {unregister()}
+                after CHANGE_STAGE,defending, {unregister()}
                 after FALL_BACK,defending, {unregister()}
               }
             }
@@ -1081,11 +1080,9 @@ public enum JungleNG implements LogicCardInfo {
                 }
                 unregisterAfter 2
                 after FALL_BACK,defending, {unregister()}
-                after EVOLVE,defending, {unregister()}
-                after DEVOLVE,defending, {unregister()}
+                after CHANGE_STAGE,defending, {unregister()}
                 after FALL_BACK,self, {unregister()}
-                after EVOLVE,self, {unregister()}
-                after DEVOLVE,self, {unregister()}
+                after CHANGE_STAGE,self, {unregister()}
               }
             }
           }
@@ -1121,11 +1118,9 @@ public enum JungleNG implements LogicCardInfo {
 
                   unregisterAfter 2
                   after FALL_BACK,defending, {unregister()}
-                  after EVOLVE,defending, {unregister()}
-                  after DEVOLVE,defending, {unregister()}
+                  after CHANGE_STAGE,defending, {unregister()}
                   after FALL_BACK,self, {unregister()}
-                  after EVOLVE,self, {unregister()}
-                  after DEVOLVE,self, {unregister()}
+                  after CHANGE_STAGE,self, {unregister()}
                 }
               }
             }
@@ -1361,11 +1356,9 @@ public enum JungleNG implements LogicCardInfo {
 
                   unregisterAfter 2
                   after FALL_BACK,defending, {unregister()}
-                  after EVOLVE,defending, {unregister()}
-                  after DEVOLVE,defending, {unregister()}
+                  after CHANGE_STAGE,defending, {unregister()}
                   after FALL_BACK,self, {unregister()}
-                  after EVOLVE,self, {unregister()}
-                  after DEVOLVE,self, {unregister()}
+                  after CHANGE_STAGE,self, {unregister()}
                 }
               }
             }
@@ -1445,7 +1438,7 @@ public enum JungleNG implements LogicCardInfo {
           text "Flip a coin. If heads, you may search your deck for any Basic Pokémon or Evolution card. Show that card to your opponent, then put it into your hand. Shuffle your deck afterward."
           onPlay {
             flip{
-              my.deck.search(count : 1, "search for a Basic Pokémon or Evolution card", {it.cardTypes.is(BASIC) || it.cardTypes.is(EVOLUTION)}).moveTo(my.hand)
+              my.deck.search(count : 1, "search for a Basic Pokémon or Evolution card", {it.cardTypes.is(BASIC) || it.cardTypes.is(EVOLUTION)}).showToOpponent().moveTo(my.hand)
             }
           }
           playRequirement{

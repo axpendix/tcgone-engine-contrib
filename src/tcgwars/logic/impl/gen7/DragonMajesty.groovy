@@ -149,7 +149,7 @@ public enum DragonMajesty implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -738,7 +738,7 @@ public enum DragonMajesty implements LogicCardInfo {
             }
             delayedA {
               before APPLY_SPECIAL_CONDITION, {
-                def pcs = ef.getResolvedTarget(bg, e)
+                def pcs = ef.getTargetPokemon()
                 if(pcs.owner==self.owner && ef.type == CONFUSED && pcs.types.contains(W)){
                   bc "Murmurs of the Sea prevents special conditions"
                   prevent()
@@ -908,7 +908,7 @@ public enum DragonMajesty implements LogicCardInfo {
             delayedA {
               before null, null, ATTACK, {
                 if(ef instanceof TargetedEffect && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
-                  def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
+                  def pcs = e.getTargetPokemon()
                   if(pcs != null && pcs.types.contains(N) && pcs.owner == self.owner){
                     bc "Dragon Guard prevents effect to Dragon Pokémon"
                     prevent()
@@ -1373,7 +1373,7 @@ public enum DragonMajesty implements LogicCardInfo {
       case LANCE_PRISM_STAR_61:
         return supporter(this) {
           text "You can play this card only if 1 of your Pokémon was Knocked Out during your opponent's last turn.\nSearch your deck for up to 2 [N] Pokémon and put them onto your Bench. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack).\n"
-          globalAbility {Card thisCard->
+          initHook {Card thisCard->
             delayed {
               before KNOCKOUT, {
                 if(ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite){
@@ -1420,7 +1420,7 @@ public enum DragonMajesty implements LogicCardInfo {
       case ZINNIA_64:
         return supporter(this) {
           text "You can play this card only if 1 of your Pokémon was Knocked Out during your opponent's last turn.\nAttach up to 2 basic Energy cards from your hand to 1 of your [N] Pokémon.\nYou may play only 1 Supporter card during your turn (before your attack).\n"
-          globalAbility {Card thisCard->
+          initHook {Card thisCard->
             delayed {
               before KNOCKOUT, {
                 if(ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite){

@@ -34,7 +34,7 @@ import tcgwars.logic.util.*;
  * @author lithogenn@gmail.com
  */
 public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
-    
+
   TEAM_AQUA_S_CACTURNE_1 ("Team Aqua's Cacturne", "1", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_, _DARKNESS_]),
   TEAM_AQUA_S_CRAWDAUNT_2 ("Team Aqua's Crawdaunt", "2", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_, _DARKNESS_]),
   TEAM_AQUA_S_KYOGRE_3 ("Team Aqua's Kyogre", "3", Rarity.HOLORARE, [POKEMON, BASIC, _WATER_, _DARKNESS_]),
@@ -132,9 +132,9 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
   SWAMPERT_EX_95 ("Swampert ex", "95", Rarity.ULTRARARE, [POKEMON, BASIC, EX, _FIGHTING_]),
   ABSOL_96 ("Absol", "96", Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
   JIRACHI_97 ("Jirachi", "97", Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]);
-    
+
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
-  
+
   protected CardTypeSet cardTypes;
   protected String name;
   protected Rarity rarity;
@@ -179,7 +179,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -360,7 +360,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
           energyCost F, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Pulverize", {
@@ -521,7 +521,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Thick Poison", {
@@ -639,7 +639,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Team Play", {
@@ -659,7 +659,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Pin Missile", {
@@ -717,7 +717,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
           energyCost L
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Plasma", {
@@ -777,7 +777,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Wave Splash", {
@@ -817,7 +817,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Pain Amplifier", {
@@ -825,7 +825,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
           energyCost P, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -837,7 +837,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Clay Pulse", {
@@ -877,7 +877,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
           energyCost R
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Dark Shock", {
@@ -935,7 +935,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Horn Rush", {
@@ -955,7 +955,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Razor Leaf", {
@@ -995,7 +995,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -1027,7 +1027,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Thundershock", {
@@ -1067,7 +1067,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Tail Strike", {
@@ -1145,7 +1145,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Wave Splash", {
@@ -1165,7 +1165,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -1219,7 +1219,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Tackle", {
@@ -1261,7 +1261,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Aqua Crush", {
@@ -1333,7 +1333,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
           energyCost F
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -1365,7 +1365,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
           energyCost F
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Spinning Attack", {
@@ -1425,7 +1425,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Combustion", {
@@ -1446,7 +1446,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -1459,7 +1459,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Sharp Fang", {
@@ -1717,7 +1717,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
           energyCost R, R, C, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -1797,7 +1797,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
           energyCost G
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Poison Ring", {
@@ -1825,7 +1825,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
           energyCost W
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Reverse Stream", {
@@ -1853,7 +1853,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
           energyCost W, C, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -1873,7 +1873,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
           energyCost D, D, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };

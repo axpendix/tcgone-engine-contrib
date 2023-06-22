@@ -1,5 +1,6 @@
-package tcgwars.logic.impl.gen1;
+package tcgwars.logic.impl.gen1
 
+import tcgwars.logic.exception.EffectRequirementException;
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen4.Unleashed;
 
@@ -102,32 +103,32 @@ public enum BaseSetNG implements LogicCardInfo {
   VOLTORB ("Voltorb", "67", Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
   VULPIX ("Vulpix", "68", Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
   WEEDLE ("Weedle", "69", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
-  CLEFAIRY_DOLL ("Clefairy Doll", "70", Rarity.RARE, [TRAINER]),
-  COMPUTER_SEARCH ("Computer Search", "71", Rarity.RARE, [TRAINER]),
-  DEVOLUTION_SPRAY ("Devolution Spray", "72", Rarity.RARE, [TRAINER]),
-  IMPOSTOR_PROFESSOR_OAK ("Impostor Professor Oak", "73", Rarity.RARE, [TRAINER]),
-  ITEM_FINDER ("Item Finder", "74", Rarity.RARE, [TRAINER]),
-  LASS ("Lass", "75", Rarity.RARE, [TRAINER]),
-  POKEMON_BREEDER ("Pokémon Breeder", "76", Rarity.RARE, [TRAINER]),
-  POKEMON_TRADER ("Pokémon Trader", "77", Rarity.RARE, [TRAINER]),
-  SCOOP_UP ("Scoop Up", "78", Rarity.RARE, [TRAINER]),
-  SUPER_ENERGY_REMOVAL ("Super Energy Removal", "79", Rarity.RARE, [TRAINER]),
-  DEFENDER ("Defender", "80", Rarity.UNCOMMON, [TRAINER]),
-  ENERGY_RETRIEVAL ("Energy Retrieval", "81", Rarity.UNCOMMON, [TRAINER]),
-  FULL_HEAL ("Full Heal", "82", Rarity.UNCOMMON, [TRAINER]),
-  MAINTENANCE ("Maintenance", "83", Rarity.UNCOMMON, [TRAINER]),
-  PLUSPOWER ("PlusPower", "84", Rarity.UNCOMMON, [TRAINER]),
-  POKEMON_CENTER ("Pokémon Center", "85", Rarity.UNCOMMON, [TRAINER]),
-  POKEMON_FLUTE ("Pokémon Flute", "86", Rarity.UNCOMMON, [TRAINER]),
-  POKEDEX ("Pokédex", "87", Rarity.UNCOMMON, [TRAINER]),
-  PROFESSOR_OAK ("Professor Oak", "88", Rarity.UNCOMMON, [TRAINER]),
-  REVIVE ("Revive", "89", Rarity.UNCOMMON, [TRAINER]),
-  SUPER_POTION ("Super Potion", "90", Rarity.UNCOMMON, [TRAINER]),
-  BILL ("Bill", "91", Rarity.COMMON, [TRAINER]),
-  ENERGY_REMOVAL ("Energy Removal", "92", Rarity.COMMON, [TRAINER]),
-  GUST_OF_WIND ("Gust of Wind", "93", Rarity.COMMON, [TRAINER]),
-  POTION ("Potion", "94", Rarity.COMMON, [TRAINER]),
-  SWITCH ("Switch", "95", Rarity.COMMON, [TRAINER]),
+  CLEFAIRY_DOLL ("Clefairy Doll", "70", Rarity.RARE, [TRAINER, ITEM]),
+  COMPUTER_SEARCH ("Computer Search", "71", Rarity.RARE, [TRAINER, ITEM]),
+  DEVOLUTION_SPRAY ("Devolution Spray", "72", Rarity.RARE, [TRAINER, ITEM]),
+  IMPOSTER_PROFESSOR_OAK ("Impostor Professor Oak", "73", Rarity.RARE, [TRAINER, ITEM]),
+  ITEM_FINDER ("Item Finder", "74", Rarity.RARE, [TRAINER, ITEM]),
+  LASS ("Lass", "75", Rarity.RARE, [TRAINER, ITEM]),
+  POKEMON_BREEDER ("Pokémon Breeder", "76", Rarity.RARE, [TRAINER, ITEM]),
+  POKEMON_TRADER ("Pokémon Trader", "77", Rarity.RARE, [TRAINER, ITEM]),
+  SCOOP_UP ("Scoop Up", "78", Rarity.RARE, [TRAINER, ITEM]),
+  SUPER_ENERGY_REMOVAL ("Super Energy Removal", "79", Rarity.RARE, [TRAINER, ITEM]),
+  DEFENDER ("Defender", "80", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  ENERGY_RETRIEVAL ("Energy Retrieval", "81", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  FULL_HEAL ("Full Heal", "82", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  MAINTENANCE ("Maintenance", "83", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  PLUSPOWER ("PlusPower", "84", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  POKEMON_CENTER ("Pokémon Center", "85", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  POKEMON_FLUTE ("Pokémon Flute", "86", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  POKEDEX ("Pokédex", "87", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  PROFESSOR_OAK ("Professor Oak", "88", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  REVIVE ("Revive", "89", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  SUPER_POTION ("Super Potion", "90", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  BILL ("Bill", "91", Rarity.COMMON, [TRAINER, ITEM]),
+  ENERGY_REMOVAL ("Energy Removal", "92", Rarity.COMMON, [TRAINER, ITEM]),
+  GUST_OF_WIND ("Gust of Wind", "93", Rarity.COMMON, [TRAINER, ITEM]),
+  POTION ("Potion", "94", Rarity.COMMON, [TRAINER, ITEM]),
+  SWITCH ("Switch", "95", Rarity.COMMON, [TRAINER, ITEM]),
   DOUBLE_COLORLESS_ENERGY ("Double Colorless Energy", "96", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
   FIGHTING_ENERGY ("Fighting Energy", "97", Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
   FIRE_ENERGY ("Fire Energy", "98", Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
@@ -280,7 +281,7 @@ public enum BaseSetNG implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -292,7 +293,7 @@ public enum BaseSetNG implements LogicCardInfo {
           pokemonPower "Damage Swap", {
             text "As often as you like during your turn (before your attack), you may move 1 damage counter from 1 of your Pokémon to another as long as you don’t Knock Out that Pokémon. This power can’t be used if Alakazam is Asleep, Confused, or Paralyzed."
             actionA {
-              checkNoSPC()
+              checkNoSPCForClassic()
               assert my.all.find({it.numberOfDamageCounters>0})
               assert my.all.find{it.numberOfDamageCounters < (it.fullHP.value - 10)/10}
               assert my.all.size() > 1
@@ -324,7 +325,7 @@ public enum BaseSetNG implements LogicCardInfo {
           pokemonPower "Rain Dance", {
             text "As often as you like during your turn (before your attack), you may attach 1 [W] Energy card to 1 of your [W] Pokémon. (This doesn’t use up your 1 Energy card attachment for the turn.) This power can’t be used if Blastoise is Asleep, Confused, or Paralyzed."
             actionA {
-              checkNoSPC()
+              checkNoSPCForClassic()
               assert my.hand.filterByBasicEnergyType(W) : "No [W] in hand"
               assert my.all.find{it.types.contains(W)} : "No [W] Pokémon."
 
@@ -389,7 +390,7 @@ public enum BaseSetNG implements LogicCardInfo {
               }
             }
             actionA {
-              checkNoSPC()
+              checkNoSPCForClassic()
               def newSet = [] as Set
               newSet.addAll(self.cards.filterByType(ENERGY))
               if(newSet != set){
@@ -628,7 +629,7 @@ public enum BaseSetNG implements LogicCardInfo {
           pokemonPower "Energy Trans", {
             text "As often as you like during your turn (before you attack), you may take 1 [G] Energy card attached to 1 of your Pokémon and attach it to a different one. This power can’t be used if Venusaur is Asleep, Confused, or Paralyzed."
             actionA {
-              assert !self.isSPC(ASLEEP) || !self.isSPC(CONFUSED) || !self.isSPC(PARALYZED)
+              checkNoSPCForClassic()
               assert my.all.findAll {it.cards.energyCount(G)>0}
               assert my.all.size()>=2
 
@@ -756,10 +757,8 @@ public enum BaseSetNG implements LogicCardInfo {
           pokemonPower "Buzzap", {
             text "At any time during your turn (before your attack), you may Knock Out Electrode and attach it to 1 of your other Pokémon. If you do, choose a type of Energy. Electrode is now an Energy card (instead of a Pokémon) that provides 2 energy of that type. You can’t use this power if Electrode is Asleep, Confused, or Paralyzed."
             actionA {
-              checkNoSPC()
+              checkNoSPCForClassic()
               powerUsed()
-
-
             }
           }
           move "Electric Shock", {
@@ -1163,11 +1162,7 @@ public enum BaseSetNG implements LogicCardInfo {
                     eff.unregister()
                     unregister()
                   }
-                  after EVOLVE, defending, {
-                    eff.unregister()
-                    unregister()
-                  }
-                  after DEVOLVE, defending, {
+                  after CHANGE_STAGE, defending, {
                     eff.unregister()
                     unregister()
                   }
@@ -1181,27 +1176,19 @@ public enum BaseSetNG implements LogicCardInfo {
             onAttack {
               def newResistance = choose([R,F,G,W,P,L,M,D,Y,N],"Select the new Resistance for $self") as Type
               bc "$self's Resistance is now ${newResistance}"
-              def eff
               delayed {
-                eff = getter GET_RESISTANCES, self, { h ->
-                  def list = [] as List<Resistance>
-                  def resistanceType = (h.object.get(0) as Resistance).resistanceType
-                  list.add(new Resistance(newResistance, resistanceType))
-                  h.object = list
+                def eff
+                register {
+                  eff = getter GET_RESISTANCES, self, { h ->
+                    List<Resistance> list = [new Resistance(newResistance, Resistance.ResistanceType.MINUS30)]
+                    h.object = list
+                  }
                 }
-
-                after FALL_BACK, self, {
+                unregister {
                   eff.unregister()
-                  unregister()
                 }
-                after EVOLVE, self, {
-                  eff.unregister()
-                  unregister()
-                }
-                after DEVOLVE, self, {
-                  eff.unregister()
-                  unregister()
-                }
+                after FALL_BACK, self, {unregister()}
+                after CHANGE_STAGE, self, {unregister()}
               }
             }
           }
@@ -1405,8 +1392,7 @@ public enum BaseSetNG implements LogicCardInfo {
                     new Knockout(self.owner.opposite.pbg.active).run(bg)
                   }
                 }
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
+                after CHANGE_STAGE, self, {unregister()}
                 after FALL_BACK, self, {unregister()}
                 unregisterAfter 2
               }
@@ -1742,7 +1728,7 @@ public enum BaseSetNG implements LogicCardInfo {
                       }
                     }
                   }
-                  acl = action("Discard Clefairy Doll", [TargetPlayer.SELF]){
+                  acl = action(pokemonCard, "Discard Clefairy Doll", [TargetPlayer.SELF]){
                     new Knockout(self).run(bg)
                   }
                 }
@@ -1751,7 +1737,7 @@ public enum BaseSetNG implements LogicCardInfo {
                 }
               }
             }
-            pokemonCard.player = trainerCard.player
+            pokemonCard.initializeFrom(trainerCard)
             bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
             benchPCS(pokemonCard)
           }
@@ -1777,25 +1763,22 @@ public enum BaseSetNG implements LogicCardInfo {
           text "Choose 1 of your own Pokémon in play and a Stage of Evolution. Discard all Evolution cards of that Stage or higher attached to that Pokémon. That Pokémon is no longer Asleep, Confused, Paralyzed, Poisoned, or anything else that might be the result of an attack (just as if you had evolved it)."
           onPlay {
             def pcs = my.all.findAll{it.evolution}.select("Pokémon to devolve")
-            def pkmn = []
-            pkmn.addAll(pcs.pokemonCards)
-            pkmn.remove(pcs.topPokemonCard)
-            def stage = pkmn.size()>1 ? pkmn.select("Choose stage to devolve to").first() : pkmn.first()
-            for(PokemonCard t7:pcs.pokemonCards){
-              if (t7 == stage) break
-              devolve(pcs, t7, my.discard)
+            def stage = pcs.pokemonCardsExceptTop.select("Choose stage to devolve to").first()
+            devolve(pcs, my.discard)
+            if (stage != pcs.topPokemonCard) {
+              devolve(pcs, my.discard)
             }
           }
           playRequirement{
             assert my.all.findAll{it.evolution} : "You have no evolved pokemon in play"
           }
         };
-      case IMPOSTOR_PROFESSOR_OAK:
+      case IMPOSTER_PROFESSOR_OAK:
         return basicTrainer (this) {
           text "Your opponent shuffles his or her hand into his or her deck, then draws 7 cards."
           onPlay {
             opp.hand.moveTo(hidden:true, opp.deck)
-            shuffleDeck(null, TargetPlayer.OPPONENT)
+            shuffleOppDeck()
             draw 7, TargetPlayer.OPPONENT
           }
           playRequirement{
@@ -1819,14 +1802,19 @@ public enum BaseSetNG implements LogicCardInfo {
         return basicTrainer (this) {
           text "You and your opponent show each other your hands, then shuffle all the Trainer cards from your hands into your decks."
           onPlay {
-            opp.hand.shuffledCopy().showToMe("Opponent's hand")
-            my.hand.getExcludedList(thisCard).shuffledCopy().showToOpponent("Opponent's hand")
+            def handMsg = "Opponent's hand - Trainer cards will be shuffled back into their deck"
+            opp.hand.showToMe(handMsg)
+            my.hand.getExcludedList(thisCard).showToOpponent(handMsg)
             def tarOpp = opp.hand.filterByType(TRAINER)
             def tarMy = my.hand.getExcludedList(thisCard).filterByType(TRAINER)
-            opp.hand.removeAll(tarOpp)
-            my.hand.removeAll(tarMy)
-            shuffleDeck(tarOpp, TargetPlayer.OPPONENT)
-            shuffleDeck(tarMy)
+            if (tarOpp) {
+              tarOpp.moveTo(opp.deck)
+              shuffleOppDeck()
+            }
+            if (tarMy) {
+              tarMy.moveTo(my.deck)
+              shuffleDeck()
+            }
           }
           playRequirement{
             assert (opp.hand || my.hand) : "Neither player has any cards in hand"
@@ -1871,7 +1859,7 @@ public enum BaseSetNG implements LogicCardInfo {
           text "Choose 1 of your own Pokémon in play and return its Basic Pokémon card to your hand. (Discard all cards attached to that card.)"
           onPlay {
             PokemonCardSet pcs = my.all.select()
-            def tar = pcs.pokemonCards[pcs.pokemonCards.size() - 1]
+            def tar = pcs.pokemonCards.last()
             scoopUpPokemon(only:tar, pcs, delegate)
           }
           playRequirement {
@@ -1882,26 +1870,22 @@ public enum BaseSetNG implements LogicCardInfo {
         return basicTrainer (this) {
           text "Discard 1 Energy card attached to 1 of your Pokémon in order to choose 1 of your opponent’s Pokémon and up to 2 Energy cards attached to it. Discard those Energy cards."
           onPlay {
-            def tar1 = my.all.findAll {it.cards.energyCount(C)}
-            if(tar1) {
-              def pcs = tar1.select("Discard energy from")
-              targeted (pcs, TRAINER_CARD) {
-                pcs.cards.filterByType(ENERGY).select("Discard").discard()
-              }
-            }
-            def tar2 = opp.all.findAll {it.cards.energyCount(C)}
-            if(tar2) {
-              def pcs = tar2.select("Discard energy from")
-              targeted (pcs, TRAINER_CARD) {
-                pcs.cards.filterByType(ENERGY).select("Discard").discard()
-                pcs.cards.filterByType(ENERGY).search("Discard").discard()
-
-              }
-            }
+            // TODO test interaction vs Legendary Body & Brock's Protection
+            def tar1 = my.all.findAll {it.cards.filterByType(ENERGY)}
+            def pcs = tar1.select("Discard energy from")
+            // this should prevent the rest of the card to resolve.
+            require(targeted (pcs, TRAINER_CARD, {
+              pcs.cards.filterByType(ENERGY).select("Discard").discard()
+            }))
+            def tar2 = opp.all.findAll {it.cards.filterByType(ENERGY)}
+            def pcs2 = tar2.select("Discard energy from")
+            targeted (pcs2, TRAINER_CARD, {
+              pcs2.cards.filterByType(ENERGY).select(max: 2, "Discard").discard()
+            })
           }
           playRequirement{
-            assert opp.all.findAll {it.cards.energyCount(C)}
-            assert my.all.findAll {it.cards.energyCount(C)}
+            assert opp.all.findAll {it.cards.filterByType(ENERGY)} : "Opponent have no Pokemon with energy"
+            assert my.all.findAll {it.cards.filterByType(ENERGY)} : "You have no Pokemon with energy"
           }
         };
       case DEFENDER: //TODO
@@ -1940,7 +1924,6 @@ public enum BaseSetNG implements LogicCardInfo {
           text "Shuffle 2 of the other cards from your hand into your deck in order to draw a card."
           onPlay {
             def list = hand.getExcludedList(thisCard).select(count:2, "Shuffle to deck")
-            hand.removeAll(list)
             shuffleDeck(list)
             draw 1
           }
@@ -2068,16 +2051,15 @@ public enum BaseSetNG implements LogicCardInfo {
         return basicTrainer (this) {
           text "Choose 1 Energy card attached to 1 of your opponent’s Pokémon and discard it."
           onPlay {
-            def tar = opp.all.findAll {it.cards.energyCount(C)}
-            if(tar) {
-              def pcs = tar.select("Discard energy from")
-              targeted (pcs, TRAINER_CARD) {
-                pcs.cards.filterByType(ENERGY).select("Discard").discard()
-              }
+            // TODO test interaction vs Legendary Body & Brock's Protection
+            def tar = opp.all.findAll {it.cards.filterByType(ENERGY)}
+            def pcs = tar.select("Discard energy from?")
+            targeted (pcs, TRAINER_CARD) {
+              pcs.cards.filterByType(ENERGY).select("Energy card to discard").discard()
             }
           }
-          playRequirement{
-            assert opp.all.findAll {it.cards.energyCount(C)}
+          playRequirement {
+            assert opp.all.findAll {it.cards.filterByType(ENERGY)}
           }
         };
       case GUST_OF_WIND:

@@ -71,7 +71,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
   XERNEAS_29 ("Xerneas", "29", Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
   DIANCIE_30 ("Diancie", "30", Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
   ALCREMIE_V_31 ("Alcremie V", "31", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _PSYCHIC_]),
-  ALCREMIE_VMAX_32 ("Alcremie VMAX", "32", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _PSYCHIC_]),
+  ALCREMIE_VMAX_32 ("Alcremie VMAX", "32", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _PSYCHIC_]),
   ZACIAN_33 ("Zacian", "33", Rarity.RARE, [POKEMON, BASIC, _PSYCHIC_]),
   WOOPER_34 ("Wooper", "34", Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
   QUAGSIRE_35 ("Quagsire", "35", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
@@ -82,7 +82,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
   ROCKRUFF_40 ("Rockruff", "40", Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
   LYCANROC_41 ("Lycanroc", "41", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
   COALOSSAL_V_42 ("Coalossal V", "42", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _FIGHTING_]),
-  COALOSSAL_VMAX_43 ("Coalossal VMAX", "43", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _FIGHTING_]),
+  COALOSSAL_VMAX_43 ("Coalossal VMAX", "43", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _FIGHTING_]),
   ZAMAZENTA_44 ("Zamazenta", "44", Rarity.RARE, [POKEMON, BASIC, _FIGHTING_]),
   FORRETRESS_45 ("Forretress", "45", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
   STEELIX_V_46 ("Steelix V", "46", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _METAL_]),
@@ -98,7 +98,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
   RAYQUAZA_56 ("Rayquaza", "56", Rarity.RARE, [POKEMON, BASIC, _COLORLESS_]),
   CHATOT_57 ("Chatot", "57", Rarity.COMMON, [POKEMON, BASIC, _COLORLESS_]),
   TOGEKISS_V_58 ("Togekiss V", "58", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _COLORLESS_]),
-  TOGEKISS_VMAX_59 ("Togekiss VMAX", "59", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _COLORLESS_]),
+  TOGEKISS_VMAX_59 ("Togekiss VMAX", "59", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _COLORLESS_]),
   TORNADUS_60 ("Tornadus", "60", Rarity.HOLORARE, [POKEMON, BASIC, _COLORLESS_]),
   PIKIPEK_61 ("Pikipek", "61", Rarity.COMMON, [POKEMON, BASIC, _COLORLESS_]),
   TRUMBEAK_62 ("Trumbeak", "62", Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
@@ -125,9 +125,9 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
   BEAUTY_83 ("Beauty", "83", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   ALLISTER_84 ("Allister", "84", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   OPAL_85 ("Opal", "85", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-  ALCREMIE_VMAX_86 ("Alcremie VMAX", "86", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _PSYCHIC_]),
-  COALOSSAL_VMAX_87 ("Coalossal VMAX", "87", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _FIGHTING_]),
-  TOGEKISS_VMAX_88 ("Togekiss VMAX", "88", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _COLORLESS_]),
+  ALCREMIE_VMAX_86 ("Alcremie VMAX", "86", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _PSYCHIC_]),
+  COALOSSAL_VMAX_87 ("Coalossal VMAX", "87", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _FIGHTING_]),
+  TOGEKISS_VMAX_88 ("Togekiss VMAX", "88", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _COLORLESS_]),
   BEAUTY_89 ("Beauty", "89", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   ALLISTER_90 ("Allister", "90", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   OPAL_91 ("Opal", "91", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
@@ -181,7 +181,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -228,26 +228,19 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         weakness R
         globalAbility {
           delayed {
-            def abilityUsed = false
             before PLAY_CARD, {
               if (ef.cardToPlay == thisCard && my.hand.getExcludedList(thisCard).empty && my.bench.freeBenchCount) {
-                def abilityName = " Elusive Master"
-                abilityUsed = confirm("Use $abilityName?")
-                if(abilityUsed && !checkGlobalAbility(thisCard)) {
-                  wcu "$abilityName was blocked."
-                  return
-                }
-                if (abilityUsed && benchPCS(thisCard, PLAY_FROM_HAND)) {
-                  bc("$thisCard.name has used $abilityName")
-                  draw 3
+                def abilityName = "Elusive Master"
+                if (confirm("Do you want to use $abilityName: if this Pokémon is the last card in your hand, you may play it onto your Bench. If you do, draw 3 cards. ")) {
+                  if (!checkGlobalAbility(thisCard)) {
+                    wcu "$abilityName was blocked."
+                  } else if (benchPCS(thisCard, PLAY_FROM_HAND)) {
+                    bc("$thisCard.name has used $abilityName")
+                    draw 3
+                  }
+                  prevent()
                 }
               }
-            }
-            before PLAY_EVOLUTION, {
-              if (abilityUsed) prevent()
-            }
-            after PLAY_CARD, {
-              abilityUsed = false
             }
           }
         }
@@ -373,7 +366,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
                 (card as EvolutionPokemonCard).predecessor == pcs.name
               }).first()
               if (!evolution) return
-              evolve(pcs, evolution, OTHER)
+              evolve(pcs, evolution)
             }
             shuffleDeck()
           }
@@ -697,7 +690,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 30
             if (confirm("Have your opponent shuffle their hand into their deck and draw 4 cards?")) {
               opp.hand.moveTo hidden:true, opp.deck
-              shuffleDeck null, TargetPlayer.OPPONENT
+              shuffleOppDeck()
               draw 4, TargetPlayer.OPPONENT
             }
           }
@@ -725,7 +718,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             if (reason == PLAY_FROM_HAND && self.evolution && bg.currentTurn == self.owner && opp.bench.any { it.evolution } && confirm("Use $thisAbility?")) {
               def pcs = opp.bench.findAll { it.evolution }.select("Pokémon to devolve?")
               targeted pcs, SRC_ABILITY, {
-                devolve pcs, pcs.topPokemonCard as Card, opp.hand
+                devolve pcs, opp.hand
               }
             }
           }
@@ -1550,18 +1543,18 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           spcEff = delayed {
             before APPLY_SPECIAL_CONDITION, self, {
               if (!self.types.contains(G)) return
-              targeted self, SRC_SPENERGY, {
+              targeted self, {
                 bc "$thisCard.name prevents ${(ef as ApplySpecialCondition).type} on $self"
                 prevent()
               }
             }
             after ATTACH_ENERGY, {
               if (self == null || !self.types.contains(G)) return
-              clearSpecialCondition self, SRC_SPENERGY
+              clearSpecialCondition self
             }
             after ENERGY_SWITCH, {
               if (self == null || !self.types.contains(G)) return
-              clearSpecialCondition self, SRC_SPENERGY
+              clearSpecialCondition self
             }
           }
         }
@@ -1581,7 +1574,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           dmgRedEff = delayed {
             before APPLY_ATTACK_DAMAGES, {
               if (!(ef.attacker.owner != self.owner && self.types.contains(F))) return
-              targeted self, SRC_SPENERGY, {
+              targeted self, {
                 bg.dm().each {
                   if (it.to == self && it.dmg.value && it.notNoEffect) {
                     bc "$thisCard.name -20"

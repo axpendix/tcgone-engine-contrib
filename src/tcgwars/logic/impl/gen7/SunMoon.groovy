@@ -252,7 +252,7 @@ public enum SunMoon implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name()
+    return this.name();
   }
 
   @Override
@@ -1171,7 +1171,7 @@ public enum SunMoon implements LogicCardInfo {
               assert bg.turnCount > 2
               powerUsed()
               // TODO: Get a ruling on this re:Scoop-Up Block (MR_MIME_66:TEAM_UP)
-              scoopUpPokemon(pokemonOnly:true, self, delegate, SRC_ABILITY)
+              scoopUpPokemon(pokemonOnly: true, self, delegate)
             }
           }
           move "Water Gun", {
@@ -2343,7 +2343,6 @@ public enum SunMoon implements LogicCardInfo {
             energyCost C
             onAttack {
               shuffleDeck(opp.hand, TargetPlayer.OPPONENT)
-              opp.hand.clear()
               draw(3, TargetPlayer.OPPONENT)
             }
           }
@@ -2422,7 +2421,7 @@ public enum SunMoon implements LogicCardInfo {
                   def sel=self.owner.pbg.deck.select(min:0, "Energy Evolution ${basicEnType}",
                     {it.cardTypes.is(EVOLUTION) && it.types.contains(basicEnType) && it.predecessor==self.name}, self.owner)
                   if(sel){
-                    evolve(self, sel.first(), OTHER)
+                    evolve(self, sel.first())
                   }
                   shuffleDeck(null, self.owner.toTargetPlayer())
                 } else {
@@ -2733,10 +2732,8 @@ public enum SunMoon implements LogicCardInfo {
           text "Each player shuffles their hand into their deck and flips a coin. If heads, that player draws 6 cards. If tails, they draw 3 cards.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
             shuffleDeck(hand.getExcludedList(thisCard))
-            hand.removeAll(hand.getExcludedList(thisCard))
             flip 1,{draw 6},{draw 3}
             shuffleDeck(opp.hand, TargetPlayer.OPPONENT)
-            opp.hand.clear()
             flip 1,{draw 6, TargetPlayer.OPPONENT},{draw 3, TargetPlayer.OPPONENT}
           }
           playRequirement{
