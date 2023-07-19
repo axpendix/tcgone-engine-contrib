@@ -935,7 +935,7 @@ public enum RisingRivals implements LogicCardInfo {
         return basic (this, hp:HP090, type:GRASS, retreatCost:2) {
           weakness R
           move "Focus Energy", {
-            text "During your next turn, Heracross E4's Megahorn attack's base damage is 100. "
+            text "During your next turn, Heracross E4's Megahorn attack's base damage is 100."
             energyCost ()
             attackRequirement {}
             onAttack {
