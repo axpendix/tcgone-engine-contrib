@@ -1161,7 +1161,7 @@ public enum MajesticDawn implements LogicCardInfo {
 
         };
       case VAPOREON_34:
-        return evolution (this, from:"Eevee", hp:HP090, type:WATER, retreatCost:2) {
+        return evolution (this, from:"Eevee", hp:HP090, type:WATER, retreatCost:1) {
           weakness L, PLUS20
           move "Cleanse Away", {
             text "30 damage. Remove 2 damage counters from each of your Benched Pokémon."
