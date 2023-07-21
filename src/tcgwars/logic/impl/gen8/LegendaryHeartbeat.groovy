@@ -755,7 +755,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           onAttack {
             my.discard.select("Card to return to hand?")
               .showToOpponent("Card opponent returned to hand from discard pile.")
-              .moveTo my.hand
+              .moveTo(my.hand)
           }
         }
         move "Aurora Gain", {
@@ -1308,7 +1308,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           onAttack {
             deck.search(max:2, cardTypeFilter(BASIC_ENERGY))
               .showToOpponent("Opponent chose the following Energy from their deck using $thisMove.")
-              .moveTo my.hand
+              .moveTo(my.hand)
             shuffleDeck()
           }
         }
