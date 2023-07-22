@@ -127,7 +127,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.WIZARDS_BLACK_STAR_PROMOS;
+    return tcgwars.logic.card.Collection.WIZARDS_BLACK_STAR_PROMOS_NG;
   }
 
   @Override
