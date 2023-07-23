@@ -561,7 +561,6 @@ public enum MajesticDawn implements LogicCardInfo {
               if(sel) {
                 def pcs = my.all.findAll{it.name == sel.predecessor}.select("Put $sel onto...")
                 evolve(pcs, sel)
-                directDamage 10, self
               }
               shuffleDeck()
             }
