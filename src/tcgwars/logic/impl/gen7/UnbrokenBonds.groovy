@@ -4086,13 +4086,14 @@ public enum UnbrokenBonds implements LogicCardInfo {
               boolean flag = false
               int extraPoisonCount = 0
               before SWITCH, null, TRAINER_CARD, {
-                flag = ef.fallenBack?.isSPC(POISONED)
+                PokemonCardSet fb = (ef as Switch).fallenBack
+                flag = ( fb & fb.isSPC(POISONED) )
                 if(flag) {
-                  extraPoisonCount = bg.em().retrieveObject("extra_poison_counter_"+ef.fallenBack.hashCode()) ?: 0
+                  extraPoisonCount = bg.em().retrieveObject("extra_poison_counter_"+fb.hashCode()) ?: 0
                 }
               }
               after SWITCH, null, TRAINER_CARD, {
-                if(flag) {apply(POISONED, ef.switchedOut, TRAINER_CARD)}
+                if(flag) {apply(POISONED, (ef as Switch).switchedOut, TRAINER_CARD)}
                 if(extraPoisonCount) extraPoison(extraPoisonCount)
               }
             }
