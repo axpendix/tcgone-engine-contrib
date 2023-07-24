@@ -816,7 +816,7 @@ public enum Triumphant implements LogicCardInfo {
             }
             onAttack {
               flip opp.bench.size(), {}, {
-                noWrDamage 40
+                noWrDamage 40, defending
               }
             }
           }
