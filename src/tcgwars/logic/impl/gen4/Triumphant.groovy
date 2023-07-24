@@ -795,7 +795,7 @@ public enum Triumphant implements LogicCardInfo {
               damage 20
               delayed {
                 def eff = getter IS_ABILITY_BLOCKED, { Holder h->
-                  if(h.effect.ability instanceof PokePower) {
+                  if(bg.currentTurn == self.owner.opposite && h.effect.ability instanceof PokePower) {
                     h.object = true
                   }
                 }
