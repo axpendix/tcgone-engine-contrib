@@ -1177,13 +1177,21 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost W, C, C
             onAttack {
               damage 60
-              def heads = 0
-              flipUntilTails {
-                heads ++
-              }
-              def types = (1..heads).collect {C} as Type[]
-              if(heads > 0) {
-                discardDefendingEnergyAfterDamage types
+              afterDamage {
+                def energyCards = defending.cards.filterByType(ENERGY)
+                def heads = 0
+                flipUntilTails {
+                  heads ++
+                }
+                def discardSize = Math.min(heads, energyCards.size())
+                if(discardSize > 0) {
+                  if (discardSize = energyCards.size()) {
+                    bc "All energies are being discarded."
+                    energyCards.discard()
+                  } else {
+                    energyCards.select(count: discardSize, "Choose $discardSize Energy cards to discard from the Defending Pokémon").discard()
+                  }
+                }
               }
             }
           }
