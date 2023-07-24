@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen4
 
+import tcgwars.logic.card.pokemon.LevelUpPokemonCard
 import tcgwars.logic.impl.gen3.CrystalGuardians
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen7.CelestialStorm;
@@ -3178,8 +3179,11 @@ public enum Platinum implements LogicCardInfo {
           onPlay {
             flip {
               def names = my.all.collect{ it.name }
-              def sel_1 = deck.search ("Select a Pokémon that Levels up from $names.", {it.cardTypes.is(LVL_X) && names.contains(it.predecessor)}).first()
-              // TODO: Level up a Pokémon. Im guessing evolve won't work but I'll give it a shot once the rest of this is released
+              LevelUpPokemonCard sel_1 = deck.search ("Select a Pokémon that Levels up from $names.", {it.cardTypes.is(LVL_X) && names.contains(it.predecessor)}).first() as LevelUpPokemonCard
+              if (sel_1) {
+                def sel_2 = my.all.findAll{ (sel_1.predecessor == it.name) }.select("Select one of your Pokémon named ${sel_1.name}")
+                bg().em().run(new LevelUp(sel_2, sel_1))
+              }
               shuffleDeck()
             }
           }

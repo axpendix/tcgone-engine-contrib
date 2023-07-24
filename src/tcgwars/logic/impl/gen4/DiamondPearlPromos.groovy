@@ -368,7 +368,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
                   it.topPokemonCard.name == (lvX as LevelUpPokemonCard).predecessor
                 }.select("Which Pokémon to Level Up?")
 
-                bg().em().run(new LevelUp(target, lvX));
+                bg().em().run(new LevelUp(target, lvX))
               }
 
               shuffleDeck()
