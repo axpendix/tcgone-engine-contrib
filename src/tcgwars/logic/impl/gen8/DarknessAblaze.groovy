@@ -3195,7 +3195,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "If this Pokémon is Knocked Out by damage from an attack from your opponent’s Pokémon, discard the top 2 cards of your opponent’s deck."
           delayedA (priority: LAST) {
             before (KNOCKOUT, self) {
-              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && opp.deck) {
+              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.opposite.pbg.deck) {
                 bc "One Last Dig - 2 cards will be discarded from the top of the opponent's deck"
                 self.owner.opposite.pbg.deck.subList(0,2).discard()
               }

@@ -3539,8 +3539,8 @@ public enum RebelClash implements LogicCardInfo {
           draw num*2
         }
         playRequirement {
-          def hand = my.hand.getExcludedList(thisCard).size() >= 1
-          assert (hand || my.deck) : "Not enough cards in your hand or your deck is empty."
+          assert my.hand.getExcludedList(thisCard) : "Not enough cards in your hand"
+          assert my.deck : "Your deck is empty"
         }
       };
       case NUGGET_162:
