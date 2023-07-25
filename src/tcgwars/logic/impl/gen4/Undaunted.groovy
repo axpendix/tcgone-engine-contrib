@@ -1946,6 +1946,7 @@ public enum Undaunted implements LogicCardInfo {
             def cnt = Math.min(2,top.size())
             def sel = top.select(count:cnt,"Choose $cnt cards to put into your hand")
             top.getExcludedList(sel).discard()
+            sel.moveTo(hidden: true, my.hand)
           }
           playRequirement{
             assert my.deck : "Your deck is empty"
