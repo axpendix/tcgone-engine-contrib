@@ -295,8 +295,6 @@ public enum DiamondPearlPromos implements LogicCardInfo {
                 def card = opp.hand.select(min:0, max: 1,"Look at your opponent's hand, choose a Pokémon you find there, and put it on the bottom of his or her deck", cardTypeFilter(POKEMON))
                 if (card.notEmpty()) {
                   card.moveTo(opp.deck)
-                  shuffleOppDeck()
-                  bc "$thisAbility shuffled $card into deck"
                 }
               }
             }
@@ -316,8 +314,8 @@ public enum DiamondPearlPromos implements LogicCardInfo {
                   }
                   countersToMove = Math.min(countersToMove, 2)
                   def target = opp.bench.select("Which target to receive $countersToMove damage counters")
-                  self.damage -= hp(10)
-                  directDamage 10, target
+                  self.damage -= hp(10 * countersToMove)
+                  directDamage 10 * countersToMove, target
                 }
               }
             }
