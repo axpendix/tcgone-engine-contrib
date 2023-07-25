@@ -1819,9 +1819,11 @@ public enum Undaunted implements LogicCardInfo {
             actions=action(thisCard, "Stadium: Burned Tower") {
               assert my.discard.find(cardTypeFilter(BASIC_ENERGY)) : "No Basic Energies in your discard pile."
               assert lastTurn != bg().turnCount : "Already used this turn."
-              bc "Used Training Court effect."
+              bc "Used $thisCard"
               lastTurn = bg().turnCount
-              my.discard.findAll(cardTypeFilter(BASIC_ENERGY)).select("Which Basic Energy to move to your hand?").moveTo(my.hand)
+              flip {
+                my.discard.findAll(cardTypeFilter(BASIC_ENERGY)).select("Which Basic Energy to move to your hand?").moveTo(my.hand)
+              }
             }
           }
           onRemoveFromPlay {
