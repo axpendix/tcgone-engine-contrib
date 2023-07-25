@@ -256,7 +256,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
         return copy(Stormfront.HEATRAN_LV_X_97, this);
       case MAGNEZONE_DP32:
         return evolution (this, from:"Magneton", hp:HP130, type:METAL, retreatCost:2) {
-          weakness R
+          weakness R, PLUS30
           resistance P, MINUS20
           move "Mirror Shot", {
             text "40 damage. If the Defending Pokémon tries to attack during your opponent's next turn, your opponent flips a coin. If tails, that attack does nothing."
@@ -269,7 +269,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
           }
           move "Magnet Slash", {
             text "100 damage. Discard all [L] Energy attached to Magnezone."
-            energyCost L, M, C, C, L
+            energyCost L, M, C, C
             attackRequirement {}
             onAttack {
               damage 100
