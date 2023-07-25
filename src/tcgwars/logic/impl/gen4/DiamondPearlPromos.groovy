@@ -499,7 +499,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
           }
           move "Grass Knot", {
             text "20+ damage. Does 20 damage plus 10 more damage for each [C] Energy in the Defending Pokémon's Retreat Cost (after applying effects to the Retreat Cost)."
-            energyCost G, C, C
+            energyCost G, C
             attackRequirement {}
             onAttack {
               damage 20 + 10 * defending.retreatCost
