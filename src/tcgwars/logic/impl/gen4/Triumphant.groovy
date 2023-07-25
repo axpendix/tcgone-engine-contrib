@@ -1425,7 +1425,7 @@ public enum Triumphant implements LogicCardInfo {
 
         };
       case PORYGON2_49:
-        return evolution (this, from:"Porygon", hp:HP080, type:COLORLESS, retreatCost:2) {
+        return evolution (this, from:"Porygon", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness F
           pokePower "Mapping", {
             text "Once during your turn, when you play Porygon2 from you hand to evolve 1 of your Pokémon, you may search your deck for a Stadium card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
