@@ -85,7 +85,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
   CRESSELIA_DP51 ("Cresselia", "DP51", Rarity.PROMO, [BASIC, POKEMON, _PSYCHIC_]),
   DARKRAI_DP52 ("Darkrai", "DP52", Rarity.PROMO, [BASIC, POKEMON, _DARKNESS_]),
   ARCEUS_LV_X_DP53 ("Arceus Lv.X", "DP53", Rarity.PROMO, [LVL_X, POKEMON, _COLORLESS_]),
-  BEGINNING_DOOR_DP54 ("Beginning Door", "DP54", Rarity.PROMO, [TRAINER, STADIUM]),
+  BEGINNING_DOOR_DP54 ("Beginning Door", "DP54", Rarity.PROMO, [TRAINER, ITEM]),
   ULTIMATE_ZONE_DP55 ("Ultimate Zone", "DP55", Rarity.PROMO, [TRAINER, STADIUM]),
   ARCEUS_LV_X_DP56 ("Arceus Lv.X", "DP56", Rarity.PROMO, [LVL_X, POKEMON, _COLORLESS_]);
 
