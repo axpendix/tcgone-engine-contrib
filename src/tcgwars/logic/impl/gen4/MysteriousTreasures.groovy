@@ -1866,9 +1866,12 @@ public enum MysteriousTreasures implements LogicCardInfo {
               assert my.discard.filterByType(ENERGY).filterByEnergyType(M) : "There is no [M] Energy card in your discard"
             }
             onAttack {
+              def metalEnergyAmt = self.cards.energyCardCount(M)
               attachEnergyFrom(type : M, my.discard, self)
-              //TODO: Make this conditional on the attach
-              heal 10, self
+              if (metalEnergyAmt < self.cards.energyCardCount(M)) {
+
+                heal 10, self
+              }
             }
           }
           move "Confront", {
