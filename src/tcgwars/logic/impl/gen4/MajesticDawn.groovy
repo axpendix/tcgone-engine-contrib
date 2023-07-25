@@ -1185,7 +1185,7 @@ public enum MajesticDawn implements LogicCardInfo {
                 }
                 def discardSize = Math.min(heads, energyCards.size())
                 if(discardSize > 0) {
-                  if (discardSize = energyCards.size()) {
+                  if (discardSize == energyCards.size()) {
                     bc "All energies are being discarded."
                     energyCards.discard()
                   } else {
