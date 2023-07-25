@@ -553,7 +553,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
         };
       case MAGNEZONE_DP44:
         return evolution (this, from:"Magneton", hp:HP130, type:LIGHTNING, retreatCost:2) {
-          weakness F
+          weakness F, PLUS30
           resistance M, MINUS20
           move "Charge Beam", {
             text "30 damage. Search your discard pile for an Energy card and attach it to Magnezone."
