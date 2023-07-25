@@ -441,7 +441,7 @@ public enum Triumphant implements LogicCardInfo {
             onActivate {r->
               if(r==PLAY_FROM_HAND && (opp.hand||opp.deck) && confirm("Use Spooky Whirlpool")){
                 powerUsed()
-                opp.hand.moveTo(opp.deck)
+                opp.hand.moveTo(hidden: true, opp.deck)
                 shuffleOppDeck()
                 draw 6, TargetPlayer.OPPONENT
               }
