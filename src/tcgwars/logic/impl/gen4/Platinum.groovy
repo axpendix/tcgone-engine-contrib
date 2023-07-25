@@ -1835,11 +1835,9 @@ public enum Platinum implements LogicCardInfo {
                         h.object = true
                       }
                     }
-                    new CheckAbilities().run(bg)
                   }
                   unregister{
                     eff.unregister()
-                    new CheckAbilities().run(bg)
                   }
                   unregisterAfter 2
                   after FALL_BACK, pcs, {unregister()}
