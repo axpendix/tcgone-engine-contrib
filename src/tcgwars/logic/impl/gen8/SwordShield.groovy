@@ -1874,8 +1874,8 @@ public enum SwordShield implements LogicCardInfo {
             target.remove(source)
             target = target.select("Target for the damage counter?")
             source.damage-=hp(10)
-            target.damage+=hp(10)
             bc "Swapped a damage counter from $source to $target."
+            directDamage 10, target
             checkFaint()
           }
         }

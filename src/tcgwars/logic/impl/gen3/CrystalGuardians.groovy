@@ -2313,10 +2313,10 @@ public enum CrystalGuardians implements LogicCardInfo {
                 bc "$self - Time Travel activated"
                 flip 1, {
                   bc "$self is not knocked out and is moved to bottom of deck."
-                  prevent()
                   self.cards.getExcludedList(self.topPokemonCard).discard()
                   moveCard(self.topPokemonCard, my.deck)
                   removePCS(self)
+                  prevent()
                 }
               }
             }
