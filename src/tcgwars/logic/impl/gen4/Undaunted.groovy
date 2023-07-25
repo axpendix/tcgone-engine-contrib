@@ -1730,17 +1730,18 @@ public enum Undaunted implements LogicCardInfo {
         return basic (this, hp:HP060, type:FIRE, retreatCost:2) {
           weakness W
           pokePower "Active Volcano", {
-            text "Once during your turn , you may discard the top card of your deck. If that card is a [R] Energy card, attach it to Slugma. This power can’t be used if Slugma is affected by a Special Condition."
+            text "Once during your turn, you may discard the top card of your deck. If that card is a [R] Energy card, attach it to Slugma. This power can’t be used if Slugma is affected by a Special Condition."
             actionA {
               checkNoSPC()
               checkLastTurn()
               assert my.deck : "Your deck is empty"
               powerUsed()
-              if(my.deck.subList(0,1).filterByBasicEnergyType(R)) {
-                attachEnergyFrom(my.deck.subList(0,1),my.all)
+              def topOfDeck = my.deck.subList(0,1)
+              if (topOfDeck.filterByBasicEnergyType(R)) {
+                attachEnergyFrom(topOfDeck,self)
               }
-              else{
-                my.deck.subList(0,1).discard()
+              else {
+                topOfDeck.discard()
               }
             }
           }
