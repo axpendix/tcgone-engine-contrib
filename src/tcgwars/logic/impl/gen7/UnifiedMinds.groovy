@@ -1890,11 +1890,11 @@ public enum UnifiedMinds implements LogicCardInfo {
               powerUsed()
               def source = my.all.findAll { it.numberOfDamageCounters > 0 }.select("Select a source for a damage counter.")
               def target = my.all
-              my.all.remove(source)
+              target.remove(source)
               target = target.select("Select a Pokémon to move the damage counter to.")
               source.damage-=hp(10)
-              target.damage+=hp(10)
               bc "Ominous Posture moved a damage counter from $source to $target."
+              directDamage 10, target
               checkFaint()
             }
           }
