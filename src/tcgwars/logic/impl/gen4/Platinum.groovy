@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen4
 
+import tcgwars.logic.card.pokemon.LevelUpPokemonCard
 import tcgwars.logic.impl.gen3.CrystalGuardians
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen7.CelestialStorm;
@@ -1815,29 +1816,33 @@ public enum Platinum implements LogicCardInfo {
         };
       case HOUNDOOM_G_50:
         return basic (this, hp:HP090, type:FIRE, retreatCost:1) {
-          weakness F, PLUS20
+          weakness F
           resistance P, MINUS20
           move "Black Cry", {
             text "20 damage. The Defending Pokémon can’t retreat or use any Poké-Powers during your opponent’s next turn."
             energyCost D, C
             onAttack {
               damage 20
-              cantRetreat defending
-              delayed {
-                def eff
-                register{
-                  eff = getter (IS_ABILITY_BLOCKED) { Holder h ->
-                    if (h.effect.target.owner == self.owner.opposite && h.effect.ability instanceof PokePower) {
-                      h.object=true
+              targeted (defending) {
+                bc "During ${opp.owner.getPlayerUsername(bg)}'s next turn, the Defending ${defending} can't retreat or use any Poké-Powers. (This effect can be removed by evolving or benching ${defending}.)"
+                cantRetreat defending
+                def pcs = defending
+                delayed {
+                  def eff
+                  register {
+                    eff = getter (IS_ABILITY_BLOCKED) { Holder h->
+                      if (bg.currentTurn==self.owner.opposite && h.effect.target == defending && h.effect.ability instanceof PokePower) {
+                        h.object = true
+                      }
                     }
                   }
-                  new CheckAbilities().run(bg)
+                  unregister{
+                    eff.unregister()
+                  }
+                  unregisterAfter 2
+                  after FALL_BACK, pcs, {unregister()}
+                  after CHANGE_STAGE, pcs, {unregister()}
                 }
-                unregister{
-                  eff.unregister()
-                  new CheckAbilities().run(bg)
-                }
-                unregisterAfter 2
               }
             }
           }
@@ -3178,8 +3183,11 @@ public enum Platinum implements LogicCardInfo {
           onPlay {
             flip {
               def names = my.all.collect{ it.name }
-              def sel_1 = deck.search ("Select a Pokémon that Levels up from $names.", {it.cardTypes.is(LVL_X) && names.contains(it.predecessor)}).first()
-              // TODO: Level up a Pokémon. Im guessing evolve won't work but I'll give it a shot once the rest of this is released
+              LevelUpPokemonCard sel_1 = deck.search ("Select a Pokémon that Levels up from $names.", {it.cardTypes.is(LVL_X) && names.contains(it.predecessor)}).first() as LevelUpPokemonCard
+              if (sel_1) {
+                def sel_2 = my.all.findAll{ (sel_1.predecessor == it.name) }.select("Select one of your Pokémon named ${sel_1.name}")
+                bg().em().run(new LevelUp(sel_2, sel_1))
+              }
               shuffleDeck()
             }
           }

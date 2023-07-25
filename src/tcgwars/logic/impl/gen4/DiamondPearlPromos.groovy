@@ -85,7 +85,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
   CRESSELIA_DP51 ("Cresselia", "DP51", Rarity.PROMO, [BASIC, POKEMON, _PSYCHIC_]),
   DARKRAI_DP52 ("Darkrai", "DP52", Rarity.PROMO, [BASIC, POKEMON, _DARKNESS_]),
   ARCEUS_LV_X_DP53 ("Arceus Lv.X", "DP53", Rarity.PROMO, [LVL_X, POKEMON, _COLORLESS_]),
-  BEGINNING_DOOR_DP54 ("Beginning Door", "DP54", Rarity.PROMO, [TRAINER, STADIUM]),
+  BEGINNING_DOOR_DP54 ("Beginning Door", "DP54", Rarity.PROMO, [TRAINER, ITEM]),
   ULTIMATE_ZONE_DP55 ("Ultimate Zone", "DP55", Rarity.PROMO, [TRAINER, STADIUM]),
   ARCEUS_LV_X_DP56 ("Arceus Lv.X", "DP56", Rarity.PROMO, [LVL_X, POKEMON, _COLORLESS_]);
 
@@ -256,7 +256,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
         return copy(Stormfront.HEATRAN_LV_X_97, this);
       case MAGNEZONE_DP32:
         return evolution (this, from:"Magneton", hp:HP130, type:METAL, retreatCost:2) {
-          weakness R
+          weakness R, PLUS30
           resistance P, MINUS20
           move "Mirror Shot", {
             text "40 damage. If the Defending Pokémon tries to attack during your opponent's next turn, your opponent flips a coin. If tails, that attack does nothing."
@@ -269,7 +269,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
           }
           move "Magnet Slash", {
             text "100 damage. Discard all [L] Energy attached to Magnezone."
-            energyCost L, M, C, C, L
+            energyCost L, M, C, C
             attackRequirement {}
             onAttack {
               damage 100
@@ -295,8 +295,6 @@ public enum DiamondPearlPromos implements LogicCardInfo {
                 def card = opp.hand.select(min:0, max: 1,"Look at your opponent's hand, choose a Pokémon you find there, and put it on the bottom of his or her deck", cardTypeFilter(POKEMON))
                 if (card.notEmpty()) {
                   card.moveTo(opp.deck)
-                  shuffleOppDeck()
-                  bc "$thisAbility shuffled $card into deck"
                 }
               }
             }
@@ -316,8 +314,8 @@ public enum DiamondPearlPromos implements LogicCardInfo {
                   }
                   countersToMove = Math.min(countersToMove, 2)
                   def target = opp.bench.select("Which target to receive $countersToMove damage counters")
-                  self.damage -= hp(10)
-                  directDamage 10, target
+                  self.damage -= hp(10 * countersToMove)
+                  directDamage 10 * countersToMove, target
                 }
               }
             }
@@ -368,7 +366,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
                   it.topPokemonCard.name == (lvX as LevelUpPokemonCard).predecessor
                 }.select("Which Pokémon to Level Up?")
 
-                bg().em().run(new LevelUp(target, lvX));
+                bg().em().run(new LevelUp(target, lvX))
               }
 
               shuffleDeck()
@@ -466,7 +464,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               checkNoSPC()
               powerUsed()
               flip ({
-                scoopUpPokemon([:], self, delegate)
+                scoopUpPokemon(self, delegate)
               })
             }
           }
@@ -499,7 +497,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
           }
           move "Grass Knot", {
             text "20+ damage. Does 20 damage plus 10 more damage for each [C] Energy in the Defending Pokémon's Retreat Cost (after applying effects to the Retreat Cost)."
-            energyCost G, C, C
+            energyCost G, C
             attackRequirement {}
             onAttack {
               damage 20 + 10 * defending.retreatCost
@@ -553,7 +551,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
         };
       case MAGNEZONE_DP44:
         return evolution (this, from:"Magneton", hp:HP130, type:LIGHTNING, retreatCost:2) {
-          weakness F
+          weakness F, PLUS30
           resistance M, MINUS20
           move "Charge Beam", {
             text "30 damage. Search your discard pile for an Energy card and attach it to Magnezone."
@@ -598,21 +596,19 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               assert my.deck : "Deck is empty"
             }
             onAttack {
-              flip {
-                def names = my.all.collect {it.name }
-                def evolutionCard = deck.search ("Evolves from $names", {
-                  it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)
-                }).first()
+              def names = my.all.collect {it.name }
+              def evolutionCard = deck.search ("Evolves from $names", {
+                it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)
+              }).first()
 
-                if (evolutionCard) {
-                  def eligibleToEvolve = my.all.findAll({
-                    it.name == (evolutionCard as EvolutionPokemonCard).predecessor
-                  })
-                  def cardToEvolve = eligibleToEvolve.select("Evolve which one?")
-                  evolve(cardToEvolve, evolutionCard)
-                }
-                shuffleDeck()
+              if (evolutionCard) {
+                def eligibleToEvolve = my.all.findAll({
+                  it.name == (evolutionCard as EvolutionPokemonCard).predecessor
+                })
+                def cardToEvolve = eligibleToEvolve.select("Evolve which one?")
+                evolve(cardToEvolve, evolutionCard)
               }
+              shuffleDeck()
             }
           }
           move "Time Wager", {
@@ -635,12 +631,10 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             energyCost C, C, C, C
             attackRequirement {}
             onAttack {
+              damage 80
+              opp.bench.each {damage 10, it}
               afterDamage {
                 discardAllSelfEnergy()
-              }
-
-              opp.bench.each {
-                directDamage(10, it)
               }
             }
           }
@@ -675,9 +669,9 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             text "If you have Cresselia in play, each of Darkrai's attacks does 20 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                if (ef.attacker.owner == self.owner && self.owner.pbg.all.find { it.name == "Cresselia" }) {
+                if (ef.attacker == self && self.owner.pbg.all.any { it.name == "Cresselia" }) {
                   bg.dm().each {
-                    if (it.to != self.owner && it.to.active && it.notNoEffect && it.dmg.value) {
+                    if (it.to != self.owner && it.to.active && it.dmg.value) {
                       bc "Darkness Aura +20"
                       it.dmg += hp(20)
                     }

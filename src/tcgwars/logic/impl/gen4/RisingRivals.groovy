@@ -390,7 +390,7 @@ public enum RisingRivals implements LogicCardInfo {
               before (KNOCKOUT, self) {
                 if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && self.owner.pbg.deck && confirm("Use Final Wish?", self.owner)) {
                   powerUsed()
-                  self.owner.pbg.deck.select("Search your deck for a card",{true}, self.owner).moveTo(self.owner.pbg.hand)
+                  self.owner.pbg.deck.select("Search your deck for a card",{true}, self.owner).moveTo(hidden:true, self.owner.pbg.hand)
                   shuffleOppDeck()
                 }
               }

@@ -160,7 +160,7 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
           resistance M, MINUS20
           move "Recharge", {
             text "Flip a coin. If heads, search your deck for a [L] Energy card and attach it to Pikachu. Shuffle your deck afterward."
-            energyCost C, L
+            energyCost C
             attackRequirement {
               assert my.deck : "Deck is empty"
             }

@@ -3606,7 +3606,7 @@ public enum DarknessAblaze implements LogicCardInfo {
               //TODO: Handle Scoop-Up Block on this.
               if (my.all.any{ it.name != "Corviknight" } && confirm("Flying Taxi - Return one of your Pokémon (and all cards attached to it) back to your hand?")){
                 def pcs = my.all.findAll { it.name != "Corviknight" }.select("Which Pokémon to bring back to your hand?")
-                scoopUpPokemon([:], pcs, delegate)
+                scoopUpPokemon(pcs, delegate)
               }
             }
           }

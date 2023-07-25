@@ -1730,17 +1730,18 @@ public enum Undaunted implements LogicCardInfo {
         return basic (this, hp:HP060, type:FIRE, retreatCost:2) {
           weakness W
           pokePower "Active Volcano", {
-            text "Once during your turn , you may discard the top card of your deck. If that card is a [R] Energy card, attach it to Slugma. This power can’t be used if Slugma is affected by a Special Condition."
+            text "Once during your turn, you may discard the top card of your deck. If that card is a [R] Energy card, attach it to Slugma. This power can’t be used if Slugma is affected by a Special Condition."
             actionA {
               checkNoSPC()
               checkLastTurn()
               assert my.deck : "Your deck is empty"
               powerUsed()
-              if(my.deck.subList(0,1).filterByBasicEnergyType(R)) {
-                attachEnergyFrom(my.deck.subList(0,1),my.all)
+              def topOfDeck = my.deck.subList(0,1)
+              if (topOfDeck.filterByBasicEnergyType(R)) {
+                attachEnergyFrom(topOfDeck,self)
               }
-              else{
-                my.deck.subList(0,1).discard()
+              else {
+                topOfDeck.discard()
               }
             }
           }
@@ -1818,9 +1819,11 @@ public enum Undaunted implements LogicCardInfo {
             actions=action(thisCard, "Stadium: Burned Tower") {
               assert my.discard.find(cardTypeFilter(BASIC_ENERGY)) : "No Basic Energies in your discard pile."
               assert lastTurn != bg().turnCount : "Already used this turn."
-              bc "Used Training Court effect."
+              bc "Used $thisCard"
               lastTurn = bg().turnCount
-              my.discard.findAll(cardTypeFilter(BASIC_ENERGY)).select("Which Basic Energy to move to your hand?").moveTo(my.hand)
+              flip {
+                my.discard.findAll(cardTypeFilter(BASIC_ENERGY)).select("Which Basic Energy to move to your hand?").moveTo(my.hand)
+              }
             }
           }
           onRemoveFromPlay {
@@ -1943,6 +1946,7 @@ public enum Undaunted implements LogicCardInfo {
             def cnt = Math.min(2,top.size())
             def sel = top.select(count:cnt,"Choose $cnt cards to put into your hand")
             top.getExcludedList(sel).discard()
+            sel.moveTo(hidden: true, my.hand)
           }
           playRequirement{
             assert my.deck : "Your deck is empty"
@@ -2100,7 +2104,7 @@ public enum Undaunted implements LogicCardInfo {
               checkNoSPC()
               powerUsed()
               flip ({
-                scoopUpPokemon([:], self, delegate)
+                scoopUpPokemon(self, delegate)
               })
             }
           }

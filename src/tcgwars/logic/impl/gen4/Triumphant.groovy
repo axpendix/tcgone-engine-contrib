@@ -254,21 +254,20 @@ public enum Triumphant implements LogicCardInfo {
             onAttack {
               if(!my.deck){
                 def list=rearrange(opp.deck.subList(0,5), "Arrange top 5 cards of your opponent's deck")
-                deck.setSubList(0, list)
+                opp.deck.setSubList(0, list)
               }
               else if(!opp.deck){
                 def list=rearrange(my.deck.subList(0,5), "Arrange top 5 cards of your deck")
-                deck.setSubList(0, list)
+                my.deck.setSubList(0, list)
               }
               else{
                 def choice = choose([0,1],["Your deck", "Your opponent's deck"], "Look at the top 5 cards of which player's deck?")
-                if (choice) {
+                if (choice == 1) {
                   def list=rearrange(opp.deck.subList(0,5), "Arrange top 5 cards of your opponent's deck")
-                  deck.setSubList(0, list)
-                }
-                else {
+                  opp.deck.setSubList(0, list)
+                } else {
                   def list=rearrange(my.deck.subList(0,5), "Arrange top 5 cards of your deck")
-                  deck.setSubList(0, list)
+                  my.deck.setSubList(0, list)
                 }
               }
             }
@@ -442,7 +441,7 @@ public enum Triumphant implements LogicCardInfo {
             onActivate {r->
               if(r==PLAY_FROM_HAND && (opp.hand||opp.deck) && confirm("Use Spooky Whirlpool")){
                 powerUsed()
-                opp.hand.moveTo(opp.deck)
+                opp.hand.moveTo(hidden: true, opp.deck)
                 shuffleOppDeck()
                 draw 6, TargetPlayer.OPPONENT
               }
@@ -795,7 +794,7 @@ public enum Triumphant implements LogicCardInfo {
               damage 20
               delayed {
                 def eff = getter IS_ABILITY_BLOCKED, { Holder h->
-                  if(h.effect.ability instanceof PokePower) {
+                  if(bg.currentTurn == self.owner.opposite && h.effect.ability instanceof PokePower) {
                     h.object = true
                   }
                 }
@@ -816,7 +815,7 @@ public enum Triumphant implements LogicCardInfo {
             }
             onAttack {
               flip opp.bench.size(), {}, {
-                noWrDamage 40
+                noWrDamage 40, defending
               }
             }
           }
@@ -1059,8 +1058,10 @@ public enum Triumphant implements LogicCardInfo {
             energyCost L, L, C
             onAttack {
               damage 60
-              flip 1, {}, {
-                discardAllSelfEnergy(L)
+              afterDamage {
+                flip 1, {}, {
+                  discardAllSelfEnergy(L)
+                }
               }
             }
           }
@@ -1202,7 +1203,7 @@ public enum Triumphant implements LogicCardInfo {
             text "30 damage. This attack’s damage isn’t affected by Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             energyCost F
             onAttack {
-              swiftDamage 30, defending
+              shredDamage 30
             }
           }
           move "Strength", {
@@ -1424,7 +1425,7 @@ public enum Triumphant implements LogicCardInfo {
 
         };
       case PORYGON2_49:
-        return evolution (this, from:"Porygon", hp:HP080, type:COLORLESS, retreatCost:2) {
+        return evolution (this, from:"Porygon", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness F
           pokePower "Mapping", {
             text "Once during your turn, when you play Porygon2 from you hand to evolve 1 of your Pokémon, you may search your deck for a Stadium card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
