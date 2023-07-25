@@ -2218,7 +2218,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             assert opp.bench.size() >= 4 : "Opponent needs to have 4 or more Benched Pokémon"
             powerUsed()
             def tar = opp.bench.select("Choose a Pokémon to return to your opponent's hand.")
-            scoopUpPokemon([:], tar, delegate)
+            scoopUpPokemon(tar, delegate)
           }
         }
         move "Power Blow", {

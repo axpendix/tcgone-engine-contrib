@@ -2100,7 +2100,7 @@ public enum Undaunted implements LogicCardInfo {
               checkNoSPC()
               powerUsed()
               flip ({
-                scoopUpPokemon([:], self, delegate)
+                scoopUpPokemon(self, delegate)
               })
             }
           }
