@@ -1203,7 +1203,7 @@ public enum Triumphant implements LogicCardInfo {
             text "30 damage. This attack’s damage isn’t affected by Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             energyCost F
             onAttack {
-              swiftDamage 30, defending
+              shredDamage 30
             }
           }
           move "Strength", {
