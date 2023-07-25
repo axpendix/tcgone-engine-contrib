@@ -1058,8 +1058,10 @@ public enum Triumphant implements LogicCardInfo {
             energyCost L, L, C
             onAttack {
               damage 60
-              flip 1, {}, {
-                discardAllSelfEnergy(L)
+              afterDamage {
+                flip 1, {}, {
+                  discardAllSelfEnergy(L)
+                }
               }
             }
           }
