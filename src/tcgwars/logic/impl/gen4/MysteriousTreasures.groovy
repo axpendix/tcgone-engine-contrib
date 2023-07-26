@@ -1870,7 +1870,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               attachEnergyFrom(type : M, my.discard, self)
               if (metalEnergyAmt < self.cards.energyCardCount(M)) {
 
-                heal 10, self
+                heal 20, self
               }
             }
           }
