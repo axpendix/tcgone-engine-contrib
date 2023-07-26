@@ -1844,9 +1844,9 @@ public enum Undaunted implements LogicCardInfo {
             my.hand.remove(thisCard)
 
             eff = delayed {
-              after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each {
-                  if (it.to == pcs && it.dmg.value && it.notNoEffect) {
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each{
+                  if(it.to == pcs && it.notNoEffect && it.dmg.value) {
                     bc "Defender -20"
                     it.dmg -= hp(20)
                   }
