@@ -357,13 +357,13 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               my.all.each {
                 predecessors.add(it.name)
               }
-              def lvX = my.deck.search("Select a Pokémon LV.X that evolves from one of your Pokémon", {
+              LevelUpPokemonCard lvX = my.deck.search("Select a Pokémon LV.X that evolves from one of your Pokémon", {
                 it.cardTypes.is(LVL_X) && it.predecessor in predecessors
-              }).first()
+              }).first() as LevelUpPokemonCard
 
               if (lvX) {
                 def target = my.all.findAll {
-                  it.topPokemonCard.name == (lvX as LevelUpPokemonCard).predecessor
+                  !it.pokemonLevelUp && it.topPokemonCard.name == lvX.predecessor
                 }.select("Which Pokémon to Level Up?")
 
                 bg().em().run(new LevelUp(target, lvX))
