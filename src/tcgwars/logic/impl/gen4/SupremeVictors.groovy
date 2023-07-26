@@ -528,7 +528,7 @@ public enum SupremeVictors implements LogicCardInfo {
             onAttack {
               damage 30
               afterDamage {
-                heal 10 * defending.card.energyCount(C), self
+                heal 10 * defending.cards.energyCount(C), self
               }
             }
           }
