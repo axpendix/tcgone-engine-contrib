@@ -464,8 +464,8 @@ public enum SupremeVictors implements LogicCardInfo {
             }
             onDeactivate {
               eff.unregister()
-              target = []
-              source = []
+              def target = []
+              def source = []
               bg.em().storeObject("Gravitation_target", target)
               bg.em().storeObject("Gravitation_source", source)
             }
@@ -477,7 +477,7 @@ public enum SupremeVictors implements LogicCardInfo {
             onAttack {
               damage 60
               if(bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player == self.owner) {
-                opp.all.findAll{it.types.containsAny(defending.types)}.each {
+                opp.bench.findAll{it.types.containsAny(defending.types)}.each {
                   damage 20, it
                 }
               }
