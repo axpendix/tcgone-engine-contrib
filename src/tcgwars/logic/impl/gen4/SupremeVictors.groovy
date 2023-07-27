@@ -782,7 +782,7 @@ public enum SupremeVictors implements LogicCardInfo {
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
                 if(ef.attacker==self) bg.dm().each {
-                  if(it.from==self && it.to.active && it.to.hasPokePower() && it.to.owner!=self.owner && it.dmg.value){
+                  if(it.from==self && it.to.active && it.to.owner!=self.owner && it.dmg.value && it.to.hasPokeBody()){
                     bc "$thisAbility +30"
                     it.dmg += hp(30)
                   }
