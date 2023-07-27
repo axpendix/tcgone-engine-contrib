@@ -2181,7 +2181,7 @@ public enum SupremeVictors implements LogicCardInfo {
               powerUsed()
               flip {
                 bc "$thisAbility moves all Energy cards from $my.active to $self"
-                my.active.filterByType(ENERGY).each {
+                my.active.cards.filterByType(ENERGY).each {
                   energySwitch(my.active,self,it,true)
                   sw(my.active,self,POKEPOWER)
                 }
