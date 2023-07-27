@@ -1867,7 +1867,7 @@ public enum SupremeVictors implements LogicCardInfo {
                 powerUsed()
                 def maxSize = Math.min(opp.deck.size(),4)
                 def list = rearrange(opp.deck.subList(0,maxSize), "Rearrange top $maxSize cards of your opponent's deck")
-                my.deck.setSubList(0, list)
+                opp.deck.setSubList(0, list)
                 bc "$thisAbility rearranged the top cards of ${self.owner.opposite.getPlayerUsername(bg)}'s deck"
               }
             }
