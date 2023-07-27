@@ -1342,8 +1342,10 @@ public enum SupremeVictors implements LogicCardInfo {
             delayedA {
               def flag
               before APPLY_ATTACK_DAMAGES, {
-                if(it.to == self && it.dmg.value >= 70) {
-                  flag = true
+                bg.dm().each {
+                  if(it.to == self && it.dmg.value >= 70) {
+                    flag = true
+                  }
                 }
               }
               after APPLY_ATTACK_DAMAGES, {
