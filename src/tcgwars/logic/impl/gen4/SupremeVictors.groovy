@@ -1402,8 +1402,7 @@ public enum SupremeVictors implements LogicCardInfo {
                         }, 1:{
                           bc "$pcs is still asleep."
                         }, 0:{
-                          bc "$pcs is knocked out by $thisMove."
-                          new Knockout(pcs).run(bg)
+                          bc "$pcs is still asleep."
                         }]
                         prevent()
                       }
