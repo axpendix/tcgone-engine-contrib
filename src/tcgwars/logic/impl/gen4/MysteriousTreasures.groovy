@@ -1188,7 +1188,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               def playerPick = choose([0, 1], ["Heads", "Tails"], "You're putting a coin next to your active Pokémon without showing your opponent. Pick which side they must guess:")
-              def oppPick = choose([0, 1], ["Heads", "Tails"], "Your opponent put a coin next to their active Pokémon without showing you. You must guess if it's Heads or Tails. If you guess incorrectly, ${self} will do 50 damage to the Defending Pokémon. If you guess correctly, ${self} will do 20 damage to itself (ignoring W/R in this case):")
+              def oppPick = oppChoose([0, 1], ["Heads", "Tails"], "Your opponent put a coin next to their active Pokémon without showing you. You must guess if it's Heads or Tails. If you guess incorrectly, ${self} will do 50 damage to the Defending Pokémon. If you guess correctly, ${self} will do 20 damage to itself (ignoring W/R in this case):")
               if (playerPick != oppPick)
                 damage 50
               else
