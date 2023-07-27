@@ -1469,7 +1469,7 @@ public enum SupremeVictors implements LogicCardInfo {
             onAttack {
               damage 40
               flip {
-                damage 40
+                damage 20
                 heal 20, self
               }
             }
