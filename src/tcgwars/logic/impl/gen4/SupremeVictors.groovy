@@ -2309,7 +2309,7 @@ public enum SupremeVictors implements LogicCardInfo {
                 def card = pcs.cards.filterByType(POKEMON_TOOL).select("Pokémon Tool to move").first() as PokemonToolCard
                 def pl = opp.all.findAll { canAttachPokemonTool(it, card) && it!=pcs }
                 if(!pl){wcu "No available Pokemon to move this card"; return}
-                def tar = pl.select("Move $tool to which Pokémon?")
+                def tar = pl.select("Move $card to which Pokémon?")
                 targeted (tar) {
                   attachPokemonTool(card, tar)
                 }
