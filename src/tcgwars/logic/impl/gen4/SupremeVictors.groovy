@@ -2053,7 +2053,7 @@ public enum SupremeVictors implements LogicCardInfo {
           }
         };
       case IVYSAUR_62:
-        return evolution (this, from:"Bulbasuar", hp:HP080, type:G, retreatCost:2) {
+        return evolution (this, from:"Bulbasaur", hp:HP080, type:G, retreatCost:2) {
           weakness R, PLUS20
           pokePower "Evolutionary Pollen", {
             text "Once during your turn, when you play Ivysaur from your hand to evolve 1 of your Pokémon, you may use this power. Your opponent's Active Pokémon is now Asleep."
