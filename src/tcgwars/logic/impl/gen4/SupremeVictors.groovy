@@ -1683,7 +1683,7 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               clearSpecialCondition(self)
-              heal 50, self
+              heal 40, self
               apply ASLEEP, self
             }
           }
