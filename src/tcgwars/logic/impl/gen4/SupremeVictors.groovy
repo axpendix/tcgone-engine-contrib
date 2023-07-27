@@ -1146,7 +1146,7 @@ public enum SupremeVictors implements LogicCardInfo {
               assert my.hand.filterByType(BASIC_ENERGY) : "You have no Basic Energy cards in your hand"
             }
             onAttack {
-              def card = my.hand.select("Choose a Basic Energy card to attach to 1 of your Pokémon").first()
+              def card = my.hand.select("Choose a Basic Energy card to attach to 1 of your Pokémon",cardTypeFilter(BASIC_ENERGY)).first()
               def tar = my.all.select("Choose a Pokémon to attach $card to")
               attachEnergy (tar,card)
               heal 20, tar
