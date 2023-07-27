@@ -1057,8 +1057,10 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              if (defending.cards.energyCount(C)) {
-                moveEnergy(defending, opp.bench)
+              afterDamage {
+                if (defending.cards.energyCount(C)) {
+                  moveEnergy(defending, opp.bench)
+                }
               }
             }
           }
