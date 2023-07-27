@@ -829,7 +829,7 @@ public enum SupremeVictors implements LogicCardInfo {
               afterDamage {
                 if(!opp.all.find{it.types.contains(W)}) {
                   def count = 0
-                  flip 3, {
+                  flip 3, {}, {
                     count++
                   }
                   if(count) {
