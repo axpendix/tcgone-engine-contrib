@@ -645,7 +645,8 @@ public enum SupremeVictors implements LogicCardInfo {
             text "Remove all Special Conditions from each of your [G] Pokémon. Each of your [G] Pokémon can't be affected by any Special Conditions."
             delayedA {
               before APPLY_SPECIAL_CONDITION, {
-                if (ef.target.owner == self.owner && ef.target.types.contains(G)) {
+                def pcs = ef.getTargetPokemon()
+                if (pcs.owner == self.owner && pcs.types.contains(G)) {
                   bc "$thisAbility prevents special conditions on $self."
                   prevent()
                 }
