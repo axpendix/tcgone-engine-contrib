@@ -1195,15 +1195,16 @@ public enum SupremeVictors implements LogicCardInfo {
           pokeBody "Marvel Eyes", {
             text "If you have Solrock in play, prevent all effects of attacks, including damage, done to any of your Lunatone or Solrock by your opponent's Pokémon LV.X."
             delayedA {
-              before null, self, Source.ATTACK, {
-                if (self.owner.pbg.all.findAll{it.name == "Solrock"} && self.owner.opposite.pbg.active.pokemonLevelUp && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+              before null, null, Source.ATTACK, {
+                PokemonCardSet pcs = e.getTargetPokemon()
+                if (pcs.owner == self.owner && ["Solrock", "Lunatone"].contains(pcs.name) && self.owner.pbg.all.findAll{it.name == "Solrock"} && self.owner.opposite.pbg.active.pokemonLevelUp && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
                   bc "$thisAbility prevents effect"
                   prevent()
                 }
               }
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if(self.owner.pbg.all.findAll{it.name == "Solrock"} && it.to == self && it.notNoEffect && it.from.pokemonLevelUp){
+                  if(it.to.owner == self.owner && ["Solrock", "Lunatone"].contains(it.to.name) && self.owner.pbg.all.findAll{it.name == "Solrock"} && it.from.pokemonLevelUp && it.notNoEffect && it.notZero){
                     it.dmg = hp(0)
                     bc "$thisAbility prevents damage"
                   }
@@ -1211,7 +1212,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
               after ENERGY_SWITCH, {
                 def efs = (ef as EnergySwitch)
-                if(self.owner.pbg.all.findAll{it.name == "Solrock"} && efs.from.pokemonLevelUp && efs.to == self && bg.currentState == Battleground.BGState.ATTACK){
+                if(efs.to.owner == self.owner && ["Solrock", "Lunatone"].contains(efs.to.name) && self.owner.pbg.all.findAll{it.name == "Solrock"} && efs.from.pokemonLevelUp && bg.currentState == Battleground.BGState.ATTACK){
                   discard efs.card
                 }
               }
