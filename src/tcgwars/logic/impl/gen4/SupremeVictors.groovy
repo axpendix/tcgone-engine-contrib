@@ -2586,7 +2586,7 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               opp.all.each {
-                damage 10
+                damage 10, it
               }
             }
           }
