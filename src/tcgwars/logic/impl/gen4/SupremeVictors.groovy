@@ -3745,7 +3745,7 @@ public enum SupremeVictors implements LogicCardInfo {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
             "Look at the top 7 cards of your deck, choose 1 of them, and put it into your hand. Put the other cards back on top of your deck. Shuffle your deck afterward."
           onPlay {
-            my.deck.subList(0,7).select("Choose a card to put into your hand").moveTo(my.hand)
+            my.deck.subList(0,7).select("Choose a card to put into your hand").moveTo(hidden: true, my.hand)
             shuffleDeck()
           }
           playRequirement{
