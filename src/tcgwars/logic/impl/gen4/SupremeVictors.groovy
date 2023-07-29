@@ -3956,7 +3956,7 @@ public enum SupremeVictors implements LogicCardInfo {
             onAttack {
               damage 80, opp.all.select()
               discardSelfEnergyAfterDamage C, C
-              cantUseAttach thisMove, self
+              cantUseAttack thisMove, self
             }
           }
         };
