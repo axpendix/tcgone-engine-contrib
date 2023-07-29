@@ -3897,7 +3897,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 150
               flip 1, {}, {
                 afterDamage {
-                  discardAllSelfEnergy(C)
+                  discardAllSelfEnergy(null)
                 }
               }
             }
