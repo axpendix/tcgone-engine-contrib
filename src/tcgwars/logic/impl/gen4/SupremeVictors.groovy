@@ -3914,9 +3914,10 @@ public enum SupremeVictors implements LogicCardInfo {
               checkNoSPC()
               assert my.discard.filterByType(ENERGY) : "You have no Energy cards in your discard pile"
               powerUsed({ usingThisAbilityEndsTurn delegate })
-              attachEnergyFrom(my.discard,my.all)
-              attachEnergyFrom(my.discard,my.all)
-              attachEnergyFrom(my.discard,my.all)
+              def maxCards = Math.min(3,my.discard.filterByEnergyType(L).size())
+              my.discard.select(max:maxCards,"Search your discard pile for up to 3 [L] Energy cards",energyFilter(L)).each {
+                attachEnergy(my.all.select("Attach $it to"), it)
+              }
               usingThisAbilityEndsTurn delegate
             }
           }
