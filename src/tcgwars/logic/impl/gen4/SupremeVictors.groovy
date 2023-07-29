@@ -3789,7 +3789,8 @@ public enum SupremeVictors implements LogicCardInfo {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
             "Search your discard pile for up to 5 in any combination of Pokémon and basic Energy cards. Show them to your opponent and shuffle them into your deck."
           onPlay {
-            my.discard.select(max:5,"Search your discard pile for up to 5 Pokémon and basic Energy cards",{it.cardTypes.is(POKEMON)||it.cardTypes.is(BASIC_ENERGY)})
+            my.discard.findAll{it.cardTypes.contains(BASIC_ENERGY) || it.cardTypes.contains(POKEMON)}.select(count: 5).moveTo(my.deck)
+            shuffleDeck()
           }
           playRequirement{
             assert my.discard.filterByType(POKEMON) || my.discard.filterByType(BASIC_ENERGY) : "You have no Pokémon or basic Energy cards in your discard pile"
