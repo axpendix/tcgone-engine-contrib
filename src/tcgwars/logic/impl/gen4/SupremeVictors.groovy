@@ -4041,7 +4041,7 @@ public enum SupremeVictors implements LogicCardInfo {
         return basic (this, hp:HP070, type:R, retreatCost:1) {
           resistance F, MINUS30
           move "Hyper Flame", {
-            text "60 damage. Flip a coin. If heads, discard a [R] Energy card attached to Moltres. If tails, discard all Energy cards attached to Moltres. If you can’t discard Energy cards, this attack does nothing."
+            text "60 damage. Flip a coin. If heads, discard a [R] Energy card attached to Moltres. If tails, discard all Energy cards attached to Moltres."
             energyCost R, R, R
             attackRequirement {
               assert self.cards.energyCount(R)
@@ -4052,7 +4052,7 @@ public enum SupremeVictors implements LogicCardInfo {
                 discardSelfEnergyAfterDamage R
               }, {
                 afterDamage {
-                  discardAllSelfEnergy C
+                  discardAllSelfEnergy(null)
                 }
               }
             }
