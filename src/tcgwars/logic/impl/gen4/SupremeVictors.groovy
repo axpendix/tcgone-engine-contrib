@@ -4080,7 +4080,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case MILOTIC_SH7:
         return evolution (this, from:"Feebas", hp:HP080, type:W, retreatCost:1) {
-          weakness L
+          weakness L, PLUS20
           pokeBody "Aqua Mirage", {
             text "If you have no cards in your hand, prevent all damage done to Milotic by attacks from your opponent’s Pokémon."
             delayedA {
@@ -4108,7 +4108,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case RELICANTH_SH8:
         return basic (this, hp:HP080, type:F, retreatCost:1) {
-          weakness G
+          weakness G, PLUS20
           move "Deep Sea Pressure", {
             text "20 damage. During your opponent's next turn, the Defending Pokémon's retreat cost is [C][C] more."
             energyCost F, C
@@ -4133,7 +4133,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case YANMA_SH9:
         return basic (this, hp:HP070, type:G, retreatCost:1) {
-          weakness L
+          weakness L, PLUS20
           resistance F, MINUS20
           move "Sonicboom", {
             text "10 damage. This attack’s damage isn’t affected by Weakness or Resistance."
