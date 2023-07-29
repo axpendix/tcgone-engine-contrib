@@ -4061,7 +4061,7 @@ public enum SupremeVictors implements LogicCardInfo {
         };
       case ZAPDOS_150:
         return basic (this, hp:HP070, type:L, retreatCost:1) {
-          weakness F
+          resistance F, MINUS30
           move "Lightning Burn", {
             text "30 damage. Flip a coin. If heads, and if your opponent has any Benched Pokémon, choose 1 of them. This attack does 30 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.) If tails, Zapdos does 30 damage to itself. "
             energyCost L, L, L
