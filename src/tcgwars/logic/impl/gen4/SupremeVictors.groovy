@@ -3757,12 +3757,12 @@ public enum SupremeVictors implements LogicCardInfo {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
             "Flip 2 coins. If either of them is heads, look at your opponent's hand. For each heads, choose 1 card from your opponent's hand and put it on the bottom of your opponent's deck in any order."
           onPlay {
-            def count
+            def count = 0
             flip 2, {
-              count ++
+              count++
             }
             if(count) {
-              rearrange(opp.hand.select(count:count,"Choose $count cards to put on the botto of your opponent's deck")).showToOpponent("Cyrus's Initiative: Selected cards").moveTo(opp.deck)
+              rearrange(opp.hand.select(count:count,"Choose $count cards to put on the botto of your opponent's deck")).showToOpponent("Cyrus's Initiative: Your opponent selected the following cards. They'll be put in the bottom of your deck in the displayed order:").moveTo(opp.deck)
             }
           }
           playRequirement{
