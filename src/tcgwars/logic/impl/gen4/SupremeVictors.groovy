@@ -3969,7 +3969,7 @@ public enum SupremeVictors implements LogicCardInfo {
             delayedA {
               def applyEffect = false
               before APPLY_ATTACK_DAMAGES, {
-                applyEffect = bg.currentTurn == self.owner.opposite && self.active && bg.dm().find({ it.to == self && it.dmg.value })
+                applyEffect = self.active && bg.currentTurn == self.owner.opposite && bg.dm().any({ it.to == self && it.dmg.value })
               }
               after APPLY_ATTACK_DAMAGES, {
                 if (applyEffect && !self.slatedToKO && my.discard.filterByType(ENERGY)) {
@@ -3984,9 +3984,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 200
-              if(!my.hand) {
+              if(my.hand) {
                 afterDamage {
-                  discardAllSelfEnergy C
+                  discardAllSelfEnergy()
                 }
               }
             }
