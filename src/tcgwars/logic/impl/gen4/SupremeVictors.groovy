@@ -3807,9 +3807,9 @@ public enum SupremeVictors implements LogicCardInfo {
             onActivate {r->
               if (r==PLAY_FROM_HAND && opp.deck && confirm('Use Darkness Send?')) {
                 powerUsed()
-                def count
+                def count = 0
                 flip 3, {
-                  count ++
+                  count++
                 }
                 opp.deck.subList(0,count).moveTo(opp.lostZone)
               }
