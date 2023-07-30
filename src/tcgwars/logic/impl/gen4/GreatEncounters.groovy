@@ -2910,13 +2910,16 @@ public enum GreatEncounters implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               powerUsed()
-              assert my.bench && opp.bench : "Both players must have a Benched Pokémon"
+              assertMyBench()
 
-              targeted (opp.active, Source.POKEPOWER) {
-                sw opp.active, opp.bench.select("Select the new Active Pokémon"), Source.POKEPOWER
+              sw my.active, my.bench.oppSelect("$thisAbility: Select your opponent's new Active Pokémon"), Source.POKEPOWER
+
+              if (opp.bench) {
+                targeted (opp.active, Source.POKEPOWER) {
+                  sw opp.active, opp.bench.select("$thisAbility: Select your opponent's new Active Pokémon"), Source.POKEPOWER
+                }
               }
 
-              sw my.active, my.bench.oppSelect("Select new Active Pokémon"), Source.POKEPOWER
             }
           }
           move "Hydro Reflect", {
