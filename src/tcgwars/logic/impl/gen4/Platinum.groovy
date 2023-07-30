@@ -591,7 +591,7 @@ public enum Platinum implements LogicCardInfo {
             text "Prevent all damage done to your Benched Pokémon (excluding any Manectric) by attacks."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {if(it.to.owner==self.owner && it.from.owner!=self.owner && it.to.benched && !it.to.name == "Manectric" && it.dmg.value && it.notNoEffect){
+                bg.dm().each {if(it.to.owner==self.owner && it.from.owner!=self.owner && it.to.benched && it.to.name != "Manectric" && it.dmg.value && it.notNoEffect){
                   bc "Electric Barrier reduces damage"
                   it.dmg=hp(0)
                 }}
@@ -603,7 +603,7 @@ public enum Platinum implements LogicCardInfo {
             energyCost L
             onAttack {
               all.each {
-                if(it.hasPokePower) {
+                if(it.hasPokePower()) {
                   damage 30, it
                 }
               }
