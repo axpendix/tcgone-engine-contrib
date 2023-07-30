@@ -3075,9 +3075,9 @@ public enum Stormfront implements LogicCardInfo {
         };
       case MACHAMP_LV_X_98:
         return levelUp (this, from:"Machamp", hp:HP150, type:FIGHTING, retreatCost:3) {
-          weakness P
+          weakness P, PLUS40
           pokeBody "No Guard", {
-            text "As long as Machamp is your Active Pokémon, each of Machamp’s attacks does 60 more damage to the Active Pokémon and any damage done to Machamp by your opponent’s Pokémon is increased by 60 ."
+            text "As long as Machamp is your Active Pokémon, each of Machamp’s attacks does 60 more damage to the Active Pokémon (before applying Weakness and Resistance) and any damage done to Machamp by your opponent’s Pokémon is increased by 60 (after applying Weakness and Resistance)."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
                 if(ef.attacker==self) bg.dm().each {
@@ -3103,19 +3103,19 @@ public enum Stormfront implements LogicCardInfo {
             onAttack {
               damage 20
               afterDamage {
-                flip{
-                  delayed {
-                    before KNOCKOUT, self, {
-                      if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite){
+                delayed {
+                  before KNOCKOUT, self, {
+                    if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite){
+                      flip {
                         self.damage = self.fullHP - hp(10)
                         bc "$self endured the hit!"
                         prevent()
                       }
                     }
-                    unregisterAfter 2
-                    after CHANGE_STAGE, self, {unregister()}
-                    after FALL_BACK, self, {unregister()}
                   }
+                  unregisterAfter 2
+                  after CHANGE_STAGE, self, {unregister()}
+                  after FALL_BACK, self, {unregister()}
                 }
               }
             }
