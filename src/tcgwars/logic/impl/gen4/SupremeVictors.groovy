@@ -3972,8 +3972,10 @@ public enum SupremeVictors implements LogicCardInfo {
                 applyEffect = self.active && bg.currentTurn == self.owner.opposite && bg.dm().any({ it.to == self && it.dmg.value })
               }
               after APPLY_ATTACK_DAMAGES, {
-                if (applyEffect && !self.slatedToKO && my.discard.filterByType(ENERGY)) {
-                  attachEnergyFrom(my.discard,self)
+                if (applyEffect && !self.slatedToKO && self.owner.pbg.discard.filterByType(ENERGY)) {
+                  self.owner.pbg.discard.select(min:0, max: 1, "$thisAbility: Attach an Energy card to attach to ${self}?", cardTypeFilter(ENERGY), self.owner).each {
+                    attachEnergy(self, it)
+                  }
                 }
               }
             }
