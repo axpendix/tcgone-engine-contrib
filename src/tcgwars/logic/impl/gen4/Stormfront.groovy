@@ -3368,7 +3368,7 @@ public enum Stormfront implements LogicCardInfo {
           }
           move "Charge Beam", {
             text "10 damage. Search your discard pile for a [L] Energy card and attach it to Voltorb. ."
-            energyCost L, L
+            energyCost L
             onAttack {
               damage 10
               afterDamage {
