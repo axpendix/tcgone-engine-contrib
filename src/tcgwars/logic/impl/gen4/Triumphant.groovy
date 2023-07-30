@@ -1620,8 +1620,13 @@ public enum Triumphant implements LogicCardInfo {
           move "Inviting Scent", {
             text "Switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon."
             energyCost C
+            attackRequirement {
+              assert opp.bench
+            }
             onAttack {
-              whirlwind()
+              targeted (defending) {
+                sw defending, opp.bench.select()
+              }
             }
           }
           move "Careless Tackle", {
