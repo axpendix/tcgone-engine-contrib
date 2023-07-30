@@ -279,7 +279,7 @@ public enum Stormfront implements LogicCardInfo {
           pokePower "Emperor Aura", {
             text "Once during your turn , when you play Empoleon from your hand to evolve 1 of your Active Pokémon, you may use this power. Your opponent can’t attach any Energy cards from his or her hand to his or her Pokémon during your opponent’s next turn."
             onActivate {r->
-              if (r==PLAY_FROM_HAND && confirm("Use Emperor Aura?")) {
+              if (r==PLAY_FROM_HAND && self.active && confirm("Use Emperor Aura?")) {
                 powerUsed()
                 delayed {
                   before ATTACH_ENERGY, {
