@@ -1591,7 +1591,7 @@ public enum Triumphant implements LogicCardInfo {
 
         };
       case ARON_56:
-        return basic (this, hp:HP060, type:METAL, retreatCost:1) {
+        return basic (this, hp:HP060, type:METAL, retreatCost:2) {
           weakness R
           resistance P, MINUS20
           move "Mountain Eater", {
