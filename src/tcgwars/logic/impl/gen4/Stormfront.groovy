@@ -2131,7 +2131,7 @@ public enum Stormfront implements LogicCardInfo {
           resistance R, MINUS20
           move "Gyro Swap", {
             text "Put a number of damage counters on the Defending Pokémon equal to the number of [C] Energy in Bronzor's Retreat Cost ."
-            energyCost P, C
+            energyCost P
             attackRequirement {
               assert self.retreatCost > 0 : "$self's retreat cost is 0"
             }
