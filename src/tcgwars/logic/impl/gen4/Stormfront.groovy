@@ -2034,7 +2034,7 @@ public enum Stormfront implements LogicCardInfo {
       case SKARMORY_51:
         return basic (this, hp:HP080, type:METAL, retreatCost:1) {
           weakness L, PLUS20
-          resistance M, MINUS20
+          resistance F, MINUS20
           move "Quick Attack", {
             text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 20 more damage."
             energyCost M
