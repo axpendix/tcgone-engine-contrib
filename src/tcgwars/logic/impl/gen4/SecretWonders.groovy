@@ -3442,7 +3442,7 @@ f
             text "Switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon."
             energyCost C
             onAttack {
-              sw opp.active, opp.bench.select()
+              sw2 opp.bench.select("Choose the new Defending Pokémon")
             }
             attackRequirement {
               assert opp.bench

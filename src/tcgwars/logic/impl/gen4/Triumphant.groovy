@@ -1467,8 +1467,10 @@ public enum Triumphant implements LogicCardInfo {
             energyCost C, C, C
             onAttack {
               damage 50
-              flip {
-                discardDefendingEnergy()
+              afterDamage {
+                flip {
+                  discardDefendingEnergy()
+                }
               }
             }
           }
@@ -1589,7 +1591,7 @@ public enum Triumphant implements LogicCardInfo {
 
         };
       case ARON_56:
-        return basic (this, hp:HP060, type:METAL, retreatCost:1) {
+        return basic (this, hp:HP060, type:METAL, retreatCost:2) {
           weakness R
           resistance P, MINUS20
           move "Mountain Eater", {
@@ -1618,8 +1620,13 @@ public enum Triumphant implements LogicCardInfo {
           move "Inviting Scent", {
             text "Switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon."
             energyCost C
+            attackRequirement {
+              assert opp.bench
+            }
             onAttack {
-              whirlwind()
+              targeted (defending) {
+                sw defending, opp.bench.select()
+              }
             }
           }
           move "Careless Tackle", {

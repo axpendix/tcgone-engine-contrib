@@ -1882,30 +1882,8 @@ public enum LegendsAwakened implements LogicCardInfo {
             text "The Defending Pokémon is now Confused. Put 6 damage counters instead of 3 on the Confused Pokémon."
             attackRequirement {}
             onAttack {
-              // TODO create GET_CONFUSED_DAMAGE static
-
-//              def magicalStepRecipient = opp.active
-//              apply CONFUSED, magicalStepRecipient, SRC_ABILITY
-//              delayed {
-//                def eff
-//                register {
-//                  eff = getter (GET_CONFUSED_DAMAGE) {h->
-//                    if (h.effect.target == magicalStepRecipient && h.effect.target.active && h.object < hp(30)) {
-//                      bc "Magical Step increases confused damage on $magicalStepRecipient to 60."
-//                      h.object = hp(60)
-//                    }
-//                  }
-//                }
-//                unregister {
-//                  eff.unregister()
-//                }
-//
-//                after CLEAR_SPECIAL_CONDITION, magicalStepRecipient, {
-//                  if(ef.types.contains(CONFUSED)){
-//                    unregister()
-//                  }
-//                }
-//              }
+              apply CONFUSED
+              bg.em().storeObject("Confusion Boost"+defending.hashCode(), "Magical Step")
             }
           }
           move "Grind", {

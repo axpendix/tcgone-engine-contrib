@@ -279,7 +279,7 @@ public enum Stormfront implements LogicCardInfo {
           pokePower "Emperor Aura", {
             text "Once during your turn , when you play Empoleon from your hand to evolve 1 of your Active Pokémon, you may use this power. Your opponent can’t attach any Energy cards from his or her hand to his or her Pokémon during your opponent’s next turn."
             onActivate {r->
-              if (r==PLAY_FROM_HAND && confirm("Use Emperor Aura?")) {
+              if (r==PLAY_FROM_HAND && self.active && confirm("Use Emperor Aura?")) {
                 powerUsed()
                 delayed {
                   before ATTACH_ENERGY, {
@@ -2034,7 +2034,7 @@ public enum Stormfront implements LogicCardInfo {
       case SKARMORY_51:
         return basic (this, hp:HP080, type:METAL, retreatCost:1) {
           weakness L, PLUS20
-          resistance M, MINUS20
+          resistance F, MINUS20
           move "Quick Attack", {
             text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 20 more damage."
             energyCost M
@@ -2131,7 +2131,7 @@ public enum Stormfront implements LogicCardInfo {
           resistance R, MINUS20
           move "Gyro Swap", {
             text "Put a number of damage counters on the Defending Pokémon equal to the number of [C] Energy in Bronzor's Retreat Cost ."
-            energyCost P, C
+            energyCost P
             attackRequirement {
               assert self.retreatCost > 0 : "$self's retreat cost is 0"
             }
@@ -3075,9 +3075,9 @@ public enum Stormfront implements LogicCardInfo {
         };
       case MACHAMP_LV_X_98:
         return levelUp (this, from:"Machamp", hp:HP150, type:FIGHTING, retreatCost:3) {
-          weakness P
+          weakness P, PLUS40
           pokeBody "No Guard", {
-            text "As long as Machamp is your Active Pokémon, each of Machamp’s attacks does 60 more damage to the Active Pokémon and any damage done to Machamp by your opponent’s Pokémon is increased by 60 ."
+            text "As long as Machamp is your Active Pokémon, each of Machamp’s attacks does 60 more damage to the Active Pokémon (before applying Weakness and Resistance) and any damage done to Machamp by your opponent’s Pokémon is increased by 60 (after applying Weakness and Resistance)."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
                 if(ef.attacker==self) bg.dm().each {
@@ -3103,19 +3103,19 @@ public enum Stormfront implements LogicCardInfo {
             onAttack {
               damage 20
               afterDamage {
-                flip{
-                  delayed {
-                    before KNOCKOUT, self, {
-                      if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite){
+                delayed {
+                  before KNOCKOUT, self, {
+                    if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite){
+                      flip {
                         self.damage = self.fullHP - hp(10)
                         bc "$self endured the hit!"
                         prevent()
                       }
                     }
-                    unregisterAfter 2
-                    after CHANGE_STAGE, self, {unregister()}
-                    after FALL_BACK, self, {unregister()}
                   }
+                  unregisterAfter 2
+                  after CHANGE_STAGE, self, {unregister()}
+                  after FALL_BACK, self, {unregister()}
                 }
               }
             }
@@ -3368,7 +3368,7 @@ public enum Stormfront implements LogicCardInfo {
           }
           move "Charge Beam", {
             text "10 damage. Search your discard pile for a [L] Energy card and attach it to Voltorb. ."
-            energyCost L, L
+            energyCost L
             onAttack {
               damage 10
               afterDamage {

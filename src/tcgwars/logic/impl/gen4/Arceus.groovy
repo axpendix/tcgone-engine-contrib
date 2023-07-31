@@ -2286,7 +2286,7 @@ public enum Arceus implements LogicCardInfo {
                 }
               }
             }
-            effPrize = getter GET_GIVEN_PRIZES, self, {holder->
+            effPrize = getter GET_GIVEN_PRIZES, BEFORE_LAST, self, {holder->
               bc "Expert Belt increases prizes taken by one."
               holder.object += 1
             }

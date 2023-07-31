@@ -591,7 +591,7 @@ public enum Platinum implements LogicCardInfo {
             text "Prevent all damage done to your Benched Pokémon (excluding any Manectric) by attacks."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {if(it.to.owner==self.owner && it.from.owner!=self.owner && it.to.benched && !it.to.name == "Manectric" && it.dmg.value && it.notNoEffect){
+                bg.dm().each {if(it.to.owner==self.owner && it.from.owner!=self.owner && it.to.benched && it.to.name != "Manectric" && it.dmg.value && it.notNoEffect){
                   bc "Electric Barrier reduces damage"
                   it.dmg=hp(0)
                 }}
@@ -603,7 +603,7 @@ public enum Platinum implements LogicCardInfo {
             energyCost L
             onAttack {
               all.each {
-                if(it.hasPokePower) {
+                if(it.hasPokePower()) {
                   damage 30, it
                 }
               }
@@ -3185,7 +3185,7 @@ public enum Platinum implements LogicCardInfo {
               def names = my.all.collect{ it.name }
               LevelUpPokemonCard sel_1 = deck.search ("Select a Pokémon that Levels up from $names.", {it.cardTypes.is(LVL_X) && names.contains(it.predecessor)}).first() as LevelUpPokemonCard
               if (sel_1) {
-                def sel_2 = my.all.findAll{ (sel_1.predecessor == it.name) }.select("Select one of your Pokémon named ${sel_1.name}")
+                def sel_2 = my.all.findAll{ !it.pokemonLevelUp && sel_1.predecessor == it.name }.select("Select one of your Pokémon named ${sel_1.name}")
                 bg().em().run(new LevelUp(sel_2, sel_1))
               }
               shuffleDeck()

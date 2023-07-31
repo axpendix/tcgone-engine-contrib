@@ -2733,6 +2733,7 @@ public enum GreatEncounters implements LogicCardInfo {
           onPlay {
             def choice = 1
             def chosenCard
+            def deckSearched = false
 
             if (my.deck && my.discard.any {it.cardTypes.is(LVL_X) }) {
               choice = choose([1,2], ['Search your deck', 'Search your discard pile'], "Choose where to search for a Pokémon LV.X card to be put it into your hand")
@@ -2741,6 +2742,7 @@ public enum GreatEncounters implements LogicCardInfo {
             if (choice == 1 && my.deck) {
               def validTargets = my.deck.findAll {it.cardTypes.is(LVL_X)}
               chosenCard = my.deck.search(count: 1, "Choose where to search for a Pokémon LV.X card to be put it into your hand", { validTargets.contains(it) })
+              deckSearched = true
             } else /*if (choice == 2 || !my.deck)*/ {
               chosenCard = my.discard.findAll { it.cardTypes.is(LVL_X) }.select()
             }
@@ -2748,7 +2750,8 @@ public enum GreatEncounters implements LogicCardInfo {
             if (chosenCard)
               chosenCard.showToOpponent("$thisCard : Chosen card").moveTo(my.hand)
 
-            shuffleDeck()
+            if (deckSearched)
+              shuffleDeck()
           }
           playRequirement{
             assert my.discard || my.deck : "Your deck or discard needs to be not empty"
@@ -2910,13 +2913,16 @@ public enum GreatEncounters implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               powerUsed()
-              assert my.bench && opp.bench : "Both players must have a Benched Pokémon"
+              assertMyBench()
 
-              targeted (opp.active, Source.POKEPOWER) {
-                sw opp.active, opp.bench.select("Select the new Active Pokémon"), Source.POKEPOWER
+              sw my.active, my.bench.oppSelect("$thisAbility: Select your opponent's new Active Pokémon"), Source.POKEPOWER
+
+              if (opp.bench) {
+                targeted (opp.active, Source.POKEPOWER) {
+                  sw opp.active, opp.bench.select("$thisAbility: Select your opponent's new Active Pokémon"), Source.POKEPOWER
+                }
               }
 
-              sw my.active, my.bench.oppSelect("Select new Active Pokémon"), Source.POKEPOWER
             }
           }
           move "Hydro Reflect", {
