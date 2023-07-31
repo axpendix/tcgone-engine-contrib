@@ -3089,7 +3089,7 @@ public enum Stormfront implements LogicCardInfo {
               }
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if(it.to == self && it.dmg.value && it.notNoEffect){
+                  if(it.to == self && self.active && it.dmg.value && it.notNoEffect){
                     bc "No Guard +60"
                     it.dmg+=hp(60)
                   }
