@@ -2178,13 +2178,14 @@ public enum SupremeVictors implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert self.benched : "$self is not on your Bench"
+              assert my.active.energyCards : "Your Active Pokémon must have Energy cards attached"
               powerUsed()
               flip {
                 bc "$thisAbility moves all Energy cards from $my.active to $self"
                 my.active.cards.filterByType(ENERGY).each {
-                  energySwitch(my.active,self,it,true)
-                  sw(my.active,self,POKEPOWER)
+                  energySwitch(my.active,self,it)
                 }
+                sw(my.active,self)
               }
             }
           }
