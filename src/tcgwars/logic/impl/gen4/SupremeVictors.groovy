@@ -1197,7 +1197,7 @@ public enum SupremeVictors implements LogicCardInfo {
             delayedA {
               before null, null, Source.ATTACK, {
                 PokemonCardSet pcs = e.getTargetPokemon()
-                if (pcs.owner == self.owner && ["Solrock", "Lunatone"].contains(pcs.name) && self.owner.pbg.all.findAll{it.name == "Solrock"} && self.owner.opposite.pbg.active.pokemonLevelUp && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                if (pcs && pcs.owner == self.owner && ["Solrock", "Lunatone"].contains(pcs.name) && self.owner.pbg.all.findAll{it.name == "Solrock"} && self.owner.opposite.pbg.active.pokemonLevelUp && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
                   bc "$thisAbility prevents effect"
                   prevent()
                 }
