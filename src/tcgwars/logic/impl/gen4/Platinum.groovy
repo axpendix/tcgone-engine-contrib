@@ -3182,8 +3182,10 @@ public enum Platinum implements LogicCardInfo {
           text "Flip a coin. If heads, search your deck for a Pokémon LV.X that levels up from 1 of your Pokémon, and put it onto that Pokémon (this counts as leveling up that Pokémon). Shuffle your deck afterward."
           onPlay {
             flip {
-              def names = my.all.collect{ it.name }
-              LevelUpPokemonCard sel_1 = deck.search ("Select a Pokémon that Levels up from $names.", {it.cardTypes.is(LVL_X) && names.contains(it.predecessor)}).first() as LevelUpPokemonCard
+              def names = my.all
+                .findAll { !it.pokemonLevelUp }
+                .collect { it.name }
+              LevelUpPokemonCard sel_1 = deck.search ("Select a Pokémon that Levels up from $names.", {it.cardTypes.is(LVL_X) && it.predecessor in names}).first() as LevelUpPokemonCard
               if (sel_1) {
                 def sel_2 = my.all.findAll{ !it.pokemonLevelUp && sel_1.predecessor == it.name }.select("Select one of your Pokémon named ${sel_1.name}")
                 bg().em().run(new LevelUp(sel_2, sel_1))
