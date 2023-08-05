@@ -1851,7 +1851,7 @@ public enum BaseSetNG implements LogicCardInfo {
             shuffleDeck()
           }
           playRequirement{
-            assert my.hand.find(cardTypeFilter(POKEMON))
+            assert my.hand.find(cardTypeFilter(POKEMON)) && my.deck.notEmpty
           }
         };
       case SCOOP_UP:
