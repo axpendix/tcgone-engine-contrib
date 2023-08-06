@@ -2265,7 +2265,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
 
         };
       case DONPHAN_107:
-        return evolution (this, from:"Phanpy", hp:HP120, type:FIGHTING, retreatCost:2) {
+        return evolution (this, from:"Phanpy", hp:HP120, type:FIGHTING, retreatCost:4) {
           weakness W
           resistance L, MINUS20
           pokeBody "Exoskeleton", {
