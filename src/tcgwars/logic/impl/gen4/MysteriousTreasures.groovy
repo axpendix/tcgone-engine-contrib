@@ -1447,9 +1447,10 @@ public enum MysteriousTreasures implements LogicCardInfo {
           move "Hidden Power", {
             text "Choose an Energy card attached to the Defending Pokémon and put it face down. Treat that card as a Special Energy card that provides [C] Energy and doesn’t have any effect other than providing Energy. Put that card face up at the end of your opponent’s next turn."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert opp.active.cards.hasEnergy()
+            }
             onAttack {
-              //  TODO: Implement this oddly unique energy modification.
               //  Notes (taken from JP FAQs, none in english rulings):
               //    * The flipped energy cannot use any abilities included in it (see: Call Energy MD 92)
               //    * Neither does it keep its name while flipped. (See: Gorebyss LM 17)
@@ -1460,22 +1461,45 @@ public enum MysteriousTreasures implements LogicCardInfo {
               //    * If Multi Energy (MT 118) is attached to Venusaur (CG 28), and Hidden Power flips it it should convert by Chlorophyll into a grass energy. Only while flipped, if not it depends on multi energy alone.
               //    * Cards only attachable to a specific Pokémon (See: Scramble Energy DF 89) can be moved to non-valid Pokémon while flipped. But the instant they flip back to normal, they should be discarded.
               //
-              def chosenEnergy = defending.cards.filterByType(ENERGY).select(count:1)
-              def eff
-              /* delayed {
-                eff = getter GET_ENERGY_TYPES, { holder->
-                  if (holder.effect.card == chosenCard) {
-                    holder.object = [[C] as Set]
-                    ////holder.name := "Flipped Back Energy"
-                    ////holder.setCardTypes := specialEnergy
-                    ////holder.customAbility := disabled
+              targeted (defending) {
+                def chosenEnergy = defending.cards.filterByType(ENERGY).select(count:1).first()
+                delayed {
+                  before null, null, Source.SRC_SPECIAL_ENERGY, {
+                    if (ef.sourceEnergy == chosenEnergy) {
+                      prevent()
+                    }
                   }
+                  after DISCARD, {
+                    if (ef.card == chosenEnergy) {
+                      unregister()
+                    }
+                  }
+                  after REMOVE_FROM_PLAY, {
+                    LUtils.isRemoveFromPlayAndContainsCard(e, chosenEnergy) {
+                      unregister()
+                    }
+                  }
+                  List<GetterEffect> mods = []
+                  register {
+                    bc "Hidden Power: $chosenEnergy was chosen, it will now be treated as a Special Energy card that provides [C] Energy and without any effect other than providing Energy"
+                    mods.add(getter(GET_ENERGY_TYPES, { holder->
+                      if(holder.effect.card == chosenEnergy) {
+                        holder.object = [[C] as Set]
+                      }
+                    }))
+                    mods.add(getter(GET_CARD_TYPES, { holder->
+                      if(holder.effect.target == chosenEnergy) {
+                        holder.object = new CardTypeSet(SPECIAL_ENERGY, ENERGY)
+                      }
+                    }))
+                  }
+                  unregister {
+                    mods.each{it.unregister()}
+                    bc "Hidden Power: $chosenEnergy returns back"
+                  }
+                  unregisterAfter 2
                 }
-                unregister {
-                  eff.unregister()
-                }
-                unregisterAfter 2
-              } */
+              }
             }
           }
 
