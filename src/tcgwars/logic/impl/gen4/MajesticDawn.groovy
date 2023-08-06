@@ -1004,7 +1004,7 @@ public enum MajesticDawn implements LogicCardInfo {
             onAttack {
               damage 30
               flip {
-                discardDefendingEnergy()
+                discardDefendingEnergyAfterDamage()
               }
             }
           }
