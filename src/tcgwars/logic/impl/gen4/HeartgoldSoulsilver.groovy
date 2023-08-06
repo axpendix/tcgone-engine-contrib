@@ -2425,9 +2425,11 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             energyCost R, W, L
             onAttack {
               damage 200
-              discardSelfEnergy(R)
-              discardSelfEnergy(W)
-              discardSelfEnergy(L)
+              afterDamage {
+                discardSelfEnergy(R)
+                discardSelfEnergy(W)
+                discardSelfEnergy(L)
+              }
             }
           }
         };
