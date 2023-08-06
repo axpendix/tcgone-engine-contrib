@@ -421,7 +421,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
             onAttack {
               flip {
-                my.deck.search(count:1,"Select 1 card",{true}).moveTo(my.hand)
+                my.deck.search(count:1,"Select 1 card",{true}).moveTo(hidden:true, my.hand)
                 shuffleDeck()
               }
             }
