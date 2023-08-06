@@ -2767,6 +2767,7 @@ public enum GreatEncounters implements LogicCardInfo {
             actionA {
               assert all.find({ it.numberOfDamageCounters > 0 }) : "None of either player's Pokémon have damage counters."
               checkLastTurn()
+              checkNoSPC()
               powerUsed()
               def source = all.findAll { it.numberOfDamageCounters > 0 }.select("Select a source for a damage counter.")
               def target = all
