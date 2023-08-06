@@ -1892,7 +1892,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             text "30 damage. Paras does 10 damage to itself."
             energyCost G, C
             onAttack {
-              damage 20
+              damage 30
               damage 10, self
             }
           }
