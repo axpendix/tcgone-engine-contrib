@@ -3481,19 +3481,22 @@ public enum MysteriousTreasures implements LogicCardInfo {
           move "Pulse Barrier", {
             text "50 damage. Discard all of your opponent’s Pokémon Tool cards and Stadium cards in play. If you do, prevent all effects, including damage, done to Electivire during your opponent’s next turn."
             energyCost L, C
-            attackRequirement {}
             onAttack {
               damage 50
               afterDamage {
-                def cardsDiscarded = new CardList()
+                // Pulse Barrier does not check to see if all the cards are discarded. It checks if ANY cards were discarded, in order to start the protective effect.
+                def flag = true
                 if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player != self.owner){
-                  cardsDiscarded.add(bg.stadiumInfoStruct.stadiumCard)
+                  flag = discard(bg.stadiumInfoStruct.stadiumCard) && flag
                 }
-                opp.all.findAll {it.cards.hasType(POKEMON_TOOL)}.each{
-                  cardsDiscarded.addAll(it.cards.filterByType(POKEMON_TOOL))
+                opp.all.findAll { pcs ->
+                  pcs.cards.filterByType(POKEMON_TOOL).each { card ->
+                    targeted (pcs) {
+                      flag = discard(card) && flag
+                    }
+                  }
                 }
-                if (cardsDiscarded) {
-                  cardsDiscarded.discard()
+                if (!flag) {
                   preventAllEffectsNextTurn()
                 }
               }
