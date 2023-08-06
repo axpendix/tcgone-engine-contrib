@@ -2082,7 +2082,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Star Light", {
           text "As long as your opponent has any Pokémon-ex or Stage 2 Evolved Pokémon in play, Jirachi ex pays [C] less Energy to use Shield Beam or Super Psy Bolt."
           getterA (GET_MOVE_LIST, BEFORE_LAST, self) {h->
-						if (opp.all.any{ it.EX || (it.evolution && it.stage2 ) }) {
+            if (opp.all.any{ it.EX || (it.evolution && it.stage2 ) }) {
               def list=[]
               for (move in h.object) {
                 def copy = move.shallowCopy()
@@ -2091,14 +2091,14 @@ public enum CrystalGuardians implements LogicCardInfo {
               }
               h.object=list
             }
-					}
+          }
         }
         move "Shield Beam", {
           text "30 damage. During your opponent's next turn, your opponent can't use any Poké-Powers on his or her Pokémon."
           energyCost P, C
           onAttack {
             damage 30
-            afterDamage {
+            runAtBeginningOfYourOpponentsTurn {
               delayed {
                 def eff
                 register{
@@ -2107,13 +2107,11 @@ public enum CrystalGuardians implements LogicCardInfo {
                       h.object=true
                     }
                   }
-                  new CheckAbilities().run(bg)
                 }
                 unregister{
                   eff.unregister()
-                  new CheckAbilities().run(bg)
                 }
-                unregisterAfter 2
+                unregisterAfter 1
               }
             }
           }
