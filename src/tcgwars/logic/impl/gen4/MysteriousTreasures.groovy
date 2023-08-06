@@ -1434,15 +1434,13 @@ public enum MysteriousTreasures implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert bg.em().retrieveObject("DP_Unown_ITEM") != bg.turnCount : "You can’t use more than 1 ITEM Poké-Power each turn."
-              //assert self.benched : "$self is not on the Bench"
               //Checking for any Unown I on the bench, text apparently wouldn't specify this one being the one benched. There's a no-more-than-1-use limit anyways.
-              ["Unown I", "Unown T", "Unown E", "Unown M"].each{
-                def cardName = it
-                assert my.benched.any{it.name == cardName} : "$cardName is not on your bench"
+              ["Unown I", "Unown T", "Unown E", "Unown M"].each{ cardName ->
+                assert my.bench.any{it.name == cardName} : "$cardName is not on your bench"
               }
               powerUsed()
               bg.em().storeObject("DP_Unown_ITEM", bg.turnCount)
-              my.deck.search(max:1, "Choose a Trainer-Item card.", cardTypeFilter(ITEM)).showToOpponent("Opponent's chosen Trainer-Item card.").moveTo(my.hand)
+              my.deck.search(max:1, "Choose a Trainer-Item card.", cardTypeFilter(ITEM)).moveTo(my.hand)
               shuffleDeck()
             }
           }
