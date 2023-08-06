@@ -1140,10 +1140,12 @@ public enum Stormfront implements LogicCardInfo {
             onAttack {
               def tar = opp.all.select("Choose 1 of your opponent's Pokémon")
               damage 30, tar
-              flip {
-                if(tar.cards.filterByType(ENERGY)) {
-                  targeted(tar){
-                    tar.cards.select("Choose an energy to discard from $tar",cardTypeFilter(ENERGY)).discard()
+              afterDamage{
+                flip {
+                  if(tar.cards.filterByType(ENERGY)) {
+                    targeted(tar){
+                      tar.cards.select("Choose an energy to discard from $tar",cardTypeFilter(ENERGY)).discard()
+                    }
                   }
                 }
               }
