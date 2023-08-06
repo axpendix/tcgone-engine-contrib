@@ -1715,12 +1715,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             energyCost G
             onAttack {
               damage 10
-              afterDamage{
-                if(my.bench) {
-                  def pcs = my.bench.select("Select the new active Pokémon.")
-                  sw my.active, pcs
-                }
-              }
+              switchYourActive(may: true, now: false)
             }
           }
 
