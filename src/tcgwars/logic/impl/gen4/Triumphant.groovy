@@ -2206,6 +2206,9 @@ public enum Triumphant implements LogicCardInfo {
               unregisterAfter 1
             }
           }
+          playRequirement{
+            assert my.prizeCardSet.size() > opp.prizeCardSet.size() : "You don't have more prize cards remaining than your opponent"
+          }
         };
       case INDIGO_PLATEAU_86:
         return stadium (this) {
