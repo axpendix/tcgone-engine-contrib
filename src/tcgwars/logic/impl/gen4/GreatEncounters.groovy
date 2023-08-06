@@ -2229,7 +2229,7 @@ public enum GreatEncounters implements LogicCardInfo {
             onAttack {
               flip {
                 damage 40
-                discardDefendingEnergy()
+                discardDefendingEnergyAfterDamage()
               }
             }
           }
