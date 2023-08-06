@@ -2145,7 +2145,6 @@ public enum LegendsAwakened implements LogicCardInfo {
           move "Bite On", {
             text "30 damage. If the Defending Pokémon isn't an Evolved Pokémon, that Pokémon can't attack, retreat, or use any Poké-Powers during your opponent's next turn."
             energyCost D
-            attackRequirement {}
             onAttack {
               damage 30
 
@@ -2156,23 +2155,25 @@ public enum LegendsAwakened implements LogicCardInfo {
                 targeted (defending) {
                   bc "During ${opp.owner.getPlayerUsername(bg)}'s next turn, the Defending ${defending} can't attack, retreat or use any Poké-Powers. (This effect can be removed by evolving or benching ${defending}.)"
                   def pcs = defending
-                  delayed {
-                    def eff
-                    register {
-                      eff = getter (IS_ABILITY_BLOCKED) { Holder h->
-                        if (h.effect.target == defending && h.effect.ability instanceof PokePower) {
-                          h.object = true
+                  runAtBeginningOfYourOpponentsTurn {
+                    delayed {
+                      def eff
+                      register {
+                        eff = getter (IS_ABILITY_BLOCKED) { Holder h->
+                          if (h.effect.target == pcs && h.effect.ability instanceof PokePower) {
+                            h.object = true
+                          }
                         }
+                        new CheckAbilities().run(bg)
                       }
-                      new CheckAbilities().run(bg)
+                      unregister{
+                        eff.unregister()
+                        new CheckAbilities().run(bg)
+                      }
+                      unregisterAfter 1
+                      after FALL_BACK, pcs, {unregister()}
+                      after CHANGE_STAGE, pcs, {unregister()}
                     }
-                    unregister{
-                      eff.unregister()
-                      new CheckAbilities().run(bg)
-                    }
-                    unregisterAfter 2
-                    after FALL_BACK, pcs, {unregister()}
-                    after CHANGE_STAGE, pcs, {unregister()}
                   }
                 }
               }
