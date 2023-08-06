@@ -1715,7 +1715,7 @@ public enum Triumphant implements LogicCardInfo {
           resistance L, MINUS20
           move "Sand Veil", {
             text "Flip a coin. If heads, prevent all effects of attacks, including damage, done to Diglett during your opponent’s next turn."
-            energyCost ()
+            energyCost C
             onAttack {
               flip {
                 preventAllEffectsNextTurn()
