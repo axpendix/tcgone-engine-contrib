@@ -2229,11 +2229,12 @@ public enum Triumphant implements LogicCardInfo {
         return basicTrainer (this) {
           text "Discard 2 cards from you hand. Search your discard pile for a Trainer card, show it to your opponent, and put it into your hand. You can’t choose Junk Arm with the effect of this card."
           onPlay {
-            my.hand.select(count:2,"Discard 2 cards").discard()
+            my.hand.getExcludedList(thisCard).select(count:2,"Discard 2 cards").discard()
             my.discard.select("Choose a Trainer card to return to your hand", {it.cardTypes.is(ITEM) && it.name != "Junk Arm"}).showToOpponent("Selected Cards").moveTo(my.hand)
           }
           playRequirement{
             assert my.hand.getExcludedList(thisCard).size() >= 2 : "You don't have 2 other cards to discard"
+            assert my.discard.filterByType(ITEM).any{it.name != "Junk Arm"} : "You don't have any Trainer-Item cards not named \"Junk Arm\""
           }
         };
       case SEEKER_88:
