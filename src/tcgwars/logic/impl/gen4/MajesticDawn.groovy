@@ -416,10 +416,12 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Chase Up", {
             text "Flip a coin. If heads, search your deck for any 1 card and put it into your hand. Shuffle your deck afterward."
             energyCost C
-            onAttack {
+            attackRequirement {
               assert my.deck : "Your deck is empty."
+            }
+            onAttack {
               flip {
-                my.deck.search(max:1,"Select 1 card",{true}).moveTo(my.hand)
+                my.deck.search(count:1,"Select 1 card",{true}).moveTo(my.hand)
                 shuffleDeck()
               }
             }
@@ -431,7 +433,7 @@ public enum MajesticDawn implements LogicCardInfo {
               damage 30
               if(my.hand.filterByBasicEnergyType(W) && my.bench) {
                 my.hand.select(min:0, max:2, "Choose up to 2 basic [W] Energy cards to attach to your Benched Pokémon",basicEnergyFilter(W)).each {
-                  attachEnergy(my.bench.select("Attach $it to"), it)
+                  attachEnergy(my.bench.select("Attach $it to"), it, PLAY_FROM_HAND)
                 }
               }
             }
