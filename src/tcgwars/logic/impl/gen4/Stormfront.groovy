@@ -1613,7 +1613,7 @@ public enum Stormfront implements LogicCardInfo {
 
         };
       case ELECTRODE_36:
-        return evolution (this, from:"Voltorb", hp:HP090, type:LIGHTNING, retreatCost:1) {
+        return evolution (this, from:"Voltorb", hp:HP090, type:LIGHTNING, retreatCost:0) {
           weakness F, PLUS20
           resistance M, MINUS20
           pokeBody "Radiance", {
