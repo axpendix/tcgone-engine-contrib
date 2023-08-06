@@ -2561,6 +2561,7 @@ public enum GreatEncounters implements LogicCardInfo {
               assert my.all.find { it.name == "Illumise" } : "Illumise is not in play"
               assert my.discard.filterByType(SUPPORTER) : "No Supporter card in your discard pile"
               checkLastTurn()
+              checkNoSPC()
               powerUsed()
               def card = my.discard.filterByType(SUPPORTER).select("Which card should be place on top of your deck?")
               card.showToOpponent("Selected card").moveTo(addToTop: true, my.deck)
