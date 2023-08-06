@@ -1296,10 +1296,10 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
         return evolution (this, from:"Caterpie", hp:HP080, type:GRASS, retreatCost:2) {
           weakness R
           pokeBody "Green Shield", {
-            text "Each of your Pokémon has no Weakness."
+            text "Each of your [G] Pokémon has no Weakness."
             delayedA {
               getterA GET_WEAKNESSES, { h ->
-                if (h.effect.target.owner == self.owner) {
+                if (h.effect.target.owner == self.owner && h.effect.target.types.contains(G)) {
                   h.object.clear()
                 }
               }
