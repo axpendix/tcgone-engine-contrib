@@ -1210,21 +1210,23 @@ public enum LegendsAwakened implements LogicCardInfo {
               checkLastTurn()
               if (it == PLAY_FROM_HAND && my.deck && confirm("Use Psychic Bind?")) {
                 powerUsed()
-                delayed {
-                  def eff
-                  register {
-                    eff = getter (IS_ABILITY_BLOCKED) { Holder h ->
-                      if (h.effect.target.owner == self.owner.opposite && h.effect.ability instanceof PokePower) {
-                        h.object = true
+                runAtBeginningOfYourOpponentsTurn {
+                  delayed {
+                    def eff
+                    register {
+                      eff = getter (IS_ABILITY_BLOCKED) { Holder h ->
+                        if (h.effect.target.owner == self.owner.opposite && h.effect.ability instanceof PokePower) {
+                          h.object = true
+                        }
                       }
+                      new CheckAbilities().run(bg)
                     }
-                    new CheckAbilities().run(bg)
+                    unregister {
+                      eff.unregister()
+                      new CheckAbilities().run(bg)
+                    }
+                    unregisterAfter 1
                   }
-                  unregister {
-                    eff.unregister()
-                    new CheckAbilities().run(bg)
-                  }
-                  unregisterAfter 2
                 }
               }
             }
