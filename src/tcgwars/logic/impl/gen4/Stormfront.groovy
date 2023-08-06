@@ -1828,7 +1828,7 @@ public enum Stormfront implements LogicCardInfo {
         };
       case MILTANK_44:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
-          weakness F
+          weakness F, PLUS20
           move "Collect", {
             text "Draw a card."
             energyCost C
