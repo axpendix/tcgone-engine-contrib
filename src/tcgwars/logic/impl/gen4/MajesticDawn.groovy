@@ -1818,7 +1818,7 @@ public enum MajesticDawn implements LogicCardInfo {
           }
           move "Uproar", {
             text "Flip a coin. If heads, this attack does 10 damage to each of your opponent’s Pokémon."
-            energyCost P
+            energyCost ()
             onAttack {
               flip {
                 opp.all.each {
