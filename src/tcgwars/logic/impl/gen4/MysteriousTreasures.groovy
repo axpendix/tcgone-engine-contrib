@@ -1323,14 +1323,12 @@ public enum MysteriousTreasures implements LogicCardInfo {
           pokePower "Energetic Impulse", {
             text "Once during your turn (before your attack), if Slaking is your Active Pokémon, you may flip a coin. If heads, Slaking’s Lazy Blow attack’s base damage is 130 during this turn. If tails, Slaking can’t attack or retreat during this turn. (If Slaking is no longer your Active Pokémon, this effect ends.)"
             actionA {
-              checkNoSPC()
               checkLastTurn()
               assert self.active : "$self is not your Active Pokémon"
               powerUsed()
               flip 1, {
                 keyStore("EI_Buff_Lazy_Blow", self, true)
                 delayed{
-                  //TODO: Check this working properly.
                   unregister{
                     keyStore("EI_Buff_Lazy_Blow", self, 0)
                     bc "Energetic Impulse's effect wore off."
