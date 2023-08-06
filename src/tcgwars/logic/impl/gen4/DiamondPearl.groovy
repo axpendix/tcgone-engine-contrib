@@ -649,11 +649,9 @@ public enum DiamondPearl implements LogicCardInfo {
           move "Accelerative Dive", {
             text "30 damage. Flip a coin. If tails, this attack does nothing. If heads, prevent all damage done to Staraptor by attacks (both yours and your opponent’s) until the end of your next turn."
             energyCost C
-            attackRequirement {}
             onAttack {
-              damage 30
-
               flip {
+                damage 30
                 delayed(priority: BEFORE_LAST) {
                   before APPLY_ATTACK_DAMAGES, {
                     def damageEntry = bg().dm().find({ it.to == self && it.dmg.value > 0 })
@@ -674,7 +672,6 @@ public enum DiamondPearl implements LogicCardInfo {
           move "Brave Heart", {
             text "100 damage. Flip a coin. If tails, Staraptor does 100 damage to itself."
             energyCost C, C, C, C
-            attackRequirement {}
             onAttack {
               damage 100
               flip 1, {}, { damage 100, self }
