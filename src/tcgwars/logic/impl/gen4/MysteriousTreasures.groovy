@@ -570,30 +570,16 @@ public enum MysteriousTreasures implements LogicCardInfo {
           resistance F, MINUS20
           pokeBody "Dark Genes", {
             text "As long as Honchkrow has the Energy necessary to use its attack, each of your Murkrow can use Honchkrow’s attack as its own without the Energy necessary to use that attack."
-            def selfOwner = self.owner
-            def selfPcs = self
             getterA GET_MOVE_LIST, { h ->
               PokemonCardSet hTarget = h.effect.target
-              if (hTarget.active && hTarget.owner == selfOwner && hTarget.name == "Murkrow" && selfPcs.benched) {
-                List<Move> honchkrowMoves = bg.em().activateGetter(new GetMoveList(selfPcs))
+              if (hTarget.active && hTarget.owner == self.owner && hTarget.name == "Murkrow" && self.benched) {
+                List honchkrowMoves = bg.em().activateGetter(new GetMoveList(self))
                 for (move in honchkrowMoves) {
-                  Move copy = move.shallowCopy()
-                  def ogCost = copy.energyCost.clone() as List<Type>
-                  copy.energyCost.retainAll()
-                  copy.addAttackRequirement(new AttackRequirement() {
-                    @Override
-                    boolean process(Battleground bg, Event e) {
-                      EnergySufficiencyCalculator esc = new EnergySufficiencyCalculator(selfPcs.energyCards, ogCost)
-                      try {
-                        bg.em().run(esc)
-                        return false
-                      } catch (NotEnoughEnergyException ignored) {
-                        wcu "$selfPcs doesn't have the necessary energy: ${esc.getRequirement()}"
-                        return true
-                      }
-                    }
-                  })
-                  h.object.add(copy)
+                  if (self.cards.energySufficient(move.energyCost)) {
+                    Move copy = move.shallowCopy()
+                    copy.energyCost.clear()
+                    h.object.add(copy)
+                  }
                 }
               }
             }
