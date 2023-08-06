@@ -463,10 +463,10 @@ public enum SecretWonders implements LogicCardInfo {
               checkNoSPC()
               assert bg.em().retrieveObject("Telepass") != bg.turnCount : "You can't use more than 1 Telepass Poke-Power each turn."
               assert opp.discard.hasType(SUPPORTER) : "Your opponent has no supporters discarded."
+              bg.em().storeObject("Telepass", bg.turnCount);
               powerUsed()
               def card = opp.discard.select("Opponent's discard. Select a supporter.", cardTypeFilter(SUPPORTER)).first()
               bg.em().run(new ActivateSimpleTrainer(card))
-              bg.em().storeObject("Telepass", bg.turnCount);
             }
           }
           move "Psychic Lock", {
