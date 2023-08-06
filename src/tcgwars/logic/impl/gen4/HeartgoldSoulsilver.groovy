@@ -2144,13 +2144,12 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
         return itemCard (this) {
           text "Choose 1 of your Pokémon. Flip 2 coins. For each heads, remove 3 damage counters from that Pokémon."
           onPlay {
-            def tar = my.all.findAll{(it.numberOfDamageCounters != 0)}
-            if(tar){
-              def pcs = tar.select("Select the pokémon to be healed")
-              flip 2, {heal 30, pcs}
-            }
+            def pcs = my.all.findAll{it.numberOfDamageCounters}.select("Select the Pokémon to be healed")
+            flip 2, {heal 30, pcs}
           }
-          playRequirement{}
+          playRequirement{
+            assert my.all.find{it.numberOfDamageCounters} : "Your Pokémon have no damage"
+          }
         };
       case POKE_BALL_95:
         return copy (BlackWhite.POKE_BALL_97, this)
