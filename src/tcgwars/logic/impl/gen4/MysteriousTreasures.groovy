@@ -2470,15 +2470,13 @@ public enum MysteriousTreasures implements LogicCardInfo {
           move "Scrunch", {
             text "Flip a coin. If heads, prevent all damage done to Chansey by attacks during your opponent’s next turn."
             energyCost C, C
-            attackRequirement {}
             onAttack {
-            flip { preventAllEffectsNextTurn() }
+              flip { preventAllDamageNextTurn() }
             }
           }
           move "Double-edge", {
             text "80 damage. Chansey does 60 damage to itself."
             energyCost C, C, C, C
-            attackRequirement {}
             onAttack {
               damage 80
               damage 60, self
