@@ -485,19 +485,28 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
         return evolution (this, from:"Slowpoke", hp:HP080, type:PSYCHIC, retreatCost:2) {
           weakness P
           pokePower "Second Sight", {
-            text " Once during your turn (before your attack), you may look at the top 3 cards in either player's deck and put them back on top of that player's deck in any order. This power can't be used if Slowking is affected by a Special Condition."
+            text "Once during your turn (before your attack), you may look at the top 3 cards in either player's deck and put them back on top of that player's deck in any order. This power can't be used if Slowking is affected by a Special Condition."
             actionA {
               checkLastTurn()
               checkNoSPC()
+              assert my.deck.notEmpty || opp.deck.notEmpty
               powerUsed()
-              def playerDeck = choose([0,1],["Your Deck", "Opponent's Deck"], "Whose deck do you want to look at")
-              if (playerDeck == 0) {
-                def list=rearrange(my.deck.subList(0,3), "Arrange top 3 cards in your deck (leftmost card is on top)")
-                deck.setSubList(0, list)
+              def choices = []
+              if (my.deck.notEmpty) {
+                choices.add("My Deck")
               }
-              else {
+              if (opp.deck.notEmpty) {
+                choices.add("Opponent's Deck")
+              }
+              def response = choose(choices, "Whose deck do you want to look at")
+              if (response == 'My Deck') {
+                def list=rearrange(my.deck.subList(0,3), "Arrange top 3 cards in your deck (leftmost card is on top)")
+                my.deck.setSubList(0, list)
+                bc "Rearranged top cards of own deck"
+              } else {
                 def list=rearrange(opp.deck.subList(0,3), "Arrange top 3 cards in your opponent's deck (leftmost card is on top)")
-                deck.setSubList(0, list)
+                opp.deck.setSubList(0, list)
+                bc "Rearranged top cards of opponent's deck"
               }
             }
           }
