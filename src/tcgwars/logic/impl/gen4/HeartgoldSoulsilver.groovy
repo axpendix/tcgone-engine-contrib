@@ -1433,11 +1433,23 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
           move "Cosmic Cyclone", {
             text "20× damage. Choose as many [W] Energy attached to your Pokémon as you like. This attack does 20 damage times the number of Energy you chose. Shuffle those cards back into your deck."
             energyCost W
+            attackRequirement {
+              assert my.all.find{pcs->pcs.cards.hasEnergyType(W)} : "No [W] in play"
+            }
             onAttack {
-              def selectedCards = self.cards.filterByEnergyType(W).select(min:0, max:self.cards.filterByEnergyType(W).size())
-              damage 20*selectedCards.energyCount(W)
-              afterDamage{ selectedCards.moveTo(my.deck) }
-              shuffleDeck()
+              def energies = new CardList()
+              while (true) {
+                def tar = my.all.findAll{pcs->pcs.cards.hasEnergyType(W)}
+                if (!tar) break
+                def pcs = tar.select("Pokemon to select [W] energy from. Cancel to stop. Already selected: $energies", energies.empty)
+                energies.addAll(pcs.cards.filterByEnergyType(W).findAll{!energies.contains(it)}.select(min:0, max:10, "Select as many [W] energy for 20x damage. Already selected: $energies"))
+              }
+              bc "Selected $energies"
+              damage 20*energies.energyCount(W)
+              afterDamage {
+                energies.moveTo(my.deck)
+                shuffleDeck()
+              }
             }
           }
 
