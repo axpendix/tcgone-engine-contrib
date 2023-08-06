@@ -2387,7 +2387,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             getterA GET_ENERGY_TYPES, { holder->
               if( holder.effect.target == self ) {
                 int count = holder.object.size()
-                holder.object = [(1..count).collect{[FIRE] as Set}]
+                holder.object = (1..count).collect{[FIRE] as Set}
               }
             }
           }
