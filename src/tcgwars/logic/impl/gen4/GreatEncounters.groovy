@@ -2176,7 +2176,9 @@ public enum GreatEncounters implements LogicCardInfo {
             onAttack {
               damage 20
               if (bg.stadiumInfoStruct && confirm ("Discard ${bg.stadiumInfoStruct.stadiumCard}?")) {
-                discard bg.stadiumInfoStruct.stadiumCard
+                afterDamage {
+                  discard bg.stadiumInfoStruct.stadiumCard
+                }
               }
             }
           }
