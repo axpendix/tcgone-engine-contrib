@@ -792,19 +792,19 @@ public enum Triumphant implements LogicCardInfo {
             energyCost P, C
             onAttack {
               damage 20
-              delayed {
-                def eff = getter IS_ABILITY_BLOCKED, { Holder h->
-                  if(bg.currentTurn == self.owner.opposite && h.effect.ability instanceof PokePower) {
-                    h.object = true
+              runAtBeginningOfYourOpponentsTurn {
+                delayed {
+                  def eff = getter IS_ABILITY_BLOCKED, { Holder h->
+                    if(bg.currentTurn == self.owner.opposite && h.effect.ability instanceof PokePower) {
+                      h.object = true
+                    }
+                  }
+                  unregisterAfter 1
+                  unregister {
+                    eff.unregister()
                   }
                 }
-                unregisterAfter 2
-                unregister {
-                  eff.unregister()
-                  new CheckAbilities().run(bg)
-                }
               }
-              new CheckAbilities().run(bg)
             }
           }
           move "Bench Manipulation", {

@@ -472,10 +472,9 @@ public enum SecretWonders implements LogicCardInfo {
           move "Psychic Lock", {
             text "60 damage. During your opponent’s next turn, your opponent can’t use any Poké-Powers on his or her Pokémon."
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
               damage 60
-              afterDamage {
+              runAtBeginningOfYourOpponentsTurn {
                 delayed {
                   def eff
                   register{
@@ -490,7 +489,7 @@ public enum SecretWonders implements LogicCardInfo {
                     eff.unregister()
                     new CheckAbilities().run(bg)
                   }
-                  unregisterAfter 2
+                  unregisterAfter 1
                 }
               }
             }
