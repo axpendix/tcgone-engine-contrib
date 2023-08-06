@@ -2943,23 +2943,23 @@ public enum UnseenForces implements LogicCardInfo {
             targeted (defending) {
               bc "During ${opp.owner.getPlayerUsername(bg)}'s next turn, the Defending ${defending} can't retreat or use any Poké-Powers. (This effect can be removed by evolving or benching ${defending}.)"
               def pcs = defending
-              delayed {
-                def eff
-                register {
-                  eff = getter (IS_ABILITY_BLOCKED) { Holder h->
-                    if (h.effect.target == defending && h.effect.ability instanceof PokePower) {
-                      h.object = true
+              runAtBeginningOfYourOpponentsTurn {
+                delayed {
+                  def eff
+                  register {
+                    eff = getter (IS_ABILITY_BLOCKED) { Holder h->
+                      if (h.effect.target == pcs && h.effect.ability instanceof PokePower) {
+                        h.object = true
+                      }
                     }
                   }
-                  new CheckAbilities().run(bg)
+                  unregister{
+                    eff.unregister()
+                  }
+                  unregisterAfter 1
+                  after FALL_BACK, pcs, {unregister()}
+                  after CHANGE_STAGE, pcs, {unregister()}
                 }
-                unregister{
-                  eff.unregister()
-                  new CheckAbilities().run(bg)
-                }
-                unregisterAfter 2
-                after FALL_BACK, pcs, {unregister()}
-                after CHANGE_STAGE, pcs, {unregister()}
               }
             }
           }
