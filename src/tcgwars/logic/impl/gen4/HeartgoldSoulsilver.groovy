@@ -1745,7 +1745,8 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             text "Shuffle your hand into your deck. Then, draw a number of cards equal to the number of cards in your opponent’s hand."
             energyCost C
             onAttack {
-              shuffleDeck(hand)
+              my.hand.moveTo(hidden: true, my.deck)
+              shuffleDeck()
               draw opp.hand.size()
             }
           }
