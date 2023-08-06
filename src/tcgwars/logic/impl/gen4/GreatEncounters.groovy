@@ -2039,15 +2039,16 @@ public enum GreatEncounters implements LogicCardInfo {
         return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
           weakness R, PLUS20
           pokePower "Scent Conduct", {
-            text "Once during your turn , you may flip a coin. If heads, search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward. This power can't be used if Illumise is affected by a Special Condition."
+            text "Once during your turn , you may flip a coin. If heads, search your deck for a [G] Basic Pokémon and put it onto your Bench. Shuffle your deck afterward. This power can't be used if Illumise is affected by a Special Condition."
             actionA {
               checkLastTurn()
+              checkNoSPC()
               assert my.deck : "Deck is empty"
               assert bench.notFull : "Bench is full"
               checkNoSPCForClassic()
               powerUsed()
               flip {
-                my.deck.search { it.cardTypes.is(BASIC) }.each {
+                my.deck.search { it.cardTypes.is(BASIC) && it.asPokemonCard().types.contains(G) }.each {
                   benchPCS(it)
                 }
                 shuffleDeck()
@@ -2064,7 +2065,8 @@ public enum GreatEncounters implements LogicCardInfo {
               for (Ability ability : defending.getAbilities().keySet()) {
                 if (ability instanceof PokeBody) hasPokeBody = true;
               }
-              if (hasPokeBody) apply ASLEEP
+              if (hasPokeBody)
+                applyAfterDamage ASLEEP
             }
           }
         };
