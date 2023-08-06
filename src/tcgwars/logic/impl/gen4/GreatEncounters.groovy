@@ -1047,12 +1047,12 @@ public enum GreatEncounters implements LogicCardInfo {
         return evolution (this, from:"Jigglypuff", hp:HP090, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS20
           pokePower "Good Night Melody", {
-            text "Once during your turn , you may use this power. Each Active Pokémon (both your and your opponent's is now Asleep. This power can't be use if Wigglytuff is affected by a Special Condition."
+            text "Once during your turn , you may use this power. Each Active Pokémon (both your and your opponent's) is now Asleep. This power can't be used if Wigglytuff is affected by a Special Condition."
             actionA {
               checkLastTurn()
               checkNoSPC()
               powerUsed()
-              apply ASLEEP, self, Source.POKEPOWER
+              apply ASLEEP, my.active, Source.POKEPOWER
               apply ASLEEP, opp.active, Source.POKEPOWER
             }
           }
