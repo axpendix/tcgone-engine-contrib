@@ -227,13 +227,15 @@ public enum MysteriousTreasures implements LogicCardInfo {
             onAttack {
               damage 40
               def tar = my.discard.filterByType(ENERGY)
-              tar.showToOpponent("Opponent Used Heap Up: Search your discard pile for all Energy cards and show them to your opponent. If you find any [M] Special Energy cards there this attack does 40 damage plus 30 more damage. Put all of those Energy cards on top of your deck. Shuffle your deck afterward. These are the energy cards in your opponent's discard pile.")
-              if (tar.find{it.cardTypes.is(SPECIAL_ENERGY) && it.name == "Metal Energy"}) {
-                damage 30
-              }
-              afterDamage {
-                tar.moveTo(my.deck)
-                shuffleDeck()
+              if (tar) {
+                tar.showToOpponent("Opponent Used Heap Up: Search your discard pile for all Energy cards and show them to your opponent. If you find any [M] Special Energy cards there this attack does 40 damage plus 30 more damage. Put all of those Energy cards on top of your deck. Shuffle your deck afterward. These are the energy cards in your opponent's discard pile.")
+                if (tar.find{it.cardTypes.is(SPECIAL_ENERGY) && it.name == "Metal Energy"}) {
+                  damage 30
+                }
+                afterDamage {
+                  tar.moveTo(my.deck)
+                  shuffleDeck()
+                }
               }
             }
           }
