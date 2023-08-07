@@ -875,9 +875,6 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
           move "Playground", {
             text "Each player may search his or her deck for as many Basic Pokémon as he or she likes, put them onto his or her Bench, and shuffle his or her deck afterward. (You put your Pokémon on the Bench first.) Pichu is now Asleep."
             energyCost ()
-            attackRequirement {
-              assert (my.bench.notFull && my.deck.notEmpty) || (opp.bench.notFull && opp.deck.notEmpty)
-            }
             onAttack {
               if(my.bench.notFull && my.deck.notEmpty) {
                 deck.search (max:my.bench.freeBenchCount,"Please search for Basic Pokémon to put on your bench.",cardTypeFilter(BASIC)).each {
