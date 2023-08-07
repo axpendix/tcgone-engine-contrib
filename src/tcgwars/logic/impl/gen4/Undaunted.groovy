@@ -1901,7 +1901,7 @@ public enum Undaunted implements LogicCardInfo {
           onPlay {
             def top = my.deck.subList(0,10).showToOpponent("Top 10 cards of your opponent's deck")
             def hasMatch = top.find { Card card->
-              card.cardTypes.is(LEGEND) && top.getExcludedList(card).find{it.cardTypes.is(LEGEND) && card.getName().equals(it.getName()) && !card.getNumber().equals(it.getNumber())}
+              card.cardTypes.is(LEGEND) && top.find{ it != card && it.cardTypes.is(LEGEND) && card.getName() == it.getName() && card.getNumber() != it.getNumber() }
             }
             if(!hasMatch) {
               top.showToMe("Top 10 cards of your deck")
@@ -1911,7 +1911,7 @@ public enum Undaunted implements LogicCardInfo {
               })
               def topLegendCard = legendPair.get(0).getNumber() < legendPair.get(1).getNumber() ? legendPair.get(0) : legendPair.get(1)
               def bottomLegendCard = legendPair.find { it != topLegendCard }
-              def legendPokemon = benchPCS(topLegendCard)
+              def legendPokemon = benchPCS(topLegendCard, PLAY_FROM_HAND)
               legendPokemon.cards.add(bottomLegendCard)
               my.deck.remove(bottomLegendCard)
               top.getExcludedList(legendPair).filterByType(ENERGY).each{
