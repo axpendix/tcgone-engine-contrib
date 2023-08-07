@@ -266,7 +266,7 @@ public enum Unleashed implements LogicCardInfo {
             text "If you have any [P] Energy attached to your Active Pokémon, the Retreat Cost for that Pokémon is 0."
             delayedA {
               getterA (GET_RETREAT_COST,BEFORE_LAST) {h->
-                if(h.effect.target.owner == self.owner && h.effect.target.cards.energyCount(P)) {
+                if(h.effect.target.active && h.effect.target.owner == self.owner && h.effect.target.cards.energyCount(P)) {
                   h.object = 0
                 }
               }
