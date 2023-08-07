@@ -1533,15 +1533,22 @@ public enum Unleashed implements LogicCardInfo {
 
         };
       case TURTWIG_67:
-        return basic (this, hp:HP050, type:GRASS, retreatCost:2) {
+        return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness R
           resistance W, MINUS20
           move "Leech Seed", {
-            text "10 damage. , remove 1 damage counter from Turtwig."
+            text "10 damage. If this attack does any damage to the Defending Pokémon (after applying Weakness and Resistance), remove 1 damage counter from Turtwig."
             energyCost G
             onAttack {
               damage 10
-              heal 10, self
+              delayed (priority: LAST) {
+                before APPLY_ATTACK_DAMAGES, {
+                  if(bg.dm().find{it.to == defending && it.from == self && it.dmg.value}) {
+                    heal 10, self
+                  }
+                }
+                unregisterAfter 1
+              }
             }
           }
           move "Ram", {
