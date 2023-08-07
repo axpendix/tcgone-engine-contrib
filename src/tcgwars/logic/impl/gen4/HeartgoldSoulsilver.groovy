@@ -935,18 +935,12 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
           move "Energy Antics", {
             text "Move an Energy card attached to 1 of your opponent’s Pokémon to another of your opponent’s Pokémon. Smoochum is now Asleep."
             energyCost ()
-            attackRequirement {
-              assert opp.all.findAll{it.cards.filterByType(ENERGY)} : "Opponent has no energy attached"
-              assert opp.bench
-            }
             onAttack {
-              def bothAll = new PcsList();
-              opp.all.each{
-                bothAll.add(it)
+              if (opp.all.findAll{it.cards.filterByType(ENERGY)} && opp.all.size() >= 2) {
+                def pcs = opp.all.findAll{it.cards.filterByType(ENERGY)}.select("Choose the pokémon to move the energy from")
+                def tar = opp.all.findAll{it != pcs}.select("Choose the pokémon to receive the energy")
+                energySwitch(pcs, tar, pcs.cards.filterByType(ENERGY).select("Choose the energy to move").first())
               }
-              def pcs = bothAll.findAll{it.cards.filterByType(ENERGY)}.select("Choose the pokémon to move the energy from")
-              def tar = bothAll.findAll{it != pcs}.select("Choose the pokémon to receive the energy")
-              energySwitch(pcs,tar, pcs.cards.filterByType(ENERGY).select("Choose the energy to move").first())
               apply ASLEEP, self
             }
 
