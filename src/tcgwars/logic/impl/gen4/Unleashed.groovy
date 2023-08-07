@@ -1679,11 +1679,11 @@ public enum Unleashed implements LogicCardInfo {
           onPlay {
             flip 1, {
               if (my.discard.filterByType(POKEMON)) {
-                my.discard.filterByType(POKEMON).select("Select a Pokémon").showToOpponent("Selected Pokémon").moveTo(addToTop:true, my.deck)
+                my.discard.filterByType(POKEMON).select("Select a Pokémon").moveTo(addToTop:true, my.deck)
               }
             }, {
-              if (my.discard.filterByType(TRAINER)) {
-                my.discard.filterByType(TRAINER).select("Select a Trainer card").showToOpponent("Selected Trainer card").moveTo(addToTop:true, my.deck)
+              if (my.discard.filterByType(ITEM)) {
+                my.discard.filterByType(ITEM).select("Select a Trainer card").moveTo(addToTop:true, my.deck)
               }
             }
           }
