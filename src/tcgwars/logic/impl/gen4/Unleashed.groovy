@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen4
 
+import tcgwars.logic.effect.blocking.CantRetreat
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen5.*;
 import tcgwars.logic.impl.gen7.*;
@@ -1445,7 +1446,7 @@ public enum Unleashed implements LogicCardInfo {
             energyCost C
             onAttack {
               heal 40, self
-              cantRetreat(self)
+              new CantRetreat(self).setForTurns(3).run(bg())
             }
           }
           move "Flap", {
