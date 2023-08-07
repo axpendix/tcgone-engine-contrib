@@ -1433,6 +1433,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
                 def tar = my.all.findAll{pcs->pcs.cards.hasEnergyType(W)}
                 if (!tar) break
                 def pcs = tar.select("Pokemon to select [W] energy from. Cancel to stop. Already selected: $energies", energies.empty)
+                if (!pcs) break
                 energies.addAll(pcs.cards.filterByEnergyType(W).findAll{!energies.contains(it)}.select(min:0, max:10, "Select as many [W] energy for 20x damage. Already selected: $energies"))
               }
               bc "Selected $energies"
