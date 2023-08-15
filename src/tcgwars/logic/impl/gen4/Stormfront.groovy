@@ -1140,10 +1140,12 @@ public enum Stormfront implements LogicCardInfo {
             onAttack {
               def tar = opp.all.select("Choose 1 of your opponent's Pokémon")
               damage 30, tar
-              flip {
-                if(tar.cards.filterByType(ENERGY)) {
-                  targeted(tar){
-                    tar.cards.select("Choose an energy to discard from $tar",cardTypeFilter(ENERGY)).discard()
+              afterDamage{
+                flip {
+                  if(tar.cards.filterByType(ENERGY)) {
+                    targeted(tar){
+                      tar.cards.select("Choose an energy to discard from $tar",cardTypeFilter(ENERGY)).discard()
+                    }
                   }
                 }
               }
@@ -1613,7 +1615,7 @@ public enum Stormfront implements LogicCardInfo {
 
         };
       case ELECTRODE_36:
-        return evolution (this, from:"Voltorb", hp:HP090, type:LIGHTNING, retreatCost:1) {
+        return evolution (this, from:"Voltorb", hp:HP090, type:LIGHTNING, retreatCost:0) {
           weakness F, PLUS20
           resistance M, MINUS20
           pokeBody "Radiance", {
@@ -1828,7 +1830,7 @@ public enum Stormfront implements LogicCardInfo {
         };
       case MILTANK_44:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
-          weakness F
+          weakness F, PLUS20
           move "Collect", {
             text "Draw a card."
             energyCost C

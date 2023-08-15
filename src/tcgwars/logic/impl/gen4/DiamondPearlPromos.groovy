@@ -353,10 +353,9 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               assert my.deck : "Deck is empty"
             }
             onAttack {
-              def predecessors = []
-              my.all.each {
-                predecessors.add(it.name)
-              }
+              def predecessors = my.all
+                .findAll { !it.pokemonLevelUp }
+                .collect { it.name }
               LevelUpPokemonCard lvX = my.deck.search("Select a Pokémon LV.X that evolves from one of your Pokémon", {
                 it.cardTypes.is(LVL_X) && it.predecessor in predecessors
               }).first() as LevelUpPokemonCard

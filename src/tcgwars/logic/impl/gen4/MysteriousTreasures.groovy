@@ -530,7 +530,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 60
-              discardRandomCardFromOpponentsHand()
+              afterDamage {
+                discardRandomCardFromOpponentsHand()
+              }
             }
           }
 

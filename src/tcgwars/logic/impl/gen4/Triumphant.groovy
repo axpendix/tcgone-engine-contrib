@@ -1715,7 +1715,7 @@ public enum Triumphant implements LogicCardInfo {
           resistance L, MINUS20
           move "Sand Veil", {
             text "Flip a coin. If heads, prevent all effects of attacks, including damage, done to Diglett during your opponent’s next turn."
-            energyCost ()
+            energyCost C
             onAttack {
               flip {
                 preventAllEffectsNextTurn()
@@ -2206,6 +2206,9 @@ public enum Triumphant implements LogicCardInfo {
               unregisterAfter 1
             }
           }
+          playRequirement{
+            assert my.prizeCardSet.size() > opp.prizeCardSet.size() : "You don't have more prize cards remaining than your opponent"
+          }
         };
       case INDIGO_PLATEAU_86:
         return stadium (this) {
@@ -2226,11 +2229,12 @@ public enum Triumphant implements LogicCardInfo {
         return basicTrainer (this) {
           text "Discard 2 cards from you hand. Search your discard pile for a Trainer card, show it to your opponent, and put it into your hand. You can’t choose Junk Arm with the effect of this card."
           onPlay {
-            my.hand.select(count:2,"Discard 2 cards").discard()
+            my.hand.getExcludedList(thisCard).select(count:2,"Discard 2 cards").discard()
             my.discard.select("Choose a Trainer card to return to your hand", {it.cardTypes.is(ITEM) && it.name != "Junk Arm"}).showToOpponent("Selected Cards").moveTo(my.hand)
           }
           playRequirement{
             assert my.hand.getExcludedList(thisCard).size() >= 2 : "You don't have 2 other cards to discard"
+            assert my.discard.filterByType(ITEM).any{it.name != "Junk Arm"} : "You don't have any Trainer-Item cards not named \"Junk Arm\""
           }
         };
       case SEEKER_88:

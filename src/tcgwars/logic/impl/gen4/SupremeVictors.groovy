@@ -1197,7 +1197,7 @@ public enum SupremeVictors implements LogicCardInfo {
             delayedA {
               before null, null, Source.ATTACK, {
                 PokemonCardSet pcs = e.getTargetPokemon()
-                if (pcs.owner == self.owner && ["Solrock", "Lunatone"].contains(pcs.name) && self.owner.pbg.all.findAll{it.name == "Solrock"} && self.owner.opposite.pbg.active.pokemonLevelUp && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                if (pcs && pcs.owner == self.owner && ["Solrock", "Lunatone"].contains(pcs.name) && self.owner.pbg.all.findAll{it.name == "Solrock"} && self.owner.opposite.pbg.active.pokemonLevelUp && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
                   bc "$thisAbility prevents effect"
                   prevent()
                 }
@@ -2178,13 +2178,14 @@ public enum SupremeVictors implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert self.benched : "$self is not on your Bench"
+              assert my.active.energyCards : "Your Active Pokémon must have Energy cards attached"
               powerUsed()
               flip {
                 bc "$thisAbility moves all Energy cards from $my.active to $self"
                 my.active.cards.filterByType(ENERGY).each {
-                  energySwitch(my.active,self,it,true)
-                  sw(my.active,self,POKEPOWER)
+                  energySwitch(my.active,self,it)
                 }
+                sw(my.active,self)
               }
             }
           }
@@ -3789,11 +3790,14 @@ public enum SupremeVictors implements LogicCardInfo {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
             "Search your discard pile for up to 5 in any combination of Pokémon and basic Energy cards. Show them to your opponent and shuffle them into your deck."
           onPlay {
-            my.discard.findAll{it.cardTypes.contains(BASIC_ENERGY) || it.cardTypes.contains(POKEMON)}.select(count: 5).moveTo(my.deck)
+            my.discard
+              .findAll{it.cardTypes.contains(BASIC_ENERGY) || it.cardTypes.contains(POKEMON)}
+              .select(min:1, max: 5, "Choose up to 5 in any combination of Pokémon and Supporter cards to put back into your deck")
+              .moveTo(my.deck)
             shuffleDeck()
           }
           playRequirement{
-            assert my.discard.filterByType(POKEMON) || my.discard.filterByType(BASIC_ENERGY) : "You have no Pokémon or basic Energy cards in your discard pile"
+            assert my.discard.filterByType(POKEMON, BASIC_ENERGY) : "You have no Pokémon or basic Energy cards in your discard pile"
           }
         };
       case VS_SEEKER_140:

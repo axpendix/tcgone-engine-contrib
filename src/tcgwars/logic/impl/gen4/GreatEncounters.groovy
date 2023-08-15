@@ -952,7 +952,7 @@ public enum GreatEncounters implements LogicCardInfo {
               assert bg.em().retrieveObject("Trump Card") == bg.turnCount-1 : "None of your Pokémon were Knocked Out during your opponent's last turn."
               bg.em().storeObject("Trump Card", bg.turnCount)
               powerUsed()
-              my.deck.search("Search your deck for 1 card",{true}).moveTo(hidden:true,my.hand)
+              my.deck.search(count:1,"Search your deck for 1 card",{true}).moveTo(hidden:true,my.hand)
             }
           }
           move "Psych Up", {
@@ -1047,12 +1047,12 @@ public enum GreatEncounters implements LogicCardInfo {
         return evolution (this, from:"Jigglypuff", hp:HP090, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS20
           pokePower "Good Night Melody", {
-            text "Once during your turn , you may use this power. Each Active Pokémon (both your and your opponent's is now Asleep. This power can't be use if Wigglytuff is affected by a Special Condition."
+            text "Once during your turn , you may use this power. Each Active Pokémon (both your and your opponent's) is now Asleep. This power can't be used if Wigglytuff is affected by a Special Condition."
             actionA {
               checkLastTurn()
               checkNoSPC()
               powerUsed()
-              apply ASLEEP, self, Source.POKEPOWER
+              apply ASLEEP, my.active, Source.POKEPOWER
               apply ASLEEP, opp.active, Source.POKEPOWER
             }
           }
@@ -1151,7 +1151,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
             onAttack {
               flip {
-                my.deck.search("Search your deck for 1 card",{true}).moveTo(hidden:true,my.hand)
+                my.deck.search(count:1, "Search your deck for 1 card",{true}).moveTo(hidden:true,my.hand)
                 shuffleDeck()
               }
             }
@@ -1599,7 +1599,7 @@ public enum GreatEncounters implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              flip { discardDefendingEnergy() }
+              flip { discardDefendingEnergyAfterDamage() }
             }
           }
           move "Steel Wing", {
@@ -2039,15 +2039,16 @@ public enum GreatEncounters implements LogicCardInfo {
         return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
           weakness R, PLUS20
           pokePower "Scent Conduct", {
-            text "Once during your turn , you may flip a coin. If heads, search your deck for a Basic Pokémon and put it onto your Bench. Shuffle your deck afterward. This power can't be used if Illumise is affected by a Special Condition."
+            text "Once during your turn , you may flip a coin. If heads, search your deck for a [G] Basic Pokémon and put it onto your Bench. Shuffle your deck afterward. This power can't be used if Illumise is affected by a Special Condition."
             actionA {
               checkLastTurn()
+              checkNoSPC()
               assert my.deck : "Deck is empty"
               assert bench.notFull : "Bench is full"
               checkNoSPCForClassic()
               powerUsed()
               flip {
-                my.deck.search { it.cardTypes.is(BASIC) }.each {
+                my.deck.search { it.cardTypes.is(BASIC) && it.asPokemonCard().types.contains(G) }.each {
                   benchPCS(it)
                 }
                 shuffleDeck()
@@ -2064,7 +2065,8 @@ public enum GreatEncounters implements LogicCardInfo {
               for (Ability ability : defending.getAbilities().keySet()) {
                 if (ability instanceof PokeBody) hasPokeBody = true;
               }
-              if (hasPokeBody) apply ASLEEP
+              if (hasPokeBody)
+                applyAfterDamage ASLEEP
             }
           }
         };
@@ -2176,7 +2178,9 @@ public enum GreatEncounters implements LogicCardInfo {
             onAttack {
               damage 20
               if (bg.stadiumInfoStruct && confirm ("Discard ${bg.stadiumInfoStruct.stadiumCard}?")) {
-                discard bg.stadiumInfoStruct.stadiumCard
+                afterDamage {
+                  discard bg.stadiumInfoStruct.stadiumCard
+                }
               }
             }
           }
@@ -2229,7 +2233,7 @@ public enum GreatEncounters implements LogicCardInfo {
             onAttack {
               flip {
                 damage 40
-                discardDefendingEnergy()
+                discardDefendingEnergyAfterDamage()
               }
             }
           }
@@ -2561,6 +2565,7 @@ public enum GreatEncounters implements LogicCardInfo {
               assert my.all.find { it.name == "Illumise" } : "Illumise is not in play"
               assert my.discard.filterByType(SUPPORTER) : "No Supporter card in your discard pile"
               checkLastTurn()
+              checkNoSPC()
               powerUsed()
               def card = my.discard.filterByType(SUPPORTER).select("Which card should be place on top of your deck?")
               card.showToOpponent("Selected card").moveTo(addToTop: true, my.deck)
@@ -2767,6 +2772,7 @@ public enum GreatEncounters implements LogicCardInfo {
             actionA {
               assert all.find({ it.numberOfDamageCounters > 0 }) : "None of either player's Pokémon have damage counters."
               checkLastTurn()
+              checkNoSPC()
               powerUsed()
               def source = all.findAll { it.numberOfDamageCounters > 0 }.select("Select a source for a damage counter.")
               def target = all
