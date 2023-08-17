@@ -206,7 +206,9 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 30
-              attachEnergyFrom(type: R, my.discard, my.all.select())
+              afterDamage {
+                attachEnergyFrom(type: R, my.discard, my.all.select())
+              }
             }
           }
           move "Flame Kick", {
