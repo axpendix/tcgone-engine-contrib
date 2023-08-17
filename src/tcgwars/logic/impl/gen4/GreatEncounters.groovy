@@ -1514,7 +1514,7 @@ public enum GreatEncounters implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              flip { discardDefendingEnergy() }
+              flip { discardDefendingEnergyAfterDamage() }
             }
           }
           move "Fury Swipes", {
