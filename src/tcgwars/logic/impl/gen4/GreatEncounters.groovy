@@ -952,7 +952,7 @@ public enum GreatEncounters implements LogicCardInfo {
               assert bg.em().retrieveObject("Trump Card") == bg.turnCount-1 : "None of your Pokémon were Knocked Out during your opponent's last turn."
               bg.em().storeObject("Trump Card", bg.turnCount)
               powerUsed()
-              my.deck.search(count:1,"Search your deck for 1 card",{true}).moveTo(hidden:true,my.hand)
+              my.deck.search(min:1, "Search your deck for 1 card",{true}).moveTo(hidden:true,my.hand)
             }
           }
           move "Psych Up", {
@@ -1151,7 +1151,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
             onAttack {
               flip {
-                my.deck.search(count:1, "Search your deck for 1 card",{true}).moveTo(hidden:true,my.hand)
+                my.deck.search(min:1, "Search your deck for 1 card",{true}).moveTo(hidden:true,my.hand)
                 shuffleDeck()
               }
             }
