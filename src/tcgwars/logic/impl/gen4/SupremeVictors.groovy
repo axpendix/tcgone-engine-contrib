@@ -2282,7 +2282,7 @@ public enum SupremeVictors implements LogicCardInfo {
           move "Call for Family", {
             text "Search your deck for up to 2 Lightning Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
             energyCost ()
-            callForFamily([basic:true, types:L], 2, delegate)
+            callForFamily([basic:true, types:[L]], 2, delegate)
           }
           move "Trash Charge", {
             text "10 damage. Search your discard pile for a [L] Energy card and attach it to 1 of your Pokémon."
