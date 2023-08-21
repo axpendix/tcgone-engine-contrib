@@ -347,13 +347,14 @@ public enum UnifiedMinds implements LogicCardInfo {
               assertMyAll(hasType: G)
             }
             onAttack {
-              def names = my.all.findAll { it.types.contains(G) }.collect{ it.name }
-              def sel_1 = deck.search ("Select a Pokémon that evolves from $names.", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)}).first()
+              def names = my.all.findAll { it.types.contains(G) }.collect{ it.name }.toSet()
+              def sel_1 = deck.search ("Select a Pokémon that evolves from $names.", {card->card.cardTypes.is(EVOLUTION) && card.predecessors.find {names.contains(it)} }).first()
               if (sel_1) {
-                def pcs = my.all.findAll { it.name==sel_1.predecessor }.select("Evolve which Pokémon?")
+                def pcs = my.all.findAll { sel_1.predecessors.contains(it.name) }.select("Evolve which Pokémon?")
                 evolve(pcs, sel_1)
                 if (sel_1.cardTypes.is(STAGE1)) {
-                  def sel_2 = deck.search ("Select a Pokémon that evolves from ${sel_1.name}.", {it.cardTypes.is(EVOLUTION) && it.predecessor == sel_1.name}).first()
+                  def sel_2 = deck.search ("Select a Pokémon that evolves from ${sel_1.name}.", {it.cardTypes.is(EVOLUTION)
+                    && it.predecessors.contains(sel_1.name)}).first()
                   if(sel_2){
                     evolve(pcs, sel_2)
                   }

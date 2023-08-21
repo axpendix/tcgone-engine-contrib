@@ -1132,14 +1132,9 @@ public enum Arceus implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
             }
             onAttack {
-              def names = my.all.collect{it.name}
-              def sel = deck.search ("Select a Pokémon that evolves from 1 of your Pokémon.", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)}).first()
-              if(sel) {
-                def pcs = my.all.findAll{it.name == sel.predecessor}.select("Put $sel onto...")
-                evolve(pcs, sel)
+              if (searchYourDeckThenEvolveOneOfYourPokemon()) {
                 directDamage 10, self
               }
-              shuffleDeck()
             }
           }
           move "Will-o’-the-wisp", {

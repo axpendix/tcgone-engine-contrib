@@ -522,7 +522,7 @@ public enum UltraPrism implements LogicCardInfo {
               my.bench.findAll{it.basic}.each{pcs->
                 def nam = pcs.name
                 def sel=self.owner.pbg.deck.search(count:1, "Search for a card that evolve from $nam",
-                  {it.cardTypes.is(EVOLUTION) && it.predecessor==pcs.name})
+                  {it.cardTypes.is(EVOLUTION) && it.predecessors.contains(pcs.name)})
                 if(sel){
                   evolve(pcs, sel.first())
                 }

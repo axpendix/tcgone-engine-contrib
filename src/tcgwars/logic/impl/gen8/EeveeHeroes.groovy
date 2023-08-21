@@ -1339,10 +1339,10 @@ public enum EeveeHeroes implements LogicCardInfo {
         text "Search your deck for a card that evolves from 1 of your Pokémon and put it onto that Pokémon to evolve it. Then" +
           "shuffle your deck. You can use this card during your first turn or on a Pokémon that was put into play this turn. Your turn ends."
         onPlay {
-          def nameList = my.all.findAll { bg.gm().hasEvolution(it.name) }.collect { it.name }
-          def card = deck.search "Select card that evolves from any of $nameList", { it.cardTypes.is(EVOLUTION) && nameList.contains(it.predecessor) }
+          def names = my.all.findAll { bg.gm().hasEvolution(it.name) }.collect { it.name }.toSet()
+          def card = deck.search "Select card that evolves from any of $names", { card -> card.cardTypes.is(EVOLUTION) && card.predecessors.find {names.contains(it)} }
           if(card) {
-            def list = my.all.findAll { it.name == card.first().predecessor }
+            def list = my.all.findAll { card.first().predecessors.contains(it.name) }
             def pcs = (list.size() == 1) ? list.first() : list.select("Evolve which Pokeémon?")
             evolve pcs, card.first()
           }

@@ -3439,15 +3439,9 @@ public enum UnseenForces implements LogicCardInfo {
             assert my.deck
           }
           onAttack {
-            def names=my.all.collect{it.name}
-            def sel=deck.search ("Evolves from $names", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)})
-            if(sel){
-              def opts=my.all.findAll({it.name==sel.first().predecessor})
-              def pcs=opts.select("Evolve which one?")
-              evolve(pcs, sel.first())
+            if (searchYourDeckThenEvolveOneOfYourPokemon()) {
               directDamage 10, self
             }
-            shuffleDeck()
           }
         }
       };

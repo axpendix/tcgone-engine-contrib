@@ -1786,7 +1786,7 @@ public enum Emerald implements LogicCardInfo {
           onPlay {
             def activeName = my.active.name
             def sel = deck.search ("Select a Pokémon that evolves from ${activeName}.", {
-              it.cardTypes.is(EVOLUTION) && it.predecessor == activeName
+              it.cardTypes.is(EVOLUTION) && it.predecessors.contains(activeName)
             })
             if (sel) {
               evolve(my.active, sel.first())

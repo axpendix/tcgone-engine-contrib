@@ -2392,7 +2392,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               targeted (pcs, SRC_ABILITY) {
                 devolve(pcs, my.deck)
                 if(pcs) {
-                  def tar = my.deck.search(max:1,"Search for an Evolution card that evolves from that Pokémon",{it.cardTypes.is(EVOLUTION) && it.predecessor==pcs.name})
+                  def tar = my.deck.search(max:1,"Search for an Evolution card that evolves from that Pokémon",{it.cardTypes.is(EVOLUTION) && it.predecessors.contains(pcs.name)})
                   if(tar) {
                     evolve(pcs,tar.first())
                   }

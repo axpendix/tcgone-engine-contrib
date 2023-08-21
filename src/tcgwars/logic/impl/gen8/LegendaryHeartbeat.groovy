@@ -362,8 +362,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             my.bench.each {pcs ->
               if (!bg.gm().hasEvolution(pcs.name)) return
               def evolution = my.deck.search ("Evolve $pcs to?", {Card card ->
-                if (!(card instanceof EvolutionPokemonCard)) return false
-                (card as EvolutionPokemonCard).predecessor == pcs.name
+                (card instanceof EvolutionPokemonCard) && (card as EvolutionPokemonCard).predecessors.contains(pcs.name)
               }).first()
               if (!evolution) return
               evolve(pcs, evolution)

@@ -595,19 +595,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               assert my.deck : "Deck is empty"
             }
             onAttack {
-              def names = my.all.collect {it.name }
-              def evolutionCard = deck.search ("Evolves from $names", {
-                it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)
-              }).first()
-
-              if (evolutionCard) {
-                def eligibleToEvolve = my.all.findAll({
-                  it.name == (evolutionCard as EvolutionPokemonCard).predecessor
-                })
-                def cardToEvolve = eligibleToEvolve.select("Evolve which one?")
-                evolve(cardToEvolve, evolutionCard)
-              }
-              shuffleDeck()
+              searchYourDeckThenEvolveOneOfYourPokemon()
             }
           }
           move "Time Wager", {

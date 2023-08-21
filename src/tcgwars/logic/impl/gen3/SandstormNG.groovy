@@ -1845,7 +1845,7 @@ public enum SandstormNG implements LogicCardInfo {
           assert evolutions : "You have no Stage 1 or Stage 2 card in hand"
           pcs = targets.select("Choose the pokemon to be evolved")
           def possibleEvolutions = evolutions.findAll{ EvolutionPokemonCard evoCard ->
-            ( evoCard.predecessor == pcs.name ) ||
+            ( evoCard.predecessors.contains(pcs.name) ) ||
             ( bg.gm().getBasicsFromStage2(evoCard.name).contains(pcs.name) )
           }
           assert possibleEvolutions : "There is no Stage 1/2 in hand for $pcs to evolve into"
