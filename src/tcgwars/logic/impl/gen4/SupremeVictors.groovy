@@ -2430,7 +2430,9 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              attachEnergyFrom(type:L,my.hand,my.all)
+              afterDamage {
+                attachEnergyFrom(type:L,my.hand,my.all)
+              }
             }
           }
         };
