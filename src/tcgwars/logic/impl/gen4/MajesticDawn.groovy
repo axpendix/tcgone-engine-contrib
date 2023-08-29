@@ -1246,7 +1246,9 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 20
-              attachEnergyFrom(type:G, my.hand, my.all)
+              afterDamage {
+                attachEnergyFrom(type:G, my.hand, my.all)
+              }
             }
           }
           move "Body Slam", {
