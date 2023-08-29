@@ -2517,7 +2517,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               before null, null, Source.ATTACK, {
                 if (ef instanceof TargetedEffect) {
                   def pcs = e.getTargetPokemon()
-                  if (bg.currentTurn == self.owner.opposite && ef.effectType != DAMAGE && pcs && pcs.owner == self.owner && self.benched && pcs.name.startsWith("Unown")) {
+                  if (bg.currentTurn == self.owner.opposite && ef.effectType != DAMAGE && self.benched && pcs && pcs.owner == self.owner && pcs.benched && pcs.name.startsWith("Unown")) {
                     bc "UNSEEN prevents effect"
                     prevent()
                   }
