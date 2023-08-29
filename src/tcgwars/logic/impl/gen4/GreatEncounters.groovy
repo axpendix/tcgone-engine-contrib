@@ -1863,6 +1863,7 @@ public enum GreatEncounters implements LogicCardInfo {
               assert my.deck : "Your Deck is empty"
               assert self.active : "$self is not your Active Pokémon"
               checkLastTurn()
+              checkNoSPC()
               powerUsed()
               flip {
                 deck.search ("Evolves from ${self.name}", {it.cardTypes.is(EVOLUTION) && self.name==it.predecessor}).each { evolve(self, it) }
