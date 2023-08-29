@@ -1292,11 +1292,20 @@ public enum Stormfront implements LogicCardInfo {
           weakness L, PLUS30
           resistance F, MINUS20
           pokeBody "Protect Wing", {
-            text "As long as Staraptor is your Active Pokémon, any damage done by attacks from your opponent’s Stage 2 Evolved Pokémon is reduced by 20 ."
+            text "As long as Staraptor is your Active Pokémon, any damage done by attacks from your opponent’s Stage 2 Pokémon is reduced by 20 ."
+            // ERRATA:
+            //    Some abilities referring to "Stage 2 Evolved Pokémon" are receiving errata.
+            //    These cards do not care if the Pokémon is evolved or not, only if it is a Stage 2 Pokémon.
+            //    So, Stage 2 Pokémon put into play with abilities like Garchomp LV.X's "Restore" attack still count for these abilities.
+            //    Staraptor's correct card text should read: "(Poké-Body) Protect Wing - As long as Staraptor is your Active Pokémon,
+            //    any damage done by attacks from your opponent's Stage 2 Pokémon is reduced by 20 (after applying Weakness and Resistance)".
+            //
+            //    (May 1, 2009 Pokemon Organized Play News; May 7, 2009 PUI Rules Team)
+            //
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if (self.active && it.from.stage2 && it.from.evolution && it.to.owner == self.owner && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect) {
+                  if (self.active && it.from.stage2 && it.to.owner == self.owner && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect) {
                     bc "$thisAbility -20"
                     it.dmg -= hp(20)
                   }
