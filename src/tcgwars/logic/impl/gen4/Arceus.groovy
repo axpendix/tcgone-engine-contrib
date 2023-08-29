@@ -662,6 +662,7 @@ public enum Arceus implements LogicCardInfo {
             text "Once during your turn , you may move 1 damage counter from 1 of your opponent’s Pokémon to another of your opponent’s Pokémon. This power can’t be used if Gengar is affected by a Special Condition."
             actionA {
               checkLastTurn()
+              checkNoSPC()
               assert opp.all.findAll{it.numberOfDamageCounters} : "There is are no pokémon with damage counters to move"
               powerUsed()
               def pcs = opp.all.findAll{it.numberOfDamageCounters}.select("Choose the pokémon to move the damage counter from")
