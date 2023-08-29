@@ -128,7 +128,9 @@ public enum FireRedLeafGreen implements LogicCardInfo {
   POKE_BALL_95 ("Poké Ball", "95", Rarity.UNCOMMON, [TRAINER, ITEM]),
   POKEDEX_HANDY909_96 ("PokéDex Handy909", "96", Rarity.UNCOMMON, [TRAINER, ITEM]),
   POKEMON_REVERSAL_97 ("Pokémon Reversal", "97", Rarity.UNCOMMON, [TRAINER, ITEM]),
-  PROF__OAK_S_RESEARCH_98 ("Prof. Oak's Research", "98", Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
+  // Q. Can I have 4 "Professor Oak's Research" (Expedition) plus 4 more "Prof. Oak's Research" (FR/LG) in a deck? Their titles are not exactly the same!
+  // A. Sorry, but "Prof." is merely an abbreviation for the word "Professor". They are to be treated as the same card, so you can only have a total of four (not eight) in your deck. (Sep 9, 2004 PUI Rules Team)
+  PROF__OAK_S_RESEARCH_98 ("Professor Oak's Research", "98", Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
   SUPER_SCOOP_UP_99 ("Super Scoop Up", "99", Rarity.UNCOMMON, [TRAINER, ITEM]),
   VS_SEEKER_100 ("VS Seeker", "100", Rarity.UNCOMMON, [TRAINER, ITEM]),
   POTION_101 ("Potion", "101", Rarity.COMMON, [TRAINER, ITEM]),
