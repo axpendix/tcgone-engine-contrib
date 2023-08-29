@@ -598,14 +598,15 @@ public enum DragonFrontiers implements LogicCardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if (it.to.owner==self.owner && it.to.benched && it.dmg.value && it.to.topPokemonCard.cardTypes.is(DELTA)) {
+                if (it.from.owner!=self.owner && it.to.owner==self.owner && it.to.benched && it.dmg.value && it.to.topPokemonCard.cardTypes.is(DELTA)) {
                   bc "Solid Shell prevents damage"
                   it.dmg=hp(0)
                 }
               }
             }
-            before null, null, Source.ATTACK, {
+            before null, null, ATTACK, {
               def pcs = e.getTargetPokemon()
+              def attacker = e.sourceAttack.attacker
               if (bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs && pcs.owner == self.owner && pcs.benched && pcs.topPokemonCard.cardTypes.is(DELTA)) {
                 bc "Solid Shell prevents effect"
                 prevent()
