@@ -2543,6 +2543,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokePower "VACATION", {
             text "Once during your turn (before your attack), you may remove 2 damage counters from each of your Pokémon. If you do, your turn ends. This power can't be used if Unown V is affected by a Special Condition."
             actionA {
+              assert my.all.any {it.numberOfDamageCounters} : "None of your Pokémon have any damage counters on them"
               checkNoSPC()
               checkLastTurn()
               powerUsed({ usingThisAbilityEndsTurn delegate })
