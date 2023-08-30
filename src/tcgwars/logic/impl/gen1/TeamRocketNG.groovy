@@ -1665,13 +1665,18 @@ public enum TeamRocketNG implements LogicCardInfo {
         return basicTrainer (this) {
           text "Flip a coin. If tails, do 10 damage to your Active Pokémon. If heads, your opponent flips a coin. If tails, your opponent does 10 damage to his or her Active Pokémon. If heads, you flip a coin. Keep doing this until a player gets tails."
           onPlay {
-            def tar = 0
-            flipUntilTails {tar = 1 - tar}
-            if(tar){
-              directDamage(10, opp.active,TRAINER_CARD)
-            }
-            else{
+            def isLastFlipMine = false
+
+            bc "Flipping for digger. The player who used the card will go first."
+
+            flipUntilTails {isLastFlipMine = !isLastFlipMine}
+
+            if (isLastFlipMine){
+              bc "${thisCard.player.getPlayerUsername(bg)} flipped tails!"
               directDamage(10, my.active,TRAINER_CARD)
+            } else {
+              bc "${thisCard.player.opposite.getPlayerUsername(bg)} flipped tails!"
+              directDamage(10, opp.active,TRAINER_CARD)
             }
           }
           playRequirement{

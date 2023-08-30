@@ -3210,7 +3210,7 @@ public enum Platinum implements LogicCardInfo {
               shuffleOppDeck()
               draw oppChoose(1..5,"Looker's Investigation: Draw how many cards?", 5), TargetPlayer.OPPONENT
             } else {
-              my.hand.getExcludedList(thisCard).moveTo(my.deck)
+              my.hand.getExcludedList(thisCard).moveTo(hidden:true, my.deck)
               shuffleDeck()
               draw choose(1..5, "Looker's Investigation: Draw how many cards?", 5)
             }

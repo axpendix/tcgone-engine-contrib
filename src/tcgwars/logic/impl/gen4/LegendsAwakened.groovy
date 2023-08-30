@@ -1566,7 +1566,7 @@ public enum LegendsAwakened implements LogicCardInfo {
                   before BETWEEN_TURNS, {
                     if (bg.currentTurn == self.owner.opposite) {
                       bc "Energy Dissolve activates"
-                      discardDefendingEnergy()
+                      discardSelfEnergy C
                     }
                   }
                   after FALL_BACK, pcs, { unregister() }
@@ -2517,7 +2517,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               before null, null, Source.ATTACK, {
                 if (ef instanceof TargetedEffect) {
                   def pcs = e.getTargetPokemon()
-                  if (bg.currentTurn == self.owner.opposite && ef.effectType != DAMAGE && pcs && pcs.owner == self.owner && self.benched && pcs.name.startsWith("Unown")) {
+                  if (bg.currentTurn == self.owner.opposite && ef.effectType != DAMAGE && self.benched && pcs && pcs.owner == self.owner && pcs.benched && pcs.name.startsWith("Unown")) {
                     bc "UNSEEN prevents effect"
                     prevent()
                   }
@@ -2543,6 +2543,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokePower "VACATION", {
             text "Once during your turn (before your attack), you may remove 2 damage counters from each of your Pokémon. If you do, your turn ends. This power can't be used if Unown V is affected by a Special Condition."
             actionA {
+              assert my.all.any {it.numberOfDamageCounters} : "None of your Pokémon have any damage counters on them"
               checkNoSPC()
               checkLastTurn()
               powerUsed({ usingThisAbilityEndsTurn delegate })

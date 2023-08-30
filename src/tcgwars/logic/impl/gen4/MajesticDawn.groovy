@@ -421,7 +421,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
             onAttack {
               flip {
-                my.deck.search(count:1,"Select 1 card",{true}).moveTo(hidden:true, my.hand)
+                my.deck.search(min:1, "Search your deck for 1 card",{true}).moveTo(hidden:true, my.hand)
                 shuffleDeck()
               }
             }
@@ -1246,7 +1246,9 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 20
-              attachEnergyFrom(type:G, my.hand, my.all)
+              afterDamage {
+                attachEnergyFrom(type:G, my.hand, my.all)
+              }
             }
           }
           move "Body Slam", {

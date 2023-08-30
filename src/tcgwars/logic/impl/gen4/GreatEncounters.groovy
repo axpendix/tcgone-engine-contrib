@@ -206,7 +206,9 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 30
-              attachEnergyFrom(type: R, my.discard, my.all.select())
+              afterDamage {
+                attachEnergyFrom(type: R, my.discard, my.all.select())
+              }
             }
           }
           move "Flame Kick", {
@@ -952,7 +954,7 @@ public enum GreatEncounters implements LogicCardInfo {
               assert bg.em().retrieveObject("Trump Card") == bg.turnCount-1 : "None of your Pokémon were Knocked Out during your opponent's last turn."
               bg.em().storeObject("Trump Card", bg.turnCount)
               powerUsed()
-              my.deck.search(count:1,"Search your deck for 1 card",{true}).moveTo(hidden:true,my.hand)
+              my.deck.search(min:1, "Search your deck for 1 card",{true}).moveTo(hidden:true,my.hand)
             }
           }
           move "Psych Up", {
@@ -1151,7 +1153,7 @@ public enum GreatEncounters implements LogicCardInfo {
             }
             onAttack {
               flip {
-                my.deck.search(count:1, "Search your deck for 1 card",{true}).moveTo(hidden:true,my.hand)
+                my.deck.search(min:1, "Search your deck for 1 card",{true}).moveTo(hidden:true,my.hand)
                 shuffleDeck()
               }
             }
@@ -1512,7 +1514,7 @@ public enum GreatEncounters implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              flip { discardDefendingEnergy() }
+              flip { discardDefendingEnergyAfterDamage() }
             }
           }
           move "Fury Swipes", {
@@ -1861,6 +1863,7 @@ public enum GreatEncounters implements LogicCardInfo {
               assert my.deck : "Your Deck is empty"
               assert self.active : "$self is not your Active Pokémon"
               checkLastTurn()
+              checkNoSPC()
               powerUsed()
               flip {
                 deck.search ("Evolves from ${self.name}", {it.cardTypes.is(EVOLUTION) && self.name==it.predecessor}).each { evolve(self, it) }
