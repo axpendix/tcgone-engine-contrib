@@ -1566,7 +1566,7 @@ public enum LegendsAwakened implements LogicCardInfo {
                   before BETWEEN_TURNS, {
                     if (bg.currentTurn == self.owner.opposite) {
                       bc "Energy Dissolve activates"
-                      discardDefendingEnergy()
+                      discardSelfEnergy C
                     }
                   }
                   after FALL_BACK, pcs, { unregister() }
