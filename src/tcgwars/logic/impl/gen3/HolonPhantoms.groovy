@@ -394,7 +394,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             after PROCESS_ATTACK_EFFECTS, {
               if (ef.attacker.owner == self.owner && bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name.contains("Holon") && ef.attacker.topPokemonCard.cardTypes.is(DELTA)) {
                 bg.dm().each {
-                  if (it.to != self.owner && it.to.active && it.notNoEffect && it.dmg.value) {
+                  if (it.to.owner != self.owner && it.to.active && it.notNoEffect && it.dmg.value) {
                     bc "Delta Reactor +10"
                     it.dmg += hp(10)
                   }
