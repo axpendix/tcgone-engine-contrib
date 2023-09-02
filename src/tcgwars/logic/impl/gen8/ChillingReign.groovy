@@ -900,7 +900,7 @@ public enum ChillingReign implements LogicCardInfo {
               after PROCESS_ATTACK_EFFECTS, {
                 if (ef.attacker == self && opp.prizeCardSet.takenCount) {
                   bg.dm().each {
-                    if (it.to != self.owner && it.to.active && it.notNoEffect && it.dmg.value) {
+                    if (it.to.owner != self.owner && it.to.active && it.notNoEffect && it.dmg.value) {
                       def bonus = opp.prizeCardSet.takenCount * 30
                       bc "$thisAbility +$bonus"
                       it.dmg += hp(bonus)

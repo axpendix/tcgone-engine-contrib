@@ -2825,7 +2825,7 @@ public enum GreatEncounters implements LogicCardInfo {
               after PROCESS_ATTACK_EFFECTS, {
                 if (ef.attacker.owner == self.owner && ef.attacker.types.contains(D) && ef.attacker.cards.filterByBasicEnergyType(D) && bg.em().retrieveObject("Dark_Shadow") != bg.turnCount) {
                   bg.dm().each {
-                    if (it.to.active && it.to != self.owner && it.notNoEffect && it.dmg.value) {
+                    if (it.to.active && it.to.owner != self.owner && it.notNoEffect && it.dmg.value) {
 
                       def bonusDamage = it.from.cards.filterByBasicEnergyType(D).size() * 10
                       bc "Dark Shadow +$bonusDamage"

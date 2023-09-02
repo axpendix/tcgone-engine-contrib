@@ -658,7 +658,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               after PROCESS_ATTACK_EFFECTS, {
                 if (ef.attacker == self && self.owner.pbg.all.any { it.name == "Cresselia" }) {
                   bg.dm().each {
-                    if (it.to != self.owner && it.to.active && it.dmg.value) {
+                    if (it.to.owner != self.owner && it.to.active && it.dmg.value) {
                       bc "Darkness Aura +20"
                       it.dmg += hp(20)
                     }
